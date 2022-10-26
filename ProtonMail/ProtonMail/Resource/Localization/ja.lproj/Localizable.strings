@@ -22,6 +22,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 添付ファイルとして追加するにはここにドロップ";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "残り1 分未満";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "1 分未満";
 
@@ -205,9 +208,6 @@
 
 /* (No Comment) */
 "Archived" = "アーカイブ済み";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか?";
@@ -1011,6 +1011,9 @@
 /* Error */
 "Incorrect PIN." = "PIN コードが正しくありません。";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mailが端末上の容量をどれくらい使用しているかの情報です。";
+
 /* Option title */
 "Inherit color from parent folder" = "親フォルダーの色を継承";
 
@@ -1048,7 +1051,7 @@
 "Invalid hashed password!" = "無効なハッシュ化されたパスワードです";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "無効な URL です";
+"Invalid URL" = "URLが正しくありません";
 
 /* title */
 "Invalid UserName" = "無効なユーザー名です";

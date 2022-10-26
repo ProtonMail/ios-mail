@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message moved to Drafts</string>
+			<string>%d meddelande flyttat till Utkast</string>
 			<key>other</key>
-			<string>%d messages moved to Drafts</string>
+			<string>%d meddelanden flyttade till Utkast</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Detta %d meddelande kommer flyttas till Utkast och få sitt schema borttaget.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

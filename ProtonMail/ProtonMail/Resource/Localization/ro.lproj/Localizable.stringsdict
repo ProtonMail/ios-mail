@@ -387,7 +387,7 @@
 			<key>one</key>
 			<string>Acest mesaj se va muta în «Ciorne» și i se va elimina programarea.</string>
 			<key>other</key>
-			<string>Aceste %d de mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

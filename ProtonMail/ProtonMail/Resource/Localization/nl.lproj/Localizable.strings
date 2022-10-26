@@ -227,11 +227,11 @@
 /* (No Comment) */
 "Archived" = "Gearchiveerd";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Weet u zeker dat u deze %d berichten definitief wilt verwijderen?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Weet u zeker dat u %@ wilt uitloggen?";
@@ -1066,7 +1066,7 @@
 "Incorrect PIN." = "Onjuiste PIN-code.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informatie over hoeveel opslagruimte dit Proton Mail account gebruikt op uw apparaat.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informatie over hoeveel opslagruimte dit Proton Mail-account gebruikt op uw apparaat.";
 
 /* Option title */
 "Inherit color from parent folder" = "Kleur van bovenliggende map overnemen";
@@ -1165,7 +1165,7 @@
 "Limit reached" = "Limiet bereikt";
 
 /* Button inside the banner */
-"Load anyway" = "Toch inladen";
+"Load anyway" = "Toch laden";
 
 /* No comment provided by engineer. */
 "Load content" = "Inhoud laden";
@@ -1998,7 +1998,7 @@
 "Snooze" = "Uitstellen";
 
 /* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Sommige afbeeldingen konden niet ingeladen worden met bescherming tegen tracking.";
+"Some images failed to load with tracking protection." = "Sommige afbeeldingen konden niet geladen worden met bescherming tegen tracking.";
 
 /* (No Comment) */
 "Space Warning" = "Waarschuwing van opslagruimte";

@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Membro</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Membros</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -275,9 +275,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d conversation?</string>
+			<string>Você tem certeza de que deseja excluir permanentemente %d conversa?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Você tem certeza de que deseja excluir permanentemente %d conversas?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d message?</string>
+			<string>Você tem certeza de que deseja excluir permanentemente %d mensagem?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Você tem certeza de que deseja excluir permanentemente %d mensagens?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Esta %d mensagem será movida para Rascunhos e seu agendamento removido.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

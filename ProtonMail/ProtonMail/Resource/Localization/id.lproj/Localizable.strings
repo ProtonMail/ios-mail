@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Diarsipkan";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Apakah Anda yakin untuk menghapus %d pesan ini secara permanen?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Apakah Anda yakin untuk menghapus pesan ini secara permanen?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Apakah Anda yakin untuk menghapus %d pesan ini secara permanen?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Apakah Anda yakin anda ingin keluar %@?";
@@ -1409,7 +1409,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Pendaftaran seluler untuk sementara dinonaktifkan. Silakan coba lagi nanti, atau coba daftar melalui proton.me menggunakan komputer desktop atau laptop.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Senin (%1$@) pada pukul 08:%2$d";

@@ -197,9 +197,6 @@
 /* (No Comment) */
 "Archived" = "Aɣbar";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda %d agi n yiznan?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda izen-agi?";
 
@@ -1224,7 +1221,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Ijerriden ɣef tiliɣriyin nsan akka tura. Ma ulac aɣilif ɛreḍ ticki neɣ ɛreḍ s ujerred di protonmail.com s useqdec n uselkim n tnarit neɣ n ufus.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Ugar";

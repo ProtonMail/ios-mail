@@ -230,9 +230,6 @@
 /* (No Comment) */
 "Archived" = "Geymt";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Ertu viss um að þú viljir eyða endanlega þessum %d skilaboðum?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
 
@@ -1373,7 +1370,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Nýskráningar á snjalltækjum eru óvirkar í augnablikinu Prófaðu aftur síðar, eða reyndu að skrá þig á protonmail.com með hjálp borð- eða fartölvu.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Meira";

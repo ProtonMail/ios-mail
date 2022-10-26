@@ -158,7 +158,7 @@
 "All protection settings will be reset and wiped upon logging out of the app." = "Alle Schutzeinstellungen werden beim Abmelden von der App zurückgesetzt und gelöscht.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen";
+"All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatives Routing erlauben";
@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Archiviert";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Are you sure you want to delete these %d messages permanently?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Bist du sicher, dass diese Nachricht dauerhaft gelöscht werden soll?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Möchtest du diese %d Meldungen wirklich dauerhaft löschen?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Möchtest du „%@“ wirklich abmelden?";
@@ -322,7 +322,7 @@
 "Birthday" = "Geburtstag";
 
 /* Settings row */
-"Block email tracking" = "E-Mail-Tracking sperren";
+"Block email tracking" = "E-Mail-Tracking blockieren";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Verhindert, dass der Absender erfährt, ob und wann Sie die Nachricht geöffnet haben";
@@ -750,7 +750,7 @@
 "Download paused: No connectivity" = "Download pausiert: Keine Verbindung";
 
 /* Text for estimate time label when no wifi is available */
-"Download paused: No WiFi detected" = "Download pausiert: Kein WLAN-Netzwerk erkannt";
+"Download paused: No WiFi detected" = "Download pausiert: Kein WLAN-Netzwerk erkannt.";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Download pausiert: Speicher voll";
@@ -948,7 +948,7 @@
 "Every time enter app" = "Jedes Mal, wenn du die App öffnest";
 
 /* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "Nachrichteninhalt ausschließen";
+"Exclude message content" = "Schließe den Inhalt von Nachrichten";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Ordner aufklappen";
@@ -1130,6 +1130,9 @@
 /* Error */
 "Incorrect PIN." = "PIN ungültig.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Informationen darüber, wie viel Speicherplatz dieses Proton Mail-Konto auf deinem Gerät verbraucht.";
+
 /* Option title */
 "Inherit color from parent folder" = "Farbe vom übergeordneten Ordner übernehmen";
 
@@ -1230,7 +1233,7 @@
 "Limit reached" = "Limit erreicht";
 
 /* Button inside the banner */
-"Load anyway" = "Dennoch laden";
+"Load anyway" = "Trotzdem laden";
 
 /* No comment provided by engineer. */
 "Load content" = "Inhalt laden";
@@ -1440,7 +1443,7 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "In Spam-Ordner verschieben";
+"Move to spam" = "In Spam verschieben";
 
 /* (No Comment) */
 "Move to Spam" = "In Spam-Ordner verschieben";
@@ -1589,7 +1592,7 @@
 "Okay" = "Okay";
 
 /* The text for determining the oldest message in the encrypted search index */
-"Oldest message: " = "Älteste Nachricht:";
+"Oldest message: " = "Älteste Nachricht: ";
 
 /* The title of On setting options */
 "On" = "Ein";
@@ -1968,6 +1971,9 @@
    The title of encrypted search in settings */
 "Search message content" = "Inhalt der Nachrichten durchsuchen";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Dauert die Suche zu lange? %1$@ von dieser Suche aus, um schnellere Ergebnisse zu erzielen.";
+
 /* The link in local storage downloaded messages. */
 "See details" = "Details anzeigen";
 
@@ -2106,6 +2112,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Zurückstellen";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Einige Grafiken konnten nicht mit Tracking-Schutz geladen werden.";
 
 /* (No Comment) */
 "Space Warning" = "Speicherplatz-Warnung";
@@ -2364,7 +2373,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dieser Link führt zu einer Website, die möglicherweise versucht, deine Informationen wie Passwörter und Kreditkartendaten zu stehlen.\n%@\n\nZu deiner Sicherheit solltest du nicht fortfahren.";
 
 /* No comment provided by engineer. */
-"This message contains embedded images." = "Diese Nachricht enthält eingebettete Grafiken.";
+"This message contains embedded images." = "Diese Nachricht enthält eingebettete Bilder.";
 
 /* No comment provided by engineer. */
 "This message contains remote content and embedded images" = "Diese Nachricht enthält extern eingebundene Inhalte und eingebettete Grafiken";
@@ -2379,7 +2388,7 @@
 "This message is from a mailing list." = "Diese Nachricht wurde an eine Verteilerliste gesendet.";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Diese Nachricht ist nicht mehr für einen späteren Versand vorgesehen. Wenn du sie dennoch später senden möchtest, kannst du auf \"Senden planen\" tippen";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Diese Nachricht ist nicht mehr für einen späteren Versand vorgesehen. Wenn du sie dennoch später senden möchtest, kannst du auf \"Senden planen\" tippen.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Diese Nachricht könnte ein Phishing-Versuch sein. Bitte überprüfe den Absender und deren Inhalt, um sicherzustellen, dass diese seriös sind.";
@@ -2501,7 +2510,7 @@
 "Undisclosed Recipients" = "Verborgene Empfänger";
 
 /* Action */
-"Undo" = "Widerrufen";
+"Undo" = "Rückgängig";
 
 /* No comment provided by engineer. */
 "Undo send" = "Senden widerrufen";

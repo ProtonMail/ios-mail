@@ -345,7 +345,7 @@
 			<key>one</key>
 			<string>Questo %d messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
 			<key>other</key>
-			<string>Questi %d messaggi verranno spostati nelle Bozze e la loro programmazione sarà rimossa.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
