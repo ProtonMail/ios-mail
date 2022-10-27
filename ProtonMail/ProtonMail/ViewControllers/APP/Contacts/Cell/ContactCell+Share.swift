@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol ContactCellShare: AnyObject {
@@ -44,50 +45,45 @@ extension ContactCellShare {
         let width: CGFloat = height
 
         if contactGroupColors.count > 0 {
-            let imageName = "contact_groups_icon"
-
             let limit = 3 // we only show 3 of the groups
             for (i, contactGroupColor) in contactGroupColors.enumerated() {
                 if i < limit {
                     // setup image
-                    var image = UIImage.init(named: imageName)
-                    if var imageUnwrapped = image {
-                        imageUnwrapped = imageUnwrapped.withRenderingMode(.alwaysTemplate)
-                        if let imageUnwrapped = UIImage.resize(image: imageUnwrapped,
-                                                               targetSize: CGSize.init(width: width,
-                                                                                       height: height)) {
-                            image = imageUnwrapped
-                        }
+                    var image = IconProvider.users
+                    if let imageUnwrapped = UIImage.resize(
+                        image: image,
+                        targetSize: CGSize(width: width,
+                                           height: height)
+                    ) {
+                        image = imageUnwrapped
                     }
 
                     // setup imageView
-                    if let image = image {
-                        let imageView = UIImageView.init(image: image)
-                        imageView.setupImage(scale: 0.7,
-                                             makeCircleBorder: true,
-                                             tintColor: UIColor.white,
-                                             backgroundColor: UIColor.init(hexString: contactGroupColor,
-                                                                           alpha: 1))
-                        imageView.translatesAutoresizingMaskIntoConstraints = false
-                        let heightConstraint = NSLayoutConstraint.init(item: imageView,
-                                                                       attribute: .height,
-                                                                       relatedBy: .equal,
-                                                                       toItem: nil,
-                                                                       attribute: .notAnAttribute,
-                                                                       multiplier: 1.0,
-                                                                       constant: height)
-                        let widthConstraint = NSLayoutConstraint.init(item: imageView,
-                                                                      attribute: .width,
-                                                                      relatedBy: .equal,
-                                                                      toItem: nil,
-                                                                      attribute: .notAnAttribute,
-                                                                      multiplier: 1.0,
-                                                                      constant: width)
+                    let imageView = UIImageView.init(image: image)
+                    imageView.setupImage(scale: 0.7,
+                                         makeCircleBorder: true,
+                                         tintColor: UIColor.white,
+                                         backgroundColor: UIColor.init(hexString: contactGroupColor,
+                                                                       alpha: 1))
+                    imageView.translatesAutoresizingMaskIntoConstraints = false
+                    let heightConstraint = NSLayoutConstraint.init(item: imageView,
+                                                                   attribute: .height,
+                                                                   relatedBy: .equal,
+                                                                   toItem: nil,
+                                                                   attribute: .notAnAttribute,
+                                                                   multiplier: 1.0,
+                                                                   constant: height)
+                    let widthConstraint = NSLayoutConstraint.init(item: imageView,
+                                                                  attribute: .width,
+                                                                  relatedBy: .equal,
+                                                                  toItem: nil,
+                                                                  attribute: .notAnAttribute,
+                                                                  multiplier: 1.0,
+                                                                  constant: width)
 
-                        // add to stack view
-                        iconStackView.addArrangedSubview(imageView)
-                        iconStackView.addConstraints([heightConstraint, widthConstraint])
-                    }
+                    // add to stack view
+                    iconStackView.addArrangedSubview(imageView)
+                    iconStackView.addConstraints([heightConstraint, widthConstraint])
                 } else {
                     break
                 }

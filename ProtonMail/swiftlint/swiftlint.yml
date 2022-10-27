@@ -213,7 +213,6 @@ excluded:
   - ${PWD}/ProtonMail/Components/APP_share/BannerView/BannerView.swift
   - ${PWD}/ProtonMail/Components/APP/PMToolBarView.swift
   - ${PWD}/ProtonMail/Components/APP/IBDesignableLabeled.swift
-  - ${PWD}/ProtonMail/Components/APP/LabelDisplayView/LabelDisplayView.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ViewModel/ComposeViewModel.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ViewModel/ComposerMessageHelper.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposeCoordinator.swift

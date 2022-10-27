@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 extension UIViewController {
@@ -36,7 +37,7 @@ extension UIViewController {
 
     func setupMenuButton() {
         let menuButton = UIBarButtonItem(
-            image: Asset.topMenu.image,
+            image: IconProvider.hamburger,
             style: .plain,
             target: self,
             action: #selector(self.openMenu)

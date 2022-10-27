@@ -57,9 +57,9 @@ extension MessageEntity {
             return location?.icon
         }
         if viewMode == .singleMessage {
-           return Asset.mailDraftIcon.image
+           return IconProvider.pencil
         } else {
-            return Asset.mailConversationDraft.image
+            return IconProvider.fileLines
         }
     }
 
@@ -127,7 +127,7 @@ extension MessageEntity {
                 }
             }
             // TODO: return colored icon accroding to folder
-            return Asset.mailCustomFolder.image
+            return IconProvider.folder
         }
     }
 

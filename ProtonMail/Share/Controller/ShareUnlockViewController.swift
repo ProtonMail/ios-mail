@@ -21,10 +21,11 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreServices
-import UIKit
 import MBProgressHUD
 import PromiseKit
 import ProtonCore_Services
+import ProtonCore_UIFoundations
+import UIKit
 
 var sharedUserDataService: UserDataService!
 
@@ -214,11 +215,11 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
 
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barTintColor = UIColor(named: "LaunchScreenBackground")
+            bar.barTintColor = ColorProvider.BackgroundNorm
             bar.isTranslucent = false
-            bar.tintColor = UIColor(named: "launch_text_color")
+            bar.tintColor = ColorProvider.TextNorm
             bar.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
+                NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm as UIColor,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }

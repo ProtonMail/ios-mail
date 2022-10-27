@@ -145,9 +145,9 @@ private extension SettingsGeneralCell.ImageType {
     var image: UIImage? {
         switch self {
         case .arrow:
-            return #imageLiteral(resourceName: "cell_right_arrow").withRenderingMode(.alwaysTemplate)
+            return IconProvider.chevronRight
         case .system:
-            return #imageLiteral(resourceName: "cell-external").withRenderingMode(.alwaysTemplate)
+            return IconProvider.arrowOutSquare
         case .none, .activityIndicator:
             return nil
         }
