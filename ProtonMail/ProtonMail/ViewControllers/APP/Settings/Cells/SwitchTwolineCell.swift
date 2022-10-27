@@ -100,9 +100,3 @@ protocol SwitchTwolineCellDelegate {
         return false
     }
 }
-
-extension SwitchTwolineCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        self.labelAtInterfaceBuilder()
-    }
-}
