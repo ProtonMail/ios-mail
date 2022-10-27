@@ -82,6 +82,11 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
         self.name = name
         self.state = state
         self.viewModel = viewModel
+        deleteButton.setImage(
+            IconProvider.crossCircle,
+            for: .normal
+        )
+        deleteButton.imageView?.tintColor = ColorProvider.NotificationError
 
         // check and set the delete button
         if state != .editView {

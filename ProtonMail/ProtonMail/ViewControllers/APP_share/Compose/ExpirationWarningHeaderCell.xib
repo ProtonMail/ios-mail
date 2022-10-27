@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,14 +23,14 @@
                             <color key="textColor" red="0.52391308550000004" green="0.53953999279999998" blue="0.78824073080000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment-closed" translatesAutoresizingMaskIntoConstraints="NO" id="y7u-Sb-7HT">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-chevron-down" translatesAutoresizingMaskIntoConstraints="NO" id="y7u-Sb-7HT">
                             <rect key="frame" x="335" y="25.5" width="14" height="14"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="14" id="5Ey-ZU-2ys"/>
                                 <constraint firstAttribute="width" constant="14" id="tUk-ug-6d5"/>
                             </constraints>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ssn-2e-X6s" userLabel="background action">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ssn-2e-X6s" userLabel="background action">
                             <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
                             <connections>
                                 <action selector="backgroundAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="zoV-gt-dMy"/>
@@ -70,6 +68,6 @@
         </view>
     </objects>
     <resources>
-        <image name="mail_attachment-closed" width="14" height="14"/>
+        <image name="ic-chevron-down" width="24" height="24"/>
     </resources>
 </document>

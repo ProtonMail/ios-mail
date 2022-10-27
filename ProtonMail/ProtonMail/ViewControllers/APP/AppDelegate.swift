@@ -418,7 +418,7 @@ extension AppDelegate: UnlockManagerDelegate {
 // MARK: Appearance
 extension AppDelegate {
     private var backArrowImage: UIImage {
-        Asset.backArrow.image.withRenderingMode(.alwaysTemplate)
+        IconProvider.arrowLeft.withRenderingMode(.alwaysTemplate)
     }
 
     private func configureAppearance() {

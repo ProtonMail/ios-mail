@@ -39,6 +39,9 @@
          "dependencies": [
             {
                "sdk": "libc++.tbd"
+            },
+            {
+               "target": "ProtonMailAnalytics"
             }
          ],
          "preBuildScripts": [

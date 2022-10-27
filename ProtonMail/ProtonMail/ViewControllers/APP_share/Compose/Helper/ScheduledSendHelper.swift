@@ -67,7 +67,7 @@ final class ScheduledSendHelper {
 // MARK: Scheduled send action sheet related
 extension ScheduledSendHelper {
     func setUpActionHeader() -> PMActionSheetHeaderView {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { [weak self] _ in
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
             self?.actionSheet?.dismiss(animated: true)
         }
         let title = LocalString._general_schedule_send_action

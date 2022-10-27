@@ -205,7 +205,7 @@ private enum SubviewsFactory {
     }
 
     static var dismissButton: UIButton {
-        let button = UIButton(image: Asset.actionSheetClose.image.toTemplateUIImage())
+        let button = UIButton(image: IconProvider.cross.toTemplateUIImage())
         button.imageView?.tintColor = ColorProvider.IconNorm
         return button
     }
