@@ -43,9 +43,3 @@ import UIKit
     }
 
 }
-
-extension DomainsTableViewCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        self.labelAtInterfaceBuilder()
-    }
-}

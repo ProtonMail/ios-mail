@@ -134,13 +134,6 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     }
 }
 
-extension SettingsGeneralCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        self.labelAtInterfaceBuilder()
-    }
-}
-
 private extension SettingsGeneralCell.ImageType {
     var image: UIImage? {
         switch self {

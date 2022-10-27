@@ -85,38 +85,6 @@ extension Array where Element == PreContact {
     }
 }
 
-final class PreAddress: NSObject {
-    let email: String
-    let recipientType: KeysResponse.RecipientType
-    let isEO: Bool
-    let pubKey: String?
-    let pgpKey: Data?
-    let mime: Bool
-    let sign: Bool
-    let pgpencrypt: Bool
-    let plainText: Bool
-
-    init(email: String,
-         pubKey: String?,
-         pgpKey: Data?,
-         recipientType: KeysResponse.RecipientType,
-         isEO: Bool,
-         mime: Bool,
-         sign: Bool,
-         pgpencrypt: Bool,
-         plainText: Bool) {
-        self.email = email
-        self.recipientType = recipientType
-        self.isEO = isEO
-        self.pubKey = pubKey
-        self.pgpKey = pgpKey
-        self.mime = mime
-        self.sign = sign
-        self.pgpencrypt = pgpencrypt
-        self.plainText = plainText
-    }
-}
-
 final class PreAttachment {
     /// attachment id
     let attachmentId: String
