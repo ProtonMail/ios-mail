@@ -1,0 +1,200 @@
+{
+  "name": "ProtonCore-PaymentsUI-V5",
+  "module_name": "ProtonCore_PaymentsUI",
+  "version": "3.22.5",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.22.5"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "frameworks": "UIKit",
+  "dependencies": {
+    "ProtonCore-Log": [
+      "3.22.5"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "3.22.5"
+    ],
+    "ProtonCore-CoreTranslation-V5": [
+      "3.22.5"
+    ],
+    "ProtonCore-Foundations": [
+      "3.22.5"
+    ],
+    "ProtonCore-UIFoundations-V5": [
+      "3.22.5"
+    ]
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "UsingCrypto+Alamofire",
+      "dependencies": {
+        "ProtonCore-Payments/UsingCrypto+Alamofire": [
+          "3.22.5"
+        ]
+      },
+      "source_files": [
+        "libraries/PaymentsUI/Sources/Extensions/**/*.swift",
+        "libraries/PaymentsUI/Sources/Managers/*.swift",
+        "libraries/PaymentsUI/Sources/Views/*.swift",
+        "libraries/PaymentsUI/Sources/PaymentsUI.swift",
+        "libraries/PaymentsUI/Sources/Coordinators/*.swift",
+        "libraries/PaymentsUI/Sources/V5/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-PaymentsUI": [
+          "libraries/PaymentsUI/Sources/Views/*.xib",
+          "libraries/PaymentsUI/Sources/V5/**/*.xib",
+          "libraries/PaymentsUI/Sources/PaymentsUI-V5.storyboard"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Payments/UsingCrypto+Alamofire": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/PaymentsUI/Tests/**/*.swift",
+          "exclude_files": "libraries/PaymentsUI/Tests/PaymentsUIViewModelTests.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCrypto+AFNetworking",
+      "dependencies": {
+        "ProtonCore-Payments/UsingCrypto+AFNetworking": [
+          "3.22.5"
+        ]
+      },
+      "source_files": [
+        "libraries/PaymentsUI/Sources/Extensions/**/*.swift",
+        "libraries/PaymentsUI/Sources/Managers/*.swift",
+        "libraries/PaymentsUI/Sources/Views/*.swift",
+        "libraries/PaymentsUI/Sources/PaymentsUI.swift",
+        "libraries/PaymentsUI/Sources/Coordinators/*.swift",
+        "libraries/PaymentsUI/Sources/V5/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-PaymentsUI": [
+          "libraries/PaymentsUI/Sources/Views/*.xib",
+          "libraries/PaymentsUI/Sources/V5/**/*.xib",
+          "libraries/PaymentsUI/Sources/PaymentsUI-V5.storyboard"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Payments/UsingCrypto+AFNetworking": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/PaymentsUI/Tests/**/*.swift",
+          "exclude_files": "libraries/PaymentsUI/Tests/PaymentsUIViewModelTests.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCryptoVPN+Alamofire",
+      "dependencies": {
+        "ProtonCore-Payments/UsingCryptoVPN+Alamofire": [
+          "3.22.5"
+        ]
+      },
+      "source_files": [
+        "libraries/PaymentsUI/Sources/Extensions/**/*.swift",
+        "libraries/PaymentsUI/Sources/Managers/*.swift",
+        "libraries/PaymentsUI/Sources/Views/*.swift",
+        "libraries/PaymentsUI/Sources/PaymentsUI.swift",
+        "libraries/PaymentsUI/Sources/Coordinators/*.swift",
+        "libraries/PaymentsUI/Sources/V5/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-PaymentsUI": [
+          "libraries/PaymentsUI/Sources/Views/*.xib",
+          "libraries/PaymentsUI/Sources/V5/**/*.xib",
+          "libraries/PaymentsUI/Sources/PaymentsUI-V5.storyboard"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Payments/UsingCryptoVPN+Alamofire": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/PaymentsUI/Tests/**/*.swift",
+          "exclude_files": "libraries/PaymentsUI/Tests/PaymentsUIViewModelTests.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCryptoVPN+AFNetworking",
+      "dependencies": {
+        "ProtonCore-Payments/UsingCryptoVPN+AFNetworking": [
+          "3.22.5"
+        ]
+      },
+      "source_files": [
+        "libraries/PaymentsUI/Sources/Extensions/**/*.swift",
+        "libraries/PaymentsUI/Sources/Managers/*.swift",
+        "libraries/PaymentsUI/Sources/Views/*.swift",
+        "libraries/PaymentsUI/Sources/PaymentsUI.swift",
+        "libraries/PaymentsUI/Sources/Coordinators/*.swift",
+        "libraries/PaymentsUI/Sources/V5/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-PaymentsUI": [
+          "libraries/PaymentsUI/Sources/Views/*.xib",
+          "libraries/PaymentsUI/Sources/V5/**/*.xib",
+          "libraries/PaymentsUI/Sources/PaymentsUI-V5.storyboard"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Payments/UsingCryptoVPN+AFNetworking": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/PaymentsUI/Tests/**/*.swift",
+          "exclude_files": "libraries/PaymentsUI/Tests/PaymentsUIViewModelTests.swift"
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}
