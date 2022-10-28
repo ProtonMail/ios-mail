@@ -38,6 +38,10 @@ private enum EmbeddedDownloadStatus {
 }
 
 final class MessageInfoProvider {
+    private var checkerDependencies: MessageSenderPGPChecker.Dependencies {
+        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+        return MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
+    }
     private(set) var message: MessageEntity {
         willSet {
             let bodyHasChanged = message.body != newValue.body
@@ -48,7 +52,9 @@ final class MessageInfoProvider {
             }
         }
         didSet {
-            pgpChecker = MessageSenderPGPChecker(message: message, user: user)
+            let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+            let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
+            pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
             prepareDisplayBody()
             checkSenderPGP()
         }
@@ -79,8 +85,8 @@ final class MessageInfoProvider {
     private weak var delegate: MessageInfoProviderDelegate?
     private var pgpChecker: MessageSenderPGPChecker?
     private let prepareDisplayBodyQueue = DispatchQueue(label: "me.proton.mail.prepareDisplayBody")
-
     private let imageProxy: ImageProxy
+    private let dependencies: Dependencies
 
     private var shouldApplyImageProxy: Bool {
         let messageNotSentByUs = !message.isSent
@@ -95,10 +101,13 @@ final class MessageInfoProvider {
         user: UserManager,
         imageProxy: ImageProxy,
         systemUpTime: SystemUpTimeProtocol,
-        labelID: LabelID
+        labelID: LabelID,
+        dependencies: Dependencies
     ) {
         self.message = message
-        self.pgpChecker = MessageSenderPGPChecker(message: message, user: user)
+        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+        let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
+        self.pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
         self.user = user
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
@@ -110,6 +119,7 @@ final class MessageInfoProvider {
         self.imageProxy = imageProxy
         self.systemUpTime = systemUpTime
         self.labelID = labelID
+        self.dependencies = dependencies
 
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
@@ -127,11 +137,19 @@ final class MessageInfoProvider {
         message: MessageEntity,
         user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
-        labelID: LabelID
+        labelID: LabelID,
+        dependencies: Dependencies
     ) {
         let imageProxyDependencies = ImageProxy.Dependencies(apiService: user.apiService)
         let imageProxy = ImageProxy(dependencies: imageProxyDependencies)
-        self.init(message: message, user: user, imageProxy: imageProxy, systemUpTime: systemUpTime, labelID: labelID)
+        self.init(
+            message: message,
+            user: user,
+            imageProxy: imageProxy,
+            systemUpTime: systemUpTime,
+            labelID: labelID,
+            dependencies: dependencies
+        )
     }
 
     lazy var senderName: String = {
@@ -630,17 +648,25 @@ extension MessageInfoProvider {
         let group = DispatchGroup()
         let queue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
         let stringsQueue = DispatchQueue(label: "StringsQueue")
+        let userKeys = user.toUserKeys()
 
         for inline in inlines {
             group.enter()
-            let work = DispatchWorkItem {
-                self.messageService.base64AttachmentData(inline) { based64String in
+            let work = DispatchWorkItem { [weak self] in
+                guard let contentID = inline.getContentID() else { return }
+                self?.dependencies.fetchAttachment.execute(
+                    params: .init(
+                        attachmentID: inline.id,
+                        attachmentKeyPacket: inline.keyPacket,
+                        purpose: .decryptAndEncodeAttachment,
+                        userKeys: userKeys
+                    )
+                ) { result in
                     defer { group.leave() }
-                    guard !based64String.isEmpty,
-                          let contentID = inline.getContentID() else { return }
+                    guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else { return }
                     stringsQueue.sync {
-                        let value = "src=\"data:\(inline.rawMimeType);base64,\(based64String)\""
-                        self.embeddedBase64["src=\"cid:\(contentID)\""] = value
+                        let value = "src=\"data:\(inline.rawMimeType);base64,\(base64Att)\""
+                        self?.embeddedBase64["src=\"cid:\(contentID)\""] = value
                     }
                 }
             }
@@ -683,5 +709,11 @@ extension MessageInfoProvider {
             self?.shouldShowEmbeddedBanner = showEmbeddedBanner
             self?.delegate?.updateBannerStatus()
         }
+    }
+}
+
+extension MessageInfoProvider {
+    struct Dependencies {
+        let fetchAttachment: FetchAttachmentUseCase
     }
 }

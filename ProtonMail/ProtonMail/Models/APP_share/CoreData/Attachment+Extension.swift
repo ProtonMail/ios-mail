@@ -132,61 +132,6 @@ extension Attachment {
         return sessionKey
     }
 
-    func base64DecryptAttachment(userInfo: UserInfo, passphrase: Passphrase) -> String {
-        let userPrivKeys = userInfo.userPrivateKeys
-        let addrPrivKeys = userInfo.addressKeys
-
-        if let localURL = self.localURL {
-            if let data: Data = try? Data(contentsOf: localURL as URL) {
-                do {
-                    if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData =
-                                userInfo.isKeyV2 ?
-                                    try data.decryptAttachment(keyPackage: keydata,
-                                                               userKeys: userPrivKeys,
-                                                               passphrase: passphrase,
-                                                               keys: addrPrivKeys) :
-                                    try data.decryptAttachmentNonOptional(keydata,
-                                                                          passphrase: passphrase.value,
-                                                                          privKeys: addrPrivKeys.binPrivKeysArray) {
-                                let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                                return strBase64
-                            }
-                        }
-                    }
-                } catch {
-                }
-            } else if let data = self.fileData, data.count > 0 {
-                do {
-                    if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData =
-                                userInfo.isKeyV2 ?
-                                    try data.decryptAttachment(keyPackage: keydata,
-                                                               userKeys: userPrivKeys,
-                                                               passphrase: passphrase,
-                                                               keys: addrPrivKeys) :
-                                    try data.decryptAttachmentNonOptional(keydata,
-                                                                          passphrase: passphrase.value,
-                                                                          privKeys: addrPrivKeys.binPrivKeysArray) {
-                                let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                                return strBase64
-                            }
-                        }
-                    }
-                } catch {
-                }
-            }
-        }
-
-        if let data = self.fileData {
-            let strBase64: String = data.base64EncodedString(options: .lineLength64Characters)
-            return strBase64
-        }
-        return ""
-    }
-
     func inline() -> Bool {
         guard let headerInfo = self.headerInfo else {
             return false

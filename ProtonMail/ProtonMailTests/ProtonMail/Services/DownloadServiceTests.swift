@@ -170,11 +170,3 @@ extension DownloadServiceTests {
         return mockApiService
     }
 }
-
-final class MockFileManager: FileManager {
-    var fileExistsResult: Bool = false
-
-    override func fileExists(atPath path: String) -> Bool {
-        return fileExistsResult
-    }
-}

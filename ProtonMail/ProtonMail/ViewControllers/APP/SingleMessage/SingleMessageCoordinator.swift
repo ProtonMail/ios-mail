@@ -179,9 +179,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
-        let viewModel = AttachmentListViewModel(attachments: attachments,
-                                                user: user,
-                                                inlineCIDS: inlineCIDS)
+        let viewModel = AttachmentListViewModel(
+            attachments: attachments,
+            user: user,
+            inlineCIDS: inlineCIDS,
+            dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
+        )
         let viewController = AttachmentListViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)
     }

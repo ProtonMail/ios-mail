@@ -61,9 +61,11 @@ final class MessageSendingRequestBuilder {
     private var attachmentBodys: [String: String] = [:]
 
     let expirationOffset: Int32
+    private let dependencies: Dependencies
 
-    init(expirationOffset: Int32?) {
+    init(expirationOffset: Int32?, dependencies: Dependencies) {
         self.expirationOffset = expirationOffset ?? 0
+        self.dependencies = dependencies
     }
 
     func update(bodyData data: Data, bodySession: Data, algo: Algorithm) {
@@ -170,51 +172,40 @@ final class MessageSendingRequestBuilder {
 
 // MARK: - Build Message Body
 extension MessageSendingRequestBuilder {
-    private func fetchAttachmentBody(att: Attachment,
-                                     messageDataService: MessageDataService,
-                                     passphrase: Passphrase,
-                                     userInfo: UserInfo,
-                                     in context: NSManagedObjectContext) -> Promise<String> {
+
+    func fetchAttachmentBody(
+        att: AttachmentEntity,
+        messageDataService: MessageDataService,
+        passphrase: Passphrase,
+        userInfo: UserInfo
+    ) -> Promise<String> {
         return Promise { seal in
-            context.perform {
-                if let localURL = att.localURL,
-                   FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
-                    return
-                }
-
-                if let data = att.fileData, !data.isEmpty {
-                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
-                    return
-                }
-
-                att.localURL = nil
-                messageDataService
-                    .fetchAttachmentForAttachment(
-                        AttachmentEntity(att),
-                        customAuthCredential: att.message.cachedAuthCredential,
-                        downloadTask: { (_: URLSessionDownloadTask) in },
-                        completion: { _, _ in
-                            let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
-                                                                                  passphrase: passphrase)
-                            seal.fulfill(decryptedAttachment)
-                        }
-                    )
+            let userKeys = UserKeys(
+                privateKeys: userInfo.userPrivateKeys,
+                addressesPrivateKeys: userInfo.addressKeys,
+                mailboxPassphrase: passphrase
+            )
+            dependencies.fetchAttachment.execute(params: .init(
+                attachmentID: att.id,
+                attachmentKeyPacket: att.keyPacket,
+                purpose: .decryptAndEncodeAttachment,
+                userKeys: userKeys
+            )) { result in
+                let base64Attachment = (try? result.get().encoded) ?? ""
+                seal.fulfill(base64Attachment)
             }
         }
     }
 
     func fetchAttachmentBodyForMime(passphrase: Passphrase,
                                     msgService: MessageDataService,
-                                    userInfo: UserInfo,
-                                    in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
+                                    userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
         var fetches = [Promise<String>]()
         for att in preAttachments {
             let promise = fetchAttachmentBody(att: att.att,
                                               messageDataService: msgService,
                                               passphrase: passphrase,
-                                              userInfo: userInfo,
-                                              in: context)
+                                              userInfo: userInfo)
             fetches.append(promise)
         }
 
@@ -222,8 +213,8 @@ extension MessageSendingRequestBuilder {
             for (index, result) in attachmentBodys.enumerated() {
                 switch result {
                 case .fulfilled(let body):
-                    let preAttachment = self.preAttachments[index]
-                    self.attachmentBodys[preAttachment.attachmentId] = body
+                    let preAttachment = self.preAttachments[index].att
+                    self.attachmentBodys[preAttachment.id.rawValue] = body
                 case .rejected:
                     break
                 }
@@ -253,14 +244,14 @@ extension MessageSendingRequestBuilder {
                 let attachment = preAttachment.att
                 // The format is =?charset?encoding?encoded-text?=
                 // encoding = B means base64
-                let attName = "=?utf-8?B?\(attachment.fileName.encodeBase64())?="
-                let contentID = attachment.contentID() ?? ""
+                let attName = "=?utf-8?B?\(attachment.name.encodeBase64())?="
+                let contentID = attachment.contentId ?? ""
 
                 let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
                                                          base64AttachmentContent: attachmentBody,
                                                          attachmentName: attName,
                                                          contentID: contentID,
-                                                         attachmentMIMEType: attachment.mimeType)
+                                                         attachmentMIMEType: attachment.rawMimeType)
                 signbody.append(contentsOf: bodyToAdd)
             }
 
@@ -482,5 +473,11 @@ extension MessageSendingRequestBuilder {
             result.append(builder.build())
         }
         return result
+    }
+}
+
+extension MessageSendingRequestBuilder {
+    struct Dependencies {
+        let fetchAttachment: FetchAttachmentUseCase
     }
 }

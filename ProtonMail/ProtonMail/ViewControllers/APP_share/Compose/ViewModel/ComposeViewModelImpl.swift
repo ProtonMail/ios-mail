@@ -50,9 +50,12 @@ class ComposeViewModelImpl: ComposeViewModel {
         // a huge refactor but allowing the dependencies injection open for testing.
         self.dependencies = dependencies ?? Dependencies(fetchAndVerifyContacts: FetchAndVerifyContacts(user: user))
 
-        super.init(msgDataService: msgService,
-                   contextProvider: coreDataContextProvider,
-                   user: user)
+        super.init(
+            msgDataService: msgService,
+            contextProvider: coreDataContextProvider,
+            user: user,
+            dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
+        )
         self.setSubject(subject)
         self.setBody(body)
         self.messageAction = action
@@ -99,10 +102,13 @@ class ComposeViewModelImpl: ComposeViewModel {
         self.dependencies = dependencies ?? Dependencies(fetchAndVerifyContacts: FetchAndVerifyContacts(user: user))
 
 
-        super.init(msgDataService: msgService,
-                   contextProvider: coreDataContextProvider,
-                   user: user,
-                   isEditingScheduleMsg: isEditingScheduleMsg)
+        super.init(
+            msgDataService: msgService,
+            contextProvider: coreDataContextProvider,
+            user: user,
+            isEditingScheduleMsg: isEditingScheduleMsg,
+            dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
+        )
 
         if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerMessageHelper.context.existingObject(with: m.objectID) as? Message {

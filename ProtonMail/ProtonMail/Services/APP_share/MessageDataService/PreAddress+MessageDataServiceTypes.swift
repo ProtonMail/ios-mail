@@ -91,14 +91,14 @@ final class PreAttachment {
     /// clear session key
     let session: Data
     let algo: Algorithm
-    let att: Attachment
+    let att: AttachmentEntity
 
     /// initial
     ///
     /// - Parameters:
     ///   - id: att id
     ///   - key: clear encrypted attachment session key
-    init(id: String, session: Data, algo: Algorithm, att: Attachment) {
+    init(id: String, session: Data, algo: Algorithm, att: AttachmentEntity) {
         self.attachmentId = id
         self.session = session
         self.algo = algo

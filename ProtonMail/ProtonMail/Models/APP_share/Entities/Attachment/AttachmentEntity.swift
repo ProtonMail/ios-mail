@@ -39,6 +39,7 @@ struct AttachmentEntity: Hashable, Equatable {
     private(set) var keyChanged: Bool
     let objectID: ObjectID
     let order: Int
+    let contentId: String?
 
     init(_ attachment: Attachment) {
         self.headerInfo = attachment.headerInfo
@@ -57,6 +58,7 @@ struct AttachmentEntity: Hashable, Equatable {
         self.keyChanged = attachment.keyChanged
         self.objectID = .init(rawValue: attachment.objectID)
         self.order = Int(attachment.order)
+        self.contentId = attachment.contentID()
     }
 
     static func convert(from attachments: NSSet) -> [AttachmentEntity] {
