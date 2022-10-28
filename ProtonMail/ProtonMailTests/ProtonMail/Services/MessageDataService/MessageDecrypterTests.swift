@@ -26,12 +26,10 @@ import XCTest
 final class MessageDecrypterTests: XCTestCase {
     private var mockUserData: UserManager!
     private var decrypter: MessageDecrypter!
-    private var coreDataService: CoreDataService!
     private var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        self.coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        self.testContext = coreDataService.mainContext
+        self.testContext = MockCoreDataStore.testPersistentContainer.viewContext
         self.mockUserData = UserManager(api: APIServiceMock(), role: .member)
         self.decrypter = MessageDecrypter(userDataSource: mockUserData)
 
@@ -60,7 +58,6 @@ final class MessageDecrypterTests: XCTestCase {
     override func tearDownWithError() throws {
         self.mockUserData = nil
         self.decrypter = nil
-        self.coreDataService = nil
         self.testContext = nil
     }
 }
@@ -162,7 +159,7 @@ extension MessageDecrypterTests {
             cleartext: body
         ).value
 
-        let message = Message(context: coreDataService.mainContext)
+        let message = Message(context: testContext)
         message.body = encryptedBody
         message.mimeType = mimeType.rawValue
         return message

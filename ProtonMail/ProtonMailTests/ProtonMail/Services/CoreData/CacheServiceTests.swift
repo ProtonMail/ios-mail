@@ -26,14 +26,13 @@ import Groot
 
 class CacheServiceTest: XCTestCase {
     var testMessage: Message!
-    var coreDataService: CoreDataContextProviderProtocol!
     var lastUpdatedStore: MockLastUpdatedStore!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = MockCoreDataContextProvider()
-        testContext = coreDataService.mainContext
+        let coreDataService = MockCoreDataContextProvider()
+        testContext = coreDataService.viewContext
         
         let parsedObject = testMessageMetaData.parseObjectAny()!
         testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
@@ -58,10 +57,10 @@ class CacheServiceTest: XCTestCase {
     
     override func tearDown() {
         testMessage = nil
-        coreDataService = nil
         sut = nil
         testContext = nil
         lastUpdatedStore.resetUnreadCounts()
+        lastUpdatedStore = nil
     }
 
     func testMoveMessageToArchive() {

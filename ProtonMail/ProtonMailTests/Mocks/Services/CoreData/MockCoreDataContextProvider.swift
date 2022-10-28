@@ -22,6 +22,10 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     private let container = MockCoreDataStore.testPersistentContainer
     private let coreDataService: CoreDataService
 
+    var viewContext: NSManagedObjectContext {
+        container.viewContext
+    }
+
     private let serialQueue: OperationQueue = {
         let persistentContainerQueue = OperationQueue()
         persistentContainerQueue.maxConcurrentOperationCount = 1
@@ -33,7 +37,7 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     }
 
     var mainContext: NSManagedObjectContext {
-        coreDataService.mainContext
+        viewContext
     }
 
     private var rootSavingContext: NSManagedObjectContext {

@@ -31,7 +31,7 @@ class ConversationViewModelTests: XCTestCase {
         try super.setUpWithError()
 
         self.contextProviderMock = MockCoreDataContextProvider()
-        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.mainContext))
+        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.viewContext))
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
@@ -371,7 +371,7 @@ class ConversationViewModelTests: XCTestCase {
     }
 
     private func makeSUT(labelID: LabelID) {
-        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.mainContext))
+        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.viewContext))
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
@@ -419,8 +419,8 @@ class ConversationViewModelTests: XCTestCase {
     }
 
     private func makeMessageMock(location: Message.Location) -> MessageEntity {
-        let mockMessage = Message(context: contextProviderMock.mainContext)
-        let label = Label(context: contextProviderMock.mainContext)
+        let mockMessage = Message(context: contextProviderMock.viewContext)
+        let label = Label(context: contextProviderMock.viewContext)
         mockMessage.labels = NSSet(array: [label])
         mockMessage.messageID = UUID().uuidString
         label.labelID = location.rawValue

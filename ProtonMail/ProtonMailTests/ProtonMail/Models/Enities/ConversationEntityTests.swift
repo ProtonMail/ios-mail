@@ -27,7 +27,7 @@ class ConversationEntityTests: XCTestCase {
         super.setUp()
 
         let contextProviderMock = MockCoreDataContextProvider()
-        testContext = contextProviderMock.mainContext
+        testContext = contextProviderMock.viewContext
     }
 
     override func tearDown() {
