@@ -21,69 +21,62 @@ import Groot
 
 class MessageHelpersTest: XCTestCase {
 
-    var coreDataService: CoreDataService!
-    var testContext: NSManagedObjectContext!
+    var coreDataService: MockCoreDataContextProvider!
 
        override func setUpWithError() throws {
-           coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-
-           testContext = coreDataService.mainContext
+           coreDataService = MockCoreDataContextProvider()
        }
 
        override func tearDownWithError() throws {
            coreDataService = nil
-           testContext = nil
        }
 
        func testRecipientsNameWithGroup() {
            let fakeMessageData = testSentMessageWithGroupToAndCC.parseObjectAny()!
-           guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeMessageData, in: testContext) as? Message else {
-               XCTFail("The fake data initialize failed")
-               return
-           }
-           let fakeMsgEntity = MessageEntity(fakeMsg)
+           let fakeMsgEntity = prepareMessage(with: fakeMessageData)
 
            let fakeEmailData = testEmailData_aaa.parseObjectAny()!
-           guard let fakeEmail = try? GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: fakeEmailData, in: testContext) as? Email else {
-               XCTFail("The fake data initialize failed")
-               return
-           }
+           let fakeEmailEntity = prepareEmail(with: fakeEmailData)
            let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 5, color: "#000000")
-           let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmail.email: EmailEntity(email: fakeEmail)], groupContacts: [vo])
+           let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmailEntity.email: fakeEmailEntity], groupContacts: [vo])
            XCTAssertEqual("groupA (0/5), test5", name)
        }
 
     func testRecipientsNameWithoutGroup_localContactWithoutTheAddress() {
         let fakeMessageData = testSentMessageWithToAndCC.parseObjectAny()!
-        guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeMessageData, in: testContext) as? Message else {
-            XCTFail("The fake data initialize failed")
-            return
-        }
-        let fakeMsgEntity = MessageEntity(fakeMsg)
+        let fakeMsgEntity = prepareMessage(with: fakeMessageData)
 
         let fakeEmailData = testEmailData_aaa.parseObjectAny()!
-        guard let fakeEmail = try? GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: fakeEmailData, in: testContext) as? Email else {
-            XCTFail("The fake data initialize failed")
-            return
-        }
-        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmail.email: EmailEntity(email: fakeEmail)], groupContacts: [])
+        let fakeEmailEntity = prepareEmail(with: fakeEmailData)
+        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmailEntity.email: fakeEmailEntity], groupContacts: [])
         XCTAssertEqual("test0, test1, test2, test3, test4, test5", name)
     }
 
     func testRecipientsNameWithoutGroup_localContactHasTheAddress() {
         let fakeMessageData = testSentMessageWithToAndCC.parseObjectAny()!
-        guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeMessageData, in: testContext) as? Message else {
-            XCTFail("The fake data initialize failed")
-            return
-        }
-        let fakeMsgEntity = MessageEntity(fakeMsg)
+        let fakeMsgEntity = prepareMessage(with: fakeMessageData)
 
         let fakeEmailData = testEmailData_bbb.parseObjectAny()!
-        guard let fakeEmail = try? GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: fakeEmailData, in: testContext) as? Email else {
-            XCTFail("The fake data initialize failed")
-            return
-        }
-        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmail.email: EmailEntity(email: fakeEmail)], groupContacts: [])
+        let fakeEmailEntity = prepareEmail(with: fakeEmailData)
+        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmailEntity.email: fakeEmailEntity], groupContacts: [])
         XCTAssertEqual("test0, test1, test2, test3, test4, test000", name)
+    }
+
+    private func prepareMessage(with data: [String: Any]) -> MessageEntity {
+        coreDataService.enqueue { context in
+            guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: data, in: context) as? Message else {
+                fatalError("The fake data initialize failed")
+            }
+            return MessageEntity(fakeMsg)
+        }
+    }
+
+    private func prepareEmail(with data: [String: Any]) -> EmailEntity {
+        coreDataService.enqueue { context in
+            guard let fakeEmail = try? GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: data, in: context) as? Email else {
+                fatalError("The fake data initialize failed")
+            }
+            return EmailEntity(email: fakeEmail)
+        }
     }
 }

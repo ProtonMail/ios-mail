@@ -26,14 +26,16 @@ import Groot
 import XCTest
 
 final class MenuLabelTests: XCTestCase {
-    private var menuLabels: [MenuLabel] = []
+    private var menuLabels: [MenuLabel]!
 
-    override func setUp() {
-        let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        let testContext = coreDataService.mainContext
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
+        let coreDataService = MockCoreDataContextProvider()
 
         let parsedLabel = testV4LabelData.parseJson()!
-        do {
+
+        try coreDataService.enqueue { testContext in
             let labels = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: parsedLabel, in: testContext)
             guard let rawData = labels as? [Label] else {
                 XCTAssert(false, "Initialization failed")
@@ -43,9 +45,13 @@ final class MenuLabelTests: XCTestCase {
                 .compactMap { LabelEntity(label: $0) },
                 previousRawData: [])
             XCTAssertEqual(self.menuLabels.count, rawData.count)
-        } catch {
-            XCTAssert(false, "Initialization failed")
         }
+    }
+
+    override func tearDown() {
+        menuLabels = nil
+
+        super.tearDown()
     }
 
     func testSortout() {

@@ -34,7 +34,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.eventService = EventsServiceMock()
         self.messageDataService = MockMessageDataService()
         let contextProviderMock = MockCoreDataContextProvider()
-        self.conversationProvider = MockConversationProvider(context: contextProviderMock.mainContext)
+        self.conversationProvider = MockConversationProvider(context: contextProviderMock.viewContext)
         self.purgeOldMessages = MockPurgeOldMessages()
         self.fetchMessageWithReset = MockFetchMessagesWithReset()
         self.fetchMessage = MockFetchMessages()

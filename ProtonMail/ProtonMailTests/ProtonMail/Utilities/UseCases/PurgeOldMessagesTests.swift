@@ -60,12 +60,11 @@ final class PurgeOldMessagesTests: XCTestCase {
         let messageID = MessageID(UUID().uuidString)
         parsedObject["ID"] = messageID.rawValue
 
-        try coreDataService.enqueue { testContext in
+        try coreDataService.enqueue { context in
             let testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
-                                                              fromJSONDictionary: parsedObject,
-                                                              in: testContext) as? Message
+                                                              fromJSONDictionary: parsedObject, in: context) as? Message
             testMessage?.messageStatus = NSNumber(value: 0)
-            try testContext.save()
+            try context.save()
         }
 
         let expectation = expectation(description: "callbacks are called")

@@ -27,12 +27,9 @@ import ProtonCore_UIFoundations
 class MailboxViewModelTests: XCTestCase {
 
     var sut: MailboxViewModel!
-    var pushNotificationServiceMock: PushNotificationServiceProtocol!
-    var coreDataContextProviderMock: CoreDataContextProviderProtocol!
-    var lastUpdatedStoreMock: LastUpdatedStoreProtocol!
+    var coreDataContextProviderMock: MockCoreDataContextProvider!
     var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
-    var apiServiceMock: APIServiceMock!
     var conversationStateProviderMock: ConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProvider!
     var labelProviderMock: MockLabelProvider!
@@ -40,18 +37,17 @@ class MailboxViewModelTests: XCTestCase {
     var conversationProviderMock: MockConversationProvider!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
-    var mockPurgeOldMessages: MockPurgeOldMessages!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
 
     var testContext: NSManagedObjectContext {
-        coreDataContextProviderMock.mainContext
+        coreDataContextProviderMock.viewContext
     }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         sharedServices.add(CoreDataService.self,
                            for: CoreDataService(container: MockCoreDataStore.testPersistentContainer))
-        apiServiceMock = APIServiceMock()
+        let apiServiceMock = APIServiceMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
@@ -73,24 +69,20 @@ class MailboxViewModelTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     subscribed: nil)
-        coreDataContextProviderMock = MockCoreDataContextProvider()
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,
                                       parent: nil,
                                       contextProvider: coreDataContextProviderMock)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
-        pushNotificationServiceMock = MockPushNotificationService()
-        lastUpdatedStoreMock = MockLastUpdatedStore()
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProvider()
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataContextProviderMock)
-        conversationProviderMock = MockConversationProvider(context: coreDataContextProviderMock.mainContext)
+        conversationProviderMock = MockConversationProvider(context: testContext)
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
-        mockPurgeOldMessages = MockPurgeOldMessages()
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
@@ -102,12 +94,12 @@ class MailboxViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        pushNotificationServiceMock = nil
+        contactGroupProviderMock = nil
+        contactProviderMock = nil
         coreDataContextProviderMock = nil
-        lastUpdatedStoreMock = nil
+        eventsServiceMock = nil
         humanCheckStatusProviderMock = nil
         userManagerMock = nil
-        apiServiceMock = nil
         mockFetchLatestEventId = nil
     }
     
@@ -490,7 +482,7 @@ class MailboxViewModelTests: XCTestCase {
     }
     
     func testGetCustomFolders() {
-        let testData = Label(context: coreDataContextProviderMock.mainContext)
+        let testData = Label(context: testContext)
         testData.labelID = "1"
         testData.name = "name1"
         labelProviderMock.customFolderToReturn = [testData]
@@ -509,7 +501,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetAllEmails() {
-        let testData = Email(context: coreDataContextProviderMock.mainContext)
+        let testData = Email(context: testContext)
         testData.emailID = "1"
         testData.email = "test@pm.me"
         contactProviderMock.allEmailsToReturn = [testData]
@@ -760,7 +752,7 @@ class MailboxViewModelTests: XCTestCase {
                                       notify: false)
         // select the folder to move
         sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity(conversationObject)
@@ -786,7 +778,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testHandleConversatinoMoveToAction_withNoDestination() {
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity(conversationObject)
@@ -801,7 +793,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inTrash_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.trash.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -827,7 +819,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inSpam_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.spam.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -853,7 +845,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inDraft_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -879,7 +871,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inInbox_moveIsCalled() {
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.inbox.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
@@ -914,7 +906,7 @@ class MailboxViewModelTests: XCTestCase {
                                       order: 0,
                                       notify: false)
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1234"
         let label = LabelLocation(id: "label1", name: nil)
         // select label1
@@ -966,7 +958,7 @@ class MailboxViewModelTests: XCTestCase {
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
         let label = LabelLocation(id: "label1", name: nil)
 
-        let conversationObject = Conversation(context: coreDataContextProviderMock.mainContext)
+        let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1234"
         // Add label to be removed
         conversationObject.applyLabelChanges(labelID: label.labelID.rawValue, apply: true)
@@ -1047,7 +1039,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetActionBarActions_inCustomFolder() {
-        let label = Label(context: coreDataContextProviderMock.mainContext)
+        let label = Label(context: testContext)
         label.labelID = "qweqwe"
         label.type = 3
         labelProviderMock.labelToReturnInGetLabel = label
@@ -1058,7 +1050,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetActionBarActions_inCustomLabel() {
-        let label = Label(context: coreDataContextProviderMock.mainContext)
+        let label = Label(context: testContext)
         label.labelID = "qweqwe"
         label.type = 1
         labelProviderMock.labelToReturnInGetLabel = label
@@ -1127,10 +1119,10 @@ extension MailboxViewModelTests {
         let testMessage = try GRTJSONSerialization
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
-                    in: coreDataContextProviderMock.mainContext) as? Message
+                    in: testContext) as? Message
         testMessage?.userID = "1"
         testMessage?.messageStatus = 1
-        try coreDataContextProviderMock.mainContext.save()
+        try testContext.save()
     }
 
     func createSut(labelID: String,
@@ -1144,7 +1136,7 @@ extension MailboxViewModelTests {
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
-            purgeOldMessages: mockPurgeOldMessages,
+            purgeOldMessages: MockPurgeOldMessages(),
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId
@@ -1160,9 +1152,9 @@ extension MailboxViewModelTests {
                                label: isCustom ? label : nil,
                                labelType: labelType,
                                userManager: userManagerMock,
-                               pushService: pushNotificationServiceMock,
+                               pushService: MockPushNotificationService(),
                                coreDataContextProvider: coreDataContextProviderMock,
-                               lastUpdatedStore: lastUpdatedStoreMock,
+                               lastUpdatedStore: MockLastUpdatedStore(),
                                humanCheckStatusProvider: humanCheckStatusProviderMock,
                                conversationStateProvider: conversationStateProviderMock,
                                contactGroupProvider: contactGroupProviderMock,

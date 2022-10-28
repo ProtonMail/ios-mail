@@ -25,14 +25,13 @@ import Groot
 import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
-    var coreDataService: CoreDataContextProviderProtocol!
     var lastUpdatedStore: MockLastUpdatedStore!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = MockCoreDataContextProvider()
-        testContext = coreDataService.mainContext
+        let coreDataService = MockCoreDataContextProvider()
+        testContext = coreDataService.viewContext
 
         lastUpdatedStore = MockLastUpdatedStore(context: testContext)
 
@@ -46,7 +45,6 @@ class CacheServiceParsingTests: XCTestCase {
     override func tearDownWithError() throws {
         cleanData()
 
-        coreDataService = nil
         sut = nil
         testContext = nil
         lastUpdatedStore.resetUnreadCounts()

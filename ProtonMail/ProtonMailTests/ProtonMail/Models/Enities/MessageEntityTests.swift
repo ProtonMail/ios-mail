@@ -20,17 +20,13 @@ import XCTest
 @testable import ProtonMail
 
 final class MessageEntityTests: XCTestCase {
-
-    var coreDataService: CoreDataService!
-    var testContext: NSManagedObjectContext!
+    private var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.mainContext
+        testContext = MockCoreDataStore.testPersistentContainer.viewContext
     }
 
     override func tearDownWithError() throws {
-        coreDataService = nil
         testContext = nil
     }
 

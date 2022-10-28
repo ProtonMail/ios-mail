@@ -130,7 +130,7 @@ class ScheduleSendLocationStatusObserverTests: XCTestCase {
     }
 
     private func generateTestDataInCoreData(total: Int32, viewMode: ViewMode) {
-        let testContext = contextProviderMock.mainContext
+        let testContext = contextProviderMock.viewContext
 
         switch viewMode {
         case .conversation:
@@ -149,7 +149,7 @@ class ScheduleSendLocationStatusObserverTests: XCTestCase {
     }
 
     private func updateTestDataByLabelID(newCount: Int32, viewMode: ViewMode) {
-        let testContext = contextProviderMock.mainContext
+        let testContext = contextProviderMock.viewContext
 
         switch viewMode {
         case .conversation:
