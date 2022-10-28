@@ -1,0 +1,235 @@
+{
+  "name": "ProtonCore-AccountDeletion-V5",
+  "module_name": "ProtonCore_AccountDeletion",
+  "version": "3.22.5",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.22.5"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "dependencies": {
+    "ProtonCore-CoreTranslation": [
+      "3.22.5"
+    ],
+    "ProtonCore-Doh": [
+      "3.22.5"
+    ],
+    "ProtonCore-Foundations": [
+      "3.22.5"
+    ],
+    "ProtonCore-Log": [
+      "3.22.5"
+    ],
+    "ProtonCore-Utilities": [
+      "3.22.5"
+    ],
+    "ProtonCore-UIFoundations-V5": [
+      "3.22.5"
+    ]
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "UsingCrypto+Alamofire",
+      "dependencies": {
+        "ProtonCore-Authentication/UsingCrypto+Alamofire": [
+          "3.22.5"
+        ],
+        "ProtonCore-Networking/Alamofire": [
+          "3.22.5"
+        ],
+        "ProtonCore-Services/Alamofire": [
+          "3.22.5"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/iOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "osx": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/macOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Doh": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Services/Alamofire": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/AccountDeletion/Tests/**/*.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCrypto+AFNetworking",
+      "dependencies": {
+        "ProtonCore-Authentication/UsingCrypto+AFNetworking": [
+          "3.22.5"
+        ],
+        "ProtonCore-Networking/AFNetworking": [
+          "3.22.5"
+        ],
+        "ProtonCore-Services/AFNetworking": [
+          "3.22.5"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/iOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "osx": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/macOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Doh": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Networking/AFNetworking": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Services/AFNetworking": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/AccountDeletion/Tests/**/*.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCryptoVPN+Alamofire",
+      "dependencies": {
+        "ProtonCore-Authentication/UsingCryptoVPN+Alamofire": [
+          "3.22.5"
+        ],
+        "ProtonCore-Networking/Alamofire": [
+          "3.22.5"
+        ],
+        "ProtonCore-Services/Alamofire": [
+          "3.22.5"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/iOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "osx": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/macOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Doh": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Services/Alamofire": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/AccountDeletion/Tests/**/*.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCryptoVPN+AFNetworking",
+      "dependencies": {
+        "ProtonCore-Authentication/UsingCryptoVPN+AFNetworking": [
+          "3.22.5"
+        ],
+        "ProtonCore-Networking/AFNetworking": [
+          "3.22.5"
+        ],
+        "ProtonCore-Services/AFNetworking": [
+          "3.22.5"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/iOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "osx": {
+        "source_files": [
+          "libraries/AccountDeletion/Sources/macOS/*.swift",
+          "libraries/AccountDeletion/Sources/Shared/*.swift"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Doh": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Networking/AFNetworking": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Services/AFNetworking": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/AccountDeletion/Tests/**/*.swift"
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}

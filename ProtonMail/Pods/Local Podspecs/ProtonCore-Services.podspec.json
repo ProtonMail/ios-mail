@@ -1,0 +1,117 @@
+{
+  "name": "ProtonCore-Services",
+  "version": "3.22.5",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.22.5"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "dependencies": {
+    "TrustKit": [
+
+    ],
+    "ProtonCore-Log": [
+      "3.22.5"
+    ],
+    "ProtonCore-DataModel": [
+      "3.22.5"
+    ],
+    "ProtonCore-Doh": [
+      "3.22.5"
+    ],
+    "ProtonCore-Utilities": [
+      "3.22.5"
+    ]
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "subspecs": [
+    {
+      "name": "AwaitKit+PromiseKit",
+      "dependencies": {
+        "PromiseKit": [
+          "~> 6.0"
+        ],
+        "AwaitKit": [
+          "~> 5.2.0"
+        ]
+      },
+      "source_files": "libraries/Services/Sources/APIService+Promise.swift"
+    },
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "Alamofire",
+      "dependencies": {
+        "ProtonCore-Networking/Alamofire": [
+          "3.22.5"
+        ]
+      },
+      "source_files": "libraries/Services/Sources/*.swift",
+      "exclude_files": "libraries/Services/Sources/APIService+Promise.swift",
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Services/Tests/*.swift",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Services/Alamofire": [
+              "3.22.5"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "AFNetworking",
+      "dependencies": {
+        "ProtonCore-Networking/AFNetworking": [
+          "3.22.5"
+        ]
+      },
+      "source_files": "libraries/Services/Sources/*.swift",
+      "exclude_files": "libraries/Services/Sources/APIService+Promise.swift",
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Services/Tests/*.swift",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Networking/AFNetworking": [
+              "3.22.5"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Services/AFNetworking": [
+              "3.22.5"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}

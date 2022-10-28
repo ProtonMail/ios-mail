@@ -1,0 +1,151 @@
+{
+  "name": "ProtonCore-HumanVerification-V5",
+  "module_name": "ProtonCore_HumanVerification",
+  "version": "3.22.5",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.22.5"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "ios": {
+    "frameworks": "UIKit"
+  },
+  "osx": {
+    "frameworks": "AppKit"
+  },
+  "dependencies": {
+    "ProtonCore-UIFoundations-V5": [
+      "3.22.5"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "3.22.5"
+    ],
+    "ProtonCore-Foundations": [
+      "3.22.5"
+    ],
+    "ProtonCore-Utilities": [
+      "3.22.5"
+    ]
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "Alamofire",
+      "dependencies": {
+        "ProtonCore-APIClient/Alamofire": [
+          "3.22.5"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/V5/**/*.{h,m,swift}"
+        ],
+        "exclude_files": "libraries/HumanVerification/Sources/macOS/NotificationColors.swift",
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5/Alamofire": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "AFNetworking",
+      "dependencies": {
+        "ProtonCore-APIClient/AFNetworking": [
+          "3.22.5"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/V5/**/*.{h,m,swift}"
+        ],
+        "exclude_files": "libraries/HumanVerification/Sources/macOS/NotificationColors.swift",
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5/AFNetworking": [
+              "3.22.5"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}

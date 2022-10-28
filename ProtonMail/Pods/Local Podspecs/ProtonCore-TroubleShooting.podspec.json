@@ -1,0 +1,71 @@
+{
+  "name": "ProtonCore-TroubleShooting",
+  "module_name": "ProtonCore_TroubleShooting",
+  "version": "3.22.5",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.22.5"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "ios": {
+    "frameworks": "UIKit"
+  },
+  "dependencies": {
+    "ProtonCore-Foundations": [
+      "3.22.5"
+    ],
+    "ProtonCore-UIFoundations-V5": [
+      "3.22.5"
+    ],
+    "ProtonCore-Utilities": [
+      "3.22.5"
+    ],
+    "ProtonCore-Doh": [
+      "3.22.5"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "3.22.5"
+    ]
+  },
+  "source_files": "libraries/TroubleShooting/Sources/**/*.{h,m,swift}",
+  "resource_bundles": {
+    "Resources-TroubleShooting": [
+      "libraries/TroubleShooting/Resources/**/*.{xib,storyboard,geojson}",
+      "libraries/TroubleShooting/Sources/**/*.{xib,storyboard,geojson}"
+    ]
+  },
+  "default_subspecs": [
+
+  ],
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/Doh": [
+          "3.22.5"
+        ]
+      },
+      "source_files": "libraries/TroubleShooting/Tests/**/*"
+    }
+  ],
+  "swift_version": "5.6"
+}
