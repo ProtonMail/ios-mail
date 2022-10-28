@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,7 +30,7 @@
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="QeM-zt-UAj"/>
-            <color key="backgroundColor" name="launchScreenBackground"/>
+            <color key="backgroundColor" name="LaunchScreenBackground"/>
             <constraints>
                 <constraint firstItem="mAr-DF-XNE" firstAttribute="centerX" secondItem="acj-WQ-DLH" secondAttribute="centerX" id="D0T-uY-469"/>
                 <constraint firstItem="QeM-zt-UAj" firstAttribute="bottom" secondItem="mAr-DF-XNE" secondAttribute="bottom" constant="40" id="GZz-sC-UaF"/>
@@ -43,7 +43,7 @@
     <resources>
         <image name="launchScreenBrand" width="126" height="32"/>
         <image name="launchScreenLogo" width="552" height="552"/>
-        <namedColor name="launchScreenBackground">
+        <namedColor name="LaunchScreenBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
