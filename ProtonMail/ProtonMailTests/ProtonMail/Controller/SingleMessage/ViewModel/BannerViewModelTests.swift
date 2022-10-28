@@ -30,6 +30,7 @@ class BannerViewModelTests: XCTestCase {
     var userManagerMock: UserManager!
     var apiServiceMock: APIServiceMock!
     var systemUpTimeMock: SystemUpTimeMock!
+    var mockFetchAttachment: MockFetchAttachment!
 
     override func setUp() {
         super.setUp()
@@ -178,6 +179,7 @@ class BannerViewModelTests: XCTestCase {
 
     private func createSUT() {
         mockMessage = MessageEntity(rawMessage)
+        mockFetchAttachment = MockFetchAttachment()
         sut = BannerViewModel(shouldAutoLoadRemoteContent: false,
                               expirationTime: nil,
                               shouldAutoLoadEmbeddedImage: false,
@@ -186,9 +188,14 @@ class BannerViewModelTests: XCTestCase {
                               receiptActionHandler: receiptHandlerMock,
                               weekStart: .automatic,
                               urlOpener: UIApplication.shared)
-        sut.providerHasChanged(provider: .init(message: mockMessage,
-                                               user: userManagerMock,
-                                               systemUpTime: systemUpTimeMock,
-                                               labelID: ""))
+        sut.providerHasChanged(
+            provider: .init(
+                message: mockMessage,
+                user: userManagerMock,
+                systemUpTime: systemUpTimeMock,
+                labelID: "",
+                dependencies: .init(fetchAttachment: mockFetchAttachment)
+            )
+        )
     }
 }

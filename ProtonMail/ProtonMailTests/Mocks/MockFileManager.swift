@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,8 +17,10 @@
 
 import Foundation
 
-protocol MessageDataProcessProtocol: AnyObject {
-    var messageDecrypter: MessageDecrypterProtocol { get }
+final class MockFileManager: FileManager {
+    var fileExistsResult: Bool = false
 
-    func cancelQueuedSendingTask(messageID: String)
+    override func fileExists(atPath path: String) -> Bool {
+        return fileExistsResult
+    }
 }

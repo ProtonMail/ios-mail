@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,9 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+@testable import ProtonMail
+import ProtonCore_TestingToolkit
 
-protocol MessageDataProcessProtocol: AnyObject {
-    var messageDecrypter: MessageDecrypterProtocol { get }
+final class MockFetchAttachment: NewUseCase<AttachmentFile, FetchAttachment.Params> {
 
-    func cancelQueuedSendingTask(messageID: String)
+    @FuncStub(MockFetchAttachment.executionBlock) var executionBlock
+    override func executionBlock(params: FetchAttachment.Params, callback: @escaping Callback) {
+        executionBlock(params, callback)
+    }
 }

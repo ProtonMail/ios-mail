@@ -31,6 +31,7 @@ final class MessageInfoProviderTest: XCTestCase {
     private var messageDecrypter: MessageDecrypterMock!
     private var sut: MessageInfoProvider!
     private var user: UserManager!
+    private var mockFetchAttachment: MockFetchAttachment!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -58,6 +59,7 @@ final class MessageInfoProviderTest: XCTestCase {
         )
 
         messageDecrypter = MessageDecrypterMock(userDataSource: user)
+        mockFetchAttachment = MockFetchAttachment()
 
         sut = MessageInfoProvider(
             message: message,
@@ -65,7 +67,8 @@ final class MessageInfoProviderTest: XCTestCase {
             user: user,
             imageProxy: imageProxy,
             systemUpTime: systemUpTime,
-            labelID: labelID
+            labelID: labelID,
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
         )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)

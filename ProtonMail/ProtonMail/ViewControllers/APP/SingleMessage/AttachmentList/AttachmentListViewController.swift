@@ -197,27 +197,28 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         }
 
         self.lastClickAttachmentID = attachment.id
-        viewModel.open(attachmentInfo: attachment,
-                       showPreviewer: { [weak self] in
-            guard let self = self else { return }
-            if self.isPKPass(attachment: attachment) { return }
-            self.openQuickLook(attachmentType: .general)
-        }, failed: { [weak self] error in
-            DispatchQueue.main.async {
+        viewModel.open(
+            attachmentInfo: attachment,
+            showPreviewer: { [weak self] in
                 guard let self = self else { return }
-                let errorClosure = { [weak self] (error: NSError) in
-                    let alert = error.localizedDescription.alertController()
-                    alert.addOKAction()
-                    self?.present(alert, animated: true, completion: nil)
+                if self.isPKPass(attachment: attachment) { return }
+                self.openQuickLook(attachmentType: .general)
+            }, failed: { [weak self] error in
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    let errorClosure = { [weak self] (error: NSError) in
+                        let alert = error.localizedDescription.alertController()
+                        alert.addOKAction()
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                    if let previewer = self.previewer {
+                        previewer.dismiss(animated: true) { errorClosure(error) }
+                    } else {
+                        errorClosure(error)
+                    }
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 }
-                if let previewer = self.previewer {
-                    previewer.dismiss(animated: true) { errorClosure(error) }
-                } else {
-                    errorClosure(error)
-                }
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-        })
+            })
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }

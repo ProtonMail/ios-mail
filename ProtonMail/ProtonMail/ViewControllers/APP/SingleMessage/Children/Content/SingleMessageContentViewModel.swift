@@ -99,7 +99,16 @@ class SingleMessageContentViewModel {
         self.context = context
         self.user = user
         self.message = context.message
-        self.messageInfoProvider = .init(message: context.message, user: user, systemUpTime: systemUpTime, labelID: context.labelId)
+        let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
+            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService))
+        )
+        self.messageInfoProvider = .init(
+            message: context.message,
+            user: user,
+            systemUpTime: systemUpTime,
+            labelID: context.labelId,
+            dependencies: messageInfoProviderDependencies
+        )
         messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader

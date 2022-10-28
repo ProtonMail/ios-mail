@@ -243,48 +243,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.queue(.updateAttKeyPacket(messageObjectID: objectID, addressID: addressID))
     }
 
-    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
-    func base64AttachmentData(_ attachment: AttachmentEntity, _ complete : @escaping base64AttachmentDataComplete) {
-        guard let user = self.userDataSource else {
-            complete("")
-            return
-        }
-        let context = self.contextProvider.mainContext
-        context.perform {
-            guard let att = context.object(with: attachment.objectID.rawValue) as? Attachment else {
-                complete("")
-                return
-            }
-            if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
-                return
-            }
-
-            if let data = att.fileData, data.count > 0 {
-                complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
-                return
-            }
-
-            att.localURL = nil
-            self.fetchAttachmentForAttachment(AttachmentEntity(att), downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { [weak self] url, error -> Void in
-                guard let self = self else {
-                    complete("")
-                    return
-                }
-                self.contextProvider.mainContext.perform {
-                    guard let attachment = try? context.existingObject(with: att.objectID) as? Attachment else {
-                        complete("")
-                        return
-                    }
-                    if attachment.localURL == nil {
-                        attachment.localURL = url
-                    }
-                    complete( attachment.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
-                }
-            })
-        }
-    }
-
     // MARK : Send message
     func send(inQueue message: Message, deliveryTime: Date?) {
         message.managedObjectContext!.perform {
@@ -370,46 +328,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.cacheService.markMessageAndConversationDeleted(labelID: labelID)
         self.labelDataService.resetCounter(labelID: labelID)
         queue(.empty(currentLabelID: labelID.rawValue))
-    }
-
-    // old functions
-    var isFirstTimeSaveAttData: Bool = false
-
-    /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    func fetchAttachmentForAttachment(_ attachment: AttachmentEntity,
-                                      customAuthCredential: AuthCredential? = nil,
-                                      downloadTask: ((URLSessionDownloadTask) -> Void)?,
-                                      completion: @escaping (URL?, NSError?) -> Void) {
-        if attachment.downloaded, let localURL = attachment.localURL {
-            completion(localURL as URL, nil)
-            return
-        }
-
-        // TODO: check for existing download tasks and return that task rather than start a new download
-        self.apiService.downloadAttachment(byID: attachment.id.rawValue,
-                                           destinationDirectoryURL: FileManager.default.attachmentDirectory,
-                                           customAuthCredential: customAuthCredential,
-                                           downloadTask: downloadTask,
-                                           completion: { url, error in
-            self.contextProvider.performOnRootSavingContext { context in
-                var fileURL: URL? = url
-                if fileURL == nil, let error = error {
-                    fileURL = MessageDataService.recoverAttachmentDownloadIssue(from: error, attachmentID: attachment.id)
-                }
-                if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
-                    attachmentToUpdate.localURL = fileURL
-                    if #available(iOS 12, *) {
-                        if !self.isFirstTimeSaveAttData {
-                            attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
-                        }
-                    } else {
-                        attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
-                    }
-                    _ = context.saveUpstreamIfNeeded()
-                }
-                completion(fileURL, error)
-            }
-        })
     }
 
     static func recoverAttachmentDownloadIssue(from error: NSError, attachmentID: AttachmentID) -> URL? {
@@ -790,9 +708,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         return Promise { seal in
             self.contextProvider.performOnRootSavingContext { context in
-                if #available(iOS 12, *) {
-                    self.isFirstTimeSaveAttData = true
-                }
                 self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
 
                 let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
@@ -1055,7 +970,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let attachments = self.attachmentsForMessage(message)
 
             // create builder
-            let sendBuilder = MessageSendingRequestBuilder(expirationOffset: message.expirationOffset)
+            let dependencies = MessageSendingRequestBuilder.Dependencies(
+                fetchAttachment: FetchAttachment(dependencies: .init(apiService: userManager.apiService))
+            )
+            let sendBuilder = MessageSendingRequestBuilder(
+                expirationOffset: message.expirationOffset,
+                dependencies: dependencies
+            )
 
             // build contacts if user setup key pinning
             var contacts = [PreContact]()
@@ -1145,7 +1066,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
                                                                           session: key,
                                                                           algo: sessionPack.algo,
-                                                                          att: att))
+                                                                          att: AttachmentEntity(att)))
                             }
                         }
                     }
@@ -1161,8 +1082,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return sendbuilder
                     .fetchAttachmentBodyForMime(passphrase: passphrase,
                                                 msgService: self,
-                                                userInfo: userInfo,
-                                                in: context)
+                                                userInfo: userInfo)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkMime)
