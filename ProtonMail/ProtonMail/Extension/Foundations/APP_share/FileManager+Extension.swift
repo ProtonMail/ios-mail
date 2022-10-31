@@ -45,11 +45,6 @@ extension FileManager {
         return urls.first!
     }
 
-    @available(*, deprecated, renamed: "temporaryDirectory")
-    var temporaryDirectoryUrl: URL {
-        FileManager.default.temporaryDirectory
-    }
-
     var appGroupsTempDirectoryURL: URL {
         var tempUrl = self.appGroupsDirectoryURL.appendingPathComponent("tmp", isDirectory: true)
         if !FileManager.default.fileExists(atPath: tempUrl.path) {
