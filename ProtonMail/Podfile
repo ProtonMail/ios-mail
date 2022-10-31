@@ -54,6 +54,7 @@ end
 def pm_pods
   common_pods
   pod 'DKImagePickerController/PhotoGallery', '4.3.4'
+  pod 'Instabug', '11.3.0'
   pod 'LifetimeTracker'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'Enterprise Debug']
   pod 'ProtonCore-AccountDeletion-V5/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
