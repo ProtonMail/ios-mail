@@ -24,5 +24,8 @@
       "Release": "xcodeGen/xcconfig/Project-Release.xcconfig",
       "Enterprise Debug": "xcodeGen/xcconfig/Project-EnterpriseDebug.xcconfig",
       "Enterprise Release": "xcodeGen/xcconfig/Project-Enterprise.xcconfig"
+   },
+   "settings": {
+      "SWIFT_SUPPRESS_WARNINGS": "${SWIFT_SUPPRESS_WARNINGS}"
    }
 }
