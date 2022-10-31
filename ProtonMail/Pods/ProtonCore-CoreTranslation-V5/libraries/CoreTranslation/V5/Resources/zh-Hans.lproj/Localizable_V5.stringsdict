@@ -13,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d VPN connections per user</string>
+			<string>每位用户可通过%d 台设备同时接入 VPN</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d addresses per user</key>
@@ -27,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d addresses per user</string>
+			<string>每位用户%d个邮箱地址</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d folders and labels</key>
@@ -41,13 +41,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d folders and labels</string>
+			<string>%d 个文件夹和标签</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>共%#@VARIABLE2@，已使用%#@VARIABLE1@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -70,7 +70,7 @@
 	<key>New_Plans %d of %d personal calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>共%#@VARIABLE2@，已使用%#@VARIABLE1@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -93,7 +93,7 @@
 	<key>New_Plans %d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>共%#@VARIABLE2@，已使用%#@VARIABLE1@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -176,7 +176,7 @@
 			<string>%d 个国家</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ in %#@COUNTRIES@</string>
+		<string>%#@SERVERS@ 在%#@COUNTRIES@中</string>
 		<key>SERVERS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -198,7 +198,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>High-speed VPN on %d devices</string>
+			<string>%d 台设备可同时接入高速 VPN</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>
@@ -212,7 +212,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Medium VPN speed %d VPN connections</string>
+			<string>%d 台设备可使用中等VPN速度</string>
 		</dict>
 	</dict>
 	<key>New_Plans Support for %d custom email domains</key>
@@ -226,7 +226,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Support for %d custom email domains</string>
+			<string>支持%d个自定义电子邮件域名</string>
 		</dict>
 	</dict>
 </dict>

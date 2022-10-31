@@ -281,3 +281,9 @@ extension PMChallenge: TextFieldInterceptorDelegate {
         }
     }
 }
+
+extension PMChallenge {
+    func getInterceptor(textField: UITextField) -> TextFieldDelegateInterceptor? {
+        return interceptors.first { $0.textField == textField }
+    }
+}

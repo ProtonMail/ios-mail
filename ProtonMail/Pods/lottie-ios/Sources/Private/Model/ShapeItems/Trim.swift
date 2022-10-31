@@ -16,6 +16,7 @@ enum TrimType: Int, Codable {
 
 // MARK: - Trim
 
+/// An item that define an ellipse shape
 final class Trim: ShapeItem {
 
   // MARK: Lifecycle

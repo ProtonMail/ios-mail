@@ -210,7 +210,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Δεν κατέστει εφικτό να ταιριάξει το προϊόν του App Store που αγοράσατε σε οποιοδήποτε προϊόν του διακομιστή μας. Συμπληρώστε την αναφορά σφάλματος και η ομάδα υποστήριξης πελατών μας θα επικοινωνήσει μαζί σας.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "Μάθετε περισσότερα";
 
 /* visit item message */
@@ -511,9 +512,6 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ο λογαριασμός σας Proton Free δημιουργήθηκε επιτυχώς.";
-
-/* Signup summary no plan description */
-"Your Proton account was successfully created." = "Ο λογαριασμός σας Proton δημιουργήθηκε επιτυχώς.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Η διεύθυνση email ανάκτησης:";

@@ -103,7 +103,7 @@ final class AccountKeySetup {
         /// generate key hashed password.
         let userKeyPassphrase = PasswordHash.passphrase(password, salt: newPasswordSalt)
         
-        guard let firstAddr = addresses.first(where: { $0.type != .externalAddress }) else {
+        guard let firstAddr = addresses.first else {
             throw KeySetupError.keyGenerationFailed
         }
         
@@ -115,7 +115,7 @@ final class AccountKeySetup {
         ///   - we dont want it keep in the memory and pass cross different functions.
         ///   - so we genrete here and encrypt it here try to keep it in this function scope.        ///
 
-        let addressKeys = try addresses.filter { $0.type != .externalAddress }.map { addr -> AddressKey in
+        let addressKeys = try addresses.map { addr -> AddressKey in
             // generate addr passphrase
             let addrPassphrase = PasswordHash.genAddrPassphrase()
             
@@ -131,12 +131,16 @@ final class AccountKeySetup {
             /// sign addr passphrase
             let tokenSignature = try addrPassphrase.signDetached(signer: userSigner)
 
+            var keyFlags = KeyFlags.signupKeyFlags
+            if addr.type == .externalAddress {
+                keyFlags = .signupExternalKeyFlags
+            }
             /// build key matadata list
             let keylist: [[String: Any]] = [[
                 "Fingerprint": armoredAddrKey.fingerprint,
                 "SHA256Fingerprints": armoredAddrKey.sha256Fingerprint,
                 "Primary": 1,
-                "Flags": KeyFlags.signupKeyFlags.rawValue
+                "Flags": keyFlags.rawValue
             ]]
             
             /// encode to json format

@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import pmtest
+import XCTest
 import ProtonCore_CoreTranslation
 
 private let titleId = "LoginViewController.titleLabel"
@@ -40,6 +41,7 @@ private let textPredicate = NSPredicate(format: "label CONTAINS[c] %@", suspende
 private let textChangePassword = "Change your password"
 private let buttonChangePasswordCancel = "Cancel"
 private let buttonChangePassword = "Change password"
+private let externalAccountsNotSupportedBannerText = "This app does not support external accounts"
 
 public final class LoginRobot: CoreElements {
     
@@ -99,6 +101,10 @@ public final class LoginRobot: CoreElements {
         
         public func changePasswordConfirm() {
             button(buttonChangePassword).wait(time: 20).checkExists()
+        }
+        
+        public func bannerExtAccountErrorShown() {
+            textView(externalAccountsNotSupportedBannerText).wait().checkExists()
         }
     }
     

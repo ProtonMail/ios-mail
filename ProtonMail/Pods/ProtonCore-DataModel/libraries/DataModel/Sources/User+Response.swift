@@ -105,6 +105,12 @@ extension UserInfo {
             self.inheritParentFolderColor = settings["InheritParentFolderColor"] as? Int ?? 0
             self.groupingMode = settings["ViewMode"] as? Int ?? 0
             self.delaySendSeconds = settings["DelaySendSeconds"] as? Int ?? 10
+
+            if let mobileSettings = settings["MobileSettings"] as? [String: Any] {
+                self.conversationToolbarActions = ToolbarActions(rawValue: mobileSettings["ConversationToolbar"] as? [String: Any])
+                self.messageToolbarActions = ToolbarActions(rawValue: mobileSettings["MessageToolbar"] as? [String: Any])
+                self.listToolbarActions = ToolbarActions(rawValue: mobileSettings["ListToolbar"] as? [String: Any])
+            }
         }
     }
 }

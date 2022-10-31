@@ -111,7 +111,7 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
     
     private let forkSelector: String
     private let apiService: APIService
-    private let doh: DoHServerConfig
+    private let doh: DoHInterface
     private let performBeforeClosingAccountDeletionScreen: (@escaping () -> Void) -> Void
     private let completion: (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
     private let preferredLanguage: String
@@ -127,7 +127,7 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
     
     init(forkSelector: String,
          apiService: APIService,
-         doh: DoHServerConfig,
+         doh: DoHInterface,
          preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier,
          performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void,
          callCompletionBlockUsing: CompletionBlockExecutor = .asyncMainExecutor,

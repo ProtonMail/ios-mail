@@ -259,7 +259,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nem sikerült összeegyeztetni a megvásárolt AppStore terméket a rendelkezésre álló termékeinkkel. Kérjük, küldjön egy hibabejelentést és ügyfélszolgálatunk felveszi önnel a kapcsolatot.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "További információk";
 
 /* visit item message */
@@ -627,9 +628,6 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Az ingyenes Proton fiókja elkészült.";
-
-/* Signup summary no plan description */
-"Your Proton account was successfully created." = "A Proton fiókja elkészült.";
 
 /* Recovery address label title */
 "Your recovery email address:" = "Az ön helyreállító e-mail címe:";

@@ -101,14 +101,12 @@ final class CanDeleteRequest: Request {
     let isAuth: Bool = true
 }
 
-typealias DoHServerConfig = DoHInterface & ServerConfig
-
 final class CanDeleteResponse: Response {}
 
 public final class AccountDeletionService {
     
     private let api: APIService
-    private let doh: DoHServerConfig
+    private let doh: DoHInterface
     private let authenticator: Authenticator
     private let preferredLanguage: String
 
@@ -118,7 +116,15 @@ public final class AccountDeletionService {
     }
     #endif
     
-    init(api: APIService, doh: DoHServerConfig, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
+    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
+    init(api: APIService, doh: DoHInterface & ServerConfig, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
+        self.api = api
+        self.doh = doh
+        self.preferredLanguage = preferredLanguage
+        self.authenticator = Authenticator(api: api)
+    }
+    
+    init(api: APIService, doh: DoHInterface, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
         self.api = api
         self.doh = doh
         self.preferredLanguage = preferredLanguage

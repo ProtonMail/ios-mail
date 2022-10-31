@@ -307,7 +307,7 @@ extension PMActionSheet {
         header.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
         header.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
         header.bottomAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
-        header.heightAnchor.constraint(equalToConstant: self.viewModel.value.HEADER_HEIGHT).isActive = true
+        header.heightAnchor.constraint(greaterThanOrEqualToConstant: self.viewModel.value.HEADER_HEIGHT).isActive = true
     }
 
     private func addTableView(_ table: UITableView, in container: UIView, hasHeader: Bool) {

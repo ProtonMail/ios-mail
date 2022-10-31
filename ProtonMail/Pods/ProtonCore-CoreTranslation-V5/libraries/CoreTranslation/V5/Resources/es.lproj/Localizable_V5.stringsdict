@@ -260,9 +260,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Compatibilidad con %d dominio de correo electrónico personalizado</string>
+			<string>Soporte para %d dominio de correo personalizado</string>
 			<key>other</key>
-			<string>Compatibilidad con %d dominios de correo electrónico personalizados</string>
+			<string>Soporte para %d dominios de correo personalizados</string>
 		</dict>
 	</dict>
 </dict>

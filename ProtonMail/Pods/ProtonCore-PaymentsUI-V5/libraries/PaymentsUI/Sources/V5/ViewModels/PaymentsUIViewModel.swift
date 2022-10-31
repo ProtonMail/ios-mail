@@ -276,8 +276,8 @@ final class PaymentsUIViewModel {
                 let isExtensionPlanAvailable = self.servicePlan.availablePlansDetails.first { $0.name == accountPlan.protonName } != nil
                 
                 self.plans = plans
-                if storeKitManager.canExtendSubscription {
-                    footerType = (!servicePlan.willRenewAutomcatically(plan: accountPlan) && isExtensionPlanAvailable) ? .withExtendSubscriptionButton(plan) : .withoutPlansToBuy
+                if storeKitManager.canExtendSubscription, !servicePlan.hasPaymentMethods, isExtensionPlanAvailable, !servicePlan.willRenewAutomatically(plan: accountPlan) {
+                    footerType = .withExtendSubscriptionButton(plan)
                 } else {
                     footerType = .withoutPlansToBuy
                 }

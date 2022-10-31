@@ -221,11 +221,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                 assertionFailure("signupAccountType should be configured during the segue")
             }
         } else {
-            if viewModel.humanVerificationVersion == .v3 {
-                checkEmail(email: currentlyUsedTextField.value)
-            } else {
-                requestValidationToken(email: currentlyUsedTextField.value)
-            }
+            checkEmail(email: currentlyUsedTextField.value)
         }
     }
 
@@ -456,6 +452,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         showBanner(message: message, button: button, action: action, position: PMBannerPosition.top)
     }
 
+    @available(*, deprecated, message: "this func was for HV v2")
     private func requestValidationToken(email: String) {
         lockUI()
         viewModel?.requestValidationToken(email: email, completion: { result in

@@ -1,0 +1,12 @@
+{
+  "Code" : 12106,
+  "ErrorDescription" : "",
+  "Error" : "Username already used",
+  "Details" : {
+    "Suggestions" : [
+      "user5",
+      "user9",
+      "user7"
+    ]
+  }
+}

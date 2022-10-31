@@ -1,0 +1,520 @@
+{
+  "name": "ProtonCore-TestingToolkit",
+  "version": "3.23.1",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.23.1"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "pod_target_xcconfig": {
+    "ENABLE_TESTING_SEARCH_PATHS": "YES",
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "frameworks": "XCTest",
+  "static_framework": true,
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "TestData",
+      "dependencies": {
+        "SwiftOTP": [
+          "~> 2.0"
+        ],
+        "CryptoSwift": [
+          "1.3.1"
+        ],
+        "ProtonCore-DataModel": [
+          "3.23.1"
+        ],
+        "ProtonCore-ObfuscatedConstants": [
+          "3.23.1"
+        ],
+        "ProtonCore-Networking": [
+          "3.23.1"
+        ]
+      },
+      "source_files": "libraries/TestingToolkit/TestData/**/*.swift"
+    },
+    {
+      "name": "UnitTests",
+      "subspecs": [
+        {
+          "name": "Core",
+          "dependencies": {
+            "ProtonCore-Utilities": [
+              "3.23.1"
+            ],
+            "swift-snapshot-testing": [
+
+            ]
+          },
+          "source_files": "libraries/TestingToolkit/UnitTests/Core/**/*.swift"
+        },
+        {
+          "name": "AccountDeletion",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-AccountDeletion/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Networking": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-AccountDeletion/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Networking": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "AccountDeletion-V5",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-AccountDeletion-V5/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Networking": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-AccountDeletion-V5/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Networking": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/AccountDeletion/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Authentication",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-Authentication/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-Authentication/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Authentication/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Authentication-KeyGeneration",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-Authentication-KeyGeneration/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Authentication-KeyGeneration/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "DataModel",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-DataModel": [
+              "3.23.1"
+            ]
+          },
+          "source_files": "libraries/TestingToolkit/UnitTests/DataModel/**/*.swift"
+        },
+        {
+          "name": "Doh",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-Doh": [
+              "3.23.1"
+            ]
+          },
+          "source_files": "libraries/TestingToolkit/UnitTests/Doh/**/*.swift"
+        },
+        {
+          "name": "HumanVerification",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-HumanVerification": [
+              "3.23.1"
+            ]
+          }
+        },
+        {
+          "name": "HumanVerification-V5",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-HumanVerification-V5": [
+              "3.23.1"
+            ]
+          }
+        },
+        {
+          "name": "Login",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/DataModel": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-Login/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-Login/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Login/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "LoginUI",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/DataModel": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-LoginUI/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-LoginUI/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Login/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "LoginUI-V5",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/DataModel": [
+              "3.23.1"
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-LoginUI-V5/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-LoginUI-V5/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Login/UsingCryptoVPN": [
+                  "3.23.1"
+                ],
+                "ProtonCore-TestingToolkit/UnitTests/Services": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/LoginUI/**/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Networking",
+          "dependencies": {
+            "ProtonCore-Networking": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ]
+          },
+          "source_files": "libraries/TestingToolkit/UnitTests/Networking/**/*.swift"
+        },
+        {
+          "name": "Services",
+          "dependencies": {
+            "ProtonCore-Services": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/DataModel": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Doh": [
+              "3.23.1"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Networking": [
+              "3.23.1"
+            ]
+          },
+          "source_files": "libraries/TestingToolkit/UnitTests/Services/**/*.swift"
+        },
+        {
+          "name": "Payments",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Core": [
+              "3.23.1"
+            ],
+            "OHHTTPStubs/Swift": [
+
+            ]
+          },
+          "subspecs": [
+            {
+              "name": "UsingCrypto",
+              "dependencies": {
+                "ProtonCore-Payments/UsingCrypto": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
+            },
+            {
+              "name": "UsingCryptoVPN",
+              "dependencies": {
+                "ProtonCore-Payments/UsingCryptoVPN": [
+                  "3.23.1"
+                ]
+              },
+              "source_files": "libraries/TestingToolkit/UnitTests/Payments/**/*.swift"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UITests",
+      "dependencies": {
+        "ProtonCore-CoreTranslation": [
+          "3.23.1"
+        ],
+        "pmtest": [
+
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "Core",
+          "dependencies": {
+            "ProtonCore-Log": [
+              "3.23.1"
+            ]
+          },
+          "source_files": "libraries/TestingToolkit/UITests/Core/**/*.swift"
+        },
+        {
+          "name": "AccountDeletion",
+          "source_files": "libraries/TestingToolkit/UITests/AccountDeletion/**/*.swift"
+        },
+        {
+          "name": "AccountSwitcher",
+          "source_files": "libraries/TestingToolkit/UITests/AccountSwitcher/**/*.swift"
+        },
+        {
+          "name": "HumanVerification",
+          "source_files": "libraries/TestingToolkit/UITests/HumanVerification/**/*.swift"
+        },
+        {
+          "name": "Login",
+          "source_files": "libraries/TestingToolkit/UITests/Login/**/*.swift"
+        },
+        {
+          "name": "PaymentsUI",
+          "source_files": "libraries/TestingToolkit/UITests/PaymentsUI/**/*.swift"
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}

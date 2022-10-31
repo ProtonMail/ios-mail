@@ -1,0 +1,104 @@
+{
+  "name": "ProtonCore-Authentication",
+  "version": "3.23.1",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.23.1"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "UsingCrypto",
+      "dependencies": {
+        "ProtonCore-Crypto": [
+          "3.23.1"
+        ],
+        "ProtonCore-APIClient": [
+          "3.23.1"
+        ],
+        "ProtonCore-Services": [
+          "3.23.1"
+        ]
+      },
+      "source_files": [
+        "libraries/Authentication/Sources/*.swift",
+        "libraries/Authentication/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Authentication/Tests/**/*.swift",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto": [
+              "3.23.1"
+            ],
+            "OHHTTPStubs/Swift": [
+
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "UsingCryptoVPN",
+      "dependencies": {
+        "ProtonCore-Crypto-VPN": [
+          "3.23.1"
+        ],
+        "ProtonCore-APIClient": [
+          "3.23.1"
+        ],
+        "ProtonCore-Services": [
+          "3.23.1"
+        ]
+      },
+      "source_files": [
+        "libraries/Authentication/Sources/*.swift",
+        "libraries/Authentication/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Authentication/Tests/**/*.swift",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCryptoVPN": [
+              "3.23.1"
+            ],
+            "OHHTTPStubs/Swift": [
+
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}

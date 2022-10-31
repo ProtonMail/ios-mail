@@ -46,6 +46,15 @@
 /* New_Plans Plan details free description */
 "New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "すべての人にプライバシーを提供するための、無料のスタータープランです。";
 
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "毎日のコミュニケーションに必要なプライバシーファーストのメールおよびカレンダーソリューション。";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "究極のプライバシーパックにはすべてのプレミアムな Proton サービスが含まれています。";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor over VPN";
+
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
 

@@ -34,10 +34,10 @@ final class OrganizationsResponse: Response {
     private(set) var organization: Organization?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
-        PMLog.debug(response.json(prettyPrinted: true))
         guard let organizationResponse = response["Organization"] else { return false }
         let (result, details) = decodeResponse(organizationResponse, to: Organization.self, errorToReturn: .organizationDecode)
         organization = details
+        PMLog.debug(organization?.debugDescription ?? RequestErrors.methodsDecode.localizedDescription)
         return result
     }
 }

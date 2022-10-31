@@ -25,6 +25,22 @@ import ProtonCore_CoreTranslation
 import ProtonCore_CoreTranslation_V5
 
 extension Plan {
+    
+    /**
+     Function name shortcuts:
+     X = MaxSpace, converted from bytes to GB
+     Y = MaxAddresses
+     Z = MaxCalendars
+     U = MaxVPN
+     V = MaxDomains
+     W = MaxMembers
+     O = UsedDomains
+     P = UsedAddresses
+     Q = UsedCalendars
+     R = UsedSpace, converted from bytes to GB
+     S = AssignedSpace, converted from bytes to GB / MaxSpace on the /users API call
+     T = UsedMembers
+     **/
 
     var upToXGBStorageDescription: String {
         String(format: CoreString_V5._new_plans_details_up_to_storage,
@@ -98,9 +114,9 @@ extension Plan {
         CoreString_V5._new_plans_details_p2p
     }
 
-    func RSGBUsedStorageSpaceDescription(usedSpace: Int64?) -> String {
+    func RSGBUsedStorageSpaceDescription(usedSpace: Int64, maxSpace: Int64) -> String {
         String(format: CoreString_V5._new_plans_details_used_storage_space,
-               storageformatter.format(value: usedSpace ?? 0), storageformatter.format(value: maxSpace))
+               storageformatter.format(value: usedSpace), storageformatter.format(value: maxSpace))
     }
 
     func TWUsersDescription(usedMembers: Int?) -> String {

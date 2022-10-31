@@ -21,12 +21,18 @@
 
 import Foundation
 import ProtonCore_Doh
+import ProtonCore_Environment
 
 public final class QuarkCommands {
-    private let doh: DoH & ServerConfig
+    private let doh: DoHInterface
     
-    public init(doh: DoH & ServerConfig) {
+    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
+    public init(doh: DoHInterface) {
         self.doh = doh
+    }
+    
+    public init(env: Environment) {
+        self.doh = env.doh
     }
     
     public func createUser(username: String, password: String,

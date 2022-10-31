@@ -35,8 +35,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Pemblokir iklan (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "Izinkan pengalihan lalu lintas alternatif";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Terjadi eror";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Gangguan antivirus";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple menginformasikan, mereka tidak dapat memproses pembayaran.";
@@ -53,6 +59,9 @@
 /* *
  * Login 2FA */
 "Authenticate" = "Otentikasi";
+
+/* top left back button */
+"Back" = "Kembali";
 
 /* Terms and conditions note */
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "Dengan mengklik Buat alamat, Anda setuju dengan Syarat dan Ketentuan Proton.";
@@ -75,6 +84,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "Ubah kata sandi Anda";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Periksa Status Proton untuk status sistem kami.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Tutup";
@@ -105,6 +117,9 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Hubungi support@protonvpn.com untuk menyelesaikan pembayaran Anda.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hubungi kami secara langsung melalui formulir dukungan kami, email (support@protonmail.zendesk.com), atau Twitter.";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Buat akun Proton dengan alamat email Anda sekarang";
@@ -156,6 +171,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "Tidak menerima kode?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Nonaktifkan seluruh proxy atau firewall yang Anda miliki, atau hubungi pengelola jaringan Anda.";
+
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Abaikan";
 
@@ -167,6 +185,9 @@
 
 /* Title of domains bottom action sheet */
 "Domain" = "Domain";
+
+/* network troubleshot view title */
+"email" = "email";
 
 /* Email field title
    Email label
@@ -207,6 +228,9 @@
 /* Error message */
 "Failed to get list of available products from App Store." = "Gagal mendapatkan daftar ketersediaan produk dari App Store.";
 
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "untuk %@";
+
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Untuk keamanan Anda, kami harus memverifikasi alamat yang Anda masukkan sebagai benar milik Anda. Kami telah mengirimkan kode verifikasi ke %@. Silakan masukkan kode tersebut di bawah:";
 
@@ -229,6 +253,9 @@
 /* Verification button */
 "Get verification code" = "Dapatkan kode verifikasi";
 
+/* network troubleshot cell title */
+"Government block" = "Pemblokiran pemerintah";
+
 /* Help button */
 "Help" = "Bantuan";
 
@@ -248,8 +275,14 @@
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Jika Anda menemui masalah saat membuat akun, silakan minta undangan dan kami akan meresponnya 1 hari kerja.";
 
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan. Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal. %1$@";
+
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Kata sandi kotak surat salah";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Masalah Internet Service Provider (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Kata sandi hashed tidak valid";
@@ -266,7 +299,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Tidak mungkin mencocokkan produk App Store yang Anda beli dengan produk apapun di server kami. Silakan isi laporan bug dan tim dukungan pelanggan akan menghubungi Anda.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "Pelajari lebih lanjut";
 
 /* visit item message */
@@ -300,6 +334,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Selanjutnya";
+
+/* network troubleshot cell title */
+"No internet connection" = "Tidak ada koneksi internet";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Bukan, untuk akun Proton Mail lain";
@@ -370,6 +407,12 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan aktivasi paket layanan.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Pastikan koneksi internet Anda berfungsi.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Mohon ceritakan masalah yang Anda hadapi.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Mohon buka kunci aplikasi untuk melanjutkan aktivasi paket layanan Anda";
 
@@ -382,8 +425,17 @@
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton sedang offline";
+
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "Proton Mail untuk profesional dan bisnis";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Status Proton";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Hadangan Proxy/Firewall";
 
 /* Error message */
 "Purchase is not possible." = "Tidak dapat melakukan pembelian.";
@@ -475,6 +527,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Maaf, kami tidak dapat memproses pembayaran di aplikasi iOS versi beta. Terima kasih telah berpartisipasi dalam program beta publik kami!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Saya masih belum menemukan solusi";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "Masih butuh bantuan lebih lanjut? Hubungi kami secara langsung.";
@@ -482,11 +537,20 @@
 /* Plan details streaming service support */
 "Streaming service support" = "Dukungan layanan streaming";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Subjek...";
+
 /* Subscription title */
 "Subscription" = "Langganan";
 
+/* network troubleshooting */
+"support form" = "formulir dukungan";
+
 /* *  Account Manager */
 "switch to" = "ganti ke";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Nonaktifkan sementara atau hapus perangkat antivirus Anda.";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
@@ -501,6 +565,9 @@
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proses pembelian IAP sudah dimulai. Silakan mengikuti instruksi Apple untuk menuntaskan atau membatalkan pembelian.";
+
+/* Message shown when we suspect that the Proton servers are blocked */
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Server Proton tidak dapat dijangkau. Hal ini dapat disebabkan antara lain oleh pengaturan jaringan yang tidak tepat, server Proton yang sedang offline, atau pemblokiran tertentu yang memengaruhi sambungan ke server Proton";
 
 /* Networking insecure connection error */
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Sistem gagal memvalidasi sertifikat TLS pada saat mencoba terhubung ke API Proton. Koneksi internet Anda mungkin sedang diawasi. Agar data Anda tetap aman, kami telah mencegah aplikasi yang bersangkutan untuk dapat mengakses API Proton.\nUntuk masuk atau mengakses akun Anda, berpindahlah ke jaringan baru dan cobalah untuk kembali terhubung.";
@@ -517,8 +584,20 @@
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Untuk dapat menggunakan aplikasi Proton selaku anggota organisasi, Anda perlu mengubah kata sandi Anda dengan masuk ke Proton melalui browser terlebih dahulu.";
 
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Penyelesaian Masalah";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Penyelesaian Masalah";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Cobalah untuk terhubung ke Proton melalui jaringan yang berbeda (atau gunakan %1$@ atau %2$@).";
+
 /* other method alert button */
 "Try other method" = "Coba metode lain";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Otentikasi dua-faktor";
@@ -623,6 +702,9 @@
 /* Dialog text for missing keys error */
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Akun Anda kehilangan kunci, silakan masuk ke web untuk membuat kunci yang diperlukan secara otomatis. Setelah Anda masuk ke web, silakan kembali ke app dan masuk ke akun Anda.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Negara Anda mungkin memblokir akses ke Proton. Cobalah untuk menggunakan %1$@ (atau VPN lainnya) atau %2$@ untuk mengakses Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Email Anda hanya akan digunakan untuk proses verifikasi ini.";
 
@@ -638,12 +720,15 @@
 /* Info about existing external Proton Mail address */
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Akun Proton Anda terasosiasi dengan %@. Untuk menggunakan %@, silakan membuat alamat email.";
 
-/* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Akun Proton Free Anda berhasil dibuat.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Akun Proton Anda berhasil dibuat.";
 
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Akun Proton Free Anda berhasil dibuat.";
+
 /* Recovery address label title */
 "Your recovery email address:" = "Alamat email pemulihan Anda:";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Masa berlaku sesi Anda telah berakhir. Silakan masuk kembali.";
 
