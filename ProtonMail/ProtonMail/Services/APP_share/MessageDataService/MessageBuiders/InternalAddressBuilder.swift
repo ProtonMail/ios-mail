@@ -44,7 +44,9 @@ class InternalAddressBuilder: PackageBuilder {
             var attPackages = [AttachmentPackage]()
             for attachment in self.preAttachments {
                 if let publicKey = self.sendPreferences.publicKeys {
-                    let newKeyPack = try attachment.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: attachment.algo.rawValue)?
+                    let newKeyPack = try attachment
+                        .session
+                        .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: attachment.algo.rawValue)?
                         .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                     let attPacket = AttachmentPackage(attachmentID: attachment.attachmentId, attachmentKey: newKeyPack)
                     attPackages.append(attPacket)
@@ -52,7 +54,8 @@ class InternalAddressBuilder: PackageBuilder {
             }
 
             if let publicKey = self.sendPreferences.publicKeys {
-                let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
+                let newKeypacket = try self.session
+                    .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
                 let newEncodedKey = newKeypacket?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let addr = AddressPackage(email: self.email,

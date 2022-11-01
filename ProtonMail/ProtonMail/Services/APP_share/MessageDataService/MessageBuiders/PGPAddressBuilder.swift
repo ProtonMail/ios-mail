@@ -55,13 +55,15 @@ class PGPAddressBuilder: PackageBuilder {
                 fatalError("Missing PGP key")
             }
             for att in self.preAttachments {
-                let newKeyPack = try att.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: att.algo.rawValue)?
+                let newKeyPack = try att.session
+                    .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: att.algo.rawValue)?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attachmentID: att.attachmentId, attachmentKey: newKeyPack)
                 attPackages.append(attPacket)
             }
 
-            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
+            let newKeypacket = try self.session
+                .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
             let newEncodedKey = newKeypacket?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             let package = AddressPackage(email: self.email,

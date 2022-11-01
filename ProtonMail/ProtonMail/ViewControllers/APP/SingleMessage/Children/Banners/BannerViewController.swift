@@ -299,42 +299,6 @@ final class BannerViewController: UIViewController {
         }
         return indexToInsert
     }
-
-    @objc
-    private func loadRemoteContent() {
-        delegate?.loadRemoteContent()
-        self.hideBanner(type: .remoteContent)
-        viewModel.resetLoadedHeight?()
-    }
-
-    @objc
-    private func loadEmbeddedImages() {
-        delegate?.loadEmbeddedImage()
-        self.hideBanner(type: .embeddedContent)
-        viewModel.resetLoadedHeight?()
-    }
-
-    private func reloadImagesWithoutProtection() {
-        delegate?.reloadImagesWithoutProtection()
-        self.hideBanner(type: .imageProxyFailure)
-    }
-
-    @objc
-    private func markAsLegitimate() {
-        viewModel.markAsLegitimate()
-        hideBanner(type: .spam)
-    }
-
-    @objc
-    private func sendReceipt() {
-        guard self.isOnline else {
-            LocalString._no_internet_connection.alertToast(withTitle: true, view: self.view, preventCopies: true)
-            return
-        }
-        viewModel.sendReceipt()
-        self.receiptBanner?.updateTitleText(newTitle: LocalString._receipt_sent)
-        self.receiptBanner?.disableTapGesture()
-    }
 }
 
 // MARK: - Exposed Method
@@ -389,12 +353,49 @@ extension BannerViewController {
     }
 }
 
-private extension Dictionary where Key == BannerType, Value == UIView {
+// MARK: final actions
+extension BannerViewController {
+    @objc
+    private func loadRemoteContent() {
+        delegate?.loadRemoteContent()
+        self.hideBanner(type: .remoteContent)
+        viewModel.resetLoadedHeight?()
+    }
 
+    @objc
+    private func loadEmbeddedImages() {
+        delegate?.loadEmbeddedImage()
+        self.hideBanner(type: .embeddedContent)
+        viewModel.resetLoadedHeight?()
+    }
+
+    @objc
+    private func markAsLegitimate() {
+        viewModel.markAsLegitimate()
+        hideBanner(type: .spam)
+    }
+
+    @objc
+    private func sendReceipt() {
+        guard self.isOnline else {
+            LocalString._no_internet_connection.alertToast(withTitle: true, view: self.view, preventCopies: true)
+            return
+        }
+        viewModel.sendReceipt()
+        self.receiptBanner?.updateTitleText(newTitle: LocalString._receipt_sent)
+        self.receiptBanner?.disableTapGesture()
+    }
+
+    private func reloadImagesWithoutProtection() {
+        delegate?.reloadImagesWithoutProtection()
+        self.hideBanner(type: .imageProxyFailure)
+    }
+}
+
+private extension Dictionary where Key == BannerType, Value == UIView {
     var sortedBanners: [Key] {
         keys.sorted(by: { $0.order > $1.order })
     }
-
 }
 
 private extension UIStackView {

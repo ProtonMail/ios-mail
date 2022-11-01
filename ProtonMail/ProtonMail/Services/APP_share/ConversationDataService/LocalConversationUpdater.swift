@@ -43,8 +43,8 @@ final class LocalConversationUpdater {
                 }
                 // Mark as unread when deleting which will in turn update counters
                 self.mark(conversationIDs: [conversationID],
-                     asUnread: false,
-                     labelID: Message.Location.trash.labelID) { _ in
+                          asUnread: false,
+                          labelID: Message.Location.trash.labelID) { _ in
                     context.delete(conversationInContext)
                     let messages = Message.messagesForConversationID(conversationID.rawValue,
                                                                      inManagedObjectContext: context)
@@ -137,7 +137,11 @@ final class LocalConversationUpdater {
                             .filter({ $0.unreadCount != NSNumber(value: 0) })
                             .forEach({ contextLabel in
                                 contextLabel.unreadCount = NSNumber(value: 0)
-                                self.updateConversationCount(for: LabelID(contextLabel.labelID), offset: -1, in: context)
+                                self.updateConversationCount(
+                                    for: LabelID(contextLabel.labelID),
+                                    offset: -1,
+                                    in: context
+                                )
                             })
                     } else {
                         let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
