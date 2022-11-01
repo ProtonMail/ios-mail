@@ -733,6 +733,9 @@
  *  Email Verify View Controller */
 "Email address" = "Tansa imayl";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Tansa imayl tensa";
+
 /* alert title */
 "Email address invalid" = "Tansa imayl mači d tameɣtut";
 
@@ -781,14 +784,25 @@
 /* contact section title */
 "Encrypted contact details" = "Talqayt n unermis awgelhan";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Awgelhen si tazwara ar tagara";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "Izen yettwawgelhen seg yixef ɣer yixef yerna yettwasezmel";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "Izen ittwawegelhen seg tazwara ar tagara";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "Izen ittwawegelhen seg tazwara ar tagara yekka-d seg tansa yettusneqden";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Izen ittwawegelhen seg yixef ɣer yixef yekka-d seg umazan yettusneqden";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Ittwawegelhen seg tazwara ar tagara ar uɣerwaḍ yettusneqden";
 
 /* (No Comment) */
 "End-to-End Encryption" = "Awegelhen seg tazwara ar tagara";
@@ -919,9 +933,6 @@
 
 /* network troubleshot cell title */
 "Government block" = "Asewḥel n udabu";
-
-/* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Segrew imaylen deg yiwen n usqerdec.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Isem n ugraw";
@@ -1338,6 +1349,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Ulac tuqqna internet";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Ur d-nufi ula d tasarut i useqdac adigan";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "ulac asentel";
 
@@ -1346,6 +1360,9 @@
 
 /* zero messages matching search query */
 "No results found" = "Ulac igmaḍ yettwafen";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ulac tasarut WKD yettwaffen i useqdac adigan i yeɣtan i tuzna";
 
 /* Error message */
 "No, not related to in-app purchase" = "Uhu, ur yeɛni ara tiɣin seg usnas";
@@ -1455,14 +1472,36 @@
 /* default vcard types */
 "Personal" = "Udmawan";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Ittuwgelhen s PGP";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "Izen yettwawgelhen s PGP yerna yettazmel";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Izen awgelhan PGP";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Izen ittuwegelhen s PGP yekka-d seg tansa yettusneqden";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Izen ittuwgelhen s PGP yekka-d seg umazan yettusneqden";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Yettwawgelhen PGP ɣer uɣerwaḍ yettusneqden";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Yettuzmel s PGP";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "Izen ittuzemlen s PGP yekka-d seg tansa yettusneqden";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Izen ittuzemlen s PGP yekka-d seg umazan yettusneqden";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Izen yettuzmel s PGP. Asenqed n umazan yecceḍ";
 
 /* default vcard types */
 "Phone" = "Tiliɣri";
@@ -1562,9 +1601,6 @@
 "Please use Proton Mail App sign-in first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas Proton Mail.";
 
 /* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Seqdec lqem Web n Proton Mail akken ad tbeddleḍ awal uffir n tnaka-ik n yimayl!";
-
-/* (No Comment) */
 "Please use your new password when signing in." = "Seqdec awal-ik uffir amaynut ticki teqqneḍ.";
 
 /* alert title */
@@ -1596,9 +1632,6 @@
 
 /* (No Comment) */
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail ur isawal ara i udellel udiɣ ur yettṛuzu ara izerfan n tudert tusligt. Afus-ik d ayen ilaqen akken ad nkemmel ad nseddu Proton Mail. Tzemreḍ ad tsaliḍ aswir n umiḍan-ik ar umiḍan s lewlaṣ neɣ ad tmuddeḍ tawsa i Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail ur iqqin ara akka tura,senqed addad amiran n Twitter nneɣ: https://twitter.com/protonmail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail ur yeqqin ara akka tura…";
@@ -1685,7 +1718,7 @@
 "ReplyAll" = "Err-asen akk";
 
 /* menu title */
-"Report a bug" = "Azen abug";
+"Report a problem" = "Azen aneqqis n wugur";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Azen aneqqis phishing";
@@ -1748,6 +1781,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Azen tangalt n usenqed";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Tuzna n usenqed tecceḍ";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Asenqed n umesgal yecceḍ";
 
@@ -1778,7 +1814,8 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Yettwazen s Proton Mail s uwgelhen ilem n wadduf";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Tuzneḍ-t s yiman-ik s uwgelhen si ṭerf ar ṭerf";
 
 /* Description */
@@ -1891,6 +1928,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Yettwaḥrez s uwgelhen ilem n wadduf";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Yettwaḥrez s uwgelhen ilem n unekcum";
+
 /* contact placeholder */
 "Street" = "Abrid";
 
@@ -1899,9 +1939,6 @@
 
 /* subject: text when forward */
 "Subject:" = "Asentel:";
-
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Asentel..";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2013,6 +2050,9 @@
 /* Title */
 "The request timed out." = "Asuter yemmut.";
 
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Tasarut n tuzna ur d tameɣtut";
+
 /* Description */
 "The size limit for attachments is 25 MB." = "Tilist n tiddi n ufaylu yeddan d 25 MB.";
 
@@ -2114,9 +2154,6 @@
    Title */
 "To" = "I";
 
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n Proton Mail di protonmail.com";
-
 /* *
  *  API Error & alert title */
 "Token expired" = "Ajiṭun yemmut";
@@ -2140,6 +2177,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Tifrat i wuguren";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Tisura yettwasentmen ur ɣtint ara i tuzna";
 
 /* Try again action */
 "Try again" = "Ɛreḍ tikelt nniḍen";

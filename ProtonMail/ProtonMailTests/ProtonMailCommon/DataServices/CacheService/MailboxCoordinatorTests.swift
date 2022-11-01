@@ -55,7 +55,7 @@ class MailboxCoordinatorTests: XCTestCase {
         uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
-        contactProviderMock = MockContactProvider()
+        contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
         conversationProviderMock = MockConversationProvider(context: contextProviderMock.mainContext)
         eventServiceMock = EventsServiceMock()
 
@@ -101,11 +101,8 @@ class MailboxCoordinatorTests: XCTestCase {
         mailboxViewControllerMock.set(coordinator: sut)
         mailboxViewControllerMock.set(viewModel: viewModelMock)
 
-        let testContext = contextProviderMock.mainContext
-
         viewModelMock.callFetchConversationDetail.bodyIs { _, _, callback in
-            let dummyConversation = Conversation(context: testContext)
-            callback?(.success(dummyConversation))
+            callback()
         }
     }
 

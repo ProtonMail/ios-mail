@@ -1,6 +1,6 @@
 //
 //  OpenPGPDefines.swift
-//  Proton MailTests - Created on 5/7/18.
+//  ProtonMailTests - Created on 5/7/18.
 //
 //
 //  Copyright (c) 2019 Proton AG
@@ -29,7 +29,9 @@ enum OpenPGPTestsDefine : Resource, CaseIterable {
     case mime_publicKey
     case mime_decodedBody
     case mime_decodedBodyHeaders
-    case mime_testMessage
+    case mime_pgpMessage
+    case mime_testMessage_with_mime_sig
+    case mime_testMessage_without_mime_sig
     case message_signed
     case message_plaintext
     case attachment_keypacket
@@ -131,8 +133,6 @@ class OpenPGPDefines {
     "rLKWGpju144Zj3G3V3fn1/c=" + "\n" +
     "=s9c+" + "\n" +
     "-----END PGP PRIVATE KEY BLOCK-----"
-    
-    static let feng100_passphrase_1 = "test"
     
  
     

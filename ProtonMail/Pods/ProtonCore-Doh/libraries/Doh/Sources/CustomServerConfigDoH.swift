@@ -22,7 +22,7 @@
 public final class CustomServerConfigDoH: DoH, ServerConfig {
     public let signupDomain: String
     public let captchaHost: String
-    public let humanVerificationV3Host: String
+    public var humanVerificationV3Host: String
     public let accountHost: String
     public let defaultHost: String
     public let apiHost: String

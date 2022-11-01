@@ -109,7 +109,8 @@ class AttachmentViewModelTests: XCTestCase {
             id: "",
             isInline: isInline,
             objectID: nil,
-            contentID: nil
+            contentID: nil,
+            order: -1
         )
     }
 }

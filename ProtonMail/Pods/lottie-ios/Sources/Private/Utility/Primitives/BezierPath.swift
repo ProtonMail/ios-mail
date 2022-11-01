@@ -31,13 +31,13 @@ struct BezierPath {
   // MARK: Internal
 
   /// The elements of the path
-  fileprivate(set) var elements: [PathElement]
+  private(set) var elements: [PathElement]
 
   /// If the path is closed or not.
-  fileprivate(set) var closed: Bool
+  private(set) var closed: Bool
 
   /// The total length of the path.
-  fileprivate(set) var length: CGFloat
+  private(set) var length: CGFloat
 
   mutating func moveToStartPoint(_ vertex: CurveVertex) {
     elements = [PathElement(vertex: vertex)]
@@ -92,7 +92,7 @@ struct BezierPath {
       }
       elements[atIndex] = newElement
 
-      if atIndex + 1 < elements.count{
+      if atIndex + 1 < elements.count {
         let nextElement = elements[atIndex + 1]
         elements[atIndex + 1] = newElement.pathElementTo(nextElement.vertex)
       }
@@ -103,23 +103,21 @@ struct BezierPath {
     }
   }
 
-  /**
-   Trims a path fromLength toLength with an offset.
-
-   Length and offset are defined in the length coordinate space.
-   If any argument is outside the range of this path, then it will be looped over the path from finish to start.
-
-   Cutting the curve when fromLength is less than toLength
-   x                    x                                 x                          x
-   ~~~~~~~~~~~~~~~ooooooooooooooooooooooooooooooooooooooooooooooooo-------------------
-   |Offset        |fromLength                             toLength|                  |
-
-   Cutting the curve when from Length is greater than toLength
-   x                x                    x               x                           x
-   oooooooooooooooooo--------------------~~~~~~~~~~~~~~~~ooooooooooooooooooooooooooooo
-   |        toLength|                    |Offset         |fromLength                 |
-
-   */
+  /// Trims a path fromLength toLength with an offset.
+  ///
+  /// Length and offset are defined in the length coordinate space.
+  /// If any argument is outside the range of this path, then it will be looped over the path from finish to start.
+  ///
+  /// Cutting the curve when fromLength is less than toLength
+  /// x                    x                                 x                          x
+  /// ~~~~~~~~~~~~~~~ooooooooooooooooooooooooooooooooooooooooooooooooo-------------------
+  /// |Offset        |fromLength                             toLength|                  |
+  ///
+  /// Cutting the curve when from Length is greater than toLength
+  /// x                x                    x               x                           x
+  /// oooooooooooooooooo--------------------~~~~~~~~~~~~~~~~ooooooooooooooooooooooooooooo
+  /// |        toLength|                    |Offset         |fromLength                 |
+  ///
   func trim(fromLength: CGFloat, toLength: CGFloat, offsetLength: CGFloat) -> [BezierPath] {
     guard elements.count > 1 else {
       return []
@@ -165,9 +163,9 @@ struct BezierPath {
     return trimPathAtLengths(positions: [(start: start, end: end)])
   }
 
-  // MARK: Fileprivate
+  // MARK: Private
 
-  fileprivate func trimPathAtLengths(positions: [(start: CGFloat, end: CGFloat)]) -> [BezierPath] {
+  private func trimPathAtLengths(positions: [(start: CGFloat, end: CGFloat)]) -> [BezierPath] {
     guard positions.count > 0 else {
       return []
     }
@@ -178,11 +176,11 @@ struct BezierPath {
     var paths = [BezierPath]()
 
     var runningLength: CGFloat = 0
-    var finishedTrimming: Bool = false
+    var finishedTrimming = false
     var pathElements = elements
 
     var currentPath = BezierPath()
-    var i: Int = 0
+    var i = 0
 
     while !finishedTrimming {
       if pathElements.count <= i {
@@ -356,18 +354,16 @@ extension BezierPath: Codable {
 
   // MARK: Internal
 
-  /**
-   The BezierPath container is encoded and decoded from the JSON format
-   that defines points for a lottie animation.
-
-   {
-   "c" = Bool
-   "i" = [[Double]],
-   "o" = [[Double]],
-   "v" = [[Double]]
-   }
-
-   */
+  /// The BezierPath container is encoded and decoded from the JSON format
+  /// that defines points for a lottie animation.
+  ///
+  /// {
+  /// "c" = Bool
+  /// "i" = [[Double]],
+  /// "o" = [[Double]],
+  /// "v" = [[Double]]
+  /// }
+  ///
 
   enum CodingKeys: String, CodingKey {
     case closed = "c"
@@ -392,8 +388,76 @@ extension BezierPath: Codable {
       try inPointsContainer.encode(element.vertex.inTangentRelative)
       try outPointsContainer.encode(element.vertex.outTangentRelative)
     }
-
   }
+}
+
+// MARK: AnyInitializable
+
+extension BezierPath: AnyInitializable {
+
+  init(value: Any) throws {
+    var pathDictionary: [String: Any]
+    if
+      let array = value as? [[String: Any]],
+      let firstDictionary = array.first
+    {
+      pathDictionary = firstDictionary
+    } else if let dictionary = value as? [String: Any] {
+      pathDictionary = dictionary
+    } else {
+      throw InitializableError.invalidInput
+    }
+    closed = (try? pathDictionary.value(for: CodingKeys.closed)) ?? true
+    var vertexDictionaries: [Any] = try pathDictionary.value(for: CodingKeys.vertices)
+    var inPointsDictionaries: [Any] = try pathDictionary.value(for: CodingKeys.inPoints)
+    var outPointsDictionaries: [Any] = try pathDictionary.value(for: CodingKeys.outPoints)
+    guard
+      vertexDictionaries.count == inPointsDictionaries.count,
+      inPointsDictionaries.count == outPointsDictionaries.count else
+    {
+      throw InitializableError.invalidInput
+    }
+    guard vertexDictionaries.count > 0 else {
+      length = 0
+      elements = []
+      return
+    }
+
+    var decodedElements = [PathElement]()
+    let firstVertexDictionary = vertexDictionaries.removeFirst()
+    let firstInPointsDictionary = inPointsDictionaries.removeFirst()
+    let firstOutPointsDictionary = outPointsDictionaries.removeFirst()
+    let firstVertex = CurveVertex(
+      point: try CGPoint(value: firstVertexDictionary),
+      inTangentRelative: try CGPoint(value: firstInPointsDictionary),
+      outTangentRelative: try CGPoint(value: firstOutPointsDictionary))
+    var previousElement = PathElement(vertex: firstVertex)
+    decodedElements.append(previousElement)
+
+    var totalLength: CGFloat = 0
+    while vertexDictionaries.count > 0 {
+      let vertexDictionary = vertexDictionaries.removeFirst()
+      let inPointsDictionary = inPointsDictionaries.removeFirst()
+      let outPointsDictionary = outPointsDictionaries.removeFirst()
+      let vertex = CurveVertex(
+        point: try CGPoint(value: vertexDictionary),
+        inTangentRelative: try CGPoint(value: inPointsDictionary),
+        outTangentRelative: try CGPoint(value: outPointsDictionary))
+      let pathElement = previousElement.pathElementTo(vertex)
+      decodedElements.append(pathElement)
+      previousElement = pathElement
+      totalLength = totalLength + pathElement.length
+    }
+    if closed {
+      let closeElement = previousElement.pathElementTo(firstVertex)
+      decodedElements.append(closeElement)
+      totalLength = totalLength + closeElement.length
+    }
+
+    length = totalLength
+    elements = decodedElements
+  }
+
 }
 
 extension BezierPath {
@@ -404,7 +468,7 @@ extension BezierPath {
     var previousElement: PathElement?
     for element in elements {
       if let previous = previousElement {
-        if previous.vertex.outTangentRelative.isZero && element.vertex.inTangentRelative.isZero {
+        if previous.vertex.outTangentRelative.isZero, element.vertex.inTangentRelative.isZero {
           cgPath.addLine(to: element.vertex.point)
         } else {
           cgPath.addCurve(to: element.vertex.point, control1: previous.vertex.outTangent, control2: element.vertex.inTangent)

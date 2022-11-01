@@ -33,6 +33,7 @@ public protocol PurchaseManagerProtocol {
     var unfinishedPurchasePlan: InAppPurchasePlan? { get }
 
     func buyPlan(plan: InAppPurchasePlan,
+                 addCredits: Bool,
                  callFinishCallbackOn queueToCallFinishCallbackOn: DispatchQueue,
                  finishCallback: @escaping (PurchaseResult) -> Void)
 }
@@ -40,8 +41,8 @@ public protocol PurchaseManagerProtocol {
 public extension PurchaseManagerProtocol {
 
     /// If no queue to callFinishCallbackOn is provided, the finish callback **will be called on the main queue**
-    func buyPlan(plan: InAppPurchasePlan, finishCallback: @escaping (PurchaseResult) -> Void) {
-        buyPlan(plan: plan, callFinishCallbackOn: DispatchQueue.main, finishCallback: finishCallback)
+    func buyPlan(plan: InAppPurchasePlan, addCredits: Bool = false, finishCallback: @escaping (PurchaseResult) -> Void) {
+        buyPlan(plan: plan, addCredits: addCredits, callFinishCallbackOn: DispatchQueue.main, finishCallback: finishCallback)
     }
 }
 
@@ -70,6 +71,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
     }
 
     func buyPlan(plan: InAppPurchasePlan,
+                 addCredits: Bool,
                  callFinishCallbackOn queueToCallFinishCallbackOn: DispatchQueue,
                  finishCallback finishCallbackToBeCalledOnProvidedQueue: @escaping (PurchaseResult) -> Void) {
 
@@ -87,14 +89,14 @@ final class PurchaseManager: PurchaseManagerProtocol {
 
         queue.async { [weak self] in
             do {
-                try self?.buyPlanUsingProperFlow(plan: plan, finishCallback: finishCallback)
+                try self?.buyPlanUsingProperFlow(plan: plan, addCredits: addCredits, finishCallback: finishCallback)
             } catch {
                 finishCallback(.purchaseError(error: error, processingPlan: self?.unfinishedPurchasePlan))
             }
         }
     }
 
-    private func buyPlanUsingProperFlow(plan: InAppPurchasePlan, finishCallback: @escaping (PurchaseResult) -> Void) throws {
+    private func buyPlanUsingProperFlow(plan: InAppPurchasePlan, addCredits: Bool, finishCallback: @escaping (PurchaseResult) -> Void) throws {
 
         guard InAppPurchasePlan.isThisAFreePlan(protonName: plan.protonName) == false else {
             // "free plan" is really the lack of any plan — so no purchase is required if user selects free
@@ -115,11 +117,14 @@ final class PurchaseManager: PurchaseManagerProtocol {
             throw StoreKitManagerErrors.transactionFailedByUnknownReason
         }
 
-        let amountDue = try fetchAmountDue(protonPlanName: details.name)
-        guard amountDue != .zero else {
-            // backend indicated that plan can be bought for free — no need to initiate the IAP flow
-            try buyPlanWhenAmountDueIsZero(plan: plan, planId: planId, finishCallback: finishCallback)
-            return
+        var amountDue = 0
+        if !addCredits {
+            amountDue = try fetchAmountDue(protonPlanName: details.name)
+            guard amountDue != .zero else {
+                // backend indicated that plan can be bought for free — no need to initiate the IAP flow
+                try buyPlanWhenAmountDueIsZero(plan: plan, planId: planId, finishCallback: finishCallback)
+                return
+            }
         }
 
         // initiate the IAP flow
@@ -146,8 +151,15 @@ final class PurchaseManager: PurchaseManagerProtocol {
         let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, planId: planId)
         let subscriptionResponse = try subscriptionRequest.awaitResponse(responseObject: SubscriptionResponse())
         if let newSubscription = subscriptionResponse.newSubscription {
-            planService.currentSubscription = newSubscription
-            finishCallback(.purchasedPlan(accountPlan: plan))
+            planService.updateCurrentSubscription { [weak self] in
+                finishCallback(.purchasedPlan(accountPlan: plan))
+                self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
+            } failure: { [weak self] _ in
+                // if updateCurrentSubscription is failed for some reason, update subscription with newSubscription data
+                self?.planService.currentSubscription = newSubscription
+                finishCallback(.purchasedPlan(accountPlan: plan))
+                self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
+            }
         } else {
             throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
         }
@@ -161,6 +173,8 @@ final class PurchaseManager: PurchaseManagerProtocol {
             if case .cancelled = result {
                 finishCallback(.purchaseCancelled)
             } else if case .resolvingIAPToCredits = result {
+                finishCallback(.toppedUpCredits)
+            } else if case .resolvingIAPToCreditsCausedByError = result {
                 finishCallback(.toppedUpCredits)
             } else {
                 finishCallback(.purchasedPlan(accountPlan: plan))

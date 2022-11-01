@@ -1,6 +1,6 @@
 //
 //  BaseTest.swift
-//  Proton MailUITests
+//  ProtonMailUITests
 //
 //  Created by denys zelenchuk on 03.07.20.
 //  Copyright © 2020 Proton Mail. All rights reserved.
@@ -9,6 +9,7 @@
 import Foundation
 import XCTest
 import pmtest
+@testable import ProtonMail
 
 let appDomainKey = "MAIL_APP_APP_DOMAIN"
 let apiDomainKey = "MAIL_APP_API_DOMAIN"

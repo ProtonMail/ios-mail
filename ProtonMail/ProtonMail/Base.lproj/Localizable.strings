@@ -340,7 +340,7 @@
  */
 //"Alert" = "Alert";
 "A new version of Proton Mail app is available, please update to latest version." = "A new version of Proton Mail app is available, please update to latest version.";
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail is currently offline, check our Twitter for the current status: https://twitter.com/ProtonPrivacy";
 "Sending Message" = "Sending message";
 "Message sending failed please try again" = "Message sending failed please try again";
 "Unknow Error" = "Unknown error";

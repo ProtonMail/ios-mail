@@ -371,7 +371,7 @@ extension LoginService {
         case let .success(passphrases):
             PMLog.debug("Validating mailbox password")
 
-            guard validateMailboxPassword(passphrases: passphrases, addresses: addresses, userKeys: user.keys) else {
+            guard validateMailboxPassword(passphrases: passphrases, userKeys: user.keys) else {
                 PMLog.debug("Validating mailbox password failed")
                 completion(.failure(.invalidSecondPassword))
                 return

@@ -21,12 +21,19 @@ import PromiseKit
 @testable import ProtonMail
 
 class MockContactProvider: ContactProviderProtocol {
+    private let coreDataContextProvider: CoreDataContextProviderProtocol
+
     private (set) var isFetchContactsCalled = false
     var allEmailsToReturn: [Email] = []
+    var allContactsToReturn: [ContactEntity] = []
     private(set) var wasCleanUpCalled: Bool = false
     var stubbedFetchResult: Swift.Result<[PreContact], Error> = .success([])
 
-    func fetchAndVerifyContacts(byEmails emails: [String], context: NSManagedObjectContext? = nil) -> Promise<[PreContact]> {
+    init(coreDataContextProvider: CoreDataContextProviderProtocol) {
+        self.coreDataContextProvider = coreDataContextProvider
+    }
+
+    func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
         return Promise { seal in
             switch self.stubbedFetchResult {
             case .success(let stubbedContacts):
@@ -35,6 +42,16 @@ class MockContactProvider: ContactProviderProtocol {
             case .failure(let error):
                 seal.reject(error)
             }
+        }
+    }
+
+    func getContactsByIds(_ ids: [String]) -> [ContactEntity] {
+        return allContactsToReturn
+    }
+
+    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
+        coreDataContextProvider.rootSavingContext.performAndWait {
+            allEmailsToReturn.map(EmailEntity.init)
         }
     }
 

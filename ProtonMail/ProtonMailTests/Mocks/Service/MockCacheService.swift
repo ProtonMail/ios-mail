@@ -20,18 +20,29 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockCacheService: CacheServiceProtocol {
+
+    private(set) var wasUpdateContactDetailCalled: Bool = false
     private(set) var wasParseMessagesResponseCalled: Bool = false
 
+    var contactToReturn: Contact?
     var returnsError: Bool = false
+
+    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?) {
+        wasUpdateContactDetailCalled = true
+        returnsError
+        ? completion?(nil, NSError.badParameter(nil))
+        : completion?(contactToReturn, nil)
+    }
 
     func parseMessagesResponse(labelID: LabelID,
                                isUnread: Bool,
                                response: [String: Any],
-                               completion: ((Error?) -> Void)?) {
+                               idsOfMessagesBeingSent: [String],
+                               completion: @escaping (Error?) -> Void) {
         wasParseMessagesResponseCalled = true
         returnsError
-            ? completion?(NSError.badParameter(nil))
-            : completion?(nil)
+            ? completion(NSError.badParameter(nil))
+            : completion(nil)
     }
 
     @FuncStub(MockCacheService.addNewLabel) var callAddNewLabel

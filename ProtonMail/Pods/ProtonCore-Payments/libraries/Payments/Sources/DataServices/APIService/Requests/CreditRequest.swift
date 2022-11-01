@@ -76,15 +76,12 @@ class CreditRequest<T: Response>: BaseApiRequest<T> {
 }
 
 final class CreditResponse: Response {
-    var newSubscription: Subscription?
-
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         guard let code = response["Code"] as? Int, code == 1000 else {
             error = RequestErrors.creditDecode.toResponseError(updating: error)
             return false
         }
-        
         return true
     }
 }

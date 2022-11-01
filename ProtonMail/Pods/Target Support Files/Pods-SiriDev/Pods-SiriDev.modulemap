@@ -1,6 +1,0 @@
-framework module Pods_SiriDev {
-  umbrella header "Pods-SiriDev-umbrella.h"
-
-  export *
-  module * { export * }
-}

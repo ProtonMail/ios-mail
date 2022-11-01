@@ -84,8 +84,7 @@ final class PMInternalTextField: UITextField {
         layer.masksToBounds = true
         layer.cornerRadius = 8
         layer.borderWidth = 1
-        let borderColor: UIColor = ColorProvider.InteractionWeakDisabled
-        layer.borderColor = borderColor.cgColor
+        layer.borderColor = ColorProvider.InteractionWeakDisabled
     }
     
     var isUmnaskButton: Bool {
@@ -135,11 +134,11 @@ final class PMInternalTextField: UITextField {
 
     func setBorder() {
         if isError {
-            layer.borderColor = ColorProvider.NotificationError.cgColor
+            layer.borderColor = ColorProvider.NotificationError
             return
         }
 
-        layer.borderColor = isEditing ? ColorProvider.BrandNorm.cgColor : ColorProvider.InteractionWeakDisabled.cgColor
+        layer.borderColor = isEditing ? ColorProvider.BrandNorm : ColorProvider.InteractionWeakDisabled
     }
 
     @objc private func togglePasswordVisibility() {

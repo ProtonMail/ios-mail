@@ -28,11 +28,7 @@ final class MessageDecrypterMock: MessageDecrypterProtocol {
         return message
     }
 
-    func verify(message: MessageEntity, verifier: [Data]) -> SignatureVerificationResult {
-        return .ok
-    }
-
-    func decrypt(message: MessageEntity) throws -> (String, [MimeAttachment]?) {
-        return ("", nil)
+    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
+        return ("", nil, .success)
     }
 }

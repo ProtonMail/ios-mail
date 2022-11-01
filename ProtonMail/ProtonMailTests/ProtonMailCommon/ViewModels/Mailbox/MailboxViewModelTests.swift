@@ -43,6 +43,10 @@ class MailboxViewModelTests: XCTestCase {
     var mockPurgeOldMessages: MockPurgeOldMessages!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
 
+    var testContext: NSManagedObjectContext {
+        coreDataContextProviderMock.mainContext
+    }
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         sharedServices.add(CoreDataService.self,
@@ -81,7 +85,7 @@ class MailboxViewModelTests: XCTestCase {
         conversationStateProviderMock = MockConversationStateProvider()
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
-        contactProviderMock = MockContactProvider()
+        contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataContextProviderMock)
         conversationProviderMock = MockConversationProvider(context: coreDataContextProviderMock.mainContext)
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
@@ -623,7 +627,7 @@ class MailboxViewModelTests: XCTestCase {
     func testFetchConversationDetailIsCalled() {
         let expectation1 = expectation(description: "Closure called")
 
-        sut.fetchConversationDetail(conversationID: "conversationID1") { _ in
+        sut.fetchConversationDetail(conversationID: "conversationID1") {
             XCTAssertTrue(self.conversationProviderMock.callFetchConversation.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.callFetchConversation.lastArguments
             XCTAssertNotNil(argument)

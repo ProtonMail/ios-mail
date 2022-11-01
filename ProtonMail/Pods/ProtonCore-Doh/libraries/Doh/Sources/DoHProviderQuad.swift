@@ -74,7 +74,7 @@ struct Quad9: DoHProviderInternal {
             if ttl > 0 && addrList.count > 0 {
                 var dnsList: [DNS] = []
                 for addr in addrList {
-                    dnsList.append(DNS(url: addr, ttl: ttl))
+                    dnsList.append(DNS(host: addr, ttl: ttl))
                 }
                 return dnsList
             }

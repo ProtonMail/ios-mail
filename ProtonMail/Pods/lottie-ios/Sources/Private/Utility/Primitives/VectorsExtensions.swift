@@ -11,9 +11,7 @@ import QuartzCore
 
 // MARK: - Vector1D + Codable
 
-/**
- Single value container. Needed because lottie sometimes wraps a Double in an array.
- */
+/// Single value container. Needed because lottie sometimes wraps a Double in an array.
 extension Vector1D: Codable {
 
   // MARK: Lifecycle
@@ -43,6 +41,25 @@ extension Vector1D: Codable {
 
 }
 
+// MARK: - Vector1D + AnyInitializable
+
+extension Vector1D: AnyInitializable {
+
+  init(value: Any) throws {
+    if
+      let array = value as? [Double],
+      let double = array.first
+    {
+      self.value = double
+    } else if let double = value as? Double {
+      self.value = double
+    } else {
+      throw InitializableError.invalidInput
+    }
+  }
+
+}
+
 extension Double {
   var vectorValue: Vector1D {
     Vector1D(self)
@@ -51,10 +68,8 @@ extension Double {
 
 // MARK: - Vector2D
 
-/**
- Needed for decoding json {x: y:} to a CGPoint
- */
-struct Vector2D: Codable {
+/// Needed for decoding json {x: y:} to a CGPoint
+public struct Vector2D: Codable, Hashable {
 
   // MARK: Lifecycle
 
@@ -63,7 +78,7 @@ struct Vector2D: Codable {
     self.y = y
   }
 
-  init(from decoder: Decoder) throws {
+  public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Vector2D.CodingKeys.self)
 
     do {
@@ -81,6 +96,14 @@ struct Vector2D: Codable {
     }
   }
 
+  // MARK: Public
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Vector2D.CodingKeys.self)
+    try container.encode(x, forKey: .x)
+    try container.encode(y, forKey: .y)
+  }
+
   // MARK: Internal
 
   var x: Double
@@ -88,12 +111,6 @@ struct Vector2D: Codable {
 
   var pointValue: CGPoint {
     CGPoint(x: x, y: y)
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: Vector2D.CodingKeys.self)
-    try container.encode(x, forKey: .x)
-    try container.encode(y, forKey: .y)
   }
 
   // MARK: Private
@@ -104,8 +121,36 @@ struct Vector2D: Codable {
   }
 }
 
-extension Vector2D {
+// MARK: AnyInitializable
 
+extension Vector2D: AnyInitializable {
+
+  init(value: Any) throws {
+    guard let dictionary = value as? [String: Any] else {
+      throw InitializableError.invalidInput
+    }
+
+    if
+      let array = dictionary[CodingKeys.x.rawValue] as? [Double],
+      let double = array.first
+    {
+      x = double
+    } else if let double = dictionary[CodingKeys.x.rawValue] as? Double {
+      x = double
+    } else {
+      throw InitializableError.invalidInput
+    }
+    if
+      let array = dictionary[CodingKeys.y.rawValue] as? [Double],
+      let double = array.first
+    {
+      y = double
+    } else if let double = dictionary[CodingKeys.y.rawValue] as? Double {
+      y = double
+    } else {
+      throw InitializableError.invalidInput
+    }
+  }
 }
 
 extension CGPoint {
@@ -116,10 +161,8 @@ extension CGPoint {
 
 // MARK: - Vector3D + Codable
 
-/**
- A three dimensional vector.
- These vectors are encoded and decoded from [Double]
- */
+/// A three dimensional vector.
+/// These vectors are encoded and decoded from [Double]
 
 extension Vector3D: Codable {
 
@@ -160,6 +203,21 @@ extension Vector3D: Codable {
     try container.encode(x)
     try container.encode(y)
     try container.encode(z)
+  }
+
+}
+
+// MARK: - Vector3D + AnyInitializable
+
+extension Vector3D: AnyInitializable {
+
+  init(value: Any) throws {
+    guard var array = value as? [Double] else {
+      throw InitializableError.invalidInput
+    }
+    x = array.count > 0 ? array.removeFirst() : 0
+    y = array.count > 0 ? array.removeFirst() : 0
+    z = array.count > 0 ? array.removeFirst() : 0
   }
 
 }

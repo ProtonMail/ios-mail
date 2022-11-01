@@ -76,8 +76,7 @@ class UndoActionManagerTests: XCTestCase {
 
         sut.addUndoToken(token, undoActionType: .archive)
         XCTAssertTrue(handlerMock.isShowUndoActionCalled)
-        let tokenToCheck = try XCTUnwrap(handlerMock.token)
-        XCTAssertEqual(tokenToCheck.token, "token")
+        XCTAssertEqual(handlerMock.undoTokens.first, "token")
         XCTAssertEqual(handlerMock.bannerMessage, "title")
     }
 
@@ -89,7 +88,7 @@ class UndoActionManagerTests: XCTestCase {
         sut.addUndoToken(token, undoActionType: .spam)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)
         XCTAssertNil(handlerMock.bannerMessage)
-        XCTAssertNil(handlerMock.token)
+        XCTAssertTrue(handlerMock.undoTokens.isEmpty)
     }
 
     func testAddUndoToken_tokenReturnAfterThreshold_handlerShouldNotBeCalled() {
@@ -146,7 +145,7 @@ class UndoActionManagerTests: XCTestCase {
         XCTAssertEqual(sut.calculateUndoActionBy(labelID: "test"), .custom("test"))
     }
 
-    func testSendUndoAction() {
+    func testRequestUndoAction() {
         apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
                 completion?(nil, ["Code": 1001], nil)
@@ -155,17 +154,17 @@ class UndoActionManagerTests: XCTestCase {
                 completion?(nil, nil, nil)
             }
         }
-        let testData = UndoTokenData(token: "token", tokenValidTime: 0)
+        let testData = ["token"]
         let expectation2 = expectation(description: "Closure called")
-        sut.sendUndoAction(token: testData, completion: { isSuccess in
+        sut.requestUndoAction(undoTokens: testData, completion: { isSuccess in
             XCTAssertTrue(isSuccess)
             expectation2.fulfill()
         })
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testUndoSending() {
+    func testRequestUndoSendAction() {
         eventService.callFetchEvents.bodyIs { _, _, _, completion in
             completion?(nil, nil, nil)
         }
@@ -179,7 +178,7 @@ class UndoActionManagerTests: XCTestCase {
             }
         }
         let expectation2 = expectation(description: "api closure called")
-        sut.undoSending(messageID: MessageID(messageID)) { isSuccess in
+        sut.requestUndoSendAction(messageID: MessageID(messageID)) { isSuccess in
             XCTAssertTrue(isSuccess)
             expectation2.fulfill()
         }

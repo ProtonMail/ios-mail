@@ -28,6 +28,7 @@ final class ConversationDataServiceTests: XCTestCase {
     var mockLastUpdatedStore: MockLastUpdatedStore!
     var mockEventsService: MockEventsService!
     var fakeUndoActionManager: UndoActionManagerProtocol!
+    var mockContactCacheStatus: MockContactCacheStatus!
 
     override func setUp() {
         super.setUp()
@@ -39,12 +40,15 @@ final class ConversationDataServiceTests: XCTestCase {
                                                   contextProvider: mockContextProvider,
                                                   getEventFetching: {return nil},
                                                   getUserManager: {return nil})
+        mockContactCacheStatus = MockContactCacheStatus()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
                                       contextProvider: mockContextProvider,
                                       lastUpdatedStore: mockLastUpdatedStore,
+                                      messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
-                                      undoActionManager: fakeUndoActionManager)
+                                      undoActionManager: fakeUndoActionManager,
+                                      contactCacheStatus: mockContactCacheStatus)
     }
 
     override func tearDown() {
@@ -55,6 +59,7 @@ final class ConversationDataServiceTests: XCTestCase {
         mockLastUpdatedStore = nil
         mockEventsService = nil
         fakeUndoActionManager = nil
+        mockContactCacheStatus = nil
     }
 
     func testFilterMessagesDictionary() {
@@ -83,18 +88,122 @@ final class ConversationDataServiceTests: XCTestCase {
         }
     }
 
-    func testFetchSendingMessageIDs() {
-        let msg1 = Message(context: mockContextProvider.mainContext)
-        msg1.messageID = "1"
-        msg1.userID = userID.rawValue
+    func testLabelRequest_whenDoesNotExceedConversationIDsLimit_sendsOneRequest() {
+        let conversationsIDs = dummyConversationIDs(amount: ConversationLabelRequest.maxNumberOfConversations)
 
-        let msg2 = Message(context: mockContextProvider.mainContext)
-        msg2.messageID = "2"
-        msg2.isSending = true
-        msg2.userID = userID.rawValue
+        let expectation = expectation(description: "only one request is sent")
+        let response = ConversationLabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/label")
 
-        let result = sut.fetchSendingMessageIDs(context: mockContextProvider.mainContext)
-        XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result[0], "2")
+        DispatchQueue.global().async {
+            self.sut.label(
+                conversationIDs: conversationsIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 1)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
     }
+
+    func testLabelRequest_whenExceedsConversationIDsLimit_sendsBatchRequest() {
+        let conversationsIDs = dummyConversationIDs(amount: ConversationLabelRequest.maxNumberOfConversations + 1)
+
+        let expectation = expectation(description: "more than one request is sent")
+        let response = ConversationLabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/label")
+
+        DispatchQueue.global().async {
+            self.sut.label(
+                conversationIDs: conversationsIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 2)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testUnlabelRequest_whenDoesNotExceedConversationIDsLimit_sendsOneRequest() {
+        let conversationIDs = dummyConversationIDs(amount: ConversationUnlabelRequest.maxNumberOfConversations)
+
+        let expectation = expectation(description: "only one request is sent")
+        let response = ConversationUnlabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/unlabel")
+
+        DispatchQueue.global().async {
+            self.sut.unlabel(
+                conversationIDs: conversationIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 1)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testUnlabelRequest_whenExceedsConversationIDsLimit_sendsBatchRequest() {
+        let conversationIDs = dummyConversationIDs(amount: ConversationUnlabelRequest.maxNumberOfConversations + 1)
+
+        let expectation = expectation(description: "more than one request is sent")
+        let response = ConversationUnlabelResponseTestData.successTestResponse()
+        updateMockApiService(with: response, forPath: "/unlabel")
+
+        DispatchQueue.global().async {
+            self.sut.unlabel(
+                conversationIDs: conversationIDs,
+                as: LabelID(rawValue: "dummy-label-id"),
+                isSwipeAction: Bool.random()
+            ) { _ in
+                XCTAssertTrue(self.mockApiService.requestStub.callCounter == 2)
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testSingleConversationRequest_isSatisfiedWithEmptyDictionary() async throws {
+        let stubbedConversationID = ConversationID("foo")
+
+        let stubbedResponse: [String: Any] = [
+            "Conversation": [:],
+            "Messages": []
+        ]
+        updateMockApiService(with: stubbedResponse, forPath: "conversations/foo")
+
+        let conversation = try await withCheckedThrowingContinuation { continuation in
+            self.sut.fetchConversation(with: stubbedConversationID, includeBodyOf: nil, callOrigin: nil) { result in
+                continuation.resume(with: result)
+            }
+        }
+
+        mockContextProvider.rootSavingContext.performAndWait {
+            XCTAssertEqual(conversation.conversationID, "")
+        }
+    }
+
+    // MARK: Private methods
+
+    private func updateMockApiService(with response: [String: Any], forPath expectedPath: String) {
+        mockApiService.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+            if path.contains(expectedPath) {
+                completion?(nil, response, nil)
+            } else {
+                XCTFail("Unexpected path")
+                completion?(nil, nil, nil)
+            }
+        }
+    }
+
+    private func dummyConversationIDs(amount: Int) -> [ConversationID] {
+        return (0...amount - 1)
+            .map(String.init)
+            .map(ConversationID.init(rawValue:))
+	}
 }

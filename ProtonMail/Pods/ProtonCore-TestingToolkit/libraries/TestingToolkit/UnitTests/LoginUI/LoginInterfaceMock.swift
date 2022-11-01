@@ -28,21 +28,21 @@ public class LoginInterfaceMock: LoginAndSignupInterface {
     
     public init() {}
     
-    @FuncStub(LoginInterfaceMock.presentLoginFlow) public var presentLoginFlowStub
+    @FuncStub(LoginInterfaceMock.presentLoginFlow(over:customization:completion:)) public var presentLoginFlowStub
     public func presentLoginFlow(over viewController: UIViewController,
                                  customization: LoginCustomizationOptions,
                                  completion: @escaping (LoginResult) -> Void){
         presentLoginFlowStub(viewController, customization, completion)
     }
     
-    @FuncStub(LoginInterfaceMock.presentSignupFlow) public var presentSignupFlowStub
+    @FuncStub(LoginInterfaceMock.presentSignupFlow(over:customization:completion:)) public var presentSignupFlowStub
     public func presentSignupFlow(over viewController: UIViewController,
                                   customization: LoginCustomizationOptions,
                                   completion: @escaping (LoginResult) -> Void) {
         presentSignupFlowStub(viewController, customization, completion)
     }
     
-    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen) public var presentFlowFromWelcomeScreenStub
+    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen(over:welcomeScreen:customization:completion:)) public var presentFlowFromWelcomeScreenStub
     public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                              welcomeScreen: WelcomeScreenVariant,
                                              customization: LoginCustomizationOptions,
@@ -50,7 +50,7 @@ public class LoginInterfaceMock: LoginAndSignupInterface {
         presentFlowFromWelcomeScreenStub(viewController, welcomeScreen, customization, completion)
     }
     
-    @FuncStub(LoginInterfaceMock.welcomeScreenForPresentingFlow, initialReturn: .crash) public var welcomeScreenForPresentingFlowStub
+    @FuncStub(LoginInterfaceMock.welcomeScreenForPresentingFlow(variant:customization:completion:), initialReturn: .crash) public var welcomeScreenForPresentingFlowStub
     public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
                                                customization: LoginCustomizationOptions,
                                                completion: @escaping (LoginResult) -> Void) -> UIViewController {
@@ -65,5 +65,34 @@ public class LoginInterfaceMock: LoginAndSignupInterface {
     @FuncStub(LoginInterfaceMock.logout) public var logoutStub
     public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
         logoutStub(credential, completion)
+    }
+    
+    @FuncStub(LoginInterfaceMock.presentLoginFlow(over:customization:updateBlock:)) public var presentLoginFlowWithUpdateBlockStub
+    public func presentLoginFlow(over viewController: UIViewController,
+                                 customization: LoginCustomizationOptions,
+                                 updateBlock: @escaping (LoginAndSignupResult) -> Void){
+        presentLoginFlowWithUpdateBlockStub(viewController, customization, updateBlock)
+    }
+    
+    @FuncStub(LoginInterfaceMock.presentSignupFlow(over:customization:updateBlock:)) public var presentSignupFlowWithUpdateBlockStub
+    public func presentSignupFlow(over viewController: UIViewController,
+                                  customization: LoginCustomizationOptions,
+                                  updateBlock: @escaping (LoginAndSignupResult) -> Void) {
+        presentSignupFlowWithUpdateBlockStub(viewController, customization, updateBlock)
+    }
+    
+    @FuncStub(LoginInterfaceMock.presentFlowFromWelcomeScreen(over:welcomeScreen:customization:updateBlock:)) public var presentFlowFromWelcomeScreenWithUpdateBlockStub
+    public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
+                                             welcomeScreen: WelcomeScreenVariant,
+                                             customization: LoginCustomizationOptions,
+                                             updateBlock: @escaping (LoginAndSignupResult) -> Void) {
+        presentFlowFromWelcomeScreenWithUpdateBlockStub(viewController, welcomeScreen, customization, updateBlock)
+    }
+    
+    @FuncStub(LoginInterfaceMock.welcomeScreenForPresentingFlow(variant:customization:updateBlock:), initialReturn: .crash) public var welcomeScreenForPresentingFlowWithUpdateBlockStub
+    public func welcomeScreenForPresentingFlow(variant welcomeScreen: WelcomeScreenVariant,
+                                               customization: LoginCustomizationOptions,
+                                               updateBlock: @escaping (LoginAndSignupResult) -> Void) -> UIViewController {
+        welcomeScreenForPresentingFlowWithUpdateBlockStub(welcomeScreen, customization, updateBlock)
     }
 }

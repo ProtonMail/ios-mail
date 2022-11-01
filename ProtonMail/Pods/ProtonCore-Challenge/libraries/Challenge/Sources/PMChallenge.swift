@@ -87,7 +87,9 @@ extension PMChallenge {
             semaphore.signal()
         }
         semaphore.wait()
-        return self.challenge
+        let challenge = self.challenge
+        self.challenge.reset()
+        return challenge
     }
 
     /**
@@ -133,16 +135,6 @@ extension PMChallenge {
 
     /// Record username that checks availability
     public func appendCheckedUsername(_ username: String) {
-        guard self.usernameEditingTime > 0 else {
-            // Ignore if editing time is zero
-            // Sometimes app will check the same username in very short time.
-            return
-        }
-
-        let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
-        self.challenge.timeUsername.append(time)
-
-        self.usernameEditingTime = 0
         guard let interceptor = self.interceptors.first(where: { $0.type == .username }) else {
             return
         }
@@ -233,6 +225,17 @@ extension PMChallenge: TextFieldInterceptorDelegate {
                   diff > 0 else { return }
             self.challenge.timeRecovery.append(diff)
             self.recoveryEditingTime = 0
+        case .username, .username_email:
+            guard self.usernameEditingTime > 0 else {
+                // Ignore if editing time is zero
+                // Sometimes app will check the same username in very short time.
+                return
+            }
+
+            let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
+            self.challenge.timeUsername.append(time)
+
+            self.usernameEditingTime = 0
         default:
             break
         }

@@ -47,29 +47,4 @@ extension ServicePlanDataServiceProtocol {
         }
         return string.getAttributedString(replacement: endDateString, attrFont: .systemFont(ofSize: 13, weight: .bold))
     }
-
-    // MARK: Private interface
-
-    private func willRenewAutomcatically(plan: InAppPurchasePlan) -> Bool {
-        guard let subscription = currentSubscription else {
-            return false
-        }
-        // Special coupon that will extend subscription
-        if subscription.hasSpecialCoupon {
-            return true
-        }
-        // Has credit that will be used for renewal
-        if hasEnoughCreditToExtendSubscription(plan: plan) {
-            return true
-        }
-        return false
-    }
-
-    private func hasEnoughCreditToExtendSubscription(plan: InAppPurchasePlan) -> Bool {
-        let credit = credits?.credit ?? 0
-        guard let details = detailsOfServicePlan(named: plan.protonName), let amount = details.pricing(for: plan.period)
-        else { return false }
-        let cost = Double(amount) / 100
-        return credit >= cost
-    }
 }

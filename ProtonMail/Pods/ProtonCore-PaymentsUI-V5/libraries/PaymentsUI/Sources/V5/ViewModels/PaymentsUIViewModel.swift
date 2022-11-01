@@ -1,5 +1,5 @@
 //
-//  PaymentsUIViewModelViewModel.swift
+//  PaymentsUIViewModel.swift
 //  ProtonCore_PaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
@@ -25,18 +25,19 @@ import ProtonCore_UIFoundations
 import ProtonCore_Payments
 
 enum FooterType {
-    case withPlans
-    case withoutPlans
+    case withPlansToBuy
+    case withoutPlansToBuy
+    case withExtendSubscriptionButton(PlanPresentation)
     case disabled
 }
 
-final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
+final class PaymentsUIViewModel {
     
     private var servicePlan: ServicePlanDataServiceProtocol
     private let mode: PaymentsUIMode
     private var accountPlans: [InAppPurchasePlan] = []
     private let planRefreshHandler: (CurrentPlanDetails?) -> Void
-    private let onError: (Error) -> Void
+    private let extendSubscriptionHandler: () -> Void
 
     private let storeKitManager: StoreKitManagerProtocol
     private let clientApp: ClientApp
@@ -45,7 +46,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     // MARK: Public properties
 
     private (set) var plans: [[PlanPresentation]] = []
-    private (set) var footerType: FooterType = .withoutPlans
+    private (set) var footerType: FooterType = .withoutPlansToBuy
     
     var isExpandButtonHidden: Bool {
         if UIDevice.current.isIpad, UIDevice.current.orientation.isPortrait {
@@ -68,9 +69,10 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     
     var iapInProgress: Bool { storeKitManager.hasIAPInProgress() }
     
-    var processingAccountPlan: InAppPurchasePlan? {
+    var unfinishedPurchasePlan: InAppPurchasePlan? {
         didSet {
-            processDisablePlans()
+            guard let unfinishedPurchasePlan = unfinishedPurchasePlan else { return }
+            processUnfinishedPurchasePlan(unfinishedPurchasePlan: unfinishedPurchasePlan)
         }
     }
     
@@ -82,60 +84,26 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
          shownPlanNames: ListOfShownPlanNames,
          clientApp: ClientApp,
          planRefreshHandler: @escaping (CurrentPlanDetails?) -> Void,
-         onError: @escaping (Error) -> Void) {
+         extendSubscriptionHandler: @escaping () -> Void) {
         self.mode = mode
         self.servicePlan = servicePlan
         self.storeKitManager = storeKitManager
         self.shownPlanNames = shownPlanNames
         self.clientApp = clientApp
         self.planRefreshHandler = planRefreshHandler
-        self.onError = onError
-        
-        if self.mode != .signup {
-            self.servicePlan.currentSubscriptionChangeDelegate = self
-        }
-        
+        self.extendSubscriptionHandler = extendSubscriptionHandler
         registerRefreshHandler()
     }
     
-    func registerRefreshHandler() {
-        storeKitManager.refreshHandler = { [weak self] in
-            self?.fetchPlans(backendFetch: false) { [weak self] result in
-                switch result {
-                case .success:
-                    self?.servicePlan.updateCredits { [weak self] in
-                        self?.planRefreshHandler(nil)
-                    } failure: { [weak self] _ in
-                        self?.planRefreshHandler(nil)
-                    }
-                case .failure(let error):
-                    self?.planRefreshHandler(nil)
-                    self?.onError(error)
-                }
-            }
+    private var getCurrentPlan: CurrentPlanDetails? {
+        if case .current(let currentPlanPresentationType) = plans.first?.first?.planPresentationType, case .details(let planDetails) = currentPlanPresentationType {
+            return planDetails
         }
-    }
-
-    func onCurrentSubscriptionChange(old: Subscription?, new: Subscription?) {
-        let oldPlansCount = plansTotalCount
-        self.createPlanPresentations(withCurrentPlan: self.mode == .current )
-        if plansTotalCount < oldPlansCount, plansSectionCount == 1, case .current(let currentPlanPresentationType) = plans.first?.first?.planPresentationType {
-            var currentPlan: CurrentPlanDetails?
-            if let old = old, let new = new, !old.hasExistingProtonSubscription, new.hasExistingProtonSubscription {
-                if case .details(let planDetails) = currentPlanPresentationType {
-                    currentPlan = planDetails
-                }
-            }
-            servicePlan.updateCredits { [weak self] in
-                self?.planRefreshHandler(currentPlan)
-            } failure: { [weak self] _ in
-                self?.planRefreshHandler(currentPlan)
-            }
-        }
+        return nil
     }
     
     func fetchPlans(backendFetch: Bool, completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
-        footerType = .withoutPlans
+        footerType = .withoutPlansToBuy
         switch mode {
         case .signup:
             fetchAllPlans(backendFetch: backendFetch, completionHandler: completionHandler)
@@ -185,7 +153,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
         if localPlans.count > 0 {
             self.plans.append(localPlans)
         }
-        footerType = .withPlans
+        footerType = .withPlansToBuy
         completionHandler?(.success((self.plans, footerType)))
     }
     
@@ -280,7 +248,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
             if !plansToShow.isEmpty {
                 plans.append(plansToShow)
             }
-            footerType = plansToShow.isEmpty ? .withoutPlans : .withPlans
+            footerType = plansToShow.isEmpty ? .withoutPlansToBuy : .withPlansToBuy
             self.plans = plans
             completionHandler?(.success((self.plans, footerType)))
 
@@ -303,7 +271,16 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                           price: subscription.price,
                                           cycle: subscription.cycle) {
                 plans.append([plan])
+                
+                // check if current plan is still available
+                let isExtensionPlanAvailable = self.servicePlan.availablePlansDetails.first { $0.name == accountPlan.protonName } != nil
+                
                 self.plans = plans
+                if storeKitManager.canExtendSubscription {
+                    footerType = (!servicePlan.willRenewAutomcatically(plan: accountPlan) && isExtensionPlanAvailable) ? .withExtendSubscriptionButton(plan) : .withoutPlansToBuy
+                } else {
+                    footerType = .withoutPlansToBuy
+                }
                 completionHandler?(.success((self.plans, footerType)))
             } else {
                 // there is an other subscription type
@@ -376,27 +353,6 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                            price: price)
     }
     
-    private func processDisablePlans() {
-        guard let currentlyProcessingPlan = self.processingAccountPlan else { return }
-        self.plans.forEach {
-            $0.forEach {
-                if case .plan(var planDetails) = $0.planPresentationType {
-                    if let planId = $0.storeKitProductId,
-                       let processingPlanId = currentlyProcessingPlan.storeKitProductId,
-                       planId == processingPlanId {
-                        $0.isCurrentlyProcessed = true
-                        planDetails.isSelectable = true
-                    } else {
-                        planDetails.isSelectable = false
-                    }
-                    $0.planPresentationType = .plan(planDetails)
-                }
-            }
-        }
-        footerType = .withoutPlans
-        planRefreshHandler(nil)
-    }
-    
     private func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         if clientApp == .vpn {
             servicePlan.updateCountriesCount { [weak self] in
@@ -406,6 +362,57 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
             }
         } else {
             servicePlan.updateServicePlans(success: success, failure: failure)
+        }
+    }
+    
+    // MARK: Private methods - Refresh data
+    
+    private func processUnfinishedPurchasePlan(unfinishedPurchasePlan: InAppPurchasePlan) {
+        self.plans.forEach {
+            $0.forEach {
+                if case .plan(var planDetails) = $0.planPresentationType {
+                    if let planId = $0.storeKitProductId, let processingPlanId = unfinishedPurchasePlan.storeKitProductId, planId == processingPlanId {
+                        // select currently prcessed buy plan button
+                        $0.isCurrentlyProcessed = true
+                        planDetails.isSelectable = true
+                    } else {
+                        // disable buy plan buttons for other plans
+                        planDetails.isSelectable = false
+                    }
+                    $0.planPresentationType = .plan(planDetails)
+                } else if case .current(let currentPlanPresentationType) = $0.planPresentationType, case .details = currentPlanPresentationType {
+                    if let planId = $0.storeKitProductId, let processingPlanId = unfinishedPurchasePlan.storeKitProductId, planId == processingPlanId {
+                        // select extend subscription button
+                        extendSubscriptionHandler()
+                    }
+                }
+            }
+        }
+        planRefreshHandler(nil)
+    }
+    
+    private func registerRefreshHandler() {
+        storeKitManager.refreshHandler = { [weak self] result in
+            switch result {
+            case .finished(let paymentSucceeded):
+                guard paymentSucceeded == .resolvingIAPToCredits ||
+                        paymentSucceeded == .resolvingIAPToCreditsCausedByError ||
+                        paymentSucceeded == .resolvingIAPToSubscription else { return }
+                // refresh plans
+                self?.createPlanPresentations(withCurrentPlan: self?.mode == .current )
+                self?.planRefreshHandler(self?.getCurrentPlan)
+            case .errored, .erroredWithUnspecifiedError:
+                // update credits
+                self?.updateCredits { [weak self] in self?.planRefreshHandler(nil) }
+            }
+        }
+    }
+    
+    private func updateCredits(completionHandler: (() -> Void)?) {
+        servicePlan.updateCredits {
+            completionHandler?()
+        } failure: { _ in
+            completionHandler?()
         }
     }
 }

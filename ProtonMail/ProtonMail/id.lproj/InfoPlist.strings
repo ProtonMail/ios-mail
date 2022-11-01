@@ -2,7 +2,7 @@
 "CFBundleDisplayName" = "Proton Mail";
 
 /* Bundle name */
-"CFBundleName" = "Proton Mail";
+"CFBundleName" = "Siri";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Diperlukan untuk melampirkan media ke dalam email.";

@@ -22,7 +22,7 @@ import ProtonCore_TestingToolkit
 class MockMailBoxViewModel: MailboxViewModel {
 
     @FuncStub(MockMailBoxViewModel.fetchConversationDetail) var callFetchConversationDetail
-    override func fetchConversationDetail(conversationID: ConversationID, completion: ((Result<Conversation, Error>) -> Void)?) {
+    override func fetchConversationDetail(conversationID: ConversationID, completion: @escaping () -> Void) {
         callFetchConversationDetail(conversationID, completion)
     }
 

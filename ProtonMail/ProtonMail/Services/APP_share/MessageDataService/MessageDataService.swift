@@ -1,0 +1,1713 @@
+//
+//  MessageDataService.swift
+//  Proton Mail
+//
+//
+//  Copyright (c) 2019 Proton AG
+//
+//  This file is part of Proton Mail.
+//
+//  Proton Mail is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Proton Mail is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
+
+import Foundation
+import CoreData
+import Groot
+import PromiseKit
+import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_Services
+import ProtonMailAnalytics
+
+protocol MessageDataServiceProtocol: Service {
+
+    /// Request to get the messages for a user
+    /// - Parameters:
+    ///   - labelID: identifier for labels, folders and locations.
+    ///   - endTime: timestamp to get messages earlier than this value.
+    ///   - fetchUnread: whether we want only unread messages or not.
+    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: CompletionBlock?)
+
+    /// Requests the total number of messages
+    func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void)
+
+    func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void)
+
+    func idsOfMessagesBeingSent() -> [String]
+}
+
+protocol LocalMessageDataServiceProtocol: Service {
+
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
+}
+
+/// Message data service
+class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, HasLocalStorage, MessageDataProcessProtocol {
+
+    /// Message fetch details
+    internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?,
+                                                _ response: [String : Any]?,
+                                                _ message: MessageEntity?,
+                                                _ error: NSError?) -> Void
+
+    typealias ReadBlock = (() -> Void)
+
+    // TODO:: those 3 var need to double check to clean up
+    var pushNotificationMessageID: String?
+
+    let apiService: APIService
+    let userID: UserID
+    weak var userDataSource: UserDataSource?
+    let labelDataService: LabelsDataService
+    let contactDataService: ContactDataService
+    let localNotificationService: LocalNotificationService
+    let contextProvider: CoreDataContextProviderProtocol
+    let lastUpdatedStore: LastUpdatedStoreProtocol
+    let cacheService: CacheService
+    let messageDecrypter: MessageDecrypterProtocol
+    let undoActionManager: UndoActionManagerProtocol
+    let contactCacheStatus: ContactCacheStatusProtocol
+
+    weak var viewModeDataSource: ViewModeDataSource?
+
+    weak var queueManager: QueueManager?
+    weak var parent: UserManager?
+
+    init(api: APIService,
+         userID: UserID,
+         labelDataService: LabelsDataService,
+         contactDataService: ContactDataService,
+         localNotificationService: LocalNotificationService,
+         queueManager: QueueManager?,
+         contextProvider: CoreDataContextProviderProtocol,
+         lastUpdatedStore: LastUpdatedStoreProtocol,
+         user: UserManager,
+         cacheService: CacheService,
+         undoActionManager: UndoActionManagerProtocol,
+         contactCacheStatus: ContactCacheStatusProtocol) {
+        self.apiService = api
+        self.userID = userID
+        self.labelDataService = labelDataService
+        self.contactDataService = contactDataService
+        self.localNotificationService = localNotificationService
+        self.contextProvider = contextProvider
+        self.lastUpdatedStore = lastUpdatedStore
+        self.parent = user
+        self.cacheService = cacheService
+        self.messageDecrypter = MessageDecrypter(userDataSource: user)
+        self.undoActionManager = undoActionManager
+        self.contactCacheStatus = contactCacheStatus
+
+        setupNotifications()
+        self.queueManager = queueManager
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: CompletionBlock?) {
+        let request = FetchMessagesByLabel(labelID: labelID.rawValue, endTime: endTime, isUnread: fetchUnread)
+        apiService.GET(request, completion: completion)
+    }
+
+    func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void) {
+        let counterRoute = MessageCount()
+        apiService.exec(route: counterRoute, responseObject: MessageCountResponse()) { response in
+            completion(response)
+        }
+    }
+
+    // MAKR : upload attachment
+
+    // MARK: - - Refactored functions
+
+    ///  nonmaly fetching the message from server based on label and time. //TODO:: change to promise
+    ///
+    /// - Parameters:
+    ///   - labelID: labelid, location id, forlder id
+    ///   - time: the latest update time
+    ///   - forceClean: force clean the exsition messages first
+    ///   - onDownload: Closure called when items have been downloaded but not yet parsed. Gives a chance to clean up right before we add a new dataset
+    ///   - completion: aync complete handler
+
+    @available(*, deprecated, message: "Moving to FetchMessagesUseCase")
+    func fetchMessages(byLabel labelID: LabelID, time: Int, forceClean: Bool, isUnread: Bool, queued: Bool = true, completion: CompletionBlock?, onDownload: (() -> Void)? = nil) {
+        let queue = queued ? queueManager?.queue : noQueue
+        queue? {
+            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                if error != nil {
+                    DispatchQueue.main.async {
+                        completion?(task, responseDict, error)
+                    }
+                } else if let response = responseDict {
+                    onDownload?()
+                    self.cacheService.parseMessagesResponse(
+                        labelID: labelID,
+                        isUnread: isUnread,
+                        response: response,
+                        idsOfMessagesBeingSent: self.idsOfMessagesBeingSent()
+                    ) { (errorFromParsing) in
+                        if let err = errorFromParsing {
+                            DispatchQueue.main.async {
+                                completion?(task, responseDict, err as NSError)
+                            }
+                        } else {
+                            let counterRoute = MessageCount()
+                            self.apiService.exec(route: counterRoute, responseObject: MessageCountResponse()) { response in
+                                if response.error == nil {
+                                    self.parent?.eventsService.processEvents(counts: response.counts)
+                                }
+                            }
+                            DispatchQueue.main.async {
+                                completion?(task, responseDict, errorFromParsing as NSError?)
+                            }
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
+                    }
+                }
+            }
+            let request = FetchMessagesByLabel(labelID: labelID.rawValue, endTime: time, isUnread: isUnread)
+            self.apiService.GET(request, completion: completionWrapper)
+        }
+    }
+
+    func isEventIDValid(context: NSManagedObjectContext) -> Bool {
+        let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
+        return eventID != "" && eventID != "0"
+    }
+
+    /// Sync mail setting when user in composer
+    /// workaround
+    func syncMailSetting() {
+        self.queueManager?.queue {
+            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID))
+            self.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { response in
+                guard response.responseCode == 1000 else {
+                    return
+                }
+                self.parent?.eventsService.processEvents(mailSettings: response.mailSettings)
+                self.parent?.eventsService.processEvents(space: response.usedSpace)
+            }
+        }
+    }
+
+    /// upload attachment to server
+    ///
+    /// - Parameter att: Attachment
+    func upload(att: Attachment) {
+        self.queue(att: att, action: .uploadAtt(attachmentObjectID: att.objectID.uriRepresentation().absoluteString))
+    }
+
+    /// upload attachment to server
+    ///
+    /// - Parameter att: Attachment
+    func upload(pubKey: Attachment) {
+        self.queue(att: pubKey, action: .uploadPubkey(attachmentObjectID: pubKey.objectID.uriRepresentation().absoluteString))
+    }
+
+    /// delete attachment from server
+    ///
+    /// - Parameter att: Attachment
+    func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void> {
+        return Promise { seal in
+            let objectID = att.objectID.rawValue.uriRepresentation().absoluteString
+            let task = QueueManager.Task(
+                messageID: messageID.rawValue,
+                action: .deleteAtt(attachmentObjectID: objectID,
+                                   attachmentID: att.id.rawValue),
+                userID: self.userID,
+                dependencyIDs: [],
+                isConversation: false
+            )
+            _ = self.queueManager?.addTask(task)
+            self.cacheService.delete(attachment: att) {
+                seal.fulfill_()
+            }
+        }
+    }
+
+    func updateAttKeyPacket(message: MessageEntity, addressID: String) {
+        let objectID = message.objectID.rawValue.uriRepresentation().absoluteString
+        self.queue(.updateAttKeyPacket(messageObjectID: objectID, addressID: addressID))
+    }
+
+    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
+    func base64AttachmentData(_ attachment: AttachmentEntity, _ complete : @escaping base64AttachmentDataComplete) {
+        guard let user = self.userDataSource else {
+            complete("")
+            return
+        }
+        let context = self.contextProvider.mainContext
+        context.perform {
+            guard let att = context.object(with: attachment.objectID.rawValue) as? Attachment else {
+                complete("")
+                return
+            }
+            if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
+                return
+            }
+
+            if let data = att.fileData, data.count > 0 {
+                complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
+                return
+            }
+
+            att.localURL = nil
+            self.fetchAttachmentForAttachment(AttachmentEntity(att), downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { [weak self] (_, url, error) -> Void in
+                guard let self = self else {
+                    complete("")
+                    return
+                }
+                self.contextProvider.mainContext.perform {
+                    guard let attachment = try? context.existingObject(with: att.objectID) as? Attachment else {
+                        complete("")
+                        return
+                    }
+                    if attachment.localURL == nil {
+                        attachment.localURL = url
+                    }
+                    complete( attachment.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
+                }
+            })
+        }
+    }
+
+    // MARK : Send message
+    func send(inQueue message: Message, body: String) {
+        message.managedObjectContext!.perform {
+            self.localNotificationService.scheduleMessageSendingFailedNotification(
+                .init(messageID: message.messageID, subtitle: message.title)
+            )
+
+            self.queue(
+                message: message,
+                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, bodyForDebug: body)
+            )
+        }
+    }
+
+    func updateMessageCount(completion: (() -> Void)? = nil) {
+        self.queueManager?.queue {
+            guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
+                completion?()
+                return
+            }
+
+            switch viewMode {
+            case .singleMessage:
+                let counterApi = MessageCount()
+                self.apiService.exec(route: counterApi, responseObject: MessageCountResponse()) { (task, response) in
+                    guard response.error == nil else {
+                        completion?()
+                        return
+                    }
+                    self.parent?.eventsService.processEvents(counts: response.counts)
+                    completion?()
+                }
+            case .conversation:
+                let conversationCountApi = ConversationCountRequest(addressID: nil)
+                self.apiService.exec(route: conversationCountApi, responseObject: ConversationCountResponse()) { (task, response) in
+                    guard response.error == nil else {
+                        completion?()
+                        return
+                    }
+                    let countDict = response.responseDict?["Counts"] as? [[String: Any]]
+                    self.parent?.eventsService.processEvents(conversationCounts: countDict)
+                    completion?()
+                }
+            }
+
+        }
+    }
+
+    /// TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
+    func injectTransientValuesIntoMessages() {
+        let ids = queueManager?.queuedMessageIds() ?? []
+        let context = self.contextProvider.rootSavingContext
+        context.perform {
+            ids.forEach { messageID in
+                guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(messageID),
+                      let managedObject = try? context.existingObject(with: objectID) else {
+                          return
+                      }
+                if let message = managedObject as? Message {
+                    self.cachePropertiesForBackground(in: message)
+                }
+                if let attachment = managedObject as? Attachment {
+                    self.cachePropertiesForBackground(in: attachment.message)
+                }
+            }
+        }
+    }
+
+    //// only needed for drafts
+    private func cachePropertiesForBackground(in message: Message) {
+        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
+        // they are transient and will not be persisted in the db, only in managed object context
+        message.cachedPassphrase = userDataSource!.mailboxPassword
+        message.cachedAuthCredential = userDataSource!.authCredential
+        message.cachedUser = userDataSource!.userInfo
+        message.cachedAddress = defaultUserAddress(for: message) // computed property depending on current user settings
+    }
+
+    func empty(location: Message.Location) {
+        self.empty(labelID: location.labelID)
+    }
+
+    func empty(labelID: LabelID) {
+        self.cacheService.markMessageAndConversationDeleted(labelID: labelID)
+        self.labelDataService.resetCounter(labelID: labelID)
+        queue(.empty(currentLabelID: labelID.rawValue))
+    }
+
+    // old functions
+    var isFirstTimeSaveAttData: Bool = false
+
+    /// downloadTask returns the download task for use with UIProgressView+AFNetworking
+    func fetchAttachmentForAttachment(_ attachment: AttachmentEntity,
+                                      customAuthCredential: AuthCredential? = nil,
+                                      downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                                      completion: ((URLResponse?, URL?, NSError?) -> Void)?) {
+        if attachment.downloaded, let localURL = attachment.localURL {
+            completion?(nil, localURL as URL, nil)
+            return
+        }
+
+        // TODO: check for existing download tasks and return that task rather than start a new download
+        self.apiService.downloadAttachment(byID: attachment.id.rawValue,
+                                           destinationDirectoryURL: FileManager.default.attachmentDirectory,
+                                           customAuthCredential: customAuthCredential,
+                                           downloadTask: downloadTask,
+                                           completion: { task, fileURL, error in
+            let context = self.contextProvider.rootSavingContext
+            context.perform {
+                if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
+                    attachmentToUpdate.localURL = fileURL
+                    if #available(iOS 12, *) {
+                        if !self.isFirstTimeSaveAttData {
+                            attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
+                        }
+                    } else {
+                        attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
+                    }
+                    _ = context.saveUpstreamIfNeeded()
+                }
+                completion?(task, fileURL, error)
+            }
+        })
+    }
+
+    private func noQueue(_ readBlock: @escaping ReadBlock) {
+        readBlock()
+    }
+
+    func forceFetchDetailForMessage(
+        _ message: MessageEntity,
+        runInQueue: Bool = true,
+        ignoreDownloaded: Bool = false,
+        completion: @escaping CompletionFetchDetail
+    ) {
+        let msgID = message.messageID
+        let closure = runInQueue ? self.queueManager?.queue: noQueue
+        closure? {
+            let completionWrapper: CompletionBlock = { task, response, error in
+                let objectId = message.objectID.rawValue
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
+                    var error: NSError?
+                    if let newMessage = context.object(with: objectId) as? Message, response != nil {
+                        // TODO need check the response code
+                        if var msg: [String: Any] = response?["Message"] as? [String: Any] {
+                            msg.removeValue(forKey: "Location")
+                            msg.removeValue(forKey: "Starred")
+                            msg.removeValue(forKey: "test")
+                            msg["UserID"] = self.userID.rawValue
+                            msg.addAttachmentOrderField()
+
+                            do {
+                                if !ignoreDownloaded,
+                                   newMessage.isDetailDownloaded,
+                                   let time = msg["Time"] as? TimeInterval,
+                                   let oldTime = newMessage.time?.timeIntervalSince1970 {
+                                    // remote time and local time are not empty
+                                    if oldTime > time {
+                                        let msgToReturn = MessageEntity(newMessage)
+                                        DispatchQueue.main.async {
+                                            completion(task, response, msgToReturn, error)
+                                        }
+                                        return
+                                    }
+                                }
+                                let realAttachments = userCachedStatus.realAttachments
+                                let localAttachments = newMessage.attachments.allObjects.compactMap { $0 as? Attachment}.filter { attach in
+                                    if attach.isSoftDeleted {
+                                        return false
+                                    } else if realAttachments {
+                                        return !attach.inline()
+                                    }
+                                    return true
+                                }
+                                let localAttachmentCount = localAttachments.count
+
+                                // This will remove all attachments that are still not uploaded to BE
+                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context)
+
+                                // Adds back the attachments that are still uploading
+                                for att in localAttachments {
+                                    if att.managedObjectContext != nil {
+                                        if !newMessage.attachments.contains(att) {
+                                            newMessage.attachments.adding(att)
+                                            att.message = newMessage
+                                        }
+                                    } else {
+                                        if let newAtt = context.object(with: att.objectID) as? Attachment {
+                                            if !newMessage.attachments.contains(newAtt) {
+                                                newMessage.attachments.adding(newAtt)
+                                                newAtt.message = newMessage
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Use local attachment count since the not-uploaded attachment is not counted
+                                newMessage.numAttachments = NSNumber(value: localAttachmentCount)
+
+                                newMessage.isDetailDownloaded = true
+                                newMessage.messageStatus = 1
+                                if let labelID = newMessage.firstValidFolder() {
+                                    self.mark(messages: [MessageEntity(newMessage)], labelID: LabelID(labelID), unRead: false)
+                                }
+                                if newMessage.unRead {
+                                    self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
+                                }
+                                newMessage.unRead = false
+                                PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
+                                error = context.saveUpstreamIfNeeded()
+                                let msgToReturn = MessageEntity(newMessage)
+                                DispatchQueue.main.async {
+                                    completion(task, response, msgToReturn, error)
+                                }
+                            } catch let ex as NSError {
+                                let msgToReturn = MessageEntity(newMessage)
+                                DispatchQueue.main.async {
+                                    completion(task, response, msgToReturn, ex)
+                                }
+                            }
+                        } else {
+                            let msgToReturn = MessageEntity(newMessage)
+                            DispatchQueue.main.async {
+                                completion(task, response, msgToReturn, NSError.badResponse())
+                            }
+                        }
+                    } else {
+                        error = NSError.unableToParseResponse(response)
+                        DispatchQueue.main.async {
+                            completion(task, response, message, error)
+                        }
+                    }
+                }
+            }
+            self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
+        }
+    }
+
+    func fetchMessageDetailForMessage(_ message: MessageEntity, labelID: LabelID, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
+        if !message.isDetailDownloaded || message.parsedHeaders.isEmpty {
+            let msgID = message.messageID
+            let closure = runInQueue ? queueManager?.queue: noQueue
+            closure? {
+                let completionWrapper: CompletionBlock = { task, response, error in
+                    let context = self.contextProvider.rootSavingContext
+                    context.perform {
+                        if response != nil {
+                            if var msg: [String: Any] = response?["Message"] as? [String: Any] {
+                                msg.removeValue(forKey: "Location")
+                                msg.removeValue(forKey: "Starred")
+                                msg.removeValue(forKey: "test")
+                                msg["UserID"] = self.userID.rawValue
+                                msg.addAttachmentOrderField()
+
+                                do {
+                                    if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
+                                        message_n.messageStatus = 1
+                                        message_n.isDetailDownloaded = true
+
+                                        let tmpError = context.saveUpstreamIfNeeded()
+                                        let msgToReturn = MessageEntity(message_n)
+                                        DispatchQueue.main.async {
+                                            completion(task, response, msgToReturn, tmpError)
+                                        }
+                                    } else {
+                                        DispatchQueue.main.async {
+                                            completion(task, response, nil, error)
+                                        }
+                                    }
+                                } catch let ex as NSError {
+                                    DispatchQueue.main.async {
+                                        completion(task, response, nil, ex)
+                                    }
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    completion(task, response, nil, error)
+                                }
+
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(task, response, nil, error)
+                            }
+                        }
+                    }
+                }
+                self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
+            }
+        } else {
+            self.mark(messages: [message], labelID: labelID, unRead: false)
+            DispatchQueue.main.async {
+                completion(nil, nil, message, nil)
+            }
+        }
+    }
+
+    func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping CompletionFetchDetail) {
+        self.queueManager?.queue {
+            let completionWrapper: CompletionBlock = { task, response, error in
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
+                    if response != nil {
+                        // TODO need check the respons code
+                        if var msg: [String: Any] = response?["Message"] as? [String: Any] {
+                            msg.removeValue(forKey: "Location")
+                            msg.removeValue(forKey: "Starred")
+                            msg.removeValue(forKey: "test")
+                            msg["UserID"] = self.userID.rawValue
+                            msg.addAttachmentOrderField()
+
+                            do {
+                                if let messageOut = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
+                                    messageOut.messageStatus = 1
+                                    messageOut.isDetailDownloaded = true
+                                    if let labelID = messageOut.firstValidFolder() {
+                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
+                                    }
+                                    if messageOut.unRead == true {
+                                        messageOut.unRead = false
+                                        PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
+                                        self.cacheService.updateCounterSync(markUnRead: false, on: messageOut)
+                                    }
+                                    let tmpError = context.saveUpstreamIfNeeded()
+
+                                    let msgToReturn = MessageEntity(messageOut)
+                                    DispatchQueue.main.async {
+                                        completion(task, response, msgToReturn, tmpError)
+                                    }
+                                }
+                            } catch let ex as NSError {
+                                DispatchQueue.main.async {
+                                    completion(task, response, nil, ex)
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(task, response, nil, NSError.badResponse())
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(task, response, nil, error)
+                        }
+                    }
+                }
+            }
+
+            let context = self.contextProvider.rootSavingContext
+            context.perform {
+                if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
+                    if message.isDetailDownloaded {
+                        let msgToReturn = MessageEntity(message)
+                        DispatchQueue.main.async {
+                            completion(nil, nil, msgToReturn, nil)
+                        }
+                    } else {
+                        self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    }
+                } else {
+                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                }
+            }
+        }
+
+    }
+
+    // MARK: fuctions for only fetch the local cache
+
+    /**
+     fetch the message by location from local cache
+
+     :param: location message location enum
+
+     :returns: NSFetchedResultsController
+     */
+    func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
+        switch viewMode {
+        case .singleMessage:
+            let moc = self.contextProvider.mainContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            if isUnread {
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@) AND (%K == %@)",
+                                                     labelID.rawValue,
+                                                     Message.Attributes.messageStatus,
+                                                     0,
+                                                     Message.Attributes.userID,
+                                                     self.userID.rawValue,
+                                                     Message.Attributes.unRead,
+                                                     NSNumber(true),
+                                                     Message.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
+            } else {
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@)",
+                                                     labelID.rawValue,
+                                                     Message.Attributes.messageStatus,
+                                                     0,
+                                                     Message.Attributes.userID,
+                                                     self.userID.rawValue,
+                                                     Message.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
+            }
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+            fetchRequest.fetchBatchSize = 30
+            fetchRequest.includesPropertyValues = true
+            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        case .conversation:
+            let moc = self.contextProvider.mainContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+            if isUnread {
+                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K > 0) AND (%K == %@)",
+                                                     ContextLabel.Attributes.labelID,
+                                                     labelID.rawValue,
+                                                     ContextLabel.Attributes.userID,
+                                                     self.userID.rawValue,
+                                                     ContextLabel.Attributes.unreadCount,
+                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
+            } else {
+                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K == %@)",
+                                                     ContextLabel.Attributes.labelID,
+                                                     labelID.rawValue,
+                                                     ContextLabel.Attributes.userID,
+                                                     self.userID.rawValue,
+                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
+            }
+            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false), NSSortDescriptor(keyPath: \ContextLabel.order, ascending: false)]
+            fetchRequest.fetchBatchSize = 30
+            fetchRequest.includesPropertyValues = true
+            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        }
+    }
+
+    /**
+     fetch the message from local cache use message id
+
+     :param: messageID String
+
+     :returns: NSFetchedResultsController
+     */
+    func fetchedMessageControllerForID(_ messageID: MessageID) -> NSFetchedResultsController<Message> {
+        let moc = self.contextProvider.mainContext
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+    }
+
+    /**
+     clean all the local cache data.
+     when use this :
+     1. logout
+     2. local cache version changed
+     3. hacked action detacted
+     4. use wraped manully.
+     */
+    func cleanUp() -> Promise<Void> {
+        return self.cleanMessage(cleanBadgeAndNotifications: true).done { (_) in
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
+            self.signout()
+        }
+    }
+
+    func signin() {
+        self.queue(.signin)
+    }
+
+    private func signout() {
+        self.queue(.signout)
+    }
+
+    static func cleanUpAll() -> Promise<Void> {
+        return Promise { seal in
+            let queueManager = sharedServices.get(by: QueueManager.self)
+            queueManager.clearAll {
+                let coreDateService = sharedServices.get(by: CoreDataService.self)
+                let context = coreDateService.operationContext
+                coreDateService.enqueue(context: context) { (context) in
+                    Message.deleteAll(inContext: context)
+                    Conversation.deleteAll(inContext: context)
+                    _ = context.saveUpstreamIfNeeded()
+                    seal.fulfill_()
+                }
+            }
+        }
+    }
+
+    func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
+        return Promise { seal in
+            let context = self.contextProvider.rootSavingContext
+            context.perform {
+                if #available(iOS 12, *) {
+                    self.isFirstTimeSaveAttData = true
+                }
+                self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
+
+                let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
+                contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
+                                                          ContextLabel.Attributes.userID,
+                                                          self.userID.rawValue,
+                                                          ContextLabel.Attributes.isSoftDeleted,
+                                                          NSNumber(false))
+                if let labels = try? context.fetch(contextLabelFetch) {
+                    labels.forEach { context.delete($0) }
+                }
+
+                let conversationFetch = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
+                conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
+                                                          Conversation.Attributes.userID,
+                                                          self.userID.rawValue,
+                                                          Conversation.Attributes.isSoftDeleted,
+                                                          NSNumber(false))
+                if let conversations = try? context.fetch(conversationFetch) {
+                    conversations.forEach { context.delete($0) }
+                }
+
+                _ = context.saveUpstreamIfNeeded()
+                context.refreshAllObjects()
+
+                if cleanBadgeAndNotifications {
+                    UIApplication.setBadge(badge: 0)
+                }
+                seal.fulfill_()
+            }
+        }
+    }
+
+    // Remove message from db
+    // In some conditions, some of the messages can't be deleted
+    private func removeMessageFromDB(context: NSManagedObjectContext, removeAllDraft: Bool) {
+        let fetch = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        // Don't delete the soft deleted message
+        // Or they would come back when user pull down to refresh
+        fetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
+                                      Message.Attributes.userID,
+                                      self.userID.rawValue,
+                                      Message.Attributes.isSoftDeleted,
+                                      NSNumber(false))
+
+        guard let results = try? context.fetch(fetch) else {
+            return
+        }
+
+        if removeAllDraft {
+            results.forEach { context.delete($0) }
+            return
+        }
+        let draftID = Message.Location.draft.rawValue
+
+        for message in results {
+            if let labels = message.labels.allObjects as? [Label] {
+                if !labels.contains(where: { $0.labelID == draftID }) {
+                    context.delete(message)
+                }
+            }
+        }
+
+        // The remove is triggered by pull down to refresh
+        // So if the messages correspond to some conditions, can't delete it
+        for message in results {
+            if let labels = message.labels.allObjects as? [Label],
+               labels.contains(where: { $0.labelID == draftID }) {
+
+                if let attachments = message.attachments.allObjects as? [Attachment],
+                   attachments.contains(where: { $0.attachmentID == "0" }) {
+                    // If the draft is uploading attachments, don't delete it
+                    continue
+                } else if isMessageBeingSent(id: message.messageID) {
+                    // If the draft is sending, don't delete it
+                    continue
+                } else if let _ = UUID(uuidString: message.messageID) {
+                    // If the message ID is UUiD, means hasn't created draft, don't delete it
+                    continue
+                }
+                context.delete(message)
+            }
+        }
+    }
+    
+    func search(_ query: String, page: Int, completion: @escaping (Swift.Result<[Message], NSError>) -> Void) {
+        let completionWrapper: CompletionBlock = {task, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if var messagesArray = response?["Messages"] as? [[String: Any]] {
+                for (index, _) in messagesArray.enumerated() {
+                    messagesArray[index]["UserID"] = self.userID.rawValue
+                }
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
+                    do {
+                        if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
+                            for message in messages {
+                                message.messageStatus = 1
+                            }
+                            _ = context.saveUpstreamIfNeeded()
+
+                            completion(.success(messages))
+                        } else {
+                            fatalError("Groot output must be a Message.")
+                        }
+                    } catch let ex as NSError {
+                        completion(.failure(ex))
+                    }
+                }
+            } else {
+                let parseError = NSError(
+                    domain: APIServiceErrorDomain,
+                    code: APIErrorCode.badParameter,
+                    localizedDescription: "Unexpected data returned by the API."
+                )
+                completion(.failure(parseError))
+            }
+        }
+        let api = SearchMessage(keyword: query, page: page)
+        self.apiService.exec(route: api, responseObject: SearchMessageResponse()) { (task, response) in
+            if let error = response.error {
+                completionWrapper(task, nil, error.toNSError)
+            } else {
+                completionWrapper(task, response.jsonDic, nil)
+            }
+        }
+    }
+
+    func saveDraft(_ message: Message?) {
+        if let message = message, let context = message.managedObjectContext {
+            context.performAndWait {
+                _ = context.saveUpstreamIfNeeded()
+
+                self.queue(
+                    message: message,
+                    action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString)
+                )
+            }
+        }
+    }
+
+    func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void) {
+        let messages: [String] = messageIDs.map(\.rawValue)
+        let request = FetchMessagesByID(msgIDs: messages)
+        self.apiService
+            .exec(route: request, responseObject: FetchMessagesByIDResponse()) { response in
+            completion(response)
+        }
+    }
+
+    // MARK: old functions
+
+    fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
+        if let all = message.attachments.allObjects as? [Attachment] {
+            return all.filter { !$0.isSoftDeleted }.sorted(by: { $0.order < $1.order })
+        }
+        return []
+    }
+
+    struct SendStatus: OptionSet {
+        let rawValue: Int
+
+        static let justStart             = SendStatus([])
+        static let fetchEmailOK          = SendStatus(rawValue: 1 << 0)
+        static let getBody               = SendStatus(rawValue: 1 << 1)
+        static let updateBuilder         = SendStatus(rawValue: 1 << 2)
+        static let processKeyResponse    = SendStatus(rawValue: 1 << 3)
+        static let checkMimeAndPlainText = SendStatus(rawValue: 1 << 4)
+        static let setAtts               = SendStatus(rawValue: 1 << 5)
+        static let goNext                = SendStatus(rawValue: 1 << 6)
+        static let checkMime             = SendStatus(rawValue: 1 << 7)
+        static let buildMime             = SendStatus(rawValue: 1 << 8)
+        static let checkPlainText        = SendStatus(rawValue: 1 << 9)
+        static let buildPlainText        = SendStatus(rawValue: 1 << 10)
+        static let initBuilders          = SendStatus(rawValue: 1 << 11)
+        static let encodeBody            = SendStatus(rawValue: 1 << 12)
+        static let buildSend             = SendStatus(rawValue: 1 << 13)
+        static let sending               = SendStatus(rawValue: 1 << 14)
+        static let done                  = SendStatus(rawValue: 1 << 15)
+        static let doneWithError         = SendStatus(rawValue: 1 << 16)
+        static let exceptionCatched      = SendStatus(rawValue: 1 << 17)
+    }
+
+    enum SendingError: Error {
+        case emptyEncodedBody
+    }
+
+    func send(byID objectIDInURI: String, bodyForDebug: String?, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+        let errorBlock: CompletionBlock = { task, response, error in
+            completion?(task, response, error)
+        }
+
+        // TODO: needs to refractor
+        let context = self.contextProvider.rootSavingContext
+        context.perform {
+            guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(objectIDInURI),
+                  let message = context.find(with: objectID) as? Message
+            else {
+                errorBlock(nil, nil, NSError.badParameter(objectIDInURI))
+                return
+            }
+            guard let userManager = self.parent, userManager.userID.rawValue == UID else {
+                errorBlock(nil, nil, NSError.userLoggedOut())
+                return
+            }
+
+            if message.messageID.isEmpty {
+                errorBlock(nil, nil, NSError.badParameter(objectIDInURI))
+                return
+            }
+
+            if message.managedObjectContext == nil {
+                NSError.alertLocalCacheErrorToast()
+                let err = RuntimeError.bad_draft.error
+                errorBlock(nil, nil, err)
+                return
+            }
+
+            self.forceFetchDetailForMessage(.init(message),
+                                            runInQueue: false,
+                                            ignoreDownloaded: true) { _, _, _, _ in
+                self.send(message: message,
+                          bodyForDebug: bodyForDebug,
+                          context: context,
+                          userManager: userManager,
+                          completion: completion)
+            }
+        }
+    }
+
+    private func send(
+        message: Message,
+        bodyForDebug: String?,
+        context: NSManagedObjectContext,
+        userManager: UserManager,
+        completion: CompletionBlock?
+    ) {
+        let errorBlock: CompletionBlock = { task, response, error in
+            completion?(task, response, error)
+        }
+
+        context.perform {
+            var status = SendStatus.justStart
+
+            let userInfo = message.cachedUser ?? userManager.userInfo
+
+            _ = userInfo.userPrivateKeys
+
+            let userPrivKeysArray = userInfo.userPrivateKeysArray
+            let addrPrivKeys = userInfo.addressKeys
+            let newSchema = addrPrivKeys.newSchema
+
+            let authCredential = message.cachedAuthCredential ?? userManager.authCredential
+            let passphrase = message.cachedPassphrase ?? userManager.mailboxPassword
+            guard let addressKey = (message.cachedAddress ?? userManager.messageService.defaultUserAddress(for: message))?.keys.first else {
+                errorBlock(nil, nil, NSError.lockError())
+                return
+            }
+
+            var requests = [UserEmailPubKeys]()
+            let emails = message.allEmails
+            for email in emails {
+                requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
+            }
+
+            // is encrypt outside
+            let isEO = !message.password.isEmpty
+
+            // get attachment
+            let attachments = self.attachmentsForMessage(message)
+
+            // create builder
+            let sendBuilder = MessageSendingRequestBuilder(expirationOffset: message.expirationOffset)
+
+            // build contacts if user setup key pinning
+            var contacts = [PreContact]()
+            firstly {
+                // fech addresses contact
+                userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails)
+            }.then { cs -> Guarantee<[Result<KeysResponse>]> in
+                // Debug info
+                status.insert(SendStatus.fetchEmailOK)
+                // fech email keys from api
+                contacts.append(contentsOf: cs)
+                return when(resolved: requests.getPromises(api: userManager.apiService))
+            }.then { results -> Promise<MessageSendingRequestBuilder> in
+                // Debug info
+                status.insert(SendStatus.getBody)
+                return context.performAsPromise {
+                    // all prebuild errors need pop up from here
+                    if let bodyForDebug = bodyForDebug,
+                       !bodyForDebug.isEmpty,
+                       bodyForDebug != message.body {
+                        self.collectBlankMessageData(message: message, bodyForDebug: bodyForDebug)
+                    }
+                    guard let splited = try message.split(),
+                          let bodyData = splited.dataPacket,
+                          let keyData = splited.keyPacket,
+                          let session = newSchema ?
+                            try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
+                                                                    passphrase: passphrase,
+                                                                    keys: addrPrivKeys) :
+                                try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
+                                                          passphrase: passphrase) else {
+                        throw RuntimeError.cant_decrypt.error
+                    }
+                    // Debug info
+                    status.insert(SendStatus.updateBuilder)
+                    guard let key = session.key else {
+                        throw RuntimeError.cant_decrypt.error
+                    }
+                    sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
+                    sendBuilder.set(password: message.password, hint: message.passwordHint)
+                    // Debug info
+                    status.insert(SendStatus.processKeyResponse)
+
+                    for (index, result) in results.enumerated() {
+                        switch result {
+                        case .fulfilled(let value):
+                            let req = requests[index]
+                            let preAddress: PreAddress
+
+                            // check contacts have pub key or not
+                            if let contact = contacts.find(email: req.email) {
+                                if value.recipientType == .internal {
+                                    // if type is internal check is key match with contact key
+                                    // compare the key if doesn't match
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: value.firstKey(),
+                                        pgpKey: contact.firstPgpKey,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: false,
+                                        sign: true,
+                                        pgpencrypt: false,
+                                        plainText: contact.plainText
+                                    )
+                                } else {
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: nil,
+                                        pgpKey: contact.firstPgpKey,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: isEO ? true : contact.mime,
+                                        sign: contact.sign,
+                                        pgpencrypt: contact.encrypt,
+                                        plainText: isEO ? false : contact.plainText
+                                    )
+                                }
+                            } else {
+                                if userInfo.sign == 1 {
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: value.firstKey(),
+                                        pgpKey: nil,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: true,
+                                        sign: true,
+                                        pgpencrypt: false,
+                                        plainText: false
+                                    )
+                                } else {
+                                    preAddress = PreAddress(
+                                        email: req.email,
+                                        pubKey: value.firstKey(),
+                                        pgpKey: nil,
+                                        recipientType: value.recipientType,
+                                        isEO: isEO,
+                                        mime: false,
+                                        sign: false,
+                                        pgpencrypt: false,
+                                        plainText: false
+                                    )
+                                }
+                            }
+                            sendBuilder.add(address: preAddress)
+                        case .rejected(let error):
+                            throw error
+                        }
+                    }
+                    // Debug info
+                    status.insert(SendStatus.checkMimeAndPlainText)
+                    if sendBuilder.hasMime || sendBuilder.hasPlainText {
+                        guard let clearbody = newSchema ?
+                                try message.decryptBody(keys: addrPrivKeys,
+                                                        userKeys: userPrivKeysArray,
+                                                        passphrase: passphrase) :
+                                    try message.decryptBody(keys: addrPrivKeys,
+                                                            passphrase: passphrase) else {
+                            throw RuntimeError.cant_decrypt.error
+                        }
+                        sendBuilder.set(clearBody: clearbody)
+                    }
+                    // Debug info
+                    status.insert(SendStatus.setAtts)
+
+                    for att in attachments {
+                        if att.managedObjectContext != nil {
+                            if let sessionPack = newSchema ?
+                                try att.getSession(userKey: userPrivKeysArray,
+                                                   keys: addrPrivKeys,
+                                                   mailboxPassword: userManager.mailboxPassword) :
+                                    try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
+                                                       mailboxPassword: userManager.mailboxPassword) {
+                                guard let key = sessionPack.key else {
+                                    continue
+                                }
+                                sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
+                                                                          session: key,
+                                                                          algo: sessionPack.algo,
+                                                                          att: att))
+                            }
+                        }
+                    }
+                    // Debug info
+                    status.insert(SendStatus.goNext)
+
+                    return sendBuilder
+                }
+            }.then { sendbuilder -> Promise<MessageSendingRequestBuilder> in
+                if !sendBuilder.hasMime {
+                    return .value(sendBuilder)
+                }
+                return sendbuilder
+                    .fetchAttachmentBodyForMime(passphrase: passphrase,
+                                                msgService: self,
+                                                userInfo: userInfo)
+            }.then { _ -> Promise<MessageSendingRequestBuilder> in
+                // Debug info
+                status.insert(SendStatus.checkMime)
+
+                if !sendBuilder.hasMime {
+                    return .value(sendBuilder)
+                }
+                // Debug info
+                status.insert(SendStatus.buildMime)
+
+                // build pgp sending mime body
+                return sendBuilder.buildMime(senderKey: addressKey,
+                                             passphrase: passphrase,
+                                             userKeys: userPrivKeysArray,
+                                             keys: addrPrivKeys,
+                                             newSchema: newSchema)
+            }.then { _ -> Promise<MessageSendingRequestBuilder> in
+                // Debug info
+                status.insert(SendStatus.checkPlainText)
+
+                if !sendBuilder.hasPlainText {
+                    return .value(sendBuilder)
+                }
+                // Debug info
+                status.insert(SendStatus.buildPlainText)
+
+                // build pgp sending mime body
+                return sendBuilder.buildPlainText(senderKey: addressKey,
+                                                  passphrase: passphrase,
+                                                  userKeys: userPrivKeysArray,
+                                                  keys: addrPrivKeys,
+                                                  newSchema: newSchema)
+            }.then { _ -> Guarantee<[Result<AddressPackageBase>]> in
+                // Debug info
+                status.insert(SendStatus.initBuilders)
+                // build address packages
+                let promises = try sendBuilder.getBuilderPromises()
+                return when(resolved: promises)
+            }.then { results -> Promise<SendMessage> in
+                context.performAsPromise {
+                    // Debug info
+                    status.insert(SendStatus.encodeBody)
+
+                    // build api request
+                    guard let encodedBody = sendBuilder.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        throw SendingError.emptyEncodedBody
+                    }
+
+                    var msgs = [AddressPackageBase]()
+                    for res in results {
+                        switch res {
+                        case .fulfilled(let value):
+                            msgs.append(value)
+                        case .rejected(let error):
+                            throw error
+                        }
+                    }
+                    // Debug info
+                    status.insert(SendStatus.buildSend)
+
+                    if let _ = UUID(uuidString: message.messageID) {
+                        // Draft saved failed, can't send this message
+                        let parseError = NSError(domain: APIServiceErrorDomain,
+                                                 code: APIErrorCode.badParameter,
+                                                 localizedDescription: "Invalid ID")
+                        throw parseError
+                    }
+                    let delaySeconds = self.userDataSource?.userInfo.delaySendSeconds ?? 0
+                    return SendMessage(messageID: message.messageID,
+                                       expirationTime: message.expirationOffset,
+                                       delaySeconds: delaySeconds,
+                                       messagePackage: msgs,
+                                       body: encodedBody,
+                                       clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
+                                       mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
+                                       plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
+                                       authCredential: authCredential)
+                }
+            }.then { sendApi -> Promise<SendResponse> in
+                // Debug info
+                status.insert(SendStatus.sending)
+                return userManager.apiService.run(route: sendApi)
+            }.done { [weak self] res in
+                context.performAndWait { [weak self] in
+                    guard let self = self else { return }
+                    // Debug info
+                    let error = res.error
+                    if error == nil {
+                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+
+#if APP_EXTENSION
+                        NSError.alertMessageSentToast()
+#else
+                        self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
+#endif
+
+                        if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                                                             fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
+                                                                             in: context) as? Message {
+                            newMessage.messageStatus = 1
+                            newMessage.isDetailDownloaded = true
+                            newMessage.unRead = false
+                            PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
+                        } else {
+                            assertionFailure("Failed to parse response Message")
+                        }
+
+                        if context.saveUpstreamIfNeeded() == nil,
+                           let originalMsgID = message.orginalMessageID {
+                            _ = self.markReplyStatus(MessageID(originalMsgID), action: message.action)
+                        }
+                    } else {
+                        // Debug info
+                        status.insert(SendStatus.doneWithError)
+                        if error?.responseCode == 9001 {
+                            // here need let user to show the human check.
+                            self.queueManager?.isRequiredHumanCheck = true
+                            error?.toNSError.alertSentErrorToast()
+                        } else if error?.responseCode == 15198 {
+                            error?.toNSError.alertSentErrorToast()
+                        } else {
+                            error?.toNSError.alertErrorToast()
+                        }
+                        NSError.alertMessageSentErrorToast()
+                        // show message now
+                        self.localNotificationService.scheduleMessageSendingFailedNotification(
+                            .init(
+                                messageID: message.messageID,
+                                error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
+                                timeInterval: 1,
+                                subtitle: message.title
+                            )
+                        )
+                    }
+                    completion?(nil, nil, error?.toNSError)
+                }
+            }.catch(policy: .allErrors) { error in
+                status.insert(SendStatus.exceptionCatched)
+
+                guard let err = error as? ResponseError,
+                      let responseCode = err.responseCode else {
+                    NSError.alertMessageSentError(details: error.localizedDescription)
+                    completion?(nil, nil, error as NSError)
+                    return
+                }
+
+                context.performAndWait {
+                    if responseCode == 9001 {
+                        // here need let user to show the human check.
+                        self.queueManager?.isRequiredHumanCheck = true
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+                    } else if responseCode == 15198 {
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+                    } else if responseCode == 15004 {
+                        // this error means the message has already been sent
+                        // so don't need to show this error to user
+                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                        NSError.alertMessageSentToast()
+                        completion?(nil, nil, nil)
+                        return
+                    } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
+                        // Email address validation failed
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+
+#if !APP_EXTENSION
+                        let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { _ in
+                            NotificationCenter.default.post(name: .switchView,
+                                                            object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+                        }
+                        LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+#endif
+                    } else if responseCode == 2500 {
+                        // The error means "Message has already been sent"
+                        // Since the message is sent, this alert is useless to user
+                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                        completion?(nil, nil, nil)
+                        // Draft folder must be single message mode
+                        self.forceFetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
+                        return
+                    } else {
+                        NSError.alertMessageSentError(details: err.localizedDescription)
+                    }
+
+                    // show message now
+                    let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
+                    self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
+                                                                                                 error: errorMsg,
+                                                                                                 timeInterval: 1,
+                                                                                                 subtitle: message.title))
+                }
+                completion?(nil, nil, err as NSError)
+            }
+        }
+    }
+
+    private func collectBlankMessageData(message: Message, bodyForDebug: String) {
+        let breads = Breadcrumbs.shared.trace(for: .inconsistentBody) ?? "empty"
+        let breadData = Array(breads.split(separator: "\n").compactMap(String.init).reversed())
+        let dict: [String: Any] = [
+            "attachmentsNum": message.attachments.count,
+            "numAttachments": message.numAttachments.intValue,
+            "messageID": message.messageID,
+            "conversationID": message.conversationID,
+            "usserIID": self.userID.rawValue,
+            "bodyData": "sendBodyLength: \(message.body.count) - draftBodyLength: \(bodyForDebug.count)",
+            "toListCount": (message.toList.parseJson() ?? []).count,
+            "ccListCount": (message.ccList.parseJson() ?? []).count,
+            "bccListCount": (message.bccList.parseJson() ?? []).count,
+            "breadCrumbs": breadData
+        ]
+        Analytics.shared.sendEvent(.inconsistentBody, trace: dict.json(prettyPrinted: true))
+    }
+
+    func cancelQueuedSendingTask(messageID: String) {
+        self.queueManager?.removeAllTasks(of: messageID, removalCondition: { action in
+            switch action {
+            case .send:
+                return true
+            default:
+                return false
+            }
+        }, completeHandler: { [weak self] in
+            self?.localNotificationService
+                .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))
+        })
+    }
+
+    private func markReplyStatus(_ originMessageID: MessageID, action: NSNumber?) -> Promise<Void> {
+        guard let act = action,
+              !originMessageID.rawValue.isEmpty else {
+            return Promise()
+        }
+
+        let fetchedMessageController = self.fetchedMessageControllerForID(originMessageID)
+
+        return Promise { seal in
+            do {
+                try fetchedMessageController.performFetch()
+                guard let message: Message = fetchedMessageController.fetchedObjects?.first as? Message,
+                    message.managedObjectContext != nil else {
+                        seal.fulfill_()
+                        return
+                }
+                let context = self.contextProvider.rootSavingContext
+                context.perform {
+                    defer {
+                        seal.fulfill_()
+                    }
+                    if let msgToUpdate = try? context.existingObject(with: message.objectID) as? Message {
+                        // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                        if act == 0 {
+                            msgToUpdate.replied = true
+                        } else if act == 1 {
+                            msgToUpdate.repliedAll = true
+                        } else if act == 2 {
+                            msgToUpdate.forwarded = true
+                        } else {
+                            // ignore
+                        }
+                        _ = context.saveUpstreamIfNeeded()
+                    }
+                }
+            } catch {
+                seal.fulfill_()
+            }
+        }
+    }
+
+    // MARK: Notifications
+
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MessageDataService.didSignOutNotification(_:)),
+                                               name: NSNotification.Name.didSignOut,
+                                               object: nil)
+        // TODO: add monitoring for didBecomeActive
+    }
+
+    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
+        _ = cleanUp()
+    }
+
+    private func queue(message: Message, action: MessageAction) {
+        if message.objectID.isTemporaryID {
+            do {
+                try message.managedObjectContext?.obtainPermanentIDs(for: [message])
+            } catch {
+                assertionFailure("\(error)")
+            }
+        }
+
+        self.cachePropertiesForBackground(in: message)
+
+        switch action {
+        case .saveDraft, .send:
+            let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+        default:
+            if message.managedObjectContext != nil && !message.messageID.isEmpty {
+                let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+                _ = self.queueManager?.addTask(task)
+            }
+        }
+    }
+
+    func queue(_ action: MessageAction) {
+        let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+        _ = self.queueManager?.addTask(task)
+    }
+
+    private func queue(att: Attachment, action: MessageAction) {
+        if att.objectID.isTemporaryID {
+            att.managedObjectContext?.performAndWait {
+                try? att.managedObjectContext?.obtainPermanentIDs(for: [att])
+            }
+        }
+        att.managedObjectContext?.performAndWait {
+            self.cachePropertiesForBackground(in: att.message)
+        }
+        let updatedID = att.objectID.uriRepresentation().absoluteString
+        var updatedAction: MessageAction?
+        switch action {
+        case .uploadAtt:
+            updatedAction = .uploadAtt(attachmentObjectID: updatedID)
+        case .uploadPubkey:
+            updatedAction = .uploadPubkey(attachmentObjectID: updatedID)
+        case .deleteAtt:
+            updatedAction = .deleteAtt(attachmentObjectID: updatedID,
+                                       attachmentID: att.attachmentID)
+        default:
+            break
+        }
+        let task = QueueManager.Task(messageID: att.message.messageID, action: updatedAction ?? action, userID: self.userID, dependencyIDs: [], isConversation: false)
+        _ = self.queueManager?.addTask(task)
+    }
+
+    func cleanLocalMessageCache(_ completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest()
+        self.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { (task, response) in
+            guard response.error == nil && !response.eventID.isEmpty else {
+                completion?(task, nil, response.error?.toNSError)
+                return
+            }
+            self.contactCacheStatus.contactsCached = 0
+            guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
+                return
+            }
+
+            let completionBlock: CompletionBlock = { task, dict, error in
+                _ = self.labelDataService.fetchV4Labels().then({
+                    self.contactDataService.cleanUp()
+                }).done({
+                    self.contactDataService.fetchContacts { (_, error) in
+                        if error == nil {
+                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                                completion?(task, nil, error)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion?(task, nil, error)
+                            }
+                        }
+                    }
+                })
+            }
+
+            self.fetchMessages(byLabel: Message.Location.inbox.labelID, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {
+                self.cleanMessage(cleanBadgeAndNotifications: true).then { _ -> Promise<Void> in
+                    return self.contactDataService.cleanUp()
+                }.cauterize()
+            }
+        }
+    }
+
+    func encryptBody(_ message: MessageEntity,
+                     clearBody: String,
+                     mailbox_pwd: String) throws -> String {
+        // TODO: Refactor this method later.
+        let addressId = message.addressID.rawValue
+        if addressId.isEmpty {
+            return .empty
+        }
+
+        if let key = self.userDataSource?.getAddressKey(address_id: addressId) {
+            return try clearBody.encrypt(withKey: key,
+                                                 userKeys: self.userDataSource!.userPrivateKeys,
+                                                 mailbox_pwd: mailbox_pwd)
+        } else {//fallback
+            let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
+            return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd)
+        }
+    }
+
+    func getUserAddressID(for message: Message) -> String {
+        if let addr = defaultUserAddress(for: message) {
+            return addr.addressID
+        }
+        return ""
+    }
+
+    func defaultUserAddress(for message: Message) -> Address? {
+        let userInfo = self.userDataSource!.userInfo
+        if let addressID = message.addressID, !addressID.isEmpty {
+            if let addr = userInfo.userAddresses.address(byID: addressID),
+               addr.send == .active {
+                return addr
+            } else {
+                if let addr = userInfo.userAddresses.defaultSendAddress() {
+                    return addr
+                }
+            }
+        } else {
+            if let addr = userInfo.userAddresses.defaultSendAddress() {
+                return addr
+            }
+        }
+        return nil
+    }
+
+    /// this function need to factor
+    func fromAddress(_ message: Message) -> Address? {
+        let userInfo = self.userDataSource!.userInfo
+        if let addressID = message.addressID, !addressID.isEmpty {
+            if let addr = userInfo.userAddresses.address(byID: addressID) {
+                return addr
+            }
+        }
+        return nil
+    }
+
+    func messageWithLocation (recipientList: String,
+                              bccList: String,
+                              ccList: String,
+                              title: String,
+                              encryptionPassword: String,
+                              passwordHint: String,
+                              expirationTimeInterval: TimeInterval,
+                              body: String,
+                              attachments: [Any]?,
+                              mailbox_pwd: String,
+                              sendAddress: Address,
+                              inManagedObjectContext context: NSManagedObjectContext) -> Message {
+        let message = Message(context: context)
+        message.messageID = UUID().uuidString
+        message.toList = recipientList
+        message.bccList = bccList
+        message.ccList = ccList
+        message.title = title
+        message.passwordHint = passwordHint
+        message.time = Date()
+        message.expirationOffset = Int32(expirationTimeInterval)
+        message.messageStatus = 1
+        message.setAsDraft()
+        message.userID = self.userID.rawValue
+        message.addressID = sendAddress.addressID
+
+        if expirationTimeInterval > 0 {
+            message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
+        }
+
+        do {
+            message.body = try self.encryptBody(MessageEntity(message), clearBody: body, mailbox_pwd: mailbox_pwd)
+            if !encryptionPassword.isEmpty {
+                message.passwordEncryptedBody = try body.encryptNonOptional(password: encryptionPassword)
+            }
+            if let attachments = attachments {
+                for (index, attachment) in attachments.enumerated() {
+                    if let image = attachment as? UIImage {
+                        if let fileData = image.pngData() {
+                            let attachment = Attachment(context: context)
+                            attachment.attachmentID = "0"
+                            attachment.message = message
+                            attachment.fileName = "\(index).png"
+                            attachment.mimeType = "image/png"
+                            attachment.fileData = fileData
+                            attachment.fileSize = fileData.count as NSNumber
+                            continue
+                        }
+                    }
+                }
+            }
+        } catch {
+        }
+        return message
+    }
+
+    func updateMessage (_ message: Message ,
+                        expirationTimeInterval: TimeInterval,
+                        body: String,
+                        mailbox_pwd: String) {
+        if expirationTimeInterval > 0 {
+            message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
+        }
+        message.body = (try? self.encryptBody(MessageEntity(message), clearBody: body, mailbox_pwd: mailbox_pwd)) ?? ""
+    }
+}

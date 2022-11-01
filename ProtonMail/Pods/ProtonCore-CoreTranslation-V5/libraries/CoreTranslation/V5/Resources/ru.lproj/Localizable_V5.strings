@@ -1,3 +1,72 @@
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ из %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Доступ к службам трансляции по всему миру";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Встроенный блокировщик рекламы (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Проверьте подключение к Интернету.";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Проблемы с подключением";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Продлить подписку";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Бесплатная VPN на одном устройстве";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Получить %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Получить Proton бесплатно";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Наивысшая скорость VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Единый тариф для всех служб Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступна только годовая подписка без автоматического продления";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Тариф успешно обновлен";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Серверы Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Строгая политика отсутствия журналов активности";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Бесплатный стартовый аккаунт для всех, кому важна конфиденциальность.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Почта и календарь с приоритетом конфиденциальности для повседневных коммуникаций.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Максимальный набор с полным доступом ко всем платным службам Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor через VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Хранилище до %@";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Наш приоритет — ваша конфиденциальность и безопасность.";
+
 /* Welcome screen */
 "Privacy by default" = "Конфиденциальность по умолчанию";
 

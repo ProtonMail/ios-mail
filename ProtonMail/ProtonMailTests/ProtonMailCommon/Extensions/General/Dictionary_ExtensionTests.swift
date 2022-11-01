@@ -47,4 +47,17 @@ final class Dictionary_ExtensionTests: XCTestCase {
         let invalid: [[String: Any]] = [["a": UIView()]]
         XCTAssertEqual(invalid.json(), "")
     }
+
+    func testAttachmentOrderField() throws {
+        let attachment1 = ["attID": 1]
+        let attachment2 = ["attID": 2]
+        var input: [String: Any] = ["Attachments": [attachment1, attachment2]]
+
+        input.addAttachmentOrderField()
+
+        let attachments = try XCTUnwrap(input["Attachments"] as? [[String: Any]])
+        for index in attachments.indices {
+            XCTAssertEqual(attachments[index]["Order"] as? Int, index)
+        }
+    }
 }

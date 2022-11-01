@@ -1,6 +1,6 @@
 //
 //  PushNotificationServiceSubscriptionTests.swift
-//  Proton MailTests - Created on 08/11/2018.
+//  ProtonMailTests - Created on 08/11/2018.
 //
 //
 //  Copyright (c) 2019 Proton AG

@@ -32,6 +32,7 @@ public final class Payments {
     var reportBugAlertHandler: BugAlertHandler
     let apiService: APIService
     let localStorage: ServicePlanDataStorage
+    let canExtendSubscription: Bool
     var paymentsAlertManager: PaymentsAlertManager
     var paymentsApi: PaymentsApiProtocol
 
@@ -58,20 +59,23 @@ public final class Payments {
         planService: planService,
         paymentsApi: paymentsApi,
         apiService: apiService,
+        canExtendSubscription: canExtendSubscription,
         paymentsAlertManager: paymentsAlertManager,
         reportBugAlertHandler: reportBugAlertHandler,
-        refreshHandler: { } // default refresh handler does nothing
+        refreshHandler: { _ in } // default refresh handler does nothing
     )
 
     public init(inAppPurchaseIdentifiers: ListOfIAPIdentifiers,
                 apiService: APIService,
                 localStorage: ServicePlanDataStorage,
                 alertManager: AlertManagerProtocol? = nil,
+                canExtendSubscription: Bool = false,
                 reportBugAlertHandler: BugAlertHandler) {
         self.inAppPurchaseIdentifiers = inAppPurchaseIdentifiers
         self.reportBugAlertHandler = reportBugAlertHandler
         self.apiService = apiService
         self.localStorage = localStorage
+        self.canExtendSubscription = canExtendSubscription
         paymentsAlertManager = PaymentsAlertManager(alertManager: alertManager ?? AlertManager())
         paymentsApi = PaymentsApiImplementation()
     }

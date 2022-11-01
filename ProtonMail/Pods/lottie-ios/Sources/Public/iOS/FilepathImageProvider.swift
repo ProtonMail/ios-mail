@@ -9,19 +9,15 @@ import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
 import UIKit
 
-/**
- Provides an image for a lottie animation from a provided Bundle.
- */
+/// Provides an image for a lottie animation from a provided Bundle.
 public class FilepathImageProvider: AnimationImageProvider {
 
   // MARK: Lifecycle
 
-  /**
-   Initializes an image provider with a specific filepath.
-
-   - Parameter filepath: The absolute filepath containing the images.
-
-   */
+  /// Initializes an image provider with a specific filepath.
+  ///
+  /// - Parameter filepath: The absolute filepath containing the images.
+  ///
   public init(filepath: String) {
     self.filepath = URL(fileURLWithPath: filepath)
   }
@@ -33,7 +29,6 @@ public class FilepathImageProvider: AnimationImageProvider {
   // MARK: Public
 
   public func imageForAsset(asset: ImageAsset) -> CGImage? {
-
     if
       asset.name.hasPrefix("data:"),
       let url = URL(string: asset.name),
@@ -53,6 +48,7 @@ public class FilepathImageProvider: AnimationImageProvider {
       return UIImage(contentsOfFile: pathWithDirectory)?.cgImage
     }
 
+    LottieLogger.shared.warn("Could not find image \"\(asset.name)\" in bundle")
     return nil
   }
 

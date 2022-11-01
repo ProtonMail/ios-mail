@@ -78,9 +78,6 @@
 /* new contacts add Birthday */
 "Add birthday" = "Lägg till födelsedag";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add CC and BCC";
-
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Lägg till kontakter";
 
@@ -443,9 +440,6 @@
 /* general close action */
 "Close" = "Stäng";
 
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close CC and BCC";
-
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
 
@@ -739,6 +733,9 @@
  *  Email Verify View Controller */
 "Email address" = "E-postadress";
 
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "E-postadress inaktiverad";
+
 /* alert title */
 "Email address invalid" = "E-postadress ogiltig";
 
@@ -787,14 +784,25 @@
 /* contact section title */
 "Encrypted contact details" = "Krypterade kontaktdetaljer";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-end-krypterat";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted and signed message" = "End-to-end krypterat och signerat meddelande";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message" = "End-to-end-krypterat meddelande";
 
 /* encryption lock description */
 "End-to-end encrypted message from verified address" = "End-to-end-krypterat meddelande från verifierad adress";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end-krypterat meddelande från verifierad avsändare";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end-krypterad till verifierad mottagare";
 
 /* (No Comment) */
 "End-to-End Encryption" = "End-to-end-kryptering";
@@ -821,7 +829,7 @@
 "Enter your signature here" = "Ange din signatur här";
 
 /* Title of alert in share extension. */
-"Error" = "Error";
+"Error" = "Fel";
 
 /* (No Comment) */
 "Error Logs" = "Felloggar";
@@ -891,7 +899,7 @@
 "From:" = "Från:";
 
 /* abbreviation of forward: */
-"Fw:" = "Vidarebefordra:";
+"Fw:" = "Vb:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Fwd:";
@@ -927,7 +935,7 @@
 "Government block" = "Statlig blockering";
 
 /* No comment provided by engineer. */
-"Group emails in the same conversation together." = "Group emails from the same conversation together.";
+"Group emails from the same conversation together." = "Gruppera e-postmeddelanden i samma konversation tillsammans.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Gruppnamn";
@@ -1052,7 +1060,7 @@
 "Invalid username!" = "Ogiltigt användarnamn!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. " = "Bjud in dina kontakter till Proton Mail för att använda sömlös ände-till-ände-kryptering eller lägg till lösenordsskydd för meddelanden du skickar dem. ";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Bjud in dina kontakter till Proton Mail för att njuta av sömlös end-to-end-kryptering, eller lägg till lösenordsskydd för meddelanden du skickar dem.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Är denna felrapport om ett köp inuti app?";
@@ -1350,6 +1358,9 @@
 /* network troubleshot cell title */
 "No internet connection" = "Ingen Internetanslutning";
 
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Inga nycklar hämtade för intern användare";
+
 /* no object error, local only , this could be not translated! */
 "no object" = "no object";
 
@@ -1358,6 +1369,12 @@
 
 /* zero messages matching search query */
 "No results found" = "Inga resultat hittades";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Inga giltiga nycklar hämtade för intern användare";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ingen WKD-nyckel hämtad för användaren är giltig för sändning";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, inte relaterade till i-app inköp";
@@ -1470,14 +1487,36 @@
 /* default vcard types */
 "Personal" = "Privat";
 
-/* encryption lock description */
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-krypterad";
+
+/* encryption lock description
+   The message after tapping the encryption icon of message received. */
 "PGP-encrypted and signed message" = "PGP-krypterat och signerat meddelande";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-krypterat meddelande";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-krypterat meddelande från verifierad adress";
 
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-krypterat meddelande från verifierad avsändare";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-krypterad till verifierad mottagare";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-signerad";
+
 /* encryption lock description */
 "PGP-signed message from verified address" = "PGP-signerat meddelande från verifierad adress";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-signerat meddelande från verifierad avsändare";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP-signerat meddelande. Avsändarverifieringen misslyckades";
 
 /* default vcard types */
 "Phone" = "Telefon";
@@ -1520,7 +1559,7 @@
 "Please input a valid email address." = "Ange en giltig e-postadress.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Håll Proton Mail öppet tills operationen är klar.";
+"Please keep Proton Mail open until the operation is done." = "Håll Proton Mail öppen tills operationen är klar.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Se till att din Internetanslutning fungerar.";
@@ -1616,7 +1655,7 @@
 "Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att kunna fortsätta driva Proton Mail. Du kan uppgradera till en betald prenumeration eller donera för att stödja Proton Mail.";
 
 /* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail är för närvarande offline, se vår Twitter för aktuell status: https://twitter.com/protonmail";
+"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail är för närvarande offline, kolla vår Twitter för aktuell status: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail är för närvarande offline…";
@@ -1646,7 +1685,7 @@
 "Read" = "Läs";
 
 /* Title */
-"Reading device contacts data…" = "Läser enhetens kontaktuppgifter…";
+"Reading device contacts data…" = "Läser enhetens kontaktdata…";
 
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Kvitto skickat";
@@ -1703,7 +1742,7 @@
 "ReplyAll" = "Svara alla";
 
 /* menu title */
-"Report a bug" = "Rapportera en bugg";
+"Report a problem" = "Rapportera ett problem";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Rapportera nätfiske";
@@ -1766,6 +1805,9 @@
 /* (No Comment) */
 "Send Verification Code" = "Skicka verifieringskod";
 
+/* The message after tapping the encryption icon of message received. */
+"Sender verification failed" = "Avsändarverifiering misslyckades";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verifiering av avsändaren misslyckades";
 
@@ -1796,8 +1838,12 @@
 /* encryption lock description for auto reply */
 "Sent by Proton Mail with zero access encryption" = "Skickat med Proton Mail med noll-åtkomstkryptering";
 
-/* encryption lock description */
+/* encryption lock description
+   The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Skickat av dig med end-to-end-kryptering till verifierad mottagare";
 
 /* Description */
 "Sent Failed" = "Kunde inte skicka";
@@ -1903,6 +1949,9 @@
 /* encryption lock description */
 "Stored with zero access encryption" = "Lagras med nollåtkomst-kryptering";
 
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Lagras med nollåtkomst-kryptering";
+
 /* contact placeholder */
 "Street" = "Gata";
 
@@ -1913,7 +1962,7 @@
 "Subject:" = "Ämne:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject.." = "Ämne..";
+"Subject..." = "Ämne...";
 
 /* menu title
    The title of a subscription plans screen */
@@ -1944,10 +1993,10 @@
 "System can't copy the file" = "Systemet kan inte kopiera filen";
 
 /* (No Comment) */
-"Take a Photo" = "Ta ett foto";
+"Take a Photo" = "Ta foto";
 
 /* Title */
-"Take new photo" = "Ta ett nytt foto";
+"Take new photo" = "Ta nytt foto";
 
 /* No comment provided by engineer. */
 "Tap here to set" = "Tryck här för att ställa in";
@@ -2023,7 +2072,10 @@
 "The private key update failed." = "Uppdatering av privat nyckel misslyckades.";
 
 /* Title */
-"The request timed out." = "Begäran tog för lång tid.";
+"The request timed out." = "Förfrågan gjorde timeout.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Den skickande nyckeln är inte giltig";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Storleksgränsen för bilagor är 25 MB.";
@@ -2114,7 +2166,7 @@
 "Time to relax" = "Dags att koppla av";
 
 /* contacts talbe cell Title title */
-"Title" = "Titel";
+"Title" = "Rubrik";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n";
@@ -2127,7 +2179,7 @@
 "To" = "Till";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för postådan, använd webbversionen av Proton Mail på protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "För att återställa ditt lösenord för brevlådan, använd webbversionen av Proton Mail på protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2152,6 +2204,9 @@
 
 /* network troubleshot view title */
 "TroubleShooting" = "Felsökning";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Betrodda nycklar är inte giltiga för att skicka";
 
 /* Try again action */
 "Try again" = "Försök igen";

@@ -57,30 +57,27 @@ struct CurveVertex {
     CurveVertex(point: point + translation, inTangent: inTangent + translation, outTangent: outTangent + translation)
   }
 
-  /**
-   Trims a path defined by two Vertices at a specific position, from 0 to 1
-
-   The path can be visualized below.
-
-   F is fromVertex.
-   V is the vertex of the receiver.
-   P is the position from 0-1.
-   O is the outTangent of fromVertex.
-   F====O=========P=======I====V
-
-   After trimming the curve can be visualized below.
-
-   S is the returned Start vertex.
-   E is the returned End vertex.
-   T is the trim point.
-   TI and TO are the new tangents for the trimPoint
-   NO and NI are the new tangents for the startPoint and endPoints
-   S==NO=========TI==T==TO=======NI==E
-   */
+  /// Trims a path defined by two Vertices at a specific position, from 0 to 1
+  ///
+  /// The path can be visualized below.
+  ///
+  /// F is fromVertex.
+  /// V is the vertex of the receiver.
+  /// P is the position from 0-1.
+  /// O is the outTangent of fromVertex.
+  /// F====O=========P=======I====V
+  ///
+  /// After trimming the curve can be visualized below.
+  ///
+  /// S is the returned Start vertex.
+  /// E is the returned End vertex.
+  /// T is the trim point.
+  /// TI and TO are the new tangents for the trimPoint
+  /// NO and NI are the new tangents for the startPoint and endPoints
+  /// S==NO=========TI==T==TO=======NI==E
   func splitCurve(toVertex: CurveVertex, position: CGFloat) ->
     (start: CurveVertex, trimPoint: CurveVertex, end: CurveVertex)
   {
-
     /// If position is less than or equal to 0, trim at start.
     if position <= 0 {
       return (
@@ -103,9 +100,9 @@ struct CurveVertex {
           outTangentRelative: toVertex.outTangentRelative))
     }
 
-    if outTangentRelative.isZero && toVertex.inTangentRelative.isZero {
+    if outTangentRelative.isZero, toVertex.inTangentRelative.isZero {
       /// If both tangents are zero, then span to be trimmed is a straight line.
-      let trimPoint = point.interpolate(toVertex.point, amount: position)
+      let trimPoint = point.interpolate(to: toVertex.point, amount: position)
       return (
         start: self,
         trimPoint: CurveVertex(point: trimPoint, inTangentRelative: .zero, outTangentRelative: .zero),
@@ -115,31 +112,29 @@ struct CurveVertex {
     /// One option is to cut by a stride until it gets close then edge it down.
     /// Measuring a percentage of the spans does not equal the same as measuring a percentage of length.
     /// This is where the historical trim path bugs come from.
-    let a = point.interpolate(outTangent, amount: position)
-    let b = outTangent.interpolate(toVertex.inTangent, amount: position)
-    let c = toVertex.inTangent.interpolate(toVertex.point, amount: position)
-    let d = a.interpolate(b, amount: position)
-    let e = b.interpolate(c, amount: position)
-    let f = d.interpolate(e, amount: position)
+    let a = point.interpolate(to: outTangent, amount: position)
+    let b = outTangent.interpolate(to: toVertex.inTangent, amount: position)
+    let c = toVertex.inTangent.interpolate(to: toVertex.point, amount: position)
+    let d = a.interpolate(to: b, amount: position)
+    let e = b.interpolate(to: c, amount: position)
+    let f = d.interpolate(to: e, amount: position)
     return (
       start: CurveVertex(point: point, inTangent: inTangent, outTangent: a),
       trimPoint: CurveVertex(point: f, inTangent: d, outTangent: e),
       end: CurveVertex(point: toVertex.point, inTangent: c, outTangent: toVertex.outTangent))
   }
 
-  /**
-    Trims a curve of a known length to a specific length and returns the points.
-
-    There is not a performant yet accurate way to cut a curve to a specific length.
-    This calls splitCurve(toVertex: position:) to split the curve and then measures
-    the length of the new curve. The function then iterates through the samples,
-    adjusting the position of the cut for a more precise cut.
-    Usually a single iteration is enough to get within 0.5 points of the desired
-    length.
-
-    This function should probably live in PathElement, since it deals with curve
-    lengths.
-   */
+  /// Trims a curve of a known length to a specific length and returns the points.
+  ///
+  /// There is not a performant yet accurate way to cut a curve to a specific length.
+  /// This calls splitCurve(toVertex: position:) to split the curve and then measures
+  /// the length of the new curve. The function then iterates through the samples,
+  /// adjusting the position of the cut for a more precise cut.
+  /// Usually a single iteration is enough to get within 0.5 points of the desired
+  /// length.
+  ///
+  /// This function should probably live in PathElement, since it deals with curve
+  /// lengths.
   func trimCurve(toVertex: CurveVertex, atLength: CGFloat, curveLength: CGFloat, maxSamples: Int, accuracy: CGFloat = 1) ->
     (start: CurveVertex, trimPoint: CurveVertex, end: CurveVertex)
   {
@@ -164,16 +159,13 @@ struct CurveVertex {
     return results
   }
 
-  /**
-   The distance from the receiver to the provided vertex.
-
-   For lines (zeroed tangents) the distance between the two points is measured.
-   For curves the curve is iterated over by sample count and the points are measured.
-   This is ~99% accurate at a sample count of 30
-   */
+  /// The distance from the receiver to the provided vertex.
+  ///
+  /// For lines (zeroed tangents) the distance between the two points is measured.
+  /// For curves the curve is iterated over by sample count and the points are measured.
+  /// This is ~99% accurate at a sample count of 30
   func distanceTo(_ toVertex: CurveVertex, sampleCount: Int = 25) -> CGFloat {
-
-    if outTangentRelative.isZero && toVertex.inTangentRelative.isZero {
+    if outTangentRelative.isZero, toVertex.inTangentRelative.isZero {
       /// Return a linear distance.
       return point.distanceTo(toVertex.point)
     }

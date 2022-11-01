@@ -46,6 +46,7 @@ public enum PaymentSucceeded: Equatable {
     case withoutExchangingToken(token: PaymentToken)
     case resolvingIAPToSubscription
     case resolvingIAPToCredits
+    case resolvingIAPToCreditsCausedByError
 }
 
 public protocol StoreKitManagerProtocol: NSObjectProtocol {
@@ -73,7 +74,8 @@ public protocol StoreKitManagerProtocol: NSObjectProtocol {
     var inAppPurchaseIdentifiers: ListOfIAPIdentifiers { get }
     var delegate: StoreKitManagerDelegate? { get set }
     var reportBugAlertHandler: BugAlertHandler { get }
-    var refreshHandler: () -> Void { get set }
+    var canExtendSubscription: Bool { get }
+    var refreshHandler: (ProcessCompletionResult) -> Void { get set }
 }
 
 public typealias BugAlertHandler = ((String?) -> Void)?
@@ -109,8 +111,7 @@ public extension StoreKitManagerProtocol {
             switch result {
             case .withoutExchangingToken(let token):
                 successCompletion(token)
-            case .cancelled, .withoutIAP, .withoutObtainingToken, .withPurchaseAlreadyProcessed,
-                 .resolvingIAPToSubscription, .resolvingIAPToCredits:
+            case .cancelled, .withoutIAP, .withoutObtainingToken, .withPurchaseAlreadyProcessed, .resolvingIAPToSubscription, .resolvingIAPToCredits, .resolvingIAPToCreditsCausedByError:
                 successCompletion(nil)
             }
         }, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
@@ -134,12 +135,13 @@ protocol PaymentQueueProtocol {
 
 enum ProcessingType {
     case existingUserNewSubscription
+    case existingUserAddCredits
     case registration
 }
 
 typealias ProcessCompletionCallback = (ProcessCompletionResult) -> Void
 
-enum ProcessCompletionResult {
+public enum ProcessCompletionResult {
     case finished(PaymentSucceeded)
     case errored(StoreKitManagerErrors)
     case erroredWithUnspecifiedError(Error)
@@ -174,7 +176,7 @@ protocol ProcessDependencies: AnyObject {
     var alertManager: PaymentsAlertManager { get }
     var updateSubscription: (Subscription) -> Void { get }
     func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
-    var finishTransaction: (SKPaymentTransaction) -> Void { get }
+    var finishTransaction: (SKPaymentTransaction, (() -> Void)?) -> Void { get }
     var apiService: APIService { get }
     func addTransactionsBeforeSignup(transaction: SKPaymentTransaction)
     func removeTransactionsBeforeSignup(transaction: SKPaymentTransaction)
@@ -182,6 +184,7 @@ protocol ProcessDependencies: AnyObject {
     var errorRetry: Double { get }
     func getReceipt() throws -> String
     var bugAlertHandler: BugAlertHandler { get }
+    var refreshCompletionHandler: (ProcessCompletionResult) -> Void { get }
 }
 
 extension SKPaymentQueue: PaymentQueueProtocol {

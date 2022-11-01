@@ -368,23 +368,23 @@ public class AlamofireSession: Session {
             return
         }
         alamofireRequest.updateHeader()
-        var taskOut: URLSessionDataTask?
         let destination: Alamofire.DownloadRequest.Destination = { _, _ in
             return (destinationDirectoryURL, [.removePreviousFile, .createIntermediateDirectories])
         }
         self.session.download(alamofireRequest, to: destination)
-            .onURLSessionTaskCreation { task in
-                taskOut = task as? URLSessionDataTask
+            .onURLSessionTaskCreation { _ in
             }
-            .uploadProgress { (progress) in
+            .uploadProgress { _ in
             }
             .response { response in
+                let urlResponse = response.response
+
                 switch response.result {
                 case let .success(value):
-                    completion(taskOut?.response, value, nil)
+                    completion(urlResponse, value, nil)
                 case let .failure(error):
-                    let err = error.underlyingError ?? (error as NSError)
-                    completion(taskOut?.response, nil, err as NSError)
+                    let err = error.underlyingError ?? error
+                    completion(urlResponse, nil, err as NSError)
                 }
             }
     }

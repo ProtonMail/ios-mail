@@ -1,6 +1,6 @@
 //
 //  CacheServiceParsingTests.swift
-//  Proton MailTests
+//  ProtonMailTests
 //
 //  Copyright (c) 2021 Proton AG
 //
@@ -26,7 +26,7 @@ import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
     var coreDataService: CoreDataContextProviderProtocol!
-    var lastUpdatedStore: LastUpdatedStoreProtocol!
+    var lastUpdatedStore: MockLastUpdatedStore!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
@@ -56,14 +56,19 @@ class CacheServiceParsingTests: XCTestCase {
     func testParseMessagesResponse() throws {
         let testData = try XCTUnwrap(testFetchingMessagesDataInInbox.parseObjectAny())
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { error in
+        sut.parseMessagesResponse(
+            labelID: Message.Location.inbox.labelID,
+            isUnread: false,
+            response: testData,
+            idsOfMessagesBeingSent: []
+        ) { error in
             XCTAssertNil(error)
             expect.fulfill()
         }
 
         wait(for: [expect], timeout: 1)
 
-        let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage))
+        let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage))
         XCTAssertFalse(lastUpdate.isNew)
         XCTAssertEqual(lastUpdate.startTime, Date(timeIntervalSince1970: 1614266155))
         XCTAssertEqual(lastUpdate.endTime, Date(timeIntervalSince1970: 1614093303))
@@ -84,7 +89,12 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testBadFormatedFetchingMessagesDataInInbox.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { error in
+        sut.parseMessagesResponse(
+            labelID: Message.Location.inbox.labelID,
+            isUnread: false,
+            response: testData,
+            idsOfMessagesBeingSent: []
+        ) { error in
             XCTAssertNotNil(error)
             expect.fulfill()
         }
@@ -100,7 +110,6 @@ class CacheServiceParsingTests: XCTestCase {
         let fakeData = testDraftMessageMetaData.parseObjectAny()!
         let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeData, in: testContext) as! Message
         fakeMsg.userID = sut.userID.rawValue
-        fakeMsg.isSending = true
         fakeMsg.messageStatus = 1
         try testContext.save()
 
@@ -108,7 +117,12 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testFetchingMessagesDataInDraft.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.draft.labelID, isUnread: false, response: testData) { error in
+        sut.parseMessagesResponse(
+            labelID: Message.Location.draft.labelID,
+            isUnread: false,
+            response: testData,
+            idsOfMessagesBeingSent: [fakeMsg.messageID]
+        ) { error in
             XCTAssertNil(error)
             expect.fulfill()
         }

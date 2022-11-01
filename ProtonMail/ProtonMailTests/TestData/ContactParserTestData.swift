@@ -18,6 +18,8 @@
 import Foundation
 
 struct ContactParserTestData {
+    static let emailUsedInSignedData = "emaile@aaa.bbb"
+
     static let plainTextData = """
     BEGIN:VCARD
     VERSION:4.0

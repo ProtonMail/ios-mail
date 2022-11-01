@@ -1,3 +1,72 @@
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ dari %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Akses ke berbagai layanan streaming di seluruh dunia";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Ad-blocker bawaan (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Periksa koneksi internet Anda";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Masalah koneksi";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Perpanjang langganan";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "VPN gratis untuk satu perangkat";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Dapatkan %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Dapatkan Proton secara cuma-cuma";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Kecepatan VPN tertinggi";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Satu paket untuk semua layanan Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Hanya langganan tahunan yang tidak terbarui yang dapat dibeli via aplikasi ini";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Paket berhasil ditingkatkan";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Server Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Kebijakan tanpa log yang ketat";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Akun gratis yang dirancang untuk menyediakan privasi sebagai hal yang baku bagi semua.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Solusi email dan kalender yang mengedepankan privasi untuk kebutuhan komunikasi Anda sehari-hari.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Paket privasi yang menyeluruh dengan akses ke seluruh layanan premium Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "TOR via VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Tanpa batasan jumlah folder, label, dan filter";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Kuota penyimpanan hingga %@";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Privasi dan keamanan Anda adalah prioritas kami.";
+
 /* Welcome screen */
-"Privacy by default" = "Privacy by default";
+"Privacy by default" = "Privasi sebagai hal yang baku";
 

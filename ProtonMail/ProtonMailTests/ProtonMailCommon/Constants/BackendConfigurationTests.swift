@@ -62,9 +62,13 @@ class BackendConfigurationTests: XCTestCase {
         assertIsProduction(configuration: result)
     }
 
-    private func assertIsProduction(configuration: BackendConfiguration) {
-        XCTAssert(configuration.environment.appDomain == "protonmail.com")
-        XCTAssert(configuration.environment.apiDomain == "api.protonmail.ch")
-        XCTAssert(configuration.environment.apiPath == "")
+    private func assertIsProduction(
+        configuration: BackendConfiguration,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(configuration.environment.appDomain, "proton.me", file: file, line: line)
+        XCTAssertEqual(configuration.environment.apiDomain, "api.protonmail.ch", file: file, line: line)
+        XCTAssertEqual(configuration.environment.apiPath, "", file: file, line: line)
     }
 }

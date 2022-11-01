@@ -46,13 +46,14 @@ class DebugLayer: CALayer {
 
 extension CALayer {
 
+  @nonobjc
   public func logLayerTree(withIndent: Int = 0) {
     var string = ""
     for _ in 0...withIndent {
       string = string + "  "
     }
     string = string + "|_" + String(describing: self)
-    print(string)
+    LottieLogger.shared.info(string)
     if let sublayers = sublayers {
       for sublayer in sublayers {
         sublayer.logLayerTree(withIndent: withIndent + 1)
@@ -72,8 +73,8 @@ extension CompositionLayer: CustomLayerDebugging {
 
 extension CALayer {
 
+  @nonobjc
   func setDebuggingState(visible: Bool) {
-
     var sublayers = self.sublayers
     if let cust = self as? CustomLayerDebugging {
       sublayers = cust.layerForDebugging().sublayers
@@ -115,9 +116,9 @@ extension CALayer {
   }
 }
 
-// MARK: - AnimationContainer + LayerDebugging
+// MARK: - MainThreadAnimationLayer + LayerDebugging
 
-extension AnimationContainer: LayerDebugging {
+extension MainThreadAnimationLayer: LayerDebugging {
   var debugStyle: LayerDebugStyle {
     LayerDebugStyle.topLayerStyle()
   }

@@ -62,7 +62,7 @@
 			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ДЕНЬ@</string>
+		<string>%#@DAY@</string>
 	</dict>
 	<key>%d hour</key>
 	<dict>
@@ -84,7 +84,7 @@
 			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ЧАС@</string>
+		<string>%#@HOUR@</string>
 	</dict>
 	<key>+%d others</key>
 	<dict>

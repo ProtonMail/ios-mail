@@ -17,7 +17,6 @@ enum PathDirection: Int, Codable {
 
 // MARK: - Ellipse
 
-/// An item that define an ellipse shape
 final class Ellipse: ShapeItem {
 
   // MARK: Lifecycle
@@ -28,6 +27,22 @@ final class Ellipse: ShapeItem {
     position = try container.decode(KeyframeGroup<Vector3D>.self, forKey: .position)
     size = try container.decode(KeyframeGroup<Vector3D>.self, forKey: .size)
     try super.init(from: decoder)
+  }
+
+  required init(dictionary: [String: Any]) throws {
+    if
+      let directionRawType = dictionary[CodingKeys.direction.rawValue] as? Int,
+      let direction = PathDirection(rawValue: directionRawType)
+    {
+      self.direction = direction
+    } else {
+      direction = .clockwise
+    }
+    let positionDictionary: [String: Any] = try dictionary.value(for: CodingKeys.position)
+    position = try KeyframeGroup<Vector3D>(dictionary: positionDictionary)
+    let sizeDictionary: [String: Any] = try dictionary.value(for: CodingKeys.size)
+    size = try KeyframeGroup<Vector3D>(dictionary: sizeDictionary)
+    try super.init(dictionary: dictionary)
   }
 
   // MARK: Internal

@@ -23,6 +23,6 @@ class EmailPublicKeysProviderMock: EmailPublicKeysProviderProtocol {
     var stubbedResult: Swift.Result<[String: KeysResponse], Error> = .success([:])
 
     func publicKeys(for email: String) -> Promise<KeysResponse> {
-        `async` { try self.stubbedResult.get()[email]! }
+        `async` { try self.stubbedResult.get()[email] ?? KeysResponse() }
     }
 }

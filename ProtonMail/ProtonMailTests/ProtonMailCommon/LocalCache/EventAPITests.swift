@@ -1,6 +1,6 @@
 //
 //  EventAPITests.swift
-//  Proton MailTests - Created on 2020.
+//  ProtonMailTests - Created on 2020.
 //
 //
 //  Copyright (c) 2020 Proton AG

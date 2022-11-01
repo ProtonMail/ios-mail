@@ -54,6 +54,10 @@ unit_tests:
   variables:
     GIT_DEPTH: 1
   artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
     paths:
       - test_output/slatherOutput/
   before_script:
@@ -192,33 +196,6 @@ nightly-build-and-upload:
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
-  tags:
-    - iOS_ARM_TAIPEI
-
-# --- Build enterprise app for release and upload
-enterprise-release:
-  dependencies: []
-  stage: enterprise
-  variables:
-    GIT_DEPTH: 1
-  rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
-      when: manual
-      allow_failure: true
-  artifacts:
-    name: "iOS mail app release enterprise build"
-    paths:
-      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
-    expire_in: 90 days
-  before_script:
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
-    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
-  script:
-    - *enterprise_config_setting
-    - fastlane ios enterprise usingTimeStamp:false
   tags:
     - iOS_ARM_TAIPEI
 

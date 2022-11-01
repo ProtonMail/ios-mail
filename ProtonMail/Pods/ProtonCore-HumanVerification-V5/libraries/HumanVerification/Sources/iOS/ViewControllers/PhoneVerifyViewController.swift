@@ -52,6 +52,7 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
         super.viewDidLoad()
         configureUI()
         generateAccessibilityIdentifiers()
+        view.accessibilityIdentifier = "Human Verification view"
     }
 
     override func viewWillAppear(_ animated: Bool) {

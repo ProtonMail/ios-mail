@@ -59,7 +59,6 @@ final class MessageEntityTests: XCTestCase {
         message.expirationOffset = 50
         message.isSoftDeleted = true
         message.isDetailDownloaded = true
-        message.isSending = true
         message.messageStatus = NSNumber(value: 1)
         message.lastModified = Date(timeIntervalSince1970: 1645686077)
         message.orginalMessageID = "originalID-0987"
@@ -88,7 +87,6 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(entity.expirationOffset, 50)
         XCTAssertTrue(entity.isSoftDeleted)
         XCTAssertTrue(entity.isDetailDownloaded)
-        XCTAssertTrue(entity.isSending)
         XCTAssertTrue(entity.hasMetaData)
         XCTAssertEqual(entity.lastModified, Date(timeIntervalSince1970: 1645686077))
         XCTAssertEqual(entity.originalMessageID, MessageID("originalID-0987"))
@@ -117,19 +115,6 @@ final class MessageEntityTests: XCTestCase {
         """
         var entity = MessageEntity(message)
         XCTAssertEqual(entity.ccList.count, 2)
-        for (idx, item) in entity.ccList.enumerated() {
-            guard let contact = item as? ContactVO else {
-                XCTFail("Should be ContactVO")
-                continue
-            }
-            if idx == 0 {
-                contact.name = "test01"
-                contact.email = "test01@protonmail.com"
-            } else {
-                contact.name = "test02"
-                contact.email = "test02@protonmail.com"
-            }
-        }
 
         message.ccList = """
         [

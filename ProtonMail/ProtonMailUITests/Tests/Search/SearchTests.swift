@@ -1,6 +1,6 @@
 //
 //  SearchTests.swift
-//  Proton MailUITests
+//  ProtonMailUITests
 //
 //  Created by mirage chung on 2021/1/13.
 //  Copyright © 2021 Proton Mail. All rights reserved.

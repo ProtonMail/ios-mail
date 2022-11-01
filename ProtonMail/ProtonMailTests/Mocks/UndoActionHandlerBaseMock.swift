@@ -20,15 +20,15 @@ import UIKit
 
 class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
     var isShowUndoActionCalled = false
-    var token: UndoTokenData?
+    var undoTokens = [String]()
     var bannerMessage: String?
     var delaySendSeconds: Int = 0
 
     var composerPresentingVC: UIViewController? { self }
 
-    func showUndoAction(token: UndoTokenData, title: String) {
+    func showUndoAction(undoTokens: [String], title: String) {
         isShowUndoActionCalled = true
-        self.token = token
+        self.undoTokens = undoTokens
         self.bannerMessage = title
     }
 }

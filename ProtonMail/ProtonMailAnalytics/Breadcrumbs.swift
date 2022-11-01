@@ -19,9 +19,11 @@ import Foundation
 
 public enum BreadcrumbEvent: String {
     case generic
+    case invalidSwipeAction
     case malformedConversationRequest
     case randomLogout
     case inconsistentBody
+    case malformedConversationLabelRequest
 }
 
 /// In memory object tracing custom information for specific events.

@@ -1,6 +1,6 @@
 class ReachabilityStub: Reachability {
 
-    var currentReachabilityStatusStub = NetworkStatus.NotReachable
+    var currentReachabilityStatusStub = NetworkStatus.ReachableViaWWAN
 
     // MARK: - Reachability
 

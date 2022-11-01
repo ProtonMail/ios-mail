@@ -559,14 +559,14 @@ extension CSSMagicTest {
         XCTAssertEqual(anchor, "div.a.b[bgcolor=\"red\"][env=\"test\"]")
 
         html = """
-        <html> <head></head> <body> <div style="color: red;font-family: &quot;Google Sans&quot;, Arial, sans-serif" ></div></body></html>
+        <html> <head></head> <body> <div style="color: red;font-family: &quot;Google Sans&quot;, Arial, sans-serif" ></div><div>not me</div></body></html>
         """
         document = CSSMagic.parse(htmlString: html)
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
         anchor = CSSMagic.getCSSAnchor(of: nodes[0])
-        XCTAssertEqual(anchor, "")
+        XCTAssertEqual(anchor, "html > body > div:nth-child(1)")
     }
 
     func testAssembleCSSDict() {

@@ -212,7 +212,7 @@
 			<string>%d conversaciones</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversación@ etiquetada</string>
+		<string>%#@Conversation@ etiquetada</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -228,7 +228,7 @@
 			<string>%d mensajes</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Mensaje@ etiquetado</string>
+		<string>%#@Message@ etiquetado</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>

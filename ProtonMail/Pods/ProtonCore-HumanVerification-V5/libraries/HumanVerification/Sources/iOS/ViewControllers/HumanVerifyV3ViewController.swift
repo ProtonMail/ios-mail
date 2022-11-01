@@ -76,6 +76,7 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         configureUI()
         loadWebContent()
         generateAccessibilityIdentifiers()
+        view.accessibilityIdentifier = "Human Verification view"
     }
     
     deinit {

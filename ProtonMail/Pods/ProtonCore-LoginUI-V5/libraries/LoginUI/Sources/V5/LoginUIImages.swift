@@ -60,9 +60,8 @@ enum LoginUIImages {
 
 public extension SignupParameters {
     
-    init(separateDomainsButton: Bool = true,
-         passwordRestrictions: SignupPasswordRestrictions,
+    init(passwordRestrictions: SignupPasswordRestrictions,
          summaryScreenVariant: SummaryScreenVariant) {
-        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant)
+        self.init(true, passwordRestrictions, summaryScreenVariant)
     }
 }

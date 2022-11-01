@@ -201,14 +201,14 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         if isSelectable {
             if plan.isExpanded {
                 mainView.layer.borderWidth = 1.0
-                mainView.layer.borderColor = ColorProvider.InteractionNorm.cgColor
+                mainView.layer.borderColor = ColorProvider.InteractionNorm
             } else {
                 mainView.layer.borderWidth = 0.0
             }
             mainView.backgroundColor = ColorProvider.BackgroundSecondary
         } else {
             mainView.layer.borderWidth = 1.0
-            mainView.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+            mainView.layer.borderColor = ColorProvider.SeparatorNorm
         }
     }
     

@@ -108,16 +108,18 @@ public final class AccountDeletionService {
     private let api: APIService
     private let doh: DoHServerConfig
     private let authenticator: Authenticator
+    private let preferredLanguage: String
 
     #if canImport(ProtonCore_Services)
-    public convenience init(api: APIService) {
-        self.init(api: api, doh: api.doh)
+    public convenience init(api: APIService, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
+        self.init(api: api, doh: api.doh, preferredLanguage: preferredLanguage)
     }
     #endif
     
-    init(api: APIService, doh: DoHServerConfig) {
+    init(api: APIService, doh: DoHServerConfig, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
         self.api = api
         self.doh = doh
+        self.preferredLanguage = preferredLanguage
         self.authenticator = Authenticator(api: api)
     }
 
@@ -170,6 +172,7 @@ public final class AccountDeletionService {
         let viewModel = AccountDeletionViewModel(forkSelector: selector,
                                                  apiService: api,
                                                  doh: doh,
+                                                 preferredLanguage: preferredLanguage,
                                                  performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
                                                  completion: completion)
         let viewController = AccountDeletionWebView(viewModel: viewModel)

@@ -7,7 +7,6 @@
 
 import Foundation
 
-/// An item that define an ellipse shape
 final class Rectangle: ShapeItem {
 
   // MARK: Lifecycle
@@ -19,6 +18,24 @@ final class Rectangle: ShapeItem {
     size = try container.decode(KeyframeGroup<Vector3D>.self, forKey: .size)
     cornerRadius = try container.decode(KeyframeGroup<Vector1D>.self, forKey: .cornerRadius)
     try super.init(from: decoder)
+  }
+
+  required init(dictionary: [String: Any]) throws {
+    if
+      let directionRawType = dictionary[CodingKeys.direction.rawValue] as? Int,
+      let direction = PathDirection(rawValue: directionRawType)
+    {
+      self.direction = direction
+    } else {
+      direction = .clockwise
+    }
+    let positionDictionary: [String: Any] = try dictionary.value(for: CodingKeys.position)
+    position = try KeyframeGroup<Vector3D>(dictionary: positionDictionary)
+    let sizeDictionary: [String: Any] = try dictionary.value(for: CodingKeys.size)
+    size = try KeyframeGroup<Vector3D>(dictionary: sizeDictionary)
+    let cornerRadiusDictionary: [String: Any] = try dictionary.value(for: CodingKeys.cornerRadius)
+    cornerRadius = try KeyframeGroup<Vector1D>(dictionary: cornerRadiusDictionary)
+    try super.init(dictionary: dictionary)
   }
 
   // MARK: Internal

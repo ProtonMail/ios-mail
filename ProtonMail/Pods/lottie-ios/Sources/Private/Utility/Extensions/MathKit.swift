@@ -23,29 +23,7 @@ extension Double {
 
 // MARK: - CGFloat + Interpolatable
 
-extension CGFloat: Interpolatable {
-
-  /**
-   Interpolates the receiver to the given number by Amount.
-   - Parameter toNumber: The number to interpolate to.
-   - Parameter amount: The amount to interpolate from 0-1
-
-   ```
-   let number = 5
-   let interpolated = number.interpolateTo(10, amount: 0.5)
-   print(interpolated)
-   // Result: 7.5
-   ```
-
-   1. The amount can be greater than one and less than zero. The interpolation will not be clipped.
-   */
-  func interpolateTo(_ to: CGFloat, amount: CGFloat) -> CGFloat {
-    self + ((to - self) * CGFloat(amount))
-  }
-
-  func interpolateTo(_ to: CGFloat, amount: CGFloat, spatialOutTangent _: CGPoint?, spatialInTangent _: CGPoint?) -> CGFloat {
-    interpolateTo(to, amount: amount)
-  }
+extension CGFloat {
 
   func remap(fromLow: CGFloat, fromHigh: CGFloat, toLow: CGFloat, toHigh: CGFloat) -> CGFloat {
     guard (fromHigh - fromLow) != 0 else {
@@ -55,19 +33,15 @@ extension CGFloat: Interpolatable {
     return toLow + (self - fromLow) * (toHigh - toLow) / (fromHigh - fromLow)
   }
 
-  /**
-   Returns a value that is clamped between the two numbers
-
-   1. The order of arguments does not matter.
-   */
+  /// Returns a value that is clamped between the two numbers
+  ///
+  /// 1. The order of arguments does not matter.
   func clamp(_ a: CGFloat, _ b: CGFloat) -> CGFloat {
     CGFloat(Double(self).clamp(Double(a), Double(b)))
   }
 
-  /**
-   Returns the difference between the receiver and the given number.
-   - Parameter absolute: If *true* (Default) the returned value will always be positive.
-   */
+  /// Returns the difference between the receiver and the given number.
+  /// - Parameter absolute: If *true* (Default) the returned value will always be positive.
   func diff(_ a: CGFloat, absolute: Bool = true) -> CGFloat {
     absolute ? abs(a - self) : a - self
   }
@@ -77,41 +51,17 @@ extension CGFloat: Interpolatable {
 
 }
 
-// MARK: - Double + Interpolatable
+// MARK: - Double
 
-extension Double: Interpolatable {
-
-  /**
-   Interpolates the receiver to the given number by Amount.
-   - Parameter toNumber: The number to interpolate to.
-   - Parameter amount: The amount to interpolate from 0-1
-
-   ```
-   let number = 5
-   let interpolated = number.interpolateTo(10, amount: 0.5)
-   print(interpolated)
-   // Result: 7.5
-   ```
-
-   1. The amount can be greater than one and less than zero. The interpolation will not be clipped.
-   */
-  func interpolateTo(_ to: Double, amount: CGFloat) -> Double {
-    self + ((to - self) * Double(amount))
-  }
-
-  func interpolateTo(_ to: Double, amount: CGFloat, spatialOutTangent _: CGPoint?, spatialInTangent _: CGPoint?) -> Double {
-    interpolateTo(to, amount: amount)
-  }
+extension Double {
 
   func remap(fromLow: Double, fromHigh: Double, toLow: Double, toHigh: Double) -> Double {
     toLow + (self - fromLow) * (toHigh - toLow) / (fromHigh - fromLow)
   }
 
-  /**
-   Returns a value that is clamped between the two numbers
-
-   1. The order of arguments does not matter.
-   */
+  /// Returns a value that is clamped between the two numbers
+  ///
+  /// 1. The order of arguments does not matter.
   func clamp(_ a: Double, _ b: Double) -> Double {
     let minValue = a <= b ? a : b
     let maxValue = a <= b ? b : a
@@ -200,28 +150,6 @@ extension CGRect {
     }
   }
 
-  /**
-   Interpolates the receiver to the given rect by Amount.
-   - Parameter to: The rect to interpolate to.
-   - Parameter amount: The amount to interpolate from 0-1
-
-   ```
-   let rect = CGRect(x:0, y:0, width: 50, height: 50)
-   let interpolated = rect.interpolateTo(CGRect(x:100, y:100, width: 100, height: 100), amount: 0.5)
-   print(interpolated)
-   // Result: (x: 50, y: 50, width: 75, height: 75)
-   ```
-
-   1. The amount can be greater than one and less than zero. The interpolation will not be clipped.
-   */
-  func interpolateTo(_ to: CGRect, amount: CGFloat) -> CGRect {
-    CGRect(
-      x: origin.x.interpolateTo(to.origin.x, amount: amount),
-      y: origin.y.interpolateTo(to.origin.y, amount: amount),
-      width: width.interpolateTo(to.width, amount: amount),
-      height: height.interpolateTo(to.height, amount: amount))
-  }
-
 }
 
 extension CGSize {
@@ -239,26 +167,6 @@ extension CGSize {
   /// Operator convenience to multiply sizes with *
   static func *(left: CGSize, right: CGFloat) -> CGSize {
     CGSize(width: left.width * right, height: left.height * right)
-  }
-
-  /**
-   Interpolates the receiver to the given size by Amount.
-   - Parameter to: The size to interpolate to.
-   - Parameter amount: The amount to interpolate from 0-1
-
-   ```
-   let size = CGSize(width: 50, height: 50)
-   let interpolated = rect.interpolateTo(CGSize(width: 100, height: 100), amount: 0.5)
-   print(interpolated)
-   // Result: (width: 75, height: 75)
-   ```
-
-   1. The amount can be greater than one and less than zero. The interpolation will not be clipped.
-   */
-  func interpolateTo(_ to: CGSize, amount: CGFloat) -> CGSize {
-    CGSize(
-      width: width.interpolateTo(to.width, amount: amount),
-      height: height.interpolateTo(to.height, amount: amount))
   }
 
   /// Returns the scale float that will fit the receive inside of the given size.
@@ -351,9 +259,7 @@ struct CGLine {
 infix operator +|
 infix operator +-
 
-// MARK: - CGPoint + Interpolatable
-
-extension CGPoint: Interpolatable {
+extension CGPoint {
 
   /// Returns the length between the receiver and *CGPoint.zero*
   var vectorLength: CGFloat {
@@ -403,27 +309,6 @@ extension CGPoint: Interpolatable {
     CGPoint(x: round(decimal * x) / decimal, y: round(decimal * y) / decimal)
   }
 
-  /**
-   Interpolates the receiver to the given Point by Amount.
-   - Parameter to: The Point to interpolate to.
-   - Parameter amount: The amount to interpolate from 0-1
-
-   ```
-   let point = CGPoint(width: 50, height: 50)
-   let interpolated = rect.interpolateTo(CGPoint(width: 100, height: 100), amount: 0.5)
-   print(interpolated)
-   // Result: (x: 75, y: 75)
-   ```
-
-   1. The amount can be greater than one and less than zero. The interpolation will not be clipped.
-   */
-
-  func interpolate(_ to: CGPoint, amount: CGFloat) -> CGPoint {
-    CGPoint(
-      x: x.interpolateTo(to.x, amount: amount),
-      y: y.interpolateTo(to.y, amount: amount))
-  }
-
   func interpolate(
     _ to: CGPoint,
     outTangent: CGPoint,
@@ -445,7 +330,7 @@ extension CGPoint: Interpolatable {
       colinear(outTangent, inTangent) == true,
       outTangent.colinear(inTangent, to) == true
     {
-      return interpolate(to, amount: amount)
+      return interpolate(to: to, amount: amount)
     }
 
     let step = 1 / CGFloat(samples)
@@ -456,10 +341,9 @@ extension CGPoint: Interpolatable {
     var previousPoint = self
     var previousAmount = CGFloat(0)
 
-    var closestPoint: Int = 0
+    var closestPoint = 0
 
     while previousAmount < 1 {
-
       previousAmount = previousAmount + step
 
       if previousAmount < amount {
@@ -476,7 +360,7 @@ extension CGPoint: Interpolatable {
     let accurateDistance = amount * totalLength
     var point = points[closestPoint]
 
-    var foundPoint: Bool = false
+    var foundPoint = false
 
     var pointAmount = CGFloat(closestPoint) * step
     var nextPointAmount: CGFloat = pointAmount + step
@@ -532,35 +416,22 @@ extension CGPoint: Interpolatable {
   }
 
   func pointOnPath(_ to: CGPoint, outTangent: CGPoint, inTangent: CGPoint, amount: CGFloat) -> CGPoint {
-    let a = interpolate(outTangent, amount: amount)
-    let b = outTangent.interpolate(inTangent, amount: amount)
-    let c = inTangent.interpolate(to, amount: amount)
-    let d = a.interpolate(b, amount: amount)
-    let e = b.interpolate(c, amount: amount)
-    let f = d.interpolate(e, amount: amount)
+    let a = interpolate(to: outTangent, amount: amount)
+    let b = outTangent.interpolate(to: inTangent, amount: amount)
+    let c = inTangent.interpolate(to: to, amount: amount)
+    let d = a.interpolate(to: b, amount: amount)
+    let e = b.interpolate(to: c, amount: amount)
+    let f = d.interpolate(to: e, amount: amount)
     return f
   }
 
   func colinear(_ a: CGPoint, _ b: CGPoint) -> Bool {
     let area = x * (a.y - b.y) + a.x * (b.y - y) + b.x * (y - a.y);
     let accuracy: CGFloat = 0.05
-    if area < accuracy && area > -accuracy {
+    if area < accuracy, area > -accuracy {
       return true
     }
     return false
-  }
-
-  func interpolateTo(_ to: CGPoint, amount: CGFloat, spatialOutTangent: CGPoint?, spatialInTangent: CGPoint?) -> CGPoint {
-    guard
-      let outTan = spatialOutTangent,
-      let inTan = spatialInTangent else
-    {
-      return interpolate(to, amount: amount)
-    }
-    let cp1 = self + outTan
-    let cp2 = to + inTan
-
-    return interpolate(to, outTangent: cp1, inTangent: cp2, amount: amount)
   }
 
   /// Subtracts the given point from the receiving point.

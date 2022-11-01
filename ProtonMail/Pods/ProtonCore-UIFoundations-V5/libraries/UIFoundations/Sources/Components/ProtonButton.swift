@@ -195,7 +195,7 @@ public class ProtonButton: UIButton, AccessibleView {
             setBackgroundColor(ColorProvider.InteractionWeakDisabled, forState: .highlighted)
             setBackgroundColor(ColorProvider.InteractionWeakDisabled, forState: .selected)
             setBackgroundColor(ColorProvider.BackgroundNorm, forState: .disabled)
-            layer.borderColor = ColorProvider.BrandNorm.cgColor
+            layer.borderColor = ColorProvider.BrandNorm
         }
     }
 

@@ -34,12 +34,13 @@ public class PMBanner: UIView, AccessibleView {
     private let attributedString: NSAttributedString?
     private let icon: UIImage?
     public let style: PMBannerStyleProtocol
-    private let dismissDuration: TimeInterval
-    private var iconButton: UIImage?
+    private var dismissDuration: TimeInterval
     private var bannerHandler: ((PMBanner) -> Void)?
-    public var iconButtonHandler: ((PMBanner) -> Void)?
-    private var textButton: String?
-    public var textButtonHandler: ((PMBanner) -> Void)?
+    private var actionButton: UIButton?
+    private var buttonText: String?
+    private var buttonIcon: UIImage?
+    public private(set) var buttonHandler: ((PMBanner) -> Void)?
+    private var activityIndicator: UIActivityIndicatorView?
     private var textView: UITextView?
     private var linkAttributed: [NSAttributedString.Key: Any]?
     public var linkHandler: ((PMBanner, URL) -> Void)?
@@ -132,8 +133,9 @@ extension PMBanner {
     ///   - icon: Icon of button
     ///   - handler: A block to execute when the user clicks the button.
     public func addButton(icon: UIImage, handler: ((PMBanner) -> Void)?) {
-        self.iconButton = icon
-        self.iconButtonHandler = handler
+        assert(self.buttonText == nil, "Only accept text button or icon button")
+        self.buttonIcon = icon
+        self.buttonHandler = handler
     }
 
     /// Add a text button on bottom-right
@@ -141,8 +143,28 @@ extension PMBanner {
     ///   - icon: Icon of button
     ///   - handler: A block to execute when the user clicks the button.
     public func addButton(text: String, handler: ((PMBanner) -> Void)?) {
-        self.textButton = text
-        self.textButtonHandler = handler
+        assert(self.buttonIcon == nil, "Only accept text button or icon button")
+        self.buttonText = text
+        self.buttonHandler = handler
+    }
+
+    /// Show loading if there is a button on the right side
+    public func setup(isLoading: Bool, dismissDuration: TimeInterval? = nil) {
+        createActivityIndicator()
+        guard let actionButton = self.actionButton,
+              let activityIndicator = activityIndicator else { return }
+        if isLoading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
+        if let duration = dismissDuration {
+            self.dismissDuration = duration
+            self.setupDismissTimer(duration: duration)
+        }
+
+        actionButton.isHidden = isLoading
+        actionButton.isUserInteractionEnabled = !isLoading
     }
 
     /// Add appearance style and handler for link set by `NSAttributedString`
@@ -233,12 +255,15 @@ extension PMBanner {
     private func setupElements() {
         subviews.forEach { $0.removeFromSuperview() }
         let imgView = self.setup(icon)
-        let iconBtn = self.setup(iconButton, handler: iconButtonHandler)
-        let textBtn = self.setup(textButton, handler: textButtonHandler)
+        if self.buttonText != nil && self.buttonIcon != nil {
+            assert(false, "Only text or icon")
+        }
+        let iconBtn = self.setup(buttonIcon: buttonIcon)
+        let textBtn = self.setup(buttonText: buttonText)
+        self.actionButton = iconBtn ?? textBtn
         let textView = self.createMessage(message: message, attributedString: attributedString)
         self.textView = textView
-        self.textView?.isUserInteractionEnabled = false
-        self.setupConstraintFor(textView, by: imgView, iconBtn, textBtn)
+        self.setupConstraintFor(textView, by: imgView, self.actionButton)
     }
 
     /// Initialize icon of `PMBanner` which is on top-left and its constraints
@@ -260,10 +285,9 @@ extension PMBanner {
     }
 
     /// Initialize icon button of `PMBanner` which is on top-right and its constraints
-    private func setup(_ iconButton: UIImage?, handler: ((PMBanner) -> Void)?) -> UIButton? {
-        guard let icon = iconButton else { return nil }
-        
-        self.iconButtonHandler = handler
+    private func setup(buttonIcon: UIImage?) -> UIButton? {
+        guard let icon = buttonIcon else { return nil }
+
         // normal button image
         let btn = UIButton()
         let imageView = createPaddingImageView(image: icon)
@@ -295,7 +319,7 @@ extension PMBanner {
             btn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -constant).prioritised(as: .defaultLow.lower)
         ])
 
-        btn.addTarget(self, action: #selector(self.clickIconButton), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(self.clickActionButton), for: .touchUpInside)
         return btn
     }
     
@@ -308,13 +332,12 @@ extension PMBanner {
     }
 
     /// Initialize text button of `PMBanner` which is on bottom-right and its constraints
-    private func setup(_ textButton: String?, handler: ((PMBanner) -> Void)?) -> UIButton? {
+    private func setup(buttonText: String?) -> UIButton? {
 
-        guard let text = textButton else {
+        guard let text = buttonText else {
             return nil
         }
 
-        self.textButtonHandler = handler
         let btn = UIButton()
         btn.setTitle(text, for: .normal)
         btn.setBackgroundColor(self.style.assistBgColor, forState: .normal)
@@ -346,7 +369,7 @@ extension PMBanner {
             ])
         }
         btn.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
-        btn.addTarget(self, action: #selector(self.clickTextButton), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(self.clickActionButton), for: .touchUpInside)
         return btn
     }
 
@@ -390,10 +413,10 @@ extension PMBanner {
     }
 
     /// Setup constraints of message textView
-    private func setupConstraintFor(_ textView: UITextView, by iconView: UIImageView?, _ iconBtn: UIButton?, _ textBtn: UIButton?) {
+    private func setupConstraintFor(_ textView: UITextView, by iconView: UIImageView?, _ actionButton: UIButton?) {
 
         let leftRef = iconView?.trailingAnchor ?? self.leadingAnchor
-        let rightRef = textBtn?.leadingAnchor ?? iconBtn?.leadingAnchor ?? self.trailingAnchor
+        let rightRef = actionButton?.leadingAnchor ?? self.trailingAnchor
 
         NSLayoutConstraint.activate([
             textView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
@@ -520,6 +543,28 @@ extension PMBanner {
                                   y: newY)
         }
     }
+
+    private func createActivityIndicator() {
+        if activityIndicator != nil { return }
+        if #available(iOS 13.0, *) {
+            activityIndicator = UIActivityIndicatorView(style: .medium)
+            activityIndicator?.color = self.style.assistTextColor
+        } else {
+            activityIndicator = UIActivityIndicatorView(style: .white)
+        }
+        guard let activityIndicator = activityIndicator,
+              let actionButton = self.actionButton else { return }
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        bringSubviewToFront(activityIndicator)
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: actionButton.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor)
+        ])
+        layoutIfNeeded()
+    }
 }
 
 // MARK: Action
@@ -527,17 +572,13 @@ extension PMBanner {
     @objc private func clickBanner() {
         self.bannerHandler?(self)
     }
-    
-    @objc private func clickIconButton() {
-        self.iconButtonHandler?(self)
-    }
 
-    @objc private func clickTextButton() {
-        self.textButtonHandler?(self)
+    @objc private func clickActionButton() {
+        self.buttonHandler?(self)
     }
 
     @objc private func bannerPan(ges: UIPanGestureRecognizer) {
-        if style.lockSwipeWhenButton, (textButton != nil || iconButton != nil) { return }
+        if style.lockSwipeWhenButton, (buttonText != nil || buttonIcon != nil) { return }
         switch ges.state {
         case .began:
             self.invalidateTimer()
@@ -585,5 +626,9 @@ extension PMBanner: UITextViewDelegate {
             _handler(self, URL)
         }
         return false
+    }
+
+    public func textViewDidChangeSelection(_ textView: UITextView) {
+        textView.selectedTextRange = nil
     }
 }

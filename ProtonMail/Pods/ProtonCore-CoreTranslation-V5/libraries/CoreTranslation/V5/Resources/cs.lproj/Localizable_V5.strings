@@ -1,3 +1,72 @@
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ z %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Globální přístup ke streamovacím službám";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Vestavěný blokátor reklam (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Zkontrolujte své připojení";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Problémy s připojením";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Prodloužit předplatné";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Bezplatná VPN na jednom zařízení";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Získejte %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Získejte Proton zdarma";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Nejvyšší rychlost VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Jeden plán pro všechny Proton služby";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Prostřednictvím této aplikace je k dispozici pouze roční předplatné, které nelze obnovit";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Plán úspěšně aktualizován";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Servery Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Přísné zásady neukládání záznamů";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Bezplatný startovací účet, který ve výchozím nastavení poskytuje soukromí všem.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Řešení e-mailu a kalendáře pro každodenní komunikaci s ohledem na soukromí.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Nejvyšší balíček ochrany soukromí s přístupem ke všem prémiovým službám Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "TOR skrze VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Až %@ úložného prostoru";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Vaše soukromí a bezpečnost jsou pro nás prioritou.";
+
 /* Welcome screen */
 "Privacy by default" = "Soukromí především";
 
