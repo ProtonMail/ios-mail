@@ -41,7 +41,8 @@ class PGPMimeAddressBuilder: PackageBuilder {
             guard let publicKey = self.sendPreferences.publicKeys else {
                 fatalError("Missing PGP key")
             }
-            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
+            let newKeypacket = try self.session
+                .getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
             let newEncodedKey = newKeypacket?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
 

@@ -37,6 +37,7 @@ private enum EmbeddedDownloadStatus {
     case none, downloading, finish
 }
 
+// swiftlint:disable type_body_length
 final class MessageInfoProvider {
     private var checkerDependencies: MessageSenderPGPChecker.Dependencies {
         let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))

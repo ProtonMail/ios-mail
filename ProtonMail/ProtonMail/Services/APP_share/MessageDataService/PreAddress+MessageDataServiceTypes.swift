@@ -1,3 +1,4 @@
+// swiftlint:disable:this file_name
 //
 //  MessageDataService+Builder.swift
 //  Proton Mail - Created on 4/12/18.

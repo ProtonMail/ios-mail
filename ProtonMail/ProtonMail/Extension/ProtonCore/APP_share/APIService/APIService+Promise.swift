@@ -30,7 +30,8 @@ public extension APIService {
     func run<T>(route: Request) -> Promise<T> where T: Response {
 
         let deferred = Promise<T>.pending()
-        let completionWrapper: (URLSessionDataTask?, Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
+        typealias Completion = (URLSessionDataTask?, Swift.Result<JSONDictionary, ResponseError>) -> Void
+        let completionWrapper: Completion = { task, result in
             switch Response.parseNetworkCallResults(
                 responseObject: T(),
                 originalResponse: task?.response,

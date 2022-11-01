@@ -25,7 +25,9 @@ class ImageProxy: LifetimeTrackable {
         .init(maxCount: 1)
     }
 
-    private static let imageCache = Cache<URL, RemoteImage>(totalCostLimit: Constants.ImageProxy.cacheMemoryLimitInBytes)
+    private static let imageCache = Cache<URL, RemoteImage>(
+        totalCostLimit: Constants.ImageProxy.cacheMemoryLimitInBytes
+    )
 
     private let dependencies: Dependencies
 

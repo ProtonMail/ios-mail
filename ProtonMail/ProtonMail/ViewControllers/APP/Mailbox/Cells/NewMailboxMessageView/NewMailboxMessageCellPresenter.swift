@@ -51,9 +51,15 @@ class NewMailboxMessageCellPresenter {
             view.checkBoxView.isHidden = false
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
-            let backgroundColor: UIColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
+            let backgroundColor: UIColor
+            if isSelected {
+                backgroundColor = ColorProvider.InteractionNorm
+                view.checkBoxView.tickImageView.image = IconProvider.checkmark
+            } else {
+                backgroundColor = ColorProvider.BackgroundSecondary
+                view.checkBoxView.tickImageView.image = nil
+            }
             view.checkBoxView.backgroundColor = backgroundColor
-            view.checkBoxView.tickImageView.image = isSelected ? IconProvider.checkmark : nil
             if #available(iOS 13, *) {
                 view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
                     .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
@@ -79,6 +85,7 @@ class NewMailboxMessageCellPresenter {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func presentContent(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {
         view.forwardImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.forwardImageView.isHidden = !viewModel.isForwarded

@@ -84,7 +84,8 @@ class SliderTableViewCell: UITableViewCell {
         ])
     }
 
-    @objc func sliderValueChanged(_ sender: UISlider) {
+    @objc
+    func sliderValueChanged(_ sender: UISlider) {
         self.callback?(sender.value)
     }
 

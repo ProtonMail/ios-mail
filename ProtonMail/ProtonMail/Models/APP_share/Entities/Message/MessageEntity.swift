@@ -133,7 +133,7 @@ struct MessageEntity: Equatable, Hashable {
         rawParsedHeaders?.parseObjectAny() ?? [:]
     }
 
-    // swiftlint:disable:function_body_length
+    // swiftlint:disable function_body_length
     init(_ message: Message) {
         self.messageID = MessageID(message.messageID)
         self.addressID = AddressID(message.addressID ?? "")
