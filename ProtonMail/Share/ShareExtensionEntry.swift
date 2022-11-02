@@ -43,6 +43,8 @@ class ShareExtensionEntry: UINavigationController {
         #if DEBUG
         PMAPIService.noTrustKit = true
         #endif
+        DFSSetting.enableDFS = true
+        DFSSetting.limitToXXXLarge = true
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
         if #available(iOSApplicationExtension 15.0, *) {
