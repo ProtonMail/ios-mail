@@ -1086,9 +1086,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorovat varování a pokračovat";
 
-/* immediately send message Action */
-"Immediately" = "Okamžitě";
-
 /* Action */
 "Import Error" = "Chyba importu";
 
@@ -1232,14 +1229,8 @@
 /* Button inside the banner */
 "Load anyway" = "Přesto načíst";
 
-/* No comment provided by engineer. */
-"Load content" = "Načíst obsah";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Načíst vložené obrázky";
-
-/* No comment provided by engineer. */
-"Load images" = "Načíst obrázky";
 
 /* Action
    The title of loading remote content banner. */
@@ -1379,9 +1370,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Gesta pro Zprávy";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Zpráva bude odeslána %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Stahují se zprávy pro vyhledávání obsahu. Některé výsledky se nemusí zobrazit. %1$@";
@@ -2369,21 +2357,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o kreditní kartě.\n%@\n\nKvůli vaší bezpečnosti, nepokračujte.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Tato zpráva obsahuje vložené obrázky.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Tato zpráva obsahuje vzdálený obsah a vložené obrázky";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Tato zpráva obsahuje vzdálený obsah.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Tato zpráva byla automaticky vygenerována jako odpověď na předchozí zprávu.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Zpráva pochází z e-mailového seznamu.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Tato zpráva již není naplánována k pozdějšímu odeslání. Pokud ji chcete odeslat později, můžete klepnout na možnost \"Naplánovat odeslání\"";
 
@@ -2459,9 +2432,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Důvěryhodné klíče nejsou použitelné pro odesílání";
-
-/* Try again action */
-"Try again" = "Zkuste to znovu";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
@@ -2541,9 +2511,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Odebrat hvězdičku";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Odhlásit odběr";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Odhlásit se z odběru";

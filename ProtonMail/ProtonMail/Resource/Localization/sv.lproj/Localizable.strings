@@ -1089,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorera varning och fortsätt";
 
-/* immediately send message Action */
-"Immediately" = "Omedelbart";
-
 /* Action */
 "Import Error" = "Importfel";
 
@@ -1235,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Ladda ändå";
 
-/* No comment provided by engineer. */
-"Load content" = "Ladda innehåll";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ladda inbäddade bilder";
-
-/* No comment provided by engineer. */
-"Load images" = "Ladda bilder";
 
 /* Action
    The title of loading remote content banner. */
@@ -1382,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Svepåtgärder för meddelande";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Meddelandet kommer att skickas den %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Meddelanden laddas ner för innehållssökning. Några resultat kanske inte visas. %1$@";
@@ -2361,7 +2349,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post har misslyckats med sin domäns autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en ProtonMail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
@@ -2371,21 +2359,6 @@
 
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Denna länk leder till en webbplats som kanske försöker stjäla din information, såsom lösenord och kreditkortsuppgifter.%@För din säkerhet, fortsätt inte.";
-
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Detta meddelande innehåller inbäddade bilder.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Detta meddelande innehåller fjärrinnehåll och inbäddade bilder";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Detta meddelande innehåller fjärrinnehåll.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Detta meddelande är automatiskt genererat som svar på ett tidigare meddelande.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Detta meddelande är från en e-postlista.";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Detta meddelande är inte längre planerad att skickas senare. Om du fortfarande vill sända det senare kan du klicka på \"Schemalagd sändning\"";
@@ -2462,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betrodda nycklar är inte giltiga för att skicka";
-
-/* Try again action */
-"Try again" = "Försök igen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
@@ -2544,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Ta bort stjärnmärkning";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Avsluta prenumeration";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Avregistrera dig från e-postlista";
@@ -2760,7 +2727,7 @@
 "Your folders" = "Dina mappar";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda Proton Mail! Du kan också manuellt kryptera meddelanden till dem om de inte använder Proton Mail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda Proton Mail! Du kan också manuellt kryptera meddelanden till dem om de inte använder Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";

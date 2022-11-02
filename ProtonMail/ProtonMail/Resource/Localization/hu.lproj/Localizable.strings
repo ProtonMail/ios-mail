@@ -757,9 +757,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Figyelmeztetés figyelmen kívül hagyása és folytatás";
 
-/* immediately send message Action */
-"Immediately" = "Azonnal";
-
 /* Action */
 "Import Error" = "Importálási hiba";
 
@@ -878,9 +875,6 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Korlát elérve";
-
-/* No comment provided by engineer. */
-"Load content" = "Tartalom betöltése";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Beágyazott képek betöltése";
@@ -1745,18 +1739,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ez a hivatkozás egy olyan weboldalhoz vezet, amely ellophatja személyes adatait, mint például a jelszavait vagy a bankkártyája adatait.\n%@\n\nA biztonsága érdekében, ne folytassa.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Ez az üzenet beágyazott képet tartalmaz.";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Ez az üzenet \"Távoli tartalmat\" tartalmaz.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Ez egy automatikusan generált üzenet, válaszként egy korábbi üzenetre.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Ez az üzenet levelezési listáról érkezett.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ez az üzenet lehetséges, hogy egy adathalászati kísérlet! Kérjük, alaposan ellenőrizze, hogy a feladó és az üzenet szövege megbízható-e.";
 
@@ -1799,9 +1781,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "A küldéshez nem érvényesek a megbízhatóként megjelölt kulcsok";
-
-/* Try again action */
-"Try again" = "Próbálja újra";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
@@ -1875,9 +1854,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Csillagozás törlése";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Leiratkozás";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Leiratkozás levelezési listáról";

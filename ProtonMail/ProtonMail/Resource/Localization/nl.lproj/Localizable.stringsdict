@@ -325,9 +325,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton vond en blokkeerde %d tracker in dit bericht.</string>
+			<string>Proton heeft %d tracker gevonden en geblokkeerd in dit bericht.</string>
 			<key>other</key>
-			<string>Proton vond en blokkeerde %d trackers in dit bericht.</string>
+			<string>Proton heeft %d trackers gevonden en geblokkeerd in dit bericht.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>

@@ -964,9 +964,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽略警告並繼續";
 
-/* immediately send message Action */
-"Immediately" = "立即";
-
 /* Action */
 "Import Error" = "匯入錯誤";
 
@@ -1098,14 +1095,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "已達上限";
 
-/* No comment provided by engineer. */
-"Load content" = "載入內容";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "載入內崁圖像";
-
-/* No comment provided by engineer. */
-"Load images" = "載入圖像";
 
 /* Action
    The title of loading remote content banner. */
@@ -1233,9 +1224,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "郵件滑動操作";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "郵件將於 %@ 傳送";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "您所傳送的郵件可以設置為在特定時間段後自動刪除。";
@@ -1988,7 +1976,7 @@
 
 /* menu title
    The title of a subscription plans screen */
-"Subscription" = "訂閱";
+"Subscription" = "訂購授權";
 
 /* (No Comment) */
 "Support Proton Mail" = "支持 Proton Mail";
@@ -2169,21 +2157,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此連結指向的網站可能試圖竊取您的資訊，如密碼與信用卡詳細資訊等。\n%@\n\n出於安全考慮，切勿打開此連結。";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "此郵件包含內嵌圖像。";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "此郵件包含遠端內容與內崁圖像";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "此郵件包含遠端內容。";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "此訊息將自動產生以回覆前一個訊息。";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "此郵件來自郵寄清單。";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "這封郵件之後就不再排程傳送。 如果您仍想稍後傳送，可以點擊“排程傳送”";
 
@@ -2260,9 +2233,6 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密鑰用於寄送時無效";
 
-/* Try again action */
-"Try again" = "再試一次";
-
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
 
@@ -2338,9 +2308,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "移除星號";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "取消訂購";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "取消訂閱接收郵件";

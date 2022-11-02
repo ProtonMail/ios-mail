@@ -1077,9 +1077,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Hunsa viðvörun og halda áfram";
 
-/* immediately send message Action */
-"Immediately" = "Strax";
-
 /* Action */
 "Import Error" = "Innflutningsvilla";
 
@@ -1217,14 +1214,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Takmörkum náð";
 
-/* No comment provided by engineer. */
-"Load content" = "Hlaða inn efni";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
-
-/* No comment provided by engineer. */
-"Load images" = "Hlaða inn myndum";
 
 /* Action
    The title of loading remote content banner. */
@@ -2279,21 +2270,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Þessi hlekkur leiðir til vefsíðu sem gæti verið að reyna að stela þínum upplýsingum, svo sem lykilorða- og kreditkortaupplýsingum.\n%@\n\nTil öryggis skaltu ekki halda áfram.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Skilaboðin innihalda ívafnar myndir.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Þessi skilaboð innihalda fjartengt efni og innfelldar myndir";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Skilaboðin innihalda fjartengt efni.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Þessi skilaboð eru útbúin sjálfvirkt sem svar við fyrri skilaboðum.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Þessi skilaboð eru send frá póstlista.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Ekki er lengur áætlað að senda þessi skilaboð síðar. Ef þú vilt samt senda þau seinna geturðu smellt á „Tímasett sending“";
 
@@ -2366,9 +2342,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Treystir dulritunarlyklar eru ekki gildir fyrir sendingu";
-
-/* Try again action */
-"Try again" = "Reyna aftur";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
@@ -2448,9 +2421,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjarlægja stjörnugjöf";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Segja upp áskrift";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Segja upp áskrift að póstlista";
