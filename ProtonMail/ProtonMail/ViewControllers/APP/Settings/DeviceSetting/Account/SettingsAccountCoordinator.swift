@@ -114,8 +114,9 @@ class SettingsAccountCoordinator {
     }
 
     private func openPrivacy() {
-        let coordinator = SettingsPrivacyCoordinator(navigationController: self.navigationController, services: self.services)
-        coordinator.start()
+        let viewModel = PrivacySettingViewModel(user: viewModel.userManager, metaStrippingProvider: userCachedStatus)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func openFolderManagement(type: PMLabelType) {
@@ -129,13 +130,13 @@ class SettingsAccountCoordinator {
 
     private func openConversationSettings() {
         let user = self.viewModel.userManager
-        let viewModel = SettingsConversationViewModel(
-            conversationStateService: user.conversationStateService,
+        let viewModel = ConversationSettingViewModel(
             updateViewModeService: UpdateViewModeService(apiService: user.apiService),
+            conversationStateService: user.conversationStateService,
             eventService: user.eventsService
         )
-        let viewController = SettingsConversationViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 
     private func openUndoSendSettings() {

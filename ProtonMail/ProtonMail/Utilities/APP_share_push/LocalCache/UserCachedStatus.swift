@@ -478,7 +478,7 @@ extension UserCachedStatus: CacheStatusInject {
     }
 }
 
-extension UserCachedStatus {
+extension UserCachedStatus: AttachmentMetadataStrippingProtocol {
     var metadataStripping: AttachmentMetadataStripping {
         get {
             guard let string = KeychainWrapper.keychain.string(forKey: Key.metadataStripping),
