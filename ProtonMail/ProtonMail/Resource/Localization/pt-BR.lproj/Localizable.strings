@@ -1089,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorar aviso e continuar";
 
-/* immediately send message Action */
-"Immediately" = "Imediatamente";
-
 /* Action */
 "Import Error" = "Erro de importação";
 
@@ -1235,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Carregar mesmo assim";
 
-/* No comment provided by engineer. */
-"Load content" = "Carregar conteúdo";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carregar imagens incorporadas";
-
-/* No comment provided by engineer. */
-"Load images" = "Carregar imagem";
 
 /* Action
    The title of loading remote content banner. */
@@ -1382,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Ações ao deslizar nas mensagens";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "A mensagem será enviada em %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "As mensagens estão sendo baixadas para pesquisa de conteúdo. Alguns resultados podem não ser exibidos. %1$@";
@@ -2372,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Esse link leva a um site que pode estar tentando roubar suas informações, como senhas e detalhes de cartão de crédito.\n%@\n\nPara sua segurança, não prossiga.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Esta mensagem contém imagens incorporadas.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Esta mensagem contém conteúdo remoto e imagens incorporadas";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Esta mensagem contém conteúdo remoto.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Esta mensagem é automaticamente gerada como uma resposta a uma mensagem anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Esta mensagem é de uma lista de endereços.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Esta mensagem não está mais programada para ser enviada mais tarde. Se você ainda quiser enviá-lo mais tarde, toque em \"Agendar envio\"";
 
@@ -2462,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "As chaves confiáveis não são válidas para o envio";
-
-/* Try again action */
-"Try again" = "Tentar novamente";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente conectar ao Proton a partir de uma rede diferente (ou use o %1$@ ou %2$@).";
@@ -2544,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Remover estrela";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Cancelar inscrição";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar a inscrição na lista de distribuição de e-mails";

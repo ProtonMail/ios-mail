@@ -325,7 +325,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
+			<string>Proton encontró y bloqueó %d rastreador en este mensaje.</string>
 			<key>other</key>
 			<string>Proton encontró y bloqueó %d rastreadores en este mensaje.</string>
 			<key>zero</key>

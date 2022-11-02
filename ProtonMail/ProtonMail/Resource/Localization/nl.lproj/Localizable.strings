@@ -757,7 +757,7 @@
 "Edit" = "Bewerken";
 
 /* The title for the view where user can select the color for the group */
-"Edit avatar" = "Bewerk profielafbeelding";
+"Edit avatar" = "Profielafbeelding bewerken";
 
 /* *
  *  Edit Contact view controller */
@@ -795,13 +795,13 @@
 "Email addresses" = "E-mailadressen";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "E-mailcontact";
+"Email contact" = "Contact e-mailen";
 
 /* title */
-"Email domain invalid" = "Ongeldig e-mail domein";
+"Email domain invalid" = "Ongeldig e-maildomein";
 
 /* Name of the feature */
-"Email tracking protection" = "E-mailtrackingsbescherming";
+"Email tracking protection" = "Bescherming tegen e-mailtracking";
 
 /* "Cancel" */
 "Empty Folder" = "Map leegmaken";
@@ -810,7 +810,7 @@
 "Empty Spam" = "Spam leegmaken";
 
 /* Alert title */
-"Empty spam folder" = "Map spam leegmaken";
+"Empty spam folder" = "Spamfolder leegmaken";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Prullenbak leegmaken";
@@ -826,7 +826,7 @@
 "Enable email notices" = "Schakel e-mailberichten in";
 
 /* (No Comment) */
-"Enable Pin Protection" = "Activeer PIN beveiliging";
+"Enable Pin Protection" = "Activeer PIN-beveiliging";
 
 /* Title */
 "Enable signature" = "Handtekening inschakelen";
@@ -1024,9 +1024,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Waarschuwing negeren en doorgaan";
 
-/* immediately send message Action */
-"Immediately" = "Onmiddellijk";
-
 /* Action */
 "Import Error" = "Fout bij importeren";
 
@@ -1167,14 +1164,8 @@
 /* Button inside the banner */
 "Load anyway" = "Toch laden";
 
-/* No comment provided by engineer. */
-"Load content" = "Inhoud laden";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ingesloten afbeeldingen laden";
-
-/* No comment provided by engineer. */
-"Load images" = "Afbeeldingen laden";
 
 /* Action
    The title of loading remote content banner. */
@@ -1206,7 +1197,7 @@
 "Logged out of %@" = "Afgemeld van %@";
 
 /* error title */
-"Logs" = "Logs";
+"Logs" = "Logboeken";
 
 /* cell title in device settings */
 "Mailbox" = "Mailbox";
@@ -1302,9 +1293,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Bericht veeg acties";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Bericht wordt verzonden op %@";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
@@ -1813,9 +1801,6 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing rapporteren";
 
-/* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar Proton Mail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.";
-
 /* link opeining confirmation */
 "Request link confirmation" = "Bevestigingslink aanvragen";
 
@@ -2244,21 +2229,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Deze link leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.\n%@\n\nGa voor uw veiligheid niet verder.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Dit bericht bevat ingebedde afbeeldingen.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Dit bericht bevat inhoud op afstand en ingesloten afbeeldingen";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Dit bericht bevat externe inhoud.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Dit bericht is automatisch aangemaakt als reactie op een voorgaand bericht.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Dit bericht komt van een mailinglist.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Dit bericht is mogelijk een poging tot phishing. Controleer de afzender en de inhoud om te controleren dat de afzender van het bericht van legitiem is.";
 
@@ -2322,9 +2292,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Vertrouwde sleutels zijn niet geldig om mee te verzenden";
-
-/* Try again action */
-"Try again" = "Opnieuw proberen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
@@ -2401,9 +2368,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Ster verwijderen";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Afmelden";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Afmelden van mailinglijst";
@@ -2547,7 +2511,7 @@
 "You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via protonmail.com/support. U kunt ook bugs melden via de app.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "U kunt nu uw berichten plannen om ze later te versturen";

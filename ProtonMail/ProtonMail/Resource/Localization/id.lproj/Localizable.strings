@@ -1089,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Abaikan peringatan dan lanjut";
 
-/* immediately send message Action */
-"Immediately" = "Segera";
-
 /* Action */
 "Import Error" = "Kesalahan Impor";
 
@@ -1235,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Tetap muat";
 
-/* No comment provided by engineer. */
-"Load content" = "Muat konten";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Muat gambar yang tersemat";
-
-/* No comment provided by engineer. */
-"Load images" = "Muat gambar";
 
 /* Action
    The title of loading remote content banner. */
@@ -1382,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Gestur Usap Pesan";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Pesan akan dikirim pada %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Sebagian pesan tidak diikutsertakan dalam pencarian konten pesan. Beberapa hasil pencarian mungkin tidak akan dimunculkan. %1$@";
@@ -2372,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju pada situs web yang dapat mencuri informasi pribadi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.\n%@\n\nDemi keamanan Anda, jangan buka tautan ini.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Pesan ini mengandung gambar yang tersemat.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Pesan ini mengandung remote content dan gambar yang tersemat";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Pesan ini mengandung remote content.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Pesan ini dibuat secara otomatis sebagai respon terhadap pesan sebelumnya.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Pesan ini berasal dari milis.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Pesan ini tidak lagi dijawalkan untuk dikirim. Apabila Anda masih ingin menjadwalkan pesan ini, Anda dapat mengetuk \"Jadwalkan pengiriman\"";
 
@@ -2462,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Kunci terpercaya tidak valid untuk mengirim";
-
-/* Try again action */
-"Try again" = "Coba lagi";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Cobalah untuk terhubung ke Proton melalui jaringan yang berbeda (atau gunakan %1$@ atau %2$@).";
@@ -2544,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Hapus bintang";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Berhenti berlangganan";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Berhenti berlangganan milis";

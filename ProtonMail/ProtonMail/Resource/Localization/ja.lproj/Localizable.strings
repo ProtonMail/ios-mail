@@ -970,9 +970,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "警告を無視して続行";
 
-/* immediately send message Action */
-"Immediately" = "切替/終了時に直ちに";
-
 /* Action */
 "Import Error" = "インポート エラー";
 
@@ -1104,14 +1101,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "アカウントの利用上限に到達しました";
 
-/* No comment provided by engineer. */
-"Load content" = "コンテンツを読み込む";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "埋め込み画像を読み込む";
-
-/* No comment provided by engineer. */
-"Load images" = "画像を読み込む";
 
 /* Action
    The title of loading remote content banner. */
@@ -2159,21 +2150,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "このリンクはパスワードやクレジットカードなどの情報を盗もうとするウェブサイトに誘導している可能性があります。\n%@\n\nセキュリティのため、アクセスしないでください。";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "このメッセージには埋め込み画像が含まれています。";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "このメッセージには外部コンテンツと埋め込み画像が含まれています。";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "このメッセージにはリモートコンテンツが含まれています。";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "このメッセージは以前のメッセージに対する自動応答です。";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "これはメーリングリストからのメッセージです。";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "このメッセージはフィッシングの可能性があります。送信者と内容をチェックし、正当なものか確認してください。";
 
@@ -2240,9 +2216,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "信頼された鍵が送信に使用できません";
-
-/* Try again action */
-"Try again" = "再試行";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
@@ -2319,9 +2292,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "星印を外す";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "登録解除";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "メーリングリストの登録を解除";

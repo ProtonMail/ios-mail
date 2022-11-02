@@ -855,9 +855,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Zanemarite upozorenje i nastavite";
 
-/* immediately send message Action */
-"Immediately" = "Odmah";
-
 /* Action */
 "Import Error" = "Pogreška uvoza";
 
@@ -974,14 +971,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Ograničenje je dosegnuto";
 
-/* No comment provided by engineer. */
-"Load content" = "Učitaj sadržaj";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Učitaj ugrađene slike";
-
-/* No comment provided by engineer. */
-"Load images" = "Učitaj slike";
 
 /* Action
    The title of loading remote content banner. */
@@ -1904,18 +1895,6 @@
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Ova mapa je prazna";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Ova poruka sadrži ugrađene slike.";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Ova poruka sadrži udaljeni sadržaj.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Ova poruka se automatski stvara kao odgovor na prethodnu poruku.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Ovo poruka je s mailing liste.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.";
 
@@ -1961,9 +1940,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Pouzdani ključevi nisu valjani za slanje";
-
-/* Try again action */
-"Try again" = "Pokušaj ponovno";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Uključite ovu značajku za automatsko dovršavanje adresa e-pošte pomoću kontakata sa svih vaših prijavljenih računa.";
@@ -2037,9 +2013,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Ukloni zvjezdicu";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Otkaži pretplatu";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Otkazati pretplatu s mailing liste";

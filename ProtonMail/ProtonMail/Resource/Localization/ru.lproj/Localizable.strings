@@ -233,6 +233,9 @@
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Вы уверены, что хотите навсегда удалить это сообщение?";
 
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Вы уверены, что хотите безвозвратно удалить эти %d сообщения?";
+
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Вы уверены, что хотите выйти из %@?";
 
@@ -1086,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Игнорировать предупреждение и продолжить";
 
-/* immediately send message Action */
-"Immediately" = "Сразу";
-
 /* Action */
 "Import Error" = "Ошибка импорта";
 
@@ -1232,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Загрузить всё равно";
 
-/* No comment provided by engineer. */
-"Load content" = "Загрузите содержимое";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Показывать встроенные изображения";
-
-/* No comment provided by engineer. */
-"Load images" = "Загрузите рисунки";
 
 /* Action
    The title of loading remote content banner. */
@@ -1379,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Действия при жестах на сообщении";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Сообщение будет отправлено %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Сообщения скачиваются для поиска по содержимому. Некоторые результаты могут не отображаться. %1$@";
@@ -2369,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Эта ссылка ведет на сайт, который может пытаться украсть вашу информацию, например, пароли и данные кредитной карты.%@\n\nВ целях безопасности не продолжайте.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "В этом сообщении есть встроенные изображения.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "В этом сообщении есть внешнее содержимое и встроенные изображения";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "В этом сообщении есть внешнее содержимое.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Это сообщение автоматически создано в ответ на предыдущее сообщение.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Это сообщение из списка рассылки.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Это сообщение больше не планируется отправить позднее. Если вы все еще хотите отправить его позже, вы можете нажать \"Запланировать отправку\"";
 
@@ -2459,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Доверенные ключи не действительны для отправки";
-
-/* Try again action */
-"Try again" = "Попробовать снова";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Попробуйте подключиться к Proton из другой сети (или используйте %1$@ или %2$@).";
@@ -2541,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Неважное";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Отписаться";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Отписаться от списка рассылки";

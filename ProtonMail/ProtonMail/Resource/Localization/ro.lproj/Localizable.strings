@@ -1089,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorare avertisment și continuare";
 
-/* immediately send message Action */
-"Immediately" = "Imediat";
-
 /* Action */
 "Import Error" = "Eroare importare";
 
@@ -1235,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Continuare încărcare";
 
-/* No comment provided by engineer. */
-"Load content" = "Încărcare conținut";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Încărcare imagini integrate";
-
-/* No comment provided by engineer. */
-"Load images" = "Încărcare imagini";
 
 /* Action
    The title of loading remote content banner. */
@@ -1382,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Acțiuni glisare mesaje";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Mesajul va fi trimis %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Mesajele se descarcă pentru căutarea în conținut. Unele rezultate pot lipsi. %1$@";
@@ -2372,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Această legătură duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.\n%@\n\nPentru siguranță, nu continuați.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Acest mesaj conține imagini incluse.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Acest mesaj conține conținut la distanță și imagini incluse.";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Acest mesaj conține conținut de la distanță.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Acest mesaj este generat automat ca răspuns la un mesaj anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Acest mesaj este de la o listă de corespondență.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Aceste mesaj nu mai este programat să fie trimis ulterior. Dacă încă mai doriți să fie trimis ulterior, apăsați pe „Trimitere programată”.";
 
@@ -2462,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Cheile de încredere nu sunt valide pentru trimitere";
-
-/* Try again action */
-"Try again" = "Reîncercați";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
@@ -2544,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fără stea";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Dezabonare";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Dezabonare de la lista de discuții";

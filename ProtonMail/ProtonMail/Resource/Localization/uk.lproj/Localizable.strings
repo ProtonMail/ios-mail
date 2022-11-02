@@ -1089,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Нехтувати попередженням і продовжити";
 
-/* immediately send message Action */
-"Immediately" = "Негайно";
-
 /* Action */
 "Import Error" = "Помилка імпорту";
 
@@ -1235,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Все одно завантажити";
 
-/* No comment provided by engineer. */
-"Load content" = "Завантажити вміст";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Завантажити вбудовані зображення";
-
-/* No comment provided by engineer. */
-"Load images" = "Завантажити зображення";
 
 /* Action
    The title of loading remote content banner. */
@@ -1382,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Дії посування для повідомлень";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Повідомлення буде надіслано %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Повідомлення завантажуються для можливості пошуку їхнього вмісту. Деякі результати не можуть бути показані. %1$@";
@@ -2372,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Це посилання веде на вебсайт, який, можливо, намагається викрасти ваші дані, як-от паролі та дані кредитної картки.\n%@\n\nЗ міркувань безпеки не продовжуйте.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Це повідомлення містить вбудовані зображення.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Це повідомлення містить зовнішній вміст і вбудовані зображення";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Це повідомлення містить зовнішній вміст.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Це повідомлення автоматично створюється у відповідь на попереднє повідомлення.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Це повідомлення зі списку розсилки.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Це повідомлення більше не заплановано до надсилання пізніше. Якщо ви досі хочете надіслати його пізніше, ви можете торкнутися «Запланувати надсилання»";
 
@@ -2462,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Довірені ключі недійсні для надсилання";
-
-/* Try again action */
-"Try again" = "Спробувати знову";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся %1$@ або %2$@).";
@@ -2544,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Прибрати зірочку";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Відписатися";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Відписатися від розсилки";

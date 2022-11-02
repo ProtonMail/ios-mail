@@ -976,9 +976,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Αγνόηση προειδοποίησης και συνέχιση";
 
-/* immediately send message Action */
-"Immediately" = "Άμεσα";
-
 /* Action */
 "Import Error" = "Σφάλμα κατά την Εισαγωγή";
 
@@ -1107,14 +1104,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Εξάντληση ορίου";
 
-/* No comment provided by engineer. */
-"Load content" = "Φόρτωση περιεχομένου";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Φόρτωση ενσωματωμένων εικόνων";
-
-/* No comment provided by engineer. */
-"Load images" = "Φόρτωση εικόνων";
 
 /* Action
    The title of loading remote content banner. */
@@ -2123,21 +2114,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Αυτός ο σύνδεσμος οδηγεί σε μια ιστοσελίδα που ενδέχεται να επιχειρήσει να υποκλέψει πληροφορίες σας, όπως κωδικούς πρόσβασης και στοιχεία πιστωτικών καρτών.\n%@\n\nΓια την ασφάλειά σας, μη συνεχίσετε.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Αυτό το μήνυμα περιέχει ενσωματωμένες εικόνες.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Αυτό το μήνυμα περιέχει απομακρυσμένο περιεχόμενο και ενσωματωμένες εικόνες";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Αυτό το μήνυμα περιέχει απομακρυσμένο περιεχόμενο.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Αυτό το μήνυμα δημιουργείται αυτόματα ως απόκριση σε ένα προηγούμενο μήνυμα.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Αυτό το μήνυμα προέρχεται από μια λίστα αλληλογραφίας.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Αυτό το μήνυμα μπορεί να είναι απόπειρα ηλεκτρονικού \"ψαρέματος\". Ελέγξτε τον αποστολέα και το περιεχόμενο για να βεβαιωθείτε ότι είναι αυθεντικό.";
 
@@ -2192,9 +2168,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Τα αξιόπιστα κλειδιά δεν είναι έγκυρα για την αποστολή";
-
-/* Try again action */
-"Try again" = "Δοκιμάστε ξανά";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
@@ -2271,9 +2244,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Αφαίρεση αστεριού";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Απεγγραφή";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Απεγγραφή από λίστα αλληλογραφίας";

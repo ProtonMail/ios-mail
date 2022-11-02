@@ -1,3 +1,6 @@
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ de %2$@";
+
 /* auto lock time format */
 "%d Minute" = "%d minuto";
 
@@ -133,6 +136,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Redireccionamento alternativo";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Sempre desligado";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Sempre ligado";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversário";
 
@@ -228,6 +237,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "Carregar automaticamente imagens incorporadas";
 
+/* settings general section title */
+"Auto-load remote content" = "Carregar automaticamente conteúdo remoto";
+
 /* top left back button */
 "Back" = "Recuar";
 
@@ -251,6 +263,9 @@
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data de nascimento";
+
+/* Settings row */
+"Block email tracking" = "Bloquear rastreamento de e-mail";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegue por tópicos no modo de conversas.";
@@ -396,6 +411,9 @@
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "A fechar";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Fechar mensagem";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -604,6 +622,24 @@
 /* Done action */
 "Done" = "Concluído";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Transferência pausada";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Transferência pausada: bateria fraca";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Transferência pausada: nenhuma ligação";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Transferência pausada: armazenamento cheio";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Progresso da transferência";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Transferência via dados móveis";
+
 /* Action */
 "Draft" = "Rascunho";
 
@@ -674,7 +710,16 @@
 "Empty Folder" = "Esvaziar pasta";
 
 /* An action title shows in ellipsis menu */
+"Empty Spam" = "Esvaziar spam";
+
+/* Alert title */
+"Empty spam folder" = "Esvaziar pasta de spam";
+
+/* An action title shows in ellipsis menu */
 "Empty Trash" = "Esvaziar o lixo";
+
+/* Alert title */
+"Empty trash folder" = "Esvaziar pasta de lixo";
 
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
@@ -688,6 +733,9 @@
 
 /* Title */
 "Enable signature" = "Activar assinatura";
+
+/* (No Comment) */
+"Enable TouchID" = "Activar TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Encriptado pelo Proton";
@@ -719,6 +767,9 @@
 /* The assistive text of textfield of PIN code setup1 */
 "Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21.";
 
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Inserir novo código PIN";
+
 /* (No Comment) */
 "Enter Verification Code" = "Insira o código de verificação";
 
@@ -740,8 +791,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Erro ao enviar";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "A estimar o tempo restante...";
+
 /* lock app option */
 "Every time enter app" = "Sempre que entrar na aplicação";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Excluir conteúdo da mensagem";
 
 /* alert title */
 "Expiration not supported" = "Expiração não suportada";
@@ -773,6 +830,12 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Pastas";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Seguir a configuração do dispositivo";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Proibido";
 
 /* (No Comment) */
 "FORGOT PASSWORD?" = "Esqueceu-se da senha?";
@@ -864,9 +927,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorar aviso e continuar";
 
-/* immediately send message Action */
-"Immediately" = "Imediatamente";
-
 /* Action */
 "Import Error" = "Erro de importação";
 
@@ -950,6 +1010,9 @@
 /* Error message */
 "Invalid username!" = "Utilizador inválido!";
 
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Convide os seus contactos para o Proton Mail para puder desfrutar de criptografia de ponta-a-ponta perfeita ou adicione uma senha de proteção às mensagens que envia.";
+
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Este relatório de erro é sobre uma compra dentro da aplicação?";
 
@@ -978,10 +1041,16 @@
 /* cell title in device settings */
 "Language" = "Idioma";
 
+/* Action */
+"Later" = "Mais tarde";
+
 /* Action
    alternative routing link name in description
    The title of learn more link */
 "Learn more" = "Saiba mais";
+
+/* The title of learn more link */
+"Learn more." = "Saiba mais.";
 
 /* settings swipe actions section title */
 "Left to Right" = "Da esquerda para a direita";
@@ -989,14 +1058,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limite atingido";
 
-/* No comment provided by engineer. */
-"Load content" = "Carregar conteúdo";
+/* Button inside the banner */
+"Load anyway" = "Carregar mesmo assim";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carregar imagens incorporadas";
-
-/* No comment provided by engineer. */
-"Load images" = "Carregar imagens";
 
 /* Action
    The title of loading remote content banner. */
@@ -1007,6 +1073,9 @@
 
 /* No comment provided by engineer. */
 "Loading…" = "A carregar…";
+
+/* The title of local storage in settings */
+"Local storage" = "Armazenamento local";
 
 /* cell title in device settings */
 "Local storage limit" = "Limite de armazenamento local";
@@ -1112,6 +1181,9 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Acções de deslizar em mensagens";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Mensagens de antes ";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "As mensagens que envia podem ser auto-destrutíveis após um certo período de tempo.";
@@ -1287,6 +1359,9 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "Aceitar";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Aceitar";
 
 /* The title of On setting options */
 "On" = "On";
@@ -1596,6 +1671,9 @@
 /* Title */
 "Save" = "Gravar";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Gravar como PDF";
+
 /* title */
 "Save Changes" = "Gravar alterações";
 
@@ -1609,6 +1687,9 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Procurar no conteúdo da mensagem";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Ver detalhes";
 
 /* section title */
 "Select colour" = "Escolha a cor";
@@ -1625,6 +1706,12 @@
 /* Action */
 "Send anyway" = "Enviar mesmo assim";
 
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Enviar imediatamente";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Enviar imediatamente?";
+
 /* when subject not empty */
 "Send message without subject?" = "Enviar mensagem sem assunto?";
 
@@ -1639,6 +1726,9 @@
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Falha ao enviar";
+
+/* Alert title */
+"Sending in progress" = "Envio em curso";
 
 /* Description */
 "Sending Message" = "A enviar a mensagem";
@@ -1659,6 +1749,12 @@
 "SENT" = "Enviado";
 
 /* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Enviado pelo Proton Mail com encriptação de acesso zero";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Enviado pelo Proton Mail com encriptação de acesso zero para destinatário verificado";
+
+/* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Enviado por si com encriptação ponta-a-ponta";
 
 /* The message after tapping the encryption icon. */
@@ -1669,6 +1765,9 @@
 
 /* Title */
 "Set" = "Definir";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Defina uma palavra-passe para encriptar esta mensagem para destinatários fora do Proton Mail.";
 
 /* Title */
 "Set Password" = "Definir senha";
@@ -1687,6 +1786,9 @@
 
 /* Action */
 "Show" = "Mostrar";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Mostrar-me";
 
 /* Alert title to confirm signout
    menu title */
@@ -1750,8 +1852,17 @@
 /* cell title in device settings */
 "Storage" = "Armazenamento";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Limite de armazenamento";
+
 /* Storage warning */
 "Storage quota exceeded" = "Limite de armazenamento excedido";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Armazenamento utilizado";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Armazenamento utilizado: ";
 
 /* Title */
 "Storage Warning" = "Aviso de armazenamento";
@@ -1921,23 +2032,17 @@
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail falhou os requisitos de autenticação do domínio. Pode ser falsificado ou ter sido reencaminhado incorretamente!";
 
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Esta mensagem falhou nos requisitos de autenticação do domínio. Pode ser uma fraude ou ter sido indevidamente encaminhado.";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este correio eletrónico aparenta ser oriundo dum endereço Proton Mail, mas foi enviado por um sistema externo e falhou os nossos requisitos de autenticação. Pode estar falsificado ou ter sido encaminhado incorretamente.";
+
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Esta funcionalidade atrasa o envio do correio, dando-lhe a oportunidade de cancelar o envio durante o período de tempo seleccionado.";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Esta pasta está vazia";
-
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Esta mensagem contém imagens incorporadas.";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Esta mensagem contém conteúdo remoto.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Esta mensagem é gerada automaticamente como resposta a uma mensagem anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Esta mensagem é oriunda de uma lista de discussão.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Esta mensagem pode ser uma tentativa de phishing. Por favor, verifique o remetente e o conteúdo para se certificar de que são legítimos.";
@@ -1957,6 +2062,9 @@
 /* message To: feild
    Title */
 "To" = "Para";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para repor a senha da sua caixa de entrada, por favor utilize a versão web do Proton Mail em protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -1985,8 +2093,8 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Chaves confiáveis não são válidas para enviar";
 
-/* Try again action */
-"Try again" = "Tentar novamente";
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente ligar ao Proton de uma rede diferente (ou utilize o %1$@ ou %2$@).";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Active esta funcionalidade para preencher automaticamente endereços electrónicos utilizando contactos de todas as suas contas ligadas.";
@@ -2049,6 +2157,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Versão desconhecida";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Ilimitado";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Desbloqueio requerido";
 
@@ -2060,9 +2171,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Remover estrela";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Cancelar subscrição";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar a inscrição nesta lista de correio";
@@ -2084,6 +2192,9 @@
 
 /* Action */
 "Upload device contacts" = "Enviar contactos do dispositivo";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Enviar contactos do iOS para o Proton Mail?";
 
 /* default vcard types */
 "URL" = "URL";
@@ -2127,6 +2238,12 @@
 /* No comment provided by engineer. */
 "View HTML" = "Ver HTML";
 
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Ver mensagem no modo escuro";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Ver mensagem no modo claro";
+
 /* Title */
 "Warning" = "Aviso";
 
@@ -2147,6 +2264,9 @@
 
 /* week */
 "week" = "semana";
+
+/* (No Comment) */
+"Welcome to Proton Mail!" = "Boas-vindas ao Proton Mail";
 
 /* default vcard types */
 "Work" = "Trabalho";
@@ -2174,6 +2294,9 @@
 
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Está sem rede";
+
+/* (No Comment) */
+"You can customize swipe gestures in the Proton Mail App Settings." = "Pode personalizar os gestos de deslizamento na aplicação do Proton Mail, em Definições.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pode obter ajuda e suporte em protonmail.com/support. Os erros também podem ser relatados com a aplicação.";

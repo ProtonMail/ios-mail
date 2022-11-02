@@ -1056,9 +1056,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽视警告并继续";
 
-/* immediately send message Action */
-"Immediately" = "立即";
-
 /* Action */
 "Import Error" = "导入出错";
 
@@ -1190,14 +1187,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "数量已达上限";
 
-/* No comment provided by engineer. */
-"Load content" = "加载内容";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "加载嵌入图像";
-
-/* No comment provided by engineer. */
-"Load images" = "加载图片";
 
 /* Action
    The title of loading remote content banner. */
@@ -1328,9 +1319,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "邮件滑动操作";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "邮件将于 %@ 发送";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "您发送的邮件可以设置在一定时间后自动销毁。";
@@ -2273,21 +2261,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "此邮件含有嵌入图像。";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "此邮件含有外链内容和嵌入图像";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "此邮件含有外链内容。";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "这是一封自动回复邮件。";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "此邮件来自邮寄列表。";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已不在稍后发送计划中。如果您仍想稍后发送，可以点击 “计划发送”";
 
@@ -2364,9 +2337,6 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密钥对发送无效";
 
-/* Try again action */
-"Try again" = "重试";
-
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
 
@@ -2442,9 +2412,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "取消星标";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "取消订阅";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "取消订阅";

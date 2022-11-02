@@ -985,9 +985,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorer advarsel og fortsæt";
 
-/* immediately send message Action */
-"Immediately" = "Omgående";
-
 /* Action */
 "Import Error" = "Importfejl";
 
@@ -1122,14 +1119,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Grænse nået";
 
-/* No comment provided by engineer. */
-"Load content" = "Indlæs indhold";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Indlæs indlejrede billeder";
-
-/* No comment provided by engineer. */
-"Load images" = "Indlæs billeder";
 
 /* Action
    The title of loading remote content banner. */
@@ -1263,9 +1254,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Besked stryge-handlinger";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Besked vil blive sendt %@";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
@@ -2181,21 +2169,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dette link fører til et websted, som måske forsøger at stjæle dine oplysninger, f. eks. adgangskoder og kreditkortoplysninger.\n%@\n\nFor din egen sikkerheds skyld bør du ikke fortsætte.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Denne besked indeholder indlejrede billeder.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Denne besked indeholder eksternt indhold og indlejrede billeder";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Denne besked indeholder eksternt indhold.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Denne besked er automatisk genereret som svar på en tidligere besked.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Denne besked er fra en mailingliste.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne besked kan være et phishing-forsøg. Tjek afsenderen og indholdet for at sikre, at de er legitime.";
 
@@ -2265,9 +2238,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betroede nøgler er ikke gyldige til afsendelse";
-
-/* Try again action */
-"Try again" = "Prøv igen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
@@ -2347,9 +2317,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjern stjernemarkering";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Afmeld abonnement";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Afmeld dig fra mailinglisten";

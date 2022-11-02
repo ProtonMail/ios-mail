@@ -160,6 +160,15 @@
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir el enrutado alternativo";
 
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Permite abrir archivos adjuntos previamente abiertos cuando estás sin conexión.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Permite abrir mensajes previamente leídos cuando estás sin conexión.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Permite buscar entre tus mensajes. %1$@";
+
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "¿También archivar?";
 
@@ -278,6 +287,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Cargar automáticamente las imágenes incrustadas";
+
+/* settings general section title */
+"Auto-load remote content" = "Cargar automáticamente el contenido remoto";
 
 /* Example feedback */
 "Awful" = "Terrible";
@@ -927,7 +939,7 @@
 "Error sending" = "Error al enviar";
 
 /* The default text while estimating the time remaining */
-"Estimating time remaining ..." = "Estimando tiempo restante...";
+"Estimating time remaining ..." = "Tiempo restante estimado ...";
 
 /* lock app option */
 "Every time enter app" = "Cada vez al abrir la aplicación";
@@ -983,6 +995,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Mensaje reenviado";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Libera como mínimo 100 MB de almacenamiento para continuar.";
 
 /* Title */
 "From" = "De";
@@ -1065,11 +1080,11 @@
 /* human check warning title */
 "Human Check Warning" = "Advertencia de verificación humana";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Si pierdes la conexión WiFi, la descarga continuará mediante los datos del móvil.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorar la advertencia y continuar";
-
-/* immediately send message Action */
-"Immediately" = "Inmediatamente";
 
 /* Action */
 "Import Error" = "Error al importar";
@@ -1108,6 +1123,9 @@
 
 /* Error */
 "Incorrect PIN." = "PIN incorrecto.";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Información de cuánto espacio de almacenamiento está utilizando en tu dispositivo esta cuenta de Proton Mail.";
 
 /* Option title */
 "Inherit color from parent folder" = "Heredar el color de la carpeta principal";
@@ -1211,14 +1229,8 @@
 /* Button inside the banner */
 "Load anyway" = "Cargar de todos modos";
 
-/* No comment provided by engineer. */
-"Load content" = "Cargar contenido";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Cargar imágenes incrustadas";
-
-/* No comment provided by engineer. */
-"Load images" = "Cargar imágenes";
 
 /* Action
    The title of loading remote content banner. */
@@ -1355,9 +1367,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Acciones de deslizamiento de mensajes";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "El mensaje se enviará en %@";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Los mensajes anteriores a %@ no serán descargados. Para buscar en ellos, libera almacenamiento en este dispositivo.";
@@ -2312,21 +2321,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Este enlace conduce a un sitio web que podría estar intentando robar su información, como contraseñas y datos de tarjetas de crédito.\n%@\n\nPor su seguridad, no continúe.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Este mensaje contiene imágenes incrustadas.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Este mensaje contiene contenido remoto e imágenes incrustadas";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Este mensaje contiene contenido remoto.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Este mensaje es generado automáticamente como respuesta a un mensaje anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Este mensaje proviene de una lista de correo.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Este mensaje ya no está programado para enviarse más tarde. Si aún quieres enviarlo más tarde, puedes pulsar en \"Programar envío\"";
 
@@ -2359,7 +2353,7 @@
 "To" = "Para";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en protonmail.com";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hoy, %@";
@@ -2399,9 +2393,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Las claves de confianza no son válidas para el envío";
-
-/* Try again action */
-"Try again" = "Inténtalo de nuevo";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intente conectarse a Proton desde una red distinta ( o usando %1$@ o %2$@).";
@@ -2481,9 +2472,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "No destacar";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Desuscribirse";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar suscripción de la lista de correo";

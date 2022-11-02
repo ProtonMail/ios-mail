@@ -1089,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Uyarıyı yok sayıp ilerle";
 
-/* immediately send message Action */
-"Immediately" = "Hemen";
-
 /* Action */
 "Import Error" = "İçe aktarma sorunu";
 
@@ -1235,14 +1232,8 @@
 /* Button inside the banner */
 "Load anyway" = "Yine de yükle";
 
-/* No comment provided by engineer. */
-"Load content" = "İçeriği yükle";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Gömülü görselleri yükle";
-
-/* No comment provided by engineer. */
-"Load images" = "Görselleri yükle";
 
 /* Action
    The title of loading remote content banner. */
@@ -1382,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "İleti kaydırma işlemleri";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "İleti %@ zamanında gönderilecek";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "İletiler içeriklerinin aranabilmesi için indirildi. Bazı sonuçlar görüntülenmeyebilir. %1$@";
@@ -2372,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir web sitesine gidiyor olabilir..\n%@\n\nGüvenliğiniz için daha ileri gitmeyin.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Bu iletide gömülü görseller var.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Bu iletide uzak içerik ve gömülü görseller var";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Bu iletide uzak içerik var.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Bu ileti, otomatik olarak önceki bir iletiyi yanıtlamak için oluşturuldu.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Bu ileti bir posta listesinden gönderilmiş.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "İletinin gönderilme zamanlaması kaldırıldı. Daha sonra gönderilmesini istiyorsanız \"Zamanlanmış gönderim\" üzerine dokunabilirsiniz";
 
@@ -2462,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Güvenilen anahtarlar gönderim için geçerli değil";
-
-/* Try again action */
-"Try again" = "Yeniden dene";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Farklı bir ağ kullanarak Proton bağlantısı kurmayı deneyin (ayrıca %1$@ ya da %2$@ kullanabilirsiniz).";
@@ -2544,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Yıldızı kaldır";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Abonelikten ayrıl";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
