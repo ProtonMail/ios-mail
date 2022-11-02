@@ -249,6 +249,12 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             }
         }
     }
+
+    func checkIfDraftIsValidToBeSent(continueAction: @escaping () -> Void) {
+        editor?.displayDraftNotValidAlertIfNeeded {
+            continueAction()
+        }
+    }
 }
 
 extension ComposeContainerViewCoordinator: ComposePasswordDelegate {

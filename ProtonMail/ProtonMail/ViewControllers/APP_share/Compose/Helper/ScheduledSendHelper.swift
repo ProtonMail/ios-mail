@@ -42,7 +42,6 @@ final class ScheduledSendHelper {
         self.delegate = delegate
     }
 
-    @objc
     func presentActionSheet() {
         guard let viewController = viewController else { return }
         let vcs = viewController.children + [viewController]
