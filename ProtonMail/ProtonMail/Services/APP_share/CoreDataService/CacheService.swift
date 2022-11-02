@@ -612,7 +612,8 @@ extension CacheService {
 // MARK: - contact related functions
 extension CacheService {
     func addNewContact(serverResponse: [[String: Any]], shouldFixName: Bool = false, objectID: String? = nil, completion: (([Contact]?, NSError?) -> Void)?) {
-        coreDataService.performOnRootSavingContext { [weak self] context in
+        let context = coreDataService.makeNewBackgroundContext()
+        context.performAndWait { [weak self] in
             guard let self = self else { return }
             do {
                 if let id = objectID,

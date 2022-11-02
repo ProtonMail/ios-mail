@@ -48,7 +48,7 @@ class MockContactProvider: ContactProviderProtocol {
         return allEmailsToReturn
     }
 
-    func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?) {
+    func fetchContacts(completion: ContactFetchComplete?) {
         isFetchContactsCalled = true
         completion?([], nil)
     }
