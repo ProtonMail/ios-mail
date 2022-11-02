@@ -146,9 +146,9 @@ class UsersManager: Service {
         return true
     }
 
-    func update(auth: AuthCredential, userInfo: UserInfo) {
-        for user in users where user.isMatch(sessionID: auth.sessionID) {
-            user.update(credential: auth, userInfo: userInfo)
+    func update(userInfo: UserInfo, for sessionID: String) {
+        for user in users where user.isMatch(sessionID: sessionID) {
+            user.update(userInfo: userInfo)
             user.save()
         }
     }

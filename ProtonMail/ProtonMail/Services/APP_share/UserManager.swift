@@ -129,6 +129,7 @@ class UserManager: Service, HasLocalStorage {
             updateTelemetry()
         }
     }
+    let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
     private(set) var isLoggedOut = false
 
@@ -297,11 +298,13 @@ class UserManager: Service, HasLocalStorage {
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         self.userInfo = userInfo
-        self.authCredential = authCredential
         self.apiService = api
         self.contextProvider = contextProvider
+        self.authCredential = authCredential
         self.appTelemetry = appTelemetry
-        self.apiService.authDelegate = self
+        self.authHelper = AuthHelper(authCredential: authCredential)
+        self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
+        self.apiService.authDelegate = authHelper
         self.parentManager = parent
         _ = self.mainQueueHandler.userID
         self.messageService.signin()
@@ -315,13 +318,18 @@ class UserManager: Service, HasLocalStorage {
         contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
+        guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
+            fatalError("This initialization only for test")
+        }
         userInfo.role = role.rawValue
         self.userInfo = userInfo
-        self.authCredential = AuthCredential.none
         self.apiService = api
         self.contextProvider = contextProvider
         self.appTelemetry = appTelemetry
-        self.apiService.authDelegate = self
+        self.authCredential = AuthCredential.none
+        self.authHelper = AuthHelper(authCredential: authCredential)
+        self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
+        self.apiService.authDelegate = authHelper
     }
 
     func isMatch(sessionID uid: String) -> Bool {
@@ -394,76 +402,8 @@ class UserManager: Service, HasLocalStorage {
         self.save()
     }
 
-    func update(credential: AuthCredential, userInfo: UserInfo) {
-        self.authCredentialAccessQueue.sync { [weak self] in
-            self?.isLoggedOut = false
-            self?.authCredential = credential
-            self?.userInfo = userInfo
-        }
-    }
-}
-
-extension UserManager: AuthDelegate {
-
-    func authCredential(sessionUID: String) -> AuthCredential? {
-        self.authCredentialAccessQueue.sync { [weak self] in
-            guard let self = self else { return nil }
-            if self.isLoggedOut {
-                print("Request credential after logging out")
-            } else if self.authCredential.sessionID == sessionUID {
-                return self.authCredential
-            } else {
-                assert(false, "Inadequate credential requested")
-            }
-            return nil
-        }
-    }
-
-    func credential(sessionUID: String) -> Credential? {
-        authCredential(sessionUID: sessionUID).map(Credential.init)
-    }
-
-    func onLogout(sessionUID uid: String) {
-        // TODO:: Since the user manager can directly catch the onLogOut event. we can improve this logic to not use the NotificationCenter.
-        self.authCredentialAccessQueue.sync { [weak self] in
-            self?.isLoggedOut = true
-        }
-        self.eventsService.stop()
-        NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": uid])
-    }
-
-    func onUpdate(credential: Credential, sessionUID: String) {
-        guard credential.UID == sessionUID else {
-            assertionFailure("Credential.UID \(credential.UID) does not match sessionUID \(sessionUID)")
-            return
-        }
-
-        self.authCredentialAccessQueue.sync { [weak self] in
-            self?.isLoggedOut = false
-            self?.authCredential.udpate(
-                sessionID: sessionUID,
-                accessToken: credential.accessToken,
-                refreshToken: credential.refreshToken,
-                expiration: credential.expiration)
-
-        }
-        self.save()
-    }
-
-    func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion) {
-        let credential = self.credential(sessionUID: sessionUID) ?? Credential(.none)
-        let authenticator = Authenticator(api: service)
-        authenticator.refreshCredential(credential) { result in
-            let processedResult: Swift.Result<Credential, AuthErrors> = result.map {
-                switch $0 {
-                case .ask2FA((let credential, _)),
-                        .newCredential(let credential, _),
-                        .updatedCredential(let credential):
-                    return credential
-                }
-            }
-            complete(processedResult)
-        }
+    func update(userInfo: UserInfo) {
+        self.userInfo = userInfo
     }
 }
 
@@ -705,5 +645,19 @@ extension UserManager: UserAddressUpdaterProtocol {
                 completion?()
             }
         }
+    }
+}
+
+extension UserManager: AuthHelperDelegate {
+    func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+        self.authCredential = authCredential
+        isLoggedOut = false
+        self.save()
+    }
+
+    func sessionWasInvalidated(for sessionUID: String) {
+        isLoggedOut = true
+        self.eventsService.stop()
+        NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])
     }
 }
