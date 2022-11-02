@@ -90,8 +90,7 @@ extension ExpandedHeaderView {
         [
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
             senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
-            senderNameLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8),
-            senderNameLabel.heightAnchor.constraint(equalToConstant: 20)
+            senderNameLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8)
         ].activate()
 
         [
