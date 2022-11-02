@@ -166,8 +166,7 @@ class NonExpandedHeaderView: UIView {
         ].activate()
 
         [
-            recipientTitle.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
-            recipientLabel.heightAnchor.constraint(equalToConstant: 20)
+            recipientTitle.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ].activate()
 
         [

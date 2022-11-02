@@ -46,7 +46,7 @@ final class TextControl: UIControl {
 private enum SubviewsFactory {
     static var textLabel: UILabel {
         let label = UILabel(frame: .zero)
-        label.textAlignment = .right
+        label.textAlignment = .left
         label.set(text: nil,
                   preferredFont: .footnote,
                   textColor: ColorProvider.InteractionNorm)
