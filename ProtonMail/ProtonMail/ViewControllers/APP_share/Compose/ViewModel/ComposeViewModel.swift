@@ -88,6 +88,7 @@ class ComposeViewModel: NSObject {
     
     private var _subject : String! = ""
     var body : String! = ""
+    var deliveryTime: Date?
 
     func getSubject() -> String {
         return self._subject
@@ -125,7 +126,6 @@ class ComposeViewModel: NSObject {
           fatalError("This method must be overridden")
     }
 
-    ///
     func sendMessage(deliveryTime: Date?) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
@@ -206,11 +206,7 @@ class ComposeViewModel: NSObject {
                                                   havingNonPMEmail: havingNonPMEmail)
     }
 
-    func needAttachRemindAlert(subject: String, body: String, attachmentNum: Int) -> Bool {
-        fatalError("This method must be overridden")
-    }
-
-    func getNormalAttachmentNum() -> Int {
+    func needAttachRemindAlert(subject: String, body: String) -> Bool {
         fatalError("This method must be overridden")
     }
 
@@ -244,6 +240,28 @@ class ComposeViewModel: NSObject {
             }
         }
     }
+
+	func isDraftHavingEmptyRecipient() -> Bool {
+        return toSelectedContacts.isEmpty &&
+        ccSelectedContacts.isEmpty &&
+        bccSelectedContacts.isEmpty
+    }
+
+    func doesInvalidAddressExist() -> Bool {
+        let allContacts = toSelectedContacts + ccSelectedContacts + bccSelectedContacts
+        let invalidEmails = allContacts
+            .filter { $0.modelType == .contact }
+            .compactMap { $0 as? ContactVO }
+            .filter {
+                $0.encryptionIconStatus?.nonExisting == true ||
+                $0.encryptionIconStatus?.isInvalid == true
+            }
+        return !invalidEmails.isEmpty
+    }
+
+    func shouldShowScheduleSendConfirmationAlert() -> Bool {
+        return isEditingScheduleMsg && deliveryTime == nil
+	}
 }
 
 extension ComposeViewModel {

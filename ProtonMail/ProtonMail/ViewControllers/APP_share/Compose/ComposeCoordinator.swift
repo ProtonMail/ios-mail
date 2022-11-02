@@ -45,7 +45,7 @@ class ComposeCoordinator {
             let nonPMEmails = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
             let pgpEmails = vc.headerView.pgpEmails
             guard nonPMEmails.count > 0 || pgpEmails.count > 0 else {
-                vc.sendMessageStepTwo()
+                vc.validateDraftBeforeSending()
                 return
             }
             vc.showExpirationUnavailabilityAlert(nonPMEmails: nonPMEmails, pgpEmails: pgpEmails)

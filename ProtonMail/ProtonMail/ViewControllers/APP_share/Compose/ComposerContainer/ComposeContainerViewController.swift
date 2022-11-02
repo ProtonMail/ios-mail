@@ -314,8 +314,8 @@ extension ComposeContainerViewController {
         self.scheduledSendButton = Self.makeBarButtonItem(
             isEnabled: isEnabled,
             icon: icon,
-            target: scheduledSendHelper,
-            action: #selector(scheduledSendHelper.presentActionSheet)
+            target: self,
+            action: #selector(self.presentScheduleSendActionSheetIfDraftIsReady)
         )
         self.scheduledSendButton.accessibilityLabel = LocalString._general_schedule_send_action
         self.scheduledSendButton.accessibilityIdentifier = "ComposeContainerViewController.scheduledSend"
@@ -407,6 +407,14 @@ extension ComposeContainerViewController {
         let rect = scheduleItemView.convert(barFrame, to: navView)
         scheduleSendIntroView.presentOn(view: navView,
                                         targetFrame: rect)
+    }
+
+    @objc
+    private func presentScheduleSendActionSheetIfDraftIsReady() {
+        // Check draft is valid or not.
+        coordinator.checkIfDraftIsValidToBeSent { [weak self] in
+            self?.showScheduleSendActionSheet()
+        }
     }
 }
 

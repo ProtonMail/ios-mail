@@ -42,10 +42,8 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
 
     private var timer: Timer? // auto save timer
 
-    /// private vars
     private var contacts: [ContactPickerModelProtocol] = []
     private var phoneContacts: [ContactPickerModelProtocol] = []
-    private var deliveryTime: Date?
 
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
@@ -67,7 +65,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         fatalError("init(coder:) has not been implemented")
     }
 
-    ///
     func inactiveViewModel() {
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self)
@@ -189,7 +186,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
             return nil
         }
         userCachedStatus.lastDraftMessageID = messageID.rawValue
-        
+
         var contentVC: UIViewController?
         var navigationController: UINavigationController?
 
@@ -229,7 +226,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         let messageService = self.viewModel.getUser().messageService
         let coreDataContextProvider = viewModel.coreDataContextProvider
         if self.dismissBySending {
-            guard self.deliveryTime == nil else { return }
+            guard viewModel.deliveryTime == nil else { return }
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
@@ -324,48 +321,16 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     }
 
     func sendAction(deliveryTime: Date?) {
-        self.deliveryTime = deliveryTime
-        self.sendAction(self)
+        viewModel.deliveryTime = deliveryTime
+        sendAction(self)
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {
         self.dismissKeyboard()
-        guard self.recipientsValidation() else { return }
-
-        if let subject = self.headerView.subject.text, subject.isEmpty {
-            let alertController = UIAlertController(title: LocalString._composer_compose_action,
-                                                    message: LocalString._composer_send_no_subject_desc,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
-                                                    style: .destructive, handler: { (action) -> Void in
-                                                        self.sendMessage()
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-
-        if viewModel.isEditingScheduleMsg && deliveryTime == nil {
-            let alertController = UIAlertController(title: LocalString._composer_send_msg_which_was_schedule_send_title,
-                                                    message: LocalString._composer_send_msg_which_was_schedule_send_message,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title,
-                                                    style: .destructive, handler: { [weak self] _ -> Void in
-                                                        self?.sendMessage()
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title_schedule_send,
-                                                    style: .default,
-                                                    handler: { [weak self] _ in
-                self?.openScheduleSendActionSheet?()
-            }))
-            present(alertController, animated: true, completion: nil)
-            return
-        } else {
-            self.sendMessage()
-        }
+        self.sendMessage()
     }
 
-    private func recipientsValidation() -> Bool {
+    private func composerRecipientsValidation() -> Bool {
 
         let showAlert: ((String) -> Void) = { message in
             let title = LocalString._warning
@@ -406,68 +371,32 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     }
 
     private func sendMessage() {
-        if self.headerView.expirationTimeInterval > 0 {
+        delay(0.3) { [weak self] in
+            self?.stopAutoSave()
+            if self?.viewModel.deliveryTime == nil {
+                self?.validateDraftBeforeSending()
+            } else {
+                self?.startSendingMessage()
+            }
+        }
+    }
 
+    func validateDraftBeforeSending() {
+        if self.headerView.expirationTimeInterval > 0 {
             if viewModel.shouldShowExpirationWarning(havingPGPPinned: headerView.hasPGPPinned,
-                                                  isPasswordSet: !encryptionPassword.isEmpty,
-                                                  havingNonPMEmail: headerView.hasNonePMEmails) {
+                                                     isPasswordSet: !encryptionPassword.isEmpty,
+                                                     havingNonPMEmail: headerView.hasNonePMEmails) {
                 navigateTo?(.expirationWarning)
                 return
             }
         }
-        delay(0.3) {
-            self.sendMessageStepTwo()
+        displayDraftNotValidAlertIfNeeded { [weak self] in
+            self?.startSendingMessage()
         }
     }
 
-    func sendMessageStepTwo() {
-        if self.viewModel.toSelectedContacts.count <= 0 &&
-            self.viewModel.ccSelectedContacts.count <= 0 &&
-            self.viewModel.bccSelectedContacts.count <= 0 {
-            let alert = UIAlertController(title: LocalString._general_alert_title,
-                                          message: LocalString._composer_no_recipient_error,
-                                          preferredStyle: .alert)
-            alert.addAction((UIAlertAction.okAction()))
-            present(alert, animated: true, completion: nil)
-            return
-        }
-
-        let allMails = self.viewModel.toSelectedContacts + self.viewModel.ccSelectedContacts + self.viewModel.bccSelectedContacts
-
-        let invalidEmails = allMails
-            .filter { $0.modelType == .contact}
-            .compactMap { $0 as? ContactVO}
-            .filter { $0.encryptionIconStatus?.nonExisting == true ||
-                $0.encryptionIconStatus?.isInvalid == true }
-        guard invalidEmails.isEmpty else {
-            let alert = UIAlertController(title: LocalString._address_invalid_error_title,
-                                          message: LocalString._address_invalid_error_content,
-                                          preferredStyle: .alert)
-            alert.addAction((UIAlertAction.okAction()))
-            present(alert, animated: true, completion: nil)
-            return
-        }
-
-        stopAutoSave()
-        _ = self.collectDraftData().done { [weak self] result in
-            guard let self = self else { return }
-            guard let result = result else {
-                      self.sendMessageStepThree()
-                      return
-                  }
-            let attachmentNum = self.viewModel.getNormalAttachmentNum()
-            if self.viewModel.needAttachRemindAlert(subject: result.0,
-                                                    body: result.1,
-                                                    attachmentNum: attachmentNum) {
-                self.showAttachRemindAlert()
-            } else {
-                self.sendMessageStepThree()
-            }
-        }
-    }
-
-    func sendMessageStepThree() {
-        self.viewModel.sendMessage(deliveryTime: self.deliveryTime)
+    func startSendingMessage() {
+        self.viewModel.sendMessage(deliveryTime: viewModel.deliveryTime)
 
         self.dismissBySending = true
         self.dismiss()
@@ -643,8 +572,64 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     @objc func caretMovedTo(_ offset: CGPoint) {
         fatalError("should be overridden")
     }
+}
 
-    private func showAttachRemindAlert() {
+// MARK: - Methods about draft validation
+extension ComposeViewController {
+    func displayDraftNotValidAlertIfNeeded(continueAction: @escaping () -> Void) {
+        isUserInputValidInTheHeaderViewOfComposer { [weak self] in
+            _ = self?.collectDraftData().done { result in
+                guard let result = result else { return }
+
+                self?.showRecipientEmptyAlertIfNeeded {
+                    self?.showInvalidAddressAlertIfNeeded {
+                        self?.showAttachmentRemindAlertIfNeeded(
+                            subject: result.0,
+                            body: result.1
+                        ) {
+                            self?.showScheduleSendConfirmationAlertIfNeeded {
+                                continueAction()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func isUserInputValidInTheHeaderViewOfComposer(continueAction: @escaping () -> Void) {
+        guard composerRecipientsValidation() else { return }
+        showSubjectAlertIfNeeded(continueAction: continueAction)
+    }
+
+    private func showInvalidAddressAlertIfNeeded(continueAction: @escaping () -> Void) {
+        guard viewModel.doesInvalidAddressExist() else {
+            continueAction()
+            return
+        }
+        let alert = UIAlertController(
+            title: LocalString._address_invalid_error_title,
+            message: LocalString._address_invalid_error_content,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction.okAction())
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func showRecipientEmptyAlertIfNeeded(continueAction: @escaping () -> Void) {
+        if viewModel.isDraftHavingEmptyRecipient() {
+            let alert = UIAlertController(title: LocalString._general_alert_title,
+                                          message: LocalString._composer_no_recipient_error,
+                                          preferredStyle: .alert)
+            alert.addAction((UIAlertAction.okAction()))
+            present(alert, animated: true, completion: nil)
+            return
+        } else {
+            continueAction()
+        }
+    }
+
+    private func showAttachRemindAlert(continueAction: @escaping () -> Void) {
         let title = LocalString._no_attachment_found
         let message = LocalString._do_you_want_to_send_message_anyway
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -652,11 +637,71 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
             title: LocalString._general_cancel_action,
             style: .cancel,
             handler: nil)
-        let send = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
-            self?.sendMessageStepThree()
+        let send = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { _ in
+            continueAction()
         }
         [cancel, send].forEach(alert.addAction)
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func showScheduleSendConfirmationAlert(continueAction: @escaping () -> Void) {
+        let alertController = UIAlertController(title: LocalString._composer_send_msg_which_was_schedule_send_title,
+                                                message: LocalString._composer_send_msg_which_was_schedule_send_message,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title,
+                                                style: .destructive, handler: { _ -> Void in
+            continueAction()
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title_schedule_send,
+                                                style: .default,
+                                                handler: { [weak self] _ in
+            self?.openScheduleSendActionSheet?()
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    private func showScheduleSendConfirmationAlertIfNeeded(continueAction: @escaping () -> Void) {
+        if viewModel.shouldShowScheduleSendConfirmationAlert() {
+            showScheduleSendConfirmationAlert {
+                continueAction()
+            }
+        } else {
+            continueAction()
+        }
+    }
+
+    private func showAttachmentRemindAlertIfNeeded(
+        subject: String,
+        body: String,
+        continueAction: @escaping () -> Void
+    ) {
+        if self.viewModel.needAttachRemindAlert(
+            subject: subject,
+            body: body
+        ) {
+            self.showAttachRemindAlert(continueAction: continueAction)
+        } else {
+            continueAction()
+        }
+    }
+
+    private func showSubjectAlertIfNeeded(continueAction: @escaping () -> Void) {
+        guard let subject = headerView.subject.text, subject.isEmpty else {
+            continueAction()
+            return
+        }
+        let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                message: LocalString._composer_send_no_subject_desc,
+                                                preferredStyle: .alert)
+        alertController.addAction(
+            UIAlertAction(title: LocalString._general_send_action,
+                          style: .destructive,
+                          handler: { _ in
+                              continueAction()
+                          })
+        )
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -693,7 +738,7 @@ extension ComposeViewController {
         }
         let alertController = UIAlertController(title: LocalString._expiration_not_supported, message: message, preferredStyle: .alert)
         let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
-            self?.sendMessageStepTwo()
+            self?.startSendingMessage()
         }
         let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .default, handler: nil)
         alertController.addAction(cancelAction)

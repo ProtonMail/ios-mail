@@ -703,7 +703,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
     }
 
-    override func getNormalAttachmentNum() -> Int {
+    private func getNormalAttachmentNum() -> Int {
         guard let messageObject = self.composerMessageHelper.message else { return 0 }
         let attachments = messageObject.attachments
             .allObjects
@@ -713,10 +713,10 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func needAttachRemindAlert(subject: String,
-                                        body: String,
-                                        attachmentNum: Int) -> Bool {
+                                        body: String) -> Bool {
         // If the message contains attachments
         // It contains keywords or not doesn't important
+        let attachmentNum = getNormalAttachmentNum()
         if attachmentNum > 0 { return false }
 
         let content = "\(subject) \(body.body(strippedFromQuotes: true))"
