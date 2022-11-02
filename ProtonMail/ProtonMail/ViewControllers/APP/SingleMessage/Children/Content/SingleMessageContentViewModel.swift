@@ -89,6 +89,8 @@ class SingleMessageContentViewModel {
         }
     }
 
+    private var hasAlreadyFetchedMessageData = false
+
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
@@ -179,13 +181,13 @@ class SingleMessageContentViewModel {
             messageBodyViewModel.errorHappens()
             return
         }
+        hasAlreadyFetchedMessageData = true
         messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] error in
             guard let self = self else { return }
             self.updateErrorBanner?(error as NSError?)
             if error != nil && !self.message.isDetailDownloaded {
                 self.messageBodyViewModel.errorHappens()
             }
-
             if !self.isEmbedInConversationView {
                 self.markReadIfNeeded()
             }
@@ -243,6 +245,9 @@ class SingleMessageContentViewModel {
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
         internetStatusProvider.registerConnectionStatus { [weak self] networkStatus in
             guard self?.message.body.isEmpty == true else {
+                return
+            }
+            guard self?.hasAlreadyFetchedMessageData == true else {
                 return
             }
             let isApplicationActive = isApplicationActive()
