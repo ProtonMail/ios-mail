@@ -115,4 +115,8 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
             block(context)
         }
     }
+
+    func makeNewBackgroundContext() -> NSManagedObjectContext {
+        container.newBackgroundContext()
+    }
 }

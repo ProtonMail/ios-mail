@@ -26,4 +26,5 @@ protocol CoreDataContextProviderProtocol {
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
     func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
+    func makeNewBackgroundContext() -> NSManagedObjectContext
 }

@@ -43,7 +43,7 @@ protocol ContactProviderProtocol: AnyObject {
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
 
     func getAllEmails() -> [Email]
-    func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?)
+    func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
 }
 
@@ -344,7 +344,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     fileprivate var isFetching: Bool = false
     fileprivate var retries: Int = 0
-    func fetchContacts(fromUI: Bool = true, completion: ContactFetchComplete?) {
+    func fetchContacts(completion: ContactFetchComplete?) {
         if contactCacheStatus.contactsCached == 1 || isFetching {
             completion?(nil, nil)
             return
@@ -426,39 +426,25 @@ class ContactDataService: Service, HasLocalStorage {
                         }
 
                         let group = DispatchGroup()
-                        if fromUI {
-                            let contactsChunks = contactsArray.chunked(into: 50)
-                            for chunk in contactsChunks {
-                                group.enter()
-                                self.cacheService.addNewContact(serverResponse: chunk, shouldFixName: true) { (_, error) in
-                                    if let err = error {
-                                        DispatchQueue.main.async {
-                                            err.alertErrorToast()
-                                        }
-                                    }
-                                    group.leave()
+                        group.enter()
+                        self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
+                            if let err = error {
+                                DispatchQueue.main.async {
+                                    err.alertErrorToast()
                                 }
-                                group.wait()
-                                // sleep 50ms to avoid UI glitch
-                                usleep(50000)
                             }
-                        } else {
-                            group.enter()
-                            self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
-                                if let err = error {
-                                    DispatchQueue.main.async {
-                                        err.alertErrorToast()
-                                    }
-                                }
-                                group.leave()
-                            }
-                            group.wait()
+                            group.leave()
                         }
+                        group.wait()
                     }
                 }
                 self.contactCacheStatus.contactsCached = 1
                 self.isFetching = false
                 self.retries = 0
+
+                self.coreDataService.mainContext.performAndWait {
+                    self.coreDataService.mainContext.refreshAllObjects()
+                }
 
                 completion?(nil, nil)
 
