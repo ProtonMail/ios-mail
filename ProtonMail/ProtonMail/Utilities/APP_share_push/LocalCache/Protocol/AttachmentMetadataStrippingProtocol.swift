@@ -25,3 +25,7 @@ import Foundation
 enum AttachmentMetadataStripping: String {
     case sendAsIs, stripMetadata
 }
+
+protocol AttachmentMetadataStrippingProtocol {
+    var metadataStripping: AttachmentMetadataStripping { get set }
+}
