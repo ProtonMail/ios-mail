@@ -146,7 +146,7 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(sut.users[0].userInfo, userInfo)
     }
 
-    func testUpdateAuthUserInfo() {
+    func testUpdateUserInfo() {
         let userID = "1"
         let user1 = createUserManagerMock(userID: userID, isPaid: false)
         sut.add(newUser: user1)
@@ -160,7 +160,7 @@ class UsersManagerTests: XCTestCase {
                                      userID: userID,
                                      privateKey: nil,
                                      passwordKeySalt: nil)
-        let newUserInfo = UserInfo(maxSpace: nil,
+        let newUserInfo = UserInfo(maxSpace: 999,
                                    usedSpace: nil,
                                    language: nil,
                                    maxUpload: nil,
@@ -172,9 +172,9 @@ class UsersManagerTests: XCTestCase {
                                    credit: nil,
                                    currency: nil,
                                    subscribed: nil)
-        sut.update(auth: newAuth, userInfo: newUserInfo)
+        sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
         XCTAssertTrue(sut.users[0].isPaid)
-        XCTAssertEqual(sut.users[0].authCredential.accessToken, "new")
+        XCTAssertEqual(sut.users[0].userInfo.maxSpace, 999)
     }
 
     func testUserAt() {

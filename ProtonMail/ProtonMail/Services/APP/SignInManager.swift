@@ -130,7 +130,7 @@ class SignInManager: Service {
                 newUserApiService: user.apiService
             ) { [weak self] in
                 guard let self = self else { return }
-                self.usersManager.update(auth: auth, userInfo: userInfo)
+                self.usersManager.update(userInfo: userInfo, for: auth.sessionID)
 
                 guard userInfo.delinquentParsed.isAvailable else {
                     self.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
