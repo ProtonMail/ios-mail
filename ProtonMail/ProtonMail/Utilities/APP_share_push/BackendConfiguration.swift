@@ -83,6 +83,12 @@ struct BackendConfiguration {
     }
 
     private(set) var environment: BackendEnvironment
+    var isProduction: Bool {
+        let productEnv = ProductionEnvironment()
+        return environment.appDomain == productEnv.appDomain &&
+        environment.apiDomain == productEnv.apiDomain &&
+        environment.apiPath == productEnv.apiPath
+    }
 
     init(
         launchArguments: [String] = ProcessInfo.processInfo.arguments,

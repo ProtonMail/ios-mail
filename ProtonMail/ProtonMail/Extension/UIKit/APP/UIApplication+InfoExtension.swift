@@ -48,4 +48,9 @@ extension UIApplication {
 
         #endif
     }
+
+    static var arePaymentsEnabled: Bool {
+        let isProduction = BackendConfiguration.shared.isProduction
+        return !(isTestflightBeta && isProduction)
+    }
 }
