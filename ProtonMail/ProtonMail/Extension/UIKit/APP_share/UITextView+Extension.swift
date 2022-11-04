@@ -26,7 +26,21 @@ extension UITextView {
         textColor: UIColor = ColorProvider.TextNorm
     ) {
         self.text = text
-        self.font = .preferredFont(for: preferredFont, weight: weight)
+        apply(textStyle: preferredFont, weight: weight, textColor: textColor)
+    }
+
+    func set(
+        text: NSAttributedString,
+        preferredFont: UIFont.TextStyle,
+        weight: UIFont.Weight = .regular,
+        textColor: UIColor = ColorProvider.TextNorm
+    ) {
+        self.attributedText = text
+        apply(textStyle: preferredFont, weight: weight, textColor: textColor)
+    }
+
+    private func apply(textStyle: UIFont.TextStyle, weight: UIFont.Weight, textColor: UIColor) {
+        self.font = .preferredFont(for: textStyle, weight: weight)
         self.adjustsFontForContentSizeCategory = true
         self.textColor = textColor
     }
