@@ -675,28 +675,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
                 NotificationCenter.default.post(name: .showScheduleSendUnavailable, object: nil)
                 return
             }
-            if let date = date {
-                self.showScheduledSendConfirmAlert(date: date)
-            } else {
-                // Immediately send
-                self.coordinator.sendAction(deliveryTime: nil)
-            }
+            self.coordinator.sendAction(deliveryTime: date)
         }
-    }
-
-    private func showScheduledSendConfirmAlert(date: Date) {
-        let timeTuple = PMDateFormatter.shared.titleForScheduledBanner(from: date)
-        let message = String(format: LocalString._edit_scheduled_button_message,
-                             timeTuple.0,
-                             timeTuple.1)
-
-        let title = LocalString._general_schedule_send_action
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: LocalString._general_confirm_action, style: .default) { [weak self] _ in
-            self?.coordinator.sendAction(deliveryTime: date)
-        }
-        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
-        [okAction, cancelAction].forEach(alert.addAction)
-        self.present(alert, animated: true, completion: nil)
     }
 }

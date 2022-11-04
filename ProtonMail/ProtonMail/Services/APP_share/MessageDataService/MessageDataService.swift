@@ -1183,10 +1183,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         #else
                         if let deliveryTime = deliveryTime {
                             let labelID = Message.Location.scheduled.labelID
+                            let messageID = MessageID(message.messageID)
                             self.parent?
                                 .eventsService
                                 .fetchEvents(byLabel: labelID, notificationMessageID: nil, completion: { _ in
-                                    NotificationCenter.default.post(name: .scheduledMessageSucceed, object: deliveryTime)
+                                    NotificationCenter.default.post(
+                                        name: .scheduledMessageSucceed,
+                                        object: (messageID,
+                                                 deliveryTime,
+                                                 self.userID)
+                                    )
                             })
                         } else {
                             self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
@@ -1598,5 +1604,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }
         message.body = (try? self.encryptBody(MessageEntity(message), clearBody: body, mailbox_pwd: mailbox_pwd)) ?? ""
+    }
+
+    func undoSend(
+        of messageId: MessageID,
+        completion: @escaping (Swift.Result<UndoSendResponse, ResponseError>) -> Void
+    ) {
+        let request = UndoSendRequest(messageID: messageId)
+        apiService.perform(request: request) { task, result in
+            completion(result)
+        }
     }
 }
