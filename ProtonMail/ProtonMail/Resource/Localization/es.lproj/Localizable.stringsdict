@@ -59,12 +59,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>conversación %d</string>
+			<string>%d conversación etiquetada</string>
 			<key>other</key>
-			<string>%d conversaciones</string>
+			<string>%d conversaciones etiquetadas</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ etiquetada</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -75,12 +75,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversación</string>
+			<string>%d conversación movida a %@</string>
 			<key>other</key>
-			<string>%d conversaciones</string>
+			<string>%d conversaciones movidas a %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ movida a %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -111,15 +111,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de correo blocked</string>
+			<string>%d rastreador de correo bloqueado</string>
 			<key>other</key>
-			<string>%d rastreadores de correo blocked</string>
+			<string>%d rastreadores de correo bloqueados</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ encontrado</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -127,11 +127,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de correo</string>
+			<string>%d rastreadores de correo encontrado</string>
 			<key>other</key>
-			<string>%d rastreadores de correo</string>
+			<string>%d rastreadores de correo encontrados</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -161,12 +161,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d mensaje</string>
+			<string>%d mensaje etiquetado</string>
 			<key>other</key>
-			<string>%d mensajes</string>
+			<string>%d mensajes etiquetados</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ etiquetado</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -177,12 +177,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d mensaje</string>
+			<string>%d mensaje movido a %@</string>
 			<key>other</key>
-			<string>%d mensajes</string>
+			<string>%d mensajes movidos a %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ movido a %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d mensaje moved to Drafts</string>
+			<string>%d mensaje movido a Borradores</string>
 			<key>other</key>
-			<string>%d mensajes moved to Drafts</string>
+			<string>%d mensajes movidos a Borradores</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -267,7 +267,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>¿Estás seguro de que quieres eliminar permanentemente %#@conversation@?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -275,9 +275,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversación</string>
+			<string>¿Estás seguro de que quieres eliminar permanentemente $%d conversación?</string>
 			<key>other</key>
-			<string>%d conversaciones</string>
+			<string>¿Estás seguro de que quieres eliminar permanentemente $%d conversaciones?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d message?</string>
+			<string>¿Estás seguro de que quieres eliminar permanentemente $%d mensaje?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>¿Estás seguro de que deseas eliminar permanentemente $%d mensajes?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -324,12 +324,12 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>Proton encontró y bloqueó %d rastreador en este mensaje.</string>
+			<key>other</key>
+			<string>Proton encontró y bloqueó %d rastreadores en este mensaje.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
-			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
-			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Este %d mensaje se moverá a Borradores y se eliminará su programación.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

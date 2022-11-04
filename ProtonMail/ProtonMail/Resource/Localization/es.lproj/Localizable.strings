@@ -4,6 +4,12 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a las' %@";
 
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Se desactivará 'Buscar contenido del mensaje'. Puede ser activado de nuevo desde las configuraciones y todos los mensajes tendrán que ser descargados de nuevo.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ de %2$@";
+
 /* auto lock time format */
 "%d Minute" = "%d minuto";
 
@@ -19,8 +25,17 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Suelta aquí para agregar como archivo adjunto";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 minuto restante";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "< 1 min";
+
 /* default empty object */
 "<no object>" = "<sin objeto>";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 mensaje movido al archivo";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 mensaje movido a spam";
@@ -139,8 +154,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Toda la configuración de protección se restablecerá y se borrará al salir de la aplicación.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Todos tus mensajes están descargados";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir el enrutado alternativo";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Permite abrir archivos adjuntos previamente abiertos cuando estás sin conexión.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Permite abrir mensajes previamente leídos cuando estás sin conexión.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Permite buscar entre tus mensajes. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "¿También archivar?";
@@ -200,11 +227,11 @@
 /* (No Comment) */
 "Archived" = "Archivado";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "¿Estás seguro de que quieres eliminar permanentemente estos %d mensajes?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "¿Estás seguro que quieres eliminar permanentemente este mensaje?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "¿Estás seguro de que quieres eliminar estos %d mensajes de forma permanente?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "¿Estás seguro que quieres cerrar la sesión %@?";
@@ -258,13 +285,11 @@
 /* Title */
 "Auto Lock Time" = "Tiempo de bloqueo automático";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Mostrar contenido remoto automáticamente";
-
 /* settings general section title */
 "Auto-load embedded images" = "Cargar automáticamente las imágenes incrustadas";
+
+/* settings general section title */
+"Auto-load remote content" = "Cargar automáticamente el contenido remoto";
 
 /* Example feedback */
 "Awful" = "Terrible";
@@ -296,6 +321,9 @@
 /* Settings row */
 "Block email tracking" = "Bloquear el seguimiento del correo electrónico";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Impide que los remitentes vean si abriste el mensaje o cuando lo hiciste";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Revise rápidamente los mensajes hilados en el modo de conversación.";
 
@@ -304,6 +332,9 @@
 
 /* Title */
 "Bug Report Received" = "Informe de error recibido";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Datos en caché";
 
 /* Call the contact (button title text) */
 "Call contact" = "Llamar contacto";
@@ -412,6 +443,9 @@
 /* Title */
 "Change sender address to .." = "Cambiar dirección del remitente a...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Carga tu dispositivo o reanuda manualmente.";
+
 /* Action */
 "Check Again" = "Verificar de nuevo";
 
@@ -495,6 +529,9 @@
 /* Title */
 "Confirmation" = "Confirmación";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Conéctate a una red WiFi o habilita \"descargar mediante datos móviles\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contacto eliminado. Se sincronizará cuando la conexión esté disponible";
 
@@ -507,6 +544,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Contactos";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Búsqueda de contenido disponible";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -610,6 +650,9 @@
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Eliminar %d mensajes";
 
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "¿Eliminar todos los mensajes descargados?";
+
 /* Title-Contacts */
 "Delete contact" = "Eliminar contacto";
 
@@ -641,6 +684,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Deshabilitado";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Al deshabilitar esta función ahora, eliminarás los mensajes que han sido descargados.";
 
 /* Action */
 "Discard" = "Descartar";
@@ -720,11 +766,17 @@
 /* Title for the alert to disable content search. */
 "Downloaded messages will be deleted" = "Los mensajes descargados serán eliminados";
 
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Descargando mensaje %1$d de %2$d";
+
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Descargando metadatos ...";
 
 /* The text to download new message when search index is refreshed. */
 "Downloading new messages ..." = "Descargando mensajes nuevos ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Se descargan los correos para que puedas buscar en ellos. Los mensajes se cifran y almacenan localmente. %1$@";
 
 /* Action */
 "Draft" = "Borrador";
@@ -792,6 +844,12 @@
 /* title */
 "Email domain invalid" = "Dominio de correo electrónico no válido";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Los rastreadores de correo pueden violar tu privacidad.";
+
+/* Name of the feature */
+"Email tracking protection" = "Protección de rastreo de correo electrónico";
+
 /* "Cancel" */
 "Empty Folder" = "Carpeta vacía";
 
@@ -822,6 +880,9 @@
 
 /* Title */
 "Enable signature" = "Habilitar firma";
+
+/* (No Comment) */
+"Enable TouchID" = "Habilitar TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Cifrado por Proton";
@@ -878,7 +939,7 @@
 "Error sending" = "Error al enviar";
 
 /* The default text while estimating the time remaining */
-"Estimating time remaining ..." = "Estimando tiempo restante...";
+"Estimating time remaining ..." = "Tiempo restante estimado ...";
 
 /* lock app option */
 "Every time enter app" = "Cada vez al abrir la aplicación";
@@ -934,6 +995,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Mensaje reenviado";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Libera como mínimo 100 MB de almacenamiento para continuar.";
 
 /* Title */
 "From" = "De";
@@ -1016,11 +1080,11 @@
 /* human check warning title */
 "Human Check Warning" = "Advertencia de verificación humana";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Si pierdes la conexión WiFi, la descarga continuará mediante los datos del móvil.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorar la advertencia y continuar";
-
-/* immediately send message Action */
-"Immediately" = "Inmediatamente";
 
 /* Action */
 "Import Error" = "Error al importar";
@@ -1060,6 +1124,9 @@
 /* Error */
 "Incorrect PIN." = "PIN incorrecto.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Información de cuánto espacio de almacenamiento está utilizando en tu dispositivo esta cuenta de Proton Mail.";
+
 /* Option title */
 "Inherit color from parent folder" = "Heredar el color de la carpeta principal";
 
@@ -1091,7 +1158,7 @@
 "Internet Service Provider (ISP) problem" = "Problema del proveedor de servicios de Internet (ISP)";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentamos la nueva imagen de Proton.\nMuchos servicios, una misión. Bienvenido a una Internet basada en la privacidad.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentamos el nuevo aspecto de Proton.\nMuchos servicios, una sola misión. Te damos la bienvenida a una Internet donde la privacidad es la norma.";
 
 /* alert title */
 "Invalid credential" = "Credencial no válida";
@@ -1159,14 +1226,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Límite alcanzado";
 
-/* No comment provided by engineer. */
-"Load content" = "Cargar contenido";
+/* Button inside the banner */
+"Load anyway" = "Cargar de todos modos";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Cargar imágenes incrustadas";
-
-/* No comment provided by engineer. */
-"Load images" = "Cargar imágenes";
 
 /* Action
    The title of loading remote content banner. */
@@ -1290,7 +1354,7 @@
 "Message Queue" = "Cola de mensajes";
 
 /* Alert title */
-"Message saved to Drafts" = "Mensaje movido a Borradores";
+"Message saved to Drafts" = "Mensaje guardado en Borradores";
 
 /* (No Comment) */
 "Message sending failed please try again" = "No se pudo enviar el mensaje, inténtalo de nuevo";
@@ -1304,6 +1368,9 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Acciones de deslizamiento de mensajes";
 
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Los mensajes anteriores a %@ no serán descargados. Para buscar en ellos, libera almacenamiento en este dispositivo.";
+
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.";
 
@@ -1316,6 +1383,9 @@
 /* *
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Lunes (%1$@) a las 08:%2$d";
 
 /* More actions button */
 "More" = "Más";
@@ -1421,7 +1491,7 @@
 "No internet connection" = "No hay conexión a Internet";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "No se ha recuperado ninguna clave para el usuario interno";
+"No keys retrieved for internal user" = "No se recuperaron claves para el usuario interno";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "sin objetos";
@@ -1518,6 +1588,9 @@
 /* default vcard types */
 "Other" = "Otro";
 
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Nuestro equipo de atención al cliente intentará activar tu plan de servicio manualmente si aceptas adjuntar los datos técnicos que App Store proporcionó a la aplicación en el momento de la compra. Estos datos no incluyen ningún detalle sobre tu cuenta de iTunes, el ID de Apple, las tarjetas de pago vinculadas o cualquier otra información de usuario. Los datos técnicos sólo nos ayudan a comprobar y verificar que la transacción se realizó en los servidores de la App Store.";
+
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Nuestro sistema ha marcado este mensaje como un intento de suplantación de identidad. Por favor, comprueba que es legítimo.";
 
@@ -1568,7 +1641,7 @@
 "PGP-encrypted message from verified sender" = "Mensaje PGP cifrado de remitente verificado";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "Cifrado PGP al destinatario verificado";
+"PGP-encrypted to verified recipient" = "Cifrado con PGP al destinatario verificado";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-signed" = "Firmado con PGP";
@@ -1820,6 +1893,9 @@
 /* Text for resume button */
 "Resume" = "Reanudar";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "reanudar manualmente.";
+
 /* Action */
 "Retry" = "Reintentar";
 
@@ -1845,6 +1921,12 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programar envío";
 
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Se eliminará su programación";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Envío programado";
+
 /* *
  *  SearchViewController */
 "Search" = "Buscar";
@@ -1852,6 +1934,12 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Buscar contenido del mensaje";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Ver detalles";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Ver progreso.";
 
 /* section title */
 "Select colour" = "Seleccionar color";
@@ -1917,7 +2005,7 @@
 "Sent by Proton Mail with zero-access encryption" = "Enviado por Proton Mail con cifrado de conocimiento cero";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Enviado por ProtonMail con cifrado de conocimiento cero al destinatario verificado";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Enviado por Proton Mail con cifrado de conocimiento cero al destinatario verificado";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Enviado por ti con cifrado de extremo a extremo";
@@ -2233,20 +2321,8 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Este enlace conduce a un sitio web que podría estar intentando robar su información, como contraseñas y datos de tarjetas de crédito.\n%@\n\nPor su seguridad, no continúe.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Este mensaje contiene imágenes incrustadas.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Este mensaje contiene contenido remoto e imágenes incrustadas";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Este mensaje contiene contenido remoto.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Este mensaje es generado automáticamente como respuesta a un mensaje anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Este mensaje proviene de una lista de correo.";
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Este mensaje ya no está programado para enviarse más tarde. Si aún quieres enviarlo más tarde, puedes pulsar en \"Programar envío\"";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Este mensaje puede ser un intento de suplantación. Comprueba el remitente y el contenido y asegúrate que sean legítimos.";
@@ -2277,7 +2353,7 @@
 "To" = "Para";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en protonmail.com";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hoy, %@";
@@ -2285,6 +2361,12 @@
 /* *
  *  API Error & alert title */
 "Token expired" = "Token caducado";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Mañana a las 08:%02d";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Mañana, %@";
 
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Demasiados mensajes esperando a ser enviados.\nPor favor espere hasta que otro mensaje se envíe para programar este.";
@@ -2311,9 +2393,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Las claves de confianza no son válidas para el envío";
-
-/* Try again action */
-"Try again" = "Inténtalo de nuevo";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intente conectarse a Proton desde una red distinta ( o usando %1$@ o %2$@).";
@@ -2393,9 +2472,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "No destacar";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Desuscribirse";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar suscripción de la lista de correo";
@@ -2487,6 +2563,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Tenemos problemas para conectar con los servidores. Por favor, vuelve a conectar.";
 
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Ahora cargamos las imágenes por defecto y bloqueamos a los remitentes que intentan rastrearte.\nEsto se puede cambiar en la configuración.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos configurar una contraseña para los siguientes destinatarios:";
 
@@ -2540,6 +2619,12 @@
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Ahora puedes programar tus mensajes para que sean enviados más tarde";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Ahora puedes buscar en sus mensajes. Esta función puede habilitarse en los ajustes en cualquier momento.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Puedes buscar en tus mensajes descargados. Para el resto de mensajes, solo se buscará en la lista de remitentes y en el asunto.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ como predeterminada porque es una característica de pago.";
@@ -2604,6 +2689,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Tus etiquetas";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Tus mensajes se están descargando...";
 
 /* *
  *  Onboarding */

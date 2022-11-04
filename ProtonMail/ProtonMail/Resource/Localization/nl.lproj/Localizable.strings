@@ -227,11 +227,11 @@
 /* (No Comment) */
 "Archived" = "Gearchiveerd";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Weet u zeker dat u deze %d berichten definitief wilt verwijderen?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Weet u zeker dat u deze %d berichten definitief wilt verwijderen?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Weet u zeker dat u %@ wilt uitloggen?";
@@ -285,13 +285,11 @@
 /* Title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Externe inhoud automatisch weergeven";
-
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
+
+/* settings general section title */
+"Auto-load remote content" = "Externe inhoud automatisch laden";
 
 /* Example feedback */
 "Awful" = "Vreselijk";
@@ -322,6 +320,9 @@
 
 /* Settings row */
 "Block email tracking" = "Blokkeer e-mailtracking";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Blokkeert dat afzenders kunnen zien of en wanneer u het bericht hebt geopend";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatiemodus.";
@@ -730,6 +731,26 @@
 /* Done action */
 "Done" = "Klaar";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Download gepauzeerd";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Download gepauzeerd: Laag batterijniveau";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Download voortgang";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Downloaden via mobiele data";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Gedownloade berichten";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Gedownloade berichten zullen worden verwijderd";
+
 /* The text for the number of downloaded messages. */
 "Downloading message %1d out of %2d" = "Bericht %1$d van de %2$d downloaden";
 
@@ -756,7 +777,7 @@
 "Edit" = "Bewerken";
 
 /* The title for the view where user can select the color for the group */
-"Edit avatar" = "Bewerk profielafbeelding";
+"Edit avatar" = "Profielafbeelding bewerken";
 
 /* *
  *  Edit Contact view controller */
@@ -794,10 +815,13 @@
 "Email addresses" = "E-mailadressen";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "E-mailcontact";
+"Email contact" = "Contact e-mailen";
 
 /* title */
-"Email domain invalid" = "Ongeldig e-mail domein";
+"Email domain invalid" = "Ongeldig e-maildomein";
+
+/* Name of the feature */
+"Email tracking protection" = "Bescherming tegen e-mailtracking";
 
 /* "Cancel" */
 "Empty Folder" = "Map leegmaken";
@@ -806,7 +830,7 @@
 "Empty Spam" = "Spam leegmaken";
 
 /* Alert title */
-"Empty spam folder" = "Map spam leegmaken";
+"Empty spam folder" = "Spamfolder leegmaken";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Prullenbak leegmaken";
@@ -822,7 +846,7 @@
 "Enable email notices" = "Schakel e-mailberichten in";
 
 /* (No Comment) */
-"Enable Pin Protection" = "Activeer PIN beveiliging";
+"Enable Pin Protection" = "Activeer PIN-beveiliging";
 
 /* Title */
 "Enable signature" = "Handtekening inschakelen";
@@ -1020,9 +1044,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Waarschuwing negeren en doorgaan";
 
-/* immediately send message Action */
-"Immediately" = "Onmiddellijk";
-
 /* Action */
 "Import Error" = "Fout bij importeren";
 
@@ -1060,6 +1081,9 @@
 
 /* Error */
 "Incorrect PIN." = "Onjuiste PIN-code.";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Informatie over hoeveel opslagruimte dit Proton Mail-account gebruikt op uw apparaat.";
 
 /* Option title */
 "Inherit color from parent folder" = "Kleur van bovenliggende map overnemen";
@@ -1157,14 +1181,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limiet bereikt";
 
-/* No comment provided by engineer. */
-"Load content" = "Inhoud laden";
+/* Button inside the banner */
+"Load anyway" = "Toch laden";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ingesloten afbeeldingen laden";
-
-/* No comment provided by engineer. */
-"Load images" = "Afbeeldingen laden";
 
 /* Action
    The title of loading remote content banner. */
@@ -1196,7 +1217,7 @@
 "Logged out of %@" = "Afgemeld van %@";
 
 /* error title */
-"Logs" = "Logs";
+"Logs" = "Logboeken";
 
 /* cell title in device settings */
 "Mailbox" = "Mailbox";
@@ -1293,8 +1314,8 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Bericht veeg acties";
 
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Bericht wordt verzonden op %@";
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Eerdere berichten ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
@@ -1311,6 +1332,9 @@
 /* *
  *  Encryption Setup View Controller */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Maandag (%1$@) om 08:%2$d";
 
 /* More actions button */
 "More" = "Meer";
@@ -1479,6 +1503,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Oké";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Oudste bericht: ";
 
 /* The title of On setting options */
 "On" = "Aan";
@@ -1800,9 +1830,6 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing rapporteren";
 
-/* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.";
-
 /* link opeining confirmation */
 "Request link confirmation" = "Bevestigingslink aanvragen";
 
@@ -1984,6 +2011,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Uitstellen";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Sommige afbeeldingen konden niet geladen worden met bescherming tegen tracking.";
+
 /* (No Comment) */
 "Space Warning" = "Waarschuwing van opslagruimte";
 
@@ -2023,6 +2053,9 @@
 
 /* Alert title */
 "Storage full" = "Opslag vol";
+
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Opslaglimiet";
 
 /* Storage warning */
 "Storage quota exceeded" = "Opslagquota overschreden";
@@ -2228,21 +2261,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Deze link leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.\n%@\n\nGa voor uw veiligheid niet verder.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Dit bericht bevat ingebedde afbeeldingen.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Dit bericht bevat inhoud op afstand en ingesloten afbeeldingen";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Dit bericht bevat externe inhoud.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Dit bericht is automatisch aangemaakt als reactie op een voorgaand bericht.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Dit bericht komt van een mailinglist.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Dit bericht is mogelijk een poging tot phishing. Controleer de afzender en de inhoud om te controleren dat de afzender van het bericht van legitiem is.";
 
@@ -2273,6 +2291,9 @@
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van Proton Mail te gebruiken via ProtonMail.com";
+
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Vandaag, %@";
 
 /* *
  *  API Error & alert title */
@@ -2306,9 +2327,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Vertrouwde sleutels zijn niet geldig om mee te verzenden";
-
-/* Try again action */
-"Try again" = "Opnieuw proberen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
@@ -2374,6 +2392,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Onbekende versie";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Onbeperkt";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Ontgrendeling vereist";
 
@@ -2385,9 +2406,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Ster verwijderen";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Afmelden";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Afmelden van mailinglijst";
@@ -2479,6 +2497,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "We hebben problemen met de verbinding met de servers. Gelieve opnieuw te verbinden.";
 
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "We laden afbeelding nu standaard en blokkeren trackers van afzenders.\nDit kan gewijzigd worden via de instellingen.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Wij raden aan een wachtwoord in te stellen voor de volgende ontvangers:";
 
@@ -2528,7 +2549,7 @@
 "You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via protonmail.com/support. U kunt ook bugs melden via de app.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "U kunt nu uw berichten plannen om ze later te versturen";
@@ -2550,6 +2571,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "U hebt ten minste één onbekende ontvanger ingevoerd. Controleer uw ontvangers.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "U heeft geen berichten.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "U heeft nog niet-opgeslagen wijzigingen. Wilt u deze opslaan?";
@@ -2593,6 +2617,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Uw labels";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Uw berichten worden gedownload...";
 
 /* *
  *  Onboarding */

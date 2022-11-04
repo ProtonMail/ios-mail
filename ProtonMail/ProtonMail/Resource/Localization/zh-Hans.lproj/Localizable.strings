@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy '年' M '月' d '日'EEEE %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "“全文搜索”将禁用。但可以从设置中重新开启并且所有的邮件将需要重新下载。";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "此操作将关闭邮件全文搜索，以后可以从设置中开启，但届时所有邮件需要重新下载。";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "共 %2$@，已使用 %1$@";
@@ -29,7 +29,7 @@
 "+ Drop here to add as attachment" = "+ 拖至此处以添加附件";
 
 /* Text for the estimated time label if less than one minute is remaining */
-"<1 minute remaining" = "< 还剩1分钟";
+"<1 minute remaining" = "还需不到 1 分钟";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 分钟";
@@ -230,9 +230,6 @@
 /* (No Comment) */
 "Archived" = "已归档";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "您确定要永久删除这 %d 封邮件吗？";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您确定要永久删除这封邮件吗？";
 
@@ -287,11 +284,6 @@
 
 /* Title */
 "Auto Lock Time" = "自动锁定时间";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "自动显示外链内容";
 
 /* settings general section title */
 "Auto-load embedded images" = "自动加载嵌入图像";
@@ -843,9 +835,6 @@
 /* title */
 "Email domain invalid" = "邮箱域名无效";
 
-/* Name of the feature */
-"Email tracking protection" = "邮件追踪保护";
-
 /* "Cancel" */
 "Empty Folder" = "清空文件夹";
 
@@ -1067,9 +1056,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽视警告并继续";
 
-/* immediately send message Action */
-"Immediately" = "立即";
-
 /* Action */
 "Import Error" = "导入出错";
 
@@ -1201,14 +1187,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "数量已达上限";
 
-/* No comment provided by engineer. */
-"Load content" = "加载内容";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "加载嵌入图像";
-
-/* No comment provided by engineer. */
-"Load images" = "加载图片";
 
 /* Action
    The title of loading remote content banner. */
@@ -1339,9 +1319,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "邮件滑动操作";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "邮件将于 %@ 发送";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "您发送的邮件可以设置在一定时间后自动销毁。";
@@ -1526,6 +1503,9 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "确定";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "确定";
 
 /* The title of On setting options */
 "On" = "开";
@@ -2281,21 +2261,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "此邮件含有嵌入图像。";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "此邮件含有外链内容和嵌入图像";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "此邮件含有外链内容。";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "这是一封自动回复邮件。";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "此邮件来自邮寄列表。";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已不在稍后发送计划中。如果您仍想稍后发送，可以点击 “计划发送”";
 
@@ -2372,9 +2337,6 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密钥对发送无效";
 
-/* Try again action */
-"Try again" = "重试";
-
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
 
@@ -2450,9 +2412,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "取消星标";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "取消订阅";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "取消订阅";

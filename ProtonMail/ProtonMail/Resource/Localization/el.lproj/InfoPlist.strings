@@ -1,5 +1,5 @@
-/* Bundle name */
-"CFBundleName" = "Siri";
+/* Bundle display name */
+"CFBundleDisplayName" = "Proton Mail";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Απαιτείται για επισύναψη πολυμέσων στο μήνυμα.";

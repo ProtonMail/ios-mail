@@ -1,8 +1,14 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", kommer inte att sökas. För att söka inom dess, öka %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Visa hela meddelandet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Den d MMM åååå kl %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Sök meddelandeinnehåll' kommer inaktiveras. Den kan aktiveras igen från inställningar och alla meddelanden kommer laddas ner på nytt.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ av %2$@";
@@ -81,6 +87,9 @@
 /* new contacts add Birthday */
 "Add birthday" = "Lägg till födelsedag";
 
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Lägg till CC och BCC";
+
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Lägg till kontakter";
 
@@ -154,6 +163,15 @@
 /* network troubleshot cell title */
 "Allow alternative routing" = "Tillåt alternativ routing";
 
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Låter dig öppna tidigare öppnade bilagor när du inte är ansluten.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Låter dig öppna tidigare lästa meddelanden när du inte är ansluten.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Låter dig söka inom dina meddelanden. %1$@";
+
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Arkivera också?";
 
@@ -212,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Arkiverad";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Är du säker på att du vill ta bort dessa %d meddelanden permanent?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Är du säker på att du vill ta bort detta meddelande permanent?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Är du säker på att du vill ta bort dessa %d meddelanden permanent?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Är du säker på att du vill logga ut %@?";
@@ -270,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Tid till automatisk låsning";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Visa fjärrinnehåll automatiskt";
-
 /* settings general section title */
 "Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";
+
+/* settings general section title */
+"Auto-load remote content" = "Ladda fjärrinnehåll automatiskt";
 
 /* Example feedback */
 "Awful" = "Förfärlig";
@@ -307,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Blockera e-postspårning";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Blockerar avsändare från att se om och när du öppnade meddelandet";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
@@ -462,6 +481,9 @@
 /* general close action */
 "Close" = "Stäng";
 
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Stäng CC och BCC";
+
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
 
@@ -510,6 +532,9 @@
 /* Title */
 "Confirmation" = "Bekräftelse";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Anslut till WiFi eller aktivera \"Ladda ner via mobildata\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt borttagen, kommer att synkroniseras när anslutning är tillgänglig";
 
@@ -522,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Kontakter";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Innehållsökning tillgängligt";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -660,6 +688,9 @@
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Inaktiverad";
 
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Inaktivering av funktionen nu kommer att radera meddelandena som redan har laddats ned.";
+
 /* Action */
 "Discard" = "Avfärda";
 
@@ -715,11 +746,17 @@
 /* Text for estimate time label when low battery */
 "Download paused: Low battery" = "Nedladdning pausad: lågt batteri";
 
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Nedladdning pausad: Ingen anslutning";
+
 /* Text for estimate time label when no wifi is available */
 "Download paused: No WiFi detected" = "Nedladdning pausad: inget Wifi upptäckt";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Nedladdning pausad: lagringsutrymme fullt";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Nedladdningsförlopp";
 
 /* The title of the slider for download via mobile data in settings */
 "Download via mobile data" = "Ladda ner via mobildata";
@@ -729,11 +766,20 @@
    The title of downloaded messages in settings */
 "Downloaded messages" = "Nedladdade meddelanden";
 
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Nedladdade meddelanden kommer att tas bort";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Laddar ner meddelande %1$d av %2$d";
+
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Laddar ner metadata …";
 
 /* The text to download new message when search index is refreshed. */
 "Downloading new messages ..." = "Laddar ner meddelanden …";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Laddar ner e-postmeddelanden så du kan söka inom dessa. Meddelanden är krypterade och lagras lokalt. %1$@";
 
 /* Action */
 "Draft" = "Utkast";
@@ -803,6 +849,9 @@
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-postspårare kan kränka din integritet.";
+
+/* Name of the feature */
+"Email tracking protection" = "E-postspårningsskydd";
 
 /* "Cancel" */
 "Empty Folder" = "Töm mapp";
@@ -891,6 +940,9 @@
 
 /* incorrect email format error in composer */
 "Error sending" = "Fel vid sändning";
+
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Beräknar återstående tid ...";
 
 /* lock app option */
 "Every time enter app" = "Varje gång appen öppnas";
@@ -1031,11 +1083,11 @@
 /* human check warning title */
 "Human Check Warning" = "Varning för mänsklig kontroll";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Om du förlorar din WiFi-anslutning kommer nedladdning att fortsätta via mobilnätet.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorera varning och fortsätt";
-
-/* immediately send message Action */
-"Immediately" = "Omedelbart";
 
 /* Action */
 "Import Error" = "Importfel";
@@ -1074,6 +1126,9 @@
 
 /* Error */
 "Incorrect PIN." = "Felaktig PIN-kod.";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Information gällande hur mycket lagringsutrymme detta Proton Mail-konto använder på din enhet.";
 
 /* Option title */
 "Inherit color from parent folder" = "Ärv färg från överordnad mapp";
@@ -1174,14 +1229,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Gräns uppnådd";
 
-/* No comment provided by engineer. */
-"Load content" = "Ladda innehåll";
+/* Button inside the banner */
+"Load anyway" = "Ladda ändå";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ladda inbäddade bilder";
-
-/* No comment provided by engineer. */
-"Load images" = "Ladda bilder";
 
 /* Action
    The title of loading remote content banner. */
@@ -1198,6 +1250,9 @@
 
 /* cell title in device settings */
 "Local storage limit" = "Lokal lagringsgräns";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "lokalt lagringsutrymme.";
 
 /* *
  *  file string type */
@@ -1270,6 +1325,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Meddelandet kunde inte skickas. Minst en mottagares e-postadress/domän finns inte eller är felaktigt formaterad.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Hämtning av meddelande pausad. Ta reda på hur %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "När meddelandet löper ut";
 
@@ -1285,6 +1343,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Meddelanderubriker";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Meddelandehistorik";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Meddelandet flyttades till papperskorgen";
@@ -1313,8 +1374,17 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Svepåtgärder för meddelande";
 
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Meddelandet kommer att skickas den %@";
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Meddelanden laddas ner för innehållssökning. Några resultat kanske inte visas. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Tidigare meddelanden ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Meddelande från innan %@ kommer inte att sökas. För att söka inom dessa, frigör lagringsutrymme på denna enhet.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelanden kommer att hämtas via WiFi. Det kan ta en stund och din enhet kan bli lite varmare. Du kan pausa åtgärden när som helst.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Meddelanden du skickar kan ställas in så att de tas bort automatiskt efter en viss tidsperiod.";
@@ -1468,6 +1538,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Inte skräppost (flytta till inkorg)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Inte alla meddelanden laddades ner. För att hämta dessa, frigör utrymme på enheten.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Inte alla meddelanden laddades ner. För att hämta dessa, utöka lagringsbegränsningen nedan.";
+
 /* No comment provided by engineer. */
 "Not set" = "Inte inställd";
 
@@ -1532,6 +1608,9 @@
 
 /* default vcard types */
 "Other" = "Övrigt";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var uppfylld på Appstores servrar.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt";
@@ -1880,6 +1959,9 @@
    The title of encrypted search in settings */
 "Search message content" = "Sök efter innehåll i meddelande";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Tar sökningen för lång tid? %1$@ från denna sökning för snabbare resultat.";
+
 /* The link in local storage downloaded messages. */
 "See details" = "Se detaljer";
 
@@ -1947,6 +2029,12 @@
 "SENT" = "Skickat";
 
 /* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Skickat av Proton Mail med nollåtkomst-kryptering";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Skickat av Proton Mail med nollåtkomst-kryptering till bekräftade mottagare";
+
+/* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
 
 /* The message after tapping the encryption icon. */
@@ -1960,6 +2048,9 @@
 
 /* Description */
 "Set a password to encrypt this message for non-Proton Mail users." = "Ställ in ett lösenord för att kryptera detta meddelande för icke Proton Mail-användare.";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Ange e-post förfallotid";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
@@ -2010,6 +2101,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Skjut upp";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Vissa bilder kunde inte laddas med spårningsskydd.";
+
 /* (No Comment) */
 "Space Warning" = "Utrymmesvarning";
 
@@ -2050,8 +2144,17 @@
 /* Alert title */
 "Storage full" = "Lagring full";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Lagringsbegränsning";
+
 /* Storage warning */
 "Storage quota exceeded" = "Lagringskvot överskriden";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Använt utrymme";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Använt utrymme: ";
 
 /* Title */
 "Storage Warning" = "Lagringsvarning";
@@ -2093,6 +2196,9 @@
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Växla valläget";
 
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Växla oläst filter";
+
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Växlade till konto '%@'";
 
@@ -2132,6 +2238,9 @@
 /* (No Comment) */
 "The display name is now %@." = "Visningsnamnet är nu %@.";
 
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Nedladdningen kommer att stoppas om Proton Mail-appen stängs.";
+
 /* Description */
 "The draft cache is broken. Please try again." = "Cachen för utkast är skadad. Försök igen.";
 
@@ -2147,6 +2256,9 @@
 /* *
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Det maximala antalet etiketter är %d.";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Detta meddelande skickas och kommer att flyttas till Skickadmappen när sändning är slutförd.";
 
 /* update password error */
 "The new password can't be empty." = "Det nya lösenordet kan inte vara tomt.";
@@ -2183,6 +2295,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Den skickande nyckeln är inte giltig";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Sändningstiden behöver vara åtminstone 5 minuter i framtiden.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Storleksgränsen för bilagor är 25 MB.";
@@ -2234,7 +2349,7 @@
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post har misslyckats med sin domäns autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en ProtonMail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Denna funktion fördröjer sändningen av dina e-postmeddelanden, vilket ger dig möjlighet att ångra sändningen under den valda tidsramen.";
@@ -2245,20 +2360,8 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Denna länk leder till en webbplats som kanske försöker stjäla din information, såsom lösenord och kreditkortsuppgifter.%@För din säkerhet, fortsätt inte.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Detta meddelande innehåller inbäddade bilder.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Detta meddelande innehåller fjärrinnehåll och inbäddade bilder";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Detta meddelande innehåller fjärrinnehåll.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Detta meddelande är automatiskt genererat som svar på ett tidigare meddelande.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Detta meddelande är från en e-postlista.";
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Detta meddelande är inte längre planerad att skickas senare. Om du fortfarande vill sända det senare kan du klicka på \"Schemalagd sändning\"";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Detta meddelande kan vara ett nätfiskeförsök. Kontrollera avsändaren och innehållet för att säkerställa att de är legitima.";
@@ -2272,6 +2375,9 @@
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Detta meddelande kommer löpa ut om %1$dD %2$dT %3$dM";
 
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Denna inställning kommer att gå tillbaks till Safari om standardwebbläsaren avinstalleras.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Dags att koppla av";
 
@@ -2280,6 +2386,9 @@
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n Växla omedelbart till annat nätverk.";
 
 /* message To: feild
    Title */
@@ -2326,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betrodda nycklar är inte giltiga för att skicka";
-
-/* Try again action */
-"Try again" = "Försök igen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
@@ -2408,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Ta bort stjärnmärkning";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Avsluta prenumeration";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Avregistrera dig från e-postlista";
@@ -2502,6 +2605,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Vi har problem att ansluta till servrarna. Anslut igen.";
 
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Vi laddar nu bilder som standard och blockerar avsändare från att spåra dig. Detta kan ändras i inställningarna.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Vi rekommenderar att du ställer in ett lösenord istället för följande mottagare:";
 
@@ -2555,6 +2661,12 @@
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Du kan nu schemalägga att dina meddelanden skickas senare";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Du kan du söka inom dina meddelanden. Denna funktion kan aktiveras från inställningarna när som helst.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Du kan söka inom nedladdade meddelanden. För alla andra meddelanden kommer endast mottagarlistan och ämnesrubriken genomsökas.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
@@ -2615,10 +2727,13 @@
 "Your folders" = "Dina mappar";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också manuellt kryptera meddelanden till dem om de inte använder ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Din inkorg skyddas nu av ände-till-ände-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda Proton Mail! Du kan också manuellt kryptera meddelanden till dem om de inte använder Proton Mail.";
 
 /* The section title of label manager table */
 "Your labels" = "Dina etiketter";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
 
 /* *
  *  Onboarding */

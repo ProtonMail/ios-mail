@@ -59,12 +59,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d gesprek</string>
+			<string>%d gesprek gelabeld</string>
 			<key>other</key>
-			<string>%d gesprekken</string>
+			<string>%d gesprekken gelabeld</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ gelabeld</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -75,12 +75,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d gesprek</string>
+			<string>%d gesprek verplaatst naar %@</string>
 			<key>other</key>
-			<string>%d gesprekken</string>
+			<string>%d gesprekken verplaatst naar %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ verplaatst naar %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -103,7 +103,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ geblokkeerd</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -111,15 +111,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d e-mailtracker</string>
+			<string>%d e-mailtracker geblokkeerd</string>
 			<key>other</key>
-			<string>%d e-mailtrackers</string>
+			<string>%d e-mailtrackers geblokkeerd</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ gevonden</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -127,11 +127,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d e-mailtracker</string>
+			<string>%d e-mailtracker gevonden</string>
 			<key>other</key>
-			<string>%d e-mailtrackers</string>
+			<string>%d e-mailtrackers gevonden</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -161,12 +161,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d bericht</string>
+			<string>%d bericht gelabeld</string>
 			<key>other</key>
-			<string>%d berichten</string>
+			<string>%d berichten gelabeld</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ gelabeld</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -177,17 +177,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d bericht</string>
+			<string>%d bericht verplaatst naar %@</string>
 			<key>other</key>
-			<string>%d berichten</string>
+			<string>%d berichten verplaatst naar %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ verplaatst naar %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ verplaatst naar Concepten</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Bericht</string>
+			<string>%d bericht verplaatst naar Concepten</string>
 			<key>other</key>
-			<string>Berichten</string>
+			<string>%d berichten verplaatst naar Concepten</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -267,7 +267,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Weet u zeker dat u %#@conversation@ permanent wil verwijderen?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -275,15 +275,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d gesprek</string>
+			<string>Weet u zeker dat u %d gesprek permanent wilt verwijderen?</string>
 			<key>other</key>
-			<string>%d gesprekken</string>
+			<string>Weet u zeker dat u %d gesprekken permanent wilt verwijderen?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Weet u zeker dat u %#@message@ permanent wil verwijderen?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d bericht</string>
+			<string>Weet u zeker dat u %d bericht definitief wilt verwijderen?</string>
 			<key>other</key>
-			<string>%d berichten</string>
+			<string>Weet u zeker dat u %d berichten definitief wilt verwijderen?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -317,7 +317,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton %#@trackers@ in dit bericht.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -325,17 +325,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>vond en blokkeerde %d tracker</string>
+			<string>Proton heeft %d tracker gevonden en geblokkeerd in dit bericht.</string>
 			<key>other</key>
-			<string>vond en blokkeerde %d trackers</string>
+			<string>Proton heeft %d trackers gevonden en geblokkeerd in dit bericht.</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ wordt verplaatst naar Concepten en zijn planning wordt verwijderd.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Dit bericht</string>
+			<string>Dit bericht wordt verplaatst naar Concepten en zijn planning wordt verwijderd.</string>
 			<key>other</key>
-			<string>Deze berichten</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

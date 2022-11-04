@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Архивные";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Вы уверены, что хотите безвозвратно удалить эти %d сообщения?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Вы уверены, что хотите навсегда удалить это сообщение?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Вы уверены, что хотите безвозвратно удалить эти %d сообщения?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Вы уверены, что хотите выйти из %@?";
@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Время автоблокировки";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Авто-показ внешнего содержимого";
-
 /* settings general section title */
 "Auto-load embedded images" = "Авто-показ встроенных изображений";
+
+/* settings general section title */
+"Auto-load remote content" = "Автозагрузка внешнего содержимого";
 
 /* Example feedback */
 "Awful" = "Ужасно";
@@ -325,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Блокировать отслеживание электронной почты";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Не дает отправителям видеть, открыли ли вы сообщение и когда оно было открыто";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Просматривайте потоковые сообщения в режиме цепочки писем.";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "Неправильный домен эл. почты";
 
-/* Name of the feature */
-"Email tracking protection" = "Защита от трэкеров в эл. почте";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Трэкеры в эл. почте могут нарушать вашу конфиденциальность.";
+
+/* Name of the feature */
+"Email tracking protection" = "Защита от отслеживания электронной почты";
 
 /* "Cancel" */
 "Empty Folder" = "Очистить папку";
@@ -1088,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Игнорировать предупреждение и продолжить";
 
-/* immediately send message Action */
-"Immediately" = "Сразу";
-
 /* Action */
 "Import Error" = "Ошибка импорта";
 
@@ -1130,7 +1128,7 @@
 "Incorrect PIN." = "Неверный PIN.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Информация о том, сколько места для хранения данных использует этот аккаунт Proton Mail на вашем устройстве.";
 
 /* Option title */
 "Inherit color from parent folder" = "Наследовать цвет от родительской папки";
@@ -1231,14 +1229,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Предел кол-ва подкл. уч. записей";
 
-/* No comment provided by engineer. */
-"Load content" = "Загрузите содержимое";
+/* Button inside the banner */
+"Load anyway" = "Загрузить всё равно";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Показывать встроенные изображения";
-
-/* No comment provided by engineer. */
-"Load images" = "Загрузите рисунки";
 
 /* Action
    The title of loading remote content banner. */
@@ -1379,9 +1374,6 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Действия при жестах на сообщении";
 
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Сообщение будет отправлено %@";
-
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Сообщения скачиваются для поиска по содержимому. Некоторые результаты могут не отображаться. %1$@";
 
@@ -1514,7 +1506,7 @@
 "No internet connection" = "Нет подключения к Интернету";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Нет загруженных ключей для внутреннего пользователя";
+"No keys retrieved for internal user" = "Ключи для внутреннего пользователя не получены";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "без темы";
@@ -2109,6 +2101,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Отложить";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Некоторые изображения не удалось загрузить с защитой от отслеживания.";
+
 /* (No Comment) */
 "Space Warning" = "Предупреждение о доступном пространстве";
 
@@ -2365,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Эта ссылка ведет на сайт, который может пытаться украсть вашу информацию, например, пароли и данные кредитной карты.%@\n\nВ целях безопасности не продолжайте.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "В этом сообщении есть встроенные изображения.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "В этом сообщении есть внешнее содержимое и встроенные изображения";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "В этом сообщении есть внешнее содержимое.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Это сообщение автоматически создано в ответ на предыдущее сообщение.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Это сообщение из списка рассылки.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Это сообщение больше не планируется отправить позднее. Если вы все еще хотите отправить его позже, вы можете нажать \"Запланировать отправку\"";
 
@@ -2455,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Доверенные ключи не действительны для отправки";
-
-/* Try again action */
-"Try again" = "Попробовать снова";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Попробуйте подключиться к Proton из другой сети (или используйте %1$@ или %2$@).";
@@ -2537,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Неважное";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Отписаться";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Отписаться от списка рассылки";
@@ -2630,6 +2604,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Не удается связаться с сервером. Пожалуйста подключитесь повторно.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Теперь мы загружаем изображения по умолчанию и не даем отправителю отслеживать вас. Это можно изменить в настройках.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Вместо этого мы рекомендуем установить пароль для следующих получателей:";

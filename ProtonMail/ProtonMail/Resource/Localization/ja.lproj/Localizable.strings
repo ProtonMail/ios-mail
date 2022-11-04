@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
 
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ / %2$@";
+
 /* auto lock time format */
 "%d Minute" = "%d 分";
 
@@ -18,6 +21,9 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 添付ファイルとして追加するにはここにドロップ";
+
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "残り1 分未満";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "1 分未満";
@@ -203,9 +209,6 @@
 /* (No Comment) */
 "Archived" = "アーカイブ済み";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "%d 件のメッセージを完全に削除してよろしいですか?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか?";
 
@@ -261,13 +264,11 @@
 /* Title */
 "Auto Lock Time" = "自動ロックまでの時間";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "外部コンテンツの自動読み込み";
-
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
+
+/* settings general section title */
+"Auto-load remote content" = "外部コンテンツを自動で読み込む";
 
 /* Example feedback */
 "Awful" = "ひどい";
@@ -398,7 +399,7 @@
 
 /* settings general section title
    title */
-"Change password" = "パスワードを変更";
+"Change password" = "パスワードの変更";
 
 /* title */
 "Change Password" = "パスワードの変更";
@@ -751,6 +752,9 @@
 /* title */
 "Email domain invalid" = "無効なメールドメインです";
 
+/* Name of the feature */
+"Email tracking protection" = "メールトラッキング防止";
+
 /* "Cancel" */
 "Empty Folder" = "フォルダーを空にする";
 
@@ -969,9 +973,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "警告を無視して続行";
 
-/* immediately send message Action */
-"Immediately" = "切替/終了時に直ちに";
-
 /* Action */
 "Import Error" = "インポート エラー";
 
@@ -1010,6 +1011,9 @@
 /* Error */
 "Incorrect PIN." = "PIN コードが正しくありません。";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mailが端末上の容量をどれくらい使用しているかの情報です。";
+
 /* Option title */
 "Inherit color from parent folder" = "親フォルダーの色を継承";
 
@@ -1018,6 +1022,9 @@
 
 /* Title */
 "inline attachments" = "本文中の添付ファイル";
+
+/* (No Comment) */
+"Input Display Name ..." = "表示名を入力してください";
 
 /* place holder */
 "Input Display Name…" = "表示名を入力…";
@@ -1047,7 +1054,7 @@
 "Invalid hashed password!" = "無効なハッシュ化されたパスワードです";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "無効な URL です";
+"Invalid URL" = "URLが正しくありません";
 
 /* title */
 "Invalid UserName" = "無効なユーザー名です";
@@ -1100,14 +1107,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "アカウントの利用上限に到達しました";
 
-/* No comment provided by engineer. */
-"Load content" = "コンテンツを読み込む";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "埋め込み画像を読み込む";
-
-/* No comment provided by engineer. */
-"Load images" = "画像を読み込む";
 
 /* Action
    The title of loading remote content banner. */
@@ -1352,7 +1353,7 @@
 "No internet connection" = "インターネット接続がありません";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "内部ユーザーの鍵が取得できません";
+"No keys retrieved for internal user" = "内部ユーザーのために取得された鍵はありません";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "オブジェクトなし";
@@ -1914,6 +1915,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "通知の休止";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
+
 /* (No Comment) */
 "Space Warning" = "容量不足";
 
@@ -2152,21 +2156,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "このリンクはパスワードやクレジットカードなどの情報を盗もうとするウェブサイトに誘導している可能性があります。\n%@\n\nセキュリティのため、アクセスしないでください。";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "このメッセージには埋め込み画像が含まれています。";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "このメッセージには外部コンテンツと埋め込み画像が含まれています。";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "このメッセージにはリモートコンテンツが含まれています。";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "このメッセージは以前のメッセージに対する自動応答です。";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "これはメーリングリストからのメッセージです。";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "このメッセージはフィッシングの可能性があります。送信者と内容をチェックし、正当なものか確認してください。";
 
@@ -2233,9 +2222,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "信頼された鍵が送信に使用できません";
-
-/* Try again action */
-"Try again" = "再試行";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
@@ -2312,9 +2298,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "星印を外す";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "登録解除";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "メーリングリストの登録を解除";
@@ -2405,6 +2388,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "サーバーへの接続に問題が発生しました。再接続してください。";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "デフォルトで画像を読み込みつつ、送信者があなたをトラッキングするのを防ぎます。\nこれは設定で変更できます。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "以下の宛先へパスワードを設定して送信することをおすすめします:";
