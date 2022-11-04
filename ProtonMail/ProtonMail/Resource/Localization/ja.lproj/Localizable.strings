@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
 
+/* settings general section title */
+"Auto-load remote content" = "外部コンテンツを自動で読み込む";
+
 /* Example feedback */
 "Awful" = "ひどい";
 
@@ -396,7 +399,7 @@
 
 /* settings general section title
    title */
-"Change password" = "パスワードを変更";
+"Change password" = "パスワードの変更";
 
 /* title */
 "Change Password" = "パスワードの変更";
@@ -1019,6 +1022,9 @@
 
 /* Title */
 "inline attachments" = "本文中の添付ファイル";
+
+/* (No Comment) */
+"Input Display Name ..." = "表示名を入力してください";
 
 /* place holder */
 "Input Display Name…" = "表示名を入力…";

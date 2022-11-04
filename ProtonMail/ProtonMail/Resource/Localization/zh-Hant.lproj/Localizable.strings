@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "於 E, MMM d, yyyy 時間 %@";
 
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%2$@ 中的 %1$@";
+
 /* auto lock time format */
 "%d Minute" = "%d 分鐘";
 
@@ -19,11 +22,17 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此處以加入附件";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<還剩餘 1 分鐘";
+
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1分鐘";
 
 /* default empty object */
 "<no object>" = "<無對象>";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "一封郵件已移至「封存」";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "一封郵件已移至「垃圾桶」";
@@ -142,8 +151,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "登出應用程式後，所有保護設定將會被重設。";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "所有您的郵件已下載";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "允許替代路由";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "允許您在離線時開啟以前打開的附件。";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "允許您在離線時開啟以前讀過的郵件。";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "允許您在郵件中搜尋。%1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "同時封存?";
@@ -206,6 +227,9 @@
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
 
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "您確定要永久刪除這 %d 封郵件嗎？";
+
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
 
@@ -261,6 +285,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "自動載入嵌入圖像";
 
+/* settings general section title */
+"Auto-load remote content" = "自動載入遠端內容";
+
 /* Example feedback */
 "Awful" = "糟透了";
 
@@ -291,6 +318,9 @@
 /* Settings row */
 "Block email tracking" = "封鎖郵件追蹤";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "阻止寄件人得知您閱讀此封郵件。";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "交談模式將說明您輕鬆瀏覽，並管理郵件往來。";
 
@@ -299,6 +329,9 @@
 
 /* Title */
 "Bug Report Received" = "已收到您的錯誤回報";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "已快取的資料";
 
 /* Call the contact (button title text) */
 "Call contact" = "致電聯絡人";
@@ -407,6 +440,9 @@
 /* Title */
 "Change sender address to .." = "變更寄件人電郵位址為...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "充電您的裝置或手動恢復。";
+
 /* Action */
 "Check Again" = "再次檢查";
 
@@ -490,6 +526,9 @@
 /* Title */
 "Confirmation" = "確認";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "連接到 WiFi 或啟用\"透過行動數據下載\"。";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "聯絡人已刪除，將在連線到網際網路時同步";
 
@@ -502,6 +541,9 @@
 /* Action and title
    menu title */
 "Contacts" = "聯絡人";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "內容搜尋可使用";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -531,6 +573,9 @@
 /* top right action text */
 "Create" = "建立";
 
+/* error part & alert title */
+"Create user failed" = "無法創建新使用者";
+
 /* Alert title */
 "Creating folder not allowed" = "不允許建立資料夾";
 
@@ -545,6 +590,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "目前的復原電郵位址";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "目前選取： ";
 
 /* Title */
 "Current sign-in password" = "目前登入密碼";
@@ -577,6 +625,9 @@
 /* error details */
 "Decryption of this content failed" = "無法解密此內容";
 
+/* error details */
+"Decryption of this message's encrypted content failed." = "此郵件的加密內容解密失敗。";
+
 /* Title */
 "Default" = "預設";
 
@@ -595,6 +646,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "刪除 %d 封郵件";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "刪除所有已下載的郵件？";
 
 /* Title-Contacts */
 "Delete contact" = "刪除聯絡人";
@@ -627,6 +681,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "已停用";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "現在停用該功能將會刪除已經下載的郵件。";
 
 /* Action */
 "Discard" = "放棄";
@@ -676,6 +733,47 @@
 
 /* Done action */
 "Done" = "完成";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "下載暫停";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "下載暫停：低電量";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "下載暫停：沒有連線";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "下載暫停：偵測不到WiFi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "下載暫停：儲存空間已滿";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "下載進度";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "透過行動數據下載";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "已下載郵件";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "以下載郵件將會被刪除";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "下載郵件在 %2$d 中的 %1$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "下載中繼資料…";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "下載新郵件…";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下載電子郵件以便您可以在其中進行搜尋。郵件加密過並儲存在本地端。%1$@";
 
 /* Action */
 "Draft" = "草稿";
@@ -743,6 +841,9 @@
 /* title */
 "Email domain invalid" = "電郵域名無效";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "電子郵件追蹤器會侵犯您的隱私。";
+
 /* Name of the feature */
 "Email tracking protection" = "電郵追蹤防護";
 
@@ -765,6 +866,9 @@
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "啟用";
 
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "啟用郵件內容搜尋";
+
 /* Title */
 "Enable email notices" = "啟用電郵通知";
 
@@ -773,6 +877,9 @@
 
 /* Title */
 "Enable signature" = "啟用簽名檔";
+
+/* (No Comment) */
+"Enable TouchID" = "啟用 Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "經 Proton 加密";
@@ -828,8 +935,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "傳送時發生錯誤";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "正在估計剩餘時間 ...";
+
 /* lock app option */
 "Every time enter app" = "每次進入應用程式時";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "排除訊息内容";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "展開資料夾";
@@ -879,6 +992,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "已轉發的訊息";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "釋放至少 100 MB 的儲存空間以繼續。";
 
 /* Title */
 "From" = "寄件人";
@@ -961,6 +1077,9 @@
 /* human check warning title */
 "Human Check Warning" = "真人驗證警告";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "若您失去了 WiFi 連線，下載將會透過行動數據來繼續。";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽略警告並繼續";
 
@@ -1002,6 +1121,9 @@
 /* Error */
 "Incorrect PIN." = "PIN 碼不正確。";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "資訊是關於這個 Proton Mail 帳號使用了多少的儲存空間在您的裝置上。";
+
 /* Option title */
 "Inherit color from parent folder" = "繼承自上層資料夾的顏色";
 
@@ -1010,6 +1132,9 @@
 
 /* Title */
 "inline attachments" = "內嵌附件";
+
+/* (No Comment) */
+"Input Display Name ..." = "輸入顯示名稱...";
 
 /* place holder */
 "Input Display Name…" = "輸入顯示名稱…";
@@ -1086,6 +1211,9 @@
    The title of learn more link */
 "Learn more" = "瞭解詳情";
 
+/* The title of learn more link */
+"Learn more." = "瞭解詳情。";
+
 /* settings swipe actions section title */
 "Left to Right" = "由左至右";
 
@@ -1094,6 +1222,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "已達上限";
+
+/* Button inside the banner */
+"Load anyway" = "仍要載入";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "載入內崁圖像";
@@ -1108,8 +1239,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "正在載入…";
 
+/* The title of local storage in settings */
+"Local storage" = "本機儲存空間";
+
 /* cell title in device settings */
 "Local storage limit" = "本機儲存空間限制";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "本機儲存空間限制。";
 
 /* *
  *  file string type */
@@ -1182,6 +1319,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電郵位址/網域不存在或格式不正確。";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "郵件下載已暫停。了解如何去 %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "郵件期限";
 
@@ -1197,6 +1337,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "郵件標頭";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "郵件歷史紀錄";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "郵件已移至「垃圾桶」";
@@ -1224,6 +1367,12 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "郵件滑動操作";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "正在下載郵件以進行內容搜尋。有些結果可能不會顯示。%1$@";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "郵件將透過 WiFi 下載。這可能需要一些時間，而且您的裝置可能會稍微發熱。您可以隨時暫停操作。";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "您所傳送的郵件可以設置為在特定時間段後自動刪除。";
@@ -1377,6 +1526,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "非垃圾郵件 (移至收件匣）";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "並非所有郵件都已下載。要下載它們，請釋放裝置上的儲存空間。";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "並非所有郵件都已下載。要下載它們，請增加下方的儲存限制。";
+
 /* No comment provided by engineer. */
 "Not set" = "未設定";
 
@@ -1408,6 +1563,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "好";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "好";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "較舊的郵件： ";
 
 /* The title of On setting options */
 "On" = "開啟";
@@ -1533,6 +1694,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "請連線後再試一次";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "請連接到網際網路來繼續動作。";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "請輸入有效的手機號碼。";
@@ -1741,6 +1905,9 @@
 /* Text for resume button */
 "Resume" = "繼續";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "手動恢復。";
+
 /* Action */
 "Retry" = "重試";
 
@@ -1779,6 +1946,15 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "搜尋郵件內容";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "搜尋花費太久時間？%1$@ 從這搜尋以獲得更快的結果。";
+
+/* The link in local storage downloaded messages. */
+"See details" = "顯示詳細資料";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "查看進度。";
 
 /* section title */
 "Select colour" = "選擇顏色";
@@ -1913,6 +2089,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延後";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "追蹤防護會導致某些圖像無法載入。";
+
 /* (No Comment) */
 "Space Warning" = "空間警告";
 
@@ -1953,8 +2132,17 @@
 /* Alert title */
 "Storage full" = "儲存空間已滿";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "儲存空間上限";
+
 /* Storage warning */
 "Storage quota exceeded" = "超過儲存空間限制";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "儲存空間已使用";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "儲存空間已使用： ";
 
 /* Title */
 "Storage Warning" = "儲存空間警告";
@@ -2037,6 +2225,9 @@
 
 /* (No Comment) */
 "The display name is now %@." = "顯示名稱現在為 %@。";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "如果您的 Proton Mail 程式關掉則下載將會中止";
 
 /* Description */
 "The draft cache is broken. Please try again." = "草稿緩存失敗，請重新嘗試。";
@@ -2297,6 +2488,9 @@
 /* (No Comment) */
 "Unkonw Version" = "未知的版本";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "無限制";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "需要解鎖";
 
@@ -2456,6 +2650,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "您現在可以安排稍後傳送訊息";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "您現在能夠在郵件中搜尋。可以隨時從設定中啟用此功能。";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "您能夠在下載的郵件中搜尋。對於所有的其他郵件，將只能搜尋到收件人列表和主旨列。";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
@@ -2473,6 +2673,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "您輸入了至少一個未知的收件人。請驗證您的收件人。";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "您沒有郵件。";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "您有尚未儲存的變更，是否要儲存？";
@@ -2516,6 +2719,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "您的標籤";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "您的訊息正在下載...";
 
 /* *
  *  Onboarding */
