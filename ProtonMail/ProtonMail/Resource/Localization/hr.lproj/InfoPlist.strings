@@ -1,6 +1,3 @@
-/* Bundle name */
-"CFBundleName" = "Siri";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Potrebno za pridodavanje medija poruci e-pošte.";
 

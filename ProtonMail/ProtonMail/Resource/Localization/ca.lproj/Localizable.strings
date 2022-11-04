@@ -206,9 +206,6 @@
 /* (No Comment) */
 "Archived" = "Arxivat";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "N'esteu segur, de voler eliminar permanentment aquests %d missatges?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "N'esteu segur, de voler eliminar permanentment aquest missatge?";
 
@@ -263,11 +260,6 @@
 
 /* Title */
 "Auto Lock Time" = "Temps de bloqueig automàtic";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Càrrega automàtica de contingut remot";
 
 /* settings general section title */
 "Auto-load embedded images" = "Càrrega automàtica d'imatges incrustades";
@@ -972,9 +964,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignora l'avís i continua";
 
-/* immediately send message Action */
-"Immediately" = "Immediatament";
-
 /* Action */
 "Import Error" = "Error d'importació";
 
@@ -1097,14 +1086,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "S'ha assolit el límit";
 
-/* No comment provided by engineer. */
-"Load content" = "Carregar contingut";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carrega imatges incrustades";
-
-/* No comment provided by engineer. */
-"Load images" = "Carregar imatges";
 
 /* Action
    The title of loading remote content banner. */
@@ -2093,21 +2076,6 @@
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Aquesta carpeta és buida";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Aquest missatge conté imatges incrustades.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Aquest missatge conté contingut remot i imatges incrustades";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Aquest missatge conté contingut remot.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Aquest missatge es genera automàticament com a resposta a un missatge previ.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Aquest missatge és d'una llista de correus.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Aquest missatge pot ser un intent de suplantació d’identitat. Comproveu el remitent i els continguts per assegurar-vos que són legítims.";
 
@@ -2156,9 +2124,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Les claus de confiança no són vàlides per enviar-les";
-
-/* Try again action */
-"Try again" = "Torna-ho a provar";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activeu aquesta funció per completar automàticament les adreces de correu electrònic utilitzant contactes de tots els vostres comptes connectats.";
@@ -2232,9 +2197,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "No destacar";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Anul·lar la subscripció";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";

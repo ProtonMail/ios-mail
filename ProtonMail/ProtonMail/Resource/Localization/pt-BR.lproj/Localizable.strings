@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Arquivado";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Você tem certeza de que deseja excluir permanentemente $%d mensagens?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Você tem certeza de que deseja excluir permanentemente esta mensagem?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Você tem certeza de que deseja excluir permanentemente $%d mensagens?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Você tem certeza que deseja encerrar a sessão%@?";
@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Tempo de bloqueio automático";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Carregar o conteúdo remoto automaticamente";
-
 /* settings general section title */
 "Auto-load embedded images" = "Carregar imagens incorporadas automaticamente";
+
+/* settings general section title */
+"Auto-load remote content" = "Carregar conteúdo remoto automaticamente";
 
 /* Example feedback */
 "Awful" = "Horrível";
@@ -325,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Bloquear rastreamento de e-mail";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Impede que os remetentes vejam se e quando você abriu a mensagem";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegue pelas mensagens encadeadas no modo de conversa.";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "Domínio de e-mail inválido";
 
-/* Name of the feature */
-"Email tracking protection" = "Proteção contra rastreadores de e-mail";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Os rastreadores de e-mail podem violar sua privacidade.";
+
+/* Name of the feature */
+"Email tracking protection" = "Proteção de rastreamento de e-mail";
 
 /* "Cancel" */
 "Empty Folder" = "Esvaziar pasta";
@@ -1088,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorar aviso e continuar";
 
-/* immediately send message Action */
-"Immediately" = "Imediatamente";
-
 /* Action */
 "Import Error" = "Erro de importação";
 
@@ -1130,7 +1128,7 @@
 "Incorrect PIN." = "PIN incorreto.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Informações sobre quanto espaço de armazenamento esta conta do ProtonMail está usando em seu dispositivo.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informações sobre quanto espaço de armazenamento esta conta do Proton Mail está usando em seu dispositivo.";
 
 /* Option title */
 "Inherit color from parent folder" = "Cor herdada da pasta pai";
@@ -1231,14 +1229,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limite alcançado";
 
-/* No comment provided by engineer. */
-"Load content" = "Carregar conteúdo";
+/* Button inside the banner */
+"Load anyway" = "Carregar mesmo assim";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carregar imagens incorporadas";
-
-/* No comment provided by engineer. */
-"Load images" = "Carregar imagem";
 
 /* Action
    The title of loading remote content banner. */
@@ -1379,9 +1374,6 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Ações ao deslizar nas mensagens";
 
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "A mensagem será enviada em %@";
-
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "As mensagens estão sendo baixadas para pesquisa de conteúdo. Alguns resultados podem não ser exibidos. %1$@";
 
@@ -1405,7 +1397,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Os registros por dispositivos móveis estão temporariamente desabilitados. Tente novamente mais tarde ou tente se registrar em protonmail.com usando um computador desktop ou notebook.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Segunda-feira (%1$@) às 08:%2$d";
@@ -2109,6 +2101,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Adiar";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Algumas imagens falharam ao carregar com proteção contra rastreamento.";
+
 /* (No Comment) */
 "Space Warning" = "Aviso de espaço";
 
@@ -2365,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Esse link leva a um site que pode estar tentando roubar suas informações, como senhas e detalhes de cartão de crédito.\n%@\n\nPara sua segurança, não prossiga.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Esta mensagem contém imagens incorporadas.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Esta mensagem contém conteúdo remoto e imagens incorporadas";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Esta mensagem contém conteúdo remoto.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Esta mensagem é automaticamente gerada como uma resposta a uma mensagem anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Esta mensagem é de uma lista de endereços.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Esta mensagem não está mais programada para ser enviada mais tarde. Se você ainda quiser enviá-lo mais tarde, toque em \"Agendar envio\"";
 
@@ -2456,9 +2436,6 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "As chaves confiáveis não são válidas para o envio";
 
-/* Try again action */
-"Try again" = "Tentar novamente";
-
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente conectar ao Proton a partir de uma rede diferente (ou use o %1$@ ou %2$@).";
 
@@ -2533,13 +2510,10 @@
 "unread" = "não lido";
 
 /* No comment provided by engineer. */
-"Unread" = "Não lida";
+"Unread" = "Não lidas";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Remover estrela";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Cancelar inscrição";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar a inscrição na lista de distribuição de e-mails";
@@ -2630,6 +2604,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Temos problemas para conectar aos servidores. Por favor, reconecte.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Agora carregamos as imagens por padrão e impedimos os remetentes de rastrearem você.\nIsso pode ser alterado nas configurações.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos configurar uma senha para os seguintes destinatários:";

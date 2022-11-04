@@ -28,6 +28,9 @@
 /* default empty object */
 "<no object>" = "<no object>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 besked flyttet til arkiv";
+
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 Besked flyttet til spam";
 
@@ -206,9 +209,6 @@
 /* (No Comment) */
 "Archived" = "Arkiveret";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Er du sikker på, at du vil slette disse %d beskeder permanent?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Er du sikker på, at du vil slette denne besked permanent?";
 
@@ -263,11 +263,6 @@
 
 /* Title */
 "Auto Lock Time" = "Auto-låsetid";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Vis automatisk eksternt indhold";
 
 /* settings general section title */
 "Auto-load embedded images" = "Auto-indlæs indlejrede billeder";
@@ -542,6 +537,9 @@
 /* top right action text */
 "Create" = "Opret";
 
+/* error part & alert title */
+"Create user failed" = "Kunne ikke oprette bruger";
+
 /* Alert title */
 "Creating folder not allowed" = "Oprettelse af mappe ikke tilladt";
 
@@ -587,6 +585,9 @@
 
 /* error details */
 "Decryption of this content failed" = "Denne indholdsdekryptering mislykkedes";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "Dekryptering af denne beskeds krypterede indhold mislykkedes.";
 
 /* Title */
 "Default" = "Standard";
@@ -785,6 +786,9 @@
 /* Title */
 "Enable signature" = "Aktivér signatur";
 
+/* (No Comment) */
+"Enable TouchID" = "Aktivér TouchID";
+
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Krypteret af Proton";
 
@@ -839,8 +843,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Fejl ved afsendelse";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Estimerer resterende tid ...";
+
 /* lock app option */
 "Every time enter app" = "Ved enhver app-tilgang";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Undtag beskedindhold";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Udvid mappe";
@@ -975,9 +985,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorer advarsel og fortsæt";
 
-/* immediately send message Action */
-"Immediately" = "Omgående";
-
 /* Action */
 "Import Error" = "Importfejl";
 
@@ -1100,6 +1107,9 @@
    The title of learn more link */
 "Learn more" = "Få mere at vide";
 
+/* The title of learn more link */
+"Learn more." = "Lær mere.";
+
 /* settings swipe actions section title */
 "Left to Right" = "Venstre mod højre";
 
@@ -1109,14 +1119,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Grænse nået";
 
-/* No comment provided by engineer. */
-"Load content" = "Indlæs indhold";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Indlæs indlejrede billeder";
-
-/* No comment provided by engineer. */
-"Load images" = "Indlæs billeder";
 
 /* Action
    The title of loading remote content banner. */
@@ -1128,8 +1132,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Indlæser…";
 
+/* The title of local storage in settings */
+"Local storage" = "Lokalt lager";
+
 /* cell title in device settings */
 "Local storage limit" = "Lokale lagerpladsgrænse";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "lokale lagerpladsgrænse.";
 
 /* *
  *  file string type */
@@ -1244,9 +1254,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Besked stryge-handlinger";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Besked vil blive sendt %@";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
@@ -1431,6 +1438,9 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "Ok";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "OK";
 
 /* The title of On setting options */
 "On" = "Til";
@@ -2159,26 +2169,14 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dette link fører til et websted, som måske forsøger at stjæle dine oplysninger, f. eks. adgangskoder og kreditkortoplysninger.\n%@\n\nFor din egen sikkerheds skyld bør du ikke fortsætte.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Denne besked indeholder indlejrede billeder.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Denne besked indeholder eksternt indhold og indlejrede billeder";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Denne besked indeholder eksternt indhold.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Denne besked er automatisk genereret som svar på en tidligere besked.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Denne besked er fra en mailingliste.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne besked kan være et phishing-forsøg. Tjek afsenderen og indholdet for at sikre, at de er legitime.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Denne besked blev automatisk genereret";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Denne besked vil blive sendt %1$@ kl. %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Denne besked udløber om %1$dD %2$dT %3$dM";
@@ -2240,9 +2238,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betroede nøgler er ikke gyldige til afsendelse";
-
-/* Try again action */
-"Try again" = "Prøv igen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
@@ -2322,9 +2317,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjern stjernemarkering";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Afmeld abonnement";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Afmeld dig fra mailinglisten";

@@ -158,7 +158,7 @@
 "All protection settings will be reset and wiped upon logging out of the app." = "Alle Schutzeinstellungen werden beim Abmelden von der App zurückgesetzt und gelöscht.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen";
+"All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatives Routing erlauben";
@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Archiviert";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Möchtest du diese %d Meldungen wirklich dauerhaft löschen?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Bist du sicher, dass diese Nachricht dauerhaft gelöscht werden soll?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Möchtest du diese %d Meldungen wirklich dauerhaft löschen?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Möchtest du „%@“ wirklich abmelden?";
@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Zeit bis zur automatischen Sperrung";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Inhalte aus externen Quellen automatisch anzeigen";
-
 /* settings general section title */
 "Auto-load embedded images" = "Eingebettete Grafiken automatisch laden";
+
+/* settings general section title */
+"Auto-load remote content" = "Inhalte aus externen Quellen automatisch laden";
 
 /* Example feedback */
 "Awful" = "Furchtbar";
@@ -324,7 +322,10 @@
 "Birthday" = "Geburtstag";
 
 /* Settings row */
-"Block email tracking" = "E-Mail-Tracking sperren";
+"Block email tracking" = "E-Mail-Tracking blockieren";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Verhindert, dass der Absender erfährt, ob und wann Sie die Nachricht geöffnet haben";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Blättere im Konversationsmodus durch zusammenhängende Nachrichten.";
@@ -749,7 +750,7 @@
 "Download paused: No connectivity" = "Download pausiert: Keine Verbindung";
 
 /* Text for estimate time label when no wifi is available */
-"Download paused: No WiFi detected" = "Download pausiert: Kein WLAN-Netzwerk erkannt";
+"Download paused: No WiFi detected" = "Download pausiert: Kein WLAN-Netzwerk erkannt.";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Download pausiert: Speicher voll";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "Ungültige E-Mail-Domäne";
 
-/* Name of the feature */
-"Email tracking protection" = "Schutz vor E-Mail-Trackern";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-Mail-Tracker können deine Privatsphäre verletzen.";
+
+/* Name of the feature */
+"Email tracking protection" = "Schutz vor E-Mail-Trackern";
 
 /* "Cancel" */
 "Empty Folder" = "Ordner leeren";
@@ -947,7 +948,7 @@
 "Every time enter app" = "Jedes Mal, wenn du die App öffnest";
 
 /* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "Nachrichteninhalt ausschließen";
+"Exclude message content" = "Schließe den Inhalt von Nachrichten";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Ordner aufklappen";
@@ -1088,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Warnung ignorieren und fortfahren";
 
-/* immediately send message Action */
-"Immediately" = "Sofort";
-
 /* Action */
 "Import Error" = "Fehler beim Importieren";
 
@@ -1130,7 +1128,7 @@
 "Incorrect PIN." = "PIN ungültig.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informationen darüber, wie viel Speicherplatz dieses Proton Mail-Konto auf deinem Gerät verbraucht.";
 
 /* Option title */
 "Inherit color from parent folder" = "Farbe vom übergeordneten Ordner übernehmen";
@@ -1231,14 +1229,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit erreicht";
 
-/* No comment provided by engineer. */
-"Load content" = "Inhalt laden";
+/* Button inside the banner */
+"Load anyway" = "Trotzdem laden";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Eingebettete Grafiken laden";
-
-/* No comment provided by engineer. */
-"Load images" = "Grafiken laden";
 
 /* Action
    The title of loading remote content banner. */
@@ -1379,9 +1374,6 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Nachricht-Wischaktionen";
 
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Die Nachricht wird am %@ gesendet";
-
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Die Nachrichten werden für die Inhaltssuche heruntergeladen. Einige Ergebnisse werden möglicherweise nicht angezeigt. %1$@";
 
@@ -1439,7 +1431,7 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "In Spam-Ordner verschieben";
+"Move to spam" = "In Spam verschieben";
 
 /* (No Comment) */
 "Move to Spam" = "In Spam-Ordner verschieben";
@@ -1514,7 +1506,7 @@
 "No internet connection" = "Keine Internetverbindung";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Keine Schlüssel für internen Benutzer abgerufen";
+"No keys retrieved for internal user" = "Keine Schlüssel für interne Benutzer abgerufen";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "Kein Objekt";
@@ -1588,7 +1580,7 @@
 "Okay" = "Okay";
 
 /* The text for determining the oldest message in the encrypted search index */
-"Oldest message: " = "Älteste Nachricht:";
+"Oldest message: " = "Älteste Nachricht: ";
 
 /* The title of On setting options */
 "On" = "Ein";
@@ -1967,6 +1959,9 @@
    The title of encrypted search in settings */
 "Search message content" = "Inhalt der Nachrichten durchsuchen";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Dauert die Suche zu lange? %1$@ von dieser Suche aus, um schnellere Ergebnisse zu erzielen.";
+
 /* The link in local storage downloaded messages. */
 "See details" = "Details anzeigen";
 
@@ -2105,6 +2100,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Zurückstellen";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Einige Grafiken konnten nicht mit Tracking-Schutz geladen werden.";
 
 /* (No Comment) */
 "Space Warning" = "Speicherplatz-Warnung";
@@ -2362,23 +2360,8 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dieser Link führt zu einer Website, die möglicherweise versucht, deine Informationen wie Passwörter und Kreditkartendaten zu stehlen.\n%@\n\nZu deiner Sicherheit solltest du nicht fortfahren.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Diese Nachricht enthält eingebettete Grafiken.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Diese Nachricht enthält extern eingebundene Inhalte und eingebettete Grafiken";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Diese Nachricht enthält Inhalte aus externen Quellen.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Diese Nachricht wurde automatisch als Antwort auf eine vorherige Nachricht erzeugt.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Diese Nachricht wurde an eine Verteilerliste gesendet.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Diese Nachricht ist nicht mehr für einen späteren Versand vorgesehen. Wenn du sie dennoch später senden möchtest, kannst du auf \"Senden planen\" tippen";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Diese Nachricht ist nicht mehr für einen späteren Versand vorgesehen. Wenn du sie dennoch später senden möchtest, kannst du auf \"Senden planen\" tippen.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Diese Nachricht könnte ein Phishing-Versuch sein. Bitte überprüfe den Absender und deren Inhalt, um sicherzustellen, dass diese seriös sind.";
@@ -2403,6 +2386,9 @@
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-Zertifikatsvalidierung fehlgeschlagen. Deine Verbindung wird möglicherweise überwacht, und die Anwendung ist zu deiner Sicherheit vorübergehend gesperrt.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS-Zertifikatsvalidierung fehlgeschlagen. Deine Verbindung wird möglicherweise überwacht, und die Anwendung ist zu deiner Sicherheit vorübergehend gesperrt.\n\nNetzwerke sofort wechseln.";
 
 /* message To: feild
    Title */
@@ -2450,9 +2436,6 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Die vertrauenswürdigen Schlüssel sind für den Versand nicht gültig";
 
-/* Try again action */
-"Try again" = "Erneut versuchen";
-
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Versuche dich von einem anderen Netzwerk aus mit Proton zu verbinden (oder verwende %1$@ oder %2$@).";
 
@@ -2497,7 +2480,7 @@
 "Undisclosed Recipients" = "Verborgene Empfänger";
 
 /* Action */
-"Undo" = "Widerrufen";
+"Undo" = "Rückgängig";
 
 /* No comment provided by engineer. */
 "Undo send" = "Senden widerrufen";
@@ -2531,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Kennzeichnung entfernen";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Abbestellen";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Aus Verteilerliste austragen";
@@ -2624,6 +2604,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Es gibt Probleme beim Verbinden mit den Servern. Bitte stelle die Verbindung wieder her.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Bilder werden jetzt standardmäßig geladen und deren Absender können dich nicht mehr zurückverfolgen.\nDies kann in den Einstellungen geändert werden.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Wir empfehlen, stattdessen für die folgenden Empfänger ein Passwort einzurichten:";

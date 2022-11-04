@@ -65,14 +65,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversații</string>
+			<string>%d conversații au fost etichetate.</string>
 			<key>one</key>
-			<string>O conversație</string>
+			<string>Conversația a fost etichetată.</string>
 			<key>other</key>
-			<string>%d de conversații</string>
+			<string>%d de conversații au fost etichetate.</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ a fost etichetată</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -83,14 +83,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversații</string>
+			<string>%d conversații au fost mutate în «%@».</string>
 			<key>one</key>
-			<string>O conversație</string>
+			<string>Conversația a fost mutată în «%@».</string>
 			<key>other</key>
-			<string>%d de conversații</string>
+			<string>%d de conversații au fost mutate în «%@».</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ a fost mutată în %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -115,7 +115,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Blocări %#@trackers@</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -123,17 +123,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d agenți de urmărire e-mail</string>
+			<string>Au fost blocaţi %d urmăritori din e-mail.</string>
 			<key>one</key>
-			<string>%d agent de urmărire email</string>
+			<string>A fost blocat un urmăritor din e-mail.</string>
 			<key>other</key>
-			<string>%d de agenți de urmărire e-mail</string>
+			<string>Au fost blocaţi %d de urmăritori din e-mail.</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Găsit %#@trackers@</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -141,13 +141,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d agenți de urmărire e-mail</string>
+			<string>S-au găsit %d urmăritori în e-mail.</string>
 			<key>one</key>
-			<string>%d agent de urmărire e-mail</string>
+			<string>S-a găsit un urmăritor în e-mail.</string>
 			<key>other</key>
-			<string>%d de agenți de urmărire e-mail</string>
+			<string>S-au găsit %d de urmăritori în e-mail.</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -179,14 +179,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d mesaje</string>
+			<string>S-au etichetat %d mesaje.</string>
 			<key>one</key>
-			<string>Un mesaj</string>
+			<string>Mesajul a fost etichetat.</string>
 			<key>other</key>
-			<string>%d de mesaje</string>
+			<string>S-au etichetat %d de mesaje.</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ etichetat</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -197,19 +197,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d mesaje</string>
+			<string>S-au mutat %d mesaje în «%@».</string>
 			<key>one</key>
-			<string>Un mesaj</string>
+			<string>Mesajul a fost mutat în «%@».</string>
 			<key>other</key>
-			<string>%d de mesaje</string>
+			<string>S-au mutat %d de mesaje în «%@».</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ a fost mutat în %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ a fost mutat în «Ciorne»</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -217,11 +217,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Mesaje</string>
+			<string>S-au mutat %d mesaje în «Ciorne».</string>
 			<key>one</key>
-			<string>Mesaj</string>
+			<string>Mesajul a fost mutat în «Ciorne».</string>
 			<key>other</key>
-			<string>Mesaje</string>
+			<string>S-au mutat %d de mesaje în «Ciorne».</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -299,7 +299,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Sigur doriți să ștergeți definitiv %#@conversation@?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -307,17 +307,17 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d conversații</string>
+			<string>Sigur doriți să ștergeți definitiv aceste %d conversații?</string>
 			<key>one</key>
-			<string>O conversație</string>
+			<string>Sigur doriți să ștergeți definitiv această conversație?</string>
 			<key>other</key>
-			<string>%d de conversații</string>
+			<string>Sigur doriți să ștergeți definitiv aceste %d de conversații?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Sigur doriți să ștergeți definitiv %#@message@?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -325,11 +325,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d mesaje</string>
+			<string>Sigur doriți să ștergeți definitiv aceste %d mesaje?</string>
 			<key>one</key>
-			<string>%d mesaj</string>
+			<string>Sigur doriți să ștergeți definitiv acest mesaj?</string>
 			<key>other</key>
-			<string>%d mesaje</string>
+			<string>Sigur doriți să ștergeți definitiv aceste %d de mesaje?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -355,7 +355,7 @@
 	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Proton a %#@trackers@ în acest mesaj.</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -363,19 +363,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>găsit și blocat %d agenți de urmărire</string>
+			<string>Proton a găsit și blocat %d urmăritori în acest mesaj.</string>
 			<key>one</key>
-			<string>găsit și blocat un agent de urmărire</string>
+			<string>Proton a găsit și blocat un urmăritor în acest mesaj.</string>
 			<key>other</key>
-			<string>găsit și blocat %d de agenți de urmărire</string>
+			<string>Proton a găsit și blocat %d de urmăritori în acest mesaj.</string>
 			<key>zero</key>
-			<string>did not find any trackers</string>
+			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ se va (vor) muta în «Ciorne» și i (li) se va elimina programarea.</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -383,11 +383,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Aceste mesaje</string>
+			<string>Aceste %d mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
 			<key>one</key>
-			<string>Acest mesaj</string>
+			<string>Acest mesaj se va muta în «Ciorne» și i se va elimina programarea.</string>
 			<key>other</key>
-			<string>Aceste mesaje</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

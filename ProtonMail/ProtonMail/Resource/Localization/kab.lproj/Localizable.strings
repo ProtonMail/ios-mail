@@ -197,9 +197,6 @@
 /* (No Comment) */
 "Archived" = "Aɣbar";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda %d agi n yiznan?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda izen-agi?";
 
@@ -254,11 +251,6 @@
 
 /* Title */
 "Auto Lock Time" = "Tanzagt send asekkeṛ awurman";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Sken s wudem awurman agbur anmeggag";
 
 /* settings general section title */
 "Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";
@@ -957,9 +949,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Zgel alɣu, tkemmkeḍ";
 
-/* immediately send message Action */
-"Immediately" = "Imir kan";
-
 /* Action */
 "Import Error" = "Erreur d'importation";
 
@@ -1085,14 +1074,8 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Tewwḍeḍ tilist";
 
-/* No comment provided by engineer. */
-"Load content" = "Sali-d agbur";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Sali tugniwin tusliɣin";
-
-/* No comment provided by engineer. */
-"Load images" = "Sali-d tugniwin";
 
 /* Action
    The title of loading remote content banner. */
@@ -1229,7 +1212,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Ijerriden ɣef tiliɣriyin nsan akka tura. Ma ulac aɣilif ɛreḍ ticki neɣ ɛreḍ s ujerred di protonmail.com s useqdec n uselkim n tnarit neɣ n ufus.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Ugar";
@@ -2102,21 +2085,6 @@
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Akaram-agi d ilem";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Izen-a yegber tugniwin yeddan.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Izen-a yegber agbur anmeggag d tugniwin tusliɣin";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Izen-agi yesɛa agbur anmeggag.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Izen-agi ilul-d s wudem awurman di tririt i yizen yezrin.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Izen-agi yekka-d si tebdart n tnezwit.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Izen-agi yezmer ad yili d aneɛruḍ n ukellex. Ttxil-k senqed amazan akked ugbur iwakken ad tḥeqqqeḍ belli d izerfanen.";
 
@@ -2143,7 +2111,7 @@
 "To" = "I";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n ProtonMail di proton Mail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n Proton Mail di proton Mail.com";
 
 /* *
  *  API Error & alert title */
@@ -2171,9 +2139,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Tisura yettwasentmen ur ɣtint ara i tuzna";
-
-/* Try again action */
-"Try again" = "Ɛreḍ tikkelt-nniḍen";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec %1$@ neɣ %2$@).";
@@ -2250,9 +2215,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Kkes seg inurifen";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Ffeɣ seg ujerred";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Ffeɣ seg ujerred n tebdart n tnezwit";

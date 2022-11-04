@@ -230,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Arhivat";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Sigur doriți să ștergeți permanent aceste %d mesaje?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Sigur doriți să ștergeți permanent acest mesaj?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Sigur doriți să ștergeți permanent aceste %d mesaje?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
@@ -288,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Timp autoblocare";
 
-/* (No Comment) */
+/* settings general section title */
+"Auto-load embedded images" = "Autoîncărcare imagini incluse";
 
 /* settings general section title */
 "Auto-load remote content" = "Autoîncărcare conținut extern";
-
-/* settings general section title */
-"Auto-load embedded images" = "Autoîncărcare imagini incluse";
 
 /* Example feedback */
 "Awful" = "Îngrozitoare";
@@ -325,6 +323,9 @@
 
 /* Settings row */
 "Block email tracking" = "Blocare urmărire e-mailuri";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Împiedică expeditorii să vadă dacă și când ați deschis mesajul.";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Parcurgeți rapid mesajele înșiruite în modul conversație.";
@@ -846,11 +847,11 @@
 /* title */
 "Email domain invalid" = "Domeniu e-mail nevalid";
 
-/* Name of the feature */
-"Email tracking protection" = "Protejare e-mail împotriva urmăririi";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Agenții de urmărire din e-mail vă pot încălca intimitatea.";
+
+/* Name of the feature */
+"Email tracking protection" = "Protejare e-mail împotriva urmăririi";
 
 /* "Cancel" */
 "Empty Folder" = "Golire folder";
@@ -1088,9 +1089,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorare avertisment și continuare";
 
-/* immediately send message Action */
-"Immediately" = "Imediat";
-
 /* Action */
 "Import Error" = "Eroare importare";
 
@@ -1130,7 +1128,7 @@
 "Incorrect PIN." = "PIN incorect.";
 
 /* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this ProtonMail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
+"Information about how much storage space this Proton Mail account is using on your device." = "Informații privind spațiul ocupat de contul Proton Mail pe dispozitiv.";
 
 /* Option title */
 "Inherit color from parent folder" = "Moştenire culoare de la folderul părinte";
@@ -1231,14 +1229,11 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limită atinsă";
 
-/* No comment provided by engineer. */
-"Load content" = "Încărcare conținut";
+/* Button inside the banner */
+"Load anyway" = "Continuare încărcare";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Încărcare imagini integrate";
-
-/* No comment provided by engineer. */
-"Load images" = "Încărcare imagini";
 
 /* Action
    The title of loading remote content banner. */
@@ -1378,9 +1373,6 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Acțiuni glisare mesaje";
-
-/* scheduled send success message, e.g. Message will be sent on On April 19 at 15:30 */
-"Message will be sent on %@" = "Mesajul va fi trimis %@";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Mesajele se descarcă pentru căutarea în conținut. Unele rezultate pot lipsi. %1$@";
@@ -1544,7 +1536,7 @@
 "normal attachments" = "atașamente normale";
 
 /* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Nu este nedorit (mutare în «Primite»)";
+"Not a spam (move to inbox)" = "Acceptat (mutare în «Primite»)";
 
 /* The status text of message history in downloaded messages if the device is out of memory. */
 "Not all messages were downloaded. To download them, free up storage on the device." = "Nu toate mesajele au fost descărcate. Pentru a le descărca, eliberați spațiu pe dispozitiv.";
@@ -2109,6 +2101,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Amânare";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Încărcarea unor imagini a eșuat cu protecția de urmărire activată.";
+
 /* (No Comment) */
 "Space Warning" = "Avertizare spațiu";
 
@@ -2365,21 +2360,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Această legătură duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.\n%@\n\nPentru siguranță, nu continuați.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Acest mesaj conține imagini incluse.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Acest mesaj conține conținut la distanță și imagini incluse.";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Acest mesaj conține conținut de la distanță.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Acest mesaj este generat automat ca răspuns la un mesaj anterior.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Acest mesaj este de la o listă de corespondență.";
-
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Aceste mesaj nu mai este programat să fie trimis ulterior. Dacă încă mai doriți să fie trimis ulterior, apăsați pe „Trimitere programată”.";
 
@@ -2455,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Cheile de încredere nu sunt valide pentru trimitere";
-
-/* Try again action */
-"Try again" = "Reîncercați";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
@@ -2537,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fără stea";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Dezabonare";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Dezabonare de la lista de discuții";
@@ -2630,6 +2604,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Au apărut probleme la conectarea la servere. Reconectaţi-vă.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Imaginile sunt încărcate implicit și expeditorii sunt blocați să vă urmărească.\nAceasta se poate modifica în setări.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Se recomandă configurarea unei parole pentru următorii destinatari:";

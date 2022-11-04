@@ -1,8 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", verður ekki leitað. Til að leita innan þeirra, skaltu auka %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Sýna skilaboðin í heild sinni]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, d. MMM. yyyy 'klukkan' %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Leita í innihaldi skilaboða' verður gert óvirkt. Það er hægt að virkja það aftur í stillingum og öllum skilaboðum verður að hlaða niður aftur.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ af %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d mínúta";
@@ -19,8 +28,17 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Slepptu hér til að bæta við sem viðhengi";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 mínúta eftir";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1m";
+
 /* default empty object */
 "<no object>" = "<ekkert atriði>";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 skilaboð færð í geymslu";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 skilaboð færð í ruslpóst";
@@ -139,8 +157,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Allar verndarstillingar verða endurstilltar og þurrkaðar út þegar þú skráir þig úr forritinu.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Öllum skilaboðum þínum er hlaðið niður";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Leyfa varaleið beiningar";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Gerir þér kleift að opna áður opnuð viðhengi án nettengingar.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Gerir þér kleift að opna áður lesin skilaboð án nettengingar.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Gerir þér kleift að leita í skilaboðunum þínum. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Setja einnig í geymslu?";
@@ -200,11 +230,11 @@
 /* (No Comment) */
 "Archived" = "Geymt";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Ertu viss um að þú viljir eyða endanlega þessum %d skilaboðum?";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Ertu viss um að þú viljir eyða þessum %d skilaboðum endanlega?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Ertu viss um að þú viljir skrá þig út %@?";
@@ -258,13 +288,11 @@
 /* Title */
 "Auto Lock Time" = "Sjálfvirkur læsingartími";
 
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Birta sjálfvirkt fjartengt efni";
-
 /* settings general section title */
 "Auto-load embedded images" = "Hlaða sjálfvirkt inn ívöfnum myndum";
+
+/* settings general section title */
+"Auto-load remote content" = "Hlaða sjálfvirkt inn fjartengdu efni";
 
 /* Example feedback */
 "Awful" = "Hræðilegt";
@@ -296,6 +324,9 @@
 /* Settings row */
 "Block email tracking" = "Lokaðu fyrir rakningu tölvupósts";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Hindrar sendendur í að sjá hvort og hvenær þú opnaðir skilaboðin";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Farðu í gegnum skilaboðaþráð í samtalsham.";
 
@@ -304,6 +335,9 @@
 
 /* Title */
 "Bug Report Received" = "Villuskýrsla móttekin";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Gögn í skyndiminni";
 
 /* Call the contact (button title text) */
 "Call contact" = "Hringja í tengilið";
@@ -412,6 +446,9 @@
 /* Title */
 "Change sender address to .." = "Breyta tölvupóstfangi sendanda í ...";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Hladdu tækið þitt eða haltu áfram handvirkt.";
+
 /* Action */
 "Check Again" = "Athuga aftur";
 
@@ -495,6 +532,9 @@
 /* Title */
 "Confirmation" = "Staðfesting";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Tengstu WiFi eða virkjaðu „Hlaða niður í gegnum farsímagögn“.";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Tengiliður eyddur, verður samstilltur næst þegar nettenging er til staðar";
 
@@ -507,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Tengiliðir";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Efnisleit í boði";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -536,6 +579,9 @@
 /* top right action text */
 "Create" = "Búa til";
 
+/* error part & alert title */
+"Create user failed" = "Ekki tókst að búa til notanda";
+
 /* Alert title */
 "Creating folder not allowed" = "Ekki leyft að búa til möppu";
 
@@ -550,6 +596,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Núgildandi endurheimtupóstfang";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Núverandi val:";
 
 /* Title */
 "Current sign-in password" = "Núverandi lykilorð innskráningar";
@@ -582,6 +631,9 @@
 /* error details */
 "Decryption of this content failed" = "Afkóðun þessa efnis mistókst";
 
+/* error details */
+"Decryption of this message's encrypted content failed." = "Afkóðun á dulrituðu efni þessara skilaboða mistókst.";
+
 /* Title */
 "Default" = "Sjálfgefið";
 
@@ -600,6 +652,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Eyða %d skilaboðum";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Eyða öllum niðurhlöðnum skilaboðum?";
 
 /* Title-Contacts */
 "Delete contact" = "Eyða tengilið";
@@ -632,6 +687,9 @@
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Óvirkt";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Ef slökkt er á eiginleikanum núna verður þeim skilaboðum eytt sem þegar hefur verið hlaðið niður.";
 
 /* Action */
 "Discard" = "Henda";
@@ -681,6 +739,47 @@
 
 /* Done action */
 "Done" = "Lokið";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Hlé gert á niðurhali";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Hlé gert á niðurhali: Lítil hleðsla";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Hlé gert á niðurhali: Engin tenging";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Hlé gert á niðurhali: Ekkert WiFi fannst";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Hlé gert á niðurhali: Geymsla full";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Nðurhalsstaða";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Sækja í gegnum farsímagögn";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Sótt skilaboð";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Sóttum skilaboðum verður eytt";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Er að sækja skilaboð %1$d af %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Sæki lýsigögn ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Sæki ný skilaboð ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Hleður niður tölvupósti svo þú getir leitað í þeim. Skilaboð eru dulkóðuð og geymd staðbundið. %1$@";
 
 /* Action */
 "Draft" = "Drög";
@@ -748,6 +847,12 @@
 /* title */
 "Email domain invalid" = "Ógilt tölvupóstlén";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Tölvupóstrekjarar geta brotið gegn friðhelgi einkalífsins.";
+
+/* Name of the feature */
+"Email tracking protection" = "Tölvupóstvörn gegn rakningu";
+
 /* "Cancel" */
 "Empty Folder" = "Tóm mappa";
 
@@ -767,6 +872,9 @@
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "Virkja";
 
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Virkja efnisleit";
+
 /* Title */
 "Enable email notices" = "Virkja tölvupósttilkynningar";
 
@@ -775,6 +883,9 @@
 
 /* Title */
 "Enable signature" = "Virkja undirskrift";
+
+/* (No Comment) */
+"Enable TouchID" = "Virkja Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Dulritað af Proton";
@@ -830,8 +941,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Villa við að senda";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Áætla tíma sem eftir er ...";
+
 /* lock app option */
 "Every time enter app" = "Í hvert sinn sem forritið ræsist";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Útiloka innihald skilaboða";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Stækkaðu möppuna";
@@ -881,6 +998,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Áframsend skilaboð";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Losaðu um að minnsta kosti 100 MB af geymsluplássi til að halda áfram.";
 
 /* Title */
 "From" = "Frá";
@@ -963,11 +1083,11 @@
 /* human check warning title */
 "Human Check Warning" = "Aðvörun við mennskuprófun";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Ef þú missir þína WiFi tengingu þá mun niðurhalið halda áfram í gegnum farsímagögn.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Hunsa viðvörun og halda áfram";
-
-/* immediately send message Action */
-"Immediately" = "Strax";
 
 /* Action */
 "Import Error" = "Innflutningsvilla";
@@ -1007,6 +1127,9 @@
 /* Error */
 "Incorrect PIN." = "Rangt PIN.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Upplýsingar um hversu mikið geymslupláss þessi Proton tölvupóstreikningur notar í tækinu þínu.";
+
 /* Option title */
 "Inherit color from parent folder" = "Erfa lit frá yfirmöppu";
 
@@ -1015,6 +1138,9 @@
 
 /* Title */
 "inline attachments" = "innfelld viðhengi";
+
+/* (No Comment) */
+"Input Display Name ..." = "Settu inn birtingarnafn...";
 
 /* place holder */
 "Input Display Name…" = "Settu inn birtingarnafn...";
@@ -1091,20 +1217,23 @@
    The title of learn more link */
 "Learn more" = "Kanna nánar";
 
+/* The title of learn more link */
+"Learn more." = "Kanna nánar.";
+
 /* settings swipe actions section title */
 "Left to Right" = "Vinstri til hægri";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "minna en 1 mínúta";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Takmörkum náð";
 
-/* No comment provided by engineer. */
-"Load content" = "Hlaða inn efni";
+/* Button inside the banner */
+"Load anyway" = "Hlaða samt inn";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
-
-/* No comment provided by engineer. */
-"Load images" = "Hlaða inn myndum";
 
 /* Action
    The title of loading remote content banner. */
@@ -1116,8 +1245,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Hleð inn...";
 
+/* The title of local storage in settings */
+"Local storage" = "Staðbundin geymsla";
+
 /* cell title in device settings */
 "Local storage limit" = "Takmörk á staðværu geymslurými";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "takmörk staðbundinnar geymslu.";
 
 /* *
  *  file string type */
@@ -1190,6 +1325,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Ekki var hægt að senda skilaboð. Tölvupóstfang/lén a.m.k. eins viðtakanda er ekki til eða er rangt sniðið.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Hlé gert á niðurhali skilaboða. Finndu út hvernig á að %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Skilaboð renna út";
 
@@ -1205,6 +1343,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Hausar skilaboða";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Skilaboðasaga";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Skilaboð voru færð í ruslið";
@@ -1233,6 +1374,18 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Aðgerðir þegar strokið er á skilaboð";
 
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Verið er að hlaða niður skilaboðum fyrir efnisleit. Sumar niðurstöður eru hugsanlega ekki sýndar. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Skilaboð frá því áður ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Skilaboð frá því áður %@, verður ekki leitað. Til að leita innan þeirra skaltu losa um geymslupláss á þessu tæki.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Skilaboðum verður hlaðið niður í gegnum WiFi. Þetta gæti tekið nokkurn tíma og tækið gæti hitnað aðeins. Þú getur gert hlé á aðgerðinni hvenær sem er.";
+
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Skilaboð sem þú sendir er hægt að stilla þannig að þau eyðist sjálfvirkt eftir ákveðinn tíma.";
 
@@ -1244,7 +1397,10 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Nýskráningar á snjalltækjum eru óvirkar í augnablikinu Prófaðu aftur síðar, eða reyndu að skrá þig á protonmail.com með hjálp borð- eða fartölvu.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Mánudag (%1$@) kl. 08:%2$d";
 
 /* More actions button */
 "More" = "Meira";
@@ -1382,6 +1538,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Ekki ruslpóstur (flytja í innhólf)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Ekki var öllum skilaboðum hlaðið niður. Til að hlaða þeim niður skaltu losa um geymslupláss í tækinu.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Ekki var öllum skilaboðum hlaðið niður. Til að hlaða þeim niður skaltu auka geymslumörkin hér að neðan.";
+
 /* No comment provided by engineer. */
 "Not set" = "Ekki skilgreint";
 
@@ -1414,6 +1576,12 @@
  *  ReportBugsViewController */
 "OK" = "Í lagi";
 
+/* Title for the alert button to disable content search. */
+"Okay" = "Í lagi";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Elstu skilaboð: ";
+
 /* The title of On setting options */
 "On" = "Virkt";
 
@@ -1440,6 +1608,9 @@
 
 /* default vcard types */
 "Other" = "Annað";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Þjónustudeild okkar mun reyna að virkja þjónustuáætlun þína handvirkt ef þú samþykkir að hengja við tæknigögn sem App Store útvegaði appinu þegar það var keypt. Þessi gögn innihalda engar upplýsingar um iTunes reikninginn þinn, Apple ID, tengd greiðslukort eða aðrar notendaupplýsingar. Tæknigögn hjálpa okkur aðeins að athuga og sannreyna að viðskiptin hafi verið framkvæmd á netþjónum App Store.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Kerfið okkar merkti þessi skilaboð sem tilraun til að veiða upplýsingar. Vinsamlega skoðaðu hvort þau séu lögmæt";
@@ -1535,6 +1706,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Vinsamlegast tengdu og reyndu aftur";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Vinsamlegast tengdu við internetið til að halda áfram.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Settu inn gilt farsímanúmer.";
@@ -1743,6 +1917,9 @@
 /* Text for resume button */
 "Resume" = "Halda áfram";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "halda áfram handvirkt.";
+
 /* Action */
 "Retry" = "Reyna aftur";
 
@@ -1768,6 +1945,12 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Áætla sendingu";
 
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Dagskrá verður fjarlægð";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Dagskrá send";
+
 /* *
  *  SearchViewController */
 "Search" = "Leita";
@@ -1775,6 +1958,15 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Leita að innihaldi skilaboða";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Tekur leit of langan tíma? %1$@ frá þessari leit að hraðari niðurstöðum.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Sjá nánar";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Sjá framvindu.";
 
 /* section title */
 "Select colour" = "Veldu lit";
@@ -1793,6 +1985,12 @@
 
 /* Title of button to send feedback */
 "Send feedback" = "Senda endurgjöf";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Senda strax";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Senda strax?";
 
 /* when subject not empty */
 "Send message without subject?" = "Senda skilaboðin án efnislínu?";
@@ -1903,6 +2101,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Ekki tókst að hlaða sumum myndum með rakningarvörn.";
+
 /* (No Comment) */
 "Space Warning" = "Aðvörun vegna lítils diskpláss";
 
@@ -1943,8 +2144,17 @@
 /* Alert title */
 "Storage full" = "Geymsla full";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Takmörk geymslurýmis";
+
 /* Storage warning */
 "Storage quota exceeded" = "Geymslukvóti er uppurinn";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Geymslurými notað";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Geymslurými notað: ";
 
 /* Title */
 "Storage Warning" = "Aðvörun vegna geymslupláss";
@@ -2028,6 +2238,9 @@
 /* (No Comment) */
 "The display name is now %@." = "Birtingarnafnið er núna %@.";
 
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Niðurhalið hættir ef Proton tölvupóstforritinu er lokað.";
+
 /* Description */
 "The draft cache is broken. Please try again." = "Skyndiminnið fyrir skilaboðadrög er bilað, reyndu aftur.";
 
@@ -2043,6 +2256,9 @@
 /* *
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Hámarksfjöldi merkinga er %d.";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Verið er að senda skilaboðin og verða færð í Sent möppuna þegar sendingu er lokið.";
 
 /* update password error */
 "The new password can't be empty." = "Nýja lykilorðið getur ekki verið autt.";
@@ -2079,6 +2295,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Dulritunarlykill sendingar er ekki gildur";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Sendingartíminn þarf að vera að minnsta kosti 5 mínútur í framtíðinni.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Stærðartakmörk fyrir viðhengi eru 25 MB.";
@@ -2141,26 +2360,17 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Þessi hlekkur leiðir til vefsíðu sem gæti verið að reyna að stela þínum upplýsingum, svo sem lykilorða- og kreditkortaupplýsingum.\n%@\n\nTil öryggis skaltu ekki halda áfram.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Skilaboðin innihalda ívafnar myndir.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Þessi skilaboð innihalda fjartengt efni og innfelldar myndir";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Skilaboðin innihalda fjartengt efni.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Þessi skilaboð eru útbúin sjálfvirkt sem svar við fyrri skilaboðum.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Þessi skilaboð eru send frá póstlista.";
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Ekki er lengur áætlað að senda þessi skilaboð síðar. Ef þú vilt samt senda þau seinna geturðu smellt á „Tímasett sending“";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Þessi skilaboð gætu verið tilraun til að veiða upplýsingar (phishing). Skoðaðu vel sendandann og efni póstsins til að ákveða hvort um löglegan póst sé að ræða.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Þessi skilaboð voru sjálfvirkt útbúin";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Þessi skilaboð verða send þann %1$@ klukkan %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Þetta skilaboð rennur út %1$dD %2$dH %3$dM";
@@ -2177,6 +2387,9 @@
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.";
 
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Staðfesting TLS vottorðs mistókst. Hægt er að fylgjast með tengingunni þinni og appinu er lokað tímabundið til öryggis.\n\nSkiptu um net strax.";
+
 /* message To: feild
    Title */
 "To" = "Til";
@@ -2184,9 +2397,21 @@
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu þínu, vinsamlega notaðu vefútgáfuna af Proton tölvupósti á protonmail.com";
 
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Í dag, %@";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "Auðkenningarteiknið er útrunnið";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Á morgun klukkan 08:%02d AM";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Á morgun, %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Of mörg skilaboð bíða sendingar.\nVinsamlegast bíddu þar til önnur skilaboð hafa verið send til að áætla þetta.";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Snerti auðkenni";
@@ -2210,9 +2435,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Treystir dulritunarlyklar eru ekki gildir fyrir sendingu";
-
-/* Try again action */
-"Try again" = "Reyna aftur";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
@@ -2278,6 +2500,9 @@
 /* (No Comment) */
 "Unkonw Version" = "Óþekkt útgáfa";
 
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Ótakmarkað";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Krafist er aflæsingar";
 
@@ -2289,9 +2514,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Fjarlægja stjörnugjöf";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Segja upp áskrift";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Segja upp áskrift að póstlista";
@@ -2383,6 +2605,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Við eigum í vandræðum með að tengjast netþjónunum. Vinsamlegast tengdu aftur.";
 
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Við hlöðum nú sjálfgefið inn myndum og hindrum sendendur í að fylgjast með þér.\nÞessu er hægt að breyta í stillingum.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Við mælum með því að setja upp lykilorð í staðinn fyrir eftirfarandi viðtakendur:";
 
@@ -2437,6 +2662,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Þú getur nú tímasett skilaboðin þín til sendingar síðar";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Þú getur nú leitað í skilaboðunum þínum. Hægt er að virkja þennan eiginleika í stillingum hvenær sem er.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Þú getur leitað í niðurhlöðnum skilaboðum. Fyrir öll önnur skilaboð verður aðeins leitað í viðtakandalistanum og efnislínunni.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Þú getur ekki sett %@ póstfangið sem sjálfgefið því það er eiginleiki sem þarf að greiða fyrir.";
 
@@ -2454,6 +2685,9 @@
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Þú hefur slegið inn að minnsta kosti einn óþekktan viðtakanda. Vinsamlegast staðfestu viðtakendur þína.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Þú átt engin skilaboð.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
@@ -2497,6 +2731,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Þínar merkingar";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Verið er að hlaða niður skilaboðunum þínum...";
 
 /* *
  *  Onboarding */

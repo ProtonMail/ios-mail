@@ -1,8 +1,17 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", δε θα γίνει αναζήτηση σε αυτό. Για να κάνετε αναζήτηση σε αυτά, αυξήστε το %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Εμφάνιση πλήρους μηνύματος]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Στις' E, MMM d, yyyy 'στις' %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Η \"Αναζήτηση περιεχομένου μηνύματος\" θα απενεργοποιηθεί. Μπορεί να ενεργοποιηθεί ξανά από τις ρυθμίσεις και όλα τα μηνύματα θα πρέπει να ληφθούν ξανά.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ από %2$@";
 
 /* auto lock time format */
 "%d Minute" = "%d λεπτό";
@@ -19,8 +28,20 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Τοποθετήστε εδώ για προσθήκη ως συνημμένο";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "< απομένει 1 λεπτό";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1λ";
+
 /* default empty object */
 "<no object>" = "<no object>";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 μήνυμα μετακινήθηκε στο αρχείο";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 Το μήνυμα μετακινήθηκε στα ανεπιθύμητα";
 
 /* Placeholder */
 "8 to 21 characters long" = "μήκος 8 έως 21 χαρακτήρες";
@@ -49,6 +70,9 @@
 
 /* section title in settings */
 "Account settings" = "Ρυθμίσεις λογαριασμού";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Η ενέργεια επανήλθε";
 
 /* (No Comment) */
 "Add" = "Προσθήκη";
@@ -191,9 +215,6 @@
 /* (No Comment) */
 "Archived" = "Αρχειοθετημένα";
 
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτά τα %d μηνύματα;";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτό το μήνυμα;";
 
@@ -248,11 +269,6 @@
 
 /* Title */
 "Auto Lock Time" = "Χρονικό Όριο Αυτόματου Κλειδώματος";
-
-/* (No Comment) */
-
-/* settings general section title */
-"Auto-load remote content" = "Αυτόματη προβολή απομακρυσμένου περιεχομένου";
 
 /* settings general section title */
 "Auto-load embedded images" = "Αυτόματη φόρτωση ενσωματωμένων εικόνων";
@@ -524,6 +540,9 @@
 /* top right action text */
 "Create" = "Δημιουργία";
 
+/* error part & alert title */
+"Create user failed" = "Αποτυχία δημιουργίας χρήστη";
+
 /* Alert title */
 "Creating folder not allowed" = "Δεν επιτρέπεται η δημιουργία φακέλου";
 
@@ -569,6 +588,9 @@
 
 /* error details */
 "Decryption of this content failed" = "Η αποκρυπτογράφηση αυτού του περιεχομένου απέτυχε";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "Η αποκρυπτογράφΗσΗ του κρυπτογραφΗμένου περιεχομένου αυτού του μΗνύματος απέτυχε.";
 
 /* Title */
 "Default" = "Προεπιλεγμένο";
@@ -735,6 +757,9 @@
 
 /* title */
 "Email domain invalid" = "Μη έγκυρο domain ηλεκτρονικού ταχυδρομείου";
+
+/* Name of the feature */
+"Email tracking protection" = "Προστασία ιχνηλασίας μηνυμάτων";
 
 /* "Cancel" */
 "Empty Folder" = "Άδειος φάκελος";
@@ -951,9 +976,6 @@
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Αγνόηση προειδοποίησης και συνέχιση";
 
-/* immediately send message Action */
-"Immediately" = "Άμεσα";
-
 /* Action */
 "Import Error" = "Σφάλμα κατά την Εισαγωγή";
 
@@ -1073,20 +1095,17 @@
    The title of learn more link */
 "Learn more" = "Μάθετε περισσότερα";
 
+/* The title of learn more link */
+"Learn more." = "Μάθετε περισσότερα.";
+
 /* settings swipe actions section title */
 "Left to Right" = "Αριστερά προς τα δεξιά";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Εξάντληση ορίου";
 
-/* No comment provided by engineer. */
-"Load content" = "Φόρτωση περιεχομένου";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Φόρτωση ενσωματωμένων εικόνων";
-
-/* No comment provided by engineer. */
-"Load images" = "Φόρτωση εικόνων";
 
 /* Action
    The title of loading remote content banner. */
@@ -1389,6 +1408,9 @@
  *  ReportBugsViewController */
 "OK" = "ΟΚ";
 
+/* Title for the alert button to disable content search. */
+"Okay" = "Εντάξει";
+
 /* The title of On setting options */
 "On" = "Ενεργό";
 
@@ -1606,6 +1628,9 @@
 
 /* network troubleshot cell title */
 "Proton is down" = "Το Proton έχει πέσει";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Αυτήν τη στιγμή, το Proton Mail βρίσκεται εκτός σύνδεσης…";
@@ -2089,21 +2114,6 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Αυτός ο σύνδεσμος οδηγεί σε μια ιστοσελίδα που ενδέχεται να επιχειρήσει να υποκλέψει πληροφορίες σας, όπως κωδικούς πρόσβασης και στοιχεία πιστωτικών καρτών.\n%@\n\nΓια την ασφάλειά σας, μη συνεχίσετε.";
 
-/* No comment provided by engineer. */
-"This message contains embedded images." = "Αυτό το μήνυμα περιέχει ενσωματωμένες εικόνες.";
-
-/* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Αυτό το μήνυμα περιέχει απομακρυσμένο περιεχόμενο και ενσωματωμένες εικόνες";
-
-/* No comment provided by engineer. */
-"This message contains remote content." = "Αυτό το μήνυμα περιέχει απομακρυσμένο περιεχόμενο.";
-
-/* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "Αυτό το μήνυμα δημιουργείται αυτόματα ως απόκριση σε ένα προηγούμενο μήνυμα.";
-
-/* No comment provided by engineer. */
-"This message is from a mailing list." = "Αυτό το μήνυμα προέρχεται από μια λίστα αλληλογραφίας.";
-
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Αυτό το μήνυμα μπορεί να είναι απόπειρα ηλεκτρονικού \"ψαρέματος\". Ελέγξτε τον αποστολέα και το περιεχόμενο για να βεβαιωθείτε ότι είναι αυθεντικό.";
 
@@ -2158,9 +2168,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Τα αξιόπιστα κλειδιά δεν είναι έγκυρα για την αποστολή";
-
-/* Try again action */
-"Try again" = "Δοκιμάστε ξανά";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
@@ -2237,9 +2244,6 @@
 
 /* The title of the star action in action sheet */
 "Unstar" = "Αφαίρεση αστεριού";
-
-/* No comment provided by engineer. */
-"Unsubscribe" = "Απεγγραφή";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Απεγγραφή από λίστα αλληλογραφίας";
@@ -2330,6 +2334,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Δυσκολευόμαστε να συνδεθούμε στους διακομιστές. Παρακαλούμε επανασυνδεθείτε.";
+
+/* Spotlight explanation of the feature */
+"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Πλέον φορτώνουμε τις εικόνες από προεπιλογή, φράζοντας την ιχνηλασία τους από τους αποστολείς. Αυτό μπορεί να αλλαχθεί στις ρυθμίσεις.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Συνιστούμε να ορίσετε έναν κωδικό πρόσβασης για τους ακόλουθους παραλήπτες:";

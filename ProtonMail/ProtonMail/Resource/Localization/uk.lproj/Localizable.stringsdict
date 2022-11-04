@@ -71,16 +71,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d розмови</string>
+			<string>%d розмови позначено міткою</string>
 			<key>many</key>
-			<string>%d розмов</string>
+			<string>%d розмов позначено міткою</string>
 			<key>one</key>
-			<string>%d розмова</string>
+			<string>%d розмову позначено міткою</string>
 			<key>other</key>
-			<string>%d розмови</string>
+			<string>%d розмов позначено міткою</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ позначено міткою</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d conversation moved to %@</key>
 	<dict>
@@ -91,16 +91,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d розмови</string>
+			<string>%d розмови переміщено до %@</string>
 			<key>many</key>
-			<string>%d розмов</string>
+			<string>%d розмов переміщено до %@</string>
 			<key>one</key>
-			<string>%d розмова</string>
+			<string>%d розмову переміщено до %@</string>
 			<key>other</key>
-			<string>%d розмови</string>
+			<string>%d розмов переміщено до %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ переміщено у %@</string>
+		<string>%#@Conversation@</string>
 	</dict>
 	<key>%d day</key>
 	<dict>
@@ -127,7 +127,7 @@
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ заблоковано</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -135,19 +135,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>%d елементи стеження заблоковані</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>%d елементів стеження заблоковано</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>%d елемент стеження заблокований</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>%d елементів стеження заблоковано</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@ знайдено</string>
+		<string>%#@trackers@</string>
 		<key>trackers</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -155,15 +155,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d email trackers</string>
+			<string>Виявлено %d елементи стеження</string>
 			<key>many</key>
-			<string>%d email trackers</string>
+			<string>Виявлено %d елементів стеження</string>
 			<key>one</key>
-			<string>%d email tracker</string>
+			<string>Виявлено %d елемент стеження</string>
 			<key>other</key>
-			<string>%d email trackers</string>
+			<string>Виявлено %d елементів стеження</string>
 			<key>zero</key>
-			<string>No email trackers</string>
+			<string>No email trackers found</string>
 		</dict>
 	</dict>
 	<key>%d hour</key>
@@ -197,16 +197,16 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d повідомлення</string>
+			<string>%d повідомлення позначено міткою</string>
 			<key>many</key>
-			<string>%d повідомлень</string>
+			<string>%d повідомлень позначено міткою</string>
 			<key>one</key>
-			<string>%d повідомлення</string>
+			<string>%d повідомлення позначено міткою</string>
 			<key>other</key>
-			<string>%d повідомлення</string>
+			<string>%d повідомлень позначено міткою</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ позначено міткою</string>
+		<string>%#@Message@</string>
 	</dict>
 	<key>%d message moved to %@</key>
 	<dict>
@@ -217,21 +217,21 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d повідомлення</string>
+			<string>%d повідомлення переміщено до %@</string>
 			<key>many</key>
-			<string>%d повідомлень</string>
+			<string>%d повідомлень переміщено до %@</string>
 			<key>one</key>
-			<string>%d повідомлення</string>
+			<string>%d повідомлення переміщено до %@</string>
 			<key>other</key>
-			<string>%d повідомлення</string>
+			<string>%d повідомлень переміщено до %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ переміщено у %@</string>
+		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@ переміщено до чернеток</string>
+		<string>%#@alertMessage@</string>
 		<key>alertMessage</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -239,13 +239,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Messages</string>
+			<string>%d повідомлення переміщено до чернеток</string>
 			<key>many</key>
-			<string>Messages</string>
+			<string>%d повідомлень переміщено до чернеток</string>
 			<key>one</key>
-			<string>Message</string>
+			<string>%d повідомлення переміщено до чернеток</string>
 			<key>other</key>
-			<string>Messages</string>
+			<string>%d повідомлень переміщено до чернеток</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -331,7 +331,7 @@
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Ви дійсно хочете остаточно видалити %#@conversation@?</string>
+		<string>%#@conversation@</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -339,19 +339,19 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d розмови</string>
+			<string>Ви дійсно хочете остаточно видалити %d розмови?</string>
 			<key>many</key>
-			<string>%d розмов</string>
+			<string>Ви дійсно хочете остаточно видалити %d розмов?</string>
 			<key>one</key>
-			<string>%d розмова</string>
+			<string>Ви дійсно хочете остаточно видалити %d розмову?</string>
 			<key>other</key>
-			<string>%d розмови</string>
+			<string>Ви дійсно хочете остаточно видалити %d розмов?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Ви дійсно хочете остаточно видалити %#@message@?</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -359,13 +359,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d повідомлення</string>
+			<string>Ви дійсно хочете остаточно видалити %d повідомлення?</string>
 			<key>many</key>
-			<string>%d повідомлень</string>
+			<string>Ви дійсно хочете остаточно видалити %d повідомлень?</string>
 			<key>one</key>
-			<string>%d повідомлення</string>
+			<string>Ви дійсно хочете остаточно видалити %d повідомлення?</string>
 			<key>other</key>
-			<string>%d повідомлення</string>
+			<string>Ви дійсно хочете остаточно видалити %d повідомлень?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -379,13 +379,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>За %d хвилини</string>
+			<string>Через %d хвилини</string>
 			<key>many</key>
-			<string>За %d хвилин</string>
+			<string>Через %d хвилин</string>
 			<key>one</key>
-			<string>За %d хвилину</string>
+			<string>Через %d хвилину</string>
 			<key>other</key>
-			<string>За %d хвилин</string>
+			<string>Через %d хвилини</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -400,12 +400,16 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Proton виявив і заблокував %d елементи стеження в цьому повідомленні.</string>
+			<key>many</key>
+			<string>Proton виявив і заблокував %d елементів стеження в цьому повідомленні.</string>
+			<key>one</key>
+			<string>Proton виявив і заблокував %d елемент стеження в цьому повідомленні.</string>
+			<key>other</key>
+			<string>Proton виявив і заблокував %d елементів стеження в цьому повідомленні.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
-			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
-			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
 		</dict>
 	</dict>
 	<key>This %d messages will move to Drafts and have its schedule removed.</key>
@@ -418,10 +422,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Ці %d повідомлення будуть переміщені до чернеток, а їхні заплановані дії вилучені.</string>
+			<key>many</key>
+			<string>Ці %d повідомлень будуть переміщені до чернеток, а їхні заплановані дії вилучені.</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Це %d повідомлення буде переміщено до чернеток, а його заплановану дію вилучено.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

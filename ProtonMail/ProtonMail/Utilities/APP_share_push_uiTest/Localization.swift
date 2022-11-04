@@ -390,10 +390,8 @@ class LocalizedString {
     /// "Send"
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
     lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
-    lazy var _general_immediately_send = NSLocalizedString("Immediately", comment: "immediately send message Action")
     lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
     lazy var _schedule_next_monday_send_action = NSLocalizedString("Monday (%@) at 08:%02d", comment: "scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15")
-    lazy var _schedule_send_success_banner_message = NSLocalizedString("Message will be sent on %@", comment: "scheduled send success message, e.g. Message will be sent on On April 19 at 15:30")
     lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
     lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
     lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
@@ -993,7 +991,6 @@ class LocalizedString {
                                               comment: "Invalid URL error when click a url in contact")
 
     lazy var _general_more = NSLocalizedString("More", comment: "More actions button")
-    lazy var _general_try_again = NSLocalizedString("Try again", comment: "Try again action")
 
     // Local notifications
 
@@ -1191,7 +1188,7 @@ class LocalizedString {
     lazy var _single_message_delete_confirmation_alert_title = NSLocalizedString("Delete message", comment: "Title of message permanent deletion alert, singular")
     lazy var _messages_delete_confirmation_alert_title = NSLocalizedString("Delete %d Messages", comment: "Title of message permanent deletion alert, plural")
     lazy var _single_message_delete_confirmation_alert_message = NSLocalizedString("Are you sure you want to delete permanently this message?", comment: "Message of message permanent deletion alert, singular")
-    lazy var _messages_delete_confirmation_alert_message = NSLocalizedString("Are you sure you want to delete permanently these %d messages?", comment: "Message of message permanent deletion alert, plural")
+    lazy var _messages_delete_confirmation_alert_message = NSLocalizedString("Are you sure you want to delete these %d messages permanently?", comment: "Message of message permanent deletion alert, plural")
 
     lazy var _settings_notification_email_section_title = NSLocalizedString("Current Recovery Email", comment: "")
 
@@ -1234,9 +1231,7 @@ class LocalizedString {
 
     lazy var _message_body_view_not_connected_text = NSLocalizedString("You are not connected. We cannot display the content of your message.", comment: "")
 
-    lazy var _banner_remote_content_title = NSLocalizedString("This message contains remote content.", comment: "")
     lazy var _banner_remote_content_new_title = NSLocalizedString("Load remote content", comment: "The title of loading remote content banner.")
-    lazy var _banner_load_remote_content = NSLocalizedString("Load content", comment: "")
     lazy var _one_attachment_list_title = NSLocalizedString("attachment", comment: "")
     lazy var _attachments_list_title = NSLocalizedString("attachments", comment: "")
 
@@ -1244,10 +1239,7 @@ class LocalizedString {
     lazy var _attachments_title = NSLocalizedString("Attachments", comment: "")
     lazy var _remove_attachment_warning = NSLocalizedString("Do you really want to remove this file from attachments?", comment: "")
 
-    lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
     lazy var _banner_embedded_image_new_title = NSLocalizedString("Load embedded images", comment: "The title of loading embedded image banner.")
-    lazy var _banner_remote_and_embedded_title = NSLocalizedString("This message contains remote content and embedded images", comment: "")
-    lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
     lazy var _banner_non_trashed_message_title = NSLocalizedString("This conversation contains non-trashed messages.", comment: "")
 
@@ -1287,15 +1279,11 @@ class LocalizedString {
 
     lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "")
 
-    lazy var _unsubscribe = NSLocalizedString("Unsubscribe", comment: "")
-
-    lazy var _unsubscribe_banner_description = NSLocalizedString("This message is from a mailing list.", comment: "")
     lazy var _unsubscribe_compact_banner_description = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
 
     lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate", comment: "")
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
-    lazy var _autoreply_banner_description = NSLocalizedString("This message is automatically generated as a response to a previous message.", comment: "")
     lazy var _autoreply_compact_banner_description = NSLocalizedString("This message was automatically generated", comment: "The title of auto reply banner")
 
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "The error message that the incoming mail failed dmarc authentication")
@@ -1406,6 +1394,7 @@ class LocalizedString {
 
     lazy var _schedule_introduction_view_title = NSLocalizedString("Scheduled send", comment: "The title of the introducation view of the schedule send")
     lazy var _schedule_introduction_view_content = NSLocalizedString("You can now schedule your messages to be sent later", comment: "The content of the introducation view of the schedule send")
+    lazy var _scheduling_message_title = NSLocalizedString("Scheduling message...", comment: "The title of the banner that will be shown when you schedule a message.")
 
     lazy var _end_to_send_verified_recipient_of_sent = NSLocalizedString("Sent by you with end-to-end encryption to verified recipient", comment: "The message after tapping the encryption icon.")
     lazy var _zero_access_verified_recipient_of_sent = NSLocalizedString("Sent by Proton Mail with zero-access encryption to verified recipient", comment: "The message after tapping the encryption icon.")
