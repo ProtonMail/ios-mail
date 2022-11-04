@@ -64,6 +64,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         case composer = "toCompose"
         case composeShow = "toComposeShow"
         case composeMailto = "toComposeMailto"
+        case composeScheduledMessage = "composeScheduledMessage"
         case search = "toSearchViewController"
         case details = "SingleMessageViewController"
         case onboardingForNew = "to_onboardingForNew_segue"
@@ -95,6 +96,8 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
                 self = .humanCheck
             case "toTroubleShootSegue":
                 self = .troubleShoot
+            case "composeScheduledMessage":
+                self = .composeScheduledMessage
             default:
                 return nil
             }
@@ -139,6 +142,9 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
             guard let message = sender as? Message else { return }
 
             navigateToComposer(existingMessage: message)
+        case .composeScheduledMessage:
+            guard let message = sender as? Message else { return }
+            editScheduleMsg(messageID: MessageID(message.messageID))
         case .troubleShoot:
             presentTroubleShootView()
         case .search:
@@ -200,6 +206,15 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
             }
         case .composeMailto where path.value != nil:
             followToComposeMailTo(path: path.value, deeplink: deeplink)
+        case .composeScheduledMessage where path.value != nil:
+            guard let messageID = path.value else {
+                return
+            }
+            if case let user = self.viewModel.user,
+               case let msgService = user.messageService,
+               let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
+                navigateToComposer(existingMessage: message, isEditingScheduleMsg: true)
+            }
         default:
             self.go(to: dest, sender: deeplink)
         }

@@ -226,12 +226,15 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         let messageService = self.viewModel.getUser().messageService
         let coreDataContextProvider = viewModel.coreDataContextProvider
         if self.dismissBySending {
-            guard viewModel.deliveryTime == nil else { return }
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
             let messageID = self.viewModel.composerMessageHelper.message?.messageID ?? .empty
-            topVC.showMessageSendingHintBanner(messageID: messageID, messageDataService: messageService)
+            if viewModel.deliveryTime != nil {
+                topVC.showMessageSchedulingHintBanner(messageID: messageID)
+            } else {
+                topVC.showMessageSendingHintBanner(messageID: messageID, messageDataService: messageService)
+            }
         } else {
             if self.viewModel.isEmptyDraft() { return }
             topVC.showDraftSaveHintBanner(cache: userCachedStatus,

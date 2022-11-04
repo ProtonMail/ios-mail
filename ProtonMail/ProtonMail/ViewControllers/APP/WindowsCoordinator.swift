@@ -139,8 +139,12 @@ class WindowsCoordinator: LifetimeTrackable {
             }
 
             NotificationCenter.default.addObserver(forName: .scheduledMessageSucceed, object: nil, queue: .main) { [weak self] notification in
-                guard let date = notification.object as? Date else { return }
-                self?.showScheduledSendSucceedBanner(deliveryTime: date)
+                guard let tuple = notification.object as? (MessageID, Date, UserID) else { return }
+                self?.showScheduledSendSucceedBanner(
+                    messageID: tuple.0,
+                    deliveryTime: tuple.1,
+                    userID: tuple.2
+                )
             }
 
             NotificationCenter.default.addObserver(forName: .showScheduleSendUnavailable, object: nil, queue: .main) { [weak self] _ in
@@ -254,7 +258,7 @@ class WindowsCoordinator: LifetimeTrackable {
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
         let queueManager: QueueManager = services.get()
-        
+
         if let user = usersManager.getUser(by: uid),
            !usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = usersManager.count == 1
@@ -565,16 +569,42 @@ class WindowsCoordinator: LifetimeTrackable {
 
 // MARK: Schedule message
 extension WindowsCoordinator {
-    private func showScheduledSendSucceedBanner(deliveryTime: Date) {
+    private func showScheduledSendSucceedBanner(
+        messageID: MessageID,
+        deliveryTime: Date,
+        userID: UserID
+    ) {
         let topVC = self.currentWindow?.topmostViewController() ?? UIViewController()
+
+        typealias Key = PMBanner.UserInfoKey
+        PMBanner
+            .getBanners(in: topVC)
+            .filter {
+                $0.userInfo?[Key.type.rawValue] as? String == Key.sending.rawValue &&
+                $0.userInfo?[Key.messageID.rawValue] as? String == messageID.rawValue
+            }
+            .forEach { $0.dismiss(animated: false) }
+
         let timeTuple = PMDateFormatter.shared.titleForScheduledBanner(from: deliveryTime)
         let message = String(format: LocalString._edit_scheduled_button_message,
                              timeTuple.0,
                              timeTuple.1)
         let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
-        banner.addButton(text: LocalString._schedule_view_action) { banner in
-            NotificationCenter.default.post(name: .switchView,
-                                            object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.scheduled.rawValue))
+        banner.addButton(text: LocalString._messages_undo_action) { banner in
+            self.handleEditScheduleMessage(
+                messageID: messageID,
+                userID: userID
+            ) {
+                let deepLink = DeepLink(
+                    String(describing: MailboxViewController.self),
+                    sender: Message.Location.draft.rawValue
+                )
+                deepLink.append(
+                    .init(name: MailboxCoordinator.Destination.composeScheduledMessage.rawValue,
+                          value: messageID.rawValue)
+                )
+                NotificationCenter.default.post(name: .switchView, object: deepLink)
+            }
             banner.dismiss()
         }
         banner.show(at: .bottom, on: topVC)
@@ -588,5 +618,28 @@ extension WindowsCoordinator {
 
         let topVC = self.currentWindow?.topmostViewController() ?? UIViewController()
         topVC.present(alert, animated: true, completion: nil)
+    }
+
+    private func handleEditScheduleMessage(
+        messageID: MessageID,
+        userID: UserID,
+        completion: @escaping () -> Void
+    ) {
+        let users = sharedServices.get(by: UsersManager.self)
+        let user = users.getUser(by: userID)
+        user?.messageService.undoSend(
+            of: messageID,
+            completion: { result in
+                guard result.error == nil else {
+                    return
+                }
+                user?.eventsService.fetchEvents(
+                    byLabel: Message.Location.allmail.labelID,
+                    notificationMessageID: nil,
+                    completion: { _ in
+                        completion()
+                    })
+            }
+        )
     }
 }

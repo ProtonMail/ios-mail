@@ -128,15 +128,15 @@ class SingleMessageContentViewModel {
             }
             let msgID = self.message.messageID
             self.showProgressHub?()
-            let request = UndoSendRequest(messageID: self.message.messageID)
-            self.user.apiService.perform(request: request) { [weak self] (task, result: Result<UndoSendResponse, ResponseError>) in
-                self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
-                                                     notificationMessageID: nil,
-                                                     completion: { [weak self] _ in
-                    self?.hideProgressHub?()
-                    self?.goToDraft(msgID)
-                })
-            }
+            self.user.messageService.undoSend(
+                of: msgID) { [weak self] result in
+                    self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
+                                                         notificationMessageID: nil,
+                                                         completion: { [weak self] _ in
+                        self?.hideProgressHub?()
+                        self?.goToDraft(msgID)
+                    })
+                }
         }
 
         messageInfoProvider.set(delegate: self)
