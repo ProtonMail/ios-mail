@@ -73,7 +73,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         return totalUserCountClosure() > 0
     }
     var isFetchingMessage: Bool { self.dependencies.updateMailbox.isFetching }
-    var isFirstFetch: Bool { self.dependencies.updateMailbox.isFirstFetch }
+    private(set) var isFirstFetch: Bool = true
 
     private let dependencies: Dependencies
 
@@ -798,8 +798,21 @@ extension MailboxViewModel {
         }
     }
 
-    func updateMailbox(showUnreadOnly: Bool, isCleanFetch: Bool, time: Int = 0, errorHandler: @escaping (Error) -> Void, completion: @escaping () -> Void) {
-        self.dependencies.updateMailbox.exec(showUnreadOnly: showUnreadOnly, isCleanFetch: isCleanFetch, time: time, errorHandler: errorHandler, completion: completion)
+    func updateMailbox(
+        showUnreadOnly: Bool,
+        isCleanFetch: Bool,
+        time: Int = 0,
+        errorHandler: @escaping (Error) -> Void,
+        completion: @escaping () -> Void
+    ) {
+        isFirstFetch = false
+        dependencies.updateMailbox.exec(
+            showUnreadOnly: showUnreadOnly,
+            isCleanFetch: isCleanFetch,
+            time: time,
+            errorHandler: errorHandler,
+            completion: completion
+        )
     }
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
