@@ -731,6 +731,26 @@
 /* Done action */
 "Done" = "Klaar";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Download gepauzeerd";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Download gepauzeerd: Laag batterijniveau";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Download voortgang";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Downloaden via mobiele data";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Gedownloade berichten";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Gedownloade berichten zullen worden verwijderd";
+
 /* The text for the number of downloaded messages. */
 "Downloading message %1d out of %2d" = "Bericht %1$d van de %2$d downloaden";
 
@@ -1294,6 +1314,9 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Bericht veeg acties";
 
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Eerdere berichten ";
+
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
 
@@ -1480,6 +1503,12 @@
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Oké";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Oudste bericht: ";
 
 /* The title of On setting options */
 "On" = "Aan";
@@ -2025,6 +2054,9 @@
 /* Alert title */
 "Storage full" = "Opslag vol";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Opslaglimiet";
+
 /* Storage warning */
 "Storage quota exceeded" = "Opslagquota overschreden";
 
@@ -2260,6 +2292,9 @@
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van Proton Mail te gebruiken via ProtonMail.com";
 
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Vandaag, %@";
+
 /* *
  *  API Error & alert title */
 "Token expired" = "Token verlopen";
@@ -2356,6 +2391,9 @@
 
 /* (No Comment) */
 "Unkonw Version" = "Onbekende versie";
+
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Onbeperkt";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Ontgrendeling vereist";
@@ -2534,6 +2572,9 @@
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "U hebt ten minste één onbekende ontvanger ingevoerd. Controleer uw ontvangers.";
 
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "U heeft geen berichten.";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "U heeft nog niet-opgeslagen wijzigingen. Wilt u deze opslaan?";
 
@@ -2576,6 +2617,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Uw labels";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Uw berichten worden gedownload...";
 
 /* *
  *  Onboarding */

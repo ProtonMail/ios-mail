@@ -325,7 +325,7 @@
 "Block email tracking" = "Blockera e-postspårning";
 
 /* Spotlight explanation of the feature */
-"Blocks senders from seeing if and when you opened the message" = "Förhindra avsändare att se om och när du öppnade meddelandet";
+"Blocks senders from seeing if and when you opened the message" = "Blockerar avsändare från att se om och när du öppnade meddelandet";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
@@ -756,7 +756,7 @@
 "Download paused: Storage full" = "Nedladdning pausad: lagringsutrymme fullt";
 
 /* The title of downloaded messages in settings */
-"Download progress" = "Nedladdningsstatus";
+"Download progress" = "Nedladdningsförlopp";
 
 /* The title of the slider for download via mobile data in settings */
 "Download via mobile data" = "Ladda ner via mobildata";
@@ -767,10 +767,10 @@
 "Downloaded messages" = "Nedladdade meddelanden";
 
 /* Title for the alert to disable content search. */
-"Downloaded messages will be deleted" = "Hämtade meddelanden kommer att tas bort";
+"Downloaded messages will be deleted" = "Nedladdade meddelanden kommer att tas bort";
 
 /* The text for the number of downloaded messages. */
-"Downloading message %1d out of %2d" = "Hämtar meddelande %1$d av %2$d";
+"Downloading message %1d out of %2d" = "Laddar ner meddelande %1$d av %2$d";
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Laddar ner metadata …";

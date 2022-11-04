@@ -1179,7 +1179,7 @@
 "Invalid username!" = "Недійсне ім'я користувача!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Запросіть свої контакти у Proton Mail, щоб користуватися бездоганним наскрізним шифруванням, або додавайте захист паролем до повідомлень, які ви їм надсилаєте.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Запросіть свої контакти у Proton Mail і користуйтеся бездоганним шифруванням, або захищайте паролем надіслані повідомлення.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Чи ця помилка стосується покупок у програмі?";
@@ -2179,7 +2179,7 @@
 "Subscription" = "Передплата";
 
 /* (No Comment) */
-"Support Proton Mail" = "Підтримка Proton Mail";
+"Support Proton Mail" = "Підтримати Proton Mail";
 
 /* cell title in app settings */
 "Swipe actions" = "Дії жестів посування";

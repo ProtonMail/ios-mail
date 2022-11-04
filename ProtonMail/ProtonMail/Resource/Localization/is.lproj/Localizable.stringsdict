@@ -59,9 +59,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation labeled</string>
+			<string>%d samtal merkt</string>
 			<key>other</key>
-			<string>%d conversations labeled</string>
+			<string>%d samtöl merkt</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -75,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation moved to %@</string>
+			<string>%d samtal flutt í %@</string>
 			<key>other</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d samtöl flutt í %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -111,9 +111,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email tracker blocked</string>
+			<string>%d tölvupóstspori hindraður</string>
 			<key>other</key>
-			<string>%d email trackers blocked</string>
+			<string>%d tölvupóstsporar hindraðir</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -127,9 +127,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email tracker found</string>
+			<string>%d tölvupóstspori fannst</string>
 			<key>other</key>
-			<string>%d email trackers found</string>
+			<string>%d tölvupóstsporar fundust</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -161,9 +161,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message labeled</string>
+			<string>%d skilaboð merkt</string>
 			<key>other</key>
-			<string>%d messages labeled</string>
+			<string>%d skilaboð merkt</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -177,9 +177,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message moved to %@</string>
+			<string>%d skilaboð fært í %@</string>
 			<key>other</key>
-			<string>%d messages moved to %@</string>
+			<string>%d skilaboð færð í %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message moved to Drafts</string>
+			<string>%d skilaboð flutt í Drög</string>
 			<key>other</key>
-			<string>%d messages moved to Drafts</string>
+			<string>%d skilaboð flutt í Drög</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -275,9 +275,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d conversation?</string>
+			<string>Ertu viss um að þú viljir eyða %d samtali endanlega?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Ertu viss um að þú viljir eyða %d samtölum endanlega?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d message?</string>
+			<string>Ertu viss um að þú viljir eyða %d skilaboði endanlega?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Ertu viss um að þú viljir eyða %d skilaboðum endanlega?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -307,9 +307,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>In %d minute</string>
+			<string>Á %d mínútu</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>Á %d mínútum</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -325,9 +325,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
+			<string>Proton fann og hindraði %d tölvupóstspora í þessu skilaboði.</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton fann og hindraði %d tölvupóstspora í þessu skilaboði.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Þetta %d skilaboð verður fært í Drög og dagskrá þess fjarlægð.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
