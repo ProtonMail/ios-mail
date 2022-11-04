@@ -20,7 +20,6 @@ import ProtonCore_Services
 
 protocol UpdateMailboxUseCase: UseCase {
     var isFetching: Bool { get }
-    var isFirstFetch: Bool { get }
 
     func exec(showUnreadOnly: Bool,
               isCleanFetch: Bool,
@@ -40,7 +39,6 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     typealias ErrorHandler = (Error) -> Void
 
     private(set) var isFetching = false
-    private(set) var isFirstFetch = true
     private let dependencies: Dependencies
     private let parameters: Parameters
     private weak var sourceDelegate: UpdateMailboxSourceProtocol?
@@ -55,10 +53,9 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     }
 
     /// Set up parameters for test
-    func setup(isFetching: Bool, isFirstFetch: Bool) {
+    func setup(isFetching: Bool) {
         if ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests {
             self.isFetching = isFetching
-            self.isFirstFetch = isFirstFetch
         }
     }
 
@@ -105,27 +102,13 @@ final class UpdateMailbox: UpdateMailboxUseCase {
             return
         }
 
-        if self.isFirstFetch {
-            self.isFirstFetch = false
-            if self.currentViewMode == .conversation {
-                self.fetchConversationCount(completion: nil)
-            }
-            self.fetchMessages(
-                time: time,
-                forceClean: false,
-                isUnread: showUnreadOnly
-            ) { [weak self] error in
-                self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
-                self?.isFetching = false
-                completion()
-            }
-        } else {
-            self.fetchEvents(notificationMessageID: self.notificationMessageID,
-                             showUnreadOnly: showUnreadOnly,
-                             time: time,
-                             errorHandler: errorHandler,
-                             completion: completion)
-        }
+        fetchEvents(
+            notificationMessageID: self.notificationMessageID,
+            showUnreadOnly: showUnreadOnly,
+            time: time,
+            errorHandler: errorHandler,
+            completion: completion
+        )
     }
 
     /// Fetch data with cache cleaning
