@@ -228,7 +228,6 @@ extension MessageSendingRequestBuilder {
                    passphrase: Passphrase,
                    userKeys: [ArmoredKey],
                    keys: [Key],
-                   newSchema: Bool,
                    in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
         context.performAsPromise {
             var messageBody = self.clearBody ?? ""
@@ -262,12 +261,11 @@ extension MessageSendingRequestBuilder {
                                                  mailbox_pwd: passphrase)
             let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
-            guard let sessionKey = try self.getSessionKey(from: keyPacket,
-                                                          isNewSchema: newSchema,
-                                                          userKeys: userKeys,
-                                                          senderKey: senderKey,
-                                                          addressKeys: keys,
-                                                          passphrase: passphrase) else {
+            guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
+                userKeys: userKeys,
+                passphrase: passphrase,
+                keys: keys
+            ) else {
                 throw BuilderError.sessionKeyFailedToCreate
             }
             self.mimeSessionKey = sessionKey.sessionKey
@@ -281,8 +279,7 @@ extension MessageSendingRequestBuilder {
     func buildPlainText(senderKey: Key,
                         passphrase: Passphrase,
                         userKeys: [ArmoredKey],
-                        keys: [Key],
-                        newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
+                        keys: [Key]) -> Promise<MessageSendingRequestBuilder> {
         async {
             let plainText = self.generatePlainTextBody()
 
@@ -294,12 +291,11 @@ extension MessageSendingRequestBuilder {
 
             let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
-            guard let sessionKey = try self.getSessionKey(from: keyPacket,
-                                                          isNewSchema: newSchema,
-                                                          userKeys: userKeys,
-                                                          senderKey: senderKey,
-                                                          addressKeys: keys,
-                                                          passphrase: passphrase) else {
+            guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
+                userKeys: userKeys,
+                passphrase: passphrase,
+                keys: keys
+            ) else {
                 throw BuilderError.sessionKeyFailedToCreate
             }
 
@@ -352,22 +348,6 @@ extension MessageSendingRequestBuilder {
                   throw BuilderError.packagesFailedToCreate
               }
         return (keyPacket, dataPacket)
-    }
-
-    func getSessionKey(from keyPacket: Data,
-                       isNewSchema: Bool,
-                       userKeys: [ArmoredKey],
-                       senderKey: Key,
-                       addressKeys: [Key],
-                       passphrase: Passphrase) throws -> SessionKey? {
-        if isNewSchema {
-            return try keyPacket.getSessionFromPubKeyPackage(userKeys: userKeys,
-                                                             passphrase: passphrase,
-                                                             keys: addressKeys)
-        } else {
-            return try keyPacket.getSessionFromPubKeyPackage(addrPrivKey: senderKey.privateKey,
-                                                             passphrase: passphrase)
-        }
     }
 
     func generatePlainTextBody() -> String {

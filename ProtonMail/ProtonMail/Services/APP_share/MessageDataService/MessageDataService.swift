@@ -949,7 +949,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             let userPrivKeysArray = userInfo.userPrivateKeys
             let addrPrivKeys = userInfo.addressKeys
-            let newSchema = addrPrivKeys.newSchema
 
             let authCredential = message.cachedAuthCredential ?? userManager.authCredential
             let passphrase = message.cachedPassphrase ?? userManager.mailboxPassword
@@ -997,12 +996,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     guard let splited = try message.split(),
                           let bodyData = splited.dataPacket,
                           let keyData = splited.keyPacket,
-                          let session = newSchema ?
-                          try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
-                                                                  passphrase: passphrase,
-                                                                  keys: addrPrivKeys) :
-                          try message.getSessionKey(keys: addrPrivKeys,
-                                                    passphrase: passphrase) else {
+                          let session = try keyData.getSessionFromPubKeyPackage(
+                            userKeys: userPrivKeysArray,
+                            passphrase: passphrase,
+                            keys: addrPrivKeys
+                          ) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     // Debug info
@@ -1041,12 +1039,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     // Debug info
                     status.insert(SendStatus.checkMimeAndPlainText)
                     if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                        guard let clearbody = newSchema ?
-                            try message.decryptBody(keys: addrPrivKeys,
-                                                    userKeys: userPrivKeysArray,
-                                                    passphrase: passphrase) :
-                            try message.decryptBody(keys: addrPrivKeys,
-                                                    passphrase: passphrase) else {
+                        guard let clearbody = try message.decryptBody(
+                            keys: addrPrivKeys,
+                            userKeys: userPrivKeysArray,
+                            passphrase: passphrase
+                        ) else {
                             throw RuntimeError.cant_decrypt.error
                         }
                         sendBuilder.set(clearBody: clearbody)
@@ -1056,12 +1053,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
                     for att in attachments {
                         if att.managedObjectContext != nil {
-                            if let sessionPack = newSchema ?
-                                try att.getSession(userKeys: userPrivKeysArray,
-                                                   keys: addrPrivKeys,
-                                                   mailboxPassword: userManager.mailboxPassword) :
-                                try att.getSession(keys: addrPrivKeys,
-                                                   mailboxPassword: userManager.mailboxPassword) {
+                            if let sessionPack = try att.getSession(
+                                userKeys: userPrivKeysArray,
+                                keys: addrPrivKeys,
+                                mailboxPassword: userManager.mailboxPassword
+                            ) {
                                 let key = sessionPack.sessionKey
                                 sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
                                                                           session: key,
@@ -1098,7 +1094,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                              passphrase: passphrase,
                                              userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
-                                             newSchema: newSchema,
                                              in: context)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
@@ -1114,8 +1109,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return sendBuilder.buildPlainText(senderKey: addressKey,
                                                   passphrase: passphrase,
                                                   userKeys: userPrivKeysArray,
-                                                  keys: addrPrivKeys,
-                                                  newSchema: newSchema)
+                                                  keys: addrPrivKeys)
             }.then { _ -> Guarantee<[Result<AddressPackageBase>]> in
                 // Debug info
                 status.insert(SendStatus.initBuilders)

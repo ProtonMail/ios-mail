@@ -34,7 +34,6 @@ import ProtonCore_Services
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
     var mailboxPassword: Passphrase { get }
-    var newSchema: Bool { get }
     var addressKeys: [Key] { get }
     var userPrivateKeys: [ArmoredKey] { get }
     var userInfo: UserInfo { get }
@@ -442,12 +441,6 @@ extension UserManager: UserDataSource {
     var addressKeys: [Key] {
         get {
             return self.userInfo.userAddresses.toKeys()
-        }
-    }
-
-    var newSchema: Bool {
-        get {
-            return self.userInfo.isKeyV2
         }
     }
 

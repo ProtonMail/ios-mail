@@ -115,24 +115,20 @@ class MailCrypto {
     static func decryptionKeys(
         basedOn addressKeys: [Key],
         mailboxPassword: Passphrase,
-        userKeys: [ArmoredKey]?
+        userKeys: [ArmoredKey]
     ) -> [DecryptionKey] {
         addressKeys.compactMap { addressKey in
             let keyPassphrase: Passphrase
-            if let userKeys = userKeys {
-                do {
-                    keyPassphrase = try getAddressKeyPassphrase(
-                        userKeys: userKeys,
-                        passphrase: mailboxPassword,
-                        key: addressKey
-                    )
-                } catch {
-                    // do not propagate the error, perhaps other keys are still OK, so we should proceed
-                    PMLog.error(error)
-                    return nil
-                }
-            } else {
-                keyPassphrase = mailboxPassword
+            do {
+                keyPassphrase = try getAddressKeyPassphrase(
+                    userKeys: userKeys,
+                    passphrase: mailboxPassword,
+                    key: addressKey
+                )
+            } catch {
+                // do not propagate the error, perhaps other keys are still OK, so we should proceed
+                PMLog.error(error)
+                return nil
             }
             return DecryptionKey(privateKey: ArmoredKey(value: addressKey.privateKey), passphrase: keyPassphrase)
         }
