@@ -51,25 +51,16 @@ struct AttachmentDecrypter {
         }
 
         let attachment: Data = try Data(contentsOf: fileUrl)
-        let decryptedData: Data
-        if userKeys.addressesPrivateKeys.isKeyV2 {
-            if let data = try attachment.decryptAttachment(
-                keyPackage: keyData,
-                userKeys: userKeys.privateKeys,
-                passphrase: userKeys.mailboxPassphrase,
-                keys: userKeys.addressesPrivateKeys
-            ) {
-                decryptedData = data
-            } else {
-                throw AttachmentDecrypterError.foundNilData
-            }
+
+        if let decryptedData = try attachment.decryptAttachment(
+            keyPackage: keyData,
+            userKeys: userKeys.privateKeys,
+            passphrase: userKeys.mailboxPassphrase,
+            keys: userKeys.addressesPrivateKeys
+        ) {
+            return decryptedData
         } else {
-            decryptedData = try attachment.decryptAttachmentNonOptional(
-                keyData,
-                passphrase: userKeys.mailboxPassphrase.value,
-                privKeys: userKeys.addressesPrivateKeys.binPrivKeysArray
-            )
+            throw AttachmentDecrypterError.foundNilData
         }
-        return decryptedData
     }
 }

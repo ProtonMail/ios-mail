@@ -342,8 +342,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildPlainText(senderKey: testKey,
                            passphrase: testPassphrase,
                            userKeys: [],
-                           keys: [],
-                           newSchema: false).done { _ in
+                           keys: [testKey]).done { _ in
             XCTAssertNotNil(self.sut.plainTextSessionAlgo)
             XCTAssertNotNil(self.sut.plainTextSessionKey)
             XCTAssertNotNil(self.sut.plainTextDataPackage)
@@ -360,8 +359,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             XCTAssertEqual(builder.algo, self.sut.plainTextSessionAlgo)
 
             expectation1.fulfill()
-        }.catch { _ in
-            XCTFail("Should not throw error")
+        }.catch { error in
+            XCTFail("\(error)")
         }
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -471,8 +470,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildMime(senderKey: testKey,
                       passphrase: testPassphrase,
                       userKeys: [],
-                      keys: [],
-                      newSchema: false,
+                      keys: [testKey],
                       in: context).done { _ in
             XCTAssertNotNil(self.sut.mimeDataPackage)
             XCTAssertNotNil(self.sut.mimeSessionAlgo)
@@ -517,8 +515,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildMime(senderKey: testKey,
                       passphrase: testPassphrase,
                       userKeys: [],
-                      keys: [],
-                      newSchema: false,
+                      keys: [testKey],
                       in: context).done { _ in
             let result = try self.sut.generatePackageBuilder()
 
@@ -578,8 +575,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildMime(senderKey: testKey,
                       passphrase: testPassphrase,
                       userKeys: [],
-                      keys: [],
-                      newSchema: false,
+                      keys: [testKey],
                       in: context).done { _ in
             XCTAssertNotNil(self.sut.mimeDataPackage)
             XCTAssertNotNil(self.sut.mimeSessionAlgo)

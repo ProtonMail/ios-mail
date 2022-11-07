@@ -69,14 +69,4 @@ extension Array where Element: Key {
         }
         return out
     }
-
-    var newSchema: Bool {
-        for key in self {
-            if key.isKeyV2 {
-                return true
-            }
-        }
-        return false
-    }
-
 }

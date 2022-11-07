@@ -70,7 +70,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
         let decryptionKeys = MailCrypto.decryptionKeys(
             basedOn: addressKeys,
             mailboxPassword: dataSource.mailboxPassword,
-            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+            userKeys: dataSource.userPrivateKeys
         )
 
         if message.isMultipartMixed {
@@ -248,17 +248,11 @@ extension MessageDecrypter {
               }
 
         do {
-            let symmetricKey: SessionKey?
-            if userData.newSchema {
-                symmetricKey = try attachment
-                    .getSession(userKeys: userData.userPrivateKeys,
-                                keys: userData.addressKeys,
-                                mailboxPassword: userData.mailboxPassword)
-            } else {
-                symmetricKey = try attachment
-                    .getSession(keys: userData.addressKeys,
-                                mailboxPassword: userData.mailboxPassword)
-            }
+            let symmetricKey = try attachment.getSession(
+                userKeys: userData.userPrivateKeys,
+                keys: userData.addressKeys,
+                mailboxPassword: userData.mailboxPassword
+            )
 
             guard let sessionPack = symmetricKey,
                   let newkp = try sessionPack.sessionKey

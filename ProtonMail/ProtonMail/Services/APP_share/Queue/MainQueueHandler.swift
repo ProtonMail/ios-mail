@@ -627,12 +627,9 @@ extension MainQueueHandler {
                 }
 
                 for att in attachments where !att.isSoftDeleted && att.attachmentID != "0" {
-                    guard let sessionPack = user.newSchema ?
-                            try att.getSession(userKeys: user.userPrivateKeys,
-                                               keys: user.addressKeys,
-                                               mailboxPassword: user.mailboxPassword) :
-                            try att.getSession(keys: user.addressKeys,
-                                               mailboxPassword: user.mailboxPassword) else { // DONE
+                    guard let sessionPack = try att.getSession(userKeys: user.userPrivateKeys,
+                                                               keys: user.addressKeys,
+                                                               mailboxPassword: user.mailboxPassword) else { // DONE
                         continue
                     }
                     guard let newKeyPack = try sessionPack.sessionKey.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo.value)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
