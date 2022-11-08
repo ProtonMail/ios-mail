@@ -31,8 +31,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Keymaker
 
-typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
-
 // TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
     func onLogout()
@@ -219,13 +217,14 @@ class UserDataService: Service, HasLocalStorage {
         delegate?.onLogout()
     }
 
-    func updateAddress(auth currentAuth: AuthCredential,
-                       user: UserInfo,
-                       addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
-        let authCredential = currentAuth
-        let userInfo = user
+    func updateAddress(authCredential: AuthCredential,
+                       userInfo: UserInfo,
+                       addressId: String,
+                       displayName: String,
+                       signature: String,
+                       completion: @escaping (NSError?) -> Void) {
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion?(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -239,7 +238,7 @@ class UserDataService: Service, HasLocalStorage {
                     return addr.withUpdated(displayName: new_displayName, signature: new_signature)
                 }
             }
-            completion?(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
@@ -249,10 +248,10 @@ class UserDataService: Service, HasLocalStorage {
         userInfo: UserInfo,
         imageType: UpdateImageAutoloadSetting.ImageType,
         setting: UpdateImageAutoloadSetting.Setting,
-        completion: @escaping UserInfoBlock
+        completion: @escaping (NSError?) -> Void
     ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -261,7 +260,7 @@ class UserDataService: Service, HasLocalStorage {
             if response.error == nil {
                 userInfo[keyPath: imageType.userInfoKeyPath] = setting.rawValue
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
@@ -269,10 +268,10 @@ class UserDataService: Service, HasLocalStorage {
         authCredential: AuthCredential,
         userInfo: UserInfo,
         action: UpdateImageProxy.Action,
-        completion: @escaping UserInfoBlock
+        completion: @escaping (NSError?) -> Void
     ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -291,17 +290,17 @@ class UserDataService: Service, HasLocalStorage {
                 }
                 userInfo.imageProxy = newStatus
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
     #endif
 
     func updateDelaySeconds(userInfo: UserInfo,
                             delaySeconds: Int,
-                            completion: @escaping UserInfoBlock) {
+                            completion: @escaping (Error?) -> Void) {
         let userInfo = userInfo
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -310,18 +309,18 @@ class UserDataService: Service, HasLocalStorage {
             if response.error == nil {
                 userInfo.delaySendSeconds = delaySeconds
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
     #if !APP_EXTENSION
     func updateLinkConfirmation(auth currentAuth: AuthCredential,
                                 user: UserInfo,
-                                _ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
+                                _ status: LinkOpeningMode, completion: @escaping (NSError?) -> Void) {
         let authCredential = currentAuth
         let userInfo = user
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
         let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
@@ -329,7 +328,7 @@ class UserDataService: Service, HasLocalStorage {
             if response.error == nil {
                 userInfo.linkConfirmation = status
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
     #endif

@@ -155,8 +155,8 @@ extension PrivacySettingViewModel {
         )
     }
 
-    private func saveData(thenPerform completion: @escaping (NSError?) -> Void) -> UserInfoBlock {
-        { _, _, error in
+    private func saveData(thenPerform completion: @escaping (NSError?) -> Void) -> (NSError?) -> Void {
+        { error in
             if error == nil {
                 self.user.save()
             }

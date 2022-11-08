@@ -155,7 +155,7 @@ class ChangePasswordViewController: UIViewController {
                                      newPassword: Passphrase(value: newPasswordEditor.value),
                                      confirmNewPassword: Passphrase(value: confirmPasswordEditor.value),
                                      tFACode: self.cached2faCode,
-                                     complete: { _, error in
+                                     complete: { error in
                 self.cached2faCode = nil
                 MBProgressHUD.hide(for: self.view, animated: true)
                 if let error = error, !error.isBadVersionError {
