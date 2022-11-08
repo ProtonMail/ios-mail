@@ -159,7 +159,8 @@ class UnlockManager: Service {
                                                 unlocked: (() -> Void)? = nil) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
-            self.delegate?.cleanAll()
+            delegate?.setupCoreData()
+            delegate?.cleanAll()
             unlockFailed?()
             return
         }
