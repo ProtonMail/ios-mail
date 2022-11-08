@@ -27,7 +27,7 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@",
-            Conversation.Attributes.conversationID,
+            Conversation.Attributes.conversationID.rawValue,
             self.conversationID.rawValue
         )
         fetchRequest.sortDescriptors = [

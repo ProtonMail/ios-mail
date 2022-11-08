@@ -722,9 +722,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
                 let conversationFetch = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
                 conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
-                                                          Conversation.Attributes.userID,
+                                                          Conversation.Attributes.userID.rawValue,
                                                           self.userID.rawValue,
-                                                          Conversation.Attributes.isSoftDeleted,
+                                                          Conversation.Attributes.isSoftDeleted.rawValue,
                                                           NSNumber(false))
                 if let conversations = try? context.fetch(conversationFetch) {
                     conversations.forEach { context.delete($0) }

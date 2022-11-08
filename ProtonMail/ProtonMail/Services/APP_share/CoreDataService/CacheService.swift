@@ -246,7 +246,13 @@ class CacheService: CacheServiceProtocol {
         messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID.rawValue)
 
         let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
-        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID.rawValue, Conversation.Attributes.userID, self.userID.rawValue)
+        contextLabelFetch.predicate = NSPredicate(
+            format: "(%K == %@) AND (%K == %@)",
+            ContextLabel.Attributes.labelID,
+            labelID.rawValue,
+            Conversation.Attributes.userID.rawValue,
+            self.userID.rawValue
+        )
 
         coreDataService.performAndWaitOnRootSavingContext { context in
             if let messages = try? context.fetch(messageFetch) {
