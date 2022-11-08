@@ -98,7 +98,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
             return
         }
         let scheduledLimit = 100
-        let countRequest = MessageCount()
+        let countRequest = MessageCountRequest()
         self.user.apiService.perform(request: countRequest, response: MessageCountResponse()) { _, response in
             if response.error == nil,
                let scheduledLabel = response.counts?.first(where: { $0["LabelID"] as? String == LabelLocation.scheduled.rawLabelID }) {

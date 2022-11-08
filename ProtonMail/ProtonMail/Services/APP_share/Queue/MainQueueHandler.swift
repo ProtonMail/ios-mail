@@ -223,7 +223,7 @@ extension MainQueueHandler {
             return
         }
 
-        let api = EmptyMessage(labelID: location.rawValue)
+        let api = EmptyMessageRequest(labelID: location.rawValue)
         self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             completion(response.error)
         }
@@ -231,7 +231,7 @@ extension MainQueueHandler {
     }
 
     private func empty(labelID: String, completion: @escaping Completion) {
-        let api = EmptyMessage(labelID: labelID)
+        let api = EmptyMessageRequest(labelID: labelID)
         self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             completion(response.error)
         }
@@ -383,9 +383,9 @@ extension MainQueueHandler {
                 let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
                 let request: Request
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    request = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
+                    request = UpdateDraftRequest(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
                 } else {
-                    request = CreateDraft(message: message, fromAddr: addr)
+                    request = CreateDraftRequest(message: message, fromAddr: addr)
                 }
 
                 self.apiService.perform(request: request, response: UpdateDraftResponse()) { task, response in

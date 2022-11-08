@@ -33,7 +33,7 @@ struct MessageAPI {
     static let path: String = "/\(Constants.App.API_PREFIXED)/messages"
 }
 
-final class SearchMessage: Request {
+final class SearchMessageRequest: Request {
     var keyword: String
     var page: Int
 
@@ -59,7 +59,7 @@ final class SearchMessage: Request {
 }
 
 // MARK: Get messages part --- MessageCountResponse
-final class MessageCount: Request {
+final class MessageCountRequest: Request {
     var path: String {
         return MessageAPI.path + "/count"
     }
@@ -92,7 +92,7 @@ final class FetchMessagesByIDResponse: Response {
 }
 
 /// Response
-final class FetchMessagesByLabel: Request {
+final class FetchMessagesByLabelRequest: Request {
     let labelID: String!
     let endTime: Int
     let isUnread: Bool?
@@ -125,7 +125,7 @@ final class FetchMessagesByLabel: Request {
 
 // MARK: Create/Update Draft Part
 /// create draft message request class -- MessageResponse
-class CreateDraft: Request {
+class CreateDraftRequest: Request {
 
     let message: Message
     let fromAddress: Address?
@@ -190,7 +190,7 @@ class CreateDraft: Request {
 }
 
 /// message update draft api request
-final class UpdateDraft: CreateDraft {
+final class UpdateDraftRequest: CreateDraftRequest {
 
     convenience init(message: Message, fromAddr: Address?, authCredential: AuthCredential? = nil) {
         self.init(message: message, fromAddr: fromAddr)
@@ -241,7 +241,7 @@ final class MessageActionRequest: Request {
 }
 
 /// empty trash or spam -- Response
-final class EmptyMessage: Request {
+final class EmptyMessageRequest: Request {
 
     let labelID: String
     init(labelID: String) {
@@ -258,8 +258,8 @@ final class EmptyMessage: Request {
 }
 
 // MARK: Message Send part
-/// send message reuqest -- SendResponse
-final class SendMessage: Request {
+
+final class SendMessageRequest: Request {
     var messagePackage: [AddressPackageBase]  // message package
     var body: String
     let messageID: String

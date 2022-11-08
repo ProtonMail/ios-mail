@@ -32,19 +32,21 @@ final class SendMessageAPITest: XCTestCase {
                                                 encodedSession: "encoded session",
                                                 algo: algorithm)
         let clearMIMEBody = ClearBodyPackage(key: "mime body key", algo: algorithm)
-        let sut = SendMessage(messageID: messageID,
-                          expirationTime: expirationTime,
-                          delaySeconds: delaySecond,
-                          messagePackage: [messagePackage],
-                          body: "This is body",
-                          clearBody: clearBody,
-                          clearAtts: [attachment],
-                          mimeDataPacket: "mime package",
-                          clearMimeBody: clearMIMEBody,
-                          plainTextDataPacket: "plain text",
-                          clearPlainTextBody: nil,
-                          authCredential: nil,
-                          deliveryTime: deliveryTime)
+        let sut = SendMessageRequest(
+            messageID: messageID,
+            expirationTime: expirationTime,
+            delaySeconds: delaySecond,
+            messagePackage: [messagePackage],
+            body: "This is body",
+            clearBody: clearBody,
+            clearAtts: [attachment],
+            mimeDataPacket: "mime package",
+            clearMimeBody: clearMIMEBody,
+            plainTextDataPacket: "plain text",
+            clearPlainTextBody: nil,
+            authCredential: nil,
+            deliveryTime: deliveryTime
+        )
         XCTAssertEqual(sut.method, HTTPMethod.post)
         XCTAssertEqual(sut.path, "\(MessageAPI.path)/\(messageID)")
 
