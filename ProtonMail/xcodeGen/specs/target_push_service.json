@@ -13,6 +13,7 @@
                   "**/*.md"
                ]
             },
+            "ProtonMail/Extension/Foundations/APP_share_push_siri",
             "ProtonMail/Extension/Foundations/APP_share_push",
             "ProtonMail/Extension/ProtonCore/APP_share_push",
             "ProtonMail/Models/APP_share_push",

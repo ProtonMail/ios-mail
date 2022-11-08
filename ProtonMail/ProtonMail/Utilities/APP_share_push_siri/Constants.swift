@@ -1,35 +1,37 @@
+// Copyright (c) 2022 Proton Technologies AG
 //
-//  App.swift
-//  Proton Mail - Created on 6/4/15.
+// This file is part of Proton Mail.
 //
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-//  Copyright (c) 2019 Proton AG
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//  This file is part of Proton Mail.
-//
-//  Proton Mail is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Proton Mail is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
 
 struct Constants {
+    static var AppGroup: String {
+#if Enterprise
+        return "group.com.protonmail.protonmail"
+#else
+        return "group.ch.protonmail.protonmail"
+#endif
+    }
 
     enum App {
         static let SpaceWarningThresholdDouble: Double = 90
         // 3 is v4 carousel
         // 4 is rebranding carousel
         static let TourVersion : Int                   = 4
-        
+
         static var appDomain: String { BackendConfiguration.shared.environment.appDomain }
         static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
         static var API_PATH: String { BackendConfiguration.shared.environment.apiPath }
@@ -51,17 +53,6 @@ struct Constants {
             }
         }
 
-        // app share group
-        static var APP_GROUP: String {
-            get {
-                #if Enterprise
-                return "group.com.protonmail.protonmail"
-                #else
-                return "group.ch.protonmail.protonmail"
-                #endif
-            }
-        }
-
         static var humanVerifyHost = "https://verify.\(Constants.App.appDomain)"
         static var accountHost = "https://account.\(Constants.App.appDomain)"
         static var appVersion: String {
@@ -78,14 +69,14 @@ struct Constants {
         static let maxNumberOfLabels = 3
     }
 
-    enum ImageProxy {
-        static let cacheMemoryLimitInBytes = 1_024 * 1_024 * 20
-    }
-
     enum ScheduleSend {
         static let minNumberOfMinutes = 5
         static var minNumberOfSeconds: TimeInterval { TimeInterval(self.minNumberOfMinutes * 60) }
         static let maxNumberOfSeconds: TimeInterval = 30 * 86400 // 86400 = 1 day
+    }
+
+    enum ImageProxy {
+        static let cacheMemoryLimitInBytes = 1_024 * 1_024 * 20
     }
 
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
@@ -100,4 +91,5 @@ struct Constants {
                                               "family2022",
                                               "visionary2022",
                                               "bundlepro2022"]
+    static let defaultLocale = "en"
 }

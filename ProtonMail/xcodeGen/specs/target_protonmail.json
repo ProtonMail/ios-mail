@@ -7,6 +7,8 @@
             "ProtonMail/Extension/Mail/APP",
             "ProtonMail/Extension/UIKit/APP_share",
             "ProtonMail/Extension/UIKit/APP",
+            "ProtonMail/Extension/Foundations/APP_share_push_siri",
+            "ProtonMail/Extension/Foundations/APP_share_siri",
             "ProtonMail/Extension/Foundations/APP_share_push",
             "ProtonMail/Extension/Foundations/APP_share",
             "ProtonMail/Extension/Foundations/APP",

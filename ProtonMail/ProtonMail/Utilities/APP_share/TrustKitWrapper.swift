@@ -209,7 +209,7 @@ final class TrustKitWrapper {
             #if !APP_EXTENSION
             return TrustKit(configuration: config)
             #else
-            return TrustKit(configuration: config, sharedContainerIdentifier: Constants.App.APP_GROUP)
+            return TrustKit(configuration: config, sharedContainerIdentifier: Constants.AppGroup)
             #endif
         }()
 
