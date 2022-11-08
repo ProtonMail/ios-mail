@@ -115,12 +115,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void) {
-        let request = FetchMessagesByLabel(labelID: labelID.rawValue, endTime: endTime, isUnread: fetchUnread)
+        let request = FetchMessagesByLabelRequest(labelID: labelID.rawValue, endTime: endTime, isUnread: fetchUnread)
         apiService.perform(request: request, jsonDictionaryCompletion: completion)
     }
 
     func fetchMessagesCount(completion: @escaping (MessageCountResponse) -> Void) {
-        let counterRoute = MessageCount()
+        let counterRoute = MessageCountRequest()
         apiService.perform(request: counterRoute, response: MessageCountResponse()) { _, response in
             completion(response)
         }
@@ -162,7 +162,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 completion(task, response, err as NSError)
                             }
                         } else {
-                            let counterRoute = MessageCount()
+                            let counterRoute = MessageCountRequest()
                             self.apiService.perform(request: counterRoute, response: MessageCountResponse()) { _, response in
                                 if response.error == nil {
                                     self.parent?.eventsService.processEvents(counts: response.counts)
@@ -175,7 +175,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 }
             }
-            let request = FetchMessagesByLabel(labelID: labelID.rawValue, endTime: time, isUnread: isUnread)
+            let request = FetchMessagesByLabelRequest(labelID: labelID.rawValue, endTime: time, isUnread: isUnread)
             self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
         }
     }
@@ -263,7 +263,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             switch viewMode {
             case .singleMessage:
-                let counterApi = MessageCount()
+                let counterApi = MessageCountRequest()
                 self.apiService.perform(request: counterApi, response: MessageCountResponse()) { _, response in
                     guard response.error == nil else {
                         completion?()
@@ -819,7 +819,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 completion(.failure(parseError))
             }
         }
-        let api = SearchMessage(keyword: query, page: page)
+        let api = SearchMessageRequest(keyword: query, page: page)
         self.apiService.perform(request: api, response: SearchMessageResponse()) { _, response in
             if let error = response.error {
                 completionWrapper(nil, error)
@@ -1109,7 +1109,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 // build address packages
                 let promises = try sendBuilder.getBuilderPromises()
                 return when(resolved: promises)
-            }.then { results -> Promise<SendMessage> in
+            }.then { results -> Promise<SendMessageRequest> in
                 context.performAsPromise {
                     // Debug info
                     status.insert(SendStatus.encodeBody)
@@ -1139,17 +1139,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         throw parseError
                     }
                     let delaySeconds = self.userDataSource?.userInfo.delaySendSeconds ?? 0
-                    return SendMessage(messageID: message.messageID,
-                                       expirationTime: message.expirationOffset,
-                                       delaySeconds: delaySeconds,
-                                       messagePackage: msgs,
-                                       body: encodedBody,
-                                       clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
-                                       mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
-                                       plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
-                                       authCredential: authCredential,
-                                       deliveryTime: deliveryTime)
-
+                    return SendMessageRequest(
+                        messageID: message.messageID,
+                        expirationTime: message.expirationOffset,
+                        delaySeconds: delaySeconds,
+                        messagePackage: msgs,
+                        body: encodedBody,
+                        clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
+                        mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
+                        plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
+                        authCredential: authCredential,
+                        deliveryTime: deliveryTime
+                    )
                 }
             }.then { sendApi -> Promise<SendResponse> in
                 // Debug info
