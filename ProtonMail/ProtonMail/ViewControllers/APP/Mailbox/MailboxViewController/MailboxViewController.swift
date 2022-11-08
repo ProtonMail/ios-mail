@@ -718,7 +718,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     // MARK: cell configuration methods
-    private func configure(cell inputCell: UITableViewCell?, indexPath: IndexPath) {
+    private func configure(cell inputCell: UITableViewCell, indexPath: IndexPath) {
         guard let mailboxCell = inputCell as? NewMailboxMessageCell else {
             return
         }
@@ -764,8 +764,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             UIAccessibilityCustomAction(name: LocalString._accessibility_list_view_custom_action_of_switch_editing_mode,
                                         target: self,
                                         selector: #selector(self.handleAccessibilityAction))
-        inputCell?.accessibilityCustomActions = [accessibilityAction]
-        inputCell?.isAccessibilityElement = true
+        inputCell.accessibilityCustomActions = [accessibilityAction]
+        inputCell.isAccessibilityElement = true
     }
 
     // Temp: needs to refactor the code of generating TagUIModel
@@ -776,7 +776,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         return object.createTags()
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, item: SwipeableItem) {
+    private func configureSwipeAction(_ cell: SwipyCell, item: MailboxItem) {
         cell.delegate = self
 
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
@@ -810,7 +810,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
     }
 
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: SwipeableItem) {
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: MailboxItem) {
         let breadcrumbs = Breadcrumbs.shared
 
         defer {
@@ -843,7 +843,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             cell.swipeToOrigin {}
         }
 
-        if viewModel.isScheduledSend(of: item) && action == .trash {
+        if item.isScheduledForSending && action == .trash {
             cell.swipeToOrigin {}
             displayScheduledAlert(scheduledNum: 1, continueAction: continueAction, cancelAction: cancelAction)
         } else {

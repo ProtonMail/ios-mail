@@ -47,7 +47,7 @@ enum SettingAccountSection: Int, CustomStringConvertible {
     }
 }
 
-enum AccountItem: Int, CustomStringConvertible {
+enum SettingsAccountItem: Int, CustomStringConvertible {
     case singlePassword
     case loginPassword
     case mailboxPassword
@@ -70,7 +70,7 @@ enum AccountItem: Int, CustomStringConvertible {
     }
 }
 
-enum AddressItem: Int, CustomStringConvertible {
+enum SettingsAddressItem: Int, CustomStringConvertible {
     case addr
     case displayName
     case signature
@@ -90,7 +90,7 @@ enum AddressItem: Int, CustomStringConvertible {
     }
 }
 
-enum MailboxItem: Int, CustomStringConvertible, Equatable {
+enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
     case undoSend
@@ -121,9 +121,9 @@ enum MailboxItem: Int, CustomStringConvertible, Equatable {
 
 protocol SettingsAccountViewModel: AnyObject {
     var sections: [SettingAccountSection] { get set }
-    var accountItems: [AccountItem] { get set }
-    var addrItems: [AddressItem] { get set }
-    var mailboxItems: [MailboxItem] {get set}
+    var accountItems: [SettingsAccountItem] { get set }
+    var addrItems: [SettingsAddressItem] { get set }
+    var mailboxItems: [SettingsMailboxItem] {get set}
 
     var storageText: String { get }
     var recoveryEmail: String { get }
@@ -145,9 +145,9 @@ protocol SettingsAccountViewModel: AnyObject {
 
 class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
-    var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
-    var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems: [MailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]
+    var accountItems: [SettingsAccountItem] = [.singlePassword, .recovery, .storage]
+    var addrItems: [SettingsAddressItem] = [.addr, .displayName, .signature, .mobileSignature]
+    var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]
 
     var userManager: UserManager
 

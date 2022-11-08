@@ -55,7 +55,7 @@ class SwipeableItemTests: XCTestCase {
 
     func testIsStarredMessage() throws {
         let nonStarredMessage = MessageEntity(message)
-        let nonStarredSUT = SwipeableItem.message(nonStarredMessage)
+        let nonStarredSUT = MailboxItem.message(nonStarredMessage)
         XCTAssertFalse(nonStarredSUT.isStarred)
 
         let starredLabel = Label(context: testContext)
@@ -63,43 +63,43 @@ class SwipeableItemTests: XCTestCase {
         message.add(labelID: starredLabel.labelID)
 
         let starredMessageEntity = MessageEntity(message)
-        let starredSUT = SwipeableItem.message(starredMessageEntity)
+        let starredSUT = MailboxItem.message(starredMessageEntity)
         XCTAssert(starredSUT.isStarred)
     }
 
     func testIsStarredConversation() throws {
         let nonStarredConversation = ConversationEntity(conversation)
-        let nonStarredSUT = SwipeableItem.conversation(nonStarredConversation)
+        let nonStarredSUT = MailboxItem.conversation(nonStarredConversation)
         XCTAssertFalse(nonStarredSUT.isStarred)
 
         conversation.applyLabelChanges(labelID: Message.Location.starred.rawValue, apply: true)
 
         let starredConversationEntity = ConversationEntity(conversation)
-        let starredSUT = SwipeableItem.conversation(starredConversationEntity)
+        let starredSUT = MailboxItem.conversation(starredConversationEntity)
         XCTAssert(starredSUT.isStarred)
     }
 
     func testItemIDMessage() throws {
         let messageEntity = MessageEntity(message)
-        let sut = SwipeableItem.message(messageEntity)
+        let sut = MailboxItem.message(messageEntity)
         XCTAssertEqual(sut.itemID, messageID)
     }
 
     func testItemIDConversation() throws {
         let conversationEntity = ConversationEntity(conversation)
-        let sut = SwipeableItem.conversation(conversationEntity)
+        let sut = MailboxItem.conversation(conversationEntity)
         XCTAssertEqual(sut.itemID, conversationID)
     }
 
     func testIsUnreadMessage() throws {
         let unreadMessage = MessageEntity(message)
-        let unreadSUT = SwipeableItem.message(unreadMessage)
+        let unreadSUT = MailboxItem.message(unreadMessage)
         XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
         message.unRead = false
 
         let readMessage = MessageEntity(message)
-        let readSUT = SwipeableItem.message(readMessage)
+        let readSUT = MailboxItem.message(readMessage)
         XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }
 
@@ -107,13 +107,13 @@ class SwipeableItemTests: XCTestCase {
         conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel.rawValue)
 
         let unreadConversation = ConversationEntity(conversation)
-        let unreadSUT = SwipeableItem.conversation(unreadConversation)
+        let unreadSUT = MailboxItem.conversation(unreadConversation)
         XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
         conversation.applyMarksAsChanges(unRead: false, labelID: inboxLabel.rawValue)
 
         let readConversation = ConversationEntity(conversation)
-        let readSUT = SwipeableItem.conversation(readConversation)
+        let readSUT = MailboxItem.conversation(readConversation)
         XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }
 }
