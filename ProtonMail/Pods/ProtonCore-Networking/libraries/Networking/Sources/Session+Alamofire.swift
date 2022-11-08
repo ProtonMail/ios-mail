@@ -110,6 +110,31 @@ extension AlamofireSession {
                 completion(taskOut(), .success(jsonDict))
                 
             case .failure(let error):
+                
+                // MARK: workaround start
+                // after enabled the HTTP code validation. when received invalid HTTP code like 404. the response will become an error.
+                //  and the response data will not be parsed(contains the details from the server side). here add a workaround.
+                //  when received an error. if it is a validation failed. and the reason is unAcceptableStatusCode.
+                //  we will try to parse the response data and return the object to upper. this can avoid breaking the upper layer logic.
+                if case .responseValidationFailed(let reason) = error,
+                   case .unacceptableStatusCode = reason,
+                   let responseData = jsonResponse.data {
+                    
+                    do {
+                        let data = try JSONResponseSerializer.defaultDataPreprocessor.preprocess(responseData)
+                        guard let jsonDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                            completion(taskOut(), .failure(.responseBodyIsNotAJSONDictionary(body: jsonResponse.data, response: jsonResponse.response)))
+                            return
+                        }
+                        completion(taskOut(), .success(jsonDict))
+                        return
+                    } catch {
+                        completion(taskOut(), .failure(.responseBodyIsNotAJSONDictionary(body: jsonResponse.data, response: jsonResponse.response)))
+                        return
+                    }
+                }
+                // MARK: workaround end
+                
                 let err = error.underlyingError ?? error
                 completion(taskOut(), .failure(.networkingEngineError(underlyingError: err as NSError)))
             }
@@ -133,6 +158,29 @@ extension AlamofireSession {
             case .success(let object):
                 completion(taskOut(), .success(object))
             case .failure(let error):
+                
+                // MARK: workaround start
+                // after enabled the HTTP code validation. when received invalid HTTP code like 404. the response will become an error.
+                //  and the response data will not be parsed(contains the details from the server side). here add a workaround.
+                //  when received an error. if it is a validation failed. and the reason is unAcceptableStatusCode.
+                //  we will try to parse the response data and return the object to upper. this can avoid breaking the upper layer logic.
+                if case .responseValidationFailed(let reason) = error,
+                   case .unacceptableStatusCode = reason,
+                   let responseData = decodedResponse.data {
+                    
+                    do {
+                        let data = try DecodableResponseSerializer<T>.defaultDataPreprocessor.preprocess(responseData)
+                        let decoder = jsonDecoder ?? self.defaultJSONDecoder
+                        let object = try decoder.decode(T.self, from: data)
+                        completion(taskOut(), .success(object))
+                        return
+                    } catch {
+                        completion(taskOut(), .failure(.responseBodyIsNotADecodableObject(body: decodedResponse.data, response: decodedResponse.response)))
+                        return
+                    }
+                }
+                // MARK: workaround end
+                
                 let err = error.underlyingError ?? error
                 if error.isResponseSerializationError {
                     completion(taskOut(), .failure(.responseBodyIsNotADecodableObject(body: decodedResponse.data, response: decodedResponse.response)))
@@ -171,7 +219,9 @@ extension AlamofireSession {
     private func request(alamofireRequest: AlamofireRequest) -> (() -> URLSessionDataTask?, DataRequest) {
         alamofireRequest.updateHeader()
         var taskOut: URLSessionDataTask?
-        let dataRequest = self.session.request(alamofireRequest, interceptor: alamofireRequest.interceptor).onURLSessionTaskCreation { task in
+        // Added: call Validate after request created. this is the key to trigger retry logic when received none 2xx http code.
+        //    - default valid httpcode: 200-300
+        let dataRequest = self.session.request(alamofireRequest, interceptor: alamofireRequest.interceptor).validate(statusCode: 200..<300).onURLSessionTaskCreation { task in
             taskOut = task as? URLSessionDataTask
         }
         return ({ taskOut }, dataRequest)

@@ -210,37 +210,5 @@
 			<string>%d utilisateur·rice·s</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>pour %d mois</string>
-			<key>other</key>
-			<string>pour %d mois</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>pour %d an</string>
-			<key>other</key>
-			<string>pour %d ans</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

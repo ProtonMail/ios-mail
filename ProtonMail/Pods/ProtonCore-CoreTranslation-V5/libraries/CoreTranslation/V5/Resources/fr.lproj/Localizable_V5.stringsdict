@@ -260,7 +260,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Prise en charge de %d domaine de messagerie personnalisé</string>
+			<string>Prise en charge d'%d domaine de messagerie personnalisé</string>
 			<key>other</key>
 			<string>Prise en charge de %d domaines de messagerie personnalisés</string>
 		</dict>

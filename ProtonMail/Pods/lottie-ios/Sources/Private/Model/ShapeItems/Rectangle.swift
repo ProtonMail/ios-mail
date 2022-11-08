@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An item that define an ellipse shape
 final class Rectangle: ShapeItem {
 
   // MARK: Lifecycle

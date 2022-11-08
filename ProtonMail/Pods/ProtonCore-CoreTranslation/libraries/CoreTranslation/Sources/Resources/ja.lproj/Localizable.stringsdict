@@ -184,33 +184,5 @@
 			<string>%d 人のユーザー</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d か月間</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d 年間</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

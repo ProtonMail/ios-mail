@@ -26,6 +26,7 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_CoreTranslation
 
+public typealias OnPresentComplete = () -> Void
 public typealias OnDismissComplete = () -> Void
 
 public class TroubleShootingViewController: UITableViewController, AccessibleView {

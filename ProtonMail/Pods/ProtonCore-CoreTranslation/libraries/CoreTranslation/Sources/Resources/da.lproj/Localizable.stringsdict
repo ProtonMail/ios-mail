@@ -210,37 +210,5 @@
 			<string>%d brugere</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>i %d måned</string>
-			<key>other</key>
-			<string>i %d måneder</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>i %d år</string>
-			<key>other</key>
-			<string>i %d år</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

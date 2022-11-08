@@ -25,14 +25,6 @@ import ProtonCore_CoreTranslation
 
 extension ServicePlanDataServiceProtocol {
     
-    var hasPaymentMethods: Bool {
-        guard let paymentMethods = paymentMethods else {
-            // if we don't know better, we default to assuming the user has payment methods available
-            return true
-        }
-        return !paymentMethods.isEmpty
-    }
-    
     func endDateString(plan: InAppPurchasePlan) -> NSAttributedString? {
         guard let endDate = currentSubscription?.endDate, endDate.isFuture else { return nil }
         
@@ -40,7 +32,7 @@ extension ServicePlanDataServiceProtocol {
         dateFormatter.dateFormat = "dd.MM.yy"
         let endDateString = dateFormatter.string(from: endDate)
         var string: String
-        if willRenewAutomcatically(plan: plan) {
+        if willRenewAutomatically(plan: plan) {
             string = String(format: CoreString._pu_plan_details_renew_auto_expired, endDateString)
         } else {
             string = String(format: CoreString._pu_plan_details_renew_expired, endDateString)

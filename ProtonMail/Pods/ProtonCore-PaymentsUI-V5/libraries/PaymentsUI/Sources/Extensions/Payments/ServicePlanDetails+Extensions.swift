@@ -145,11 +145,29 @@ extension Plan {
     
     var cycleDescription: String? {
         guard let cycle = cycle, cycle > 0 else { return nil }
-        let years = cycle / 12
-        if years > 0 {
-            return String(format: CoreString._pu_plan_details_price_time_period_y, years)
+        let dateComponents = DateComponents(month: cycle)
+        let cycleString: String?
+        if cycle % 12 == 0 {
+            cycleString = yearsFormatter.string(from: dateComponents)
         } else {
-            return String(format: CoreString._pu_plan_details_price_time_period_m, cycle)
+            cycleString = monthsFormatter.string(from: dateComponents)
         }
+        guard let cycleString = cycleString else { return nil }
+        return String(format: CoreString._pu_plan_details_price_time_period_no_unit, cycleString)
     }
+}
+
+private let monthsFormatter: DateComponentsFormatter = createSingleUnitFormatter(unit: .month)
+
+private let yearsFormatter: DateComponentsFormatter = createSingleUnitFormatter(unit: .year)
+
+private func createSingleUnitFormatter(unit: NSCalendar.Unit) -> DateComponentsFormatter {
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = unit
+    formatter.allowsFractionalUnits = false
+    formatter.collapsesLargestUnit = true
+    formatter.maximumUnitCount = 1
+    formatter.zeroFormattingBehavior = .dropAll
+    formatter.unitsStyle = .full
+    return formatter
 }

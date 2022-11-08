@@ -461,7 +461,7 @@ extension SignupCoordinator: SignupViewControllerDelegate {
 extension SignupCoordinator: PasswordViewControllerDelegate {
     func passwordIsShown() {
         
-        if container.humanVerificationVersion == .v3, signupAccountType == .external {
+        if signupAccountType == .external {
             // if PasswordViewController is presented we need to remove HumanVerifyV3ViewController from the navigation stack to don't allow to come back to it.
             HumanCheckHelper.removeHumanVerification(from: navigationController)
         }

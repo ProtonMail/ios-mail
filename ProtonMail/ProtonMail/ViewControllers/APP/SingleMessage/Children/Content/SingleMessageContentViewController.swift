@@ -201,7 +201,7 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func showEditScheduleBanner() {
-        guard self.editScheduleBannerController == nil else {
+        guard self.editScheduleBannerController == nil && viewModel.message.isScheduledSend else {
             return
         }
         let controller = BannerViewController(viewModel: viewModel.bannerViewModel, isScheduleBannerOnly: true)

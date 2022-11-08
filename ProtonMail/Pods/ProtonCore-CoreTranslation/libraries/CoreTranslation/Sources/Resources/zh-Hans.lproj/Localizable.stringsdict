@@ -13,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d VPN connections</string>
+			<string>%d 台设备可同时接入 VPN</string>
 		</dict>
 	</dict>
 	<key>%d addresses &amp; calendars</key>
@@ -27,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d addresses &amp; calendars</string>
+			<string>%d 地址 &amp; 日历</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -41,7 +41,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d calendars</string>
+			<string>%d 份日历</string>
 		</dict>
 	</dict>
 	<key>%d calendars / user</key>
@@ -69,7 +69,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d connections</string>
+			<string>%d 台设备同时接入</string>
 		</dict>
 	</dict>
 	<key>%d countries</key>
@@ -153,7 +153,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d high-speed VPN connections</string>
+			<string>%d 台设备可同时接入高速 VPN</string>
 		</dict>
 	</dict>
 	<key>%d high-speed VPN connections / user</key>
@@ -181,35 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d users</string>
-		</dict>
-	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>for %d months</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>for %d years</string>
+			<string>%d 位用户</string>
 		</dict>
 	</dict>
 </dict>

@@ -53,6 +53,7 @@ public struct APIServiceMock: APIService {
     @PropertyStub(\APIServiceMock.humanDelegate, initialGet: .crash) public var humanDelegateStub
     public var humanDelegate: HumanVerifyDelegate? { get { humanDelegateStub() } set { humanDelegateStub(newValue) } }
     
+    @available(*, deprecated, message: "This will be changed to DoHInterface type")
     @PropertyStub(\APIServiceMock.doh, initialGet: .crash) public var dohStub
     public var doh: DoH & ServerConfig { get { dohStub() } set { dohStub(newValue) } }
     

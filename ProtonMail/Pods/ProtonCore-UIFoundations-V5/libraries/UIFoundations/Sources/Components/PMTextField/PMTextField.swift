@@ -52,7 +52,7 @@ public class PMTextField: UIView, AccessibleView {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private var mainView: UIView!
-    @IBOutlet private weak var textField: PMInternalTextField! {
+    @IBOutlet weak var textField: PMInternalTextField! {
         didSet {
             textField.internalDelegate = self
         }

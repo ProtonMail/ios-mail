@@ -22,6 +22,8 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation-V5/ProtonCore_CoreTranslation_V
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework

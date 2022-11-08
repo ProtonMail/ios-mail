@@ -277,7 +277,7 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
     }
 
     public static var Caption: [NSAttributedString.Key: Any] {
-        let font = UIFont(name: "SFProDisplay-Regular", size: 13)!
+        let font = UIFont.systemFont(ofSize: 13)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 

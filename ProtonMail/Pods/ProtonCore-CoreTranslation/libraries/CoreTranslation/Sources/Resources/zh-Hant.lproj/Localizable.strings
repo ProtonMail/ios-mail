@@ -266,7 +266,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "了解更多";
 
 /* visit item message */
@@ -640,9 +641,6 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
-
-/* Signup summary no plan description */
-"Your Proton account was successfully created." = "您的 Proton 帳號已成功創建。";
 
 /* Recovery address label title */
 "Your recovery email address:" = "您的復原電郵位址：";

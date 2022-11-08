@@ -42,4 +42,15 @@ extension VerifiedMessage {
             return content
         }
     }
+
+    func map<NewContent>(_ transform: (ClearContent) throws -> NewContent) rethrows -> VerifiedMessage<NewContent> {
+        let mappedContent = try transform(content)
+
+        switch self {
+        case .verified:
+            return .verified(mappedContent)
+        case let .unverified(_, error):
+            return .unverified(mappedContent, error)
+        }
+    }
 }

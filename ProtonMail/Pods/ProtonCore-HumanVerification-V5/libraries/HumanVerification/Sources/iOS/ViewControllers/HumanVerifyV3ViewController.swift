@@ -36,8 +36,35 @@ protocol HumanVerifyV3ViewControllerDelegate: AnyObject {
     func emailAddressAlreadyTakenWithError(code: Int, description: String)
 }
 
+// Delete this enum once iOS 11 support is dropped.
+enum UserInterfaceStyle: Int {
+    case unspecified = 0
+    case light = 1
+    case dark = 2
+
+    @available(iOS 12, *)
+    init(value: UIUserInterfaceStyle) {
+        switch value {
+        case .unspecified:
+            self = .unspecified
+        case .light:
+            self = .light
+        case .dark:
+            self = .dark
+        @unknown default:
+            assertionFailure("Unrecognized UIUserInterfaceStyle: \(value)")
+            self = .unspecified
+        }
+    }
+
+    @available(iOS 12, *)
+    static func != (lhs: UIUserInterfaceStyle, rhs: UserInterfaceStyle) -> Bool {
+        lhs.rawValue != rhs.rawValue
+    }
+}
+
 final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
-    
+
     // MARK: Outlets
 
     var webView: WKWebView!
@@ -63,11 +90,10 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
     var viewTitle: String?
     var banner: PMBanner?
     var presentsBannerInsteadOfWebView = false
-    @available(iOS 12.0, *)
-    lazy var currentInterfaceStyle: UIUserInterfaceStyle = .unspecified
-    
+    private lazy var currentInterfaceStyle: UserInterfaceStyle = .unspecified
+
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
-    
+
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
@@ -78,12 +104,12 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
         view.accessibilityIdentifier = "Human Verification view"
     }
-    
+
     deinit {
         userContentController.removeAllUserScripts()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if #available(iOS 12.0, *) {
@@ -92,23 +118,23 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
             }
         }
     }
-    
+
     // MARK: Actions
-    
+
     @IBAction func closeAction(_ sender: Any) {
         delegate?.didDismissViewController()
     }
-    
+
     @IBAction func helpAction(_ sender: Any) {
         delegate?.didShowHelpViewController()
     }
-    
+
     // MARK: Private interface
 
     private func configureUI() {
         title = viewTitle ?? CoreString._hv_title
         if #available(iOS 12.0, *) {
-            currentInterfaceStyle = traitCollection.userInterfaceStyle
+            currentInterfaceStyle = .init(value: traitCollection.userInterfaceStyle)
         }
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
@@ -117,7 +143,7 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         closeBarButtonItem.image = isModalPresentation ? IconProvider.crossSmall : IconProvider.arrowLeft
         setupWebView()
     }
-    
+
     private func setupWebView() {
         userContentController.add(WeaklyProxingScriptHandler(self), name: viewModel.scriptName)
         let webViewConfiguration = WKWebViewConfiguration()
@@ -133,7 +159,7 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         webView.isOpaque = false
         view.addSubview(webView)
         view.bringSubviewToFront(activityIndicator)
-        
+
         let layoutGuide = view.safeAreaLayoutGuide
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor).isActive = true
@@ -141,7 +167,7 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         webView.topAnchor.constraint(equalTo: layoutGuide.topAnchor).isActive = true
     }
-    
+
     private var lastLoadingURL: String?
 
     private func loadWebContent() {
@@ -151,7 +177,7 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         lastLoadingURL = requestObj.url?.absoluteString
         webView.load(requestObj)
     }
-    
+
     private func setupObservers() {
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
             if #available(iOS 12.0, *) {
@@ -164,10 +190,10 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
     private func checkInterfaceStyle() {
         if traitCollection.userInterfaceStyle != currentInterfaceStyle {
             loadWebContent()
-            currentInterfaceStyle = traitCollection.userInterfaceStyle
+            currentInterfaceStyle = .init(value: traitCollection.userInterfaceStyle)
         }
     }
-    
+
     private func presentErrorWithoutWebView(message: String) {
         self.hideWebView(showActivityIndicator: false)
         self.banner?.dismiss()
@@ -180,7 +206,7 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         self.banner?.show(at: .top, on: self)
         presentsBannerInsteadOfWebView = true
     }
-    
+
     private func presentErrorOverWebView(message: String) {
         self.banner?.dismiss()
         self.banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
@@ -189,25 +215,25 @@ final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         }
         self.banner?.show(at: .top, on: self)
     }
-    
+
     private func dismissErrorBanner() {
         presentsBannerInsteadOfWebView = false
         banner?.dismiss()
         loadWebContent()
     }
-    
+
     private func presentSuccessBanner(message: String) {
         self.banner?.dismiss()
         self.banner = PMBanner(message: message, style: PMBannerNewStyle.success)
         self.banner?.show(at: .topCustom(.baner), on: self)
     }
-    
+
     private func showWebView() {
         enableUserInteraction(for: webView)
         webView.isHidden = false
         activityIndicator?.stopAnimating()
     }
-    
+
     private func hideWebView(showActivityIndicator: Bool) {
         webView.isHidden = true
         if showActivityIndicator {
@@ -232,7 +258,7 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
         enableUserInteraction(for: webView)
         decisionHandler(.allow)
     }
-    
+
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         handleFailedRequest(webView, error)
     }
@@ -240,7 +266,7 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
     func webView(_ webview: WKWebView, didFail _: WKNavigation!, withError error: Error) {
         handleFailedRequest(webView, error)
     }
-    
+
     private func handleFailedRequest(_ webview: WKWebView, _ error: Error) {
         guard let loadingUrl = lastLoadingURL else { return }
         viewModel.shouldRetryFailedLoading(host: loadingUrl, error: error) { [weak self] in
@@ -251,7 +277,7 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
             }
         }
     }
-    
+
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

@@ -34,6 +34,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     var currentSubscription: Subscription? { get set }
     var paymentMethods: [PaymentMethod]? { get set }
     var countriesCount: [Countries]? { get }
+    var user: User? { get }
 
     var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
 
@@ -45,7 +46,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     func updateCurrentSubscription(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func updateCredits(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func updateCountriesCount(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
-    func willRenewAutomcatically(plan: InAppPurchasePlan) -> Bool
+    func willRenewAutomatically(plan: InAppPurchasePlan) -> Bool
 }
 
 public extension ServicePlanDataServiceProtocol {
@@ -164,6 +165,8 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
         willSet { localStorage.credits = newValue }
     }
     
+    public var user: User?
+    
     public var countriesCount: [Countries]?
     
     init(inAppPurchaseIdentifiers: @escaping ListOfIAPIdentifiersGet,
@@ -240,7 +243,7 @@ extension ServicePlanDataService {
         }, callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
     }
     
-    func willRenewAutomcatically(plan: InAppPurchasePlan) -> Bool {
+    func willRenewAutomatically(plan: InAppPurchasePlan) -> Bool {
         guard let subscription = currentSubscription else {
             return false
         }
@@ -298,6 +301,7 @@ extension ServicePlanDataService {
         do {
             // no user info means we don't even need to ask for subscription, so it's ok to throw here
             let user = try self.getUserInfo()
+            self.user = user
             
             updateCredits(user: user)
             

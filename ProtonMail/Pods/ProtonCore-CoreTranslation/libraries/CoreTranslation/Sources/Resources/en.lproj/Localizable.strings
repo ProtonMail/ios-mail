@@ -288,6 +288,7 @@
 "Current plan will expire on %@" = "Current plan will expire on %@";
 "%@ storage" = "%@ storage";
 "%@ storage / user" = "%@ storage / user";
+"for %@" = "for %@";
 "Medium speed" = "Medium speed";
 "Priority customer support" = "Priority customer support";
 "Adblocker (NetShield)" = "Adblocker (NetShield)";
@@ -330,7 +331,7 @@
 "support form" = "support form";
 "email" = "email";
 "Twitter" = "Twitter";
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "Troubleshooting";
 "Allow alternative routing" = "Allow alternative routing";
 "No internet connection" = "No internet connection";
 "Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";

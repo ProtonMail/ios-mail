@@ -656,9 +656,12 @@ public class LocalizedString {
     
     /// Plan details storage
     public lazy var _pu_plan_details_storage = NSLocalizedString("%@ storage", bundle: Common.bundle, comment: "Plan details storage")
-
+    
     /// Plan details storage per user
     public lazy var _pu_plan_details_storage_per_user = NSLocalizedString("%@ storage / user", bundle: Common.bundle, comment: "Plan details storage per user")
+    
+    /// Plan details price time period
+    public lazy var _pu_plan_details_price_time_period_no_unit = NSLocalizedString("for %@", bundle: Common.bundle, comment: "Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months")
 
     /// Plan details medium speed
     public lazy var _pu_plan_details_vpn_free_speed = NSLocalizedString("Medium speed", bundle: Common.bundle, comment: "Plan details medium speed")

@@ -57,7 +57,10 @@ public extension UserInfo {
                  weekStart: nil,
                  delaySendSeconds: nil,
                  telemetry: nil,
-                 crashReports: nil
+                 crashReports: nil,
+                 conversationToolbarActions: nil,
+                 messageToolbarActions: nil,
+                 listToolbarActions: nil
         )
     }
 }

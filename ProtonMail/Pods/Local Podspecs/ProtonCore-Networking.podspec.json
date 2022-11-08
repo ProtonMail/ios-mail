@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Networking",
-  "version": "3.22.5",
+  "version": "3.23.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.22.5"
+    "tag": "3.23.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -23,83 +23,48 @@
     "5.6"
   ],
   "pod_target_xcconfig": {
-    "APPLICATION_EXTENSION_API_ONLY": "NO"
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
   },
   "dependencies": {
     "ProtonCore-CoreTranslation": [
-      "3.22.5"
+      "3.23.1"
     ],
     "ProtonCore-Log": [
-      "3.22.5"
+      "3.23.1"
     ],
     "ProtonCore-Utilities": [
-      "3.22.5"
+      "3.23.1"
+    ],
+    "ProtonCore-Environment": [
+      "3.23.1"
+    ],
+    "Alamofire": [
+      "5.4.4"
     ],
     "TrustKit": [
 
     ]
   },
   "default_subspecs": [
-    "ErrorWarningEmittingDefaultSubspec"
+
   ],
-  "subspecs": [
+  "source_files": "libraries/Networking/Sources/**/*",
+  "testspecs": [
     {
-      "name": "ErrorWarningEmittingDefaultSubspec",
-      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
-    },
-    {
-      "name": "Alamofire",
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "libraries/Networking/Tests/*.swift",
       "dependencies": {
-        "Alamofire": [
-          "5.4.4"
-        ]
-      },
-      "source_files": "libraries/Networking/Sources/**/*",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Networking/Tests/*.swift",
-          "dependencies": {
-            "ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire": [
-              "3.22.5"
-            ],
-            "ProtonCore-Doh": [
-              "3.22.5"
-            ],
-            "OHHTTPStubs/Swift": [
+        "ProtonCore-TestingToolkit/UnitTests/Networking": [
+          "3.23.1"
+        ],
+        "ProtonCore-Doh": [
+          "3.23.1"
+        ],
+        "OHHTTPStubs/Swift": [
 
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "AFNetworking",
-      "dependencies": {
-        "AFNetworking": [
-          "~> 4.0"
         ]
-      },
-      "source_files": "libraries/Networking/Sources/**/*",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Networking/Tests/*.swift",
-          "dependencies": {
-            "ProtonCore-TestingToolkit/UnitTests/Networking/AFNetworking": [
-              "3.22.5"
-            ],
-            "ProtonCore-Doh": [
-              "3.22.5"
-            ],
-            "OHHTTPStubs/Swift": [
-
-            ]
-          }
-        }
-      ]
+      }
     }
   ],
   "swift_version": "5.6"

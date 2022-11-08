@@ -71,6 +71,10 @@ extension UserInfo: NSCoding {
 
         static let telemetry = "telemetry"
         static let crashReports = "crashReports"
+
+        static let conversationToolbarActions = "conversationToolbarActions"
+        static let messageToolbarActions = "messageToolbarActions"
+        static let listToolbarActions = "listToolbarActions"
     }
 
     public convenience init(coder aDecoder: NSCoder) {
@@ -116,7 +120,10 @@ extension UserInfo: NSCoding {
             weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart),
             delaySendSeconds: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.delaySendSeconds),
             telemetry: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.telemetry),
-            crashReports: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.crashReports)
+            crashReports: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.crashReports),
+            conversationToolbarActions: aDecoder.decodeObject(forKey: CoderKey.conversationToolbarActions) as? ToolbarActions,
+            messageToolbarActions: aDecoder.decodeObject(forKey: CoderKey.messageToolbarActions) as? ToolbarActions,
+            listToolbarActions: aDecoder.decodeObject(forKey: CoderKey.listToolbarActions) as? ToolbarActions
         )
     }
 
@@ -163,6 +170,10 @@ extension UserInfo: NSCoding {
 
         aCoder.encode(telemetry, forKey: CoderKey.telemetry)
         aCoder.encode(crashReports, forKey: CoderKey.crashReports)
+
+        aCoder.encode(conversationToolbarActions, forKey: CoderKey.conversationToolbarActions)
+        aCoder.encode(messageToolbarActions, forKey: CoderKey.messageToolbarActions)
+        aCoder.encode(listToolbarActions, forKey: CoderKey.listToolbarActions)
     }
 }
 

@@ -81,5 +81,6 @@ public enum SignError: Error {
 }
 
 public struct SignatureVerifyError: Error {
-    public let message: String?
+    public let code: Int
+    public let message: String
 }

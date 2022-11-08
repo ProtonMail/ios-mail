@@ -31,7 +31,6 @@ class SignupViewModel {
     var signupService: Signup
     var loginService: Login
     let challenge: PMChallenge
-    let humanVerificationVersion: HumanVerificationVersion
     var currentlyChosenSignUpDomain: String {
         get { loginService.currentlyChosenSignUpDomain }
         set { loginService.currentlyChosenSignUpDomain = newValue }
@@ -41,13 +40,22 @@ class SignupViewModel {
     init(apiService: PMAPIService,
          signupService: Signup,
          loginService: Login,
-         challenge: PMChallenge,
-         humanVerificationVersion: HumanVerificationVersion) {
+         challenge: PMChallenge) {
         self.apiService = apiService
         self.signupService = signupService
         self.loginService = loginService
         self.challenge = challenge
-        self.humanVerificationVersion = humanVerificationVersion
+    }
+    
+    @available(*, deprecated,
+                renamed: "init(apiService:signupService:loginService:challenge:)",
+                message: "humanverification version is removed. v3 will be the default version")
+    convenience init(apiService: PMAPIService,
+                     signupService: Signup,
+                     loginService: Login,
+                     challenge: PMChallenge,
+                     humanVerificationVersion: HumanVerificationVersion) {
+        self.init(apiService: apiService, signupService: signupService, loginService: loginService, challenge: challenge)
     }
 
     func isUserNameValid(name: String) -> Bool {

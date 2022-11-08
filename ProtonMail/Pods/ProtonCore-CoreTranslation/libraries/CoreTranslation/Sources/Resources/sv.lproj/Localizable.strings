@@ -35,8 +35,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Annonsblockerare (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "Tillåt alternativ routing";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Ett fel har uppstått";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivirusstörningar";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple informerade oss om att de inte kunde behandla köpet.";
@@ -53,6 +59,9 @@
 /* *
  * Login 2FA */
 "Authenticate" = "Autentisera";
+
+/* top left back button */
+"Back" = "Tillbaka";
 
 /* Terms and conditions note */
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "Genom att klicka på ”Skapa adress” godkänner du Protons användarvillkor.";
@@ -75,6 +84,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "Ändra ditt lösenord";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Kontrollera Proton Status för vår systemstatus.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Stäng";
@@ -105,6 +117,9 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Kontakta support@protonvpn.com för att slutföra ditt köp.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakta oss direkt via vårt supportformulär, e-post (support@protonmail.zendesk.com) eller Twitter.";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Skapa ett Proton-konto med din nuvarande e-post";
@@ -156,6 +171,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "Fick du inte koden?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Inaktivera eventuella proxies eller brandväggar eller kontakta din nätverksadministratör.";
+
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Avfärda";
 
@@ -167,6 +185,9 @@
 
 /* Title of domains bottom action sheet */
 "Domain" = "Domän";
+
+/* network troubleshot view title */
+"email" = "e-post";
 
 /* Email field title
    Email label
@@ -207,6 +228,9 @@
 /* Error message */
 "Failed to get list of available products from App Store." = "Misslyckades att hämta lista med tillgängliga produkter från App Store.";
 
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "för %@";
+
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "För din säkerhet måste vi verifiera att adressen du angett tillhör dig. Vi skickade en verifieringskod till %@. Ange koden nedan:";
 
@@ -229,6 +253,9 @@
 /* Verification button */
 "Get verification code" = "Skaffa verifieringskod";
 
+/* network troubleshot cell title */
+"Government block" = "Statlig blockering";
+
 /* Help button */
 "Help" = "Hjälp";
 
@@ -248,8 +275,14 @@
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Om du har problem med att skapa ditt konto, begär en inbjudan så svarar vi inom en arbetsdag.";
 
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Om Proton-webbplatser är blockerade kan denna inställning göra det möjligt för appen att prova alternativ nätverksroutning för att nå Proton, vilket kan vara användbart för att kringgå brandväggar eller nätverksproblem. Vi rekommenderar att du behåller den här inställningen aktiverad för bättre tillförlitlighet. %1$@";
+
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Felaktigt lösenord för brevlådan";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problem med Internetleverantör (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Ogiltigt hashat lösenord";
@@ -266,7 +299,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Vi kunde inte matcha AppStore-produkten du köpt med någon produkt på vår server. Fyll i buggrapporten så kommer vår kundtjänst att kontakta dig.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "Lär dig mer";
 
 /* visit item message */
@@ -304,6 +338,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Nästa";
+
+/* network troubleshot cell title */
+"No internet connection" = "Ingen Internetanslutning";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Nej, för ett annat Proton Mail-konto";
@@ -368,6 +405,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Ange lösenord för ditt Proton-konto.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Se till att din Internetanslutning fungerar.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Dela ditt problem.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
 
@@ -380,8 +423,17 @@
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton är nere";
+
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "Proton Mail för professionella och företag";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton-status";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy-/brandväggstörningar";
 
 /* Error message */
 "Purchase is not possible." = "Köp är inte möjligt.";
@@ -473,6 +525,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Tyvärr, kan inte vi behandla inköp i betaversionen av iOS-appen. Tack för deltagandet i vår offentliga beta!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Kan fortfarande inte hitta en lösning";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "Behöver du fortfarande hjälp? Kontakta oss direkt.";
@@ -480,11 +535,20 @@
 /* Plan details streaming service support */
 "Streaming service support" = "Stöd för streamingtjänster";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Ämne...";
+
 /* Subscription title */
 "Subscription" = "Prenumeration";
 
+/* network troubleshooting */
+"support form" = "supportformulär";
+
 /* *  Account Manager */
 "switch to" = "byt till";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Inaktivera eller ta bort ditt antivirusprogram tillfälligt.";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
@@ -500,6 +564,12 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP-köpprocessen har startat. Följ Apples instruktioner för att antingen slutföra eller avbryta köpet.";
 
+/* Message shown when we suspect that the Proton servers are blocked */
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-servrarna går inte att nå. Det kan bero på fel nätverkskonfiguration, att Proton-servrar inte fungerar eller att Proton-servrar är blockerade";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen misslyckades när du försökte ansluta till Proton API. Din nuvarande Internetanslutning kan övervakas. För att skydda din data förhindrar vi appen från att komma åt Proton API. För att logga in eller komma åt ditt konto, byt till ett nytt nätverk och försök ansluta igen.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Detta bör inte ta mer än en minut.";
 
@@ -512,8 +582,20 @@
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "För att kunna använda Proton-appen som medlem i en organisation måste du först ändra ditt lösenord genom att logga in på Proton i en webbläsare.";
 
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Felsök";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Felsökning";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
+
 /* other method alert button */
 "Try other method" = "Prova annan metod";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Tvåfaktorsautentisering";
@@ -618,6 +700,9 @@
 /* Dialog text for missing keys error */
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Ditt konto saknar nycklar. Logga in på webben för att automatiskt generera nycklar som krävs När du har loggat in på webben går du tillbaka till appen och loggar in.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ditt land kanske blockerar åtkomst till Proton. Prova att använda %1$@ (eller någon annan VPN) eller %2$@ för att komma åt Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Din e-post kommer endast användas för denna engångsverifiering.";
 
@@ -633,12 +718,15 @@
 /* Info about existing external Proton Mail address */
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Ditt Proton-konto är associerat med %@. För att använda %@, skapa en adress.";
 
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Ditt Proton-konto skapades utan problem.";
+
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ditt Proton Free-konto har skapats.";
 
-/* Signup summary no plan description */
-"Your Proton account was successfully created." = "Ditt Proton-konto har skapats.";
-
 /* Recovery address label title */
 "Your recovery email address:" = "Din e-postadress för återställning:";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Din session har löpt ut. Logga in igen.";
 

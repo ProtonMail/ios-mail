@@ -393,21 +393,13 @@ public final class SessionFactory: SessionFactoryInterface {
     }
     
     public func createSessionInstance(url apiHostUrl: String) -> Session {
-        #if canImport(Alamofire)
         AlamofireSession()
-        #elseif canImport(AFNetworking)
-        AFNetworkingSession(url: apiHostUrl)
-        #endif
     }
     
     public func createSessionRequest(
         parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval, retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated
     ) -> SessionRequest {
-        #if canImport(Alamofire)
         AlamofireRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout, retryPolicy: retryPolicy)
-        #elseif canImport(AFNetworking)
-        SessionRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout)
-        #endif
     }
 }
 

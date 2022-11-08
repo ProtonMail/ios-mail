@@ -32,6 +32,9 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "広告ブロッカー (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "代替ルーティングを許可";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "エラーが発生しました";
 
@@ -118,6 +121,9 @@
 /* *
  * Login choose username */
 "Create Proton Mail address" = "Proton Mail アドレスを作成";
+
+/* Create user failed error */
+"Create user failed" = "ユーザーを作成できませんでした";
 
 /* Signup password proton view title */
 "Create your password" = "パスワードを作成";
@@ -220,6 +226,9 @@
 /* Verification button */
 "Get verification code" = "検証コードを取得";
 
+/* network troubleshot cell title */
+"Government block" = "政府による検閲";
+
 /* Help button */
 "Help" = "ヘルプ";
 
@@ -232,11 +241,21 @@
 /* Login help screen title */
 "How can we help?" = "お困りですか?";
 
+/* *
+ *  Human verification */
+"Human Verification" = "人間であることの検証";
+
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "アカウントの作成に問題がある場合は、招待をリクエストしてください。1 営業日以内に対応します。";
 
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。%1$@";
+
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "無効なメールボックスのパスワードです";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "インターネット サービス プロバイダー (ISP) の問題";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "無効なハッシュ化されたパスワードです";
@@ -253,7 +272,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "あなたが購入したApp Storeの商品を、当社のサーバー上の製品に一致させることができませんでした。バグ報告に記入してくだされば、当社の顧客サポートチームからご連絡いたします。";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "より詳しく";
 
 /* visit item message */
@@ -287,6 +307,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "次へ";
+
+/* network troubleshot cell title */
+"No internet connection" = "インターネット接続がありません";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "いいえ、別のProton Mailのアカウント用です";
@@ -363,8 +386,17 @@
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton は現在利用できません";
+
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "専門家とビジネスのための Proton Mail";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton ステータス";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "プロキシーまたはファイアウォールの干渉";
 
 /* quit button */
 "Quit" = "終了";
@@ -460,11 +492,17 @@
 /* Plan details streaming service support */
 "Streaming service support" = "ストリーミングサービス対応";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "件名...";
+
 /* Subscription title */
 "Subscription" = "サブスクリプション";
 
 /* *  Account Manager */
 "switch to" = "切り替え: ";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "ウイルス対策ソフトウェアを一時的に無効化または削除してください。";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
@@ -477,6 +515,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API へ接続している途中に TLS 証明書の検証に失敗しました。現在のインターネット接続は監視されている可能性があります。データを安全に保つに、アプリは Proton API へのアクセスをブロックしています。\nアカウントにログインおよびアクセスするには、新しいネットワークに切り替えてから再度お試しください。";
+
 /* Complete view description */
 "This should take no more than a minute." = "これにはそんなに時間はかかりません。";
 
@@ -486,8 +527,23 @@
 /* Delete account explaination under button */
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "この操作により、アカウントとすべてのデータが完全に削除されます。削除後に、このアカウントを再度有効化することはできません。";
 
+/* Dialog message for organization user first login */
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "組織のメンバーとして Proton アプリを使うと、初めにブラウザーから Proton にサインインしてパスワードを変更する必要があります。";
+
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "トラブルシューティング";
+
+/* network troubleshot view title */
+"TroubleShooting" = "トラブルシューティング";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
+
 /* other method alert button */
 "Try other method" = "他の方法を試してください";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "2 要素認証";
@@ -598,11 +654,11 @@
 /* Info about existing external Proton Mail address */
 "Your Proton Account is associated with %@. To use %@, please create an address." = "あなたのアカウントは %@ に関連付けられています。%@ を使用するには、アドレスを作成してください。";
 
-/* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Proton アカウントは正常に作成されました。";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
 
 /* Recovery address label title */
 "Your recovery email address:" = "回復用メールアドレス:";

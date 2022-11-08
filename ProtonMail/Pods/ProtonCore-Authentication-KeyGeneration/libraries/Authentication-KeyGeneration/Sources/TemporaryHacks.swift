@@ -19,18 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if DEBUG_CORE_INTERNALS
+import ProtonCore_FeatureSwitch
 
-public enum TemporaryHacks {
-    // Can be used only for core example app internal tests
-    public static var useKeymigrationPhaseV2: Bool = false
+extension Feature {
+    public static var useKeymigrationPhaseV2: Feature = Feature.init(name: "useKeymigrationPhaseV2",
+                                                                     isEnable: true,
+                                                                     flags: [.availableCoreInternal])
 }
-
-#else
-
-public enum TemporaryHacks {
-    // Can be used only for core example app internal tests
-    public static var useKeymigrationPhaseV2: Bool = false
-}
-
-#endif
