@@ -165,6 +165,7 @@ class UnlockManager: Service {
         }
 
         guard self.delegate?.isMailboxPasswordStored(forUser: uid) == true else { // this will provoke mainKey obtention
+            delegate?.setupCoreData()
             requestMailboxPassword()
             return
         }
