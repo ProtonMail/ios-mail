@@ -426,7 +426,6 @@ extension EventsService {
 
                 DispatchQueue.main.async {
                     completion(error)
-                    return
                 }
             }
         }

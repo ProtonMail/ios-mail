@@ -504,7 +504,7 @@ extension MainQueueHandler {
             guard
                 let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
-                let userKeys = attachment.message.cachedUser?.userPrivateKeys ?? self.user?.userPrivateKeys else {
+                let userKeys = (attachment.message.cachedUser ?? self.user?.userInfo)?.userPrivateKeys else {
                 completion(NSError.encryptionError())
                 return
             }
@@ -809,7 +809,7 @@ extension MainQueueHandler {
                 completion(nil)
                 return
             }
-            self?.messageDataService.forceFetchDetailForMessage(MessageEntity(message), runInQueue: false, completion: { _, error in
+            self?.messageDataService.forceFetchDetailForMessage(MessageEntity(message), runInQueue: false, completion: { error in
                 guard error == nil else {
                     completion(error)
                     return

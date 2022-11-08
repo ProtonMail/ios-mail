@@ -58,9 +58,6 @@ protocol LocalMessageDataServiceProtocol: Service {
 /// Message data service
 class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, HasLocalStorage, MessageDataProcessProtocol {
 
-    /// Message fetch details
-    internal typealias CompletionFetchDetail = (_ message: MessageEntity?, _ error: NSError?) -> Void
-
     typealias ReadBlock = (() -> Void)
 
     // TODO:: those 3 var need to double check to clean up
@@ -348,7 +345,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         _ message: MessageEntity,
         runInQueue: Bool = true,
         ignoreDownloaded: Bool = false,
-        completion: @escaping CompletionFetchDetail
+        completion: @escaping (NSError?) -> Void
     ) {
         let msgID = message.messageID
         let closure = runInQueue ? self.queueManager?.queue: noQueue
@@ -374,9 +371,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                    let oldTime = newMessage.time?.timeIntervalSince1970 {
                                     // remote time and local time are not empty
                                     if oldTime > time {
-                                        let msgToReturn = MessageEntity(newMessage)
                                         DispatchQueue.main.async {
-                                            completion(msgToReturn, error)
+                                            completion(error)
                                         }
                                         return
                                     }
@@ -426,26 +422,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.unRead = false
                                 PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
                                 error = context.saveUpstreamIfNeeded()
-                                let msgToReturn = MessageEntity(newMessage)
                                 DispatchQueue.main.async {
-                                    completion(msgToReturn, error)
+                                    completion(error)
                                 }
                             } catch let ex as NSError {
-                                let msgToReturn = MessageEntity(newMessage)
                                 DispatchQueue.main.async {
-                                    completion(msgToReturn, ex)
+                                    completion(ex)
                                 }
                             }
                         } else {
-                            let msgToReturn = MessageEntity(newMessage)
                             DispatchQueue.main.async {
-                                completion(msgToReturn, NSError.badResponse())
+                                completion(NSError.badResponse())
                             }
                         }
                     } else {
                         error = NSError.unableToParseResponse(response)
                         DispatchQueue.main.async {
-                            completion(message, error)
+                            completion(error)
                         }
                     }
                 }
@@ -923,7 +916,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             self.forceFetchDetailForMessage(.init(message),
                                             runInQueue: false,
-                                            ignoreDownloaded: true) { _, _ in
+                                            ignoreDownloaded: true) { _ in
                 self.send(message: message,
                           context: context,
                           userManager: userManager,
@@ -1285,7 +1278,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: msgID))
             // Draft folder must be single message mode
             if let msgEntity = msgEntity {
-                self.forceFetchDetailForMessage(msgEntity) { _, _ in }
+                self.forceFetchDetailForMessage(msgEntity) { _ in }
             }
             completion(nil)
             return
