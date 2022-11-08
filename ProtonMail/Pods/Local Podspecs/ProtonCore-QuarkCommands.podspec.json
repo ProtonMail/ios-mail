@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-QuarkCommands",
-  "version": "3.22.5",
+  "version": "3.23.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.22.5"
+    "tag": "3.23.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -27,69 +27,36 @@
   },
   "dependencies": {
     "ProtonCore-Doh": [
-      "3.22.5"
+      "3.23.1"
+    ],
+    "ProtonCore-Environment": [
+      "3.23.1"
     ],
     "ProtonCore-Log": [
-      "3.22.5"
+      "3.23.1"
+    ],
+    "ProtonCore-Networking": [
+      "3.23.1"
+    ],
+    "ProtonCore-Services": [
+      "3.23.1"
     ]
   },
   "default_subspecs": [
-    "ErrorWarningEmittingDefaultSubspec"
+
   ],
-  "subspecs": [
+  "source_files": "libraries/QuarkCommands/Sources/**.swift",
+  "testspecs": [
     {
-      "name": "ErrorWarningEmittingDefaultSubspec",
-      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
-    },
-    {
-      "name": "Alamofire",
+      "name": "Tests",
+      "test_type": "unit",
       "dependencies": {
-        "ProtonCore-Networking/Alamofire": [
-          "3.22.5"
-        ],
-        "ProtonCore-Services/Alamofire": [
-          "3.22.5"
+        "ProtonCore-TestingToolkit/UnitTests/Doh": [
+          "3.23.1"
         ]
       },
-      "source_files": "libraries/QuarkCommands/Sources/**.swift",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "dependencies": {
-            "ProtonCore-TestingToolkit/UnitTests/Doh": [
-              "3.22.5"
-            ]
-          },
-          "source_files": "libraries/QuarkCommands/Tests/**/*.swift",
-          "resources": "libraries/QuarkCommands/Tests/Mocks/Resources/*"
-        }
-      ]
-    },
-    {
-      "name": "AFNetworking",
-      "dependencies": {
-        "ProtonCore-Networking/AFNetworking": [
-          "3.22.5"
-        ],
-        "ProtonCore-Services/AFNetworking": [
-          "3.22.5"
-        ]
-      },
-      "source_files": "libraries/QuarkCommands/Sources/**.swift",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "dependencies": {
-            "ProtonCore-TestingToolkit/UnitTests/Doh": [
-              "3.22.5"
-            ]
-          },
-          "source_files": "libraries/QuarkCommands/Tests/**/*.swift",
-          "resources": "libraries/QuarkCommands/Tests/Mocks/Resources/*"
-        }
-      ]
+      "source_files": "libraries/QuarkCommands/Tests/**/*.swift",
+      "resources": "libraries/QuarkCommands/Tests/Mocks/Resources/*"
     }
   ],
   "swift_version": "5.6"

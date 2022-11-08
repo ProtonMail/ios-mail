@@ -34,6 +34,9 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Solo las suscripciones anuales no renovables están disponibles en esta aplicación";
 
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Plan mejorado correctamente";
 
@@ -51,6 +54,9 @@
 
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "La solución definitiva de privacidad con acceso a todos los servicios premium de Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor sobre VPN";
 
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";

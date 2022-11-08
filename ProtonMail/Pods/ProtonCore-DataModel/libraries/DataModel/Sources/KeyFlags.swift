@@ -28,13 +28,15 @@ public struct KeyFlags: OptionSet, Decodable {
     }
 
     /// 1: Can use key to verify signatures | Key is not compromised
-    public static let verifySignatures          = KeyFlags(rawValue: 1 << 0)
+    public static let verifySignatures = KeyFlags(rawValue: 1 << 0)
     /// 2: Can use key to encrypt new data | Key is not obsolete
-    public static let encryptNewData            = KeyFlags(rawValue: 1 << 1)
+    public static let encryptNewData = KeyFlags(rawValue: 1 << 1)
     /// 4: Belongs to an external address
-    public static let belongsToExternalAddress  = KeyFlags(rawValue: 1 << 2)
+    public static let belongsToExternalAddress = KeyFlags(rawValue: 1 << 2)
     /// 3: default value when signup  1 + 2
-    public static let signupKeyFlags: KeyFlags  = [.verifySignatures, .encryptNewData]
-    /// all
-    public static let all: KeyFlags             = [.verifySignatures, .encryptNewData, .belongsToExternalAddress]
+    public static let signupKeyFlags: KeyFlags = [.verifySignatures, .encryptNewData]
+    /// 7: default value when signup external  1 + 2 + 4
+    public static let signupExternalKeyFlags: KeyFlags = [.verifySignatures, .encryptNewData, .belongsToExternalAddress]
+    /// all -- contains all
+    public static let all: KeyFlags = [.verifySignatures, .encryptNewData, .belongsToExternalAddress]
 }

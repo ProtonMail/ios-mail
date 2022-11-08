@@ -200,6 +200,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework"
@@ -225,6 +227,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Enterprise Debug" ]]; then
@@ -252,6 +255,8 @@ if [[ "$CONFIGURATION" == "Enterprise Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework"
@@ -277,6 +282,7 @@ if [[ "$CONFIGURATION" == "Enterprise Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Enterprise Release" ]]; then
@@ -303,6 +309,8 @@ if [[ "$CONFIGURATION" == "Enterprise Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework"
@@ -328,6 +336,7 @@ if [[ "$CONFIGURATION" == "Enterprise Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -354,6 +363,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework"
@@ -379,6 +390,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

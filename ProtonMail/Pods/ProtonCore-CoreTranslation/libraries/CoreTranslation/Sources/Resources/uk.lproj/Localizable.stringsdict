@@ -262,45 +262,5 @@
 			<string>%d користувачів</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>на %d місяці</string>
-			<key>many</key>
-			<string>на %d місяців</string>
-			<key>one</key>
-			<string>на %d місяць</string>
-			<key>other</key>
-			<string>на %d місяців</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>на %d роки</string>
-			<key>many</key>
-			<string>на %d років</string>
-			<key>one</key>
-			<string>на %d рік</string>
-			<key>other</key>
-			<string>на %d років</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

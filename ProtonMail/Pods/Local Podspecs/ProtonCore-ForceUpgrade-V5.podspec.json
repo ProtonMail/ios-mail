@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-ForceUpgrade-V5",
   "module_name": "ProtonCore_ForceUpgrade",
-  "version": "3.22.5",
+  "version": "3.23.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.22.5"
+    "tag": "3.23.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -28,67 +28,32 @@
   },
   "dependencies": {
     "ProtonCore-CoreTranslation": [
-      "3.22.5"
+      "3.23.1"
     ],
     "ProtonCore-UIFoundations-V5": [
-      "3.22.5"
+      "3.23.1"
+    ],
+    "ProtonCore-Networking": [
+      "3.23.1"
     ]
   },
   "default_subspecs": [
-    "ErrorWarningEmittingDefaultSubspec"
+
   ],
-  "subspecs": [
+  "ios": {
+    "source_files": [
+      "libraries/ForceUpgrade/Sources/iOS/*.{h,m,swift}",
+      "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
+    ]
+  },
+  "osx": {
+    "source_files": "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
+  },
+  "testspecs": [
     {
-      "name": "ErrorWarningEmittingDefaultSubspec",
-      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
-    },
-    {
-      "name": "Alamofire",
-      "dependencies": {
-        "ProtonCore-Networking/Alamofire": [
-          "3.22.5"
-        ]
-      },
-      "ios": {
-        "source_files": [
-          "libraries/ForceUpgrade/Sources/iOS/*.{h,m,swift}",
-          "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
-        ]
-      },
-      "osx": {
-        "source_files": "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
-      },
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/ForceUpgrade/Tests/**/*"
-        }
-      ]
-    },
-    {
-      "name": "AFNetworking",
-      "dependencies": {
-        "ProtonCore-Networking/AFNetworking": [
-          "3.22.5"
-        ]
-      },
-      "ios": {
-        "source_files": [
-          "libraries/ForceUpgrade/Sources/iOS/*.{h,m,swift}",
-          "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
-        ]
-      },
-      "osx": {
-        "source_files": "libraries/ForceUpgrade/Sources/Shared/*.{h,m,swift}"
-      },
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/ForceUpgrade/Tests/**/*"
-        }
-      ]
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "libraries/ForceUpgrade/Tests/**/*"
     }
   ],
   "swift_version": "5.6"

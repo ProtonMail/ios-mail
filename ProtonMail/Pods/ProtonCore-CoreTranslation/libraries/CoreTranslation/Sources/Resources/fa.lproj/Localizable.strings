@@ -114,7 +114,8 @@
 /* alert title */
 "Invalid verification code" = "کد تایید نامعتبر";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "بیشتر بدانید";
 
 /* Plan details visionary description */

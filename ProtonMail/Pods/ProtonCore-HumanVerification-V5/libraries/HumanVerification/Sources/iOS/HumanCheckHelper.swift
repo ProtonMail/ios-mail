@@ -34,28 +34,14 @@ public class HumanCheckHelper: HumanVerifyDelegate {
     private let supportURL: URL
     private var verificationCompletion: ((HumanVerifyFinishReason) -> Void)?
     var coordinator: HumanCheckMenuCoordinator?
-    private var coordinatorV3: HumanCheckV3Coordinator?
+    var coordinatorV3: HumanCheckV3Coordinator?
     private let clientApp: ClientApp
     
-    public let version: HumanVerificationVersion
-    
-    @available(*, deprecated, message: "Please use the initializer that specifies the human verification version")
-    public convenience init(apiService: APIService,
-                            supportURL: URL? = nil,
-                            viewController: UIViewController? = nil,
-                            nonModalUrls: [URL]? = nil,
-                            clientApp: ClientApp,
-                            responseDelegate: HumanVerifyResponseDelegate? = nil,
-                            paymentDelegate: HumanVerifyPaymentDelegate? = nil) {
-        self.init(apiService: apiService, supportURL: supportURL, viewController: viewController, nonModalUrls: nonModalUrls, clientApp: clientApp, versionToBeUsed: .v2, responseDelegate: responseDelegate, paymentDelegate: paymentDelegate)
-    }
-
     public init(apiService: APIService,
                 supportURL: URL? = nil,
                 viewController: UIViewController? = nil,
                 nonModalUrls: [URL]? = nil,
                 clientApp: ClientApp,
-                versionToBeUsed: HumanVerificationVersion,
                 responseDelegate: HumanVerifyResponseDelegate? = nil,
                 paymentDelegate: HumanVerifyPaymentDelegate? = nil) {
         self.apiService = apiService
@@ -63,11 +49,25 @@ public class HumanCheckHelper: HumanVerifyDelegate {
         self.rootViewController = viewController
         self.nonModalUrls = nonModalUrls
         self.clientApp = clientApp
-        self.version = versionToBeUsed
         self.responseDelegate = responseDelegate
         self.paymentDelegate = paymentDelegate
     }
-
+    
+    @available(*, deprecated, message: "HumanVerificationVersion parameter is removed. V3 HV will be used by default")
+    public convenience init(apiService: APIService,
+                            supportURL: URL? = nil,
+                            viewController: UIViewController? = nil,
+                            nonModalUrls: [URL]? = nil,
+                            clientApp: ClientApp,
+                            versionToBeUsed: HumanVerificationVersion,
+                            responseDelegate: HumanVerifyResponseDelegate? = nil,
+                            paymentDelegate: HumanVerifyPaymentDelegate? = nil) {
+        
+        self.init(apiService: apiService, supportURL: supportURL, viewController: viewController,
+                  nonModalUrls: nonModalUrls, clientApp: clientApp,
+                  responseDelegate: responseDelegate, paymentDelegate: paymentDelegate)
+    }
+    
     public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
         
         // check if payment token exists
@@ -89,25 +89,18 @@ public class HumanCheckHelper: HumanVerifyDelegate {
             startMenuCoordinator(parameters: parameters, currentURL: currentURL, completion: completion)
         }
     }
-
+    
     public func getSupportURL() -> URL {
         return supportURL
     }
     
     private func startMenuCoordinator(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
-        switch version {
-        case .v2:
-            // filter only methods allowed by HV v2
-            var parameters = parameters
-            parameters.methods = parameters.methods.compactMap { VerifyMethod(predefinedString: $0.method) }
-            prepareCoordinator(parameters: parameters)
-        case .v3:
-            prepareV3Coordinator(parameters: parameters, currentURL: currentURL)
-        }
+        prepareV3Coordinator(parameters: parameters, currentURL: currentURL)
         responseDelegate?.onHumanVerifyStart()
         verificationCompletion = completion
     }
     
+    @available(*, deprecated, message: "we can remove it. was for HV v2")
     private func prepareCoordinator(parameters: HumanVerifyParameters) {
         DispatchQueue.main.async {
             self.coordinator = HumanCheckMenuCoordinator(rootViewController: self.rootViewController, apiService: self.apiService, parameters: parameters, clientApp: self.clientApp)
@@ -155,7 +148,7 @@ extension HumanCheckHelper: HumanCheckMenuCoordinatorDelegate {
             }
         }))
     }
-
+    
     func close() {
         verificationCompletion?(.close)
         self.responseDelegate?.onHumanVerifyEnd(result: .cancel)

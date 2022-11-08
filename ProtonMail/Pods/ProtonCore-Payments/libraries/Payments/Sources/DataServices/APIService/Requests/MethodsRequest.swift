@@ -39,10 +39,10 @@ final class MethodResponse: Response {
     var methods: [PaymentMethod]?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
-        PMLog.debug(response.json(prettyPrinted: true))
         guard let paymentMethods = response["PaymentMethods"] as? [[String: Any]] else { return false }
         let (result, methods) = decodeResponse(paymentMethods, to: [PaymentMethod].self, errorToReturn: .methodsDecode)
         self.methods = methods
+        PMLog.debug(methods?.debugDescription ?? RequestErrors.methodsDecode.localizedDescription)
         return result
     }
 }

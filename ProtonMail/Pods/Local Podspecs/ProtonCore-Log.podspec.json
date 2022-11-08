@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Log",
-  "version": "3.22.5",
+  "version": "3.23.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.22.5"
+    "tag": "3.23.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -32,14 +32,6 @@
     "libraries/Log/Sources/*.swift",
     "libraries/Log/Sources/**/*.swift"
   ],
-  "script_phases": {
-    "name": "AwaitKit Xcode 13 update",
-    "execution_position": "before_compile",
-    "output_files": [
-      "DispatchQueue+Await.swift"
-    ],
-    "script": "            if [ \"$XCODE_VERSION_MAJOR\" = \"1300\" ]; then\n                echo \"Xcode 13 detected, changing the DispatchQueue+Await.swift file\"\n                pwd\n                find . -name \"DispatchQueue+Await.swift\"\n                find . -name \"DispatchQueue+Await.swift\" -exec sed -i '' \"s/return try await(promise)/return try \\`await\\`(promise)/g\" {} \\;\n            else\n                echo \"Xcode 13 not detected, leaving the DispatchQueue+Await.swift file be\"\n            fi\n"
-  },
   "testspecs": [
     {
       "name": "Tests",

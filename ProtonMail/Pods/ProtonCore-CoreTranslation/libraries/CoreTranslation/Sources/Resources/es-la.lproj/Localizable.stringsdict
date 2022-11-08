@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d VPN connections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d VPN connections</string>
+			<key>many</key>
+			<string>%d VPN connections</string>
+			<key>one</key>
+			<string>%d conexión VPN</string>
+			<key>other</key>
+			<string>%d conexiones VPN</string>
+			<key>two</key>
+			<string>%d VPN connections</string>
+			<key>zero</key>
+			<string>%d VPN connections</string>
+		</dict>
+	</dict>
+	<key>%d addresses &amp; calendars</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d addresses &amp; calendars</string>
+			<key>many</key>
+			<string>%d addresses &amp; calendars</string>
+			<key>one</key>
+			<string>%d dirección &amp; calendario</string>
+			<key>other</key>
+			<string>%d direcciones y calendarios</string>
+			<key>two</key>
+			<string>%d addresses &amp; calendars</string>
+			<key>zero</key>
+			<string>%d addresses &amp; calendars</string>
+		</dict>
+	</dict>
+	<key>%d calendars</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d calendars</string>
+			<key>many</key>
+			<string>%d calendars</string>
+			<key>one</key>
+			<string>%d calendario</string>
+			<key>other</key>
+			<string>%d calendarios</string>
+			<key>two</key>
+			<string>%d calendars</string>
+			<key>zero</key>
+			<string>%d calendars</string>
+		</dict>
+	</dict>
+	<key>%d calendars / user</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d calendars / user</string>
+			<key>many</key>
+			<string>%d calendars / user</string>
+			<key>one</key>
+			<string>%d calendar / user</string>
+			<key>other</key>
+			<string>%d calendars / user</string>
+			<key>two</key>
+			<string>%d calendars / user</string>
+			<key>zero</key>
+			<string>%d calendars / user</string>
+		</dict>
+	</dict>
+	<key>%d connections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d connections</string>
+			<key>many</key>
+			<string>%d connections</string>
+			<key>one</key>
+			<string>%d conexión</string>
+			<key>other</key>
+			<string>%d conexiones</string>
+			<key>two</key>
+			<string>%d connections</string>
+			<key>zero</key>
+			<string>%d connections</string>
+		</dict>
+	</dict>
+	<key>%d countries</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d countries</string>
+			<key>many</key>
+			<string>%d countries</string>
+			<key>one</key>
+			<string>%d país</string>
+			<key>other</key>
+			<string>%d países</string>
+			<key>two</key>
+			<string>%d countries</string>
+			<key>zero</key>
+			<string>%d countries</string>
+		</dict>
+	</dict>
+	<key>%d custom domains</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d custom domains</string>
+			<key>many</key>
+			<string>%d custom domains</string>
+			<key>one</key>
+			<string>%d dominio personalizado</string>
+			<key>other</key>
+			<string>%d dominios personalizados</string>
+			<key>two</key>
+			<string>%d custom domains</string>
+			<key>zero</key>
+			<string>%d custom domains</string>
+		</dict>
+	</dict>
+	<key>%d email addresses</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d email addresses</string>
+			<key>many</key>
+			<string>%d email addresses</string>
+			<key>one</key>
+			<string>%d dirección de correo</string>
+			<key>other</key>
+			<string>%d direcciones de correo</string>
+			<key>two</key>
+			<string>%d email addresses</string>
+			<key>zero</key>
+			<string>%d email addresses</string>
+		</dict>
+	</dict>
+	<key>%d email addresses / user</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d email addresses / user</string>
+			<key>many</key>
+			<string>%d email addresses / user</string>
+			<key>one</key>
+			<string>%d email address / user</string>
+			<key>other</key>
+			<string>%d email addresses / user</string>
+			<key>two</key>
+			<string>%d email addresses / user</string>
+			<key>zero</key>
+			<string>%d email addresses / user</string>
+		</dict>
+	</dict>
+	<key>%d folders / labels</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d folders / labels</string>
+			<key>many</key>
+			<string>%d folders / labels</string>
+			<key>one</key>
+			<string>%d folder / label</string>
+			<key>other</key>
+			<string>%d folders / labels</string>
+			<key>two</key>
+			<string>%d folders / labels</string>
+			<key>zero</key>
+			<string>%d folders / labels</string>
+		</dict>
+	</dict>
+	<key>%d high-speed VPN connections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d high-speed VPN connections</string>
+			<key>many</key>
+			<string>%d high-speed VPN connections</string>
+			<key>one</key>
+			<string>%d conexión VPN de alta velocidad</string>
+			<key>other</key>
+			<string>%d conexiones VPN de velocidad alta</string>
+			<key>two</key>
+			<string>%d high-speed VPN connections</string>
+			<key>zero</key>
+			<string>%d high-speed VPN connections</string>
+		</dict>
+	</dict>
+	<key>%d high-speed VPN connections / user</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d high-speed VPN connections / user</string>
+			<key>many</key>
+			<string>%d high-speed VPN connections / user</string>
+			<key>one</key>
+			<string>%d high-speed VPN connection / user</string>
+			<key>other</key>
+			<string>%d high-speed VPN connections / user</string>
+			<key>two</key>
+			<string>%d high-speed VPN connections / user</string>
+			<key>zero</key>
+			<string>%d high-speed VPN connections / user</string>
+		</dict>
+	</dict>
+	<key>%d users</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d users</string>
+			<key>many</key>
+			<string>%d users</string>
+			<key>one</key>
+			<string>%d usuario</string>
+			<key>other</key>
+			<string>%d usuarios</string>
+			<key>two</key>
+			<string>%d users</string>
+			<key>zero</key>
+			<string>%d users</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

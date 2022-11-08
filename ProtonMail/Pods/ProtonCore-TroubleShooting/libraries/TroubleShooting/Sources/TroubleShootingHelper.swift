@@ -26,8 +26,14 @@ import ProtonCore_Doh
 public typealias OnStatusChanged = (_ newStatus: DoHStatus) -> Void
 
 class DohStatusHelper: DohStatusProtocol {
-    var doh: DoH
-    init(doh: DoH) {
+    var doh: DoHInterface
+    
+    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
+    init(doh: DoH & ServerConfig) {
+        self.doh = doh
+    }
+    
+    init(doh: DoHInterface) {
         self.doh = doh
     }
     
@@ -47,7 +53,17 @@ class DohStatusHelper: DohStatusProtocol {
 public class TroubleShootingHelper {
     
     let viewModel: TroubleShootingViewModel
-    public init(doh: DoH, dohStatusChanged: OnStatusChanged? = nil) {
+    
+    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
+    public init(doh: DoH & ServerConfig, dohStatusChanged: OnStatusChanged? = nil) {
+        let statusHelper = DohStatusHelper(doh: doh)
+        if let statusChanged = dohStatusChanged {
+            statusHelper.onChanged = statusChanged
+        }
+        self.viewModel = TroubleShootingViewModel(doh: statusHelper)
+    }
+    
+    public init(doh: DoHInterface, dohStatusChanged: OnStatusChanged? = nil) {
         let statusHelper = DohStatusHelper(doh: doh)
         if let statusChanged = dohStatusChanged {
             statusHelper.onChanged = statusChanged
@@ -67,10 +83,42 @@ public class TroubleShootingHelper {
 
 extension UIViewController {
     
-    public func present(doh: DoH,
+    @available(*, deprecated, message: "This will be removed. Use initializer with doh: DoHInterface type.")
+    public func present(doh: DoH & ServerConfig,
+                        modalPresentationStyle: UIModalPresentationStyle? = nil,
                         dohStatusChanged: OnStatusChanged? = nil,
+                        onPresent: OnPresentComplete? = nil,
                         onDismiss: OnDismissComplete? = nil) {
         let statusHelper = DohStatusHelper(doh: doh)
+        present(
+            statusHelper: statusHelper,
+            modalPresentationStyle: modalPresentationStyle,
+            dohStatusChanged: dohStatusChanged,
+            onPresent: onPresent,
+            onDismiss: onDismiss
+        )
+    }
+    
+    public func present(doh: DoHInterface,
+                        modalPresentationStyle: UIModalPresentationStyle? = nil,
+                        dohStatusChanged: OnStatusChanged? = nil,
+                        onPresent: OnPresentComplete? = nil,
+                        onDismiss: OnDismissComplete? = nil) {
+        let statusHelper = DohStatusHelper(doh: doh)
+        present(
+            statusHelper: statusHelper,
+            modalPresentationStyle: modalPresentationStyle,
+            dohStatusChanged: dohStatusChanged,
+            onPresent: onPresent,
+            onDismiss: onDismiss
+        )
+    }
+    
+    private func present(statusHelper: DohStatusHelper,
+                         modalPresentationStyle: UIModalPresentationStyle?,
+                         dohStatusChanged: OnStatusChanged?,
+                         onPresent: OnPresentComplete?,
+                         onDismiss: OnDismissComplete?) {
         if let statusChanged = dohStatusChanged {
             statusHelper.onChanged = statusChanged
         }
@@ -80,6 +128,9 @@ extension UIViewController {
             troubleShootView.onDismiss = dismiss
         }
         let nav = UINavigationController(rootViewController: troubleShootView)
-        self.present(nav, animated: true)
+        if let customModalPresentationStyle = modalPresentationStyle {
+            nav.modalPresentationStyle = customModalPresentationStyle
+        }
+        self.present(nav, animated: false, completion: onPresent)
     }
 }

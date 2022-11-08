@@ -42,7 +42,7 @@ class HumanCheckV3Coordinator {
     private var initialHelpViewController: HVHelpViewController?
 
     /// View models
-    private let humanVerifyV3ViewModel: HumanVerifyV3ViewModel
+    let humanVerifyV3ViewModel: HumanVerifyV3ViewModel
 
     // MARK: - Public properties
 

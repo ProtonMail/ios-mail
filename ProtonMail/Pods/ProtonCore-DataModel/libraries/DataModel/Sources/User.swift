@@ -82,6 +82,7 @@ public struct User: Codable, Equatable {
 public final class UserInfo: NSObject {
     public var attachPublicKey: Int
     public var autoSaveContact: Int
+    public var conversationToolbarActions: ToolbarActions
     public var crashReports: Int
     public var credit: Int
     public var currency: String
@@ -98,8 +99,10 @@ public final class UserInfo: NSObject {
     public var inheritParentFolderColor: Int
     public var language: String
     public var linkConfirmation: LinkOpeningMode
+    public var listToolbarActions: ToolbarActions
     public var maxSpace: Int64
     public var maxUpload: Int64
+    public var messageToolbarActions: ToolbarActions
     public var notificationEmail: String
     public var notify: Int
     public var passwordMode: Int
@@ -159,7 +162,10 @@ public final class UserInfo: NSObject {
         weekStart: Int?,
         delaySendSeconds: Int?,
         telemetry: Int?,
-        crashReports: Int?)
+        crashReports: Int?,
+        conversationToolbarActions: ToolbarActions?,
+        messageToolbarActions: ToolbarActions?,
+        listToolbarActions: ToolbarActions?)
     {
         self.maxSpace = maxSpace ?? DefaultValue.maxSpace
         self.usedSpace = usedSpace ?? DefaultValue.usedSpace
@@ -203,6 +209,9 @@ public final class UserInfo: NSObject {
         } else {
             self.linkConfirmation = DefaultValue.linkConfirmation
         }
+        self.conversationToolbarActions = conversationToolbarActions ?? DefaultValue.conversationToolbarActions
+        self.messageToolbarActions = messageToolbarActions ?? DefaultValue.messageToolbarActions
+        self.listToolbarActions = listToolbarActions ?? DefaultValue.listToolbarActions
     }
 
     // init from api
@@ -220,6 +229,7 @@ public final class UserInfo: NSObject {
                          subscribed: Int?) {
         self.attachPublicKey = DefaultValue.attachPublicKey
         self.autoSaveContact = DefaultValue.autoSaveContact
+        self.conversationToolbarActions = DefaultValue.conversationToolbarActions
         self.crashReports = DefaultValue.crashReports
         self.credit = credit ?? DefaultValue.credit
         self.currency = currency ?? DefaultValue.currency
@@ -235,8 +245,10 @@ public final class UserInfo: NSObject {
         self.inheritParentFolderColor = DefaultValue.inheritParentFolderColor
         self.language = language ?? DefaultValue.language
         self.linkConfirmation = linkConfirmation == 0 ? .openAtWill : DefaultValue.linkConfirmation
+        self.listToolbarActions = DefaultValue.listToolbarActions
         self.maxSpace = maxSpace ?? DefaultValue.maxSpace
         self.maxUpload = maxUpload ?? DefaultValue.maxUpload
+        self.messageToolbarActions = DefaultValue.messageToolbarActions
         self.notificationEmail = DefaultValue.notificationEmail
         self.notify = DefaultValue.notify
         self.passwordMode = DefaultValue.passwordMode
@@ -383,5 +395,8 @@ extension UserInfo {
         static let userId: String = ""
         static let userKeys: [Key] = []
         static let weekStart: Int = 0
+        static let conversationToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
+        static let messageToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
+        static let listToolbarActions: ToolbarActions = .init(isCustom: false, actions: [])
     }
 }

@@ -34,10 +34,6 @@ Sources: [libraries/APIClient](libraries/APIClient)
 
 Platforms supported: iOS, macOS
 
-Variants: 
-* `ProtonCore-APIClient/Alamofire`
-* `ProtonCore-APIClient/AFNetworking`
-
 
 ### Authentication
 
@@ -50,10 +46,8 @@ Sources: [libraries/Authentication](libraries/Authentication)
 Platforms supported: iOS, macOS
 
 Variants: 
-* `ProtonCore-Authentication/UsingCrypto+Alamofire`
-* `ProtonCore-Authentication/UsingCrypto+AFNetworking`
-* `ProtonCore-Authentication/UsingCryptoVPN+Alamofire`
-* `ProtonCore-Authentication/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-Authentication/UsingCrypto`
+* `ProtonCore-Authentication/UsingCryptoVPN`
 
 
 ### Authentication-KeyGeneration
@@ -67,10 +61,8 @@ Sources: [libraries/Authentication-KeyGeneration](libraries/Authentication-KeyGe
 Platforms supported: iOS, macOS
 
 Variants: 
-* `ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire`
-* `ProtonCore-Authentication-KeyGeneration/UsingCrypto+AFNetworking`
-* `ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN+Alamofire`
-* `ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-Authentication-KeyGeneration/UsingCrypto`
+* `ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN`
 
 
 ### Challenge
@@ -93,10 +85,6 @@ Podspec: [ProtonCore-Common.podspec](ProtonCore-Common.podspec)
 Sources: [libraries/Common](libraries/Common)
 
 Platforms supported: iOS, macOS (very limited subset of sources)
-
-Variants: 
-* `ProtonCore-Common/Alamofire`
-* `ProtonCore-Common/AFNetworking`
 
 
 ### CoreTranslation
@@ -172,10 +160,8 @@ Sources: [libraries/Features](libraries/Features)
 Platforms supported: iOS, macOS
 
 Variants: 
-* `ProtonCore-Features/UsingCrypto+Alamofire`
-* `ProtonCore-Features/UsingCrypto+AFNetworking`
-* `ProtonCore-Features/UsingCryptoVPN+Alamofire`
-* `ProtonCore-Features/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-Features/UsingCrypto`
+* `ProtonCore-Features/UsingCryptoVPN`
 
 
 ### ForceUpgrade
@@ -187,10 +173,6 @@ Podspec: [ProtonCore-ForceUpgrade.podspec](ProtonCore-ForceUpgrade.podspec)
 Sources: [libraries/ForceUpgrade](libraries/ForceUpgrade)
 
 Platforms supported: iOS, macOS (very limited subset of sources)
-
-Variants: 
-* `ProtonCore-ForceUpgrade/Alamofire`
-* `ProtonCore-ForceUpgrade/AFNetworking`
 
 
 ### Foundations
@@ -224,10 +206,6 @@ Podspec: [ProtonCore-HumanVerification.podspec](ProtonCore-HumanVerification.pod
 Sources: [libraries/HumanVerification](libraries/HumanVerification)
 
 Platforms supported: iOS, macOS
-
-Variants: 
-* `ProtonCore-HumanVerification/Alamofire`
-* `ProtonCore-HumanVerification/AFNetworking`
 
 
 ### Keymaker
@@ -283,10 +261,8 @@ Sources: [libraries/Login](libraries/Login)
 Platforms supported: iOS, macOS
 
 Variants: 
-* `ProtonCore-Login/UsingCrypto+Alamofire`
-* `ProtonCore-Login/UsingCrypto+AFNetworking`
-* `ProtonCore-Login/UsingCryptoVPN+Alamofire`
-* `ProtonCore-Login/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-Login/UsingCrypto`
+* `ProtonCore-Login/UsingCryptoVPN`
 
 
 ### LoginUI
@@ -300,10 +276,8 @@ Sources: [libraries/LoginUI](libraries/LoginUI)
 Platforms supported: iOS
 
 Variants: 
-* `ProtonCore-LoginUI/UsingCrypto+Alamofire`
-* `ProtonCore-LoginUI/UsingCrypto+AFNetworking`
-* `ProtonCore-LoginUI/UsingCryptoVPN+Alamofire`
-* `ProtonCore-LoginUI/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-LoginUI/UsingCrypto`
+* `ProtonCore-LoginUI/UsingCryptoVPN`
 
 
 ### Networking
@@ -315,10 +289,6 @@ Podspec: [ProtonCore-Networking.podspec](ProtonCore-Networking.podspec)
 Sources: [libraries/Networking](libraries/Networking)
 
 Platforms supported: iOS, macOS
-
-Variants: 
-* `ProtonCore-Networking/Alamofire`
-* `ProtonCore-Networking/AFNetworking`
 
 
 ### ObfuscatedConstants
@@ -356,10 +326,8 @@ Sources: [libraries/Payments](libraries/Payments)
 Platforms supported: iOS, macOS
 
 Variants: 
-* `ProtonCore-Payments/UsingCrypto+Alamofire`
-* `ProtonCore-Payments/UsingCrypto+AFNetworking`
-* `ProtonCore-Payments/UsingCryptoVPN+Alamofire`
-* `ProtonCore-Payments/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-Payments/UsingCrypto`
+* `ProtonCore-Payments/UsingCryptoVPN`
 
 
 ### PaymentsUI
@@ -373,10 +341,8 @@ Sources: [libraries/PaymentsUI](libraries/PaymentsUI)
 Platforms supported: iOS
 
 Variants: 
-* `ProtonCore-PaymentsUI/UsingCrypto+Alamofire`
-* `ProtonCore-PaymentsUI/UsingCrypto+AFNetworking`
-* `ProtonCore-PaymentsUI/UsingCryptoVPN+Alamofire`
-* `ProtonCore-PaymentsUI/UsingCryptoVPN+AFNetworking`
+* `ProtonCore-PaymentsUI/UsingCrypto`
+* `ProtonCore-PaymentsUI/UsingCryptoVPN`
 
 
 ### Services
@@ -388,10 +354,6 @@ Podspec: [ProtonCore-Services.podspec](ProtonCore-Services.podspec)
 Sources: [libraries/Services](libraries/Services)
 
 Platforms supported: iOS, macOS
-
-Variants: 
-* `ProtonCore-Services/Alamofire`
-* `ProtonCore-Services/AFNetworking`
 
 
 ### Settings

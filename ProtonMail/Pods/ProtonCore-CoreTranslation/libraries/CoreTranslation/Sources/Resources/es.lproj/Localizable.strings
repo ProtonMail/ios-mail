@@ -35,8 +35,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Bloqueador de anuncios (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "Permitir el enrutamiento alternativo";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Se ha producido un error";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferencia del antivirus";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple ha informado de que no se pudo procesar la compra.";
@@ -53,6 +59,9 @@
 /* *
  * Login 2FA */
 "Authenticate" = "Autenticar";
+
+/* top left back button */
+"Back" = "Atrás";
 
 /* Terms and conditions note */
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "Al hacer clic en Crear dirección, aceptas los Términos y Condiciones de Proton.";
@@ -75,6 +84,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "Cambia tu contraseña";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Consulte Estado de Proton para conocer el estado de nuestro sistema.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Cerrar";
@@ -106,6 +118,9 @@
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Póngase en contacto con support@protonvpn.com para completar la compra.";
 
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contáctanos directamente a través de nuestro formulario de soporte, correo electrónico (support@protonmail.zendesk.com), o Twitter.";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Crea una cuenta de Proton con tu correo electrónico actual";
 
@@ -121,6 +136,9 @@
 /* *
  * Login choose username */
 "Create Proton Mail address" = "Crear dirección de Proton Mail";
+
+/* Create user failed error */
+"Create user failed" = "Error al crear el usuario";
 
 /* Signup password proton view title */
 "Create your password" = "Crea tu contraseña";
@@ -153,6 +171,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "¿No has recibido el código?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Deshabilita cualquier proxy o cortafuegos, o contacta con el administrador de tu red.";
+
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Descartar";
 
@@ -164,6 +185,9 @@
 
 /* Title of domains bottom action sheet */
 "Domain" = "Dominio";
+
+/* network troubleshot view title */
+"email" = "correo electrónico";
 
 /* Email field title
    Email label
@@ -226,6 +250,9 @@
 /* Verification button */
 "Get verification code" = "Obtener código de verificación";
 
+/* network troubleshot cell title */
+"Government block" = "Bloqueo gubernamental";
+
 /* Help button */
 "Help" = "Ayuda";
 
@@ -238,11 +265,21 @@
 /* Login help screen title */
 "How can we help?" = "¿Cómo podemos ayudarte?";
 
+/* *
+ *  Human verification */
+"Human Verification" = "Verificación humana";
+
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Si está teniendo problemas para crear su cuenta, por favor solicite una invitación y le responderemos como máximo en un día hábil.";
 
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En caso de que los sitios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento de red alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.%1$@";
+
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Contraseña de buzón incorrecta";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problema del proveedor de servicios de Internet (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Contraseña hash inválida";
@@ -259,7 +296,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No fue posible corresponder el producto comprado en la App Store con ningún producto de nuestro servidor. Rellene y envíe un reporte de errores y nuestro equipo contactará con usted.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "Más información";
 
 /* visit item message */
@@ -297,6 +335,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Siguiente";
+
+/* network troubleshot cell title */
+"No internet connection" = "No hay conexión a Internet";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "No, usar una cuenta distinta de Proton Mail";
@@ -367,6 +408,12 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Por favor inicie sesión en la cuenta de Proton Mail del plan que está mejorando para que podamos completar la activación del plan de servicio.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Por favor, asegúrate de que tu conexión a internet funciona.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Por favor, comparte tu problema.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Desbloquee la aplicación para proceder con la activación del plan de servicio";
 
@@ -379,8 +426,17 @@
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton está caído";
+
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "Proton Mail para profesionales y negocios";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Estado de Proton";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferencia de Proxy/Firewall";
 
 /* Error message */
 "Purchase is not possible." = "La compra no es posible.";
@@ -402,6 +458,9 @@
 
 /* old value of remove account button in account manager */
 "Remove account" = "Eliminar cuenta";
+
+/* remove account button in account manager */
+"Remove account from this device" = "Eliminar la cuenta de este dispositivo";
 
 /* Repeat password field title */
 "Repeat password" = "Repetir contraseña";
@@ -469,6 +528,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Lo sentimos, no podemos procesar compras en la versión beta de la aplicación para iOS. ¡Gracias por participar en nuestra beta pública!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Todavía no se ha podido solucionar";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "¿Aún necesitas ayuda? Contáctanos directamente.";
@@ -476,11 +538,20 @@
 /* Plan details streaming service support */
 "Streaming service support" = "Soporte de servicio de streaming";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Asunto...";
+
 /* Subscription title */
 "Subscription" = "Suscripción";
 
+/* network troubleshooting */
+"support form" = "formulario de soporte";
+
 /* *  Account Manager */
 "switch to" = "cambiar a";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Deshabilita temporalmente o elimina tu software de antivirus.";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
@@ -496,6 +567,12 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "El proceso de compra de IAP ha comenzado. Por favor siga las instrucciones de Apple para completar o cancelar la compra.";
 
+/* Message shown when we suspect that the Proton servers are blocked */
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Los servidores de Proton son inaccesibles. Puede deberse a una configuración de red incorrecta, a que los servidores de Proton no funcionan o a que los servidores de Proton estén bloqueados";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La validación del certificado TLS falló al intentar conectarse a la API de Proton. Su conexión actual a internet puede estar monitorizada. Para mantener sus datos seguros, estamos impidiendo que la aplicación acceda a la API de Proton.\nPara iniciar sesión o acceder a su cuenta, cambie a una nueva red e intente conectarse de nuevo.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Esto no debería de tardar más de un minuto.";
 
@@ -508,8 +585,20 @@
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Para utilizar la aplicación Proton como miembro de una organización, primero necesitas cambiar tu contraseña iniciando sesión en Proton a través de un navegador.";
 
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Solución de problemas";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Solución de problemas";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intente conectarse a Proton desde una red distinta ( o usando %1$@ o %2$@).";
+
 /* other method alert button */
 "Try other method" = "Prueba otro método";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Autenticación de doble factor";
@@ -614,6 +703,9 @@
 /* Dialog text for missing keys error */
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Su cuenta carece de claves, por favor acceda a su cuenta vía web para generar las claves requeridas automáticamente. Una vez que haya accedido vía web, por favor acceda a la aplicación.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba utilizando %1$@ (u otra VPN) o %2$@ para acceder a Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Tu correo electrónico sólo se utilizará para esta verificación única.";
 
@@ -629,12 +721,15 @@
 /* Info about existing external Proton Mail address */
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Su cuenta de Proton está asociada con %@. Para usar %@, por favor cree una dirección.";
 
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "Tu cuenta Proton ha sido creada con éxito.";
+
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Su cuenta gratuita Proton fue creada correctamente.";
 
-/* Signup summary no plan description */
-"Your Proton account was successfully created." = "Su cuenta de Proton fue creada correctamente.";
-
 /* Recovery address label title */
 "Your recovery email address:" = "Tu dirección de correo electrónico de recuperación:";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Tu sesión ha expirado. Por favor, conéctate de nuevo.";
 

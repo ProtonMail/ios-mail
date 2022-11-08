@@ -278,53 +278,31 @@ public class Crypto {
                                    split: SplitPacket,
                                    verifications: [ArmoredKey],
                                    verifyTime: Int64) throws -> VerifiedString {
-        
-        let splitMsg = try throwingNotNil { error in
-            CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)
-        }
-        
-        let pgpMsg = try throwingNotNil { error in
-            splitMsg.getPGPMessage()
-        }
-        
-        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
-                                                                             encrypted: pgpMsg,
-                                                                             verifications: verifications,
-                                                                             verifyTime: verifyTime)
-        guard let message = verifyMessage.message?.getString() else {
-            throw CryptoError.emptyResult
-        }
-        if verifyMessage.signatureVerificationError == nil {
-            return .verified(message)
-        } else {
-            return .unverified(message, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
-        }
+        let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
+            decryptionKeys: decryptionKeys,
+            encrypted: .right(split),
+            verifications: verifications,
+            verifyTime: verifyTime
+        )
+
+        return verifyMessage.map { $0.getString() }
     }
     
     internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                    split: SplitPacket,
                                    verifications: [ArmoredKey],
                                    verifyTime: Int64) throws -> VerifiedData {
-        
-        let splitMsg = try throwingNotNil { error in
-            CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)
-        }
-        
-        let pgpMsg = try throwingNotNil { error in
-            splitMsg.getPGPMessage()
-        }
-        
-        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
-                                                                             encrypted: pgpMsg,
-                                                                             verifications: verifications,
-                                                                             verifyTime: verifyTime)
-        guard let data = verifyMessage.message?.data else {
-            throw CryptoError.emptyResult
-        }
-        if verifyMessage.signatureVerificationError == nil {
-            return .verified(data)
-        } else {
-            return .unverified(data, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+        let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
+            decryptionKeys: decryptionKeys,
+            encrypted: .right(split),
+            verifications: verifications,
+            verifyTime: verifyTime
+        )
+        return try verifyMessage.map {
+            guard let data = $0.data else {
+                throw CryptoError.emptyResult
+            }
+            return data
         }
     }
     
@@ -332,41 +310,64 @@ public class Crypto {
                                    encrypted: ArmoredMessage,
                                    verifications: [ArmoredKey],
                                    verifyTime: Int64) throws -> VerifiedData {
-        let pgpMsg = try throwingNotNil { error in
-            CryptoPGPMessage(fromArmored: encrypted.value)
-        }
-        
-        let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
-                                                                             encrypted: pgpMsg, verifications: verifications,
-                                                                             verifyTime: verifyTime)
-        guard let data = verifyMessage.message?.data else {
-            throw CryptoError.emptyResult
-        }
-        if verifyMessage.signatureVerificationError == nil {
-            return .verified(data)
-        } else {
-            return .unverified(data, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+        let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
+            decryptionKeys: decryptionKeys,
+            encrypted: .left(encrypted),
+            verifications: verifications,
+            verifyTime: verifyTime
+        )
+        return try verifyMessage.map {
+            guard let data = $0.data else {
+                throw CryptoError.emptyResult
+            }
+            return data
         }
     }
-    
+
     internal func decryptAndVerify(decryptionKeys: [DecryptionKey],
                                    encrypted: ArmoredMessage,
                                    verifications: [ArmoredKey],
                                    verifyTime: Int64) throws -> VerifiedString {
-        let pgpMsg = try throwingNotNil { error in
-            CryptoPGPMessage(fromArmored: encrypted.value)
+        let verifyMessage: VerifiedMessage<CryptoPlainMessage> = try decryptAndVerify(
+            decryptionKeys: decryptionKeys,
+            encrypted: .left(encrypted),
+            verifications: verifications,
+            verifyTime: verifyTime
+        )
+        return verifyMessage.map { $0.getString() }
+    }
+
+    private func decryptAndVerify(
+        decryptionKeys: [DecryptionKey],
+        encrypted: Either<ArmoredMessage, SplitPacket>,
+        verifications: [ArmoredKey],
+        verifyTime: Int64
+    ) throws -> VerifiedMessage<CryptoPlainMessage> {
+        let pgpMsg: CryptoPGPMessage = try throwingNotNil { _ in
+            switch encrypted {
+            case .left(let armoredMessage):
+                return CryptoPGPMessage(fromArmored: armoredMessage.value)
+            case .right(let split):
+                return CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)?.getPGPMessage()
+            }
         }
-        
+
         let verifyMessage: ExplicitVerifyMessage = try self.decryptAndVerify(decryptionKeys: decryptionKeys,
-                                                                             encrypted: pgpMsg, verifications: verifications,
+                                                                             encrypted: pgpMsg,
+                                                                             verifications: verifications,
                                                                              verifyTime: verifyTime)
-        guard let message = verifyMessage.message?.getString() else {
+        guard let message = verifyMessage.message else {
             throw CryptoError.emptyResult
         }
-        if verifyMessage.signatureVerificationError == nil {
-            return .verified(message)
+
+        if let rawSignatureVerificationError = verifyMessage.signatureVerificationError {
+            let signatureVerificationError = SignatureVerifyError(
+                code: rawSignatureVerificationError.status,
+                message: rawSignatureVerificationError.message
+            )
+            return .unverified(message, signatureVerificationError)
         } else {
-            return .unverified(message, SignatureVerifyError(message: verifyMessage.signatureVerificationError?.message))
+            return .verified(message)
         }
     }
     

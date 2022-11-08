@@ -212,7 +212,7 @@ extension PMAPIService {
                 }
                 let requestHeaders = task?.originalRequest?.allHTTPHeaderFields ?? request.request?.allHTTPHeaderFields ?? [:]
                 self.doh.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
-                    host: url, requestHeaders: requestHeaders, sessionId: UID, response: task?.response, error: error) { shouldRetry in
+                    host: url, requestHeaders: requestHeaders, sessionId: UID, response: task?.response, error: error, callCompletionBlockUsing: .asyncMainExecutor) { shouldRetry in
                     
                     if shouldRetry {
                         // retry. will use the proxy domain automatically if it was successfully fetched

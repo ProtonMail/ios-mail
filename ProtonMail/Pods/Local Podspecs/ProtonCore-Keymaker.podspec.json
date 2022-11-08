@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "3.22.5",
+  "version": "3.23.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.22.5"
+    "tag": "3.23.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -23,7 +23,7 @@
     "5.6"
   ],
   "pod_target_xcconfig": {
-    "APPLICATION_EXTENSION_API_ONLY": "NO"
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
   },
   "dependencies": {
     "EllipticCurveKeyPair": [
@@ -42,7 +42,7 @@
       "name": "UsingCrypto",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "3.22.5"
+          "3.23.1"
         ]
       },
       "source_files": [
@@ -61,7 +61,7 @@
       "name": "UsingCryptoVPN",
       "dependencies": {
         "ProtonCore-Crypto-VPN": [
-          "3.22.5"
+          "3.23.1"
         ]
       },
       "source_files": [

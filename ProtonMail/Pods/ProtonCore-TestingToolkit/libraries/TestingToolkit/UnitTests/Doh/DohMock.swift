@@ -114,7 +114,7 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     public var signupDomain: String { signupDomainStub() }
 
     @PropertyStub(\DohInterfaceMock.status, initialGet: .crash) public var statusStub
-    public var status: DoHStatus { statusStub() }
+    public var status: DoHStatus { get { statusStub() } set { statusStub(newValue) } }
     
     @FuncStub(DohInterfaceMock.getCurrentlyUsedHostUrl, initialReturn: .crash) public var getCurrentlyUsedHostUrlStub
     public func getCurrentlyUsedHostUrl() -> String { getCurrentlyUsedHostUrlStub() }

@@ -35,8 +35,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Блокувальник реклами (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "Дозволити альтернативну маршрутизацію";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Сталася помилка";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Перешкоджання антивірусу";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple повідомила нам, що не може обробити купівлю.";
@@ -53,6 +59,9 @@
 /* *
  * Login 2FA */
 "Authenticate" = "Автентифікація";
+
+/* top left back button */
+"Back" = "Назад";
 
 /* Terms and conditions note */
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "Натискаючи Створити адресу, ви погоджуєтеся з Умовами та положеннями Proton.";
@@ -75,6 +84,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "Змініть свій пароль";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Перевірте стан Proton, щоб дізнатися стан нашої системи.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Закрити";
@@ -105,6 +117,9 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Для завершення покупки зв’яжіться з support@protonvpn.com.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Зверніться до нас через форму підтримки, електронною поштою (support@protonmail.zendesk.com) або у Twitter.";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Створити обліковий запис Proton із поточною е-поштою";
@@ -156,6 +171,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "Не отримали код?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Вимкніть будь-які проксі чи мережеві екрани, або зверніться до свого мережевого адміністратора.";
+
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Відхилити";
 
@@ -167,6 +185,9 @@
 
 /* Title of domains bottom action sheet */
 "Domain" = "Домен";
+
+/* network troubleshot view title */
+"email" = "електронний лист";
 
 /* Email field title
    Email label
@@ -207,6 +228,9 @@
 /* Error message */
 "Failed to get list of available products from App Store." = "Не вдалося отримати список доступних продуктів з App Store.";
 
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "за %@";
+
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Задля вашої безпеки, ми повинні переконатися, що введена адреса належить вам. Ми надіслали код перевірки на %@. Будь ласка, введіть цей код внизу:";
 
@@ -229,6 +253,9 @@
 /* Verification button */
 "Get verification code" = "Отримати код підтвердження";
 
+/* network troubleshot cell title */
+"Government block" = "Блокування урядом";
+
 /* Help button */
 "Help" = "Допомога";
 
@@ -248,8 +275,14 @@
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Якщо у вас виникли труднощі під час створення облікового запису, подайте запит на запрошення і ми відповімо впродовж 1 робочого дня.";
 
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для більшої надійності. %1$@";
+
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Неправильний пароль поштової скриньки";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Проблема постачальника послуг інтернету (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Неправильний хешований пароль";
@@ -266,7 +299,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Не вдалося зіставити придбаний в App Store продукт з жодним продуктом на нашому сервері. Будь ласка, заповніть звіт про помилку і наша команда підтримки зв'яжеться з вами.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "Докладніше";
 
 /* visit item message */
@@ -304,6 +338,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Далі";
+
+/* network troubleshot cell title */
+"No internet connection" = "Немає з’єднання з інтернетом";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Ні, для іншого облікового запису електронної пошти Proton";
@@ -374,6 +411,12 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити активацію тарифного плану служби.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Переконайтеся, що ваше з'єднання з інтернетом працює.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Будь ласка, розкажіть про свою проблему.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Розблокуйте програму, щоб продовжити активацію плану послуг";
 
@@ -386,8 +429,17 @@
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
+/* network troubleshot cell title */
+"Proton is down" = "Proton зараз недоступний";
+
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "Електронна пошта Proton для професіоналів та бізнесу";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Стан Proton";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Взаємодія з проксі та мережевим екраном";
 
 /* Error message */
 "Purchase is not possible." = "Купівля неможлива.";
@@ -479,6 +531,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Перепрошуємо, але ми не можемо обробляти покупки в бета-версії програми для iOS. Дякуємо за участь в нашій загальній програмі тестування!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Не вдалося знайти рішення";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "Досі потребуєте допомоги? Зв'яжіться з нами безпосередньо.";
@@ -486,11 +541,20 @@
 /* Plan details streaming service support */
 "Streaming service support" = "Підтримка сервісів трансляції";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Тема...";
+
 /* Subscription title */
 "Subscription" = "Передплата";
 
+/* network troubleshooting */
+"support form" = "форма підтримки";
+
 /* *  Account Manager */
 "switch to" = "перейти до";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Тимчасово вимкніть чи вилучіть свою антивірусну програму.";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
@@ -505,6 +569,9 @@
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Процес покупки в програмі розпочато. Дотримуйтесь інструкцій Apple для завершення чи скасування покупки.";
+
+/* Message shown when we suspect that the Proton servers are blocked */
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Сервери Proton недоступні. Причиною може бути неправильна конфігурація мережі, сервери Proton не працюють або сервери Proton заблоковані";
 
 /* Networking insecure connection error */
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не вдалося перевірити сертифікат TLS під час спроби з'єднання з Proton API. Ваше інтернет-з'єднання може відстежуватися. Для захисту ваших даних ми не дозволяємо програмі отримувати доступ до Proton API.\nЩоб увійти чи отримати доступ до свого облікового запису, змініть мережу і спробуйте з'єднатися знову.";
@@ -521,8 +588,20 @@
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Щоб користуватися програмою Proton як учасник організації, спершу потрібно змінити пароль, увійшовши до Proton через браузер.";
 
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Усунення проблем";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Усунення проблем";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся %1$@ або %2$@).";
+
 /* other method alert button */
 "Try other method" = "Спробувати інший спосіб";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Двоетапна перевірка";
@@ -627,6 +706,9 @@
 /* Dialog text for missing keys error */
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "У вашому обліковому записі немає ключів. Будь ласка, увійдіть через браузер для автоматичного генерування ключів. Після успішного входу в браузері, поверніться до програми та виконайте вхід.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ваша країна може блокувати доступ до Proton. Спробуйте скористатися %1$@ (чи будь-якою іншою VPN) або %2$@ для доступу до Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Ваша електронна пошта використається лише для цієї одноразової перевірки.";
 
@@ -642,12 +724,15 @@
 /* Info about existing external Proton Mail address */
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Ваш обліковий запис Proton пов'язаний з %@. Щоб використовувати %@, створіть адресу.";
 
-/* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Ваш обліковий запис Proton успішно створено.";
 
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
+
 /* Recovery address label title */
 "Your recovery email address:" = "Ваша електронна пошта для відновлення:";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Термін дії вашого сеансу завершився. Увійдіть знову.";
 

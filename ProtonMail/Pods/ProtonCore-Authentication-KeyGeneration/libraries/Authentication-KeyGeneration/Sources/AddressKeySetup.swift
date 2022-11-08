@@ -63,7 +63,8 @@ final class AddressKeySetup {
     }
     
     /// use this funcetion to generate address key. secret is hex string of 32 bytes random data.
-    func generateAddressKey(keyName: String, email: String, armoredUserKey: String, password: String, salt: Data) throws -> GeneratedAddressKey {
+    func generateAddressKey(keyName: String, email: String, armoredUserKey: String,
+                            password: String, salt: Data, addrType: Address.AddressType = .protonDomain) throws -> GeneratedAddressKey {
         guard !salt.isEmpty else {
             throw KeySetupError.invalidSalt
         }
@@ -83,12 +84,17 @@ final class AddressKeySetup {
         let userSignerKey = SigningKey.init(privateKey: userPrivateKey,
                                             passphrase: userKeyPassphrase)
         let tokenSignature = try addrKeyPassphrase.signDetached(signer: userSignerKey)
+        
+        var keyFlags = KeyFlags.signupKeyFlags
+        if addrType == .externalAddress {
+            keyFlags = .signupExternalKeyFlags
+        }
         /// build key matadata list
         let keylist: [[String: Any]] = [[
             "Fingerprint": armoredAddrKey.fingerprint,
             "SHA256Fingerprints": armoredAddrKey.sha256Fingerprint,
             "Primary": 1,
-            "Flags": KeyFlags.signupKeyFlags.rawValue
+            "Flags": keyFlags.rawValue
         ]]
         
         /// encode to json format
