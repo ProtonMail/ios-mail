@@ -120,10 +120,10 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
 }
 
 protocol SettingsAccountViewModel: AnyObject {
-    var sections: [SettingAccountSection] { get set }
-    var accountItems: [SettingsAccountItem] { get set }
-    var addrItems: [SettingsAddressItem] { get set }
-    var mailboxItems: [SettingsMailboxItem] {get set}
+    var sections: [SettingAccountSection] { get }
+    var accountItems: [SettingsAccountItem] { get }
+    var addrItems: [SettingsAddressItem] { get }
+    var mailboxItems: [SettingsMailboxItem] { get }
 
     var storageText: String { get }
     var recoveryEmail: String { get }
@@ -133,38 +133,50 @@ protocol SettingsAccountViewModel: AnyObject {
 
     var defaultSignatureStatus: String { get }
     var defaultMobileSignatureStatus: String { get }
-    var userManager: UserManager { get }
     var allSendingAddresses: [Address] { get }
 
-    func updateItems()
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
 
     var reloadTable: (() -> Void)? { get set }
 }
 
-
 class SettingsAccountViewModelImpl: SettingsAccountViewModel {
-    var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
-    var accountItems: [SettingsAccountItem] = [.singlePassword, .recovery, .storage]
-    var addrItems: [SettingsAddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, /* .search,*/ .labels, .folders]
+    let sections: [SettingAccountSection] = [ .account, .addresses, .mailbox, .deleteAccount]
 
-    var userManager: UserManager
+    var accountItems: [SettingsAccountItem] {
+        var items: [SettingsAccountItem]
+        if userManager.userInfo.passwordMode == 1 {
+            items = [.singlePassword]
+        } else {
+            items = [.loginPassword, .mailboxPassword]
+        }
+
+        items.append(contentsOf: [.recovery, .storage])
+
+        return items
+    }
+
+    let addrItems: [SettingsAddressItem] = [.addr, .displayName, .signature, .mobileSignature]
+
+    var mailboxItems: [SettingsMailboxItem] {
+        var items: [SettingsMailboxItem] = [.privacy, .undoSend]
+
+        if userManager.conversationStateService.isConversationFeatureEnabled {
+            items.append(.conversation)
+        }
+
+        items.append(contentsOf: [.labels, .folders])
+
+        return items
+    }
+
+    private let userManager: UserManager
 
     var reloadTable: (() -> Void)?
 
     init(user: UserManager) {
         self.userManager = user
         user.conversationStateService.add(delegate: self)
-        addConversationRowIfFeatureEnabled()
-    }
-
-    func updateItems() {
-        if self.userManager.userInfo.passwordMode == 1 {
-            accountItems = [.singlePassword, .recovery, .storage]
-        } else {
-            accountItems = [.loginPassword, .mailboxPassword, .recovery, .storage]
-        }
     }
 
     var storageText: String {
@@ -255,24 +267,12 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             }
         }
     }
-
-    private func addConversationRowIfFeatureEnabled() {
-        guard userManager.conversationStateService.isConversationFeatureEnabled else { return }
-        mailboxItems.insert(.conversation, at: 1)
-    }
 }
 
 extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {
-
     func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-        if isFeatureEnabled && !mailboxItems.contains(.conversation) {
-            mailboxItems.insert(.conversation, at: 1)
-        } else {
-            mailboxItems.removeAll(where: { $0 == .conversation })
-        }
         reloadTable?()
     }
 
     func viewModeHasChanged(viewMode: ViewMode) {}
-
 }

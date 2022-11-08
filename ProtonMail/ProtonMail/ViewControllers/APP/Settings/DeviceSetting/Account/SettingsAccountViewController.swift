@@ -89,7 +89,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.viewModel.updateItems()
+
         navigationController?.setNavigationBarHidden(false, animated: true)
         self.tableView.reloadData()
     }
@@ -291,17 +291,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.mailboxItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .privacy:
-                cellToUpdate.configure(right: "")
-            case .conversation:
-                cellToUpdate.configure(right: "")
-            case .undoSend:
-                cellToUpdate.configure(right: "")
-            case .search:
-                cellToUpdate.configure(right: "off")
-            case .labels:
-                cellToUpdate.configure(right: "")
-            case .folders:
+            case .privacy, .conversation, .undoSend, .search, .labels, .folders:
                 cellToUpdate.configure(right: "")
             case .storage:
                 cellToUpdate.configure(right: "100 MB (disabled)")
