@@ -17,9 +17,18 @@
 
 import Foundation
 
-enum SwipeableItem {
+enum MailboxItem {
     case message(MessageEntity)
     case conversation(ConversationEntity)
+
+    var isScheduledForSending: Bool {
+        switch self {
+        case .message(let message):
+            return message.isScheduledSend
+        case .conversation(let conversation):
+            return conversation.contains(of: .scheduled)
+        }
+    }
 
     var isStarred: Bool {
         switch self {

@@ -963,15 +963,6 @@ extension MailboxViewModel {
 
 // MARK: - Swipe actions
 extension MailboxViewModel {
-    func isScheduledSend(of item: SwipeableItem) -> Bool {
-        switch item {
-        case .message(let message):
-            return message.isScheduledSend
-        case .conversation(let conversation):
-            return conversation.contains(of: .scheduled)
-        }
-    }
-
     func isScheduledSend(in indexPath: IndexPath) -> Bool {
         if locationViewMode == .singleMessage {
             guard let message = item(index: indexPath) else { return false }
@@ -982,7 +973,7 @@ extension MailboxViewModel {
         }
     }
 
-    func isSwipeActionValid(_ action: MessageSwipeAction, item: SwipeableItem) -> Bool {
+    func isSwipeActionValid(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
         guard let location = messageLocation else {
             return true
         }
