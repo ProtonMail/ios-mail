@@ -24,7 +24,7 @@ import Foundation
 
 extension FileManager {
     var appGroupsDirectoryURL: URL! {
-        return self.containerURL(forSecurityApplicationGroupIdentifier: Constants.App.APP_GROUP)
+        return self.containerURL(forSecurityApplicationGroupIdentifier: Constants.AppGroup)
     }
 
     var applicationSupportDirectoryURL: URL {
