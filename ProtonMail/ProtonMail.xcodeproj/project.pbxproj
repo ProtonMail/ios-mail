@@ -7389,6 +7389,7 @@
 				A0BE62B02F1A1002D1E7A3479363A2F1 /* Sources */,
 				EC5A9B57322B4DBDC42CA33F70E98D27 /* Frameworks */,
 				3707E9551B06F05DEE0FD30FF1A9B73E /* Resources */,
+				E31B9A564964B8119C3ABEFE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -7432,6 +7433,7 @@
 				F3EAD2CB32C6DEB9AD3C1954EACCC8E4 /* Sentry Upload */,
 				B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */,
 				D69E6F42AB3779456E68CFB51F664382 /* Embed Frameworks */,
+				32A32D899A8F5E3C83053928 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -7456,6 +7458,7 @@
 				85D3B7A03E5E6FC4F98F651AAFE03D93 /* Frameworks */,
 				577D604FBA606E88292D081338F1CCA7 /* Resources */,
 				B067CAB9F3717BF234AE571C16B79A46 /* [CP] Embed Pods Frameworks */,
+				CEE8688C6D6D79E7AF0F3B45 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -7893,6 +7896,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		32A32D899A8F5E3C83053928 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-FeatureSwitch/Resources-FeatureSwitch.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-TroubleShooting/Resources-TroubleShooting.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-FeatureSwitch.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-TroubleShooting.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		384438ECB5D5B0ADC688AD42C1148AA5 /* swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8009,6 +8032,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
+				"${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -8060,6 +8084,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipyCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapshotTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenPGP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8200,6 +8225,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CEE8688C6D6D79E7AF0F3B45 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-FeatureSwitch/Resources-FeatureSwitch.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-TroubleShooting/Resources-TroubleShooting.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-FeatureSwitch.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-TroubleShooting.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D8ABFD66B15CD9A21671B7560901F0AD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8242,6 +8287,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E31B9A564964B8119C3ABEFE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Share/Pods-Share-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-FeatureSwitch/Resources-FeatureSwitch.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Resources-FeatureSwitch.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Share/Pods-Share-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E5854C8EE63F4B11D414DC42F312E7FD /* [CP] Check Pods Manifest.lock */ = {
