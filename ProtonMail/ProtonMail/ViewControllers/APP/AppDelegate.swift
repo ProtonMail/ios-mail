@@ -413,6 +413,12 @@ extension AppDelegate: UnlockManagerDelegate {
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }
+
+    func setupCoreData() {
+        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self,
+                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+    }
 }
 
 // MARK: Appearance

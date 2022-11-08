@@ -24,14 +24,22 @@ import CoreData
 import Foundation
 
 final class Conversation: NSManagedObject {
-    enum Attributes {
-        static let entityName = String(describing: Conversation.self)
-        static let conversationID = "conversationID"
-        static let time = "time"
+    enum Attributes: String, CaseIterable {
+        static let entityName = "Conversation"
         static let labels = "labels"
-        static let userID = "userID"
-        static let numUnread = "numUnread"
-        static let isSoftDeleted = "isSoftDeleted"
+
+        case addressID = "addressID"
+        case conversationID = "conversationID"
+        case expirationTime = "expirationTime"
+        case numAttachments = "numAttachments"
+        case numMessages = "numMessages"
+        case order = "order"
+        case recipients = "recipients"
+        case senders = "senders"
+        case userID = "userID"
+        case isSoftDeleted = "isSoftDeleted"
+        case size = "size"
+        case subject = "subject"
     }
 
     @NSManaged var conversationID: String
@@ -94,7 +102,9 @@ extension Conversation {
     }
 
     class func conversationForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext) -> Conversation? {
-        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.conversationID, matchingValue: conversationID) as? Conversation
+        return context.managedObjectWithEntityName(Attributes.entityName,
+                                                   forKey: Attributes.conversationID.rawValue,
+                                                   matchingValue: conversationID) as? Conversation
     }
 
     /// Fetch the Label from local cache based on the labelIDs from contextLabel

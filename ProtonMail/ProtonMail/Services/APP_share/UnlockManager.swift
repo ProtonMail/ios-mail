@@ -46,6 +46,7 @@ protocol UnlockManagerDelegate: AnyObject {
     func cleanAll()
     func isUserStored() -> Bool
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
+    func setupCoreData()
 }
 
 class UnlockManager: Service {
@@ -167,6 +168,8 @@ class UnlockManager: Service {
             requestMailboxPassword()
             return
         }
+
+        delegate?.setupCoreData()
 
         cacheStatus.pinFailedCount = 0
 
