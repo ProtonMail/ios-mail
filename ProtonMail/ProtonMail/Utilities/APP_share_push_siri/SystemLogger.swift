@@ -44,7 +44,7 @@ class SystemLogger {
     }
 
     static func disableLogging() {
-        isLoggingEnabled = false
+//        isLoggingEnabled = false
     }
 
     /// Log a message into the unified logging system for a specific category. It only works for iOS 15 and above.
@@ -95,5 +95,6 @@ extension SystemLogger {
         case serviceRefactor = "Service Refactor"
         case coreData = "CoreData"
         case tests = "Tests"
+        case bugHunt = "BugHunt"
     }
 }

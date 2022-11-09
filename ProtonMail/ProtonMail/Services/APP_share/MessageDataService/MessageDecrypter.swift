@@ -58,8 +58,18 @@ class MessageDecrypter: MessageDecrypterProtocol {
     }
 
     func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
+        SystemLogger.logTemporarily(
+            message: "decrypt: message = '\(message.title)' | addressId = \(message.addressID.rawValue)",
+            category: .bugHunt
+        )
         let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
         if addressKeys.isEmpty {
+            let isUserDataSourceNil = self.userDataSource == nil
+            SystemLogger.logTemporarily(
+                message: "No keys found for addressID \(message.addressID.rawValue) | isUserDataSourceNil = \(isUserDataSourceNil)",
+                category: .bugHunt,
+                isError: true
+            )
             return (message.body, nil, .failure)
         }
 
@@ -81,6 +91,11 @@ class MessageDecrypter: MessageDecrypterProtocol {
                     keys: keysWithPassphrases
                 )
                 let (body, attachments) = postProcessMIME(messageData: messageData)
+                SystemLogger.logTemporarily(
+                    message: "Multipart decrypted: result \(messageData.signatureVerificationResult)",
+                    category: .bugHunt,
+                    isError: messageData.signatureVerificationResult == .failure
+                )
                 return (body, attachments, messageData.signatureVerificationResult)
             } catch {
                 assertionFailure("\(error)")
@@ -98,6 +113,11 @@ class MessageDecrypter: MessageDecrypterProtocol {
             decrypted: decrypted,
             isPlainText: message.isPlainText,
             hasVerificationKeys: !verificationKeys.isEmpty
+        )
+        SystemLogger.logTemporarily(
+            message: "NonMIME decrypted: result \(verificationResult)",
+            category: .bugHunt,
+            isError: verificationResult == .failure
         )
         return (processedBody, nil, verificationResult)
     }

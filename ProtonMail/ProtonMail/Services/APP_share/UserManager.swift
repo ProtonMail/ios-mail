@@ -492,6 +492,11 @@ extension UserManager: UserDataSource {
     }
 
     func getAllAddressKey(address_id: String) -> [Key]? {
+        SystemLogger.logTemporarily(
+            message: "getAllAddressKey: num addresses = \(userInfo.userAddresses.count) | addresses: \(userInfo.userAddresses.map{ "\($0.email) - \($0.addressID))" })",
+            category: .bugHunt,
+            isError: (userInfo.userAddresses.count == 0)
+        )
         return self.userInfo.getAllAddressKey(address_id: address_id)
     }
 
