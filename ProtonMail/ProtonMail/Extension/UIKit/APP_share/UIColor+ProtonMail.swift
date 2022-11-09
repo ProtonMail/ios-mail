@@ -24,6 +24,38 @@ import Foundation
 import UIKit
 
 extension UIColor {
+    /// Does not include the number sign (#) at the beginning.
+    var rrggbbaa: String {
+        guard let components = cgColor.components else {
+            return String(repeating: "0", count: 8)
+        }
+
+        let red: CGFloat
+        let green: CGFloat
+        let blue: CGFloat
+        let alpha: CGFloat
+
+        if cgColor.numberOfComponents < 3 {
+            // UIExtendedGrayColorSpace
+            red = components[0]
+            green = components[0]
+            blue = components[0]
+            alpha = components[1]
+        } else {
+            red  = components[0]
+            green = components[1]
+            blue = components[2]
+            alpha = components[3]
+        }
+
+        return String.init(
+            format: String(repeating: "%02lX", count: 4),
+            lroundf(Float(red * 255)),
+            lroundf(Float(green * 255)),
+            lroundf(Float(blue * 255)),
+            lroundf(Float(alpha * 255))
+        )
+    }
 
     convenience init(RRGGBB: UInt) {
         self.init(
