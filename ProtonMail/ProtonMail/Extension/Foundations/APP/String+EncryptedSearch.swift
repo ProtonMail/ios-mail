@@ -19,7 +19,7 @@ import Foundation
 
 extension String {
     struct EncryptedSearchStringUtils {
-        let originalString: String
+        private let originalString: String
 
         fileprivate init(originalString: String) {
             self.originalString = originalString
