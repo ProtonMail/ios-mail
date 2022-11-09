@@ -458,6 +458,7 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
 
     @objc
     private func tryDecryptionAgain() {
+        SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
         if let vi = self.navigationController?.view {
             MBProgressHUD.showAdded(to: vi, animated: true)
         }

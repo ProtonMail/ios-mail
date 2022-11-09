@@ -565,6 +565,7 @@ extension MessageInfoProvider {
 
     private func decryptBody() -> MessageDecrypterProtocol.Output? {
         do {
+            SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
             let decryptionOutput = try messageDecrypter.decrypt(message: message)
             isBodyDecryptable = true
             delegate?.hideDecryptionErrorBanner()

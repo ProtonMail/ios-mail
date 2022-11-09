@@ -250,6 +250,7 @@ class ConversationViewModel {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")
+        SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
         guard let body = try? messageService.messageDecrypter.decrypt(message: message).0 else {
             return nil
         }

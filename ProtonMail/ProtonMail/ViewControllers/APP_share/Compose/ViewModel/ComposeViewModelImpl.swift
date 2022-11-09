@@ -598,6 +598,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             var body = ""
             var css: String?
             do {
+                SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
                 if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
                     css = CSSMagic.generateCSSForDarkMode(htmlString: body)
@@ -610,6 +611,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             let msg = composerMessageHelper.message!
             var body = ""
             do {
+                SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
             } catch {
                 body = msg.bodyToHtml()
@@ -660,6 +662,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             var body = ""
 
             do {
+                SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
             } catch {
                 body = msg.bodyToHtml()
@@ -726,6 +729,7 @@ class ComposeViewModelImpl: ComposeViewModel {
            (message.ccList == "[]" || message.ccList.isEmpty),
            (message.bccList == "[]" || message.bccList.isEmpty),
            message.numAttachments.intValue == 0 {
+            SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
             let decryptedBody = (try? self.user.messageService.messageDecrypter.decrypt(message: message)) ?? .empty
             let bodyDocument = try? SwiftSoup.parse(decryptedBody)
             let body = try? bodyDocument?.body()?.text()

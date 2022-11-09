@@ -77,6 +77,7 @@ final class MessageSenderPGPChecker {
             do {
                 let (senderVerified, verificationKeys) = try keyFetchingResult.get()
 
+                SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
                 let signatureVerificationResult = try self.messageService.messageDecrypter
                     .decrypt(message: messageEntity, verificationKeys: verificationKeys)
                     .signatureVerificationResult

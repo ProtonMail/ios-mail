@@ -650,6 +650,7 @@ extension MainQueueHandler {
                     att.keyPacket = newKeyPack
                     att.keyChanged = true
                 }
+                SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
                 let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message)
                 message.addressID = addressID
                 if message.nextAddressID == addressID {

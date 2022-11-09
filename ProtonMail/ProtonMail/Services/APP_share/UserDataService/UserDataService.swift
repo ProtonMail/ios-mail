@@ -760,6 +760,7 @@ class UserDataService: Service, HasLocalStorage {
     }
 
     func fetchUserAddresses(completion: ((Swift.Result<AddressesResponse, Error>) -> Void)?) {
+        SystemLogger.logTemporarily(message: "fetchUserAddresses", category: .bugHunt)
         let req = GetAddressesRequest()
         apiService.exec(route: req, responseObject: AddressesResponse()) { (_, res) in
             if let error = res.error {

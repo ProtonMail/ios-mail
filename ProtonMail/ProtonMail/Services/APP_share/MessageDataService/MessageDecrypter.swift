@@ -138,6 +138,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
                 conversation.numMessages = NSNumber(value: newCount)
             }
 
+            SystemLogger.logTemporarily(message: "decrypt() from \(#function)", category: .bugHunt)
             let body = try? self.decrypt(message: newMessage)
             self.copy(attachments: message.attachments,
                       to: newMessage,
