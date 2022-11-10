@@ -339,7 +339,8 @@ final class MessageInfoProvider {
         }
     }
     var nonInlineAttachments: [AttachmentEntity] {
-        message.attachments.filter { !(inlineAttachments ?? []).contains($0) }
+        let inlineIDs = inlineAttachments?.map { $0.id } ?? []
+        return message.attachments.filter { !inlineIDs.contains($0.id) }
     }
 
     private(set) var mimeAttachments: [MimeAttachment] = [] {
