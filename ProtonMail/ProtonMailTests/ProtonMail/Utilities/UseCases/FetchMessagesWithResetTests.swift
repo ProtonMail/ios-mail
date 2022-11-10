@@ -177,7 +177,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
         XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
 
-        XCTAssertFalse(mockLabelProvider.wasFetchV4LabelsCalled)
+        XCTAssertTrue(mockLabelProvider.wasFetchV4LabelsCalled)
 
         XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
         XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)

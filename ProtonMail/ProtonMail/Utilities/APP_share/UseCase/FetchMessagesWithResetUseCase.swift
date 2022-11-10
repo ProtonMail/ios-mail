@@ -83,19 +83,21 @@ extension FetchMessagesWithReset {
                 self.runOnMainThread { callback?(.success(Void())) }
                 return
             }
-            self.dependencies.fetchMessages.execute(
-                endTime: endTime,
-                isUnread: isUnread,
-                callback: { result in
-                    if let error = result.error {
-                        self.runOnMainThread { callback?(.failure(error)) }
-                    } else {
-                        self.runOnMainThread { callback?(.success(Void())) }
-                    }
-                },
-                onMessagesRequestSuccess: {
-                    self.removePersistedMessages(cleanContact: cleanContact, removeAllDraft: removeAllDraft)
-                })
+            self.dependencies.labelProvider.fetchV4Labels { _ in
+                self.dependencies.fetchMessages.execute(
+                    endTime: endTime,
+                    isUnread: isUnread,
+                    callback: { result in
+                        if let error = result.error {
+                            self.runOnMainThread { callback?(.failure(error)) }
+                        } else {
+                            self.runOnMainThread { callback?(.success(Void())) }
+                        }
+                    },
+                    onMessagesRequestSuccess: {
+                        self.removePersistedMessages(cleanContact: cleanContact, removeAllDraft: removeAllDraft)
+                    })
+            }
         }
     }
 
@@ -116,7 +118,6 @@ extension FetchMessagesWithReset {
             if cleanContact {
                 self.dependencies.contactProvider.fetchContacts(completion: nil)
             }
-            self.dependencies.labelProvider.fetchV4Labels(completion: nil)
         }.cauterize()
     }
 }
