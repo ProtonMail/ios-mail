@@ -607,11 +607,11 @@ extension MessageInfoProvider {
         if let inlines = inlineAttachments { return inlines }
         let result = attachments.filter { attachment in
             guard let contentID = attachment.getContentID() else { return false }
-            if body.preg_match("src=\"\(contentID)\"") ||
-                body.preg_match("src=\"cid:\(contentID)\"") ||
-                body.preg_match("data-embedded-img=\"\(contentID)\"") ||
-                body.preg_match("data-src=\"cid:\(contentID)\"") ||
-                body.preg_match("proton-src=\"cid:\(contentID)\"") {
+            if body.contains(check: "src=\"\(contentID)\"") ||
+                body.contains(check: "src=\"cid:\(contentID)\"") ||
+                body.contains(check: "data-embedded-img=\"\(contentID)\"") ||
+                body.contains(check: "data-src=\"cid:\(contentID)\"") ||
+                body.contains(check: "proton-src=\"cid:\(contentID)\"") {
                 return true
             }
             return false
