@@ -294,12 +294,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                  argument: self.navigationController?.view)
         }
 
-        if viewModel.eventsService.status != .started {
-            self.startAutoFetch()
-        } else {
-            viewModel.eventsService.resume()
-            viewModel.eventsService.call()
-        }
         self.updateUnreadButton()
         deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
@@ -318,6 +312,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        if viewModel.eventsService.status != .started {
+            self.startAutoFetch()
+        } else {
+            viewModel.eventsService.resume()
+            viewModel.eventsService.call()
+        }
 
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
