@@ -154,7 +154,8 @@ class SingleMessageContentViewModel {
         downloadDetails()
     }
 
-    func downloadDetails() {
+    func downloadDetails(origin: String = #function) {
+        SystemLogger.logTemporarily(message: "downloadDetails() | origin: \(origin)", category: .bugHunt)
         let shouldLoadBody = message.body.isEmpty || !message.isDetailDownloaded
         // The parsedHeader is added in the MAILIOS-2335
         // the user update from the older app doesn't have the parsedHeader

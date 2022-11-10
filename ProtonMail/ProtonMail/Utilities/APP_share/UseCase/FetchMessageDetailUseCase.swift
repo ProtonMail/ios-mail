@@ -35,6 +35,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
+        SystemLogger.logTemporarily(message: "FetchMessageDetailUseCase: messageId = \(params.message.messageID.rawValue)", category: .bugHunt)
         if params.hasToBeQueued {
             dependencies.queueManager?.addBlock { [weak self] in
                 self?.fetchMessageDetail(params: params, callback: callback)
@@ -48,6 +49,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         dependencies
             .apiService
             .messageDetail(messageID: params.message.messageID) { [weak self] _, response, error in
+                SystemLogger.logTemporarily(message: "FetchMessageDetailUseCase response: error = \(error)", category: .bugHunt)
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return

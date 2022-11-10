@@ -59,7 +59,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
 
     func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
         SystemLogger.logTemporarily(
-            message: "decrypt: message = '\(message.title)' | addressId = \(message.addressID.rawValue)",
+            message: "decrypt: message = '\(message.title)' | messageId = \(message.messageID.rawValue)",
             category: .bugHunt
         )
         let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)

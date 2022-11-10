@@ -48,6 +48,7 @@ final class MessageInfoProvider {
             }
         }
         didSet {
+            SystemLogger.logTemporarily(message: "MessageInfoProvider message set", category: .bugHunt)
             pgpChecker = MessageSenderPGPChecker(message: message, user: user)
             prepareDisplayBody()
             checkSenderPGP()
@@ -540,6 +541,7 @@ extension MessageInfoProvider {
     }
 
     private func checkAndDecryptBody() {
+        SystemLogger.logTemporarily(message: "checkAndDecryptBody(): messageId = \(message.messageID)", category: .bugHunt)
         let expiration = message.expirationTime
         let referenceDate = Date.getReferenceDate(processInfo: systemUpTime)
         let expired = (expiration ?? .distantFuture).compare(referenceDate) == .orderedAscending
@@ -549,11 +551,15 @@ extension MessageInfoProvider {
         }
 
         guard message.isDetailDownloaded else {
+            SystemLogger.logTemporarily(message: " early exit: isDetailDownloaded false", category: .bugHunt)
             return
         }
 
         let decryptionIsNeeded = bodyParts == nil
-        guard decryptionIsNeeded else { return }
+        guard decryptionIsNeeded else {
+            SystemLogger.logTemporarily(message: " early exit: decryptionIsNeeded false ", category: .bugHunt)
+            return
+        }
         if let result = decryptBody() {
             updateBodyParts(with: result.body)
             mimeAttachments = result.attachments ?? []

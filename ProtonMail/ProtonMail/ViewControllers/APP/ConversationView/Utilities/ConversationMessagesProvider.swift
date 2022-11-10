@@ -76,6 +76,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
             }
         case .update:
             if let message = anObject as? Message, let indexPath = indexPath, let newIndexPath = newIndexPath {
+                SystemLogger.logTemporarily(message: "ConversationMessagesProvider update: isDetailDownloaded = \(message.isDetailDownloaded) | message = \(message.messageID)", category: .bugHunt)
                 conversationUpdate?(.update(message: MessageEntity(message),
                                             fromRow: indexPath.row,
                                             toRow: newIndexPath.row))

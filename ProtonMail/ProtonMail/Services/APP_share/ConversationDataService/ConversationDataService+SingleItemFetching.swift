@@ -32,6 +32,7 @@ extension ConversationDataService {
         callOrigin: String?,
         completion: @escaping ((Result<Conversation, Error>) -> Void)
     ) {
+        SystemLogger.logTemporarily(message: "fetchConversation: messageId = \(messageID?.rawValue)", category: .bugHunt)
         guard !conversationID.rawValue.isEmpty else {
             reportMissingConversationID(callOrigin: callOrigin)
             let err = NSError.protonMailError(1_000, localizedDescription: "ID is empty.")

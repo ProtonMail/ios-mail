@@ -543,11 +543,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     func fetchMessageDetailForMessage(_ message: MessageEntity, labelID: LabelID, runInQueue: Bool = true, completion: @escaping CompletionFetchDetail) {
+        SystemLogger.logTemporarily(message: "fetchMessageDetailForMessage: messageId = \(message.messageID.rawValue)", category: .bugHunt)
         if !message.isDetailDownloaded || message.parsedHeaders.isEmpty {
             let msgID = message.messageID
             let closure = runInQueue ? queueManager?.queue: noQueue
             closure? {
                 let completionWrapper: CompletionBlock = { task, response, error in
+                    SystemLogger.logTemporarily(message: "fetchMessageDetailForMessage response: error = \(error)", category: .bugHunt)
                     self.contextProvider.performOnRootSavingContext { context in
                         if response != nil {
                             if var msg: [String: Any] = response?["Message"] as? [String: Any] {
