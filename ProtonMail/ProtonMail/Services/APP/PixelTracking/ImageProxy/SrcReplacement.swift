@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,8 +17,7 @@
 
 import Foundation
 
-struct ImageProxyOutput {
-    let failedUnsafeRemoteSrcs: Set<SrcReplacement>
-    let safeBase64Srcs: Set<SrcReplacement>
-    let summary: TrackerProtectionSummary
+struct SrcReplacement: Hashable {
+    let marker: UUID
+    let value: String
 }
