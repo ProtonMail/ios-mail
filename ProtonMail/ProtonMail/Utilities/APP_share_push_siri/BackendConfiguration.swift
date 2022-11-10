@@ -30,8 +30,8 @@ struct ProductionEnvironment: BackendEnvironment {
 }
 
 struct AtlasEnvironment: BackendEnvironment {
-    let appDomain = "proton.black"
-    let apiDomain = "proton.black"
+    let appDomain = "ising.proton.black"
+    let apiDomain = "ising.proton.black"
     let apiPath = "/api"
 }
 
@@ -101,7 +101,7 @@ struct BackendConfiguration {
         } else {
 
             // Production Environment
-            self.environment = ProductionEnvironment()
+            self.environment = AtlasEnvironment()
         }
     }
 }
