@@ -18,9 +18,5 @@
 import Foundation
 
 struct TrackerProtectionSummary: Equatable {
-    /// Failed proxy requests end up here. If the user wishes to, we can load the images without protection by
-    /// replacing the UUIDs with the URLs in the message body.
-    let failedRequests: [UUID: URL]
-
     let trackers: [String: Set<URL>]
 }

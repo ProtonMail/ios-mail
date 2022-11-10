@@ -51,17 +51,18 @@ class ImageProxy: LifetimeTrackable {
         imageCache.purge()
     }
 
-    func process(body: String) throws -> ImageProxyOutput {
-        if Thread.isMainThread {
-            assertionFailure("Do not run this method on the main thread")
-        }
-
+    /*
+     Iterate over all <img> elements that point to a remote image, and:
+     1. generatie a UUID
+     2. overwrite the src of the img with the UUID to prevent loading without protection
+        (<img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img>)
+     3. launch a request to fetch the image through the proxy
+     4. notify the delegate when the image is ready, so that they can replace the UUIDs with the data:
+     <img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img> -> <img src=\"https://example.com/tracker.png\"></img>.
+     */
+    func process(body: String, delegate: ImageProxyDelegate) throws -> String {
         let fullHTMLDocument = try SwiftSoup.parse(body)
         let imgs = try fullHTMLDocument.select("img")
-        let dispatchGroup = DispatchGroup()
-
-        var failedRequests: [UUID: URL] = [:]
-        var trackers: [String: Set<URL>] = [:]
 
         let remoteElements: [(Element, URL)] = imgs.compactMap { img in
             guard
@@ -72,17 +73,32 @@ class ImageProxy: LifetimeTrackable {
                 return nil
             }
 
-            dispatchGroup.enter()
             return (img, srcURL)
         }
 
         guard !remoteElements.isEmpty else {
-            let summary = TrackerProtectionSummary(failedRequests: [:], trackers: [:])
-            return ImageProxyOutput(processedBody: body, summary: summary)
+            return body
         }
 
+        var failedUnsafeRemoteSrcs: Set<SrcReplacement> = []
+        var safeBase64Srcs: Set<SrcReplacement> = []
+        var trackers: [String: Set<URL>] = [:]
+
+        let dispatchGroup = DispatchGroup()
+
         for (img, srcURL) in remoteElements {
-            fetchRemoteImage(srcURL: srcURL) { result in
+            let uuid = Environment.uuid()
+
+            try img.attr("src", uuid.uuidString)
+
+            dispatchGroup.enter()
+
+            fetchRemoteImage(srcURL: srcURL) { [weak self] result in
+                guard let self = self else {
+                    dispatchGroup.leave()
+                    return
+                }
+
                 self.processingQueue.sync {
                     defer {
                         dispatchGroup.leave()
@@ -90,8 +106,11 @@ class ImageProxy: LifetimeTrackable {
 
                     do {
                         let remoteImage = try result.get()
+
                         let encodedData = remoteImage.data.base64EncodedString()
-                        self.setSrc(of: img, to: "data:\(remoteImage.contentType ?? "");base64,\(encodedData)")
+                        let base64Src = "data:\(remoteImage.contentType ?? "");base64,\(encodedData)"
+                        let replacement = SrcReplacement(marker: uuid, value: base64Src)
+                        safeBase64Srcs.insert(replacement)
 
                         if let trackerProvider = remoteImage.trackerProvider {
                             var urlsFromProvider = trackers[trackerProvider] ?? []
@@ -99,19 +118,26 @@ class ImageProxy: LifetimeTrackable {
                             trackers[trackerProvider] = urlsFromProvider
                         }
                     } catch {
-                        let uuid = self.markElementForFurtherReloadAndBlockLoadingTheImage(img)
-                        failedRequests[uuid] = srcURL
+                        let replacement = SrcReplacement(marker: uuid, value: srcURL.absoluteString)
+                        failedUnsafeRemoteSrcs.insert(replacement)
                     }
                 }
             }
         }
 
-        dispatchGroup.wait()
+        dispatchGroup.notify(queue: processingQueue) {
+            let summary = TrackerProtectionSummary(trackers: trackers)
+            let output = ImageProxyOutput(
+                failedUnsafeRemoteSrcs: failedUnsafeRemoteSrcs,
+                safeBase64Srcs: safeBase64Srcs,
+                summary: summary
+            )
+            delegate.imageProxy(self, didFinishWithOutput: output)
+        }
 
         fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
-        let processedBody = try fullHTMLDocument.outerHtml()
-        let summary = TrackerProtectionSummary(failedRequests: failedRequests, trackers: trackers)
-        return ImageProxyOutput(processedBody: processedBody, summary: summary)
+        let bodyWithoutRemoteURLs = try fullHTMLDocument.outerHtml()
+        return bodyWithoutRemoteURLs
     }
 
     private func fetchRemoteImage(srcURL: URL, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
@@ -198,32 +224,6 @@ class ImageProxy: LifetimeTrackable {
         }
 
         return contentType
-    }
-
-    private func setSrc(of img: Node, to value: String) {
-        // based on the inspection of the implementation of this method, it should never throw
-        do {
-            try img.attr("src", value)
-        } catch {
-            assertionFailure("\(error)")
-        }
-    }
-
-    /*
-     If the Image Proxy cannot fetch data from an src URL of a given img element, it will:
-     - generate a UUID
-     - overwrite the src of the element with the UUID to prevent loading without protection
-        (<img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img>)
-     - store the UUID and the original src URL in the `failedRequests` dictionary
-     - return the `failedRequests` dictionary as a part of `TrackerProtectionSummary`
-
-     The caller can then replace the UUIDs with the URLs to load images without protection:
-     <img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img> -> <img src=\"https://example.com/tracker.png\"></img>.
-     */
-    private func markElementForFurtherReloadAndBlockLoadingTheImage(_ img: Node) -> UUID {
-        let uuid = Environment.uuid()
-        setSrc(of: img, to: uuid.uuidString)
-        return uuid
     }
 }
 

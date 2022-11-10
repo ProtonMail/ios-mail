@@ -44,6 +44,7 @@ final class MessageInfoProvider {
             if bodyHasChanged {
                 bodyParts = nil
                 hasAutoRetriedDecrypt = false
+                imageProxyHasRunOnCurrentBody = false
                 trackerProtectionSummary = nil
             }
         }
@@ -78,14 +79,14 @@ final class MessageInfoProvider {
     private let labelID: LabelID
     private weak var delegate: MessageInfoProviderDelegate?
     private var pgpChecker: MessageSenderPGPChecker?
-    private let prepareDisplayBodyQueue = DispatchQueue(label: "me.proton.mail.prepareDisplayBody")
 
     private let imageProxy: ImageProxy
+
+    private var imageProxyHasRunOnCurrentBody = false
 
     private var shouldApplyImageProxy: Bool {
         let messageNotSentByUs = !message.isSent
         let remoteContentAllowed = remoteContentPolicy == .allowed
-        let imageProxyHasRunOnCurrentBody = trackerProtectionSummary != nil
         return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled && !imageProxyHasRunOnCurrentBody
     }
 
@@ -254,24 +255,13 @@ final class MessageInfoProvider {
         didSet { delegate?.update(hasStrippedVersion: hasStrippedVersion) }
     }
 
-    /*
-     Keep track of handled failures. This extra property allows us to not modify the Image Proxy output,
-     while not duplicating any information
-     */
-    private var handledFailedProxyRequests = Set<UUID>()
+    private var unhandledFailedProxyRequests: Set<SrcReplacement> = []
 
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
 
     var shouldShowImageProxyFailedBanner: Bool {
-        guard let trackerProtectionSummary = trackerProtectionSummary else {
-            return false
-        }
-
-        let areThereUnhandledFailedRequests = trackerProtectionSummary.failedRequests.contains { element in
-            !handledFailedProxyRequests.contains(element.key)
-        }
-        return areThereUnhandledFailedRequests
+        !unhandledFailedProxyRequests.isEmpty
     }
 
     private var hasAutoRetriedDecrypt = false
@@ -337,12 +327,10 @@ final class MessageInfoProvider {
         }
     }
 
-    /// Queue to update embedded image data
-    private lazy var replacementQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
+    private let dispatchQueue = DispatchQueue(
+        label: "me.proton.mail.MessageInfoProvider",
+        qos: .userInteractive
+    )
 
     private(set) var inlineAttachments: [AttachmentEntity]? {
         didSet {
@@ -379,7 +367,7 @@ extension MessageInfoProvider {
         userAddressUpdater.updateUserAddresses { [weak self] in
             self?.bodyParts = nil
             self?.prepareDisplayBody()
-            self?.prepareDisplayBodyQueue.async {
+            self?.dispatchQueue.async {
                 handler?()
             }
         }
@@ -390,26 +378,27 @@ extension MessageInfoProvider {
     }
 
     func reloadImagesWithoutProtection() {
-        replacementQueue.addOperation { [weak self] in
+        replaceMarkersWithURLs(unhandledFailedProxyRequests)
+        unhandledFailedProxyRequests.removeAll()
+    }
+
+    func replaceMarkersWithURLs(_ replacements: Set<SrcReplacement>) {
+        dispatchQueue.async { [weak self] in
             guard
                 let self = self,
-                let failedRequests = self.trackerProtectionSummary?.failedRequests,
-                let currentlyDisplayedBodyParts = self.bodyParts
+                let currentlyDisplayedBody = self.bodyParts?.originalBody
             else {
                 assertionFailure("This action should not be triggerable in this case.")
                 return
             }
 
-            var unprotectedBody = currentlyDisplayedBodyParts.originalBody
-            for (marker, srcURL) in failedRequests {
-                unprotectedBody = unprotectedBody.replacingOccurrences(
-                    of: marker.uuidString,
-                    with: srcURL.absoluteString
-                )
-                self.handledFailedProxyRequests.insert(marker)
+            let updatedBody = replacements.reduce(into: currentlyDisplayedBody) { body, replacement in
+                if let rangeToReplace = body.range(of: replacement.marker.uuidString, options: .caseInsensitive) {
+                    body = body.replacingCharacters(in: rangeToReplace, with: replacement.value)
+                }
             }
 
-            self.updateBodyParts(with: unprotectedBody)
+            self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
         }
     }
@@ -478,7 +467,7 @@ extension MessageInfoProvider {
 // MARK: Body related
 extension MessageInfoProvider {
     private func prepareDisplayBody() {
-        prepareDisplayBodyQueue.async {
+        dispatchQueue.async {
             self.checkAndDecryptBody()
             guard var decryptedBody = self.bodyParts?.originalBody else {
                 self.prepareDecryptFailedBody()
@@ -487,9 +476,9 @@ extension MessageInfoProvider {
 
             if self.shouldApplyImageProxy {
                 do {
-                    let proxyOutput = try self.imageProxy.process(body: decryptedBody)
-                    decryptedBody = proxyOutput.processedBody
-                    self.trackerProtectionSummary = proxyOutput.summary
+                    let bodyWithoutRemoteURLs = try self.imageProxy.process(body: decryptedBody, delegate: self)
+                    self.imageProxyHasRunOnCurrentBody = true
+                    decryptedBody = bodyWithoutRemoteURLs
                 } catch {
                     // ImageProxy will only fail if the HTML is malformed, the other errors are contained
                     assertionFailure("\(error)")
@@ -654,7 +643,7 @@ extension MessageInfoProvider {
     }
 
     private func showEmbeddedImages() {
-        self.replacementQueue.addOperation { [weak self] in
+        dispatchQueue.async { [weak self] in
             guard
                 let self = self,
                 self.embeddedStatus == .finish,
@@ -683,5 +672,13 @@ extension MessageInfoProvider {
             self?.shouldShowEmbeddedBanner = showEmbeddedBanner
             self?.delegate?.updateBannerStatus()
         }
+    }
+}
+
+extension MessageInfoProvider: ImageProxyDelegate {
+    func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
+        trackerProtectionSummary = output.summary
+        unhandledFailedProxyRequests = output.failedUnsafeRemoteSrcs
+        replaceMarkersWithURLs(output.safeBase64Srcs)
     }
 }
