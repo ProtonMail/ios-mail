@@ -25,7 +25,9 @@ class ImageProxy: LifetimeTrackable {
         .init(maxCount: 1)
     }
 
-    private static let imageCache = Cache<URL, RemoteImage>(totalCostLimit: Constants.ImageProxy.cacheMemoryLimitInBytes)
+    private static let imageCache = Cache<URL, RemoteImage>(
+        totalCostLimit: Constants.ImageProxy.cacheMemoryLimitInBytes
+    )
 
     private let dependencies: Dependencies
 
@@ -33,7 +35,7 @@ class ImageProxy: LifetimeTrackable {
     // concurrent for optimum performance
     private let downloadCompletionQueue = DispatchQueue.global()
 
-    // used for modifing the HTML document as well as combining fetched tracker info into a dictionary
+    // used for modifying the HTML document as well as combining fetched tracker info into a dictionary
     // serial for thread safety
     private let processingQueue = DispatchQueue(label: "com.protonmail.ImageProxy")
 
@@ -61,17 +63,25 @@ class ImageProxy: LifetimeTrackable {
         var failedRequests: [UUID: URL] = [:]
         var trackers: [String: Set<URL>] = [:]
 
-        for img in imgs {
+        let remoteElements: [(Element, URL)] = imgs.compactMap { img in
             guard
                 let src = try? img.attr("src"),
                 recognizedImageURLPrefixes.contains(where: { src.starts(with: $0) }),
                 let srcURL = URL(string: src)
             else {
-                continue
+                return nil
             }
 
             dispatchGroup.enter()
+            return (img, srcURL)
+        }
 
+        guard !remoteElements.isEmpty else {
+            let summary = TrackerProtectionSummary(failedRequests: [:], trackers: [:])
+            return ImageProxyOutput(processedBody: body, summary: summary)
+        }
+
+        for (img, srcURL) in remoteElements {
             fetchRemoteImage(srcURL: srcURL) { result in
                 self.processingQueue.sync {
                     defer {
