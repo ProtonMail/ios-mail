@@ -2609,7 +2609,7 @@
 "We have trouble connecting to the servers. Please reconnect." = "Stiamo avendo problemi di connessione al server. Sei pregato di riconnetterti.";
 
 /* Spotlight explanation of the feature */
-"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Ora, in maniera predefinita, carichiamo le immagini e blocchiamo i mittenti dal poterti tracciare.\nCiò può essere cambiato nelle impostazioni.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Ora, in maniera predefinita, carichiamo le immagini e blocchiamo i mittenti dal poterti tracciare.\nCiò può essere cambiato nelle impostazioni.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Consigliamo invece di configurare una password per i seguenti destinatari:";
