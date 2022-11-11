@@ -7,6 +7,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>webcredentials:account.protonmail.com</string>
+		<string>webcredentials:account.proton.me</string>
 	</array>
 	<key>com.apple.developer.siri</key>
 	<true/>
