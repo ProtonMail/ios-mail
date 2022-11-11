@@ -373,7 +373,9 @@ final class MessageInfoProvider {
 // MARK: Public functions
 extension MessageInfoProvider {
     func update(message: MessageEntity) {
-        self.message = message
+        prepareDisplayBodyQueue.async {
+            self.message = message
+        }
     }
 
     func tryDecryptionAgain(handler: (() -> Void)?) {
