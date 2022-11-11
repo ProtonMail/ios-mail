@@ -11,7 +11,7 @@
 
 cd ..
 FOLDERS=("ProtonMail/Supporting Files" "PushService" "Share" "Siri")
-BUNDLE_VERSION=$(git rev-list --count HEAD)
+BUNDLE_VERSION="7386"
 if [ "$1" ] 
 then
     echo $1
