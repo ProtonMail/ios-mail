@@ -590,7 +590,8 @@ extension MessageInfoProvider {
         }
     }
 
-    private func updateBodyParts(with newBody: String) {
+    private func updateBodyParts(with newBody: String, origin: String = #function) {
+        SystemLogger.logTemporarily(message: "updateBodyParts() from \(origin) | newBody = \(newBody.prefix(40))", category: .bugHunt)
         bodyParts = BodyParts(
             originalBody: newBody,
             isNewsLetter: message.isNewsLetter,
