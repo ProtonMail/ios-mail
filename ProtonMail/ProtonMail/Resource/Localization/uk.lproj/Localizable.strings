@@ -1951,6 +1951,9 @@
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Заплановане надсилання";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Планування повідомлення...";
+
 /* *
  *  SearchViewController */
 "Search" = "Пошук";

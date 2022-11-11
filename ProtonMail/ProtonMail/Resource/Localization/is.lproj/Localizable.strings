@@ -750,7 +750,7 @@
 "Download paused: No connectivity" = "Hlé gert á niðurhali: Engin tenging";
 
 /* Text for estimate time label when no wifi is available */
-"Download paused: No WiFi detected" = "Hlé gert á niðurhali: Ekkert WiFi fannst";
+"Download paused: No WiFi detected" = "Hlé gert á niðurhali: Ekkert þráðlaust net fannst";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Hlé gert á niðurhali: Geymsla full";
@@ -1084,7 +1084,7 @@
 "Human Check Warning" = "Aðvörun við mennskuprófun";
 
 /* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Ef þú missir þína WiFi tengingu þá mun niðurhalið halda áfram í gegnum farsímagögn.";
+"If you lose your WiFi connection, download will continue over mobile data." = "Ef þú missir tengingu við þráðlausa netið þá mun niðurhalið halda áfram í gegnum farsímagögn.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Hunsa viðvörun og halda áfram";
@@ -1115,7 +1115,7 @@
 "In order to use our services, you must agree to Proton Mail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála Proton tölvupósts.";
 
 /* "Deleted" */
-"Inbox" = "Pósthólf";
+"Inbox" = "Innhólf";
 
 /* *
  *  MailboxViewController */
@@ -1950,6 +1950,9 @@
 
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Dagskrá send";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Skipulegg skilaboð...";
 
 /* *
  *  SearchViewController */

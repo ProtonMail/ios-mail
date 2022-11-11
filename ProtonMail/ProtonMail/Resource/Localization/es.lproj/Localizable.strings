@@ -1,3 +1,6 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "no se buscarán. Incrementa el %1$@ para buscar en ellos";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "... [Mostrar mensaje completo]";
 
@@ -1322,6 +1325,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El mensaje no ha podido ser enviado. Al menos una dirección de correo electrónico o un dominio del destinatario no existe o bien tiene un formato incorrecto.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Descarga de mensajes pausada. Descubre cómo %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Caducidad del mensaje";
 
@@ -1368,8 +1374,17 @@
 /* (No Comment) */
 "Message Swipe Actions" = "Acciones de deslizamiento de mensajes";
 
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Se están descargando los mensajes para la búsqueda de contenido. Algunos resultados no se mostrarán. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Los mensajes anteriores ";
+
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Los mensajes anteriores a %@ no serán descargados. Para buscar en ellos, libera almacenamiento en este dispositivo.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Los mensajes se descargarán mediante WiFi. Esto puede llevar algún tiempo y tu dispositivo se puede calentar ligeramente. Puedes pausar esta acción en cualquier momento.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.";
@@ -1522,6 +1537,12 @@
 
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "No es spam (mover a la bandeja de entrada)";
+
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "No se han podido descargar todos los mensajes. Libera espacio en el dispositivo para descargarlos.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "No se han podido descargar todos los mensajes. Aumenta el límite de almacenamiento más abajo para descargarlos.";
 
 /* No comment provided by engineer. */
 "Not set" = "No establecido";
@@ -1685,6 +1706,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Por favor, conéctate y vuelve a intentarlo";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Conéctate a internet para continuar.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Introduce un número de teléfono válido.";
@@ -1927,6 +1951,9 @@
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Envío programado";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Programando mensaje...";
+
 /* *
  *  SearchViewController */
 "Search" = "Buscar";
@@ -1934,6 +1961,9 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Buscar contenido del mensaje";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "¿La búsqueda está llevando mucho tiempo? %1$@ de esta búsqueda para obtener resultados más rápidamente.";
 
 /* The link in local storage downloaded messages. */
 "See details" = "Ver detalles";
@@ -2074,6 +2104,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Silenciar";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Algunas de las imágenes no han podido ser cargadas con la protección de rastreo.";
+
 /* (No Comment) */
 "Space Warning" = "Advertencia de espacio";
 
@@ -2208,6 +2241,9 @@
 /* (No Comment) */
 "The display name is now %@." = "El nombre a mostrar es ahora %@.";
 
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Se parará la descarga si la aplicación Proton Mail se cierra.";
+
 /* Description */
 "The draft cache is broken. Please try again." = "La caché del borrador está rota, inténtalo de nuevo.";
 
@@ -2223,6 +2259,9 @@
 /* *
  *  LabelsViewController */
 "The maximum number of labels is %d." = "El número máximo de etiquetas es %d.";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "El mensaje está siendo enviado y se moverá a la carpeta Enviados una vez se haya completado el envío.";
 
 /* update password error */
 "The new password can't be empty." = "La nueva contraseña no puede estar vacía.";
@@ -2259,6 +2298,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "La clave de envío no es válida";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "La hora de envío tiene que ser como mínimo dentro de 5 minutos.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límite de tamaño para los archivos adjuntos es de 25 MB.";
@@ -2347,6 +2389,9 @@
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación está temporalmente bloqueada.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "La validación del certificado TLS ha fallado. Tu conexión puede estar siendo monitorizada y, por tu seguridad, la aplicación se ha bloqueado temporalmente.\n\nCambia de red inmediatamente.";
 
 /* message To: feild
    Title */

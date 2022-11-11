@@ -88,7 +88,7 @@
 "Add birthday" = "Adăugare dată naștere";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "Adăugare Copie și Copie ascunsă";
+"Add CC and BCC" = "Adăugare copie și copie ascunsă";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adăugare contacte";
@@ -409,7 +409,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "CI";
+"Cc" = "C";
 
 /* *
  *  PhoneVerifyViewController */
@@ -482,7 +482,7 @@
 "Close" = "Închidere";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Închidere Copie și Copie ascunsă";
+"Close CC and BCC" = "Închidere copie și copie ascunsă";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Se închide";
@@ -1950,6 +1950,9 @@
 
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Trimitere programată";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Se programează mesajul...";
 
 /* *
  *  SearchViewController */

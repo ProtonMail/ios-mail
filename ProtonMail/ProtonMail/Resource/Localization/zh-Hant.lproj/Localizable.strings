@@ -1939,6 +1939,9 @@
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "排程傳送";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "正在排程訊息...";
+
 /* *
  *  SearchViewController */
 "Search" = "搜尋";

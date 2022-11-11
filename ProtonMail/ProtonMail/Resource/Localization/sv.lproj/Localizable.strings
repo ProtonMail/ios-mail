@@ -1951,6 +1951,9 @@
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Schemalägg sändning";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Schemalägger meddelande …";
+
 /* *
  *  SearchViewController */
 "Search" = "Sök";

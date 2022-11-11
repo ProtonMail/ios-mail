@@ -1730,6 +1730,9 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programar enviament";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Programant missatge...";
+
 /* *
  *  SearchViewController */
 "Search" = "Cerca";
