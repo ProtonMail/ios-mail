@@ -1945,6 +1945,9 @@
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Zaplanowane wysyłanie";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Planowanie wiadomości...";
+
 /* *
  *  SearchViewController */
 "Search" = "Szukaj";

@@ -1951,6 +1951,9 @@
 /* The title of the introducation view of the schedule send */
 "Scheduled send" = "Invio pianificato";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Pianificazione messaggio...";
+
 /* *
  *  SearchViewController */
 "Search" = "Cerca";
