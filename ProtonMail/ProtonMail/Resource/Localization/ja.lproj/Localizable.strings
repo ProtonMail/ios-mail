@@ -2390,7 +2390,7 @@
 "We have trouble connecting to the servers. Please reconnect." = "サーバーへの接続に問題が発生しました。再接続してください。";
 
 /* Spotlight explanation of the feature */
-"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "デフォルトで画像を読み込みつつ、送信者があなたをトラッキングするのを防ぎます。\nこれは設定で変更できます。";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "デフォルトで画像を読み込みつつ、送信者があなたをトラッキングするのを防ぎます。\nこれは設定で変更できます。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "以下の宛先へパスワードを設定して送信することをおすすめします:";

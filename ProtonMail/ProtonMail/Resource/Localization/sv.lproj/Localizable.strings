@@ -2609,7 +2609,7 @@
 "We have trouble connecting to the servers. Please reconnect." = "Vi har problem att ansluta till servrarna. Anslut igen.";
 
 /* Spotlight explanation of the feature */
-"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Vi laddar nu bilder som standard och blockerar avsändare från att spåra dig. Detta kan ändras i inställningarna.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Vi laddar nu bilder som standard och blockerar avsändare från att spåra dig. Detta kan ändras i inställningarna.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Vi rekommenderar att du ställer in ett lösenord istället för följande mottagare:";
