@@ -2603,7 +2603,7 @@
 "We have trouble connecting to the servers. Please reconnect." = "Máme potíže s připojením k serverům. Zkuste se prosím připojit znovu.";
 
 /* Spotlight explanation of the feature */
-"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "Nyní ve výchozím nastavení načítáme obrázky a znemožňujeme odesílatelům, aby vás sledovali.\nTuto možnost lze změnit v nastavení.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Nyní ve výchozím nastavení načítáme obrázky a znemožňujeme odesílatelům, aby vás sledovali.\nTuto možnost lze změnit v nastavení.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Místo toho doporučujeme nastavit heslo pro následující příjemce:";

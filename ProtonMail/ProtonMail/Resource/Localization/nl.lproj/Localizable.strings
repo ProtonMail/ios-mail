@@ -2498,7 +2498,7 @@
 "We have trouble connecting to the servers. Please reconnect." = "We hebben problemen met de verbinding met de servers. Gelieve opnieuw te verbinden.";
 
 /* Spotlight explanation of the feature */
-"We now load images by default and block senders from tracking you.\nThis can be changed in settings." = "We laden afbeelding nu standaard en blokkeren trackers van afzenders.\nDit kan gewijzigd worden via de instellingen.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "We laden afbeelding nu standaard en blokkeren trackers van afzenders.\nDit kan gewijzigd worden via de instellingen.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Wij raden aan een wachtwoord in te stellen voor de volgende ontvangers:";
