@@ -20,9 +20,9 @@ fileprivate struct id {
     static let subjectTextFieldIdentifier = "ComposeHeaderViewController.subject"
     static let pasteMenuItem = app.menuItems.staticTexts.element(boundBy: 0)
     static let popoverDismissRegionOtherIdentifier = "PopoverDismissRegion"
-    static let expirationButtonIdentifier = "ComposeContainerViewController.hourButton"
-    static let passwordButtonIdentifier = "ComposeContainerViewController.lockButton"
-    static let attachmentButtonIdentifier = "ComposeContainerViewController.attachmentButton"
+    static let expirationButtonIdentifier = "ComposeContainerViewController.toolbar.hourButton"
+    static let passwordButtonIdentifier = "ComposeContainerViewController.toolbar.lockButton"
+    static let attachmentButtonIdentifier = "ComposeContainerViewController.toolbar.attachmentButton"
     static let cancelNavBarButtonIdentifier = "ComposeContainerViewController.cancelButton"
     static let showCcBccButtonIdentifier = "ComposeHeaderViewController.showCcBccButton"
     static let fromStaticTextIdentifier = "ComposeHeaderViewController.fromAddress"
@@ -190,7 +190,7 @@ class ComposerRobot: CoreElements {
 
     func recipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
-        keyboard().byIndex(0).onDescendant(button("Return")).tap()
+        button("Return").firstMatch().tap()
         return self
     }
     
@@ -203,7 +203,7 @@ class ComposerRobot: CoreElements {
     
     func editRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
-        keyboard().byIndex(0).onDescendant(button("Return")).tap()
+        keyboard().byIndex(0).onDescendant(button("Return")).firstMatch().tap()
         return self
     }
     
@@ -267,6 +267,7 @@ class ComposerRobot: CoreElements {
     
     func subject(_ subjectText: String) -> ComposerRobot {
         textField(id.subjectTextFieldIdentifier)
+            .firstMatch()
             .forceKeyboardFocus()
             .typeText(subjectText)
         return self

@@ -21,13 +21,14 @@ import pmtest
 fileprivate struct id {
    
     /// Set Password screen identifiers.
-    static let messagePasswordOtherIdentifier = "ComposePasswordVC.passwordText"
-    static let messagePasswordSecureTextFieldIdentifier = "ComposePasswordVC.textField"
+    static let messagePasswordOtherIdentifier = "ComposePasswordVC.passwordText.mainView"
+    static let messagePasswordSecureTextFieldIdentifier = "ComposePasswordVC.passwordText.textField"
     
-    static let confirmPasswordOtherIdentifier = "ComposePasswordVC.confirmText"
-    static let confirmPasswordSecureTextFieldIdentifier = "ComposePasswordVC.textField"
+    static let confirmPasswordOtherIdentifier = "ComposePasswordVC.confirmText.mainView"
+    static let confirmPasswordSecureTextFieldIdentifier = "ComposePasswordVC.confirmText.textField"
     static let hintPasswordTextViewIdentifier = "ComposePasswordVC.passwordHintText"
     static let applyButtonIdentifier = "ComposePasswordVC.applyButton"
+    static let infoTextTextViewIdentifier = "ComposePasswordVC.infoText"
 }
 
 /**
@@ -42,15 +43,15 @@ class SetPasswordRobot: CoreElements {
     }
 
     private func definePassword(_ password: String) -> SetPasswordRobot {
-        otherElement(id.messagePasswordOtherIdentifier).onDescendant(secureTextField(id.messagePasswordSecureTextFieldIdentifier))
+        secureTextField(id.messagePasswordSecureTextFieldIdentifier)
+            .firstMatch()
             .tap()
             .typeText(password)
         return self
     }
 
     private func confirmPassword(_ password: String) -> SetPasswordRobot {
-        otherElement(id.confirmPasswordOtherIdentifier)
-            .onDescendant(secureTextField(id.confirmPasswordSecureTextFieldIdentifier))
+        secureTextField(id.confirmPasswordSecureTextFieldIdentifier)
             .tap()
             .typeText(password)
         return self
@@ -58,8 +59,7 @@ class SetPasswordRobot: CoreElements {
 
     private func defineHint(_ hint: String) -> SetPasswordRobot {
         textView(id.hintPasswordTextViewIdentifier).tap().typeText(hint)
-        /// Workaround to dismiss keyboard.
-        app.tap()
+        textView(id.infoTextTextViewIdentifier).tap()
         return self
     }
 

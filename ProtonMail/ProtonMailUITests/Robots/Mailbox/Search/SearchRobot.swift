@@ -10,7 +10,7 @@ import XCTest
 import pmtest
 
 fileprivate struct id {
-    static let searchTextFieldIdentifier = "SearchViewController.textField"
+    static let searchTextFieldIdentifier = "SearchViewController.searchBar.textField"
     static let searchKeyboardButtonText = LocalString._general_search_placeholder
     static let cancelButttonIdentifier = LocalString._general_cancel_button
     static func messageSenderLabelIdentifier(_ subject: String) -> String { return "\(subject).senderLabel" }

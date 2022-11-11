@@ -23,7 +23,7 @@ class SearchTests: BaseTestCase {
     
     func testSearchFromInboxBySubject() {
         let user = testData.onePassUser
-        let recipient = testData.onePassUser
+        let recipient = testData.twoPassUser
         LoginRobot()
             .loginUser(user)
             .compose()
@@ -47,7 +47,6 @@ class SearchTests: BaseTestCase {
     
     func testSearchDraft() {
         let user = testData.onePassUser
-        let modifiedDraftTopic = String(format: "%@ modify subject test", subject)
         LoginRobot()
             .loginUser(user)
             .compose()
@@ -58,15 +57,6 @@ class SearchTests: BaseTestCase {
             .searchBar()
             .searchMessageText(subject)
             .verify.draftMessageExists(subject)
-            .goBackToDrafts()
-            .clickDraftBySubject(subject)
-            .changeSubjectTo(modifiedDraftTopic)
-            .tapCancel()
-            .menuDrawer()
-            .inbox()
-            .searchBar()
-            .searchMessageText(modifiedDraftTopic)
-            .verify.draftMessageExists(modifiedDraftTopic)
     }
     
     func testSearchForNonExistentMessage() {

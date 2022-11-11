@@ -32,8 +32,8 @@
         "AccountSettingsTests\/testChangeDisplayName()",
         "AccountSettingsTests\/testCreateAndDeleteFolder()",
         "AccountSettingsTests\/testCreateAndDeleteLabel()",
+        "AccountSettingsTests\/testDisablePrivacyAutoShowImages()",
         "AccountSettingsTests\/testNavigateToDefaultEmailAddress()",
-        "ContactsTests\/testEditContact()",
         "ContactsTests\/testEditGroup()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomLabel()",
@@ -42,18 +42,14 @@
         "LogoutTests\/testLogoutOnePassUser()",
         "MenuTests\/testSaveSpecialCharacterDisplayName()",
         "MenuTests\/testSaveTwoWordsDisplayName()",
-        "MultiuserManagementTests\/testRemovePrimaryAccount()",
-        "MultiuserManagementTests\/testRemoveSecondaryAccount()",
         "MultiuserManagementTests\/testSwitchAccount()",
         "PinTests\/testTurnOnAndOffPin()",
-        "SearchTests\/testSearchFromInboxByAddress()",
-        "SendNewMessageTests\/testSendMessageToInternalContact()",
-        "SpamTests\/testSwipeToSpamMessage()",
-        "TrashTests\/testDeleteMessageFromDetailPage()"
+        "SettingsTests\/testEditAutoLockTime()",
+        "SpamTests\/testSwipeToSpamMessage()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
-        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "identifier" : "67596B012358FAE8B0782EE2",
         "name" : "ProtonMailUITests"
       }
     }

@@ -13,7 +13,6 @@ stages:
   - sh Tests/TestPlans/scripts/prepare_users.sh
   - cd ..
   - *run_xcodegen_if_needed
-  - gem install xcpretty
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
@@ -85,34 +84,37 @@ ui_tests:
   stage: test
   except:
     - schedules
-    - develop
   only:
     refs:
       - master
+      - develop
       - /^release\/.*$/
+      - merge_requests
   variables:
     GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
     paths:
-      - ./index.html
-      - ./TestResults/report.junit
-      - ./TestResults.xcresult
+      - ProtonMail/fastlane/test_output/ProtonMailUITests.xcresult
     expire_in: 20 days
     reports:
-      junit: ./TestResults/report.junit
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
+      junit: ProtonMail/fastlane/test_output/report.junit
   before_script:
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
     - *before_script_mac
-    - cd ..
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
+    - bundle install
+    - bundle exec fastlane ui_test
   tags:
     - iOS_ARM_TAIPEI
+  allow_failure: true
 
 feature_tests:
   dependencies: []
