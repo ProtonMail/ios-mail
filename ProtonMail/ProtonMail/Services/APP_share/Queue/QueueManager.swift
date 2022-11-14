@@ -112,7 +112,8 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
                  .label, .unlabel, .folder,
                  .updateLabel, .createLabel, .deleteLabel,
                  .updateContact, .deleteContact, .addContact,
-                 .addContactGroup, .updateContactGroup, .deleteContactGroup:
+                 .addContactGroup, .updateContactGroup, .deleteContactGroup,
+                 .notificationAction:
                 _ = self.miscQueue.add(task.uuid, object: task)
             case .signout:
                 self.handleSignout(signoutTask: task)
@@ -623,6 +624,7 @@ private extension Collection where Element == Any {
 }
 
 protocol QueueManagerProtocol {
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool
     func addBlock(_ block: @escaping () -> Void)
 }
 

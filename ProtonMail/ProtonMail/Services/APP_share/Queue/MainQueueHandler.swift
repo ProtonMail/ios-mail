@@ -42,6 +42,7 @@ final class MainQueueHandler: QueueHandler {
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
+    private let dependencies: Dependencies
 
     init(coreDataService: CoreDataService,
          apiService: APIService,
@@ -50,7 +51,9 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager) {
+         user: UserManager,
+         dependencies: Dependencies = Dependencies()
+    ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
         self.apiService = apiService
@@ -62,6 +65,7 @@ final class MainQueueHandler: QueueHandler {
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
         self.user = user
+        self.dependencies = dependencies
     }
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -105,6 +109,8 @@ final class MainQueueHandler: QueueHandler {
                                         labelID: nextLabelID,
                                         isSwipeAction: isSwipeAction,
                                         completion: completeHandler)
+            case let .notificationAction(messageID, action):
+                notificationAction(messageId: messageID, action: action, completion: completeHandler)
             }
         } else {
             switch action {
@@ -187,6 +193,8 @@ final class MainQueueHandler: QueueHandler {
                 self.updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: addedEmailList, removedEmailList: removedEmailList, completion: completeHandler)
             case .deleteContactGroup(let objectID):
                 self.deleteContactGroup(objectID: objectID, completion: completeHandler)
+            case let .notificationAction(messageID, action):
+                notificationAction(messageId: messageID, action: action, completion: completeHandler)
             }
         }
     }
@@ -987,6 +995,40 @@ extension MainQueueHandler {
                      as: LabelID(labelID),
                      isSwipeAction: isSwipeAction) { result in
             completion(result.error)
+        }
+    }
+}
+
+// MARK: queue actions for notification actions
+
+extension MainQueueHandler {
+
+    func notificationAction(messageId: String, action: PushNotificationAction, completion: @escaping Completion) {
+        guard let user = user else {
+            return
+        }
+        let params = ExecuteNotificationAction.Parameters(
+            apiService: user.apiService,
+            action: action,
+            messageId: messageId
+        )
+        dependencies.actionRequest.execute(params: params) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case .failure(let error):
+                completion(error)
+            }
+        }
+    }
+}
+
+extension MainQueueHandler {
+    struct Dependencies {
+        let actionRequest: ExecuteNotificationActionUseCase
+
+        init(actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction()) {
+            self.actionRequest = actionRequest
         }
     }
 }

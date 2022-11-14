@@ -67,7 +67,12 @@ class SetPinCodeModelImpl: PinCodeViewModel {
         self.isPinMatched { matched in
             if matched {
                 keymaker.deactivate(BioProtection())
-                keymaker.activate(PinProtection(pin: self.enterPin), completion: completion)
+                keymaker.activate(PinProtection(pin: self.enterPin)) { activated in
+                    if activated {
+                        NotificationCenter.default.post(name: .appExtraSecurityEnabled, object: nil, userInfo: nil)
+                    }
+                    completion(activated)
+                }
             }
         }
     }

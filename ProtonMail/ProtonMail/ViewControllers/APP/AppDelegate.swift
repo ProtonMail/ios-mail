@@ -128,6 +128,7 @@ extension AppDelegate: UIApplicationDelegate {
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService())
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
@@ -170,6 +171,11 @@ extension AppDelegate: UIApplicationDelegate {
         //start network notifier
         sharedInternetReachability.startNotifier()
         self.configureLanguage()
+        /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
+        /// notification actions work. This is because the app could be inactive when an action is triggered
+        /// and `didFinishLaunchingWithOptions` will be called, but other functions
+        /// like `applicationWillEnterForeground` won't.
+        self.configurePushService(launchOptions: launchOptions)
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didSignOutNotification(_:)),

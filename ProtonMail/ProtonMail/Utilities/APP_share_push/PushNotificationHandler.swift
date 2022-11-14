@@ -157,6 +157,9 @@ private extension PushNotificationHandler {
         let pushData = pushContent.data
         content.title = pushData.sender.name.isEmpty ? pushData.sender.address : pushData.sender.name
         content.body = pushData.body
+
+        // extra information to be used by notification actions
+        content.userInfo["messageId"] = pushData.messageId
     }
 
     private func updateBadge(

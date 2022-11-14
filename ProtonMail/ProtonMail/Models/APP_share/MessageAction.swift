@@ -51,6 +51,7 @@ enum MessageAction: Equatable {
         case addContactGroup
         case updateContactGroup
         case deleteContactGroup
+        case notificationAction
     }
 
     enum NestedCodingKeys: CodingKey {
@@ -75,6 +76,8 @@ enum MessageAction: Equatable {
         case isSwipeAction
         case importFromDevice
         case deliveryTime
+        case notificationAction
+        case messageID
     }
 
     // Draft
@@ -132,6 +135,9 @@ enum MessageAction: Equatable {
     case updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String])
     case deleteContactGroup(objectID: String)
 
+    // Push notification action
+    case notificationAction(messageID: String, action: PushNotificationAction)
+
     var rawValue: String {
         switch self {
         case .saveDraft:
@@ -188,6 +194,8 @@ enum MessageAction: Equatable {
             return "updateContactGroup"
         case .deleteContactGroup:
             return "deleteContactGroup"
+        case .notificationAction:
+            return "notificationAction"
         }
     }
 }
@@ -310,6 +318,12 @@ extension MessageAction: Codable {
         case .deleteContactGroup:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContactGroup)
             self = .deleteContactGroup(objectID: try nestedContainer.decode(String.self, forKey: .objectID))
+        case .notificationAction:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .notificationAction)
+            self = .notificationAction(
+                messageID: try nestedContainer.decode(String.self, forKey: .messageID),
+                action: try nestedContainer.decode(PushNotificationAction.self, forKey: .notificationAction)
+            )
         }
     }
 
@@ -436,6 +450,10 @@ extension MessageAction: Codable {
         case .deleteContactGroup(let objectID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .deleteContactGroup)
             try nestedContainer.encode(objectID, forKey: .objectID)
+        case .notificationAction(let messageID, let action):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .notificationAction)
+            try nestedContainer.encode(messageID, forKey: .messageID)
+            try nestedContainer.encode(action, forKey: .notificationAction)
         }
     }
 }

@@ -42,8 +42,6 @@ let sharedServices: ServiceFactory = {
                    for: LastUpdatedStore(contextProvider: helper.get(by: CoreDataService.self)))
     }
     #if !APP_EXTENSION
-    // push service
-    helper.add(PushNotificationService.self, for: PushNotificationService())
     // from old ServiceFactory.default
     helper.add(AddressBookService.self, for: AddressBookService())
     #endif

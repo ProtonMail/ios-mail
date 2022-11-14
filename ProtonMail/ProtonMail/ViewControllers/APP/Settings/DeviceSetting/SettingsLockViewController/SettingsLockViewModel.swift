@@ -175,7 +175,10 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
 
     func enableBioProtection( completion: @escaping () -> Void) {
         keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-        keymaker.activate(BioProtection()) { _ in
+        keymaker.activate(BioProtection()) { activated in
+            if activated {
+                NotificationCenter.default.post(name: .appExtraSecurityEnabled, object: nil, userInfo: nil)
+            }
             completion()
         }
     }
@@ -191,6 +194,7 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
             keymaker.deactivate(randomProtection)
         }
         userCachedStatus.keymakerRandomkey = nil
+        NotificationCenter.default.post(name: .appExtraSecurityDisabled, object: nil, userInfo: nil)
     }
 
     func getBioProtectionTitle() -> String {
