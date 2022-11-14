@@ -29,7 +29,8 @@ class MessageActionCodableTests: XCTestCase {
         switch action {
         case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .read, .unread, .delete, .send, .emptyTrash,
              .emptySpam, .empty, .label, .unlabel, .folder, .updateLabel, .createLabel, .deleteLabel, .signout,
-             .signin, .fetchMessageDetail, .updateAttKeyPacket, .updateContact, .deleteContact, .addContact, .addContactGroup, .updateContactGroup, .deleteContactGroup:
+             .signin, .fetchMessageDetail, .updateAttKeyPacket, .updateContact, .deleteContact, .addContact,
+             .addContactGroup, .updateContactGroup, .deleteContactGroup, .notificationAction:
             break
         }
     }

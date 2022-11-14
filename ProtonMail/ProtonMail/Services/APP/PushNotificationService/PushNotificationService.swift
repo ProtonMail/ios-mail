@@ -46,8 +46,12 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private let sharedUserDefaults = SharedUserDefaults()
     private let notificationCenter: NotificationCenter
     private let navigationResolver: PushNavigationResolver
+    private let notificationActions: PushNotificationActionsHandler
 
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
+
+    /// The notification action is pending because the app has been just launched and can't make a request yet
+    private var notificationActionPendingUnlock: NotificationActionPayload?
 
     init(subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -70,8 +74,11 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         self.navigationResolver = PushNavigationResolver(
             dependencies: PushNavigationResolver.Dependencies(subscriptionsPack: currentSubscriptions)
         )
+        self.notificationActions = PushNotificationActionsHandler()
 
         super.init()
+
+        notificationActions.registerActions()
 
         defer {
             notificationCenter.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
@@ -180,6 +187,11 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         })
 
         finalizeReporting(settingsToReport: settingsToReport)
+
+        if let notificationPayload = notificationActionPendingUnlock {
+            notificationActionPendingUnlock = nil
+            handleNotificationActionTask(payload: notificationPayload)
+        }
     }
 
     @objc private func didSignOut() {
@@ -269,6 +281,55 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     // MARK: - notifications
 
+    private func handleRemoteNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if UnlockManager.shared.isUnlocked() { // unlocked
+            didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
+        } else if UIApplication.shared.applicationState == .inactive { // opened by push
+            setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+        } else {
+            completionHandler()
+        }
+    }
+
+    private func handleNotificationAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        let userInfo = response.notification.request.content.userInfo
+        defer { completionHandler() }
+        guard
+            let sessionId = userInfo["UID"] as? String,
+            let messageId = userInfo["messageId"] as? String
+        else {
+            SystemLogger.log(message: "Action info parameters not found", category: .pushNotification, isError: true)
+            return
+        }
+        let notificationActionPayload = NotificationActionPayload(
+            sessionId: sessionId,
+            messageId: messageId,
+            actionIdentifier: response.actionIdentifier
+        )
+        guard !usersManager.users.isEmpty else {
+            // This might mean the app is locked and not able to access
+            // authenticated users info yet or that there are no users.
+            if usersManager.hasUsers() {
+                notificationActionPendingUnlock = notificationActionPayload
+                SystemLogger.log(message: "Action pending \(response.actionIdentifier)", category: .pushNotification)
+            }
+            return
+        }
+        handleNotificationActionTask(payload: notificationActionPayload)
+    }
+
+    private func handleNotificationActionTask(payload: NotificationActionPayload) {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        guard let userId = usersManager.getUser(by: payload.sessionId)?.userID else {
+            let message = "Action \(payload.actionIdentifier): User not found for specific session"
+            SystemLogger.log(message: message, category: .pushNotification, isError: true)
+            return
+        }
+        notificationActions.handle(action: payload.actionIdentifier, userId: userId, messageId: payload.messageId)
+    }
+
     private func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
         guard
             let payload = pushNotificationPayload(userInfo: userInfo),
@@ -314,16 +375,21 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 }
 
 extension PushNotificationService: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                       didReceive response: UNNotificationResponse,
-                                       withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        if UnlockManager.shared.isUnlocked() { // unlocked
-            self.didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
-        } else if UIApplication.shared.applicationState == .inactive { // opened by push
-            self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            // App opened tapping on a push notification
+            handleRemoteNotification(response: response, completionHandler: completionHandler)
+
+        } else if notificationActions.isKnown(action: response.actionIdentifier) {
+            // User tapped on a push notification action
+            handleNotificationAction(response: response, completionHandler: completionHandler)
+
         } else {
-            // app is locked and not opened from push - nothing to do here
             completionHandler()
         }
     }
@@ -354,6 +420,15 @@ extension PushNotificationService {
                 updateSubscriptionClosure((result.key, result.value))
             }
         }
+    }
+}
+
+private extension PushNotificationService {
+
+    struct NotificationActionPayload {
+        let sessionId: String
+        let messageId: String
+        let actionIdentifier: String
     }
 }
 

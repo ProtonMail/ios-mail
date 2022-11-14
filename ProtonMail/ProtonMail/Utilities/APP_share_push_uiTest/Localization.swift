@@ -1507,6 +1507,16 @@ class LocalizedString {
     lazy var _encrypted_search_disable_alert_button_delete = NSLocalizedString("Okay", comment: "Title for the alert button to disable content search.")
     lazy var _encrypted_search_disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
     lazy var _encrypted_search_message_count = NSLocalizedString("Downloading message %1d out of %2d", comment: "The text for the number of downloaded messages.")
+
+    var _title_notification_action_mark_as_read: String {
+        L11n.PushNotificationAction.mark_as_read
+    }
+    var _title_notification_action_archive: String {
+        L11n.PushNotificationAction.archive
+    }
+    var _title_notification_action_move_to_trash: String {
+        L11n.PushNotificationAction.move_to_trash
+    }
 }
 
 enum L11n {
@@ -1522,5 +1532,11 @@ enum L11n {
         // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
         static let new_feature_description = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
+    }
+
+    fileprivate struct PushNotificationAction {
+        static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
+        static let archive = NSLocalizedString("Archive", comment: "Push notification action to archive")
+        static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
     }
 }
