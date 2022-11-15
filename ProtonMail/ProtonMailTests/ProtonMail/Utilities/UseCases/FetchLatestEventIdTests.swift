@@ -30,7 +30,7 @@ class FetchLatestEventIdTests: XCTestCase {
         mockLastUpdatedStore = MockLastUpdatedStore()
 
         sut = FetchLatestEventId(
-            params: makeParams(),
+            userId: "dummy_user_id",
             dependencies: makeDependencies(
                 mockEventsService: mockEventsService,
                 mockLastUpdatedStore: mockLastUpdatedStore
@@ -49,7 +49,7 @@ class FetchLatestEventIdTests: XCTestCase {
         mockEventsService.fetchLatestEventIDResult.eventID = eventId
 
         let expectation = expectation(description: "callback is called")
-        sut.execute { result in
+        sut.execute(params: ()) { result in
             XCTAssert(try! result.get().eventID == eventId)
             expectation.fulfill()
         }
@@ -61,7 +61,7 @@ class FetchLatestEventIdTests: XCTestCase {
 
     func testExecute_whenEventsService_doesNotReturnAnEvent() {
         let expectation = expectation(description: "callback is called")
-        sut.execute { result in
+        sut.execute(params: ()) { result in
             XCTAssert(try! result.get().eventID.isEmpty == true)
             expectation.fulfill()
         }
@@ -71,10 +71,6 @@ class FetchLatestEventIdTests: XCTestCase {
         XCTAssert(mockLastUpdatedStore.updateEventIDWasCalled == false)
     }
 
-}
-
-private func makeParams() -> FetchLatestEventId.Parameters {
-    FetchLatestEventId.Parameters(userId: "dummy_user_id")
 }
 
 private func makeDependencies(

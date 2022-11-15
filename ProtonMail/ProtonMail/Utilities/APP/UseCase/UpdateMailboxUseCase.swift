@@ -226,17 +226,20 @@ extension UpdateMailbox {
         let labelID = self.parameters.labelID
         switch self.locationViewMode {
         case .singleMessage:
+            let params = FetchMessagesWithReset.Params(
+                endTime: time,
+                fetchOnlyUnreadMessages: unreadOnly,
+                refetchContacts: cleanContact,
+                removeAllDrafts: removeAllDraft
+            )
             self.dependencies
                 .fetchMessageWithReset
-                .execute(endTime: time,
-                         isUnread: unreadOnly,
-                         cleanContact: cleanContact,
-                         removeAllDraft: removeAllDraft,
-                         hasToBeQueued: false) { result in
+                .callbackOn(.main)
+                .execute(params: params) { result in
                     completion(result.error)
                 }
         case .conversation:
-            self.dependencies.fetchLatestEventID.execute(callback: { _ in })
+            self.dependencies.fetchLatestEventID.execute(params: (), callback: { _ in })
             self.dependencies
                 .conversationProvider
                 .fetchConversations(for: labelID,

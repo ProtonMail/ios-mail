@@ -18,23 +18,21 @@
 import Foundation
 import PromiseKit
 
-protocol FetchLatestEventIdUseCase: UseCase {
-    func execute(callback: UseCaseResult<EventLatestIDResponse>?)
-}
+typealias FetchLatestEventIdUseCase = NewUseCase<EventLatestIDResponse, Void>
 
 class FetchLatestEventId: FetchLatestEventIdUseCase {
-    private let params: Parameters
+    private let userId: UserID
     private let dependencies: Dependencies
 
-    init(params: Parameters, dependencies: Dependencies) {
-        self.params = params
+    init(userId: UserID, dependencies: Dependencies) {
+        self.userId = userId
         self.dependencies = dependencies
     }
 
-    func execute(callback: UseCaseResult<EventLatestIDResponse>?) {
+    override func executionBlock(params: Void, callback: @escaping Callback) {
         dependencies.eventsService?.fetchLatestEventID { [weak self] latestEvent in
             if latestEvent.eventID.isEmpty {
-                self?.runOnMainThread { callback?(.success(latestEvent)) }
+                callback(.success(latestEvent))
             } else {
                 self?.persistLastEventId(latestEvent: latestEvent, callback: callback)
             }
@@ -44,24 +42,20 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
 
 extension FetchLatestEventId {
 
-    private func persistLastEventId(latestEvent: EventLatestIDResponse,
-                                    callback: UseCaseResult<EventLatestIDResponse>?) {
-        _ = dependencies.lastUpdatedStore.updateEventID(by: params.userId,
-                                                        eventID: latestEvent.eventID)
-            .ensure { [weak self] in
-                self?.runOnMainThread { callback?(.success(latestEvent)) }
+    private func persistLastEventId(latestEvent: EventLatestIDResponse, callback: @escaping Callback) {
+        dependencies
+            .lastUpdatedStore
+            .updateEventID(by: userId, eventID: latestEvent.eventID)
+            .ensure {
+                callback(.success(latestEvent))
             }
+            .cauterize()
     }
 }
 
 // MARK: Input structs
 
 extension FetchLatestEventId {
-
-    struct Parameters {
-        /// Identifier to persist the last event locally for a specific user.
-        let userId: UserID
-    }
 
     struct Dependencies {
         let eventsService: EventsServiceProtocol?

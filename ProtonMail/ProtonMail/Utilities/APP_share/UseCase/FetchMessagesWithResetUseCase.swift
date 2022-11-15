@@ -18,97 +18,59 @@
 import Foundation
 import PromiseKit
 
-protocol FetchMessagesWithResetUseCase: UseCase {
-    func execute(
-        endTime: Int,
-        isUnread: Bool,
-        cleanContact: Bool,
-        removeAllDraft: Bool,
-        hasToBeQueued: Bool,
-        callback: UseCaseResult<Void>?
-    )
-}
+typealias FetchMessagesWithResetUseCase = NewUseCase<Void, FetchMessagesWithReset.Params>
 
 final class FetchMessagesWithReset: FetchMessagesWithResetUseCase {
-    private let params: Parameters
+    private let userID: UserID
     private let dependencies: Dependencies
 
-    init(params: Parameters, dependencies: Dependencies) {
-        self.params = params
+    init(userID: UserID, dependencies: Dependencies) {
+        self.userID = userID
         self.dependencies = dependencies
     }
 
-    func execute(
-        endTime: Int,
-        isUnread: Bool,
-        cleanContact: Bool,
-        removeAllDraft: Bool,
-        hasToBeQueued: Bool,
-        callback: UseCaseResult<Void>?
-    ) {
-        if hasToBeQueued {
-            dependencies.queueManager.addBlock { [weak self] in
-                self?.fetchMessagesIfNeeded(
-                    endTime: endTime,
-                    isUnread: isUnread,
-                    cleanContact: cleanContact,
-                    removeAllDraft: removeAllDraft,
-                    callback: callback
-                )
-            }
-        } else {
-            fetchMessagesIfNeeded(
-                endTime: endTime,
-                isUnread: isUnread,
-                cleanContact: cleanContact,
-                removeAllDraft: removeAllDraft,
-                callback: callback
-            )
-        }
+    override func executionBlock(params: FetchMessagesWithReset.Params, callback: @escaping Callback) {
+        fetchMessagesIfNeeded(params: params, callback: callback)
     }
 }
 
 extension FetchMessagesWithReset {
 
-    private func fetchMessagesIfNeeded(
-        endTime: Int,
-        isUnread: Bool,
-        cleanContact: Bool,
-        removeAllDraft: Bool,
-        callback: UseCaseResult<Void>?
-    ) {
-        dependencies.fetchLatestEventId.execute { result in
+    private func fetchMessagesIfNeeded(params: Params, callback: @escaping Callback) {
+        dependencies.fetchLatestEventId.execute(params: ()) { result in
             let newEvent: Bool = (try? !result.get().eventID.isEmpty) ?? false
             guard newEvent else {
-                self.runOnMainThread { callback?(.success(Void())) }
+                callback(.success(Void()))
                 return
             }
             self.dependencies.labelProvider.fetchV4Labels { _ in
                 self.dependencies.fetchMessages.execute(
-                    endTime: endTime,
-                    isUnread: isUnread,
+                    endTime: params.endTime,
+                    isUnread: params.fetchOnlyUnreadMessages,
                     callback: { result in
                         if let error = result.error {
-                            self.runOnMainThread { callback?(.failure(error)) }
+                            callback(.failure(error))
                         } else {
-                            self.runOnMainThread { callback?(.success(Void())) }
+                            callback(.success(Void()))
                         }
                     },
                     onMessagesRequestSuccess: {
-                        self.removePersistedMessages(cleanContact: cleanContact, removeAllDraft: removeAllDraft)
+                        self.removePersistedMessages(
+                            cleanContact: params.refetchContacts,
+                            removeAllDraft: params.removeAllDrafts
+                        )
                     })
             }
         }
     }
 
     private func removePersistedMessages(cleanContact: Bool, removeAllDraft: Bool) {
-        let userId = params.userId
         dependencies.localMessageDataService.cleanMessage(
             removeAllDraft: removeAllDraft,
             cleanBadgeAndNotifications: false
         ).then { _ -> Promise<Void> in
-            self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: userId, type: .singleMessage)
-            self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: userId, type: .conversation)
+            self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
+            self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
             if cleanContact {
                 return self.dependencies.contactProvider.cleanUp()
             } else {
@@ -126,9 +88,11 @@ extension FetchMessagesWithReset {
 
 extension FetchMessagesWithReset {
 
-    struct Parameters {
-        /// Identifier to persist the last event locally for a specific user.
-        let userId: UserID
+    struct Params {
+        let endTime: Int
+        let fetchOnlyUnreadMessages: Bool
+        let refetchContacts: Bool
+        let removeAllDrafts: Bool
     }
 
     struct Dependencies {
@@ -138,7 +102,6 @@ extension FetchMessagesWithReset {
         let lastUpdatedStore: LastUpdatedStoreProtocol
         let contactProvider: ContactProviderProtocol
         let labelProvider: LabelProviderProtocol
-        let queueManager: QueueManagerProtocol
 
         init(
             fetchLatestEventId: FetchLatestEventIdUseCase,
@@ -146,8 +109,7 @@ extension FetchMessagesWithReset {
             localMessageDataService: LocalMessageDataServiceProtocol,
             lastUpdatedStore: LastUpdatedStoreProtocol = sharedServices.get(by: LastUpdatedStore.self),
             contactProvider: ContactProviderProtocol,
-            labelProvider: LabelProviderProtocol,
-            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)
+            labelProvider: LabelProviderProtocol
         ) {
             self.fetchLatestEventId = fetchLatestEventId
             self.fetchMessages = fetchMessages
@@ -155,7 +117,6 @@ extension FetchMessagesWithReset {
             self.lastUpdatedStore = lastUpdatedStore
             self.contactProvider = contactProvider
             self.labelProvider = labelProvider
-            self.queueManager = queueManager
         }
     }
 }

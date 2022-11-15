@@ -16,20 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 final class MockFetchLatestEventId: FetchLatestEventIdUseCase {
-    private(set) var executeWasCalled: Bool = false
-    var result: Result<EventLatestIDResponse, Error>
-
-    init() {
+    private var defaultEvent: EventLatestIDResponse {
         let event = EventLatestIDResponse()
         event.eventID = "dummy_event_id"
-        result = .success(event)
+        return event
     }
+    lazy var result: Result<EventLatestIDResponse, Error> = { .success(defaultEvent) }()
 
-    func execute(callback: UseCaseResult<EventLatestIDResponse>?) {
-        self.executeWasCalled = true
-        callback?(result)
+    @FuncStub(MockFetchLatestEventId.executionBlock(params:callback:)) var callExecutionBlock
+    override func executionBlock(params: Void, callback: @escaping Callback) {
+        callExecutionBlock(params, callback)
+        callback(result)
     }
 }
