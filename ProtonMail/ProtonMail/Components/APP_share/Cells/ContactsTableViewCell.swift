@@ -66,20 +66,20 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     ///   - color: contact group color -- String type and optional
     func config(name: String, email: String, highlight: String, color: String? = nil) {
         var nameAttributed = FontManager.Default.addTruncatingTail()
-        nameAttributed[.font] = UIFont.preferredFont(for: .body, weight: .regular)
+        nameAttributed[.font] = UIFont.adjustedFont(forTextStyle: .body)
         self.nameLabel.attributedText =
             .highlightedString(text: name,
                                textAttributes: nameAttributed,
                                search: highlight,
-                               font: UIFont.preferredFont(for: .body, weight: .bold))
+                               font: UIFont.adjustedFont(forTextStyle: .body, weight: .bold))
 
         var emailAttributes = FontManager.DefaultSmallWeak.addTruncatingTail()
-        emailAttributes[.font] = UIFont.preferredFont(for: .footnote, weight: .regular)
+        emailAttributes[.font] = UIFont.adjustedFont(forTextStyle: .footnote)
         self.emailLabel.attributedText =
             .highlightedString(text: email,
                                textAttributes: emailAttributes,
                                search: highlight,
-                               font: UIFont.preferredFont(for: .footnote, weight: .bold))
+                               font: UIFont.adjustedFont(forTextStyle: .footnote))
 
         // will be show the image
         if let color = color {

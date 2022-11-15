@@ -134,7 +134,7 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
 
     private func setUpSelf() {
         customView.titleTextView.attributedText = viewModel.messageTitle
-        navigationTitleLabel.label.attributedText = viewModel.message.title.apply(style: .DefaultSmallStrong)
+        navigationTitleLabel.label.attributedText = viewModel.message.title.apply(style: FontManager.DefaultSmallStrong)
         navigationTitleLabel.label.lineBreakMode = .byTruncatingTail
 
         customView.navigationSeparator.isHidden = true

@@ -24,6 +24,7 @@ import Foundation
 import ProtonCore_AccountSwitcher
 import ProtonCore_Networking
 import ProtonCore_PaymentsUI
+import ProtonCore_UIFoundations
 import SideMenuSwift
 
 final class MenuCoordinator: CoordinatorDismissalObserver {
@@ -121,6 +122,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     }
 
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
+        DFSSetting.enableDFS = true
         // in some cases we should highlight a different row in the side menu, or none at all
         var labelToHighlight: MenuLabel? = labelInfo
 
@@ -135,6 +137,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
             self.navigateToSettings(deepLink: deepLink)
             labelToHighlight = nil
         case .contacts:
+            DFSSetting.enableDFS = false
             self.navigateToContact()
         case .bugs:
             self.navigateToBugReport()

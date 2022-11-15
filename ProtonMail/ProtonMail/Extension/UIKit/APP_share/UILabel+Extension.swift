@@ -68,7 +68,7 @@ extension UILabel {
         textColor: UIColor,
         lineBreakMode: NSLineBreakMode
     ) {
-        self.font = .preferredFont(for: textStyle, weight: weight)
+        self.font = .adjustedFont(forTextStyle: textStyle, weight: weight)
         self.adjustsFontForContentSizeCategory = true
         self.textColor = textColor
         self.lineBreakMode = lineBreakMode

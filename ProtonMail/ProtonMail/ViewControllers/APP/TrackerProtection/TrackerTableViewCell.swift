@@ -40,6 +40,7 @@ class TrackerTableViewCell: UITableViewCell {
 
     func configure(with url: URL) {
         contentTextView.attributedText = url.absoluteString.apply(style: FontManager.DefaultWeak)
+        contentTextView.font = .adjustedFont(forTextStyle: .body)
     }
 
     private func addSubviews() {

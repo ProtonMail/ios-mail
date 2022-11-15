@@ -73,6 +73,7 @@ private enum SubviewFactory {
     static var providerNameLabel: UILabel {
         let label = UILabel()
         label.textColor = ColorProvider.TextNorm
+        label.set(text: nil, preferredFont: .body)
         return label
     }
 
@@ -80,14 +81,15 @@ private enum SubviewFactory {
         let label = UILabel()
         label.backgroundColor = ColorProvider.InteractionNorm
         label.clipsToBounds = true
-        label.font = .systemFont(ofSize: 13)
+        label.set(text: "0", preferredFont: .footnote)
         label.textAlignment = .center
         label.textColor = ColorProvider.SidebarTextNorm
 
-        let size: CGFloat = 20
-        label.layer.cornerRadius = size / 2
+        label.sizeToFit()
+        let height: CGFloat = label.frame.height
+        label.layer.cornerRadius = height / 2
         NSLayoutConstraint.activate([
-            label.heightAnchor.constraint(equalToConstant: size),
+            label.heightAnchor.constraint(equalToConstant: height),
             label.heightAnchor.constraint(equalTo: label.widthAnchor)
         ])
 
