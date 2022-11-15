@@ -8,6 +8,7 @@ stages:
 
 .run_xcodegen_if_needed: &run_xcodegen_if_needed
   - sh xcodeGenHelper.sh
+  - git restore . # CI will re-download Pods, so we need to restore them to preserve local changes committed to out repo
 
 .before_script_mac: &before_script_mac
   - cd ProtonMail/ProtonMailUITests

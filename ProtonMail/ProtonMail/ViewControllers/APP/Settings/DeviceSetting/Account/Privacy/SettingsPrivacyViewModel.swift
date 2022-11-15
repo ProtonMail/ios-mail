@@ -47,13 +47,21 @@ enum SettingPrivacyItem: CustomStringConvertible {
 }
 
 class SettingsPrivacyViewModel {
-    let privacySections: [SettingPrivacyItem] = [
-        .autoLoadRemoteContent,
-        .autoLoadEmbeddedImage,
-        .blockEmailTracking,
-        .linkOpeningMode,
-        .metadataStripping,
-    ]
+    var privacySections: [SettingPrivacyItem] {
+        var sections: [SettingPrivacyItem] = [
+            .autoLoadRemoteContent,
+            .autoLoadEmbeddedImage,
+            .blockEmailTracking,
+            .linkOpeningMode,
+            .metadataStripping
+        ]
+
+        if !UserInfo.isImageProxyAvailable {
+            sections.removeAll { $0 == .blockEmailTracking }
+        }
+
+        return sections
+    }
 
     private let user: UserManager
 
@@ -84,6 +92,21 @@ class SettingsPrivacyViewModel {
             userInfo: userInfo,
             imageType: imageType,
             setting: setting,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    @available(
+        *,
+         deprecated,
+         message: "Switch to the UpdateImageAutoloadSetting-based variant once Image Proxy is ready to be shipped."
+    )
+    func updateAutoLoadImageStatus(flag: ShowImages, newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateAutoLoadImages(
+            currentAuth: user.authCredential,
+            userInfo: userInfo,
+            flag: flag,
+            enable: newStatus,
             completion: saveData(thenPerform: completion)
         )
     }
