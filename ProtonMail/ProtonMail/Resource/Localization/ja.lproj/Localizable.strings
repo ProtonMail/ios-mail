@@ -540,6 +540,9 @@
 /* top right action text */
 "Create" = "作成";
 
+/* error part & alert title */
+"Create user failed" = "ユーザーを作成できませんでした";
+
 /* Alert title */
 "Creating folder not allowed" = "フォルダーを作成できません";
 
@@ -686,6 +689,18 @@
 /* Done action */
 "Done" = "完了";
 
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "ダウンロード中断中: バッテリーが少なくなっています";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "ダウンロード中断中: ネットワークに接続されていません";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "ダウンロード中断中: Wi-Fi がありません";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "ダウンロード中断中: ストレージがいっぱいです";
+
 /* Action */
 "Draft" = "下書き";
 
@@ -782,6 +797,9 @@
 
 /* Title */
 "Enable signature" = "署名の有効化";
+
+/* (No Comment) */
+"Enable TouchID" = "Touch ID を有効にする";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Protonによって暗号化済み";
@@ -1101,11 +1119,17 @@
    The title of learn more link */
 "Learn more" = "詳細";
 
+/* The title of learn more link */
+"Learn more." = "詳細";
+
 /* settings swipe actions section title */
 "Left to Right" = "左から右";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "アカウントの利用上限に到達しました";
+
+/* Button inside the banner */
+"Load anyway" = "読み込む";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "埋め込み画像を読み込む";
@@ -1119,6 +1143,9 @@
 
 /* No comment provided by engineer. */
 "Loading…" = "読み込み中…";
+
+/* The title of local storage in settings */
+"Local storage" = "ローカルストレージ";
 
 /* cell title in device settings */
 "Local storage limit" = "ストレージ容量の上限";
@@ -2388,9 +2415,6 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "サーバーへの接続に問題が発生しました。再接続してください。";
-
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "デフォルトで画像を読み込みつつ、送信者があなたをトラッキングするのを防ぎます。\nこれは設定で変更できます。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "以下の宛先へパスワードを設定して送信することをおすすめします:";

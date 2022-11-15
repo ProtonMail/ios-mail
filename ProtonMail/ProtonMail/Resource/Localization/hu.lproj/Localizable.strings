@@ -44,15 +44,24 @@
 /* (No Comment) */
 "Add" = "Hozzáadás";
 
+/* new contacts add Anniversary */
+"Add anniversary" = "Évforduló hozzáadása";
+
 /* menu title
    The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Melléklet hozzáadása";
+
+/* new contacts add Birthday */
+"Add birthday" = "Születésnap hozzáadása";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Címzettek hozzáadása";
 
 /* Action */
 "Add Folder" = "Mappa hozzáadása";
+
+/* new contacts add Gender */
+"Add gender" = "Nem hozzáadása";
 
 /* add label action */
 "Add Label" = "Címke hozzáadása";
@@ -74,6 +83,15 @@
 
 /* action */
 "Add new URL" = "Új URL hozzáadása";
+
+/* new contacts add Nickname */
+"Add nickname" = "Becenév hozzáadása";
+
+/* new contacts add Organization */
+"Add organization" = "Szervezet hozzáadása";
+
+/* The button text for add profile picture */
+"Add photo" = "Fénykép hozzáadása";
 
 /* mark message star */
 "Add Star" = "Csillagozás";
@@ -103,6 +121,9 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Az app-ból kilépéssel minden biztonsági beállítás reset-elve és törölve lesz.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Az összes üzeneted letöltésre került";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatív útválasztó engedélyezése";
 
@@ -112,11 +133,20 @@
 /* cell title in app settings */
 "Alternative routing" = "Alternatív útválasztás";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Mindig kikapcsolva";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Mindig bekapcsolva";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Évforduló";
 
 /* network troubleshot cell title */
 "Antivirus interference" = "Antivírus interferencia";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Az el nem mentett változtatások el fognak veszni.";
 
 /* section title in settings */
 "App settings" = "Alkalmazás beállítások";
@@ -139,6 +169,9 @@
 
 /* (No Comment) */
 "Archived" = "Archivált";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Biztos benne, hogy véglegesen törölni akar %d üzenetet?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Biztos, hogy ki szeretne jelentkezni %@?";
@@ -189,6 +222,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "Beágyazott képek automatikus betöltése";
 
+/* settings general section title */
+"Auto-load remote content" = "Távoli tartalom automatikus betöltése";
+
 /* Example feedback */
 "Awful" = "Szörnyű";
 
@@ -218,6 +254,9 @@
 
 /* Settings row */
 "Block email tracking" = "E-mail követés megakadályozása";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Megakadályozza, hogy a feladó értesüljön arról amikor megnyitja az üzenetet";
 
 /* Title */
 "Bug Description" = "Hiba leírása";
@@ -596,6 +635,9 @@
 /* title */
 "Email domain invalid" = "Érvénytelen email domain";
 
+/* Name of the feature */
+"Email tracking protection" = "E-mail követési védelem";
+
 /* "Cancel" */
 "Empty Folder" = "Mappa kiürítése";
 
@@ -795,6 +837,9 @@
 /* Error */
 "Incorrect PIN." = "Helytelen PIN-kód.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Információ arról, mennyi tárhelyet használ ez a Proton Mail fiók az eszközén.";
+
 /* Option title */
 "Inherit color from parent folder" = "Szín öröklése a tartalmazó mappáról";
 
@@ -875,6 +920,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Korlát elérve";
+
+/* Button inside the banner */
+"Load anyway" = "Betöltés mindenképp";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Beágyazott képek betöltése";
@@ -1429,6 +1477,9 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Ütemezett küldés";
 
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Üzenet ütemezése...";
+
 /* *
  *  SearchViewController */
 "Search" = "Keresés";
@@ -1539,6 +1590,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Szüneteltetés";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Néhány kép betöltése nem sikerült a követési védelemmel.";
 
 /* (No Comment) */
 "Space Warning" = "Tárhely figyelmeztetés";

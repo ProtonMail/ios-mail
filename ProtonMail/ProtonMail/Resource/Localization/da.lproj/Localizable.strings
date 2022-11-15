@@ -1,8 +1,14 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", vil ikke blive gennemsøgt. Hvis du vil søge i dem, skal du øge %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vis fuld besked]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "\"Søg i beskedindhold\" vil blive deaktiveret. Det kan aktiveres igen i indstillingerne, og alle beskeder skal downloades igen.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ af %2$@";
@@ -21,6 +27,9 @@
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Drop hér for at tilføje som vedhæftning";
+
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 minut tilbage";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1m";
@@ -148,8 +157,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet ved log ud af appen.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Alle dine beskeder er downloadet";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Tillad alternativ routing";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Giver dig mulighed for at åbne tidligere åbnede vedhæftede filer, mens du er offline.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Giver dig mulighed for at åbne tidligere læste beskeder, mens du er offline.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Giver dig mulighed for at søge i dine beskeder. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Arkivér også?";
@@ -212,6 +233,9 @@
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Er du sikker på, at du vil slette denne besked permanent?";
 
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Er du sikker på, at du ønsker at slette disse %d beskeder permanent?";
+
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Er du sikker på, at du vil logge ud %@?";
 
@@ -267,6 +291,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "Auto-indlæs indlejrede billeder";
 
+/* settings general section title */
+"Auto-load remote content" = "Auto-indlæs fjernindhold";
+
 /* Example feedback */
 "Awful" = "Forfærdelig";
 
@@ -297,6 +324,9 @@
 /* Settings row */
 "Block email tracking" = "Bloker sporing af e-mail";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Blokerer afsendere fra at se, om og hvornår du har åbnet beskeden";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Gå hurtigt gennem tråd af meddelelser i samtaletilstand.";
 
@@ -305,6 +335,9 @@
 
 /* Title */
 "Bug Report Received" = "Fejlrapport modtaget";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Cachelagrede data";
 
 /* Call the contact (button title text) */
 "Call contact" = "Ring til kontakt";
@@ -413,6 +446,9 @@
 /* Title */
 "Change sender address to .." = "Skift afsenderadresse til..";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Oplad din enhed, eller genoptag manuelt.";
+
 /* Action */
 "Check Again" = "Tjek igen";
 
@@ -496,6 +532,9 @@
 /* Title */
 "Confirmation" = "Bekræftelse";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Opret forbindelse til Wi-Fi eller aktiver \"Download via mobildata\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt slettet. Den synkroniseres, når forbindelse bliver tilgængelig";
 
@@ -508,6 +547,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Kontakter";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Indholdsøgning tilgængelig";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -554,6 +596,9 @@
 
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Nuværende gendannelses-e-mail";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Nuværende valg: ";
 
 /* Title */
 "Current sign-in password" = "Nuværende login-adgangskode";
@@ -643,6 +688,9 @@
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Deaktiveret";
 
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Hvis du deaktiverer funktionen nu, slettes de beskeder, der allerede er blevet downloadet.";
+
 /* Action */
 "Discard" = "Kassér";
 
@@ -691,6 +739,47 @@
 
 /* Done action */
 "Done" = "Udført";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Download sat på pause";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Download sat på pause: Lavt batteri";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Download sat på pause: Ingen forbindelse";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Download sat på pause: Ingen Wi-Fi fundet";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Download sat på pause: Lagerplads fuld";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Fremskridt for download";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Download via mobildata";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Downloadede beskeder";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Downloadede beskeder vil blive slettet";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Henter besked %1$d ud af %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Downloader metadata ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Downloader nye beskeder ...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloader e-mails, så du kan søge i dem. Beskederne er krypterede og lagres lokalt. %1$@";
 
 /* Action */
 "Draft" = "Kladde";
@@ -758,6 +847,12 @@
 /* title */
 "Email domain invalid" = "Ugyldigt e-maildomæne";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-mail-trackere kan krænke dit privatliv.";
+
+/* Name of the feature */
+"Email tracking protection" = "Beskyttelse mod sporing af e-mail";
+
 /* "Cancel" */
 "Empty Folder" = "Tøm mappe";
 
@@ -776,6 +871,9 @@
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "Aktivér";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Aktiver indholdssøgning";
 
 /* Title */
 "Enable email notices" = "Aktiver e-mail-meddelelser";
@@ -901,6 +999,9 @@
 /* forwarded message title */
 "Forwarded message" = "Videresendt besked";
 
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Frigør mindst 100 MB lagerplads for at fortsætte.";
+
 /* Title */
 "From" = "Fra";
 
@@ -982,6 +1083,9 @@
 /* human check warning title */
 "Human Check Warning" = "Robottjek -advarsel";
 
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Hvis du mister din WiFi-forbindelse, fortsætter download via mobildata.";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorer advarsel og fortsæt";
 
@@ -1023,6 +1127,9 @@
 /* Error */
 "Incorrect PIN." = "Forkert PIN.";
 
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Oplysninger om, hvor meget lagerplads denne Proton Mail-konto bruger på din enhed.";
+
 /* Option title */
 "Inherit color from parent folder" = "Nedarv farve fra overordnet mappe";
 
@@ -1031,6 +1138,9 @@
 
 /* Title */
 "inline attachments" = "integrerede vedhæftninger";
+
+/* (No Comment) */
+"Input Display Name ..." = "Indtast visningsnavn...";
 
 /* place holder */
 "Input Display Name…" = "Angiv visningsnavn…";
@@ -1118,6 +1228,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Grænse nået";
+
+/* Button inside the banner */
+"Load anyway" = "Indlæs alligevel";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Indlæs indlejrede billeder";
@@ -1212,6 +1325,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Besked kunne ikke sendes. Mindst én modtager e-mailadresse/domæne findes ikke eller er fejlagtigt formateret.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Download af beskeder er sat på pause. Se her, hvordan du kan %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Beskedudløb";
 
@@ -1227,6 +1343,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Beskedoverskrfter";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Beskedhistorik";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Besked flyttet til Papirkurv";
@@ -1254,6 +1373,18 @@
 
 /* (No Comment) */
 "Message Swipe Actions" = "Besked stryge-handlinger";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Beskeder downloades med henblik på indholdssøgning. Nogle resultater vises muligvis ikke. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Beskeder fra før ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Beskeder fra før %@, vil ikke blive søgt. Hvis du vil søge i dem, skal du frigøre lagerplads på denne enhed.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelelser downloades via Wi-Fi. Det kan tage noget tid, og din enhed kan blive lidt varm. Du kan til enhver tid sætte handlingen på pause.";
 
 /* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Beskeder, du afsender, kan indstilles til auto-sletning efter et forudbestemt tidsinterval.";
@@ -1407,6 +1538,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Ikke spam (flyt til indbakke)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Ikke alle beskeder blev downloadet. Hvis du vil hente dem, skal du frigøre lagerplads på enheden.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Ikke alle beskeder blev downloadet. Hvis du vil hente dem, skal du øge lagergrænsen nedenfor.";
+
 /* No comment provided by engineer. */
 "Not set" = "Ikke indstillet";
 
@@ -1442,6 +1579,9 @@
 /* Title for the alert button to disable content search. */
 "Okay" = "OK";
 
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Ældste besked: ";
+
 /* The title of On setting options */
 "On" = "Til";
 
@@ -1468,6 +1608,9 @@
 
 /* default vcard types */
 "Other" = "Andet";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og verificere, at transaktionen blev gennemført på App Store's servere.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vores system markerede denne besked som et phishing-forsøg. Kontroller venligst, at den er legitim";
@@ -1563,6 +1706,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Forbind og prøv igen";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Opret forbindelse til internettet for at fortsætte.";
 
 /* (No Comment) */
 "Please input a valid cell phone number." = "Angiv et gyldigt mobilnummer.";
@@ -1771,6 +1917,9 @@
 /* Text for resume button */
 "Resume" = "Genoptag";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "genoptage manuelt.";
+
 /* Action */
 "Retry" = "Prøv igen";
 
@@ -1796,6 +1945,15 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Planlæg afsendelse";
 
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Tidsplan vil blive fjernet";
+
+/* The title of the introducation view of the schedule send */
+"Scheduled send" = "Planlagt afsendelse";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Planlægger besked...";
+
 /* *
  *  SearchViewController */
 "Search" = "Søg";
@@ -1803,6 +1961,15 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Søg i beskedindhold";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Tager det for lang tid at søge? %1$@ fra denne søgning for at få hurtigere resultater.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Se detaljer";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Se fremskridt.";
 
 /* section title */
 "Select colour" = "Vælg farve";
@@ -1821,6 +1988,12 @@
 
 /* Title of button to send feedback */
 "Send feedback" = "Send feedback";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Send omgående";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Send omgående?";
 
 /* when subject not empty */
 "Send message without subject?" = "Afsend besked uden emneindhold?";
@@ -1931,6 +2104,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Udsæt";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Nogle billeder kunne ikke indlæses med sporingsbeskyttelse.";
+
 /* (No Comment) */
 "Space Warning" = "Lagerpladsadvarsel";
 
@@ -1971,8 +2147,17 @@
 /* Alert title */
 "Storage full" = "Lageret er fuldt";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Lagergrænse";
+
 /* Storage warning */
 "Storage quota exceeded" = "Lagerpladskvote overskredet";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Anvendt lagerplads";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Anvendt lagerplads: ";
 
 /* Title */
 "Storage Warning" = "Lagerpladsadvarsel";
@@ -2056,6 +2241,9 @@
 /* (No Comment) */
 "The display name is now %@." = "Det viste navn er nu %@.";
 
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Overførslen stopper, hvis Proton Mail-appen lukkes.";
+
 /* Description */
 "The draft cache is broken. Please try again." = "Udkast-cachen er ødelagt, fotrsøg igen.";
 
@@ -2071,6 +2259,9 @@
 /* *
  *  LabelsViewController */
 "The maximum number of labels is %d." = "Maks. antal af etiketter udgør %d.";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Beskeden er ved at blive sendt og flyttes til mappen Sendt, når afsendelsen er afsluttet.";
 
 /* update password error */
 "The new password can't be empty." = "Det nye kodeord kan ikke være tomt.";
@@ -2107,6 +2298,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Afsendelsesnøgle er ikke gyldig";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Afsendelsestidspunktet skal være mindst 5 minutter ude i fremtiden.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Størrelsesgrænsen for vedhæftede filer er 25 MB.";
@@ -2169,6 +2363,9 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dette link fører til et websted, som måske forsøger at stjæle dine oplysninger, f. eks. adgangskoder og kreditkortoplysninger.\n%@\n\nFor din egen sikkerheds skyld bør du ikke fortsætte.";
 
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Denne besked er ikke længere planlagt til at blive sendt senere. Hvis du stadig ønsker at sende den senere, kan du trykke på \"Planlæg afsendelse\"";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne besked kan være et phishing-forsøg. Tjek afsenderen og indholdet for at sikre, at de er legitime.";
 
@@ -2192,6 +2389,9 @@
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering mislykkedes. Din forbindelse kan overvåges, og appen blokeres midlertidigt af hensyn til din sikkerhed.\n\n";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Validering af TLS-certifikat mislykkedes. Din forbindelse kan blive overvåget, og appen er midlertidigt blokeret af hensyn til din sikkerhed.";
 
 /* message To: feild
    Title */
@@ -2462,6 +2662,12 @@
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Du kan nu planlægge dine beskeder til senere afsendelse";
 
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Du kan nu søge i dine beskeder. Du kan til enhver tid aktivere denne funktion i indstillingerne.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Du kan søge i downloadede beskeder. For alle andre meddelelser er det kun modtagerlisten og emnelinjen, der søges i.";
+
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
@@ -2525,6 +2731,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Dine etiketter";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
 
 /* *
  *  Onboarding */

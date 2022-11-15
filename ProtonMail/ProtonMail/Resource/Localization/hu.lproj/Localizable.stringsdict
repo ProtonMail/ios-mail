@@ -59,9 +59,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation labeled</string>
+			<string>%d beszélgetés megjelölve</string>
 			<key>other</key>
-			<string>%d conversations labeled</string>
+			<string>%d beszélgetés megjelölve</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -75,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation moved to %@</string>
+			<string>%d beszélgetés áthelyezve ide: %@</string>
 			<key>other</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d beszélgetés áthelyezve ide: %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -111,9 +111,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email tracker blocked</string>
+			<string>%d email-követő blokkolva</string>
 			<key>other</key>
-			<string>%d email trackers blocked</string>
+			<string>%d email-követő blokkolva</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -127,9 +127,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email tracker found</string>
+			<string>%d email-követőt találtunk</string>
 			<key>other</key>
-			<string>%d email trackers found</string>
+			<string>%d email-követőt találtunk</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -161,9 +161,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message labeled</string>
+			<string>%d üzenet megjelölve</string>
 			<key>other</key>
-			<string>%d messages labeled</string>
+			<string>%d üzenet megjelölve</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -177,9 +177,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message moved to %@</string>
+			<string>%d üzenet áthelyezve ide: %@</string>
 			<key>other</key>
-			<string>%d messages moved to %@</string>
+			<string>%d üzenet áthelyezve ide: %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -195,9 +195,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message moved to Drafts</string>
+			<string>%d üzenet áthelyezve a Vázlatokba</string>
 			<key>other</key>
-			<string>%d messages moved to Drafts</string>
+			<string>%d üzenet áthelyezve a Vázlatokba</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -275,9 +275,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d conversation?</string>
+			<string>Biztos, hogy véglegesen töröl $%d beszélgetést?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>Biztos, hogy véglegesen töröl $%d beszélgetést?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -291,9 +291,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Are you sure you want to permanently delete %d message?</string>
+			<string>Biztos, hogy véglegesen töröl $%d üzenetet?</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>Biztos, hogy véglegesen töröl $%d üzenetet?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -307,9 +307,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>In %d minute</string>
+			<string>%d percen belül</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>%d percen belül</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -325,9 +325,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
+			<string>A Proton %d követőt talált és blokkolt ebben az üzenetben.</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>A Proton %d követőt talált és blokkolt ebben az üzenetben.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -343,9 +343,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Ezt a(z) %d üzenetet áthelyezzük a Vázlatokba és időbeosztását eltávolítjuk.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

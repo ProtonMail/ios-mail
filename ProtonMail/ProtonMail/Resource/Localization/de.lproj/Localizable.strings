@@ -1,5 +1,5 @@
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
-", will not be searched. To search within them, increase the %1$@" = "werden nicht durchsucht. Um diese zu durchsuchen, erhöhen Sie die %1$@";
+", will not be searched. To search within them, increase the %1$@" = "werden nicht durchsucht. Um diese zu durchsuchen, erhöhe die %1$@";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vollständige Nachricht anzeigen]";
@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'Am' EEEE, d. MMMM yyyy 'um' %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Die Funktion „Nachrichteninhalt durchsuchen” wird deaktiviert. Sie kann in den Einstellungen wieder aktiviert werden, wobei dann alle Nachrichten erneut heruntergeladen werden müssen.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Die Funktion „Nachrichteninhalt durchsuchen“ wird deaktiviert. Sie kann in den Einstellungen wieder aktiviert werden, wobei dann alle Nachrichten erneut heruntergeladen werden müssen.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ von %2$@";
@@ -170,7 +170,7 @@
 "Allows you to open previously read messages while offline." = "Erlaubt es dir, zuvor gelesene Nachrichten zu öffnen, während du offline bist.";
 
 /* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Ermöglicht Ihnen die Suche innerhalb Ihrer Nachrichten. %1$@";
+"Allows you to search within your messages. %1$@" = "Ermöglicht dir die Suche innerhalb deiner Nachrichten. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Auch archivieren?";
@@ -325,7 +325,7 @@
 "Block email tracking" = "E-Mail-Tracking blockieren";
 
 /* Spotlight explanation of the feature */
-"Blocks senders from seeing if and when you opened the message" = "Verhindert, dass der Absender erfährt, ob und wann Sie die Nachricht geöffnet haben";
+"Blocks senders from seeing if and when you opened the message" = "Verhindert, dass der Absender erfährt, ob und wann du die Nachricht geöffnet hast";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Blättere im Konversationsmodus durch zusammenhängende Nachrichten.";
@@ -419,7 +419,7 @@
 "Change account password" = "Kontenpasswort ändern";
 
 /* Title */
-"Change default address to .." = "Standardadresse ändern auf …";
+"Change default address to .." = "Standardadresse ändern zu...";
 
 /* (No Comment) */
 "Change left swipe action" = "Nach-Links-Wischen-Aktion ändern";
@@ -444,7 +444,7 @@
 "Change right swipe action" = "Nach-Rechts-Wischen-Aktion ändern";
 
 /* Title */
-"Change sender address to .." = "Absenderadresse ändern auf …";
+"Change sender address to .." = "Absenderadresse ändern zu...";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Lade dein Gerät oder fahre manuell fort.";
@@ -456,7 +456,7 @@
 "Check Proton Status for our system status." = "Prüfe den Proton-Status für unseren Systemstatus.";
 
 /* "Username" */
-"Checking ...." = "Wird überprüft …";
+"Checking ...." = "Wird überprüft…";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "Wähle eine andere Absenderadresse aus";
@@ -632,7 +632,7 @@
 "Decryption of this content failed" = "Entschlüsselung dieses Inhalts ist fehlgeschlagen";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "Entschlüsseln des verschlüsselten Inhalts dieser Nachricht ist fehlgeschlagen.";
+"Decryption of this message's encrypted content failed." = "Entschlüsseln des verschlüsselten Inhalts dieser Nachricht fehlgeschlagen.";
 
 /* Title */
 "Default" = "Standard";
@@ -948,7 +948,7 @@
 "Every time enter app" = "Jedes Mal, wenn du die App öffnest";
 
 /* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "Schließe den Inhalt von Nachrichten";
+"Exclude message content" = "Nachrichteninhalt ausschließen";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Ordner aufklappen";
@@ -1093,7 +1093,7 @@
 "Import Error" = "Fehler beim Importieren";
 
 /* (No Comment) */
-"Import File From..." = "Datei importieren von …";
+"Import File From..." = "Datei importieren von…";
 
 /* Title */
 "Import from…" = "Importieren aus…";
@@ -1240,7 +1240,7 @@
 "Load remote content" = "Inhalte aus externen Quellen laden";
 
 /* (No Comment) */
-"Loading..." = "Wird geladen …";
+"Loading..." = "Wird geladen…";
 
 /* No comment provided by engineer. */
 "Loading…" = "Lädt…";
@@ -1326,7 +1326,7 @@
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Nachricht konnte nicht gesendet werden. Mindestens eine Empfänger-E-Mail-Adresse/-Domain existiert nicht oder enthält Fehler in der Formatierung.";
 
 /* Text for the search info banner when indexing is paused. */
-"Message downloading paused. Find out how to %1$@" = "Das Herunterladen der Nachricht wurde angehalten. Finden Sie heraus, wie Sie dies %1$@";
+"Message downloading paused. Find out how to %1$@" = "Das Herunterladen der Nachricht wurde angehalten. Finde heraus, wie du dies %1$@";
 
 /* Composer expiration page title */
 "Message expiration" = "Ablauf der Nachricht";
@@ -1342,7 +1342,7 @@
 "Message has been moved." = "Nachricht wurde verschoben.";
 
 /* Title of the view showing the message header */
-"Message headers" = "Kopfzeilen der Nachricht";
+"Message headers" = "Header der Nachricht";
 
 /* The title of message history in settings for encrypted search */
 "Message history" = "Nachrichtenverlauf";
@@ -1440,7 +1440,7 @@
 "Move to trash" = "In den Papierkorb verschieben";
 
 /* (No Comment) */
-"Move to Trash" = "In Papierkorb verschieben";
+"Move to Trash" = "In den Papierkorb verschieben";
 
 /* (No Comment) */
 "Move to..." = "Verschieben nach…";
@@ -1610,7 +1610,7 @@
 "Other" = "Andere";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Unser Kundendienstteam wird versuchen, Ihren Serviceplan manuell zu aktivieren, wenn Sie zustimmen, die technischen Daten anzuhängen, die der App Store der App zum Zeitpunkt des Kaufs zur Verfügung gestellt hat. Diese Daten enthalten keine Details über Ihr iTunes-Konto, Ihre Apple-ID, verknüpfte Zahlungskarten oder andere Benutzerinformationen. Die technischen Daten helfen uns lediglich zu überprüfen, ob die Transaktion auf den Servern des App Stores durchgeführt wurde.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Unser Kundendienstteam wird versuchen, deinen Serviceplan manuell zu aktivieren, wenn du zustimmst, die technischen Daten anzuhängen, die der App Store der App zum Zeitpunkt des Kaufs zur Verfügung gestellt hat. Diese Daten enthalten keine Details über dein iTunes-Konto, deine Apple-ID, verknüpfte Zahlungskarten oder andere Benutzerinformationen. Die technischen Daten helfen uns lediglich zu überprüfen, ob die Transaktion auf den Servern des App Stores durchgeführt wurde.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Unser System hat diese Nachricht als Phishing-Versuch gekennzeichnet. Bitte überprüfe, ob sie seriös ist.";
@@ -1671,7 +1671,7 @@
 "PGP-signed message from verified sender" = "PGP-signierte Nachricht von bestätigtem Absender";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "PGP-signierte Nachricht. Absenderverifizierung fehlgeschlagen";
+"PGP-signed message. Sender verification failed" = "PGP-signierte Nachricht. Absenderverifizierung fehlgeschlagen.";
 
 /* default vcard types */
 "Phone" = "Telefonnummer";
@@ -1912,13 +1912,13 @@
 "Request link confirmation" = "Link-Bestätigung anfordern";
 
 /* Title */
-"Resetting message cache…" = "Nachrichtenspeicher wird zurückgesetzt ...";
+"Resetting message cache…" = "Nachrichtenspeicher wird zurückgesetzt...";
 
 /* Text for resume button */
 "Resume" = "Fortsetzen";
 
 /* Text for the link to show when indexing is paused. */
-"resume manually." = "manuell fortsetzen.";
+"resume manually." = "manuell fortsetzen kannst.";
 
 /* Action */
 "Retry" = "Erneut versuchen";
@@ -1952,7 +1952,7 @@
 "Scheduled send" = "Geplantes Senden";
 
 /* The title of the banner that will be shown when you schedule a message. */
-"Scheduling message..." = "Nachricht wird geplant …";
+"Scheduling message..." = "Nachricht wird geplant...";
 
 /* *
  *  SearchViewController */
@@ -1960,7 +1960,7 @@
 
 /* cell title in device settings
    The title of encrypted search in settings */
-"Search message content" = "Inhalt der Nachrichten durchsuchen";
+"Search message content" = "Nachrichteninhalt durchsuchen";
 
 /* Text for the banner when content search is slow. */
 "Search taking too long? %1$@ from this search for faster results." = "Dauert die Suche zu lange? %1$@ von dieser Suche aus, um schnellere Ergebnisse zu erzielen.";
@@ -2023,7 +2023,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Senden von Nachrichten von einer %1$@-Adresse ist eine Funktion für bezahlte Konten. Deine Nachricht wird von deiner standardmäßigen Adresse „%2$@“ gesendet";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Das Senden wird möglich, nachdem die Anhänge hochgeladen wurden";
+"Sending will be available\nwhen attachments are uploaded" = "Das Senden wird möglich, nachdem die Anhänge hochgeladen wurden.";
 
 /* menu title */
 "Sent" = "Gesendet";
@@ -2038,7 +2038,7 @@
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Gesendet von Proton Mail mit Null-Zugriffs-Verschlüsselung an verifizierten Empfänger";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Von Ihnen mit Ende-zu-Ende-Verschlüsselung gesendet";
+"Sent by you with end-to-end encryption" = "Von dir mit Ende-zu-Ende-Verschlüsselung gesendet";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption to verified recipient" = "Von dir mit Ende-zu-Ende-Verschlüsselung gesendet an verifizierten Empfänger";
@@ -2105,7 +2105,7 @@
 "Snooze" = "Zurückstellen";
 
 /* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Einige Grafiken konnten nicht mit Tracking-Schutz geladen werden.";
+"Some images failed to load with tracking protection." = "Einige Bilder konnten nicht mit Tracking-Schutz geladen werden.";
 
 /* (No Comment) */
 "Space Warning" = "Speicherplatz-Warnung";
@@ -2163,7 +2163,7 @@
 "Storage Warning" = "Speicherplatz-Warnung";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "Gespeichert mit Null-Zugriff-Verschlüsselung";
+"Stored with zero-access encryption" = "Gespeichert mit Zero-Access-Verschlüsselung";
 
 /* contact placeholder */
 "Street" = "Straße";
@@ -2175,7 +2175,7 @@
 "Subject:" = "Betreff:";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Betreff …";
+"Subject..." = "Betreff…";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2203,7 +2203,7 @@
 "Switch unread filter" = "Zwischen gelesenen/ungelesenen Nachrichten umschalten";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Zu Konto „%@” gewechselt";
+"Switched to account '%@'" = "Zu Konto „%@“ gewechselt";
 
 /* Error */
 "System can't copy the file" = "System konnte nicht die Datei kopieren";
@@ -2261,7 +2261,7 @@
 "The maximum number of labels is %d." = "Die maximale Kategorieanzahl beträgt %d.";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
-"The message is being sent and will move to the Sent folder once sending is complete." = "Die Nachricht wird gesendet und nach Abschluss des Sendevorgangs in den Ordner „Gesendet” verschoben.";
+"The message is being sent and will move to the Sent folder once sending is complete." = "Die Nachricht wird gesendet und nach Abschluss des Sendevorgangs in den Ordner „Gesendet“ verschoben.";
 
 /* update password error */
 "The new password can't be empty." = "Bitte das neue Passwort eingeben.";
@@ -2364,7 +2364,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dieser Link führt zu einer Website, die möglicherweise versucht, deine Informationen wie Passwörter und Kreditkartendaten zu stehlen.\n%@\n\nZu deiner Sicherheit solltest du nicht fortfahren.";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Diese Nachricht ist nicht mehr für einen späteren Versand vorgesehen. Wenn du sie dennoch später senden möchtest, kannst du auf \"Senden planen\" tippen.";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Diese Nachricht ist nicht mehr für einen späteren Versand geplant. Wenn du sie weiterhin später senden möchtest, kannst du auf \"Senden planen\" tippen.";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Diese Nachricht könnte ein Phishing-Versuch sein. Bitte überprüfe den Absender und deren Inhalt, um sicherzustellen, dass diese seriös sind.";
@@ -2408,7 +2408,7 @@
 "Token expired" = "Token abgelaufen";
 
 /* scheduled send message at tomorrow morning Action */
-"Tomorrow at 08:%02d AM" = "Morgen vormittag um 08:%02d";
+"Tomorrow at 08:%02d AM" = "Morgen Vormittag um 08:%02d";
 
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
 "Tomorrow, %@" = "Morgen, %@";
@@ -2537,7 +2537,7 @@
 "Updated Proton, unified protection" = "Verbessertes Proton, einheitlicher Schutz";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Auf ein kostenpflichtiges Abonnement aktualisieren, um von deiner Adresse „%@” senden zu können";
+"Upgrade to a paid plan to send from your %@ address" = "Auf ein kostenpflichtiges Abonnement upgraden, um von deiner Adresse „%@“ senden zu können.";
 
 /* Action */
 "Upload device contacts" = "Kontakte des Geräts hochladen";
@@ -2582,7 +2582,7 @@
 "View" = "Anzeigen";
 
 /* No comment provided by engineer. */
-"View headers" = "Kopfzeilen anzeigen";
+"View headers" = "Header anzeigen";
 
 /* No comment provided by engineer. */
 "View HTML" = "Als HTML anzeigen";
@@ -2607,9 +2607,6 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Es gibt Probleme beim Verbinden mit den Servern. Bitte stelle die Verbindung wieder her.";
-
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Bilder werden jetzt standardmäßig geladen und deren Absender können dich nicht mehr zurückverfolgen.\nDies kann in den Einstellungen geändert werden.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Wir empfehlen, stattdessen für die folgenden Empfänger ein Passwort einzurichten:";
@@ -2663,7 +2660,7 @@
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Hilfe und Unterstützung kannst du auf proton.me/support erhalten. Fehler können auch innerhalb der App gemeldet werden.";
 
 /* The content of the introducation view of the schedule send */
-"You can now schedule your messages to be sent later" = "Du kannst jetzt das Versenden deiner Nachrichten zu einem späteren Zeitpunkt planen";
+"You can now schedule your messages to be sent later" = "Du kannst jetzt das Versenden deiner Nachrichten zu einem späteren Zeitpunkt planen.";
 
 /* The description of encrypted search at the pop up. */
 "You can now search within your messages. This feature can be enabled from settings at any time." = "Du kannst jetzt innerhalb deiner Nachrichten suchen. Diese Funktion kann jederzeit in den Einstellungen aktiviert werden.";
