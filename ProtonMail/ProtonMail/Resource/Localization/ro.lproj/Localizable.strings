@@ -2608,9 +2608,6 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Au apărut probleme la conectarea la servere. Reconectaţi-vă.";
 
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Imaginile sunt încărcate implicit și expeditorii sunt blocați să vă urmărească.\nAceasta se poate modifica în setări.";
-
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Se recomandă configurarea unei parole pentru următorii destinatari:";
 

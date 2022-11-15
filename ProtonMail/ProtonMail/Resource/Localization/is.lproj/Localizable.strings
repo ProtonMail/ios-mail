@@ -2608,9 +2608,6 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Við eigum í vandræðum með að tengjast netþjónunum. Vinsamlegast tengdu aftur.";
 
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Við hlöðum nú sjálfgefið inn myndum og hindrum sendendur í að fylgjast með þér.\nÞessu er hægt að breyta í stillingum.";
-
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Við mælum með því að setja upp lykilorð í staðinn fyrir eftirfarandi viðtakendur:";
 

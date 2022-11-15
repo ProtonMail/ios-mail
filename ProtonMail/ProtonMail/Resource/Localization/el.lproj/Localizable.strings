@@ -2335,9 +2335,6 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Δυσκολευόμαστε να συνδεθούμε στους διακομιστές. Παρακαλούμε επανασυνδεθείτε.";
 
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Πλέον φορτώνουμε τις εικόνες από προεπιλογή, φράζοντας την ιχνηλασία τους από τους αποστολείς. Αυτό μπορεί να αλλαχθεί στις ρυθμίσεις.";
-
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Συνιστούμε να ορίσετε έναν κωδικό πρόσβασης για τους ακόλουθους παραλήπτες:";
 
