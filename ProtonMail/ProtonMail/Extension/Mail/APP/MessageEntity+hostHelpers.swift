@@ -34,7 +34,7 @@ extension MessageEntity {
     }
 
     var spam: SpamType? {
-        if flag.contains(.dmarcFailed) {
+        if flag.contains(.dmarcFailed) && !flag.contains(.dmarcPass) {
             return .dmarcFailed
         }
         let isSpam = self.labels

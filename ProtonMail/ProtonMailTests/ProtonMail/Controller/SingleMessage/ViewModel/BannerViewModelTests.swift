@@ -139,6 +139,15 @@ class BannerViewModelTests: XCTestCase {
         XCTAssertEqual(sut.spamType, .dmarcFailed)
     }
 
+    func testSpamType_with_dmarcPass() {
+        var flag = Message.Flag()
+        flag.insert(.dmarcFailed)
+        flag.insert(.dmarcPass)
+        rawMessage.flag = flag
+        createSUT()
+        XCTAssertNil(sut.spamType)
+    }
+
     func testSpamType_withPhishing_returnSameType() {
         var flag = Message.Flag()
         flag.insert(.autoPhishing)

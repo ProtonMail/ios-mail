@@ -65,6 +65,7 @@ extension Message {
 
         static let unsubscribed = Flag(rawValue: 1 << 19) // 524288
 
+        static let dmarcPass = Flag(rawValue: 1 << 23)
         // Incoming mail failed dmarc authentication.
         static let dmarcFailed = Flag(rawValue: 1 << 26)
 
