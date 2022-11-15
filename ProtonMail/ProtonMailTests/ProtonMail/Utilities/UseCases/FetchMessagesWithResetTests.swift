@@ -40,7 +40,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         mockLabelProvider = MockLabelProvider()
 
         sut = FetchMessagesWithReset(
-            params: makeParams(),
+            userID: "dummy_user_id",
             dependencies: makeDependencies(
                 mockFetchLatestEventId: mockFetchLatestEventId,
                 mockFetchMessages: mockFetchMessages,
@@ -64,14 +64,15 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let cleanContact = true
         let expectation = expectation(description: "callback is called")
 
-        sut.execute(
+        let params = FetchMessagesWithReset.Params(
             endTime: 0,
-            isUnread: Bool.random(),
-            cleanContact: cleanContact,
-            removeAllDraft: Bool.random(),
-            hasToBeQueued: Bool.random()) { _ in
-                expectation.fulfill()
-            }
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: cleanContact,
+            removeAllDrafts: Bool.random()
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
         waitForExpectations(timeout: timeout)
         checkMocksForCleaningContacts(cleanContactIs: cleanContact)
     }
@@ -80,14 +81,15 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let cleanContact = false
         let expectation = expectation(description: "callback is called")
 
-        sut.execute(
+        let params = FetchMessagesWithReset.Params(
             endTime: 0,
-            isUnread: Bool.random(),
-            cleanContact: cleanContact,
-            removeAllDraft: Bool.random(),
-            hasToBeQueued: Bool.random()) { _ in
-                expectation.fulfill()
-            }
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: cleanContact,
+            removeAllDrafts: Bool.random()
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
         waitForExpectations(timeout: timeout)
         checkMocksForCleaningContacts(cleanContactIs: cleanContact)
     }
@@ -96,14 +98,15 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let removeAllDraft = true
         let expectation = expectation(description: "callback is called")
 
-        sut.execute(
+        let params = FetchMessagesWithReset.Params(
             endTime: 0,
-            isUnread: Bool.random(),
-            cleanContact: Bool.random(),
-            removeAllDraft: removeAllDraft,
-            hasToBeQueued: Bool.random()) { _ in
-                expectation.fulfill()
-            }
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: Bool.random(),
+            removeAllDrafts: removeAllDraft
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
         waitForExpectations(timeout: timeout)
         checkMocksForRemoveAllDraft(whenRemoveAllDraftIs: removeAllDraft)
     }
@@ -112,14 +115,15 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let removeAllDraft = false
         let expectation = expectation(description: "callback is called")
 
-        sut.execute(
+        let params = FetchMessagesWithReset.Params(
             endTime: 0,
-            isUnread: Bool.random(),
-            cleanContact: Bool.random(),
-            removeAllDraft: removeAllDraft,
-            hasToBeQueued: Bool.random()) { _ in
-                expectation.fulfill()
-            }
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: Bool.random(),
+            removeAllDrafts: removeAllDraft
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
         waitForExpectations(timeout: timeout)
         checkMocksForRemoveAllDraft(whenRemoveAllDraftIs: removeAllDraft)
     }
@@ -130,17 +134,18 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let emptyEvent = EventLatestIDResponse()
         mockFetchLatestEventId.result = .success(emptyEvent)
 
-        sut.execute(
+        let params = FetchMessagesWithReset.Params(
             endTime: 0,
-            isUnread: Bool.random(),
-            cleanContact: Bool.random(),
-            removeAllDraft: Bool.random(),
-            hasToBeQueued: Bool.random()) { _ in
-                expectation.fulfill()
-            }
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: Bool.random(),
+            removeAllDrafts: Bool.random()
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
         waitForExpectations(timeout: timeout)
 
-        XCTAssertTrue(mockFetchLatestEventId.executeWasCalled)
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertFalse(mockFetchMessages.executeWasCalled)
 
         XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
@@ -159,17 +164,18 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         mockFetchMessages.result = .failure(NSError.badResponse())
 
-        sut.execute(
+        let params = FetchMessagesWithReset.Params(
             endTime: 0,
-            isUnread: Bool.random(),
-            cleanContact: Bool.random(),
-            removeAllDraft: Bool.random(),
-            hasToBeQueued: Bool.random()) { _ in
-                expectation.fulfill()
-            }
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: Bool.random(),
+            removeAllDrafts: Bool.random()
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
         waitForExpectations(timeout: timeout)
 
-        XCTAssertTrue(mockFetchLatestEventId.executeWasCalled)
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
         XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
@@ -186,7 +192,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
 extension FetchMessagesWithResetTests {
     private func checkMocksForCleaningContacts(cleanContactIs value: Bool) {
-        XCTAssertTrue(mockFetchLatestEventId.executeWasCalled)
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
         XCTAssertTrue(mockLocalMessagesService.wasCleanMessageCalled)
@@ -200,7 +206,7 @@ extension FetchMessagesWithResetTests {
     }
 
     private func checkMocksForRemoveAllDraft(whenRemoveAllDraftIs value: Bool) {
-        XCTAssertTrue(mockFetchLatestEventId.executeWasCalled)
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
         XCTAssertTrue(mockLocalMessagesService.wasCleanMessageCalled)
@@ -210,26 +216,22 @@ extension FetchMessagesWithResetTests {
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)
     }
-}
 
-private func makeParams() -> FetchMessagesWithReset.Parameters {
-    FetchMessagesWithReset.Parameters(userId: "dummy_user_id")
-}
-
-private func makeDependencies(
-    mockFetchLatestEventId: FetchLatestEventIdUseCase,
-    mockFetchMessages: FetchMessagesUseCase,
-    mockLocalMessageDataService: LocalMessageDataServiceProtocol,
-    mockLastUpdatedStore: LastUpdatedStoreProtocol,
-    mockContactProvider: ContactProviderProtocol,
-    mockLabelProvider: LabelProviderProtocol,
-    mockQueueManager: QueueManagerProtocol = MockQueueManager()) -> FetchMessagesWithReset.Dependencies {
-    FetchMessagesWithReset.Dependencies(
-        fetchLatestEventId: mockFetchLatestEventId,
-        fetchMessages: mockFetchMessages,
-        localMessageDataService: mockLocalMessageDataService,
-        lastUpdatedStore: mockLastUpdatedStore,
-        contactProvider: mockContactProvider,
-        labelProvider: mockLabelProvider,
-        queueManager: mockQueueManager)
+    private func makeDependencies(
+        mockFetchLatestEventId: FetchLatestEventIdUseCase,
+        mockFetchMessages: FetchMessagesUseCase,
+        mockLocalMessageDataService: LocalMessageDataServiceProtocol,
+        mockLastUpdatedStore: LastUpdatedStoreProtocol,
+        mockContactProvider: ContactProviderProtocol,
+        mockLabelProvider: LabelProviderProtocol
+    ) -> FetchMessagesWithReset.Dependencies {
+        FetchMessagesWithReset.Dependencies(
+            fetchLatestEventId: mockFetchLatestEventId,
+            fetchMessages: mockFetchMessages,
+            localMessageDataService: mockLocalMessageDataService,
+            lastUpdatedStore: mockLastUpdatedStore,
+            contactProvider: mockContactProvider,
+            labelProvider: mockLabelProvider
+        )
+    }
 }

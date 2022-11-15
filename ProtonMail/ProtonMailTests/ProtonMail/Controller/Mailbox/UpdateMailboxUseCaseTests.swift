@@ -95,7 +95,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -142,7 +142,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -182,8 +182,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertTrue(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -221,7 +221,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -263,8 +263,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -306,8 +306,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -341,7 +341,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         XCTAssertFalse(self.sut.isFetching)
         XCTAssertTrue(self.fetchMessage.executeWasCalled)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -378,8 +378,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertTrue(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -409,7 +409,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertTrue(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertTrue(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -435,8 +435,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: [completionExpected], timeout: 2.0)
 
         XCTAssertTrue(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -465,7 +465,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: [completionExpected], timeout: 2.0)
 
         XCTAssertTrue(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 }

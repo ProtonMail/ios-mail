@@ -285,8 +285,9 @@ extension MenuCoordinator {
         let userID = user.userID
 
         let fetchLatestEvent = FetchLatestEventId(
-            params: .init(userId: userID),
-            dependencies: .init(eventsService: user.eventsService))
+            userId: userID,
+            dependencies: .init(eventsService: user.eventsService)
+        )
 
         let fetchMessages = FetchMessages(
             params: .init(labelID: labelID),
@@ -307,7 +308,7 @@ extension MenuCoordinator {
         )
 
         let fetchMessagesWithReset = FetchMessagesWithReset(
-            params: FetchMessagesWithReset.Parameters(userId: userID),
+            userID: userID,
             dependencies: FetchMessagesWithReset.Dependencies(
                 fetchLatestEventId: fetchLatestEvent,
                 fetchMessages: fetchMessages,

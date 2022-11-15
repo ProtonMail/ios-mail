@@ -59,7 +59,6 @@ extension MailboxViewModelTests {
         } completion: {
             XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
             XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
-            XCTAssertTrue(self.mockFetchLatestEventId.executeWasCalled)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversations.lastArguments)
                 XCTAssertEqual(argument.first, self.sut.labelID)
@@ -72,7 +71,15 @@ extension MailboxViewModelTests {
             } catch {
                 XCTFail("Should not reach here")
             }
-            expectation1.fulfill()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                // There could be a race condition with this check. FetchLatestEventId runs in a
+                // background thread (as any UseCase by default). FetchLatestEventId is called inside
+                // updateMailbox but the callback is ignored and the execution continues without
+                // waiting.
+                // Therefore the following assert could run even before FetchLatestEventId runs.
+                XCTAssertTrue(self.mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
+                expectation1.fulfill()
+            }
         }
 
 //        sut.fetchDataWithReset(time: 999,
