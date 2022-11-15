@@ -79,8 +79,12 @@ class NewOnboardView: UIView {
 
     func config(_ data: Onboarding) {
         imageView.image = data.image
-        titleLabel.attributedText = data.title.apply(style: FontManager.Headline.alignment(.center))
-        contentLabel.attributedText = data.description.apply(style: FontManager.Default.alignment(.center))
+        var headline = FontManager.Headline
+        headline[.font] = UIFont.boldSystemFont(ofSize: 22)
+        titleLabel.attributedText = data.title.apply(style: headline.alignment(.center))
+        var defaultAttr = FontManager.Default
+        defaultAttr[.font] = UIFont.systemFont(ofSize: 17)
+        contentLabel.attributedText = data.description.apply(style: defaultAttr.alignment(.center))
     }
 }
 

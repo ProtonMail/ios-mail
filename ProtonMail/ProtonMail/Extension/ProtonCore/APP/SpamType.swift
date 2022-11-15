@@ -31,8 +31,7 @@ enum SpamType {
 extension SpamType {
 
     var text: NSAttributedString {
-        var style = FontManager.CaptionInverted
-        style[.font] = UIFont.preferredFont(for: .footnote, weight: .regular)
+        let style = FontManager.CaptionInverted
         switch self {
         case .autoPhishing:
             return LocalString._auto_phising_banner_message.apply(style: style)

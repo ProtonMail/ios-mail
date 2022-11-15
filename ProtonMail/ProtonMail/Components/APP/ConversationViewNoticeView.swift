@@ -218,13 +218,15 @@ private enum SubviewsFactory {
 
     static var titleLabel: UILabel {
         let title = LocalString._conversation_notice_title
-        let label = UILabel(attributedString: title.apply(style: .DefaultStrong.alignment(.center)))
+        let label = UILabel(attributedString: title.apply(style: FontManager.DefaultStrong.alignment(.center)))
+        label.numberOfLines = 0
         return label
     }
 
     static var messageLabel: UILabel {
         let title = LocalString._conversation_notice_message
-        let label = UILabel(attributedString: title.apply(style: .CaptionWeak.alignment(.center)))
+        let label = UILabel(attributedString: title.apply(style: FontManager.CaptionWeak.alignment(.center)))
+        label.numberOfLines = 0
         return label
     }
 

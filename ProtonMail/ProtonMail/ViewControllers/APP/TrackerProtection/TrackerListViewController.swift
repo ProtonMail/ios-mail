@@ -27,6 +27,8 @@ class TrackerListViewController: UIViewController, LifetimeTrackable {
     let trackers: [TrackerInfo]
 
     private let tableView = SubviewFactory.tableView
+    private var titleLabel: UILabel?
+    private var detailTextView: UITextView?
 
     private var expandedSection: Int? {
         didSet {
@@ -71,6 +73,8 @@ class TrackerListViewController: UIViewController, LifetimeTrackable {
     private func customView() -> UIView {
         let trackerCount = trackers.map(\.urls.count).reduce(0, +)
         let tableViewHeader = SubviewFactory.tableViewHeader(numberOfTrackers: trackerCount)
+        titleLabel = tableViewHeader.arrangedSubviews.first as? UILabel
+        detailTextView = tableViewHeader.arrangedSubviews[safe: 1] as? UITextView
 
         tableView.register(viewType: TrackerTableViewHeaderView.self)
         tableView.register(cellType: TrackerTableViewCell.self)
@@ -84,6 +88,24 @@ class TrackerListViewController: UIViewController, LifetimeTrackable {
         stackView.axis = .vertical
 
         return SubviewFactory.viewToRenderBackground(wrapping: stackView)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        // The following elements can't reflect font size changed automatically
+        // Reset font when event happened
+        tableView.reloadData()
+        titleLabel?.font = .adjustedFont(forTextStyle: .headline)
+        detailTextView?.font = .adjustedFont(forTextStyle: .subheadline)
     }
 }
 
@@ -131,7 +153,7 @@ private enum SubviewFactory {
         return tableView
     }
 
-    static func tableViewHeader(numberOfTrackers: Int) -> UIView {
+    static func tableViewHeader(numberOfTrackers: Int) -> UIStackView {
         let titleLabel = titleLabel(numberOfTrackers: numberOfTrackers)
         let detailsLabel = detailsLabel(numberOfTrackers: numberOfTrackers)
 
