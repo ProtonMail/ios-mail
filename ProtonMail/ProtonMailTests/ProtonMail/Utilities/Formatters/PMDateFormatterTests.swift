@@ -207,7 +207,7 @@ class PMDateFormatterTests: XCTestCase {
         sut.isDateInTomorrow = { _ in false }
 
         let sendDate = Date.fixture("2022-04-24 17:00:00")
-        XCTAssertEqual(sut.stringForScheduledMsg(from: sendDate), "April 24, 5:00 PM")
+        XCTAssert(["April 24, 5:00 PM", "April 24 at 5:00 PM"].contains(sut.stringForScheduledMsg(from: sendDate)))
     }
 
     func testCheckIsDateWillHappenInTheNext10Mins() {
