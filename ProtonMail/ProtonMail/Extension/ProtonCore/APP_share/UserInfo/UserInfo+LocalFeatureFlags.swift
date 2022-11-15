@@ -48,4 +48,8 @@ extension UserInfo {
 #endif
         return false
     }
+
+    static var isImageProxyAvailable: Bool {
+        false
+    }
 }

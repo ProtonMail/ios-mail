@@ -17,6 +17,7 @@
 
 import Foundation
 import PromiseKit
+import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 
@@ -66,7 +67,7 @@ final class MessageInfoProvider {
     }
 
     var imageProxyEnabled: Bool {
-        user.userInfo.imageProxy.contains(.imageProxy)
+        UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy)
     }
 
     private let contactService: ContactDataService
@@ -105,8 +106,8 @@ final class MessageInfoProvider {
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
         self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
-        self.remoteContentPolicy = user.userInfo.hideRemoteImages == 0 ? .allowed : .disallowed
-        self.embeddedContentPolicy = user.userInfo.hideEmbeddedImages == 0 ? .allowed : .disallowed
+        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? .allowed : .disallowed
+        self.embeddedContentPolicy = user.userInfo.isAutoLoadEmbeddedImagesEnabled ? .allowed : .disallowed
         self.userAddressUpdater = user
         self.imageProxy = imageProxy
         self.systemUpTime = systemUpTime

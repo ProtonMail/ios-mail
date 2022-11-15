@@ -37,6 +37,7 @@ public extension UserInfo {
                  language: nil,
                  maxUpload: nil,
                  notify: nil,
+                 showImages: nil,
                  swipeLeft: nil,
                  swipeRight: nil,
                  role: nil,

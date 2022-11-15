@@ -92,9 +92,17 @@ class SettingsPrivacyViewController: UITableViewController {
         cell.backgroundColor = ColorProvider.BackgroundNorm
         switch item {
         case .autoLoadRemoteContent:
-            configureAutoLoadImageCell(cell, item, .remote)
+            if UserInfo.isImageProxyAvailable {
+                configureAutoLoadImageCell(cell, item, UpdateImageAutoloadSetting.ImageType.remote)
+            } else {
+                configureAutoLoadImageCell(cell, item, ShowImages.remote)
+            }
         case .autoLoadEmbeddedImage:
-            configureAutoLoadImageCell(cell, item, .embedded)
+            if UserInfo.isImageProxyAvailable {
+                configureAutoLoadImageCell(cell, item, UpdateImageAutoloadSetting.ImageType.embedded)
+            } else {
+                configureAutoLoadImageCell(cell, item, ShowImages.embedded)
+            }
         case .blockEmailTracking:
             configureBlockEmailTrackingCell(cell, item)
         case .linkOpeningMode:
@@ -128,6 +136,21 @@ extension SettingsPrivacyViewController {
 
         configureCell(cell, item, isOn: isOn) { newStatus, completion in
             self.viewModel.updateAutoLoadImageStatus(imageType: imageType, setting: newStatus ? .show : .hide, completion: completion)
+        }
+    }
+
+    @available(
+        *,
+         deprecated,
+         message: "Switch to the other variant once Image Proxy is ready to be shipped."
+    )
+    private func configureAutoLoadImageCell(_ cell: SwitchTableViewCell,
+                                            _ item: SettingPrivacyItem,
+                                            _ flag: ShowImages) {
+        let isOn = viewModel.userInfo.showImages.contains(flag)
+
+        configureCell(cell, item, isOn: isOn) { newStatus, completion in
+            self.viewModel.updateAutoLoadImageStatus(flag: flag, newStatus: newStatus, completion: completion)
         }
     }
 

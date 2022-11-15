@@ -107,6 +107,7 @@ public struct UserData {
                  language: nil,
                  maxUpload: Int64(user.maxUpload),
                  notify: nil,
+                 showImages: nil,
                  swipeLeft: nil,
                  swipeRight: nil,
                  role: user.role,

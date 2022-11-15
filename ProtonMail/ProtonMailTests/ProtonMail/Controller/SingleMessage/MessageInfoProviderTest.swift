@@ -192,22 +192,24 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(imageProxy.processCallCount, 0)
     }
 
-    func testImageProxy_ifEnabled_whenRemoteContentIsAllowed_isCalled() async throws {
-        enableImageProxyAndRemoteContent()
-        XCTAssertEqual(imageProxy.processCallCount, 1)
-    }
+    // Re-enable this test once Image Proxy is re-enabled.
+//    func testImageProxy_ifEnabled_whenRemoteContentIsAllowed_isCalled() async throws {
+//        enableImageProxyAndRemoteContent()
+//        XCTAssertEqual(imageProxy.processCallCount, 1)
+//    }
 
-    func testImageProxy_whenMessageBodyChanges_isCalled() async throws {
-        enableImageProxyAndRemoteContent()
-
-        simulateMessageUpdateWithSameBodyAsBefore()
-        waitForMessageToBePrepared()
-        XCTAssertEqual(imageProxy.processCallCount, 1)
-
-        try simulateMessageUpdateWithBodyDifferentThanBefore()
-        waitForMessageToBePrepared()
-        XCTAssertEqual(imageProxy.processCallCount, 2)
-    }
+    // Re-enable this test once Image Proxy is re-enabled.
+//    func testImageProxy_whenMessageBodyChanges_isCalled() async throws {
+//        enableImageProxyAndRemoteContent()
+//
+//        simulateMessageUpdateWithSameBodyAsBefore()
+//        waitForMessageToBePrepared()
+//        XCTAssertEqual(imageProxy.processCallCount, 1)
+//
+//        try simulateMessageUpdateWithBodyDifferentThanBefore()
+//        waitForMessageToBePrepared()
+//        XCTAssertEqual(imageProxy.processCallCount, 2)
+//    }
 
     func testImageProxy_whenSettingsOtherThanRemoteContentAreChanged_isNotCalled() async throws {
         enableImageProxyAndRemoteContent()
@@ -223,6 +225,8 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
     }
 
+    // Re-enable these tests once Image Proxy is re-enabled.
+    /*
     func testTrackerProtectionSummary_whenProxyIsUsed_isSetAndDelegateIsNotified() async throws {
         XCTAssertNil(sut.trackerProtectionSummary)
         XCTAssertEqual(delegateObject.trackerProtectionSummaryChangedStub.callCounter, 0)
@@ -264,6 +268,7 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertFalse(sut.shouldShowImageProxyFailedBanner)
         XCTAssertEqual(sut.bodyParts?.originalBody, expectedProcessedBody)
     }
+     */
 }
 
 extension MessageInfoProviderTest {
