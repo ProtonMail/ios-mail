@@ -361,7 +361,9 @@ final class MessageInfoProvider {
 // MARK: Public functions
 extension MessageInfoProvider {
     func update(message: MessageEntity) {
-        self.message = message
+        dispatchQueue.async {
+            self.message = message
+        }
     }
 
     func tryDecryptionAgain(handler: (() -> Void)?) {
