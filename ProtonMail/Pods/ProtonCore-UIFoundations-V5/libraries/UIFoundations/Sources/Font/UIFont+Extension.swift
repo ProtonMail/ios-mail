@@ -23,14 +23,14 @@ import UIKit
 
 extension UIFont {
     public static func preferredFont(for style: TextStyle, weight: Weight) -> UIFont {
-        let metrics = UIFontMetrics(forTextStyle: style)
         let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
         let limit = UIFont.fontLimit(for: style)
-        if DFSSetting.limitToXXXLarge {
+        if DFSSetting.limitToXXXLarge && font.pointSize > limit {
+            let metrics = UIFontMetrics(forTextStyle: style)
             return metrics.scaledFont(for: font, maximumPointSize: limit)
         } else {
-            return metrics.scaledFont(for: font)
+            return font
         }
     }
 
@@ -86,29 +86,29 @@ extension UIFont {
     public static func fontLimit(for style: TextStyle) -> CGFloat {
         switch style {
         case .largeTitle:
-            return 48
+            return 40
         case .title1:
-            return 41
-        case .title2:
             return 34
+        case .title2:
+            return 28
         case .title3:
-            return 32
+            return 26
         case .headline:
-            return 29
-        case .body:
-            return 29
-        case .callout:
-            return 28
-        case .subheadline:
-            return 28
-        case .footnote:
-            return 24
-        case .caption1:
             return 23
+        case .body:
+            return 23
+        case .callout:
+            return 22
+        case .subheadline:
+            return 21
+        case .footnote:
+            return 19
+        case .caption1:
+            return 18
         case .caption2:
-            return 22
+            return 17
         default:
-            return 22
+            return 23
         }
     }
 }
