@@ -200,6 +200,8 @@ img {
     border: 0;
     -ms-interpolation-mode: bicubic;
     max-width: 100%;
+    height: initial;
+    width: initial;
     /* will prevent embed image improper sizing */
     /*    height: auto; remove it if test ok*/
 }
