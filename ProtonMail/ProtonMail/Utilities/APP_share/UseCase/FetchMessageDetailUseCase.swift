@@ -168,7 +168,12 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 }
             }
         }
-        message.numAttachments = NSNumber(value: message.attachments.count)
+        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
+        let attachmentCount = message.attachments
+            .compactMap { $0 as? Attachment }
+            .filter { !$0.inline() || !realAttachments }
+            .count
+        message.numAttachments = NSNumber(value: attachmentCount)
     }
 
     private func updateUnread(message: Message) {
