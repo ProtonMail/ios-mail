@@ -79,7 +79,7 @@ class SignInManager: Service {
         if usersManager.count == 0 {
             userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
             // The spotlight views are only shown when user updates from old version.
-            for feature in SpotlightableFeatureKey.allCases {
+            for feature in SpotlightableFeatureKey.allCases where feature.isFeatureEnabled {
                 userCachedStatus.userHasSeenSpotlight(for: feature)
             }
         }
@@ -165,5 +165,16 @@ extension SignInManager {
 extension SignInManager: LifetimeTrackable {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
+    }
+}
+
+private extension SpotlightableFeatureKey {
+    var isFeatureEnabled: Bool {
+        switch self {
+        case .scheduledSend:
+            return UserInfo.isScheduleSendEnable
+        case .trackerProtection:
+            return UserInfo.isImageProxyAvailable
+        }
     }
 }
