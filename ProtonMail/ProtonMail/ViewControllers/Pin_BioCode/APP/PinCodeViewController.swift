@@ -163,6 +163,7 @@ extension PinCodeViewController: PinCodeViewDelegate {
             self.navigationController?.popViewController(animated: true)
             return
         }
+        unlockManager.delegate?.setupCoreData()
         // unlock when app launch
         _ = delegate.cancel {
             _ = self.navigationController?.popViewController(animated: true)
