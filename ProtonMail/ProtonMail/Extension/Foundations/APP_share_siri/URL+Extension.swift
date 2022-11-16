@@ -28,8 +28,8 @@ extension URL {
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = true
             try setResourceValues(resourceValues)
-        } catch let ex as NSError {
-            assert(false, " path: \(absoluteString) excludeFromBackup error: \(ex)")
+        } catch {
+            assert(false, " path: \(absoluteString) excludeFromBackup error: \(error)")
         }
     }
 
@@ -62,7 +62,7 @@ extension URL {
         // to
         result.to = urlComponment.path.isEmpty ? [] : splitMails(urlComponment.path)
 
-        queryItems?.forEach({ (queryItem) in
+        queryItems?.forEach({ queryItem in
             guard let value = queryItem.value else {
                 return
             }
@@ -110,9 +110,6 @@ extension URL {
                        "protonvpn.net",
                        "pm.me",
                        "protonirockerxow.onion"]
-        for domain in protons {
-            if host.hasSuffix(domain) { return true }
-        }
-        return false
+        return protons.contains(where: { host.hasSuffix($0) })
     }
 }

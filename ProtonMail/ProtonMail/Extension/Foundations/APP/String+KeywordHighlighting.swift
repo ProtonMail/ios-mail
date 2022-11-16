@@ -27,6 +27,7 @@ extension String {
             return color.withAlphaComponent(0.3)
         }()
 
+        // swiftlint:disable:next strict_fileprivate
         fileprivate init(originalString: String) {
             self.originalString = originalString
         }

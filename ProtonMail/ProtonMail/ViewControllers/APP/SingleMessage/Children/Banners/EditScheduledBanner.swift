@@ -39,6 +39,7 @@ class EditScheduledBanner: UIView {
 
     private func setUpSelf() {
         // TODO: switch to use color from Core
+        // ProtonCarbonSignalInfo, so far it is only for macOS
         backgroundColor = UIColor(hexColorCode: "#239ECE")
         roundCorner(8)
     }

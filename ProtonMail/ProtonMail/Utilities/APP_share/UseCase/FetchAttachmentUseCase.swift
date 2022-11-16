@@ -90,17 +90,19 @@ final class FetchAttachment: FetchAttachmentUseCase {
     }
 }
 
+extension FetchAttachment.Params {
+    enum Purpose {
+        /// The UseCase will return the file decrypted and encoded to base64
+        case decryptAndEncodeAttachment
+        /// The UseCase will return the file decrypted and encoded to utf8
+        case decryptAndEncodePublicKey
+        /// The UseCase won't decrypt the downloaded file.
+        case onlyDownload
+    }
+}
+
 extension FetchAttachment {
     struct Params {
-        enum Purpose {
-            /// The UseCase will return the file decrypted and encoded to base64
-            case decryptAndEncodeAttachment
-            /// The UseCase will return the file decrypted and encoded to utf8
-            case decryptAndEncodePublicKey
-            /// The UseCase won't decrypt the downloaded file.
-            case onlyDownload
-        }
-
         let attachmentID: AttachmentID
         let attachmentKeyPacket: String?
         let purpose: Purpose

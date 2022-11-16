@@ -445,6 +445,7 @@ identifier_name:
     - x
     - y
     - to  # as in "from, to"
+    - cc
 
 modifier_order:
   preferred_modifier_order:

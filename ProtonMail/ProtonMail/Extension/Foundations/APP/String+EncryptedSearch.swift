@@ -21,6 +21,7 @@ extension String {
     struct EncryptedSearchStringUtils {
         private let originalString: String
 
+        // swiftlint:disable:next strict_fileprivate
         fileprivate init(originalString: String) {
             self.originalString = originalString
         }
