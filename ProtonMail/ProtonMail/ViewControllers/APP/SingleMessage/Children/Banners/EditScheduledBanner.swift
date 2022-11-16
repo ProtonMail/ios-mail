@@ -77,11 +77,12 @@ class EditScheduledBanner: UIView {
     }
 
     func configure(date: String, time: String, editAction: @escaping () -> Void) {
-        infoLabel.text = String(format: LocalString._edit_scheduled_button_message,
-                                date,
-                                time)
-        infoLabel.textAlignment = .left
-        infoLabel.font = UIFont.systemFont(ofSize: 13)
+        let infoText = String(
+            format: LocalString._edit_scheduled_button_message,
+            date,
+            time
+        )
+        infoLabel.set(text: infoText, preferredFont: .footnote, textColor: .white)
         self.editAction = editAction
 
         editButton.contentEdgeInsets = .init(top: 0, left: 10, bottom: 0, right: 10)
@@ -102,8 +103,8 @@ private enum SubviewsFactory {
 
     static var editButton: UIButton {
         let button = UIButton(frame: .zero)
+        button.titleLabel?.set(text: nil, preferredFont: .caption1)
         button.setTitle(LocalString._edit_scheduled_button_title, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = 8
