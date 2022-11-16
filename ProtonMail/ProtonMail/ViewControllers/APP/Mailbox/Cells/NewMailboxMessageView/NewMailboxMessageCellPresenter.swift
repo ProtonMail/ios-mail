@@ -113,7 +113,7 @@ class NewMailboxMessageCellPresenter {
         }
 
         view.titleLabel.set(text: viewModel.topic,
-                            preferredFont: .body,
+                            preferredFont: .subheadline,
                             weight: weight,
                             textColor: color)
 
