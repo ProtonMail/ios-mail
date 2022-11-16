@@ -1,4 +1,4 @@
-import Foundation
+import ProtonCore_DataModel
 import ProtonCore_Networking
 
 struct SingleMessageContentViewContext {
@@ -70,7 +70,7 @@ class SingleMessageContentViewModel {
     }
 
     var shouldSpotlightTrackerProtection: Bool {
-        !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection)
+        !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection) && UserInfo.isImageProxyAvailable
     }
 
     private(set) var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
