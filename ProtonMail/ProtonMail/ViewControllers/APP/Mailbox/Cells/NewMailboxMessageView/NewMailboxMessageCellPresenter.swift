@@ -91,7 +91,7 @@ class NewMailboxMessageCellPresenter {
         view.forwardImageView.isHidden = !viewModel.isForwarded
 
         view.replyImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
-        view.replyImageView.isHidden = !viewModel.isReply
+        view.replyImageView.isHidden = !viewModel.isReply || viewModel.isReplyAll
 
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
