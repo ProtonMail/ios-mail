@@ -40,7 +40,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         .init(maxCount: 1)
     }
     #endif
-    private var childrenHeightObservations: [NSKeyValueObservation]!
+    private var childrenHeightObservations: [NSKeyValueObservation] = []
     private var cancelButton: UIBarButtonItem!
     private var sendButton: UIBarButtonItem!
     private var scheduledSendButton: UIBarButtonItem!
