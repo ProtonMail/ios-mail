@@ -41,7 +41,7 @@ public struct ErrorResponse: SessionDecodableResponse {
     enum CodingKeys: String, CodingKey {
         case code = "code"
         case error = "error"
-        case details = "exception"
+        case exception = "exception"
         case description = "errorDescription"
     }
 }
@@ -51,7 +51,7 @@ extension ErrorResponse {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         code = try values.decode(Int.self, forKey: .code)
         error = try values.decode(String.self, forKey: .error)
-        errorDescription = try values.decodeIfPresent(String.self, forKey: .description) ?? values.decode(String.self, forKey: .details)
+        errorDescription = try? values.decodeIfPresent(String.self, forKey: .description) ?? values.decodeIfPresent(String.self, forKey: .exception)
     }
 }
 

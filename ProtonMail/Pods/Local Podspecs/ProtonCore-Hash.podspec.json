@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Hash",
-  "version": "3.23.1",
+  "version": "3.23.4",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.23.1"
+    "tag": "3.23.4"
   },
   "platforms": {
     "ios": "11.0",
