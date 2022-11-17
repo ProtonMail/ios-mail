@@ -55,10 +55,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Aðgangskóði hefur ekki verið settur, virkjaðu það í kerfisstillingunum";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. Skráðu þig inn í protonmail.com til að greiða ófrágenginn reikning.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. Skráðu þig inn í proton.me til að greiða ófrágenginn reikning.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. \n\nSkoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">upplýsingasíðurnar okkar</a> til að sjá nánari upplýsingar.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. \n\nSkoðaðu <a href=\"https://proton.me/support/knowledge-base/delinquency/\">upplýsingasíðurnar okkar</a> til að sjá nánari upplýsingar.";
 
 /* Account manager title */
 "Account" = "Notandaaðgangur";
@@ -1383,7 +1383,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Mánudag (%1$@) kl. 08:%2$d";
@@ -2384,7 +2384,7 @@
 "To" = "Til";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu þínu, vinsamlega notaðu vefútgáfuna af Proton tölvupósti á protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu þínu, vinsamlega notaðu vefútgáfuna af Proton tölvupósti á proton.me";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Í dag, %@";
@@ -2646,7 +2646,7 @@
 "You can disable conversations from settings any time." = "Þú getur slökkt á samtölum úr stillingum hvenær sem er.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Þú getur fengið hjálp og ýmsa aðstoð á protonmail.com/support. Einnig er hægt að tilkynna um villur innan úr forritinu.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Þú getur fengið hjálp og ýmsa aðstoð á proton.me/support. Einnig er hægt að tilkynna um villur innan úr forritinu.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Þú getur nú tímasett skilaboðin þín til sendingar síðar";

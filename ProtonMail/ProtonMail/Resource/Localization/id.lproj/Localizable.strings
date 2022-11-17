@@ -51,10 +51,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Kode akses belum diatur. Silakan aktifkan kode akses melalui pengaturan sistem";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Akses ke akun ini telah dinonaktifkan karena terdapatnya tagihan yang belum dibayar. Silakan masuk melalui protonmail.com untuk membayar tagihan Anda.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Akses ke akun ini telah dinonaktifkan karena terdapatnya tagihan yang belum dibayar. Silakan masuk melalui proton.me untuk membayar tagihan Anda.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Akses ke akun ini telah diblokir karena terdapatnya tagihan yang belum dibayar.\n Silakan kunjungi <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">pustaka pengetahuan dasar kami</a> untuk informasi lebih lanjut.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Akses ke akun ini telah diblokir karena terdapatnya tagihan yang belum dibayar.\n Silakan kunjungi <a href=\"https://proton.me/support/knowledge-base/delinquency/\">pustaka pengetahuan dasar kami</a> untuk informasi lebih lanjut.";
 
 /* Account manager title */
 "Account" = "Akun";
@@ -1379,7 +1379,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Senin (%1$@) pada pukul 08:%2$d";
@@ -2380,7 +2380,7 @@
 "To" = "Kepada";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, silakan gunakan Proton Mail versi web di protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, silakan gunakan Proton Mail versi web di proton.me";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hari ini, %@";
@@ -2642,7 +2642,7 @@
 "You can disable conversations from settings any time." = "Anda dapat menonaktifkan percakapan melalui menu pengaturan kapan saja.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Anda dapat memperoleh bantuan dan dukungan di protonmail.com/support. Bug juga dapat dilaporkan melalui aplikasi.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Anda dapat memperoleh bantuan dan dukungan di proton.me/support. Bug juga dapat dilaporkan melalui aplikasi.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Kini Anda dapat menjadwalkan pengiriman pesan";

@@ -78,8 +78,8 @@ Current live version 4.0.8
 
 ## Articles
 
-- [Open sourcing](https://protonmail.com/blog/ios-open-source)
-- [Security model](https://protonmail.com/blog/ios-security-model)
+- [Open sourcing](https://proton.me/blog/ios-open-source)
+- [Security model](https://proton.me/blog/ios-security-model)
 
 ## Our Team
 

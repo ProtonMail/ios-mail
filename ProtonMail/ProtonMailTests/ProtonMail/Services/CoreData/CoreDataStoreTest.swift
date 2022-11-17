@@ -58,14 +58,14 @@ class CoreDataStoreTest: XCTestCase {
             "ParsedHeaders" : {
                 "Subject" : "Important phishing warning for all ProtonMail users",
                 "X-Pm-Content-Encryption" : "end-to-end",
-                "To" : "feng88@protonmail.com",
+                "To" : "feng88@proton.me",
                 "X-Auto-Response-Suppress" : "OOF",
                 "Precedence" : "bulk",
-                "X-Original-To" : "feng88@protonmail.com",
+                "X-Original-To" : "feng88@proton.me",
                 "Mime-Version" : "1.0",
                 "Return-Path" : "<contact@protonmail.ch>",
                 "Content-Type" : "texthtml",
-                "Delivered-To" : "feng88@protonmail.com",
+                "Delivered-To" : "feng88@proton.me",
                 "From" : "ProtonMail <contact@protonmail.ch>",
                 "Received" : "from mail.protonmail.ch by mail.protonmail.ch; Wed, 02 May 2018 12:43:19 -0400",
                 "Message-Id" : "<MQV54A1N98S8ASTB7Z183NM1MG@protonmail.ch>",
@@ -74,7 +74,7 @@ class CoreDataStoreTest: XCTestCase {
             },
             "ToList" : [
             {
-            "Address" : "feng88@protonmail.com",
+            "Address" : "feng88@proton.me",
             "Name" : "",
             "Group" : ""
             }

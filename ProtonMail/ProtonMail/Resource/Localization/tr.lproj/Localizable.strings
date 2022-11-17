@@ -51,10 +51,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Parola ayarlanmamış. Sistem ayarlarından parolanızı etkinleştirin";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen protonmail.com üzerinden oturum açın.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen proton.me üzerinden oturum açın.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim engellendi.\n Ayrıntılı bilgi almak için <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">bilgi bankasına</a> bakabilirsiniz.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim engellendi.\n Ayrıntılı bilgi almak için <a href=\"https://proton.me/support/knowledge-base/delinquency/\">bilgi bankasına</a> bakabilirsiniz.";
 
 /* Account manager title */
 "Account" = "Hesap";
@@ -1379,7 +1379,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Pazartesi (%1$@) saat 08:%2$d";
@@ -2380,7 +2380,7 @@
 "To" = "Kime";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "E-posta kutusu parolanızı sıfırlamak için lütfen protonmail.com adresindeki Proton Mail web sürümünü kullanın";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "E-posta kutusu parolanızı sıfırlamak için lütfen proton.me adresindeki Proton Mail web sürümünü kullanın";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Bugün, %@";
@@ -2642,7 +2642,7 @@
 "You can disable conversations from settings any time." = "Yazışmaları gruplama özelliğini istediğiniz zaman ayarlar bölümünden kapatabilirsiniz.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "protonmail.com/support adresinden yardım ve destek alabilirsiniz. Hataları, uygulama içinden de bildirebilirsiniz.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "proton.me/support adresinden yardım ve destek alabilirsiniz. Hataları, uygulama içinden de bildirebilirsiniz.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Artık iletileri daha sonra gönderilmek üzere zamanlayabilirsiniz";

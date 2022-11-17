@@ -33,7 +33,7 @@ enum PushEncryptedMessageTestData {
             "body": "\(body)",
             "sender": {
               "Name": "\(sender)",
-              "Address": "abuse@protonmail.com",
+              "Address": "abuse@proton.me",
               "Group": ""
             },
             "badge": 5,

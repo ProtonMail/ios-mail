@@ -55,10 +55,10 @@
 "A passcode has not been set, enable it in the system Settings" = "No se ha establecido un código de acceso, habilítalo en la configuración del sistema";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "El acceso a esta cuenta se ha deshabilitado por falta de pago. Por favor, inicia sesión a través de protonmail.com para pagar tus facturas pendientes.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "El acceso a esta cuenta se ha deshabilitado por falta de pago. Por favor, inicia sesión a través de proton.me para pagar tus facturas pendientes.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta se ha deshabilitado por falta de pago.\n\n Por favor visita <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">nuestra base de conocimiento</a> para más información.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta se ha deshabilitado por falta de pago.\n\n Por favor visita <a href=\"https://proton.me/support/knowledge-base/delinquency/\">nuestra base de conocimiento</a> para más información.";
 
 /* Account manager title */
 "Account" = "Cuenta";
@@ -1383,7 +1383,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Lunes (%1$@) a las 08:%2$d";
@@ -2384,7 +2384,7 @@
 "To" = "Para";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de Proton Mail en proton.me";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hoy, %@";
@@ -2646,7 +2646,7 @@
 "You can disable conversations from settings any time." = "Puede desactivar las conversaciones desde los ajustes en cualquier momento.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puedes obtener ayuda y soporte en protonmail.com/support. Los errores también pueden notificarse desde la aplicación.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Puedes obtener ayuda y soporte en proton.me/support. Los errores también pueden notificarse desde la aplicación.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Ahora puedes programar tus mensajes para que sean enviados más tarde";

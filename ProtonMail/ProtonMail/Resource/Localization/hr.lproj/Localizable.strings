@@ -24,10 +24,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Šifra nije postavljena, omogućite je u postavkama sustava";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem proton.me kako biste platili neplaćenu fakturu.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.\n\nMolimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.\n\nMolimo posjetite <a href=\"https://proton.me/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
 
 /* Account manager title */
 "Account" = "Korisnički račun";
@@ -1079,7 +1079,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Više";
@@ -2108,7 +2108,7 @@
 "You are offline" = "Niste na mreži";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pomoć i podršku možete dobiti na protonmail.com/support. Pogreške možete prijaviti i pomoću aplikacije.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Pomoć i podršku možete dobiti na proton.me/support. Pogreške možete prijaviti i pomoću aplikacije.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.";

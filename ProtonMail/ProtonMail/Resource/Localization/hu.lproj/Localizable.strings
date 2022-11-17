@@ -23,10 +23,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Nincs beállítva jelkód. Kapcsolja be a rendszerbeállításokban.";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "A fiók elérése számlatartozás miatt le van tiltva. Kérjük, lépjen be a protonmail.com weblapon és egyenlítse ki a számláit.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "A fiók elérése számlatartozás miatt le van tiltva. Kérjük, lépjen be a proton.me weblapon és egyenlítse ki a számláit.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "A fiók elérése számlatartozás miatt le van tiltva.\n\nKérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">tudásbázist</a> további információkért.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "A fiók elérése számlatartozás miatt le van tiltva.\n\nKérjük, nézze meg a <a href=\"https://proton.me/support/knowledge-base/delinquency/\">tudásbázist</a> további információkért.";
 
 /* Account manager title */
 "Account" = "Fiók";
@@ -1023,7 +1023,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Továbbiak";
@@ -1793,7 +1793,7 @@
 "To" = "Címzett";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "A postafiók-jelszó alaphelyzetbe állításához használja a Proton Mail webes verzióját a protonmail.com oldalon";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "A postafiók-jelszó alaphelyzetbe állításához használja a Proton Mail webes verzióját a proton.me oldalon";
 
 /* *
  *  API Error & alert title */
@@ -2001,7 +2001,7 @@
 "You can customize swipe gestures in the Proton Mail App Settings." = "A csúsztatásos műveleteket a Proton Mail Beállítások menüjében állíthatja be igényeihez.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Segítséget és támogatást kaphat a protonmail.com/support webhelyen. A hibákat az alkalmazás segítségével is jelentheti.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Segítséget és támogatást kaphat a proton.me/support webhelyen. A hibákat az alkalmazás segítségével is jelentheti.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Most már ütemezheti is a leveleit későbbi elküldésre";

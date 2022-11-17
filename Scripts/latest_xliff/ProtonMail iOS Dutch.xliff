@@ -191,17 +191,17 @@
         <target state="translated">ARCHIEF</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="translated">Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen. Gelieve aan te melden via protonmail.com om uw onbetaalde factuur te betalen.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="translated">Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen. Gelieve aan te melden via proton.me om uw onbetaalde factuur te betalen.</target>
         <note>error message</note>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="final">Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen
 
-Bezoek &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;ons kenniscentrum&lt;/a&gt; voor meer informatie.</target>
+Bezoek &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;ons kenniscentrum&lt;/a&gt; voor meer informatie.</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid" approved="yes">
@@ -1620,9 +1620,9 @@ Bezoek &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="final">Notificatie e-mailadres invoeren ...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="final">Het direct aanmaken van een ProtonMail-account is tijdelijk uitgeschakeld. Ga naar https://protonmail.com/invite om een uitnodiging aan te vragen.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="final">Het direct aanmaken van een ProtonMail-account is tijdelijk uitgeschakeld. Ga naar https://proton.me/invite om een uitnodiging aan te vragen.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error">
@@ -1949,8 +1949,8 @@ Bezoek &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="final">Mobiele handtekening</target>
         <note>Mobile Signature title in settings</note>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
         <target state="final">Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via ProtonMail.com op een PC of laptop.</target>
         <note>Description</note>
       </trans-unit>
@@ -3130,12 +3130,12 @@ Bezoek &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="needs-translation">To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="needs-translation">To reset your mailbox password, please use the web version of ProtonMail at proton.me</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
         <target state="final">Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com</target>
         <note>Description</note>
       </trans-unit>
@@ -3541,8 +3541,8 @@ Bezoek &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="final">U kunt onder "Instellingen" in de ProtonMail-app veeggebaren instellen.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
         <target state="final">U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.</target>
         <note>Description</note>
       </trans-unit>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.4
 
-# Check if there is wrong translation   
+# Check if there is wrong translation
 # For example, it should be `Proton Mail` rather than `ProtonMail`
 # Run this script to get suspect translation
 
@@ -57,11 +57,11 @@ def warning_if_contain_protonmail(target: str) -> str:
     if 'protonmail' not in lower:
         return ''
     # check the following cases
-    # protonmail.com
-    # https://protonmail.com/support
+    # proton.me
+    # https://proton.me/support
     # support@protonmail.zendesk.co
     # https://twitter.com/protonmail
-    if 'protonmail.com' in lower or 'support@protonmail' in lower or '/protonmail' in lower:
+    if 'proton.me' in lower or 'support@protonmail' in lower or '/protonmail' in lower:
         return ''
 
     # Contain protonmail but not a link

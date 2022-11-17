@@ -28,7 +28,7 @@ class PushContentTests: XCTestCase {
         let payload = PushContentTestsData.fullPayloadTypeEmail
         let pushContent = try! PushContent(json: payload)
 
-        XCTAssertEqual(pushContent.data.sender.address, "rosencrantz@protonmail.com")
+        XCTAssertEqual(pushContent.data.sender.address, "rosencrantz@proton.me")
         XCTAssertEqual(pushContent.data.sender.name, "Anatoly Rosencrantz")
         XCTAssertEqual(pushContent.data.badge, 11)
         XCTAssertEqual(pushContent.data.body, "Push push")
@@ -40,7 +40,7 @@ class PushContentTests: XCTestCase {
         let payload = PushContentTestsData.fullPayloadTypeOpenUrl
         let pushContent = try! PushContent(json: payload)
 
-        XCTAssertEqual(pushContent.data.sender.address, "abuse@protonmail.com")
+        XCTAssertEqual(pushContent.data.sender.address, "abuse@proton.me")
         XCTAssertEqual(pushContent.data.sender.name, "ProtonMail")
         XCTAssertEqual(pushContent.data.badge, 4)
         XCTAssertEqual(pushContent.data.body, "New login to your account on ProtonCalendar for web.")
@@ -52,7 +52,7 @@ class PushContentTests: XCTestCase {
         let payload = PushContentTestsData.minimalPayload
         let pushContent = try! PushContent(json: payload)
 
-        XCTAssertEqual(pushContent.data.sender.address, "rosencrantz@protonmail.com")
+        XCTAssertEqual(pushContent.data.sender.address, "rosencrantz@proton.me")
         XCTAssertEqual(pushContent.data.sender.name, "Anatoly Rosencrantz")
         XCTAssertEqual(pushContent.data.badge, 11)
         XCTAssertEqual(pushContent.data.body, "Push push")
@@ -63,7 +63,7 @@ class PushContentTests: XCTestCase {
         let payload = PushContentTestsData.payloadWithoutSenderName
         let pushContent = try! PushContent(json: payload)
 
-        XCTAssertEqual(pushContent.data.sender.address, "rosencrantz@protonmail.com")
+        XCTAssertEqual(pushContent.data.sender.address, "rosencrantz@proton.me")
         XCTAssertEqual(pushContent.data.sender.name, "")
         XCTAssertEqual(pushContent.data.badge, 11)
         XCTAssertEqual(pushContent.data.body, "Push push")
@@ -90,7 +90,7 @@ private enum PushContentTestsData {
             "body": "Push push",
             "sender": {
               "Name": "Anatoly Rosencrantz",
-              "Address": "rosencrantz@protonmail.com",
+              "Address": "rosencrantz@proton.me",
               "Group": ""
             },
             "vibrate": 1,
@@ -112,12 +112,12 @@ private enum PushContentTestsData {
             "body": "New login to your account on ProtonCalendar for web.",
             "sender": {
               "Name": "ProtonMail",
-              "Address": "abuse@protonmail.com",
+              "Address": "abuse@proton.me",
               "Group": ""
             },
             "badge": 4,
             "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug==",
-            "url": "https://protonmail.com/support/knowledge-base/display-name-and-signature/"
+            "url": "https://proton.me/support/knowledge-base/display-name-and-signature/"
           },
           "type": "open_url"
         }
@@ -132,7 +132,7 @@ private enum PushContentTestsData {
             "body": "Push push",
             "sender": {
               "Name": "Anatoly Rosencrantz",
-              "Address": "rosencrantz@protonmail.com",
+              "Address": "rosencrantz@proton.me",
               "Group": ""
             },
             "vibrate": 1,
@@ -154,7 +154,7 @@ private enum PushContentTestsData {
             "body": "Push push",
             "sender": {
               "Name": "Anatoly Rosencrantz",
-              "Address": "rosencrantz@protonmail.com"
+              "Address": "rosencrantz@proton.me"
             },
             "badge": 11,
             "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="
@@ -169,7 +169,7 @@ private enum PushContentTestsData {
             "body": "Push push",
             "sender": {
               "Name": "",
-              "Address": "rosencrantz@protonmail.com"
+              "Address": "rosencrantz@proton.me"
             },
             "badge": 11,
             "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug=="

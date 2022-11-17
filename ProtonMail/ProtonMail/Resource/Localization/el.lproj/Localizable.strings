@@ -55,10 +55,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Ένας κωδικός πρόσβασης δεν έχει οριστεί, ενεργοποιήστε το στις ρυθμίσεις συστήματος";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη, λόγω μη πληρωμής. Παρακαλούμε συνδεθείτε από το protonmail.com προς εξόφληση του απλήρωτου τιμολόγιού σας.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη, λόγω μη πληρωμής. Παρακαλούμε συνδεθείτε από το proton.me προς εξόφληση του απλήρωτου τιμολόγιού σας.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη λόγω μη πληρωμής.\n Παρακαλώ επισκεφθείτε <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">βάση γνώσεων μας</a> για περισσότερες πληροφορίες.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη λόγω μη πληρωμής.\n Παρακαλώ επισκεφθείτε <a href=\"https://proton.me/support/knowledge-base/delinquency/\">βάση γνώσεων μας</a> για περισσότερες πληροφορίες.";
 
 /* Account manager title */
 "Account" = "Λογαριασμός";
@@ -1224,7 +1224,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Περισσότερα";
@@ -2126,7 +2126,7 @@
 "To" = "Προς";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Για επαναφορά του κωδικού της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail στο protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Για επαναφορά του κωδικού της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του Proton Mail στο proton.me";
 
 /* *
  *  API Error & alert title */
@@ -2370,7 +2370,7 @@
 "You can disable conversations from settings any time." = "Μπορείτε οποτεδήποτε να απενεργοποιήσετε τις συνομιλίες από τις ρυθμίσεις.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Μπορείτε να λάβετε βοήθεια και υποστήριξη στο protonmail.com/support. Μπορούν επίσης να αναφερθούν και σφάλματα σχετικά με την εφαρμογή.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Μπορείτε να λάβετε βοήθεια και υποστήριξη στο proton.me/support. Μπορούν επίσης να αναφερθούν και σφάλματα σχετικά με την εφαρμογή.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Τώρα μπορείτε να χρονοδιαγραφήσετε την αποστολή των μηνυμάτων σας αργότερα";

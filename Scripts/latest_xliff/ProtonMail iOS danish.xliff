@@ -197,17 +197,17 @@
         <target state="translated">ARKIV</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="translated">Adgang til denne konto er deaktiveret grundet manglende betaling. Log ind via protonmail.com for at betale din udestående faktura.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="translated">Adgang til denne konto er deaktiveret grundet manglende betaling. Log ind via proton.me for at betale din udestående faktura.</target>
         <note>error message</note>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="translated">Adgang til denne konte er deaktiveret grundet restance.
 
-Besøg &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;vidensdatabasen&lt;/a&gt; for yderligere information.</target>
+Besøg &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;vidensdatabasen&lt;/a&gt; for yderligere information.</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid">
@@ -1701,9 +1701,9 @@ Besøg &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="translated">Angiv notifikations-e-mail...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="translated">Straks-oprettelse af ProtonMail-konti er midlertidigt inaktiv. Gå til https://protonmail.com/invite for at anmode om en invitation.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="translated">Straks-oprettelse af ProtonMail-konti er midlertidigt inaktiv. Gå til https://proton.me/invite for at anmode om en invitation.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error">
@@ -2042,12 +2042,12 @@ Besøg &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="translated">Mobilsignatur</target>
         <note>Mobile Signature title in settings</note>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="translated">Mobiltilmeldinger er midlertidig inaktiv. Forsøg igen senere eller prøv at tilmelde via protonmail.com vha. en computer.</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="translated">Mobiltilmeldinger er midlertidig inaktiv. Forsøg igen senere eller prøv at tilmelde via proton.me vha. en computer.</target>
         <note>Description</note>
         <alt-trans>
-          <target>Mobiltilmeldinger er midlertidig inaktiv. Forsøg igen senere eller prøv at tilmelde via protonmail.com vha. en stationær eller bærbar computer.</target>
+          <target>Mobiltilmeldinger er midlertidig inaktiv. Forsøg igen senere eller prøv at tilmelde via proton.me vha. en stationær eller bærbar computer.</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature.">
@@ -3289,13 +3289,13 @@ Besøg &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="translated">Benyt webversionen af ProtonMail via protonmail.com for at nulstille din postkasseadgangskode</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="translated">Benyt webversionen af ProtonMail via proton.me for at nulstille din postkasseadgangskode</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="translated">Benyt venligst webversionen af ProtonMail via protonmail.com for at nulstille din postkasseadgangskode</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="translated">Benyt venligst webversionen af ProtonMail via proton.me for at nulstille din postkasseadgangskode</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:">
@@ -3706,9 +3706,9 @@ Besøg &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="translated">Du kan tilpasse stryge-gestusser i ProtonMail App-indstillinger.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app.">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="translated">Du kan få hjælp og support via protonmail.com/support. Fejl kan tillige anmeldes via app'en.</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app.">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="translated">Du kan få hjælp og support via proton.me/support. Fejl kan tillige anmeldes via app'en.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature.">

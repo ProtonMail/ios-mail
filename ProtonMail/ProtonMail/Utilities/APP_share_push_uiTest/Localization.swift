@@ -339,8 +339,8 @@ class LocalizedString {
 
     /// "API Server not reachable…"
     lazy var _general_api_server_not_reachable = NSLocalizedString("API Server not reachable…", comment: "when server not reachable")
-    /// "Access to this account is disabled due to non-payment. Please log in through protonmail.com to pay your outstanding invoice(s)."
-    lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "error message")
+    /// "Access to this account is disabled due to non-payment. Please log in through proton.me to pay your outstanding invoice(s)."
+    lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.", comment: "error message")
     /// "Alert"
     lazy var _general_alert_title     = NSLocalizedString("Alert", comment: "Title")
     /// "Done"
