@@ -930,7 +930,7 @@
 "Every time enter app" = "Jedes Mal, wenn du die App öffnest";
 
 /* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "Nachrichteninhalt ausschließen";
+"Exclude message content" = "Schließe den Inhalt von Nachrichten";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Ordner aufklappen";
@@ -2589,6 +2589,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Es gibt Probleme beim Verbinden mit den Servern. Bitte stelle die Verbindung wieder her.";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Bilder werden jetzt standardmäßig geladen und deren Absender können dich nicht mehr zurückverfolgen.\nDies kann in den Einstellungen geändert werden.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Wir empfehlen, stattdessen für die folgenden Empfänger ein Passwort einzurichten:";

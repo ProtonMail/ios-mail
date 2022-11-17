@@ -25,7 +25,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.23.3'
+  '3.23.4'
 end
 
 def common_pods

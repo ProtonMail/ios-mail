@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_DataModel
 import struct UIKit.CGFloat
 
 extension PrivacySettingViewModel {
@@ -47,7 +47,22 @@ final class PrivacySettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
 
-    let privacySections: [SettingPrivacyItem] = SettingPrivacyItem.allCases
+    var privacySections: [SettingPrivacyItem] {
+        var sections: [SettingPrivacyItem] = [
+            .autoLoadRemoteContent,
+            .autoLoadEmbeddedImage,
+            .blockEmailTracking,
+            .linkOpeningMode,
+            .metadataStripping
+        ]
+
+        if !UserInfo.isImageProxyAvailable {
+            sections.removeAll { $0 == .blockEmailTracking }
+        }
+
+        return sections
+    }
+
     let user: UserManager
     private(set) var metaStrippingProvider: AttachmentMetadataStrippingProtocol
 
@@ -66,11 +81,13 @@ extension PrivacySettingViewModel: SwitchToggleVMInput {
         }
         switch item {
         case .autoLoadRemoteContent:
-            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
-            updateAutoLoadImageStatus(to: status, imageType: .remote, completion: completion)
+//            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
+//            updateAutoLoadImageStatus(to: status, imageType: .remote, completion: completion)
+            updateAutoLoadImageStatus(flag: .remote, newStatus: newStatus, completion: completion)
         case .autoLoadEmbeddedImage:
-            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
-            updateAutoLoadImageStatus(to: status, imageType: .embedded, completion: completion)
+//            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
+//            updateAutoLoadImageStatus(to: status, imageType: .embedded, completion: completion)
+            updateAutoLoadImageStatus(flag: .embedded, newStatus: newStatus, completion: completion)
         case .blockEmailTracking:
             updateBlockEmailTrackingStatus(newStatus: newStatus, completion: completion)
         case .linkOpeningMode:
@@ -85,7 +102,7 @@ extension PrivacySettingViewModel: SwitchToggleVMInput {
 extension PrivacySettingViewModel: SwitchToggleVMOutput {
     var title: String { LocalString._privacy }
     var sectionNumber: Int { 1 }
-    var rowNumber: Int { SettingPrivacyItem.allCases.count }
+    var rowNumber: Int { privacySections.count }
     var headerTopPadding: CGFloat { 8 }
     var footerTopPadding: CGFloat { 0 }
 
@@ -111,11 +128,9 @@ extension PrivacySettingViewModel {
     private func status(of item: SettingPrivacyItem) -> Bool {
         switch item {
         case .autoLoadRemoteContent:
-            let imageType = UpdateImageAutoloadSetting.ImageType.remote
-            return user.userInfo[keyPath: imageType.userInfoKeyPath] == 0
+            return user.userInfo.isAutoLoadRemoteContentEnabled
         case .autoLoadEmbeddedImage:
-            let imageType = UpdateImageAutoloadSetting.ImageType.embedded
-            return user.userInfo[keyPath: imageType.userInfoKeyPath] == 0
+            return user.userInfo.isAutoLoadEmbeddedImagesEnabled
         case .blockEmailTracking:
             return user.userInfo.imageProxy.contains(.imageProxy)
         case .linkOpeningMode:
@@ -133,6 +148,21 @@ extension PrivacySettingViewModel {
             userInfo: user.userInfo,
             imageType: imageType,
             setting: newStatus,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    @available(
+        *,
+         deprecated,
+         message: "Switch to the UpdateImageAutoloadSetting-based variant once Image Proxy is ready to be shipped."
+    )
+    private func updateAutoLoadImageStatus(flag: ShowImages, newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateAutoLoadImages(
+            currentAuth: user.authCredential,
+            userInfo: user.userInfo,
+            flag: flag,
+            enable: newStatus,
             completion: saveData(thenPerform: completion)
         )
     }

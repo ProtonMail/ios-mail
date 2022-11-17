@@ -261,7 +261,7 @@
 			<key>one</key>
 			<string>%d weitere</string>
 			<key>other</key>
-			<string>%d weitere</string>
+			<string>%d andere</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>

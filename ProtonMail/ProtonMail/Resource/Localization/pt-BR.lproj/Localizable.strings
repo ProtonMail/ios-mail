@@ -2590,6 +2590,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Temos problemas para conectar aos servidores. Por favor, reconecte.";
 
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Agora carregamos as imagens por padrão e impedimos os remetentes de rastrearem você.\nIsso pode ser alterado nas configurações.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos configurar uma senha para os seguintes destinatários:";
 

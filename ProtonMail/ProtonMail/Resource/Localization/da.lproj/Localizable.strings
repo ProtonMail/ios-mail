@@ -272,8 +272,6 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Auto-indlæs indlejrede billeder";
-
-/* settings general section title */
 "Auto-load remote content" = "Auto-indlæs fjernindhold";
 
 /* Example feedback */

@@ -1,9 +1,6 @@
 /* Bundle display name */
 "CFBundleDisplayName" = "Proton Mail";
 
-/* Bundle name */
-"CFBundleName" = "PushService";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Diperlukan untuk melampirkan media ke dalam email.";
 

@@ -2578,6 +2578,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "連線到伺服器時發生問題。請重新連線。";
 
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "我們將預設載入所有圖像，並且攔截寄件者進行追蹤。這項功能可於設定中變更。";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "我們建議為以下收件人設定密碼：";
 
