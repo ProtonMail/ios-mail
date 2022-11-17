@@ -42,10 +42,10 @@
 "A passcode has not been set, enable it in the system Settings" = "パスコードが設定されていません。システム設定で有効にしてください。";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "未払いのため、このアカウントへのアクセスはできません。未払いの請求書をお支払いいただくには protonmail.com からログインしてください。";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "未払いのため、このアカウントへのアクセスはできません。未払いの請求書をお支払いいただくには proton.me からログインしてください。";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "料金未払いのため、このアカウントへのアクセスはできません。 \n詳細については、<a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">ナレッジベース</a>にアクセスしてください。";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "料金未払いのため、このアカウントへのアクセスはできません。 \n詳細については、<a href=\"https://proton.me/support/knowledge-base/delinquency/\">ナレッジベース</a>にアクセスしてください。";
 
 /* Account manager title */
 "Account" = "アカウント";
@@ -1253,7 +1253,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "月曜日 (%1$@) 08:%2$d";
@@ -2194,7 +2194,7 @@
 "To" = "宛先";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "メールボックスのパスワードをリセットするには Web バージョンの Proton Mail (protonmail.com) を使用してください";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "メールボックスのパスワードをリセットするには Web バージョンの Proton Mail (proton.me) を使用してください";
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "今日、%@";
@@ -2450,7 +2450,7 @@
 "You can disable conversations from settings any time." = "会話モードは設定からいつでもオフにできます。";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートを protonmail.com/support にて提供しています。アプリ内からも不具合の報告ができます。";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートを proton.me/support にて提供しています。アプリ内からも不具合の報告ができます。";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "あとでメッセージを送信するようスケジュールしました";

@@ -227,25 +227,25 @@
         <target state="final">ARCHIVIO</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="final">L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore, accedi su protonmail.com per pagare la fattura pendente.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="final">L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore, accedi su proton.me per pagare la fattura pendente.</target>
         <note>error message</note>
         <alt-trans>
-          <target>L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore accedi su protonmail.com per pagare la fattura pendente.</target>
+          <target>L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore accedi su proton.me per pagare la fattura pendente.</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="final">L'accesso a questo account è stato annullato a causa di un mancato pagamento.
 
-Per favore visita &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;conoscenze di base&lt;/a&gt; per maggiori informazioni.</target>
+Per favore visita &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;conoscenze di base&lt;/a&gt; per maggiori informazioni.</target>
         <note/>
         <alt-trans>
           <target>L'accesso a questo account è stato annullato a causa di un mancato pagamento.
 
-Per favore visiti &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;conoscenze di base&lt;/a&gt; per maggiori informazioni.</target>
+Per favore visiti &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;conoscenze di base&lt;/a&gt; per maggiori informazioni.</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="Account password invalid" approved="yes">
@@ -1751,9 +1751,9 @@ Per favore visiti &lt;a href="https://protonmail.com/support/knowledge-base/deli
         <target state="final">Inserire l'email di notifica...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="final">La creazione istantanea di account ProtonMail è stata temporaneamente disabilitata. Si prega di andare a https://protonmail.com/invite per richiedere un invito.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="final">La creazione istantanea di account ProtonMail è stata temporaneamente disabilitata. Si prega di andare a https://proton.me/invite per richiedere un invito.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error" approved="yes">
@@ -2095,9 +2095,9 @@ Per favore visiti &lt;a href="https://protonmail.com/support/knowledge-base/deli
         <target state="final">Firma mobile</target>
         <note>Mobile Signature title in settings</note>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="final">Le iscrizioni da dispositivo mobile sono temporaneamente disattivate. Per favore, ritenta più tardi oppure prova ad iscriverti su protonmail.com da un computer fisso o portatile.</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="final">Le iscrizioni da dispositivo mobile sono temporaneamente disattivate. Per favore, ritenta più tardi oppure prova ad iscriverti su proton.me da un computer fisso o portatile.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature." approved="yes">
@@ -3351,13 +3351,13 @@ Per favore visiti &lt;a href="https://protonmail.com/support/knowledge-base/deli
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su protonmail.com</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su proton.me</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su protonmail.com</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su proton.me</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:" approved="yes">
@@ -3765,9 +3765,9 @@ Per favore visiti &lt;a href="https://protonmail.com/support/knowledge-base/deli
         <target state="final">È possibile personalizzare i gesti di scorrimento nelle impostazioni di ProtonMail.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="final">Puoi ricevere aiuto e assistenza su protonmail.com/support. I bug possono essere segnalati anche tramite l'app.</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="final">Puoi ricevere aiuto e assistenza su proton.me/support. I bug possono essere segnalati anche tramite l'app.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">

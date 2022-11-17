@@ -191,17 +191,17 @@
         <target state="final">ARCHIVO</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="final">El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de protonmail.com para pagar su factura no pagada.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="final">El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de proton.me para pagar su factura no pagada.</target>
         <note>error message</note>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="final">El acceso a esta cuenta está deshabilitado por falta de pago.
 
-Visite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;la base de conocimiento&lt;/a&gt; para más información.</target>
+Visite &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;la base de conocimiento&lt;/a&gt; para más información.</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid" approved="yes">
@@ -1644,9 +1644,9 @@ Visite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="final">Ingresar email de notificaciones...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="final">La creación instantánea de cuentas de ProtonMail se ha deshabilitado temporalmente. Diríjase a https://protonmail.com/invite para solicitar una invitación.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="final">La creación instantánea de cuentas de ProtonMail se ha deshabilitado temporalmente. Diríjase a https://proton.me/invite para solicitar una invitación.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error" approved="yes">
@@ -1970,9 +1970,9 @@ Visite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="final">Firma móvil</target>
         <note>Mobile Signature title in settings</note>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="final">El registro por móvil está temporalmente deshabilitado. Inténtelo de nuevo más tarde o intente registrarse en protonmail.com utilizando una computadora.</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="final">El registro por móvil está temporalmente deshabilitado. Inténtelo de nuevo más tarde o intente registrarse en proton.me utilizando una computadora.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature." approved="yes">
@@ -3142,13 +3142,13 @@ Visite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en proton.me</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en proton.me</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:" approved="yes">
@@ -3541,9 +3541,9 @@ Visite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&g
         <target state="final">Puede personalizar gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="final">Puede obtener ayuda y soporte en protonmail.com/support. Los errores también se pueden informar desde la aplicación.</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="final">Puede obtener ayuda y soporte en proton.me/support. Los errores también se pueden informar desde la aplicación.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">

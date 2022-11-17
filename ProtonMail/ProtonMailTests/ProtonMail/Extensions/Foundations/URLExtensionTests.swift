@@ -33,9 +33,9 @@ class URLExtensionTests: XCTestCase {
         url = url.removeProtonSchemeIfNeeded()
         XCTAssertEqual(url.absoluteString, "ftp://abc.com")
 
-        url = try XCTUnwrap(URL(string: "pm-incoming-mail://0ba37cbb-0637-4af7-9862-6213cf5c9013.proton/www.protonmail.com"), "Invalid url")
+        url = try XCTUnwrap(URL(string: "pm-incoming-mail://0ba37cbb-0637-4af7-9862-6213cf5c9013.proton/www.proton.me"), "Invalid url")
         url = url.removeProtonSchemeIfNeeded()
-        XCTAssertEqual(url.absoluteString, "https://www.protonmail.com")
+        XCTAssertEqual(url.absoluteString, "https://www.proton.me")
     }
 
     func testIsOwnedByProton() {

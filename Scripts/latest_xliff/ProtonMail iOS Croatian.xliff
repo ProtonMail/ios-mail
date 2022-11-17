@@ -191,17 +191,17 @@
         <target state="final">Arhiva</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="final">Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="final">Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem proton.me kako biste platili neplaćenu fakturu.</target>
         <note>error message</note>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="final">Pristup ovom računu je onemogućen zbog neplaćanja.
 
-Molimo posjetite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;našu bazu znanja&lt;/a&gt; za više informacija.</target>
+Molimo posjetite &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;našu bazu znanja&lt;/a&gt; za više informacija.</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid" approved="yes">
@@ -1635,9 +1635,9 @@ Molimo posjetite &lt;a href="https://protonmail.com/support/knowledge-base/delin
         <target state="final">Unesite adresu e-pošte za obavijesti...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="final">Izrada instantnog ProtonMail računa privremeno je onemogućena. Idite na https://protonmail.com/invite da biste zatražili pozivnicu.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="final">Izrada instantnog ProtonMail računa privremeno je onemogućena. Idite na https://proton.me/invite da biste zatražili pozivnicu.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error" approved="yes">
@@ -1964,9 +1964,9 @@ Molimo posjetite &lt;a href="https://protonmail.com/support/knowledge-base/delin
         <target state="final">Potpis na mobilnim uređajima</target>
         <note>Mobile Signature title in settings</note>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="final">Prijave za mobilne uređaje privremeno su onemogućene. Pokušajte ponovo kasnije ili se pokušajte prijaviti na protonmail.com pomoću računala ili prijenosnog računala.</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="final">Prijave za mobilne uređaje privremeno su onemogućene. Pokušajte ponovo kasnije ili se pokušajte prijaviti na proton.me pomoću računala ili prijenosnog računala.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature." approved="yes">
@@ -3137,13 +3137,13 @@ Molimo posjetite &lt;a href="https://protonmail.com/support/knowledge-base/delin
         </alt-trans>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi proton.me</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi proton.me</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:" approved="yes">
@@ -3542,9 +3542,9 @@ Molimo posjetite &lt;a href="https://protonmail.com/support/knowledge-base/delin
         <target state="final">Geste pokreta prsta možete prilagoditi u postavkama ProtonMail aplikacije.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="final">Pomoć i podršku možete dobiti na protonmail.com/support. Pogreške možete prijaviti i pomoću aplikacije.</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="final">Pomoć i podršku možete dobiti na proton.me/support. Pogreške možete prijaviti i pomoću aplikacije.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">

@@ -27,10 +27,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Há um código-passe não definido. Active-o nas definições";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "O acesso a esta conta está desactivado devido a falta de pagamento. Por favor, entre através de protonmail.com para liquidar as suas dívidas.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "O acesso a esta conta está desactivado devido a falta de pagamento. Por favor, entre através de proton.me para liquidar as suas dívidas.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "O acesso a esta conta está desactivado devido a falta de pagamento.\n Por favor aceda à nossa <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">base de conhecimento</a> para mais informação.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "O acesso a esta conta está desactivado devido a falta de pagamento.\n Por favor aceda à nossa <a href=\"https://proton.me/support/knowledge-base/delinquency/\">base de conhecimento</a> para mais informação.";
 
 /* Account manager title */
 "Account" = "Conta";
@@ -1178,7 +1178,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Mais";
@@ -2046,7 +2046,7 @@
 "To" = "Para";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para repor a senha da sua caixa de entrada, por favor utilize a versão web do Proton Mail em protonmail.com";
+"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Para repor a senha da sua caixa de entrada, por favor utilize a versão web do Proton Mail em proton.me";
 
 /* *
  *  API Error & alert title */
@@ -2281,7 +2281,7 @@
 "You can customize swipe gestures in the Proton Mail App Settings." = "Pode personalizar os gestos de deslizamento na aplicação do Proton Mail, em Definições.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pode obter ajuda e suporte em protonmail.com/support. Os erros também podem ser relatados com a aplicação.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Pode obter ajuda e suporte em proton.me/support. Os erros também podem ser relatados com a aplicação.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Não pode predefinir o endereço %@, é uma funcionalidade paga.";

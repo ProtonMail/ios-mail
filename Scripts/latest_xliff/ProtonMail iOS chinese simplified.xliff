@@ -200,20 +200,20 @@
         <target state="translated">已存档</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="translated">此账户因欠费已被停用。请登录 protonmail.com 续费。</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="translated">此账户因欠费已被停用。请登录 proton.me 续费。</target>
         <note>error message</note>
         <alt-trans>
-          <target>此帐户由于欠费已经被禁止访问。请登录 protonmail.com 进行支付。</target>
+          <target>此帐户由于欠费已经被禁止访问。请登录 proton.me 进行支付。</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="translated">此账户因欠费已被停用。
 
-请前往我们的&lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;帮助中心&lt;/a&gt;了解详情。</target>
+请前往我们的&lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;帮助中心&lt;/a&gt;了解详情。</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid">
@@ -1842,12 +1842,12 @@
           <target>输入通知电子邮件...</target>
         </alt-trans>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="translated">ProtonMail 暂停注册，请前往 https://protonmail.com/invite 获取邀请。</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="translated">ProtonMail 暂停注册，请前往 https://proton.me/invite 获取邀请。</target>
         <note>Error</note>
         <alt-trans>
-          <target>目前暂时禁用创建 ProtonMail 帐户功能。请访问 https://protonmail.com/invite，获得邀请。</target>
+          <target>目前暂时禁用创建 ProtonMail 帐户功能。请访问 https://proton.me/invite，获得邀请。</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="Internal Error">
@@ -2189,12 +2189,12 @@
           <target>移动设备签名</target>
         </alt-trans>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="translated">移动端注册已暂停，请稍后再试，或使用电脑前往 protonmail.com 尝试注册。</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="translated">移动端注册已暂停，请稍后再试，或使用电脑前往 proton.me 尝试注册。</target>
         <note>Description</note>
         <alt-trans>
-          <target>移动启用注册暂时禁用。请稍后再试，或者可以尝试使用电脑访问 protonmail.com 注册</target>
+          <target>移动启用注册暂时禁用。请稍后再试，或者可以尝试使用电脑访问 proton.me 注册</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature.">
@@ -3489,13 +3489,13 @@
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="translated">请前往 protonmail.com 使用网页版 ProtonMail 重置邮箱密码</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="translated">请前往 proton.me 使用网页版 ProtonMail 重置邮箱密码</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="translated">请使用ProtonMail网页版:protonmail.com 重置您的邮箱密码</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="translated">请使用ProtonMail网页版:proton.me 重置您的邮箱密码</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:">
@@ -3930,9 +3930,9 @@
         <target state="translated">您可以在 ProtonMail 应用设置中定制滑动操作。</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app.">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="translated">您可以在 protonmail.com/support 获取帮助与支持，也可以在应用内反馈程序缺陷。</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app.">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="translated">您可以在 proton.me/support 获取帮助与支持，也可以在应用内反馈程序缺陷。</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature.">

@@ -39,10 +39,10 @@
 "A passcode has not been set, enable it in the system Settings" = "No s'ha establert un codi d'accés, habiliteu-lo a la configuració del sistema";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accés a aquest compte està desactivat per falta de pagament. Inicieu la sessió a protonmail.com per pagar la factura no pagada.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "L'accés a aquest compte està desactivat per falta de pagament. Inicieu la sessió a proton.me per pagar la factura no pagada.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.\n\nVisiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la nostre base de coneixement</a> per més informació.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.\n\nVisiteu <a href=\"https://proton.me/support/knowledge-base/delinquency/\">la nostre base de coneixement</a> per més informació.";
 
 /* Account manager title */
 "Account" = "Compte";
@@ -1209,7 +1209,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Més";
@@ -2319,7 +2319,7 @@
 "You can customize swipe gestures in the Proton Mail App Settings." = "Podeu personalitzar els gestos de lliscament en la configuració de l'aplicació de Proton Mail.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Podeu obtenir ajuda i assistència a protonmail.com/support. Els errors també es poden informar amb l'aplicació.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Podeu obtenir ajuda i assistència a proton.me/support. Els errors també es poden informar amb l'aplicació.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Ara podeu programar els vostres missatges per tal que s'enviïn més tard";

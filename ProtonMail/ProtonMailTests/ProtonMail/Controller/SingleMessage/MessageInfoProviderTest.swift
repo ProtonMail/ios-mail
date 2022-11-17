@@ -93,15 +93,15 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
         XCTAssertEqual(sut.originFolderTitle(isExpanded: false), "Inbox")
         XCTAssertEqual(sut.size, "2 KB")
-        XCTAssertEqual(sut.simpleRecipient, "cc name, feng88@protonmail.com")
+        XCTAssertEqual(sut.simpleRecipient, "cc name, feng88@proton.me")
 
         let toList = sut.toData
         XCTAssertEqual(toList?.title, "To:")
         XCTAssertEqual(toList?.recipients.count, 1)
-        XCTAssertEqual(toList?.recipients.first?.name, "feng88@protonmail.com")
+        XCTAssertEqual(toList?.recipients.first?.name, "feng88@proton.me")
 
         let ccList = sut.ccData
-        XCTAssertEqual(ccList?.title, "CC:")
+        XCTAssertEqual(ccList?.title, "Cc:")
         XCTAssertEqual(ccList?.recipients.count, 1)
         XCTAssertEqual(ccList?.recipients.first?.name, "cc name")
     }

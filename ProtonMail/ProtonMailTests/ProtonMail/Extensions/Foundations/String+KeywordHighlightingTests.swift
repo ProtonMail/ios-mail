@@ -27,7 +27,7 @@ class String_KeywordHighlightingTests: XCTestCase {
 <body>
 <p>Hello 😀,</p>
 <p>You have 1 new message(s) in your inbox and custom folders.</p>
-<p>Please log in at <a href="https://mail.protonmail.com">https://mail.protonmail.com</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
+<p>Please log in at <a href="https://mail.proton.me">https://mail.proton.me</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
 <p>Best regards 😀,</p>
 <p>The ProtonMail Team</p>
 </body>
@@ -48,7 +48,7 @@ class String_KeywordHighlightingTests: XCTestCase {
 <body>
 <p><span>Hello <mark style="background-color: #8A6EFF4D" id="es-autoscroll">😀</mark>,</span></p>
 <p><span>You have 1 new message(s) in your inbox and <mark style="background-color: #8A6EFF4D" id="es-autoscroll">custom</mark> <mark style="background-color: #8A6EFF4D" id="es-autoscroll">folder</mark>s.</span></p>
-<p>Please log in at <a href="https://mail.protonmail.com">https://mail.protonmail.com</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
+<p>Please log in at <a href="https://mail.proton.me">https://mail.proton.me</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
 <p><span>Best regards <mark style="background-color: #8A6EFF4D" id="es-autoscroll">😀</mark>,</span></p>
 <p>The ProtonMail Team</p>
 </body>
@@ -69,7 +69,7 @@ class String_KeywordHighlightingTests: XCTestCase {
             NSRange(location:37, length: 2): expectation(description: "1st 😀 is highlighted"),
             NSRange(location:92, length: 6): expectation(description: "custom is highlighted"),
             NSRange(location:99, length: 6): expectation(description: "folder is highlighted"),
-            NSRange(location:350, length: 2): expectation(description: "2nd 😀 is highlighted")
+            NSRange(location:340, length: 2): expectation(description: "2nd 😀 is highlighted")
         ]
 
         result.enumerateAttribute(.backgroundColor, in: range) { value, highlightedRange, _ in

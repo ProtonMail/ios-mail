@@ -33,10 +33,10 @@
 "A passcode has not been set, enable it in the system Settings" = "Tangalt tuffirt ur tettwazen ara yakan, rmed-itt deg iɣewwaṛen n unagraw";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Anekcum ar umiḍan-agi yensa ɣef sebba n lexlas mazal. Ma ulac aɣilif qqen ar protonmail.com akken ad xelseḍ tafaturt mazal.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Anekcum ar umiḍan-agi yensa ɣef sebba n lexlas mazal. Ma ulac aɣilif qqen ar proton.me akken ad xelseḍ tafaturt mazal.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Yensa unekcum ar umiḍan-a imi mazal ur yettwaxelleṣ ara.\n\nMa ulac aɣilif, rzu ar <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">taffa-nneɣ n tmussni</a> i ugar n telɣut.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Yensa unekcum ar umiḍan-a imi mazal ur yettwaxelleṣ ara.\n\nMa ulac aɣilif, rzu ar <a href=\"https://proton.me/support/knowledge-base/delinquency/\">taffa-nneɣ n tmussni</a> i ugar n telɣut.";
 
 /* Account manager title */
 "Account" = "Amiḍan";
@@ -1194,7 +1194,7 @@
 
 /* *
  *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* More actions button */
 "More" = "Ugar";
@@ -2337,7 +2337,7 @@
 "You can disable conversations from settings any time." = "Tzemreḍ ad tsenseḍ ameslay melmi i tebɣiḍ seg yiɣewwaren.";
 
 /* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Tzemreḍ ad d-remseḍ tallelt si protonmail.com/support. Ibugen zemren daɣen ad ttwaznen s usnas.";
+"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Tzemreḍ ad d-remseḍ tallelt si proton.me/support. Ibugen zemren daɣen ad ttwaznen s usnas.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ur tezmireḍ ara ad tesbaduḍ tansa %@ am tansa tamezwert acku d tawuri n lexlaṣ.";
