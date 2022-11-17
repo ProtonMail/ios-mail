@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "共 %2$@，已使用 %1$@";
 
-/* auto lock time format */
-"%d Minute" = "%d 分钟";
-
-/* auto lock time format */
-"%d Minutes" = "%d 分钟";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d 秒";
 
@@ -255,12 +249,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "部分收件人的邮箱地址/域名不存在或格式不正确，因此邮件已被存为草稿。";
 
-/* No comment provided by engineer. */
-"attachment" = "附件";
-
-/* No comment provided by engineer. */
-"Attachment" = "上传为附件";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "附件上传失败";
 
@@ -269,12 +257,6 @@
 
 /* Alert title */
 "Attachment limit" = "附件限制";
-
-/* No comment provided by engineer. */
-"attachments" = "附件";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "附件";
 
 /* Title */
 "Authentication" = "身份验证";

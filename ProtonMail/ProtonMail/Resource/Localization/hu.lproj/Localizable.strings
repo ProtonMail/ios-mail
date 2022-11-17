@@ -1,8 +1,4 @@
-/* auto lock time format */
-"%d Minute" = "%d perc";
 
-/* auto lock time format */
-"%d Minutes" = "%d perc";
 
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d másodperc";
@@ -192,23 +188,11 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Egy vagy több e-mail cím vagy domain név nem létezik vagy hibás formátumú. Az üzenet a piszkozatokba került.";
 
-/* No comment provided by engineer. */
-"attachment" = "mellékletet";
-
-/* No comment provided by engineer. */
-"Attachment" = "Melléklet";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "A melléklet hiba";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "A melléklet importálva";
-
-/* No comment provided by engineer. */
-"attachments" = "mellékletek";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Mellékletek";
 
 /* Title */
 "Authentication" = "Azonosítás";

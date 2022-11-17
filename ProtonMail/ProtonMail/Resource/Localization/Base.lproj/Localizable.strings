@@ -257,8 +257,6 @@
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID is not enrolled, enable it in the system Settings";
 "A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
 "TouchID not available" = "TouchID not available";
-"%d Minutes" = "%d minutes";
-"%d Minute" = "%d minute";
 "None" = "None";
 "Every time enter app" = "Every time enter app";
 "Unknown" = "Unknown";

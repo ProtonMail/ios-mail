@@ -39,8 +39,6 @@ class LocalizedString {
 
     // Mark Settings
 
-    /// "%d Minute"
-    lazy var _settings_auto_lock_minute  = NSLocalizedString("%d Minute", comment: "auto lock time format")
     /// "%d Minutes"
     lazy var _settings_auto_lock_minutes = NSLocalizedString("%d Minutes", comment: "auto lock time format")
     /// "DisplayName"
@@ -669,6 +667,8 @@ class LocalizedString {
 
     lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon logging out of the app.", comment: "A description string in pin & faceID setting page")
 
+    lazy var _timing = NSLocalizedString("Timing", comment: "A section title for timing section to set auto lock timing")
+
     lazy var _go_to_settings = NSLocalizedString("Go to settings", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     lazy var _go_to_signin = NSLocalizedString("Go to sign-in", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
@@ -952,7 +952,7 @@ class LocalizedString {
     lazy var _contact_groups_delete = NSLocalizedString("Delete contact group",
                                                         comment: "The description of the button for deleting the contact group")
 
-    lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
+    lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
                                                                           comment: "The string that describes whether there are 0 or 1 member in the contact group")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")
@@ -1020,7 +1020,7 @@ class LocalizedString {
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
     lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.", comment: "Cert pinning failed alert message")
 
-    lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n", comment: "Cert pinning failed alert message")
+    lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.", comment: "Cert pinning failed alert message")
 
     lazy var _cert_validation_failed_continue = NSLocalizedString("Disable Validation", comment: "Cert pinning failed alert message")
 
@@ -1232,11 +1232,8 @@ class LocalizedString {
     lazy var _message_body_view_not_connected_text = NSLocalizedString("You are not connected. We cannot display the content of your message.", comment: "")
 
     lazy var _banner_remote_content_new_title = NSLocalizedString("Load remote content", comment: "The title of loading remote content banner.")
-    lazy var _one_attachment_list_title = NSLocalizedString("attachment", comment: "")
-    lazy var _attachments_list_title = NSLocalizedString("attachments", comment: "")
+    lazy var _attachment = NSLocalizedString("%d attachment", comment: "e.g. 3 attachments")
 
-    lazy var _one_attachment_title = NSLocalizedString("Attachment", comment: "")
-    lazy var _attachments_title = NSLocalizedString("Attachments", comment: "")
     lazy var _remove_attachment_warning = NSLocalizedString("Do you really want to remove this file from attachments?", comment: "")
 
     lazy var _banner_embedded_image_new_title = NSLocalizedString("Load embedded images", comment: "The title of loading embedded image banner.")

@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ από %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d λεπτό";
-
-/* auto lock time format */
-"%d Minutes" = "%d λεπτά";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d δευτερόλεπτα";
 
@@ -240,12 +234,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Τουλάχιστον μία διεύθυνση email παραλήπτη/τομέα δεν υπάρχει ή έχει κακή μορφοποίηση. Το μήνυμα μετακινήθηκε στα πρόχειρα.";
 
-/* No comment provided by engineer. */
-"attachment" = "συνημμένο";
-
-/* No comment provided by engineer. */
-"Attachment" = "Συνημμένο";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Αποτυχία επισύναψης";
 
@@ -254,12 +242,6 @@
 
 /* Alert title */
 "Attachment limit" = "Όριο συνημμένων";
-
-/* No comment provided by engineer. */
-"attachments" = "συνημμένα";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Συνημμένα";
 
 /* Title */
 "Authentication" = "Ταυτοποίηση";

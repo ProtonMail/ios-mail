@@ -10,12 +10,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ van %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d minuut";
-
-/* auto lock time format */
-"%d Minutes" = "%d minuten";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d seconden";
 
@@ -255,12 +249,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Ten minste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
 
-/* No comment provided by engineer. */
-"attachment" = "bijlage";
-
-/* No comment provided by engineer. */
-"Attachment" = "Bijlage";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Bijlagefout";
 
@@ -269,12 +257,6 @@
 
 /* Alert title */
 "Attachment limit" = "Bijlagelimiet";
-
-/* No comment provided by engineer. */
-"attachments" = "bijlagen";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Bijlagen";
 
 /* Title */
 "Authentication" = "Verificatie";

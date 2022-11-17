@@ -67,11 +67,8 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(AttachmentListTableViewCell.self)
         tableView.rowHeight = 72.0
 
-        var titleToAdd = realAttachment ? "\(viewModel.normalAttachments.count) " : "\(viewModel.attachmentCount) "
-        titleToAdd += viewModel.attachmentCount > 1 ?
-            LocalString._attachments_list_title :
-            LocalString._one_attachment_list_title
-        title = titleToAdd
+        let number = realAttachment ? viewModel.normalAttachments.count : viewModel.attachmentCount
+        title = String(format: LocalString._attachment, number)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(reachabilityChanged(_:)),

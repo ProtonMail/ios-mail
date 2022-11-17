@@ -1,12 +1,6 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Dana' EE, d. MMM, yyyy 'u' %@";
 
-/* auto lock time format */
-"%d Minute" = "%d minuta";
-
-/* auto lock time format */
-"%d Minutes" = "%d minute";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d sekundi";
 
@@ -195,12 +189,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Barem jedna adresa e-pošte/domena primatelja ne postoji ili je loše oblikovana. Poruka je premještena u skice.";
 
-/* No comment provided by engineer. */
-"attachment" = "privitak";
-
-/* No comment provided by engineer. */
-"Attachment" = "Prilog";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Neuspjeh privitka";
 
@@ -209,12 +197,6 @@
 
 /* Alert title */
 "Attachment limit" = "Ograničenje privitka";
-
-/* No comment provided by engineer. */
-"attachments" = "privitci";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Privitci";
 
 /* Title */
 "Authentication" = "Autentikacija";

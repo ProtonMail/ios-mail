@@ -35,7 +35,7 @@ enum SettingLockSection: Int {
             let title = "\n\nProtection"
             return LocalString._lock_wipe_desc + title
         case .timing:
-            return "Timing"
+            return LocalString._timing
         case .mainKey:
             return "Enable MainKey protection"
         default:

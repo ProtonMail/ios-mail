@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ з %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d хвилина";
-
-/* auto lock time format */
-"%d Minutes" = "%d хвилини";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d секунд";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Адреса е-пошти чи домен принаймні одного з отримувачів не існує, або має неналежний формат. Повідомлення переміщено до чернеток.";
 
-/* No comment provided by engineer. */
-"attachment" = "вкладення";
-
-/* No comment provided by engineer. */
-"Attachment" = "Вкладення";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Помилка вкладення";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Обмеження вкладення";
-
-/* No comment provided by engineer. */
-"attachments" = "вкладення";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Вкладення";
 
 /* Title */
 "Authentication" = "Автентифікація";

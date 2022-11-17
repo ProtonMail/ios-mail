@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ из %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d минута";
-
-/* auto lock time format */
-"%d Minutes" = "%d минуты";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d секунд";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "По крайней мере один адрес электронной почты/домен получателя не существует или отформатирован неправильно. Сообщение перемещено в черновики.";
 
-/* No comment provided by engineer. */
-"attachment" = "вложение";
-
-/* No comment provided by engineer. */
-"Attachment" = "Вложение";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Ошибка вложения";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Лимит вложений";
-
-/* No comment provided by engineer. */
-"attachments" = "вложения";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Вложения";
 
 /* Title */
 "Authentication" = "Аутентификация";

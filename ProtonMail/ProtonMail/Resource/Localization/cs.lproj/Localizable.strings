@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ z %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d minuta";
-
-/* auto lock time format */
-"%d Minutes" = "%d minuty";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d sekund";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Alespoň jedna e-mailová adresa/doména příjemce neexistuje nebo má špatný formát. Zpráva byla přesunuta do konceptů.";
 
-/* No comment provided by engineer. */
-"attachment" = "příloha";
-
-/* No comment provided by engineer. */
-"Attachment" = "Příloha";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Chyba přílohy";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Limit pro přílohy";
-
-/* No comment provided by engineer. */
-"attachments" = "přílohy";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Přílohy";
 
 /* Title */
 "Authentication" = "Ověřování";
@@ -2388,7 +2370,7 @@
 "Title" = "Titul";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\nOkamžitě se připojte k jiné síti.";

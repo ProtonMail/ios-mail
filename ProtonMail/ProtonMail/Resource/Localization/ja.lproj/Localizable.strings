@@ -7,12 +7,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ / %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d 分";
-
-/* auto lock time format */
-"%d Minutes" = "%d 分";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d 秒";
 
@@ -234,12 +228,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。メッセージは下書きに移動されました。";
 
-/* No comment provided by engineer. */
-"attachment" = "添付ファイル";
-
-/* No comment provided by engineer. */
-"Attachment" = "添付ファイル";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "添付に失敗しました";
 
@@ -248,12 +236,6 @@
 
 /* Alert title */
 "Attachment limit" = "添付の上限に達しました";
-
-/* No comment provided by engineer. */
-"attachments" = "添付ファイル";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "添付ファイル";
 
 /* Title */
 "Authentication" = "認証";
