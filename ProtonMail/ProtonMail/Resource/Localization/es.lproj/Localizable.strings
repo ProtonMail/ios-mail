@@ -13,6 +13,10 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
 
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ de %2$@";
+
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d segundos";
 
@@ -2589,6 +2593,9 @@
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Tenemos problemas para conectar con los servidores. Por favor, vuelve a conectar.";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Ahora cargamos las imágenes por defecto y bloqueamos a los remitentes que intentan rastrearte.\nEsto se puede cambiar en la configuración.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos configurar una contraseña para los siguientes destinatarios:";

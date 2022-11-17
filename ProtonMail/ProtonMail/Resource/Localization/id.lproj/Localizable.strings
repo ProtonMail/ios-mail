@@ -2590,6 +2590,9 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Kami mengalami kendala dalam menyambungkan ke server. Silakan sambungkan ulang.";
 
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Kami kini memuat gambar secara default dan memblokir pengirim untuk dapat melacak Anda.\nHal ini dapat diubah di pengaturan.";
+
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Kami menyarankan Anda untuk menyetel sandi bagi penerima berikut:";
 

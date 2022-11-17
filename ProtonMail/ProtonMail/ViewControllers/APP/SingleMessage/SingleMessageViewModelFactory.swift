@@ -107,9 +107,9 @@ private class SingleMessageComponentsFactory {
         let receiptService = ReceiptService(labelID: labelId,
                                             apiService: user.apiService,
                                             eventsService: user.eventsService)
-        return .init(shouldAutoLoadRemoteContent: user.userInfo.hideRemoteImages == 0,
+        return .init(shouldAutoLoadRemoteContent: user.userInfo.isAutoLoadRemoteContentEnabled,
                      expirationTime: message.expirationTime,
-                     shouldAutoLoadEmbeddedImage: user.userInfo.hideEmbeddedImages == 0,
+                     shouldAutoLoadEmbeddedImage: user.userInfo.isAutoLoadEmbeddedImagesEnabled,
                      unsubscribeActionHandler: unsubscribeService,
                      markLegitimateActionHandler: markLegitimateService,
                      receiptActionHandler: receiptService,

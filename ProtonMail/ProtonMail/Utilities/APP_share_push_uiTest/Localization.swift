@@ -1232,6 +1232,8 @@ class LocalizedString {
     lazy var _message_body_view_not_connected_text = NSLocalizedString("You are not connected. We cannot display the content of your message.", comment: "")
 
     lazy var _banner_remote_content_new_title = NSLocalizedString("Load remote content", comment: "The title of loading remote content banner.")
+    lazy var _one_attachment_list_title = NSLocalizedString("attachment", comment: "")
+    lazy var _attachments_list_title = NSLocalizedString("attachments", comment: "")
     lazy var _attachment = NSLocalizedString("%d attachment", comment: "e.g. 3 attachments")
 
     lazy var _remove_attachment_warning = NSLocalizedString("Do you really want to remove this file from attachments?", comment: "")

@@ -307,9 +307,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Om %d minut</string>
+			<string>In %d minute</string>
 			<key>other</key>
-			<string>Om %d minutter</string>
+			<string>In %d minutes</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
