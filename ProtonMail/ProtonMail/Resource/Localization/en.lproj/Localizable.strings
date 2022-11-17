@@ -52,12 +52,6 @@
 /* The title of multiple selected messages of action sheet in inbox */
 "%d messages" = "%d messages";
 
-/* auto lock time format */
-"%d Minute" = "%d minute";
-
-/* auto lock time format */
-"%d Minutes" = "%d minutes";
-
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d Selected";
 
@@ -331,12 +325,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.";
 
-/* No comment provided by engineer. */
-"attachment" = "attachment";
-
-/* No comment provided by engineer. */
-"Attachment" = "Attachment";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Attachment failure";
 
@@ -345,12 +333,6 @@
 
 /* Alert title */
 "Attachment limit" = "Attachment limit";
-
-/* No comment provided by engineer. */
-"attachments" = "attachments";
-
-/* VoiceOver: email has attachments */
-"Attachments" = "Attachments";
 
 /* Title */
 "Authentication" = "Authentication";

@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ sur %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d minute";
-
-/* auto lock time format */
-"%d Minutes" = "%d minutes";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d secondes";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Au moins une adresse ou un domaine de destinataire n'existe pas ou est mal formaté. Le message a été déplacé dans le dossier Brouillons.";
 
-/* No comment provided by engineer. */
-"attachment" = "pièce jointe";
-
-/* No comment provided by engineer. */
-"Attachment" = "Pièce jointe";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Échec du chargement de la pièce jointe";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Limite de pièce jointe";
-
-/* No comment provided by engineer. */
-"attachments" = "pièces jointes";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Pièces jointes";
 
 /* Title */
 "Authentication" = "Authentification";

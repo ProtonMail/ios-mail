@@ -58,12 +58,7 @@ class AttachmentViewController: UIViewController {
     }
 
     private func setup(view: AttachmentView, with data: AttachmentViewModel) {
-        var text = "\(data.numberOfAttachments) "
-        if data.numberOfAttachments <= 1 {
-            text += "\(LocalString._one_attachment_title) "
-        } else {
-            text += "\(LocalString._attachments_title) "
-        }
+        var text = String(format: LocalString._attachment, data.numberOfAttachments)
 
         let byteCountFormatter = ByteCountFormatter()
         let sizeString = "(\(byteCountFormatter.string(fromByteCount: Int64(data.totalSizeOfAllAttachments))))"

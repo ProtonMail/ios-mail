@@ -7,12 +7,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d minut";
-
-/* auto lock time format */
-"%d Minutes" = "%d minuts";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d segons";
 
@@ -231,12 +225,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Almenys una adreça de correu o domini de destinatari no existeix o té un format incorrecte. Missatge mogut a esborranys.";
 
-/* No comment provided by engineer. */
-"attachment" = "adjunt";
-
-/* No comment provided by engineer. */
-"Attachment" = "Adjuntar";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Error d'adjunt";
 
@@ -245,12 +233,6 @@
 
 /* Alert title */
 "Attachment limit" = "Límit d'arxius adjunts";
-
-/* No comment provided by engineer. */
-"attachments" = "adjunts";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Adjunts";
 
 /* Title */
 "Authentication" = "Autentificació";
@@ -2095,7 +2077,7 @@
 "Title" = "Títol";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ha fallat la validació del certificat TLS. La vostra connexió podria estar monitorada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Ha fallat la validació del certificat TLS. La vostra connexió podria estar monitorada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.";
 
 /* message To: feild
    Title */

@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ din %2$@";
 
-/* auto lock time format */
-"%d Minute" = "Un minut";
-
-/* auto lock time format */
-"%d Minutes" = "%d minute";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d secunde";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Cel puțin o adresă de e-mail/domeniu pentru destinatar nu există sau nu este în format corespunzător. Mesajul a fost mutat în «Ciorne».";
 
-/* No comment provided by engineer. */
-"attachment" = "atașament";
-
-/* No comment provided by engineer. */
-"Attachment" = "Atașament";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Eșuare atașament";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Limită atașament";
-
-/* No comment provided by engineer. */
-"attachments" = "atașamente";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Atașamente";
 
 /* Title */
 "Authentication" = "Autentificare";

@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ von %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d Minute";
-
-/* auto lock time format */
-"%d Minutes" = "%d Minuten";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d Sekunden";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Mindestens eine Empfänger-E-Mail-Adresse/Domäne existiert nicht oder ist ungültig. Nachricht wurde in Entwürfe verschoben.";
 
-/* No comment provided by engineer. */
-"attachment" = "Anhang";
-
-/* No comment provided by engineer. */
-"Attachment" = "Anhang";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Anhängen fehlgeschlagen";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Anhangsgrenze";
-
-/* No comment provided by engineer. */
-"attachments" = "Anhänge";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Anhänge";
 
 /* Title */
 "Authentication" = "Authentifizierung";

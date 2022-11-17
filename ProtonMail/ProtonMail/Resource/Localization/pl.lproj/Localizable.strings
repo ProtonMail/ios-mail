@@ -13,9 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ z %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d minuta";
-
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d zaznaczone";
 
@@ -252,12 +249,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Co najmniej jeden adres e-mail lub domena odbiorcy nie istnieje lub jest nieprawidłowo sformatowana. Wiadomość została przeniesiona do Szkiców.";
 
-/* No comment provided by engineer. */
-"attachment" = "załącznik";
-
-/* No comment provided by engineer. */
-"Attachment" = "załącznik";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Błąd przesyłania załącznika";
 
@@ -266,12 +257,6 @@
 
 /* Alert title */
 "Attachment limit" = "Limit rozmiaru załącznika został osiągnięty";
-
-/* No comment provided by engineer. */
-"attachments" = "załączniki";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Załączniki";
 
 /* Title */
 "Authentication" = "Uwierzytelnianie";

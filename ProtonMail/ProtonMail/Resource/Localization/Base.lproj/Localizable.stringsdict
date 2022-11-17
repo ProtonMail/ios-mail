@@ -364,5 +364,69 @@
 			<string>%d messages moved to Drafts</string>
 		</dict>
 	</dict>
+    <key>%d seconds</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@second@</string>
+        <key>second</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>one</key>
+            <string>%d second</string>
+            <key>other</key>
+            <string>%d seconds</string>
+        </dict>
+    </dict>
+    <key>%d Selected</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@selected@</string>
+        <key>selected</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>one</key>
+            <string>%d Selected</string>
+            <key>other</key>
+            <string>%d Selected</string>
+        </dict>
+    </dict>
+    <key>%d attachment</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@attachment@</string>
+        <key>attachment</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>one</key>
+            <string>%d attachment</string>
+            <key>other</key>
+            <string>%d attachments</string>
+        </dict>
+    </dict>
+    <key>%d Minutes</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@minutes@</string>
+        <key>minutes</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>u</string>
+            <key>one</key>
+            <string>%d minute</string>
+            <key>other</key>
+            <string>%d minutes</string>
+        </dict>
+    </dict>
 </dict>
 </plist>

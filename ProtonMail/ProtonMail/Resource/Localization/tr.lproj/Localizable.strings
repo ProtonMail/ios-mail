@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ / %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d dakika";
-
-/* auto lock time format */
-"%d Minutes" = "%d dakika";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d saniye";
 
@@ -258,12 +252,6 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi ya da etki alanı bulunamadı veya biçimi hatalı. İleti taslaklar kutusuna taşındı.";
 
-/* No comment provided by engineer. */
-"attachment" = "ek dosya";
-
-/* No comment provided by engineer. */
-"Attachment" = "Ek dosya";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Ek dosya hatası";
 
@@ -272,12 +260,6 @@
 
 /* Alert title */
 "Attachment limit" = "Ek dosya sınırlaması";
-
-/* No comment provided by engineer. */
-"attachments" = "ek dosyalar";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Ek dosyalar";
 
 /* Title */
 "Authentication" = "Kimlik doğrulaması";
