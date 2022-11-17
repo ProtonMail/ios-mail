@@ -26,12 +26,14 @@ class UsersManagerTests: XCTestCase {
     var apiMock: APIService!
     var sut: UsersManager!
     var doh: DohMock!
+    var cachedUserDataProviderMock: MockCachedUserDataProvider!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
+        self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
         self.doh = DohMock()
-        sut = UsersManager(doh: doh)
+        sut = UsersManager(doh: doh, userDataCache: cachedUserDataProviderMock)
     }
 
     override func tearDown() {
@@ -39,6 +41,7 @@ class UsersManagerTests: XCTestCase {
         sut = nil
         doh = nil
         apiMock = nil
+        cachedUserDataProviderMock = nil
     }
 
     func testNumberOfFreeAccounts() {
@@ -237,16 +240,26 @@ class UsersManagerTests: XCTestCase {
         XCTAssertNil(sut.getUser(by: id2))
     }
 
-    func testRemoveUser() {
+    func testRemoveUser() throws {
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
         let user2 = createUserManagerMock(userID: "2", isPaid: false)
         sut.add(newUser: user1)
         sut.add(newUser: user2)
-        XCTAssertTrue(sut.disconnectedUsers.isEmpty)
         XCTAssertEqual(sut.users.count, 2)
+
         sut.remove(user: user1)
+
         XCTAssertEqual(sut.users.count, 1)
-        XCTAssertEqual(sut.disconnectedUsers.count, 1)
+        XCTAssertTrue(
+            cachedUserDataProviderMock.callSetDisconnectedUser.wasCalled
+        )
+        let argument = try XCTUnwrap(
+            cachedUserDataProviderMock.callSetDisconnectedUser.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.count, 1)
+        let disconnectedUser = try XCTUnwrap(argument.first)
+        XCTAssertEqual(disconnectedUser.userID, user1.userID.rawValue)
+
         XCTAssertEqual(sut.users[0].userInfo, user2.userInfo)
     }
 
@@ -264,17 +277,24 @@ class UsersManagerTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testLogoutUser_userNotInUsersManager_addedToDisconnectedUser() {
+    func testLogoutUser_userNotInUsersManager_addedToDisconnectedUser() throws {
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
         XCTAssertTrue(sut.users.isEmpty)
         let expectation1 = expectation(description: "Closure is called")
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)
-            XCTAssertEqual(self.sut.disconnectedUsers.count, 1)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertTrue(
+            cachedUserDataProviderMock.callSetDisconnectedUser.wasCalledExactlyOnce
+        )
+        let argument = try XCTUnwrap(
+            cachedUserDataProviderMock.callSetDisconnectedUser.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.count, 1)
     }
 
     private func createUserManagerMock(userID: String, isPaid: Bool) -> UserManager {
