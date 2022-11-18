@@ -81,13 +81,19 @@ extension PrivacySettingViewModel: SwitchToggleVMInput {
         }
         switch item {
         case .autoLoadRemoteContent:
-//            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
-//            updateAutoLoadImageStatus(to: status, imageType: .remote, completion: completion)
-            updateAutoLoadImageStatus(flag: .remote, newStatus: newStatus, completion: completion)
+            if UserInfo.isImageProxyAvailable {
+                let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
+                updateAutoLoadImageStatus(to: status, imageType: .remote, completion: completion)
+            } else {
+                updateAutoLoadImageStatus(flag: .remote, newStatus: newStatus, completion: completion)
+            }
         case .autoLoadEmbeddedImage:
-//            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
-//            updateAutoLoadImageStatus(to: status, imageType: .embedded, completion: completion)
-            updateAutoLoadImageStatus(flag: .embedded, newStatus: newStatus, completion: completion)
+            if UserInfo.isImageProxyAvailable {
+                let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
+                updateAutoLoadImageStatus(to: status, imageType: .embedded, completion: completion)
+            } else {
+                updateAutoLoadImageStatus(flag: .embedded, newStatus: newStatus, completion: completion)
+            }
         case .blockEmailTracking:
             updateBlockEmailTrackingStatus(newStatus: newStatus, completion: completion)
         case .linkOpeningMode:
