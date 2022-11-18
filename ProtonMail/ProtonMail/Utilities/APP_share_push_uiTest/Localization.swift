@@ -1532,7 +1532,8 @@ enum L11n {
         static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
         // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
-        static let new_feature_description = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
+        static let feature_description_if_remote_content_allowed = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
+        static let feature_description_if_remote_content_not_allowed = NSLocalizedString("Email tracking protection is now available. Senders will not know if, where, or when you opened their emails.", comment: "Spotlight explanation of the feature")
     }
 
     struct ReferralProgram {
