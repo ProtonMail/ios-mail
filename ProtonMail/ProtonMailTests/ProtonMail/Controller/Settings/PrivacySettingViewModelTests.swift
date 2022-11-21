@@ -84,27 +84,23 @@ final class PrivacySettingViewModelTests: XCTestCase {
     }
 
     func testPrivacyItemStatus_showImages() throws {
-//        user.userInfo.hideRemoteImages = 1
-//        user.userInfo.hideEmbeddedImages = 1
-        user.userInfo.showImages = .none
+        user.userInfo.hideRemoteImages = 1
+        user.userInfo.hideEmbeddedImages = 1
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: false)
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: false)
 
-//        user.userInfo.hideRemoteImages = 0
-//        user.userInfo.hideEmbeddedImages = 1
-        user.userInfo.showImages = .remote
+        user.userInfo.hideRemoteImages = 0
+        user.userInfo.hideEmbeddedImages = 1
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: true)
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: false)
 
-//        user.userInfo.hideRemoteImages = 1
-//        user.userInfo.hideEmbeddedImages = 0
-        user.userInfo.showImages = .embedded
+        user.userInfo.hideRemoteImages = 1
+        user.userInfo.hideEmbeddedImages = 0
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: false)
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: true)
 
-//        user.userInfo.hideRemoteImages = 0
-//        user.userInfo.hideEmbeddedImages = 0
-        user.userInfo.showImages = [.remote, .embedded]
+        user.userInfo.hideRemoteImages = 0
+        user.userInfo.hideEmbeddedImages = 0
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: true)
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: true)
     }
@@ -140,90 +136,18 @@ final class PrivacySettingViewModelTests: XCTestCase {
         wait(for: [expectation2], timeout: 1)
     }
 
-//    func testToggle_remoteContent_enable() throws {
-//        let path = "/mail/v4/settings/hide-remote-images"
-//        let params = ["HideRemoteImages": 0]
-//        // succeed
-//        user.userInfo.hideRemoteImages = 1
-//        try testPrivacyItem(.autoLoadRemoteContent, expectedResult: false)
-//
-//        requestStub(path: path, params: params, error: nil)
-//        try testToggle(item: .autoLoadRemoteContent, isSuccess: true, targetStatus: true, expectedResult: true)
-//
-//        // failure
-//        user.userInfo.hideRemoteImages = 1
-//        try testPrivacyItem(.autoLoadRemoteContent, expectedResult: false)
-//
-//        requestStub(path: path, params: params, error: errorTemplate)
-//        try testToggle(item: .autoLoadRemoteContent, isSuccess: false, targetStatus: true, expectedResult: false)
-//    }
-//
-//    func testToggle_remoteContent_disable() throws {
-//        let path = "/mail/v4/settings/hide-remote-images"
-//        let params = ["HideRemoteImages": 1]
-//        // succeed
-//        user.userInfo.hideRemoteImages = 0
-//        try testPrivacyItem(.autoLoadRemoteContent, expectedResult: true)
-//
-//        requestStub(path: path, params: params, error: nil)
-//        try testToggle(item: .autoLoadRemoteContent, isSuccess: true, targetStatus: false, expectedResult: false)
-//
-//        // failure
-//        user.userInfo.hideRemoteImages = 0
-//        try testPrivacyItem(.autoLoadRemoteContent, expectedResult: true)
-//
-//        requestStub(path: path, params: params, error: errorTemplate)
-//        try testToggle(item: .autoLoadRemoteContent, isSuccess: false, targetStatus: false, expectedResult: true)
-//    }
-//
-//    func testToggle_embedded_enable() throws {
-//        let path = "/mail/v4/settings/hide-embedded-images"
-//        let params = ["HideEmbeddedImages": 0]
-//        // succeed
-//        user.userInfo.hideEmbeddedImages = 1
-//        try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: false)
-//
-//        requestStub(path: path, params: params, error: nil)
-//        try testToggle(item: .autoLoadEmbeddedImage, isSuccess: true, targetStatus: true, expectedResult: true)
-//
-//        // failure
-//        user.userInfo.hideEmbeddedImages = 1
-//        try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: false)
-//
-//        requestStub(path: path, params: params, error: errorTemplate)
-//        try testToggle(item: .autoLoadEmbeddedImage, isSuccess: false, targetStatus: true, expectedResult: false)
-//    }
-//
-//    func testToggle_embedded_disable() throws {
-//        let path = "/mail/v4/settings/hide-embedded-images"
-//        let params = ["HideEmbeddedImages": 1]
-//        // succeed
-//        user.userInfo.hideEmbeddedImages = 0
-//        try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: true)
-//
-//        requestStub(path: path, params: params, error: nil)
-//        try testToggle(item: .autoLoadEmbeddedImage, isSuccess: true, targetStatus: false, expectedResult: false)
-//
-//        // failure
-//        user.userInfo.hideEmbeddedImages = 0
-//        try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: true)
-//
-//        requestStub(path: path, params: params, error: errorTemplate)
-//        try testToggle(item: .autoLoadEmbeddedImage, isSuccess: false, targetStatus: false, expectedResult: true)
-//    }
-
     func testToggle_remoteContent_enable() throws {
-        let path = "/mail/v4/settings/images"
-        let params = ["ShowImages": 1]
+        let path = "/mail/v4/settings/hide-remote-images"
+        let params = ["HideRemoteImages": 0]
         // succeed
-        user.userInfo.showImages = .none
+        user.userInfo.hideRemoteImages = 1
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: false)
 
         requestStub(path: path, params: params, error: nil)
         try testToggle(item: .autoLoadRemoteContent, isSuccess: true, targetStatus: true, expectedResult: true)
 
         // failure
-        user.userInfo.showImages = .none
+        user.userInfo.hideRemoteImages = 1
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: false)
 
         requestStub(path: path, params: params, error: errorTemplate)
@@ -231,17 +155,17 @@ final class PrivacySettingViewModelTests: XCTestCase {
     }
 
     func testToggle_remoteContent_disable() throws {
-        let path = "/mail/v4/settings/images"
-        let params = ["ShowImages": 0]
+        let path = "/mail/v4/settings/hide-remote-images"
+        let params = ["HideRemoteImages": 1]
         // succeed
-        user.userInfo.showImages = .remote
+        user.userInfo.hideRemoteImages = 0
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: true)
 
         requestStub(path: path, params: params, error: nil)
         try testToggle(item: .autoLoadRemoteContent, isSuccess: true, targetStatus: false, expectedResult: false)
 
         // failure
-        user.userInfo.showImages = .remote
+        user.userInfo.hideRemoteImages = 0
         try testPrivacyItem(.autoLoadRemoteContent, expectedResult: true)
 
         requestStub(path: path, params: params, error: errorTemplate)
@@ -249,17 +173,17 @@ final class PrivacySettingViewModelTests: XCTestCase {
     }
 
     func testToggle_embedded_enable() throws {
-        let path = "/mail/v4/settings/images"
-        let params = ["ShowImages": 2]
+        let path = "/mail/v4/settings/hide-embedded-images"
+        let params = ["HideEmbeddedImages": 0]
         // succeed
-        user.userInfo.showImages = .none
+        user.userInfo.hideEmbeddedImages = 1
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: false)
 
         requestStub(path: path, params: params, error: nil)
         try testToggle(item: .autoLoadEmbeddedImage, isSuccess: true, targetStatus: true, expectedResult: true)
 
         // failure
-        user.userInfo.showImages = .none
+        user.userInfo.hideEmbeddedImages = 1
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: false)
 
         requestStub(path: path, params: params, error: errorTemplate)
@@ -267,17 +191,17 @@ final class PrivacySettingViewModelTests: XCTestCase {
     }
 
     func testToggle_embedded_disable() throws {
-        let path = "/mail/v4/settings/images"
-        let params = ["ShowImages": 0]
+        let path = "/mail/v4/settings/hide-embedded-images"
+        let params = ["HideEmbeddedImages": 1]
         // succeed
-        user.userInfo.showImages = .embedded
+        user.userInfo.hideEmbeddedImages = 0
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: true)
 
         requestStub(path: path, params: params, error: nil)
         try testToggle(item: .autoLoadEmbeddedImage, isSuccess: true, targetStatus: false, expectedResult: false)
 
         // failure
-        user.userInfo.showImages = .embedded
+        user.userInfo.hideEmbeddedImages = 0
         try testPrivacyItem(.autoLoadEmbeddedImage, expectedResult: true)
 
         requestStub(path: path, params: params, error: errorTemplate)
@@ -322,44 +246,43 @@ final class PrivacySettingViewModelTests: XCTestCase {
         try testToggle(item: .linkOpeningMode, isSuccess: false, targetStatus: false, expectedResult: true)
     }
 
-    // re-enable once image proxy is enabled
-//    func testToggle_block_email_tracker_enable() throws {
-//        let path = "/mail/v4/settings/imageproxy"
-//        let params = ["Action": 1,
-//                      "ImageProxy": 2]
-//        // succeed
-//        user.userInfo.imageProxy = ImageProxy(rawValue: 0)
-//        try testPrivacyItem(.blockEmailTracking, expectedResult: false)
-//
-//        requestStub(path: path, params: params, error: nil)
-//        try testToggle(item: .blockEmailTracking, isSuccess: true, targetStatus: true, expectedResult: true)
-//
-//        // failure
-//        user.userInfo.imageProxy = ImageProxy(rawValue: 0)
-//        try testPrivacyItem(.blockEmailTracking, expectedResult: false)
-//
-//        requestStub(path: path, params: params, error: errorTemplate)
-//        try testToggle(item: .blockEmailTracking, isSuccess: false, targetStatus: true, expectedResult: false)
-//    }
-//
-//    func testToggle_block_email_tracker_disable() throws {
-//        let path = "/mail/v4/settings/imageproxy"
-//        let params = ["Action": 0,
-//                      "ImageProxy": 2]
-//        // succeed
-//        user.userInfo.imageProxy = ImageProxy(rawValue: 2)
-//        try testPrivacyItem(.blockEmailTracking, expectedResult: true)
-//
-//        requestStub(path: path, params: params, error: nil)
-//        try testToggle(item: .blockEmailTracking, isSuccess: true, targetStatus: false, expectedResult: false)
-//
-//        // failure
-//        user.userInfo.imageProxy = ImageProxy(rawValue: 2)
-//        try testPrivacyItem(.blockEmailTracking, expectedResult: true)
-//
-//        requestStub(path: path, params: params, error: errorTemplate)
-//        try testToggle(item: .blockEmailTracking, isSuccess: false, targetStatus: false, expectedResult: true)
-//    }
+    func testToggle_block_email_tracker_enable() throws {
+        let path = "/mail/v4/settings/imageproxy"
+        let params = ["Action": 1,
+                      "ImageProxy": 2]
+        // succeed
+        user.userInfo.imageProxy = ImageProxy(rawValue: 0)
+        try testPrivacyItem(.blockEmailTracking, expectedResult: false)
+
+        requestStub(path: path, params: params, error: nil)
+        try testToggle(item: .blockEmailTracking, isSuccess: true, targetStatus: true, expectedResult: true)
+
+        // failure
+        user.userInfo.imageProxy = ImageProxy(rawValue: 0)
+        try testPrivacyItem(.blockEmailTracking, expectedResult: false)
+
+        requestStub(path: path, params: params, error: errorTemplate)
+        try testToggle(item: .blockEmailTracking, isSuccess: false, targetStatus: true, expectedResult: false)
+    }
+
+    func testToggle_block_email_tracker_disable() throws {
+        let path = "/mail/v4/settings/imageproxy"
+        let params = ["Action": 0,
+                      "ImageProxy": 2]
+        // succeed
+        user.userInfo.imageProxy = ImageProxy(rawValue: 2)
+        try testPrivacyItem(.blockEmailTracking, expectedResult: true)
+
+        requestStub(path: path, params: params, error: nil)
+        try testToggle(item: .blockEmailTracking, isSuccess: true, targetStatus: false, expectedResult: false)
+
+        // failure
+        user.userInfo.imageProxy = ImageProxy(rawValue: 2)
+        try testPrivacyItem(.blockEmailTracking, expectedResult: true)
+
+        requestStub(path: path, params: params, error: errorTemplate)
+        try testToggle(item: .blockEmailTracking, isSuccess: false, targetStatus: false, expectedResult: true)
+    }
 }
 
 extension PrivacySettingViewModelTests {

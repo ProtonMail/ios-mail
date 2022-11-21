@@ -50,6 +50,6 @@ extension UserInfo {
     }
 
     static var isImageProxyAvailable: Bool {
-        false
+        true
     }
 }
