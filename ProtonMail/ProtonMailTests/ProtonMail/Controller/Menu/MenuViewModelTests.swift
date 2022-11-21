@@ -96,6 +96,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let baseInfo = MenuViewModel.MoreItemsInfo(userIsMember: nil,
                                                    subscriptionAvailable: true,
@@ -110,6 +111,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: true,
                                                    subscriptionAvailable: true,
@@ -125,6 +127,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: true,
@@ -139,6 +142,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
@@ -153,6 +157,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
@@ -167,6 +172,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
@@ -180,6 +186,7 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .contacts),
                              MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
+                             MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,

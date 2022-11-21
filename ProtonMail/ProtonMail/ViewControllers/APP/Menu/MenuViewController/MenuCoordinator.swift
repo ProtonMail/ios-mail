@@ -161,6 +161,9 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
             } else {
                 self.navigateToMailBox(labelInfo: inboxLabel, deepLink: deepLink, showFeedbackActionSheet: true)
             }
+        case .referAFriend:
+            navigateToReferralView()
+            labelToHighlight = nil
         default:
             break
         }
@@ -620,6 +623,19 @@ extension MenuCoordinator {
         let skeletonVC = SkeletonViewController.instance(isEnabledTimeout: isEnabledTimeout)
         guard let navigation = skeletonVC.navigationController else { return }
         self.setupContentVC(destination: navigation)
+    }
+
+    private func navigateToReferralView() {
+        guard let referralLink = usersManager.firstUser?
+            .userInfo.referralProgram?.link else {
+            return
+        }
+        let view = ReferralShareViewController(
+            referralLink: referralLink
+        )
+        let navigation = UINavigationController(rootViewController: view)
+        navigation.modalPresentationStyle = .fullScreen
+        sideMenu.present(navigation, animated: true)
     }
 }
 

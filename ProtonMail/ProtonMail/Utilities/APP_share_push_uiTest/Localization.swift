@@ -112,6 +112,8 @@ class LocalizedString {
     /// "Manage accounts"
     lazy var _menu_manage_accounts = NSLocalizedString("Manage accounts", comment: "menu title")
     lazy var _menu_add_attachment = NSLocalizedString("Add attachment", comment: "menu title")
+    /// "Refer a friend"
+    lazy var _menu_refer_a_friend = NSLocalizedString("Refer a friend", comment: "menu title")
 
     // Mark Message localtion
 
@@ -1532,6 +1534,16 @@ enum L11n {
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
         static let new_feature_description = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
     }
+
+    struct ReferralProgram {
+        static let linkCopied = NSLocalizedString("Link copied.", comment: "The banner title after tapping link copy button in referral share view.")
+        static let title = NSLocalizedString("Invite friends to Proton,\n get up to $90 in credits!", comment: "The article title of the referral share view.")
+        static let content = NSLocalizedString("Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan.", comment: "The article content of the referral share view.")
+        static let inviteLinkTitle = NSLocalizedString("Your invite link", comment: "The title link of the textfield of the referral link in referral share view.")
+        static let shareTitle = NSLocalizedString("Share", comment: "The title of the share button in referral share view.")
+        static let trackRewardTitle = NSLocalizedString("Track your rewards", comment: "The title of the track reward button in referral share view.")
+        static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
+	}
 
     fileprivate struct PushNotificationAction {
         static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
