@@ -18,6 +18,54 @@
 			<string>%d Members</string>
 		</dict>
 	</dict>
+	<key>%d Minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minutes@</string>
+		<key>minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d minute</string>
+			<key>other</key>
+			<string>%d minutes</string>
+		</dict>
+	</dict>
+	<key>%d Selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@selected@</string>
+		<key>selected</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d Selected</string>
+			<key>other</key>
+			<string>%d Selected</string>
+		</dict>
+	</dict>
+	<key>%d attachment</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@attachment@</string>
+		<key>attachment</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d attachment</string>
+			<key>other</key>
+			<string>%d attachments</string>
+		</dict>
+	</dict>
 	<key>%d attempt remaining</key>
 	<dict>
 		<key>ATTEMPT</key>
@@ -27,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining</string>
+			<string>%d kísérlet maradt</string>
 			<key>other</key>
-			<string>%d attempts remaining</string>
+			<string>%d kísérlet maradt</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -43,9 +91,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining until secure data wipe!</string>
+			<string>%d kísérlet maradt az adatok biztonságos törléséig!</string>
 			<key>other</key>
-			<string>%d attempts remaining until secure data wipe!</string>
+			<string>%d kísérlet maradt az adatok biztonságos törléséig!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -216,6 +264,22 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>%d seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@second@</string>
+		<key>second</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d second</string>
+			<key>other</key>
+			<string>%d seconds</string>
+		</dict>
+	</dict>
 	<key>%u conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
@@ -259,9 +323,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d other</string>
+			<string>%d további</string>
 			<key>other</key>
-			<string>%d others</string>
+			<string>%d további</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
@@ -357,9 +421,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Updated %d min ago</string>
+			<string>%d perce frissítve</string>
 			<key>other</key>
-			<string>Updated %d mins ago</string>
+			<string>%d perce frissítve</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
