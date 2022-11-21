@@ -137,6 +137,9 @@
  * Login choose username */
 "Create Proton Mail address" = "Crear adreça Proton Mail";
 
+/* Create user failed error */
+"Create user failed" = "No s'ha pogut crear l'usuari.";
+
 /* Signup password proton view title */
 "Create your password" = "Creeu la vostra contrasenya";
 
@@ -224,6 +227,9 @@
 
 /* Error message */
 "Failed to get list of available products from App Store." = "No s'ha pogut obtenir la llista de productes disponibles de l'App Store.";
+
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "per %@";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Per la vostra seguretat, hem de verificar que l'adreça que heu introduït us pertany. Hem enviat un codi de verificació a %@. Introduïu el codi a sota:";
@@ -564,6 +570,9 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "El procés de compra de IAP ha començat. Seguiu les instruccions d'Apple per completar o cancel·lar la compra.";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La validació del certificat TLS ha fallat intentant connectar a l'API de Proton. La vostra connexió a internet actual podria estar controlada. Per mantenir les vostres dades segures, estem evitant que l'aplicació accedeixi a l'API de Proton.\nPer iniciar sessió o accedir al vostre compte, canvieu a una nova xarxa i intenteu tornar a connectar.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Això no hauria de durar més d'un minut.";
 
@@ -720,4 +729,7 @@
 
 /* Recovery address label title */
 "Your recovery email address:" = "La vostra adreça de correu electrònic de recuperació:";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "La vostra sessió ha caducat. Torneu a iniciar sessió.";
 

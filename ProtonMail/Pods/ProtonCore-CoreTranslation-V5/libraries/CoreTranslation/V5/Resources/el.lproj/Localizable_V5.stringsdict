@@ -260,9 +260,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Support for %d custom email domain</string>
+			<string>Υποστήριξη για %d παραμετροποιημένο τομέα email</string>
 			<key>other</key>
-			<string>Support for %d custom email domains</string>
+			<string>Υποστήριξη για %d παραμετροποιημένους τομείς email</string>
 		</dict>
 	</dict>
 </dict>

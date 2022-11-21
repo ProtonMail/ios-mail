@@ -317,9 +317,6 @@ public extension Color {
 public let ColorProvider = ColorProviderBase()
 
 @available(*, deprecated, renamed: "ColorProvider")
-public let ColorManager = ColorProviderBase()
-
-@available(*, deprecated, renamed: "ColorProvider")
 public let UIColorManager = ColorProviderBase()
 
 struct HSBA: Equatable { let hue: CGFloat; let saturation: CGFloat; let brightness: CGFloat; let alpha: CGFloat }

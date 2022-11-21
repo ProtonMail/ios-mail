@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Common-V5",
   "module_name": "ProtonCore_Common",
-  "version": "3.23.4",
+  "version": "3.24.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.23.4"
+    "tag": "3.24.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -28,13 +28,13 @@
   },
   "dependencies": {
     "ProtonCore-UIFoundations-V5": [
-      "3.23.4"
+      "3.24.2"
     ],
     "ProtonCore-Services": [
-      "3.23.4"
+      "3.24.2"
     ],
     "ProtonCore-Networking": [
-      "3.23.4"
+      "3.24.2"
     ]
   },
   "default_subspecs": [

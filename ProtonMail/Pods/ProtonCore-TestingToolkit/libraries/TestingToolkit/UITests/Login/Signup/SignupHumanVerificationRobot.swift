@@ -76,7 +76,7 @@ public final class SignupHumanVerificationRobot: CoreElements {
     }
     
     public func insertEmail(_ email: String) -> SignupHumanVerificationRobot {
-        textField(emailTextField).tap().typeText(email)
+        textField().firstMatch().tap().typeText(email)
         return self
     }
     

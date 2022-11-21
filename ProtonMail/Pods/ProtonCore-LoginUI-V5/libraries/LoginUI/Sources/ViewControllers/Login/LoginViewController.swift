@@ -31,6 +31,7 @@ protocol LoginStepsDelegate: AnyObject {
     func createAddressNeeded(data: CreateAddressData)
     func userAccountSetupNeeded()
     func firstPasswordChangeNeeded()
+    func learnMoreAboutExternalAccountsNotSupported()
 }
 
 protocol LoginViewControllerDelegate: LoginStepsDelegate {
@@ -338,6 +339,10 @@ extension LoginViewController: LoginErrorCapable {
 
     func onFirstPasswordChangeNeeded() {
         delegate?.firstPasswordChangeNeeded()
+    }
+    
+    func onLearnMoreAboutExternalAccountsNotSupported() {
+        delegate?.learnMoreAboutExternalAccountsNotSupported()
     }
 
     var bannerPosition: PMBannerPosition { .top }

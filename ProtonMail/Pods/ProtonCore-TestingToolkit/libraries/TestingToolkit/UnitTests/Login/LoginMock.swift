@@ -25,11 +25,7 @@ import ProtonCore_Log
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
+import GoLibs
 import ProtonCore_Login
 
 public class LoginMock: Login {

@@ -9,5 +9,4 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework
 ${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework
-${BUILT_PRODUCTS_DIR}/swift-snapshot-testing/SnapshotTesting.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-QuarkCommands/ProtonCore_QuarkCommands.framework

@@ -19,9 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-@available(*, deprecated, renamed: "ProtonColorPaletteiOS")
-typealias ProtonColorPallete = ProtonColorPaletteiOS
-
 public struct ProtonColorPaletteiOS {
     static let instance = ProtonColorPaletteiOS()
 

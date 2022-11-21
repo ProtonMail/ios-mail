@@ -31,12 +31,17 @@ public struct KeyFlags: OptionSet, Decodable {
     public static let verifySignatures = KeyFlags(rawValue: 1 << 0)
     /// 2: Can use key to encrypt new data | Key is not obsolete
     public static let encryptNewData = KeyFlags(rawValue: 1 << 1)
-    /// 4: Belongs to an external address
-    public static let belongsToExternalAddress = KeyFlags(rawValue: 1 << 2)
-    /// 3: default value when signup  1 + 2
+    /// 4: Cannot be used to encrypt an email | External address key
+    public static let cannotEncryptEmail = KeyFlags(rawValue: 1 << 2)
+    /// 8: Emails from this address will not come signed | External address key
+    public static let dontExpectSignedEmails = KeyFlags(rawValue: 1 << 3)
+    
+    /// 3: default value when signup 1 + 2
     public static let signupKeyFlags: KeyFlags = [.verifySignatures, .encryptNewData]
-    /// 7: default value when signup external  1 + 2 + 4
-    public static let signupExternalKeyFlags: KeyFlags = [.verifySignatures, .encryptNewData, .belongsToExternalAddress]
+    /// 12: value for checking if the key is external address key 4 + 8
+    public static let signifyingExternalAddress: KeyFlags = [.cannotEncryptEmail, .dontExpectSignedEmails]
+    /// 15: default value when signup external 1 + 2 + 4 + 8
+    public static let signupExternalKeyFlags: KeyFlags = [.verifySignatures, .encryptNewData, .cannotEncryptEmail, .dontExpectSignedEmails]
     /// all -- contains all
-    public static let all: KeyFlags = [.verifySignatures, .encryptNewData, .belongsToExternalAddress]
+    public static let all: KeyFlags = [.verifySignatures, .encryptNewData, .cannotEncryptEmail, .dontExpectSignedEmails]
 }

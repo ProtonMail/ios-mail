@@ -1,11 +1,26 @@
 /* Proton Mail address availability */
 "%@ is available" = "%@ está disponível";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Conta eliminada.\nA terminar sessão...";
+
 /* Email verification view title */
 "Account verification" = "Verificação da conta";
 
 /* Title of account switcher */
 "Accounts" = "Contas";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Bloqueador de anúncios (NetShield)";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Permitir redirecionamento alternativo";
+
+/* Generic error message when no better error can be displayed */
+"An error has occured" = "Ocorreu um erro.";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferência do antivírus";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "A Apple informou-nos que não puderam processar a compra.";
@@ -23,6 +38,9 @@
  * Login 2FA */
 "Authenticate" = "Autenticar";
 
+/* top left back button */
+"Back" = "Recuar";
+
 /* Cancel button */
 "Cancel" = "Cancelar";
 
@@ -32,11 +50,30 @@
 /* Dialog action button title for organization user first login */
 "Change password" = "Alterar senha";
 
+/* *
+ * Login upgrade username-only account */
+"Change your password" = "Altere a sua senha";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Verifique o estado do Proton no nosso estado do sistema.";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Fechar";
+
+/* sent baner title */
+"Code sent to %@" = "Código enviado para %@";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Configuração concluída";
+
 /* Signup summary title */
 "Congratulations" = "Parabéns!";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "Contactar suporte ao cliente";
+
+/* Confirmation for the credits applied popup, will result in showing customer support contact form */
+"Contact Support" = "Contactar o suporte";
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contacte support@protonvpn.com para concluir a sua compra.";
@@ -54,6 +91,9 @@
  * Signup */
 "Create your Proton Account" = "Criar conta Proton";
 
+/* Signup complete progress step creation */
+"Creating your account" = "A criar a sua conta";
+
 /* Plan selection title */
 "Current plan" = "Plano actual";
 
@@ -69,8 +109,17 @@
 /* Not receive code button */
 "Did not receive the code?" = "Não recebeu o código?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Desactive quaisquer proxies ou firewalls ou contacte o administrador da rede.";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Descartar";
+
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Deseja activar a compra para o endereço %@?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domínio";
 
 /* Email field title
    Email label
@@ -106,6 +155,9 @@
 /* Verification button */
 "Get verification code" = "Obter código de verificação";
 
+/* network troubleshot cell title */
+"Government block" = "Bloqueio governamental";
+
 /* Help button */
 "Help" = "Ajuda";
 
@@ -114,6 +166,19 @@
 
 /* Plan details highest speed message */
 "Highest speed" = "Velocidade máxima";
+
+/* *
+ *  Human verification */
+"Human Verification" = "Verificação humana";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Se tiver problemas para criar a conta, por favor solicite um convite e responderemos dentro de 1 dia útil.";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Caso as páginas do Proton estejam bloqueadas, esta definição permite à aplicação tentar redireccionar o tráfego para ligar ao Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos que mantenha esta definição para maior confiança. %1$@";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problema no fornecedor de serviços Internet (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Palavra-passe de hash inválida";
@@ -137,6 +202,9 @@
 /* Manage accounts button */
 "Manage accounts" = "Gerir contas";
 
+/* Plan details medium speed */
+"Medium speed" = "Velocidade média";
+
 /* Plan details multi-user support message */
 "Multi-user support" = "Suporte a múltiplos utilizadores";
 
@@ -146,6 +214,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Seguinte";
+
+/* network troubleshot cell title */
+"No internet connection" = "Sem ligação à internet";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Não, para outra conta Proton Mail";
@@ -160,6 +231,12 @@
 
 /* Password field title */
 "Password" = "Senha";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "A senha deve conter pelo menos %@ caracteres.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "A senha deve conter pelo menos 8 caracteres";
 
 /* (No Comment) */
 "payment failed" = "o pagamento falhou";
@@ -179,8 +256,32 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Por favor, inicie a sessão na conta Proton Mail em que está a actualizar o plano para que possamos concluir a activação.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Por favor, certifique-se de que a sua ligação à internet está a funcionar.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Por favor, desbloqueie a aplicação para prosseguir com a activação do seu plano";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Apoio ao cliente prioritário";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Privacy by default";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* network troubleshot cell title */
+"Proton is down" = "O Proton está indisponível";
+
+/* Plan details pro description */
+"Proton Mail for professionals and businesses" = "Proton Mail para profissionais e empresas.";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Estado do Proton";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferência de Proxy/Firewall";
 
 /* quit button */
 "Quit" = "Sair";
@@ -191,8 +292,14 @@
 /* Recovery email field title */
 "Recovery email" = "Endereço de recuperação";
 
+/* Recovery phone field title */
+"Recovery phone number" = "Número de telefone de recuperação";
+
 /* Remove button */
 "Remove" = "Remover";
+
+/* old value of remove account button in account manager */
+"Remove account" = "Remover conta";
 
 /* Repeat password field title */
 "Repeat password" = "Repita a senha";
@@ -238,6 +345,21 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Desculpe, não podemos processar compras na versão beta da aplicação iOS. Obrigado por participar na nossa versão beta pública!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Ainda não encontrou uma solução";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Suporte a transmissão";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Assunto...";
+
+/* Subscription title */
+"Subscription" = "Subscrição";
+
+/* network troubleshooting */
+"support form" = "formulário de suporte";
+
 /* Recovery terms and conditions link
    Terms and conditions link in the note
    Terms and conditions view title */
@@ -248,6 +370,9 @@
 
 /* other method alert button */
 "Try other method" = "Tentar outro método";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Autenticação em dois passos";
@@ -271,6 +396,9 @@
 
 /* Upgrade plan button */
 "Upgrade" = "Actualizar";
+
+/* Plan selection title */
+"Upgrade your plan" = "Atualizar o seu plano";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Usar código de recuperação";
@@ -309,11 +437,17 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Registou-se com sucesso, mas o seu pagamento não foi processado. Para reenviar a sua informação de pagamento, clique em Repetir. Só haverá uma cobrança. Se o problema persistir, por favor contacte o suporte ao cliente.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "O seu país pode estar a bloquear o acesso ao Proton. Tente utilizar %1$@ (ou outra VPN) ou %2$@ para aceder ao Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "O seu email só será usado para esta verificação única.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "O seu telefone só será usado para esta verificação única.";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "O seu plano renova automaticamente em %@";
 
 /* Recovery address label title */
 "Your recovery email address:" = "O seu email de recuperação:";

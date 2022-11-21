@@ -1,0 +1,6 @@
+framework module ProtonCore_Crypto {
+  umbrella header "ProtonCore-GoLibs-umbrella.h"
+
+  export *
+  module * { export * }
+}

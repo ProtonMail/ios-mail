@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import Crypto
+import GoLibs
 import XCTest
 @testable import ProtonMail
 import ProtonCore_Crypto

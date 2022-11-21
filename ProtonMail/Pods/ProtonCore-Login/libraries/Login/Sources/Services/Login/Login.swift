@@ -57,6 +57,7 @@ public enum LoginError: Error, CustomStringConvertible {
     case initialError(message: String)
     case generic(message: String, code: Int, originalError: Error)
     case apiMightBeBlocked(message: String, originalError: Error)
+    case externalAccountsNotSupported(message: String, originalError: Error)
     case invalidState
     case missingKeys
     case needsFirstTimePasswordChange
@@ -96,6 +97,7 @@ public extension LoginError {
              .invalidAccessToken(let message),
              .generic(let message, _, _),
              .apiMightBeBlocked(let message, _),
+             .externalAccountsNotSupported(let message, _),
              .initialError(let message):
             return message
         case .invalidState,

@@ -20,7 +20,7 @@ import Foundation
 import XCTest
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-import Crypto
+import GoLibs
 
 final class DataAttachmentDecryptionTests: XCTestCase {
     private let encryptedData = try! Data(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "dataPacket", withExtension: nil)!)
