@@ -36,4 +36,9 @@ enum Link {
     static let protonTwitter = "https://twitter.com/ProtonMail"
     static let protonSupportMailTo = "mailto:support@protonmail.zendesk.com"
     static let encryptedSearchInfo = "https://proton.me/support/search-message-content"
+
+    enum ReferralProgram {
+        static let trackYourRewards = "https://account.proton.me/mail/referral"
+        static let referralTermsAndConditions = "https://proton.me/support/referral-program"
+    }
 }

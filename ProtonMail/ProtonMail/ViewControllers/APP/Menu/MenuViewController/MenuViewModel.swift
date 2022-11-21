@@ -653,6 +653,7 @@ extension MenuViewModel {
                        MenuLabel(location: .provideFeedback),
                        MenuLabel(location: .bugs),
                        MenuLabel(location: .lockapp),
+                       MenuLabel(location: .referAFriend),
                        MenuLabel(location: .signout)]
 
         if info.userIsMember == false {
