@@ -444,33 +444,9 @@ public protocol AuthDelegate: AnyObject {
     func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion)
     func onUpdate(credential: Credential, sessionUID: String)
     func onLogout(sessionUID: String)
-    
-    // deprecated API
-    
-    @available(*, deprecated, message: "Please use onUpdate(auth:sessionUID:) instead")
-    func onUpdate(auth: Credential)
-    
-    @available(*, deprecated, message: "Please use onRefresh(sessionUID:service:complete:) instead")
-    func onRefresh(bySessionUID: String, complete: @escaping AuthRefreshComplete)
-    
-    @available(*, deprecated, message: "Please use authCredential(sessionUID:) instead")
-    func getToken(bySessionUID: String) -> AuthCredential?
 }
 
 public typealias AuthRefreshComplete = (_ auth: Credential?, _ hasError: AuthErrors?) -> Void
-
-// empty default implementations so that the objects conforming to the protocol are not required to add them by themselves
-public extension AuthDelegate {
-    
-    @available(*, deprecated, message: "Please use authCredential(sessionUID:) instead")
-    func getToken(bySessionUID: String) -> AuthCredential? { authCredential(sessionUID: bySessionUID) }
-    
-    @available(*, deprecated, message: "Please use onUpdate(auth:sessionUID:) instead")
-    func onUpdate(auth: Credential) { }
-    
-    @available(*, deprecated, message: "Please use onRefresh(sessionUID:for:complete:) instead")
-    func onRefresh(bySessionUID: String, complete: @escaping AuthRefreshComplete) { }
-}
 
 public protocol APIService: API {
     func setSessionUID(uid: String)

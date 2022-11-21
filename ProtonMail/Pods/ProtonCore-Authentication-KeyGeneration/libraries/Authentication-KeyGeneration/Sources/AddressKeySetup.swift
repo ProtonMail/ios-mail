@@ -19,16 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
-#if canImport(ProtonCore_Crypto_VPN)
-import ProtonCore_Crypto_VPN
-#elseif canImport(ProtonCore_Crypto)
+import GoLibs
 import ProtonCore_Crypto
-#endif
 import Foundation
 import ProtonCore_Authentication
 import ProtonCore_Hash
@@ -85,9 +77,11 @@ final class AddressKeySetup {
                                             passphrase: userKeyPassphrase)
         let tokenSignature = try addrKeyPassphrase.signDetached(signer: userSignerKey)
         
-        var keyFlags = KeyFlags.signupKeyFlags
+        let keyFlags: KeyFlags
         if addrType == .externalAddress {
             keyFlags = .signupExternalKeyFlags
+        } else {
+            keyFlags = .signupKeyFlags
         }
         /// build key matadata list
         let keylist: [[String: Any]] = [[

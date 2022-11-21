@@ -20,7 +20,7 @@
 "New_Plans Free VPN on a single device" = "單一裝置的免費 VPN";
 
 /* New_Plans Get plan button */
-"New_Plans Get %@" = "取得 %s";
+"New_Plans Get %@" = "取得 %@";
 
 /* New_Plans Get free plan button */
 "New_Plans Get Proton for free" = "取得免費版 Proton";

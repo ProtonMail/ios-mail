@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 

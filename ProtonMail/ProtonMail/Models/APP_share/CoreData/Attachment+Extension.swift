@@ -23,7 +23,7 @@
 import Foundation
 import CoreData
 import PromiseKit
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 

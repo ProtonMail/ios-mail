@@ -141,14 +141,6 @@ extension PMChallenge {
         // make sure the textField is not focused after check username.
         interceptor.textField?.resignFirstResponder()
     }
-
-    /// Declare user start request verification so that timer starts.
-    @available(*, deprecated, message: "The function will be removed in the future")
-    public func requestVerify() { }
-
-    /// Count verification time
-    @available(*, deprecated, message: "The function will be removed in the future")
-    public func verificationFinish() throws { }
 }
 
 // MARK: Private function

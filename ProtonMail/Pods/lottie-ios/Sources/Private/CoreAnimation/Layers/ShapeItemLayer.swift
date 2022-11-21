@@ -55,8 +55,13 @@ final class ShapeItemLayer: BaseAnimationLayer {
     /// A `ShapeItem` that should be rendered by this layer
     let item: ShapeItem
 
-    /// The group that contains this `ShapeItem`, if applicable
-    let parentGroup: Group?
+    /// The set of groups that this item descends from
+    ///  - Due to the way `GroupLayer`s are setup, the original `ShapeItem`
+    ///    hierarchy from the `ShapeLayer` data model may no longer exactly
+    ///    match the hierarchy of `GroupLayer` / `ShapeItemLayer`s constructed
+    ///    at runtime. Since animation keypaths need to match the original
+    ///    structure of the `ShapeLayer` data model, we track that info here.
+    let groupPath: [String]
   }
 
   override func setupAnimations(context: LayerAnimationContext) throws {
@@ -203,6 +208,13 @@ final class ShapeItemLayer: BaseAnimationLayer {
     var trimPathMultiplier: PathMultiplier? = nil
     if let (trim, context) = otherItems.first(Trim.self, context: context) {
       trimPathMultiplier = try shapeLayer.addAnimations(for: trim, context: context)
+
+      try context.compatibilityAssert(
+        otherItems.first(Fill.self) == nil,
+        """
+        The Core Animation rendering engine doesn't currently support applying
+        trims to filled shapes (only stroked shapes).
+        """)
     }
 
     try shapeLayer.addAnimations(for: shape.item, context: context.for(shape), pathMultiplier: trimPathMultiplier ?? 1)
@@ -227,6 +239,7 @@ final class ShapeItemLayer: BaseAnimationLayer {
       pathMultiplier: 1)
 
     if let (gradientFill, context) = otherItems.first(GradientFill.self, context: context) {
+      layers.shapeMaskLayer.fillRule = gradientFill.fillRule.caFillRule
       try layers.gradientColorLayer.addGradientAnimations(for: gradientFill, type: .rgb, context: context)
       try layers.gradientAlphaLayer?.addGradientAnimations(for: gradientFill, type: .alpha, context: context)
     }
@@ -292,8 +305,8 @@ extension LayerAnimationContext {
   func `for`(_ item: ShapeItemLayer.Item) -> LayerAnimationContext {
     var context = self
 
-    if let group = item.parentGroup {
-      context.currentKeypath.keys.append(group.name)
+    for parentGroupName in item.groupPath {
+      context.currentKeypath.keys.append(parentGroupName)
     }
 
     context.currentKeypath.keys.append(item.item.name)

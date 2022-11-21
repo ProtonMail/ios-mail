@@ -46,7 +46,7 @@ the following restrictions:
   distribution.
 
 
-## ProtonCore-Crypto
+## ProtonCore-DataModel
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -724,7 +724,7 @@ Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
 
 
-## ProtonCore-DataModel
+## ProtonCore-GoLibs
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

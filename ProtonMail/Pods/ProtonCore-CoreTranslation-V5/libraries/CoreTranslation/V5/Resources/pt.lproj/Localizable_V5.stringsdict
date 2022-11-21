@@ -80,7 +80,7 @@
 	<key>New_Plans %d of %d personal calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ de %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -107,7 +107,7 @@
 	<key>New_Plans %d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ de %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -126,7 +126,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d user</string>
+			<string>%d utilizador</string>
 			<key>other</key>
 			<string>%d users</string>
 		</dict>
@@ -199,9 +199,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d country</string>
+			<string>%d país</string>
 			<key>other</key>
-			<string>%d countries</string>
+			<string>%d países</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@SERVERS@ in %#@COUNTRIES@</string>

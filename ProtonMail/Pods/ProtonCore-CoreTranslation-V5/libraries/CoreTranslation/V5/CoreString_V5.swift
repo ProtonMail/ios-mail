@@ -19,17 +19,150 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable line_length identifier_name
+// swiftlint:disable line_length identifier_name cyclomatic_complexity 
 
 import Foundation
 
-public var CoreString_V5 = LocalizedString_V5()
+@dynamicMemberLookup
+public struct CoreString_V5 {
+    
+    private static var localizedStringInstance = LocalizedString_V5()
+    
+    public static func reset() {
+        localizedStringInstance = LocalizedString_V5()
+    }
+    
+    public static subscript(dynamicMember keyPath: KeyPath<LocalizedStringAccessors_V5, LocalizedStringAccessors_V5>) -> String {
+        // it doesn't matter which instance/case we'll use to access keyPath, __ls_welcome_footer is just a random choice
+        // and the only reason we need to use the instance at all is that dynamic member lookup doesn't support static members (including enum cases)
+        LocalizedStringAccessors_V5.__ls_welcome_footer[keyPath: keyPath].localizedString(from: localizedStringInstance)
+    }
+}
+
+public enum LocalizedStringAccessors_V5: CaseIterable {
+    
+    case __ls_welcome_footer
+    public var _ls_welcome_footer: LocalizedStringAccessors_V5 { .__ls_welcome_footer }
+    case __new_plans_select_plan_description
+    public var _new_plans_select_plan_description: LocalizedStringAccessors_V5 { .__new_plans_select_plan_description }
+    case __new_plans_plan_details_free_description
+    public var _new_plans_plan_details_free_description: LocalizedStringAccessors_V5 { .__new_plans_plan_details_free_description }
+    case __new_plans_plan_details_plus_description
+    public var _new_plans_plan_details_plus_description: LocalizedStringAccessors_V5 { .__new_plans_plan_details_plus_description }
+    case __new_plans_plan_details_vpn_plus_description
+    public var _new_plans_plan_details_vpn_plus_description: LocalizedStringAccessors_V5 { .__new_plans_plan_details_vpn_plus_description }
+    case __new_plans_plan_details_bundle_description
+    public var _new_plans_plan_details_bundle_description: LocalizedStringAccessors_V5 { .__new_plans_plan_details_bundle_description }
+    case __new_plan_details_drive_plus_description
+    public var _new_plan_details_drive_plus_description: LocalizedStringAccessors_V5 { .__new_plan_details_drive_plus_description }
+    case __new_plans_plan_footer_desc
+        public var _new_plans_plan_footer_desc: LocalizedStringAccessors_V5 { .__new_plans_plan_footer_desc }
+    case __new_plans_details_unlimited_folders_labels_filters
+    public var _new_plans_details_unlimited_folders_labels_filters: LocalizedStringAccessors_V5 { .__new_plans_details_unlimited_folders_labels_filters }
+    case __new_plans_details_up_to_storage
+    public var _new_plans_details_up_to_storage: LocalizedStringAccessors_V5 { .__new_plans_details_up_to_storage }
+    case __new_plans_details_vpn_on_single_device
+    public var _new_plans_details_vpn_on_single_device: LocalizedStringAccessors_V5 { .__new_plans_details_vpn_on_single_device }
+    case __new_plans_details_highest_VPN_speed
+    public var _new_plans_details_highest_VPN_speed: LocalizedStringAccessors_V5 { .__new_plans_details_highest_VPN_speed }
+    case __new_plans_details_ad_blocker
+    public var _new_plans_details_ad_blocker: LocalizedStringAccessors_V5 { .__new_plans_details_ad_blocker }
+    case __new_plans_details_access_streaming_services
+    public var _new_plans_details_access_streaming_services: LocalizedStringAccessors_V5 { .__new_plans_details_access_streaming_services }
+    case __new_plans_details_secure_core_servers
+    public var _new_plans_details_secure_core_servers: LocalizedStringAccessors_V5 { .__new_plans_details_secure_core_servers }
+    case __new_plans_details_tor_over_vpn
+    public var _new_plans_details_tor_over_vpn: LocalizedStringAccessors_V5 { .__new_plans_details_tor_over_vpn }
+    case __new_plans_details_p2p
+    public var _new_plans_details_p2p: LocalizedStringAccessors_V5 { .__new_plans_details_p2p }
+    case __new_plans_get_plan_button
+    public var _new_plans_get_plan_button: LocalizedStringAccessors_V5 { .__new_plans_get_plan_button }
+    case __new_plans_get_free_plan_button
+    public var _new_plans_get_free_plan_button: LocalizedStringAccessors_V5 { .__new_plans_get_free_plan_button }
+    case __new_plans_extend_subscription_button
+    public var _new_plans_extend_subscription_button: LocalizedStringAccessors_V5 { .__new_plans_extend_subscription_button }
+    case __new_plans_details_used_storage_space
+    public var _new_plans_details_used_storage_space: LocalizedStringAccessors_V5 { .__new_plans_details_used_storage_space }
+    case __new_plans_connection_error_title
+    public var _new_plans_connection_error_title: LocalizedStringAccessors_V5 { .__new_plans_connection_error_title }
+    case __new_plans_connection_error_description
+    public var _new_plans_connection_error_description: LocalizedStringAccessors_V5 { .__new_plans_connection_error_description }
+    case __new_plans_details_no_logs_policy
+    public var _new_plans_details_no_logs_policy: LocalizedStringAccessors_V5 { .__new_plans_details_no_logs_policy }
+    case __new_plans_plan_successfully_upgraded
+    public var _new_plans_plan_successfully_upgraded: LocalizedStringAccessors_V5 { .__new_plans_plan_successfully_upgraded }
+    case __new_plans_details_n_custom_email_domains
+    public var _new_plans_details_n_custom_email_domains: LocalizedStringAccessors_V5 { .__new_plans_details_n_custom_email_domains }
+    case __new_plans_details_n_folders_labels
+    public var _new_plans_details_n_folders_labels: LocalizedStringAccessors_V5 { .__new_plans_details_n_folders_labels }
+    case __new_plans_details_n_personal_calendars
+    public var _new_plans_details_n_personal_calendars: LocalizedStringAccessors_V5 { .__new_plans_details_n_personal_calendars }
+    case __new_plans_details_vpn_on_n_devices
+    public var _new_plans_details_vpn_on_n_devices: LocalizedStringAccessors_V5 { .__new_plans_details_vpn_on_n_devices }
+    case __new_plans_details_vpn_servers
+    public var _new_plans_details_vpn_servers: LocalizedStringAccessors_V5 { .__new_plans_details_vpn_servers }
+    case __new_plans_details_vpn_free_servers
+    public var _new_plans_details_vpn_free_servers: LocalizedStringAccessors_V5 { .__new_plans_details_vpn_free_servers }
+    case __new_plans_details_vpn_free_speed_n_connections
+    public var _new_plans_details_vpn_free_speed_n_connections: LocalizedStringAccessors_V5 { .__new_plans_details_vpn_free_speed_n_connections }
+    case __new_plans_details_n_of_m_users
+    public var _new_plans_details_n_of_m_users: LocalizedStringAccessors_V5 { .__new_plans_details_n_of_m_users }
+    case __new_plans_details_n_of_m_addresses
+    public var _new_plans_details_n_of_m_addresses: LocalizedStringAccessors_V5 { .__new_plans_details_n_of_m_addresses }
+    case __new_plans_details_n_of_m_personal_calendars
+    public var _new_plans_details_n_of_m_personal_calendars: LocalizedStringAccessors_V5 { .__new_plans_details_n_of_m_personal_calendars }
+    case __new_plans_details_n_addresses_per_user
+    public var _new_plans_details_n_addresses_per_user: LocalizedStringAccessors_V5 { .__new_plans_details_n_addresses_per_user }
+    case __new_plans_details_n_personal_calendars_per_user
+    public var _new_plans_details_n_personal_calendars_per_user: LocalizedStringAccessors_V5 { .__new_plans_details_n_personal_calendars_per_user }
+    case __new_plans_details_n_connections_per_user
+    public var _new_plans_details_n_connections_per_user: LocalizedStringAccessors_V5 { .__new_plans_details_n_connections_per_user }
+    
+    public func localizedString(from localizedStringInstance: LocalizedString_V5) -> String {
+        switch self {
+        case .__ls_welcome_footer: return localizedStringInstance._ls_welcome_footer
+        case .__new_plans_select_plan_description: return localizedStringInstance._new_plans_select_plan_description
+        case .__new_plans_plan_details_free_description: return localizedStringInstance._new_plans_plan_details_free_description
+        case .__new_plans_plan_details_plus_description: return localizedStringInstance._new_plans_plan_details_plus_description
+        case .__new_plans_plan_details_vpn_plus_description: return localizedStringInstance._new_plans_plan_details_vpn_plus_description
+        case .__new_plans_plan_details_bundle_description: return localizedStringInstance._new_plans_plan_details_bundle_description
+        case .__new_plan_details_drive_plus_description: return localizedStringInstance._new_plan_details_drive_plus_description
+        case .__new_plans_plan_footer_desc: return localizedStringInstance._new_plans_plan_footer_desc
+        case .__new_plans_details_unlimited_folders_labels_filters: return localizedStringInstance._new_plans_details_unlimited_folders_labels_filters
+        case .__new_plans_details_up_to_storage: return localizedStringInstance._new_plans_details_up_to_storage
+        case .__new_plans_details_vpn_on_single_device: return localizedStringInstance._new_plans_details_vpn_on_single_device
+        case .__new_plans_details_highest_VPN_speed: return localizedStringInstance._new_plans_details_highest_VPN_speed
+        case .__new_plans_details_ad_blocker: return localizedStringInstance._new_plans_details_ad_blocker
+        case .__new_plans_details_access_streaming_services: return localizedStringInstance._new_plans_details_access_streaming_services
+        case .__new_plans_details_secure_core_servers: return localizedStringInstance._new_plans_details_secure_core_servers
+        case .__new_plans_details_tor_over_vpn: return localizedStringInstance._new_plans_details_tor_over_vpn
+        case .__new_plans_details_p2p: return localizedStringInstance._new_plans_details_p2p
+        case .__new_plans_get_plan_button: return localizedStringInstance._new_plans_get_plan_button
+        case .__new_plans_get_free_plan_button: return localizedStringInstance._new_plans_get_free_plan_button
+        case .__new_plans_extend_subscription_button: return localizedStringInstance._new_plans_extend_subscription_button
+        case .__new_plans_details_used_storage_space: return localizedStringInstance._new_plans_details_used_storage_space
+        case .__new_plans_connection_error_title: return localizedStringInstance._new_plans_connection_error_title
+        case .__new_plans_connection_error_description: return localizedStringInstance._new_plans_connection_error_description
+        case .__new_plans_details_no_logs_policy: return localizedStringInstance._new_plans_details_no_logs_policy
+        case .__new_plans_plan_successfully_upgraded: return localizedStringInstance._new_plans_plan_successfully_upgraded
+        case .__new_plans_details_n_custom_email_domains: return localizedStringInstance._new_plans_details_n_custom_email_domains
+        case .__new_plans_details_n_folders_labels: return localizedStringInstance._new_plans_details_n_folders_labels
+        case .__new_plans_details_n_personal_calendars: return localizedStringInstance._new_plans_details_n_personal_calendars
+        case .__new_plans_details_vpn_on_n_devices: return localizedStringInstance._new_plans_details_vpn_on_n_devices
+        case .__new_plans_details_vpn_servers: return localizedStringInstance._new_plans_details_vpn_servers
+        case .__new_plans_details_vpn_free_servers: return localizedStringInstance._new_plans_details_vpn_free_servers
+        case .__new_plans_details_vpn_free_speed_n_connections: return localizedStringInstance._new_plans_details_vpn_free_speed_n_connections
+        case .__new_plans_details_n_of_m_users: return localizedStringInstance._new_plans_details_n_of_m_users
+        case .__new_plans_details_n_of_m_addresses: return localizedStringInstance._new_plans_details_n_of_m_addresses
+        case .__new_plans_details_n_of_m_personal_calendars: return localizedStringInstance._new_plans_details_n_of_m_personal_calendars
+        case .__new_plans_details_n_addresses_per_user: return localizedStringInstance._new_plans_details_n_addresses_per_user
+        case .__new_plans_details_n_personal_calendars_per_user: return localizedStringInstance._new_plans_details_n_personal_calendars_per_user
+        case .__new_plans_details_n_connections_per_user: return localizedStringInstance._new_plans_details_n_connections_per_user
+        }
+    }
+}
 
 public class LocalizedString_V5 {
-    
-    public class func reset() {
-        CoreString_V5 = LocalizedString_V5()
-    }
     
     // Login / Signup
     
@@ -49,7 +182,10 @@ public class LocalizedString_V5 {
     
     /// Details vpn plus plan description
     public lazy var _new_plans_plan_details_vpn_plus_description = NSLocalizedString("New_Plans Your privacy and security are our priority.", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Plan details vpn plus description")
-    
+
+    /// Details drive plus plan description
+    public lazy var _new_plan_details_drive_plus_description = NSLocalizedString("New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private.", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Plan details drive plus description")
+
     /// Details bundle plan description
     public lazy var _new_plans_plan_details_bundle_description = NSLocalizedString("New_Plans The ultimate privacy pack with access to all premium Proton services.", tableName: "Localizable_V5", bundle: Common_V5.bundle, comment: "New_Plans Plan details bundle description")
     

@@ -21,11 +21,7 @@
 
 import Foundation
 import EllipticCurveKeyPair
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
+import GoLibs
 
 #if canImport(UIKit)
 import UIKit

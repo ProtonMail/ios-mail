@@ -73,7 +73,7 @@ extension LoginService {
                 completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
                 return
             }
-
+            
             self.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
                 user: user, mailboxPassword: mailboxPassword, completion: completion
             )
@@ -102,11 +102,30 @@ extension LoginService {
             }
         }
     }
-
+    
     private func fetchEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
         addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
-        let intAddresses = !addresses.filter({ $0.type != .externalAddress }).isEmpty
+        let intAddresses = addresses.first(where: { $0.type != .externalAddress }) != nil
+        
+        // when external user has no key. external address is not empty. try to create user key only. other logic stays the same
+        if user.keys.isEmpty, user.isExternal, !intAddresses, !addresses.isEmpty {
+            self.createAccountKeysIfNeeded(user: user,
+                                           addresses: addresses,
+                                           mailboxPassword: mailboxPassword) { [weak self] result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let updatedUser):
+                    // after the keys generation — retry fetching the data
+                    self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
+                        user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
+                    )
+                }
+            }
+            return
+        }
+        
         if user.keys.isEmpty == true, (intAddresses || addresses.isEmpty) {
             // automatic account migration needed: keys must be generated
             setupAccountKeysAndCreateInternalAddressIfNeeded(
@@ -141,7 +160,7 @@ extension LoginService {
             completion(.failure(.invalidState))
 
         case .external:
-            if addresses.filter({ $0.type != .externalAddress && $0.status != .disabled }).isEmpty {
+            if addresses.filter({ $0.status != .disabled }).isEmpty {
                 guard let authCredential = self.authManager.authCredential(sessionUID: sessionId),
                       let credential = self.authManager.credential(sessionUID: sessionId) else {
                     completion(.failure(.invalidState))
@@ -333,7 +352,7 @@ extension LoginService {
             return
         }
 
-        if user.private == 1, let address = addresses.first(where: { $0.type != .externalAddress && $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
+        if user.private == 1, let address = addresses.first(where: { $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
             createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
             return
         }

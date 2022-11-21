@@ -82,21 +82,21 @@ extension Key {
     }
 }
 
-@available(*, deprecated, renamed: "Key")
-public typealias AddressKey = Key
-
-@available(*, deprecated, renamed: "Key")
-public typealias UserKey = Key
-
 // exposed interfaces
-extension Key {
-    
-    @available(*, deprecated, renamed: "isKeyV2")
-    internal var newSchema: Bool {
+extension Key {    
+    public var isKeyV2: Bool {
         return signature != nil
     }
     
-    public var isKeyV2: Bool {
-        return signature != nil
+    public var isExternalAddressKey: Bool {
+        KeyFlags(rawValue: UInt8(truncating: keyFlags as NSNumber)).contains(.signifyingExternalAddress)
+    }
+    
+    public var cannotEncryptEmail: Bool {
+        KeyFlags(rawValue: UInt8(truncating: keyFlags as NSNumber)).contains(.cannotEncryptEmail)
+    }
+    
+    public var dontExpectSignedEmails: Bool {
+        KeyFlags(rawValue: UInt8(truncating: keyFlags as NSNumber)).contains(.dontExpectSignedEmails)
     }
 }

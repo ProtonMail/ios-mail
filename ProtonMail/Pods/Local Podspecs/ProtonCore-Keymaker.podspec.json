@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "3.23.4",
+  "version": "3.24.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.23.4"
+    "tag": "3.24.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -35,46 +35,255 @@
   ],
   "subspecs": [
     {
+      "name": "Crypto-Go1.15.15",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto-Go1.15.15": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto-Go1.17.9",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto-Go1.17.9": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto-Go1.18.3",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto-Go1.18.3": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto-Go1.19.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto-Go1.19.2": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto-patched-Go1.19.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto-patched-Go1.19.2": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-Go1.15.15",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-Go1.17.9",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-Go1.17.9": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-Go1.18.3",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-Go1.18.3": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-Go1.19.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-Go1.19.2": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+Search-Go1.15.15",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+Search-Go1.17.9",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+Search-Go1.17.9": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+Search-Go1.18.3",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+Search-Go1.18.3": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+Search-Go1.19.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+Search-Go1.19.2": [
+          "3.24.2"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        }
+      ]
+    },
+    {
       "name": "ErrorWarningEmittingDefaultSubspec",
       "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
-    },
-    {
-      "name": "UsingCrypto",
-      "dependencies": {
-        "ProtonCore-Crypto": [
-          "3.23.4"
-        ]
-      },
-      "source_files": [
-        "libraries/Keymaker/Sources/*.swift",
-        "libraries/Keymaker/Sources/**/*.swift"
-      ],
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Keymaker/Tests/**/*"
-        }
-      ]
-    },
-    {
-      "name": "UsingCryptoVPN",
-      "dependencies": {
-        "ProtonCore-Crypto-VPN": [
-          "3.23.4"
-        ]
-      },
-      "source_files": [
-        "libraries/Keymaker/Sources/*.swift",
-        "libraries/Keymaker/Sources/**/*.swift"
-      ],
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Keymaker/Tests/**/*"
-        }
-      ]
     }
   ],
   "swift_version": "5.6"

@@ -101,6 +101,8 @@
 "Incorrect mailbox password" = "Incorrect mailbox password";
 "Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
 "An error has occured" = "An error has occured";
+"Proton address required" = "Proton address required";
+"Learn more" = "Learn more";
 
 /**
  * Login choose username

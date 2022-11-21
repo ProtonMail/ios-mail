@@ -83,4 +83,8 @@ final class ExternalLinks {
             return URL(string: "https://account.proton.me/forgot-username")!
         }
     }
+    
+    var learnMoreAboutExternalAccountsNotSupported: URL {
+        URL(string: "https://proton.me/support/external-accounts")!
+    }
 }

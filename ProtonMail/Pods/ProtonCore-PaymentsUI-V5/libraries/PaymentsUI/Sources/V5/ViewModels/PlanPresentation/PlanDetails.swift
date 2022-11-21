@@ -122,7 +122,7 @@ extension PlanDetails {
 
         case "93d6ab89dfe0ef0cadbb77402d21e1b485937d4b9cef19390b1f5d8e7876b66a":
             strDetails = (name: nil,
-                          description: nil,
+                          description: CoreString_V5._new_plan_details_drive_plus_description,
                           optDetails: [
                             (.storage, details.XGBStorageDescription),
                             (.envelope, details.YAddressesDescription),

@@ -76,6 +76,8 @@ extension UserInfo: NSCoding {
         static let conversationToolbarActions = "conversationToolbarActions"
         static let messageToolbarActions = "messageToolbarActions"
         static let listToolbarActions = "listToolbarActions"
+
+        static let referralProgram = "referralProgram"
     }
 
     public convenience init(coder aDecoder: NSCoder) {
@@ -125,7 +127,8 @@ extension UserInfo: NSCoding {
             crashReports: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.crashReports),
             conversationToolbarActions: aDecoder.decodeObject(forKey: CoderKey.conversationToolbarActions) as? ToolbarActions,
             messageToolbarActions: aDecoder.decodeObject(forKey: CoderKey.messageToolbarActions) as? ToolbarActions,
-            listToolbarActions: aDecoder.decodeObject(forKey: CoderKey.listToolbarActions) as? ToolbarActions
+            listToolbarActions: aDecoder.decodeObject(forKey: CoderKey.listToolbarActions) as? ToolbarActions,
+            referralProgram: aDecoder.decodeObject(forKey: CoderKey.referralProgram) as? ReferralProgram
         )
     }
 
@@ -177,6 +180,8 @@ extension UserInfo: NSCoding {
         aCoder.encode(conversationToolbarActions, forKey: CoderKey.conversationToolbarActions)
         aCoder.encode(messageToolbarActions, forKey: CoderKey.messageToolbarActions)
         aCoder.encode(listToolbarActions, forKey: CoderKey.listToolbarActions)
+
+        aCoder.encode(referralProgram, forKey: CoderKey.referralProgram)
     }
 }
 

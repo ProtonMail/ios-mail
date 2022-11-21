@@ -38,6 +38,9 @@
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "エラーが発生しました";
 
+/* network troubleshot cell title */
+"Antivirus interference" = "ウイルス対策ソフトウェアの干渉";
+
 /* Error message */
 "Apple informed us they could not process the purchase." = "Appleが購入の手続きを進める事ができませんでした。";
 
@@ -53,6 +56,9 @@
 /* *
  * Login 2FA */
 "Authenticate" = "認証";
+
+/* top left back button */
+"Back" = "戻る";
 
 /* Terms and conditions note */
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "アドレスを作成をクリックすると、Proton の利用規約に同意したことになります。";
@@ -75,6 +81,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "パスワードを変更";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Proton Status でシステム状況を確認してください。";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "閉じる";
@@ -105,6 +114,9 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "support@protonvpn.com に連絡し、購入手続きを完了してください。";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "サポートフォーム、メール (support@protonmail.zendesk.com)、または Twitter から直接、お問い合わせください。";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "現在のメールで Proton アカウントを作成";
@@ -156,6 +168,9 @@
 /* Not receive code button */
 "Did not receive the code?" = "コードを受け取っていませんか?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "プロキシーやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
+
 /* Cancellation for the credits applied popup */
 "Dismiss" = "却下";
 
@@ -203,6 +218,9 @@
 
 /* Error message */
 "Failed to get list of available products from App Store." = "App Store 上の利用可能製品の一覧の取得に失敗しました。";
+
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "%@ 間";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "セキュリティのため、入力したアドレスがあなたのアドレスであるか確認する必要があります。検証コードを %@ に送信しました。下記にコードを入力してください:";
@@ -497,6 +515,9 @@
 
 /* Subscription title */
 "Subscription" = "サブスクリプション";
+
+/* network troubleshooting */
+"support form" = "サポートフォーム";
 
 /* *  Account Manager */
 "switch to" = "切り替え: ";

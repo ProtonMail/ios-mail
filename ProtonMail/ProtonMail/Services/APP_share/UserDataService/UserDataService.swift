@@ -22,7 +22,7 @@
 
 import Foundation
 import PromiseKit
-import Crypto
+import GoLibs
 import OpenPGP
 import ProtonCore_APIClient
 import ProtonCore_Crypto
