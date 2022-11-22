@@ -73,6 +73,14 @@ class SingleMessageContentViewModel {
         !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection) && UserInfo.isImageProxyAvailable
     }
 
+    var spotlightMessage: String {
+        if user.userInfo.isAutoLoadRemoteContentEnabled {
+            return L11n.EmailTrackerProtection.feature_description_if_remote_content_allowed
+        } else {
+            return L11n.EmailTrackerProtection.feature_description_if_remote_content_not_allowed
+        }
+    }
+
     private(set) var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = nonExapndedHeaderViewModel else { return }
