@@ -466,13 +466,13 @@ extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverPr
 
     private func updateLayoutWithKeyboard(_ notification: Notification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-              let presentingVC = navigationController?.presentingViewController else {
+              let window = view.window else {
             return
         }
         let bottomLeftPoint = CGPoint(x: 0, y: view.frame.height)
-        let convertedPoint = view.convert(bottomLeftPoint, to: presentingVC.view)
-        let presentingVCHeight = presentingVC.view.frame.height
-        let presentedVCToBottom = presentingVCHeight - convertedPoint.y
+        let convertedPoint = view.convert(bottomLeftPoint, to: window)
+        let screenHeight = window.screen.bounds.height
+        let presentedVCToBottom = screenHeight - convertedPoint.y
         let heightToAddForKeyboard = keyboardFrame.cgRectValue.height - presentedVCToBottom
 
         self.bottomPadding.constant = heightToAddForKeyboard + toolBarHeight
