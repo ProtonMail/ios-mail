@@ -28,9 +28,6 @@
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 мин";
 
-/* default empty object */
-"<no object>" = "<no object>";
-
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 сообщение перемещено в архив";
 
@@ -40,36 +37,14 @@
 /* Placeholder */
 "8 to 21 characters long" = "длинной от 9 до 21 символа";
 
-/* *
- *  LabelTableViewCell */
-"A message cannot have more than 5 labels" = "Сообщение не может иметь более 5 ярлыков";
-
-/* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Доступна новая версия приложения Proton Mai, пожалуйста, обновите приложение до последней версии.";
-
-/* (No Comment) */
-"A passcode has not been set, enable it in the system Settings" = "Пароль не задан, установите его в системных настройках";
-
-/* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ к этому аккаунту приостановлен из-за неуплаты. Пожалуйста, войдите в систему через proton.me, чтобы оплатить счет.";
-
-/* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учётной записи приостановлен из-за неуплаты.\n Пожалуйста, посетите <a href=\"https://proton.me/support/knowledge-base/delinquency/\">нашу базу знаний</a> для получения дополнительной информации.";
-
 /* Account manager title */
 "Account" = "Учётная запись";
-
-/* title */
-"Account password invalid" = "Неправильный пароль аккаунта";
 
 /* section title in settings */
 "Account settings" = "Настройки аккаунта";
 
 /* The title of toast message that is shown after the undo action is done */
 "Action reverted" = "Действие отменено";
-
-/* (No Comment) */
-"Add" = "Добавить";
 
 /* new contacts add Anniversary */
 "Add anniversary" = "Добавить годовщину";
@@ -138,7 +113,7 @@
 /* cell title in device settings */
 "Addresses" = "Адреса";
 
-/* alert title */
+/* Title */
 "Alert" = "Предупреждение";
 
 /* Title */
@@ -152,7 +127,7 @@
 "All protection settings will be reset and wiped upon logging out of the app." = "Все настройки защиты будут сброшены и удалены после выхода из приложения.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Все ваши сообщения загружены";
+"All your messages are downloaded" = "Все ваши сообщения скачаны";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Разрешить альтернативную маршрутизацию";
@@ -215,14 +190,9 @@
 "Apply Password" = "Применить пароль";
 
 /* menu title
+   Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Архив";
-
-/* mail location title */
-"ARCHIVE" = "Архив";
-
-/* (No Comment) */
-"Archived" = "Архивные";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Вы уверены, что хотите навсегда удалить это сообщение?";
@@ -252,6 +222,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "По крайней мере один адрес электронной почты/домен получателя не существует или отформатирован неправильно. Сообщение перемещено в черновики.";
 
+/* No comment provided by engineer. */
+"attachment" = "вложение";
+
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Ошибка вложения";
 
@@ -261,14 +234,14 @@
 /* Alert title */
 "Attachment limit" = "Лимит вложений";
 
+/* No comment provided by engineer. */
+"attachments" = "вложения";
+
+/* The title of attachments in local storage settings */
+"Attachments" = "Вложения";
+
 /* Title */
 "Authentication" = "Аутентификация";
-
-/* (No Comment) */
-"Authentication Failed Wrong username or password" = "Сбой аутентификации: неправильное имя пользователя или пароль.";
-
-/* Title */
-"Auto Lock Time" = "Время автоблокировки";
 
 /* settings general section title */
 "Auto-load embedded images" = "Авто-показ встроенных изображений";
@@ -282,20 +255,14 @@
 /* top left back button */
 "Back" = "Назад";
 
-/* title */
+/* Error title */
 "Bad parameter" = "Неверный параметр";
 
 /* Error Description */
 "Bad parameter: %@" = "Неверный параметр: %@";
 
-/* title */
-"Bad path" = "Неверный путь";
-
-/* title */
+/* Error Description */
 "Bad response" = "Неверный ответ";
-
-/* Title */
-"Bcc" = "Cкр";
 
 /* message Bcc: feild */
 "Bcc:" = "Cкр:";
@@ -314,9 +281,6 @@
 
 /* Title */
 "Bug Description" = "Описание ошибки";
-
-/* Title */
-"Bug Report Received" = "Отчёт об ошибке получен";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Кэшированные данные";
@@ -338,13 +302,6 @@
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
 "Can't delete contact group through API" = "Невозможно удалить группу контактов через API";
-
-/* *
- *  MessageViewController */
-"Can't download message body, please try again." = "Невозможно загрузить тело сообщения. Пожалуйста, попробуйте снова.";
-
-/* (No Comment) */
-"Can't find the clicked message please try again!" = "Невозможно найти выбранное сообщение. Пожалуйста, попробуйте снова!";
 
 /* Description */
 "Can't find the value from the response body" = "Невозможно найти значение из тела ответа";
@@ -386,25 +343,8 @@
 /* Warning message */
 "Cannot empty folder right now." = "В данный момент невозможно очистить папку.";
 
-/* (No Comment) */
-"Cant' decrypt this attachment!" = "Невозможно расшифровать это вложение.";
-
-/* message Cc: feild
-   Title */
-"Cc" = "Копия";
-
-/* *
- *  PhoneVerifyViewController */
-"Cell phone number" = "Номер мобильного телефона";
-
 /* settings general section title */
 "Change account password" = "Изменить пароль акаунта";
-
-/* Title */
-"Change default address to .." = "Изменить адрес по умолчанию на...";
-
-/* (No Comment) */
-"Change left swipe action" = "Изменить действие при пролистывании влево";
 
 /* settings general section title */
 "Change mailbox password" = "Изменить пароль почтового ящика";
@@ -413,20 +353,8 @@
    title */
 "Change password" = "Изменить пароль";
 
-/* title */
-"Change Password" = "Изменить пароль";
-
-/* (No Comment) */
-"Change Pin" = "Изменить PIN";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Изменить PIN-код";
-
-/* (No Comment) */
-"Change right swipe action" = "Изменить действие при пролистывании вправо";
-
-/* Title */
-"Change sender address to .." = "Изменить адрес отправителя на...";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Зарядите свое устройство или продолжите вручную.";
@@ -436,9 +364,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Проверьте состояние Proton, чтобы узнать состояние системы.";
-
-/* "Username" */
-"Checking ...." = "Проверка...";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "Выберете дрогой адрес отправителя";
@@ -453,9 +378,6 @@
 
 /* cell title in device setting */
 "Clear local cache" = "Очистить кэш на устройстве";
-
-/* (No Comment) */
-"Clear Local Message Cache" = "Очистить кэш сообщений на устройстве";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Очистить форматирование";
@@ -479,8 +401,8 @@
    The title of combined contact in settings */
 "Combined contacts" = "Объединенные контакты";
 
-/* *
- *  Composer Email view controller */
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Новое письмо";
 
 /* An action title shows in ellipsis menu */
@@ -489,12 +411,9 @@
 /* Title */
 "Compose to" = "Написать письмо";
 
-/* *
- *  MenuViewController */
+/* Action
+   The title of button of PIN code setup2 */
 "Confirm" = "Подтвердить";
-
-/* "Mailbox Password" */
-"Confirm Mailbox Password" = "Подтвердите пароль почтового ящика";
 
 /* Title */
 "Confirm new mailbox password" = "Подтвердить новый пароль почтового ящика";
@@ -505,9 +424,6 @@
 /* Title */
 "Confirm new sign-in password" = "Подтвердите новый пароль входа";
 
-/* (No Comment) */
-"Confirm Password" = "Подтвердить пароль";
-
 /* alert title */
 "Confirm phishing report" = "Подтвердить жалобу на фишинг";
 
@@ -515,7 +431,7 @@
 "Confirmation" = "Подтверждение";
 
 /* Text for status label when no wifi is available */
-"Connect to WiFi or enable \"Download via mobile data\"." = "Подключитесь к WiFi, или разрешите \"Загрузку данных через сотовую сеть\".";
+"Connect to WiFi or enable \"Download via mobile data\"." = "Подключитесь к WiFi, или разрешите \"Скачивание данных через сотовую сеть\".";
 
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Контакт удален. Он будет синхронизирован, когда подключение станет доступно";
@@ -561,9 +477,6 @@
 /* top right action text */
 "Create" = "Создать";
 
-/* error part & alert title */
-"Create user failed" = "Не удалось создать пользователя";
-
 /* Alert title */
 "Creating folder not allowed" = "Создание папки недопустимо";
 
@@ -601,12 +514,6 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "Дата: %@";
 
-/* days */
-"days" = "Дней";
-
-/* (No Comment) */
-"Debug" = "Отладка";
-
 /* error title */
 "Decryption error" = "Ошибка расшифровки";
 
@@ -622,14 +529,9 @@
 /* Settings row */
 "Default browser" = "Браузер по умолчанию";
 
-/* Placeholder */
-"Define Hint (Optional)" = "Укажите подсказку (необязательно)";
-
-/* (No Comment) */
-"Define Password" = "Укажите пароль";
-
-/* *
- *  Contacts View Controller */
+/* general delete action
+   The title of the delete action in action sheet
+   Title for the alert button to delete all downloaded messages. */
 "Delete" = "Удалить";
 
 /* Title of message permanent deletion alert, plural */
@@ -653,11 +555,7 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Удалить сообщение";
 
-/* (No Comment) */
-"Deleted" = "Удаленно";
-
-/* *
- *  Email Header View */
+/* Title */
 "Details" = "Информация";
 
 /* Firewall interference description. */
@@ -679,24 +577,8 @@
 /* Action */
 "Discard changes" = "Отменить изменения";
 
-/* (No Comment) */
-"Discard draft" = "Удалить черновик";
-
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Отключите клавиатуру";
-
-/* (No Comment) */
-"Display name" = "Отображаемое имя";
-
-/* Title in settings */
-"Display Name" = "Отображаемое имя";
-
-/* *
- *  SettingsViewController & alert title */
-"Display Name Updated" = "Отображаемое имя обновлено";
-
-/* Title in display name settings */
-"DisplayName" = "Отображаемое имя";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Вы действительно хотите удалить этот файл из вложений?";
@@ -775,9 +657,6 @@
 /* menu title */
 "Drafts" = "Черновики";
 
-/* mail location title */
-"DRAFTS" = "Черновики";
-
 /* Onboarding title */
 "Easily up-to-date" = "Легко обновить";
 
@@ -787,10 +666,6 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Изменить аватар";
-
-/* *
- *  Edit Contact view controller */
-"Edit Contact" = "Изменить контакт";
 
 /* The title of edit folder page */
 "Edit folder" = "Изменить папку";
@@ -807,15 +682,11 @@
 /* default vcard types */
 "Email" = "Электронная почта";
 
-/* *
- *  Email Verify View Controller */
-"Email address" = "Адрес эл. почты";
+/* contact placeholder */
+"Email address" = "Адрес электронной почты";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Адрес электронной почты отключен";
-
-/* alert title */
-"Email address invalid" = "Неверный адрес электронной почты";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "Недопустимый адрес электронной почты";
@@ -826,17 +697,11 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Контакт электронной почты";
 
-/* title */
-"Email domain invalid" = "Неправильный домен эл. почты";
-
 /* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "Трэкеры в эл. почте могут нарушать вашу конфиденциальность.";
+"Email trackers can violate your privacy." = "Трэкеры в электронной почте могут нарушать вашу конфиденциальность.";
 
 /* Name of the feature */
 "Email tracking protection" = "Защита от отслеживания электронной почты";
-
-/* "Cancel" */
-"Empty Folder" = "Очистить папку";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Очистить Спам";
@@ -852,7 +717,7 @@
 
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
-"Enable" = "Активировать";
+"Enable" = "Включить";
 
 /* Title for the alert to enable encrypted search */
 "Enable content search" = "Разрешить поиск по содержимому";
@@ -860,14 +725,8 @@
 /* Title */
 "Enable email notices" = "Включить уведомления о письмах";
 
-/* (No Comment) */
-"Enable Pin Protection" = "Включить защиту PIN-кодом";
-
 /* Title */
 "Enable signature" = "Включить подпись";
-
-/* (No Comment) */
-"Enable TouchID" = "Включить TouchID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Зашифровано Proton";
@@ -890,9 +749,6 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted to verified recipient" = "Зашифровано сквозным методом для проверенного получателя";
 
-/* (No Comment) */
-"End-to-End Encryption" = "Сквозное шифрование";
-
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
 
@@ -901,9 +757,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Введите новый PIN-код";
-
-/* (No Comment) */
-"Enter Verification Code" = "Введите код подтверждения";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Введите пароль чтобы сделать изменения";
@@ -916,9 +769,6 @@
 
 /* Title of alert in share extension. */
 "Error" = "Ошибка";
-
-/* (No Comment) */
-"Error Logs" = "Журналы ошибок";
 
 /* incorrect email format error in composer */
 "Error sending" = "Ошибка отправки";
@@ -938,18 +788,11 @@
 /* alert title */
 "Expiration not supported" = "Истечение срока действия не поддерживается";
 
-/* (No Comment) */
-"Expiring Messages" = "Исчезающие сообщения";
-
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Не удалось определить тип файла";
-
-/* *
- *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Не удалось инициализировать сохраненные данные приложения";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Не удалось загрузить содержимое!\nПопробуйте снова.";
@@ -972,9 +815,6 @@
 /* The title of alert that the app is not having the permission to access photo library */
 "Forbidden" = "Запрещено";
 
-/* (No Comment) */
-"FORGOT PASSWORD?" = "Забыли пароль?";
-
 /* forward action */
 "Forward" = "Переслать";
 
@@ -985,7 +825,7 @@
 "Free up at least 100 MB of storage to continue." = "Освободите по крайней мере 100 МБ хранилища, чтобы продолжить.";
 
 /* Title */
-"From" = "Из";
+"From" = "От";
 
 /* Title */
 "From your photo library" = "Из вашей галереи";
@@ -1004,9 +844,6 @@
 
 /* section title in settings */
 "General settings" = "Основные настройки";
-
-/* (No Comment) */
-"General Settings" = "Основные настройки";
 
 /* title of the next button */
 "Get Started" = "Начнем";
@@ -1038,20 +875,11 @@
 /* menu title (contact groups) */
 "Groups" = "Группы";
 
-/* (No Comment) */
-"Help & Support" = "Помощь & поддержка";
-
 /* Action */
 "Hide" = "Скрыть";
 
 /* Title */
 "Hide details" = "Скрыть подробности";
-
-/* (No Comment) */
-"Hide Details" = "Скрыть информацию";
-
-/* hours */
-"hours" = "Часов";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Как бы вы описали свои впечатления от новой Proton Mail?";
@@ -1066,16 +894,13 @@
 "Human Check Warning" = "Предупреждение о проверке \"Я не робот\"";
 
 /* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Если вы потеряете подключение к WiFi, загрузка продолжится через сотовую сеть.";
+"If you lose your WiFi connection, download will continue over mobile data." = "Если вы потеряете подключение к WiFi, скачивание продолжится через сотовую сеть.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Игнорировать предупреждение и продолжить";
 
 /* Action */
 "Import Error" = "Ошибка импорта";
-
-/* (No Comment) */
-"Import File From..." = "Импортировать файл из...";
 
 /* Title */
 "Import from…" = "Импортировать из…";
@@ -1093,18 +918,8 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае блокировки сайтов Proton эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию, чтобы достигнуть Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Для большей надёжности мы рекомендуем оставить эту настройку включённой. %1$@";
 
-/* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Для того чтобы пользоваться нашими службами, вы должны согласиться с Условиями обслуживания Proton Mail.";
-
-/* "Deleted" */
+/* menu title */
 "Inbox" = "Входящие";
-
-/* *
- *  MailboxViewController */
-"INBOX" = "Входящие";
-
-/* (No Comment) */
-"Incorrect password" = "Неверный пароль";
 
 /* Error */
 "Incorrect PIN." = "Неверный PIN.";
@@ -1120,9 +935,6 @@
 
 /* Title */
 "inline attachments" = "встроенные вложения";
-
-/* (No Comment) */
-"Input Display Name ..." = "Введите отображаемое имя...";
 
 /* place holder */
 "Input Display Name…" = "Введите отображаемое имя…";
@@ -1145,17 +957,11 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Представляем обновленный облик Proton.\nМного служб, одна миссия. Добро пожаловать в Интернет, конфиденциальный по умолчанию.";
 
-/* alert title */
-"Invalid credential" = "Часть учётных данных неверна";
-
 /* update password error */
 "Invalid hashed password!" = "Недопустимый хешированный пароль!";
 
 /* Invalid URL error when click a url in contact */
 "Invalid URL" = "Неверный URL";
-
-/* title */
-"Invalid UserName" = "Недопустимое имя пользователя";
 
 /* Error message */
 "Invalid username!" = "Недействительное имя пользователя!";
@@ -1166,21 +972,11 @@
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Этот отчёт об ошибке – о покупке через приложение?";
 
-/* (No Comment) */
-"Key generation failed" = "Сбой при создании ключа";
-
 /* No comment provided by engineer. */
 "Label as" = "Отметить ярлыком";
 
-/* *
- *  MoreOptionsView */
-"Label as..." = "Обозначить, как...";
-
 /* Title */
 "Label as…" = "Отметить ярлыком как…";
-
-/* (No Comment) */
-"Label Management" = "Управление ярлыками";
 
 /* createing lable input place holder */
 "Label Name" = "Название ярлыка";
@@ -1212,7 +1008,7 @@
 "Limit reached" = "Предел кол-ва подкл. уч. записей";
 
 /* Button inside the banner */
-"Load anyway" = "Загрузить всё равно";
+"Load anyway" = "Все равно скачать";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Показывать встроенные изображения";
@@ -1221,11 +1017,8 @@
    The title of loading remote content banner. */
 "Load remote content" = "Загрузить внешнее содержимое";
 
-/* (No Comment) */
-"Loading..." = "Загрузка...";
-
 /* No comment provided by engineer. */
-"Loading…" = "Загрузка…";
+"Loading…" = "Скачивание…";
 
 /* The title of local storage in settings */
 "Local storage" = "Локальное хранилище";
@@ -1234,11 +1027,7 @@
 "Local storage limit" = "Предел объёма локального хранилища";
 
 /* Text for the link to show when indexing is stopped because of storage limit reached. */
-"local storage limit." = "предел объёма локального хранилища.";
-
-/* *
- *  file string type */
-"Localizable.strings" = "База";
+"local storage limit." = "предел объема локального хранилища.";
 
 /* menu title */
 "Lock The App" = "Заблокировать приложение";
@@ -1258,16 +1047,6 @@
 /* cell title in device settings */
 "Mailbox" = "Почтовый ящик";
 
-/* (No Comment) */
-"Mailbox Password" = "Пароль почтового ящика";
-
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Пароль почтового ящика";
-
-/* (No Comment) */
-"Mailbox password doesn't match" = "Пароль почтового ящика не совпадает";
-
 /* No comment provided by engineer. */
 "Manage" = "Управлять";
 
@@ -1280,7 +1059,8 @@
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Отметить как законное";
 
-/* The title of the read action in action sheet */
+/* Push notification action mark as read
+   The title of the read action in action sheet */
 "Mark as read" = "Отметить как прочитанное";
 
 /* Action */
@@ -1288,9 +1068,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Отметить как непрочитанное";
-
-/* (No Comment) */
-"Mark Read" = "Отметить как прочитанное";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1313,8 +1090,7 @@
 /* Composer expiration page title */
 "Message expiration" = "Срок действия сообщения";
 
-/* *
- *  Expiration View */
+/* No comment provided by engineer. */
 "Message expired" = "Срок действия сообщения истек";
 
 /* Title */
@@ -1335,17 +1111,8 @@
 /* Placeholder */
 "Message Password" = "Пароль сообщения";
 
-/* composer view */
-"Message password does not match." = "Пароль сообщения не совпадает.";
-
-/* "Cancel" */
-"Message Queue" = "Очередь сообщений";
-
 /* Alert title */
 "Message saved to Drafts" = "Сообщение сохранено в Черновики";
-
-/* (No Comment) */
-"Message sending failed please try again" = "Не удалось отправить сообщение. Попробуйте снова";
 
 /* Description */
 "Message sending failed. Please try again." = "Не удалось отправить сообщение. Попробуйте снова.";
@@ -1353,33 +1120,20 @@
 /* Description after message have been sent */
 "Message sent" = "Сообщение отправлено";
 
-/* (No Comment) */
-"Message Swipe Actions" = "Действия при жестах на сообщении";
-
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Сообщения скачиваются для поиска по содержимому. Некоторые результаты могут не отображаться. %1$@";
 
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
-"Messages from before " = "Сообщения до ";
+"Messages from before " = "Сообщения от до ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Для сообщений, отправленных до %@, поиск работать не будет. Чтобы искать в них, освободите место на этом устройстве.";
 
 /* Text for the alert to enable encrypted search */
-"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Сообщения загрузятся через WiFi. Это может занять какое-то время, и ваше устройство слегка нагреется. Вы можете приостановить скачивание в любое время.";
-
-/* (No Comment) */
-"Messages you send can be set to auto delete after a certain time period." = "Отправленные сообщения можно настроить на автоматическое удаление по истечении определенного промежутка времени.";
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Сообщения скачаются через WiFi. Это может занять какое-то время, и ваше устройство слегка нагреется. Вы можете приостановить скачивание в любое время.";
 
 /* default vcard types */
 "Mobile" = "Мобильный";
-
-/* Mobile Signature title in settings */
-"Mobile Signature" = "Мобильная подпись";
-
-/* *
- *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Понедельник (%1$@) в 08:%2$d";
@@ -1396,48 +1150,22 @@
 /* Action title of move to archive */
 "Move to archive" = "Переместить в Архив";
 
-/* (No Comment) */
-"Move to Archive" = "Переместить в архив";
-
-/* (No Comment) */
-"Move to Draft" = "Переместить в Черновики";
-
 /* The title of the remove action in action sheet */
 "Move to inbox" = "Переместить во Входящие";
-
-/* "Trash" */
-"Move to Inbox" = "Переместить в входящие";
-
-/* (No Comment) */
-"Move to Outbox" = "Переместить в Исходящие";
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
 "Move to spam" = "Переместить в спам";
 
-/* (No Comment) */
-"Move to Spam" = "Переместить в спам";
-
-/* The title of the remove action in action sheet */
+/* Push notification action move to trash
+   The title of the remove action in action sheet */
 "Move to trash" = "Переместить в Корзину";
-
-/* (No Comment) */
-"Move to Trash" = "Переместить в корзину";
-
-/* (No Comment) */
-"Move to..." = "Переместить в...";
 
 /* Title */
 "Move to…" = "Переместить в…";
 
-/* (No Comment) */
-"Multiple Addresses" = "Несколько адресов";
-
 /* Onboarding title */
 "Neat and tidy" = "Чистый и опрятный";
-
-/* (No Comment) */
-"NEED AN ACCOUNT? SIGN UP." = "Бесплатная регистрация";
 
 /* The title of alternative routing settings */
 "Networking" = "Настройки сети";
@@ -1503,7 +1231,7 @@
 "No valid keys retrieved for internal user" = "Для внутреннего пользователя не получены действительные ключи";
 
 /* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "Ни один из полученных из WKD ключей пользователя не годен для отправки";
+"No WKD key retrieved for user is valid for sending" = "Ни один из полученных для пользователя ключей WKD не годен для отправки";
 
 /* Error message */
 "No, not related to in-app purchase" = "Нет, не имеет отношения к покупке через приложение";
@@ -1538,9 +1266,6 @@
 /* Alert title */
 "Notice" = "Замечание";
 
-/* (No Comment) */
-"Notification Email" = "Электронная почта для уведомлений";
-
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Уведомления";
@@ -1554,8 +1279,7 @@
 /* Sending message when device doesn't have netowrk connection description */
 "Offline, message queued for sending" = "Офлайн, сообщение поставлено в очередь на отправку";
 
-/* *
- *  ReportBugsViewController */
+/* Action */
 "OK" = "OK";
 
 /* Title for the alert button to disable content search. */
@@ -1582,9 +1306,6 @@
 /* VoiceOver title of account switcher button in the menu */
 "Open account switcher" = "Открыть переключатель аккаунтов";
 
-/* (No Comment) */
-"OpenDraft" = "Открыть черновик";
-
 /* contacts talbe cell Organization title */
 "Organization" = "Организация";
 
@@ -1597,30 +1318,14 @@
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является оно законным";
 
-/* "Draft" = "Draft"; */
-"Outbox" = "Исходящие";
-
 /* Setting option title of folder setting page */
 "Parent folder" = "Родительская папка";
-
-/* *
- *  Login View */
-"Password" = "Пароль";
-
-/* (No Comment) */
-"Password cannot be empty." = "Пароль не может быть пустым.";
 
 /* title */
 "Password Hint" = "Напоминание пароля";
 
-/* (No Comment) */
-"Password Mismatch" = "Пароли не совпадают";
-
 /* update password error */
 "Password update failed" = "Не удалось обновить пароль";
-
-/* (No Comment) */
-"Password Updated" = "Пароль обновлён";
 
 /* Placeholder */
 "Passwords must match" = "Пароли должны совпадать";
@@ -1661,13 +1366,6 @@
 /* contact placeholder */
 "Phone number" = "Номер телефона";
 
-/* "Verification code request failed" */
-"Phone number invalid" = "Некорректный номер телефона";
-
-/* *
- *  Attachment table ViewController */
-"Photo Library" = "Фотоальбом / Медиатека";
-
 /* The protection title of PIN code protection */
 "PIN code" = "PIN-код";
 
@@ -1680,20 +1378,11 @@
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN-код слишком короткий";
 
-/* (No Comment) */
-"Please check your cell phone for the verification code." = "Пожалуйста, проверьте свой мобильный телефон на наличие кода подтверждения.";
-
-/* (No Comment) */
-"Please check your email for the verification code." = "Пожалуйста, проверьте свою электронную почту на наличие кода подтверждения.";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Пожалуйста, подключитесь и попробуйте снова";
 
 /* Text for status label when no internet connection is available */
 "Please connect to the internet to continue." = "Пожалуйста, подключитесь к Интернету для продолжения.";
-
-/* (No Comment) */
-"Please input a valid cell phone number." = "Пожалуйста, введите номер телефона в правильном формате.";
 
 /* error message */
 "Please input a valid email address." = "Пожалуйста, введите адрес электронной почты в правильном формате.";
@@ -1704,14 +1393,8 @@
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Убедитесь, что работает ваше подключение к Интернету.";
 
-/* (No Comment) */
-"Please pick a user name first!" = "Пожалуйста, сначала задайте имя пользователя!";
-
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Пожалуйста, укажите название группы";
-
-/* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Пожалуйста, удалите все вложения перед изменением отправителя";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Выберите хотя бы один адрес эл. почты";
@@ -1719,29 +1402,11 @@
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Пожалуйста, выберите по крайней мере один адрес электронной почты для группы контактов";
 
-/* (No Comment) */
-"Please set a password." = "Пожалуйста, задайте пароль.";
-
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Пожалуйста, задайте адрес электронной почты для восстановления/уведомлений";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Пожалуйста, опишите свою проблему.";
-
-/* (No Comment) */
-"Please try a different domain." = "Пожалуйста, попробуйте другой домен.";
-
-/* (No Comment) */
-"Please try a different email address." = "Пожалуйста, попробуйте другой адрес электронной почты.";
-
-/* (No Comment) */
-"Please try a different password." = "Пожалуйста, попробуйте другой пароль.";
-
-/* (No Comment) */
-"Please try a different user name." = "Пожалуйста, попробуйте другое имя пользователя.";
-
-/* (No Comment) */
-"Please try again." = "Пожалуйста, попробуйте ещё раз";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Пожалуйста, перейдите на платный тариф, чтобы использовать более 3 папок";
@@ -1758,15 +1423,6 @@
 /* Description */
 "Please use Proton Mail App sign-in first." = "Пожалуйста, сначала войдите через приложение Proton Mail.";
 
-/* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Чтобы изменить пароль вашего почтового ящика, используйте веб-версию Proton Mail.";
-
-/* (No Comment) */
-"Please use your new password when signing in." = "Пожалуйста, при входе используйте ваш новый пароль.";
-
-/* alert title */
-"Please, manage it in your phone." = "Пожалуйста, управляйте этим с помощью вашего телефона.";
-
 /* No comment provided by engineer. */
 "Print" = "Печать";
 
@@ -1779,23 +1435,11 @@
 /* Local notification title */
 "Problem sending message" = "Проблема при отправке сообщения";
 
-/* (No Comment) */
-"Protection" = "Защита";
-
-/* (No Comment) */
-"Protection Entire App" = "Защита всего приложения";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton не работает";
 
 /* Title */
 "Proton Mail" = "Proton Mail";
-
-/* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton Mail не продает рекламу и не нарушает вашу конфиденциальность. Ваша поддержка крайне важна для продолжения работы Proton Mail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать Proton Mail.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton Mail в настоящее время офлайн, проверьте текущий статус в нашем Twitter: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail сейчас офлайн…";
@@ -1811,9 +1455,6 @@
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Конфликт с прокси-сервером/брандмауэром";
-
-/* (No Comment) */
-"Quick swipe actions" = "Действия при быстрых смахиваниях";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Выполните повторную аутентификацию";
@@ -1839,10 +1480,6 @@
 /* Title */
 "Recovery email" = "Адрес резервной эл. почты";
 
-/* *
- *  SignUpEmailViewController */
-"Recovery Email" = "Адрес резервной эл. почты";
-
 /* No comment provided by engineer. */
 "Recovery enabled" = "Восстановление включено";
 
@@ -1864,22 +1501,15 @@
 /* textview title */
 "Repeat password" = "Повторите пароль";
 
-/* The title of PIN code setup2 view 
+/* The title of PIN code setup2 view
    The title of textfield of PIN code setup2 */
 "Repeat PIN code" = "Повторите PIN-код";
 
-/* *
- *  Controller Defined */
+/* reply action */
 "Reply" = "Ответить";
 
 /* reply all action */
 "Reply all" = "Ответить всем";
-
-/* composer view model impl */
-"Reply message" = "Ответить на сообщение";
-
-/* (No Comment) */
-"ReplyAll" = "Ответить всем";
 
 /* menu title */
 "Report a problem" = "Сообщить о проблеме";
@@ -1905,9 +1535,6 @@
 /* Action */
 "Retry" = "Повторить";
 
-/* (No Comment) */
-"Retry after %d seconds" = "Повторить через %d с";
-
 /* settings swipe actions section title */
 "Right to Left" = "Справа налево";
 
@@ -1919,9 +1546,6 @@
 
 /* title */
 "Save Changes" = "Сохранить изменения";
-
-/* (No Comment) */
-"Save draft" = "Сохранить черновик";
 
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1936,8 +1560,8 @@
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Сообщение ставится в очередь...";
 
-/* *
- *  SearchViewController */
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Поиск";
 
 /* cell title in device settings
@@ -1948,16 +1572,13 @@
 "Search taking too long? %1$@ from this search for faster results." = "Поиск выполняется слишком долго? %1$@ из этого поиска для более быстрых результатов.";
 
 /* The link in local storage downloaded messages. */
-"See details" = "Посмотреть подробности";
+"See details" = "Посмотреть информацию";
 
 /* Text for the link to show the current indexing progress */
-"See progress." = "Посмотреть прогресс.";
+"See progress." = "Посмотреть ход выполнения.";
 
 /* section title */
 "Select colour" = "Выберите цвет";
-
-/* (No Comment) */
-"Select your language" = "Выберите свой язык";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Выбрано";
@@ -1977,14 +1598,11 @@
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Отправить сразу?";
 
-/* when subject not empty */
+/* Description */
 "Send message without subject?" = "Отправить сообщение без темы?";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Отправить уведомление о прочтении";
-
-/* (No Comment) */
-"Send Verification Code" = "Отправить код подтверждения";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Проверка отправителя не удалась";
@@ -1994,9 +1612,6 @@
 
 /* Alert title */
 "Sending in progress" = "Идет отправка";
-
-/* Description */
-"Sending Message" = "Отправка сообщения";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Отправка сообщения…";
@@ -2009,9 +1624,6 @@
 
 /* menu title */
 "Sent" = "Отправленные";
-
-/* mail location title */
-"SENT" = "Отправленные";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Отправлено Proton Mail с шифрованием нулевого доступа";
@@ -2029,7 +1641,7 @@
 "Sent Failed" = "Ошибка отправки";
 
 /* Title */
-"Set" = "Задать";
+"Set" = "Установить";
 
 /* Description */
 "Set a password to encrypt this message for non-Proton Mail users." = "Установите пароль для шифрования этого сообщения для пользователей вне Proton Mail.";
@@ -2065,14 +1677,8 @@
    menu title */
 "Sign out" = "Выйти";
 
-/* Action */
-"Sign Out" = "Выход";
-
 /* Title in signature settings */
 "Signature" = "Подпись";
-
-/* (No Comment) */
-"Signature Updated" = "Подпись обновлена";
 
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Вошел как %@";
@@ -2089,20 +1695,8 @@
 /* The banner shown in case of proxy failure */
 "Some images failed to load with tracking protection." = "Некоторые изображения не удалось загрузить с защитой от отслеживания.";
 
-/* (No Comment) */
-"Space Warning" = "Предупреждение о доступном пространстве";
-
 /* menu title */
 "Spam" = "Спам";
-
-/* mail location title */
-"SPAM" = "Спам";
-
-/* (No Comment) */
-"Spammed" = "Это спам";
-
-/* Description */
-"Srp single password keyslat invalid!" = "Неверная соль единого пароля SRP!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -2111,11 +1705,10 @@
 /* Title */
 "Star/unstar" = "Отметить как важное/неважное";
 
-/* "Spam" */
-"Starred" = "Со звёздами";
-
-/* "INBOX" */
-"STARRED" = "Со звездами";
+/* menu title
+   Springboard (3D Touch) shortcuts action
+   VoiceOver: email is starred */
+"Starred" = "Со звездочками";
 
 /* contact placeholder */
 "State" = "Область (регион)";
@@ -2130,16 +1723,16 @@
 "Storage full" = "Хранилище заполнено";
 
 /* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Предел объёма хранилища";
+"Storage limit" = "Предел объема хранилища";
 
 /* Storage warning */
 "Storage quota exceeded" = "Превышена квота хранилища";
 
 /* The title of storage usage in settings for encrypted search */
-"Storage used" = "Использованное хранилище";
+"Storage used" = "Использовано хранилища";
 
 /* The text for determining the size of the encrypted search index */
-"Storage used: " = "Использованное хранилище: ";
+"Storage used: " = "Использовано хранилища: ";
 
 /* Title */
 "Storage Warning" = "Предупреждение о хранилище";
@@ -2163,17 +1756,8 @@
    The title of a subscription plans screen */
 "Subscription" = "Подписка";
 
-/* (No Comment) */
-"Support Proton Mail" = "Поддержите Proton Mail";
-
 /* cell title in app settings */
 "Swipe actions" = "Жесты";
-
-/* (No Comment) */
-"Swipe Left to Right" = "Смахивание слева направо";
-
-/* (No Comment) */
-"Swipe Right to Left" = "Смахивание справа налево";
 
 /* Swiping gestures */
 "Swiping gestures" = "Жесты смахиванием";
@@ -2190,9 +1774,6 @@
 /* Error */
 "System can't copy the file" = "Система не может скопировать файл";
 
-/* (No Comment) */
-"Take a Photo" = "Сделать фото";
-
 /* Title */
 "Take new photo" = "Сделать новое фото";
 
@@ -2205,7 +1786,7 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Временно отключите или удалите антивирус.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Благодарим вас за отправку отчета об ошибке.  Мы добавили отчет в нашу систему отслеживания ошибок.";
 
 /* Comment in banner thanking user for providing feedback */
@@ -2214,33 +1795,14 @@
 /* Error message */
 "The 2 passwords are not matching" = "Пароли не совпадают";
 
-/* (No Comment) */
-"The authentication credentials are invalid." = "Аутентификационные учётные данные неверны.";
-
-/* (No Comment) */
-"The authentication token has expired." = "Срок действия аутентификационного токена истёк.";
-
-/* (No Comment) */
-"The display name is now %@." = "Отображаемое имя теперь %@.";
-
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
-"The download will stop if the Proton Mail app is closed." = "Загрузка остановится, если приложение Proton Mail загрыто.";
+"The download will stop if the Proton Mail app is closed." = "Скачивание остановится, если приложение Proton Mail закрыто.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Кэш черновиков нарушен. Пожалуйста, попробуйте ещё раз.";
 
-/* error when sending the message */
-"The draft format incorrectly sending failed!" = "Сбой отправки. Ошибка в формате черновика.";
-
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "Не удалось прикрепить следующие файлы:";
-
-/* (No Comment) */
-"The mailbox password is incorrect." = "Неверный пароль почтового ящика.";
-
-/* *
- *  LabelsViewController */
-"The maximum number of labels is %d." = "Максимальное количество ярлыков: %d.";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Сообщение отправляется и после завершения отправки переместится в папку \"Отправленные\".";
@@ -2248,26 +1810,14 @@
 /* update password error */
 "The new password can't be empty." = "Новый пароль не может быть пустым.";
 
-/* (No Comment) */
-"The new password can't empty" = "Новый пароль не может быть пустым";
-
 /* update password error */
 "The new password does not match." = "Новый пароль и его подтверждение не совпадают.";
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Длина пароля должна быть не менее 8 символов";
 
-/* (No Comment) */
-"The new password not match" = "Пароли не совпадают";
-
-/* update password error */
-"The Password is wrong." = "Пароль неверный.";
-
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Пароль должен быть длинной от 8 до 21 символа";
-
-/* (No Comment) */
-"The password you entered does not match the current password." = "Пароль, введенный вами, не совпадает с текущим паролем.";
 
 /* The error message of entering an invalid password */
 "The PIN codes must match!" = "PIN-коды должны совпадать!";
@@ -2287,30 +1837,14 @@
 /* Description */
 "The size limit for attachments is 25 MB." = "Максимальный размер вложений - 25 Мб.";
 
-/* (No Comment) */
-"The total attachment size can't be bigger than 25MB" = "Общий размер вложений не может превышать 25 Mб";
-
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL, к которому вы пытаетесь получить доступ, не стандартный и может быть загружен некорректно. Открыть его браузером по умолчанию вашего устройства?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Пользователь уже вошел";
 
-/* (No Comment) */
-"The username has been taken." = "Имя пользователя занято.";
-
-/* title */
-"The verification email invalid" = "Неправильный адрес эл. почты для проверки";
-
-/* *
- *  RecaptchaViewController */
-"The verification failed!" = "Проверка не удалась!";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Есть неотправленные сообщения, которые будут потеряны при выходе из системы";
-
-/* local error */
-"There was an error creating or loading the application's saved data." = "Произошла ошибка при создании или загрузке сохраненных данных приложения.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Это действие не может быть отменено.";
@@ -2318,11 +1852,8 @@
 /* Alert message when user tries to delete folder */
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Это действие не может быть отменено. Почта, содержащаяся в этой папке не может быть удалена, ее можно найти в папке Вся почта.";
 
-/* alert desc */
-"This contact belongs to your Address Book." = "Этот контакт есть в вашей адресной книге.";
-
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "В этой цепочке писем есть не удаленные сообщения.";
+"This conversation contains non-trashed messages." = "В этой цепочке писем есть неудаленные сообщения.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "В этой цепочке писем есть удаленные сообщения";
@@ -2370,24 +1901,14 @@
 "Title" = "Должность";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Проверка сертификата TLS не удалась. Ваше соединение может отслеживаться, поэтому приложение временно заблокировано в целях вашей безопасности.\n\n";
-
-/* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Проверка сертификата TLS не прошла. Ваше подключение может отслеживаться, а приложение временно заблокировано в целях вашей безопасности.\n\nНемедленно переключитесь на другую сеть.";
 
 /* message To: feild
    Title */
 "To" = "Кому";
 
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию Proton Mail по адресу proton.me";
-
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Сегодня, %@";
-
-/* *
- *  API Error & alert title */
-"Token expired" = "Срок действия токена истёк";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Завтра в 08:%02d ДП";
@@ -2396,30 +1917,20 @@
 "Tomorrow, %@" = "Завтра, %@";
 
 /* Alert message */
-"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Слишком много сообщений, ожидающих отправки.\nПожалуйста, подождите, пока не будет отправлено другое сообщение, чтобы запланировать отправку этого.";
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Слишком много сообщений, ожидающих отправки.\nПодождите, пока не будет отправлено другое сообщение, чтобы запланировать отправку этого.";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Идентификация по отпечатку пальца";
 
-/* *
- *  SettingTableViewController */
-"TouchID is not enrolled, enable it in the system Settings" = "Невозможно использовать TouchID, включите его в настройках телефона";
-
-/* (No Comment) */
-"TouchID not available" = "TouchID недоступен";
-
-/* *
- *  MessageAction */
+/* mail location desc
+   menu title */
 "Trash" = "Корзина";
-
-/* mail location title */
-"TRASH" = "Корзина";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Устранение неполадок";
 
 /* The error message while calculating the encryption preferences */
-"Trusted keys are not valid for sending" = "Доверенные ключи не действительны для отправки";
+"Trusted keys are not valid for sending" = "Доверенные ключи недействительны для отправки";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Попробуйте подключиться к Proton из другой сети (или используйте %1$@ или %2$@).";
@@ -2433,33 +1944,14 @@
 /* Internal type casting error */
 "Type casting error" = "Ошибка преобразования типа значения переменной";
 
-/* (No Comment) */
-"Unable to connect to the server" = "Не удалось подключиться к серверу";
-
-/* (No Comment) */
-"Unable to construct a valid URL with the following path: %@" = "Невозможно составить исправный URL-адрес с указанным путём: %@";
-
-/* (No Comment) */
-"Unable to decrypt message." = "Невозможно расшифровать сообщение.";
-
 /* Description */
 "Unable to edit this message offline" = "Невозможно изменить это сообщение без сетевого подключения";
-
-/* (No Comment) */
-"Unable to parse authentication token!" = "Невозможно разобрать аутентификационный токен!";
 
 /* Description */
 "Unable to parse response" = "Невозможно разобрать ответ";
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Не удалось разобрать объект при ответе: %@";
-
-/* alert title */
-"Unable to parse token" = "Не удалось разобрать токен";
-
-/* *
- *  MessageDataService */
-"Unable to send the email" = "Не удалось отправить письмо.";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Скрытые получатели";
@@ -2470,20 +1962,11 @@
 /* No comment provided by engineer. */
 "Undo send" = "Отменить отправку";
 
-/* (No Comment) */
-"Unknow Error" = "Неизвестная ошибка";
-
-/* (No Comment) */
-"Unknow file" = "Неизвестный файл";
-
 /* title, default display name */
-"Unknown" = "Неизвестный";
+"Unknown" = "Неизвестно";
 
 /* Error */
 "Unknown Error" = "Неизвестная ошибка";
-
-/* (No Comment) */
-"Unkonw Version" = "Неизвестная версия";
 
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Неограничено";
@@ -2533,32 +2016,11 @@
 /* Option title */
 "Use folder colors" = "Использовать цвета папки";
 
-/* (No Comment) */
-"User already exist!" = "Имя пользователя уже занято";
-
-/* (No Comment) */
-"User is available!" = "Имя пользователя доступно";
-
-/* title */
-"User name exist" = "Имя пользователя существует";
-
-/* alert title */
-"User name invalid" = "Недействительное имя пользователя";
-
-/* alert title */
-"Verification code request failed" = "Сбой запроса кода подтверждения";
-
-/* alert title */
-"Verification code sent" = "Код подтверждения отправлен";
-
 /* error title */
-"Verification error" = "Ошибка подтверждения";
+"Verification error" = "Ошибка авторизации";
 
 /* error details */
 "Verification of this content’s signature failed" = "Проверка подписи этого контакта не удалась";
-
-/* (No Comment) */
-"Version %@ %@" = "Версия %@ %@";
 
 /* View action for view scheduled message. */
 "View" = "Посмотреть";
@@ -2590,9 +2052,6 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Не удается связаться с сервером. Пожалуйста подключитесь повторно.";
 
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Теперь мы загружаем изображения по умолчанию и не даем отправителю отслеживать вас. Это можно изменить в настройках.";
-
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Вместо этого мы рекомендуем установить пароль для следующих получателей:";
 
@@ -2602,17 +2061,11 @@
 /* week */
 "week" = "неделя";
 
-/* (No Comment) */
-"Welcome to Proton Mail!" = "Добро пожаловать в Proton Mail";
-
 /* Example feedback */
 "Wonderful" = "Прекрасно";
 
 /* default vcard types */
 "Work" = "Рабочий";
-
-/* title */
-"Wrong verification code" = "Неверный код подтверждения";
 
 /* Title */
 "wrote:" = "написал(а):";
@@ -2635,14 +2088,8 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Вы офлайн";
 
-/* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Вы можете настроить жесты смахивания в настройках приложения Proton Mail.";
-
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Вы можете отключить цепочки писем в настройках в любое время.";
-
-/* (No Comment) */
-"You can get help and support at proton.me/support. Bugs can also be reported with the app." = "Помощь и поддержку вы сможете получить по адресу proton.me/support. Об ошибках также можно сообщать через приложение.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Сейчас вы можете запланировать отправку ваших сообщений на более позднее время";
@@ -2677,20 +2124,13 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "У вас есть несохранённые изменения. Вы хотите сохранить их?";
 
-/* (No Comment) */
-"You have used %d%% of your storage space (%@)." = "Вы используете %d%% объёма своего хранилища (%@).";
-
 /* Content of space warning */
 "You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Вы использовали %1$d%% своего дискового пространства (%2$@). Чтобы продолжать отправлять и получать сообщения электронной почты, пожалуйста, улучшите тарифный план.";
-
-/* *
- *  StorageLimit */
-"You have used up all of your storage space (%@)." = "Вы исчерпали весь объём хранилища (%@).";
 
 /* Content of space warning */
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Вы израсходовали все пространство для хранения (%@). Чтобы продолжать отправлять и получать электронные письма, пожалуйста, улучшите тарифный план.";
 
-/* "Alert" */
+/* Description */
 "You need at least one recipient to send" = "Для отправки необходим хотя бы один получатель";
 
 /* Alert to confirm signout */
@@ -2699,11 +2139,17 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Вы собираетесь необратимо удалить сообщение. Вы уверены?";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "Вы защищены от отслеживания электронной почты";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ваши изменения будут отменены";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Возможно, в вашей стране доступ к Proton заблокирован. Попробуйте использовать %1$@ (или любую другую VPN) либо %2$@ для доступа к Proton.";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Теперь ваши электронные письма приходят с удаленными изображениями, загруженными по умолчанию. Отправители не будут знать, открывали ли вы их письма, где и когда.\nЧтобы изменить это, перейдите в Настройки → Настройки учетной записи → Конфиденциальность.";
 
 /* Title of user feedback view */
 "Your feedback" = "Ваш отзыв";
@@ -2711,24 +2157,14 @@
 /* The section title of folder manager table */
 "Your folders" = "Ваши папки";
 
-/* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Теперь ваш почтовый ящик защищен сквозным шифрованием. Чтобы переписка с друзьями стала безопасной автоматически, пусть и они воспользуются Proton Mail! Также вы сможете по желанию шифровать сообщения для них, если они не пользуются Proton Mail.";
-
 /* The section title of label manager table */
 "Your labels" = "Ваши ярлыки";
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Ваши сообщения скачиваются...";
 
-/* *
- *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
-
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Срок вашей сессии истёк, потому что вы были неактивны некоторое время или она была прервана. Пожалуйста, войдите снова.";
-
-/* (No Comment) */
-"Your signature has been updated." = "Ваша подпись обновлена.";
 
 /* contact placeholder */
 "ZIP" = "Почтовый индекс";

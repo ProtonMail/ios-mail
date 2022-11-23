@@ -954,7 +954,7 @@ class LocalizedString {
     lazy var _contact_groups_delete = NSLocalizedString("Delete contact group",
                                                         comment: "The description of the button for deleting the contact group")
 
-    lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
+    lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
                                                                           comment: "The string that describes whether there are 0 or 1 member in the contact group")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")

@@ -1,10 +1,6 @@
 /* cell title in app settings */
 "Alternative routing" = "Alternative routing";
 
-/* *
- *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
-
 /* cell title in device settings */
 "Privacy" = "Privacy";
 
