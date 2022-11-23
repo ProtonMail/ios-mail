@@ -258,7 +258,13 @@ class UserManager: Service, HasLocalStorage {
     }()
 
 	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
-        let service = FeatureFlagsDownloadService(apiService: self.apiService, sessionID: self.authCredential.sessionID)
+        let service = FeatureFlagsDownloadService(
+            userID: userID,
+            apiService: self.apiService,
+            sessionID: self.authCredential.sessionID,
+            scheduleSendEnableStatusProvider: userCachedStatus,
+            realAttachmentsFlagProvider: userCachedStatus
+        )
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)
         return service

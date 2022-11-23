@@ -393,7 +393,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
                 return
             }
         }
-        displayDraftNotValidAlertIfNeeded { [weak self] in
+        displayDraftNotValidAlertIfNeeded() { [weak self] in
             self?.startSendingMessage()
         }
     }
@@ -579,7 +579,10 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
 
 // MARK: - Methods about draft validation
 extension ComposeViewController {
-    func displayDraftNotValidAlertIfNeeded(continueAction: @escaping () -> Void) {
+    func displayDraftNotValidAlertIfNeeded(
+        isTriggeredFromScheduleButton: Bool = false,
+        continueAction: @escaping () -> Void
+    ) {
         isUserInputValidInTheHeaderViewOfComposer { [weak self] in
             _ = self?.collectDraftData().done { result in
                 guard let result = result else { return }
@@ -590,7 +593,9 @@ extension ComposeViewController {
                             subject: result.0,
                             body: result.1
                         ) {
-                            self?.showScheduleSendConfirmationAlertIfNeeded {
+                            self?.showScheduleSendConfirmationAlertIfNeeded(
+                                isTriggeredFromScheduleButton: isTriggeredFromScheduleButton
+                            ) {
                                 continueAction()
                             }
                         }
@@ -663,8 +668,8 @@ extension ComposeViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    private func showScheduleSendConfirmationAlertIfNeeded(continueAction: @escaping () -> Void) {
-        if viewModel.shouldShowScheduleSendConfirmationAlert() {
+    private func showScheduleSendConfirmationAlertIfNeeded(isTriggeredFromScheduleButton: Bool, continueAction: @escaping () -> Void) {
+        if viewModel.shouldShowScheduleSendConfirmationAlert() && !isTriggeredFromScheduleButton {
             showScheduleSendConfirmationAlert {
                 continueAction()
             }

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,28 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
-import CoreImage
+@testable import ProtonMail
 
-class MockRealAttachmentsFlagProvider: RealAttachmentsFlagProvider {
-
-    @PropertyStub(\MockRealAttachmentsFlagProvider.realAttachments, initialGet: false) var realAttachmentStub
-    var realAttachments: Bool {
-        realAttachmentStub()
+class MockScheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider {
+    @FuncStub(MockScheduleSendEnableStatusProvider.isScheduleSendEnabled, initialReturn: false) var callIsScheduleSendEnable
+    func isScheduleSendEnabled(userID: UserID) -> Bool {
+        return callIsScheduleSendEnable(userID)
     }
 
-    @FuncStub(MockRealAttachmentsFlagProvider.set) var callSet
-    func set(realAttachments: Bool, sessionID: String) {
-        callSet(realAttachments, sessionID)
-    }
-
-    func getShared() -> UserDefaults {
-        .standard
-    }
-
-    func setValue(_ value: Any?, forKey key: String) {
-
+    @FuncStub(MockScheduleSendEnableStatusProvider.setScheduleSendStatus) var callSetScheduleSendStatus
+    func setScheduleSendStatus(enable: Bool, userID: UserID) {
+        return callSetScheduleSendStatus(enable, userID)
     }
 }

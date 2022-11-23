@@ -22,16 +22,28 @@ import ProtonCore_TestingToolkit
 class FeatureFlagsDownloadServiceTests: XCTestCase {
 
     var apiServiceMock: APIServiceMock!
+    var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
+    var realAttachmentFlagProviderMock: MockRealAttachmentsFlagProvider!
     var sut: FeatureFlagsDownloadService!
+    var userID: UserID = UserID(rawValue: String.randomString(20))
 
     override func setUp() {
         super.setUp()
         apiServiceMock = APIServiceMock()
-        sut = FeatureFlagsDownloadService(apiService: apiServiceMock, sessionID: "")
+        scheduleSendEnableStatusMock = .init()
+        realAttachmentFlagProviderMock = .init()
+        sut = FeatureFlagsDownloadService(
+            userID: userID,
+            apiService: apiServiceMock,
+            sessionID: "",
+            scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
+            realAttachmentsFlagProvider: realAttachmentFlagProviderMock
+        )
     }
 
     override func tearDown() {
         super.tearDown()
+        scheduleSendEnableStatusMock = nil
         sut = nil
     }
 
@@ -42,7 +54,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         XCTAssertEqual(sut.subscribers.count, 1)
     }
 
-    func testGetFeatureFlag() {
+    func testGetFeatureFlag() throws {
         let subscriberMock = SubscriberMock()
         sut.register(newSubscriber: subscriberMock)
 
@@ -71,6 +83,15 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         }
         waitForExpectations(timeout: 2, handler: nil)
         XCTAssertNotNil(sut.lastFetchingTime)
+        XCTAssertTrue(scheduleSendEnableStatusMock.callSetScheduleSendStatus.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(scheduleSendEnableStatusMock.callSetScheduleSendStatus.lastArguments)
+        XCTAssertTrue(argument.a1)
+        XCTAssertEqual(argument.a2, userID)
+
+
+        XCTAssertTrue(realAttachmentFlagProviderMock.callSet.wasCalledExactlyOnce)
+        let argument1 = try XCTUnwrap(realAttachmentFlagProviderMock.callSet.lastArguments?.a1)
+        XCTAssertTrue(argument1)
     }
 
     func testFetchingFlagsIn5mins_receiveFetchingTooOften() {

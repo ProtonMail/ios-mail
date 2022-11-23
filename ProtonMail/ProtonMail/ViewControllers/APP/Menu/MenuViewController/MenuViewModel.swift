@@ -192,7 +192,7 @@ extension MenuViewModel: MenuVMProtocol {
         case .more: return self.moreItems.count
         }
     }
-    
+
     func clickCollapsedArrow(labelID: LabelID) {
         guard let idx = self.rawData.firstIndex(where: {$0.location.labelID == labelID}) else {
             return
@@ -214,7 +214,7 @@ extension MenuViewModel: MenuVMProtocol {
         }
         self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
     }
-    
+
     func signOut(userID: UserID, completion: (() -> Void)?) {
         guard let user = self.usersManager.getUser(by: userID) else {
             completion?()
@@ -222,7 +222,7 @@ extension MenuViewModel: MenuVMProtocol {
         }
         self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
-    
+
     func removeDisconnectAccount(userID: UserID) {
         guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) else {return}
         self.usersManager.removeDisconnectedUser(user)
@@ -267,7 +267,7 @@ extension MenuViewModel: MenuVMProtocol {
         let labelID = LabelLocation.inbox.toMessageLocation.rawValue
         return user.getUnReadCount(by: labelID)
     }
-    
+
     func activateUser(id: UserID) {
         guard let user = self.usersManager.getUser(by: id) else {
             return
@@ -436,11 +436,13 @@ extension MenuViewModel {
     }
 
     private func observeScheduleSendLocationStatus() {
-        guard let user = self.currentUser,
-              let observer =
-                ScheduleSendLocationStatusObserver(contextProvider: coreDataContextProvider,
-                                                   userID: user.userID,
-                                                   viewModelDataSource: user) else { return }
+        guard let user = self.currentUser else { return }
+        let observer =
+            ScheduleSendLocationStatusObserver(
+                contextProvider: coreDataContextProvider,
+                userID: user.userID,
+                viewModelDataSource: user
+            )
 
         let currentCount = observer.observe(countUpdate: { [weak self] newCount in
             self?.updateInboxItems(by: newCount)

@@ -34,17 +34,26 @@ class ComposeContainerViewModel: TableContainerViewModel {
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.getUser() }
     private var userIntroductionProgressProvider: UserIntroductionProgressProvider
+    private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
 
     var isScheduleSendIntroViewShown: Bool {
         userIntroductionProgressProvider.hasUserSeenSpotlight(for: .scheduledSend)
     }
 
-    init(editorViewModel: ContainableComposeViewModel,
-         uiDelegate: ComposeContainerUIProtocol?,
-         userIntroductionProgressProvider: UserIntroductionProgressProvider) {
+    var isScheduleSendEnable: Bool {
+        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID)
+    }
+
+    init(
+        editorViewModel: ContainableComposeViewModel,
+        uiDelegate: ComposeContainerUIProtocol?,
+        userIntroductionProgressProvider: UserIntroductionProgressProvider,
+        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
+    ) {
         self.childViewModel = editorViewModel
         self.uiDelegate = uiDelegate
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.scheduleSendStatusProvider = scheduleSendStatusProvider
         super.init()
         self.contactChanged = observeRecipients()
     }

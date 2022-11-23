@@ -104,6 +104,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
+
+        static let isScheduleSendEnabled = "isScheduleSendEnabled"
     }
 
     var keymakerRandomkey: String? {
@@ -121,10 +123,10 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     var primaryUserSessionId: String? {
         get {
-            if getShared()?.object(forKey: Key.primaryUserSessionId) == nil {
+            if getShared().object(forKey: Key.primaryUserSessionId) == nil {
                 return nil
             }
-            return getShared()?.string(forKey: Key.primaryUserSessionId)
+            return getShared().string(forKey: Key.primaryUserSessionId)
         }
         set {
             setValue(newValue, forKey: Key.primaryUserSessionId)
@@ -133,7 +135,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     var isDohOn: Bool {
         get {
-            if getShared()?.object(forKey: Key.dohFlag) == nil {
+            if getShared().object(forKey: Key.dohFlag) == nil {
                 return true
             }
             return getShared().bool(forKey: Key.dohFlag)
@@ -145,7 +147,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     var isCombineContactOn: Bool {
         get {
-            if getShared()?.object(forKey: Key.combineContactFlag) == nil {
+            if getShared().object(forKey: Key.combineContactFlag) == nil {
                 return false
             }
             return getShared().bool(forKey: Key.combineContactFlag)
@@ -186,20 +188,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
         set {
             setValue(newValue, forKey: Key.showServerNoticesNextTime)
-        }
-    }
-
-    func set(realAttachments: Bool, sessionID: String) {
-        if let flagString = getShared().string(forKey: Key.realAttachments),
-           let data = flagString.data(using: .utf8),
-           var dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-            dict[sessionID] = realAttachments
-            let jsonString = dict.json()
-            setValue(jsonString, forKey: Key.realAttachments)
-        } else {
-            let dict: [String: Any] = [sessionID: realAttachments]
-            let jsonString = dict.json()
-            setValue(jsonString, forKey: Key.realAttachments)
         }
     }
 
@@ -496,7 +484,7 @@ extension UserCachedStatus: AttachmentMetadataStrippingProtocol {
 extension UserCachedStatus: DarkModeCacheProtocol {
     var darkModeStatus: DarkModeStatus {
         get {
-            if getShared()?.object(forKey: Key.darkModeFlag) == nil {
+            if getShared().object(forKey: Key.darkModeFlag) == nil {
                 return .followSystem
             }
             let raw = getShared().integer(forKey: Key.darkModeFlag)
@@ -513,23 +501,10 @@ extension UserCachedStatus: DarkModeCacheProtocol {
     }
 }
 
-extension UserCachedStatus: RealAttachmentsFlagProvider {
-    var realAttachments: Bool {
-        if let flagString = getShared().string(forKey: Key.realAttachments),
-           let data = flagString.data(using: .utf8),
-           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
-           let sessionID = self.primaryUserSessionId,
-           let flag = dict[sessionID] {
-            return flag
-        } else {
-            return false
-        }
-    }
-}
 extension UserCachedStatus: MessageInfoCacheProtocol {
     var hasMessageFromNotification: Bool {
         get {
-            if getShared()?.object(forKey: Key.newMessageFromNotification) == nil {
+            if getShared().object(forKey: Key.newMessageFromNotification) == nil {
                 return true
             }
             return getShared().bool(forKey: Key.newMessageFromNotification)
@@ -645,7 +620,7 @@ extension UserCachedStatus: ServicePlanDataStorage {
 extension UserCachedStatus: SwipeActionCacheProtocol {
     var leftToRightSwipeActionType: SwipeActionSettingType? {
         get {
-            if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+            if let value = self.getShared().int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
                 return nil
@@ -658,7 +633,7 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
 
     var rightToLeftSwipeActionType: SwipeActionSettingType? {
         get {
-            if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+            if let value = self.getShared().int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
                 return nil
@@ -670,12 +645,12 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
     }
 
     func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
-        if self.getShared()?.int(forKey: Key.leftToRightSwipeAction) == nil,
+        if self.getShared().int(forKey: Key.leftToRightSwipeAction) == nil,
            let action = SwipeActionSettingType.convertFromServer(rawValue: leftToRight) {
             self.leftToRightSwipeActionType = action
         }
 
-        if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
+        if self.getShared().int(forKey: Key.rightToLeftSwipeAction) == nil,
            let action = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
         }

@@ -27,13 +27,11 @@ final class ScheduleSendLocationStatusObserver: NSObject, NSFetchedResultsContro
     private let userID: UserID
     private weak var viewModeDataSource: ViewModeDataSource?
 
-    init?(contextProvider: CoreDataContextProviderProtocol,
-          userID: UserID,
-          viewModelDataSource: ViewModeDataSource,
-          isEnable: Bool = UserInfo.isScheduleSendEnable) {
-        guard isEnable else {
-            return nil
-        }
+    init(
+        contextProvider: CoreDataContextProviderProtocol,
+        userID: UserID,
+        viewModelDataSource: ViewModeDataSource
+    ) {
         self.context = contextProvider.mainContext
         self.userID = userID
         self.viewModeDataSource = viewModelDataSource

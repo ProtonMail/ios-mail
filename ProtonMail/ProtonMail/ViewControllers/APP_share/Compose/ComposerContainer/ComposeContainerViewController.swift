@@ -288,9 +288,9 @@ extension ComposeContainerViewController {
         self.setupSendButton()
         self.setupScheduledSendButton()
         var items: [UIBarButtonItem] = [self.sendButton]
-        #if DEBUG_ENTERPRISE
-        items.append(self.scheduledSendButton)
-        #endif
+        if viewModel.isScheduleSendEnable {
+            items.append(self.scheduledSendButton)
+        }
         self.navigationItem.rightBarButtonItems = items
     }
 
@@ -308,7 +308,7 @@ extension ComposeContainerViewController {
     }
 
     private func setupScheduledSendButton() {
-        guard UserInfo.isScheduleSendEnable else { return }
+        guard viewModel.isScheduleSendEnable else { return }
         let icon = IconProvider.clockPaperPlane
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
         self.scheduledSendButton = Self.makeBarButtonItem(
@@ -393,7 +393,8 @@ extension ComposeContainerViewController {
     }
 
     private func showScheduleSendIntroViewIfNeeded() {
-        guard UserInfo.isScheduleSendEnable, !viewModel.isScheduleSendIntroViewShown else {
+        guard viewModel.isScheduleSendEnable,
+              !viewModel.isScheduleSendIntroViewShown else {
             return
         }
         viewModel.userHasSeenScheduledSendSpotlight()
