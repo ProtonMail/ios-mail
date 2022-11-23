@@ -91,7 +91,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
 
         Environment.uuid = { UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")! }
 
-        ImageProxy.purgeCache()
+        ImageProxyCache.shared.purge()
     }
 
     override func tearDownWithError() throws {

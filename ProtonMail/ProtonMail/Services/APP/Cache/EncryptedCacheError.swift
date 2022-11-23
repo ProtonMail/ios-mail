@@ -17,7 +17,6 @@
 
 import Foundation
 
-protocol Cacheable {
-    /// The cost that counts towards the overall `totalCostLimit` of the NSCache.
-    var cost: Int { get }
+enum EncryptedCacheError: Error {
+    case cannotObtainMainKey
 }
