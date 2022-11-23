@@ -209,7 +209,15 @@ extension UpdateMailbox {
                                     shouldReset: forceClean) { result in
                     switch result {
                     case .success:
-                        completion(nil)
+                        self.dependencies.conversationProvider
+                            .fetchConversationCounts(addressID: nil) { result in
+                                switch result {
+                                case .success:
+                                    completion(nil)
+                                case .failure(let error):
+                                    completion(error)
+                                }
+                            }
                     case .failure(let error):
                         completion(error)
                     }

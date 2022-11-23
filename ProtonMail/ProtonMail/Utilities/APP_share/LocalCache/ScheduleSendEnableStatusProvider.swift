@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,27 +17,25 @@
 
 import Foundation
 
-protocol RealAttachmentsFlagProvider: AnyObject {
-    var realAttachments: Bool { get }
-
-    func set(realAttachments: Bool, sessionID: String)
+protocol ScheduleSendEnableStatusProvider: AnyObject {
+    func isScheduleSendEnabled(userID: UserID) -> Bool
+    func setScheduleSendStatus(enable: Bool, userID: UserID)
 }
 
-extension UserCachedStatus: RealAttachmentsFlagProvider {
-    var realAttachments: Bool {
-        guard let dict = getShared().object(forKey: Key.realAttachments) as? [String: Bool],
-              let sessionID = primaryUserSessionId else {
+extension UserCachedStatus: ScheduleSendEnableStatusProvider {
+    func isScheduleSendEnabled(userID: UserID) -> Bool {
+        guard let dict = getShared().object(forKey: Key.isScheduleSendEnabled) as? [String: Bool] else {
             return false
         }
-        return dict[sessionID] ?? false
+        return dict[userID.rawValue] ?? false
     }
 
-    func set(realAttachments: Bool, sessionID: String) {
+    func setScheduleSendStatus(enable: Bool, userID: UserID) {
         var dictionaryToUpdate: [String: Bool] = [:]
-        if let dict = getShared().object(forKey: UserCachedStatus.Key.realAttachments) as? [String: Bool] {
+        if let dict = getShared().object(forKey: Key.isScheduleSendEnabled) as? [String: Bool] {
             dictionaryToUpdate = dict
         }
-        dictionaryToUpdate[sessionID] = realAttachments
-        setValue(dictionaryToUpdate, forKey: Key.realAttachments)
+        dictionaryToUpdate[userID.rawValue] = enable
+        getShared().setValue(dictionaryToUpdate, forKey: Key.isScheduleSendEnabled)
     }
 }

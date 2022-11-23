@@ -65,9 +65,12 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     #endif
 
     func start() {
-        let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel,
-                                                  uiDelegate: nil,
-                                                  userIntroductionProgressProvider: userCachedStatus)
+        let viewModel = ComposeContainerViewModel(
+            editorViewModel: editorViewModel,
+            uiDelegate: nil,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendStatusProvider: userCachedStatus
+        )
         let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
         viewModel.uiDelegate = viewController
 
@@ -251,7 +254,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     func checkIfDraftIsValidToBeSent(continueAction: @escaping () -> Void) {
-        editor?.displayDraftNotValidAlertIfNeeded {
+        editor?.displayDraftNotValidAlertIfNeeded(isTriggeredFromScheduleButton: true) {
             continueAction()
         }
     }

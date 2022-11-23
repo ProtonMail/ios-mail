@@ -38,6 +38,22 @@ enum FeatureFlagTestData {
             "Value": 1,
             "UpdateTime": 1638767627,
             "Writable": true
+        },
+        {
+            "Code": "ScheduledSend",
+            "Type": "boolean",
+            "Global": true,
+            "DefaultValue": true,
+            "Value": true,
+            "Writable": true
+        },
+        {
+            "Code": "RealNumAttachments",
+            "Type": "boolean",
+            "Global": true,
+            "DefaultValue": true,
+            "Value": true,
+            "Writable": true
         }
     ],
     "Total": 14
