@@ -194,6 +194,6 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
             }
         }
 
-        ImageProxy.purgeCache()
+        ImageProxyCache.shared.purge()
     }
 }

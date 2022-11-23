@@ -76,7 +76,7 @@ struct Constants {
     }
 
     enum ImageProxy {
-        static let cacheMemoryLimitInBytes = 1_024 * 1_024 * 20
+        static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 1024   // 1 GiB
     }
 
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
