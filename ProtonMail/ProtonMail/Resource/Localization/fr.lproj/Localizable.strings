@@ -1555,7 +1555,7 @@
 "Schedule will be removed" = "La programmation sera supprimée.";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Envoi programmé";
+"Schedule send" = "Envoi programmé";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Programmation du message...";

@@ -1555,7 +1555,7 @@
 "Schedule will be removed" = "Jadwal akan dihapus";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Pengiriman terjadwal";
+"Schedule send" = "Pengiriman terjadwal";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Menjadwalkan pesan...";

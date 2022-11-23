@@ -16,6 +16,7 @@
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal static let composeScheduleStar = ImageAsset(name: "compose_schedule_star")
+  internal static let icThreeDotsHorizontal = ImageAsset(name: "ic-three-dots-horizontal")
   internal static let esIcon = ImageAsset(name: "es-icon")
   internal static let launchScreenBackground = ColorAsset(name: "LaunchScreenBackground")
   internal static let launchScreenBrand = ImageAsset(name: "launchScreenBrand")

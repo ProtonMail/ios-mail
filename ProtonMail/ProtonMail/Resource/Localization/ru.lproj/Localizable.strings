@@ -1555,7 +1555,7 @@
 "Schedule will be removed" = "Расписание будет удалено";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Отравлено по расписанию";
+"Schedule send" = "Отравлено по расписанию";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Сообщение ставится в очередь...";
