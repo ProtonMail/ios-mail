@@ -1612,7 +1612,7 @@
 "Schedule will be removed" = "Zamanlama kaldırılacak";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Zamanlanmış gönderim";
+"Schedule send" = "Zamanlanmış gönderim";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "İleti zamanlanıyor...";

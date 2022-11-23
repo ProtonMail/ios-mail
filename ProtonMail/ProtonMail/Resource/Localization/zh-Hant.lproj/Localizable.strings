@@ -1543,7 +1543,7 @@
 "Schedule will be removed" = "行事曆將會被移除";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "排程傳送";
+"Schedule send" = "排程傳送";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "正在排程訊息...";

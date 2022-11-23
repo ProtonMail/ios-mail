@@ -1667,7 +1667,7 @@
 "Schedule will be removed" = "Schedule will be removed";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Scheduled send";
+"Schedule send" = "Schedule send";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Scheduling message...";

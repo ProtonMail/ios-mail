@@ -1477,7 +1477,7 @@
 "Schedule will be removed" = "将删除计划";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "定时发送";
+"Schedule send" = "定时发送";
 
 /* Springboard (3D Touch) shortcuts action
    Title */

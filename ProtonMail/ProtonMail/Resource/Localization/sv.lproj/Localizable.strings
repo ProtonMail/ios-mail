@@ -1609,7 +1609,7 @@
 "Schedule will be removed" = "Schema kommer att tas bort";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Schemalägg sändning";
+"Schedule send" = "Schemalägg sändning";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Schemalägger meddelande …";

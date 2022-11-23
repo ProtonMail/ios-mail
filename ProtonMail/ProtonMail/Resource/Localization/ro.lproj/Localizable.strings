@@ -1555,7 +1555,7 @@
 "Schedule will be removed" = "Programarea va fi eliminată";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Trimitere programată";
+"Schedule send" = "Trimitere programată";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Se programează mesajul...";

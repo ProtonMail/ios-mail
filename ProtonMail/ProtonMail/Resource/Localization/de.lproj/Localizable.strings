@@ -1600,7 +1600,7 @@
 "Schedule will be removed" = "Zeitplan wird entfernt";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Geplantes Senden";
+"Schedule send" = "Geplantes Senden";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Nachricht wird geplant...";
