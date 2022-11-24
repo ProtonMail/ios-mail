@@ -23,19 +23,23 @@ import ProtonCore_TestingToolkit
 
 class UserManagerTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
+    var sut: UserManager!
+    var defaultUserID: UserID = "1"
 
     override func setUp() {
         super.setUp()
         apiServiceMock = APIServiceMock()
+        makeSUT(userID: defaultUserID)
     }
 
     override func tearDown() {
         super.tearDown()
+        sut = nil
         apiServiceMock = nil
     }
 
     func testGetUserID() {
-        let userID = String.randomString(100)
+        let userID = UserID(String.randomString(100))
         let fakeAuth = makeAuthCredential(userId: userID)
         let userInfo = makeUserInfo(userId: userID)
         let sut = UserManager(
@@ -44,11 +48,19 @@ class UserManagerTests: XCTestCase {
             authCredential: fakeAuth,
             parent: nil
         )
-        XCTAssertEqual(sut.userID.rawValue, userID)
+        XCTAssertEqual(sut.userID, userID)
+    }
+
+    func testToolbarActionsIsStandard() {
+        sut.userInfo.messageToolbarActions.isCustom = false
+        sut.userInfo.listToolbarActions.isCustom = false
+        sut.userInfo.conversationToolbarActions.isCustom = false
+
+        XCTAssertTrue(sut.toolbarActionsIsStandard)
     }
 
     func testBecomeActiveUser_whenTelemetryForUserIsDisabled_disablesTelemetry() {
-        let userID = String.randomString(100)
+        let userID = UserID(String.randomString(100))
         let fakeAuth = makeAuthCredential(userId: userID)
         let userInfo = makeUserInfo(userId: userID)
         let mockAppTelemetry = MockAppTelemetry()
@@ -69,7 +81,7 @@ class UserManagerTests: XCTestCase {
     }
 
     func testBecomeActiveUser_whenTelemetryForUserIsEnabled_enablesTelemetry() {
-        let userID = String.randomString(100)
+        let userID = UserID(String.randomString(100))
         let fakeAuth = makeAuthCredential(userId: userID)
         let userInfo = makeUserInfo(userId: userID)
         let mockAppTelemetry = MockAppTelemetry()
@@ -92,21 +104,31 @@ class UserManagerTests: XCTestCase {
 }
 
 private extension UserManagerTests {
+    func makeSUT(userID: UserID) {
+        let fakeAuth = makeAuthCredential(userId: userID)
+        let userInfo = makeUserInfo(userId: userID)
+        sut = UserManager(
+            api: apiServiceMock,
+            userInfo: userInfo,
+            authCredential: fakeAuth,
+            parent: nil
+        )
+    }
 
-    func makeAuthCredential(userId: String) -> AuthCredential {
+    func makeAuthCredential(userId: UserID) -> AuthCredential {
         AuthCredential(
             sessionID: "",
             accessToken: "",
             refreshToken: "",
             expiration: Date(),
             userName: "",
-            userID: userId,
+            userID: userId.rawValue,
             privateKey: nil,
             passwordKeySalt: nil
         )
     }
 
-    func makeUserInfo(userId: String) -> UserInfo {
+    func makeUserInfo(userId: UserID) -> UserInfo {
         UserInfo(
             maxSpace: nil,
             usedSpace: nil,
@@ -115,7 +137,7 @@ private extension UserManagerTests {
             role: nil,
             delinquent: nil,
             keys: nil,
-            userId: userId,
+            userId: userId.rawValue,
             linkConfirmation: nil,
             credit: nil,
             currency: nil,

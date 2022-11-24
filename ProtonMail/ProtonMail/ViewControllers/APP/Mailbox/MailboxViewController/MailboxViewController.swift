@@ -1542,8 +1542,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
 // MARK: - Action bar
 extension MailboxViewController {
-    private func refreshActionBarItems() {
-        let actions = self.viewModel.getActionBarActions()
+    func refreshActionBarItems() {
+        let actions = self.viewModel.actionsForToolbar()
         var actionItems: [PMToolBarView.ActionItem] = []
 
         for action in actions {
@@ -1560,7 +1560,6 @@ extension MailboxViewController {
                     case .delete:
                         self.showDeleteAlert { [weak self] in
                             guard let `self` = self else { return }
-                            self.viewModel.handleBarAction(action)
                             self.showMessageMoved(title: LocalString._messages_has_been_deleted)
                         }
                     case .moveTo:
@@ -1571,8 +1570,7 @@ extension MailboxViewController {
                         var scheduledSendNum: Int?
                         let continueAction: () -> Void = { [weak self] in
                             guard let self = self else { return }
-                            self.viewModel.handleBarAction(action)
-                            if action != .markAsRead && action != .markAsUnread {
+                            if action != .markRead && action != .markUnread {
                                 let message: String
                                 if let num = scheduledSendNum {
                                     message = String(format: LocalString._message_moved_to_drafts, num)
@@ -1592,8 +1590,8 @@ extension MailboxViewController {
                             continueAction: continueAction
                         )
                     default:
-                        self.viewModel.handleBarAction(action)
-                        if ![.markAsRead, .markAsUnread].contains(action) {
+                        self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                        if ![.markRead, .markUnread].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
                         }
@@ -2008,11 +2006,11 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         showAlert(title: title, message: message)
     }
 
-    private func handleActionSheetAction(_ action: MailListSheetAction) {
+    private func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .dismiss:
             dismissActionSheet()
-        case .remove:
+        case .trash:
             var scheduledSendNum: Int?
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action)
@@ -2032,7 +2030,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                     self?.displayScheduledAlert(scheduledNum: selectedNum, continueAction: continueAction)
                 },
                 continueAction: continueAction)
-        case .moveToArchive, .moveToSpam, .moveToInbox:
+        case .archive, .spam, .inbox:
             viewModel.handleActionSheetAction(action)
             showMessageMoved(title: LocalString._messages_has_been_moved)
             hideSelectionMode()
@@ -2047,6 +2045,15 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             labelButtonTapped()
         case .moveTo:
             folderButtonTapped()
+        case .toolbarCustomization:
+            let allActions = viewModel.toolbarCustomizationAllAvailableActions()
+            let currentActions = viewModel.actionsForToolbarCustomizeView()
+            coordinator?.presentToolbarCustomizationView(
+                allActions: allActions,
+                currentActions: currentActions
+            )
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+            break
         }
     }
 }

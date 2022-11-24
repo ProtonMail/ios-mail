@@ -20,6 +20,7 @@ import Foundation
 enum SpotlightableFeatureKey: CaseIterable, Codable {
     case scheduledSend
     case trackerProtection
+    case toolbarCustomization
 }
 
 protocol UserIntroductionProgressProvider {

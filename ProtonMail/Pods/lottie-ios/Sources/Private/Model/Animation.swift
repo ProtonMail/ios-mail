@@ -31,8 +31,8 @@ public final class Animation: Codable, DictionaryInitializable {
     startFrame = try container.decode(AnimationFrameTime.self, forKey: .startFrame)
     endFrame = try container.decode(AnimationFrameTime.self, forKey: .endFrame)
     framerate = try container.decode(Double.self, forKey: .framerate)
-    width = try container.decode(Double.self, forKey: .width)
-    height = try container.decode(Double.self, forKey: .height)
+    width = try container.decode(Int.self, forKey: .width)
+    height = try container.decode(Int.self, forKey: .height)
     layers = try container.decode([LayerModel].self, ofFamily: LayerType.self, forKey: .layers)
     glyphs = try container.decodeIfPresent([Glyph].self, forKey: .glyphs)
     fonts = try container.decodeIfPresent(FontList.self, forKey: .fonts)
@@ -137,10 +137,10 @@ public final class Animation: Codable, DictionaryInitializable {
   let type: CoordinateSpace
 
   /// The height of the composition in points.
-  let width: Double
+  let width: Int
 
   /// The width of the composition in points.
-  let height: Double
+  let height: Int
 
   /// The list of animation layers
   let layers: [LayerModel]

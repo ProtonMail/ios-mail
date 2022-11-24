@@ -63,7 +63,7 @@ class MailListActionSheetItemViewModel_ActionsTests: XCTestCase {
 
     func testRemoveActionViewModel() {
         sut = .removeActionViewModel()
-        XCTAssertEqual(sut.type, .remove)
+        XCTAssertEqual(sut.type, .trash)
         let singleMessageFormat = LocalString._title_of_remove_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
     }
@@ -77,14 +77,14 @@ class MailListActionSheetItemViewModel_ActionsTests: XCTestCase {
 
     func testMoveToArchiveActionViewModel() {
         sut = .moveToArchive()
-        XCTAssertEqual(sut.type, .moveToArchive)
+        XCTAssertEqual(sut.type, .archive)
         let singleMessageFormat = LocalString._title_of_archive_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
     }
 
     func testMoveToSpamActionViewModel() {
         sut = .moveToSpam()
-        XCTAssertEqual(sut.type, .moveToSpam)
+        XCTAssertEqual(sut.type, .spam)
         let singleMessageFormat = LocalString._title_of_spam_action_in_action_sheet
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
     }
@@ -103,13 +103,13 @@ class MailListActionSheetItemViewModel_ActionsTests: XCTestCase {
 
     func testMoveToInboxActionViewModel() {
         sut = .moveToInboxActionViewModel()
-        XCTAssertEqual(sut.type, .moveToInbox)
+        XCTAssertEqual(sut.type, .inbox)
         XCTAssertEqual(sut.title, LocalString._title_of_move_inbox_action_in_action_sheet)
     }
 
     func testNotSpamActionViewModel() {
         sut = .notSpamActionViewModel()
-        XCTAssertEqual(sut.type, .moveToInbox)
+        XCTAssertEqual(sut.type, .inbox)
         XCTAssertEqual(sut.title, LocalString._action_sheet_action_title_spam_to_inbox)
     }
 }

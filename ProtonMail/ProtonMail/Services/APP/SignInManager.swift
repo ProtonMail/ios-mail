@@ -175,6 +175,8 @@ private extension SpotlightableFeatureKey {
             return false
         case .trackerProtection:
             return UserInfo.isImageProxyAvailable
+        case .toolbarCustomization:
+            return UserInfo.isToolbarCustomizationEnable
         }
     }
 }

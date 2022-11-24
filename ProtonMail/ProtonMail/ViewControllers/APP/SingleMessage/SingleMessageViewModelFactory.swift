@@ -76,14 +76,20 @@ class SingleMessageViewModelFactory {
             user: user,
             childViewModels: childViewModels,
             internetStatusProvider: internetStatusProvider,
+            userIntroductionProgressProvider: userCachedStatus,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(
+                dependencies: .init(user: user)
+            ),
+            toolbarActionProvider: user,
+            toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             systemUpTime: systemUpTime,
-			goToDraft: goToDraft
+            goToDraft: goToDraft
         )
     }
 
 }
 
-private class SingleMessageComponentsFactory {
+class SingleMessageComponentsFactory {
 
     func messageBody(spamType: SpamType?, user: UserManager) -> NewMessageBodyViewModel {
         return .init(

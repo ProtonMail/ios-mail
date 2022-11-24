@@ -38,6 +38,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
+    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -45,6 +46,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
          viewModel: MailboxViewModel,
          services: ServiceFactory,
          contextProvider: CoreDataContextProviderProtocol,
+         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
          internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
@@ -58,6 +60,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         self.contextProvider = contextProvider
         self.internetStatusProvider = internetStatusProvider
         self.getApplicationState = getApplicationState
+        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
     }
 
     enum Destination: String {
@@ -255,7 +258,8 @@ extension MailboxCoordinator {
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
-            user: self.viewModel.user
+            user: self.viewModel.user,
+            infoBubbleViewStatusProvider: userCachedStatus
         )
         coordinator.goToDraft = { [weak self] msgID in
             self?.editScheduleMsg(messageID: msgID)
@@ -274,7 +278,8 @@ extension MailboxCoordinator {
             navigationController: navigationController,
             conversation: conversation,
             user: self.viewModel.user,
-            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self)
+            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+            infoBubbleViewStatusProvider: userCachedStatus
         )
         conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID in
@@ -349,7 +354,8 @@ extension MailboxCoordinator {
                 navigationController: navigationController,
                 labelId: viewModel.labelID,
                 message: message,
-                user: self.viewModel.user
+                user: self.viewModel.user,
+                infoBubbleViewStatusProvider: userCachedStatus
             )
             coordinator.goToDraft = { [weak self] msgID in
                 self?.editScheduleMsg(messageID: msgID)
@@ -397,6 +403,7 @@ extension MailboxCoordinator {
                 conversation: entity,
                 user: self.viewModel.user,
                 internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+                infoBubbleViewStatusProvider: userCachedStatus,
                 targetID: targetID)
             coordinator.goToDraft = { [weak self] msgID in
                 self?.editScheduleMsg(messageID: msgID)
@@ -430,6 +437,35 @@ extension MailboxCoordinator {
         self.viewController?.present(nav, animated: true, completion: nil)
     }
 
+    func presentToolbarCustomizationView(
+        allActions: [MessageViewActionSheetAction],
+        currentActions: [MessageViewActionSheetAction]
+    ) {
+        let view = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
+            viewModel: .init(
+                currentActions: currentActions,
+                allActions: allActions,
+                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
+                defaultActions: MessageViewActionSheetAction.defaultActions,
+                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            )
+        )
+        view.customizationIsDone = { [weak self] result in
+            self?.viewController?.showProgressHud()
+            self?.viewModel.updateToolbarActions(
+                actions: result,
+                completion: { error in
+                    if let error = error {
+                        error.alertErrorToast()
+                    }
+                    self?.viewController?.refreshActionBarItems()
+                    self?.viewController?.hideProgressHud()
+                })
+        }
+        let nav = UINavigationController(rootViewController: view)
+        viewController?.navigationController?.present(nav, animated: true)
+    }
+    
     private func editScheduleMsg(messageID: MessageID) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {

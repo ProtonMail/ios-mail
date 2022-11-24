@@ -242,7 +242,7 @@ extension SearchViewController {
                         self.folderButtonTapped()
                     case .labelAs:
                         self.labelButtonTapped()
-                    case .markAsUnread, .markAsRead:
+                    case .markUnread, .markRead:
                         self.viewModel.handleBarActions(action)
                     case .trash:
                         self.showTrashScheduleAlertIfNeeded { [weak self] scheduledNum in
@@ -258,6 +258,10 @@ extension SearchViewController {
 
                     case .more:
                         assertionFailure("handled above")
+                    case .reply, .replyAll, .forward, .archive, .spam, .print, .viewHeaders, .viewHTML,
+                            .reportPhishing, .dismiss, .inbox, .spamMoveToInbox, .star,. unstar,
+                            .viewInDarkMode, .viewInLightMode, .toolbarCustomization, .replyOrReplyAll, .saveAsPDF:
+                        assertionFailure("should not reach here")
                     }
                 }
             }
@@ -331,11 +335,11 @@ extension SearchViewController {
         showLabelAsActionSheet(messages: viewModel.selectedMessages)
     }
 
-    private func handleActionSheetAction(_ action: MailListSheetAction) {
+    private func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .dismiss:
             dismissActionSheet()
-        case .remove, .moveToArchive, .moveToSpam, .moveToInbox:
+        case .trash, .archive, .spam, .inbox:
             showMessageMoved(title: LocalString._messages_has_been_moved)
             cancelButtonTapped()
         case .markRead, .markUnread, .star, .unstar:
@@ -349,6 +353,11 @@ extension SearchViewController {
             labelButtonTapped()
         case .moveTo:
             folderButtonTapped()
+        case .toolbarCustomization:
+            // TODO: Add implementation
+            break
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+            break
         }
     }
 
@@ -581,7 +590,8 @@ extension SearchViewController {
             navigationController: navigationController,
             labelId: "",
             message: message,
-            user: self.viewModel.user
+            user: self.viewModel.user,
+            infoBubbleViewStatusProvider: userCachedStatus
         )
         coordinator.goToDraft = { [weak self] msgID in
             guard let self = self else { return }
@@ -614,6 +624,7 @@ extension SearchViewController {
                     conversation: conversation,
                     user: self.viewModel.user,
                     internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                    infoBubbleViewStatusProvider: userCachedStatus,
                     targetID: messageID
                 )
                 coordinator.goToDraft = { [weak self] msgID in

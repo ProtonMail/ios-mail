@@ -36,6 +36,8 @@ enum SingleMessageNavigationAction: Equatable {
     case addNewLabel
     case viewCypher(url: URL)
     case more(messageId: MessageID)
+    case toolbarCustomization(currentActions: [MessageViewActionSheetAction],
+                              allActions: [MessageViewActionSheetAction])
 }
 
 extension SingleMessageNavigationAction {

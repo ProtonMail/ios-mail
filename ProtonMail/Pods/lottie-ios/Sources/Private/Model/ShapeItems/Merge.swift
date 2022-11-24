@@ -20,6 +20,7 @@ enum MergeMode: Int, Codable {
 
 // MARK: - Merge
 
+/// An item that define an ellipse shape
 final class Merge: ShapeItem {
 
   // MARK: Lifecycle

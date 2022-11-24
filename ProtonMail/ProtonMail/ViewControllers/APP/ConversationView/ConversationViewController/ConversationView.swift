@@ -1,4 +1,5 @@
 import ProtonCore_UIFoundations
+import CoreGraphics
 
 class ConversationView: UIView {
 
@@ -75,6 +76,13 @@ class ConversationView: UIView {
             view.centerXAnchor.constraint(equalTo: centerXAnchor)
         ].activate()
         return view
+    }
+
+    func toolbarLastButtonCGRect() -> CGRect? {
+        guard let rect = toolBar.lastButtonCGRect() else {
+            return nil
+        }
+        return toolBar.convert(rect, to: self)
     }
 }
 

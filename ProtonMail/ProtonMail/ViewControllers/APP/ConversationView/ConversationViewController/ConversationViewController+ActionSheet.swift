@@ -33,6 +33,10 @@ extension ConversationViewController {
             showPhishingAlert { [weak self] _ in
                 self?.viewModel.handleActionSheetAction(action, message: message, body: body) { _ in }
             }
+        case .toolbarCustomization:
+            showToolbarActionCustomizationView()
+        case .viewInDarkMode, .viewInLightMode:
+            viewModel.handleActionSheetAction(action, completion: {})
         default:
             viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
                 guard shouldDismissView else { return }
@@ -67,6 +71,13 @@ extension ConversationViewController {
         default:
             return
         }
+    }
+
+    private func showToolbarActionCustomizationView() {
+        coordinator.handle(navigationAction: .toolbarCustomization(
+            currentActions: viewModel.actionsForToolbarCustomizeView(),
+            allActions: viewModel.toolbarCustomizationAllAvailableActions()
+        ))
     }
 }
 

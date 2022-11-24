@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
+
 struct MailListActionSheetViewModel {
     let title: String
     private(set) var items: [MailListActionSheetItemViewModel] = []
@@ -56,5 +58,8 @@ struct MailListActionSheetViewModel {
             items += [.moveToSpam()]
         }
         items += [.moveToActionViewModel()]
+        if UserInfo.isToolbarCustomizationEnable {
+            items += [.customizeToolbarActionViewModel()]
+        }
     }
 }

@@ -21,7 +21,7 @@ import ProtonCore_UIFoundations
 class PMToolBarView: UIView {
 
     struct ActionItem {
-        let type: MailboxViewModel.ActionTypes
+        let type: MessageViewActionSheetAction
         let handler: () -> Void
     }
 
@@ -29,7 +29,7 @@ class PMToolBarView: UIView {
     let separatorView = SubviewFactory.separatorView
 
     private var actionHandlers: [() -> Void] = []
-    private(set) var types: [MailboxViewModel.ActionTypes] = []
+    private(set) var types: [MessageViewActionSheetAction] = []
 
     init() {
         super.init(frame: .zero)
@@ -50,10 +50,10 @@ class PMToolBarView: UIView {
     }
 
     func setUpActions(_ actions: [ActionItem]) {
-        assert(actions.count <= 5, "Should not pass more than 5 actions")
+        assert(actions.count <= 6, "Should not pass more than 6 actions")
 
-        // Maximum amount of actions is 5.
-        let actions = actions.prefix(5)
+        // Maximum amount of actions is 6.
+        let actions = actions.prefix(6)
 
         actionHandlers = actions.map(\.handler)
         types = actions.map(\.type)
@@ -66,7 +66,7 @@ class PMToolBarView: UIView {
         for (index, action) in actions.enumerated() {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(action.type.iconImage, for: .normal)
+            button.setImage(action.type.icon, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             button.accessibilityIdentifier = action.type.accessibilityIdentifier
             button.tag = index
@@ -76,6 +76,14 @@ class PMToolBarView: UIView {
         }
         btnStackView.addArrangedSubview(SubviewFactory.makeEdgeSpacer())
         accessibilityElements = buttons
+    }
+
+    func lastButtonCGRect() -> CGRect? {
+        guard let lastButton = btnStackView.arrangedSubviews
+            .last(where: { $0 is UIButton }) else {
+            return nil
+        }
+        return lastButton.convert(lastButton.bounds, to: self)
     }
 
     private func addSubviews() {

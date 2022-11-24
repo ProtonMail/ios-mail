@@ -38,6 +38,8 @@ class MailboxViewModelTests: XCTestCase {
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
+    var toolbarActionProviderMock: MockToolbarActionProvider!
+    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
 
     var testContext: NSManagedObjectContext {
         coreDataContextProviderMock.viewContext
@@ -84,6 +86,8 @@ class MailboxViewModelTests: XCTestCase {
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
+        toolbarActionProviderMock = MockToolbarActionProvider()
+        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -101,6 +105,8 @@ class MailboxViewModelTests: XCTestCase {
         humanCheckStatusProviderMock = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
+        toolbarActionProviderMock = nil
+        saveToolbarActionUseCaseMock = nil
     }
     
     func testMessageItemOfIndexPath() {
@@ -992,50 +998,50 @@ class MailboxViewModelTests: XCTestCase {
 
     func testGetActionBarActions_inInbox() {
         createSut(labelID: Message.Location.inbox.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inStar() {
         createSut(labelID: Message.Location.starred.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inArchive() {
         createSut(labelID: Message.Location.archive.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inAllMail() {
         createSut(labelID: Message.Location.allmail.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inAllSent() {
         createSut(labelID: Message.Location.sent.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inDraft() {
         createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inTrash() {
         createSut(labelID: Message.Location.trash.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.delete, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .delete, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inSpam() {
         createSut(labelID: Message.Location.spam.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.delete, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .delete, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inCustomFolder() {
@@ -1045,8 +1051,8 @@ class MailboxViewModelTests: XCTestCase {
         labelProviderMock.labelToReturnInGetLabel = label
         createSut(labelID: "qweqwe", labelType: .folder, isCustom: false, labelName: nil)
 
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_inCustomLabel() {
@@ -1056,13 +1062,14 @@ class MailboxViewModelTests: XCTestCase {
         labelProviderMock.labelToReturnInGetLabel = label
         createSut(labelID: "qweqwe", labelType: .folder, isCustom: false, labelName: nil)
 
-        let result = sut.getActionBarActions()
-        XCTAssertEqual(result, [.markAsRead, .trash, .moveTo, .labelAs, .more])
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetActionBarActions_withNonExistLabel() {
         createSut(labelID: "qweasd", labelType: .folder, isCustom: false, labelName: nil)
-        XCTAssertTrue(sut.getActionBarActions().isEmpty)
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
     func testGetOnboardingDestination() {
@@ -1110,6 +1117,43 @@ class MailboxViewModelTests: XCTestCase {
         }
 
         XCTAssert(signalsSent == 1)
+    }
+
+    func testUpdateToolbarActions_updateActionWithoutMoreAction() {
+        saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
+            completion(.success(Void()))
+        }
+        let e = expectation(description: "Closure is called")
+        sut.updateToolbarActions(actions: [.unstar, .markRead]) { _ in
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalledExactlyOnce)
+        XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.listViewActions, [.unstar, .markRead])
+    }
+
+    func testUpdateToolbarActions_updateActionWithMoreAction() {
+        saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
+            completion(.success(Void()))
+        }
+        let e = expectation(description: "Closure is called")
+        sut.updateToolbarActions(actions: [.unstar, .markRead, .more]) { _ in
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalledExactlyOnce)
+        XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.listViewActions, [.unstar, .markRead])
+
+        let e1 = expectation(description: "Closure is called")
+        sut.updateToolbarActions(actions: [.more, .unstar, .markRead]) { _ in
+            e1.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalled)
+        XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.listViewActions, [.unstar, .markRead])
     }
 }
 
@@ -1164,6 +1208,8 @@ extension MailboxViewModelTests {
                                eventsService: eventsServiceMock,
                                dependencies: dependencies,
                                welcomeCarrouselCache: welcomeCarrouselCache,
+                               toolbarActionProvider: toolbarActionProviderMock,
+                               saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                totalUserCountClosure: {
             return totalUserCount
         })

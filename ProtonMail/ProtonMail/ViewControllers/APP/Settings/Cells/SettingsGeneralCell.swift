@@ -36,8 +36,8 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var stackViewTrailingConstraintWithIconView: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTrailingConstraintWithContainer: NSLayoutConstraint!
-    @IBOutlet private weak var leftText: UILabel!
-    @IBOutlet private weak var rightText: UILabel!
+    @IBOutlet private(set) weak var leftText: UILabel!
+    @IBOutlet private(set) weak var rightText: UILabel!
     @IBOutlet private weak var rightArrowImage: UIImageView!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 

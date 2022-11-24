@@ -181,6 +181,10 @@ extension MessageEntity {
     var isCustomFolder: Bool {
         self.customFolder != nil
     }
+
+    var allRecipients: [String] {
+        return recipientsTo + recipientsTo + recipientsBcc
+    }
 }
 
 extension MessageEntity {

@@ -1,5 +1,6 @@
 import CoreData
 import ProtonCore_UIFoundations
+import ProtonCore_DataModel
 
 enum MessageDisplayRule {
     case showNonTrashedOnly
@@ -118,6 +119,10 @@ class ConversationViewModel {
         return labelProvider.getCustomFolders().map(LabelEntity.init)
     }()
     let labelProvider: LabelProviderProtocol
+    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
+    private let toolbarActionProvider: ToolbarActionProvider
+    private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
+    private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let dependencies: Dependencies
 
     init(labelId: LabelID,
@@ -128,8 +133,12 @@ class ConversationViewModel {
          conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
+         userIntroductionProgressProvider: UserIntroductionProgressProvider,
+         targetID: MessageID?,
+         toolbarActionProvider: ToolbarActionProvider,
+         saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
+         toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          goToDraft: @escaping (MessageID) -> Void,
-         targetID: MessageID? = nil,
          dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
@@ -153,11 +162,15 @@ class ConversationViewModel {
         self.conversationStateProvider = conversationStateProvider
         self.goToDraft = goToDraft
         self.labelProvider = labelProvider
+        self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.messageCount
         self.connectionStatusProvider = internetStatusProvider
+        self.toolbarActionProvider = toolbarActionProvider
+        self.saveToolbarActionUseCase = saveToolbarActionUseCase
+        self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
         self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
     }
@@ -302,6 +315,31 @@ class ConversationViewModel {
             .execute(params: params, callback: callback)
     }
 
+	func shouldShowToolbarCustomizeSpotlight() -> Bool {
+        if !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .toolbarCustomization) {
+            return true
+        }
+
+        //  If 1 of the logged accounts has a non-standard set of actions, Accounts with
+        //  standard actions will see the feature spotlight once when
+        //  first opening message details.
+        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightStatusProvider
+            .toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
+        if user.hasAtLeastOneNonStandardToolbarAction,
+           user.toolbarActionsIsStandard,
+           !ifCurrentUserAlreadySeenTheSpotlight {
+            return true
+        }
+        return false
+    }
+
+    func setToolbarCustomizeSpotlightViewIsShown() {
+        userIntroductionProgressProvider.userHasSeenSpotlight(for: .toolbarCustomization)
+        var ids = toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds
+        ids.append(user.userID.rawValue)
+        toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
         let hasMessages = !self.messagesDataSource.isEmpty
@@ -411,6 +449,21 @@ class ConversationViewModel {
             }
         }
     }
+
+    func searchForScheduled(conversation: ConversationEntity? = nil,
+                            displayAlert: @escaping (Int) -> Void,
+                            continueAction: @escaping () -> Void) {
+        let conversationToCheck = conversation ?? self.conversation
+        guard conversationToCheck.contains(of: .scheduled) else {
+            continueAction()
+            return
+        }
+        let scheduledNum = messagesDataSource
+            .compactMap { $0.message }
+            .filter { $0.contains(location: .scheduled) }
+            .count
+        displayAlert(scheduledNum)
+    }
 }
 
 // MARK: - Actions
@@ -491,7 +544,7 @@ extension ConversationViewModel {
         }
     }
 
-    func handleToolBarAction(_ action: MailboxViewModel.ActionTypes) {
+    func handleToolBarAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .delete:
             conversationService.deleteConversations(with: [conversation.conversationID],
@@ -501,7 +554,7 @@ extension ConversationViewModel {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-        case .markAsRead:
+        case .markRead:
             conversationService.markAsRead(
                 conversationIDs: [conversation.conversationID],
                 labelID: labelId
@@ -511,7 +564,7 @@ extension ConversationViewModel {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-        case .markAsUnread:
+        case .markUnread:
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId) { [weak self] result in
                 guard let self = self else { return }
@@ -570,47 +623,84 @@ extension ConversationViewModel {
                                                     completion: fetchEvents)
         case .inbox, .spamMoveToInbox:
             moveAction(Message.Location.inbox)
-        default:
+        case .print, .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
+             .viewInLightMode, .replyOrReplyAll, .saveAsPDF, .dismiss, .forward,
+             .labelAs, .moveTo, .reply, .replyAll, .star, .unstar, .toolbarCustomization,
+             .more:
             break
         }
         completion()
     }
+}
 
-    func searchForScheduled(conversation: ConversationEntity? = nil,
-                            displayAlert: @escaping (Int) -> Void,
-                            continueAction: @escaping () -> Void) {
-        let conversationToCheck = conversation ?? self.conversation
-        guard conversationToCheck.contains(of: .scheduled) else {
-            continueAction()
-            return
-        }
-        let scheduledNum = messagesDataSource
-            .compactMap { $0.message }
-            .filter { $0.contains(location: .scheduled) }
-            .count
-        displayAlert(scheduledNum)
-    }
+// MARK: - Toolbar action functions
+extension ConversationViewModel: ToolbarCustomizationActionHandler {
 
-    func toolbarActionTypes() -> [MailboxViewModel.ActionTypes] {
-        var types: [MailboxViewModel.ActionTypes] = [
-            .markAsUnread,
-            .trash,
-            .delete,
-            .moveTo,
-            .labelAs,
-            .more
-        ]
+    func toolbarActionTypes() -> [MessageViewActionSheetAction] {
         let originMessageListIsSpamOrTrash = [
             Message.Location.spam.labelID,
             Message.Location.trash.labelID
         ].contains(labelId)
+        let isInTrashOrSpam = originMessageListIsSpamOrTrash || areAllMessagesInThreadInTheTrash || areAllMessagesInThreadInSpam
+        let isConversationRead = !conversation.isUnread(labelID: labelId)
+        let isConversationStarred = conversation.starred
+        let isInArchive = conversation.contains(of: .archive)
+        let isInTrash = areAllMessagesInThreadInTheTrash
+        let isInSpam = conversation.contains(of: .spam)
 
-        if areAllMessagesInThreadInTheTrash || areAllMessagesInThreadInSpam || originMessageListIsSpamOrTrash {
-            types.removeAll(where: { $0 == .trash })
-        } else {
-            types.removeAll(where: { $0 == .delete })
+        let actions = toolbarActionProvider.conversationToolbarActions
+            .addMoreActionToTheLastLocation()
+
+        return replaceActionsLocally(actions: actions,
+                                     isInSpam: isInSpam || isInTrashOrSpam,
+                                     isInTrash: isInTrash || isInTrashOrSpam,
+                                     isInArchive: isInArchive,
+                                     isRead: isConversationRead,
+                                     isStarred: isConversationStarred,
+                                     hasMultipleRecipients: false)
+    }
+
+    func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
+        let actionSheetViewModel = ConversationActionSheetViewModel(
+            title: conversation.subject,
+            isUnread: conversation.isUnread(labelID: labelId),
+            isStarred: conversation.starred) { location in
+                areAllMessagesIn(location: location)
+            }
+        let isInSpam = conversation.contains(of: .spam)
+        let isInArchive = conversation.contains(of: .archive)
+        let isInTrash = areAllMessagesInThreadInTheTrash
+        let isConversationRead = !conversation.isUnread(labelID: labelId)
+        let isConversationStarred = conversation.starred
+
+        return replaceActionsLocally(actions: actionSheetViewModel.items,
+                                     isInSpam: isInSpam,
+                                     isInTrash: isInTrash,
+                                     isInArchive: isInArchive,
+                                     isRead: isConversationRead,
+                                     isStarred: isConversationStarred,
+                                     hasMultipleRecipients: false)
+    }
+
+    func saveToolbarAction(actions: [MessageViewActionSheetAction],
+                           completion: ((NSError?) -> Void)?) {
+        let preference: ToolbarActionPreference = .init(
+            conversationActions: actions,
+            messageActions: nil,
+            listViewActions: nil
+        )
+        saveToolbarActionUseCase
+            .callbackOn(.main)
+            .executionBlock(
+            params: .init(preference: preference)
+        ) { result in
+            switch result {
+            case .success:
+                completion?(nil)
+            case let .failure(error):
+                completion?(error as NSError)
+            }
         }
-        return types
     }
 }
 

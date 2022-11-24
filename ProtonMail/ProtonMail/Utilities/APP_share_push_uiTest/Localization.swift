@@ -1267,6 +1267,7 @@ class LocalizedString {
     lazy var _action_sheet_action_title_phishing = NSLocalizedString("Report phishing", comment: "")
     lazy var _action_sheet_action_title_inbox = NSLocalizedString("Move to inbox", comment: "")
     lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
+    lazy var _action_sheet_action_title_toolbar_customize = NSLocalizedString("Customize toolbar", comment: "")
 
     lazy var _move_to_done_button_title = NSLocalizedString("Done", comment: "")
     lazy var _move_to_title = NSLocalizedString("Move to", comment: "")
@@ -1508,6 +1509,25 @@ class LocalizedString {
     lazy var _encrypted_search_disable_alert_button_delete = NSLocalizedString("Okay", comment: "Title for the alert button to disable content search.")
     lazy var _encrypted_search_disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
     lazy var _encrypted_search_message_count = NSLocalizedString("Downloading message %1d out of %2d", comment: "The text for the number of downloaded messages.")
+
+    lazy var _toolbar_customize_header_title_of_first_section = NSLocalizedString("Toolbar actions (select up to 5)", comment: "The title of the section header in the toolbar customize view.")
+    lazy var _toolbar_customize_header_title_of_second_section = NSLocalizedString("Available actions", comment: "The title of the section header in the toolbar customize view.")
+
+    lazy var _toolbar_customize_info_title: String = NSLocalizedString("You can choose and rearrange the actions in your toolbar", comment: "The title of the info bubble view in toolbar customization view.")
+    lazy var _toolbar_customize_reset_alert_title: String = NSLocalizedString("Reset to default?", comment: "The title of the alert after tapping reset in toolbar customization view.")
+    lazy var _toolbar_customize_reset_alert_content: String = NSLocalizedString("The actions in the toolbar will be reset to default", comment: "The content of the alert after tapping reset in toolbar customization view.")
+    lazy var _toolbar_customize_reset_alert_ok_title: String = NSLocalizedString("Confirm", comment: "The title of the action of the alert after tapping reset in toolbar customization view.")
+    lazy var _toolbar_customize_reset_button__title: String = NSLocalizedString("Reset to default", comment: "The title of the reset button in toolbar customization view.")
+
+    lazy var _toolbar_customize_setting_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the item in the App settings section of the device setting view.")
+    lazy var _toolbar_setting_segment_title_message: String = NSLocalizedString("Message", comment: "The title of the first item in the segment control of the Customize toolbar setting view.")
+    lazy var _toolbar_setting_info_title_message: String = NSLocalizedString("This toolbar is visible when reading a message.", comment: "The title of the info label in the first segment of the Customize toolbar setting view.")
+    lazy var _toolbar_setting_segment_title_inbox: String = NSLocalizedString("Inbox", comment: "The title of the second item in the segment control of the Customize toolbar setting view.")
+    lazy var _toolbar_setting_info_title_inbox: String = NSLocalizedString("This toolbar appears when selecting multiple messages in your inbox.", comment: "The title of the info label in the second segment of the Customize toolbar setting view.")
+    lazy var _toolbar_setting_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the Customize toolbar setting view.")
+
+    lazy var _toolbar_spotlight_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the Customize toolbar spotlight view.")
+    lazy var _toolbar_spotlight_content: String = NSLocalizedString("You can now choose and rearrange the actions in this bar", comment: "The content of the Customize toolbar spotlight view.")
 
     var _title_notification_action_mark_as_read: String {
         L11n.PushNotificationAction.mark_as_read
