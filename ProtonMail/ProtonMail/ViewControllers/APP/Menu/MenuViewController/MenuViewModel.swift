@@ -87,7 +87,8 @@ final class MenuViewModel: NSObject {
         let defaultInfo = MoreItemsInfo(userIsMember: nil,
                                         subscriptionAvailable: subscriptionAvailable,
                                         isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                                        isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
+                                        isTouchIDEnabled: userCachedStatus.isTouchIDEnabled,
+                                        isReferralEligible: usersManager.firstUser?.userInfo.referralProgram?.eligible ?? false)
         self.moreItems = Self.moreItems(for: defaultInfo)
         super.init()
     }
@@ -493,7 +494,8 @@ extension MenuViewModel {
         let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userInfo.isMember ?? false,
                                           subscriptionAvailable: self.subscriptionAvailable,
                                           isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                                          isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
+                                          isTouchIDEnabled: userCachedStatus.isTouchIDEnabled,
+                                          isReferralEligible: currentUser?.userInfo.referralProgram?.eligible ?? false)
         let newMore = Self.moreItems(for: moreItemsInfo)
         if newMore.count != self.moreItems.count {
             self.moreItems = newMore
@@ -636,6 +638,7 @@ extension MenuViewModel {
         var subscriptionAvailable: Bool
         var isPinCodeEnabled: Bool
         var isTouchIDEnabled: Bool
+        var isReferralEligible: Bool
     }
 
     static func inboxItems() -> [MenuLabel] {
@@ -668,6 +671,10 @@ extension MenuViewModel {
 
         if !info.isPinCodeEnabled, !info.isTouchIDEnabled {
             newMore = newMore.filter { $0.location != .lockapp }
+        }
+
+        if !info.isReferralEligible {
+            newMore = newMore.filter { $0.location != .referAFriend }
         }
 
         return newMore
