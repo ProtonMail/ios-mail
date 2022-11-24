@@ -144,8 +144,8 @@ class LocalizedString {
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
-    /// "The draft cache is broken please try again"
-    lazy var _message_draft_cache_is_broken = NSLocalizedString("The draft cache is broken. Please try again.", comment: "Description")
+    /// "Email failed to send. Message saved as draft."
+    lazy var _email_failed_to_send = NSLocalizedString("Email failed to send. Message saved as draft.", comment: "Description")
 
     lazy var _folder_no_message = NSLocalizedString("Nothing to see here", comment: "The title will be shown when foler doesnt have emails")
     lazy var _folder_is_empty = NSLocalizedString("This folder is empty", comment: "The subtitle will be shown when folder doesnt have emails")
@@ -586,9 +586,6 @@ class LocalizedString {
 
     /// "Unable to send the email"
     lazy var unable_to_send_the_email = NSLocalizedString("Unable to send the email", comment: "error when sending the message")
-
-    /// "The draft format incorrectly sending failed!"
-    lazy var _the_draft_incorrectly_sending_failed = NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message")
 
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")

@@ -46,7 +46,7 @@ extension MessageDataService {
             get {
                 switch self {
                 case .bad_draft:
-                    return LocalString._the_draft_incorrectly_sending_failed
+                    return LocalString._email_failed_to_send
                 default:
                     break
                 }
