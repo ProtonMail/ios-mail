@@ -59,7 +59,7 @@ extension NSError {
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._message_draft_cache_is_broken
+        hud.detailsLabel.text = LocalString._email_failed_to_send
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.offset.y = 250.0
