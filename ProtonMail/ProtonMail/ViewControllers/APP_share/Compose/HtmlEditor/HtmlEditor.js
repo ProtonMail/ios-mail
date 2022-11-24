@@ -25,7 +25,7 @@ var mutationObserver = new MutationObserver(function(events) {
 
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
-
+        event.target.setAttribute("dir", "auto");
         // check if removed image was our inline embedded attachment
         for (var j = 0; j < event.removedNodes.length; j++) {
             var removedNode = event.removedNodes[j];
