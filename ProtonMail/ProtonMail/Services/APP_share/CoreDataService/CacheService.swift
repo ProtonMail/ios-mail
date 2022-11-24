@@ -617,29 +617,36 @@ extension CacheService {
 
 // MARK: - contact related functions
 extension CacheService {
-    func addNewContact(serverResponse: [[String: Any]], shouldFixName: Bool = false, objectID: String? = nil, completion: (([Contact]?, NSError?) -> Void)?) {
+    func addNewContact(
+        serverResponse: [[String: Any]],
+        shouldFixName: Bool = false,
+        localContactObjectID: String? = nil,
+        completion: (([Contact]?, NSError?) -> Void)?
+    ) {
         let context = coreDataService.makeNewBackgroundContext()
         context.performAndWait { [weak self] in
             guard let self = self else { return }
             do {
-                if let id = objectID,
+                // Delete the temporary contact that is created locally.
+                if let id = localContactObjectID,
                    let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                   let managedObject = try? context.existingObject(with: objectID),
-                   let contact = managedObject as? Contact,
-                   let contactID = serverResponse[0]["ID"] as? String {
-                    contact.contactID = contactID
+                   let managedObject = try? context.existingObject(with: objectID) {
+                    context.delete(managedObject)
                 }
 
-                let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                fromJSONArray: serverResponse,
-                                                                in: context) as? [Contact]
-                contacts?.forEach { (c) in
-                    c.userID = self.userID.rawValue
+                let contacts = try GRTJSONSerialization.objects(
+                    withEntityName: Contact.Attributes.entityName,
+                    fromJSONArray: serverResponse,
+                    in: context
+                ) as? [Contact]
+
+                contacts?.forEach { contact in
+                    contact.userID = self.userID.rawValue
                     if shouldFixName {
-                        _ = c.fixName(force: true)
+                        _ = contact.fixName(force: true)
                     }
-                    if let emails = c.emails.allObjects as? [Email] {
-                        emails.forEach { (e) in
+                    if let emails = contact.emails.allObjects as? [Email] {
+                        emails.forEach { e in
                             e.userID = self.userID.rawValue
                         }
                     }
