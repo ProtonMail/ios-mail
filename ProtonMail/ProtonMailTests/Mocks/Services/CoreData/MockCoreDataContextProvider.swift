@@ -97,6 +97,10 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     }
 
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
+        if let url = URL(string: urlString), url.scheme == "x-coredata" {
+            let psc = container.persistentStoreCoordinator
+            return psc.managedObjectID(forURIRepresentation: url)
+        }
         return nil
     }
 
