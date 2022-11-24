@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -127,8 +127,8 @@
                         <constraint firstAttribute="height" constant="48" id="uVi-Sr-6KG"/>
                     </constraints>
                 </view>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ghjg" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6W7-2D-2Lf">
-                    <rect key="frame" x="0.0" y="192" width="375" height="48"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Subject" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6W7-2D-2Lf">
+                    <rect key="frame" x="0.0" y="192" width="367" height="48"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <accessibility key="accessibilityConfiguration" identifier="SubjectTextField"/>
                     <constraints>
@@ -170,7 +170,7 @@
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="top" secondItem="aWx-4S-hlX" secondAttribute="bottom" id="c4T-qO-1T0"/>
                 <constraint firstItem="dnv-By-JFr" firstAttribute="top" secondItem="7aF-E7-jWA" secondAttribute="bottom" id="d8W-SZ-6V8"/>
                 <constraint firstItem="lId-3P-n4a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oVi-aI-KHl"/>
-                <constraint firstAttribute="trailing" secondItem="6W7-2D-2Lf" secondAttribute="trailing" id="riS-Pg-jLT"/>
+                <constraint firstAttribute="trailing" secondItem="6W7-2D-2Lf" secondAttribute="trailing" constant="8" id="riS-Pg-jLT"/>
                 <constraint firstItem="kJd-U5-xJL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wTx-4N-M62"/>
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yfs-VQ-XKu"/>
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="top" secondItem="dnv-By-JFr" secondAttribute="bottom" id="yms-be-pcw"/>
