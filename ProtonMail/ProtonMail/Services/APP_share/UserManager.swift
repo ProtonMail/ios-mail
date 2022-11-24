@@ -624,6 +624,23 @@ extension UserManager {
         let usedSpace = self.userInfo.usedSpace
         return usedSpace >= maxSpace
     }
+
+    var hasAtLeastOneNonStandardToolbarAction: Bool {
+        guard let users = parentManager else {
+            return false
+        }
+        return users.users.contains(where: { user in
+            user.userInfo.messageToolbarActions.isCustom ||
+            user.userInfo.listToolbarActions.isCustom ||
+            user.userInfo.conversationToolbarActions.isCustom
+        })
+    }
+
+    var toolbarActionsIsStandard: Bool {
+        return !userInfo.messageToolbarActions.isCustom &&
+            !userInfo.listToolbarActions.isCustom &&
+            !userInfo.conversationToolbarActions.isCustom
+    }
 }
 
 extension UserManager: ViewModeDataSource {

@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
+
 struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
@@ -39,6 +41,9 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
             items.append(contentsOf: [.trash, .spamMoveToInbox, .delete, .moveTo])
         } else {
             items.append(contentsOf: [.trash, .archive, .spam, .moveTo])
+        }
+        if UserInfo.isToolbarCustomizationEnable {
+            items.append(.toolbarCustomization)
         }
     }
 }

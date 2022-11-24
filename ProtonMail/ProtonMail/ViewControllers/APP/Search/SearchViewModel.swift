@@ -42,11 +42,11 @@ protocol SearchVMProtocol: AnyObject {
     func addSelected(messageID: String)
     func removeSelected(messageID: String)
     func removeAllSelectedIDs()
-    func getActionBarActions() -> [MailboxViewModel.ActionTypes]
+    func getActionBarActions() -> [MessageViewActionSheetAction]
     func getActionSheetViewModel() -> MailListActionSheetViewModel
-    func handleBarActions(_ action: MailboxViewModel.ActionTypes)
+    func handleBarActions(_ action: MessageViewActionSheetAction)
     func deleteSelectedMessages()
-    func handleActionSheetAction(_ action: MailListSheetAction)
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction)
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void)
@@ -271,10 +271,10 @@ extension SearchViewModel: SearchVMProtocol {
         self.selectedIDs.removeAll()
     }
 
-    func getActionBarActions() -> [MailboxViewModel.ActionTypes] {
+    func getActionBarActions() -> [MessageViewActionSheetAction] {
         // Follow all mail folder
         let isAnyMessageRead = selectionContainsReadMessages()
-        return [isAnyMessageRead ? .markAsUnread : .markAsRead, .trash, .moveTo, .labelAs, .more]
+        return [isAnyMessageRead ? .markUnread : .markRead, .trash, .moveTo, .labelAs, .more]
     }
 
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
@@ -283,28 +283,22 @@ extension SearchViewModel: SearchVMProtocol {
                                               viewMode: .singleMessage))
     }
 
-    func handleBarActions(_ action: MailboxViewModel.ActionTypes) {
+    func handleBarActions(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .markAsRead:
+        case .markRead:
             self.mark(messages: selectedMessages, unread: false)
-        case .markAsUnread:
+        case .markUnread:
             self.mark(messages: selectedMessages, unread: true)
         case .trash:
             self.move(toLabel: .trash)
         case .delete:
             self.deleteSelectedMessages()
-        case .moveTo, .labelAs, .more:
+        default:
             break
         }
     }
 
-    func deleteSelectedMessages() {
-        messageService.move(messages: selectedMessages,
-                            from: [self.labelID],
-                            to: Message.Location.trash.labelID)
-    }
-
-    func handleActionSheetAction(_ action: MailListSheetAction) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .unstar:
             handleUnstarAction()
@@ -314,16 +308,21 @@ extension SearchViewModel: SearchVMProtocol {
             handleMarkReadAction()
         case .markUnread:
             handleMarkUnreadAction()
-        case .remove:
+        case .trash:
             self.move(toLabel: .trash)
-        case .moveToArchive:
+        case .archive:
             self.move(toLabel: .archive)
-        case .moveToSpam:
+        case .spam:
             self.move(toLabel: .spam)
         case .dismiss, .delete, .labelAs, .moveTo:
             break
-        case .moveToInbox:
+        case .inbox:
             self.move(toLabel: .inbox)
+        case .toolbarCustomization:
+            // TODO: Add implementation
+            break
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+            break
         }
     }
 
@@ -357,6 +356,12 @@ extension SearchViewModel: SearchVMProtocol {
         let ids = Array(selectedIDs)
         return messages
             .filter { ids.contains($0.messageID.rawValue) && $0.contains(location: .scheduled) }
+    }
+
+    func deleteSelectedMessages() {
+        messageService.move(messages: selectedMessages,
+                            from: [self.labelID],
+                            to: Message.Location.trash.labelID)
     }
 }
 

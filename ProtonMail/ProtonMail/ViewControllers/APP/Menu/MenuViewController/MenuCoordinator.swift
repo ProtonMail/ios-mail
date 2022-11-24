@@ -55,6 +55,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     var pendingActionAfterDismissal: (() -> Void)?
     private var mailboxCoordinator: MailboxCoordinator?
     let sideMenu: PMSideMenuController
+    private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
 
     init(services: ServiceFactory,
          pushService: PushNotificationService,
@@ -358,6 +359,9 @@ extension MenuCoordinator {
         labelType: PMLabelType
     ) -> MailboxViewModel {
         let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
+        guard let usersManager = userManager.parentManager else {
+            fatalError("UsersManger should not be nil")
+        }
         return MailboxViewModel(
             labelID: labelID,
             label: labelInfo,
@@ -374,6 +378,10 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
+            toolbarActionProvider: userManager,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(
+                dependencies: .init(user: userManager)
+            ),
             totalUserCountClosure: { [weak self] in
                 return self?.usersManager.count ?? 0
             }
@@ -424,7 +432,8 @@ extension MenuCoordinator {
             viewController: view,
             viewModel: viewModel,
             services: self.services,
-            contextProvider: coreDataService
+            contextProvider: coreDataService,
+            infoBubbleViewStatusProvider: userCachedStatus
         )
         mailbox.start()
         if let deeplink = deepLink {
@@ -450,8 +459,19 @@ extension MenuCoordinator {
         let navigation = UINavigationController()
         navigation.modalPresentationStyle = .fullScreen
 
-        let settings = SettingsDeviceCoordinator(navigationController: navigation, services: self.services)
+        let usersManager = services.get(by: UsersManager.self)
+        guard let userManager = usersManager.firstUser else {
+            return
+        }
+
+        let settings = SettingsDeviceCoordinator(
+            navigationController: navigation,
+            user: userManager,
+            usersManager: usersManager,
+            services: services
+        )
         settings.start()
+        self.settingsDeviceCoordinator = settings
 
         guard let sideMenu = self.viewController?.sideMenuController else {
             return

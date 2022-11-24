@@ -42,6 +42,13 @@ extension UserInfo {
         }
     }
 
+    static var isToolbarCustomizationEnable: Bool {
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        }
+        return false
+    }
+
     static var isImageProxyAvailable: Bool {
         true
     }

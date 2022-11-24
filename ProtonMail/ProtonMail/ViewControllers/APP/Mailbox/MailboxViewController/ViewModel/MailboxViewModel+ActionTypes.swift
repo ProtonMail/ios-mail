@@ -22,97 +22,118 @@
 
 import Foundation
 import ProtonCore_UIFoundations
+import ProtonCore_DataModel
 
-extension MailboxViewModel {
-    /// This enum is used to indicate what types of action should this view to show in the action bar as actions.
-    enum ActionTypes {
-        case markAsRead
-        case markAsUnread
-        case labelAs
-        case trash
-        /// permanently delete the message
-        case delete
-        case moveTo
-        case more
-
-        var iconImage: ImageAsset.Image {
-            switch self {
-            case .delete:
-                return IconProvider.trashCross
-            case .trash:
-                return IconProvider.trash
-            case .moveTo:
-                return IconProvider.folderArrowIn
-            case .more:
-                return IconProvider.threeDotsHorizontal
-            case .labelAs:
-                return IconProvider.tag
-            case .markAsRead:
-                return IconProvider.envelopeOpen
-            case .markAsUnread:
-                return IconProvider.envelopeDot
-            }
-        }
-
-        var accessibilityIdentifier: String {
-            switch self {
-            case .delete:
-                return "PMToolBarView.deleteButton"
-            case .trash:
-                return "PMToolBarView.trashButton"
-            case .moveTo:
-                return "PMToolBarView.moveToButton"
-            case .more:
-                return "PMToolBarView.moreButton"
-            case .labelAs:
-                return "PMToolBarView.labelAsButton"
-            case .markAsRead:
-                return "PMToolBarView.readButton"
-            case .markAsUnread:
-                return "PMToolBarView.unreadButton"
-            }
-        }
-    }
-
-    func getActionBarActions() -> [ActionTypes] {
+extension MailboxViewModel: ToolbarCustomizationActionHandler {
+    // Move to trash becomes delete permanently in "Trash" and "Spam".
+    // Move to spam becomes Not spam (move to inbox) in "Spam".
+    // Archive becomes move to inbox in "Archive" and "Trash".
+    func actionsForToolbar() -> [MessageViewActionSheetAction] {
         let isAnyMessageRead = selectionContainsReadItems()
+        let isAnyMessageStarred = containsStarMessages(messageIDs: selectedIDs)
+        let isInSpam = labelID == Message.Location.spam.labelID
+        let isInTrash = labelID == Message.Location.trash.labelID
+        let isInArchive = labelID == Message.Location.archive.labelID
 
-        let standardActions: [ActionTypes] = [
-            isAnyMessageRead ? .markAsUnread : .markAsRead,
-            .trash,
-            .moveTo,
-            .labelAs,
-            .more
-        ]
+        let actions = toolbarActionProvider.listViewToolbarActions
+            .addMoreActionToTheLastLocation()
+        return replaceActionsLocally(actions: actions,
+                                     isInSpam: isInSpam,
+                                     isInTrash: isInTrash,
+                                     isInArchive: isInArchive,
+                                     isRead: isAnyMessageRead,
+                                     isStarred: isAnyMessageStarred,
+                                     hasMultipleRecipients: false)
+    }
 
-        //default inbox
-        if let type = Message.Location(self.labelID) {
-            switch type {
-            case .inbox, .starred, .archive, .allmail, .sent, .draft, .scheduled:
-                return standardActions
-            case .spam, .trash:
-                return [.delete, .moveTo, .labelAs, .more]
+    func toolbarActionTypes() -> [MessageViewActionSheetAction] {
+        let isAnyMessageRead = selectionContainsReadItems()
+        let isAnyStarMessages = containsStarMessages(messageIDs: selectedIDs)
+        let isInSpam = labelID == Message.Location.spam.labelID
+        let isInTrash = labelID == Message.Location.trash.labelID
+        let isInArchive = labelID == Message.Location.archive.labelID
+
+        let actions = toolbarActionProvider.listViewToolbarActions
+            .addMoreActionToTheLastLocation()
+        return replaceActionsLocally(actions: actions,
+                                     isInSpam: isInSpam,
+                                     isInTrash: isInTrash,
+                                     isInArchive: isInArchive,
+                                     isRead: isAnyMessageRead,
+                                     isStarred: isAnyStarMessages,
+                                     hasMultipleRecipients: false)
+    }
+
+    func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
+        let isAnyMessageRead = selectionContainsReadItems()
+        let isAnyStarMessages = containsStarMessages(messageIDs: selectedIDs)
+        let isInSpam = labelID == Message.Location.spam.labelID
+        let isInTrash = labelID == Message.Location.trash.labelID
+        let isInArchive = labelID == Message.Location.archive.labelID
+
+        let allItems = actionSheetViewModel.items.map { $0.type }
+        return replaceActionsLocally(actions: allItems,
+                                     isInSpam: isInSpam,
+                                     isInTrash: isInTrash,
+                                     isInArchive: isInArchive,
+                                     isRead: isAnyMessageRead,
+                                     isStarred: isAnyStarMessages,
+                                     hasMultipleRecipients: false)
+    }
+
+    func saveToolbarAction(actions: [MessageViewActionSheetAction],
+                           completion: ((NSError?) -> Void)?) {
+        let preference: ToolbarActionPreference = .init(
+            conversationActions: nil,
+            messageActions: nil,
+            listViewActions: actions
+        )
+        saveToolbarActionUseCase
+            .callbackOn(.main)
+            .executionBlock(
+            params: .init(preference: preference)
+        ) { result in
+            switch result {
+            case .success:
+                completion?(nil)
+            case let .failure(error):
+                completion?(error as NSError)
             }
-        }
-        if self.labelProvider.getLabel(by: labelID) != nil {
-            return standardActions
-        } else {
-            return []
         }
     }
 
-    func handleBarAction(_ action: ActionTypes) {
+    func handleBarActions(_ action: MessageViewActionSheetAction, selectedIDs: Set<String>) {
         switch action {
-        case .markAsRead:
-            self.mark(IDs: selectedIDs, unread: false)
-        case .markAsUnread:
-            self.mark(IDs: selectedIDs, unread: true)
+        case .markRead:
+            mark(IDs: selectedIDs, unread: false)
+        case .markUnread:
+            mark(IDs: selectedIDs, unread: true)
         case .trash:
-            self.moveSelectedIDs(from: labelID, to: Message.Location.trash.labelID)
+            moveSelectedIDs(from: labelID,
+                            to: Message.Location.trash.labelID)
         case .delete:
-            self.deleteSelectedIDs()
-        case .moveTo, .labelAs, .more:
-            break
+            deleteSelectedIDs()
+        case .inbox, .spamMoveToInbox:
+            moveSelectedIDs(from: labelID,
+                            to: Message.Location.inbox.labelID)
+        case .star:
+            label(IDs: selectedIDs,
+                  with: Message.Location.starred.labelID,
+                  apply: true)
+        case .unstar:
+            label(IDs: selectedIDs,
+                  with: Message.Location.starred.labelID,
+                  apply: false)
+        case .spam:
+            moveSelectedIDs(from: labelID,
+                            to: Message.Location.spam.labelID)
+        case .archive:
+            moveSelectedIDs(from: labelID,
+                            to: Message.Location.archive.labelID)
+        case .moveTo, .labelAs, .more, .reply, .replyOrReplyAll, .replyAll, .forward,
+             .print, .viewHeaders, .viewHTML, .reportPhishing, .dismiss,
+             .viewInLightMode, .viewInDarkMode, .toolbarCustomization, .saveAsPDF:
+            assertionFailure("should not reach here")
         }
     }
 }

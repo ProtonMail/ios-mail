@@ -702,6 +702,14 @@ extension UsersManager {
             return
         }
     }
+
+    func generatePairOfApiServicesAndUserInfos() -> [UserID: (APIService, UserInfo)] {
+        var usersApiAndUserInfo: [UserID: (APIService, UserInfo)] = [:]
+        for user in users {
+            usersApiAndUserInfo[user.userID] = (user.apiService, user.userInfo)
+        }
+        return usersApiAndUserInfo
+    }
 }
 
 extension UsersManager: APIServiceDelegate {

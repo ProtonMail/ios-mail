@@ -49,6 +49,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .moveTo,
                                                                .saveAsPDF,
                                                                .print,
+                                                               .toolbarCustomization,
                                                                .viewHeaders,
                                                                .viewHTML,
                                                                .reportPhishing]
@@ -74,6 +75,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
@@ -100,6 +102,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
         // check isBodyDecryptable
@@ -124,6 +127,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
         // check includeStarring
@@ -152,6 +156,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .moveTo,
                                                                .saveAsPDF,
                                                                .print,
+                                                               .toolbarCustomization,
                                                                .viewHeaders,
                                                                .viewHTML,
                                                                .reportPhishing]
@@ -176,6 +181,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
@@ -202,6 +208,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
@@ -228,6 +235,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
         // check isBodyDecryptable
@@ -256,6 +264,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .moveTo,
                                                                .saveAsPDF,
                                                                .print,
+                                                               .toolbarCustomization,
                                                                .viewHeaders,
                                                                .viewHTML,
                                                                .reportPhishing]
@@ -280,6 +289,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
@@ -306,6 +316,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
@@ -332,6 +343,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .reportPhishing]
         // check isBodyDecryptable
@@ -361,6 +373,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .moveTo,
                                                                .saveAsPDF,
                                                                .print,
+                                                               .toolbarCustomization,
                                                                .viewHeaders,
                                                                .viewHTML,
                                                                .reportPhishing]
@@ -388,6 +401,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .moveTo,
                                                                 .saveAsPDF,
                                                                 .print,
+                                                                .toolbarCustomization,
                                                                 .viewHeaders,
                                                                 .viewHTML,
                                                                 .reportPhishing]
@@ -418,6 +432,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
             .moveTo,
             .saveAsPDF,
             .print,
+            .toolbarCustomization,
             .viewHeaders,
             .viewHTML,
             .reportPhishing
@@ -459,6 +474,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
             .moveTo,
             .saveAsPDF,
             .print,
+			.toolbarCustomization,
             .viewHeaders,
             .viewHTML,
             .reportPhishing
