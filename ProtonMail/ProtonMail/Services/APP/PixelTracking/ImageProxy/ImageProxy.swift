@@ -118,14 +118,14 @@ class ImageProxy: LifetimeTrackable {
             }
         }
 
-        dispatchGroup.notify(queue: processingQueue) {
+        dispatchGroup.notify(queue: processingQueue) { [weak delegate] in
             let summary = TrackerProtectionSummary(trackers: trackers)
             let output = ImageProxyOutput(
                 failedUnsafeRemoteSrcs: failedUnsafeRemoteSrcs,
                 safeBase64Srcs: safeBase64Srcs,
                 summary: summary
             )
-            delegate.imageProxy(self, didFinishWithOutput: output)
+            delegate?.imageProxy(self, didFinishWithOutput: output)
         }
 
         fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
