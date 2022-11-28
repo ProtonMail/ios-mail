@@ -1,13 +1,13 @@
 {
   "name": "Sentry",
-  "version": "7.8.0",
+  "version": "7.31.2",
   "summary": "Sentry client for cocoa",
   "homepage": "https://github.com/getsentry/sentry-cocoa",
   "license": "mit",
   "authors": "Sentry",
   "source": {
     "git": "https://github.com/getsentry/sentry-cocoa.git",
-    "tag": "7.8.0"
+    "tag": "7.31.2"
   },
   "platforms": {
     "ios": "9.0",
@@ -22,8 +22,15 @@
     "z",
     "c++"
   ],
-  "xcconfig": {
-    "GCC_ENABLE_CPP_EXCEPTIONS": "YES"
+  "pod_target_xcconfig": {
+    "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
+    "CLANG_CXX_LANGUAGE_STANDARD": "c++14",
+    "CLANG_CXX_LIBRARY": "libc++"
+  },
+  "watchos": {
+    "pod_target_xcconfig": {
+      "OTHER_LDFLAGS": "$(inherited) -framework WatchKit"
+    }
   },
   "default_subspecs": [
     "Core"
@@ -32,10 +39,21 @@
     {
       "name": "Core",
       "source_files": [
-        "Sources/Sentry/**/*.{h,m,c}",
-        "Sources/SentryCrash/**/*.{h,m,mm,c,cpp}"
+        "Sources/Sentry/**/*.{h,hpp,m,mm,c,cpp}",
+        "Sources/SentryCrash/**/*.{h,hpp,m,mm,c,cpp}"
       ],
       "public_header_files": "Sources/Sentry/Public/*.h"
+    },
+    {
+      "name": "HybridSDK",
+      "source_files": [
+        "Sources/Sentry/**/*.{h,hpp,m,mm,c,cpp}",
+        "Sources/SentryCrash/**/*.{h,hpp,m,mm,c,cpp}"
+      ],
+      "public_header_files": [
+        "Sources/Sentry/Public/*.h",
+        "Sources/Sentry/include/PrivateSentrySDKOnly.h"
+      ]
     }
   ]
 }

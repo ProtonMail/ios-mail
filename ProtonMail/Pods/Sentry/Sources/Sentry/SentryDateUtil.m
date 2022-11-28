@@ -1,6 +1,5 @@
 #import "SentryDateUtil.h"
 #import "SentryCurrentDate.h"
-#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

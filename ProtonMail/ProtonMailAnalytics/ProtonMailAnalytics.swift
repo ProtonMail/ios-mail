@@ -37,13 +37,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.dsn = self.endPoint
             options.debug = debug
             options.environment = environment
-
-            // Disabling some options to make the report work. Otherwise it does not show in Sentry,
-            // probably because the size limit in Proton's backend is 65kb for each event.
-            // See: https://jira.protontech.ch/browse/INFSUP-682
-            options.enableAutoSessionTracking = false
-            options.attachStacktrace = false
-            options.maxBreadcrumbs = 10
+            options.enableAutoPerformanceTracking = false
         }
         isEnabled = true
     }

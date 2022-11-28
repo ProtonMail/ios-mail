@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -311,6 +312,10 @@ int
 sentrycrashjson_addFloatingPointElement(
     SentryCrashJSONEncodeContext *const context, const char *const name, double value)
 {
+    if (isnan(value)) {
+        return sentrycrashjson_addNullElement(context, name);
+    }
+
     int result = sentrycrashjson_beginElement(context, name);
     unlikely_if(result != SentryCrashJSON_OK) { return result; }
     char buff[50];

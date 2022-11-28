@@ -8,7 +8,9 @@
 {
     NSUInteger indexOfFirstNonSentryFrame = [frames indexOfObjectPassingTest:^BOOL(
         SentryFrame *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-        return ![[obj.package lowercaseString] containsString:@"sentry"];
+        NSString *package = [obj.package lowercaseString];
+        package = [package stringByReplacingOccurrencesOfString:@"users/sentry" withString:@""];
+        return ![package containsString:@"sentry"];
     }];
 
     if (indexOfFirstNonSentryFrame == NSNotFound) {

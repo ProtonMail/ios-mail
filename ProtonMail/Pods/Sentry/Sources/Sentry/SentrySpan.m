@@ -1,7 +1,12 @@
 #import "SentrySpan.h"
 #import "NSDate+SentryExtras.h"
+#import "NSDictionary+SentrySanitize.h"
 #import "SentryCurrentDate.h"
+#import "SentryLog.h"
+#import "SentryMeasurementValue.h"
 #import "SentryNoOpSpan.h"
+#import "SentrySpanId.h"
+#import "SentryTime.h"
 #import "SentryTraceHeader.h"
 #import "SentryTracer.h"
 
@@ -14,16 +19,20 @@ SentrySpan ()
 @implementation SentrySpan {
     NSMutableDictionary<NSString *, id> *_data;
     NSMutableDictionary<NSString *, id> *_tags;
+    BOOL _isFinished;
 }
 
-- (instancetype)initWithTransaction:(SentryTracer *)transaction context:(SentrySpanContext *)context
+- (instancetype)initWithTracer:(SentryTracer *)tracer context:(SentrySpanContext *)context
 {
     if (self = [super init]) {
-        _transaction = transaction;
+        SENTRY_LOG_DEBUG(@"Created span %@ for trace ID %@", context.spanId.sentrySpanIdString,
+            tracer.context.traceId);
+        _tracer = tracer;
         _context = context;
         self.startTimestamp = [SentryCurrentDate date];
         _data = [[NSMutableDictionary alloc] init];
         _tags = [[NSMutableDictionary alloc] init];
+        _isFinished = NO;
     }
     return self;
 }
@@ -36,13 +45,14 @@ SentrySpan ()
 - (id<SentrySpan>)startChildWithOperation:(NSString *)operation
                               description:(nullable NSString *)description
 {
-    if (self.transaction == nil) {
+    if (self.tracer == nil) {
+        SENTRY_LOG_DEBUG(@"No tracer, returning no-op span");
         return [SentryNoOpSpan shared];
     }
 
-    return [self.transaction startChildWithParentId:[self.context spanId]
-                                          operation:operation
-                                        description:description];
+    return [self.tracer startChildWithParentId:[self.context spanId]
+                                     operation:operation
+                                   description:description];
 }
 
 - (void)setDataValue:(nullable id)value forKey:(NSString *)key
@@ -85,6 +95,16 @@ SentrySpan ()
     }
 }
 
+- (void)setMeasurement:(NSString *)name value:(NSNumber *)value
+{
+    [self.tracer setMeasurement:name value:value];
+}
+
+- (void)setMeasurement:(NSString *)name value:(NSNumber *)value unit:(SentryMeasurementUnit *)unit
+{
+    [self.tracer setMeasurement:name value:value unit:unit];
+}
+
 - (NSDictionary<NSString *, id> *)tags
 {
     @synchronized(_tags) {
@@ -94,7 +114,7 @@ SentrySpan ()
 
 - (BOOL)isFinished
 {
-    return self.timestamp != nil;
+    return _isFinished;
 }
 
 - (void)finish
@@ -105,9 +125,14 @@ SentrySpan ()
 - (void)finishWithStatus:(SentrySpanStatus)status
 {
     self.context.status = status;
-    self.timestamp = [SentryCurrentDate date];
-    if (self.transaction != nil) {
-        [self.transaction spanFinished:self];
+    _isFinished = YES;
+    if (self.timestamp == nil) {
+        self.timestamp = [SentryCurrentDate date];
+        SENTRY_LOG_DEBUG(@"Setting span timestamp: %@ at system time %llu", self.timestamp,
+            (unsigned long long)getAbsoluteTime());
+    }
+    if (self.tracer != nil) {
+        [self.tracer spanFinished:self];
     }
 }
 
@@ -130,7 +155,7 @@ SentrySpan ()
 
     @synchronized(_data) {
         if (_data.count > 0) {
-            mutableDictionary[@"data"] = _data.copy;
+            mutableDictionary[@"data"] = [_data.copy sentry_sanitize];
         }
     }
 

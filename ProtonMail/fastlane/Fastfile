@@ -200,6 +200,13 @@ platform :ios do
 
     build_release_app
 
+    sentry_upload_dsym(
+      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      org_slug: ENV["SENTRY_ORG"],
+      project_slug: ENV["SENTRY_PROJECT"],
+      url: ENV["SENTRY_URL"]
+    )
+
     upload_to_testflight(
       api_key: api_key,
       team_name: "Proton Technologies AG",
@@ -231,6 +238,13 @@ platform :ios do
     end
 
     build_enterprise_app
+
+    sentry_upload_dsym(
+      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      org_slug: ENV["SENTRY_ORG"],
+      project_slug: ENV["SENTRY_PROJECT"],
+      url: ENV["SENTRY_URL"]
+    )
 
     branchName = git_branch
     lastGitCommitHash = last_git_commit[:commit_hash]

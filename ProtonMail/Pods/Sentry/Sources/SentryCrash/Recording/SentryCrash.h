@@ -24,8 +24,6 @@
 // THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "SentryCrashMonitorType.h"
 #import "SentryCrashReportFilter.h"
 #import "SentryCrashReportWriter.h"
@@ -42,6 +40,8 @@ typedef enum {
     SentryCrashCDeleteOnSucess,
     SentryCrashCDeleteAlways
 } SentryCrashCDeleteBehavior;
+
+static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
 
 /**
  * Reports any crashes that occur in the application.
@@ -83,28 +83,11 @@ typedef enum {
  */
 @property (nonatomic, readwrite, assign) SentryCrashMonitorType monitoring;
 
-/** Maximum time to allow the main thread to run without returning.
- * If a task occupies the main thread for longer than this interval, the
- * watchdog will consider the queue deadlocked and shut down the app and write a
- * crash report.
- *
- * Note: You must have added SentryCrashMonitorTypeMainThreadDeadlock to the
- * monitoring property in order for this to have any effect.
- *
- * Warning: Make SURE that nothing in your app that runs on the main thread
- * takes longer to complete than this value or it WILL get shut down! This
- * includes your app startup process, so you may need to push app initialization
- * to another thread, or perhaps set this to a higher value until your
- * application has been fully initialized.
- *
- * WARNING: This is still causing false positives in some cases. Use at own
- * risk!
- *
- * 0 = Disabled.
- *
- * Default: 0
- */
-@property (nonatomic, readwrite, assign) double deadlockWatchdogInterval;
+// We removed searchQueueNames in 4.0.0 see:
+// https://github.com/getsentry/sentry-cocoa/commit/b728c74e898e6ed3b1cab0b1cf5b6c8892b29b70,
+// because we were deferencing a pointer to the dispatch queue, which could have been deallocated by
+// the time you deference it. Also see this comment in some WebKit code:
+// https://github.com/WebKit/WebKit/blob/09225dc168d445890bb0e2a5fa8bc19aef8556f2/Source/WebCore/page/cocoa/ResourceUsageThreadCocoa.mm#L119.
 
 /** If YES, introspect memory contents during a crash.
  * Any Objective-C objects or C strings near the stack pointer or referenced by

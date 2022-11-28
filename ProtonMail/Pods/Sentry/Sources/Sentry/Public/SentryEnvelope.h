@@ -3,7 +3,7 @@
 #import "SentryDefines.h"
 
 @class SentryEvent, SentrySession, SentrySdkInfo, SentryId, SentryUserFeedback, SentryAttachment,
-    SentryTransaction, SentryTraceState;
+    SentryTransaction, SentryTraceContext, SentryClientReport;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,29 +21,29 @@ SENTRY_NO_INIT
 - (instancetype)initWithId:(SentryId *_Nullable)eventId;
 
 /**
- * Initializes an SentryEnvelopeHeader object with the specified eventId and traceState.
+ * Initializes an SentryEnvelopeHeader object with the specified eventId and traceContext.
  *
  * @param eventId The identifier of the event. Can be nil if no event in the envelope or attachment
  * related to event.
- * @param traceState Current trace state.
+ * @param traceContext Current trace state.
  */
 - (instancetype)initWithId:(nullable SentryId *)eventId
-                traceState:(nullable SentryTraceState *)traceState;
+              traceContext:(nullable SentryTraceContext *)traceContext;
 
 /**
- * Initializes an SentryEnvelopeHeader object with the specified eventId, skdInfo and traceState.
+ * Initializes an SentryEnvelopeHeader object with the specified eventId, skdInfo and traceContext.
  *
- * It is recommended to use initWithId:traceState: because it sets the sdkInfo for you.
+ * It is recommended to use initWithId:traceContext: because it sets the sdkInfo for you.
  *
  * @param eventId The identifier of the event. Can be nil if no event in the envelope or attachment
  * related to event.
  * @param sdkInfo sdkInfo Describes the Sentry SDK. Can be nil for backwards compatibility. New
  * instances should always provide a version.
- * @param traceState Current trace state.
+ * @param traceContext Current trace state.
  */
 - (instancetype)initWithId:(nullable SentryId *)eventId
                    sdkInfo:(nullable SentrySdkInfo *)sdkInfo
-                traceState:(nullable SentryTraceState *)traceState NS_DESIGNATED_INITIALIZER;
+              traceContext:(nullable SentryTraceContext *)traceContext NS_DESIGNATED_INITIALIZER;
 
 /**
  * The event identifier, if available.
@@ -54,7 +54,7 @@ SENTRY_NO_INIT
 
 @property (nullable, nonatomic, readonly, copy) SentrySdkInfo *sdkInfo;
 
-@property (nullable, nonatomic, readonly, copy) SentryTraceState *traceState;
+@property (nullable, nonatomic, readonly, copy) SentryTraceContext *traceContext;
 
 @end
 

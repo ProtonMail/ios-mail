@@ -26,7 +26,6 @@
 
 #import "SentryCrashReportFilter.h"
 #import "SentryCrashReportWriter.h"
-#import <Foundation/Foundation.h>
 
 /**
  * Crash system installation which handles backend-specific details.

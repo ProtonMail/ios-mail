@@ -10,6 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface
 SentryScope (Private)
 
+@property (atomic, copy, readonly, nullable) NSString *environmentString;
+
 @property (atomic, strong, readonly) NSArray<SentryAttachment *> *attachments;
 
 @property (atomic, strong) SentryUser *_Nullable userObject;

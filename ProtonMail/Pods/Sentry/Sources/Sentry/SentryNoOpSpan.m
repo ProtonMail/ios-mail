@@ -64,6 +64,14 @@ NS_ASSUME_NONNULL_BEGIN
 {
 }
 
+- (void)setMeasurement:(NSString *)name value:(NSNumber *)value
+{
+}
+
+- (void)setMeasurement:(NSString *)name value:(NSNumber *)value unit:(SentryMeasurementUnit *)unit
+{
+}
+
 - (NSDictionary<NSString *, id> *)tags
 {
     return @{};
