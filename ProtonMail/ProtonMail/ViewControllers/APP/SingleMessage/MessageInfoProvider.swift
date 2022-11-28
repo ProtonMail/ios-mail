@@ -90,7 +90,6 @@ final class MessageInfoProvider {
     private let imageProxy: ImageProxy
     private let dependencies: Dependencies
 
-
     private var imageProxyHasRunOnCurrentBody = false
 
     private var shouldApplyImageProxy: Bool {
@@ -412,7 +411,6 @@ extension MessageInfoProvider {
                 let self = self,
                 let currentlyDisplayedBody = self.bodyParts?.originalBody
             else {
-                assertionFailure("This action should not be triggerable in this case.")
                 return
             }
 

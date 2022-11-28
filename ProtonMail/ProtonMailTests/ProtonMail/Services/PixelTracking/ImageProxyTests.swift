@@ -73,8 +73,8 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
                 "Content-Type": self.testImageContentType
             ]
 
-            let originalSrcURL = url.query!.components(separatedBy: "=")[1].removingPercentEncoding
-            if originalSrcURL == self.trackingImageURL {
+            let originalSrcURL = url.query!.components(separatedBy: "=")[1].removingPercentEncoding!
+            if originalSrcURL.contains(check: "track") {
                 headers["x-pm-tracker-provider"] = "{0:\"MailChimp.com\"}"
             }
 
@@ -103,7 +103,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         try super.tearDownWithError()
     }
 
-    func testReplacesRemoteSrcURLsWithUUIDs() async throws {
+    func testReplacesRemoteSrcURLsWithUUIDs() throws {
         let expectedProcessedBody = """
 <html>
     <body>
@@ -140,7 +140,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         XCTAssertEqual(trackingOutput.summary.trackers.count, 1)
     }
 
-    func testOnlyWorksOnRemoteImages() throws {
+    func testReturnsUnmodifiedBodyIfNoRemoteImagesAreFound() throws {
         let incomingBody = """
 <html>
     <body background=>
@@ -149,12 +149,13 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
     </body>
 </html>
 """
-        _ = try sut.process(body: incomingBody, delegate: delegate)
+        let processedBody = try sut.process(body: incomingBody, delegate: delegate)
+        XCTAssertEqual(processedBody, incomingBody)
         waitForProxyToFinishProcessing()
-        XCTAssertNil(delegate.didFinishWithOutput.lastArguments?.a2)
+        XCTAssertFalse(delegate.didFinishWithOutput.wasCalled)
     }
 
-    func testProvidesAListOfFailuresDueToResponseErrors() async throws {
+    func testProvidesAListOfFailuresDueToResponseErrors() throws {
         apiServiceMock.downloadStub.bodyIs { _, urlString, _, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!
             let response = HTTPURLResponse(url: url, statusCode: 500, httpVersion: nil, headerFields: [:])
@@ -167,7 +168,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         assertTrackingURLHasBeenListedForReload(output.failedUnsafeRemoteSrcs)
     }
 
-    func testProvidesAListOfFailuresDueToNonImageResponses() async throws {
+    func testProvidesAListOfFailuresDueToNonImageResponses() throws {
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!
 
@@ -195,7 +196,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         assertTrackingURLHasBeenListedForReload(output.failedUnsafeRemoteSrcs)
     }
 
-    func testCachesTheData() async throws {
+    func testCachesTheData() throws {
         _ = try sut.process(body: nonTrackingMessage, delegate: delegate)
         waitForProxyToFinishProcessing()
         _ = try sut.process(body: nonTrackingMessage, delegate: delegate)

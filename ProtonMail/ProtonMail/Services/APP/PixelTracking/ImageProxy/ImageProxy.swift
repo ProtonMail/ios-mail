@@ -57,11 +57,10 @@ class ImageProxy: LifetimeTrackable {
         let fullHTMLDocument = try SwiftSoup.parse(body)
         let imgs = try fullHTMLDocument.select("img")
 
-        let remoteElements: [(Element, URL)] = imgs.compactMap { img in
+        let remoteElements: [(Element, String)] = imgs.compactMap { img in
             guard
-                let src = try? img.attr("src"),
-                recognizedImageURLPrefixes.contains(where: { src.starts(with: $0) }),
-                let srcURL = URL(string: src)
+                let srcURL = try? img.attr("src"),
+                recognizedImageURLPrefixes.contains(where: { srcURL.starts(with: $0) })
             else {
                 return nil
             }
@@ -75,7 +74,7 @@ class ImageProxy: LifetimeTrackable {
 
         var failedUnsafeRemoteSrcs: Set<SrcReplacement> = []
         var safeBase64Srcs: Set<SrcReplacement> = []
-        var trackers: [String: Set<URL>] = [:]
+        var trackers: [String: Set<String>] = [:]
 
         let dispatchGroup = DispatchGroup()
 
@@ -111,7 +110,7 @@ class ImageProxy: LifetimeTrackable {
                             trackers[trackerProvider] = urlsFromProvider
                         }
                     } catch {
-                        let replacement = SrcReplacement(marker: uuid, value: srcURL.absoluteString)
+                        let replacement = SrcReplacement(marker: uuid, value: srcURL)
                         failedUnsafeRemoteSrcs.insert(replacement)
                     }
                 }
@@ -133,7 +132,7 @@ class ImageProxy: LifetimeTrackable {
         return bodyWithoutRemoteURLs
     }
 
-    private func fetchRemoteImage(srcURL: URL, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
+    private func fetchRemoteImage(srcURL: String, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
         let remoteURL = proxyURL(for: srcURL)
 
         do {
@@ -189,11 +188,10 @@ class ImageProxy: LifetimeTrackable {
         }
     }
 
-    private func proxyURL(for url: URL) -> String {
+    private func proxyURL(for urlString: String) -> String {
         let baseURL = dependencies.apiService.doh.getCurrentlyUsedHostUrl()
-        let encodedImageURL: String = url
-            .absoluteString
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? url.absoluteString
+        let encodedImageURL = urlString
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? urlString
         return "\(baseURL)/core/v4/images?Url=\(encodedImageURL)"
     }
 

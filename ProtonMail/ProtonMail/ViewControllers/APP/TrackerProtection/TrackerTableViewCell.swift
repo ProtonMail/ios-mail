@@ -38,8 +38,8 @@ class TrackerTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with url: URL) {
-        contentTextView.attributedText = url.absoluteString.apply(style: FontManager.DefaultWeak)
+    func configure(with url: String) {
+        contentTextView.attributedText = url.apply(style: FontManager.DefaultWeak)
         contentTextView.font = .adjustedFont(forTextStyle: .body)
     }
 
