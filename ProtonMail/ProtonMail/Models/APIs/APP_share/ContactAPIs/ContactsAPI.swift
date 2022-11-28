@@ -312,25 +312,6 @@ final class ContactAddResponse: Response {
     }
 }
 
-final class ContactDeleteRequest: Request { // Response
-    var IDs: [String] = []
-    init(ids: [String]) {
-        IDs = ids
-    }
-
-    var path: String {
-        return ContactsAPI.path + "/delete"
-    }
-
-    var method: HTTPMethod {
-        return .put
-    }
-
-    var parameters: [String: Any]? {
-        return ["IDs": IDs]
-    }
-}
-
 final class ContactUpdateRequest: Request { // ContactDetailResponse
     var contactID: String
     let Cards: [CardData]
