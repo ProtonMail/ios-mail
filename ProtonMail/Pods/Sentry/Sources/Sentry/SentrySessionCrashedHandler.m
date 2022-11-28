@@ -1,6 +1,6 @@
 #import "SentrySessionCrashedHandler.h"
 #import "SentryClient+Private.h"
-#import "SentryCrashAdapter.h"
+#import "SentryCrashWrapper.h"
 #import "SentryCurrentDate.h"
 #import "SentryFileManager.h"
 #import "SentryHub.h"
@@ -10,14 +10,14 @@
 @interface
 SentrySessionCrashedHandler ()
 
-@property (nonatomic, strong) SentryCrashAdapter *crashWrapper;
+@property (nonatomic, strong) SentryCrashWrapper *crashWrapper;
 @property (nonatomic, strong) SentryOutOfMemoryLogic *outOfMemoryLogic;
 
 @end
 
 @implementation SentrySessionCrashedHandler
 
-- (instancetype)initWithCrashWrapper:(SentryCrashAdapter *)crashWrapper
+- (instancetype)initWithCrashWrapper:(SentryCrashWrapper *)crashWrapper
                     outOfMemoryLogic:(SentryOutOfMemoryLogic *)outOfMemoryLogic;
 {
     self = [self init];

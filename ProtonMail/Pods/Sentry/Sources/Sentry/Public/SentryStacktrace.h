@@ -22,6 +22,11 @@ SENTRY_NO_INIT
 @property (nonatomic, strong) NSDictionary<NSString *, NSString *> *registers;
 
 /**
+ * Indicates that this stack trace is a snapshot triggered by an external signal.
+ */
+@property (nonatomic, copy, nullable) NSNumber *snapshot;
+
+/**
  * Initialize a SentryStacktrace with frames and registers
  * @param frames NSArray
  * @param registers NSArray

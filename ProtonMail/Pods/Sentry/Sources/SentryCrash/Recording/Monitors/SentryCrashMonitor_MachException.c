@@ -32,7 +32,7 @@
 #include "SentryCrashSystemCapabilities.h"
 #include "SentryCrashThread.h"
 
-//#define SentryCrashLogger_LocalLevel TRACE
+// #define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
 
 #if SentryCrashCRASH_HAS_MACH
@@ -276,7 +276,9 @@ handleExceptions(void *const userData)
     SentryCrashLOG_DEBUG("Trapped mach exception code 0x%x, subcode 0x%x", exceptionMessage.code[0],
         exceptionMessage.code[1]);
     if (g_isEnabled) {
-        sentrycrashmc_suspendEnvironment();
+        thread_act_array_t threads = NULL;
+        mach_msg_type_number_t numThreads = 0;
+        sentrycrashmc_suspendEnvironment(&threads, &numThreads);
         g_isHandlingCrash = true;
         sentrycrashcm_notifyFatalExceptionCaptured(true);
 
@@ -307,7 +309,8 @@ handleExceptions(void *const userData)
         crashContext->offendingMachineContext = machineContext;
         sentrycrashsc_initCursor(&g_stackCursor, NULL, NULL);
         if (sentrycrashmc_getContextForThread(exceptionMessage.thread.name, machineContext, true)) {
-            sentrycrashsc_initWithMachineContext(&g_stackCursor, 100, machineContext);
+            sentrycrashsc_initWithMachineContext(
+                &g_stackCursor, MAX_STACKTRACE_LENGTH, machineContext);
             SentryCrashLOG_TRACE("Fault address 0x%x, instruction address 0x%x",
                 sentrycrashcpu_faultAddress(machineContext),
                 sentrycrashcpu_instructionAddress(machineContext));
@@ -339,7 +342,7 @@ handleExceptions(void *const userData)
 
         SentryCrashLOG_DEBUG("Crash handling complete. Restoring original handlers.");
         g_isHandlingCrash = false;
-        sentrycrashmc_resumeEnvironment();
+        sentrycrashmc_resumeEnvironment(threads, numThreads);
         sentrycrash_async_backtrace_decref(g_stackCursor.async_caller);
     }
 

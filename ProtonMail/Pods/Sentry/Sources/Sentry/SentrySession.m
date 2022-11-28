@@ -6,6 +6,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString *
+nameForSentrySessionStatus(SentrySessionStatus status)
+{
+    switch (status) {
+    case kSentrySessionStatusOk:
+        return @"ok";
+    case kSentrySessionStatusExited:
+        return @"exited";
+    case kSentrySessionStatusCrashed:
+        return @"crashed";
+        break;
+    case kSentrySessionStatusAbnormal:
+        return @"abnormal";
+    }
+}
+
 @implementation SentrySession
 
 @synthesize flagInit = _init;
@@ -189,26 +205,7 @@ NS_ASSUME_NONNULL_BEGIN
             [serializedData setValue:_init forKey:@"init"];
         }
 
-        NSString *statusString = nil;
-        switch (_status) {
-        case kSentrySessionStatusOk:
-            statusString = @"ok";
-            break;
-        case kSentrySessionStatusExited:
-            statusString = @"exited";
-            break;
-        case kSentrySessionStatusCrashed:
-            statusString = @"crashed";
-            break;
-        case kSentrySessionStatusAbnormal:
-            statusString = @"abnormal";
-            break;
-        default:
-            [SentryLog
-                logWithMessage:@"Missing string for SessionStatus when serializing SentrySession."
-                      andLevel:kSentryLevelWarning];
-            break;
-        }
+        NSString *statusString = nameForSentrySessionStatus(_status);
 
         if (nil != statusString) {
             [serializedData setValue:statusString forKey:@"status"];

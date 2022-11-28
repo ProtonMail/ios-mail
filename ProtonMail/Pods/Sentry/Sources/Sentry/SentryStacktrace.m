@@ -33,8 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSMutableArray *copyFrames = self.frames.mutableCopy;
         [copyFrames removeObjectAtIndex:self.frames.count - 2];
         self.frames = copyFrames;
-        [SentryLog logWithMessage:@"Found duplicate frame, removing one with link register"
-                         andLevel:kSentryLevelDebug];
+        SENTRY_LOG_DEBUG(@"Found duplicate frame, removing one with link register");
     }
 }
 
@@ -56,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.registers.count > 0) {
         [serializedData setValue:self.registers forKey:@"registers"];
     }
+    [serializedData setValue:self.snapshot forKey:@"snapshot"];
+
     return serializedData;
 }
 

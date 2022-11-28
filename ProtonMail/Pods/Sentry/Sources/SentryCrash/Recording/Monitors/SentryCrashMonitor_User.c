@@ -28,7 +28,7 @@
 #include "SentryCrashStackCursor_SelfThread.h"
 #include "SentryCrashThread.h"
 
-//#define SentryCrashLogger_LocalLevel TRACE
+// #define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
 
 #include <memory.h>
@@ -46,8 +46,10 @@ sentrycrashcm_reportUserException(const char *name, const char *reason, const ch
         SentryCrashLOG_WARN("User-reported exception monitor is not installed. "
                             "Exception has not been recorded.");
     } else {
+        thread_act_array_t threads = NULL;
+        mach_msg_type_number_t numThreads = 0;
         if (logAllThreads) {
-            sentrycrashmc_suspendEnvironment();
+            sentrycrashmc_suspendEnvironment(&threads, &numThreads);
         }
         if (terminateProgram) {
             sentrycrashcm_notifyFatalExceptionCaptured(false);
@@ -78,7 +80,7 @@ sentrycrashcm_reportUserException(const char *name, const char *reason, const ch
         sentrycrash_async_backtrace_decref(stackCursor.async_caller);
 
         if (logAllThreads) {
-            sentrycrashmc_resumeEnvironment();
+            sentrycrashmc_resumeEnvironment(threads, numThreads);
         }
         if (terminateProgram) {
             abort();

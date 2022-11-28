@@ -1,4 +1,5 @@
 #import "SentryFramesTrackingIntegration.h"
+#import "PrivateSentrySDKOnly.h"
 #import "SentryFramesTracker.h"
 #import "SentryLog.h"
 
@@ -15,33 +16,31 @@ SentryFramesTrackingIntegration ()
 
 @implementation SentryFramesTrackingIntegration
 
-- (void)installWithOptions:(SentryOptions *)options
+- (BOOL)installWithOptions:(SentryOptions *)options
 {
 #if SENTRY_HAS_UIKIT
-    if (!options.enableAutoPerformanceTracking) {
-        [SentryLog logWithMessage:
-                       @"AutoUIPerformanceTracking disabled. Will not track slow and frozen frames."
-                         andLevel:kSentryLevelDebug];
-        return;
-    }
-
-    if (!options.isTracingEnabled) {
-        [SentryLog
-            logWithMessage:
-                @"No tracesSampleRate and tracesSampler set. Will not track slow and frozen frames."
-                  andLevel:kSentryLevelDebug];
-        return;
+    if (!PrivateSentrySDKOnly.framesTrackingMeasurementHybridSDKMode
+        && ![super installWithOptions:options]) {
+        return NO;
     }
 
     self.tracker = [SentryFramesTracker sharedInstance];
     [self.tracker start];
 
+    return YES;
 #else
     [SentryLog
         logWithMessage:
             @"NO UIKit -> SentryFramesTrackingIntegration will not track slow and frozen frames."
               andLevel:kSentryLevelInfo];
+
+    return NO;
 #endif
+}
+
+- (SentryIntegrationOption)integrationOptions
+{
+    return kIntegrationOptionEnableAutoPerformanceTracking | kIntegrationOptionIsTracingEnabled;
 }
 
 - (void)uninstall

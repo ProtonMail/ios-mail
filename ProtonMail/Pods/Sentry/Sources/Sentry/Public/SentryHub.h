@@ -38,9 +38,6 @@ SENTRY_NO_INIT
  */
 - (void)endSessionWithTimestamp:(NSDate *)timestamp;
 
-@property (nonatomic, strong)
-    NSMutableArray<NSObject<SentryIntegrationProtocol> *> *installedIntegrations;
-
 /**
  * Captures a manually created event and sends it to Sentry.
  *
@@ -234,9 +231,9 @@ SENTRY_NO_INIT
 - (void)bindClient:(SentryClient *_Nullable)client;
 
 /**
- * Checks if integration is activated for bound client and returns it.
+ * Checks if integration is activated.
  */
-- (id _Nullable)getIntegration:(NSString *)integrationName;
+- (BOOL)hasIntegration:(NSString *)integrationName;
 
 /**
  * Checks if a specific Integration (`integrationClass`) has been installed.
@@ -261,6 +258,15 @@ SENTRY_NO_INIT
  * event.
  */
 - (void)captureEnvelope:(SentryEnvelope *)envelope NS_SWIFT_NAME(capture(envelope:));
+
+/**
+ * Waits synchronously for the SDK to flush out all queued and cached items for up to the specified
+ * timeout in seconds. If there is no internet connection, the function returns immediately. The SDK
+ * doesn't dispose the client or the hub.
+ *
+ * @param timeout The time to wait for the SDK to complete the flush.
+ */
+- (void)flush:(NSTimeInterval)timeout NS_SWIFT_NAME(flush(timeout:));
 
 @end
 

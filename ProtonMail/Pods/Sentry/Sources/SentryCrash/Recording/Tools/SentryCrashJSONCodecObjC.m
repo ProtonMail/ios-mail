@@ -126,6 +126,10 @@ SentryCrashJSONCodec ()
         self.callbacks = malloc(sizeof(*self.callbacks));
         // Unlikely malloc failure.
         NSAssert(self.callbacks != NULL, @"Could not allocate callbacks");
+        if (self.callbacks == NULL) {
+            NSLog(@"Could not allocate callbacks");
+            return NULL;
+        }
 
         self.callbacks->onBeginArray = onBeginArray;
         self.callbacks->onBeginObject = onBeginObject;

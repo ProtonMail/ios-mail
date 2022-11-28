@@ -30,9 +30,8 @@
 #include "SentryCrashMonitorContext.h"
 #import "SentryCrashStackCursor_Backtrace.h"
 #include "SentryCrashThread.h"
-#import <Foundation/Foundation.h>
 
-//#define SentryCrashLogger_LocalLevel TRACE
+// #define SentryCrashLogger_LocalLevel TRACE
 #import "SentryCrashLogger.h"
 
 // ============================================================================
@@ -61,7 +60,9 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
 {
     SentryCrashLOG_DEBUG(@"Trapped exception %@", exception);
     if (g_isEnabled) {
-        sentrycrashmc_suspendEnvironment();
+        thread_act_array_t threads = NULL;
+        mach_msg_type_number_t numThreads = 0;
+        sentrycrashmc_suspendEnvironment(&threads, &numThreads);
         sentrycrashcm_notifyFatalExceptionCaptured(false);
 
         SentryCrashLOG_DEBUG(@"Filling out context.");
@@ -100,7 +101,7 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
 
         free(callstack);
         if (currentSnapshotUserReported) {
-            sentrycrashmc_resumeEnvironment();
+            sentrycrashmc_resumeEnvironment(threads, numThreads);
         }
         if (g_previousUncaughtExceptionHandler != NULL) {
             SentryCrashLOG_DEBUG(@"Calling original exception handler.");

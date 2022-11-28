@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SentrySpanId, SentryId, SentryTraceHeader;
+@class SentrySpanId, SentryId, SentryTraceHeader, SentryMeasurementUnit;
 
 NS_SWIFT_NAME(Span)
 @protocol SentrySpan <SentrySerializable>
@@ -64,15 +64,13 @@ NS_SWIFT_NAME(Span)
 /**
  * Sets a value to data.
  */
-- (void)setDataValue:(nullable id)value
-              forKey:(NSString *)key NS_SWIFT_NAME(setData(value:key:));
+- (void)setDataValue:(nullable id)value forKey:(NSString *)key NS_SWIFT_NAME(setData(value:key:));
 
 /**
  * Use setDataValue instead. This method calls setDataValue, was added by mistake, and will be
  * deprecated in a future version.
  */
-- (void)setExtraValue:(nullable id)value
-               forKey:(NSString *)key NS_SWIFT_NAME(setExtra(value:key:));
+- (void)setExtraValue:(nullable id)value forKey:(NSString *)key NS_SWIFT_NAME(setExtra(value:key:));
 
 /**
  * Removes a data value.
@@ -88,6 +86,35 @@ NS_SWIFT_NAME(Span)
  * Removes a tag value.
  */
 - (void)removeTagForKey:(NSString *)key NS_SWIFT_NAME(removeTag(key:));
+
+/**
+ * Set a measurement without unit. When setting the measurement without the unit, no formatting
+ * will be applied to the measurement value in the Sentry product, and the value will be shown as
+ * is.
+ *
+ * @discussion Setting a measurement with the same name on the same transaction multiple times only
+ * keeps the last value.
+ *
+ * @param name the name of the measurement
+ * @param value the value of the measurement
+ */
+- (void)setMeasurement:(NSString *)name
+                 value:(NSNumber *)value NS_SWIFT_NAME(setMeasurement(name:value:));
+
+/**
+ * Set a measurement with specific unit.
+ *
+ * @discussion Setting a measurement with the same name on the same transaction multiple times only
+ * keeps the last value.
+ *
+ * @param name the name of the measurement
+ * @param value the value of the measurement
+ * @param unit the unit the value is measured in
+ */
+- (void)setMeasurement:(NSString *)name
+                 value:(NSNumber *)value
+                  unit:(SentryMeasurementUnit *)unit
+    NS_SWIFT_NAME(setMeasurement(name:value:unit:));
 
 /**
  * Finishes the span by setting the end time.

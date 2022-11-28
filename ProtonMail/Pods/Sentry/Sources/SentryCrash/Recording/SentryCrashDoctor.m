@@ -416,13 +416,6 @@ typedef enum { CPUFamilyUnknown, CPUFamilyArm, CPUFamilyX86, CPUFamilyX86_64 } C
     return [[stack objectForKey:@SentryCrashField_Overflow] boolValue];
 }
 
-- (BOOL)isDeadlock:(NSDictionary *)report
-{
-    NSDictionary *errorReport = [self errorReport:report];
-    NSString *crashType = [errorReport objectForKey:@SentryCrashField_Type];
-    return [@SentryCrashExcType_Deadlock isEqualToString:crashType];
-}
-
 - (NSString *)diagnoseCrash:(NSDictionary *)report
 {
     @try {
@@ -430,10 +423,6 @@ typedef enum { CPUFamilyUnknown, CPUFamilyArm, CPUFamilyX86, CPUFamilyX86_64 } C
             [[self lastInAppStackEntry:report] objectForKey:@SentryCrashField_SymbolName];
         NSDictionary *crashedThreadReport = [self crashedThreadReport:report];
         NSDictionary *errorReport = [self errorReport:report];
-
-        if ([self isDeadlock:report]) {
-            return [NSString stringWithFormat:@"Main thread deadlocked in %@", lastFunctionName];
-        }
 
         if ([self isStackOverflow:crashedThreadReport]) {
             return [NSString stringWithFormat:@"Stack overflow in %@", lastFunctionName];

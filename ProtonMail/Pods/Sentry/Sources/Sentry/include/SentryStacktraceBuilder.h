@@ -1,3 +1,6 @@
+#import "SentryCrashMachineContext.h"
+#import "SentryCrashStackCursor.h"
+#include "SentryCrashThread.h"
 #import "SentryDefines.h"
 #import <Foundation/Foundation.h>
 
@@ -20,6 +23,17 @@ SENTRY_NO_INIT
  */
 - (SentryStacktrace *)buildStacktraceForCurrentThread;
 
+/**
+ * Builds the stacktrace for given thread removing frames from the SentrySDK until frames from
+ * a different package are found. When including Sentry via the Swift Package Manager the package is
+ * the same as the application that includes Sentry. In this case the full stacktrace is returned
+ * without skipping frames.
+ */
+- (SentryStacktrace *)buildStacktraceForThread:(SentryCrashThread)thread
+                                       context:(struct SentryCrashMachineContext *)context;
+
+- (SentryStacktrace *)buildStackTraceFromStackEntries:(SentryCrashStackEntry *)entries
+                                               amount:(unsigned int)amount;
 @end
 
 NS_ASSUME_NONNULL_END
