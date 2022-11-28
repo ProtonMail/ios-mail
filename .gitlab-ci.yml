@@ -172,6 +172,7 @@ build-app-and-upload:
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+    - bundle install
     - bundle exec fastlane ios build
     - ./fastlane/add_git_tag.sh
   tags:
@@ -200,6 +201,7 @@ nightly-build-and-upload:
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+    - bundle install
     - bundle exec fastlane ios build
   tags:
     - iOS_ARM_TAIPEI
@@ -225,6 +227,7 @@ enterprise-test:
     - *set_up_brew_dependecies
   script:
     - *enterprise_config_setting
+    - bundle install
     - bundle exec fastlane ios enterprise usingTimeStamp:true
   tags:
     - iOS_ARM_TAIPEI
