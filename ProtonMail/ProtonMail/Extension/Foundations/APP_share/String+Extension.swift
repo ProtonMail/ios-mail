@@ -22,8 +22,6 @@
 
 import Foundation
 
-
-
 extension String {
     func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
