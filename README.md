@@ -63,7 +63,7 @@ See [LICENSE](LICENSE) file
 
 ## Setup
 
-1. Have macOS up to date and install Xcode 13.2.1
+1. Have macOS up to date and install Xcode 14 +
 2. We are using [Mint](https://github.com/yonaskolb/mint) as our package manager, If you don't have it, you can install it via [Homebrew](https://brew.sh/) by `brew bundle --file="ProtonMail/Brewfile" --no-upgrade` then run `mint bootstrap` to install dependecies
 3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
 4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project, `sh ProtonMail/xcodeGenHelper.sh`
