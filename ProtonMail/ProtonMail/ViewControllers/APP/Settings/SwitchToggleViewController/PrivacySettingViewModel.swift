@@ -163,7 +163,11 @@ extension PrivacySettingViewModel {
          deprecated,
          message: "Switch to the UpdateImageAutoloadSetting-based variant once Image Proxy is ready to be shipped."
     )
-    private func updateAutoLoadImageStatus(flag: ShowImages, newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+    private func updateAutoLoadImageStatus(
+        flag: ShowImages,
+        newStatus: Bool,
+        completion: @escaping (NSError?) -> Void
+    ) {
         self.user.userService.updateAutoLoadImages(
             currentAuth: user.authCredential,
             userInfo: user.userInfo,

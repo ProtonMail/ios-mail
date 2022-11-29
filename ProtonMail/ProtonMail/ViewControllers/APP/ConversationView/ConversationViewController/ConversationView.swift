@@ -1,5 +1,5 @@
-import ProtonCore_UIFoundations
 import CoreGraphics
+import ProtonCore_UIFoundations
 
 class ConversationView: UIView {
 

@@ -115,7 +115,10 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                                         currentActions: currentActions)
         }
     }
+}
 
+// MARK: - Private functions
+extension SingleMessageCoordinator {
     private func presentCompose(with contact: ContactVO) {
         let viewModel = ContainableComposeViewModel(
             msg: nil,

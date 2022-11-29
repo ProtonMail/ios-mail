@@ -20,7 +20,6 @@ import ProtonCore_Keymaker
 
 class ConversationMigrationPolicy: NSEntityMigrationPolicy {
 
-    // swiftlint:disable function_body_length
     override func createDestinationInstances(
         forSource sInstance: NSManagedObject,
         in mapping: NSEntityMapping,

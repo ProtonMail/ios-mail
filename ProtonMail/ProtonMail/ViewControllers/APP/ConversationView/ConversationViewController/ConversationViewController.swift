@@ -824,7 +824,7 @@ private extension ConversationViewController {
             unreadReadAction()
         case .more:
             moreButtonTapped()
-         case .trash:
+        case .trash:
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
                     self?.navigationController?.popViewController(animated: true)

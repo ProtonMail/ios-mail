@@ -465,7 +465,7 @@ extension MailboxCoordinator {
         let nav = UINavigationController(rootViewController: view)
         viewController?.navigationController?.present(nav, animated: true)
     }
-    
+
     private func editScheduleMsg(messageID: MessageID) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {

@@ -122,6 +122,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         self.go(to: label, deepLink: deepLink)
     }
 
+    // swiftlint:disable:next function_body_length
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
         DFSSetting.enableDFS = true
         // in some cases we should highlight a different row in the side menu, or none at all
@@ -359,9 +360,6 @@ extension MenuCoordinator {
         labelType: PMLabelType
     ) -> MailboxViewModel {
         let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
-        guard let usersManager = userManager.parentManager else {
-            fatalError("UsersManger should not be nil")
-        }
         return MailboxViewModel(
             labelID: labelID,
             label: labelInfo,
