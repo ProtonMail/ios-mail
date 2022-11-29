@@ -25,17 +25,11 @@
 /* The title of swipe banner after swiping to move conversations */
 "%d conversation moved to %@" = "%1$d Unterhaltung nach %2$@ verschoben";
 
-/* day */
-"%d day" = "%d Tag";
-
 /* Title of the tracker list. Only used if there is at least one tracker. */
 "%d email trackers blocked" = "%d E-Mail-Tracker gesperrt";
 
 /* Short hint in the header view */
 "%d email trackers found" = "%d E-Mail-Tracker erkannt";
-
-/* hour */
-"%d hour" = "%d Stunde";
 
 /* The title of swipe banner after swiping to label messages */
 "%d message labeled" = "%d Nachricht kategorisiert";

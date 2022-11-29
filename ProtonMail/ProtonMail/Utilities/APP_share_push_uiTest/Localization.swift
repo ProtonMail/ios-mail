@@ -1105,10 +1105,8 @@ class LocalizedString {
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
     lazy var _week = NSLocalizedString("week", comment: "week")
     lazy var _day = NSLocalizedString("%d day", comment: "day")
-    lazy var _days = NSLocalizedString("days", comment: "days")
 
     lazy var _hour = NSLocalizedString("%d hour", comment: "hour")
-    lazy var _hours = NSLocalizedString("hours", comment: "hours")
 
     lazy var _minute = NSLocalizedString("%d min", comment: "minute")
 

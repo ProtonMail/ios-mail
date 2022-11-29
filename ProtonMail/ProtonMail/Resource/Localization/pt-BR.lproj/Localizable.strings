@@ -19,12 +19,6 @@
 /* Error */
 "%d attempt remaining until secure data wipe!" = "%d tentativa restante até a limpeza segura dos dados!";
 
-/* day */
-"%d day" = "%d dia";
-
-/* hour */
-"%d hour" = "%d hora";
-
 /* The title of swipe banner after swiping to label messages */
 "%d message labeled" = "%d mensagem marcada";
 

@@ -160,8 +160,6 @@
 			<string>O zi</string>
 			<key>other</key>
 			<string>%d de zile</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -218,8 +216,6 @@
 			<string>O oră</string>
 			<key>other</key>
 			<string>%d de ore</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>

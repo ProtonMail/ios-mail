@@ -142,8 +142,6 @@
 			<string>%d nap</string>
 			<key>other</key>
 			<string>%d nap</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -194,8 +192,6 @@
 			<string>%d óra</string>
 			<key>other</key>
 			<string>%d óra</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
