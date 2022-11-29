@@ -122,10 +122,10 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         waitForProxyToFinishProcessing()
         let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
 
-        let expectedOutput: Set<SrcReplacement> = [
-            SrcReplacement(marker: UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, value: "data:\(testImageContentType);base64,\(base64Image)")
+        let expectedOutput: [UUID: Base64Image] = [
+            UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!: Base64Image(url: "data:\(testImageContentType);base64,\(base64Image)")
         ]
-        XCTAssertEqual(output.safeBase64Srcs, expectedOutput)
+        XCTAssertEqual(output.safeBase64Contents, expectedOutput)
     }
 
     func testDetectsTrackers() throws {
@@ -165,7 +165,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         _ = try sut.process(body: trackingMessage, delegate: delegate)
         waitForProxyToFinishProcessing()
         let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
-        assertTrackingURLHasBeenListedForReload(output.failedUnsafeRemoteSrcs)
+        assertTrackingURLHasBeenListedForReload(output.failedUnsafeRemoteURLs)
     }
 
     func testProvidesAListOfFailuresDueToNonImageResponses() throws {
@@ -193,7 +193,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         _ = try sut.process(body: trackingMessage, delegate: delegate)
         waitForProxyToFinishProcessing()
         let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
-        assertTrackingURLHasBeenListedForReload(output.failedUnsafeRemoteSrcs)
+        assertTrackingURLHasBeenListedForReload(output.failedUnsafeRemoteURLs)
     }
 
     func testCachesTheData() throws {
@@ -204,9 +204,9 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         XCTAssertEqual(apiServiceMock.downloadStub.callCounter, 1)
     }
 
-    private func assertTrackingURLHasBeenListedForReload(_ failedRequests: Set<SrcReplacement>, file: StaticString = #file, line: UInt = #line) {
-        let expectedFailedRequests: Set<SrcReplacement> = [
-            SrcReplacement(marker: Environment.uuid(), value: trackingImageURL)
+    private func assertTrackingURLHasBeenListedForReload(_ failedRequests: [UUID: UnsafeRemoteURL], file: StaticString = #file, line: UInt = #line) {
+        let expectedFailedRequests: [UUID: UnsafeRemoteURL] = [
+            Environment.uuid(): UnsafeRemoteURL(value: trackingImageURL)
         ]
         XCTAssertEqual(failedRequests, expectedFailedRequests, file: file, line: line)
     }

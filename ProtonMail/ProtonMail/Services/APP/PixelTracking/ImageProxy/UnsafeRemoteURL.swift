@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,8 +17,20 @@
 
 import Foundation
 
-struct ImageProxyOutput {
-    let failedUnsafeRemoteURLs: [UUID: UnsafeRemoteURL]
-    let safeBase64Contents: [UUID: Base64Image]
-    let summary: TrackerProtectionSummary
+struct UnsafeRemoteURL: Hashable {
+    let value: String
+
+    init(value: Substring) {
+        self.value = String(value)
+    }
+
+    init(value: String) {
+        self.value = value
+    }
+}
+
+extension UnsafeRemoteURL: Comparable {
+    static func < (lhs: UnsafeRemoteURL, rhs: UnsafeRemoteURL) -> Bool {
+        lhs.value < rhs.value
+    }
 }

@@ -57,7 +57,7 @@ class ImageProxy: LifetimeTrackable {
         let fullHTMLDocument = try SwiftSoup.parse(body)
         let imgs = try fullHTMLDocument.select("img")
 
-        let remoteElements: [(Element, String)] = imgs.compactMap { img in
+        let remoteElements: [(Element, UnsafeRemoteURL)] = imgs.compactMap { img in
             guard
                 let srcURL = try? img.attr("src"),
                 recognizedImageURLPrefixes.contains(where: { srcURL.starts(with: $0) })
@@ -65,27 +65,27 @@ class ImageProxy: LifetimeTrackable {
                 return nil
             }
 
-            return (img, srcURL)
+            return (img, UnsafeRemoteURL(value: srcURL))
         }
 
         guard !remoteElements.isEmpty else {
             return body
         }
 
-        var failedUnsafeRemoteSrcs: Set<SrcReplacement> = []
-        var safeBase64Srcs: Set<SrcReplacement> = []
-        var trackers: [String: Set<String>] = [:]
+        var failedUnsafeRemoteURLs: [UUID: UnsafeRemoteURL] = [:]
+        var safeBase64Contents: [UUID: Base64Image] = [:]
+        var trackers: [String: Set<UnsafeRemoteURL>] = [:]
 
         let dispatchGroup = DispatchGroup()
 
-        for (img, srcURL) in remoteElements {
+        for (img, unsafeURL) in remoteElements {
             let uuid = Environment.uuid()
 
             try img.attr("src", uuid.uuidString)
 
             dispatchGroup.enter()
 
-            fetchRemoteImage(srcURL: srcURL) { [weak self] result in
+            fetchRemoteImage(from: unsafeURL) { [weak self] result in
                 guard let self = self else {
                     dispatchGroup.leave()
                     return
@@ -98,20 +98,15 @@ class ImageProxy: LifetimeTrackable {
 
                     do {
                         let remoteImage = try result.get()
-
-                        let encodedData = remoteImage.data.base64EncodedString()
-                        let base64Src = "data:\(remoteImage.contentType ?? "");base64,\(encodedData)"
-                        let replacement = SrcReplacement(marker: uuid, value: base64Src)
-                        safeBase64Srcs.insert(replacement)
+                        safeBase64Contents[uuid] = Base64Image(remoteImage: remoteImage)
 
                         if let trackerProvider = remoteImage.trackerProvider {
                             var urlsFromProvider = trackers[trackerProvider] ?? []
-                            urlsFromProvider.insert(srcURL)
+                            urlsFromProvider.insert(unsafeURL)
                             trackers[trackerProvider] = urlsFromProvider
                         }
                     } catch {
-                        let replacement = SrcReplacement(marker: uuid, value: srcURL)
-                        failedUnsafeRemoteSrcs.insert(replacement)
+                        failedUnsafeRemoteURLs[uuid] = unsafeURL
                     }
                 }
             }
@@ -120,8 +115,8 @@ class ImageProxy: LifetimeTrackable {
         dispatchGroup.notify(queue: processingQueue) { [weak delegate] in
             let summary = TrackerProtectionSummary(trackers: trackers)
             let output = ImageProxyOutput(
-                failedUnsafeRemoteSrcs: failedUnsafeRemoteSrcs,
-                safeBase64Srcs: safeBase64Srcs,
+                failedUnsafeRemoteURLs: failedUnsafeRemoteURLs,
+                safeBase64Contents: safeBase64Contents,
                 summary: summary
             )
             delegate?.imageProxy(self, didFinishWithOutput: output)
@@ -132,23 +127,23 @@ class ImageProxy: LifetimeTrackable {
         return bodyWithoutRemoteURLs
     }
 
-    private func fetchRemoteImage(srcURL: String, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
-        let remoteURL = proxyURL(for: srcURL)
+    private func fetchRemoteImage(from unsafeURL: UnsafeRemoteURL, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
+        let safeURL = proxyURL(for: unsafeURL)
 
         do {
-            if let cachedRemoteImage = try imageCache.remoteImage(forURL: remoteURL) {
+            if let cachedRemoteImage = try imageCache.remoteImage(forURL: safeURL) {
                 completion(.success(cachedRemoteImage))
                 return
             }
         } catch {
-            imageCache.removeRemoteImage(forURL: remoteURL)
+            imageCache.removeRemoteImage(forURL: safeURL)
             assertionFailure("\(error)")
         }
 
         let destinationURL = temporaryLocalURL()
 
         dependencies.apiService.download(
-            byUrl: remoteURL,
+            byUrl: safeURL.value,
             destinationDirectoryURL: destinationURL,
             headers: nil,
             authenticated: true,
@@ -177,7 +172,7 @@ class ImageProxy: LifetimeTrackable {
                     }
 
                     let remoteImage = RemoteImage(data: data, httpURLResponse: httpURLResponse)
-                    self.cacheRemoteImage(remoteImage, for: remoteURL)
+                    self.cacheRemoteImage(remoteImage, for: safeURL)
                     result = .success(remoteImage)
                 } catch {
                     result = .failure(error)
@@ -188,11 +183,12 @@ class ImageProxy: LifetimeTrackable {
         }
     }
 
-    private func proxyURL(for urlString: String) -> String {
+    private func proxyURL(for unsafeURL: UnsafeRemoteURL) -> SafeRemoteURL {
         let baseURL = dependencies.apiService.doh.getCurrentlyUsedHostUrl()
-        let encodedImageURL = urlString
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? urlString
-        return "\(baseURL)/core/v4/images?Url=\(encodedImageURL)"
+        let encodedImageURL: String = unsafeURL
+            .value
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? unsafeURL.value
+        return SafeRemoteURL(value: "\(baseURL)/core/v4/images?Url=\(encodedImageURL)")
     }
 
     private func temporaryLocalURL() -> URL {
@@ -204,9 +200,9 @@ class ImageProxy: LifetimeTrackable {
         return directory.appendingPathComponent(pathComponent)
     }
 
-    private func cacheRemoteImage(_ remoteImage: RemoteImage, for remoteURL: String) {
+    private func cacheRemoteImage(_ remoteImage: RemoteImage, for safeURL: SafeRemoteURL) {
         do {
-            try self.imageCache.setRemoteImage(remoteImage, forURL: remoteURL)
+            try self.imageCache.setRemoteImage(remoteImage, forURL: safeURL)
         } catch {
             assertionFailure("\(error)")
         }

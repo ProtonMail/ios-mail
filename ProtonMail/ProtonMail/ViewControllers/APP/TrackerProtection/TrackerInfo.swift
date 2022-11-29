@@ -19,5 +19,5 @@ import Foundation
 
 struct TrackerInfo {
     let provider: String
-    let urls: [String]
+    let urls: [UnsafeRemoteURL]
 }

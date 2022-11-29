@@ -18,7 +18,7 @@
 import Foundation
 
 struct TrackerProtectionSummary: Equatable {
-    let trackers: [String: Set<String>]
+    let trackers: [String: Set<UnsafeRemoteURL>]
 
     var totalTrackerCount: Int {
         trackers.values.compactMap { $0.count }.reduce(0, +)

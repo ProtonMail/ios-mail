@@ -275,7 +275,7 @@ final class MessageInfoProvider {
         didSet { delegate?.update(hasStrippedVersion: hasStrippedVersion) }
     }
 
-    private var unhandledFailedProxyRequests: Set<SrcReplacement> = []
+    private var unhandledFailedProxyRequests: [UUID: UnsafeRemoteURL] = [:]
 
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
@@ -401,11 +401,11 @@ extension MessageInfoProvider {
     }
 
     func reloadImagesWithoutProtection() {
-        replaceMarkersWithURLs(unhandledFailedProxyRequests)
+        replaceMarkersWithURLs(unhandledFailedProxyRequests.mapValues(\.value))
         unhandledFailedProxyRequests.removeAll()
     }
 
-    func replaceMarkersWithURLs(_ replacements: Set<SrcReplacement>) {
+    func replaceMarkersWithURLs(_ replacements: [UUID: String]) {
         dispatchQueue.async { [weak self] in
             guard
                 let self = self,
@@ -415,9 +415,14 @@ extension MessageInfoProvider {
             }
 
             let updatedBody = replacements.reduce(into: currentlyDisplayedBody) { body, replacement in
-                if let rangeToReplace = body.range(of: replacement.marker.uuidString, options: .caseInsensitive) {
-                    body = body.replacingCharacters(in: rangeToReplace, with: replacement.value)
+                let marker = replacement.key.uuidString
+
+                guard let rangeToReplace = body.range(of: marker, options: .caseInsensitive) else {
+                    assertionFailure("Current body should contain \(marker)")
+                    return
                 }
+
+                body.replaceSubrange(rangeToReplace, with: replacement.value)
             }
 
             self.updateBodyParts(with: updatedBody)
@@ -708,9 +713,9 @@ extension MessageInfoProvider {
 extension MessageInfoProvider: ImageProxyDelegate {
     func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
         trackerProtectionSummary = output.summary
-        unhandledFailedProxyRequests = output.failedUnsafeRemoteSrcs
-        replaceMarkersWithURLs(output.safeBase64Srcs)
-	}
+        unhandledFailedProxyRequests = output.failedUnsafeRemoteURLs
+        replaceMarkersWithURLs(output.safeBase64Contents.mapValues(\.url))
+    }
 }
 
 extension MessageInfoProvider {
