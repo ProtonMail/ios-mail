@@ -252,7 +252,7 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testIfAnImageProxyRequestFails_promptsUserToReplaceFailedRequestMarkersWithOriginalURLs() async throws {
         imageProxy.stubbedFailedRequests = [
-            SrcReplacement(marker: UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, value: "https://example.com/image")
+            UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!: UnsafeRemoteURL(value: "https://example.com/image")
         ]
         let stubbedInitialBody = "<img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img>"
         let expectedProcessedBody = "<img src=\"https://example.com/image\"></img>"
@@ -401,7 +401,7 @@ final private class ProviderDelegate: MessageInfoProviderDelegate {
 }
 
 private class ImageProxyMock: ProtonMail.ImageProxy {
-    var stubbedFailedRequests: Set<SrcReplacement> = []
+    var stubbedFailedRequests: [UUID: UnsafeRemoteURL] = [:]
     private(set) var processCallCount = 0
 
     init(apiService: APIServiceMock) {
@@ -413,8 +413,8 @@ private class ImageProxyMock: ProtonMail.ImageProxy {
         processCallCount += 1
         let trackerProtectionSummary = TrackerProtectionSummary(trackers: [:])
         let output = ImageProxyOutput(
-            failedUnsafeRemoteSrcs: stubbedFailedRequests,
-            safeBase64Srcs: [],
+            failedUnsafeRemoteURLs: stubbedFailedRequests,
+            safeBase64Contents: [:],
             summary: trackerProtectionSummary
         )
         delegate.imageProxy(self, didFinishWithOutput: output)
