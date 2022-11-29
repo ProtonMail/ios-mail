@@ -142,8 +142,6 @@
 			<string>%d dia</string>
 			<key>other</key>
 			<string>%d dias</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -194,8 +192,6 @@
 			<string>%d hora</string>
 			<key>other</key>
 			<string>%d horas</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>

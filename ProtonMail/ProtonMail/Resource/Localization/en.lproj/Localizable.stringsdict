@@ -128,8 +128,6 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>zero</key>
-			<string>%d day</string>
 			<key>one</key>
 			<string>%d day</string>
 			<key>other</key>
@@ -146,8 +144,6 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>zero</key>
-			<string>%d hour</string>
 			<key>one</key>
 			<string>%d hour</string>
 			<key>other</key>

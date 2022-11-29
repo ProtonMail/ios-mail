@@ -124,8 +124,6 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d hari</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -170,8 +168,6 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d jam</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
