@@ -32,19 +32,7 @@ class MailCrypto {
 
     enum CryptoError: Error {
         case failedGeneratingKeypair(Error?)
-        case verificationFailed
         case decryptionFailed
-    }
-
-    private let EXPECTED_TOKEN_LENGTH: Int = 64
-
-    // MARK: - Message
-
-    /**
-     * Check that the key token is a 32 byte value encoded in hexadecimal form.
-     */
-    private func verifyTokenFormat(decryptedToken: String) -> Bool {
-        decryptedToken.count == EXPECTED_TOKEN_LENGTH && decryptedToken.allSatisfy { $0.isHexDigit }
     }
 
     // MARK: - static
@@ -54,7 +42,7 @@ class MailCrypto {
             processInfo.updateLocalSystemUpTime(time: processInfo.systemUpTime)
             processInfo.localServerTime = TimeInterval(time)
         }
-        CryptoUpdateTime(time)
+        Crypto.updateTime(time)
     }
 
     static func generateRandomKeyPair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
@@ -84,34 +72,6 @@ class MailCrypto {
         return (passphrase, publicKey, privateKey)
     }
 
-    // Extracts the right passphrase for migrated/non-migrated keys and verifies the signature
-    static func getAddressKeyPassphrase(userKeys: [ArmoredKey], passphrase: Passphrase, key: Key) throws -> Passphrase {
-        guard let token = key.token, let signature = key.signature else {
-            return passphrase
-        }
-
-        let decryptionKeys = userKeys.map {
-            DecryptionKey(privateKey: $0, passphrase: passphrase)
-        }
-
-        let plainToken: String = try Decryptor.decrypt(decryptionKeys: decryptionKeys, encrypted: .init(value: token))
-
-        guard MailCrypto().verifyTokenFormat(decryptedToken: plainToken) else {
-            throw Self.CryptoError.verificationFailed
-        }
-
-        let verification = try Sign.verifyDetached(
-            signature: .init(value: signature),
-            plainText: plainToken,
-            verifierKeys: userKeys
-        )
-        if verification == true {
-            return Passphrase(value: plainToken)
-        } else {
-            throw Self.CryptoError.verificationFailed
-        }
-    }
-
     static func decryptionKeys(
         basedOn addressKeys: [Key],
         mailboxPassword: Passphrase,
@@ -120,11 +80,7 @@ class MailCrypto {
         addressKeys.compactMap { addressKey in
             let keyPassphrase: Passphrase
             do {
-                keyPassphrase = try getAddressKeyPassphrase(
-                    userKeys: userKeys,
-                    passphrase: mailboxPassword,
-                    key: addressKey
-                )
+                keyPassphrase = try addressKey.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: mailboxPassword)
             } catch {
                 // do not propagate the error, perhaps other keys are still OK, so we should proceed
                 PMLog.error(error)

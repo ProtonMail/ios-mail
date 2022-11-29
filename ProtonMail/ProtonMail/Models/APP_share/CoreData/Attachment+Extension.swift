@@ -87,11 +87,7 @@ extension Attachment {
 
     func sign(byKey key: Key, userKeys: [ArmoredKey], passphrase: Passphrase) -> Data? {
         do {
-            let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
-                userKeys: userKeys,
-                passphrase: passphrase,
-                key: key
-            )
+            let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
             let signingKey = SigningKey(privateKey: ArmoredKey(value: key.privateKey), passphrase: addressKeyPassphrase)
             let dataToSign: Data
             if let fileData = fileData {
@@ -106,19 +102,6 @@ extension Attachment {
         } catch {
             return nil
         }
-    }
-
-    func getSession(keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
-        guard let keyPacket = self.keyPacket else {
-            return nil // TODO:: error throw
-        }
-        let passphrase = self.message.cachedPassphrase ?? mailboxPassword
-        guard let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0)) else {
-            return nil // TODO:: error throw
-        }
-
-        let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
-        return sessionKey
     }
 
     func getSession(userKeys: [ArmoredKey], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
