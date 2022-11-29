@@ -133,7 +133,7 @@ class LabelsFoldersTests: BaseTestCase {
         loginRobot
             .loginUser(user)
             .refreshMailbox()
-            .clickMessageByIndex(1)
+            .clickMessageByIndex(2)
             .createLabel(folderName)
             .tapDoneSelectingLabelButton()
             .navigateBackToInbox()
