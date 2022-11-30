@@ -53,6 +53,7 @@ class ImageProxy: LifetimeTrackable {
      4. notify the delegate when the image is ready, so that they can replace the UUIDs with the data:
      <img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img> -> <img src=\"https://example.com/tracker.png\"></img>.
      */
+    // swiftlint:disable:next function_body_length
     func process(body: String, delegate: ImageProxyDelegate) throws -> String {
         let fullHTMLDocument = try SwiftSoup.parse(body)
         let imgs = try fullHTMLDocument.select("img")

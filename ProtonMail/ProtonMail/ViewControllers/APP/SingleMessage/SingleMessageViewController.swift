@@ -319,6 +319,7 @@ extension SingleMessageViewController {
 }
 
 private extension SingleMessageViewController {
+    // swiftlint:disable:next function_body_length
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .reply, .replyAll, .forward:

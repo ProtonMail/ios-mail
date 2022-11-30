@@ -83,11 +83,9 @@ final class ToolbarSettingViewModel {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(
-            params: .init(preference: preference)
-        ) { _ in
-            completion()
-        }
+            .executionBlock(params: .init(preference: preference)) { _ in
+                completion()
+            }
     }
 
     func infoViewTitle(segment: Int) -> String {

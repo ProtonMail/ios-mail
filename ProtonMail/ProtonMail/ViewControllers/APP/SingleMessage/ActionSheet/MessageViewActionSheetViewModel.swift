@@ -26,6 +26,7 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
+    // swiftlint:disable:next function_body_length
     init(
         title: String,
         labelID: LabelID,

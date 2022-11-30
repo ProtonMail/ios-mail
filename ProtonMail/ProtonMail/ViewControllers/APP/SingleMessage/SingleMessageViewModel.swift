@@ -20,9 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
 import ProtonCore_DataModel
 import ProtonCore_UIFoundations
-import Foundation
 
 class SingleMessageViewModel {
 
@@ -52,7 +52,7 @@ class SingleMessageViewModel {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         return formatter
     }()
-    private let userIntroductionProgressProvider :UserIntroductionProgressProvider
+    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
@@ -319,16 +319,14 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(
-            params: .init(preference: preference)
-        ) { result in
-            switch result {
-            case .success:
-                completion?(nil)
-            case let .failure(error):
-                completion?(error as NSError)
+            .executionBlock(params: .init(preference: preference)) { result in
+                switch result {
+                case .success:
+                    completion?(nil)
+                case let .failure(error):
+                    completion?(error as NSError)
+                }
             }
-        }
     }
 }
 

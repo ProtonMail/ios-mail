@@ -45,7 +45,7 @@ final class SaveToolbarActionSettings: SaveToolbarActionSettingsForUsersUseCase 
     }
 
     override func executionBlock(params: Params, callback: @escaping NewUseCase<Void, Params>.Callback) {
-        let conversationActions =  params.preference.conversationActions
+        let conversationActions = params.preference.conversationActions
             .map(ServerToolbarAction.convert)
         let messageActions = params.preference.messageActions
             .map(ServerToolbarAction.convert)

@@ -38,9 +38,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     func start(openFromNotification: Bool = false) {
-        guard let usersManager = user.parentManager else {
-            fatalError("UsersManger should not be nil")
-        }
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
                 queueManager: sharedServices.get(by: QueueManager.self),

@@ -177,23 +177,6 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         }
     }
 
-    static let actionsNotAddableToToolbar: [MessageViewActionSheetAction] = [
-        .reply,
-        .replyAll,
-        .dismiss,
-        .more,
-        .toolbarCustomization,
-        .viewInDarkMode,
-        .viewInLightMode
-    ]
-
-    static let defaultActions: [Self] = [
-        .markUnread,
-        .trash,
-        .moveTo,
-        .labelAs
-    ]
-
     var accessibilityIdentifier: String {
         switch self {
         case .delete:
@@ -214,6 +197,26 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
             return title ?? ""
         }
     }
+}
+
+// MARK: - Static
+extension MessageViewActionSheetAction {
+    static let actionsNotAddableToToolbar: [MessageViewActionSheetAction] = [
+        .reply,
+        .replyAll,
+        .dismiss,
+        .more,
+        .toolbarCustomization,
+        .viewInDarkMode,
+        .viewInLightMode
+    ]
+
+    static let defaultActions: [Self] = [
+        .markUnread,
+        .trash,
+        .moveTo,
+        .labelAs
+    ]
 
     static func allActionsOfListView() -> [Self] {
         return [
