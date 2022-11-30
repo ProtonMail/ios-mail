@@ -667,6 +667,10 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Upravit obrázek";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Upravit kontakt";
+
 /* The title of edit folder page */
 "Edit folder" = "Upravit složku";
 
@@ -1134,6 +1138,9 @@
 
 /* default vcard types */
 "Mobile" = "Mobil";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Podpis v mobilní aplikaci";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Pondělí (%1$@) v 08:%2$d";

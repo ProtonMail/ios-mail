@@ -248,9 +248,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archive";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIVE";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Are you sure you want to delete permanently this message?";
 
@@ -754,9 +751,6 @@
 /* menu title */
 "Drafts" = "Drafts";
 
-/* mail location title */
-"DRAFTS" = "DRAFTS";
-
 /* Onboarding title */
 "Easily up-to-date" = "Easily up-to-date";
 
@@ -1026,9 +1020,6 @@
 /* alternative routing description
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
-
-/* mail location title */
-"INBOX" = "INBOX";
 
 /* menu title */
 "Inbox" = "Inbox";
@@ -1737,9 +1728,6 @@
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
 
-/* mail location title */
-"SENT" = "SENT";
-
 /* menu title */
 "Sent" = "Sent";
 
@@ -1816,9 +1804,6 @@
 /* The banner shown in case of proxy failure */
 "Some images failed to load with tracking protection." = "Some images failed to load with tracking protection.";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* menu title */
 "Spam" = "Spam";
 
@@ -1833,9 +1818,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Starred";
-
-/* mail location title */
-"STARRED" = "STARRED";
 
 /* contact placeholder */
 "State" = "State";
@@ -2067,9 +2049,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Trash";
-
-/* mail location title */
-"TRASH" = "TRASH";
 
 /* network troubleshot view title */
 "TroubleShooting" = "TroubleShooting";

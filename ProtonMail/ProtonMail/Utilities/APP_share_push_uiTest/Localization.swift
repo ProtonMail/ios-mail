@@ -117,24 +117,17 @@ class LocalizedString {
 
     // Mark Message localtion
 
-    /// "All Mail"
     lazy var _locations_all_mail_title = NSLocalizedString("All Mail", comment: "mail location title")
-    /// "INBOX"
-    lazy var _locations_inbox_title    = NSLocalizedString("INBOX", comment: "mail location title")
-    /// "STARRED"
-    lazy var _locations_starred_title  = NSLocalizedString("STARRED", comment: "mail location title")
-    /// "DRAFTS"
-    lazy var _locations_draft_title    = NSLocalizedString("DRAFTS", comment: "mail location title")
-    /// "SENT"
-    lazy var _locations_outbox_title   = NSLocalizedString("SENT", comment: "mail location title")
-    /// "TRASH"
-    lazy var _locations_trash_title    = NSLocalizedString("TRASH", comment: "mail location title")
-    /// "ARCHIVE"
-    lazy var _locations_archive_title  = NSLocalizedString("ARCHIVE", comment: "mail location title")
-    /// "SPAM"
-    lazy var _locations_spam_title     = NSLocalizedString("SPAM", comment: "mail location title")
-    /// "Trash"
-    lazy var _locations_trash_desc    = NSLocalizedString("Trash", comment: "mail location desc")
+    lazy var _locations_inbox_title    = NSLocalizedString("Inbox", comment: "mail location title")
+    lazy var _locations_starred_title  = NSLocalizedString("Starred", comment: "mail location title")
+    lazy var _locations_draft_title    = NSLocalizedString("Drafts", comment: "mail location title")
+    lazy var _locations_outbox_title   = NSLocalizedString("Sent", comment: "mail location title")
+    lazy var _locations_trash_title    = NSLocalizedString("Trash", comment: "mail location title")
+    lazy var _locations_archive_title  = NSLocalizedString("Archive", comment: "mail location title")
+    lazy var _locations_spam_title     = NSLocalizedString("Spam", comment: "mail location title")
+    lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
+
+    var _locations_trash_desc : String { _locations_trash_title }
     /// "Add Star"
     lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
 

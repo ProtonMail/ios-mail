@@ -703,6 +703,10 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Editar o avatar";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Editar contato";
+
 /* The title of edit folder page */
 "Edit folder" = "Editar a pasta";
 
@@ -1170,6 +1174,9 @@
 
 /* default vcard types */
 "Mobile" = "Celular";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Assinatura móvel";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Segunda-feira (%1$@) às 08:%2$d";

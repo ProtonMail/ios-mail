@@ -529,6 +529,10 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Editar o avatar";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Editar contacto";
+
 /* The title of edit folder page */
 "Edit folder" = "Editar pasta";
 
@@ -939,6 +943,9 @@
 
 /* default vcard types */
 "Mobile" = "Telemóvel";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Assinatura móvel";
 
 /* More actions button */
 "More" = "Mais";

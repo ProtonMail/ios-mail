@@ -667,6 +667,10 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Змінити аватар";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Редагувати контакт";
+
 /* The title of edit folder page */
 "Edit folder" = "Редагувати теку";
 
@@ -1134,6 +1138,9 @@
 
 /* default vcard types */
 "Mobile" = "Мобільний";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Мобільні підпис";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Понеділок (%1$@) о 08:%2$d";
