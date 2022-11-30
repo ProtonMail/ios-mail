@@ -655,6 +655,10 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "编辑头像";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "编辑联系人";
+
 /* The title of edit folder page */
 "Edit folder" = "更改文件夹";
 
@@ -1071,6 +1075,9 @@
 
 /* default vcard types */
 "Mobile" = "手机";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "移动设备签名";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "星期一 (%1$@) 上午 08:%2$d";

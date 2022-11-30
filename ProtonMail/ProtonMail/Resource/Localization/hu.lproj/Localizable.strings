@@ -470,6 +470,10 @@
    The button title of the scheduled message banner. */
 "Edit" = "Szerkesztés";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Névjegy szerkesztése";
+
 /* The title of edit folder page */
 "Edit folder" = "Mappa szerkesztése";
 
@@ -793,6 +797,9 @@
 
 /* default vcard types */
 "Mobile" = "Mobil";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Mobil aláírás";
 
 /* More actions button */
 "More" = "Továbbiak";
