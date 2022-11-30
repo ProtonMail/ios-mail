@@ -1911,7 +1911,7 @@
 "There are unsent messages that will be lost if you sign out" = "Gönderilmemiş iletiler var. Oturumu kapatırsanız bunlar silinecek";
 
 /* The content of the alert that will be shown when user tries to delete a scheduled message. */
-"This %d messages will move to Drafts and have its schedule removed." = "Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.";
+"These %d messages will move to Drafts and have their schedule removed." = "Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Bu işlem geri alınamaz.";

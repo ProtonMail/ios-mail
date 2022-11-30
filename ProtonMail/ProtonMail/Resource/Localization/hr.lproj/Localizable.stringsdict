@@ -444,7 +444,7 @@
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
-	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@alertMessage@</string>
@@ -455,11 +455,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 			<key>one</key>
 			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
