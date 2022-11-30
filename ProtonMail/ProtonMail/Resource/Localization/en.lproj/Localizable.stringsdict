@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>%d email trackers blocked</key>
+	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@trackers@</string>
@@ -18,7 +18,7 @@
 			<string>%d email trackers blocked</string>
 		</dict>
 	</dict>
-    <key>%d email trackers found</key>
+	<key>%d email trackers found</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@trackers@</string>
@@ -36,7 +36,7 @@
 			<string>%d email trackers found</string>
 		</dict>
 	</dict>
-    <key>Proton found %d trackers on this message.</key>
+	<key>Proton found %d trackers on this message.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@trackers@</string>
@@ -332,7 +332,7 @@
 			<string>In %d minutes</string>
 		</dict>
 	</dict>
-	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@alertMessage@</string>
@@ -345,88 +345,88 @@
 			<key>one</key>
 			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
-			<string>Thess %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>
 	</dict>
-    <key>%d message moved to Drafts</key>
-    <dict>
-        <key>NSStringLocalizedFormatKey</key>
-        <string>%#@alertMessage@</string>
-        <key>alertMessage</key>
-        <dict>
-            <key>NSStringFormatSpecTypeKey</key>
-            <string>NSStringPluralRuleType</string>
-            <key>NSStringFormatValueTypeKey</key>
-            <string>u</string>
-            <key>one</key>
-            <string>%d message moved to Drafts</string>
-            <key>other</key>
-            <string>%d messages moved to Drafts</string>
-        </dict>
-    </dict>
-    <key>%d seconds</key>
-    <dict>
-        <key>NSStringLocalizedFormatKey</key>
-        <string>%#@second@</string>
-        <key>second</key>
-        <dict>
-            <key>NSStringFormatSpecTypeKey</key>
-            <string>NSStringPluralRuleType</string>
-            <key>NSStringFormatValueTypeKey</key>
-            <string>u</string>
-            <key>one</key>
-            <string>%d second</string>
-            <key>other</key>
-            <string>%d seconds</string>
-        </dict>
-    </dict>
-    <key>%d Selected</key>
-    <dict>
-        <key>NSStringLocalizedFormatKey</key>
-        <string>%#@selected@</string>
-        <key>selected</key>
-        <dict>
-            <key>NSStringFormatSpecTypeKey</key>
-            <string>NSStringPluralRuleType</string>
-            <key>NSStringFormatValueTypeKey</key>
-            <string>u</string>
-            <key>one</key>
-            <string>%d Selected</string>
-            <key>other</key>
-            <string>%d Selected</string>
-        </dict>
-    </dict>
-    <key>%d attachment</key>
-    <dict>
-        <key>NSStringLocalizedFormatKey</key>
-        <string>%#@attachment@</string>
-        <key>attachment</key>
-        <dict>
-            <key>NSStringFormatSpecTypeKey</key>
-            <string>NSStringPluralRuleType</string>
-            <key>NSStringFormatValueTypeKey</key>
-            <string>u</string>
-            <key>one</key>
-            <string>%d attachment</string>
-            <key>other</key>
-            <string>%d attachments</string>
-        </dict>
-    </dict>
-    <key>%d Minutes</key>
-    <dict>
-        <key>NSStringLocalizedFormatKey</key>
-        <string>%#@minutes@</string>
-        <key>minutes</key>
-        <dict>
-            <key>NSStringFormatSpecTypeKey</key>
-            <string>NSStringPluralRuleType</string>
-            <key>NSStringFormatValueTypeKey</key>
-            <string>u</string>
-            <key>one</key>
-            <string>%d minute</string>
-            <key>other</key>
-            <string>%d minutes</string>
-        </dict>
-    </dict>
+	<key>%d message moved to Drafts</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d message moved to Drafts</string>
+			<key>other</key>
+			<string>%d messages moved to Drafts</string>
+		</dict>
+	</dict>
+	<key>%d seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@second@</string>
+		<key>second</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d second</string>
+			<key>other</key>
+			<string>%d seconds</string>
+		</dict>
+	</dict>
+	<key>%d Selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@selected@</string>
+		<key>selected</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d Selected</string>
+			<key>other</key>
+			<string>%d Selected</string>
+		</dict>
+	</dict>
+	<key>%d attachment</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@attachment@</string>
+		<key>attachment</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d attachment</string>
+			<key>other</key>
+			<string>%d attachments</string>
+		</dict>
+	</dict>
+	<key>%d Minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minutes@</string>
+		<key>minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d minute</string>
+			<key>other</key>
+			<string>%d minutes</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

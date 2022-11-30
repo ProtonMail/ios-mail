@@ -1378,7 +1378,7 @@ class LocalizedString {
     lazy var _scheduled_message_time_tomorrow = NSLocalizedString("Tomorrow, %@", comment: "The title of the time label of the scheduled message that is about to be sent tomorrow.")
 
     lazy var _delete_scheduled_alert_title = NSLocalizedString("Schedule will be removed", comment: "The title of the alert that will be shown when user tries to delete a scheduled message.")
-    lazy var _delete_scheduled_alert_message = NSLocalizedString("This %d messages will move to Drafts and have its schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
+    lazy var _delete_scheduled_alert_message = NSLocalizedString("These %d messages will move to Drafts and have their schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
     lazy var _message_moved_to_drafts = NSLocalizedString("%d message moved to Drafts", comment: "Banner message")
 
     lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")

@@ -1962,7 +1962,7 @@
 "There are unsent messages that will be lost if you sign out" = "There are unsent messages that will be lost if you sign out";
 
 /* The content of the alert that will be shown when user tries to delete a scheduled message. */
-"This %d messages will move to Drafts and have its schedule removed." = "This %d messages will move to Drafts and have its schedule removed.";
+"These %d messages will move to Drafts and have their schedule removed." = "These %d messages will move to Drafts and have their schedule removed.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "This action cannot be undone.";
