@@ -159,11 +159,7 @@ extension Data {
         var firstError: Error?
         for key in keys {
             do {
-                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
-                    userKeys: userKeys,
-                    passphrase: passphrase,
-                    key: key
-                )
+                let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
                 let decryptedAttachment = try attachmentDecryptor.decryptAttachmentNonOptional(
                     keyPacket: keyPackage,
                     dataPacket: self,
@@ -184,29 +180,11 @@ extension Data {
     }
 
     // key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: Passphrase, privKeys: [Key]) throws -> SessionKey {
-        let decryptionKeys: [DecryptionKey] = privKeys.map {
-            DecryptionKey(privateKey: ArmoredKey(value: $0.privateKey), passphrase: passphrase)
-        }
-        return try Decryptor.decryptSessionKey(decryptionKeys: decryptionKeys, keyPacket: self)
-    }
-
-    // key packet part
-    func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: Passphrase) throws -> SessionKey {
-        let decryptionKey = DecryptionKey(privateKey: ArmoredKey(value: addrPrivKey), passphrase: passphrase)
-        return try Decryptor.decryptSessionKey(decryptionKeys: [decryptionKey], keyPacket: self)
-    }
-
-    // key packet part
     func getSessionFromPubKeyPackage(userKeys: [ArmoredKey], passphrase: Passphrase, keys: [Key]) throws -> SessionKey? {
         var firstError: Error?
         for key in keys {
             do {
-                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
-                    userKeys: userKeys,
-                    passphrase: passphrase,
-                    key: key
-                )
+                let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
                 let decryptionKey = DecryptionKey(
                     privateKey: ArmoredKey(value: key.privateKey),
                     passphrase: addressKeyPassphrase

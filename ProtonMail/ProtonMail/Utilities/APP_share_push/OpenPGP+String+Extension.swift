@@ -34,9 +34,7 @@ extension String {
     }
 
     private func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailbox_pwd: Passphrase) throws -> ArmoredMessage {
-        let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                                          passphrase: mailbox_pwd,
-                                                                          key: key)
+        let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: mailbox_pwd)
 
         let signerKey = SigningKey(
             privateKey: ArmoredKey(value: key.privateKey),
