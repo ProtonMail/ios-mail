@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
+	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -15,9 +15,9 @@
 			<key>few</key>
 			<string>%d membri</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>Un membru</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d de membri</string>
 		</dict>
 	</dict>
 	<key>%d Minutes</key>
@@ -31,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d minutes</string>
-			<key>one</key>
 			<string>%d minute</string>
+			<key>one</key>
+			<string>Un minut</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d de minute</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -49,11 +49,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Selected</string>
+			<string>%d selectate</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>Unul selectat</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d selectate</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -67,11 +67,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d attachments</string>
+			<string>%d fișiere atașate</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>un fișier atașat</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d de fișiere atașate</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -175,11 +175,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Au fost blocaţi %d urmăritori din e-mail.</string>
+			<string>Au fost blocate %d funcții de monitorizare din e-mail.</string>
 			<key>one</key>
-			<string>A fost blocat un urmăritor din e-mail.</string>
+			<string>A fost blocată o funcție de monitorizare din e-mail.</string>
 			<key>other</key>
-			<string>Au fost blocaţi %d de urmăritori din e-mail.</string>
+			<string>Au fost blocate %d de funcții de monitorizare din e-mail.</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -193,11 +193,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>S-au găsit %d urmăritori în e-mail.</string>
+			<string>S-au găsit %d funcții de monitorizare în e-mail.</string>
 			<key>one</key>
-			<string>S-a găsit un urmăritor în e-mail.</string>
+			<string>S-a găsit o funcție de monitorizare în e-mail.</string>
 			<key>other</key>
-			<string>S-au găsit %d de urmăritori în e-mail.</string>
+			<string>S-au găsit %d de funcții de monitorizare în e-mail.</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -303,11 +303,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d seconds</string>
+			<string>%d secunde</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>o secundă</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d de secunde</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -431,11 +431,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Proton a găsit și blocat %d urmăritori în acest mesaj.</string>
+			<string>Proton a găsit și blocat %d funcții de monitorizare în acest mesaj.</string>
 			<key>one</key>
-			<string>Proton a găsit și blocat un urmăritor în acest mesaj.</string>
+			<string>Proton a găsit și blocat o funcție de monitorizare în acest mesaj.</string>
 			<key>other</key>
-			<string>Proton a găsit și blocat %d de urmăritori în acest mesaj.</string>
+			<string>Proton a găsit și blocat %d de funcții de monitorizare în acest mesaj.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>

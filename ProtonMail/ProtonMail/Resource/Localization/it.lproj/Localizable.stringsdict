@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
+	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d Membro</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d Membri</string>
 		</dict>
 	</dict>
 	<key>%d Minutes</key>
@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d minuto</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d minuti</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -45,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d selezionato</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d selezionati</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -61,9 +61,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d allegato</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d allegati</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -239,9 +239,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d messaggio spostato in bozze</string>
+			<string>%d messaggio spostato in Bozze</string>
 			<key>other</key>
-			<string>%d messaggi spostati in bozze</string>
+			<string>%d messaggi spostati in Bozze</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -271,9 +271,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d secondo</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d secondi</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Questo %d messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
+			<string>Questo messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
 			<key>other</key>
 			<string>These %d messages will move to Drafts and have its schedule removed.</string>
 		</dict>

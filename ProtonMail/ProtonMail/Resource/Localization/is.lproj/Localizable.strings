@@ -37,6 +37,9 @@
 /* Placeholder */
 "8 to 21 characters long" = "8 til 21 stafa langt";
 
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. Skráðu þig inn í proton.me til að greiða ófrágenginn reikning.";
+
 /* Account manager title */
 "Account" = "Notandaaðgangur";
 
@@ -194,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Safn";
 
+/* mail location title */
+"ARCHIVE" = "SAFN";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
 
@@ -243,11 +249,17 @@
 /* Title */
 "Authentication" = "Auðkenning";
 
+/* Title */
+"Auto Lock Time" = "Sjálfvirkur læsingartími";
+
 /* settings general section title */
 "Auto-load embedded images" = "Hlaða sjálfvirkt inn ívöfnum myndum";
 
 /* settings general section title */
 "Auto-load remote content" = "Hlaða sjálfvirkt inn fjartengdu efni";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Tiltækar aðgerðir";
 
 /* Example feedback */
 "Awful" = "Hræðilegt";
@@ -263,6 +275,9 @@
 
 /* Error Description */
 "Bad response" = "Rangt svar";
+
+/* Title */
+"Bcc" = "Falið afrit (Bcc)";
 
 /* message Bcc: feild */
 "Bcc:" = "Falið afrit:";
@@ -281,6 +296,9 @@
 
 /* Title */
 "Bug Description" = "Lýsing á villu";
+
+/* Title */
+"Bug Report Received" = "Villuskýrsla móttekin";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Gögn í skyndiminni";
@@ -343,8 +361,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "Ekki er hægt að tæma möppuna núna.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Afrit (Cc)";
+
 /* settings general section title */
 "Change account password" = "Breyta lykilorði innskráningar";
+
+/* Title */
+"Change default address to…" = "Change default address to…";
 
 /* settings general section title */
 "Change mailbox password" = "Breyta lykilorði á pósthólfi";
@@ -353,8 +378,14 @@
    title */
 "Change password" = "Breyta lykilorði";
 
+/* update password error title */
+"Change Password" = "Breyta lykilorði";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Breyta PIN kóða";
+
+/* Title */
+"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Hladdu tækið þitt eða haltu áfram handvirkt.";
@@ -502,6 +533,11 @@
    Custom option for time config picker */
 "Custom" = "Sérsniðið";
 
+/* The title of the Customize toolbar setting view.
+   The title of the Customize toolbar spotlight view.
+   The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Sérsníða verkfærastiku";
+
 /* Title */
 "Cut" = "Klippa";
 
@@ -528,6 +564,9 @@
 
 /* Settings row */
 "Default browser" = "Sjálfgefinn vafri";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Skilgreina vísbendingu (valkvætt)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -579,6 +618,12 @@
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Sleppa lyklaborði";
+
+/* Title in settings */
+"Display Name" = "Birtingarnafn";
+
+/* Title in display name settings */
+"DisplayName" = "Birtingarnafn";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Viltu virkilega fjarlægja þessa skrá úr viðhengjum?";
@@ -657,6 +702,9 @@
 /* menu title */
 "Drafts" = "Drög";
 
+/* mail location title */
+"DRAFTS" = "DRÖG";
+
 /* Onboarding title */
 "Easily up-to-date" = "Auðveldlega uppfærð";
 
@@ -666,6 +714,9 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Breyta táknmynd";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Breyta tengilið";
 
 /* The title of edit folder page */
 "Edit folder" = "Breyta möppu";
@@ -921,6 +972,9 @@
 /* menu title */
 "Inbox" = "Innhólf";
 
+/* mail location title */
+"INBOX" = "INNHÓLF";
+
 /* Error */
 "Incorrect PIN." = "Rangt PIN.";
 
@@ -1035,9 +1089,6 @@
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Skráðu þig inn aftur til að halda áfram að fá uppfærslur";
 
-/* comment */
-"Log out" = "Skrá út";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Útskráður frá %@";
 
@@ -1074,6 +1125,9 @@
 
 /* menu title */
 "Menu" = "Valmynd";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Skilaboð";
 
 /* No comment provided by engineer. */
 "Message actions" = "Skilaboðaaðgerðir";
@@ -1134,6 +1188,9 @@
 
 /* default vcard types */
 "Mobile" = "Farsími";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Farsímaundirskrift";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Mánudag (%1$@) kl. 08:%2$d";
@@ -1483,6 +1540,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Endurheimt virkjuð";
 
+/* menu title */
+"Refer a friend" = "Vísa vini á";
+
 /* Title */
 "Remind Me Later" = "Áminna mig síðar";
 
@@ -1523,6 +1583,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Krefjast staðfestingar á tengli";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Frumstilla á sjálfgefið";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Frumstilla á sjálfgefið?";
+
 /* Title */
 "Resetting message cache…" = "Endurstilli skyndiminni skilaboða...";
 
@@ -1548,14 +1614,11 @@
 "Save Changes" = "Vista breytingar";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Áætla sendingu";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Dagskrá verður fjarlægð";
-
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Dagskrá send";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Skipulegg skilaboð...";
@@ -1613,6 +1676,9 @@
 /* Alert title */
 "Sending in progress" = "Sending í gangi";
 
+/* Description */
+"Sending Message" = "Sendi skilaboð";
+
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Sendi skilaboð…";
 
@@ -1624,6 +1690,9 @@
 
 /* menu title */
 "Sent" = "Sent";
+
+/* mail location title */
+"SENT" = "SENT";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Sent frá Proton tölvupósti með órjúfanlegri dulritun";
@@ -1664,6 +1733,9 @@
 /* menu title */
 "Settings" = "Stillingar";
 
+/* The title of the share button in referral share view. */
+"Share" = "Deila";
+
 /* action */
 "Share contact" = "Deila tengilið";
 
@@ -1676,6 +1748,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Skrá út";
+
+/* Action */
+"Sign Out" = "Skrá út";
 
 /* Title in signature settings */
 "Signature" = "Undirskrift";
@@ -1698,6 +1773,9 @@
 /* menu title */
 "Spam" = "Ruslpóstur";
 
+/* mail location title */
+"SPAM" = "RUSLPÓSTUR";
+
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Stjörnumerkja";
@@ -1709,6 +1787,9 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Stjörnumerkt";
+
+/* mail location title */
+"STARRED" = "STJÖRNUMERKT";
 
 /* contact placeholder */
 "State" = "Hérað/Fylki";
@@ -1786,6 +1867,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Gerðu vírusvarnaforritið þitt tímabundið óvirkt.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Skilmálar & kvaðir";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Takk fyrir að senda inn villuskýrslu.  Við höfum bætt skýrslunni þinni í villuskráningarkerfið okkar.";
 
@@ -1815,6 +1899,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Nýja lykilorðið þarf að vera að lágmarki 8 stafir";
+
+/* update password error */
+"The password is wrong." = "The password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Lykilorðið verður að vera á milli 8 og 21 stafur að lengd";
@@ -1901,6 +1988,9 @@
 "Title" = "Titill";
 
 /* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.";
+
+/* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Staðfesting TLS vottorðs mistókst. Hægt er að fylgjast með tengingunni þinni og appinu er lokað tímabundið til öryggis.\n\nSkiptu um net strax.";
 
 /* message To: feild
@@ -1925,6 +2015,9 @@
 /* mail location desc
    menu title */
 "Trash" = "Rusl";
+
+/* mail location title */
+"TRASH" = "RUSL";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Bilanagreining";

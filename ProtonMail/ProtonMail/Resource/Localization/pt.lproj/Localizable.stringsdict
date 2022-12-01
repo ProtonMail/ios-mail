@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
+	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d membro</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d membros</string>
 		</dict>
 	</dict>
 	<key>%d Minutes</key>
@@ -31,7 +31,7 @@
 			<key>one</key>
 			<string>%d minute</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d minutos</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -47,7 +47,7 @@
 			<key>one</key>
 			<string>%d Selected</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d Selecionados</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -63,7 +63,7 @@
 			<key>one</key>
 			<string>%d attachment</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d anexos</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -273,7 +273,7 @@
 			<key>one</key>
 			<string>%d second</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d segundos</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>

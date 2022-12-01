@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
+	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d lid</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d leden</string>
 		</dict>
 	</dict>
 	<key>%d Minutes</key>
@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d minuut</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d minuten</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -45,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d Geselecteerd</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d Geselecteerd</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -61,9 +61,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d bijlage</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d bijlagen</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -271,9 +271,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d seconde</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d seconden</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>

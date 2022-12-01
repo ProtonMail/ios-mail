@@ -907,9 +907,6 @@
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Εισέλθετε ξανά για να συνεχίσετε να λαμβάνετε ενημερώσεις";
 
-/* comment */
-"Log out" = "Αποσύνδεση";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Έχετε εξέλθει από το %@";
 
@@ -1375,7 +1372,7 @@
 "Save Changes" = "Αποθήκευση Αλλαγών";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Προγραμματισμός αποστολής";
 
 /* Springboard (3D Touch) shortcuts action

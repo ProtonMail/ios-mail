@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
+	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -17,9 +17,9 @@
 			<key>many</key>
 			<string>%d участников</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d участник</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d участника</string>
 		</dict>
 	</dict>
 	<key>%d Minutes</key>
@@ -33,13 +33,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d minutes</string>
+			<string>%d минуты</string>
 			<key>many</key>
-			<string>%d minutes</string>
+			<string>%d минут</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d минута</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d минут</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -53,13 +53,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Selected</string>
+			<string>%d выбрано</string>
 			<key>many</key>
-			<string>%d Selected</string>
+			<string>%d выбрано</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d выбрано</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d выбрано</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -73,13 +73,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d attachments</string>
+			<string>%d вложения</string>
 			<key>many</key>
-			<string>%d attachments</string>
+			<string>%d вложений</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d вложение</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d вложений</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -335,13 +335,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d seconds</string>
+			<string>%d секунды</string>
 			<key>many</key>
-			<string>%d seconds</string>
+			<string>%d секунд</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d секунда</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d секунд</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>

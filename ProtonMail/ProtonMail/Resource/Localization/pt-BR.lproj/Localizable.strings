@@ -13,6 +13,9 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
 
+/* e.g. 3 attachments */
+"%d attachment" = "%d anexo";
+
 /* Description */
 "%d attempt remaining" = "%d tentativa restante";
 
@@ -27,6 +30,9 @@
 
 /* Banner message */
 "%d message moved to Drafts" = "%d mensagem movida para Rascunhos";
+
+/* auto lock time format */
+"%d Minutes" = "%d Minutos";
 
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d segundos";
@@ -60,6 +66,9 @@
 
 /* Placeholder */
 "8 to 21 characters long" = "8 a 21 caracteres";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "O acesso a esta conta foi desativado devido à falta de pagamento. Por favor, acesse o proton.me para pagar sua fatura pendente.";
 
 /* Account manager title */
 "Account" = "Conta";
@@ -218,6 +227,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Arquivo";
 
+/* mail location title */
+"ARCHIVE" = "ARQUIVO";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Você tem certeza de que deseja excluir permanentemente esta mensagem?";
 
@@ -273,11 +285,17 @@
 /* Title */
 "Authentication" = "Autenticação";
 
+/* Title */
+"Auto Lock Time" = "Tempo do bloqueio automático";
+
 /* settings general section title */
 "Auto-load embedded images" = "Carregar imagens incorporadas automaticamente";
 
 /* settings general section title */
 "Auto-load remote content" = "Carregar conteúdo remoto automaticamente";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Ações disponível";
 
 /* Example feedback */
 "Awful" = "Horrível";
@@ -293,6 +311,9 @@
 
 /* Error Description */
 "Bad response" = "Resposta incorreta";
+
+/* Title */
+"Bcc" = "Cco";
 
 /* message Bcc: feild */
 "Bcc:" = "Cco:";
@@ -311,6 +332,9 @@
 
 /* Title */
 "Bug Description" = "Descrição do problema";
+
+/* Title */
+"Bug Report Received" = "Relatório do problema recebido";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Dados em cache";
@@ -373,8 +397,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "Não é possível esvaziar a pasta agora.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Cc";
+
 /* settings general section title */
 "Change account password" = "Alterar senha da conta";
+
+/* Title */
+"Change default address to…" = "Change default address to…";
 
 /* settings general section title */
 "Change mailbox password" = "Alterar senha da caixa de correio";
@@ -383,8 +414,14 @@
    title */
 "Change password" = "Alterar senha";
 
+/* update password error title */
+"Change Password" = "Alterar senha";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Alterar código PIN";
+
+/* Title */
+"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Carregue seu dispositivo ou retorne manualmente.";
@@ -532,6 +569,11 @@
    Custom option for time config picker */
 "Custom" = "Personalizado";
 
+/* The title of the Customize toolbar setting view.
+   The title of the Customize toolbar spotlight view.
+   The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Personalizar barra de ferramentas";
+
 /* Title */
 "Cut" = "Recortar";
 
@@ -543,6 +585,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Data: %@";
+
+/* days */
+"days" = "dias";
 
 /* error title */
 "Decryption error" = "Erro ao descriptografar";
@@ -558,6 +603,9 @@
 
 /* Settings row */
 "Default browser" = "Navegador padrão";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Definir dica (opcional)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -609,6 +657,12 @@
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Dispensar teclado";
+
+/* Title in settings */
+"Display Name" = "Nome de exibição";
+
+/* Title in display name settings */
+"DisplayName" = "Nome de exibição";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Deseja realmente remover este arquivo dos anexos?";
@@ -687,6 +741,9 @@
 /* menu title */
 "Drafts" = "Rascunhos";
 
+/* mail location title */
+"DRAFTS" = "RASCUNHOS";
+
 /* Onboarding title */
 "Easily up-to-date" = "Facilmente atualizado";
 
@@ -696,6 +753,9 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Editar o avatar";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Editar contato";
 
 /* The title of edit folder page */
 "Edit folder" = "Editar a pasta";
@@ -727,11 +787,17 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Enviar e-mail para contato";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "Formato do rascunho incorreto. Falha ao enviar.";
+
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Os rastreadores de e-mail podem violar sua privacidade.";
 
 /* Name of the feature */
 "Email tracking protection" = "Proteção de rastreamento de e-mail";
+
+/* Spotlight explanation of the feature */
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "A proteção de rastreamento de e-mail agora está disponível. Os remetentes não saberão se, onde ou quando você abriu seus e-mails.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Esvaziar spam";
@@ -911,6 +977,9 @@
 /* Title */
 "Hide details" = "Ocultar detalhes";
 
+/* hours */
+"hours" = "horas";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Como você descreveria sua experiência com o novo Proton Mail?";
 
@@ -944,12 +1013,18 @@
 /* import contact title */
 "Importing Contacts" = "Importando contatos";
 
+/* The title of the time label of the scheduled message that is about to be sent in 30 minutes. */
+"In %d minutes" = "Em %d minutos";
+
 /* alternative routing description
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites da Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
 
 /* menu title */
 "Inbox" = "Caixa de entrada";
+
+/* mail location title */
+"INBOX" = "CAIXA DE ENTRADA";
 
 /* Error */
 "Incorrect PIN." = "PIN incorreto.";
@@ -996,8 +1071,14 @@
 /* Error message */
 "Invalid username!" = "Nome de usuário inválido!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para o Proton,\nganhe até $ 90 em créditos!";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Convide seus contatos para o Proton Mail para desfrutar de criptografia de ponta a ponta perfeita ou adicione proteção por senha às mensagens que você enviar.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para o Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Este relatório de erro é sobre uma compra feita no aplicativo?";
@@ -1037,6 +1118,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limite alcançado";
 
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Link copiado.";
+
 /* Button inside the banner */
 "Load anyway" = "Carregar mesmo assim";
 
@@ -1064,9 +1148,6 @@
 
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Inicie sessão novamente para continuar recebendo atualizações";
-
-/* comment */
-"Log out" = "Encerrar sessão";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Desconectado de %@";
@@ -1104,6 +1185,9 @@
 
 /* menu title */
 "Menu" = "Menu";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Mensagem";
 
 /* No comment provided by engineer. */
 "Message actions" = "Ações de mensagem";
@@ -1164,6 +1248,9 @@
 
 /* default vcard types */
 "Mobile" = "Celular";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Assinatura móvel";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Segunda-feira (%1$@) às 08:%2$d";
@@ -1516,6 +1603,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperação ativada";
 
+/* menu title */
+"Refer a friend" = "Indicar um amigo";
+
 /* Title */
 "Remind Me Later" = "Lembre-me mais tarde";
 
@@ -1556,6 +1646,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Solicitar link de confirmação";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Restaurar para padrão";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Restaurar para padrão?";
+
 /* Title */
 "Resetting message cache…" = "Redefinindo o cache da mensagem…";
 
@@ -1581,14 +1677,11 @@
 "Save Changes" = "Salvar alterações";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Agendar envio";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "A programação será removida";
-
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Envio programado";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Agendando mensagem...";
@@ -1646,6 +1739,9 @@
 /* Alert title */
 "Sending in progress" = "Envio em andamento";
 
+/* Description */
+"Sending Message" = "Enviando mensagem";
+
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviando mensagem…";
 
@@ -1657,6 +1753,9 @@
 
 /* menu title */
 "Sent" = "Enviados";
+
+/* mail location title */
+"SENT" = "ENVIADOS";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Enviado por Proton Mail com criptografia de acesso zero";
@@ -1697,6 +1796,9 @@
 /* menu title */
 "Settings" = "Configurações";
 
+/* The title of the share button in referral share view. */
+"Share" = "Compartilhar";
+
 /* action */
 "Share contact" = "Compartilhar contato";
 
@@ -1709,6 +1811,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Encerrar sessão";
+
+/* Action */
+"Sign Out" = "Encerrar sessão";
 
 /* Title in signature settings */
 "Signature" = "Assinatura";
@@ -1731,6 +1836,9 @@
 /* menu title */
 "Spam" = "Spam";
 
+/* mail location title */
+"SPAM" = "SPAM";
+
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Favorito";
@@ -1742,6 +1850,9 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Com estrela";
+
+/* mail location title */
+"STARRED" = "COM ESTRELA";
 
 /* contact placeholder */
 "State" = "Estado";
@@ -1819,6 +1930,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Desative ou remova temporariamente o seu software antivírus.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Termos e condições";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Obrigado por enviar um relatório de bug. Adicionamos seu relatório ao nosso sistema de rastreamento de bugs.";
 
@@ -1827,6 +1941,9 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "As senhas não coincidem";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "As ações na barra de ferramentas serão redefinidas para o padrão";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Baixar mensagens será interrompido se o aplicativo Proton Mail for fechado.";
@@ -1848,6 +1965,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "A nova senha precisa ter pelo menos 8 caracteres";
+
+/* update password error */
+"The password is wrong." = "The password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "A senha deve ter entre 8 e 21 caracteres";
@@ -1927,11 +2047,23 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Essa preferência retornará ao Safari se o navegador escolhido for desinstalado.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Essa barra de ferramentas aparece quando é selecionado múltiplas mensagens na sua caixa de entrada.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Essa barra de ferramentas é visível ao ler as mensagens.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Hora de relaxar";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Horário";
+
 /* contacts talbe cell Title title */
 "Title" = "Título";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "A validação do certificado TLS falhou. Sua conexão pode ser monitorada e o app temporariamente bloqueado para sua segurança.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Falha na validação do certificado TLS. Sua conexão pode estar sendo monitorada e o aplicativo está temporariamente bloqueado para sua segurança.\n\nTroque imediatamente de rede.";
@@ -1952,12 +2084,21 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Muitas mensagens esperando para serem enviadas. Aguarde até que outra mensagem seja enviada para agendar esta.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Acções da barra de ferramentas (até 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Acompanhe suas recompensas";
 
 /* mail location desc
    menu title */
 "Trash" = "Lixeira";
+
+/* mail location title */
+"TRASH" = "LIXEIRA";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Solução de problemas";
@@ -1985,6 +2126,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Não foi possível analisar o objeto de resposta:\n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "Não foi possível enviar o e-mail";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatários ocultos";
@@ -2124,8 +2268,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Você está desconectado";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Você pode escolher e reorganizar as ações na sua barra de ferramentas";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Você pode desativar as conversas das configurações a qualquer momento.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Você agora pode escolher e reorganizar as ações nesse barra de ferramentas";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Agora você pode agendar suas mensagens para serem enviadas depois";
@@ -2184,11 +2334,17 @@
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Seu país pode estar bloqueando o acesso ao Proton. Tente usar o %1$@ (qualquer outra VPN) ou use %2$@ para acessar o Proton.";
 
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Seus e-mails agora vêm com imagens remotas carregadas por padrão. Os remetentes não saberão se, onde ou quando você abriu seus e-mails.\nPara alterar isso, vá para Configurações → Configurações da conta → Privacidade.";
+
 /* Title of user feedback view */
 "Your feedback" = "Seu comentário";
 
 /* The section title of folder manager table */
 "Your folders" = "Suas pastas";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Seu link de convite";
 
 /* The section title of label manager table */
 "Your labels" = "Seus marcadores";

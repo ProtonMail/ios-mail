@@ -990,9 +990,6 @@
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "重新登录即可继续接收邮件更新提醒";
 
-/* comment */
-"Log out" = "退出账户";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "%@ 账户已退出登录";
 
@@ -1470,14 +1467,11 @@
 "Save Changes" = "保存更改";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "定时发送";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "将删除计划";
-
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "定时发送";
 
 /* Springboard (3D Touch) shortcuts action
    Title */

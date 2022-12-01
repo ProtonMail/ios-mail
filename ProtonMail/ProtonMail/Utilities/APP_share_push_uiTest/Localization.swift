@@ -212,8 +212,8 @@ class LocalizedString {
     lazy var _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
     /// "You need at least one recipient to send"
     lazy var _composer_no_recipient_error = NSLocalizedString("You need at least one recipient to send", comment: "Description")
-    /// "Change sender address to .."
-    lazy var _composer_change_sender_address_to = NSLocalizedString("Change sender address to ..", comment: "Title")
+    /// "Change sender address to…"
+    lazy var _composer_change_sender_address_to = NSLocalizedString("Change sender address to…", comment: "Title")
     /// "Upgrade to a paid plan to send from your %@ address"
     lazy var _composer_change_paid_plan_sender_error = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
     /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
@@ -527,8 +527,8 @@ class LocalizedString {
     /// "Auto Lock Time"
     lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "Title")
 
-    /// "Change default address to .."
-    lazy var _settings_change_default_address_to = NSLocalizedString("Change default address to ..", comment: "Title")
+    /// "Change default address to…"
+    lazy var _settings_change_default_address_to = NSLocalizedString("Change default address to…", comment: "Title")
 
     /// "You can't set the %@ address as default because it is a paid feature."
     lazy var _settings_change_paid_address_warning = NSLocalizedString("You can't set %@ address as default because it is a paid feature.", comment: "pm.me upgrade warning in composer")
@@ -730,8 +730,8 @@ class LocalizedString {
     /// "Can't get user auth info"
     lazy var _cant_get_user_auth_info = NSLocalizedString("Can't get user auth info", comment: "update password error")
 
-    /// "The Password is wrong."
-    lazy var _the_password_is_wrong = NSLocalizedString("The Password is wrong.", comment: "update password error")
+    /// "The password is wrong."
+    lazy var _the_password_is_wrong = NSLocalizedString("The password is wrong.", comment: "update password error")
 
     /// "The new password does not match."
     lazy var _the_new_password_not_match = NSLocalizedString("The new password does not match.", comment: "update password error")
@@ -951,7 +951,7 @@ class LocalizedString {
     lazy var _contact_groups_delete = NSLocalizedString("Delete contact group",
                                                         comment: "The description of the button for deleting the contact group")
 
-    lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
+    lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
                                                                           comment: "The string that describes whether there are 0 or 1 member in the contact group")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")
@@ -1387,9 +1387,7 @@ class LocalizedString {
     lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")
     lazy var _composer_send_msg_which_was_schedule_send_message = NSLocalizedString("This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"", comment: "The message of the alert of the user trying to send a message that was schedule-send.")
     lazy var _composer_send_msg_which_was_schedule_send_action_title = NSLocalizedString("Send immediately", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
-    lazy var _composer_send_msg_which_was_schedule_send_action_title_schedule_send = NSLocalizedString("Schedule send", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
 
-    lazy var _schedule_introduction_view_title = NSLocalizedString("Schedule send", comment: "The title of the introducation view of the schedule send")
     lazy var _schedule_introduction_view_content = NSLocalizedString("You can now schedule your messages to be sent later", comment: "The content of the introducation view of the schedule send")
     lazy var _scheduling_message_title = NSLocalizedString("Scheduling message...", comment: "The title of the banner that will be shown when you schedule a message.")
 
