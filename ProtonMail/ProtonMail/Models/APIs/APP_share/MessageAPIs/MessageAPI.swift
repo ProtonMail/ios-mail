@@ -260,24 +260,24 @@ final class EmptyMessageRequest: Request {
 // MARK: Message Send part
 
 final class SendMessageRequest: Request {
-    var messagePackage: [AddressPackageBase]  // message package
-    var body: String
+    let messagePackage: [AddressPackageBase]  // message package
+    let body: String
     let messageID: String
-    let expirationTime: Int32
+    let expirationTime: Int
     let delaySeconds: Int
 
-    var clearBody: ClearBodyPackage?
-    var clearAtts: [ClearAttachmentPackage]?
+    let clearBody: ClearBodyPackage?
+    let clearAtts: [ClearAttachmentPackage]?
 
-    var mimeDataPacket: String
-    var clearMimeBody: ClearBodyPackage?
+    let mimeDataPacket: String
+    let clearMimeBody: ClearBodyPackage?
 
-    var plainTextDataPacket: String
-    var clearPlainTextBody: ClearBodyPackage?
-    private var deliveryTime: Date?
+    let plainTextDataPacket: String
+    let clearPlainTextBody: ClearBodyPackage?
+    let deliveryTime: Date?
 
     init(messageID: String,
-         expirationTime: Int32?,
+         expirationTime: Int?,
          delaySeconds: Int,
          messagePackage: [AddressPackageBase]!,
          body: String,
