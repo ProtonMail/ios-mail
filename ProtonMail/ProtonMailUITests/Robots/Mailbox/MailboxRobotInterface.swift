@@ -38,7 +38,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        cell(id.mailboxMessageCellIdentifier(subject)).firstMatch().waitForHittable().onChild(staticText(subject)).firstMatch().forceTap()
+        cell(id.mailboxMessageCellIdentifier(subject)).firstMatch().tap()
         return MessageRobot()
     }
     

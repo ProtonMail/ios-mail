@@ -88,13 +88,13 @@ class ComposerRobot: CoreElements {
     }
     
     func draftToSubjectBodyAttachment(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
-        return recipients(to)
-            .subject(subjectText)
-            .body(body)
-            .addAttachment()
+        return addAttachment()
             .add()
             .pickImages(1)
-            .waitForImagesUpload(1)
+            .recipients(to)
+            .subject(subjectText)
+            .body(body)
+            
     }
     
     func sendMessageToContact(_ subjectText: String) -> ContactDetailsRobot {
@@ -151,23 +151,21 @@ class ComposerRobot: CoreElements {
     }
     
     func sendMessageWithAttachments(_ to: String, _ subjectText: String, attachmentsAmount: Int = 1) -> InboxRobot {
-        typeAndSelectRecipients(to)
-            .subject(subjectText)
-            .addAttachment()
+        addAttachment()
             .add()
             .pickImages(attachmentsAmount)
-            .waitForImagesUpload(attachmentsAmount)
+            .typeAndSelectRecipients(to)
+            .subject(subjectText)
             .send()
         return InboxRobot()
     }
     
     func sendMessageEOAndExpiryTimeWithAttachment(_ to: String, _ subjectText: String, _ password: String, _ hint: String, attachmentsAmount: Int = 1, expirePeriod: expirationPeriod) -> InboxRobot {
-        typeAndSelectRecipients(to)
-            .subject(subjectText)
-            .addAttachment()
+        addAttachment()
             .add()
             .pickImages(attachmentsAmount)
-            .waitForImagesUpload(attachmentsAmount)
+            .typeAndSelectRecipients(to)
+            .subject(subjectText)
             .setMessagePassword()
             .definePasswordWithHint(password, hint)
             .messageExpiration()
