@@ -70,6 +70,14 @@ class MockMessageDataService: MessageDataServiceProtocol {
     func idsOfMessagesBeingSent() -> [String] {
         []
     }
+
+    func getMessageSendingData(
+        for uri: String,
+        completionQueue: DispatchQueue,
+        completion: @escaping ((MessageSendingData?) -> Void)
+    ) {
+        completion(nil)
+    }
 }
 
 final class MockMessageDataAction: MessageDataActionProtocol {

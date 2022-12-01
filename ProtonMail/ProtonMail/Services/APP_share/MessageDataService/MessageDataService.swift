@@ -48,6 +48,12 @@ protocol MessageDataServiceProtocol: Service {
 
     func isEventIDValid() -> Bool
     func idsOfMessagesBeingSent() -> [String]
+
+    func getMessageSendingData(
+        for uri: String,
+        completionQueue: DispatchQueue,
+        completion: @escaping ((MessageSendingData?) -> Void)
+    )
 }
 
 protocol LocalMessageDataServiceProtocol: Service {
@@ -888,6 +894,33 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
 
+    func getMessageSendingData(
+        for uri: String,
+        completionQueue: DispatchQueue,
+        completion: @escaping ((MessageSendingData?) -> Void)
+    ) {
+        // TODO: Use `CoreDataContextProviderProtocol.read` when available
+        contextProvider.performOnRootSavingContext { [weak self, weak completionQueue] context in
+            guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(uri) else {
+                completionQueue?.async { completion(nil) }
+                return
+            }
+            guard let message = context.find(with: objectID) as? Message else {
+                completionQueue?.async { completion(nil) }
+                return
+            }
+            let messageEntity = MessageEntity(message)
+            let messageSendData = MessageSendingData(
+                message: messageEntity,
+                cachedUserInfo: message.cachedUser,
+                cachedAuthCredential: message.cachedAuthCredential,
+                cachedSenderAddress: message.cachedAddress,
+                defaultSenderAddress: self?.defaultUserAddress(for: message)
+            )
+            completionQueue?.async { completion(messageSendData) }
+        }
+    }
+
     func send(byID objectIDInURI: String, deliveryTime: Date?, UID: String, completion: @escaping (Error?) -> Void) {
         // TODO: needs to refractor
         self.contextProvider.performOnRootSavingContext { context in
@@ -965,10 +998,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let dependencies = MessageSendingRequestBuilder.Dependencies(
                 fetchAttachment: FetchAttachment(dependencies: .init(apiService: userManager.apiService))
             )
-            let sendBuilder = MessageSendingRequestBuilder(
-                expirationOffset: message.expirationOffset,
-                dependencies: dependencies
-            )
+            let sendBuilder = MessageSendingRequestBuilder(dependencies: dependencies)
 
             // build contacts if user setup key pinning
             var contacts = [PreContact]()
@@ -1141,13 +1171,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     let delaySeconds = self.userDataSource?.userInfo.delaySendSeconds ?? 0
                     return SendMessageRequest(
                         messageID: message.messageID,
-                        expirationTime: message.expirationOffset,
+                        expirationTime: Int(message.expirationOffset),
                         delaySeconds: delaySeconds,
                         messagePackage: msgs,
                         body: encodedBody,
-                        clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
-                        mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
-                        plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
+                        clearBody: sendBuilder.clearBodyPackage,
+                        clearAtts: sendBuilder.clearAtts,
+                        mimeDataPacket: sendBuilder.mimeBody,
+                        clearMimeBody: sendBuilder.clearMimeBodyPackage,
+                        plainTextDataPacket: sendBuilder.plainBody,
+                        clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
                         authCredential: authCredential,
                         deliveryTime: deliveryTime
                     )

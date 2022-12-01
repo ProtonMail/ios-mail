@@ -19,7 +19,7 @@ final class SendMessageAPITest: XCTestCase {
                                     expectedBody: String,
                                     shouldHaveAttachments: Bool) throws {
         let messageID = UUID().uuidString
-        let expirationTime = Int32.random(in: 1...5)
+        let expirationTime = Int.random(in: 1...5)
         let delaySecond = Int.random(in: 1...9)
         let deliveryTime = Date()
         let messagePackage = AddressPackage(email: "test@pm.me",
@@ -53,7 +53,7 @@ final class SendMessageAPITest: XCTestCase {
         let jsonDict = try XCTUnwrap(sut.parameters)
         XCTAssertEqual(jsonDict["DeliveryTime"] as? Int, Int(deliveryTime.timeIntervalSince1970))
         XCTAssertEqual(jsonDict["DelaySeconds"] as? Int, delaySecond)
-        XCTAssertEqual(jsonDict["ExpiresIn"] as? Int32, expirationTime)
+        XCTAssertEqual(jsonDict["ExpiresIn"] as? Int, expirationTime)
         let packages = try XCTUnwrap(jsonDict["Packages"] as? [[String: Any]])
         XCTAssertEqual(packages.count, 1)
 
