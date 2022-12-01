@@ -384,7 +384,6 @@ class LocalizedString {
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
     lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
     lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
-    lazy var _schedule_next_monday_send_action = NSLocalizedString("Monday (%@) at 08:%02d", comment: "scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15")
     lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
     lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
     lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
