@@ -660,7 +660,7 @@ extension ComposeViewController {
                                                 style: .destructive, handler: { _ -> Void in
             continueAction()
         }))
-        alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title_schedule_send,
+        alertController.addAction(UIAlertAction(title: LocalString._general_schedule_send_action,
                                                 style: .default,
                                                 handler: { [weak self] _ in
             self?.openScheduleSendActionSheet?()

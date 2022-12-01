@@ -883,9 +883,6 @@
 /* menu title */
 "Lock The App" = "Bloqueja l'aplicació";
 
-/* comment */
-"Log out" = "Tanca la sessió";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "S'ha tancat la sessió de %@";
 
@@ -1345,7 +1342,7 @@
 "Save Changes" = "Desa els canvis";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Programar enviament";
 
 /* The title of the banner that will be shown when you schedule a message. */

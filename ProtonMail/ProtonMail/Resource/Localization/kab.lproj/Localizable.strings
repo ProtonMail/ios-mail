@@ -877,9 +877,6 @@
 /* menu title */
 "Lock The App" = "Sekkeṛ asnas";
 
-/* comment */
-"Log out" = "Ffeɣ";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Ffeɣ seg %@";
 
@@ -1339,7 +1336,7 @@
 "Save Changes" = "Sekles ibeddilen";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Sɣiwes tuzna";
 
 /* Springboard (3D Touch) shortcuts action

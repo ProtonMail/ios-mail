@@ -1035,9 +1035,6 @@
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Log ind igen for at fortsat at modtage opdateringer";
 
-/* comment */
-"Log out" = "Log ud";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Logget ud af %@";
 
@@ -1548,14 +1545,11 @@
 "Save Changes" = "Gem ændringer";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Planlæg afsendelse";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Tidsplan vil blive fjernet";
-
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Planlagt afsendelse";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Planlægger besked...";

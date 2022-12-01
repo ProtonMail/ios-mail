@@ -13,6 +13,9 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ / %2$@";
 
+/* e.g. 3 attachments */
+"%d attachment" = "%d ek dosya";
+
 /* Description */
 "%d attempt remaining" = "%d deneme hakkı kaldı";
 
@@ -42,6 +45,9 @@
 
 /* minute */
 "%d min" = "%d dk";
+
+/* auto lock time format */
+"%d Minutes" = "%d dakika";
 
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d saniye";
@@ -75,6 +81,9 @@
 
 /* Placeholder */
 "8 to 21 characters long" = "8 ile 21 karakter uzunluğunda";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen proton.me üzerinden oturum açın.";
 
 /* Account manager title */
 "Account" = "Hesap";
@@ -233,6 +242,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Arşivle";
 
+/* mail location title */
+"ARCHIVE" = "ARŞİV";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
 
@@ -288,11 +300,17 @@
 /* Title */
 "Authentication" = "Kimlik doğrulaması";
 
+/* Title */
+"Auto Lock Time" = "Otomatik kilitleme süresi";
+
 /* settings general section title */
 "Auto-load embedded images" = "Gömülü görseller otomatik olarak yüklensin";
 
 /* settings general section title */
 "Auto-load remote content" = "Uzak içerik otomatik olarak yüklensin";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Yapılabilecek işlemler";
 
 /* Example feedback */
 "Awful" = "Çok kötü";
@@ -308,6 +326,9 @@
 
 /* Error Description */
 "Bad response" = "Yanıt hatalı";
+
+/* Title */
+"Bcc" = "Gizli kopya";
 
 /* message Bcc: feild */
 "Bcc:" = "Gizli kopya:";
@@ -326,6 +347,9 @@
 
 /* Title */
 "Bug Description" = "Hata açıklaması";
+
+/* Title */
+"Bug Report Received" = "Hata raporu alındı";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Ön belleğe alınmış veriler";
@@ -388,8 +412,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "Klasör şu anda boşaltılamıyor.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Kopya";
+
 /* settings general section title */
 "Change account password" = "Hesap parolasını değiştir";
+
+/* Title */
+"Change default address to…" = "Change default address to…";
 
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
@@ -398,8 +429,14 @@
    title */
 "Change password" = "Parolayı değiştir";
 
+/* update password error title */
+"Change Password" = "Parolayı değiştir";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "PIN kodunu değiştir";
+
+/* Title */
+"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Aygıtınızı şarj edin ya da el ile sürdürün.";
@@ -547,6 +584,11 @@
    Custom option for time config picker */
 "Custom" = "Özel";
 
+/* The title of the Customize toolbar setting view.
+   The title of the Customize toolbar spotlight view.
+   The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Araç çubuğunu özelleştir";
+
 /* Title */
 "Cut" = "Kes";
 
@@ -558,6 +600,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Tarih: %@";
+
+/* days */
+"days" = "gün";
 
 /* error title */
 "Decryption error" = "Şifre çözme sorunu";
@@ -573,6 +618,9 @@
 
 /* Settings row */
 "Default browser" = "Varsayılan tarayıcı";
+
+/* Placeholder */
+"Define Hint (Optional)" = "İpucu belirtin (isteğe bağlı)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -624,6 +672,12 @@
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Klavyeyi yok say";
+
+/* Title in settings */
+"Display Name" = "Görüntülenecek ad";
+
+/* Title in display name settings */
+"DisplayName" = "Görüntülenecek ad";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Bu dosyayı ek dosyalar içinden kaldırmak istediğinize emin misiniz?";
@@ -702,6 +756,9 @@
 /* menu title */
 "Drafts" = "Taslaklar";
 
+/* mail location title */
+"DRAFTS" = "TASLAKLAR";
+
 /* Onboarding title */
 "Easily up-to-date" = "Kolayca güncel";
 
@@ -711,6 +768,9 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Avatarı düzenle";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Kişiyi düzenle";
 
 /* The title of edit folder page */
 "Edit folder" = "Klasörü düzenle";
@@ -742,11 +802,17 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "E-posta kişisi";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "E-posta gönderilemedi. İleti taslak olarak kaydedildi.";
+
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-posta izleyiciler kişisel gizliliğinizi tehlikeye düşürebilir.";
 
 /* Name of the feature */
 "Email tracking protection" = "E-posta izleme koruması";
+
+/* Spotlight explanation of the feature */
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "E-posta izleme koruması artık kullanılabilir. Göndericiler, e-postalarını açıp açmadığınızı, nerede veya ne zaman açtığınızı bilemezler.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "İstenmeyen kutusunu boşalt";
@@ -926,6 +992,9 @@
 /* Title */
 "Hide details" = "Ayrıntıları gizle";
 
+/* hours */
+"hours" = "saat";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
 
@@ -968,6 +1037,9 @@
 
 /* menu title */
 "Inbox" = "Gelen kutusu";
+
+/* mail location title */
+"INBOX" = "GELEN KUTUSU";
 
 /* Error */
 "Incorrect PIN." = "PIN kodu yanlış.";
@@ -1014,8 +1086,14 @@
 /* Error message */
 "Invalid username!" = "Kullanıcı adı geçersiz!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Arkadaşlarınıza Proton önerin,\n $90 tutarına kadar kredi kazanın!";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Sorunsuz uçtan uca şifrelemenin tadını çıkarmak için tanıdıklarınızı Proton Mail kullanmaya çağırın ya da gönderdiğiniz iletilere parola koruması ekleyin.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Arkadaşlarınızı Proton kullanmaya davet edin: Mail Plus tarifesini ücretsiz olarak denesinler. Ücretli bir tarifeye abone olurlarsa siz de kredi kazanın.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Bu hata bildirimi uygulama içi satın alma işlemiyle mi ilgili?";
@@ -1055,6 +1133,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Sınıra ulaşıldı";
 
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Bağlantı kopyalandı.";
+
 /* Button inside the banner */
 "Load anyway" = "Yine de yükle";
 
@@ -1082,9 +1163,6 @@
 
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Güncellemeleri almayı sürdürmek için yeniden oturum açın";
-
-/* comment */
-"Log out" = "Oturumu kapat";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "%@ oturumu kapatıldı";
@@ -1122,6 +1200,9 @@
 
 /* menu title */
 "Menu" = "Menü";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "İleti";
 
 /* No comment provided by engineer. */
 "Message actions" = "İleti işlemleri";
@@ -1182,6 +1263,9 @@
 
 /* default vcard types */
 "Mobile" = "Cep telefonu";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Mobil imza";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Pazartesi (%1$@) saat 08:%2$d";
@@ -1534,6 +1618,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Kurtarma etkileştirildi";
 
+/* menu title */
+"Refer a friend" = "Arkadaşınıza önerin";
+
 /* Title */
 "Remind Me Later" = "Daha sonra hatırlat";
 
@@ -1574,6 +1661,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Bağlantı onayı istensin";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Varsayılana sıfırla";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Varsayılana sıfırlansın mı?";
+
 /* Title */
 "Resetting message cache…" = "İleti ön belleği sıfırlanıyor…";
 
@@ -1599,14 +1692,11 @@
 "Save Changes" = "Değişiklikleri kaydet";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Gönderimi zamanla";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Zamanlama kaldırılacak";
-
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Zamanlanmış gönderim";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "İleti zamanlanıyor...";
@@ -1664,6 +1754,9 @@
 /* Alert title */
 "Sending in progress" = "Gönderiliyor";
 
+/* Description */
+"Sending Message" = "İleti gönderiliyor";
+
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "İleti gönderiliyor…";
 
@@ -1675,6 +1768,9 @@
 
 /* menu title */
 "Sent" = "Gönderilmiş";
+
+/* mail location title */
+"SENT" = "GÖNDERİLMİŞ";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
@@ -1715,6 +1811,9 @@
 /* menu title */
 "Settings" = "Ayarlar";
 
+/* The title of the share button in referral share view. */
+"Share" = "Paylaş";
+
 /* action */
 "Share contact" = "Kişiyi paylaş";
 
@@ -1727,6 +1826,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Oturumu kapat";
+
+/* Action */
+"Sign Out" = "Oturumu kapat";
 
 /* Title in signature settings */
 "Signature" = "İmza";
@@ -1749,6 +1851,9 @@
 /* menu title */
 "Spam" = "İstenmeyen";
 
+/* mail location title */
+"SPAM" = "İSTENMEYEN";
+
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Yıldız koy/kaldır";
@@ -1760,6 +1865,9 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Yıldızlı";
+
+/* mail location title */
+"STARRED" = "YILDIZLI";
 
 /* contact placeholder */
 "State" = "Bölge";
@@ -1837,6 +1945,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Virüsten koruma uygulamanızı geçici olarak devre dışı bırakın ya da kaldırın.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Hüküm ve koşullar";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata bildiriminde bulunduğunuz için teşekkür ederiz. Bildiriminiz hata izleme sistemimize eklendi.";
 
@@ -1845,6 +1956,9 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "Parola ile onayı aynı değil";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Araç çubuğu varsayılan işlemlere sıfırlanacak";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Proton Mail uygulaması kapatılırsa indirme işlemi durdurulur.";
@@ -1866,6 +1980,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Yeni parola en az 8 karakter uzunluğunda olmalıdır";
+
+/* update password error */
+"The password is wrong." = "The password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Parola uzunluğu 8 ile 21 karakter arasında olmalıdır";
@@ -1948,11 +2065,23 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Bu araç çubuğu, gelen kutunuzda birden fazla ileti seçtiğinizde görünür.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Bu araç çubuğu bir ileti okunurken görünür.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Rahatlama zamanı";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Zamanlama";
+
 /* contacts talbe cell Title title */
 "Title" = "Başlık";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak devre dışı bırakıldı.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak devre dışı bırakıldı.\n\nHemen ağları değiştirin.";
@@ -1973,12 +2102,21 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Gönderilecek çok fazla ileti var.\nLütfen, bu iletiyi zamanlamak için başka bir ileti gönderilene kadar bekleyin.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Araç çubuğu işlemleri (en fazla 5 tane seçin)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Ödüllerinizi izleyin";
 
 /* mail location desc
    menu title */
 "Trash" = "Çöp kutusu";
+
+/* mail location title */
+"TRASH" = "ÇÖP KUTUSU";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Sorun giderme";
@@ -2006,6 +2144,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Yanıt nesnesi işlenemedi: \n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "E-posta gönderilemedi";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Gizli alıcılar";
@@ -2145,8 +2286,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Çevrimdışısınız";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Araç çubuğunuzdaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Yazışmaları gruplama özelliğini istediğiniz zaman ayarlar bölümünden kapatabilirsiniz.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Artık iletileri daha sonra gönderilmek üzere zamanlayabilirsiniz";
@@ -2213,6 +2360,9 @@
 
 /* The section title of folder manager table */
 "Your folders" = "Klasörleriniz";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Davet bağlantınız";
 
 /* The section title of label manager table */
 "Your labels" = "Etiketleriniz";

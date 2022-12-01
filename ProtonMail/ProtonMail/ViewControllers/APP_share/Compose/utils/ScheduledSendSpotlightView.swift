@@ -21,7 +21,7 @@ import UIKit
 final class ScheduledSendSpotlightView: SpotlightView {
     init() {
         super.init(
-            title: LocalString._schedule_introduction_view_title,
+            title: LocalString._general_schedule_send_action,
             message: LocalString._schedule_introduction_view_content,
             icon: Asset.composeScheduleStar
         )

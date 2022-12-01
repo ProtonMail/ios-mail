@@ -780,9 +780,6 @@
 /* menu title */
 "Lock The App" = "Zaključaj aplikaciju";
 
-/* comment */
-"Log out" = "Odjavite se";
-
 /* error title */
 "Logs" = "Zapisnici";
 
@@ -1197,7 +1194,7 @@
 "Save Changes" = "Spremi promjene";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
+   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
 "Schedule send" = "Zakaži slanje";
 
 /* Springboard (3D Touch) shortcuts action
