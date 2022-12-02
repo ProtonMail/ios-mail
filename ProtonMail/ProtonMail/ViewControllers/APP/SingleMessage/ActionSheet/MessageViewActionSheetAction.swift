@@ -110,11 +110,11 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
     var icon: UIImage? {
         switch self {
         case .reply:
-            return IconProvider.arrowUpAndLeft
+            return IconProvider.reply
         case .replyAll:
-            return IconProvider.arrowsUpAndLeft
+            return IconProvider.replyAll
         case .forward:
-            return IconProvider.arrowRight
+            return IconProvider.forward
         case .markUnread:
             return IconProvider.envelopeDot
         case .markRead:

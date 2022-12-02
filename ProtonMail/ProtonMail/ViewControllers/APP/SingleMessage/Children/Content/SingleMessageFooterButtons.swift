@@ -49,21 +49,21 @@ private enum SubviewsFactory {
 
     static var replyButton: MailButton {
         let button = MailButton()
-        button.icon = IconProvider.arrowUpAndLeft
+        button.icon = IconProvider.reply
         button.title = LocalString._general_reply_button
         return button
     }
 
     static var replyAllButton: MailButton {
         let button = MailButton()
-        button.icon = IconProvider.arrowsUpAndLeft
+        button.icon = IconProvider.replyAll
         button.title = LocalString._general_replyall_button
         return button
     }
 
     static var forwardButton: MailButton {
         let button = MailButton()
-        button.icon = IconProvider.arrowRight
+        button.icon = IconProvider.forward
         button.title = LocalString._general_forward_button
         return button
     }
