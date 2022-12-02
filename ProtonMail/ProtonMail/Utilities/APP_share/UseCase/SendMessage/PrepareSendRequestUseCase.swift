@@ -35,13 +35,18 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
 
             try prepareMimeFormatIfNeeded(sendBuilder: sendBuilder, params: params)
             try preparePlainTextFormatIfNeeded(sendBuilder: sendBuilder, params: params)
-            try prepareAddressPackagesBase(sendBuilder: sendBuilder) { [unowned self] addressesPackageBase in
-                let request = self.createRequest(
-                    sendBuilder: sendBuilder,
-                    params: params,
-                    addressesPackageBase: addressesPackageBase
-                )
-                callback(.success(request))
+            try prepareAddressPackagesBase(sendBuilder: sendBuilder) { [unowned self] result in
+                switch result {
+                case .failure(let error):
+                    callback(.failure(error))
+                case .success(let addressesPackageBase):
+                    let request = self.createRequest(
+                        sendBuilder: sendBuilder,
+                        params: params,
+                        addressesPackageBase: addressesPackageBase
+                    )
+                    callback(.success(request))
+                }
             }
 
         } catch {
@@ -75,7 +80,7 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
 
     private func prepareAddressPackagesBase(
         sendBuilder: MessageSendingRequestBuilder,
-        completion: @escaping ([AddressPackageBase]) -> Void
+        completion: @escaping (Swift.Result<[AddressPackageBase], Error>) -> Void
     ) throws {
         logInfo(step: .preparingAddressesPackageBase)
         let packageBuilders = try sendBuilder.generatePackageBuilder()
@@ -83,15 +88,23 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
         _ = when(resolved: promises)
             .done { results in
                 var addressesPackageBase = [AddressPackageBase]()
+                var returnedError: Error?
                 for result in results {
                     switch result {
                     case .fulfilled(let value):
                         addressesPackageBase.append(value)
                     case .rejected(let error):
-                        throw error
+                        returnedError = error
+                    }
+                    if returnedError != nil {
+                        break
                     }
                 }
-                completion(addressesPackageBase)
+                if let error = returnedError {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(addressesPackageBase))
+                }
             }
     }
 
