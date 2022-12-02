@@ -4,6 +4,7 @@
   --text-color: {{proton-text-color}};
   --bg-color: {{proton-background-color}};
   --brand-color: {{proton-brand-color}};
+  --screen-width: {{screen-width}};
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -208,11 +209,21 @@ nav ol,nav ul {
 img {
     border: 0;
     -ms-interpolation-mode: bicubic;
-    max-width: 100%;
-    height: initial;
-    width: initial;
     /* will prevent embed image improper sizing */
     /*    height: auto; remove it if test ok*/
+}
+
+/*img tag, doesn't have width attribute and style contains width*/
+/*img tag, has width attribute*/
+img:not([width], [style*='width']),
+img[width] {
+    max-width: var(--screen-width);
+    height: initial;
+}
+
+/*img tag, doesn't have width attribute and style doesn't have width*/
+img:not([width], [style^='width'])[src] {
+    max-width: 100%;
 }
 
 /*img.proton-embedded {*/
