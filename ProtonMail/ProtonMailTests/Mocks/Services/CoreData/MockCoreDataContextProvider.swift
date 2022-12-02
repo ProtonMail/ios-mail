@@ -123,4 +123,20 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     func makeNewBackgroundContext() -> NSManagedObjectContext {
         container.newBackgroundContext()
     }
+
+    func read<T>(block: (NSManagedObjectContext) -> T) -> T {
+        rethrowingRead(block: block)
+    }
+
+    func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T {
+        try rethrowingRead(block: block)
+    }
+
+    private func rethrowingRead<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T {
+        let context = rootSavingContext
+
+        return try context.performAndWait {
+            try block(context)
+        }
+    }
 }

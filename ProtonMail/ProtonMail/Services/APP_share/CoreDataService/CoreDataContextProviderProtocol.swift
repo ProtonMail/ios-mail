@@ -27,4 +27,6 @@ protocol CoreDataContextProviderProtocol {
     func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func makeNewBackgroundContext() -> NSManagedObjectContext
+    func read<T>(block: (NSManagedObjectContext) -> T) -> T
+    func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T
 }

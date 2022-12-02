@@ -20,7 +20,7 @@ import Foundation
 import PromiseKit
 
 class MockLabelProvider: LabelProviderProtocol {
-    var customFolderToReturn: [Label] = []
+    var customFolderToReturn: [LabelEntity] = []
     var labelToReturnInGetLabel: Label?
     var mockLabelPublisherToReturn: MockLabelPublisher?
     private(set) var wasFetchV4LabelsCalled: Bool = false
@@ -29,7 +29,7 @@ class MockLabelProvider: LabelProviderProtocol {
         return mockLabelPublisherToReturn!
     }
 
-    func getCustomFolders() -> [Label] {
+    func getCustomFolders() -> [LabelEntity] {
         return customFolderToReturn
     }
 

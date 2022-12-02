@@ -115,8 +115,8 @@ class ConversationViewModel {
     private let goToDraft: (MessageID) -> Void
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
-    lazy var customFolders: [LabelEntity] = {
-        return labelProvider.getCustomFolders().map(LabelEntity.init)
+    lazy private(set) var customFolders: [LabelEntity] = {
+        labelProvider.getCustomFolders()
     }()
     let labelProvider: LabelProviderProtocol
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
