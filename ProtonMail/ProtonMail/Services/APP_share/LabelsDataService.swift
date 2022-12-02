@@ -38,7 +38,7 @@ enum LabelFetchType: Int {
 
 protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
-    func getCustomFolders() -> [Label]
+    func getCustomFolders() -> [LabelEntity]
     func getLabel(by labelID: LabelID) -> Label?
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
 }
@@ -226,7 +226,7 @@ class LabelsDataService: Service, HasLocalStorage {
     }
 
     func getMenuFolderLabels() -> [MenuLabel] {
-        let labels = self.getAllLabels(of: .all, context: self.contextProvider.mainContext).compactMap { LabelEntity(label: $0) }
+        let labels = self.getAllLabels(of: .all)
         let datas: [MenuLabel] = Array(labels: labels, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return folderItems
@@ -245,9 +245,17 @@ class LabelsDataService: Service, HasLocalStorage {
         let context = context
         do {
             return try context.fetch(fetchRequest)
-        } catch {}
+        } catch {
+            assertionFailure("\(error)")
+            return []
+        }
+    }
 
-        return []
+    func getAllLabels(of type: LabelFetchType) -> [LabelEntity] {
+        contextProvider.read { context in
+            let labels = getAllLabels(of: type, context: context)
+            return labels.map(LabelEntity.init(label:))
+        }
     }
 
     func makePublisher() -> LabelPublisherProtocol {
@@ -433,8 +441,8 @@ class LabelsDataService: Service, HasLocalStorage {
 }
 
 extension LabelsDataService: LabelProviderProtocol {
-    func getCustomFolders() -> [Label] {
-        return getAllLabels(of: .folder, context: contextProvider.mainContext)
+    func getCustomFolders() -> [LabelEntity] {
+        getAllLabels(of: .folder)
     }
 
     func getLabel(by labelID: LabelID) -> Label? {

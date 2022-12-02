@@ -209,8 +209,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
-    lazy var customFolders: [LabelEntity] = {
-        return labelProvider.getCustomFolders().map(LabelEntity.init)
+    lazy private(set) var customFolders: [LabelEntity] = {
+        labelProvider.getCustomFolders()
     }()
 
     var allEmails: [Email] {

@@ -224,10 +224,7 @@ extension SearchViewModel: SearchVMProtocol {
         let initial = message.getInitial(senderName: senderName)
         let sender = message.getSender(senderName: senderName)
         let weekStart = user.userInfo.weekStartValue
-        let customFolderLabels = user.labelService.getAllLabels(
-            of: .folder,
-            context: CoreDataService.shared.mainContext
-        ).compactMap { LabelEntity(label: $0) }
+        let customFolderLabels = user.labelService.getAllLabels(of: .folder)
         let isSelected = self.selectedMessages.contains(message)
         let isEditing = self.uiDelegate?.listEditing ?? false
         let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal

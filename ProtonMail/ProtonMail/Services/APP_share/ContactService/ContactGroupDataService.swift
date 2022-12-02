@@ -274,17 +274,12 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     }
 
     func getAllContactGroupVOs() -> [ContactGroupVO] {
-        let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainContext)
-
-        var result: [ContactGroupVO] = []
-        for label in labels {
-            result.append(ContactGroupVO.init(ID: label.labelID,
-                                              name: label.name,
-                                              groupSize: label.emails.count,
-                                              color: label.color))
+        coreDataService.read { context in
+            let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
+            return labels.map { label in
+                ContactGroupVO(ID: label.labelID, name: label.name, groupSize: label.emails.count, color: label.color)
+            }
         }
-
-        return result
     }
 }
 

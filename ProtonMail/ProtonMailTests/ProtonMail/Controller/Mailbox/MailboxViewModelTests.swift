@@ -491,7 +491,7 @@ class MailboxViewModelTests: XCTestCase {
         let testData = Label(context: testContext)
         testData.labelID = "1"
         testData.name = "name1"
-        labelProviderMock.customFolderToReturn = [testData]
+        labelProviderMock.customFolderToReturn = [testData].map(LabelEntity.init(label:))
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
         XCTAssertEqual(sut.customFolders, [LabelEntity(label: testData)])
