@@ -106,6 +106,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
 
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
+        let smallestSupportedWidth: CGFloat = 375
+        var screenWidth = webView?.window?.screen.bounds.width ?? smallestSupportedWidth
+        let paddingOfCell: CGFloat = 8
+        screenWidth = screenWidth - 2 * paddingOfCell
         self.contents = contents
         var css: String
         switch contents.renderStyle {
@@ -121,6 +125,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                 css = WebContents.cssLightModeOnly
             }
         }
+        css = css.replacingOccurrences(of: "{{screen-width}}", with: "\(Int(screenWidth))px")
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
         let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
