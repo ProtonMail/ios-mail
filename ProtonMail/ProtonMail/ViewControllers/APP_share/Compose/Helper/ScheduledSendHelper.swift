@@ -65,7 +65,7 @@ final class ScheduledSendHelper {
 
 // MARK: Scheduled send action sheet related
 extension ScheduledSendHelper {
-    func setUpActionHeader() -> PMActionSheetHeaderView {
+    private func setUpActionHeader() -> PMActionSheetHeaderView {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
             self?.actionSheet?.dismiss(animated: true)
         }
@@ -74,7 +74,7 @@ extension ScheduledSendHelper {
         return header
     }
 
-    func setUpTomorrowAction() -> PMActionSheetPlainItem? {
+    private func setUpTomorrowAction() -> PMActionSheetPlainItem? {
         let roundDown = self.current.minute.roundDownForScheduledSend
         guard let tomorrow = self.current.tomorrow(at: 8, minute: roundDown) else {
             return nil
@@ -87,20 +87,34 @@ extension ScheduledSendHelper {
         }
     }
 
-    func setUpMondayAction() -> PMActionSheetPlainItem? {
+    private func setUpMondayAction() -> PMActionSheetPlainItem? {
         let roundDown = self.current.minute.roundDownForScheduledSend
         guard let next = self.current.next(.monday, hour: 8, minute: roundDown) else {
             return nil
         }
-        let day = next.formattedWith("MMM dd")
-        let title = String(format: LocalString._schedule_next_monday_send_action, day, roundDown)
+
+        let weekDayName = next.formattedWith("EEEE").capitalized
+        let datePart = next.formattedWith("(MMM dd)")
+
+        let timeFormatter = DateFormatter()
+        timeFormatter.locale = Locale.current
+        timeFormatter.dateStyle = .none
+        timeFormatter.timeStyle = .short
+
+        let timePart = String(
+            format: LocalString._composer_forward_header_at,
+            timeFormatter.string(from: next)
+        ).lowercased()
+
+        let title = "\(weekDayName) \(datePart) \(timePart)"
+
         return PMActionSheetPlainItem(title: title, icon: nil) { [weak self] _ in
             self?.delegate?.scheduledTimeIsSet(date: next)
             self?.actionSheet?.dismiss(animated: true)
         }
     }
 
-    func setUpCustomAction() -> PMActionSheetPlainItem {
+    private func setUpCustomAction() -> PMActionSheetPlainItem {
         PMActionSheetPlainItem(title: LocalString._composer_expiration_custom, icon: nil) { [weak self] _ in
             guard let self = self,
                   let viewController = self.viewController,

@@ -441,8 +441,7 @@ extension MenuViewModel {
         let observer =
             ScheduleSendLocationStatusObserver(
                 contextProvider: coreDataContextProvider,
-                userID: user.userID,
-                viewModelDataSource: user
+                userID: user.userID
             )
 
         let currentCount = observer.observe(countUpdate: { [weak self] newCount in

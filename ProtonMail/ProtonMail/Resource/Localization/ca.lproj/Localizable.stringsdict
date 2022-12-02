@@ -91,9 +91,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Queda %d intent abans de l'eliminació de les dades segures!</string>
+			<string>Queda %d intent abans de l&apos;eliminació de les dades segures!</string>
 			<key>other</key>
-			<string>Queden %d intents abans de l'eliminació de les dades segures!</string>
+			<string>Queden %d intents abans de l&apos;eliminació de les dades segures!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -392,7 +392,7 @@
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
-	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@alertMessage@</string>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Aquest %d missatge es mourà a Esborranys i se n'eliminarà la programació.</string>
+			<string>Aquest %d missatge es mourà a Esborranys i se n&apos;eliminarà la programació.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

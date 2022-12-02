@@ -1073,6 +1073,9 @@
 /* default vcard types */
 "Mobile" = "携帯電話";
 
+/* Mobile Signature title in settings */
+"Mobile Signature" = "モバイル署名";
+
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "月曜日 (%1$@) 08:%2$d";
 

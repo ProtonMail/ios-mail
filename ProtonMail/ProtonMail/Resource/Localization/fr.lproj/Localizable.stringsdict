@@ -91,9 +91,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentative restante avant l'effacement sécurisé des données !</string>
+			<string>%d tentative restante avant l&apos;effacement sécurisé des données !</string>
 			<key>other</key>
-			<string>%d tentatives restantes avant l'effacement sécurisé des données !</string>
+			<string>%d tentatives restantes avant l&apos;effacement sécurisé des données !</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -157,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d'e-mails bloqué</string>
+			<string>%d traqueur d&apos;e-mails bloqué</string>
 			<key>other</key>
-			<string>%d traqueurs d'e-mails bloqués</string>
+			<string>%d traqueurs d&apos;e-mails bloqués</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -173,9 +173,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d'e-mails trouvé</string>
+			<string>%d traqueur d&apos;e-mails trouvé</string>
 			<key>other</key>
-			<string>%d traqueurs d'e-mails trouvés</string>
+			<string>%d traqueurs d&apos;e-mails trouvés</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -392,7 +392,7 @@
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
-	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@alertMessage@</string>
@@ -405,7 +405,7 @@
 			<key>one</key>
 			<string>Ce message sera déplacé dans le dossier Brouillons et sa programmation sera supprimée.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
