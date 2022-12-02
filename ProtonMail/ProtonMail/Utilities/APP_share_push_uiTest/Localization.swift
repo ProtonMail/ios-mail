@@ -643,6 +643,7 @@ class LocalizedString {
     lazy var _discard_changes = NSLocalizedString("Discard changes", comment: "Action")
 
     lazy var _general_discard = NSLocalizedString("Discard", comment: "Action")
+    lazy var _general_discarded = NSLocalizedString("Discarded", comment: "Message shown to user after discarding action is done")
 
     /// "Add new url"
     lazy var _add_new_url = NSLocalizedString("Add new URL", comment: "action")
