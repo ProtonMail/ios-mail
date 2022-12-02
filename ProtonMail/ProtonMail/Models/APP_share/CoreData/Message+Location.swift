@@ -42,6 +42,7 @@ extension Message {
         case allmail = "5"
         case scheduled = "12"
         // 8 , 7  another type of draft,sent
+
         var localizedTitle: String {
             switch self {
             case .inbox:
@@ -61,7 +62,7 @@ extension Message {
             case .allmail:
                 return LocalString._locations_all_mail_title
             case .scheduled:
-                return "Scheduled"
+                return LocalString._locations_scheduled_title
             }
         }
 
@@ -71,29 +72,6 @@ extension Message {
 
         init?(_ labelID: LabelID) {
             self.init(rawValue: labelID.rawValue)
-        }
-
-		var title: String {
-            switch self {
-            case .inbox:
-                return LocalString._locations_inbox_title
-            case .starred:
-                return LocalString._locations_starred_title
-            case .draft:
-                return LocalString._locations_draft_title
-            case .sent:
-                return LocalString._locations_outbox_title
-            case .trash:
-                return LocalString._locations_trash_title
-            case .archive:
-                return LocalString._locations_archive_title
-            case .spam:
-                return LocalString._locations_spam_title
-            case .allmail:
-                return LocalString._locations_all_mail_title
-            case .scheduled:
-                return "Scheduled"
-            }
         }
     }
 }

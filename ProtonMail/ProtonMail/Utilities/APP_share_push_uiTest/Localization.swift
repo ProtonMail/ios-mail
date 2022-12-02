@@ -117,24 +117,17 @@ class LocalizedString {
 
     // Mark Message localtion
 
-    /// "All Mail"
     lazy var _locations_all_mail_title = NSLocalizedString("All Mail", comment: "mail location title")
-    /// "INBOX"
-    lazy var _locations_inbox_title    = NSLocalizedString("INBOX", comment: "mail location title")
-    /// "STARRED"
-    lazy var _locations_starred_title  = NSLocalizedString("STARRED", comment: "mail location title")
-    /// "DRAFTS"
-    lazy var _locations_draft_title    = NSLocalizedString("DRAFTS", comment: "mail location title")
-    /// "SENT"
-    lazy var _locations_outbox_title   = NSLocalizedString("SENT", comment: "mail location title")
-    /// "TRASH"
-    lazy var _locations_trash_title    = NSLocalizedString("TRASH", comment: "mail location title")
-    /// "ARCHIVE"
-    lazy var _locations_archive_title  = NSLocalizedString("ARCHIVE", comment: "mail location title")
-    /// "SPAM"
-    lazy var _locations_spam_title     = NSLocalizedString("SPAM", comment: "mail location title")
-    /// "Trash"
-    lazy var _locations_trash_desc    = NSLocalizedString("Trash", comment: "mail location desc")
+    lazy var _locations_inbox_title    = NSLocalizedString("Inbox", comment: "mail location title")
+    lazy var _locations_starred_title  = NSLocalizedString("Starred", comment: "mail location title")
+    lazy var _locations_draft_title    = NSLocalizedString("Drafts", comment: "mail location title")
+    lazy var _locations_outbox_title   = NSLocalizedString("Sent", comment: "mail location title")
+    lazy var _locations_trash_title    = NSLocalizedString("Trash", comment: "mail location title")
+    lazy var _locations_archive_title  = NSLocalizedString("Archive", comment: "mail location title")
+    lazy var _locations_spam_title     = NSLocalizedString("Spam", comment: "mail location title")
+    lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
+
+    var _locations_trash_desc : String { _locations_trash_title }
     /// "Add Star"
     lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
 
@@ -391,7 +384,6 @@ class LocalizedString {
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
     lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
     lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
-    lazy var _schedule_next_monday_send_action = NSLocalizedString("Monday (%@) at 08:%02d", comment: "scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15")
     lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
     lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
     lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
@@ -1382,7 +1374,7 @@ class LocalizedString {
     lazy var _scheduled_message_time_tomorrow = NSLocalizedString("Tomorrow, %@", comment: "The title of the time label of the scheduled message that is about to be sent tomorrow.")
 
     lazy var _delete_scheduled_alert_title = NSLocalizedString("Schedule will be removed", comment: "The title of the alert that will be shown when user tries to delete a scheduled message.")
-    lazy var _delete_scheduled_alert_message = NSLocalizedString("This %d messages will move to Drafts and have its schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
+    lazy var _delete_scheduled_alert_message = NSLocalizedString("These %d messages will move to Drafts and have their schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
     lazy var _message_moved_to_drafts = NSLocalizedString("%d message moved to Drafts", comment: "Banner message")
 
     lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")
