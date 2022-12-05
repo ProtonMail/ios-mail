@@ -233,6 +233,11 @@ class ConversationViewModel {
         }
     }
 
+    func stopObserveConversationAndMessages() {
+        conversationUpdateProvider.stopObserve()
+        conversationMessagesProvider.stopObserve()
+    }
+
     func setCellIsExpandedAtLaunch() {
         self.isExpandedAtLaunch = true
     }
@@ -494,8 +499,8 @@ extension ConversationViewModel {
             let messageId = message.messageID
             guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }),
                   let viewModel = messagesDataSource[index].messageViewModel else {
-                      return
-                  }
+                return
+            }
             viewModel.messageHasChanged(message: message)
 
             guard viewModel.state.isExpanded else {

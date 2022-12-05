@@ -52,4 +52,9 @@ extension UserInfo {
     static var isImageProxyAvailable: Bool {
         true
     }
+
+    /// Swipe to show previous / next conversation or messages
+    static var isConversationSwipeEnabled: Bool {
+        false
+    }
 }

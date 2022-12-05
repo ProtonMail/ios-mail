@@ -15,14 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LifetimeTracker
 import ProtonCore_Services
 import SwiftSoup
 
-class ImageProxy: LifetimeTrackable {
-    static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
-    }
+class ImageProxy {
 
     private let imageCache = ImageProxyCache.shared
 
@@ -40,8 +36,6 @@ class ImageProxy: LifetimeTrackable {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-
-        trackLifetime()
     }
 
     /*

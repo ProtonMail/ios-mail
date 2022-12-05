@@ -53,6 +53,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         storedMessages(messageObjects.map(MessageEntity.init))
     }
 
+    func stopObserve() {
+        fetchedController.delegate = nil
+    }
+
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         conversationUpdate?(.willUpdate)
     }

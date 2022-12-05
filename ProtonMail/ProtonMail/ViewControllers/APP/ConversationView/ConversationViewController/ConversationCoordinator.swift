@@ -38,6 +38,12 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     func start(openFromNotification: Bool = false) {
+        let viewController = makeConversationVC()
+        self.viewController = viewController
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func makeConversationVC() -> ConversationViewController {
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
                 queueManager: sharedServices.get(by: QueueManager.self),
@@ -74,7 +80,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             dependencies: dependencies)
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        return viewController
     }
 
     func handle(navigationAction: ConversationNavigationAction) {

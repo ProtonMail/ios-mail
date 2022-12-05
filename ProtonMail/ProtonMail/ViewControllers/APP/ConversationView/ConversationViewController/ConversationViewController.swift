@@ -29,7 +29,7 @@ import UIKit
 class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                                   LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
+        .init(maxCount: 3)
     }
 
     let viewModel: ConversationViewModel
@@ -93,11 +93,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             }
         }
 
-        viewModel.observeConversationUpdate()
-
-        if !ProcessInfo.isRunningUnitTests {
-            viewModel.observeConversationMessages(tableView: customView.tableView)
-        }
         setUpToolBarIfNeeded()
 
         registerNotification()
@@ -106,6 +101,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpNavigationBar()
+
+        if !ProcessInfo.isRunningUnitTests {
+            viewModel.observeConversationMessages(tableView: customView.tableView)
+        }
+        viewModel.observeConversationUpdate()
         self.viewModel.user.undoActionManager.register(handler: self)
     }
 
@@ -126,6 +126,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationItem.backBarButtonItem = nil
+        viewModel.stopObserveConversationAndMessages()
         self.dismissActionSheet()
     }
 

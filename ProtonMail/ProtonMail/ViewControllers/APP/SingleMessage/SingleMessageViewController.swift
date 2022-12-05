@@ -28,7 +28,7 @@ import UIKit
 final class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol,
                                    LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
+        .init(maxCount: 3)
     }
 
     private lazy var contentController: SingleMessageContentViewController = { [unowned self] in

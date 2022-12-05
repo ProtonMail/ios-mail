@@ -53,6 +53,10 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         try? fetchedController.performFetch()
     }
 
+    func stopObserve() {
+        fetchedController.delegate = nil
+    }
+
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         guard let conversation = controller.fetchedObjects?.first as? Conversation else {
             conversationDidUpdate?(nil)
