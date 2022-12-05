@@ -17,3 +17,5 @@ ProtonMail/Brewfile.lock.json
 ProtonMail/Pods/Pods.xcodeproj/project.pbxproj
 ProtonMail/ProtonMail.xcodeproj
 ProtonMail/ProtonMail.xcworkspace
+
+bundler-cache

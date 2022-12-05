@@ -78,6 +78,10 @@ unit_tests:
     - *run_xcodegen_if_needed
     - bundle install
     - bundle exec fastlane unit_test
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
@@ -115,6 +119,10 @@ ui_tests_smoke:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - bundle install
     - bundle exec fastlane ui_test
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
   allow_failure: false
@@ -177,6 +185,8 @@ report:ui_feature_tests:
   stage: report
   dependencies:
     - ui_feature_tests
+  variables:
+    GIT_DEPTH: 1
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
@@ -200,6 +210,8 @@ report:ui_feature_tests:
 build-app-and-upload:
   dependencies: []
   stage: test_flight
+  variables:
+    GIT_STRATEGY: clone
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
@@ -222,6 +234,10 @@ build-app-and-upload:
     - bundle install
     - bundle exec fastlane ios build
     - ./fastlane/add_git_tag.sh
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
@@ -250,6 +266,10 @@ nightly-build-and-upload:
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - bundle install
     - bundle exec fastlane ios build
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
@@ -276,6 +296,10 @@ enterprise-test:
     - *enterprise_config_setting
     - bundle install
     - bundle exec fastlane ios enterprise usingTimeStamp:true
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
