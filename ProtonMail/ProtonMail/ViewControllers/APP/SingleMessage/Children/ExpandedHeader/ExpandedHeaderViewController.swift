@@ -323,7 +323,7 @@ class ExpandedHeaderViewController: UIViewController {
                 String.localizedStringWithFormat(L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message, 0)
             ]
             let alert = UIAlertController(
-                title: String.localizedStringWithFormat(L11n.EmailTrackerProtection.n_email_trackers_found, 0),
+                title: L11n.EmailTrackerProtection.no_email_trackers_found,
                 message: messageComponents.joined(separator: " "),
                 preferredStyle: .alert
             )

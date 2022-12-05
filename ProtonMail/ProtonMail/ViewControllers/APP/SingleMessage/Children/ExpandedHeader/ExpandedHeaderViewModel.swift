@@ -38,11 +38,10 @@ final class ExpandedHeaderViewModel {
 
         let trackerCount = infoProvider.trackerProtectionSummary?.totalTrackerCount ?? 0
         let trackersFound = trackerCount != 0
-        let text = String.localizedStringWithFormat(
-            trackersFound ? L11n.EmailTrackerProtection.n_email_trackers_blocked
-                : L11n.EmailTrackerProtection.n_email_trackers_found,
+        let text = trackersFound ? String.localizedStringWithFormat(
+            L11n.EmailTrackerProtection.n_email_trackers_blocked,
             trackerCount
-        )
+        ) : L11n.EmailTrackerProtection.no_email_trackers_found
         return (text, trackersFound)
     }
 
