@@ -67,6 +67,7 @@ class SingleMessageViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
+         dependencies: SingleMessageContentViewModel.Dependencies,
          goToDraft: @escaping (MessageID) -> Void
     ) {
         self.labelId = labelId
@@ -86,6 +87,7 @@ class SingleMessageViewModel {
             internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
             userIntroductionProgressProvider: userCachedStatus,
+            dependencies: dependencies,
             goToDraft: goToDraft
         )
         self.userIntroductionProgressProvider = userIntroductionProgressProvider

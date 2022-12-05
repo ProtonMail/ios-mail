@@ -453,64 +453,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func fetchMessageDetailForMessage(_ message: MessageEntity, labelID: LabelID, runInQueue: Bool = true, completion: @escaping (Error?) -> Void) {
-        if !message.isDetailDownloaded || message.parsedHeaders.isEmpty {
-            let msgID = message.messageID
-            let closure = runInQueue ? queueManager?.queue: noQueue
-            closure? {
-                let completionWrapper: API.JSONCompletion = { task, result in
-                    self.contextProvider.performOnRootSavingContext { context in
-                        switch result {
-                        case .success(let response):
-                            if var msg: [String: Any] = response["Message"] as? [String: Any] {
-                                msg.removeValue(forKey: "Location")
-                                msg.removeValue(forKey: "Starred")
-                                msg.removeValue(forKey: "test")
-                                msg["UserID"] = self.userID.rawValue
-                                msg.addAttachmentOrderField()
-
-                                do {
-                                    if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
-                                        message_n.messageStatus = 1
-                                        message_n.isDetailDownloaded = true
-
-                                        let tmpError = context.saveUpstreamIfNeeded()
-                                        DispatchQueue.main.async {
-                                            completion(tmpError)
-                                        }
-                                    } else {
-                                        DispatchQueue.main.async {
-                                            completion(nil)
-                                        }
-                                    }
-                                } catch let ex as NSError {
-                                    DispatchQueue.main.async {
-                                        completion(ex)
-                                    }
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion(NSError.badResponse())
-                                }
-
-                            }
-                        case .failure(let error):
-                            DispatchQueue.main.async {
-                                completion(error)
-                            }
-                        }
-                    }
-                }
-                self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
-            }
-        } else {
-            self.mark(messages: [message], labelID: labelID, unRead: false)
-            DispatchQueue.main.async {
-                completion(nil)
-            }
-        }
-    }
-
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Error?) -> Void) {
         self.queueManager?.queue {
             let completionWrapper: API.JSONCompletion = { task, result in

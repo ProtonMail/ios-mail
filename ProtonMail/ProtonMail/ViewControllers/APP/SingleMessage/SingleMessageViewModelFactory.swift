@@ -30,6 +30,7 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
+        dependencies: SingleMessageContentViewModel.Dependencies,
         goToDraft: @escaping (MessageID) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
@@ -47,6 +48,7 @@ class SingleMessageContentViewModelFactory {
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
                      userIntroductionProgressProvider: userCachedStatus,
+                     dependencies: dependencies,
                      goToDraft: goToDraft)
     }
 
@@ -70,6 +72,17 @@ class SingleMessageViewModelFactory {
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: sharedServices.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                realAttachmentsFlagProvider: userCachedStatus,
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
+        let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
         return .init(
             labelId: labelId,
             message: message,
@@ -83,6 +96,7 @@ class SingleMessageViewModelFactory {
             toolbarActionProvider: user,
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             systemUpTime: systemUpTime,
+            dependencies: dependencies,
             goToDraft: goToDraft
         )
     }
