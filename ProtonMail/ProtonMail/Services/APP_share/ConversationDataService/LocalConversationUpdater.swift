@@ -120,10 +120,15 @@ final class LocalConversationUpdater {
                 }
 
                 if let added = labelToAdd, !added.rawValue.isEmpty {
-                    conversation.applyLabelChanges(labelID: added.rawValue, apply: true, context: context)
-                    messages?.forEach { $0.add(labelID: added.rawValue) }
-
-                    // When we trash the conversation, make all unread messsages as read.
+                    let scheduleID = LabelLocation.scheduled.rawLabelID
+                    if conversation.contains(of: scheduleID) &&
+                        added == LabelLocation.trash.labelID {
+                        updateLabelForTrashedScheduleConversation(conversation, messages: messages, context: context)
+                    } else {
+                        conversation.applyLabelChanges(labelID: added.rawValue, apply: true, context: context)
+                        messages?.forEach { $0.add(labelID: added.rawValue) }
+                    }
+                    // When we trash the conversation, make all unread messages as read.
                     if added == Message.Location.trash.labelID {
                         messages?.forEach { $0.unRead = false }
                         PushUpdater().remove(notificationIdentifiers: messages?.compactMap({ $0.notificationId }))
@@ -149,11 +154,34 @@ final class LocalConversationUpdater {
         }
     }
 
+    private func updateLabelForTrashedScheduleConversation(_ conversation: Conversation,
+                                                           messages: [Message]?,
+                                                           context: NSManagedObjectContext) {
+        let scheduleID = LabelLocation.scheduled.rawLabelID
+        let draftID = LabelLocation.draft.rawLabelID
+        let trashID = LabelLocation.trash.rawLabelID
+        conversation.applyLabelChanges(labelID: scheduleID, apply: false, context: context)
+        conversation.applyLabelChanges(labelID: draftID, apply: true, context: context)
+        var scheduledCount = 0
+        messages?.forEach({ message in
+            if message.contains(label: .scheduled) {
+                message.add(labelID: draftID)
+                message.remove(labelID: scheduleID)
+                scheduledCount += 1
+            } else {
+                message.add(labelID: trashID)
+            }
+        })
+        if scheduledCount != messages?.count {
+            conversation.applyLabelChanges(labelID: trashID, apply: true, context: context)
+        }
+    }
+
     private func removeSpecificFolder(of conversation: Conversation,
                                       messagesOfConversation: [Message],
                                       context: NSManagedObjectContext) -> [LabelID] {
-        let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail]
-        // If folder, first remove all labels that are not draft, sent, starred, archive, allmail
+        let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail, .scheduled]
+        // If folder, first remove all labels that are not draft, sent, starred, archive, allmail, scheduled
         var labelsThatAlreadyUpdateTheUnreadCount: [LabelID] = []
         let allLabels = conversation.labels as? Set<ContextLabel> ?? []
         let filteredLabels = allLabels.filter({ !untouchedLocations.map(\.rawValue).contains($0.labelID) })

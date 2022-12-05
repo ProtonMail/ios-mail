@@ -1,0 +1,76 @@
+{
+  "include": [
+    {
+      "path": "./xcodeGen/specs/base_config.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_push.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_enterprise.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_push_service.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_protonmail.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_share.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_protonmail_analytics.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_siri.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_protonmail_tests.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/scheme_protonmail_uitests.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_protonmail_analytics.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_protonmail_tests.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_protonmail_uitests.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_push_service.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_push.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_protonmail.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_siri.json",
+      "relativePaths": false
+    },
+    {
+      "path": "./xcodeGen/specs/target_share.json",
+      "relativePaths": false
+    }
+  ]
+}

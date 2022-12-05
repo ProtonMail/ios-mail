@@ -38,4 +38,25 @@ extension Bundle {
     var bundleShortVersion: String {
         return infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
     }
+
+    class func loadResource(
+        named name: String,
+        ofType ext: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws -> String {
+        guard let path = main.path(forResource: name, ofType: ext) else {
+            throw "\(name).\(ext) not present in the bundle."
+        }
+
+        do {
+            return try String(contentsOfFile: path)
+        } catch {
+            throw error
+        }
+    }
+}
+
+extension String: LocalizedError {
+    public var errorDescription: String? { return self }
 }

@@ -56,6 +56,7 @@ public enum LoginError: Error, CustomStringConvertible {
     case invalidAccessToken(message: String)
     case initialError(message: String)
     case generic(message: String, code: Int, originalError: Error)
+    case apiMightBeBlocked(message: String, originalError: Error)
     case invalidState
     case missingKeys
     case needsFirstTimePasswordChange
@@ -79,6 +80,8 @@ extension LoginError: Equatable {
             return lv == rv
         case let (.generic(lmessage, lcode, _), .generic(rmessage, rcode, _)):
             return lmessage == rmessage && lcode == rcode
+        case (.apiMightBeBlocked(let lmessage, _), .apiMightBeBlocked(let rmessage, _)):
+            return lmessage == rmessage
         default:
             return false
         }
@@ -92,6 +95,7 @@ public extension LoginError {
              .invalid2FACode(let message),
              .invalidAccessToken(let message),
              .generic(let message, _, _),
+             .apiMightBeBlocked(let message, _),
              .initialError(let message):
             return message
         case .invalidState,
@@ -106,6 +110,7 @@ public extension LoginError {
     
     var codeInLogin: Int {
         switch self {
+        case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
         case .generic(_, let code, _): return code
         default: return bestShotAtReasonableErrorCode
         }
@@ -124,7 +129,8 @@ public enum SignupError: Error {
     case passwordNotEqual
     case passwordShouldHaveAtLeastEightCharacters
     case generic(message: String, code: Int, originalError: Error)
-    case `default`
+    case apiMightBeBlocked(message: String, originalError: Error)
+    case unknown
 }
 
 extension SignupError: Equatable {
@@ -138,13 +144,15 @@ extension SignupError: Equatable {
             (.passwordEmpty, .passwordEmpty),
             (.passwordNotEqual, .passwordNotEqual),
             (.passwordShouldHaveAtLeastEightCharacters, .passwordShouldHaveAtLeastEightCharacters),
-            (.default, .default):
+            (.unknown, .unknown):
             return true
         case (.invalidVerificationCode(let lv), .invalidVerificationCode(let rv)),
             (.generateVerifier(let lv), .generateVerifier(let rv)):
             return lv == rv
         case let (.generic(lmessage, lcode, _), .generic(rmessage, rcode, _)):
             return lmessage == rmessage && lcode == rcode
+        case let (.apiMightBeBlocked(lmessage, _), .apiMightBeBlocked(rmessage, _)):
+            return lmessage == rmessage
         default:
             return false
         }
@@ -165,6 +173,7 @@ public extension SignupError {
     
     var codeInLogin: Int {
         switch self {
+        case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
         case .generic(_, let code, _): return code
         default: return bestShotAtReasonableErrorCode
         }
@@ -174,17 +183,30 @@ public extension SignupError {
 public enum AvailabilityError: Error {
     case notAvailable(message: String)
     case generic(message: String, code: Int, originalError: Error)
+    case apiMightBeBlocked(message: String, originalError: Error)
+}
+
+extension AvailabilityError: Equatable {
+    public static func == (lhs: AvailabilityError, rhs: AvailabilityError) -> Bool {
+        switch (lhs, rhs) {
+        case (.notAvailable(let lmessage), .notAvailable(let rmessage)): return lmessage == rmessage
+        case (.apiMightBeBlocked(let lmessage, _), .apiMightBeBlocked(let rmessage, _)): return lmessage == rmessage
+        case (.generic(let lmessage, let lcode, _), .generic(let rmessage, let rcode, _)): return lmessage == rmessage && lcode == rcode
+        default: return false
+        }
+    }
 }
 
 public extension AvailabilityError {
     var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message, _, _), .notAvailable(let message): return message
+        case .generic(let message, _, _), .notAvailable(let message), .apiMightBeBlocked(let message, _): return message
         }
     }
     
     var codeInLogin: Int {
         switch self {
+        case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
         case .generic(_, let code, _): return code
         default: return bestShotAtReasonableErrorCode
         }
@@ -194,17 +216,30 @@ public extension AvailabilityError {
 public enum SetUsernameError: Error {
     case alreadySet(message: String)
     case generic(message: String, code: Int, originalError: Error)
+    case apiMightBeBlocked(message: String, originalError: Error)
+}
+
+extension SetUsernameError: Equatable {
+    public static func == (lhs: SetUsernameError, rhs: SetUsernameError) -> Bool {
+        switch (lhs, rhs) {
+        case (.alreadySet(let lmessage), .alreadySet(let rmessage)): return lmessage == rmessage
+        case (.apiMightBeBlocked(let lmessage, _), .apiMightBeBlocked(let rmessage, _)): return lmessage == rmessage
+        case (.generic(let lmessage, let lcode, _), .generic(let rmessage, let rcode, _)): return lmessage == rmessage && lcode == rcode
+        default: return false
+        }
+    }
 }
 
 public extension SetUsernameError {
     var userFacingMessageInLogin: String {
         switch self {
-        case .alreadySet(let message), .generic(let message, _, _): return message
+        case .alreadySet(let message), .generic(let message, _, _), .apiMightBeBlocked(let message, _): return message
         }
     }
     
     var codeInLogin: Int {
         switch self {
+        case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
         case .generic(_, let code, _): return code
         default: return bestShotAtReasonableErrorCode
         }
@@ -215,18 +250,20 @@ public enum CreateAddressError: Error {
     case alreadyHaveInternalOrCustomDomainAddress(Address)
     case cannotCreateInternalAddress(alreadyExistingAddress: Address?)
     case generic(message: String, code: Int, originalError: Error)
+    case apiMightBeBlocked(message: String, originalError: Error)
 }
 
 public extension CreateAddressError {
     var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message, _, _): return message
+        case .generic(let message, _, _), .apiMightBeBlocked(let message, _): return message
         default: return localizedDescription
         }
     }
     
     var codeInLogin: Int {
         switch self {
+        case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
         case .generic(_, let code, _): return code
         default: return bestShotAtReasonableErrorCode
         }
@@ -236,18 +273,33 @@ public extension CreateAddressError {
 public enum CreateAddressKeysError: Error {
     case alreadySet
     case generic(message: String, code: Int, originalError: Error)
+    case apiMightBeBlocked(message: String, originalError: Error)
+}
+
+extension CreateAddressKeysError: Equatable {
+    
+    public static func == (lhs: CreateAddressKeysError, rhs: CreateAddressKeysError) -> Bool {
+        switch (lhs, rhs) {
+        case (.alreadySet, .alreadySet): return true
+        case (.apiMightBeBlocked(let lmessage, _), .apiMightBeBlocked(let rmessage, _)): return lmessage == rmessage
+        case (.generic(let lmessage, let lcode, _), .generic(let rmessage, let rcode, _)): return lmessage == rmessage && lcode == rcode
+        default: return false
+        }
+    }
+    
 }
 
 public extension CreateAddressKeysError {
     var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message, _, _): return message
+        case .generic(let message, _, _), .apiMightBeBlocked(let message, _): return message
         case .alreadySet: return localizedDescription
         }
     }
     
     var codeInLogin: Int {
         switch self {
+        case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
         case .generic(_, let code, _): return code
         default: return bestShotAtReasonableErrorCode
         }

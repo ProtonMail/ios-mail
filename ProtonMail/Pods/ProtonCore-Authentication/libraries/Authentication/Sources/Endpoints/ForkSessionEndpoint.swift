@@ -23,8 +23,7 @@ import Foundation
 import ProtonCore_Networking
 
 extension AuthService {
-    public struct ForkSessionResponse: Codable, Equatable {
-        public let code: Int
+    public struct ForkSessionResponse: APIDecodableResponse, Encodable, Equatable {
         public let selector: String
     }
     
@@ -32,7 +31,6 @@ extension AuthService {
 
         var path: String {
             return "/auth/v4/sessions/forks"
-//            return "/auth/sessions/forks"
         }
         
         var method: HTTPMethod {

@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.0.8</string>
+	<string>4.1.1</string>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>NSExtension</key>
@@ -25,7 +25,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.usernotifications.service</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>PushServiceDev.NotificationService</string>
+		<string>PushService.NotificationService</string>
 	</dict>
 </dict>
 </plist>

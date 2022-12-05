@@ -90,16 +90,20 @@ class ChangeDisplayNameViewModel: SettingDetailsViewModel {
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         let userService = userManager.userService
         if let addr = userManager.addresses.defaultAddress() {
-            userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
-                                      addressId: addr.addressID, displayName: new_value,
-                                      signature: addr.signature, completion: { _, _, error in
-                                          if let error = error {
-                                              complete(false, error)
-                                          } else {
-                                              self.userManager.save()
-                                              complete(true, nil)
-                                          }
-                                      })
+            userService.updateAddress(
+                auth: userManager.authCredential,
+                user: userManager.userInfo,
+                addressId: addr.addressID,
+                displayName: new_value,
+                signature: addr.signature,
+                completion: { _, _, error in
+                    if let error = error {
+                        complete(false, error)
+                    } else {
+                        self.userManager.save()
+                        complete(true, nil)
+                    }
+                })
         } else {
             fatalError("Current user has no defualt address. Should not go here")
         }
@@ -172,18 +176,22 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
         let userService = userManager.userService
         let valueToSave = new_value.trim().ln2br()
         if let addr = userManager.addresses.defaultAddress() {
-            userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
-                                      addressId: addr.addressID, displayName: addr.displayName,
-                                      signature: valueToSave, completion: { _, _, error in
-                                          if let error = error {
-                                              complete(false, error)
-                                          } else {
-                                              self.userManager.save()
-                                              complete(true, nil)
-                                          }
-                                      })
+            userService.updateAddress(
+                auth: userManager.authCredential,
+                user: userManager.userInfo,
+                addressId: addr.addressID,
+                displayName: addr.displayName,
+                signature: valueToSave,
+                completion: { _, _, error in
+                    if let error = error {
+                        complete(false, error)
+                    } else {
+                        self.userManager.save()
+                        complete(true, nil)
+                    }
+                })
         } else {
-            userService.updateSignature(auth: userManager.auth,
+            userService.updateSignature(auth: userManager.authCredential,
                                         valueToSave) { _, _, error in
                 if let error = error {
                     complete(false, error)
@@ -347,7 +355,7 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
             complete(true, nil)
         } else {
             let service = userManager.userService
-            service.updateNotificationEmail(auth: userManager.auth,
+            service.updateNotificationEmail(auth: userManager.authCredential,
                                             user: userManager.userInfo,
                                             new_notification_email: new_value,
                                             login_password: password,
@@ -367,7 +375,7 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
             complete(true, nil)
         } else {
             let service = userManager.userService
-            service.updateNotify(auth: userManager.auth,
+            service.updateNotify(auth: userManager.authCredential,
                                  user: userManager.userInfo,
                                  isOn, completion: { _, _, error in
                                      if let error = error {

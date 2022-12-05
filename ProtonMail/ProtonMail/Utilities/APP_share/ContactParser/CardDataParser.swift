@@ -79,7 +79,7 @@ class CardDataParser {
                             if keyGroup == group {
                                 let keyPref = key.getPref()
                                 let value = key.getBinary() // based 64 key
-                                if let isExpired = value.isPublicKeyExpired(), !isExpired {
+                                if let cryptoKey = CryptoKey(value), !cryptoKey.isExpired() {
                                     pubKeys.append(value)
                                     if keyPref == 1 || keyPref == Int32.min {
                                         firstKey = value

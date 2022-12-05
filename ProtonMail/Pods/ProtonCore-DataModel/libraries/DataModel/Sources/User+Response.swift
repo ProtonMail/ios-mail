@@ -51,14 +51,14 @@ extension UserInfo {
             subscribed: subscribed
         )
     }
-    
+
     public func parse(userSettings: [String: Any]?) {
         if let settings = userSettings {
             if let email = settings["Email"] as? [String: Any] {
                 self.notificationEmail = email["Value"] as? String ?? ""
                 self.notify = email["Notify"] as? Int ?? 0
             }
-            
+
             if let pwdMode = settings["PasswordMode"] as? Int {
                 self.passwordMode = pwdMode
             } else {
@@ -68,7 +68,7 @@ extension UserInfo {
                     }
                 }
             }
-            
+
             if let twoFA = settings["2FA"]  as? [String: Any] {
                 self.twoFactor = twoFA["Enabled"] as? Int ?? 0
             }
@@ -76,25 +76,42 @@ extension UserInfo {
             if let weekStart = settings["WeekStart"] as? Int {
                 self.weekStart = weekStart
             }
+
+            if let telemetry = settings["Telemetry"] as? Int {
+                self.telemetry = telemetry
+            }
+
+            if let crashReports = settings["CrashReports"] as? Int {
+                self.crashReports = crashReports
+            }
         }
     }
-    
+
     public func parse(mailSettings: [String: Any]?) {
         if let settings = mailSettings {
             self.displayName = settings["DisplayName"] as? String ?? "'"
             self.defaultSignature = settings["Signature"] as? String ?? ""
+            self.hideEmbeddedImages = settings["HideEmbeddedImages"] as? Int ?? DefaultValue.hideEmbeddedImages
+            self.hideRemoteImages = settings["HideRemoteImages"] as? Int ?? DefaultValue.hideRemoteImages
+            self.imageProxy = ImageProxy(rawValue: settings["ImageProxy"] as? Int ?? DefaultValue.imageProxy.rawValue)
             self.autoSaveContact  = settings["AutoSaveContacts"] as? Int ?? 0
             self.showImages = ShowImages(rawValue: settings["ShowImages"] as? Int ?? 0)
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3
             self.swipeRight = settings["SwipeRight"] as? Int ?? 0
             self.linkConfirmation = settings["ConfirmLink"] as? Int == 0 ? .openAtWill : .confirmationAlert
-            
+
             self.attachPublicKey = settings["AttachPublicKey"] as? Int ?? 0
             self.sign = settings["Sign"] as? Int ?? 0
             self.enableFolderColor = settings["EnableFolderColor"] as? Int ?? 0
             self.inheritParentFolderColor = settings["InheritParentFolderColor"] as? Int ?? 0
             self.groupingMode = settings["ViewMode"] as? Int ?? 0
             self.delaySendSeconds = settings["DelaySendSeconds"] as? Int ?? 10
+
+            if let mobileSettings = settings["MobileSettings"] as? [String: Any] {
+                self.conversationToolbarActions = ToolbarActions(rawValue: mobileSettings["ConversationToolbar"] as? [String: Any])
+                self.messageToolbarActions = ToolbarActions(rawValue: mobileSettings["MessageToolbar"] as? [String: Any])
+                self.listToolbarActions = ToolbarActions(rawValue: mobileSettings["ListToolbar"] as? [String: Any])
+            }
         }
     }
 }

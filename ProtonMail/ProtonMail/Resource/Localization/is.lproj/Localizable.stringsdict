@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d Member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d member</string>
+			<key>other</key>
+			<string>%d members</string>
+		</dict>
+	</dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d tilraun eftir</string>
+			<key>other</key>
+			<string>%d tilraunir eftir</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d tilraun eftir þar til tækið verður hreinsað í öryggisskyni!</string>
+			<key>other</key>
+			<string>%d tilraunir eftir þar til tækið verður hreinsað í öryggisskyni!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d conversation labeled</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d samtal merkt</string>
+			<key>other</key>
+			<string>%d samtöl merkt</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%d conversation moved to %@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d samtal flutt í %@</string>
+			<key>other</key>
+			<string>%d samtöl flutt í %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d dagur</string>
+			<key>other</key>
+			<string>%d dagar</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@DAY@</string>
+	</dict>
+	<key>%d email trackers blocked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d tölvupóstspori hindraður</string>
+			<key>other</key>
+			<string>%d tölvupóstsporar hindraðir</string>
+		</dict>
+	</dict>
+	<key>%d email trackers found</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d tölvupóstspori fannst</string>
+			<key>other</key>
+			<string>%d tölvupóstsporar fundust</string>
+			<key>zero</key>
+			<string>No email trackers found</string>
+		</dict>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d klukkustund</string>
+			<key>other</key>
+			<string>%d klukkustundir</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d message labeled</key>
+	<dict>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d skilaboð merkt</string>
+			<key>other</key>
+			<string>%d skilaboð merkt</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@</string>
+	</dict>
+	<key>%d message moved to %@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d skilaboð fært í %@</string>
+			<key>other</key>
+			<string>%d skilaboð færð í %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
+	<key>%d message moved to Drafts</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d skilaboð flutt í Drög</string>
+			<key>other</key>
+			<string>%d skilaboð flutt í Drög</string>
+		</dict>
+	</dict>
+	<key>%d min</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d mínúta</string>
+			<key>other</key>
+			<string>%d mínútur</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>%u conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u samtal</string>
+			<key>other</key>
+			<string>%u samtöl</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+	</dict>
+	<key>%u message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u skilaboð</string>
+			<key>other</key>
+			<string>%u skilaboð</string>
+		</dict>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d annað</string>
+			<key>other</key>
+			<string>%d önnur</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to permanently delete %d conversation?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@conversation@</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Ertu viss um að þú viljir eyða %d samtali endanlega?</string>
+			<key>other</key>
+			<string>Ertu viss um að þú viljir eyða %d samtölum endanlega?</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to permanently delete %d message?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Ertu viss um að þú viljir eyða %d skilaboði endanlega?</string>
+			<key>other</key>
+			<string>Ertu viss um að þú viljir eyða %d skilaboðum endanlega?</string>
+		</dict>
+	</dict>
+	<key>In %d minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minute@</string>
+		<key>minute</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Á %d mínútu</string>
+			<key>other</key>
+			<string>Á %d mínútum</string>
+			<key>zero</key>
+			<string>In %d minute</string>
+		</dict>
+	</dict>
+	<key>Proton found %d trackers on this message.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@trackers@</string>
+		<key>trackers</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Proton fann og hindraði %d tölvupóstspora í þessu skilaboði.</string>
+			<key>other</key>
+			<string>Proton fann og hindraði %d tölvupóstspora í þessu skilaboði.</string>
+			<key>zero</key>
+			<string>Proton did not find any trackers on this message.</string>
+		</dict>
+	</dict>
+	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alertMessage@</string>
+		<key>alertMessage</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Þetta %d skilaboð verður fært í Drög og dagskrá þess fjarlægð.</string>
+			<key>other</key>
+			<string>These %d messages will move to Drafts and have its schedule removed.</string>
+		</dict>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Uppfært fyrir %d mínútu síðan</string>
+			<key>other</key>
+			<string>Uppfært fyrir %d mínútum síðan</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+</dict>
+</plist>

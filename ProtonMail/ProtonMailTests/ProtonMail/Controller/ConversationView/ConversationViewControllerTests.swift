@@ -46,17 +46,21 @@ class ConversationViewControllerTests: XCTestCase {
         conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
 
+        let dependencies = ConversationViewModel.Dependencies(
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        )
+
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
-                                                  isDarkModeEnableClosure: {
-            return false
-        },
                                                   conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                                   conversationStateProvider: MockConversationStateProvider(),
-                                                  labelProvider: labelProviderMock)
+                                                  labelProvider: labelProviderMock,
+                                                  goToDraft: { _ in },
+                                                  dependencies: dependencies)
+
         applicationStateMock = MockApplicationStateProvider(state: .background)
         sut = ConversationViewController(coordinator: coordinatorMock,
                                          viewModel: viewModelMock,

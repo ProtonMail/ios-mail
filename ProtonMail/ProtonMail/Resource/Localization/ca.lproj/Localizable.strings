@@ -1,0 +1,2412 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Mostra el missatge complet]";
+
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ de %2$@";
+
+/* auto lock time format */
+"%d Minute" = "%d minut";
+
+/* auto lock time format */
+"%d Minutes" = "%d minuts";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d segons";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d Seleccionat";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Arrossegui aquí per afegir com a fitxer adjunt";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1 min";
+
+/* default empty object */
+"<no object>" = "<no object>";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 missatge mogut a l'arxiu";
+
+/* Placeholder */
+"8 to 21 characters long" = "Longitud de 8 a 21 caràcters";
+
+/* *
+ *  LabelTableViewCell */
+"A message cannot have more than 5 labels" = "Un missatge no pot tenir més de 5 etiquetes";
+
+/* "Alert" = "Alert"; */
+"A new version of Proton Mail app is available, please update to latest version." = "Hi ha una nova versió de Proton Mail disponible, actualitzeu l'aplicació.";
+
+/* (No Comment) */
+"A passcode has not been set, enable it in the system Settings" = "No s'ha establert un codi d'accés, habiliteu-lo a la configuració del sistema";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accés a aquest compte està desactivat per falta de pagament. Inicieu la sessió a protonmail.com per pagar la factura no pagada.";
+
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.\n\nVisiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la nostre base de coneixement</a> per més informació.";
+
+/* Account manager title */
+"Account" = "Compte";
+
+/* title */
+"Account password invalid" = "Contrasenya de compte incorrecta";
+
+/* section title in settings */
+"Account settings" = "Configuració del compte";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Acció desfeta";
+
+/* (No Comment) */
+"Add" = "Afegeix";
+
+/* new contacts add Anniversary */
+"Add anniversary" = "Afegir aniversari";
+
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
+"Add attachment" = "Afegir adjunt";
+
+/* new contacts add Birthday */
+"Add birthday" = "Afegir data de naixement";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Afegeix CC i BCC";
+
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Afegeix contactes";
+
+/* Action */
+"Add Folder" = "Afegeix carpeta";
+
+/* new contacts add Gender */
+"Add gender" = "Afegir gènere";
+
+/* add label action */
+"Add Label" = "Afegeix etiqueta";
+
+/* add new address action */
+"Add new address" = "Afegir una nova adreça";
+
+/* new custom field action */
+"Add new custom field" = "Afegiu un camp personalitzat nou";
+
+/* new email action */
+"Add new email" = "Afegiu un correu electrònic nou";
+
+/* new field action */
+"Add new field" = "Afegir un nou camp";
+
+/* new phone action */
+"Add new phone number" = "Afegeix un nou número de telèfon";
+
+/* action */
+"Add new URL" = "Afegir una nova URL";
+
+/* new contacts add Nickname */
+"Add nickname" = "Afegir àlies";
+
+/* new contacts add Organization */
+"Add organization" = "Afegir organització";
+
+/* The button text for add profile picture */
+"Add photo" = "Afegir foto";
+
+/* mark message star */
+"Add Star" = "Afegir Destacat";
+
+/* new contacts add Title */
+"Add title" = "Afegir títol";
+
+/* Title */
+"Add to contacts" = "Afegeix als contactes";
+
+/* default vcard types */
+"Address" = "Adreça";
+
+/* cell title in device settings */
+"Addresses" = "Adreces";
+
+/* alert title */
+"Alert" = "Alerta";
+
+/* Title */
+"All contacts are imported" = "S'importen tots els contactes";
+
+/* mail location title
+   menu title */
+"All Mail" = "Tot el correu";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Tots els ajustos de protecció es restabliran i s'eliminaran al sortir de l'aplicació.";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Autoritza un enrutament alternatiu";
+
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Arxivar també?";
+
+/* cell title in app settings */
+"Alternative routing" = "Enrutament alternatiu";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Sempre desactivat";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Sempre encés";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Aniversari";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Interferència de l'antivirus";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Qualsevol canvi no desat es perdrà.";
+
+/* when server not reachable */
+"API Server not reachable…" = "Servidor API no disponible…";
+
+/* security title in settings */
+"App PIN" = "PIN de l'aplicació";
+
+/* security title in settings */
+"App PIN & Face ID" = "PIN d'aplicació i Face ID";
+
+/* security title in settings */
+"App PIN & Touch ID" = "PIN d'aplicació i Touch ID";
+
+/* section title in settings */
+"App settings" = "Configuració de l'aplicació";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Aparença";
+
+/* Apply action */
+"Apply" = "Aplica";
+
+/* Title */
+"Apply Labels" = "Aplicar etiquetes";
+
+/* button title */
+"Apply Password" = "Aplica la contrasenya";
+
+/* menu title
+   The title of the archive action in action sheet */
+"Archive" = "Arxivar";
+
+/* mail location title */
+"ARCHIVE" = "Arxivar";
+
+/* (No Comment) */
+"Archived" = "Arxivat";
+
+/* Message of message permanent deletion alert, singular */
+"Are you sure you want to delete permanently this message?" = "N'esteu segur, de voler eliminar permanentment aquest missatge?";
+
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
+
+/* Alert to confirm sign out
+   Alert when sign out non-primary account from account manager */
+"Are you sure you want to sign out?" = "Segur que voleu tancar la sessió?";
+
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "A les %@";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Almenys una adreça de correu del grup no s'ha pogut trobar";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Almenys una adreça de correu del grup no s'ha pogut trobar.";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Almenys una adreça de correu de destinatari té un format incorrecte, comproveu-la.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Almenys una adreça de correu o domini de destinatari no existeix o té un format incorrecte. Missatge mogut a esborranys.";
+
+/* No comment provided by engineer. */
+"attachment" = "adjunt";
+
+/* No comment provided by engineer. */
+"Attachment" = "Adjuntar";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Error d'adjunt";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Fitxer adjunt importat";
+
+/* Alert title */
+"Attachment limit" = "Límit d'arxius adjunts";
+
+/* No comment provided by engineer. */
+"attachments" = "adjunts";
+
+/* The title of attachments in local storage settings */
+"Attachments" = "Adjunts";
+
+/* Title */
+"Authentication" = "Autentificació";
+
+/* (No Comment) */
+"Authentication Failed Wrong username or password" = "Ha fallat l'inici de sessió. Nom d'usuari o contrasenya incorrectes";
+
+/* Title */
+"Auto Lock Time" = "Temps de bloqueig automàtic";
+
+/* settings general section title */
+"Auto-load embedded images" = "Càrrega automàtica d'imatges incrustades";
+
+/* Example feedback */
+"Awful" = "Horrible";
+
+/* top left back button */
+"Back" = "Torna";
+
+/* title */
+"Bad parameter" = "Paràmetre erroni";
+
+/* Error Description */
+"Bad parameter: %@" = "Paràmetre erroni %@";
+
+/* title */
+"Bad path" = "Ruta errònia";
+
+/* title */
+"Bad response" = "Resposta errònia";
+
+/* Title */
+"Bcc" = "CCO";
+
+/* message Bcc: feild */
+"Bcc:" = "Cco:";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Aniversari";
+
+/* Settings row */
+"Block email tracking" = "Bloquegi el seguiment del correu electrònic";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Navegueu ràpidament a través dels missatges encadenats en el mode conversa.";
+
+/* Title */
+"Bug Description" = "Descripció de l'error";
+
+/* Title */
+"Bug Report Received" = "Informe d'error rebut";
+
+/* Call the contact (button title text) */
+"Call contact" = "Trucar contacte";
+
+/* Error */
+"Can't copy the file" = "No es pot copiar l'arxiu";
+
+/* update password error */
+"Can't create a SRP Client" = "No es pot crear un client SRP";
+
+/* update password error */
+"Can't create a SRP verifier!" = "No es pot crear un verificador SRP!";
+
+/* When quick look attachment but can't decrypt it! */
+"Can't decrypt this attachment!" = "No s'ha pogut desxifrat l'adjunt!";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "No s'ha pogut esborrar el grup de contactes a través de l'API";
+
+/* *
+ *  MessageViewController */
+"Can't download message body, please try again." = "No s'ha pogut descarregar el cos del missatge, si us plau proveu de nou.";
+
+/* (No Comment) */
+"Can't find the clicked message please try again!" = "No trobeu el missatge clicat, torna-ho a provar!";
+
+/* Description */
+"Can't find the value from the response body" = "No es pot trobar el valor del cos de resposta";
+
+/* when quick look attachment but can't find the data */
+"Can't find this attachment!" = "No es pot trobar el fitxer adjunt!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus ID!" = "No es pot obtenir un ID de mòduls!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "No es pot obtenir un Mòdul!";
+
+/* update password error */
+"Can't get user auth info" = "No es pot obtenir informació d'autentificació d'usuari";
+
+/* Error */
+"Can't load the file" = "No es pot carregar el fitxer";
+
+/* Error */
+"Can't open the file" = "No es pot obrir el fitxer";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "No s'ha pogut actualitzar el grup de contactes a través de l'API";
+
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
+"Cancel" = "Cancel·la";
+
+/* Action */
+"Cancel Check" = "Cancel·la la comprovació";
+
+/* Title */
+"Cancelling" = "Cancel·lant";
+
+/* Warning message */
+"Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
+
+/* (No Comment) */
+"Cant' decrypt this attachment!" = "Impossible desxifrar aquest fitxer adjunt.";
+
+/* message Cc: feild
+   Title */
+"Cc" = "CC";
+
+/* *
+ *  PhoneVerifyViewController */
+"Cell phone number" = "Número de telèfon mòbil";
+
+/* settings general section title */
+"Change account password" = "Canviar contrasenya del compte";
+
+/* Title */
+"Change default address to .." = "Canvieu l'adreça predeterminada a ..";
+
+/* (No Comment) */
+"Change left swipe action" = "Canvieu l'acció de lliscar a l'esquerra";
+
+/* settings general section title */
+"Change mailbox password" = "Canviar contrasenya de la bústia de correu";
+
+/* settings general section title
+   title */
+"Change password" = "Canvia la contrasenya";
+
+/* title */
+"Change Password" = "Canvi de contrasenya";
+
+/* (No Comment) */
+"Change Pin" = "Canvia PIN";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Canviar codi PIN";
+
+/* (No Comment) */
+"Change right swipe action" = "Canvieu l'acció de desplaçament cap a la dreta";
+
+/* Title */
+"Change sender address to .." = "Canvieu l'adreça del remitent a ..";
+
+/* Action */
+"Check Again" = "Comprovar-ho un altre cop";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Visiteu Proton Status per conèixer l'estat del nostre sistema.";
+
+/* "Username" */
+"Checking ...." = "Comprovant....";
+
+/* contact placeholder */
+"City" = "Ciutat";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Netejar";
+
+/* cell title in device setting */
+"Clear local cache" = "Netejar memòria cau local";
+
+/* (No Comment) */
+"Clear Local Message Cache" = "Esborra la memòria cau local de missatges";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "Netetja Estil";
+
+/* general close action */
+"Close" = "Tanca";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Tancant";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Replega la carpeta";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Replega el missatge";
+
+/* cell title in device settings
+   The title of combined contact in settings */
+"Combined contacts" = "Contactes combinats";
+
+/* *
+ *  Composer Email view controller */
+"Compose" = "Redactar";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Escriu un missatge";
+
+/* Title */
+"Compose to" = "Composa per a";
+
+/* *
+ *  MenuViewController */
+"Confirm" = "Confirma";
+
+/* "Mailbox Password" */
+"Confirm Mailbox Password" = "Confirma la contrasenya de la bústia";
+
+/* Title */
+"Confirm new mailbox password" = "Confirmeu la contrasenya de la bústia nova";
+
+/* Placeholder */
+"Confirm new password" = "Confirmi la nova contrasenya";
+
+/* Title */
+"Confirm new sign-in password" = "Confirmeu la nova contrasenya d'inici de sessió";
+
+/* (No Comment) */
+"Confirm Password" = "Confirmar contrasenya";
+
+/* alert title */
+"Confirm phishing report" = "Confirmeu l'informe de phishing";
+
+/* Title */
+"Confirmation" = "Confirmació";
+
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "S'ha eliminat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "S'ha desat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contacteu-nos directament a través del nostre formulari d’assistència, correu electrònic (support@protonmail.zendesk.com) o Twitter.";
+
+/* Action and title
+   menu title */
+"Contacts" = "Contactes";
+
+/* Action
+   The title of button of PIN code setup1 */
+"Continue" = "Continua";
+
+/* No comment provided by engineer. */
+"Conversation grouping" = "Agrupació de conversa";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Mode de conversa";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Les converses són opcionals";
+
+/* Title */
+"Copy" = "Copia";
+
+/* Title */
+"Copy address" = "Copiar l'adreça";
+
+/* Title */
+"Copy name" = "Copia el nom";
+
+/* contact placeholder */
+"Country" = "País";
+
+/* top right action text */
+"Create" = "Crear";
+
+/* error part & alert title */
+"Create user failed" = "No s'ha pogut crear l'usuari";
+
+/* Alert title */
+"Creating folder not allowed" = "No es permet crear la carpeta";
+
+/* Alert title */
+"Creating label not allowed" = "No es permet crear l'etiqueta";
+
+/* Change language title */
+"Current Language is: " = "El idioma actual es: ";
+
+/* Placeholder */
+"Current password" = "Contrasenya actual";
+
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Correu electrònic de recuperació actual";
+
+/* Title */
+"Current sign-in password" = "Contrasenya d'inici de sessió actual";
+
+/* contacts default label type
+   Custom option for time config picker */
+"Custom" = "Personalitzat";
+
+/* Title */
+"Cut" = "Retalla";
+
+/* cell title in app setting */
+"Dark mode" = "Mode fosc";
+
+/* message Date: text */
+"Date:" = "Data:";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Data: %@";
+
+/* days */
+"days" = "Dies";
+
+/* (No Comment) */
+"Debug" = "Depura";
+
+/* error title */
+"Decryption error" = "Error de desxifrat";
+
+/* error details */
+"Decryption of this content failed" = "El desxifratge d'aquest contingut ha fallat";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "El contingut encriptat d'aquest missatge no s'ha pogut desxifrar.";
+
+/* Title */
+"Default" = "Predeterminada";
+
+/* Settings row */
+"Default browser" = "Navegador predeterminat";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Defineix pista (opcional)";
+
+/* (No Comment) */
+"Define Password" = "Defineix contrasenya";
+
+/* *
+ *  Contacts View Controller */
+"Delete" = "Esborra";
+
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "Eliminar %d missatges";
+
+/* Title-Contacts */
+"Delete contact" = "Elimina el contacte";
+
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Eliminar grup de contactes";
+
+/* The title of delete folder button */
+"Delete folder" = "Eliminar carpeta";
+
+/* The title of delete label button */
+"Delete label" = "Eliminar etiqueta";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Eliminar missatge";
+
+/* (No Comment) */
+"Deleted" = "Esborrat";
+
+/* *
+ *  Email Header View */
+"Details" = "Detalls";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Deshabilita qualsevol proxy o tallafoc, o contacta amb el teu administrador de xarxa.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Desactiva la Validació";
+
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
+"Disabled" = "Desactivat";
+
+/* Action */
+"Discard" = "Descarta";
+
+/* Action */
+"Discard changes" = "Descarta els canvis";
+
+/* (No Comment) */
+"Discard draft" = "Descarta l'esborrany";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Tanca el teclat";
+
+/* (No Comment) */
+"Display name" = "Nom a mostrar";
+
+/* Title in settings */
+"Display Name" = "Nom a mostrar";
+
+/* *
+ *  SettingsViewController & alert title */
+"Display Name Updated" = "S'ha actualitzat el nom a mostrar";
+
+/* Title in display name settings */
+"DisplayName" = "Nom a mostrar";
+
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "N'esteu segur, de voler eliminar aquest arxiu dels arxius adjunts?";
+
+/* Description */
+"Do you want to cancel the process?" = "Voleu cancel·lar el procés?";
+
+/* Warning message */
+"Do you want to discard the changes?" = "Voleu descartar els canvis?";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Voleu descartar els vostres canvis?";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Voleu enviar el missatge igualment?";
+
+/* Action */
+"Don't remind me again" = "No em tornis a recordar";
+
+/* Title */
+"Don't Show Again" = "No ho tornis a mostrar";
+
+/* Done action */
+"Done" = "Fet";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Baixant missatge %1$d de %2$d";
+
+/* Action */
+"Draft" = "Esborrany";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "L'esborrany encara s'està pujant…";
+
+/* hint message */
+"Draft saved" = "Esborrany desat";
+
+/* menu title */
+"Drafts" = "Esborranys";
+
+/* mail location title */
+"DRAFTS" = "Esborranys";
+
+/* Onboarding title */
+"Easily up-to-date" = "Actualitzat fàcilment";
+
+/* Action
+   The button title of the scheduled message banner. */
+"Edit" = "Edita";
+
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Editar avatar";
+
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Editar contacte";
+
+/* The title of edit folder page */
+"Edit folder" = "Edita la carpeta";
+
+/* The title for the contact group editing view */
+"Edit group" = "Editar grup";
+
+/* The title of edit label page */
+"Edit label" = "Edita l'etiqueta";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Editar foto";
+
+/* default vcard types */
+"Email" = "Correu electrònic";
+
+/* *
+ *  Email Verify View Controller */
+"Email address" = "Adreça de correu electrònic";
+
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Correu electrònic deshabilitada";
+
+/* alert title */
+"Email address invalid" = "Correu electrònic invàlid";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Adreça de correu invàlida";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "Adreces de correu electrònic";
+
+/* Send an email to the current contact (button title text) */
+"Email contact" = "Contacte de correu electrònic";
+
+/* title */
+"Email domain invalid" = "Domini de correu electrònic no vàlid";
+
+/* "Cancel" */
+"Empty Folder" = "Buida la carpeta";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Buida el correu brossa";
+
+/* Alert title */
+"Empty spam folder" = "Buida la carpeta del correu brossa";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Buida la paperera";
+
+/* Alert title */
+"Empty trash folder" = "Buida la carpeta de la paperera";
+
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Habilitar";
+
+/* Title */
+"Enable email notices" = "Habilitar avisos de correu electrònic";
+
+/* (No Comment) */
+"Enable Pin Protection" = "Activa la protecció amb PIN";
+
+/* Title */
+"Enable signature" = "Habilitar signatura";
+
+/* (No Comment) */
+"Enable TouchID" = "Habilita el Touch ID";
+
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Xifrat per Proton";
+
+/* contact section title */
+"Encrypted contact details" = "Detalls de contacte xifrats";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Xifrat d'extrem a extrem";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Missatge signat i xifrat d'extrem a extrem";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Missatge xifrat d'extrem a extrem";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Missatge xifrat d'extrem a extrem des d'un remitent verificat";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Xifrat d'extrem a extrem al destinatari verificat";
+
+/* (No Comment) */
+"End-to-End Encryption" = "Xiftar d'extrem a extrem";
+
+/* Action in 2fa popup view */
+"Enter" = "Entrar";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduïu un codi PIN amb almenys 4 caràcters i com a màxim 21 caràcters.";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Introduïu el codi PIN nou";
+
+/* (No Comment) */
+"Enter Verification Code" = "Introduïu el codi de verificació";
+
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Introduïu la vostra contrasenya per fer canvis";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Introduïu el PIN per desbloquejar la safata d'entrada.";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "Introduïu aquí la vostra signatura";
+
+/* Title of alert in share extension. */
+"Error" = "Error";
+
+/* (No Comment) */
+"Error Logs" = "Registres d'errors";
+
+/* incorrect email format error in composer */
+"Error sending" = "Error a l'enviar";
+
+/* lock app option */
+"Every time enter app" = "Cada vegada que ingresseu a l'aplicació";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Amplia la carpeta";
+
+/* alert title */
+"Expiration not supported" = "Caducitat no suportada";
+
+/* (No Comment) */
+"Expiring Messages" = "Expiració de missatges";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
+/* Error message */
+"Failed to determine type of file" = "No s'ha pogut determinar el tipus de fitxer";
+
+/* *
+ *  Core Data Service & local error */
+"Failed to initialize the application's saved data" = "No s'ha pogut inicialitzar la informació desada de l'aplicació";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "No s'ha pogut carregar el contingut!\nTorneu-ho a provar.";
+
+/* default vcard types */
+"Fax" = "Fax";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Classifiqueu, etiqueteu, i codifiqueu amb colors els missatges per crear la vostra perfecta i personalitzada safata d'entrada.";
+
+/* place holder */
+"Folder Name" = "Nom de la carpeta";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Carpetes";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Segueix la configuració del dispositiu";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Prohibit";
+
+/* (No Comment) */
+"FORGOT PASSWORD?" = "Ha oblidat la contrasenya?";
+
+/* forward action */
+"Forward" = "Reenvia";
+
+/* forwarded message title */
+"Forwarded message" = "Missatge reenviat";
+
+/* Title */
+"From" = "De";
+
+/* Title */
+"From your photo library" = "Des de la vostra biblioteca fotogràfica";
+
+/* message From: field text */
+"From:" = "De:";
+
+/* abbreviation of forward: */
+"Fw:" = "Fw:";
+
+/* abbreviation of forward: */
+"Fwd:" = "Rv:";
+
+/* contacts talbe cell gender title */
+"Gender" = "Gènere";
+
+/* section title in settings */
+"General settings" = "Configuració general";
+
+/* (No Comment) */
+"General Settings" = "Configuració general";
+
+/* title of the next button */
+"Get Started" = "Començar";
+
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Torna (recomanat)";
+
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Ves a esborranys";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Ves a la configuració";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign-in" = "Anar a l'inici de sessió";
+
+/* Got it action */
+"Got it" = "Entesos";
+
+/* network troubleshot cell title */
+"Government block" = "Bloqueig governamental";
+
+/* The instruction label for the group name textfield */
+"Group name" = "Nom del grup";
+
+/* menu title (contact groups) */
+"Groups" = "Grups";
+
+/* (No Comment) */
+"Help & Support" = "Ajuda & suport";
+
+/* Action */
+"Hide" = "Amagar";
+
+/* Title */
+"Hide details" = "Amagar els detalls";
+
+/* (No Comment) */
+"Hide Details" = "Amaga els detalls";
+
+/* hours */
+"hours" = "Hores";
+
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
+
+/* Description */
+"Human Check Failed" = "S'ha produït un error en el control humà";
+
+/* human check warning title */
+"Human Check Warning" = "Avís de verificació humana";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignora l'avís i continua";
+
+/* Action */
+"Import Error" = "Error d'importació";
+
+/* (No Comment) */
+"Import File From..." = "Importa el fitxer des de...";
+
+/* Title */
+"Import from…" = "Importar des de…";
+
+/* Downloading attachments from cloud */
+"Importing" = "Important";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importació d’adjunts, que pot trigar una estona";
+
+/* import contact title */
+"Importing Contacts" = "Importació de contactes";
+
+/* alternative routing description
+   The footer of alternative routing setting */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
+
+/* "Deleted" */
+"Inbox" = "Safata d'entrada";
+
+/* *
+ *  MailboxViewController */
+"INBOX" = "Safata d'entrada";
+
+/* (No Comment) */
+"Incorrect password" = "Contrasenya incorrecta";
+
+/* Error */
+"Incorrect PIN." = "PIN incorrecte.";
+
+/* Option title */
+"Inherit color from parent folder" = "Heretat d'una carpeta principal";
+
+/* A label message */
+"Inherited from parent folder" = "Heretat d'una carpeta principal";
+
+/* Title */
+"inline attachments" = "adjunts en línia";
+
+/* (No Comment) */
+"Input Display Name ..." = "Introduïu el nom a mostrar...";
+
+/* place holder */
+"Input Display Name…" = "Introduïu el nom a mostrar…";
+
+/* place holder */
+"Input Notification Email …" = "Introduir correu electrònic de notificació …";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Connexió insegura";
+
+/* The preconditions are not met */
+"Internal Error" = "Error intern";
+
+/* default vcard types */
+"Internet" = "Internet";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problema amb el proveïdor d'accés a internet";
+
+/* alert title */
+"Invalid credential" = "Credencial no vàlida";
+
+/* update password error */
+"Invalid hashed password!" = "Contrasenya amb contrasenya no vàlida!";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "URL no vàlida";
+
+/* title */
+"Invalid UserName" = "Nom d'usuari invàlid";
+
+/* Error message */
+"Invalid username!" = "Nom d'usuari invàlid!";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Aquest informe és sobre una compra des de l'aplicació?";
+
+/* (No Comment) */
+"Key generation failed" = "Ha fallat la generació de claus";
+
+/* No comment provided by engineer. */
+"Label as" = "Etiqueta com a";
+
+/* *
+ *  MoreOptionsView */
+"Label as..." = "Etiqueta com a...";
+
+/* Title */
+"Label as…" = "Etiquetar com a…";
+
+/* (No Comment) */
+"Label Management" = "Gestió d'etiquetes";
+
+/* createing lable input place holder */
+"Label Name" = "Nom de etiqueta";
+
+/* VoiceOver: email has lables */
+"Labels" = "Etiquetes";
+
+/* cell title in device settings */
+"Language" = "Idioma";
+
+/* Action */
+"Later" = "Més tard";
+
+/* Action
+   alternative routing link name in description
+   The title of learn more link */
+"Learn more" = "Més informació";
+
+/* settings swipe actions section title */
+"Left to Right" = "Esquerra a Dreta";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "S'ha assolit el límit";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Carrega imatges incrustades";
+
+/* Action
+   The title of loading remote content banner. */
+"Load remote content" = "Carrega el contingut remot";
+
+/* (No Comment) */
+"Loading..." = "Carregant...";
+
+/* No comment provided by engineer. */
+"Loading…" = "Carregant…";
+
+/* cell title in device settings */
+"Local storage limit" = "Límit d'emmagatzematge local";
+
+/* *
+ *  file string type */
+"Localizable.strings" = "Base";
+
+/* menu title */
+"Lock The App" = "Bloqueja l'aplicació";
+
+/* comment */
+"Log out" = "Tanca la sessió";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "S'ha tancat la sessió de %@";
+
+/* error title */
+"Logs" = "Registres";
+
+/* cell title in device settings */
+"Mailbox" = "Bústia de correu";
+
+/* (No Comment) */
+"Mailbox Password" = "Contrasenya de la bústia";
+
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Contrasenya de la bústia";
+
+/* (No Comment) */
+"Mailbox password doesn't match" = "La contrasenya de la bústia no coincideix";
+
+/* No comment provided by engineer. */
+"Manage" = "Gestionar";
+
+/* menu title */
+"Manage accounts" = "Gestionar comptes";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Gestionar adreces";
+
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Marcar com a legítim";
+
+/* The title of the read action in action sheet */
+"Mark as read" = "Marcar com a llegit";
+
+/* Action */
+"Mark as read/unread" = "Marcar com a llegit/no llegit";
+
+/* The title of the unread action in action sheet */
+"Mark as unread" = "Marca com a no llegit";
+
+/* (No Comment) */
+"Mark Read" = "Marca com a llegit";
+
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
+
+/* menu title */
+"Menu" = "Menú";
+
+/* No comment provided by engineer. */
+"Message actions" = "Accions del missatge";
+
+/* Title of the view showing the message body */
+"Message body" = "Cos del missatge";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
+
+/* Composer expiration page title */
+"Message expiration" = "Caducitat del missatge";
+
+/* *
+ *  Expiration View */
+"Message expired" = "El missatge ha expirat";
+
+/* Title */
+"Message has been deleted." = "S'ha eliminat el missatge.";
+
+/* Title */
+"Message has been moved." = "El missatge s'ha mogut.";
+
+/* Title of the view showing the message header */
+"Message headers" = "Capçaleres del missatge";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "S'ha mogut el missatge a la paperera";
+
+/* Placeholder */
+"Message Password" = "Contrasenya del missatge";
+
+/* composer view */
+"Message password does not match." = "La contrasenya del missatge no coincideix.";
+
+/* "Cancel" */
+"Message Queue" = "Cua de missatges";
+
+/* Alert title */
+"Message saved to Drafts" = "Missatge desat a Esborranys";
+
+/* (No Comment) */
+"Message sending failed please try again" = "Error en l'enviament de missatges. Torna-ho a provar";
+
+/* Description */
+"Message sending failed. Please try again." = "Error en l'enviament del missatge. Torneu-ho a provar.";
+
+/* Description after message have been sent */
+"Message sent" = "Missatge enviat";
+
+/* (No Comment) */
+"Message Swipe Actions" = "Accions de desplaçament del missatge";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Els missatges d'abans de %@, no seràn cercats. Per cercar entre els missatges antics allibera espai a aquest dispositiu.";
+
+/* (No Comment) */
+"Messages you send can be set to auto delete after a certain time period." = "Els missatges que envieu poden configurar-se com a supressió automàtica després d'un cert període de temps.";
+
+/* default vcard types */
+"Mobile" = "Mòbil";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Signatura mòbil";
+
+/* *
+ *  Encryption Setup View Controller */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
+
+/* More actions button */
+"More" = "Més";
+
+/* No comment provided by engineer. */
+"Move message" = "Mou el missatge";
+
+/* No comment provided by engineer. */
+"Move to" = "Moure a";
+
+/* Action title of move to archive */
+"Move to archive" = "Moure a l'arxiu";
+
+/* (No Comment) */
+"Move to Archive" = "Moure a l'arxiu";
+
+/* (No Comment) */
+"Move to Draft" = "Mou als esborranys";
+
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Mou a la safata d'entrada";
+
+/* "Trash" */
+"Move to Inbox" = "Moure a la safata d'entrada";
+
+/* (No Comment) */
+"Move to Outbox" = "Mou a la Safata de sortida";
+
+/* Action title of move to spam
+   The title of the spam action in action sheet */
+"Move to spam" = "Moure al correu brossa";
+
+/* (No Comment) */
+"Move to Spam" = "Mou al correu brossa";
+
+/* The title of the remove action in action sheet */
+"Move to trash" = "Moure a la paperera";
+
+/* (No Comment) */
+"Move to Trash" = "Moure a la paperera";
+
+/* (No Comment) */
+"Move to..." = "Mou a...";
+
+/* Title */
+"Move to…" = "Mou a…";
+
+/* (No Comment) */
+"Multiple Addresses" = "Adreces múltiples";
+
+/* Onboarding title */
+"Neat and tidy" = "Polit i endreçat";
+
+/* (No Comment) */
+"NEED AN ACCOUNT? SIGN UP." = "Necessita Un Compte? Registra'T";
+
+/* The title of alternative routing settings */
+"Networking" = "Xarxa";
+
+/* Contacts add new contact */
+"New contact" = "Nou contacte";
+
+/* The title of create folder page */
+"New folder" = "Carpeta nova";
+
+/* No comment provided by engineer. */
+"New Folder" = "Carpeta nova";
+
+/* The title for the contact group creation view */
+"New group" = "Grup nou";
+
+/* The title of create label page */
+"New label" = "Etiqueta nova";
+
+/* No comment provided by engineer. */
+"New Label" = "Etiqueta nova";
+
+/* Title */
+"New mailbox password" = "Nova contrasenya de la bústia";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Missatge nou";
+
+/* Placeholder */
+"New password" = "Contrasenya nova";
+
+/* Title */
+"New sign-in password" = "Nova contrasenya d'inici de sessió";
+
+/* title of the next button */
+"Next" = "Següent";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Sobrenom";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No s'ha trobat cap adjunt";
+
+/* Title */
+"No connectivity detected…" = "No s'ha detectat cap connectivitat…";
+
+/* network troubleshot cell title */
+"No internet connection" = "No hi ha connexió a Internet";
+
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "No s’ha recuperat cap clau per a l’usuari intern";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "cap objecte";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "Cap destinatari";
+
+/* zero messages matching search query */
+"No results found" = "No s'han trobat resultats";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "No s'han recuperat claus vàlides per a l'usuari intern";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "No hi ha cap clau WKD per a l'usuari vàlida per a l'enviament";
+
+/* Error message */
+"No, not related to in-app purchase" = "No, no relacionat amb una compra dins l'aplicació";
+
+/* A *short* description saying that there is no contact group associated with this contact email
+   Action title of none
+   The protection title of None protection
+   Title */
+"None" = "Cap";
+
+/* Title */
+"normal attachments" = "adjunts normals";
+
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "No és correu brossa (mou a la safata d'entrada)";
+
+/* No comment provided by engineer. */
+"Not set" = "No establert";
+
+/* title */
+"Notes" = "Notes";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Aquí no hi ha res";
+
+/* Alert title */
+"Notice" = "Avís";
+
+/* (No Comment) */
+"Notification Email" = "Correu electrònic de notificació";
+
+/* A option title that enable/disable notification feature
+   cell title in device settings */
+"Notifications" = "Notificacions";
+
+/* The title of Off setting options */
+"Off" = "Desactivat";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Fora de línia";
+
+/* *
+ *  ReportBugsViewController */
+"OK" = "D'acord";
+
+/* The title of On setting options */
+"On" = "Activat";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "El %@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "El %1$@ a les %2$@";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Només es pot afegir un compte gratuït";
+
+/* Open action */
+"Open" = "Obrir";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Obrir el commutador de comptes";
+
+/* (No Comment) */
+"OpenDraft" = "Obrir esborrany";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organització";
+
+/* default vcard types */
+"Other" = "Altres";
+
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "El nostre sistema ha marcat aquest missatge com un intent de suplantació d'identitat. Comproveu que sigui legítim";
+
+/* "Draft" = "Draft"; */
+"Outbox" = "Safata de sortida";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "Carpeta superior";
+
+/* *
+ *  Login View */
+"Password" = "Contrasenya";
+
+/* (No Comment) */
+"Password cannot be empty." = "La contrasenya no es pot deixar en blanc.";
+
+/* title */
+"Password Hint" = "Pista per a la contrasenya";
+
+/* (No Comment) */
+"Password Mismatch" = "Les contrasenyes no coincideixen";
+
+/* update password error */
+"Password update failed" = "Actualització de contrasenya ha fallat";
+
+/* (No Comment) */
+"Password Updated" = "Contrasenya actualitzada";
+
+/* Placeholder */
+"Passwords must match" = "Les contrasenyes han de coincidir";
+
+/* Text for pause button */
+"Pause" = "Pausar";
+
+/* default vcard types */
+"Personal" = "Personal";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Xifrat amb PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "Missatge signat i xifrat amb PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Missatge xifrat amb PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Missatge xifrat amb PGP des d'un remitent verificat";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Xifrat PGP al destinatari verificat";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Signat amb PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Missatge signat amb PGP d'un remitent verificat";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Missatge signat PGP. Ha fallat la verificació del remitent";
+
+/* default vcard types */
+"Phone" = "Telèfon";
+
+/* contact placeholder */
+"Phone number" = "Número de telèfon";
+
+/* "Verification code request failed" */
+"Phone number invalid" = "El número de telèfon no és vàlid";
+
+/* *
+ *  Attachment table ViewController */
+"Photo Library" = "Biblioteca de fotografies";
+
+/* The protection title of PIN code protection */
+"PIN code" = "Codi PIN";
+
+/* Description */
+"PIN code can't be empty." = "El codi PIN no es pot deixar en blanc.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "El PIN és massa llarg";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "El PIN és massa curt";
+
+/* (No Comment) */
+"Please check your cell phone for the verification code." = "Si us plau, reviseu el vostre mòbil per obtenir el codi de verificació.";
+
+/* (No Comment) */
+"Please check your email for the verification code." = "Comproveu el vostre correu electrònic per obtenir el codi de verificació.";
+
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Si us plau, connecteu-vos i torneu-ho a intentar";
+
+/* (No Comment) */
+"Please input a valid cell phone number." = "Introduïu un número de telèfon mòbil vàlid.";
+
+/* error message */
+"Please input a valid email address." = "Introduïu una adreça de correu electrònic vàlida.";
+
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Si us plau, assegura't que la teva connexió a internet funciona.";
+
+/* (No Comment) */
+"Please pick a user name first!" = "Selecciona un nom d'usuari primer!";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Si us plau, indica un nom per al grup";
+
+/* when switch sender but email has attachments */
+"Please remove all attachments before changing sender!" = "Si us plau, elimineu tots els fitxers adjunts abans de canviar el remitent";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Seleccioneu com a mínim un correu electrònic";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Si us plau, seleccioneu almenys un e-mail per al grup de contacte";
+
+/* (No Comment) */
+"Please set a password." = "Si us plau establiu una contrasenya.";
+
+/* No comment provided by engineer. */
+"Please set a recovery / notification email" = "Establiu un correu electrònic de recuperació / notificació";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Compartiu el problema.";
+
+/* (No Comment) */
+"Please try a different domain." = "Si us plau, proveu un domini diferent.";
+
+/* (No Comment) */
+"Please try a different email address." = "Si us plau, proveu una altra adreça electrònica.";
+
+/* (No Comment) */
+"Please try a different password." = "Si us plau, proveu una contrasenya diferent.";
+
+/* (No Comment) */
+"Please try a different user name." = "Si us plau, proveu un nom d’usuari diferent.";
+
+/* (No Comment) */
+"Please try again." = "Torneu-ho a provar, si us plau";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Actualitzeu-vos a un pla de pagament per utilitzar més de 3 carpetes";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Actualitzeu-vos a un pla de pagament per utilitzar més de 3 etiquetes";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Actualitzeu el vostre pla";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
+
+/* (No Comment) */
+"Please use your new password when signing in." = "Utilitzeu la vostra nova contrasenya en iniciar la sessió.";
+
+/* alert title */
+"Please, manage it in your phone." = "Si us plau, féu-ho en el telèfon.";
+
+/* No comment provided by engineer. */
+"Print" = "Imprimir";
+
+/* cell title in device settings */
+"Privacy" = "Privacitat";
+
+/* Onboarding title */
+"Privacy for all" = "Privacitat per a tothom";
+
+/* Local notification title */
+"Problem sending message" = "Problema enviant el missatge";
+
+/* (No Comment) */
+"Protection" = "Protecció";
+
+/* (No Comment) */
+"Protection Entire App" = "Aplicació completa de protecció";
+
+/* network troubleshot cell title */
+"Proton is down" = "Proton està caigut";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail està fora de línia…";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Estat de Proton";
+
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Deixi la seva opinió";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Interferència del proxy/tallafoc";
+
+/* (No Comment) */
+"Quick swipe actions" = "Accions de desplaçament ràpid";
+
+/* The title of re auth alert */
+"Re-authenticate" = "Tornar a autenticar";
+
+/* abbreviation of reply: */
+"Re:" = "Re:";
+
+/* No comment provided by engineer. */
+"Read" = "Llegit";
+
+/* Title */
+"Reading device contacts data…" = "Llegint dades dels contactes del dispositiu…";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Confirmació enviada";
+
+/* The error message is shown in composer */
+"Recipient not found" = "Destinatari no trobat";
+
+/* Title */
+"Recovery Code" = "Codi de recuperació";
+
+/* Title */
+"Recovery email" = "Correu electrònic de recuperació";
+
+/* *
+ *  SignUpEmailViewController */
+"Recovery Email" = "Correu electrònic de recuperació";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "Recuperació habilitada";
+
+/* Title */
+"Remind Me Later" = "Recorda-m'ho més tard";
+
+/* remove action */
+"Remove" = "Suprimeix";
+
+/* Settings row */
+"Remove image metadata" = "Esborrar les metadades de la imatge";
+
+/* action title */
+"Remove password" = "Suprimir contrasenya";
+
+/* The button to enable label list reorder */
+"Reorder" = "Reordenar";
+
+/* textview title */
+"Repeat password" = "Repetir contrasenya";
+
+/* The title of PIN code setup2 view 
+   The title of textfield of PIN code setup2 */
+"Repeat PIN code" = "Repetir codi PIN";
+
+/* *
+ *  Controller Defined */
+"Reply" = "Respon";
+
+/* reply all action */
+"Reply all" = "Respon a tothom";
+
+/* composer view model impl */
+"Reply message" = "Respondre al missatge";
+
+/* (No Comment) */
+"ReplyAll" = "Respondre a tothom";
+
+/* menu title */
+"Report a problem" = "Notifica un problema";
+
+/* No comment provided by engineer. */
+"Report phishing" = "Notificar suplantació d'identitat";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Informar un missatge com a intent de pesca us enviarà el missatge, per poder analitzar-lo i millorar-ne els filtres. Això significa que podrem veure el contingut del missatge complet.";
+
+/* link opeining confirmation */
+"Request link confirmation" = "Sol·licitar enllaç de confirmació";
+
+/* Title */
+"Resetting message cache…" = "Restablint la memòria cau del missatge…";
+
+/* Text for resume button */
+"Resume" = "Continuar";
+
+/* Action */
+"Retry" = "Reintentar";
+
+/* (No Comment) */
+"Retry after %d seconds" = "Reintentar després de %d segons";
+
+/* settings swipe actions section title */
+"Right to Left" = "Dreta a Esquerra";
+
+/* Title */
+"Save" = "Desa";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "Desa com a PDF";
+
+/* title */
+"Save Changes" = "Desa els canvis";
+
+/* (No Comment) */
+"Save draft" = "Desa l'esborrany";
+
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "Programar enviament";
+
+/* *
+ *  SearchViewController */
+"Search" = "Cerca";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Cercar al contingut del missatge";
+
+/* section title */
+"Select colour" = "Seleccionar color";
+
+/* (No Comment) */
+"Select your language" = "Seleccioneu el vostre idioma";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Seleccionat";
+
+/* Action */
+"Send" = "Enviar";
+
+/* Action */
+"Send anyway" = "Enviar de totes maneres";
+
+/* Title of button to send feedback */
+"Send feedback" = "Enviar comentaris";
+
+/* when subject not empty */
+"Send message without subject?" = "Enviar missatge sense assumpte?";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Enviar confirmació de lectura";
+
+/* (No Comment) */
+"Send Verification Code" = "Envia el codi de verificació";
+
+/* encryption lock description */
+"Sender Verification Failed" = "La verificació del remitent ha fallat";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Enviament fallit";
+
+/* Alert title */
+"Sending in progress" = "Enviament en procés";
+
+/* Description */
+"Sending Message" = "S'està enviant el missatge";
+
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "Enviant missatge…";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "S'estan enviant missatges de %1$@ L'adreça és una funció remunerada. El vostre missatge s'enviarà des de la vostra adreça predeterminada %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Es podrà enviar quan\nels adjunts estiguin pujats";
+
+/* menu title */
+"Sent" = "Enviats";
+
+/* mail location title */
+"SENT" = "Enviat";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "Enviat per vós amb xifrat d'extrem a extrem";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Enviat per vós amb xifrat d'extrem a extrem a un destinatari verificat";
+
+/* Description */
+"Sent Failed" = "Enviament fallit";
+
+/* Title */
+"Set" = "Establir";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Estableix l'expiració del correu";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "Estableix la contrasenya del correu";
+
+/* Title */
+"Set Password" = "Establir contrasenya";
+
+/* The title of PIN code setup1 view */
+"Set PIN code" = "Establir codi PIN";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Establiu gestos de lliscament per a accedir a les accions més utilitzades.";
+
+/* menu title */
+"Settings" = "Preferències";
+
+/* action */
+"Share contact" = "Compartir contacte";
+
+/* Action */
+"Show" = "Mostrar";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Mostra'm";
+
+/* Alert title to confirm signout
+   menu title */
+"Sign out" = "Tanca la sessió";
+
+/* Action */
+"Sign Out" = "Tanca la sessió";
+
+/* Title in signature settings */
+"Signature" = "Signatura";
+
+/* (No Comment) */
+"Signature Updated" = "Signatura actualitzada";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Sessió iniciada com a %@";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Sessió de %1$@ tancada i iniciada amb %2$@";
+
+/* skip button title in onboarding page */
+"Skip" = "Omet";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Posposa";
+
+/* (No Comment) */
+"Space Warning" = "Avís espacial";
+
+/* menu title */
+"Spam" = "Correu brossa";
+
+/* mail location title */
+"SPAM" = "Correu brossa";
+
+/* (No Comment) */
+"Spammed" = "Correu brossa";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp única clau keyslat no és vàlid!";
+
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
+"Star" = "Destacat";
+
+/* Title */
+"Star/unstar" = "Destacar / no destacar";
+
+/* "Spam" */
+"Starred" = "Destacats";
+
+/* "INBOX" */
+"STARRED" = "Destacats";
+
+/* contact placeholder */
+"State" = "Estat";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "No s'ha pogut trobar una solució encara";
+
+/* cell title in device settings */
+"Storage" = "Emmagatzematge";
+
+/* Alert title */
+"Storage full" = "Emmagatzematge ple";
+
+/* Storage warning */
+"Storage quota exceeded" = "Límit d'emmagatzematge superat";
+
+/* Title */
+"Storage Warning" = "Avís d'emmagatzematge";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Emmagatzemat amb xifratge d'accés zero";
+
+/* contact placeholder */
+"Street" = "Carrer";
+
+/* Placeholder */
+"Subject" = "Assumpte";
+
+/* subject: text when forward */
+"Subject:" = "Assumpte:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Assumpte...";
+
+/* menu title
+   The title of a subscription plans screen */
+"Subscription" = "Subscripció";
+
+/* cell title in app settings */
+"Swipe actions" = "Accions de lliscament";
+
+/* (No Comment) */
+"Swipe Left to Right" = "Llisca a l'esquerra o a la dreta";
+
+/* (No Comment) */
+"Swipe Right to Left" = "Llisca de dreta a esquerra";
+
+/* Swiping gestures */
+"Swiping gestures" = "Gest de lliscament";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Canviar mode de selecció";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Canviar al compte ‘%@’";
+
+/* Error */
+"System can't copy the file" = "El sistema no pot copiar el fitxer";
+
+/* (No Comment) */
+"Take a Photo" = "Fes una foto";
+
+/* Title */
+"Take new photo" = "Fer una foto nova";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Toqueu aquí per establir";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Deshabilita temporalment o elimina el teu software d'antivirus.";
+
+/* (No Comment) */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gràcies per enviar un informe d'error. Hem afegit el vostre informe al nostre sistema de seguiment d'errors.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Gràcies per la vostra opinió!";
+
+/* Error message */
+"The 2 passwords are not matching" = "Les 2 contrasenyes no coincideixen";
+
+/* (No Comment) */
+"The authentication credentials are invalid." = "Les credencials d'autenticació no són vàlides.";
+
+/* (No Comment) */
+"The authentication token has expired." = "El token d'autenticació ha caducat.";
+
+/* (No Comment) */
+"The display name is now %@." = "Ara el nom a mostrar és %@.";
+
+/* Description */
+"The draft cache is broken. Please try again." = "La memòria cau de l’esborrany està trencada. Si us plau, torneu-ho a provar.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "Ha fallat l'enviament incorrecte del format de projecte!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "No s'han pogut adjuntar els fitxers següents:";
+
+/* (No Comment) */
+"The mailbox password is incorrect." = "La contrasenya de la bústia de correu electrònic no és correcta.";
+
+/* *
+ *  LabelsViewController */
+"The maximum number of labels is %d." = "El nombre màxim d'etiquetes és %d.";
+
+/* update password error */
+"The new password can't be empty." = "La nova contrasenya no pot estar buida.";
+
+/* (No Comment) */
+"The new password can't empty" = "La nova contrasenya no pot estar buida";
+
+/* update password error */
+"The new password does not match." = "La nova contrasenya no coincideix.";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "La nova contrasenya ha de tenir almenys 8 caràcters";
+
+/* (No Comment) */
+"The new password not match" = "Les contrasenyes no coincideixen";
+
+/* update password error */
+"The Password is wrong." = "La contrasenya és incorrecta.";
+
+/* Error message */
+"The password must be between 8 and 21 characters long" = "La contrasenya ha de tenir entre 8 i 21 caràcters";
+
+/* (No Comment) */
+"The password you entered does not match the current password." = "La contrasenya que heu introduït no coincideix amb la contrasenya actual.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Els codis PIN han de coincidir!";
+
+/* update password error */
+"The private key update failed." = "No s'ha pogut actualitzar la clau privada.";
+
+/* Title */
+"The request timed out." = "S'ha esgotat la sol·licitud.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "La clau enviada no es vàlida";
+
+/* Description */
+"The size limit for attachments is 25 MB." = "El límit de mida pels arxius adjunts és de 25Mb.";
+
+/* (No Comment) */
+"The total attachment size can't be bigger than 25MB" = "La mida del fitxer adjunt no pot ser superior a 25 Mb";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL que voleu accedir no és estàndard i no es pot carregar correctament. Voleu obrir-lo amb el navegador predeterminat del dispositiu?";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Es usuari ja està identificat";
+
+/* (No Comment) */
+"The username has been taken." = "El nom d'usuari està agafat.";
+
+/* title */
+"The verification email invalid" = "Correu electrònic de verificació no vàlid";
+
+/* *
+ *  RecaptchaViewController */
+"The verification failed!" = "La verificació ha fallat!";
+
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Hi ha missatges no enviats que es perdran si tanqueu la sessió";
+
+/* local error */
+"There was an error creating or loading the application's saved data." = "S'ha produït un error en crear o carregar les dades desades de l'aplicació.";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Aquesta acció no es pot desfer.";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Aquesta acció no es pot desfer. Els correus electrònics emmagatzemats a aquesta carpeta no se suprimiran i es poden trobar a la carpeta Tot el correu.";
+
+/* alert desc */
+"This contact belongs to your Address Book." = "Aquest contacte pertany a la vostra llibreta d'adreces.";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Aquesta conversa conté missatges no esborrats.";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Aquesta conversa conté missatges de la paperera";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Aquesta funció retarda l'enviament dels vostres correus electrònics, donant-vos l'oportunitat de desfer l'enviament durant el període de temps seleccionat.";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "Aquesta carpeta és buida";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Aquest missatge pot ser un intent de suplantació d’identitat. Comproveu el remitent i els continguts per assegurar-vos que són legítims.";
+
+/* The title of auto reply banner */
+"This message was automatically generated" = "Aquest missatge s'ha generat automàticament";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Aquest missatge caducarà d'aquí %1$dD %2$dH %3$dM";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "És moment de relaxar-se";
+
+/* contacts talbe cell Title title */
+"Title" = "Títol";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ha fallat la validació del certificat TLS. La vostra connexió podria estar monitorada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\n";
+
+/* message To: feild
+   Title */
+"To" = "Per a";
+
+/* *
+ *  API Error & alert title */
+"Token expired" = "Token caducat";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
+/* *
+ *  SettingTableViewController */
+"TouchID is not enrolled, enable it in the system Settings" = "L'identificador tàctil no està inscrit, habiliteu-lo a la configuració del sistema";
+
+/* (No Comment) */
+"TouchID not available" = "L'identificador tàctil no està disponible";
+
+/* *
+ *  MessageAction */
+"Trash" = "Paperera";
+
+/* mail location title */
+"TRASH" = "Paperera";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Resolució de problemes";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Les claus de confiança no són vàlides per enviar-les";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activeu aquesta funció per completar automàticament les adreces de correu electrònic utilitzant contactes de tots els vostres comptes connectats.";
+
+/* Placeholder */
+"Two Factor Code" = "Codi de dos factors";
+
+/* Internal type casting error */
+"Type casting error" = "Error de classificació";
+
+/* (No Comment) */
+"Unable to connect to the server" = "No es pot connectar al servidor";
+
+/* (No Comment) */
+"Unable to construct a valid URL with the following path: %@" = "Impossible construir una URL vàlida amb la següent ruta: %@";
+
+/* (No Comment) */
+"Unable to decrypt message." = "No es pot desxifrar el missatge.";
+
+/* Description */
+"Unable to edit this message offline" = "Impossible modificar aquest missatge fora de línia";
+
+/* (No Comment) */
+"Unable to parse authentication token!" = "No s'ha pogut analitzar el testimoni d'autenticació!";
+
+/* Description */
+"Unable to parse response" = "No s'ha pogut analitzar la resposta";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "No es pot analitzar l'objecte de resposta:\n%@";
+
+/* alert title */
+"Unable to parse token" = "No s'ha pogut analitzar token";
+
+/* *
+ *  MessageDataService */
+"Unable to send the email" = "No es pot enviar el correu electrònic";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Destinataris ocults";
+
+/* Action */
+"Undo" = "Desfés";
+
+/* No comment provided by engineer. */
+"Undo send" = "Desfés l'enviament";
+
+/* (No Comment) */
+"Unknow Error" = "Error desconegut";
+
+/* (No Comment) */
+"Unknow file" = "Fitxer desconegut";
+
+/* title, default display name */
+"Unknown" = "Desconegut";
+
+/* Error */
+"Unknown Error" = "Error desconegut";
+
+/* (No Comment) */
+"Unkonw Version" = "Versió desconeguda";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Desbloqueig requerit";
+
+/* The unread title of unread action button in mailbox view */
+"unread" = "no llegit";
+
+/* No comment provided by engineer. */
+"Unread" = "No llegit";
+
+/* The title of the star action in action sheet */
+"Unstar" = "No destacar";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";
+
+/* Error message */
+"Unsupported file type" = "Tipus de fitxer no suportat";
+
+/* update notification email error title */
+"Update Notification Email" = "Actualitza el correu electrònic de notificació";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Actualitzat fa >1 hora";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Actualitzat ara mateix";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Proton actualitzat, protecció unificada";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Actualitzeu a un pla de pagament per enviar des del vostre compte %@ adreça";
+
+/* Action */
+"Upload device contacts" = "Carregar contactes del dispositiu";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Voleu pujar els contactes d'iOS a Proton Mail?";
+
+/* default vcard types */
+"URL" = "URL";
+
+/* Option title */
+"Use folder colors" = "Utilitzar colors de carpeta";
+
+/* (No Comment) */
+"User already exist!" = "L'usuari existeix!";
+
+/* (No Comment) */
+"User is available!" = "L'usuari està disponible!";
+
+/* title */
+"User name exist" = "El nom d'usuari ja existeix";
+
+/* alert title */
+"User name invalid" = "Nom d'usuari invàlid";
+
+/* alert title */
+"Verification code request failed" = "Ha fallat la sol·licitud del codi de verificació";
+
+/* alert title */
+"Verification code sent" = "S'ha enviat el codi de verificació";
+
+/* error title */
+"Verification error" = "Error de verificació";
+
+/* error details */
+"Verification of this content’s signature failed" = "La verificació de la signatura d'aquest contingut ha fallat";
+
+/* (No Comment) */
+"Version %@ %@" = "Versió %@ %@";
+
+/* View action for view scheduled message. */
+"View" = "Mostra";
+
+/* No comment provided by engineer. */
+"View headers" = "Mostrar les capçaleres";
+
+/* No comment provided by engineer. */
+"View HTML" = "Veure HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Veure missatges en mode Fosc";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Veure missatges en mode Clar";
+
+/* Title */
+"Warning" = "Advertència";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't send email!" = "Atenció: heu de provar que sou humà abans de poder enviar correus electrònics!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Avís: presumpte lloc web fals";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hem pogut enviar el vostre missatge, possiblement a causa d'una mala connexió de xarxa. El vostre missatge s'ha desat a Esborranys i s'enviarà automàticament la propera vegada que obriu l'aplicació.";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Tenim problemes per connectar amb els servidors. Torneu a connectar-vos.";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Recomanem configurar una contrasenya pels destinataris següents:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomanem configurar una contrasenya o deshabilitar PGP pels destinataris següents:";
+
+/* week */
+"week" = "setmana";
+
+/* (No Comment) */
+"Welcome to Proton Mail!" = "Us donem la benvinguda a Proton Mail";
+
+/* Example feedback */
+"Wonderful" = "Meravellosa";
+
+/* default vcard types */
+"Work" = "Feina";
+
+/* title */
+"Wrong verification code" = "Codi de verificació no vàlid";
+
+/* Title */
+"wrote:" = "va escriure:";
+
+/* Error message */
+"Yes, attach details of payment" = "Sí, adjuntar dades de pagament";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Ahir";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Esteu al dia!";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "No esteu connectat. No podem mostrar el contingut del vostre missatge.";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Esteu fora de línia";
+
+/* (No Comment) */
+"You can customize swipe gestures in the Proton Mail App Settings." = "Podeu personalitzar els gestos de lliscament en la configuració de l'aplicació de Proton Mail.";
+
+/* (No Comment) */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Podeu obtenir ajuda i assistència a protonmail.com/support. Els errors també es poden informar amb l'aplicació.";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Ara podeu programar els vostres missatges per tal que s'enviïn més tard";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "No podeu configurar %@ adreça com a predeterminada perquè és una funció de pagament.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Heu deshabilitat Face ID a la vostra configuració del sistema. El Face ID s’ha utilitzat per protegir informació important del compte. Per accedir al vostre compte, aneu a la configuració i reactiveu Face ID o torneu a iniciar la sessió.";
+
+/* Message */
+"You have %d new emails!" = "Teniu %d nous correus electrònics!";
+
+/* Title */
+"You have a new email!" = "Teniu un nou correu electrònic!";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Heu introduït almenys una adreça de correu electrònic incorrecta. Verifiqueu els vostres destinataris.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Heu introduït almenys un destinatari desconegut. Verifiqueu els vostres destinataris.";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Hi ha canvis no desats. Vols desar-los?";
+
+/* (No Comment) */
+"You have used %d%% of your storage space (%@)." = "Heu utilitzat %d%% del vostre espai d'emmagatzematge (%@).";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Heu utilitzat %1$d%% del vostre espai d'emmagatzematge (%2$@). Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
+
+/* *
+ *  StorageLimit */
+"You have used up all of your storage space (%@)." = "Has utilitzat tot el teu espai d'emmagatzematge (%@).";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Heu utilitzat tot el vostre espai d'emmagatzematge (%@). Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
+
+/* "Alert" */
+"You need at least one recipient to send" = "Necessites almenys un destinatari per enviar";
+
+/* Alert to confirm signout */
+"You will be switched to %@" = "Es canviarà a %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Aixó esborrarà el missatge de manera irreversible. Està segur?";
+
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Els vostres canvis es descartaran";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "El teu país pot bloquetgar l’accés a Proton. Provi utilitzar %1$@ (o altre VPN) o %2$@ per accedir a Proton.";
+
+/* Title of user feedback view */
+"Your feedback" = "Els teus comentaris";
+
+/* The section title of folder manager table */
+"Your folders" = "Les vostres carpetes";
+
+/* The section title of label manager table */
+"Your labels" = "Les vostres etiquetes";
+
+/* *
+ *  Onboarding */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "La seva nova compte de correu electrònic ja està configurada i llesta per enviar i rebre missatges xifrats.";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La vostra sessió ha caducat perquè heu estat inactiva durant un temps o perquè s'ha revocat. Torneu a iniciar la sessió.";
+
+/* (No Comment) */
+"Your signature has been updated." = "S'ha actualitzat la vostra signatura.";
+
+/* contact placeholder */
+"ZIP" = "ZIP";
+

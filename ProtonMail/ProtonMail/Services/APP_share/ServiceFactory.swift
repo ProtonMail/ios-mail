@@ -51,7 +51,7 @@ let sharedServices: ServiceFactory = {
 final class ServiceFactory {
 
     /// this is the a tempary.
-    static let `default` : ServiceFactory = sharedServices
+    static let `default`: ServiceFactory = sharedServices
 
     private var servicesDictionary: [String: Service] = [:]
 

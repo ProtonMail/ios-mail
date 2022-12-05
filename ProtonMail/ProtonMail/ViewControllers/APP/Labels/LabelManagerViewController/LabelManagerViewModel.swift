@@ -338,7 +338,7 @@ extension LabelManagerViewModel {
                                       notify: false)
             return addFolder
         case .data:
-            guard let item = self.data.getFolderItem(by: indexPath) else {
+            guard let item = self.data.getFolderItem(at: indexPath.row) else {
                 assert(false, "bugs")
                 return MenuLabel(location: .bugs)
             }
@@ -375,7 +375,7 @@ extension LabelManagerViewModel {
                 return
             }
             self.isFetching = true
-            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
+            self.dependencies.labelService.fetchV4Labels { [weak self] _ in
                 self?.isFetching = false
             }
         }

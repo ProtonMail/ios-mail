@@ -21,13 +21,13 @@ import ProtonCore_DataModel
 struct UserDataServiceKeyHelper {
     struct UpdatedKeyResult {
         let saltOfNewPassword: Data
-        let hashedNewPassword: String
+        let hashedNewPassword: Passphrase
         let updatedUserKeys: [Key]
         let originalUserKeys: [Key]
         let updatedAddresses: [Address]?
     }
 
-    func updatePasswordV2(userKeys: [Key], oldPassword: String, newPassword: String) throws -> UpdatedKeyResult {
+    func updatePasswordV2(userKeys: [Key], oldPassword: Passphrase, newPassword: Passphrase) throws -> UpdatedKeyResult {
         let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
         let hashedNewPassword = PasswordUtils.getMailboxPassword(newPassword, salt: saltOfNewPassword)
         let result = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: hashedNewPassword)
@@ -40,7 +40,7 @@ struct UserDataServiceKeyHelper {
                                 updatedAddresses: nil)
     }
 
-    func updatePassword(userKeys: [Key], addressKeys: [Address], oldPassword: String, newPassword: String) throws -> UpdatedKeyResult {
+    func updatePassword(userKeys: [Key], addressKeys: [Address], oldPassword: Passphrase, newPassword: Passphrase) throws -> UpdatedKeyResult {
         let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
         let hashedNewPassword = PasswordUtils.getMailboxPassword(newPassword, salt: saltOfNewPassword)
         let userKeyResult = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: hashedNewPassword)

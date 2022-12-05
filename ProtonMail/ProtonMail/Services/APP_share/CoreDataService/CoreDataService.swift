@@ -20,8 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
+import Foundation
+
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
 
 class CoreDataService: Service, CoreDataContextProviderProtocol {
     static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
@@ -41,6 +45,9 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         self.container = container
         self.rootSavingContext = CoreDataService.createRootSavingContext(container.persistentStoreCoordinator)
         self.mainContext = CoreDataService.createMainContext(self.rootSavingContext)
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
     }
 
     deinit {
@@ -177,3 +184,11 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         }
     }
 }
+
+#if !APP_EXTENSION
+extension CoreDataService: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif

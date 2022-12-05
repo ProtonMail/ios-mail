@@ -102,9 +102,9 @@ extension ExpandedHeaderTagView: UICollectionViewDelegateFlowLayout, UICollectio
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath)
         guard let tagCell = cell as? TagCollectionCell,
               let info = tags[safe: indexPath.row] else { return cell }
-        tagCell.setup(backgroundColor: info.color,
-                      title: info.title?.string ?? .empty,
-                      titleColor: .white)
+        tagCell.setup(backgroundColor: info.tagColor,
+                      title: info.title,
+                      titleColor: info.titleColor)
         return tagCell
     }
 
@@ -114,11 +114,13 @@ extension ExpandedHeaderTagView: UICollectionViewDelegateFlowLayout, UICollectio
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         guard let info = tags[safe: indexPath.row] else { return .zero }
-        let text = info.title?.string ?? .empty
-        let label = UILabel(font: .systemFont(ofSize: 11), text: text, textColor: .black)
+        let text = info.title
+        let label = UILabel(frame: .zero)
+        label.set(text: text, preferredFont: .caption1, weight: .semibold)
         label.sizeToFit()
         let width = min(label.frame.width + 16, collectionView.frame.width - 8)
-        return CGSize(width: width, height: 18)
+        let height = max(18, label.frame.height)
+        return CGSize(width: width, height: height)
     }
 }
 

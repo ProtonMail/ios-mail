@@ -34,7 +34,7 @@ public final class AccountManagerVC: UIViewController, AccessibleView {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var titleLabel: UILabel!
     private var viewModel: AccountManagerVMProtocl!
-    private let CELLID = "AccountmanagerUserCell"
+    private let CELLID = "AccountManagerUserCell"
     
     override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -106,7 +106,8 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.BackgroundNorm
 
-        let label = UILabel(title, font: .systemFont(ofSize: 15), textColor: ColorProvider.TextWeak)
+        let font = UIFont.adjustedFont(forTextStyle: .subheadline)
+        let label = UILabel(title, font: font, textColor: ColorProvider.TextWeak)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = ColorProvider.BackgroundNorm
         view.addSubview(label)
@@ -218,14 +219,15 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
 
 extension AccountManagerVC {
     private func setupView() {
-        self.setupNavgationBar()
+        self.setupNavigationBar()
         self.setupTableview()
         self.titleLabel.text = CoreString._as_manage_accounts
         self.titleLabel.textColor = ColorProvider.TextNorm
+        titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
         self.view.backgroundColor = ColorProvider.BackgroundNorm
     }
 
-    private func setupNavgationBar() {
+    private func setupNavigationBar() {
         // Transparent background
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -254,6 +256,12 @@ extension AccountManagerVC {
         self.tableView.register(AccountmanagerUserCell.nib(), forCellReuseIdentifier: self.CELLID)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         self.tableView.separatorColor = ColorProvider.InteractionWeak
+        if DFSSetting.enableDFS {
+            tableView.rowHeight = UITableView.automaticDimension
+            tableView.estimatedRowHeight = 64
+        } else {
+            tableView.rowHeight = 64
+        }
     }
 }
 

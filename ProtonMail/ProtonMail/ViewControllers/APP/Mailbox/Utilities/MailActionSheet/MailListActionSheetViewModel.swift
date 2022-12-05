@@ -52,7 +52,7 @@ struct MailListActionSheetViewModel {
         let locationsHavingSpam: [Message.Location] = [.draft, .spam, .sent, .trash]
         if let location = Message.Location(rawValue: labelId), locationsHavingSpam.contains(location) {
             items += [.deleteActionViewModel()]
-        } else {
+        } else if labelId != Message.Location.scheduled.rawValue {
             items += [.moveToSpam()]
         }
         items += [.moveToActionViewModel()]

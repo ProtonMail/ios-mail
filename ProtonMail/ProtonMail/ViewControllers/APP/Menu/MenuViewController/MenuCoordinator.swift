@@ -127,7 +127,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         switch labelInfo.location {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
             self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
         case .subscription:
             self.navigateToSubscribe()
@@ -193,7 +193,7 @@ extension MenuCoordinator {
         case .switchUser:
             self.usersManager.active(by: sessionID)
         case .switchUserFromNotification:
-            let isAnotherUser = self.usersManager.firstUser?.userinfo.userId ?? "" != user.userinfo.userId
+            let isAnotherUser = self.usersManager.firstUser?.userInfo.userId ?? "" != user.userInfo.userId
             self.usersManager.active(by: sessionID)
             // viewController?.setupLabelsIfViewIsLoaded()
             // rebase todo, check MR 496
@@ -227,7 +227,7 @@ extension MenuCoordinator {
         case "toAccountManager":
             return MenuLabel(location: .accountManger)
         case .skeletonTemplate:
-            return MenuLabel(location: .customize(.skeletonTemplate, nil))
+            return MenuLabel(location: .customize(.skeletonTemplate, value))
         default:
             return nil
         }
@@ -270,7 +270,7 @@ extension MenuCoordinator {
     private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
         if case .customize(let id, _) = labelInfo.location {
             if id == .skeletonTemplate {
-                self.navigateToSkeletonVC()
+                self.navigateToSkeletonVC(labelInfo: labelInfo)
             } else {
                 self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
             }
@@ -293,6 +293,15 @@ extension MenuCoordinator {
             )
         )
 
+        let fetchMessagesForUpdate = FetchMessages(
+            params: .init(labelID: labelID),
+            dependencies: .init(
+                messageDataService: user.messageService,
+                cacheService: user.cacheService,
+                eventsService: user.eventsService
+            )
+        )
+
         let fetchMessagesWithReset = FetchMessagesWithReset(
             params: FetchMessagesWithReset.Parameters(userId: userID),
             dependencies: FetchMessagesWithReset.Dependencies(
@@ -306,11 +315,31 @@ extension MenuCoordinator {
 
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
 
+        let updateMailbox = UpdateMailbox(
+            dependencies: .init(messageInfoCache: userCachedStatus,
+                                eventService: user.eventsService,
+                                messageDataService: user.messageService,
+                                conversationProvider: user.conversationService,
+                                purgeOldMessages: purgeOldMessages,
+                                fetchMessageWithReset: fetchMessagesWithReset,
+                                fetchMessage: fetchMessagesForUpdate,
+                                fetchLatestEventID: fetchLatestEvent),
+            parameters: .init(labelID: labelID))
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: services.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: coreDataService,
+                realAttachmentsFlagProvider: userCachedStatus,
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
-            fetchMessagesWithReset: fetchMessagesWithReset,
-            fetchLatestEventIdUseCase: fetchLatestEvent,
-            purgeOldMessages: purgeOldMessages)
+            updateMailbox: updateMailbox,
+            fetchMessageDetail: fetchMessageDetail
+        )
         return mailboxVMDependencies
     }
 
@@ -366,11 +395,11 @@ extension MenuCoordinator {
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: label.labelID,
-                labelInfo: LabelInfo(labelID: label.labelID, name: label.name),
+                labelInfo: LabelInfo(name: label.name),
                 labelType: labelInfo.type
             )
 
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,
@@ -578,8 +607,12 @@ extension MenuCoordinator {
         return isFound
     }
 
-    private func navigateToSkeletonVC() {
-        let skeletonVC = SkeletonViewController.instance()
+    private func navigateToSkeletonVC(labelInfo: MenuLabel) {
+        guard case let .customize(_, value) = labelInfo.location else { return }
+        // If this is triggered by SignInCoordinator
+        // Disable skeleton timer
+        let isEnabledTimeout = value != String(describing: SignInCoordinator.self)
+        let skeletonVC = SkeletonViewController.instance(isEnabledTimeout: isEnabledTimeout)
         guard let navigation = skeletonVC.navigationController else { return }
         self.setupContentVC(destination: navigation)
     }

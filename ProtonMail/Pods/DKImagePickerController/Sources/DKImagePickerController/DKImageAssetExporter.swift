@@ -104,6 +104,8 @@ public class DKImageAssetExporterConfiguration: NSObject, NSCopying {
     #endif
     
     @objc public var exportDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("DKImageAssetExporter")
+
+    @objc public var compressionQuality = CGFloat(0.9)
     
     public required override init() {
         super.init()
@@ -115,6 +117,7 @@ public class DKImageAssetExporterConfiguration: NSObject, NSCopying {
         copy.videoExportPreset = self.videoExportPreset
         copy.avOutputFileType = self.avOutputFileType
         copy.exportDirectory = self.exportDirectory
+        copy.compressionQuality = self.compressionQuality
         
         return copy
     }
@@ -172,7 +175,6 @@ open class DKImageAssetExporter: DKImageBaseManager {
             
             operation.completionBlock = nil
             
-            var success = true
             var exportedCount = 0
             
             let exportCompletionBlock: (DKAsset, Error?) -> Void = { asset, error in
@@ -195,7 +197,6 @@ open class DKImageAssetExporter: DKImageBaseManager {
                 }
                 
                 if let error = error as NSError? {
-                    success = false
                     asset.error = error
                     
                     asset.localTemporaryPath = nil
@@ -204,7 +205,6 @@ open class DKImageAssetExporter: DKImageBaseManager {
                         let attributes = try FileManager.default.attributesOfItem(atPath: asset.localTemporaryPath!.path)
                         asset.fileSize = (attributes[FileAttributeKey.size] as! NSNumber).uintValue
                     } catch let error as NSError {
-                        success = false
                         asset.error = error
                         
                         asset.localTemporaryPath = nil
@@ -323,9 +323,15 @@ open class DKImageAssetExporter: DKImageBaseManager {
     
     private func imageToJPEG(with imageData: Data) -> Data? {
         if #available(iOS 10.0, *), let ciImage = CIImage(data: imageData), let colorSpace = ciImage.colorSpace {
-            return CIContext().jpegRepresentation(of: ciImage, colorSpace: colorSpace, options:[:])
+            return CIContext().jpegRepresentation(
+                of: ciImage,
+                colorSpace: colorSpace,
+                options: [
+                    CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String) : configuration.compressionQuality
+                ]
+            )
         } else if let image = UIImage(data: imageData) {
-            return image.jpegData(compressionQuality: 0.9)
+            return image.jpegData(compressionQuality: configuration.compressionQuality)
         } else {
             return nil
         }
@@ -402,7 +408,7 @@ open class DKImageAssetExporter: DKImageBaseManager {
                 
                 let semaphore = DispatchSemaphore(value: 0)
                 
-                asset.fetchImageData(options: options, completeBlock: { (data, info) in
+                asset.fetchImageData(options: options, compressionQuality: configuration.compressionQuality) { (data, info) in
                     self.currentAssetInRequesting = nil
                     semaphore.signal()
                     
@@ -465,19 +471,20 @@ open class DKImageAssetExporter: DKImageBaseManager {
                             }
                         }
                     }
-                })
+                }
                 self.currentAssetInRequesting = asset
                 
                 semaphore.wait()
             }
         } else {
+            let quality = configuration.compressionQuality
             DKImageAssetExporter.ioQueue.async {
                 if self.operations[requestID] == nil {
                     return completion(self.makeCancelledError())
                 }
                 
                 do {
-                    try write(data: asset.image!.jpegData(compressionQuality: 0.9)!, to: asset.localTemporaryPath!)
+                    try write(data: asset.image!.jpegData(compressionQuality: quality)!, to: asset.localTemporaryPath!)
                     completion(nil)
                 } catch {
                     completion(error)

@@ -21,9 +21,9 @@ fileprivate struct id {
     static let usePinSwitchIdentifier = "Use PIN code"
     static let autoLockCellIdentifier = "SettingsCell.Auto-Lock_Timer"
     static let pinTimerCellIdentifier = "SettingsGeneralCell.Timing"
-    static let addPinTextFieldIdentifier = "PinCodeSetUpViewController.textField"
+    static let addPinTextFieldIdentifier = "PinCodeSetUpViewController.passwordTextField.textField"
     static let nextButtonIdentifier = "PinCodeSetUpViewController.nextButton"
-    static let confirmPinTextFieldIdentifier = "PinCodeConfirmationViewController.textField"
+    static let confirmPinTextFieldIdentifier = "PinCodeConfirmationViewController.passwordTextField.textField"
     static let confirmButtonIdentifier = "PinCodeConfirmationViewController.confirmButton"
     static let checkMarkButtonLabel = "checkmark"
 }

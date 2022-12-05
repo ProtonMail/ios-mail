@@ -26,22 +26,7 @@ public struct AddressKey_v2: Decodable, Equatable {
     public let privateKey: String
     public let token, signature: String?
     public let primary: Bool, active: Bool
-    public let flags: Flags
-
-    public struct Flags: OptionSet, Decodable {
-        public let rawValue: UInt8
-        
-        public init(rawValue: UInt8) {
-            self.rawValue = rawValue
-        }
-
-        /// 1: Can use key to verify signatures
-        public static let verifySignatures          = Flags(rawValue: 1 << 0)
-        /// 2: Can use key to encrypt new data
-        public static let encryptNewData            = Flags(rawValue: 1 << 1)
-        /// 4: Belongs to an external address
-        public static let belongsToExternalAddress  = Flags(rawValue: 1 << 2)
-    }
+    public let flags: KeyFlags
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -62,7 +47,7 @@ public struct AddressKey_v2: Decodable, Equatable {
         signature: String?,
         primary: Bool,
         active: Bool,
-        flags: Flags
+        flags: KeyFlags
     ) {
         self.id = id
         self.version = version
@@ -85,6 +70,6 @@ public struct AddressKey_v2: Decodable, Equatable {
         signature = try container.decodeIfPresent(String.self, forKey: .signature)
         primary = try container.decodeBoolFromInt(forKey: .primary)
         active = try container.decodeBoolFromInt(forKey: .active)
-        flags = try container.decode(Flags.self, forKey: .flags)
+        flags = try container.decode(KeyFlags.self, forKey: .flags)
     }
 }

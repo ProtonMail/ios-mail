@@ -32,9 +32,14 @@ class SelectableTableViewCell: UITableViewCell {
         return "\(self)"
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        itemNameLabel.set(text: nil, preferredFont: .body)
+    }
+
     func configure(icon: UIImage, title: String, isSelected: Bool) {
         self.accessoryType = isSelected ? .checkmark : .none
-        itemNameLabel.attributedText = title.apply(style: FontManager.Default)
+        itemNameLabel.text = title
         iconView.image = icon
         iconView.tintColor = ColorProvider.TextNorm
     }

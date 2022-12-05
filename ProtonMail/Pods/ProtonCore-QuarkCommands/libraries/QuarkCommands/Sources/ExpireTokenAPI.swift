@@ -35,9 +35,7 @@ public enum ExpireTokenError: Error {
     }
 }
 
-public struct ExpireTokenResponse: Codable {
-    public var code: Int
-}
+public struct ExpireTokenResponse: Codable {}
 
 public class ExpireToken: Request {
     let uid: String

@@ -33,7 +33,22 @@ final class CreateAddressViewModel {
     }
     let recoveryEmail: String
     let isLoading = Observable<Bool>(false)
-    let error = Publisher<(String, Int, Error)>()
+    enum PossibleErrors {
+        case setUsernameError(SetUsernameError)
+        case createAddressError(CreateAddressError)
+        case loginError(LoginError)
+        case createAddressKeysError(CreateAddressKeysError)
+        
+        var originalError: Error {
+            switch self {
+            case .setUsernameError(let setUsernameError): return setUsernameError
+            case .createAddressError(let createAddressError): return createAddressError
+            case .loginError(let loginError): return loginError
+            case .createAddressKeysError(let createAddressKeysError): return createAddressKeysError
+            }
+        }
+    }
+    let error = Publisher<(String, Int, PossibleErrors)>()
     let finished = Publisher<LoginData>()
 
     private let login: Login
@@ -73,9 +88,9 @@ final class CreateAddressViewModel {
                 case .alreadySet:
                     PMLog.debug("Username already set, moving on")
                     self?.createAddress()
-                case .generic:
+                case .generic, .apiMightBeBlocked:
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .setUsernameError(error)))
                 }
             }
         }
@@ -96,10 +111,10 @@ final class CreateAddressViewModel {
                 case let .cannotCreateInternalAddress(address):
                     PMLog.debug("Address cannot be created. Already existing address: \(String(describing: address))")
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
-                case .generic:
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .createAddressError(error)))
+                case .generic, .apiMightBeBlocked:
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .createAddressError(error)))
                 }
             }
         }
@@ -111,7 +126,7 @@ final class CreateAddressViewModel {
             case .failure(let error):
                 PMLog.debug("User account doesn't have keys and we cannot create one")
                 self?.isLoading.value = false
-                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .loginError(error)))
             case .success(let user):
                 // we update the user so that we know about the newly created keys
                 self?.user = user
@@ -133,9 +148,9 @@ final class CreateAddressViewModel {
                 case .alreadySet:
                     PMLog.debug("Address keys already created, moving on")
                     self?.finishFlow()
-                case .generic:
+                case .generic, .apiMightBeBlocked:
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .createAddressKeysError(error)))
                 }
             }
         }
@@ -154,7 +169,7 @@ final class CreateAddressViewModel {
                     self?.finished.publish(data)
                 }
             case let .failure(error):
-                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .loginError(error)))
                 self?.isLoading.value = false
             }
         }

@@ -23,6 +23,7 @@
 import Foundation
 import Crypto
 import OpenPGP
+import ProtonCore_Crypto
 
 func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {
@@ -36,9 +37,9 @@ func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
     return outAuth
 }
 
-func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
+func SrpAuthForVerifier(_ password: Passphrase, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
     var error: NSError?
-    let passwordSlic = password.data(using: .utf8)
+    let passwordSlic = Data(password.value.utf8)
     let outAuth = SrpNewAuthForVerifier(passwordSlic, signedModulus, rawSalt, &error)
     if let err = error {
         throw err

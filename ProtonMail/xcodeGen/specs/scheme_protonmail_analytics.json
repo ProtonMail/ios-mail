@@ -1,0 +1,28 @@
+{
+   "schemes": {
+      "ProtonMailAnalytics": {
+         "build": {
+            "targets": {
+               "ProtonMailAnalytics": "all"
+            }
+         },
+         "run": {
+            "config": "Debug"
+         },
+         "test": {
+            "config": "Debug"
+         },
+         "profile": {
+            "config": "Release"
+         },
+         "analyze": {
+            "config": "Debug"
+         },
+         "archive": {
+            "config": "Release",
+            "customArchiveName": "ProtonMailAnalytics",
+            "revealArchiveInOrganizer": true
+         }
+      }
+   }
+}

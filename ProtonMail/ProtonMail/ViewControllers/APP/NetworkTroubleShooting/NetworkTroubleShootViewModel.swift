@@ -78,7 +78,7 @@ struct NetworkTroubleShootViewModel {
         var attributedString: NSMutableAttributedString {
             let foregroundColor: UIColor = ColorProvider.TextWeak
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.preferredFont(forTextStyle: .caption1),
+                .font: UIFont.preferredFont(for: .caption1, weight: .regular),
                 .foregroundColor: foregroundColor
             ]
 

@@ -1,3 +1,4 @@
+import ProtonCore_UIFoundations
 import UIKit
 
 class ConversationCollapsedMessageViewModel {
@@ -10,30 +11,45 @@ class ConversationCollapsedMessageViewModel {
 
     var reloadView: ((ConversationMessageModel) -> Void)?
 
-    let replacingEmails: [Email]
+    let replacingEmailsMap: [String: EmailEntity]
     private var cachedCustomFolderLabels: [LabelEntity] = []
 
-    init(message: MessageEntity, weekStart: WeekStart, replacingEmails: [Email]) {
+    private let dateFormatter: PMDateFormatter
+    private let contactGroups: [ContactGroupVO]
+
+    init(
+        message: MessageEntity,
+        weekStart: WeekStart,
+        replacingEmailsMap: [String: EmailEntity],
+        contactGroups: [ContactGroupVO],
+        dateFormatter: PMDateFormatter = .shared
+    ) {
         self.message = message
         self.weekStart = weekStart
-        self.replacingEmails = replacingEmails
+        self.replacingEmailsMap = replacingEmailsMap
+        self.dateFormatter = dateFormatter
+        self.contactGroups = contactGroups
     }
 
     func model(customFolderLabels: [LabelEntity]) -> ConversationMessageModel {
         cachedCustomFolderLabels = customFolderLabels
         let tags = message.orderedLabel.map { label in
-            TagUIModel(title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
-                       icon: nil,
-                       color: UIColor(hexString: label.color, alpha: 1.0))
+            TagUIModel(
+                title: label.name,
+                titleColor: .white,
+                titleWeight: .semibold,
+                icon: nil,
+                tagColor: UIColor(hexString: label.color, alpha: 1.0)
+            )
         }
 
         return ConversationMessageModel(
             messageLocation: message
                 .getFolderMessageLocation(customFolderLabels: customFolderLabels)?.toMessageLocation,
             isCustomFolderLocation: message.isCustomFolder,
-            initial: message.displaySender(replacingEmails).initials().apply(style: FontManager.body3RegularNorm),
+            initial: message.displaySender(replacingEmailsMap).initials().apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
-            sender: message.displaySender(replacingEmails),
+            sender: message.getSenderName(replacingEmailsMap: replacingEmailsMap, groupContacts: contactGroups),
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReplied: message.isReplied,
@@ -43,6 +59,7 @@ class ConversationCollapsedMessageViewModel {
             tags: tags,
             expirationTag: message.createTagFromExpirationDate(),
             isDraft: message.isDraft,
+            isScheduled: message.contains(location: .scheduled),
             isSent: message.isSent
         )
     }
@@ -53,7 +70,10 @@ class ConversationCollapsedMessageViewModel {
 
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
-        return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+        if message.isScheduledSend {
+            return dateFormatter.stringForScheduledMsg(from: date, inListView: true)
+        } else {
+            return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+        }
     }
-
 }

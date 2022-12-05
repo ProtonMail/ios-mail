@@ -46,6 +46,7 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
     weak var delegate: ChooseUsernameViewControllerDelegate?
     var viewModel: ChooseUsernameViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    var onDohTroubleshooting: () -> Void = { }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -95,6 +96,13 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
             case let .generic(message: message, _, _):
                 if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                     self.showError(message: message)
+                }
+            case let .apiMightBeBlocked(message, _):
+                if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                    self.showError(message: message,
+                                   button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                        self?.onDohTroubleshooting()
+                    }
                 }
             case let .notAvailable(message: message):
                 self.setError(textField: self.addressTextField, error: nil)
@@ -155,7 +163,7 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
         delegate?.userDidRequestGoBack()
     }
 
-    private func showError(message: String) {
+    private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
         showBanner(message: message, position: .top)
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -34,7 +34,7 @@
                         <color key="textColor" name="TextNorm"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="mail address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2uD-BP-hNh">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="mail address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2uD-BP-hNh">
                         <rect key="frame" x="60" y="32" width="161" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" name="TextWeak"/>
@@ -121,6 +121,7 @@
                     <constraint firstItem="v7Z-fY-JDq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="mbq-Pk-acJ"/>
                     <constraint firstItem="HCT-Fe-28W" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nEa-8B-jek"/>
                     <constraint firstItem="uak-be-SBq" firstAttribute="leading" secondItem="HCT-Fe-28W" secondAttribute="trailing" constant="14" id="nLQ-FX-cms"/>
+                    <constraint firstItem="v7Z-fY-JDq" firstAttribute="top" secondItem="2uD-BP-hNh" secondAttribute="bottom" constant="15" id="q58-xa-aP9"/>
                     <constraint firstItem="2uD-BP-hNh" firstAttribute="leading" secondItem="HCT-Fe-28W" secondAttribute="trailing" constant="14" id="upR-Ln-82Q"/>
                     <constraint firstAttribute="trailing" secondItem="zI6-dA-Blk" secondAttribute="trailing" constant="16" id="vq7-12-glN"/>
                 </constraints>

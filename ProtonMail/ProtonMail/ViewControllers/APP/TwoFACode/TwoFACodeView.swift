@@ -23,7 +23,7 @@
 import UIKit
 
 protocol TwoFACodeViewDelegate {
-    func ConfirmedCode(_ code: String, pwd: String)
+    func ConfirmedCode(_ code: String)
     func Cancel()
 }
 
@@ -117,7 +117,6 @@ class TwoFACodeView: PMView {
     }
 
     func confirm() {
-        let pwd = (loginPasswordField.text ?? "")
         let code = (twoFactorCodeField.text ?? "").trim()
         if mode!.check(.loginPassword) {
             // error need
@@ -127,7 +126,7 @@ class TwoFACodeView: PMView {
         }
 
         self.dismissKeyboard()
-        delegate?.ConfirmedCode(code, pwd: pwd)
+        delegate?.ConfirmedCode(code)
     }
 
     @IBAction func enterAction(_ sender: AnyObject) {

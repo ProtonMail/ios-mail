@@ -44,7 +44,7 @@ extension ComposeSaveHintProtocol {
         // Shouldn't show the banner
         guard let user = messageService.parent,
               let manager = user.parentManager,
-              manager.users.contains(where: { $0.userinfo.userId == user.userinfo.userId }),
+              manager.users.contains(where: { $0.userInfo.userId == user.userInfo.userId }),
               let messageID = cache.lastDraftMessageID else { return }
         let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataContextProvider.mainContext)
 

@@ -151,7 +151,7 @@ class CompleteViewModel {
                 switch error {
                 case .notAvailable:
                     self.login(name: userName, password: password, completion: completion)
-                case .generic:
+                case .generic, .apiMightBeBlocked:
                     completion(.failure(error))
                 }
             }
@@ -181,7 +181,7 @@ class CompleteViewModel {
                 switch error {
                 case .notAvailable:
                     self.login(name: userName, password: password, completion: completion)
-                case .generic:
+                case .generic, .apiMightBeBlocked:
                     completion(.failure(error))
                 }
             }

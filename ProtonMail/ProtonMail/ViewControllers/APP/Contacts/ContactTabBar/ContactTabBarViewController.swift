@@ -20,13 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ContactTabBarViewController: UITabBarController {
+final class ContactTabBarViewController: UITabBarController, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     var coordinator: ContactTabBarCoordinator?
     init() {
         super.init(nibName: nil, bundle: nil)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {

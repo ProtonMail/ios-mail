@@ -61,6 +61,8 @@ final class HelpViewController: UIViewController, AccessibleView {
         closeButton.setImage(IconProvider.crossSmall, for: .normal)
         closeButton.tintColor = ColorProvider.IconNorm
         titleLabel.text = CoreString._ls_help_screen_title
+        titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
     }
 
     private func setupTableView() {

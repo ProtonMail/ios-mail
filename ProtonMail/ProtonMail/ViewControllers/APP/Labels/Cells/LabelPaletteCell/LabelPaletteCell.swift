@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 protocol LabelPaletteCellDelegate: AnyObject {
-    func selectColor(hex: String, index: Int)
+    func selectColor(hex: String)
 }
 
 final class LabelPaletteCell: UITableViewCell {
@@ -115,6 +115,6 @@ extension LabelPaletteCell: UICollectionViewDelegate, UICollectionViewDataSource
 
         let colorHex = self.colors[row]
         self.selectedColor = colorHex
-        self.delegate?.selectColor(hex: colorHex, index: row)
+        self.delegate?.selectColor(hex: colorHex)
     }
 }

@@ -26,15 +26,18 @@ import ProtonCore_DataModel
 enum SettingPrivacyItem: CustomStringConvertible {
     case autoLoadRemoteContent
     case autoLoadEmbeddedImage
+    case blockEmailTracking
     case linkOpeningMode
     case metadataStripping
 
     var description: String {
         switch self {
         case .autoLoadRemoteContent:
-            return LocalString._auto_show_images
+            return LocalString._auto_load_remote_content
         case .autoLoadEmbeddedImage:
-            return LocalString._auto_show_embedded_images
+            return LocalString._auto_load_embedded_images
+        case .blockEmailTracking:
+            return LocalString._block_email_tracking
         case .linkOpeningMode:
             return LocalString._request_link_confirmation
         case .metadataStripping:
@@ -44,11 +47,22 @@ enum SettingPrivacyItem: CustomStringConvertible {
 }
 
 class SettingsPrivacyViewModel {
+    var privacySections: [SettingPrivacyItem] {
+        var sections: [SettingPrivacyItem] = [
+            .autoLoadRemoteContent,
+            .autoLoadEmbeddedImage,
+            .blockEmailTracking,
+            .linkOpeningMode,
+            .metadataStripping
+        ]
 
-    let privacySections: [SettingPrivacyItem] = [.autoLoadRemoteContent,
-                                                 .autoLoadEmbeddedImage,
-                                                 .linkOpeningMode,
-                                                 .metadataStripping]
+        if !UserInfo.isImageProxyAvailable {
+            sections.removeAll { $0 == .blockEmailTracking }
+        }
+
+        return sections
+    }
+
     private let user: UserManager
 
     var userInfo: UserInfo {
@@ -68,41 +82,60 @@ class SettingsPrivacyViewModel {
         self.user = user
     }
 
-    func updateAutoLoadImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateAutoLoadImage(auth: user.auth,
-                                                  user: userInfo,
-                                                  remote: newStatus) { _, _, error in
-            if error == nil {
-                self.user.save()
-                completion?(nil)
-            } else {
-                completion?(error)
-            }
-        }
+    func updateAutoLoadImageStatus(
+        imageType: UpdateImageAutoloadSetting.ImageType,
+        setting: UpdateImageAutoloadSetting.Setting,
+        completion: @escaping (NSError?) -> Void
+    ) {
+        self.user.userService.updateImageAutoloadSetting(
+            currentAuth: user.authCredential,
+            userInfo: userInfo,
+            imageType: imageType,
+            setting: setting,
+            completion: saveData(thenPerform: completion)
+        )
     }
 
-    func updateLinkConfirmation(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateLinkConfirmation(auth: user.auth,
-                                                     user: user.userInfo,
-                                                     newStatus ? .confirmationAlert : .openAtWill) { _, _, error in
-            if error != nil {
-                completion?(error)
-            } else {
-                self.user.save()
-                completion?(nil)
-            }
-        }
+    @available(
+        *,
+         deprecated,
+         message: "Switch to the UpdateImageAutoloadSetting-based variant once Image Proxy is ready to be shipped."
+    )
+    func updateAutoLoadImageStatus(flag: ShowImages, newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateAutoLoadImages(
+            currentAuth: user.authCredential,
+            userInfo: userInfo,
+            flag: flag,
+            enable: newStatus,
+            completion: saveData(thenPerform: completion)
+        )
     }
 
-    func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?) {
-        self.user.userService.updateAutoLoadEmbeddedImage(auth: user.auth,
-                                                          userInfo: user.userInfo,
-                                                          remote: newStatus) { _, _, error in
+    func updateLinkConfirmation(newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateLinkConfirmation(
+            auth: user.authCredential,
+            user: user.userInfo,
+            newStatus ? .confirmationAlert : .openAtWill,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    func updateBlockEmailTrackingStatus(newStatus: Bool, completion: @escaping (NSError?) -> Void) {
+        self.user.userService.updateBlockEmailTracking(
+            authCredential: user.authCredential,
+            userInfo: user.userInfo,
+            action: newStatus ? .add : .remove,
+            completion: saveData(thenPerform: completion)
+        )
+    }
+
+    private func saveData(thenPerform completion: @escaping (NSError?) -> Void) -> UserInfoBlock {
+        { _, _, error in
             if error == nil {
                 self.user.save()
-                completion?(nil)
+                completion(nil)
             } else {
-                completion?(error)
+                completion(error)
             }
         }
     }

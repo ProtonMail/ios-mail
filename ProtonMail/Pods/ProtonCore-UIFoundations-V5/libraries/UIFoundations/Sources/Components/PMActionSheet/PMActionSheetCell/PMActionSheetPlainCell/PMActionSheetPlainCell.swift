@@ -41,6 +41,7 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.separator = self.addSeparator(leftRef: self.leftIcon, constant: -16)
+        titleLabel.font = .adjustedFont(forTextStyle: .subheadline)
     }
 
     func config(item: PMActionSheetPlainItem, indexPath: IndexPath) {

@@ -43,7 +43,6 @@ extension UIImageView {
         }
 
         self.image = self.image?.withRenderingMode(renderingMode)
-        self.highlightedImage = self.image?.withRenderingMode(renderingMode)
 
         self.tintColor = tintColor
         if let backgroundColor = backgroundColor {

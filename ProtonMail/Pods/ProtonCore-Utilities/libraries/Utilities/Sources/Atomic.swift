@@ -23,13 +23,25 @@
 // Inspired by https://www.objc.io/blog/2018/12/18/atomic-variables/ article
 
 public final class Atomic<A> {
+    
     private let serialAccessQueue = DispatchQueue(label: "ch.proton.atomic_queue")
     private var internalValue: A
+    
     public init(_ value: A) {
         self.internalValue = value
     }
 
-    public var value: A { serialAccessQueue.sync { self.internalValue } }
+    public var value: A {
+        serialAccessQueue.sync {
+            self.internalValue
+        }
+    }
+    
+    public func fetch<T>(_ fetchingKeyPath: KeyPath<A, T>) -> T {
+        serialAccessQueue.sync {
+            self.internalValue[keyPath: fetchingKeyPath]
+        }
+    }
 
     public func mutate(_ transform: (inout A) -> Void) {
         serialAccessQueue.sync {

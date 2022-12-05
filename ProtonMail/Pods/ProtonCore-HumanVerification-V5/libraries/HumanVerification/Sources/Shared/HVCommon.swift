@@ -31,7 +31,7 @@ public final class HVCommon {
         case .vpn:
             return URL(string: "https://protonvpn.com/support/protonvpn-human-verification/")!
         default:
-            return URL(string: "https://protonmail.com/support/knowledge-base/human-verification/")!
+            return URL(string: "https://proton.me/support/human-verification")!
         }
     }
 

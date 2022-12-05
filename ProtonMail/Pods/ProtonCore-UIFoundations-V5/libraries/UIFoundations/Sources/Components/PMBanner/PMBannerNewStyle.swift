@@ -124,12 +124,12 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
 
     /// Message font
     public var messageFont: UIFont {
-        return .systemFont(ofSize: 15)
+        .adjustedFont(forTextStyle: .subheadline)
     }
 
     /// Button font
     public var buttonFont: UIFont {
-        return .systemFont(ofSize: 15)
+        .adjustedFont(forTextStyle: .subheadline)
     }
 
     /// Button vertical alignment

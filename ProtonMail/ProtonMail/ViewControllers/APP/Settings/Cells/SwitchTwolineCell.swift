@@ -49,10 +49,10 @@ protocol SwitchTwolineCellDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        topLineLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+        topLineLabel.font = UIFont.preferredFont(for: .footnote, weight: .regular)
         topLineLabel.adjustsFontForContentSizeCategory = true
 
-        bottomTextView.font = UIFont.preferredFont(forTextStyle: .caption1)
+        bottomTextView.font = UIFont.preferredFont(for: .caption1, weight: .regular)
         bottomTextView.adjustsFontForContentSizeCategory = true
 
         bottomTextView.isSelectable = true
@@ -70,10 +70,10 @@ protocol SwitchTwolineCellDelegate {
     }
 
     func configCell(_ topline: String, bottomLine: NSMutableAttributedString, showSwitcher: Bool, status: Bool, complete: switchActionBlock?) {
-        topLineLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        topLineLabel.font = UIFont.preferredFont(for: .subheadline, weight: .regular)
         topLineLabel.adjustsFontForContentSizeCategory = true
         topLineLabel.textColor = ColorProvider.TextNorm
-        bottomTextView.font = UIFont.preferredFont(forTextStyle: .footnote)
+        bottomTextView.font = UIFont.preferredFont(for: .footnote, weight: .regular)
         bottomTextView.adjustsFontForContentSizeCategory = true
         bottomTextView.textColor = ColorProvider.TextWeak
 

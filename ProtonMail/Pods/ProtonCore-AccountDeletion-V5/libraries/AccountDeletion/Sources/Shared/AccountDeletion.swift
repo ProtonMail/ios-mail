@@ -59,6 +59,7 @@ public enum AccountDeletionError: Error {
     case sessionForkingError(message: String)
     case closedByUser
     case deletionFailure(message: String)
+    case apiMightBeBlocked(message: String, originalError: Error)
     
     public var userFacingMessageInAccountDeletion: String {
         switch self {
@@ -66,6 +67,7 @@ public enum AccountDeletionError: Error {
         case .sessionForkingError(let message): return message
         case .closedByUser: return ""
         case .deletionFailure(let message): return message
+        case .apiMightBeBlocked(let message, _): return message
         }
     }
 }
@@ -99,14 +101,12 @@ final class CanDeleteRequest: Request {
     let isAuth: Bool = true
 }
 
-typealias DoHServerConfig = DoHInterface & ServerConfig
-
 final class CanDeleteResponse: Response {}
 
 public final class AccountDeletionService {
     
     private let api: APIService
-    private let doh: DoHServerConfig
+    private let doh: DoHInterface
     private let authenticator: Authenticator
     private let preferredLanguage: String
 
@@ -116,7 +116,15 @@ public final class AccountDeletionService {
     }
     #endif
     
-    init(api: APIService, doh: DoHServerConfig, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
+    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
+    init(api: APIService, doh: DoHInterface & ServerConfig, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
+        self.api = api
+        self.doh = doh
+        self.preferredLanguage = preferredLanguage
+        self.authenticator = Authenticator(api: api)
+    }
+    
+    init(api: APIService, doh: DoHInterface, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
         self.api = api
         self.doh = doh
         self.preferredLanguage = preferredLanguage
@@ -129,15 +137,19 @@ public final class AccountDeletionService {
         performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void = { $0() },
         completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
     ) {
-        api.exec(route: CanDeleteRequest(), responseObject: CanDeleteResponse()) { [self] (response: CanDeleteResponse) in
+        api.perform(request: CanDeleteRequest(), response: CanDeleteResponse()) { [self] (_, response: CanDeleteResponse) in
             if let error = response.error {
-                completion(.failure(.cannotDeleteYourself(becauseOf: error)))
-                return
+                if error.isApiIsBlockedError {
+                    completion(.failure(.apiMightBeBlocked(message: error.networkResponseMessageForTheUser, originalError: error.underlyingError ?? error as NSError)))
+                } else {
+                    completion(.failure(.cannotDeleteYourself(becauseOf: error)))
+                }
+            } else {
+                self.forkSession(viewController: viewController,
+                                 performAfterShowingAccountDeletionScreen: performAfterShowingAccountDeletionScreen,
+                                 performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
+                                 completion: completion)
             }
-            self.forkSession(viewController: viewController,
-                             performAfterShowingAccountDeletionScreen: performAfterShowingAccountDeletionScreen,
-                             performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
-                             completion: completion)
         }
     }
     
@@ -147,9 +159,10 @@ public final class AccountDeletionService {
                              completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void) {
         authenticator.forkSession { [self] result in
             switch result {
+            case let .failure(.apiMightBeBlocked(message, originalError)):
+                completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
             case .failure(let authError):
                 completion(.failure(.sessionForkingError(message: authError.userFacingMessageInNetworking)))
-                
             case .success(let response):
                 handleSuccessfullyForkedSession(
                     selector: response.selector,

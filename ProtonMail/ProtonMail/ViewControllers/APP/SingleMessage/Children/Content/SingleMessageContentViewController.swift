@@ -6,8 +6,12 @@ class SingleMessageContentViewController: UIViewController {
 
     let viewModel: SingleMessageContentViewModel
 
-    var headerViewController: UIViewController = .init() {
+    private var headerViewController: HeaderViewController? {
         didSet {
+            guard let headerViewController = headerViewController else {
+                return
+            }
+
             headerAnimationOn ?
                 changeHeader(oldController: oldValue, newController: headerViewController) :
                 manageHeaderViewControllers(oldController: oldValue, newController: headerViewController)
@@ -22,6 +26,7 @@ class SingleMessageContentViewController: UIViewController {
 
     private(set) var messageBodyViewController: NewMessageBodyViewController!
     private(set) var bannerViewController: BannerViewController?
+    private(set) var editScheduleBannerController: BannerViewController?
     private(set) var attachmentViewController: AttachmentViewController?
     private let applicationStateProvider: ApplicationStateProvider
 
@@ -36,7 +41,8 @@ class SingleMessageContentViewController: UIViewController {
         self.parentScrollView = parentScrollView
         self.navigationAction = navigationAction
         let moreThanOneContact = viewModel.message.isHavingMoreThanOneContact
-        let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact)
+        let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact,
+                                                             isScheduled: viewModel.message.contains(location: .scheduled))
         self.customView =  SingleMessageContentView(replyState: replyState)
         self.applicationStateProvider = applicationStateProvider
         super.init(nibName: nil, bundle: nil)
@@ -48,6 +54,7 @@ class SingleMessageContentViewController: UIViewController {
         if viewModel.message.expirationTime != nil {
             showBanner()
         }
+        showEditScheduleBanner()
     }
 
     deinit {
@@ -61,6 +68,7 @@ class SingleMessageContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.set(uiDelegate: self)
         viewModel.viewDidLoad()
         viewModel.updateErrorBanner = { [weak self] error in
             if let error = error {
@@ -70,11 +78,8 @@ class SingleMessageContentViewController: UIViewController {
                 self?.bannerViewController?.hideBanner(type: .error)
             }
         }
-        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageBodyViewModel.hasStrippedVersion
+        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageInfoProvider.hasStrippedVersion
         customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
-        viewModel.messageBodyViewModel.hasStrippedVersionObserver = { [customView] hasStrippedVersion in
-            customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
-        }
         viewModel.messageHadChanged = { [weak self] in
             guard let self = self else { return }
             self.embedAttachmentViewIfNeeded()
@@ -86,6 +91,15 @@ class SingleMessageContentViewController: UIViewController {
             self?.shouldReloadWhenAppIsActive = value
         }
 
+        viewModel.showProgressHub = { [weak self] in
+            guard let self = self else { return }
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+        }
+
+        viewModel.hideProgressHub = { [weak self] in
+            guard let self = self else { return }
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
 
         addObservations()
         setUpHeaderActions()
@@ -93,9 +107,22 @@ class SingleMessageContentViewController: UIViewController {
         setUpFooterButtons()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        spotlightFeatures()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 12.0, *) {
+            let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
+            viewModel.sendMetricAPIIfNeeded(isDarkModeStyle: isDarkModeStyle)
+        }
+    }
+
     @objc private func showHide(_ sender: UIButton) {
         sender.isHidden = true
-        viewModel.messageBodyViewModel.displayMode.toggle()
+        viewModel.messageInfoProvider.displayMode.toggle()
         delay(0.5) {
             sender.isHidden = false
         }
@@ -106,7 +133,9 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func setUpFooterButtons() {
-        if !viewModel.message.isHavingMoreThanOneContact {
+        if viewModel.message.contains(location: .scheduled) {
+            customView.footerButtons.removeFromSuperview()
+        } else if !viewModel.message.isHavingMoreThanOneContact {
             customView.footerButtons.stackView.distribution = .fillEqually
             customView.footerButtons.replyAllButton.removeFromSuperview()
         } else {
@@ -165,17 +194,28 @@ class SingleMessageContentViewController: UIViewController {
             replyButtonTapped()
         case .replyAll:
             replyAllButtonTapped()
+        case .none:
+            return
         }
     }
 
+    private func showEditScheduleBanner() {
+        guard self.editScheduleBannerController == nil && viewModel.message.isScheduledSend else {
+            return
+        }
+        let controller = BannerViewController(viewModel: viewModel.bannerViewModel, isScheduleBannerOnly: true)
+        self.editScheduleBannerController = controller
+        embed(controller, inside: customView.editScheduleSendBannerContainer)
+    }
+
     private func showBanner() {
-        guard self.bannerViewController == nil && !children.contains(where: { $0 is BannerViewController }) else {
+        guard self.bannerViewController == nil else {
             return
         }
         let controller = BannerViewController(viewModel: viewModel.bannerViewModel)
         controller.delegate = self
-        embed(controller, inside: customView.bannerContainer)
         self.bannerViewController = controller
+        embed(controller, inside: customView.bannerContainer)
     }
 
     private func hideBanner() {
@@ -186,13 +226,16 @@ class SingleMessageContentViewController: UIViewController {
         self.bannerViewController = nil
     }
 
-    private func manageHeaderViewControllers(oldController: UIViewController, newController: UIViewController) {
-        unembed(oldController)
+    private func manageHeaderViewControllers(oldController: UIViewController?, newController: UIViewController) {
+        if let oldController = oldController {
+            unembed(oldController)
+        }
+
         embed(newController, inside: self.customView.messageHeaderContainer.contentContainer)
     }
 
-    private func changeHeader(oldController: UIViewController, newController: UIViewController) {
-        oldController.willMove(toParent: nil)
+    private func changeHeader(oldController: UIViewController?, newController: UIViewController) {
+        oldController?.willMove(toParent: nil)
         newController.view.translatesAutoresizingMaskIntoConstraints = false
 
         self.addChild(newController)
@@ -219,11 +262,11 @@ class SingleMessageContentViewController: UIViewController {
         
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
-            oldController.view.alpha = 0
+            oldController?.view.alpha = 0
         } completion: { [weak self] _ in
             newController.view.layoutIfNeeded()
-            oldController.view.removeFromSuperview()
-            oldController.removeFromParent()
+            oldController?.view.removeFromSuperview()
+            oldController?.removeFromParent()
             newController.didMove(toParent: self)
             self?.viewModel.recalculateCellHeight?(false)
         }
@@ -277,7 +320,9 @@ class SingleMessageContentViewController: UIViewController {
     private func embedChildren() {
         precondition(messageBodyViewController != nil)
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
-        embed(headerViewController, inside: customView.messageHeaderContainer.contentContainer)
+        if let headerViewController = headerViewController {
+            embed(headerViewController, inside: customView.messageHeaderContainer.contentContainer)
+        }
         embedAttachmentViewIfNeeded()
         embedHeaderController()
     }
@@ -325,11 +370,7 @@ class SingleMessageContentViewController: UIViewController {
     private func presentActionSheet(context: MessageHeaderContactContext) {
         var title = context.contact.title
         if context.type == .sender {
-            if let expandVM = self.viewModel.expandedHeaderViewModel {
-                title = expandVM.sender.string
-            } else if let nonExpandVM = self.viewModel.nonExapndedHeaderViewModel {
-                title = nonExpandVM.sender.string
-            }
+            title = viewModel.messageInfoProvider.senderName
         }
         let actionSheet = PMActionSheet.messageDetailsContact(for: title, subTitle: context.contact.subtitle) { [weak self] action in
             self?.dismissActionSheet()
@@ -364,20 +405,15 @@ class SingleMessageContentViewController: UIViewController {
             shouldReloadWhenAppIsActive = false
         }
     }
+
+    private func spotlightFeatures() {
+        if viewModel.shouldSpotlightTrackerProtection {
+            spotlightTrackerProtection()
+        }
+    }
 }
 
 extension SingleMessageContentViewController: NewMessageBodyViewControllerDelegate {
-    func updateContentBanner(shouldShowRemoteContentBanner: Bool, shouldShowEmbeddedContentBanner: Bool) {
-        let shouldShowRemoteContentBanner =
-            shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
-        let shouldShowEmbeddedImageBanner =
-            shouldShowEmbeddedContentBanner && !viewModel.bannerViewModel.shouldAutoLoadEmbeddedImage
-
-        showBanner()
-        bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
-                                                embeddedImage: shouldShowEmbeddedImageBanner)
-    }
-
     func openMailUrl(_ mailUrl: URL) {
         navigationAction(.mailToUrl(url: mailUrl))
     }
@@ -420,24 +456,12 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func showDecryptionErrorBanner() {
-        self.showBanner()
-        bannerViewController?
-            .showDecryptionBanner { [weak self] in
-                self?.tryDecryptionAgain()
-            }
-    }
-
-    func hideDecryptionErrorBanner() {
-        bannerViewController?.hideDecryptionBanner()
-    }
-
     @objc
     private func tryDecryptionAgain() {
         if let vi = self.navigationController?.view {
             MBProgressHUD.showAdded(to: vi, animated: true)
         }
-        self.viewModel.messageBodyViewModel.tryDecryptionAgain { [weak self] in
+        viewModel.messageInfoProvider.tryDecryptionAgain { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 if let vi = self.navigationController?.view {
@@ -446,10 +470,6 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
             }
         }
     }
-
-    func sendDarkModeMetric(isApply: Bool) {
-        self.viewModel.sendDarkModeMetric(isApply: isApply)
-    }
 }
 
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
@@ -457,7 +477,7 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
         let messageID = viewModel.message.messageID
         // Attachment list needs to check if the body contains content IDs
         // So needs to use full message body or it could miss inline image in the quote
-        let body = viewModel.messageBodyViewModel.bodyParts?.body(for: .expanded)
+        let body = viewModel.messageInfoProvider.bodyParts?.body(for: .expanded)
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
     }
 }
@@ -472,7 +492,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadEmbeddedImage() {
-        viewModel.messageBodyViewModel.embeddedContentPolicy = .allowed
+        viewModel.messageInfoProvider.embeddedContentPolicy = .allowed
     }
 
     func handleMessageExpired() {
@@ -481,7 +501,11 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageBodyViewModel.remoteContentPolicy = .allowed
+        viewModel.messageInfoProvider.remoteContentPolicy = .allowed
+    }
+
+    func reloadImagesWithoutProtection() {
+        viewModel.messageInfoProvider.reloadImagesWithoutProtection()
     }
 }
 
@@ -519,5 +543,72 @@ extension SingleMessageContentViewController: ScrollableContainer {
     @objc
     func restoreOffset() {
         scroller.setContentOffset(self.contentOffsetToPreserve, animated: false)
+    }
+}
+
+extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
+    func updateContentBanner(
+        shouldShowRemoteContentBanner: Bool,
+        shouldShowEmbeddedContentBanner: Bool,
+        shouldShowImageProxyFailedBanner: Bool
+    ) {
+        let shouldShowRemoteContentBanner =
+            shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
+        let shouldShowEmbeddedImageBanner =
+            shouldShowEmbeddedContentBanner && !viewModel.bannerViewModel.shouldAutoLoadEmbeddedImage
+
+        showBanner()
+        bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
+                                                embeddedImage: shouldShowEmbeddedImageBanner,
+                                                imageProxyFailure: shouldShowImageProxyFailedBanner)
+    }
+
+    func setDecryptionErrorBanner(shouldShow: Bool) {
+        if shouldShow {
+            showBanner()
+            bannerViewController?.showDecryptionBanner { [weak self] in
+                self?.tryDecryptionAgain()
+            }
+        } else {
+            bannerViewController?.hideDecryptionBanner()
+        }
+    }
+
+    func update(hasStrippedVersion: Bool) {
+        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
+    }
+
+    func updateAttachmentBannerIfNeeded() {
+        embedAttachmentViewIfNeeded()
+	}
+
+    func trackerProtectionSummaryChanged() {
+        headerViewController?.trackerProtectionSummaryChanged()
+    }
+
+    private func spotlightTrackerProtection() {
+        guard let spotlightContainerView = navigationController?.view else {
+            assertionFailure("View outside of view hierarchy")
+            return
+        }
+
+        let spotlightView = makeSpotlightView()
+
+        guard let spotlightableView = headerViewController?.spotlightableView else {
+            return
+        }
+
+        viewModel.userHasSeenSpotlightForTrackerProtection()
+
+        let frameInContainer = spotlightableView.convert(spotlightableView.bounds, to: spotlightContainerView)
+        spotlightView.presentOn(view: spotlightContainerView, targetFrame: frameInContainer)
+    }
+
+    private func makeSpotlightView() -> SpotlightView {
+        SpotlightView(
+            title: L11n.EmailTrackerProtection.spotlight_title,
+            message: L11n.EmailTrackerProtection.new_feature_description,
+            icon: Asset.trackingProtectionSpotlightIcon
+        )
     }
 }

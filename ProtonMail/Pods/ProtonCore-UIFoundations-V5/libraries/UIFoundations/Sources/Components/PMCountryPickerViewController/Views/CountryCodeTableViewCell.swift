@@ -35,6 +35,8 @@ class CountryCodeTableViewCell: UITableViewCell, AccessibleCell {
         flagImageView.layer.masksToBounds = true
         countryLabel.textColor = ColorProvider.TextNorm
         codeLabel.textColor = ColorProvider.TextWeak
+        countryLabel.font = .adjustedFont(forTextStyle: .body)
+        codeLabel.font = .adjustedFont(forTextStyle: .callout)
     }
 
     func configCell(_ countryCode: CountryCode) {

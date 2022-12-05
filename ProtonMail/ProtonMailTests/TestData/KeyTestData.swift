@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Crypto
 
-enum KeyTestData: String {
-    case publicKey1 = """
+struct KeyTestData {
+    static let publicKey1 = """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: Keybase OpenPGP v1.0.0
     Comment: https://keybase.io/crypto
@@ -46,7 +47,7 @@ enum KeyTestData: String {
     =3SpF
     -----END PGP PUBLIC KEY BLOCK-----
     """
-    case privateKey1 = """
+    static let  privateKey1 = """
     -----BEGIN PGP PRIVATE KEY BLOCK-----
     Version: Keybase OpenPGP v1.0.0
     Comment: https://keybase.io/crypto
@@ -79,8 +80,8 @@ enum KeyTestData: String {
     =+Uml
     -----END PGP PRIVATE KEY BLOCK-----
     """
-    case passphrash1 = "12345"
-    case publicKey2 = """
+    static let  passphrash1 = Passphrase(value: "12345")
+    static let  publicKey2 = """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: Keybase OpenPGP v1.0.0
     Comment: https://keybase.io/crypto
@@ -108,7 +109,7 @@ enum KeyTestData: String {
     =ssIw
     -----END PGP PUBLIC KEY BLOCK-----
     """
-    case privateKey2 = """
+    static let  privateKey2 = """
     -----BEGIN PGP PRIVATE KEY BLOCK-----
     Version: Keybase OpenPGP v1.0.0
     Comment: https://keybase.io/crypto
@@ -141,8 +142,8 @@ enum KeyTestData: String {
     =5fxc
     -----END PGP PRIVATE KEY BLOCK-----
     """
-    case passphrash2 = "54321"
-    case publicKey11 = """
+    static let  passphrash2 = "54321"
+    static let  publicKey11 = """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: Keybase OpenPGP v2.1.15
     Comment: https://keybase.io/crypto
@@ -170,7 +171,7 @@ enum KeyTestData: String {
     -----END PGP PUBLIC KEY BLOCK-----
     """
     // same passphrase as privateKey1
-    case privateKey11 = """
+    static let  privateKey11 = """
     -----BEGIN PGP PRIVATE KEY BLOCK-----
     Version: Keybase OpenPGP v2.1.15
     Comment: https://keybase.io/crypto

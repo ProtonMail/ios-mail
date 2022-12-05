@@ -27,6 +27,7 @@ import ProtonCore_Services
 extension APIService {
 
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
+    @available(*, deprecated, message: "use `FetchAttachmentsUseCase` instead")
     func downloadAttachment(byID attachmentID: String,
                             destinationDirectoryURL: URL,
                             customAuthCredential: AuthCredential? = nil,

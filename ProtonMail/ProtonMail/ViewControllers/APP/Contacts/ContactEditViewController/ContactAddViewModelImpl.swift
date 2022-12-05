@@ -260,7 +260,7 @@ class ContactAddViewModelImpl: ContactEditViewModel {
             signed_vcard2 = try Crypto().signDetached(
                 plainText: vcard2Str,
                 privateKey: userkey.privateKey,
-                passphrase: mailboxPassword
+                passphrase: mailboxPassword.value
             )
         } catch {
             onError(error as NSError)
@@ -389,7 +389,7 @@ class ContactAddViewModelImpl: ContactEditViewModel {
             signed_vcard3 = try Crypto().signDetached(
                 plainText: vcard3Str,
                 privateKey: userkey.privateKey,
-                passphrase: mailboxPassword
+                passphrase: mailboxPassword.value
             )
         } catch {
             onError(error as NSError)

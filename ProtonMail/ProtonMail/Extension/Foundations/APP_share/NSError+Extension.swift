@@ -25,58 +25,6 @@ import ProtonCore_Services
 
 extension NSError {
 
-    convenience init(domain: String,
-                     code: Int,
-                     localizedDescription: String,
-                     localizedFailureReason: String? = nil,
-                     localizedRecoverySuggestion: String? = nil) {
-        var userInfo = [NSLocalizedDescriptionKey: localizedDescription]
-
-        if let localizedFailureReason = localizedFailureReason {
-            userInfo[NSLocalizedFailureReasonErrorKey] = localizedFailureReason
-        }
-
-        if let localizedRecoverySuggestion = localizedRecoverySuggestion {
-            userInfo[NSLocalizedRecoverySuggestionErrorKey] = localizedRecoverySuggestion
-        }
-
-        self.init(domain: domain, code: code, userInfo: userInfo)
-    }
-
-    class func protonMailError(_ code: Int,
-                               localizedDescription: String,
-                               localizedFailureReason: String? = nil,
-                               localizedRecoverySuggestion: String? = nil) -> NSError {
-        return NSError(domain: protonMailErrorDomain(),
-                       code: code,
-                       localizedDescription: localizedDescription,
-                       localizedFailureReason: localizedFailureReason,
-                       localizedRecoverySuggestion: localizedRecoverySuggestion)
-    }
-
-    class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
-        var domain = Bundle.main.bundleIdentifier ?? "ch.protonmail"
-
-        if let subdomain = subdomain {
-            domain += ".\(subdomain)"
-        }
-        return domain
-    }
-
-    func isInternetError() -> Bool {
-        var isInternetIssue = false
-        let identifier = "com.alamofire.serialization.response.error.response"
-        if self.userInfo[identifier] as? HTTPURLResponse != nil {
-        } else {
-            if self.code == -1_009 ||
-                self.code == -1_004 ||
-                self.code == -1_001 {
-                isInternetIssue = true
-            }
-        }
-        return isInternetIssue
-    }
-
     var isBadVersionError: Bool {
         // These two error codes are badAppVersion and badApiVersion
         // But the ProtonCore doesn't have it

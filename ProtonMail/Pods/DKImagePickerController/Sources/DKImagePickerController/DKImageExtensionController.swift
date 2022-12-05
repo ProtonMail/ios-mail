@@ -19,11 +19,7 @@ public class DKImageExtensionContext {
 
 @objc
 public enum DKImageExtensionType: Int {
-    case
-    gallery,
-    camera,
-    inlineCamera,
-    photoEditor
+    case gallery, camera, inlineCamera, photoEditor
 }
 
 public protocol DKImageExtensionProtocol {
@@ -68,12 +64,13 @@ open class DKImageBaseExtension: NSObject, DKImageExtensionProtocol {
 open class DKImageExtensionNone: DKImageBaseExtension {}
 
 /// The class handles the loading of extensions.
-@objc
-public class DKImageExtensionController: NSObject {
+@objcMembers
+open class DKImageExtensionController: NSObject {
     
     fileprivate static var defaultExtensions = [DKImageExtensionType : DKImageBaseExtension.Type]()
     fileprivate static var extensions = [DKImageExtensionType : DKImageBaseExtension.Type]()
     
+    private var blacklist = Set<DKImageExtensionType>()
     private var cache = [DKImageExtensionType : DKImageBaseExtension]()
     
     private static let checkDefaultExtensions: Void = {
@@ -113,7 +110,9 @@ public class DKImageExtensionController: NSObject {
             
             e?.perform(with: extraInfo)
         } else {
-            debugPrint("No DKImageExtension founed.")
+            // If the .camera extension is not found, then register it first using:
+            // DKImageExtensionController.registerExtension(extensionClass: DKImageExtensionCamera.self, for: .camera)
+            debugPrint("No DKImageExtension found: \(extensionType)")
         }
     }
     
@@ -123,16 +122,24 @@ public class DKImageExtensionController: NSObject {
         }
     }
     
+    public func enable(extensionType: DKImageExtensionType) {
+        self.blacklist.remove(extensionType)
+    }
+    
+    public func disable(extensionType: DKImageExtensionType) {
+        self.blacklist.insert(extensionType)
+    }
+
     public func isExtensionTypeAvailable(_ extensionType: DKImageExtensionType) -> Bool {
-        return self.fetchExtensionClass(extensionType) != nil
+        return !self.blacklist.contains(extensionType) && self.fetchExtensionClass(extensionType) != nil
     }
     
     /// Registers an extension for the specified type.
-    @objc public class func registerExtension(extensionClass: DKImageBaseExtension.Type, for type: DKImageExtensionType) {
+    public class func registerExtension(extensionClass: DKImageBaseExtension.Type, for type: DKImageExtensionType) {
         DKImageExtensionController.extensions[type] = extensionClass
     }
     
-    @objc public class func unregisterExtension(for type: DKImageExtensionType) {
+    public class func unregisterExtension(for type: DKImageExtensionType) {
         DKImageExtensionController.extensions[type] = nil
     }
     

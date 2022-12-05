@@ -71,8 +71,8 @@ public struct AuthenticatorMock: AuthenticatorInterface {
     }
 
     @FuncStub(Self.createAddress) public var createAddressStub
-    public func createAddress(_ credential: Credential?, domain: String, displayName: String?, siganture: String?, completion: @escaping (Result<Address, AuthErrors>) -> Void) {
-        createAddressStub(credential, domain, displayName, siganture, completion)
+    public func createAddress(_ credential: Credential?, domain: String, displayName: String?, signature: String?, completion: @escaping (Result<Address, AuthErrors>) -> Void) {
+        createAddressStub(credential, domain, displayName, signature, completion)
     }
 
     @FuncStub(Self.getUserInfo) public var getUserInfoStub

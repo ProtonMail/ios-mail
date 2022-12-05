@@ -44,14 +44,13 @@ final class ConversationViewTrashedHintView: UIView {
 
     func setup(isTrashFolder: Bool, useShowButton: Bool) {
         let title = useShowButton ? LocalString._show: LocalString._hide
-        button.setAttributedTitle(
-            title.apply(style: FontManager.body2RegularNorm),
-            for: .normal
-        )
+        button.setTitle(title, for: .normal)
         if isTrashFolder {
-            hintText.attributedText = LocalString._banner_non_trashed_message_title.apply(style: FontManager.Caption)
+            hintText.set(text: LocalString._banner_non_trashed_message_title,
+                         preferredFont: .footnote)
         } else {
-            hintText.attributedText = LocalString._banner_trashed_message_title.apply(style: FontManager.Caption)
+            hintText.set(text: LocalString._banner_trashed_message_title,
+                         preferredFont: .footnote)
         }
         layoutIfNeeded()
     }
@@ -105,17 +104,17 @@ private enum SubviewsFactory {
 
     static var hintText: UILabel {
         let label = UILabel(frame: .zero)
-        label.attributedText = LocalString._banner_trashed_message_title.apply(style: FontManager.Caption)
+        label.set(text: LocalString._banner_trashed_message_title,
+                  preferredFont: .footnote)
         label.numberOfLines = 0
         return label
     }
 
     static var showButton: UIButton {
         let button = UIButton(frame: .zero)
-        button.setAttributedTitle(
-            LocalString._show.apply(style: FontManager.body2RegularNorm),
-            for: .normal
-        )
+        button.titleLabel?.set(text: nil, preferredFont: .subheadline)
+        button.setTitle(LocalString._show, for: .normal)
+        button.setTitleColor(ColorProvider.TextNorm, for: .normal)
         button.backgroundColor = .clear
         return button
     }

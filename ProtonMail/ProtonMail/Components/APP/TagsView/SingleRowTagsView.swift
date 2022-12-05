@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_UIFoundations
 
 class SingleRowTagsView: UIView {
 
@@ -97,14 +98,15 @@ class SingleRowTagsView: UIView {
               let lastItem = row.last else { return }
         let numberLabel = UILabel()
         self.addSubview(numberLabel)
-        numberLabel.attributedText = "+\(tagViews.count - row.count)"
-            .apply(style: FontManager.OverlineRegularTextWeak)
         [
             numberLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             numberLabel.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor, constant: horizontalSpacing),
             numberLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ].activate()
-        numberLabel.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
+        numberLabel.set(text: "+\(tagViews.count - row.count)",
+                        preferredFont: .caption2,
+                        weight: .semibold,
+                        textColor: ColorProvider.TextWeak)
         numberLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         numberLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }

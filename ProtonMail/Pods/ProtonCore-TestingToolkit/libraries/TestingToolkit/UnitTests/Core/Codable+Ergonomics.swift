@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Utilities
 
 public extension Encodable {
     var toJsonDict: [String: Any] {
@@ -72,8 +73,13 @@ public extension Encodable {
 }
 
 public extension Decodable {
-    func from(_ dict: [String: Any]?) -> Self {
-        try! JSONDecoder().decode(Self.self, from: JSONSerialization.data(withJSONObject: dict!))
+
+    static func from(_ dict: [String: Any]?) -> Self {
+        try! JSONDecoder.decapitalisingFirstLetter.decode(Self.self, from: JSONSerialization.data(withJSONObject: dict!))
+    }
+    
+    static func fromIfPossible(_ dict: [String: Any]?) -> Self? {
+        try? JSONDecoder.decapitalisingFirstLetter.decode(Self.self, from: JSONSerialization.data(withJSONObject: dict!))
     }
 }
 
@@ -91,4 +97,12 @@ struct CustomCodingKey: CodingKey {
     init?(intValue: Int) {
         return nil
     }
+}
+
+extension Dictionary where Key == String, Value == Any {
+    
+    public func serializedToData() throws -> Data {
+        try JSONSerialization.data(withJSONObject: self, options: .sortedKeys)
+    }
+    
 }

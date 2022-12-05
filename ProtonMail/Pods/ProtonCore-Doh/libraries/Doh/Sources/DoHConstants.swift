@@ -49,7 +49,7 @@ public enum ProductionHosts: String, CaseIterable {
     
     public var urlString: String { url.absoluteString }
     
-    var dohHost: String {
+    public var dohHost: String {
         let result: String
         switch self {
         case .legacyProtonMailAPI, .legacyVerifyMailApp, .legacyVerifyMailApi, .legacyAccountApp: result = "MFYGSLTQOJXXI33ONVQWS3BOMNUA"

@@ -24,9 +24,11 @@ extension MessageEntity {
     var tagUIModels: [TagUIModel] {
         orderedLabel.map { label in
             TagUIModel(
-                title: label.name.apply(style: FontManager.OverlineSemiBoldTextInverted),
+                title: label.name,
+                titleColor: .white,
+                titleWeight: .semibold,
                 icon: nil,
-                color: UIColor(hexString: label.color, alpha: 1.0)
+                tagColor: UIColor(hexString: label.color, alpha: 1.0)
             )
         }
     }
@@ -134,11 +136,12 @@ extension MessageEntity {
               messageLocation != .draft else { return nil }
         let title = expirationTime
             .countExpirationTime(processInfo: userCachedStatus)
-            .apply(style: FontManager.OverlineRegularInteractionStrong)
         return TagUIModel(
             title: title,
-            icon: Asset.mailHourglass.image,
-            color: ColorProvider.InteractionWeak
+            titleColor: ColorProvider.InteractionStrong,
+            titleWeight: .regular,
+            icon: IconProvider.hourglass,
+            tagColor: ColorProvider.InteractionWeak
         )
     }
 

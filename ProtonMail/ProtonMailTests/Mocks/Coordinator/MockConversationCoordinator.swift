@@ -25,6 +25,8 @@ class MockConversationCoordinator: ConversationCoordinatorProtocol {
 
     var pendingActionAfterDismissal: (() -> Void)?
 
+    var goToDraft: ((MessageID) -> Void)?
+
     init(conversation: ConversationEntity) {
         self.conversation = conversation
     }

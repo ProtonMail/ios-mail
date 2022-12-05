@@ -262,45 +262,5 @@
 			<string>%d пользователей</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>на %d месяца</string>
-			<key>many</key>
-			<string>на %d месяцев</string>
-			<key>one</key>
-			<string>на %d месяц</string>
-			<key>other</key>
-			<string>на %d месяцев</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>на %d года</string>
-			<key>many</key>
-			<string>на %d лет</string>
-			<key>one</key>
-			<string>на %d год</string>
-			<key>other</key>
-			<string>на %d лет</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

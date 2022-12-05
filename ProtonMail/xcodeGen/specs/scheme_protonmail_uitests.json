@@ -1,0 +1,85 @@
+{
+   "schemes": {
+      "ProtonMailUITests": {
+         "build": {
+            "targets": {
+               "ProtonMailUITests": [
+                  "test",
+                  "run"
+               ],
+               "ProtonMail": [
+                  "test",
+                  "run"
+               ]
+            }
+         },
+         "run": {
+            "config": "Debug"
+         },
+         "test": {
+            "config": "Debug",
+            "testPlans": [
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/RegressionTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/SmokeTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/AccountSettingsTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/DraftsTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/ContactsTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/MultiuserManagementTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/SendNewMessageTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/LabelsFoldersTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/LoginTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/LogoutTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/MenuTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/SettingsTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/SearchTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/HumanVerificationTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/ForceUpgradeTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/PinTests.xctestplan"
+               }
+            ]
+         },
+         "profile": {
+            "config": "Release"
+         },
+         "analyze": {
+            "config": "Debug"
+         },
+         "archive": {
+            "config": "Release",
+            "customArchiveName": "ProtonMailUITests",
+            "revealArchiveInOrganizer": true
+         }
+      }
+   }
+}

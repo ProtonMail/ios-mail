@@ -166,7 +166,7 @@ class AttachmentListViewModel {
 
         // No way we should store this file cleartext any longer than absolutely needed
         let tempClearFileURL =
-        FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.name.clear)
+        FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name.clear)
 
         guard let decryptData =
                 user.newSchema ?
@@ -175,7 +175,7 @@ class AttachmentListViewModel {
                                            passphrase: user.mailboxPassword,
                                            keys: user.addressKeys) :
                     try data.decryptAttachmentNonOptional(keyPackage,
-                                                          passphrase: user.mailboxPassword,
+                                                          passphrase: user.mailboxPassword.value,
                                                           privKeys: user.addressPrivateKeys),
               (try? decryptData.write(to: tempClearFileURL, options: [.atomic])) != nil else {
                   throw Errors.cantDecryptAttachment
@@ -190,8 +190,7 @@ class AttachmentListViewModel {
             return nil
         }
 
-        let context = contextProvider.rootSavingContext
-        context.performAndWait {
+        contextProvider.performAndWaitOnRootSavingContext { context in
             if let attachment = context.object(with: objectID) as? Attachment {
                 result = AttachmentEntity(attachment)
             }

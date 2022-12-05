@@ -24,6 +24,7 @@ import Foundation
 import OpenPGP
 import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
+import ProtonCore_Crypto
 import ProtonCore_Hash
 
 enum PasswordError: Error {
@@ -61,16 +62,16 @@ final class PasswordUtils {
         return b
     }
 
-    static func getMailboxPassword(_ password: String, salt: Data) -> String {
+    static func getMailboxPassword(_ password: Passphrase, salt: Data) -> Passphrase {
         let byteArray = NSMutableData()
         byteArray.append(salt)
         let source = NSData(data: byteArray as Data) as Data
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         do {
-            let out = try bcrypt_string(password, salt: encodedSalt)
+            let out = try bcrypt_string(password.value, salt: encodedSalt)
             let index = out.index(out.startIndex, offsetBy: 29)
             let outStr = String(out[index...])
-            return outStr
+            return Passphrase(value: outStr)
         } catch PasswordError.hashEmpty {
             // check error
         } catch PasswordError.hashSizeWrong {
@@ -78,7 +79,7 @@ final class PasswordUtils {
         } catch {
             // check error
         }
-        return ""
+        return Passphrase(value: "")
 
     }
 }

@@ -33,10 +33,13 @@ final class LabelInfoCell: UITableViewCell {
         super.awakeFromNib()
         self.iconView.tintColor = ColorProvider.IconHint
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        infoLabel.set(text: nil,
+                      preferredFont: .subheadline,
+                      textColor: ColorProvider.TextHint)
     }
 
     func config(info: String, icon: UIImage, cellHeight: CGFloat) {
-        self.infoLabel.attributedText = info.apply(style: FontManager.DefaultSmallHint)
+        self.infoLabel.text = info
         self.iconView.image = icon
         self.infoLabelHeight.constant = cellHeight
     }

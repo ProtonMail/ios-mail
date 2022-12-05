@@ -28,3 +28,21 @@ protocol CoreDataContextProviderProtocol {
                  block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
 }
+
+extension CoreDataContextProviderProtocol {
+    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.perform {
+            block(context)
+        }
+    }
+
+    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.performAndWait {
+            block(context)
+        }
+    }
+}

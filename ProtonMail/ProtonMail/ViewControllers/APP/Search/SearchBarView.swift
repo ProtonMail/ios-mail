@@ -108,17 +108,18 @@ private enum SubviewsFactory {
 
     static var textField: UITextField {
         let textField = UITextField(frame: .zero)
+        textField.set(text: nil, preferredFont: .body)
         textField.backgroundColor = ColorProvider.BackgroundSecondary
         textField.roundCorner(3)
         textField.autocapitalizationType = .none
         textField.returnKeyType = .search
         textField.placeholder = LocalString._general_search_placeholder
-        textField.typingAttributes = FontManager.Default
         return textField
     }
 
     static var cancelButton: UIButton {
         let button = UIButton(type: .custom)
+        button.titleLabel?.set(text: nil, preferredFont: .body)
         button.setTitle(LocalString._general_cancel_button, for: .normal)
         button.setTitleColor(ColorProvider.TextNorm, for: .normal)
         return button

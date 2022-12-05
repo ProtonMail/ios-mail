@@ -71,8 +71,7 @@ class MoveToActionSheetPresenter {
         let rows = viewModel.menuLabels.getNumberOfRows()
         var folderActions: [PMActionSheetPlainItem] = []
         for i in 0..<rows {
-            let indexPath = IndexPath(row: i, section: 0)
-            guard let menuLabel = viewModel.menuLabels.getFolderItem(by: indexPath) else {
+            guard let menuLabel = viewModel.menuLabels.getFolderItem(at: i) else {
                 continue
             }
 

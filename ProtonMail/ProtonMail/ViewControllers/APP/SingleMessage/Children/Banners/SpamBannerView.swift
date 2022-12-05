@@ -114,7 +114,7 @@ private enum SubviewsFactory {
 
     static var button: UIButton {
         let button = UIButton()
-        button.setBackgroundImage(.color(.init(red: 1, green: 1, blue: 1, alpha: 0.35)), for: .normal)
+        button.setBackgroundImage(.colored(with: .init(red: 1, green: 1, blue: 1, alpha: 0.35)), for: .normal)
         button.roundCorner(8)
         return button
     }

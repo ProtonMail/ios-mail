@@ -16,37 +16,39 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
+import ProtonCore_Crypto
 
 /// Address Builder for building the packages
 class PGPMimeAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
-    let algo: String
-    /// Initial
-    ///
-    /// - Parameters:
-    ///   - type: SendType sending message type for address
-    ///   - addr: message send to
-    ///   - session: message encrypted body session key
-    init(type: SendType, addr: PreAddress, session: Data, algo: String) {
+    let algo: Algorithm
+
+    init(
+        type: PGPScheme,
+        email: String,
+        sendPreferences: SendPreferences,
+        session: Data,
+        algo: Algorithm
+    ) {
         self.session = session
         self.algo = algo
-        super.init(type: type, addr: addr)
+        super.init(type: type, email: email, sendPreferences: sendPreferences)
     }
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            guard let publicKey = self.preAddress.pgpKey else {
+            guard let publicKey = self.sendPreferences.publicKeys else {
                 fatalError("Missing PGP key")
             }
-            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey, algo: self.algo)
+            let newKeypacket = try self.session.getKeyPackage(publicKey: publicKey.getPublicKey(), algo: self.algo.rawValue)
             let newEncodedKey = newKeypacket?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
 
-            let package = MimeAddressPackage(email: self.preAddress.email,
+            let package = MimeAddressPackage(email: self.email,
                                              bodyKeyPacket: newEncodedKey,
-                                             type: self.sendType,
-                                             plainText: self.preAddress.plainText)
+                                             scheme: self.sendType,
+                                             plainText: self.sendPreferences.mimeType == .plainText)
             return package
         }
     }

@@ -30,6 +30,8 @@ class NewMailboxMessageCellContentView: UIView {
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
     let checkBoxView = NewMailboxMessageCheckBoxView()
+    let scheduledIconView = SubviewsFactory.scheduledIconView
+    let scheduledContainer = SubviewsFactory.scheduledContainer
 
     init() {
         super.init(frame: .zero)
@@ -43,11 +45,12 @@ class NewMailboxMessageCellContentView: UIView {
         addSubview(leftContainer)
         leftContainer.addSubview(initialsContainer)
         leftContainer.addSubview(checkBoxView)
+        leftContainer.addSubview(scheduledIconView)
+        leftContainer.addSubview(scheduledContainer)
         initialsContainer.addSubview(initialsLabel)
     }
 
     private func setUpLayout() {
-        leftContainer.translatesAutoresizingMaskIntoConstraints = false
         [
             leftContainer.heightAnchor.constraint(equalToConstant: 28),
             leftContainer.widthAnchor.constraint(equalToConstant: 28),
@@ -56,7 +59,6 @@ class NewMailboxMessageCellContentView: UIView {
         ]
             .activate()
 
-        messageContentView.translatesAutoresizingMaskIntoConstraints = false
         [
             messageContentView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             messageContentView.leadingAnchor.constraint(equalTo: leftContainer.trailingAnchor, constant: 16),
@@ -65,8 +67,7 @@ class NewMailboxMessageCellContentView: UIView {
         ]
             .activate()
 
-        [initialsContainer, checkBoxView].forEach { view in
-            view.translatesAutoresizingMaskIntoConstraints = false
+        [initialsContainer, checkBoxView, scheduledContainer].forEach { view in
             [
                 view.topAnchor.constraint(equalTo: leftContainer.topAnchor),
                 view.leadingAnchor.constraint(equalTo: leftContainer.leadingAnchor),
@@ -75,6 +76,13 @@ class NewMailboxMessageCellContentView: UIView {
             ]
                 .activate()
         }
+
+        [
+            scheduledIconView.centerXAnchor.constraint(equalTo: leftContainer.centerXAnchor),
+            scheduledIconView.centerYAnchor.constraint(equalTo: leftContainer.centerYAnchor),
+            scheduledIconView.widthAnchor.constraint(equalToConstant: 20),
+            scheduledIconView.heightAnchor.constraint(equalToConstant: 20)
+        ].activate()
 
         [
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
@@ -94,6 +102,22 @@ private enum SubviewsFactory {
         let view = UIView()
         view.backgroundColor = ColorProvider.InteractionWeak
         view.layer.cornerRadius = 8
+        view.isUserInteractionEnabled = false
+        return view
+    }
+
+    static var scheduledIconView: UIImageView {
+        let view = UIImageView(image: IconProvider.clock)
+        view.contentMode = .scaleAspectFit
+        view.tintColor = ColorProvider.IconNorm
+        return view
+    }
+
+    static var scheduledContainer: UIView {
+        let view = UIView()
+        view.layer.cornerRadius = 8
+        view.layer.borderWidth = 1
+        view.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
         view.isUserInteractionEnabled = false
         return view
     }

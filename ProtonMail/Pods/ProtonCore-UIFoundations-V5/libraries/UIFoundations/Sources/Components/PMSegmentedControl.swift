@@ -24,7 +24,9 @@ import ProtonCore_Foundations
 
 public final class PMSegmentedControl: UISegmentedControl, AccessibleView {
 
-    private let defaultFont = UIFont.systemFont(ofSize: 14)
+    private var defaultFont: UIFont {
+        .adjustedFont(forTextStyle: .footnote, fontSize: 14)
+    }
     private let defaultColor: UIColor = ColorProvider.TextNorm
 
     required init?(coder aDecoder: NSCoder) {
@@ -47,7 +49,7 @@ public final class PMSegmentedControl: UISegmentedControl, AccessibleView {
         setImage(embeddedImage, forSegmentAt: forSegmentAt)
     }
 
-    private func configure() {
+    private func configure(needObserver: Bool = true) {
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: defaultColor, NSAttributedString.Key.font: defaultFont]
         setTitleTextAttributes(titleTextAttributes, for: .selected)
         setTitleTextAttributes(titleTextAttributes, for: .normal)

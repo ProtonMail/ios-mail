@@ -125,8 +125,14 @@ extension MenuViewController {
         //self.tableView.contentInset = .init(top: 28.0, left: 0.0, bottom: 0.0, right: 0.0)
 
         self.setPrimaryUserview(highlight: false)
-        self.displayName.textColor = ColorProvider.SidebarTextNorm
-        self.addressLabel.textColor = ColorProvider.SidebarTextWeak
+        displayName.set(text: nil,
+                        preferredFont: .subheadline,
+                        weight: .regular,
+                        textColor: ColorProvider.SidebarTextNorm)
+        addressLabel.set(text: nil,
+                         preferredFont: .footnote,
+                         weight: .regular,
+                         textColor: ColorProvider.SidebarTextWeak)
         self.arrowBtn.setImage(IconProvider.chevronDown, for: .normal)
         self.arrowBtn.imageView?.tintColor = ColorProvider.SidebarIconNorm
         self.primaryUserview.setCornerRadius(radius: 12)
@@ -140,6 +146,10 @@ extension MenuViewController {
 
         self.shortNameView.setCornerRadius(radius: 8)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
+        avatarLabel.set(text: nil,
+                        preferredFont: .footnote,
+                        weight: .regular,
+                        textColor: ColorProvider.SidebarTextNorm)
         self.avatarLabel.accessibilityElementsHidden = true
         self.addGesture()
     }
@@ -201,7 +211,7 @@ extension MenuViewController {
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
-            self.viewModel.signOut(userID: UserID(self.viewModel.currentUser?.userinfo.userId ?? ""),
+            self.viewModel.signOut(userID: UserID(self.viewModel.currentUser?.userInfo.userId ?? ""),
                                    completion: nil)
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
@@ -311,7 +321,7 @@ extension MenuViewController: MenuUIProtocol {
         self.tableView.beginUpdates()
         for indexPath in rows {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? MenuItemTableViewCell,
-                  let label = self.viewModel.menuItemOptional(indexPath: indexPath) else {
+                  let label = self.viewModel.menuItem(indexPath: indexPath) else {
                 continue
             }
             cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
@@ -357,15 +367,18 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(MenuItemTableViewCell.self)", for: indexPath) as! MenuItemTableViewCell
-        let label = self.viewModel.menuItem(indexPath: indexPath)
-        cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
-        cell.update(iconColor: self.viewModel.getIconColor(of: label))
+        if let label = self.viewModel.menuItem(indexPath: indexPath) {
+            cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, isUsedInSideBar: true, delegate: self)
+            cell.update(iconColor: self.viewModel.getIconColor(of: label))
+        }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let label = self.viewModel.menuItem(indexPath: indexPath)
+        guard let label = self.viewModel.menuItem(indexPath: indexPath) else {
+            return
+        }
         switch label.location {
         case .lockapp:
             keymaker.lockTheApp() // remove mainKey from memory
@@ -415,7 +428,11 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             line.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
 
-        let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: ColorProvider.SidebarTextWeak)
+        let label = UILabel()
+        label.set(text: section.title,
+                  preferredFont: .footnote,
+                  weight: .regular,
+                  textColor: ColorProvider.SidebarTextWeak)
         label.translatesAutoresizingMaskIntoConstraints = false
 
         vi.addSubview(label)
@@ -430,10 +447,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         guard section == .folders || section == .labels else {
             return vi
         }
-        let sectionIndex = section == .folders ? 1: 2
-        let path = IndexPath(row: 0, section: sectionIndex)
         let addTypes: [LabelLocation] = [.addFolder, .addLabel]
-        if let label = self.viewModel.menuItemOptional(indexPath: path),
+        if let label = self.viewModel.menuItem(in: section, at: 0),
            addTypes.contains(label.location) {
             return vi
         }

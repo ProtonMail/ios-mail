@@ -20,6 +20,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
 import ProtonCore_LoginUI
@@ -128,11 +129,6 @@ final class SignInCoordinator {
         self.isFirstAccountFlow = isFirstAccountFlow
         self.startingPoint = startingPoint
         self.environment = environment
-        login = environment.loginCreationClosure(LocalString._protonmail,
-                                                 .internal,
-                                                 .internal,
-                                                 [.notEmpty, .atLeastEightCharactersLong],
-                                                 !isFirstAccountFlow)
 
         // explanation: boxing stopClosure to avoid referencing self before initialization is finished
         var stopClosure = {}
@@ -141,6 +137,15 @@ final class SignInCoordinator {
             onFinish($0)
         }
         stopClosure = { [weak self] in self?.stop() }
+        self.initLogin()
+    }
+
+    private func initLogin() {
+        login = environment.loginCreationClosure(LocalString._protonmail,
+                                                 .internal,
+                                                 .internal,
+                                                 [.notEmpty, .atLeastEightCharactersLong],
+                                                 !isFirstAccountFlow)
     }
 
     private func makeViewController() -> VC {
@@ -157,6 +162,9 @@ final class SignInCoordinator {
     func start() {
         guard isStarted == false else { return }
         isStarted = true
+        if login == nil {
+            initLogin()
+        }
 
         switch startingPoint {
         case .form:
@@ -168,13 +176,13 @@ final class SignInCoordinator {
                                     })
         case .mailboxPassword:
             self.login?.presentMailboxPasswordFlow(over: actualViewController) { [weak self] in
-                self?.processMailboxPasswordInCleartext($0)
+                self?.processMailboxPasswordInCleartext(Passphrase(value: $0))
                 self?.login = nil
             }
         }
     }
 
-    private func processMailboxPasswordInCleartext(_ password: String) {
+    private func processMailboxPasswordInCleartext(_ password: Passphrase) {
         if environment.currentAuth() == nil {
             environment.tryRestoringPersistedUser()
         }
@@ -184,12 +192,12 @@ final class SignInCoordinator {
         }
         let encryptedPassword = environment.mailboxPassword(password, auth)
         if encryptedPassword != password {
-            auth.udpate(password: encryptedPassword)
+            auth.udpate(password: encryptedPassword.value)
         }
         unlockMainKey(failOnMailboxPassword: true)
     }
 
-    private func stop() {
+    func stop() {
         guard isStarted == true else { return }
         self.login = nil
         isStarted = false
@@ -239,8 +247,10 @@ final class SignInCoordinator {
         case .success:
             break
         case .freeAccountsLimitReached:
+            self.loginData = nil
             processReachLimitError()
         case .errorOccurred:
+            self.loginData = nil
             self.processExistError()
         }
     }
@@ -277,7 +287,7 @@ final class SignInCoordinator {
     }
 
     private func showSkeletonTemplate() {
-        let link = DeepLink(.skeletonTemplate)
+        let link = DeepLink(.skeletonTemplate, sender: String(describing: SignInCoordinator.self))
         NotificationCenter.default.post(name: .switchView, object: link)
     }
 

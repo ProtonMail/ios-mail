@@ -44,7 +44,7 @@ public extension User {
     
     func updated(ID: String? = nil,
                  name: String? = nil,
-                 usedSpace: Double? = nil ,
+                 usedSpace: Double? = nil,
                  currency: String? = nil,
                  credit: Int? = nil,
                  maxSpace: Double? = nil,

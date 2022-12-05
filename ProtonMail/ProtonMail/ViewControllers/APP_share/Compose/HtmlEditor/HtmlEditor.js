@@ -421,3 +421,9 @@ html_editor.removeStyleFromSelection = function() {
     }
 }
 
+html_editor.update_font_size = function(size) {
+    let pixelSize = size + "px";
+    document.documentElement.style.setProperty("font-size", pixelSize);
+    var contentsHeight = html_editor.getContentsHeight();
+    window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
+}

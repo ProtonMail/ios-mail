@@ -35,9 +35,7 @@ extension AuthService {
         return allowed
     }()
     
-    public struct UserAvailableResponse: Codable {
-        var code: Int
-    }
+    public struct UserAvailableResponse: APIDecodableResponse, Encodable {}
     
     struct UserAvailableWithoutSpecifyingDomainEndpoint: Request {
         

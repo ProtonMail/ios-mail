@@ -21,18 +21,26 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
 extension Message {
 
     /// wrappers
-    var cachedPassphrase: String? {
+    var cachedPassphrase: Passphrase? {
         get {
-            guard let raw = self.cachedPassphraseRaw as Data? else { return nil }
-            return String(data: raw, encoding: .utf8)
+            guard
+                let raw = self.cachedPassphraseRaw as Data?,
+                let value = String(data: raw, encoding: .utf8)
+            else {
+                return nil
+            }
+            return Passphrase(value: value)
         }
-        set { self.cachedPassphraseRaw = newValue?.data(using: .utf8) as NSData? }
+        set {
+            self.cachedPassphraseRaw = newValue.map { Data($0.value.utf8) } as NSData?
+        }
     }
 
     var cachedAuthCredential: AuthCredential? {

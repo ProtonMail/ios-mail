@@ -19,7 +19,11 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class ReceiptService {
+protocol ReceiptActionHandler: AnyObject {
+    func sendReceipt(messageID: MessageID)
+}
+
+final class ReceiptService: ReceiptActionHandler {
     private let labelID: LabelID
     private let apiService: APIService
     private let eventsService: EventsFetching

@@ -157,9 +157,8 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
             }
 
             if let emailIDs = emailIDs {
-                let context = self.coreDataService.operationContext
                 var mails: [EmailEntity] = []
-                context.performAndWait {
+                self.coreDataService.performAndWaitOnRootSavingContext { context in
                     mails = emailIDs
                         .compactMap { Email.EmailForID($0, inManagedObjectContext: context)}.map(EmailEntity.init)
                 }
@@ -175,8 +174,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
                 } else {
                     if !response.emailIDs.isEmpty {
                         // save
-                        let context = self.coreDataService.operationContext
-                        context.perform {
+                        self.coreDataService.performOnRootSavingContext { context in
                             let label = Label.labelForLabelID(groupID.rawValue, inManagedObjectContext: context)
 
                             let emailsToUse = emailList.compactMap { (email) -> Email? in
@@ -224,9 +222,8 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
                 seal.fulfill(())
                 return
             }
-            let context = self.coreDataService.operationContext
             var mails: [EmailEntity] = []
-            context.performAndWait {
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
                 mails = emailIDs
                     .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }.map(EmailEntity.init)
             }
@@ -299,10 +296,9 @@ extension ContactGroupsDataService {
     func queueCreate(name: String, color: String, emailIDs: [String]) -> Promise<Void> {
         return Promise<Void> { [weak self] seal in
             guard let self = self else { return }
-            let context = self.coreDataService.operationContext
             let userID = self.userID
             let queue = self.queueManager
-            context.perform {
+            self.coreDataService.performOnRootSavingContext { context in
                 // Create a temporary label for display, the label will be removed after getting response
                 let groupLabel = Label.makeGroupLabel(context: context,
                                                       userID: userID.rawValue,
@@ -325,10 +321,9 @@ extension ContactGroupsDataService {
     func queueUpdate(groupID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String]) -> Promise<Void> {
         return Promise<Void> { [weak self] seal in
             guard let self = self else { return }
-            let context = self.coreDataService.operationContext
             let userID = self.userID
             let queue = self.queueManager
-            context.perform {
+            self.coreDataService.performOnRootSavingContext { context in
                 guard let label = Label.labelGroup(byID: groupID, inManagedObjectContext: context) else {
                     seal.fulfill_()
                     return
@@ -364,11 +359,10 @@ extension ContactGroupsDataService {
     }
 
     func queueDelete(groupID: String) -> Promise<Void> {
-        let context = self.coreDataService.operationContext
         let userID = self.userID
         let queue = self.queueManager
         return Promise<Void> { seal in
-            context.perform {
+            self.coreDataService.performOnRootSavingContext { context in
                 guard let label = Label.labelGroup(byID: groupID, inManagedObjectContext: context) else {
                     seal.fulfill_()
                     return

@@ -34,7 +34,7 @@ struct EncryptionPreferences {
     let error: EncryptionPreferencesError?
 }
 
-enum EncryptionPreferencesError: Error {
+enum EncryptionPreferencesError: Error, Equatable {
     case internalUserDisable
     case internalUserNoApiKey
     case internalUserNoValidApiKey

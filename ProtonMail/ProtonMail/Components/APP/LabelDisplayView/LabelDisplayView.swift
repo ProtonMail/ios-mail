@@ -31,10 +31,6 @@ class LabelDisplayView: PMView {
         return "LabelDisplayView"
     }
 
-    override func awakeFromNib() {
-
-    }
-
     override func sizeToFit() {
         labelText.sizeToFit()
         super.sizeToFit()

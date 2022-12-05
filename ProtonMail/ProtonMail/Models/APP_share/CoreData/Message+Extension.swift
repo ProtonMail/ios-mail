@@ -161,16 +161,18 @@ extension Message {
 
     func firstValidFolder() -> String? {
         let labelObjects = self.mutableSetValue(forKey: "labels")
-        for lableObject in labelObjects {
-            if let label = lableObject as? Label {
+        for label in labelObjects {
+            if let label = label as? Label {
                 if label.type == 3 {
                     return label.labelID
                 }
-
-                if !label.labelID.preg_match("(?!^\\d+$)^.+$") {
-                    if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
-                        return label.labelID
-                    }
+                if !label.labelID.preg_match("(?!^\\d+$)^.+$"),
+                   label.labelID != HiddenLocation.draft.rawValue,
+                   label.labelID != HiddenLocation.sent.rawValue,
+                   label.labelID != Location.starred.rawValue,
+                   label.labelID != Location.allmail.rawValue,
+                   label.labelID != HiddenLocation.outbox.rawValue {
+                    return label.labelID
                 }
             }
         }
@@ -307,13 +309,13 @@ extension Message {
 
     // MARK: methods
 
-    func decryptBody(keys: [Key], passphrase: String) throws -> String? {
+    func decryptBody(keys: [Key], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
                 let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(
-                    key.privateKey,
+                    ArmoredKey(value: key.privateKey),
                     passphrase: passphrase
                 )
                 return decryptedBody
@@ -331,7 +333,7 @@ extension Message {
         return nil
     }
 
-    func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
+    func decryptBody(keys: [Key], userKeys: [Data], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
@@ -339,7 +341,7 @@ extension Message {
                 let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                                                   passphrase: passphrase,
                                                                                   key: key)
-                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
                                                                                     passphrase: addressKeyPassphrase)
                 return decryptedBody
             } catch {
@@ -356,7 +358,7 @@ extension Message {
         return try body.split()
     }
 
-    func getSessionKey(keys: [Data], passphrase: String) throws -> SymmetricKey? {
+    func getSessionKey(keys: [Key], passphrase: Passphrase) throws -> SessionKey? {
         return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
 

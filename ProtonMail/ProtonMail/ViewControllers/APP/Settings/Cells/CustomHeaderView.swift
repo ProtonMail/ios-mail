@@ -29,7 +29,7 @@ class CustomHeaderView: UITableViewCell {
         super.awakeFromNib()
 
         if #available(iOS 10, *) {
-            headerText.font = UIFont.preferredFont(forTextStyle: .caption1)
+            headerText.font = UIFont.preferredFont(for: .caption1, weight: .regular)
             headerText.adjustsFontForContentSizeCategory = true
         }
     }

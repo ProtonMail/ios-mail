@@ -65,7 +65,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
         let item = self.viewModel.sections[indexPath.section]
         if let switchCell = cell as? SwitchTableViewCell {
-            switchCell.configCell(item.title, status: viewModel.isDohOn) { _, newStatus, _ in
+            switchCell.configCell(item.title, isOn: viewModel.isDohOn) { newStatus, _ in
                 self.viewModel.setDohStatus(newStatus)
             }
         }
@@ -84,15 +84,14 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
 
         if let headerCell = header {
             let textLabel = UILabel()
-
-            let textAttribute = FontManager.DefaultSmallWeak.alignment(.left)
-            textLabel.attributedText = NSAttributedString(string: eSection.head, attributes: textAttribute)
+            textLabel.set(text: eSection.head,
+                          preferredFont: .subheadline,
+                          textColor: ColorProvider.TextWeak)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 
             headerCell.contentView.addSubview(textLabel)
 
             NSLayoutConstraint.activate([
-                textLabel.heightAnchor.constraint(equalToConstant: 20.0),
                 textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 24),
                 textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
                 textLabel.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 16),
@@ -128,6 +127,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
                 textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
             }
             textView.attributedText = attributedString
+            textView.font = .preferredFont(forTextStyle: .footnote)
             textView.translatesAutoresizingMaskIntoConstraints = false
             textView.delegate = self
 

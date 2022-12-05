@@ -43,7 +43,6 @@ class ConversationCountRequest: Request {
 
 class ConversationCountResponse: Response {
     var responseDict: [String: Any]?
-    var counts: [ConversationCountData]?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         responseDict = response
@@ -53,10 +52,9 @@ class ConversationCountResponse: Response {
             return false
         }
 
-        guard let result = try? JSONDecoder().decode([ConversationCountData].self, from: data) else {
+        guard (try? JSONDecoder().decode([ConversationCountData].self, from: data)) != nil else {
             return false
         }
-        counts = result
         return true
     }
 }

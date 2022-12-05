@@ -21,16 +21,22 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import LifetimeTracker
 import ProtonCore_ForceUpgrade
 import ProtonCore_Networking
 #if DEBUG
 import OHHTTPStubs
 #endif
 
-class ForceUpgradeManager {
+class ForceUpgradeManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
     static let shared = ForceUpgradeManager()
 
-    private init() { }
+    private init() {
+        trackLifetime()
+    }
 
     var forceUpgradeHelper: ForceUpgradeDelegate = {
         return ForceUpgradeHelper(config: .mobile(URL.appleStore))

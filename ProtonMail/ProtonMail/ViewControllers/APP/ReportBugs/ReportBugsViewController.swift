@@ -21,13 +21,18 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import LifetimeTracker
 import MBProgressHUD
-import SideMenuSwift
 import ProtonCore_Payments
 import ProtonCore_UIFoundations
 import Reachability
+import SideMenuSwift
 
-class ReportBugsViewController: ProtonMailViewController {
+class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private let user: UserManager
     fileprivate let bottomPadding: CGFloat = 30.0
     fileprivate let textViewDefaultHeight: CGFloat = 120.0
@@ -46,6 +51,7 @@ class ReportBugsViewController: ProtonMailViewController {
         self.user = user
 
         super.init(nibName: nil, bundle: nil)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {
@@ -75,7 +81,7 @@ class ReportBugsViewController: ProtonMailViewController {
             addPlaceholder()
         } else {
             removePlaceholder()
-            textView.attributedText = cachedBugReport.cachedBug.apply(style: FontManager.Default)
+            textView.set(text: cachedBugReport.cachedBug, preferredFont: .body)
         }
         self.title = LocalString._menu_bugs_title
 
@@ -157,12 +163,11 @@ class ReportBugsViewController: ProtonMailViewController {
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
-        textView.attributedText = LocalString._bug_description.apply(style: FontManager.Default.foregroundColor(ColorProvider.TextHint))
+        textView.set(text: LocalString._bug_description, preferredFont: .body, textColor: ColorProvider.TextHint)
     }
 
     fileprivate func removePlaceholder() {
-        textView.attributedText = .init()
-        textView.typingAttributes = FontManager.Default
+        textView.set(text: .empty, preferredFont: .body)
     }
 
     fileprivate func reset() {

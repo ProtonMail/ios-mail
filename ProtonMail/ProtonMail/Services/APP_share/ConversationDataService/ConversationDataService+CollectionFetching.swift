@@ -82,8 +82,7 @@ extension ConversationDataService {
                     self.contactCacheStatus.contactsCached = 0
                 }
                 let totalMessageCount = responseDict?["Total"] as? Int ?? 0
-                let context = self.contextProvider.rootSavingContext
-                context.perform { [weak self] in
+                self.contextProvider.performOnRootSavingContext { [weak self] context in
                     do {
                         guard let self = self else { return }
                         var conversationsDict = response.conversationsDict
@@ -197,8 +196,7 @@ extension ConversationDataService {
                     return
                 }
                 
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         var conversationsDict = response.conversationsDict
 

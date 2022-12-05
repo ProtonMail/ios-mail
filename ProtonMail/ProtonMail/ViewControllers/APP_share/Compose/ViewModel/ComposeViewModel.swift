@@ -32,7 +32,7 @@ protocol FileData {
     var contents: AttachmentConvertible { get set }
 }
 
-struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
+struct ConcreteFileData: FileData {
     var name: String
     var ext: String
     var contents: AttachmentConvertible
@@ -48,18 +48,19 @@ class ComposeViewModel: NSObject {
     let composerMessageHelper: ComposerMessageHelper
     let messageService: MessageDataService
     let coreDataContextProvider: CoreDataContextProviderProtocol
+    let isEditingScheduleMsg: Bool
 
-    init(
-        msgDataService: MessageDataService,
-        contextProvider: CoreDataContextProviderProtocol,
-        user: UserManager
-    ) {
+    init(msgDataService: MessageDataService,
+         contextProvider: CoreDataContextProviderProtocol,
+         user: UserManager,
+         isEditingScheduleMsg: Bool = false) {
         self.messageService = msgDataService
         self.coreDataContextProvider = contextProvider
         self.composerMessageHelper = ComposerMessageHelper(msgDataService: msgDataService,
                                                            contextProvider: contextProvider,
                                                            user: user,
                                                            cacheService: user.cacheService)
+        self.isEditingScheduleMsg = isEditingScheduleMsg
     }
 
     /// Only to notify ComposeContainerViewModel that contacts changed
@@ -117,7 +118,7 @@ class ComposeViewModel: NSObject {
     }
 
     ///
-    func sendMessage() {
+    func sendMessage(deliveryTime: Date?) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
 

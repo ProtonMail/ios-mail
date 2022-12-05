@@ -32,6 +32,9 @@ class ExpandedHeaderViewController: UIViewController {
 
     var contactTapped: ((MessageHeaderContactContext) -> Void)?
 
+    // storing this for spotlight purposes
+    private weak var trackerProtectionRow: ExpandedHeaderRowView?
+
     init(viewModel: ExpandedHeaderViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -62,32 +65,41 @@ class ExpandedHeaderViewController: UIViewController {
     private func setUpView() {
         customView.contentStackView.clearAllViews()
 
-        customView.initialsLabel.text = viewModel.initials.string
+        customView.initialsLabel.set(text: viewModel.infoProvider.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
 
-        customView.senderNameLabel.attributedText = viewModel.sender
+        customView.senderNameLabel.set(text: viewModel.infoProvider.senderName,
+                                       preferredFont: .subheadline,
+                                       weight: .semibold,
+                                       lineBreakMode: .byTruncatingMiddle)
 
-        customView.timeLabel.attributedText = viewModel.time
+        customView.timeLabel.set(text: viewModel.infoProvider.time,
+                                 preferredFont: .footnote,
+                                 textColor: ColorProvider.TextWeak)
 
-        customView.senderEmailControl.label.attributedText = viewModel.senderEmail
+        customView.senderEmailControl.label.set(text: viewModel.infoProvider.senderEmail,
+                                                preferredFont: .footnote,
+                                                textColor: ColorProvider.InteractionNorm,
+                                                lineBreakMode: .byTruncatingMiddle)
 
-        customView.starImageView.isHidden = !viewModel.message.isStarred
+        customView.starImageView.isHidden = !viewModel.infoProvider.message.isStarred
 
         customView.senderEmailControl.tap = { [weak self] in
-            guard let sender = self?.viewModel.senderContact else { return }
+            guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
 
         var contactRow: ExpandedHeaderRowView?
-        if let toData = viewModel.toData {
-            contactRow = present(viewModel: toData, isToContacts: true)
+        if let toData = viewModel.infoProvider.toData {
+            contactRow = present(viewModel: toData, doNotCoverMoreButton: true)
         }
 
-        if let ccData = viewModel.ccData {
-            contactRow = present(viewModel: ccData)
+        if let ccData = viewModel.infoProvider.ccData {
+            let doNotCoverMoreButton = viewModel.infoProvider.toData == nil
+            contactRow = present(viewModel: ccData, doNotCoverMoreButton: doNotCoverMoreButton)
         }
 
-        if viewModel.toData == nil && viewModel.ccData == nil {
+        if viewModel.infoProvider.toData == nil && viewModel.infoProvider.ccData == nil {
             contactRow = present(viewModel: .undisclosedRecipients)
         }
 
@@ -95,22 +107,27 @@ class ExpandedHeaderViewController: UIViewController {
             customView.contentStackView.setCustomSpacing(18, after: rowView)
         }
 
-        !viewModel.tags.isEmpty ? presentTags() : ()
+        let tags = viewModel.infoProvider.message.tagUIModels
+        tags.isEmpty ? (): presentTags()
 
-        if let fullDate = viewModel.date {
+        if let fullDate = viewModel.infoProvider.date {
             presentFullDateRow(stringDate: fullDate)
         }
 
-        if let image = viewModel.originImage, let title = viewModel.originTitle {
+        if let image = viewModel.infoProvider.originImage(isExpanded: true),
+            let title = viewModel.infoProvider.originFolderTitle(isExpanded: true) {
             presentOriginRow(image: image, title: title)
         }
 
-        if let size = viewModel.size {
-            presentSizeRow(size: size)
+        presentSizeRow(size: viewModel.infoProvider.size)
+
+        if let (title, trackersFound) = viewModel.trackerProtectionRowInfo {
+            presentTrackerProtectionRow(title: title, trackersFound: trackersFound)
         }
 
-        if let icon = viewModel.senderContact?.encryptionIconStatus?.iconWithColor,
-           let reason = viewModel.senderContact?.encryptionIconStatus?.text {
+        let contact = viewModel.infoProvider.checkedSenderContact
+        if let icon = contact?.encryptionIconStatus?.iconWithColor,
+           let reason = contact?.encryptionIconStatus?.text {
             presentLockIconRow(icon: icon, reason: reason)
         }
         presentHideDetailButton()
@@ -119,8 +136,8 @@ class ExpandedHeaderViewController: UIViewController {
 
     private func setUpLock() {
         guard customView.lockImageView.image == nil,
-              viewModel.message.isDetailDownloaded,
-              let contact = viewModel.senderContact else { return }
+              viewModel.infoProvider.message.isDetailDownloaded,
+              let contact = viewModel.infoProvider.checkedSenderContact else { return }
 
         if let iconStatus = contact.encryptionIconStatus {
             self.customView.lockImageView.tintColor = iconStatus.iconColor.color
@@ -130,26 +147,30 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentTags() {
+        let tags = viewModel.infoProvider.message.tagUIModels
+        guard !tags.isEmpty else { return }
         let tagViews = ExpandedHeaderTagView(frame: .zero)
-        tagViews.setUp(tags: viewModel.tags)
+        tagViews.setUp(tags: tags)
         customView.contentStackView.addArrangedSubview(tagViews)
     }
 
-    @discardableResult
-    private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, isToContacts: Bool = false) -> ExpandedHeaderRowView {
+    private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, doNotCoverMoreButton: Bool = false) -> ExpandedHeaderRowView {
         let row = ExpandedHeaderRowView()
         row.iconImageView.isHidden = true
-        row.titleLabel.attributedText = viewModel.title
-        row.titleLabel.lineBreakMode = .byTruncatingTail
+        row.titleLabel.text = viewModel.title
         row.contentStackView.spacing = 5
 
         viewModel.recipients.enumerated().map { dataSet -> UIStackView in
             let recipient = dataSet.element
             let control = TextControl()
-            control.label.attributedText = recipient.name
+            control.label.set(text: recipient.name,
+                              preferredFont: .footnote)
             control.label.setContentCompressionResistancePriority(.required, for: .horizontal)
             let addressController = TextControl()
-            addressController.label.attributedText = recipient.address
+            addressController.label.set(text: recipient.address,
+                                        preferredFont: .footnote,
+                                        textColor: ColorProvider.InteractionNorm,
+                                        lineBreakMode: .byTruncatingMiddle)
             addressController.label.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
             if let contact = recipient.contact {
                 control.tap = { [weak self] in
@@ -162,7 +183,7 @@ class ExpandedHeaderViewController: UIViewController {
             let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center, spacing: 4)
             stack.addArrangedSubview(control)
             stack.addArrangedSubview(addressController)
-            if dataSet.offset == 0 && isToContacts {
+            if dataSet.offset == 0 && doNotCoverMoreButton {
                 // 32 reply button + 8 * 2 spacing + 32 more button
                 stack.setCustomSpacing(80, after: addressController)
                 stack.addArrangedSubview(UIView())
@@ -180,34 +201,72 @@ class ExpandedHeaderViewController: UIViewController {
         contactTapped?(context)
     }
 
-    private func presentFullDateRow(stringDate: NSAttributedString) {
+    private func presentFullDateRow(stringDate: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = IconProvider.calendarToday
         let dateLabel = UILabel(frame: .zero)
-        dateLabel.attributedText = stringDate
+        dateLabel.set(text: stringDate,
+                      preferredFont: .footnote,
+                      textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(dateLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
 
-    private func presentOriginRow(image: UIImage, title: NSAttributedString) {
+    private func presentOriginRow(image: UIImage, title: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = image
         let titleLabel = UILabel()
-        titleLabel.attributedText = title
+        titleLabel.set(text: title,
+                       preferredFont: .footnote,
+                       textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
 
-    private func presentSizeRow(size: NSAttributedString) {
+    private func presentSizeRow(size: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
         row.iconImageView.image = IconProvider.filingCabinet
         let titleLabel = UILabel()
-        titleLabel.attributedText = size
+        titleLabel.set(text: size,
+                       preferredFont: .footnote,
+                       textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
+    }
+
+    private func presentTrackerProtectionRow(title: String, trackersFound: Bool) {
+        let row = ExpandedHeaderRowView()
+        row.titleLabel.isHidden = true
+        row.iconImageView.image = trackersFound ? IconProvider.shieldFilled : IconProvider.shield
+        row.iconImageView.tintColor = ColorProvider.IconAccent
+
+        row.contentStackView.axis = .horizontal
+
+        let titleLabel = UILabel()
+        titleLabel.set(text: title, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
+        row.contentStackView.addArrangedSubview(titleLabel)
+
+        row.contentStackView.addArrangedSubview(UIView())
+
+        let chevronImageView = UIImageView()
+        chevronImageView.image = IconProvider.chevronRightFilled
+        chevronImageView.tintColor = ColorProvider.IconNorm
+        chevronImageView.contentMode = .scaleAspectFit
+        [
+            chevronImageView.heightAnchor.constraint(equalToConstant: 16).setPriority(as: .defaultHigh)
+        ].activate()
+        row.contentStackView.addArrangedSubview(chevronImageView)
+
+        let button = UIButton()
+        button.addTarget(self, action: #selector(trackerInfoTapped), for: .touchUpInside)
+        row.addSubview(button)
+        button.fillSuperview()
+
+        customView.contentStackView.addArrangedSubview(row)
+        trackerProtectionRow = row
     }
 
     private func presentLockIconRow(icon: UIImage, reason: String) {
@@ -215,15 +274,17 @@ class ExpandedHeaderViewController: UIViewController {
         row.titleLabel.isHidden = true
         row.iconImageView.image = icon
         let titleLabel = UILabel()
-        titleLabel.attributedText = reason.apply(style: .CaptionWeak)
+        titleLabel.set(text: reason,
+                       preferredFont: .footnote,
+                       textColor: ColorProvider.TextWeak)
         row.contentStackView.addArrangedSubview(titleLabel)
         customView.contentStackView.addArrangedSubview(row)
     }
 
     private func presentHideDetailButton() {
         let button = UIButton()
+        button.titleLabel?.set(text: nil, preferredFont: .footnote)
         button.setTitle(LocalString._hide_details, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
         button.setContentCompressionResistancePriority(.required, for: .vertical)
         let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
@@ -244,7 +305,31 @@ class ExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.senderContact?.encryptionIconStatus?.text.alertToastBottom()
+        viewModel.infoProvider.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
+    }
+
+    @objc
+    private func trackerInfoTapped() {
+        if
+            let trackerProtectionSummary = viewModel.infoProvider.trackerProtectionSummary,
+            !trackerProtectionSummary.trackers.isEmpty {
+            let trackerList = TrackerListViewController(trackerProtectionSummary: trackerProtectionSummary)
+            navigationController?.pushViewController(trackerList, animated: true)
+        } else {
+            let messageComponents: [String] = [
+                L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
+                String.localizedStringWithFormat(L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message, 0)
+            ]
+            let alert = UIAlertController(
+                title: String.localizedStringWithFormat(L11n.EmailTrackerProtection.n_email_trackers_found, 0),
+                message: messageComponents.joined(separator: " "),
+                preferredStyle: .alert
+            )
+            let url = URL(string: Link.emailTrackerProtection)!
+            alert.addURLAction(title: LocalString._learn_more, url: url)
+            alert.addOKAction()
+            present(alert, animated: true)
+        }
     }
 
     @objc
@@ -256,4 +341,14 @@ class ExpandedHeaderViewController: UIViewController {
         nil
     }
 
+}
+
+extension ExpandedHeaderViewController: HeaderViewController {
+    var spotlightableView: UIView? {
+        trackerProtectionRow?.iconImageView
+    }
+
+    func trackerProtectionSummaryChanged() {
+        setUpView()
+    }
 }

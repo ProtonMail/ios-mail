@@ -182,6 +182,8 @@ public final class AccountSwitcher: UIView, AccessibleView {
         self.manageAccountIcon.image = IconProvider.cogWheel
         self.manageAccountIcon.backgroundColor = color
         self.manageAccountIcon.tintColor = ColorProvider.IconNorm
+        manageAccountLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        manageAccountLabel.adjustsFontForContentSizeCategory = true
     }
 
     private func presentAccountManager() {
@@ -297,6 +299,14 @@ extension AccountSwitcher {
         self.shortUserNameView.backgroundColor = ColorProvider.BrandNorm
         self.shortUserName.backgroundColor = ColorProvider.BrandNorm
         self.shortUserName.textColor = AccountSwitcherStyle.smallTextColor
+
+        username.font = .adjustedFont(forTextStyle: .subheadline)
+        usermail.font = .adjustedFont(forTextStyle: .footnote)
+        shortUserName.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
+        shortUserName.adjustsFontSizeToFitWidth = true
+        username.adjustsFontForContentSizeCategory = true
+        usermail.adjustsFontForContentSizeCategory = true
+        shortUserName.adjustsFontForContentSizeCategory = true
     }
 
     private func setupAccountTable() {
@@ -313,7 +323,7 @@ extension AccountSwitcher {
 
 extension AccountSwitcher: UITableViewDataSource, UITableViewDelegate, AccountSwitchCellProtocol {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.CELL_HEIGHT
+        DFSSetting.enableDFS ? UITableView.automaticDimension: CELL_HEIGHT
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -327,7 +337,8 @@ extension AccountSwitcher: UITableViewDataSource, UITableViewDelegate, AccountSw
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        let label = UILabel(CoreString._as_switch_to_title, font: .systemFont(ofSize: 15), textColor: ColorProvider.TextWeak)
+        let font = UIFont.adjustedFont(forTextStyle: .subheadline)
+        let label = UILabel(CoreString._as_switch_to_title, font: font, textColor: ColorProvider.TextWeak)
         view.addSubview(label)
         label.constraintToSuperview(top: 24, right: 0, bottom: -8, left: 16)
         label.backgroundColor = ColorProvider.BackgroundNorm

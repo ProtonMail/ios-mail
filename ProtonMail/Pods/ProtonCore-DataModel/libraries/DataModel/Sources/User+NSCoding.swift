@@ -23,83 +23,96 @@ import Foundation
 
 // MARK: - NSCoding
 extension UserInfo: NSCoding {
-    
+
     fileprivate struct CoderKey {
         static let displayName = "displayName"
+        static let hideEmbeddedImages = "hideEmbeddedImages"
+        static let hideRemoteImages = "hideRemoteImages"
+        static let imageProxy = "imageProxy"
         static let maxSpace = "maxSpace"
         static let notificationEmail = "notificationEmail"
         static let signature = "signature"
         static let usedSpace = "usedSpace"
         static let userStatus = "userStatus"
         static let userAddress = "userAddresses"
-        
+
         static let autoSaveContact = "autoSaveContact"
         static let language = "language"
         static let maxUpload = "maxUpload"
         static let notify = "notify"
         static let showImages = "showImages"
-        
+
         static let swipeLeft = "swipeLeft"
         static let swipeRight = "swipeRight"
-        
+
         static let role = "role"
-        
+
         static let delinquent = "delinquent"
-        
+
         static let userKeys = "userKeys"
         static let userId = "userId"
-        
+
         static let attachPublicKey = "attachPublicKey"
         static let sign = "sign"
-        
+
         static let linkConfirmation = "linkConfirmation"
-        
+
         static let credit = "credit"
         static let currency = "currency"
         static let subscribed = "subscribed"
-        
+
         static let pwdMode = "passwordMode"
         static let twoFA = "2faStatus"
-        
+
         static let enableFolderColor = "enableFolderColor"
         static let inheritParentFolderColor = "inheritParentFolderColor"
         static let groupingMode = "groupingMode"
         static let weekStart = "weekStart"
         static let delaySendSeconds = "delaySendSeconds"
+
+        static let telemetry = "telemetry"
+        static let crashReports = "crashReports"
+
+        static let conversationToolbarActions = "conversationToolbarActions"
+        static let messageToolbarActions = "messageToolbarActions"
+        static let listToolbarActions = "listToolbarActions"
     }
-    
+
     public convenience init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.string(forKey: CoderKey.displayName),
+            hideEmbeddedImages: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.hideEmbeddedImages),
+            hideRemoteImages: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.hideRemoteImages),
+            imageProxy: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.imageProxy),
             maxSpace: aDecoder.decodeInt64(forKey: CoderKey.maxSpace),
             notificationEmail: aDecoder.string(forKey: CoderKey.notificationEmail),
             signature: aDecoder.string(forKey: CoderKey.signature),
             usedSpace: aDecoder.decodeInt64(forKey: CoderKey.usedSpace),
             userAddresses: aDecoder.decodeObject(forKey: CoderKey.userAddress) as? [Address],
-            
+
             autoSC: aDecoder.decodeInteger(forKey: CoderKey.autoSaveContact),
             language: aDecoder.string(forKey: CoderKey.language),
             maxUpload: aDecoder.decodeInt64(forKey: CoderKey.maxUpload),
             notify: aDecoder.decodeInteger(forKey: CoderKey.notify),
-            showImage: aDecoder.decodeInteger(forKey: CoderKey.showImages),
-            
-            swipeL: aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
-            swipeR: aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
-            
+            showImages: aDecoder.decodeInteger(forKey: CoderKey.showImages),
+
+            swipeLeft: aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
+            swipeRight: aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
+
             role: aDecoder.decodeInteger(forKey: CoderKey.role),
-            
+
             delinquent: aDecoder.decodeInteger(forKey: CoderKey.delinquent),
-            
+
             keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? [Key],
             userId: aDecoder.string(forKey: CoderKey.userId),
             sign: aDecoder.decodeInteger(forKey: CoderKey.sign),
             attachPublicKey: aDecoder.decodeInteger(forKey: CoderKey.attachPublicKey),
-            
+
             linkConfirmation: aDecoder.string(forKey: CoderKey.linkConfirmation),
-            
+
             credit: aDecoder.decodeInteger(forKey: CoderKey.credit),
             currency: aDecoder.string(forKey: CoderKey.currency),
-            
+
             pwdMode: aDecoder.decodeInteger(forKey: CoderKey.pwdMode),
             twoFA: aDecoder.decodeInteger(forKey: CoderKey.twoFA),
             enableFolderColor: aDecoder.decodeInteger(forKey: CoderKey.enableFolderColor),
@@ -107,49 +120,63 @@ extension UserInfo: NSCoding {
             subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed),
             groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode),
             weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart),
-            delaySendSeconds: aDecoder.decodeInteger(forKey: CoderKey.delaySendSeconds)
+            delaySendSeconds: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.delaySendSeconds),
+            telemetry: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.telemetry),
+            crashReports: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.crashReports),
+            conversationToolbarActions: aDecoder.decodeObject(forKey: CoderKey.conversationToolbarActions) as? ToolbarActions,
+            messageToolbarActions: aDecoder.decodeObject(forKey: CoderKey.messageToolbarActions) as? ToolbarActions,
+            listToolbarActions: aDecoder.decodeObject(forKey: CoderKey.listToolbarActions) as? ToolbarActions
         )
     }
-    
+
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(maxSpace, forKey: CoderKey.maxSpace)
         aCoder.encode(notificationEmail, forKey: CoderKey.notificationEmail)
         aCoder.encode(usedSpace, forKey: CoderKey.usedSpace)
         aCoder.encode(userAddresses, forKey: CoderKey.userAddress)
-        
+
         aCoder.encode(language, forKey: CoderKey.language)
         aCoder.encode(maxUpload, forKey: CoderKey.maxUpload)
         aCoder.encode(notify, forKey: CoderKey.notify)
-        
+
         aCoder.encode(role, forKey: CoderKey.role)
         aCoder.encode(delinquent, forKey: CoderKey.delinquent)
         aCoder.encode(userKeys, forKey: CoderKey.userKeys)
-        
+
         // get from mail settings
         aCoder.encode(displayName, forKey: CoderKey.displayName)
         aCoder.encode(defaultSignature, forKey: CoderKey.signature)
         aCoder.encode(autoSaveContact, forKey: CoderKey.autoSaveContact)
         aCoder.encode(showImages.rawValue, forKey: CoderKey.showImages)
+        aCoder.encode(hideEmbeddedImages, forKey: CoderKey.hideEmbeddedImages)
+        aCoder.encode(hideRemoteImages, forKey: CoderKey.hideRemoteImages)
         aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encode(swipeRight, forKey: CoderKey.swipeRight)
         aCoder.encode(userId, forKey: CoderKey.userId)
         aCoder.encode(enableFolderColor, forKey: CoderKey.enableFolderColor)
         aCoder.encode(inheritParentFolderColor, forKey: CoderKey.inheritParentFolderColor)
-        
+
         aCoder.encode(sign, forKey: CoderKey.sign)
         aCoder.encode(attachPublicKey, forKey: CoderKey.attachPublicKey)
-        
+
         aCoder.encode(linkConfirmation.rawValue, forKey: CoderKey.linkConfirmation)
-        
+
         aCoder.encode(credit, forKey: CoderKey.credit)
         aCoder.encode(currency, forKey: CoderKey.currency)
         aCoder.encode(subscribed, forKey: CoderKey.subscribed)
-        
+
         aCoder.encode(passwordMode, forKey: CoderKey.pwdMode)
         aCoder.encode(twoFactor, forKey: CoderKey.twoFA)
         aCoder.encode(groupingMode, forKey: CoderKey.groupingMode)
         aCoder.encode(weekStart, forKey: CoderKey.weekStart)
         aCoder.encode(delaySendSeconds, forKey: CoderKey.delaySendSeconds)
+
+        aCoder.encode(telemetry, forKey: CoderKey.telemetry)
+        aCoder.encode(crashReports, forKey: CoderKey.crashReports)
+
+        aCoder.encode(conversationToolbarActions, forKey: CoderKey.conversationToolbarActions)
+        aCoder.encode(messageToolbarActions, forKey: CoderKey.messageToolbarActions)
+        aCoder.encode(listToolbarActions, forKey: CoderKey.listToolbarActions)
     }
 }
 
@@ -157,7 +184,7 @@ extension UserInfo {
     public func archive() -> Data {
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
-    
+
     public static func unarchive(_ data: Data?) -> UserInfo? {
         guard let data = data else { return nil }
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? UserInfo

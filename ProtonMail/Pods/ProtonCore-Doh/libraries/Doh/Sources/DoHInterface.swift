@@ -133,7 +133,7 @@ public protocol DoHInterface {
     
     func getSignUpString() -> String
     
-    var status: DoHStatus { get }
+    var status: DoHStatus { get set }
     
     func setUpCookieSynchronization(storage: HTTPCookieStorage?)
     func synchronizeCookies(with response: URLResponse?)

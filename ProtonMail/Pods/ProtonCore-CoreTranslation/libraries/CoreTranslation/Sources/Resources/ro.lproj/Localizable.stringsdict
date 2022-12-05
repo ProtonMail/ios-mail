@@ -236,41 +236,5 @@
 			<string>%d de utilizatori</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>pentru %d luni</string>
-			<key>one</key>
-			<string>pentru o lună</string>
-			<key>other</key>
-			<string>pentru %d de luni</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>pentru %d ani</string>
-			<key>one</key>
-			<string>pentru un an</string>
-			<key>other</key>
-			<string>pentru %d de ani</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

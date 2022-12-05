@@ -577,11 +577,14 @@ open class DKAssetGroupDetailVC: UIViewController,
                 cell.thumbnailImage = image
             }
         }
-        
-        cell.longPressBlock = { [weak self, weak cell] in
-            guard let strongSelf = self, let strongCell = cell else { return }
-            
-            strongSelf.showGallery(from: strongCell)
+
+        if let imagePickerController = imagePickerController,
+            imagePickerController.UIDelegate.needsToShowPreviewOnLongPress() {
+
+            cell.longPressBlock = { [weak self, weak cell] in
+                guard let strongSelf = self, let strongCell = cell else { return }
+                strongSelf.showGallery(from: strongCell)
+            }
         }
     }
 
@@ -623,6 +626,12 @@ open class DKAssetGroupDetailVC: UIViewController,
             assetCell.isSelected = false
             self.collectionView?.deselectItem(at: indexPath, animated: false)
         }
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let assetCell: DKAssetGroupDetailBaseCell? = cell as? DKAssetGroupDetailBaseCell
+
+        assetCell?.asset?.cancelRequests()
     }
 
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

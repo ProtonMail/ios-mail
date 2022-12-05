@@ -18,17 +18,17 @@
 import ProtonCore_Networking
 
 struct RemoveLabelFromMessagesRequest: Request {
-    var labelID: String
+    var labelID: LabelID
     var messages: [String]
 
-    init(labelID: String, messages: [String]) {
+    init(labelID: LabelID, messages: [String]) {
         self.labelID = labelID
         self.messages = messages
     }
 
     var parameters: [String: Any]? {
         var out = [String: Any]()
-        out["LabelID"] = labelID
+        out["LabelID"] = labelID.rawValue
         out["IDs"] = messages
         return out
     }

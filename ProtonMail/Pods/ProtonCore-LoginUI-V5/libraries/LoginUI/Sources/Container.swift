@@ -22,6 +22,7 @@
 import Foundation
 import TrustKit
 import ProtonCore_APIClient
+import ProtonCore_Authentication
 import ProtonCore_Challenge
 import ProtonCore_DataModel
 import ProtonCore_Doh
@@ -33,6 +34,8 @@ import typealias ProtonCore_Payments.ListOfIAPIdentifiers
 import typealias ProtonCore_Payments.ListOfShownPlanNames
 import typealias ProtonCore_Payments.BugAlertHandler
 import ProtonCore_PaymentsUI
+import ProtonCore_TroubleShooting
+import ProtonCore_Environment
 
 extension PMChallenge: ChallangeParametersProvider {
     public func provideParameters() -> [[String: Any]] {
@@ -43,100 +46,153 @@ extension PMChallenge: ChallangeParametersProvider {
 final class Container {
     let login: Login
     let signupService: Signup
-
-    private let api: PMAPIService
-    private let authManager: AuthManager
+    let authManager: AuthHelper
+    
+    let api: PMAPIService
     private var humanCheckHelper: HumanCheckHelper?
-    let humanVerificationVersion: HumanVerificationVersion
     private var paymentsManager: PaymentsManager?
     private let externalLinks: ExternalLinks
     private let clientApp: ClientApp
     private let appName: String
     private let challenge: PMChallenge
+    let troubleShootingHelper: TroubleShootingHelper
     
     var token: String?
     var tokenType: String?
-
+    
+    @available(*, deprecated,
+                renamed: "init(appName:clientApp:doh:apiServiceDelegate:forceUpgradeDelegate:minimumAccountType:)",
+                message: "HumanVerificationVersion is removed")
+    convenience init(appName: String,
+                     clientApp: ClientApp,
+                     doh: DoHInterface,
+                     trustKit: TrustKit? = nil,
+                     apiServiceDelegate: APIServiceDelegate,
+                     forceUpgradeDelegate: ForceUpgradeDelegate,
+                     humanVerificationVersion: HumanVerificationVersion,
+                     minimumAccountType: AccountType) {
+        
+        self.init(appName: appName, clientApp: clientApp, doh: doh, trustKit: trustKit,
+                  apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate,
+                    minimumAccountType: minimumAccountType)
+    }
+    
+    @available(*, deprecated,
+                renamed: "init(appName:clientApp:environment:apiServiceDelegate:orceUpgradeDelegate:minimumAccountType:)",
+                message: "HumanVerificationVersion is removed")
+    convenience init(appName: String,
+                     clientApp: ClientApp,
+                     environment: Environment,
+                     trustKit: TrustKit? = nil,
+                     apiServiceDelegate: APIServiceDelegate,
+                     forceUpgradeDelegate: ForceUpgradeDelegate,
+                     humanVerificationVersion: HumanVerificationVersion,
+                     minimumAccountType: AccountType) {
+        
+        self.init(appName: appName, clientApp: clientApp, doh: environment.doh, trustKit: trustKit,
+                  apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate, minimumAccountType: minimumAccountType)
+    }
+    
+    convenience init(appName: String,
+                     clientApp: ClientApp,
+                     environment: Environment,
+                     trustKit: TrustKit? = nil,
+                     apiServiceDelegate: APIServiceDelegate,
+                     forceUpgradeDelegate: ForceUpgradeDelegate,
+                     minimumAccountType: AccountType) {
+        
+        self.init(appName: appName, clientApp: clientApp, doh: environment.doh, trustKit: trustKit,
+                  apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate,
+                  minimumAccountType: minimumAccountType)
+    }
+    
     init(appName: String,
          clientApp: ClientApp,
-         doh: DoH & ServerConfig,
+         doh: DoHInterface,
+         trustKit: TrustKit? = nil,
          apiServiceDelegate: APIServiceDelegate,
          forceUpgradeDelegate: ForceUpgradeDelegate,
-         humanVerificationVersion: HumanVerificationVersion,
          minimumAccountType: AccountType) {
+        
+        // use the TrustKit instance passed from the outside
+        if let trustKit = trustKit {
+            PMAPIService.trustKit = trustKit
+        }
+        
         if PMAPIService.trustKit == nil {
             let trustKit = TrustKit()
             trustKit.pinningValidator = .init()
             PMAPIService.trustKit = trustKit
         }
         
-        let sessionId = "LoginModuleSessionId"
-        api = PMAPIService(doh: doh, sessionUID: sessionId)
+        api = PMAPIService(doh: doh)
         api.forceUpgradeDelegate = forceUpgradeDelegate
         api.serviceDelegate = apiServiceDelegate
-        authManager = AuthManager()
+        authManager = AuthHelper()
         api.authDelegate = authManager
-        login = LoginService(api: api, authManager: authManager, clientApp: clientApp, sessionId: sessionId, minimumAccountType: minimumAccountType)
+        login = LoginService(api: api, authManager: authManager, clientApp: clientApp, minimumAccountType: minimumAccountType)
         challenge = PMChallenge()
         signupService = SignupService(api: api, challangeParametersProvider: challenge, clientApp: clientApp)
         self.appName = appName
         self.clientApp = clientApp
         self.externalLinks = ExternalLinks(clientApp: clientApp)
-        self.humanVerificationVersion = humanVerificationVersion
+        self.troubleShootingHelper = TroubleShootingHelper.init(doh: doh)
     }
-
+    
     // MARK: Login view models
-
+    
     func makeLoginViewModel() -> LoginViewModel {
         challenge.reset()
         return LoginViewModel(login: login, challenge: challenge)
     }
-
+    
     func makeCreateAddressViewModel(username: String, data: CreateAddressData, updateUser: @escaping (User) -> Void) -> CreateAddressViewModel {
         return CreateAddressViewModel(username: username, login: login, data: data, updateUser: updateUser)
     }
-
+    
     func makeChooseUsernameViewModel(data: CreateAddressData) -> ChooseUsernameViewModel {
         return ChooseUsernameViewModel(data: data, login: login, appName: appName)
     }
-
+    
     func makeMailboxPasswordViewModel() -> MailboxPasswordViewModel {
         return MailboxPasswordViewModel(login: login)
     }
-
+    
     func makeTwoFactorViewModel() -> TwoFactorViewModel {
         return TwoFactorViewModel(login: login)
     }
-
+    
     // MARK: Signup view models
-
+    
     func makeSignupViewModel() -> SignupViewModel {
         challenge.reset()
         return SignupViewModel(apiService: api,
                                signupService: signupService,
                                loginService: login,
-                               challenge: challenge,
-                               humanVerificationVersion: humanVerificationVersion)
+                               challenge: challenge)
     }
-
+    
     func makePasswordViewModel() -> PasswordViewModel {
         return PasswordViewModel()
     }
-
+    
     func makeRecoveryViewModel(initialCountryCode: Int) -> RecoveryViewModel {
         return RecoveryViewModel(signupService: signupService, initialCountryCode: initialCountryCode, challenge: challenge)
     }
-
+    
     func makeCompleteViewModel(initDisplaySteps: [DisplayProgressStep]) -> CompleteViewModel {
         return CompleteViewModel(signupService: signupService, loginService: login, initDisplaySteps: initDisplaySteps)
     }
-
+    
     func makeEmailVerificationViewModel() -> EmailVerificationViewModel {
         return EmailVerificationViewModel(apiService: api, signupService: signupService)
     }
     
-    func makeSummaryViewModel(planName: String?, screenVariant: SummaryScreenVariant) -> SummaryViewModel {
-        return SummaryViewModel(planName: planName, screenVariant: screenVariant, clientApp: clientApp)
+    func makeSummaryViewModel(planName: String?,
+                              paymentsAvailability: PaymentsAvailability,
+                              screenVariant: SummaryScreenVariant) -> SummaryViewModel {
+        return SummaryViewModel(planName: planName, paymentsAvailability: paymentsAvailability,
+                                screenVariant: screenVariant, clientApp: clientApp)
     }
     
     func makePaymentsCoordinator(for iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, reportBugAlertHandler: BugAlertHandler) -> PaymentsManager {
@@ -144,25 +200,24 @@ final class Container {
         self.paymentsManager = paymentsManager
         return paymentsManager
     }
-
+    
     // MARK: Other view models
-
+    
     func makeExternalLinks() -> ExternalLinks {
         return externalLinks
     }
-
+    
     func setupHumanVerification(viewController: UIViewController? = nil) {
         let nonModalUrl = URL(string: "/users/availableExternal")!
         humanCheckHelper = HumanCheckHelper(apiService: api,
                                             viewController: viewController,
                                             nonModalUrls: [nonModalUrl],
                                             clientApp: clientApp,
-                                            versionToBeUsed: humanVerificationVersion,
                                             responseDelegate: self,
                                             paymentDelegate: self)
         api.humanDelegate = humanCheckHelper
     }
-
+    
 }
 
 extension Container: HumanVerifyPaymentDelegate {
@@ -171,7 +226,7 @@ extension Container: HumanVerifyPaymentDelegate {
     }
     
     func paymentTokenStatusChanged(status: PaymentTokenStatusResult) {
-
+        
     }
 }
 
@@ -183,5 +238,11 @@ extension Container: HumanVerifyResponseDelegate {
     func humanVerifyToken(token: String?, tokenType: String?) {
         self.token = token
         self.tokenType = tokenType
+    }
+}
+
+extension Container {
+    func executeDohTroubleshootMethodFromApiDelegate() {
+        api.serviceDelegate?.onDohTroubleshot()
     }
 }

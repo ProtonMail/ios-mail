@@ -41,8 +41,7 @@ class LabelAsActionSheetPresenter {
 
         var labelActions: [PMActionSheetPlainItem] = []
         for i in 0..<rows {
-            let indexPath = IndexPath(row: i, section: 0)
-            guard let menuLabel = labelItems.getFolderItem(by: indexPath) else {
+            guard let menuLabel = labelItems.getFolderItem(at: i) else {
                 continue
             }
             var iconColor: UIColor = ColorProvider.IconNorm

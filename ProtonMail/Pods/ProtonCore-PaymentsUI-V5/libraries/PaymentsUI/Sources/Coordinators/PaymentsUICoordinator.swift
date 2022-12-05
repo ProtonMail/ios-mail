@@ -33,6 +33,7 @@ final class PaymentsUICoordinator {
     private var mode: PaymentsUIMode = .signup
     private var completionHandler: ((PaymentsUIResultReason) -> Void)?
     private var viewModel: PaymentsUIViewModel?
+    private var onDohTroubleshooting: () -> Void
     
     private let planService: ServicePlanDataServiceProtocol
     private let storeKitManager: StoreKitManagerProtocol
@@ -58,7 +59,8 @@ final class PaymentsUICoordinator {
          purchaseManager: PurchaseManagerProtocol,
          clientApp: ClientApp,
          shownPlanNames: ListOfShownPlanNames,
-         alertManager: PaymentsUIAlertManager) {
+         alertManager: PaymentsUIAlertManager,
+         onDohTroubleshooting: @escaping () -> Void) {
         self.planService = planService
         self.storeKitManager = storeKitManager
         self.purchaseManager = purchaseManager
@@ -66,6 +68,7 @@ final class PaymentsUICoordinator {
         self.alertManager = alertManager
         self.clientApp = clientApp
         self.storyboardName = Config.storyboardName
+        self.onDohTroubleshooting = onDohTroubleshooting
     }
     
     func start(viewController: UIViewController?, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
@@ -88,12 +91,15 @@ final class PaymentsUICoordinator {
         
         let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self, storyboardName: storyboardName)
         paymentsUIViewController.delegate = self
+        paymentsUIViewController.onDohTroubleshooting = { [weak self] in
+            self?.onDohTroubleshooting()
+        }
         
         viewModel = PaymentsUIViewModel(mode: mode,
-                                                 storeKitManager: storeKitManager,
-                                                 servicePlan: servicePlan,
-                                                 shownPlanNames: shownPlanNames,
-                                                 clientApp: clientApp) { [weak self] updatedPlan in
+                                        storeKitManager: storeKitManager,
+                                        servicePlan: servicePlan,
+                                        shownPlanNames: shownPlanNames,
+                                        clientApp: clientApp) { [weak self] updatedPlan in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentsUIViewController?.reloadData()
                 if updatedPlan != nil {
@@ -165,6 +171,8 @@ final class PaymentsUICoordinator {
             self.showError(message: error.userFacingMessageInPayments, error: error)
         } else if let error = error as? ResponseError {
             self.showError(message: error.localizedDescription, error: error)
+        } else if let error = error as? AuthErrors, error.isInvalidAccessToken {
+            // silence invalid access token error
         } else {
             self.showError(message: error.userFacingMessageInPayments, error: error)
         }
@@ -246,6 +254,13 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
                     self.unfinishedPurchasePlan = processingPlan
                 }
                 self.showError(error: error)
+            case let .apiMightBeBlocked(message, originalError, processingPlan):
+                if let processingPlan = processingPlan {
+                    self.unfinishedPurchasePlan = processingPlan
+                }
+                self.unfinishedPurchasePlan = processingPlan
+                // TODO: should we handle it ourselves? or let the client do it?
+                self.finishCallback(reason: .apiMightBeBlocked(message: message, originalError: originalError))
             case .purchaseCancelled:
                 break
             }

@@ -23,8 +23,8 @@ import Foundation
 import ProtonCore_Networking
 
 extension AuthService {
-    public struct EndSessionResponse: Codable, Equatable {
-        var code: Int
+    public struct EndSessionResponse: APIDecodableResponse, Encodable, Equatable {
+        let code: Int
     }
     
     struct EndSessionEndpoint: Request {

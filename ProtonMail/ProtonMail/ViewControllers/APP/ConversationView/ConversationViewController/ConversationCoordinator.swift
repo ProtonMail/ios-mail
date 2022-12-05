@@ -2,6 +2,7 @@ import SafariServices
 
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
+    var goToDraft: ((MessageID) -> Void)? { get set }
 
     func handle(navigationAction: ConversationNavigationAction)
 }
@@ -17,6 +18,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
+    var goToDraft: ((MessageID) -> Void)?
 
     init(labelId: LabelID,
          navigationController: UINavigationController,
@@ -33,24 +35,34 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     func start(openFromNotification: Bool = false) {
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: sharedServices.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                realAttachmentsFlagProvider: userCachedStatus,
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
+        let dependencies = ConversationViewModel.Dependencies(
+            fetchMessageDetail: fetchMessageDetail
+        )
         let viewModel = ConversationViewModel(
             labelId: labelId,
             conversation: conversation,
             user: user,
             contextProvider: CoreDataService.shared,
             internetStatusProvider: internetStatusProvider,
-            isDarkModeEnableClosure: { [weak self] in
-                if #available(iOS 12.0, *) {
-                    return self?.viewController?.traitCollection.userInterfaceStyle == .dark
-                } else {
-                    return false
-                }
-            },
             conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
             labelProvider: user.labelService,
-            targetID: targetID
-        )
+            goToDraft: { [weak self] msgID in
+                self?.navigationController.popViewController(animated: false)
+                self?.goToDraft?(msgID)
+            },
+            targetID: targetID,
+            dependencies: dependencies)
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)

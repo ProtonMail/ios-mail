@@ -6,6 +6,7 @@ class SingleMessageContentView: UIView {
     let replyState: HeaderContainerView.ReplyState
     let bannerContainer = UIView()
     let messageBodyContainer = UIView()
+    let editScheduleSendBannerContainer = UIView()
     let showHideHistoryButtonContainer = SingleMessageContentViewHistoryButtonContainer()
     lazy var messageHeaderContainer = HeaderContainerView(replyState: replyState)
     let attachmentContainer = UIView()
@@ -18,12 +19,20 @@ class SingleMessageContentView: UIView {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
-        accessibilityElements = [messageHeaderContainer, attachmentContainer, bannerContainer, messageBodyContainer, footerButtons]
+        accessibilityElements = [
+            messageHeaderContainer,
+            editScheduleSendBannerContainer,
+            attachmentContainer,
+            bannerContainer,
+            messageBodyContainer,
+            footerButtons
+        ]
     }
 
     private func addSubviews() {
         addSubview(stackView)
         stackView.addArrangedSubview(messageHeaderContainer)
+        stackView.addArrangedSubview(editScheduleSendBannerContainer)
         stackView.addArrangedSubview(attachmentContainer)
         stackView.addArrangedSubview(bannerContainer)
         stackView.addArrangedSubview(messageBodyContainer)

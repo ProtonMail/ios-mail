@@ -28,8 +28,11 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
+import ProtonCore_Crypto
 
 protocol MessageDataServiceProtocol: Service {
+
+    var pushNotificationMessageID: String? { get set }
 
     /// Request to get the messages for a user
     /// - Parameters:
@@ -43,6 +46,7 @@ protocol MessageDataServiceProtocol: Service {
 
     func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void)
 
+    func isEventIDValid() -> Bool
     func idsOfMessagesBeingSent() -> [String]
 }
 
@@ -185,7 +189,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func isEventIDValid(context: NSManagedObjectContext) -> Bool {
+    func isEventIDValid() -> Bool {
         let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
         return eventID != "" && eventID != "0"
     }
@@ -288,7 +292,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     // MARK : Send message
-    func send(inQueue message: Message, body: String) {
+    func send(inQueue message: Message, deliveryTime: Date?) {
         message.managedObjectContext!.perform {
             self.localNotificationService.scheduleMessageSendingFailedNotification(
                 .init(messageID: message.messageID, subtitle: message.title)
@@ -296,7 +300,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             self.queue(
                 message: message,
-                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, bodyForDebug: body)
+                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
             )
         }
     }
@@ -338,8 +342,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     /// TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = queueManager?.queuedMessageIds() ?? []
-        let context = self.contextProvider.rootSavingContext
-        context.perform {
+        contextProvider.performOnRootSavingContext { context in
             ids.forEach { messageID in
                 guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(messageID),
                       let managedObject = try? context.existingObject(with: objectID) else {
@@ -393,9 +396,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                            destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                            customAuthCredential: customAuthCredential,
                                            downloadTask: downloadTask,
-                                           completion: { task, fileURL, error in
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+                                           completion: { task, url, error in
+            self.contextProvider.performOnRootSavingContext { context in
+                var fileURL: URL? = url
+                if fileURL == nil, let error = error {
+                    fileURL = MessageDataService.recoverAttachmentDownloadIssue(from: error, attachmentID: attachment.id)
+                }
                 if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                     attachmentToUpdate.localURL = fileURL
                     if #available(iOS 12, *) {
@@ -407,15 +413,26 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                     _ = context.saveUpstreamIfNeeded()
                 }
-                completion?(task, fileURL, error)
+                let errorToReturn: NSError? = fileURL == nil ? error : nil
+                completion?(task, fileURL, errorToReturn)
             }
         })
+    }
+
+    static func recoverAttachmentDownloadIssue(from error: NSError, attachmentID: AttachmentID) -> URL? {
+        if error.code == CocoaError.fileWriteFileExists.rawValue {
+            let destinationDirectoryURL = FileManager.default.attachmentDirectory
+            return destinationDirectoryURL.appendingPathComponent(attachmentID.rawValue)
+        } else {
+            return nil
+        }
     }
 
     private func noQueue(_ readBlock: @escaping ReadBlock) {
         readBlock()
     }
 
+    @available(*, deprecated, message: "Moving to FetchMessageDetailUseCase")
     func forceFetchDetailForMessage(
         _ message: MessageEntity,
         runInQueue: Bool = true,
@@ -427,8 +444,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         closure? {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let objectId = message.objectID.rawValue
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     var error: NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
                         // TODO need check the response code
@@ -532,8 +548,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let closure = runInQueue ? queueManager?.queue: noQueue
             closure? {
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    let context = self.contextProvider.rootSavingContext
-                    context.perform {
+                    self.contextProvider.performOnRootSavingContext { context in
                         if response != nil {
                             if var msg: [String: Any] = response?["Message"] as? [String: Any] {
                                 msg.removeValue(forKey: "Location")
@@ -588,8 +603,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping CompletionFetchDetail) {
         self.queueManager?.queue {
             let completionWrapper: CompletionBlock = { task, response, error in
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     if response != nil {
                         // TODO need check the respons code
                         if var msg: [String: Any] = response?["Message"] as? [String: Any] {
@@ -636,8 +650,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
             }
 
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+            self.contextProvider.performOnRootSavingContext { context in
                 if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
                         let msgToReturn = MessageEntity(message)
@@ -664,7 +677,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
      :returns: NSFetchedResultsController
      */
-    func fetchedResults(by labelID: LabelID, viewMode: ViewMode, isUnread: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
+    func fetchedResults(by labelID: LabelID,
+                        viewMode: ViewMode,
+                        isUnread: Bool = false,
+                        isAscending: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
         switch viewMode {
         case .singleMessage:
             let moc = self.contextProvider.mainContext
@@ -690,7 +706,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      Message.Attributes.isSoftDeleted,
                                                      NSNumber(false))
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: isAscending),
+                                            NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -715,7 +732,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      ContextLabel.Attributes.isSoftDeleted,
                                                      NSNumber(false))
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false), NSSortDescriptor(keyPath: \ContextLabel.order, ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
+                                            NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
             fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -779,8 +797,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         return Promise { seal in
-            let context = self.contextProvider.rootSavingContext
-            context.perform {
+            self.contextProvider.performOnRootSavingContext { context in
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
                 }
@@ -868,7 +885,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
         }
     }
-    
+
     func search(_ query: String, page: Int, completion: @escaping (Swift.Result<[Message], NSError>) -> Void) {
         let completionWrapper: CompletionBlock = {task, response, error in
             if let error = error {
@@ -877,8 +894,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 for (index, _) in messagesArray.enumerated() {
                     messagesArray[index]["UserID"] = self.userID.rawValue
                 }
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                             for message in messages {
@@ -972,14 +988,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
 
-    func send(byID objectIDInURI: String, bodyForDebug: String?, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    func send(byID objectIDInURI: String, deliveryTime: Date?, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             completion?(task, response, error)
         }
 
         // TODO: needs to refractor
-        let context = self.contextProvider.rootSavingContext
-        context.perform {
+        self.contextProvider.performOnRootSavingContext { context in
             guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(objectIDInURI),
                   let message = context.find(with: objectID) as? Message
             else {
@@ -1007,9 +1022,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                             runInQueue: false,
                                             ignoreDownloaded: true) { _, _, _, _ in
                 self.send(message: message,
-                          bodyForDebug: bodyForDebug,
                           context: context,
                           userManager: userManager,
+                          deliveryTime: deliveryTime,
                           completion: completion)
             }
         }
@@ -1017,9 +1032,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     private func send(
         message: Message,
-        bodyForDebug: String?,
         context: NSManagedObjectContext,
         userManager: UserManager,
+        deliveryTime: Date?,
         completion: CompletionBlock?
     ) {
         let errorBlock: CompletionBlock = { task, response, error in
@@ -1050,8 +1065,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
             }
 
-            // is encrypt outside
-            let isEO = !message.password.isEmpty
+            let isEncryptedToOutside = !message.password.isEmpty
 
             // get attachment
             let attachments = self.attachmentsForMessage(message)
@@ -1075,29 +1089,22 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 status.insert(SendStatus.getBody)
                 return context.performAsPromise {
                     // all prebuild errors need pop up from here
-                    if let bodyForDebug = bodyForDebug,
-                       !bodyForDebug.isEmpty,
-                       bodyForDebug != message.body {
-                        self.collectBlankMessageData(message: message, bodyForDebug: bodyForDebug)
-                    }
                     guard let splited = try message.split(),
                           let bodyData = splited.dataPacket,
                           let keyData = splited.keyPacket,
                           let session = newSchema ?
-                            try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
-                                                                    passphrase: passphrase,
-                                                                    keys: addrPrivKeys) :
-                                try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
-                                                          passphrase: passphrase) else {
+                          try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
+                                                                  passphrase: passphrase,
+                                                                  keys: addrPrivKeys) :
+                          try message.getSessionKey(keys: addrPrivKeys,
+                                                    passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     // Debug info
                     status.insert(SendStatus.updateBuilder)
-                    guard let key = session.key else {
-                        throw RuntimeError.cant_decrypt.error
-                    }
+                    let key = session.sessionKey
                     sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
-                    sendBuilder.set(password: message.password, hint: message.passwordHint)
+                    sendBuilder.set(password: Password(value: message.password), hint: message.passwordHint)
                     // Debug info
                     status.insert(SendStatus.processKeyResponse)
 
@@ -1105,65 +1112,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         switch result {
                         case .fulfilled(let value):
                             let req = requests[index]
-                            let preAddress: PreAddress
+                            let localContact = contacts.find(email: req.email)
 
-                            // check contacts have pub key or not
-                            if let contact = contacts.find(email: req.email) {
-                                if value.recipientType == .internal {
-                                    // if type is internal check is key match with contact key
-                                    // compare the key if doesn't match
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: value.firstKey(),
-                                        pgpKey: contact.firstPgpKey,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: false,
-                                        sign: true,
-                                        pgpencrypt: false,
-                                        plainText: contact.plainText
-                                    )
-                                } else {
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: nil,
-                                        pgpKey: contact.firstPgpKey,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: isEO ? true : contact.mime,
-                                        sign: contact.sign,
-                                        pgpencrypt: contact.encrypt,
-                                        plainText: isEO ? false : contact.plainText
-                                    )
-                                }
-                            } else {
-                                if userInfo.sign == 1 {
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: value.firstKey(),
-                                        pgpKey: nil,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: true,
-                                        sign: true,
-                                        pgpencrypt: false,
-                                        plainText: false
-                                    )
-                                } else {
-                                    preAddress = PreAddress(
-                                        email: req.email,
-                                        pubKey: value.firstKey(),
-                                        pgpKey: nil,
-                                        recipientType: value.recipientType,
-                                        isEO: isEO,
-                                        mime: false,
-                                        sign: false,
-                                        pgpencrypt: false,
-                                        plainText: false
-                                    )
-                                }
-                            }
-                            sendBuilder.add(address: preAddress)
+                            let encryptionPreferences = EncryptionPreferencesHelper
+                                .getEncryptionPreferences(
+                                    email: req.email,
+                                    keysResponse: value,
+                                    userDefaultSign: userInfo.sign == 1,
+                                    userAddresses: userManager.addresses,
+                                    contact: localContact
+                                )
+                            let sendPreferences = SendPreferencesHelper
+                                .getSendPreferences(
+                                    encryptionPreferences: encryptionPreferences,
+                                    isMessageHavingPWD: isEncryptedToOutside
+                                )
+
+                            sendBuilder.add(email: req.email, sendPreferences: sendPreferences)
                         case .rejected(let error):
                             throw error
                         }
@@ -1172,11 +1137,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     status.insert(SendStatus.checkMimeAndPlainText)
                     if sendBuilder.hasMime || sendBuilder.hasPlainText {
                         guard let clearbody = newSchema ?
-                                try message.decryptBody(keys: addrPrivKeys,
-                                                        userKeys: userPrivKeysArray,
-                                                        passphrase: passphrase) :
-                                    try message.decryptBody(keys: addrPrivKeys,
-                                                            passphrase: passphrase) else {
+                            try message.decryptBody(keys: addrPrivKeys,
+                                                    userKeys: userPrivKeysArray,
+                                                    passphrase: passphrase) :
+                            try message.decryptBody(keys: addrPrivKeys,
+                                                    passphrase: passphrase) else {
                             throw RuntimeError.cant_decrypt.error
                         }
                         sendBuilder.set(clearBody: clearbody)
@@ -1190,11 +1155,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 try att.getSession(userKey: userPrivKeysArray,
                                                    keys: addrPrivKeys,
                                                    mailboxPassword: userManager.mailboxPassword) :
-                                    try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
-                                                       mailboxPassword: userManager.mailboxPassword) {
-                                guard let key = sessionPack.key else {
-                                    continue
-                                }
+                                try att.getSession(keys: addrPrivKeys,
+                                                   mailboxPassword: userManager.mailboxPassword) {
+                                let key = sessionPack.sessionKey
                                 sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
                                                                           session: key,
                                                                           algo: sessionPack.algo,
@@ -1214,7 +1177,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return sendbuilder
                     .fetchAttachmentBodyForMime(passphrase: passphrase,
                                                 msgService: self,
-                                                userInfo: userInfo)
+                                                userInfo: userInfo,
+                                                in: context)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkMime)
@@ -1230,7 +1194,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                              passphrase: passphrase,
                                              userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
-                                             newSchema: newSchema)
+                                             newSchema: newSchema,
+                                             in: context)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info
                 status.insert(SendStatus.checkPlainText)
@@ -1291,7 +1256,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                        clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                        mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
                                        plainTextDataPacket: sendBuilder.plainBody, clearPlainTextBody: sendBuilder.clearPlainBodyPackage,
-                                       authCredential: authCredential)
+                                       authCredential: authCredential,
+                                       deliveryTime: deliveryTime)
+
                 }
             }.then { sendApi -> Promise<SendResponse> in
                 // Debug info
@@ -1299,17 +1266,28 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return userManager.apiService.run(route: sendApi)
             }.done { [weak self] res in
                 context.performAndWait { [weak self] in
-                    guard let self = self else { return }
+                    guard let self = self,
+                          let parent = self.parent,
+                          parent.isLoggedOut == false else { return }
                     // Debug info
                     let error = res.error
                     if error == nil {
                         self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
 
-#if APP_EXTENSION
-                        NSError.alertMessageSentToast()
-#else
-                        self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
-#endif
+                        #if APP_EXTENSION
+                            NSError.alertMessageSentToast()
+                        #else
+                        if let deliveryTime = deliveryTime {
+                            let labelID = Message.Location.scheduled.labelID
+                            self.parent?
+                                .eventsService
+                                .fetchEvents(byLabel: labelID, notificationMessageID: nil, completion: {  _, _, _ in
+                                    NotificationCenter.default.post(name: .scheduledMessageSucceed, object: deliveryTime)
+                            })
+                        } else {
+                            self.undoActionManager.showUndoSendBanner(for: MessageID(message.messageID))
+                        }
+                        #endif
 
                         if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
                                                                              fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
@@ -1353,79 +1331,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
             }.catch(policy: .allErrors) { error in
                 status.insert(SendStatus.exceptionCatched)
-
-                guard let err = error as? ResponseError,
-                      let responseCode = err.responseCode else {
-                    NSError.alertMessageSentError(details: error.localizedDescription)
-                    completion?(nil, nil, error as NSError)
-                    return
-                }
-
-                context.performAndWait {
-                    if responseCode == 9001 {
-                        // here need let user to show the human check.
-                        self.queueManager?.isRequiredHumanCheck = true
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-                    } else if responseCode == 15198 {
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-                    } else if responseCode == 15004 {
-                        // this error means the message has already been sent
-                        // so don't need to show this error to user
-                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                        NSError.alertMessageSentToast()
-                        completion?(nil, nil, nil)
-                        return
-                    } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
-                        // Email address validation failed
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-
-#if !APP_EXTENSION
-                        let toDraftAction = UIAlertAction(title: LocalString._address_invalid_error_to_draft_action_title, style: .default) { _ in
-                            NotificationCenter.default.post(name: .switchView,
-                                                            object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
-                        }
-                        LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
-#endif
-                    } else if responseCode == 2500 {
-                        // The error means "Message has already been sent"
-                        // Since the message is sent, this alert is useless to user
-                        self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                        completion?(nil, nil, nil)
-                        // Draft folder must be single message mode
-                        self.forceFetchDetailForMessage(MessageEntity(message)) { _, _, _, _ in }
-                        return
-                    } else {
-                        NSError.alertMessageSentError(details: err.localizedDescription)
-                    }
-
-                    // show message now
-                    let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
-                    self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                                 error: errorMsg,
-                                                                                                 timeInterval: 1,
-                                                                                                 subtitle: message.title))
-                }
-                completion?(nil, nil, err as NSError)
+                self.handleSendError(error: error, message: message, completion: completion)
             }
         }
-    }
-
-    private func collectBlankMessageData(message: Message, bodyForDebug: String) {
-        let breads = Breadcrumbs.shared.trace(for: .inconsistentBody) ?? "empty"
-        let breadData = Array(breads.split(separator: "\n").compactMap(String.init).reversed())
-        let dict: [String: Any] = [
-            "attachmentsNum": message.attachments.count,
-            "numAttachments": message.numAttachments.intValue,
-            "messageID": message.messageID,
-            "conversationID": message.conversationID,
-            "usserIID": self.userID.rawValue,
-            "bodyData": "sendBodyLength: \(message.body.count) - draftBodyLength: \(bodyForDebug.count)",
-            "toListCount": (message.toList.parseJson() ?? []).count,
-            "ccListCount": (message.ccList.parseJson() ?? []).count,
-            "bccListCount": (message.bccList.parseJson() ?? []).count,
-            "breadCrumbs": breadData
-        ]
-        Analytics.shared.sendEvent(.inconsistentBody, trace: dict.json(prettyPrinted: true))
     }
 
     func cancelQueuedSendingTask(messageID: String) {
@@ -1442,8 +1350,74 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         })
     }
 
-    private func markReplyStatus(_ originMessageID: MessageID, action: NSNumber?) -> Promise<Void> {
-        guard let act = action,
+    private func handleSendError(error: Error, message: Message, completion: CompletionBlock?) {
+        guard let err = error as? ResponseError,
+              let responseCode = err.responseCode else {
+            NSError.alertMessageSentError(details: error.localizedDescription)
+            completion?(nil, nil, error as NSError)
+            return
+        }
+
+        var msgID = ""
+        var msgEntity: MessageEntity?
+        var title = ""
+        message.managedObjectContext?.performAndWait {
+            msgID = message.messageID
+            msgEntity = MessageEntity(message)
+            title = message.title
+        }
+
+        if responseCode == APIErrorCode.humanVerificationRequired {
+            // here need let user to show the human check.
+            self.queueManager?.isRequiredHumanCheck = true
+            NSError.alertMessageSentError(details: err.localizedDescription)
+        } else if responseCode == 15198 {
+            NSError.alertMessageSentError(details: err.localizedDescription)
+        } else if responseCode == APIErrorCode.alreadyExist || responseCode == 15004 {
+            // The error means "Message has already been sent"
+            // Since the message is sent, this alert is useless to user
+            self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: msgID))
+            // Draft folder must be single message mode
+            if let msgEntity = msgEntity {
+                self.forceFetchDetailForMessage(msgEntity) { _, _, _, _ in }
+            }
+            completion?(nil, nil, nil)
+            return
+        } else if responseCode == APIErrorCode.invalidRequirements {
+            self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: msgID))
+            // The scheduled message exceeded maximum allowance
+            NotificationCenter.default.post(name: .showScheduleSendUnavailable, object: nil)
+            completion?(nil, nil, nil)
+            return
+        } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
+            // Email address validation failed
+            NSError.alertMessageSentError(details: err.localizedDescription)
+
+            #if !APP_EXTENSION
+            let title = LocalString._address_invalid_error_to_draft_action_title
+            let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
+                NotificationCenter.default.post(name: .switchView,
+                                                object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+            }
+            LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+            #endif
+        } else {
+            NSError.alertMessageSentError(details: err.localizedDescription)
+        }
+
+        // show message now
+        let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
+        self.localNotificationService
+            .scheduleMessageSendingFailedNotification(.init(messageID: msgID,
+                                                            error: errorMsg,
+                                                            timeInterval: 1,
+                                                            subtitle: title))
+        completion?(nil, nil, err as NSError)
+    }
+    
+    private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {
+        guard let originMessageID = oriMsgID,
+            let act = action,
               !originMessageID.rawValue.isEmpty else {
             return Promise()
         }
@@ -1458,8 +1432,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         seal.fulfill_()
                         return
                 }
-                let context = self.contextProvider.rootSavingContext
-                context.perform {
+                self.contextProvider.performOnRootSavingContext { context in
                     defer {
                         seal.fulfill_()
                     }
@@ -1505,16 +1478,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 assertionFailure("\(error)")
             }
         }
-
-        self.cachePropertiesForBackground(in: message)
-
+        var messageID = ""
+        message.managedObjectContext?.performAndWait {
+            self.cachePropertiesForBackground(in: message)
+            messageID = message.messageID
+        }
         switch action {
         case .saveDraft, .send:
-            let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
         default:
-            if message.managedObjectContext != nil && !message.messageID.isEmpty {
-                let task = QueueManager.Task(messageID: message.messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            if message.managedObjectContext != nil && !messageID.isEmpty {
+                let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
                 _ = self.queueManager?.addTask(task)
             }
         }
@@ -1564,21 +1539,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
 
             let completionBlock: CompletionBlock = { task, dict, error in
-                _ = self.labelDataService.fetchV4Labels().then({
-                    self.contactDataService.cleanUp()
-                }).done({
-                    self.contactDataService.fetchContacts { (_, error) in
-                        if error == nil {
-                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
-                                completion?(task, nil, error)
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                completion?(task, nil, error)
+                self.labelDataService.fetchV4Labels { _ in
+                    self.contactDataService.cleanUp().ensure {
+                        self.contactDataService.fetchContacts { (_, error) in
+                            if error == nil {
+                                _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                                    completion?(task, nil, error)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    completion?(task, nil, error)
+                                }
                             }
                         }
-                    }
-                })
+                    }.cauterize()
+                }
             }
 
             self.fetchMessages(byLabel: Message.Location.inbox.labelID, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {
@@ -1591,7 +1566,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func encryptBody(_ message: MessageEntity,
                      clearBody: String,
-                     mailbox_pwd: String) throws -> String {
+                     mailbox_pwd: Passphrase) throws -> String {
         // TODO: Refactor this method later.
         let addressId = message.addressID.rawValue
         if addressId.isEmpty {
@@ -1604,7 +1579,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                  mailbox_pwd: mailbox_pwd)
         } else {//fallback
             let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
-            return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd)
+            return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)
         }
     }
 
@@ -1654,7 +1629,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                               expirationTimeInterval: TimeInterval,
                               body: String,
                               attachments: [Any]?,
-                              mailbox_pwd: String,
+                              mailbox_pwd: Passphrase,
                               sendAddress: Address,
                               inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
@@ -1704,7 +1679,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func updateMessage (_ message: Message ,
                         expirationTimeInterval: TimeInterval,
                         body: String,
-                        mailbox_pwd: String) {
+                        mailbox_pwd: Passphrase) {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }

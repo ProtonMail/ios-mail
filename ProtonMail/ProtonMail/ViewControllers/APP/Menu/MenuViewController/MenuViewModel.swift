@@ -26,12 +26,14 @@ import PromiseKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_DataModel
 import ProtonCore_UIFoundations
+import ProtonMailAnalytics
 import UIKit
 
 final class MenuViewModel: NSObject {
     private let usersManager: UsersManager
     private let userStatusInQueueProvider: UserStatusInQueueProtocol
     private let coreDataContextProvider: CoreDataContextProviderProtocol
+    private var scheduleSendLocationStatusObserver: ScheduleSendLocationStatusObserver?
 
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
@@ -56,19 +58,19 @@ final class MenuViewModel: NSObject {
 
     private var rawData = [MenuLabel]()
     private(set) var sections: [MenuSection]
-    private let inboxItems: [MenuLabel]
+    private(set) var inboxItems: [MenuLabel]
     private(set) var folderItems: [MenuLabel] = []
-    private var labelItems: [MenuLabel] = []
+    private(set) var labelItems: [MenuLabel] = []
     private(set) var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subscription functionality
     private var subscriptionAvailable = true
 
     var reloadClosure: (() -> Void)?
     lazy private(set) var userEnableColorSettingClosure: () -> Bool = { [weak self] in
-        self?.currentUser?.userinfo.enableFolderColor == 1
+        self?.currentUser?.userInfo.enableFolderColor == 1
     }
     lazy private(set) var userUsingParentFolderColorClosure: () -> Bool = { [weak self] in
-        self?.currentUser?.userinfo.inheritParentFolderColor == 1
+        self?.currentUser?.userInfo.inheritParentFolderColor == 1
     }
 
     weak var coordinator: MenuCoordinator?
@@ -114,12 +116,13 @@ extension MenuViewModel: MenuVMProtocol {
         self.fetchLabels()
         self.observeLabelUnreadUpdate()
         self.observeContextLabelUnreadUpdate()
+        self.observeScheduleSendLocationStatus()
         self.highlight(label: MenuLabel(location: .inbox))
     }
 
     var enableFolderColor: Bool {
         guard let user = self.currentUser else { return false }
-        return user.userinfo.enableFolderColor == 1
+        return user.userInfo.enableFolderColor == 1
     }
 
     func menuViewInit() {
@@ -130,44 +133,53 @@ extension MenuViewModel: MenuVMProtocol {
         }
     }
 
-    func menuItem(indexPath: IndexPath) -> MenuLabel {
+    func menuItemOrError(
+        indexPath: IndexPath,
+        caller: StaticString
+    ) -> Swift.Result<MenuLabel, MailAnalyticsErrorEvent> {
         let section = self.sections[indexPath.section]
         let row = indexPath.row
 
+        let sectionItems: [MenuLabel]
         switch section {
         case .inboxes:
-            return self.inboxItems[row]
+            return .success(self.inboxItems[row])
         case .folders:
-            guard let item = self.folderItems.getFolderItem(by: indexPath) else {
-                fatalError("no item for row \(row) in section \(section.title)")
+            sectionItems = folderItems
+            if let item = sectionItems.getFolderItem(at: row) {
+                return .success(item)
             }
-            return item
         case .labels:
-            guard let item = self.labelItems[safe: row] else {
-                fatalError("no item for row \(row) in section \(section.title)")
+            sectionItems = labelItems
+            if let item = sectionItems[safe: row] {
+                return .success(item)
             }
-            return item
         case .more:
-            guard let item = self.moreItems[safe: row] else {
-                fatalError("no item for row \(row) in section \(section.title)")
+            sectionItems = moreItems
+            if let item = sectionItems[safe: row] {
+                return .success(item)
             }
-            return item
         }
+
+        let error = MailAnalyticsErrorEvent.invalidMenuItemRequested(
+            section: section.title,
+            row: row,
+            itemCount: sectionItems.count,
+            caller: caller
+        )
+        return .failure(error)
     }
 
-    func menuItemOptional(indexPath: IndexPath) -> MenuLabel? {
-        let section = indexPath.section
-        let row = indexPath.row
-
-        switch self.sections[section] {
+    func menuItem(in section: MenuSection, at index: Int) -> MenuLabel? {
+        switch section {
         case .inboxes:
-            return self.inboxItems[row]
+            return inboxItems[index]
         case .folders:
-            return self.folderItems.getFolderItem(by: indexPath)
+            return folderItems.getFolderItem(at: index)
         case .labels:
-            return self.labelItems[safe:row]
+            return labelItems[safe: index]
         case .more:
-            return self.moreItems[safe:row]
+            return moreItems[safe: index]
         }
     }
 
@@ -260,7 +272,7 @@ extension MenuViewModel: MenuVMProtocol {
         guard let user = self.usersManager.getUser(by: id) else {
             return
         }
-        self.usersManager.active(by: user.auth.sessionID)
+        self.usersManager.active(by: user.authCredential.sessionID)
         self.userDataInit()
         self.menuViewInit()
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))
@@ -325,7 +337,7 @@ extension MenuViewModel: MenuVMProtocol {
     func allowToCreate(type: PMLabelType) -> Bool {
         guard let user = self.currentUser else { return false }
         // Only free user has limitation
-        guard user.userinfo.subscribed == 0 else { return true }
+        guard user.userInfo.subscribed == 0 else { return true }
         switch type {
         case .folder:
             return self.folderItems.getNumberOfRows() < Constants.FreePlan.maxNumberOfFolders
@@ -365,7 +377,7 @@ extension MenuViewModel {
         // The response of api will write into CoreData
         // And the change will trigger controllerDidChangeContent(_ :)
         defer {
-            service.fetchV4Labels().cauterize()
+            service.fetchV4Labels()
         }
 
         self.fetchedLabels = service.fetchedResultsController(.all)
@@ -387,7 +399,7 @@ extension MenuViewModel {
         let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              LabelUpdate.Attributes.userID,
-                                             user.userinfo.userId)
+                                             user.userInfo.userId)
         let strComp = NSSortDescriptor(key: LabelUpdate.Attributes.labelID,
                                        ascending: true,
                                        selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
@@ -408,7 +420,7 @@ extension MenuViewModel {
         let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              ConversationCount.Attributes.userID,
-                                             user.userinfo.userId)
+                                             user.userInfo.userId)
         let strComp = NSSortDescriptor(key: ConversationCount.Attributes.labelID,
                                        ascending: true,
                                        selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
@@ -422,7 +434,33 @@ extension MenuViewModel {
         } catch {
         }
     }
-    
+
+    private func observeScheduleSendLocationStatus() {
+        guard let user = self.currentUser,
+              let observer =
+                ScheduleSendLocationStatusObserver(contextProvider: coreDataContextProvider,
+                                                   userID: user.userID,
+                                                   viewModelDataSource: user) else { return }
+
+        let currentCount = observer.observe(countUpdate: { [weak self] newCount in
+            self?.updateInboxItems(by: newCount)
+        })
+        updateInboxItems(by: currentCount)
+        self.scheduleSendLocationStatusObserver = observer
+    }
+
+    func updateInboxItems(by scheduledMsgCount: Int) {
+        if scheduledMsgCount > 0 && !inboxItems.contains(where: { $0.location == .scheduled }) {
+            if let insertIndex = inboxItems.firstIndex(where: { $0.location == .sent }) {
+                inboxItems.insert(MenuLabel(location: .scheduled), at: insertIndex)
+                reloadClosure?()
+            }
+        } else if scheduledMsgCount <= 0 {
+            inboxItems.removeAll(where: { $0.location == .scheduled })
+            reloadClosure?()
+        }
+    }
+
     private func handle(dbLabels: [LabelEntity]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas
@@ -450,7 +488,7 @@ extension MenuViewModel {
     }
 
     private func updateMoreItems(shouldReload: Bool = true) {
-        let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userinfo.isMember ?? false,
+        let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userInfo.isMember ?? false,
                                           subscriptionAvailable: self.subscriptionAvailable,
                                           isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
                                           isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)

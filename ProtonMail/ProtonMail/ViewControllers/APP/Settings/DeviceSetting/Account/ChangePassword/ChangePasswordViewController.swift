@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
+import ProtonCore_Crypto
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import UIKit
@@ -33,8 +34,13 @@ class ChangePasswordViewController: UIViewController {
     @IBOutlet private weak var confirmPasswordEditor: PMTextField!
     @IBOutlet private weak var saveButton: ProtonButton!
     @IBOutlet private weak var topOffset: NSLayoutConstraint!
+    @IBOutlet private var scrollViewBottom: NSLayoutConstraint!
 
-    var keyboardHeight: CGFloat = 0.0
+    var keyboardHeight: CGFloat = 0.0 {
+        didSet {
+            scrollViewBottom.constant = keyboardHeight
+        }
+    }
     var textFieldPoint: CGFloat = 0.0
 
     private let viewModel: ChangePasswordViewModel
@@ -107,16 +113,6 @@ class ChangePasswordViewController: UIViewController {
         }
     }
 
-    private func updateView() {
-        let screenHeight = view.frame.height
-        let keyboardTop = screenHeight - self.keyboardHeight
-        if self.textFieldPoint > keyboardTop {
-            topOffset.constant = keyboardTop - self.textFieldPoint
-        } else {
-            topOffset.constant = 32
-        }
-    }
-
     private func isInputEmpty() -> Bool {
         let currentPassword = (currentPasswordEditor.value ) // .trim()
         let newPassword = (newPasswordEditor.value ) // .trim()
@@ -155,9 +151,9 @@ class ChangePasswordViewController: UIViewController {
             open2FA()
         } else {
             MBProgressHUD.showAdded(to: view, animated: true)
-            viewModel.setNewPassword(currentPasswordEditor.value ,
-                                     newPassword: newPasswordEditor.value ,
-                                     confirmNewPassword: confirmPasswordEditor.value ,
+            viewModel.setNewPassword(currentPasswordEditor.value,
+                                     newPassword: Passphrase(value: newPasswordEditor.value),
+                                     confirmNewPassword: Passphrase(value: confirmPasswordEditor.value),
                                      tFACode: self.cached2faCode,
                                      complete: { _, error in
                 self.cached2faCode = nil
@@ -203,20 +199,18 @@ class ChangePasswordViewController: UIViewController {
 extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         keyboardHeight = 0
-        updateView()
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
         let info = notification.userInfo as NSDictionary?
         if let keyboardSize = (info?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
-            updateView()
         }
     }
 }
 
 extension ChangePasswordViewController: TwoFACodeViewControllerDelegate {
-    func confirmedCode(_ code: String, pwd: String) {
+    func confirmedCode(_ code: String) {
         NotificationCenter.default.addKeyboardObserver(self)
         self.cached2faCode = code
         self.startUpdatePwd()
@@ -262,6 +256,5 @@ extension ChangePasswordViewController: PMTextFieldDelegate {
             let padding: CGFloat = 24
             textFieldPoint += ( padding + self.saveButton.frame.height )
         }
-        updateView()
     }
 }

@@ -23,7 +23,7 @@
 import Foundation
 
 struct ExpandedHeaderRecipientsRowViewModel {
-    let title: NSAttributedString
+    let title: String
     let recipients: [ExpandedHeaderRecipientRowViewModel]
 }
 
@@ -31,11 +31,11 @@ extension ExpandedHeaderRecipientsRowViewModel {
 
     static var undisclosedRecipients: Self {
         .init(
-            title: "\(LocalString._general_to_label):".apply(style: FontManager.body3RegularWeak),
+            title: "\(LocalString._general_to_label):",
             recipients: [
                 ExpandedHeaderRecipientRowViewModel(
-                    name: LocalString._undisclosed_recipients.apply(style: FontManager.body3RegularInteractionNorm),
-                    address: "".apply(style: FontManager.body3RegularInteractionNorm),
+                    name: LocalString._undisclosed_recipients,
+                    address: "",
                     contact: nil
                 )
             ]

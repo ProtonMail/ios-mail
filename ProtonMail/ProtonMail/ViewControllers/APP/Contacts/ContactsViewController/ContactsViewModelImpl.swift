@@ -48,7 +48,7 @@ final class ContactsViewModelImpl: ContactsViewModel {
             guard let self = self else { return }
             self.fetchedResultsController?.delegate = self
 
-            self.coreDataService.rootSavingContext.perform {
+            self.coreDataService.performOnRootSavingContext { _ in
                 self.transformCoreDataObjects()
             }
         }
@@ -109,7 +109,7 @@ final class ContactsViewModelImpl: ContactsViewModel {
         do {
             try fetchedResultsController?.performFetch()
 
-            coreDataService.rootSavingContext.perform {
+            coreDataService.performOnRootSavingContext { _ in
                 self.transformCoreDataObjects()
             }
         } catch {

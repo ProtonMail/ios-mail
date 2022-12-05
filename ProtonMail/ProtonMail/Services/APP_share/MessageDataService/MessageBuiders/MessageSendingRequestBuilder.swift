@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
@@ -38,21 +39,22 @@ final class MessageSendingRequestBuilder {
 
     private(set) var bodyDataPacket: Data?
     private(set) var bodySessionKey: Data?
-    private(set) var bodySessionAlgo: String?
+    private(set) var bodySessionAlgo: Algorithm?
 
-    private(set) var preAddresses = [PreAddress]()
+    private(set) var addressSendPreferences: [String: SendPreferences] = [:]
+
     private(set) var preAttachments = [PreAttachment]()
-    private(set) var password: String?
+    private(set) var password: Passphrase?
     private(set) var hint: String?
 
     private(set) var mimeSessionKey: Data?
-    private(set) var mimeSessionAlgo: String?
+    private(set) var mimeSessionAlgo: Algorithm?
     private(set) var mimeDataPackage: String?
 
     private(set) var clearBody: String?
 
     private(set) var plainTextSessionKey: Data?
-    private(set) var plainTextSessionAlgo: String?
+    private(set) var plainTextSessionAlgo: Algorithm?
     private(set) var plainTextDataPackage: String?
 
     // [AttachmentID: base64 attachment body]
@@ -64,13 +66,13 @@ final class MessageSendingRequestBuilder {
         self.expirationOffset = expirationOffset ?? 0
     }
 
-    func update(bodyData data: Data, bodySession: Data, algo: String) {
+    func update(bodyData data: Data, bodySession: Data, algo: Algorithm) {
         self.bodyDataPacket = data
         self.bodySessionKey = bodySession
         self.bodySessionAlgo = algo
     }
 
-    func set(password: String, hint: String?) {
+    func set(password: Passphrase, hint: String?) {
         self.password = password
         self.hint = hint
     }
@@ -79,8 +81,8 @@ final class MessageSendingRequestBuilder {
         self.clearBody = clearBody
     }
 
-    func add(address: PreAddress) {
-        self.preAddresses.append(address)
+    func add(email: String, sendPreferences: SendPreferences) {
+        self.addressSendPreferences[email] = sendPreferences
     }
 
     func add(attachment: PreAttachment) {
@@ -88,7 +90,7 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearBodyPackage: ClearBodyPackage? {
-        if self.contains(type: .cinln) || self.contains(type: .cmime) {
+        if self.contains(type: .cleartextInline) || self.contains(type: .cleartextMIME) {
             if let algorithm = bodySessionAlgo,
                let encodedSessionKey = self.encodedSessionKey {
                 return ClearBodyPackage(key: encodedSessionKey,
@@ -99,7 +101,7 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearMimeBodyPackage: ClearBodyPackage? {
-        if self.contains(type: .cmime),
+        if self.contains(type: .cleartextMIME),
            let base64MIMESessionKey = mimeSessionKey?.encodeBase64(),
            let algorithm = mimeSessionAlgo {
             return ClearBodyPackage(key: base64MIMESessionKey,
@@ -109,7 +111,7 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearPlainBodyPackage: ClearBodyPackage? {
-        if hasPlainText, contains(type: .cinln) || contains(type: .cmime) {
+        if hasPlainText, contains(type: .cleartextInline) || contains(type: .cleartextMIME) {
             guard let base64SessionKey = plainTextSessionKey?.encodeBase64(),
                   let algorithm = plainTextSessionAlgo else {
                       return nil
@@ -135,12 +137,12 @@ final class MessageSendingRequestBuilder {
     }
 
     var clearAtts: [ClearAttachmentPackage]? {
-        if self.contains(type: .cinln) || self.contains(type: .cmime) {
+        if self.contains(type: .cleartextInline) || self.contains(type: .cleartextMIME) {
             var attachments = [ClearAttachmentPackage]()
             for preAttachment in self.preAttachments {
                 let encodedSession = preAttachment.session
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                attachments.append(ClearAttachmentPackage(attID: preAttachment.attachmentId,
+                attachments.append(ClearAttachmentPackage(attachmentID: preAttachment.attachmentId,
                                                           encodedSession: encodedSession,
                                                           algo: preAttachment.algo))
             }
@@ -149,66 +151,16 @@ final class MessageSendingRequestBuilder {
         return nil
     }
 
-    func calculateSendType(recipientType: KeysResponse.RecipientType,
-                           isEO: Bool,
-                           hasPGPKey: Bool,
-                           hasPGPEncryption: Bool,
-                           isMIME: Bool) -> SendType {
-        if recipientType == .internal {
-            return .intl
-        }
-
-        // pgp mime
-        if isMIME, hasPGPKey, hasPGPEncryption {
-            if isEO, self.expirationOffset > 0 {
-                return .eo
-            } else {
-                return .pgpmime
-            }
-        }
-
-        // encrypted outside
-        if isEO {
-            return .eo
-        }
-
-        // mime clear
-        if isMIME {
-            return .cmime
-        }
-
-        // pgp inline
-        if hasPGPKey, hasPGPEncryption {
-            return .inlnpgp
-        }
-
-        // clear inline
-        return .cinln
-    }
-
     var hasMime: Bool {
-        return self.contains(type: .pgpmime) || self.contains(type: .cmime)
+        return self.contains(type: .pgpMIME) || self.contains(type: .cleartextMIME)
     }
 
     var hasPlainText: Bool {
-        for preAddress in self.preAddresses where preAddress.plainText {
-            return true
-        }
-        return false
+        addressSendPreferences.contains(where: { $0.value.mimeType == .plainText })
     }
 
-    func contains(type: SendType) -> Bool {
-        for pre in self.preAddresses {
-            let buildType = self.calculateSendType(recipientType: pre.recipientType,
-                                                   isEO: pre.isEO,
-                                                   hasPGPKey: pre.pgpKey != nil,
-                                                   hasPGPEncryption: pre.pgpencrypt,
-                                                   isMIME: pre.mime)
-            if buildType.contains(type) {
-                return true
-            }
-        }
-        return false
+    func contains(type: PGPScheme) -> Bool {
+        addressSendPreferences.contains(where: { $0.value.pgpScheme == type })
     }
 
     var encodedSessionKey: String? {
@@ -218,43 +170,49 @@ final class MessageSendingRequestBuilder {
 
 // MARK: - Build Message Body
 extension MessageSendingRequestBuilder {
-    func fetchAttachmentBody(att: Attachment,
-                             messageDataService: MessageDataService,
-                             passphrase: String,
-                             userInfo: UserInfo) -> Promise<String> {
+    private func fetchAttachmentBody(att: Attachment,
+                                     messageDataService: MessageDataService,
+                                     passphrase: Passphrase,
+                                     userInfo: UserInfo,
+                                     in context: NSManagedObjectContext) -> Promise<String> {
         return Promise { seal in
-            if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
-                return
-            }
+            context.perform {
+                if let localURL = att.localURL,
+                   FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                    return
+                }
 
-            if let data = att.fileData, !data.isEmpty {
-                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
-                return
-            }
+                if let data = att.fileData, !data.isEmpty {
+                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                    return
+                }
 
-            att.localURL = nil
-            messageDataService
-                .fetchAttachmentForAttachment(AttachmentEntity(att),
-                                              customAuthCredential: att.message.cachedAuthCredential,
-                                              downloadTask: { (_: URLSessionDownloadTask) -> Void in },
-                                              completion: { _, _, _ -> Void in
-                    let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
-                                                                          passphrase: passphrase)
-                    seal.fulfill(decryptedAttachment)
-                })
+                att.localURL = nil
+                messageDataService
+                    .fetchAttachmentForAttachment(AttachmentEntity(att),
+                                                  customAuthCredential: att.message.cachedAuthCredential,
+                                                  downloadTask: { (_: URLSessionDownloadTask) -> Void in },
+                                                  completion: { _, _, _ -> Void in
+                        let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
+                                                                              passphrase: passphrase)
+                        seal.fulfill(decryptedAttachment)
+                    })
+            }
         }
     }
 
-    func fetchAttachmentBodyForMime(passphrase: String,
+    func fetchAttachmentBodyForMime(passphrase: Passphrase,
                                     msgService: MessageDataService,
-                                    userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
+                                    userInfo: UserInfo,
+                                    in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
         var fetches = [Promise<String>]()
         for att in preAttachments {
             let promise = fetchAttachmentBody(att: att.att,
                                               messageDataService: msgService,
                                               passphrase: passphrase,
-                                              userInfo: userInfo)
+                                              userInfo: userInfo,
+                                              in: context)
             fetches.append(promise)
         }
 
@@ -262,8 +220,8 @@ extension MessageSendingRequestBuilder {
             for (index, result) in attachmentBodys.enumerated() {
                 switch result {
                 case .fulfilled(let body):
-                    let preAttachment = self.preAttachments[index].att
-                    self.attachmentBodys[preAttachment.attachmentID] = body
+                    let preAttachment = self.preAttachments[index]
+                    self.attachmentBodys[preAttachment.attachmentId] = body
                 case .rejected:
                     break
                 }
@@ -274,19 +232,20 @@ extension MessageSendingRequestBuilder {
 
     // swiftlint:disable function_body_length
     func buildMime(senderKey: Key,
-                   passphrase: String,
+                   passphrase: Passphrase,
                    userKeys: [Data],
                    keys: [Key],
-                   newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
-        return Promise { seal in
+                   newSchema: Bool,
+                   in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
+        context.performAsPromise {
             var messageBody = self.clearBody ?? ""
             messageBody = QuotedPrintable.encode(string: messageBody)
 
-            let boundaryMsg = generateMessageBoundaryString()
-            var signbody = buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
+            let boundaryMsg = self.generateMessageBoundaryString()
+            var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
 
             for preAttachment in self.preAttachments {
-                guard let attachmentBody = attachmentBodys[preAttachment.attachmentId] else {
+                guard let attachmentBody = self.attachmentBodys[preAttachment.attachmentId] else {
                     continue
                 }
                 let attachment = preAttachment.att
@@ -318,16 +277,16 @@ extension MessageSendingRequestBuilder {
                                                           passphrase: passphrase) else {
                 throw BuilderError.sessionKeyFailedToCreate
             }
-            self.mimeSessionKey = sessionKey.key
+            self.mimeSessionKey = sessionKey.sessionKey
             self.mimeSessionAlgo = sessionKey.algo
             self.mimeDataPackage = dataPacket.base64EncodedString()
 
-            seal.fulfill(self)
+            return self
         }
     }
 
     func buildPlainText(senderKey: Key,
-                        passphrase: String,
+                        passphrase: Passphrase,
                         userKeys: [Data],
                         keys: [Key],
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
@@ -351,7 +310,7 @@ extension MessageSendingRequestBuilder {
                 throw BuilderError.sessionKeyFailedToCreate
             }
 
-            self.plainTextSessionKey = sessionKey.key
+            self.plainTextSessionKey = sessionKey.sessionKey
             self.plainTextSessionAlgo = sessionKey.algo
             self.plainTextDataPackage = dataPacket.base64EncodedString()
 
@@ -407,7 +366,7 @@ extension MessageSendingRequestBuilder {
                        userKeys: [Data],
                        senderKey: Key,
                        addressKeys: [Key],
-                       passphrase: String) throws -> SymmetricKey? {
+                       passphrase: Passphrase) throws -> SessionKey? {
         if isNewSchema {
             return try keyPacket.getSessionFromPubKeyPackage(userKeys: userKeys,
                                                              passphrase: passphrase,
@@ -437,16 +396,16 @@ extension MessageSendingRequestBuilder {
 extension MessageSendingRequestBuilder {
     func generatePackageBuilder() throws -> [PackageBuilder] {
         var out = [PackageBuilder]()
-        for pre in self.preAddresses {
+        for (email, sendPreferences) in self.addressSendPreferences {
             var session = Data()
-            var algo: String = "aes256"
+            var algo: Algorithm = .AES256
             if let bodySession = self.bodySessionKey {
                 session = bodySession
             }
             if let bodySessionAlgo = self.bodySessionAlgo {
                 algo = bodySessionAlgo
             }
-            if pre.plainText {
+            if sendPreferences.mimeType == .plainText {
                 if let sessionKey = plainTextSessionKey,
                    let algorithm = plainTextSessionAlgo {
                     session = sessionKey
@@ -455,44 +414,58 @@ extension MessageSendingRequestBuilder {
                     throw BuilderError.plainTextDataNotPrepared
                 }
             }
-            switch self.calculateSendType(recipientType: pre.recipientType,
-                                          isEO: pre.isEO,
-                                          hasPGPKey: pre.pgpKey != nil,
-                                          hasPGPEncryption: pre.pgpencrypt,
-                                          isMIME: pre.mime) {
-            case .intl:
-                out.append(InternalAddressBuilder(type: .intl,
-                                                  addr: pre,
+            switch sendPreferences.pgpScheme {
+            case .proton:
+                out.append(InternalAddressBuilder(type: .proton,
+                                                  email: email,
+                                                  sendPreferences: sendPreferences,
                                                   session: session,
                                                   algo: algo,
                                                   atts: self.preAttachments))
-            case .eo where self.password != nil:
-                out.append(EOAddressBuilder(type: .eo,
-                                            addr: pre,
+            case .encryptedToOutside where self.password != nil:
+                out.append(EOAddressBuilder(type: .encryptedToOutside,
+                                            email: email,
+                                            sendPreferences: sendPreferences,
                                             session: session,
                                             algo: algo,
-                                            password: self.password ?? "",
+                                            password: self.password ?? Passphrase(value: ""),
                                             atts: self.preAttachments,
-                                            hit: self.hint))
-            case .cinln:
-                out.append(ClearAddressBuilder(type: .cinln, addr: pre))
-            case .inlnpgp:
-                out.append(PGPAddressBuilder(type: .inlnpgp,
-                                             addr: pre,
+                                            passwordHint: self.hint))
+            case .cleartextInline:
+                out.append(ClearAddressBuilder(type: .cleartextInline,
+                                               email: email,
+                                               sendPreferences: sendPreferences))
+            case .pgpInline where sendPreferences.publicKeys != nil:
+                out.append(PGPAddressBuilder(type: .pgpInline,
+                                             email: email,
+                                             sendPreferences: sendPreferences,
                                              session: session,
                                              algo: algo,
                                              atts: self.preAttachments))
-            case .pgpmime: // pgp mime
+            case .pgpInline where sendPreferences.publicKeys == nil:
+                out.append(ClearAddressBuilder(type: .cleartextInline,
+                                               email: email,
+                                               sendPreferences: sendPreferences))
+            case .pgpMIME where sendPreferences.publicKeys != nil:
                 guard let sessionData = mimeSessionKey,
                       let algorithm = mimeSessionAlgo else {
-                          throw BuilderError.MIMEDataNotPrepared
-                      }
-                out.append(PGPMimeAddressBuilder(type: .pgpmime,
-                                                 addr: pre,
-                                                 session: sessionData,
-                                                 algo: algorithm))
-            case .cmime: // clear text mime
-                out.append(ClearMimeAddressBuilder(type: .cmime, addr: pre))
+                    throw BuilderError.MIMEDataNotPrepared
+                }
+                out.append(PGPMimeAddressBuilder(
+                    type: .pgpMIME,
+                    email: email,
+                    sendPreferences: sendPreferences,
+                    session: sessionData,
+                    algo: algorithm
+                ))
+            case .pgpMIME where sendPreferences.publicKeys == nil:
+                out.append(ClearMimeAddressBuilder(type: .cleartextMIME,
+                                                   email: email,
+                                                   sendPreferences: sendPreferences))
+            case .cleartextMIME:
+                out.append(ClearMimeAddressBuilder(type: .cleartextMIME,
+                                                   email: email,
+                                                   sendPreferences: sendPreferences))
             default:
                 break
             }

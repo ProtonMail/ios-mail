@@ -36,6 +36,10 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     private var title: String?
     private var subtitle: String?
 
+    private var titleLabel: UILabel?
+    private var subTitleLabel: UILabel?
+    private var titleStack: UIStackView?
+
     /// Initializer of `PMActionSheetHeaderView`
     /// - Parameters:
     ///   - title: Title of action sheet
@@ -52,6 +56,11 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
         self.title = title
         self.subtitle = subtitle
         self.setup(hasSeparator: hasSeparator)
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     override private init(frame: CGRect) {
@@ -88,25 +97,32 @@ extension PMActionSheetHeaderView {
 
     private func createTitleView() -> UIStackView {
         let stack = UIStackView(.vertical, alignment: .center, distribution: .fillProportionally, useAutoLayout: true)
-
         if let title = self.title {
-            let fontSize: CGFloat = self.subtitle == nil ? 17: 15
-            let font: UIFont = .systemFont(ofSize: fontSize, weight: .semibold)
+            let font: UIFont
+            if subtitle == nil {
+                font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
+            } else {
+                font = .adjustedFont(forTextStyle: .subheadline, weight: .semibold)
+            }
+
             let color: UIColor = ColorProvider.TextNorm
             let lbl = UILabel(title, font: font, textColor: color)
             lbl.sizeToFit()
+            titleLabel = lbl
             stack.addArrangedSubview(lbl)
         }
 
         if let subtitle = self.subtitle {
-            let font: UIFont = .systemFont(ofSize: 12)
+            let font: UIFont = .adjustedFont(forTextStyle: .caption1)
             let color: UIColor = ColorProvider.TextWeak
             let lbl = UILabel(subtitle, font: font, textColor: color)
             lbl.numberOfLines = 2
             lbl.textAlignment = .center
             lbl.sizeToFit()
+            subTitleLabel = lbl
             stack.addArrangedSubview(lbl)
         }
+        titleStack = stack
         return stack
     }
 
@@ -147,7 +163,7 @@ extension PMActionSheetHeaderView {
             btn.setTitle(title, for: .normal)
             btn.titleLabel?.lineBreakMode = .byTruncatingTail
             btn.setTitleColor(_item.textColor, for: .normal)
-            btn.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            btn.titleLabel?.font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
             btn.widthAnchor.constraint(greaterThanOrEqualToConstant: MIN_TEXT_BUTTON_SIZE).isActive = true
             btn.widthAnchor.constraint(lessThanOrEqualToConstant: MAX_TEXT_BUTTON_SIZE).isActive = true
         } else if let icon = _item.icon {
@@ -187,5 +203,20 @@ extension PMActionSheetHeaderView {
         guard let _item = item,
             let handler = _item.handler else { return }
         handler(_item)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        // The following elements can't update font automatically when user preferred font is changed
+        // Reset font again when user changes preferred
+        let font: UIFont
+        if subtitle == nil {
+            font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
+        } else {
+            font = .adjustedFont(forTextStyle: .subheadline, weight: .semibold)
+        }
+        titleLabel?.font = font
+        subTitleLabel?.font = .adjustedFont(forTextStyle: .caption1)
+        titleStack?.layoutIfNeeded()
     }
 }

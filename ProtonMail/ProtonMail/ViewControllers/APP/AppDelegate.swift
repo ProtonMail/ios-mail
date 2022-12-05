@@ -20,18 +20,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import LifetimeTracker
-import UIKit
-import UserNotifications
 import Intents
 import SideMenuSwift
+import LifetimeTracker
+import ProtonCore_Crypto
 import ProtonCore_Doh
 import ProtonCore_Keymaker
+import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
+import SideMenuSwift
+import UIKit
+import UserNotifications
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -47,7 +50,7 @@ class AppDelegate: UIResponder {
 
 // MARK: - consider move this to coordinator
 extension AppDelegate: UserDataServiceDelegate {
-    func onLogout(animated: Bool) {
+    func onLogout() {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
             let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
@@ -156,10 +159,12 @@ extension AppDelegate: UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #endif
-        self.configureAnalytics()
+        configureCrypto()
+        configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
-
+        DFSSetting.enableDFS = true
+        DFSSetting.limitToXXXLarge = true
         //start network notifier
         sharedInternetReachability.startNotifier()
         self.configureLanguage()
@@ -183,8 +188,8 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
 
-    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
-        self.onLogout(animated: false)
+    @objc fileprivate func didSignOutNotification(_: Notification) {
+        self.onLogout()
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -286,8 +291,7 @@ extension AppDelegate: UIApplicationDelegate {
         // TODO::here need change to notify composer to save editing draft
         let coreDataService = sharedServices.get(by: CoreDataService.self)
 
-        let rootContext = coreDataService.rootSavingContext
-        rootContext.performAndWait {
+        coreDataService.performAndWaitOnRootSavingContext { rootContext in
             _ = rootContext.saveUpstreamIfNeeded()
         }
         BackgroundTimer().willEnterBackgroundOrTerminate()
@@ -331,9 +335,8 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PushUpdater().update(with: userInfo) {
-            completionHandler(.newData)
-        }
+        PushUpdater().update(with: userInfo)
+        completionHandler(.newData)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -398,7 +401,7 @@ extension AppDelegate: UnlockManagerDelegate {
         guard let _ = uid else {
             return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
+        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
     func cleanAll() {
@@ -450,8 +453,15 @@ extension AppDelegate {
             Analytics.shared.setup(isInDebug: false, environment: .enterprise)
             #else
             Analytics.shared.setup(isInDebug: false, environment: .production)
+
+            // This instruction is to disable PMLogs
+            PMLog.logsDirectory = nil
             #endif
         #endif
+    }
+
+    private func configureCrypto() {
+        Crypto().initializeGoCryptoWithDefaultConfiguration()
     }
 
     private func configureLanguage() {
@@ -506,7 +516,7 @@ extension AppDelegate {
 
 #if DEBUG
 extension AppDelegate {
-    
+
     private func setupUITestsMocks() {
         let environment = ProcessInfo.processInfo.environment
         if let _ = environment["HumanVerificationStubs"] {

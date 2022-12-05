@@ -104,26 +104,26 @@ public class ProtonButton: UIButton, AccessibleView {
         switch mode {
         case .solid:
             solidLayout()
-            titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
+            titleLabel?.font = .adjustedFont(forTextStyle: .body)
             updateEdgeInsets(top: 12, leading: 36, bottom: 12, trailing: 36)
         case .outlined:
             nonSolidLayout()
             setTitleColor(ColorProvider.BrandLighten40, for: .disabled)
-            titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
+            titleLabel?.font = .adjustedFont(forTextStyle: .body)
             dynamicUpdate()
             layer.borderWidth = 1
             updateEdgeInsets(top: 12, leading: 36, bottom: 12, trailing: 36)
         case .text:
             nonSolidLayout()
             setTitleColor(ColorProvider.TextDisabled, for: .disabled)
-            titleLabel?.font = UIFont.systemFont(ofSize: 15.0)
+            titleLabel?.font = .adjustedFont(forTextStyle: .subheadline)
             updateEdgeInsets(top: 14, leading: 16, bottom: 14, trailing: 16)
         case .image(let type):
             let isImageOnly = type == .chevron
             imageLayout(isImageOnly: isImageOnly)
             dynamicUpdate()
             layer.masksToBounds = true
-            titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
+            titleLabel?.font = .adjustedFont(forTextStyle: .body)
             titleLabel?.minimumScaleFactor = 0.5
             titleLabel?.textAlignment = .natural
             contentHorizontalAlignment = .leading

@@ -26,20 +26,20 @@ import MBProgressHUD
 extension NSError {
 
     func alertController(title: String? = nil) -> UIAlertController {
-        var message = localizedFailureReason
+        var message = localizedFailureReason ?? .empty
 
-        if localizedRecoverySuggestion != nil {
-            if message != nil {
-                message = message! + "\n\n"
-            } else {
-                message = ""
+        if let recoverySuggestion = localizedRecoverySuggestion {
+            if !message.isEmpty {
+                message += "\n\n"
             }
-
-            message = message! + localizedRecoverySuggestion!
+            message += recoverySuggestion
         }
-        let _title = title ?? localizedDescription
-        return UIAlertController(title: _title, message: localizedDescription, preferredStyle: .alert)
-
+        if message.isEmpty {
+            message = localizedDescription
+        }
+        let alertTitle = title ?? localizedDescription
+        let alertMessage = alertTitle == message ? nil : message
+        return UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
     }
 
     func alertToast() {

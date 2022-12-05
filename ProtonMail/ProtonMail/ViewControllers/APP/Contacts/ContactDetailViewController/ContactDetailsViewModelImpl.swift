@@ -25,6 +25,7 @@ import PromiseKit
 import Crypto
 import CoreData
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Payments
 
@@ -283,7 +284,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                 let userkeys = userInfo.userKeys
                 for key in userkeys {
                     do {
-                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
                                                                                            passphrase: user.mailboxPassword)
                         break
                     }
@@ -354,10 +355,10 @@ extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
 
     private func updateRebuildFlag() {
         let objectID = self.contact.objectID.rawValue
-        self.coreDataService.rootSavingContext.performAndWait { [weak self] in
-            if let contactToUpdate = try? self?.coreDataService.rootSavingContext.existingObject(with: objectID) as? Contact {
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            if let contactToUpdate = try? context.existingObject(with: objectID) as? Contact {
                 contactToUpdate.needsRebuild = false
-                _ = self?.coreDataService.rootSavingContext.saveUpstreamIfNeeded()
+                _ = context.saveUpstreamIfNeeded()
             }
         }
     }

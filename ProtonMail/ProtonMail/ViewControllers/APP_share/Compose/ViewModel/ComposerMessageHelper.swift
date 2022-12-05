@@ -18,6 +18,7 @@
 import AwaitKit
 import CoreData
 import Foundation
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 final class ComposerMessageHelper: NSObject {
@@ -36,7 +37,7 @@ final class ComposerMessageHelper: NSObject {
     @objc dynamic private(set) var message: Message?
     let context: NSManagedObjectContext
     let messageDataService: MessageDataService
-    let mailboxPassword: String
+    let mailboxPassword: Passphrase
     let cacheService: CacheService
 
     var messageID: MessageID? {

@@ -46,6 +46,7 @@ class NonExpandedHeaderViewController: UIViewController {
         setUpLockTapAction()
         setUpViewModelObservations()
         setUpView()
+        setUpTimeLabelUpdate()
     }
 
     func observeShowDetails(action: @escaping (() -> Void)) {
@@ -53,32 +54,57 @@ class NonExpandedHeaderViewController: UIViewController {
     }
 
     private func setUpView() {
-        customView.initialsLabel.text = viewModel.initials.string
+        customView.initialsLabel.set(text: viewModel.infoProvider?.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
-        customView.originImageView.image = viewModel.originImage
-        customView.sentImageView.isHidden = !viewModel.shouldShowSentImage
-        customView.senderLabel.attributedText = viewModel.sender
-        customView.senderLabel.lineBreakMode = .byTruncatingTail
-        customView.senderAddressLabel.label.attributedText = viewModel.senderEmail
+        customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
+        customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
+        customView.sentImageView.superview?.isHidden = !viewModel.shouldShowSentImage
+        customView.senderLabel.set(text: viewModel.infoProvider?.senderName,
+                                   preferredFont: .subheadline,
+                                   weight: .semibold)
+        customView.senderAddressLabel.label.set(text: viewModel.infoProvider?.senderEmail,
+                                                preferredFont: .footnote,
+                                                textColor: ColorProvider.InteractionNorm,
+                                                lineBreakMode: .byTruncatingMiddle)
         customView.senderAddressLabel.tap = { [weak self] in
-            guard let sender = self?.viewModel.senderContact else { return }
+            guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
-        customView.timeLabel.attributedText = viewModel.time
-        customView.recipientLabel.attributedText = viewModel.recipient
-        customView.showDetailsControl.addTarget(self,
-                                                action: #selector(self.clickShowDetailsButton),
-                                                for: .touchUpInside)
-        customView.starImageView.isHidden = !viewModel.message.isStarred
-        tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
-        setUpLock()
+        customView.timeLabel.set(text: viewModel.infoProvider?.time,
+                                 preferredFont: .footnote,
+                                 textColor: ColorProvider.TextWeak)
+        customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
+        updateTrackerDetectionStatus()
+        customView.expandView = { [weak self] in
+            self?.showDetailsAction?()
+        }
+        let isStarred = viewModel.infoProvider?.message.isStarred ?? false
+        customView.starImageView.isHidden = !isStarred
+        let tags = viewModel.infoProvider?.message.tagUIModels ?? []
+        tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
+        let contact = viewModel.infoProvider?.checkedSenderContact
+        update(senderContact: contact)
     }
 
-    private func setUpLock() {
-        guard customView.lockImageView.image == nil, viewModel.message.isDetailDownloaded else { return }
-        viewModel.lockIcon { [weak self] image, _ in
-            self?.customView.lockImageView.image = image
-            self?.customView.lockContainer.isHidden = image == nil
+    func updateTrackerDetectionStatus() {
+        customView.showTrackerDetectionStatus(viewModel.trackerDetectionStatus)
+    }
+
+    func update(senderContact: ContactVO?) {
+        if let contact = senderContact {
+            let icon = contact.encryptionIconStatus?.icon
+            customView.lockImageView.image = icon
+            customView.lockImageView.tintColor = contact.encryptionIconStatus?.iconColor.color ?? .black
+            customView.lockContainer.isHidden = icon == nil
+        } else {
+            customView.lockContainer.isHidden = true
+        }
+    }
+
+	private func setUpTimeLabelUpdate() {
+        viewModel.setupTimerIfNeeded()
+        viewModel.updateTimeLabel = { [weak self] in
+            self?.customView.timeLabel.text = self?.viewModel.infoProvider?.time
         }
     }
 
@@ -88,12 +114,7 @@ class NonExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.senderContact?.encryptionIconStatus?.text.alertToastBottom()
-    }
-
-    @objc
-    private func clickShowDetailsButton() {
-        self.showDetailsAction?()
+        viewModel.infoProvider?.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
     }
 
     private func setUpViewModelObservations() {
@@ -111,4 +132,15 @@ class NonExpandedHeaderViewController: UIViewController {
         nil
     }
 
+}
+
+extension NonExpandedHeaderViewController: HeaderViewController {
+    var spotlightableView: UIView? {
+        let view = customView.trackerProtectionImageView
+        return view.isHidden ? nil : view
+    }
+
+    func trackerProtectionSummaryChanged() {
+        updateTrackerDetectionStatus()
+    }
 }

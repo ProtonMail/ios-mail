@@ -33,7 +33,7 @@ public class AuthService: Client {
     
     func info(username: String, complete: @escaping(_ response: AuthInfoResponse) -> Void) {
         let route = InfoEndpoint(username: username)
-        self.apiService.exec(route: route, responseObject: AuthInfoResponse(), complete: complete)
+        self.apiService.perform(request: route, response: AuthInfoResponse(), responseCompletion: { _, response in complete(response) })
     }
     
     // swiftlint:disable function_parameter_count
@@ -44,6 +44,6 @@ public class AuthService: Client {
               challenge: ChallengeProperties?,
               complete: @escaping(_ response: Result<AuthService.AuthRouteResponse, ResponseError>) -> Void) {
         let route = AuthEndpoint(username: username, ephemeral: ephemeral, proof: proof, session: session, challenge: challenge)
-        self.apiService.exec(route: route, complete: complete)
+        self.apiService.perform(request: route, decodableCompletion: { _, result in complete(result) })
     }
 }

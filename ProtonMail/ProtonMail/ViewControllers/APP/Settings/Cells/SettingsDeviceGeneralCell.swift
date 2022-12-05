@@ -25,14 +25,6 @@ import UIKit
 @IBDesignable class SettingsDeviceGeneralCell: UITableViewCell {
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
 }
 
 extension SettingsDeviceGeneralCell: IBDesignableLabeled {

@@ -26,18 +26,28 @@ import ProtonCore_Login
 import ProtonCore_UIFoundations
 
 extension UIViewController {
-    func showBanner(message: String, position: PMBannerPosition) {
+    func showBanner(message: String, style: PMBannerNewStyle = .error, button: String? = nil, action: (() -> Void)? = nil, position: PMBannerPosition) {
         unlockUI()
-        let banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
-        banner.addButton(text: CoreString._hv_ok_button) { _ in
+        let banner = PMBanner(message: message, style: style, dismissDuration: Double.infinity)
+        banner.addButton(text: button ?? CoreString._hv_ok_button) { _ in
+            action?()
             banner.dismiss()
         }
         PMBanner.dismissAll(on: self)
         banner.show(at: position, on: self)
     }
+    
+    func showBannerWithoutButton(message: String, style: PMBannerNewStyle = .error, position: PMBannerPosition) {
+        unlockUI()
+        let banner = PMBanner(message: message, style: style, dismissDuration: Double.infinity)
+        PMBanner.dismissAll(on: self)
+        banner.show(at: position, on: self)
+    }
 }
 
-protocol ErrorCapable: UIViewController { }
+protocol ErrorCapable: UIViewController {
+    var onDohTroubleshooting: () -> Void { get }
+}
 
 extension ErrorCapable {
     func setError(textField: PMTextField, error: (Error & CustomStringConvertible)?) {
@@ -54,6 +64,7 @@ protocol LoginErrorCapable: ErrorCapable {
     func showError(error: LoginError)
     func onUserAccountSetupNeeded()
     func onFirstPasswordChangeNeeded()
+    func showInfo(message: String)
 
     var bannerPosition: PMBannerPosition { get }
 }
@@ -72,6 +83,10 @@ extension LoginErrorCapable {
             showBanner(message: message)
         case let .generic(message: message, _, _):
             showBanner(message: message)
+        case let .apiMightBeBlocked(message, _):
+            showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                self?.onDohTroubleshooting()
+            }
         case .invalidSecondPassword:
             showBanner(message: CoreString._ls_error_invalid_mailbox_password)
         case .invalidState:
@@ -98,9 +113,13 @@ extension LoginErrorCapable {
             showBanner(message: CoreString._su_error_missing_sub_user_configuration)
         }
     }
+    
+    func showInfo(message: String) {
+        showBannerWithoutButton(message: message, style: .info, position: bannerPosition)
+    }
 
-    func showBanner(message: String) {
-        showBanner(message: message, position: bannerPosition)
+    func showBanner(message: String, button: String? = nil, action: (() -> Void)? = nil) {
+        showBanner(message: message, button: button, action: action, position: bannerPosition)
     }
 
     func onUserAccountSetupNeeded() {
@@ -155,9 +174,13 @@ extension SignUpErrorCapable {
             self.invalidPassword(reason: .notEqual)
         case let .generic(message: message, _, _):
             showBanner(message: message)
+        case let .apiMightBeBlocked(message, _):
+            showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                self?.onDohTroubleshooting()
+            }
         case .generateVerifier:
             showBanner(message: CoreString._su_error_create_user_failed)
-        case .default:
+        case .unknown:
             showBanner(message: CoreString._error_occured)
         }
     }
@@ -180,8 +203,8 @@ extension SignUpErrorCapable {
         present(alert, animated: true, completion: nil)
     }
 
-    func showBanner(message: String) {
-        showBanner(message: message, position: bannerPosition)
+    func showBanner(message: String, button: String? = nil, action: (() -> Void)? = nil) {
+        showBanner(message: message, button: button, action: action, position: bannerPosition)
     }
 
     func emailAddressAlreadyUsed() {

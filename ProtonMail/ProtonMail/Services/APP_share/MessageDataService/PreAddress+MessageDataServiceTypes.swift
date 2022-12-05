@@ -24,6 +24,7 @@ import Crypto
 import Foundation
 import OpenPGP
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Hash
 import ProtonCore_Services
@@ -133,7 +134,7 @@ final class PreAttachment {
     let attachmentId: String
     /// clear session key
     let session: Data
-    let algo: String
+    let algo: Algorithm
     let att: Attachment
 
     /// initial
@@ -141,7 +142,7 @@ final class PreAttachment {
     /// - Parameters:
     ///   - id: att id
     ///   - key: clear encrypted attachment session key
-    init(id: String, session: Data, algo: String, att: Attachment) {
+    init(id: String, session: Data, algo: Algorithm, att: Attachment) {
         self.attachmentId = id
         self.session = session
         self.algo = algo

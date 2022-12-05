@@ -27,8 +27,9 @@ final class SwitchTableViewCell: UITableViewCell {
     static var CellID: String {
         return "\(self)"
     }
+
     typealias ActionStatus = (_ isOK: Bool) -> Void
-    typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
+    typealias SwitchActionBlock = (_ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,41 +39,44 @@ final class SwitchTableViewCell: UITableViewCell {
         switchView.clipsToBounds = true
         switchView.backgroundColor = ColorProvider.Shade60
         selectionStyle = .none
+
+        topLineLabel.set(text: nil, preferredFont: .body)
+        topLineLabel.textAlignment = .left
     }
 
-    var callback: switchActionBlock?
+    private var onSwitch: SwitchActionBlock?
 
-    @IBOutlet weak var topLineBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var centerConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var centerConstraint: NSLayoutConstraint!
+    // swiftlint:disable private_outlet
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var switchView: UISwitch!
 
     override func prepareForReuse() {
+        super.prepareForReuse()
+
         self.switchView.isEnabled = true
         self.switchView.onTintColor = ColorProvider.BrandNorm
     }
 
     @IBAction func switchAction(_ sender: UISwitch) {
         let status = sender.isOn
-        callback?(self, status, { (isOK ) -> Void in
+        onSwitch?(status) { isOK -> Void in
             if isOK == false {
                 self.switchView.setOn(false, animated: true)
                 self.layoutIfNeeded()
             }
-        })
+        }
     }
 
-    func configCell(_ topline: String, status: Bool, complete: switchActionBlock?) {
-        let leftAttributes = FontManager.Default.alignment(.left)
-        topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
-
-        switchView.isOn = status
-        callback = complete
+    func configCell(_ topline: String, isOn: Bool, onSwitch: @escaping SwitchActionBlock) {
+        topLineLabel.text = topline
+        switchView.isOn = isOn
+        self.onSwitch = onSwitch
         self.accessibilityLabel = topline
         self.accessibilityElements = [switchView as Any]
         self.switchView.accessibilityLabel = topline
-
         centerConstraint.priority = UILayoutPriority(rawValue: 750.0)
+        self.switchView.accessibilityLabel = topline
         self.layoutIfNeeded()
     }
 }

@@ -36,6 +36,11 @@ final class SummaryProgressCell: UITableViewCell {
     @IBOutlet private weak var stepImageView: UIImageView!
     @IBOutlet private weak var stepLabel: UILabel!
     @IBOutlet weak var labelLeadingConstraint: NSLayoutConstraint!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        stepLabel.font = .adjustedFont(forTextStyle: .subheadline)
+    }
     
     // MARK: - Properties
 

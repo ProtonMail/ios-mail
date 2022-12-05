@@ -18,41 +18,43 @@
 import OpenPGP
 import PromiseKit
 import ProtonCore_APIClient
+import ProtonCore_Crypto
 import ProtonCore_Services
 
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {
-    let password: String
-    let hit: String?
+    let password: Passphrase
+    let passwordHint: String?
     let session: Data
-    let algo: String
+    let algo: Algorithm
 
     /// prepared attachment list
     let preAttachments: [PreAttachment]
 
-    init(type: SendType,
-         addr: PreAddress,
+    init(type: PGPScheme,
+         email: String,
+         sendPreferences: SendPreferences,
          session: Data,
-         algo: String,
-         password: String,
+         algo: Algorithm,
+         password: Passphrase,
          atts: [PreAttachment],
-         hit: String?) {
+         passwordHint: String?) {
         self.session = session
         self.algo = algo
         self.password = password
         self.preAttachments = atts
-        self.hit = hit
-        super.init(type: type, addr: addr)
+        self.passwordHint = passwordHint
+        super.init(type: type, email: email, sendPreferences: sendPreferences)
     }
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let encodedKeyPackage = try self.session.getSymmetricPacket(withPwd: self.password, algo: self.algo)?
+            let encodedKeyPackage = try self.session.getSymmetricPacket(withPwd: self.password.value, algo: self.algo.value)?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             // create outside encrypt packet
             let token = String.randomString(32) as String
             let based64Token = token.encodeBase64() as String
-            let encryptedToken = try based64Token.encryptNonOptional(password: self.password)
+            let encryptedToken = try based64Token.encryptNonOptional(password: self.password.value)
 
             // start build auth package
             let authModuls: AuthModulusResponse = try `await`(
@@ -79,21 +81,21 @@ class EOAddressBuilder: PackageBuilder {
 
             var attPack: [AttachmentPackage] = []
             for att in self.preAttachments {
-                let newKeyPack = try att.session.getSymmetricPacket(withPwd: self.password, algo: att.algo)?
+                let newKeyPack = try att.session.getSymmetricPacket(withPwd: self.password.value, algo: att.algo.value)?
                     .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let attPacket = AttachmentPackage(attID: att.attachmentId, attKey: newKeyPack)
+                let attPacket = AttachmentPackage(attachmentID: att.attachmentId, attachmentKey: newKeyPack)
                 attPack.append(attPacket)
             }
 
             let package = EOAddressPackage(token: based64Token,
                                            encToken: encryptedToken,
                                            auth: authPacket,
-                                           pwdHit: self.hit,
-                                           email: self.preAddress.email,
+                                           passwordHint: self.passwordHint,
+                                           email: self.email,
                                            bodyKeyPacket: encodedKeyPackage,
-                                           plainText: self.preAddress.plainText,
-                                           attPackets: attPack,
-                                           type: self.sendType)
+                                           plainText: self.sendPreferences.mimeType == .plainText,
+                                           attachmentPackages: attPack,
+                                           scheme: self.sendType)
             return package
         }
     }

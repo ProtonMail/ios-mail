@@ -88,9 +88,6 @@
  * Login choose username */
 "Create Proton Mail address" = "Δημιουργία διεύθυνσης Proton Mail";
 
-/* Create user failed error */
-"Create user failed" = "Αποτυχία δημιουργίας χρήστη";
-
 /* Signup password proton view title */
 "Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
 
@@ -201,10 +198,6 @@
 /* Login help screen title */
 "How can we help?" = "Πώς μπορούμε να βοηθήσουμε;";
 
-/* *
- *  Human verification */
-"Human Verification" = "Επαλήθευση ανθρώπου";
-
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Αν αντιμετωπίζετε προβλήματα με τη δημιουργία του λογαριασμού σας, ζητήστε μια πρόσκληση και θα απαντήσουμε σε 1 εργάσιμη ημέρα.";
 
@@ -217,7 +210,8 @@
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Δεν κατέστει εφικτό να ταιριάξει το προϊόν του App Store που αγοράσατε σε οποιοδήποτε προϊόν του διακομιστή μας. Συμπληρώστε την αναφορά σφάλματος και η ομάδα υποστήριξης πελατών μας θα επικοινωνήσει μαζί σας.";
 
-/* learn more button */
+/* alternative routing link name in description
+   learn more button */
 "Learn more" = "Μάθετε περισσότερα";
 
 /* visit item message */

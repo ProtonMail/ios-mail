@@ -115,7 +115,7 @@
     <resources>
         <image name="arrow_up" width="14" height="8"/>
         <namedColor name="MobileBrandNorm">
-            <color red="0.42699998617172241" green="0.28999999165534973" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.42745098039215684" green="0.29019607843137257" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

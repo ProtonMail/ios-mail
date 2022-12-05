@@ -21,19 +21,24 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import LifetimeTracker
 import ProtonCore_Services
 import ProtonCore_HumanVerification
 #if DEBUG
 import OHHTTPStubs
 #endif
 
-class HumanVerificationManager {
-
+class HumanVerificationManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
     static let shared = HumanVerificationManager()
 
     var humanVerifyDelegates: [String: HumanVerifyDelegate] = [:]
 
-    private init() { }
+    private init() {
+        trackLifetime()
+    }
 
     func humanCheckHelper(apiService: PMAPIService) -> HumanVerifyDelegate {
 

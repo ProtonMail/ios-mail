@@ -133,10 +133,10 @@ public final class AuthInfoResponse: Response, Codable {
 }
 
 // use codable
-public final class AuthInfoRes: Codable {
+public final class AuthInfoRes: APIDecodableResponse {
     public var Modulus: String?
     public var ServerEphemeral: String?
-    public var Version: Int = 0
+    public var Version: Int?
     public var Salt: String?
     public var SRPSession: String?
 }

@@ -243,7 +243,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         }
 
         let service = userManager.userService
-        service.updateUserDomiansOrder(auth: userManager.auth,
+        service.updateUserDomiansOrder(auth: userManager.authCredential,
                                        user: userManager.userInfo,
                                        newAddrs,
                                        newOrder: newOrder) { _, _, error in

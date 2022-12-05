@@ -20,13 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_AccountDeletion
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsAccountViewController: UITableViewController, AccessibleView {
+class SettingsAccountViewController: UITableViewController, AccessibleView, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+
     private let viewModel: SettingsAccountViewModel
     private let coordinator: SettingsAccountCoordinator
 
@@ -35,6 +40,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
         self.coordinator = coordinator
 
         super.init(style: .grouped)
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {
@@ -145,17 +151,14 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
 
         if let headerCell = header {
             let textLabel = UILabel()
-
-            let textAttribute = FontManager
-                .DefaultSmallWeak
-                .alignment(.left)
-            textLabel.attributedText = NSAttributedString(string: eSection.description, attributes: textAttribute)
+            textLabel.set(text: eSection.description,
+                          preferredFont: .subheadline,
+                          textColor: ColorProvider.TextWeak)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 
             headerCell.contentView.addSubview(textLabel)
 
             NSLayoutConstraint.activate([
-                textLabel.heightAnchor.constraint(equalToConstant: 20.0),
                 textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 24),
                 textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
                 textLabel.leftAnchor.constraint(equalTo: headerCell.contentView.leftAnchor, constant: 16),
@@ -217,7 +220,9 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
             string: AccountDeletionService.defaultExplanationMessage,
             attributes: attributes
         )
-        let label = UILabel(attributedString: string)
+        let label = UILabel(AccountDeletionService.defaultExplanationMessage,
+                            font: UIFont.preferredFont(for: .footnote, weight: .regular),
+                            textColor: ColorProvider.TextWeak)
         label.numberOfLines = 0
         return label
     }()
@@ -234,8 +239,17 @@ class SettingsAccountViewController: UITableViewController, AccessibleView {
         guard let index = self.viewModel.sections.firstIndex(of: .deleteAccount), index == section else {
             return UIView()
         }
+        let container = UIView()
+        container.addSubview(accountDeletionFooter)
+        accountDeletionFooter.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            accountDeletionFooter.topAnchor.constraint(equalTo: container.topAnchor),
+            accountDeletionFooter.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+            accountDeletionFooter.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
+            accountDeletionFooter.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
         accountDeletionFooter.preferredMaxLayoutWidth = tableView.frame.width
-        return accountDeletionFooter
+        return container
     }
 }
 

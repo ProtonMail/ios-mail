@@ -20,7 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
+import MBProgressHUD
 import PromiseKit
+import ProtonCore_DataModel
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
@@ -30,9 +35,15 @@ protocol ComposeContainerUIProtocol: AnyObject {
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
+    #if !APP_EXTENSION
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+    #endif
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem!
     private var sendButton: UIBarButtonItem!
+    private var scheduledSendButton: UIBarButtonItem!
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     private let timerInterval: TimeInterval = 30
@@ -42,6 +53,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var toolbar: ComposeToolbar!
     private var isAddingAttachment: Bool = false
     private var attachmentsReloaded = false
+    private var scheduledSendHelper: ScheduledSendHelper!
     // MARK: Attachment variables
     let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
     private(set) var currentAttachmentSize: Int = 0
@@ -69,18 +81,34 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     var isUploadingAttachments: Bool = false {
         didSet {
-            setupSendButton()
+            setupTopRightBarButton()
             setUpTitleView()
         }
     }
 
     private var isSendButtonTapped = false
 
+    override init(
+        viewModel: ComposeContainerViewModel,
+        coordinator: ComposeContainerViewCoordinator
+    ) {
+        super.init(viewModel: viewModel, coordinator: coordinator)
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     deinit {
-        self.childrenHeightObservations = []
+        self.childrenHeightObservations.forEach({ $0.invalidate() })
         NotificationCenter.default.removeKeyboardObserver(self)
         NotificationCenter.default.removeObserver(self)
     }
+
+    private lazy var scheduleSendIntroView = ScheduledSendSpotlightView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +123,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
         NotificationCenter.default.addKeyboardObserver(self)
 
+        self.scheduledSendHelper = ScheduledSendHelper(viewController: self,
+                                                       delegate: self)
         self.setupBottomPadding()
         self.configureNavigationBar()
         self.setupChildViewModel()
@@ -103,7 +133,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.emptyBackButtonTitleForNextView()
         let childVM = self.viewModel.childViewModel
         if childVM.shareOverLimitationAttachment {
-            self.sizeError(0)
+            self.sizeError()
         }
 
         // accessibility
@@ -128,6 +158,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         #endif
 
         generateAccessibilityIdentifiers()
+        showScheduleSendIntroViewIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -149,7 +180,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.navigationController?.navigationBar.barTintColor = ColorProvider.BackgroundNorm
         self.navigationController?.navigationBar.isTranslucent = false
 
-        self.setupSendButton()
+        self.setupTopRightBarButton()
         self.setupCancelButton()
     }
 
@@ -213,7 +244,7 @@ extension ComposeContainerViewController {
 
     private func setupChildViewModel() {
         let childViewModel = self.viewModel.childViewModel
-        let header = self.coordinator.createHeader(childViewModel)
+        let header = self.coordinator.createHeader()
         self.coordinator.createEditor(childViewModel)
         let attachmentView = self.coordinator.createAttachmentView(childViewModel: childViewModel)
 
@@ -253,6 +284,16 @@ extension ComposeContainerViewController {
         ]
     }
 
+    private func setupTopRightBarButton() {
+        self.setupSendButton()
+        self.setupScheduledSendButton()
+        var items: [UIBarButtonItem] = [self.sendButton]
+        #if DEBUG_ENTERPRISE
+        items.append(self.scheduledSendButton)
+        #endif
+        self.navigationItem.rightBarButtonItems = items
+    }
+
     private func setupSendButton() {
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
         let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
@@ -261,15 +302,24 @@ extension ComposeContainerViewController {
             action: isEnabled ? #selector(sendAction) : nil,
             style: .plain,
             tintColor: tintColor,
-            squareSize: 21.74,
+            squareSize: 22,
             backgroundColor: ColorProvider.BackgroundNorm,
-            backgroundSquareSize: 40,
+            backgroundSquareSize: 35,
             isRound: true,
-            imageInsets: UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+            imageInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         )
-        self.navigationItem.rightBarButtonItem = self.sendButton
+
         self.sendButton.accessibilityLabel = LocalString._general_send_action
         self.sendButton.accessibilityIdentifier = "ComposeContainerViewController.sendButton"
+    }
+
+    private func setupScheduledSendButton() {
+        guard UserInfo.isScheduleSendEnable else { return }
+        let icon = Asset.icClockPaperPlane.image
+        let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
+        self.scheduledSendButton = self.scheduledSendHelper.setUpScheduledSendButton(isEnabled: isEnabled, icon: icon)
+        self.scheduledSendButton.accessibilityLabel = LocalString._general_schedule_send_action
+        self.scheduledSendButton.accessibilityIdentifier = "ComposeContainerViewController.scheduledSend"
     }
 
     private func setUpTitleView() {
@@ -321,11 +371,28 @@ extension ComposeContainerViewController {
         self.syncTimer?.invalidate()
         self.syncTimer = nil
     }
+
+    private func showScheduleSendIntroViewIfNeeded() {
+        guard UserInfo.isScheduleSendEnable, !viewModel.isScheduleSendIntroViewShown else {
+            return
+        }
+        viewModel.userHasSeenScheduledSendSpotlight()
+
+        guard let navView = self.navigationController?.view,
+              let scheduleItemView = self.scheduledSendButton.value(forKey: "view") as? UIView,
+              let targetView = scheduleItemView.subviews.first else {
+                  return
+              }
+        let barFrame = targetView.frame
+        let rect = scheduleItemView.convert(barFrame, to: navView)
+        scheduleSendIntroView.presentOn(view: navView,
+                                        targetFrame: rect)
+    }
 }
 
 extension ComposeContainerViewController: ComposeContainerUIProtocol {
     func updateSendButton() {
-        self.setupSendButton()
+        self.setupTopRightBarButton()
     }
 
     func setLockStatus(isLock: Bool) {
@@ -347,6 +414,10 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
             self?.currentAttachmentSize = size
             completion?()
         }
+    }
+
+    func showScheduleSendActionSheet() {
+        scheduledSendHelper.presentActionSheet()
     }
 }
 
@@ -450,7 +521,7 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
             return
         }
         self.coordinator.header.view.endEditing(true)
-        self.coordinator.editor.view.endEditing(true)
+        self.coordinator.editor?.view.endEditing(true)
         self.coordinator.attachmentView?.view.endEditing(true)
         self.view.endEditing(true)
 
@@ -505,12 +576,12 @@ extension ComposeContainerViewController: AttachmentController {
 
                 let remainingSize = (self.kDefaultAttachmentFileSize - self.currentAttachmentSize)
                 guard size < remainingSize else {
-                    self.sizeError(0)
+                    self.sizeError()
                     seal.fulfill_()
                     return
                 }
-                
-                guard let message = self.coordinator.editor.viewModel.composerMessageHelper.message,
+
+                guard let message = self.coordinator.editor?.viewModel.composerMessageHelper.message,
                       message.managedObjectContext != nil else {
                     self.error(LocalString._system_cant_copy_the_file)
                     seal.fulfill_()
@@ -548,7 +619,7 @@ extension ComposeContainerViewController: AttachmentController {
         }
     }
 
-    private func sizeError(_ size: Int) {
+    private func sizeError() {
         DispatchQueue.main.async {
             let title = LocalString._attachment_limit
             let message = LocalString._the_total_attachment_size_cant_be_bigger_than_25mb
@@ -556,5 +627,48 @@ extension ComposeContainerViewController: AttachmentController {
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }
+    }
+}
+
+// MARK: Scheduled send related
+extension ComposeContainerViewController: ScheduledSendHelperDelegate {
+    func showSendInTheFutureAlert() {
+        let alert = LocalString._schedule_send_future_warning.alertController()
+        alert.addOKAction()
+        present(alert, animated: true)
+    }
+
+    func scheduledTimeIsSet(date: Date?) {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        self.viewModel.allowScheduledSend { [weak self] isAllowed in
+            guard let self = self else { return }
+            MBProgressHUD.hide(for: self.view, animated: true)
+            guard isAllowed else {
+                NotificationCenter.default.post(name: .showScheduleSendUnavailable, object: nil)
+                return
+            }
+            if let date = date {
+                self.showScheduledSendConfirmAlert(date: date)
+            } else {
+                // Immediately send
+                self.coordinator.sendAction(deliveryTime: nil)
+            }
+        }
+    }
+
+    private func showScheduledSendConfirmAlert(date: Date) {
+        let timeTuple = PMDateFormatter.shared.titleForScheduledBanner(from: date)
+        let message = String(format: LocalString._edit_scheduled_button_message,
+                             timeTuple.0,
+                             timeTuple.1)
+
+        let title = LocalString._general_schedule_send_action
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: LocalString._general_confirm_action, style: .default) { [weak self] _ in
+            self?.coordinator.sendAction(deliveryTime: date)
+        }
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
+        [okAction, cancelAction].forEach(alert.addAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }

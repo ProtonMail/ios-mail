@@ -28,12 +28,16 @@ import ProtonCore_DataModel
 
 extension Crypto {
 
-    static func updateKeysPassword(_ old_keys: [Key], old_pass: String, new_pass: String ) throws -> [Key] {
+    static func updateKeysPassword(_ old_keys: [Key], old_pass: Passphrase, new_pass: Passphrase) throws -> [Key] {
         var outKeys: [Key] = [Key]()
         for okey in old_keys {
             do {
-                let new_private_key = try self.updatePassphrase(privateKey: okey.privateKey, oldPassphrase: old_pass, newPassphrase: new_pass)
-                let newK = Key(keyID: okey.keyID, privateKey: new_private_key, isUpdated: true)
+                let new_private_key = try self.updatePassphrase(
+                    privateKey: ArmoredKey(value: okey.privateKey),
+                    oldPassphrase: old_pass,
+                    newPassphrase: new_pass
+                )
+                let newK = Key(keyID: okey.keyID, privateKey: new_private_key.value, isUpdated: true)
                 outKeys.append(newK)
             } catch {
                 let newK = Key(keyID: okey.keyID, privateKey: okey.privateKey)
@@ -61,17 +65,17 @@ extension Crypto {
         return outKeys
     }
 
-    static func updateAddrKeysPassword(_ old_addresses: [Address], old_pass: String, new_pass: String ) throws -> [Address] {
+    static func updateAddrKeysPassword(_ old_addresses: [Address], old_pass: Passphrase, new_pass: Passphrase) throws -> [Address] {
         var out_addresses = [Address]()
         for addr in old_addresses {
             var outKeys = [Key]()
             for okey in addr.keys {
                 do {
-                    let new_private_key = try Crypto.updatePassphrase(privateKey: okey.privateKey,
+                    let new_private_key = try Crypto.updatePassphrase(privateKey: ArmoredKey(value: okey.privateKey),
                                                                       oldPassphrase: old_pass,
                                                                       newPassphrase: new_pass)
                     let newK = Key(keyID: okey.keyID,
-                                   privateKey: new_private_key,
+                                   privateKey: new_private_key.value,
                                    keyFlags: okey.keyFlags,
                                    token: nil,
                                    signature: nil,
@@ -149,7 +153,7 @@ extension Crypto: AttachmentDecryptor {}
 extension Data {
     func decryptAttachment(keyPackage: Data,
                            userKeys: [Data],
-                           passphrase: String,
+                           passphrase: Passphrase,
                            keys: [Key],
                            attachmentDecryptor: AttachmentDecryptor = Crypto()) throws -> Data? {
         var firstError: Error?
@@ -164,7 +168,7 @@ extension Data {
                     keyPacket: keyPackage,
                     dataPacket: self,
                     privateKey: key.privateKey,
-                    passphrase: addressKeyPassphrase
+                    passphrase: addressKeyPassphrase.value
                 )
                 return decryptedAttachment
             } catch let error {
@@ -180,17 +184,21 @@ extension Data {
     }
 
     // key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: [Data]) throws -> SymmetricKey {
-        try Crypto().getSessionNonOptional(keyPacket: self, privateKeys: privKeys, passphrase: passphrase)
+    func getSessionFromPubKeyPackage(_ passphrase: Passphrase, privKeys: [Key]) throws -> SessionKey {
+        let decryptionKeys: [DecryptionKey] = privKeys.map {
+            DecryptionKey(privateKey: ArmoredKey(value: $0.privateKey), passphrase: passphrase)
+        }
+        return try Decryptor.decryptSessionKey(decryptionKeys: decryptionKeys, keyPacket: self)
     }
 
     // key packet part
-    func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: String) throws -> SymmetricKey {
-        try Crypto().getSessionNonOptional(keyPacket: self, privateKey: addrPrivKey, passphrase: passphrase)
+    func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: Passphrase) throws -> SessionKey {
+        let decryptionKey = DecryptionKey(privateKey: ArmoredKey(value: addrPrivKey), passphrase: passphrase)
+        return try Decryptor.decryptSessionKey(decryptionKeys: [decryptionKey], keyPacket: self)
     }
 
     // key packet part
-    func getSessionFromPubKeyPackage(userKeys: [Data], passphrase: String, keys: [Key]) throws -> SymmetricKey? {
+    func getSessionFromPubKeyPackage(userKeys: [Data], passphrase: Passphrase, keys: [Key]) throws -> SessionKey? {
         var firstError: Error?
         for key in keys {
             do {
@@ -199,11 +207,11 @@ extension Data {
                     passphrase: passphrase,
                     key: key
                 )
-                let sessionKey = try Crypto().getSessionNonOptional(
-                    keyPacket: self,
-                    privateKey: key.privateKey,
+                let decryptionKey = DecryptionKey(
+                    privateKey: ArmoredKey(value: key.privateKey),
                     passphrase: addressKeyPassphrase
                 )
+                let sessionKey = try Decryptor.decryptSessionKey(decryptionKeys: [decryptionKey], keyPacket: self)
                 return sessionKey
             } catch let error {
                 if firstError == nil {

@@ -262,45 +262,5 @@
 			<string>%d użytkowników</string>
 		</dict>
 	</dict>
-	<key>for %d months</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>na %d miesiące</string>
-			<key>many</key>
-			<string>na %d miesięcy</string>
-			<key>one</key>
-			<string>na miesiąc</string>
-			<key>other</key>
-			<string>na %d miesiąca</string>
-		</dict>
-	</dict>
-	<key>for %d years</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>na %d lata</string>
-			<key>many</key>
-			<string>na %d lat</string>
-			<key>one</key>
-			<string>na rok</string>
-			<key>other</key>
-			<string>na %d roku</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

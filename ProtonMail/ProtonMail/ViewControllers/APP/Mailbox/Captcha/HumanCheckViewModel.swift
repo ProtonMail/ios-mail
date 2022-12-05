@@ -32,7 +32,7 @@ class HumanCheckViewModel {
         fatalError("This method must be overridden")
     }
 
-    func humanCheck(_ type: String, token: String, complete:@escaping HumanCheckBlock) {
+    func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
         fatalError("This method must be overridden")
     }
 

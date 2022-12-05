@@ -1,0 +1,115 @@
+{
+  "name": "ProtonCore-Payments",
+  "version": "3.23.4",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.23.4"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "dependencies": {
+    "ReachabilitySwift": [
+      "~> 5.0.0"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "3.23.4"
+    ],
+    "ProtonCore-Foundations": [
+      "3.23.4"
+    ],
+    "ProtonCore-Hash": [
+      "3.23.4"
+    ],
+    "ProtonCore-Log": [
+      "3.23.4"
+    ]
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "UsingCrypto",
+      "dependencies": {
+        "ProtonCore-Authentication/UsingCrypto": [
+          "3.23.4"
+        ],
+        "ProtonCore-Networking": [
+          "3.23.4"
+        ],
+        "ProtonCore-Services": [
+          "3.23.4"
+        ]
+      },
+      "source_files": [
+        "libraries/Payments/Sources/**/*.swift",
+        "libraries/Payments/Sources/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Payments/UsingCrypto": [
+              "3.23.4"
+            ]
+          },
+          "source_files": "libraries/Payments/Tests/**/*.swift"
+        }
+      ]
+    },
+    {
+      "name": "UsingCryptoVPN",
+      "dependencies": {
+        "ProtonCore-Authentication/UsingCryptoVPN": [
+          "3.23.4"
+        ],
+        "ProtonCore-Networking": [
+          "3.23.4"
+        ],
+        "ProtonCore-Services": [
+          "3.23.4"
+        ]
+      },
+      "source_files": [
+        "libraries/Payments/Sources/**/*.swift",
+        "libraries/Payments/Sources/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Payments/UsingCryptoVPN": [
+              "3.23.4"
+            ]
+          },
+          "source_files": "libraries/Payments/Tests/**/*.swift"
+        }
+      ]
+    }
+  ],
+  "swift_version": "5.6"
+}

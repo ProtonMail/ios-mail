@@ -91,13 +91,13 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockCoordinator(navigationController: self.navigationController, services: self.services)
+        let lockSetting = SettingsLockCoordinator(navigationController: self.navigationController)
         lockSetting.start()
     }
 
     private func openCombineContacts() {
         let viewModel = SettingsCombineContactViewModel(combineContactCache: userCachedStatus)
-        let viewController = SettingsContactCombineViewController(viewModel: viewModel, coordinator: self)
+        let viewController = SettingsContactCombineViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -121,8 +121,8 @@ class SettingsDeviceCoordinator {
     }
 
     private func openDarkMode() {
-        let viewModel = SettingsDarkModeViewModel(darkModeCache: userCachedStatus)
-        let viewController = SettingsDarkModeViewController(viewModel: viewModel)
+        let viewModel = DarkModeSettingViewModel(darkModeCache: userCachedStatus)
+        let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

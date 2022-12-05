@@ -43,4 +43,15 @@ public extension AuthCredential {
                        privateKey: privateKey ?? self.privateKey,
                        passwordKeySalt: passwordKeySalt ?? self.passwordKeySalt)
     }
+    
+    static func areEqualFieldwise(_ lhs: AuthCredential, _ rhs: AuthCredential) -> Bool {
+        return lhs.sessionID == rhs.sessionID &&
+               lhs.accessToken == rhs.accessToken &&
+               lhs.refreshToken == rhs.refreshToken &&
+               lhs.expiration == rhs.expiration &&
+               lhs.userName == rhs.userName &&
+               lhs.userID == rhs.userID &&
+               lhs.privateKey == rhs.privateKey &&
+               lhs.passwordKeySalt == rhs.passwordKeySalt
+    }
 }

@@ -32,7 +32,7 @@ extension IBDesignableLabeled {
         label.text = "\(Self.self)"
         label.textAlignment = .center
         label.textColor = .white
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.font = UIFont.preferredFont(for: .headline, weight: .regular)
 
         let colors: [UIColor] = [.magenta, .green, .blue, .yellow, .red]
 

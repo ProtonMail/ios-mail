@@ -24,8 +24,7 @@ import ProtonCore_Networking
 
 extension AuthService {
     
-    struct RefreshResponse: Codable, CredentialConvertible {
-        var code: Int
+    struct RefreshResponse: APIDecodableResponse, CredentialConvertible, Encodable {
         var accessToken: String
         var expiresIn: TimeInterval
         var tokenType: String

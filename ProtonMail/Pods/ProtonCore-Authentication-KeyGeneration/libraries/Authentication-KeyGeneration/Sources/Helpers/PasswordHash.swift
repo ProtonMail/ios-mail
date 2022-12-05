@@ -26,6 +26,12 @@ import Crypto_VPN
 #elseif canImport(Crypto)
 import Crypto
 #endif
+#if canImport(ProtonCore_Crypto_VPN)
+import ProtonCore_Crypto_VPN
+#elseif canImport(ProtonCore_Crypto)
+import ProtonCore_Crypto
+#endif
+import ProtonCore_Hash
 
 public final class PasswordHash {
     enum PasswordError: Error {
@@ -60,14 +66,29 @@ public final class PasswordHash {
         return ""
     }
     
+    public static func passphrase(_ password: String, salt: Data) -> Passphrase {
+        return .init(value: self.hashPassword(password, salt: salt))
+    }
+    
+    /// Generate a 32 byte random secret and encode it in a 64 byte hex string
+    /// - Returns: Passphrase
+    public static func genAddrPassphrase() -> Passphrase {
+        /// generate address key secret size 32 bytes or 256 bits
+        let secret = PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
+        /// hex string of secret data
+        let hexSecret = HMAC.hexStringFromData(secret)
+        assert(hexSecret.count == 64)
+        return Passphrase.init(value: hexSecret)
+    }
+    
     static func bcrypt(_ password: String, salt: Data) throws -> String {
         var error: NSError?
-        let passSlic = password.data(using: .utf8)
-        let out = SrpMailboxPassword(passSlic, salt, &error)
+        let passSlice = password.data(using: .utf8)
+        let out = SrpMailboxPassword(passSlice, salt, &error)
         if let err = error {
             throw err
         }
-        guard let outSlic = out, let outHash = String.init(data: outSlic, encoding: .utf8) else {
+        guard let outSlice = out, let outHash = String.init(data: outSlice, encoding: .utf8) else {
             throw PasswordError.hashEmpty
         }
         let size = outHash.count

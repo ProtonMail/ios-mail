@@ -28,10 +28,12 @@ class SkeletonViewController: ProtonMailTableViewController {
 
     private(set) var timeout: Int = 10
     private(set) var timer: Timer?
+    private(set) var isEnabledTimeout = true
 
-    class func instance(timeout: Int = 10) -> SkeletonViewController {
+    class func instance(timeout: Int = 10, isEnabledTimeout: Bool = true) -> SkeletonViewController {
         let skeletonVC = SkeletonViewController(style: .plain)
         skeletonVC.timeout = timeout
+        skeletonVC.isEnabledTimeout = isEnabledTimeout
         _ = UINavigationController(rootViewController: skeletonVC)
         return skeletonVC
     }
@@ -47,6 +49,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
+        guard isEnabledTimeout else { return }
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
             NotificationCenter.default.post(name: .switchView, object: nil)
         }

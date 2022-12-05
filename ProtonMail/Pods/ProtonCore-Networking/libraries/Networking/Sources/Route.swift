@@ -33,29 +33,20 @@ public protocol Package {
 }
 
 ///
-public enum HTTPMethod {
-    case delete
-    case get
-    case post
-    case put
+public enum HTTPMethod: String {
+    case delete = "DELETE"
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
 
+    @available(*, deprecated, renamed: "rawValue")
     public func toString() -> String {
-        switch self {
-        case .delete:
-            return "DELETE"
-        case .get:
-            return "GET"
-        case .post:
-            return "POST"
-        case .put:
-            return "PUT"
-        }
+        self.rawValue
     }
 }
 
 // APIClient is the api client base
 public protocol Request: Package {
-    // those functions shdould be overrided
     var path: String { get }
     var header: [String: Any] { get }
     var method: HTTPMethod { get }
@@ -65,6 +56,7 @@ public protocol Request: Package {
 
     var authCredential: AuthCredential? { get }
     var autoRetry: Bool { get }
+    var retryPolicy: ProtonRetryPolicy.RetryMode { get }
 }
 
 extension Request {
@@ -94,5 +86,9 @@ extension Request {
     
     public var nonDefaultTimeout: TimeInterval? {
         return nil
+    }
+
+    public var retryPolicy: ProtonRetryPolicy.RetryMode {
+        return .userInitiated
     }
 }

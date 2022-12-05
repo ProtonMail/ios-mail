@@ -20,6 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+import ProtonCore_Networking
+
 public let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
 public class APIErrorCode {
@@ -72,6 +74,24 @@ public class APIErrorCode {
     public static let tls = 3500
     
     public static let humanVerificationEditEmail = 9100 // internal error
+    
+    public static let potentiallyBlocked = 111_222_333 // internal error
+}
+
+public extension ResponseError {
+    var isApiIsBlockedError: Bool {
+        return bestShotAtReasonableErrorCode == APIErrorCode.potentiallyBlocked
+    }
+}
+
+public extension AuthErrors {
+    static func from(_ responseError: ResponseError) -> AuthErrors {
+        if responseError.isApiIsBlockedError {
+            return .apiMightBeBlocked(message: responseError.networkResponseMessageForTheUser, originalError: responseError)
+        } else {
+            return .networkingError(responseError)
+        }
+    }
 }
 
 // This need move to a common framwork

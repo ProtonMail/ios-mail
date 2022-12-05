@@ -62,6 +62,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case trash
     case allmail
     case customize(String, String?)
+    case scheduled
 
     case bugs
     case contacts
@@ -102,6 +103,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "Add Folder": self = .addFolder
         case "Account Manager": self = .accountManger
         case "Add Account": self = .addAccount
+        case "12": self = .scheduled
         default:
             if let name = name {
                 self = .customize(id, name)
@@ -137,6 +139,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .addFolder: return "Add Folder"
         case .accountManger: return "Account Manager"
         case .addAccount: return "Add Account"
+        case .scheduled: return "12"
         }
     }
 
@@ -170,6 +173,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .addFolder: return LocalString._labels_add_folder_action
         case .accountManger: return LocalString._menu_manage_accounts
         case .addAccount: return ""
+        case .scheduled: return "Scheduled"
         }
     }
 
@@ -210,6 +214,8 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return nil
         case .addLabel, .addFolder:
             return IconProvider.plus
+        case .scheduled:
+            return IconProvider.clock
         default:
             return nil
         }

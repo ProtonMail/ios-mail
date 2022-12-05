@@ -29,7 +29,8 @@ public final class PMHeaderView: UIView, AccessibleView {
     @IBOutlet private var titleLabelBottom: NSLayoutConstraint!
     @IBOutlet private var contentView: UIView!
     private let title: String
-    private let fontSize: CGFloat
+    private var fontSize: CGFloat?
+    private var font: UIFont?
     private let titleColor: UIColor
     private let titleLeft: CGFloat
     private let titleBottom: CGFloat
@@ -39,14 +40,19 @@ public final class PMHeaderView: UIView, AccessibleView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// - Parameters:
+    ///   - fontSize: Title font size, the priority is lower than font
+    ///   - font: Title font, the priority is higher than fontSize
     public init(title: String,
                 fontSize: CGFloat = 15,
+                font: UIFont? = nil,
                 titleColor: UIColor = ColorProvider.TextWeak,
                 titleLeft: CGFloat = 16,
                 titleBottom: CGFloat = 8,
                 background: UIColor = ColorProvider.BackgroundSecondary) {
         self.title = title
         self.fontSize = fontSize
+        self.font = font
         self.titleColor = titleColor
         self.titleLeft = titleLeft
         self.titleBottom = titleBottom
@@ -81,7 +87,11 @@ extension PMHeaderView {
         self.contentView.backgroundColor = self.background
         self.titleLabel.text = self.title
         self.titleLabel.textColor = self.titleColor
-        self.titleLabel.font = .systemFont(ofSize: self.fontSize)
+        if let font = font {
+            self.titleLabel.font = font
+        } else if let fontSize = fontSize {
+            self.titleLabel.font = .systemFont(ofSize: fontSize)
+        }
         self.titleLabelLeft.constant = self.titleLeft
         self.titleLabelBottom.constant = self.titleBottom
     }

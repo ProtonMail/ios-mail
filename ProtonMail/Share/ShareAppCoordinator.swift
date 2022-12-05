@@ -74,6 +74,6 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
         guard let _ = uid else {
             return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
+        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
     }
 }

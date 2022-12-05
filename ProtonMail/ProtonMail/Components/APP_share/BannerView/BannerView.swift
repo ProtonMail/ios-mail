@@ -26,7 +26,7 @@ import ProtonCore_UIFoundations
 class BannerView: PMView {
 
     let yourAttributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont.preferredFont(forTextStyle: .footnote),
+        .font: UIFont.preferredFont(for: .footnote, weight: .regular),
         .foregroundColor: UIColor.white,
         .underlineStyle: NSUnderlineStyle.single.rawValue]
     // .double.rawValue, .thick.rawValue

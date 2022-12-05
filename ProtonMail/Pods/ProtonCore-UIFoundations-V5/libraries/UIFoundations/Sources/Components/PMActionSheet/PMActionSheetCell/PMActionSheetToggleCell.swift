@@ -53,6 +53,7 @@ extension PMActionSheetToggleCell {
         self.imageView?.image = item.icon
         self.imageView?.tintColor = item.iconColor
         self.textLabel?.text = item.title
+        self.textLabel?.font = .adjustedFont(forTextStyle: .subheadline)
         self.textLabel?.textColor = item.textColor
         self.toggle.isOn = item.isOn
         self.toggle.onTintColor = item.toggleColor

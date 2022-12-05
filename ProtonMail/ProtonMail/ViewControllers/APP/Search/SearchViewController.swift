@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
+import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
@@ -37,7 +38,10 @@ protocol SearchViewUIProtocol: UIViewController {
     func reloadTable()
 }
 
-class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
+class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
 
     @IBOutlet private var navigationBarView: UIView!
     @IBOutlet private var tableView: UITableView!
@@ -88,6 +92,8 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.uiDelegate = self
+        trackLifetime()
     }
 
     required init?(coder: NSCoder) {
@@ -239,8 +245,17 @@ extension SearchViewController {
                     case .markAsUnread, .markAsRead:
                         self.viewModel.handleBarActions(action)
                     case .trash:
-                        self.viewModel.handleBarActions(action)
-                        self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                        self.showTrashScheduleAlertIfNeeded { [weak self] scheduledNum in
+                            self?.viewModel.handleBarActions(action)
+                            let title: String
+                            if scheduledNum == 0 {
+                                title = LocalString._messages_has_been_moved
+                            } else {
+                                title = String(format: LocalString._message_moved_to_drafts, scheduledNum)
+                            }
+                            self?.showMessageMoved(title: title)
+                        }
+
                     case .more:
                         assertionFailure("handled above")
                     }
@@ -328,7 +343,7 @@ extension SearchViewController {
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
-                self.viewModel.deleteSelectedMessage()
+                self.viewModel.deleteSelectedMessages()
             }
         case .labelAs:
             labelButtonTapped()
@@ -365,6 +380,17 @@ extension SearchViewController {
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
+    }
+
+    private func showTrashScheduleAlertIfNeeded(continueAction: @escaping (Int) -> Void) {
+        let num = viewModel.scheduledMessagesFromSelected().count
+        guard num > 0 else {
+            continueAction(0)
+            return
+        }
+        displayScheduledAlert(scheduledNum: num) {
+            continueAction(num)
+        }
     }
 
     private func showMessageMoved(title: String) {
@@ -505,24 +531,35 @@ extension SearchViewController {
 
     private func prepareForDraft(_ message: MessageEntity) {
         self.updateTapped(status: true)
-        self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
+        viewModel.fetchMessageDetail(message: message, callback: { [weak self] result in
             self?.updateTapped(status: false)
-            guard let self = self else { return }
-            guard error == nil else {
-                let alert = LocalString._unable_to_edit_offline.alertController()
+            switch result {
+            case .failure(let error):
+                let alert = error.localizedDescription.alertController()
                 alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-                self.tableView.indexPathsForSelectedRows?.forEach {
-                    self.tableView.deselectRow(at: $0, animated: true)
+                self?.present(alert, animated: true, completion: nil)
+                self?.tableView.indexPathsForSelectedRows?.forEach {
+                    self?.tableView.deselectRow(at: $0, animated: true)
                 }
-                return
+            case .success(let message):
+                self?.showComposer(message: message)
             }
-            self.showComposer(message: message)
-        }
+        })
     }
     private func showComposer(message: MessageEntity) {
         guard let viewModel = self.viewModel.getComposeViewModel(message: message),
               let navigationController = self.navigationController else { return }
+        let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
+                                                          editorViewModel: viewModel,
+                                                          services: ServiceFactory.default)
+        coordinator.start()
+    }
+
+    private func showComposer(msgID: MessageID) {
+        guard let viewModel = self.viewModel.getComposeViewModel(by: msgID, isEditingScheduleMsg: true),
+              let navigationController = self.navigationController else {
+            return
+        }
         let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
                                                           editorViewModel: viewModel,
                                                           services: ServiceFactory.default)
@@ -546,6 +583,12 @@ extension SearchViewController {
             message: message,
             user: self.viewModel.user
         )
+        coordinator.goToDraft = { [weak self] msgID in
+            guard let self = self else { return }
+            // trigger the data to be updated.
+            _ = self.textFieldShouldReturn(self.searchBar.textField)
+            self.showComposer(msgID: msgID)
+        }
         coordinator.start()
     }
 
@@ -573,6 +616,12 @@ extension SearchViewController {
                     internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
                     targetID: messageID
                 )
+                coordinator.goToDraft = { [weak self] msgID in
+                    guard let self = self else { return }
+                    // trigger the data to be updated.
+                    _ = self.textFieldShouldReturn(self.searchBar.textField)
+                    self.showComposer(msgID: msgID)
+                }
                 coordinator.start()
             case .failure(let error):
                 error.alert(at: nil)

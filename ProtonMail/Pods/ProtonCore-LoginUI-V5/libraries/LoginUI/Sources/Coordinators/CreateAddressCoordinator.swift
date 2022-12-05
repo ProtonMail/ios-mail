@@ -64,6 +64,12 @@ final class CreateAddressCoordinator {
         chooseUsernameViewController.viewModel = container.makeChooseUsernameViewModel(data: data)
         chooseUsernameViewController.customErrorPresenter = customErrorPresenter
         chooseUsernameViewController.delegate = self
+        chooseUsernameViewController.onDohTroubleshooting = { [weak self] in
+            guard let self = self else { return }
+            self.container.executeDohTroubleshootMethodFromApiDelegate()
+            
+            self.container.troubleShootingHelper.showTroubleShooting(over: self.navigationController)
+        }
         navigationController.pushViewController(chooseUsernameViewController, animated: true)
     }
 
@@ -77,6 +83,12 @@ final class CreateAddressCoordinator {
         )
         createAddressViewController.customErrorPresenter = customErrorPresenter
         createAddressViewController.delegate = self
+        createAddressViewController.onDohTroubleshooting = { [weak self] in
+            guard let self = self else { return }
+            self.container.executeDohTroubleshootMethodFromApiDelegate()
+            
+            self.container.troubleShootingHelper.showTroubleShooting(over: self.navigationController)
+        }
         navigationController.pushViewController(createAddressViewController, animated: true)
     }
 }

@@ -22,6 +22,8 @@
 
 import Foundation
 
+
+
 extension String {
     func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
@@ -197,9 +199,7 @@ extension String {
     }
 
     func encodeBase64() -> String {
-        let utf8str = self.data(using: String.Encoding.utf8)
-        let base64Encoded = utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-        return base64Encoded
+        Data(utf8).encodeBase64()
     }
 
     func decodeBase64() -> Data {

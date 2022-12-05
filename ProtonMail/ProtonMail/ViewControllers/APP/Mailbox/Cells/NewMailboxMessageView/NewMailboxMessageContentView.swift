@@ -95,7 +95,7 @@ class NewMailboxMessageContentView: UIView {
             view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         }
 
-        let heightConstraint = messageCountLabel.heightAnchor.constraint(equalToConstant: 20.0)
+        let heightConstraint = messageCountLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20.0)
         heightConstraint.priority = .defaultHigh
         [heightConstraint].activate()
 

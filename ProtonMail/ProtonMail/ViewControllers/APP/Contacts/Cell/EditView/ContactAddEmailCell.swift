@@ -32,7 +32,7 @@ class ContactAddEmailCell: UITableViewCell, AccessibleCell {
     @IBOutlet var separatorView: UIView!
 
     @IBAction func selectTypeTapped(_ sender: UIButton) {
-        delegate?.pick(typeInterface: email, sender: self)
+        delegate?.pick(typeInterface: email)
     }
 
     override func awakeFromNib() {

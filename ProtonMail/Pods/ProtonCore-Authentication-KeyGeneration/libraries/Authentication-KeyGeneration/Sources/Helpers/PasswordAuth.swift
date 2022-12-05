@@ -35,8 +35,8 @@ final class PasswordAuth {
     /// base64 encoded
     let verifer: String
 
-    init(modulus_id: String, salt: String, verifer: String) {
-        self.ModulusID = modulus_id
+    init(modulusID: String, salt: String, verifer: String) {
+        self.ModulusID = modulusID
         self.salt = salt
         self.verifer = verifer
     }

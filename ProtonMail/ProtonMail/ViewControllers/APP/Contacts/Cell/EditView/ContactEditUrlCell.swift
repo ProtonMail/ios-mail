@@ -63,7 +63,7 @@ final class ContactEditUrlCell: UITableViewCell {
     }
 
     @IBAction func typeAction(_ sender: UIButton) {
-        delegate?.pick(typeInterface: url, sender: self)
+        delegate?.pick(typeInterface: url)
     }
 }
 

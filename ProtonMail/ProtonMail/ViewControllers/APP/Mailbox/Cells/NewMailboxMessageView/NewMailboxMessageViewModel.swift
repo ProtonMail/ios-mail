@@ -26,7 +26,7 @@ struct NewMailboxMessageViewModel {
     let location: Message.Location?
     let isLabelLocation: Bool
     let style: NewMailboxMessageViewStyle
-    let initial: NSAttributedString
+    let initial: String
     let isRead: Bool
     let sender: String
     let time: String
@@ -39,4 +39,6 @@ struct NewMailboxMessageViewModel {
     let tags: [TagUIModel]
     let messageCount: Int
     var folderIcons: [UIImage]
+    let scheduledTime: String?
+    let isScheduledTimeInNext10Mins: Bool
 }

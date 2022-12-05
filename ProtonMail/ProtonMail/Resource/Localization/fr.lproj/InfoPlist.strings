@@ -1,0 +1,21 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "Proton Mail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Nécessaire pour joindre des fichiers multimédia à l'e-mail.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Nécessaire pour joindre des photos à l'e-mail.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Utilisé pour accéder aux adresses électroniques des contacts enregistrés sur l'appareil afin qu'elles puissent être utilisées lors de la rédaction d'un message ou du chargement manuel des contacts de l'appareil sur votre compte. Les informations de contact ne sont pas chargées sur nos serveurs sans une action explicite de votre part.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Vous permet de déverrouiller votre application rapidement et de façon sécurisée.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Nécessaire pour l’enregistrement des images en pièce jointe dans la bibliothèque de photos.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos à l’email.";
+

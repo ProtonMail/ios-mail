@@ -11,8 +11,8 @@ import ProtonCore_TestingToolkit
 
 fileprivate struct id {
     static let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"
-    static let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.attempsLabel"
-    static let pinCodeLogoutButtonIdentifier = "PinCodeViewController.backButton"
+    static let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.pinCodeView.attempsLabel"
+    static let pinCodeLogoutButtonIdentifier = "PinCodeViewController.pinCodeView.backButton"
     static let logoutButtonIdentifier = "Log out"
     static let pinStaticTextZero = "0"
     static let pinStaticTextOne = "1"

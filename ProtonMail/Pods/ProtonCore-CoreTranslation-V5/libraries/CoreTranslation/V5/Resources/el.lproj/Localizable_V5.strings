@@ -43,9 +43,6 @@
 /* New_Plans Plan details no logs policy */
 "New_Plans Strict no-logs policy" = "Αυστηρή πολιτική μη καταγραφής";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor μέσω VPN";
-
 /* New_Plans Plan details unlimited folders, labels, filters */
 "New_Plans Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες και φίλτρα";
 
@@ -57,16 +54,4 @@
 
 /* Welcome screen */
 "Privacy by default" = "Ιδιωτικότητα από προεπιλογή";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
 

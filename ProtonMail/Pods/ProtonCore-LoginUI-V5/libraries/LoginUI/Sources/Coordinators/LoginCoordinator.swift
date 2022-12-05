@@ -23,6 +23,10 @@ import Foundation
 import UIKit
 import ProtonCore_UIFoundations
 import ProtonCore_Login
+import ProtonCore_Authentication
+import ProtonCore_Networking
+import ProtonCore_CoreTranslation
+import ProtonCore_TroubleShooting
 
 protocol LoginCoordinatorDelegate: AnyObject {
     func userDidDismissLoginCoordinator(loginCoordinator: LoginCoordinator)
@@ -58,6 +62,7 @@ final class LoginCoordinator {
         if let initialErrorString = customization.initialError {
             self.initialError = LoginError.initialError(message: initialErrorString)
         }
+        self.container.authManager.setUpDelegate(self, callingItOn: .asyncMainExecutor)
     }
 
     @discardableResult
@@ -86,6 +91,13 @@ final class LoginCoordinator {
         loginViewController.showCloseButton = isCloseButtonAvailable
         loginViewController.initialError = initialError
         loginViewController.isSignupAvailable = isSignupAvailable
+        loginViewController.onDohTroubleshooting = { [weak self] in
+            guard let self = self else { return }
+            self.container.executeDohTroubleshootMethodFromApiDelegate()
+            
+            guard let nav = self.navigationController else { return }
+            self.container.troubleShootingHelper.showTroubleShooting(over: nav)
+        }
         return loginViewController
     }
 
@@ -134,6 +146,13 @@ final class LoginCoordinator {
         twoFactorViewController.viewModel = container.makeTwoFactorViewModel()
         twoFactorViewController.customErrorPresenter = customization.customErrorPresenter
         twoFactorViewController.delegate = self
+        twoFactorViewController.onDohTroubleshooting = { [weak self] in
+            guard let self = self else { return }
+            self.container.executeDohTroubleshootMethodFromApiDelegate()
+            
+            guard let nav = self.navigationController else { return }
+            self.container.troubleShootingHelper.showTroubleShooting(over: nav)
+        }
         navigationController?.pushViewController(twoFactorViewController, animated: true)
     }
 
@@ -142,6 +161,13 @@ final class LoginCoordinator {
         mailboxPasswordViewController.viewModel = container.makeMailboxPasswordViewModel()
         mailboxPasswordViewController.customErrorPresenter = customization.customErrorPresenter
         mailboxPasswordViewController.delegate = self
+        mailboxPasswordViewController.onDohTroubleshooting = { [weak self] in
+            guard let self = self else { return }
+            self.container.executeDohTroubleshootMethodFromApiDelegate()
+            
+            guard let nav = self.navigationController else { return }
+            self.container.troubleShootingHelper.showTroubleShooting(over: nav)
+        }
         navigationController?.pushViewController(mailboxPasswordViewController, animated: true)
     }
 
@@ -193,6 +219,14 @@ final class LoginCoordinator {
             
             guard let errorCapable = viewController as? LoginErrorCapable else { return }
             errorCapable.showError(error: error)
+        }
+    }
+    
+    private func popAndShowInfo(message: String) {
+        navigationController?.popToRootViewController(animated: true) {
+            guard let viewController = self.navigationController?.topViewController else { return }
+            guard let errorCapable = viewController as? LoginErrorCapable else { return }
+            errorCapable.showInfo(message: message)
         }
     }
 }
@@ -348,5 +382,14 @@ extension LoginCoordinator: WelcomeViewControllerDelegate {
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.autoresettingNextTransitionStyle = .modalLike
         delegate?.userSelectedSignup(navigationController: navigationController)
+    }
+}
+
+extension LoginCoordinator: AuthHelperDelegate {
+    func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+    }
+    
+    func sessionWasInvalidated(for sessionUID: String) {
+        popAndShowInfo(message: CoreString._ls_info_session_expired)
     }
 }

@@ -55,7 +55,8 @@ class ConversationViewModel {
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
     private let contextProvider: CoreDataContextProviderProtocol
-    private let sharedReplacingEmails: [Email]
+    private let sharedReplacingEmailsMap: [String: EmailEntity]
+    private let sharedContactGroups: [ContactGroupVO]
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -104,30 +105,32 @@ class ConversationViewModel {
             .allSatisfy(\.isSpam)
     }
 
-    let isDarkModeEnableClosure: () -> Bool
     let connectionStatusProvider: InternetConnectionStatusProvider
     private var conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
     var messageIDsOfMarkedAsRead: [MessageID] = []
+    private let goToDraft: (MessageID) -> Void
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy var customFolders: [LabelEntity] = {
         return labelProvider.getCustomFolders().map(LabelEntity.init)
     }()
     let labelProvider: LabelProviderProtocol
+    let dependencies: Dependencies
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
-         isDarkModeEnableClosure: @escaping () -> Bool,
          conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
-         targetID: MessageID? = nil) {
+         goToDraft: @escaping (MessageID) -> Void,
+         targetID: MessageID? = nil,
+         dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
         self.messageService = user.messageService
@@ -140,12 +143,17 @@ class ConversationViewModel {
                                                                          contextProvider: contextProvider)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
-        self.sharedReplacingEmails = contactService.allAccountEmails()
+        self.sharedReplacingEmailsMap = contactService.allAccountEmails()
+            .reduce(into: [:]) { partialResult, email in
+                partialResult[email.email] = EmailEntity(email: email)
+            }
+        self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID
-        self.isDarkModeEnableClosure = isDarkModeEnableClosure
         self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
         self.conversationStateProvider = conversationStateProvider
+        self.goToDraft = goToDraft
         self.labelProvider = labelProvider
+        self.dependencies = dependencies
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.messageCount
@@ -220,9 +228,10 @@ class ConversationViewModel {
         let viewModel = ConversationMessageViewModel(labelId: labelId,
                                                      message: message,
                                                      user: user,
-                                                     replacingEmails: sharedReplacingEmails,
+                                                     replacingEmailsMap: sharedReplacingEmailsMap,
+                                                     contactGroups: sharedContactGroups,
                                                      internetStatusProvider: connectionStatusProvider,
-                                                     isDarkModeEnableClosure: isDarkModeEnableClosure)
+                                                     goToDraft: goToDraft)
         return .message(viewModel: viewModel)
     }
 
@@ -280,6 +289,17 @@ class ConversationViewModel {
     func areAllMessagesIn(location: LabelLocation) -> Bool {
         let numMessagesInLocation = conversation.getNumMessages(labelID: location.labelID)
         return numMessagesInLocation == conversation.messageCount
+    }
+
+    func fetchMessageDetail(message: MessageEntity,
+                            callback: @escaping FetchMessageDetailUseCase.Callback) {
+        let params: FetchMessageDetail.Params = .init(
+            userID: user.userID,
+            message: message
+        )
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params, callback: callback)
     }
 
     /// Add trashed hint banner if the messages contain trashed message
@@ -358,7 +378,7 @@ class ConversationViewModel {
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
-        let tempFileUri = FileManager.default.temporaryDirectoryUrl
+        let tempFileUri = FileManager.default.temporaryDirectory
             .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
         try? FileManager.default.removeItem(at: tempFileUri)
         try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
@@ -380,8 +400,7 @@ class ConversationViewModel {
             return messageType(with: newMessage)
         }
         if self.messagesDataSource.isEmpty {
-            let context = contextProvider.rootSavingContext
-            context.perform { [weak self] in
+            contextProvider.performOnRootSavingContext { [weak self] context in
                 guard let self = self,
                       let object = try? context.existingObject(with: self.conversation.objectID.rawValue) else {
                           self?.dismissView?()
@@ -555,6 +574,21 @@ extension ConversationViewModel {
             break
         }
         completion()
+    }
+
+    func searchForScheduled(conversation: ConversationEntity? = nil,
+                            displayAlert: @escaping (Int) -> Void,
+                            continueAction: @escaping () -> Void) {
+        let conversationToCheck = conversation ?? self.conversation
+        guard conversationToCheck.contains(of: .scheduled) else {
+            continueAction()
+            return
+        }
+        let scheduledNum = messagesDataSource
+            .compactMap { $0.message }
+            .filter { $0.contains(location: .scheduled) }
+            .count
+        displayAlert(scheduledNum)
     }
 
     func toolbarActionTypes() -> [MailboxViewModel.ActionTypes] {
@@ -898,5 +932,11 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 
     func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
 
+    }
+}
+
+extension ConversationViewModel {
+    struct Dependencies {
+        let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }

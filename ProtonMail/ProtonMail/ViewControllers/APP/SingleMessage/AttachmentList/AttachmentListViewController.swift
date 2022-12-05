@@ -165,7 +165,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let sectionItem = viewModel.attachmentSections[section]
             guard !viewModel.isEmpty(section: sectionItem) else { return nil }
             return PMHeaderView(title: sectionItem.actionTitle,
-                                fontSize: 15,
+                                font: UIFont.preferredFont(for: .subheadline, weight: .regular),
                                 titleColor: ColorProvider.TextWeak,
                                 titleLeft: 16,
                                 titleBottom: 8,
@@ -173,7 +173,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        viewModel.isEmpty(section: viewModel.attachmentSections[section]) ? 0 : 52
+        viewModel.isEmpty(section: viewModel.attachmentSections[section]) ? 0 : UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -354,7 +354,7 @@ extension AttachmentListViewController: QLPreviewControllerDataSource, QLPreview
             return URL(fileURLWithPath: LocalString._unknown_error) as QLPreviewItem
         }
         // other way to get file URL in the xcassets?
-        let tempURL = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("Placeholder.png")
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("Placeholder.png")
         do {
             try data.write(to: tempURL)
             self.tempClearFileURL = tempURL

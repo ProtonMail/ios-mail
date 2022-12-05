@@ -94,19 +94,19 @@ final class FetchMessagesByIDResponse: Response {
 /// Response
 final class FetchMessagesByLabel: Request {
     let labelID: String!
-    let startTime: Int?
     let endTime: Int
     let isUnread: Bool?
 
     init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil) {
         self.labelID = labelID
         self.endTime = endTime
-        self.startTime = 0
         self.isUnread = isUnread
     }
 
     var parameters: [String: Any]? {
-        var out: [String: Any] = ["Sort": "Time"]
+        let desc = LabelLocation.scheduled.rawLabelID == labelID ? 0 : 1
+        var out: [String: Any] = ["Sort": "Time",
+                                  "Desc": desc]
         out["LabelID"] = self.labelID
         if self.endTime > 0 {
             let newTime = self.endTime - 1
@@ -210,7 +210,6 @@ final class UpdateDraft: CreateDraft {
 
 /// mesaage action request PUT method   --- Response
 final class MessageActionRequest: Request {
-    let messages: [Message]
     let action: String
     var ids: [String] = [String]()
     private var currentLabelID: Int?
@@ -218,7 +217,6 @@ final class MessageActionRequest: Request {
     init(action: String, ids: [String], labelID: String? = nil) {
         self.action = action
         self.ids = ids
-        self.messages = [Message]()
 
         if let num = Int(labelID ?? "") {
             self.currentLabelID = num
@@ -276,6 +274,7 @@ final class SendMessage: Request {
 
     var plainTextDataPacket: String
     var clearPlainTextBody: ClearBodyPackage?
+    private var deliveryTime: Date?
 
     init(messageID: String,
          expirationTime: Int32?,
@@ -288,7 +287,8 @@ final class SendMessage: Request {
          clearMimeBody: ClearBodyPackage?,
          plainTextDataPacket: String,
          clearPlainTextBody: ClearBodyPackage?,
-         authCredential: AuthCredential?) {
+         authCredential: AuthCredential?,
+         deliveryTime: Date?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
@@ -304,6 +304,7 @@ final class SendMessage: Request {
         self.clearPlainTextBody = clearPlainTextBody
 
         self.auth = authCredential
+        self.deliveryTime = deliveryTime
     }
 
     let auth: AuthCredential?
@@ -318,120 +319,93 @@ final class SendMessage: Request {
             out["ExpiresIn"] = self.expirationTime
         }
         out["DelaySeconds"] = self.delaySeconds
+        if let deliveryTime = deliveryTime {
+            out["DeliveryTime"] = Int(deliveryTime.timeIntervalSince1970)
+        }
         // optional this will override app setting
         // out["AutoSaveContacts"] = "\(0 / 1)"
 
-        let normalPackage = messagePackage.filter { $0.type.rawValue < 10 }
-        let mimePackage = messagePackage.filter { $0.type.rawValue > 10 }
-
-        let plainTextPackage = normalPackage.filter { $0.plainText == true }
-        let htmlPackage = normalPackage.filter { $0.plainText == false }
-
         // packages object
         var packages: [Any] = [Any]()
+        let normalPackage = messagePackage.filter { $0.scheme.rawValue < 10 }
 
-        // plaintext
-        if plainTextPackage.count > 0 {
-            // not mime
-            var plainTextAddress: [String: Any] = [String: Any]()
-            var addrs = [String: Any]()
-            var type = SendType()
-            for mp in plainTextPackage {
-                addrs[mp.email] = mp.parameters!
-                type.insert(mp.type)
-            }
-            plainTextAddress["Addresses"] = addrs
-            // "Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
-            plainTextAddress["Type"] = type.rawValue
-            plainTextAddress["Body"] = self.plainTextDataPacket
-            plainTextAddress["MIMEType"] = "text/plain"
-
-            if let cb = self.clearPlainTextBody, plainTextPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
-                // Include only if cleartext recipients
-                plainTextAddress["BodyKey"] = [
-                    "Key": cb.key,
-                    "Algorithm": cb.algo
-                ]
-            }
-
-            if let cAtts = clearAtts, plainTextPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
-                // Only include if cleartext recipients, optional if no attachments
-                var atts: [String: Any] = [String: Any]()
-                for it in cAtts {
-                    atts[it.ID] = [
-                        "Key": it.encodedSession,
-                        "Algorithm": it.algo == "3des" ? "tripledes" : it.algo
-                    ]
-                }
-                plainTextAddress["AttachmentKeys"] = atts
-            }
-            packages.append(plainTextAddress)
+        let plainTextPackage = normalPackage.filter { $0.plainText == true }
+        if let encodedPlainTextPackage = encode(addressPackages: plainTextPackage,
+                                                mime: .plainText,
+                                                body: plainTextDataPacket,
+                                                clearBody: clearPlainTextBody,
+                                                clearAttachments: clearAtts) {
+            packages.append(encodedPlainTextPackage)
         }
 
-        // html text
-        if htmlPackage.count > 0 {
-            // not mime
-            var htmlAddress: [String: Any] = [String: Any]()
-            var addrs = [String: Any]()
-            var type = SendType()
-            for mp in htmlPackage {
-                addrs[mp.email] = mp.parameters!
-                type.insert(mp.type)
-            }
-            htmlAddress["Addresses"] = addrs
-            // "Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
-            htmlAddress["Type"] = type.rawValue
-            htmlAddress["Body"] = self.body
-            htmlAddress["MIMEType"] = "text/html"
-
-            if let cb = clearBody, htmlPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
-                // Include only if cleartext recipients
-                htmlAddress["BodyKey"] = [
-                    "Key": cb.key,
-                    "Algorithm": cb.algo
-                ]
-            }
-
-            if let cAtts = clearAtts, htmlPackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
-                // Only include if cleartext recipients, optional if no attachments
-                var atts: [String: Any] = [String: Any]()
-                for it in cAtts {
-                    atts[it.ID] = [
-                        "Key": it.encodedSession,
-                        "Algorithm": it.algo == "3des" ? "tripledes" : it.algo
-                    ]
-                }
-                htmlAddress["AttachmentKeys"] = atts
-            }
-            packages.append(htmlAddress)
+        let htmlPackage = normalPackage.filter { $0.plainText == false }
+        if let encodedHTMLPackage = encode(addressPackages: htmlPackage,
+                                           mime: .html,
+                                           body: body,
+                                           clearBody: clearBody,
+                                           clearAttachments: clearAtts) {
+            packages.append(encodedHTMLPackage)
         }
 
-        if mimePackage.count > 0 {
-            // mime
-            var mimeAddress: [String: Any] = [String: Any]()
-
-            var addrs = [String: Any]()
-            var mimeType = SendType()
-            for mp in mimePackage {
-                addrs[mp.email] = mp.parameters!
-                mimeType.insert(mp.type)
-            }
-            mimeAddress["Addresses"] = addrs
-            mimeAddress["Type"] = mimeType.rawValue // 16|32 MIME sending cannot share packages with inline sending
-            mimeAddress["Body"] = mimeDataPacket
-            mimeAddress["MIMEType"] = "multipart/mixed"
-
-            if let cb = clearMimeBody, mimePackage.contains(where: { $0.type == .cinln || $0.type == .cmime }) {
-                // Include only if cleartext MIME recipients
-                mimeAddress["BodyKey"] = [
-                    "Key": cb.key,
-                    "Algorithm": cb.algo
-                ]
-            }
-            packages.append(mimeAddress)
+        let mimePackage = messagePackage.filter { $0.scheme.rawValue > 10 }
+        if let encodedMIMEPackage = encode(addressPackages: mimePackage,
+                                           mime: .mime,
+                                           body: mimeDataPacket,
+                                           clearBody: clearMimeBody,
+                                           clearAttachments: nil) {
+            packages.append(encodedMIMEPackage)
         }
         out["Packages"] = packages
         return out
+    }
+
+    private func encode(
+        addressPackages: [AddressPackageBase],
+        mime: SendMIMEType,
+        body: String,
+        clearBody: ClearBodyPackage?,
+        clearAttachments: [ClearAttachmentPackage]?
+    ) -> [String: Any]? {
+        if addressPackages.isEmpty { return nil }
+
+        var dict = [String: Any]()
+        var addresses = [String: Any]()
+        var type = SendType()
+        for package in addressPackages {
+            guard let parameters = package.parameters else { continue }
+            addresses[package.email] = parameters
+            type.insert(package.scheme.sendType)
+        }
+        dict["Addresses"] = addresses
+        // "Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+        dict["Type"] = type.rawValue
+        dict["Body"] = body
+        dict["MIMEType"] = mime.rawValue
+
+        if let clearBody = clearBody,
+            addressPackages.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
+            // Include only if cleartext recipients
+            let bodyKey: [String: String] = [
+                "Key": clearBody.key,
+                "Algorithm": clearBody.algo.value
+            ]
+            dict["BodyKey"] = bodyKey
+        }
+
+        if let clearAttachments = clearAttachments,
+           addressPackages.contains(where: { $0.scheme == .cleartextInline || $0.scheme == .cleartextMIME }) {
+            // Only include if cleartext recipients, optional if no attachments
+            var attachments = [String: [String: String]]()
+            for item in clearAttachments {
+                let info: [String: String] = [
+                    "Key": item.encodedSession,
+                    "Algorithm": item.algo.value
+                ]
+                attachments[item.ID] = info
+            }
+            dict["AttachmentKeys"] = attachments
+        }
+        return dict
     }
 
     var path: String {

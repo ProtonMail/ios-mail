@@ -34,6 +34,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     var currentSubscription: Subscription? { get set }
     var paymentMethods: [PaymentMethod]? { get set }
     var countriesCount: [Countries]? { get }
+    var user: User? { get }
 
     var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
 
@@ -163,6 +164,8 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
     public var credits: Credits? {
         willSet { localStorage.credits = newValue }
     }
+    
+    public var user: User?
     
     public var countriesCount: [Countries]?
     
@@ -298,6 +301,7 @@ extension ServicePlanDataService {
         do {
             // no user info means we don't even need to ask for subscription, so it's ok to throw here
             let user = try self.getUserInfo()
+            self.user = user
             
             updateCredits(user: user)
             

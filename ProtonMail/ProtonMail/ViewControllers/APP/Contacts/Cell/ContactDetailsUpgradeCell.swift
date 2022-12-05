@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import CoreGraphics
 
 final class ContactDetailsUpgradeCell: UITableViewCell {
 
@@ -30,8 +31,8 @@ final class ContactDetailsUpgradeCell: UITableViewCell {
     private var delegate: ContactUpgradeCellDelegate?
 
     override func awakeFromNib() {
-        let color: CGColor = ColorProvider.BrandNorm
-        frameView.layer.borderColor = color
+        super.awakeFromNib()
+        frameView.layer.borderColor = ColorProvider.BrandNorm
         frameView.layer.borderWidth = 1.0
         frameView.layer.cornerRadius = 4.0
         frameView.clipsToBounds = true

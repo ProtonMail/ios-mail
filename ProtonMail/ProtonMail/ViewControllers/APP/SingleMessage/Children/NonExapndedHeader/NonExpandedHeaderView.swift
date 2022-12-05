@@ -27,21 +27,31 @@ class NonExpandedHeaderView: UIView {
 
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
-    let senderLabel = UILabel(frame: .zero)
+    let senderLabel = SubviewsFactory.senderLabel
     let senderAddressLabel = TextControl()
     let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
+    lazy var originImageContainer = StackViewContainer(view: originImageView)
     let sentImageView = SubviewsFactory.sentImageView
+    lazy var sentImageContainer = StackViewContainer(view: sentImageView)
     let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
-    let recipientLabel = UILabel()
+    let recipientTitle = SubviewsFactory.recipientTitle
+    let recipientLabel = SubviewsFactory.recipientLabel
     let tagsView = SingleRowTagsView()
-    let showDetailsControl = SubviewsFactory.showDetailControl
+    let trackerProtectionImageView = SubviewsFactory.trackerProtectionImageView
     let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
-    private let firstLineStackView = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
+    var expandView: (() -> Void)?
+
+    private let firstLineStackView = UIStackView.stackView(
+        axis: .horizontal,
+        distribution: .fill,
+        alignment: .center,
+        spacing: 5
+    )
     private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
     private let recipientStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
@@ -50,12 +60,31 @@ class NonExpandedHeaderView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
+        setUpGestures()
+    }
+
+    func showTrackerDetectionStatus(_ status: NonExpandedHeaderViewModel.TrackerDetectionStatus) {
+        let icon: UIImage?
+        let tintColor: UIColor?
+        switch status {
+        case .trackersFound:
+            icon = IconProvider.shieldFilled
+            tintColor = ColorProvider.IconAccent
+        case .noTrackersFound, .notDetermined:
+            icon = IconProvider.shield
+            tintColor = ColorProvider.IconWeak
+        case .proxyNotEnabled:
+            icon = nil
+            tintColor = nil
+        }
+        trackerProtectionImageView.image = icon
+        trackerProtectionImageView.isHidden = icon == nil
+        trackerProtectionImageView.tintColor = tintColor
     }
 
     private func addSubviews() {
         addSubview(initialsContainer)
         addSubview(contentStackView)
-        addSubview(showDetailsControl)
 
         initialsContainer.addSubview(initialsLabel)
         lockImageControl.addSubview(lockImageView)
@@ -63,19 +92,13 @@ class NonExpandedHeaderView: UIView {
         contentStackView.addArrangedSubview(firstLineStackView)
         contentStackView.setCustomSpacing(4, after: firstLineStackView)
 
-        let originContainer = StackViewContainer(view: originImageView, top: 2)
-        let sentContainer = StackViewContainer(view: sentImageView, top: 2, trailing: -4)
-
         firstLineStackView.addArrangedSubview(senderLabel)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(starImageView)
-        firstLineStackView.addArrangedSubview(sentContainer)
-        firstLineStackView.addArrangedSubview(originContainer)
+        firstLineStackView.addArrangedSubview(trackerProtectionImageView)
+        firstLineStackView.addArrangedSubview(sentImageContainer)
+        firstLineStackView.addArrangedSubview(originImageContainer)
         firstLineStackView.addArrangedSubview(timeLabel)
-
-        firstLineStackView.setCustomSpacing(4, after: senderLabel)
-        firstLineStackView.setCustomSpacing(6, after: originContainer)
-        firstLineStackView.setCustomSpacing(4, after: starImageView)
 
         contentStackView.addArrangedSubview(senderAddressStack)
         contentStackView.setCustomSpacing(4, after: senderAddressStack)
@@ -86,6 +109,7 @@ class NonExpandedHeaderView: UIView {
         // 32 reply button + 8 * 2 spacing + 32 more button
         senderAddressStack.setCustomSpacing(80, after: senderAddressLabel)
 
+        recipientStack.addArrangedSubview(recipientTitle)
         recipientStack.addArrangedSubview(recipientLabel)
         recipientStack.setCustomSpacing(80, after: recipientLabel)
         recipientStack.addArrangedSubview(UIView())
@@ -95,12 +119,19 @@ class NonExpandedHeaderView: UIView {
     }
 
     private func setUpLayout() {
-        [
-            originImageView.heightAnchor.constraint(equalToConstant: 16),
-            originImageView.widthAnchor.constraint(equalToConstant: 16),
-            starImageView.heightAnchor.constraint(equalToConstant: 16),
-            starImageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
+        let square16x16Views: [UIView] = [
+            lockContainer,
+            originImageView,
+            sentImageView,
+            starImageView,
+            trackerProtectionImageView
+        ]
+        for view in square16x16Views {
+            [
+                view.heightAnchor.constraint(equalToConstant: 16),
+                view.widthAnchor.constraint(equalToConstant: 16)
+            ].activate()
+        }
 
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
@@ -126,19 +157,17 @@ class NonExpandedHeaderView: UIView {
 
         lockImageView.fillSuperview()
 
+        // The reason to set height anchor is to fix UI
+        // Without these constraints the sender name position will change between
+        // non-expanded and expanded
+        // When font large enough
         [
-            lockContainer.heightAnchor.constraint(equalToConstant: 16),
-            lockContainer.widthAnchor.constraint(equalToConstant: 16)
+            senderLabel.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
 
         [
+            recipientTitle.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
             recipientLabel.heightAnchor.constraint(equalToConstant: 20)
-        ].activate()
-        [
-            showDetailsControl.leadingAnchor.constraint(equalTo: recipientLabel.leadingAnchor),
-            showDetailsControl.topAnchor.constraint(equalTo: recipientLabel.topAnchor),
-            showDetailsControl.trailingAnchor.constraint(equalTo: recipientLabel.trailingAnchor),
-            showDetailsControl.bottomAnchor.constraint(equalTo: recipientLabel.bottomAnchor)
         ].activate()
 
         [
@@ -149,6 +178,19 @@ class NonExpandedHeaderView: UIView {
 
         timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    }
+
+    private func setUpGestures() {
+        for view in [recipientStack, trackerProtectionImageView] {
+            view.isUserInteractionEnabled = true
+            let tapGR = UITapGestureRecognizer(target: self, action: #selector(expandTapped))
+            view.addGestureRecognizer(tapGR)
+        }
+    }
+
+    @objc
+    private func expandTapped() {
+        expandView?()
     }
 
     required init?(coder: NSCoder) {
@@ -163,20 +205,12 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = ColorProvider.IconWeak
-        [
-            imageView.heightAnchor.constraint(equalToConstant: 16),
-            imageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
         return imageView
     }
 
     static var sentImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        [
-            imageView.heightAnchor.constraint(equalToConstant: 16),
-            imageView.widthAnchor.constraint(equalToConstant: 16)
-        ].activate()
         imageView.image = IconProvider.paperPlane
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
@@ -200,18 +234,44 @@ private enum SubviewsFactory {
 
     static var lockImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
-    }
-
-    static var showDetailControl: UIControl {
-        let control = UIControl()
-        return control
     }
 
     static var timeLabel: UILabel {
         let label = UILabel(frame: .zero)
         label.textAlignment = .right
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.TextWeak)
         return label
+    }
+
+    static var senderLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: nil, preferredFont: .subheadline)
+        return label
+    }
+
+    static var recipientTitle: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: "\(LocalString._general_to_label): ", preferredFont: .footnote)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }
+
+    static var recipientLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.TextWeak)
+        return label
+    }
+
+    static var trackerProtectionImageView: UIImageView {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        return imageView
     }
 }

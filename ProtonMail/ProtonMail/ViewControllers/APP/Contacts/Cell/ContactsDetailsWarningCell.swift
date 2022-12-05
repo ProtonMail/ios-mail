@@ -33,11 +33,6 @@ class ContactsDetailsWarningCell: UITableViewCell {
     @IBOutlet weak var errorTitle: UILabel!
     @IBOutlet weak var errorDetails: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
     func configCell(warning: WarningType) {
         switch warning {
         case .signatureWarning:

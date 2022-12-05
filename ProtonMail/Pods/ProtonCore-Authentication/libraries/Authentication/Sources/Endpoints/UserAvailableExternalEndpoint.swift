@@ -24,9 +24,7 @@ import ProtonCore_Networking
 
 extension AuthService {
     
-    public struct UserAvailableExternalResponse: Codable {
-        var code: Int
-    }
+    public struct UserAvailableExternalResponse: APIDecodableResponse, Encodable {}
     
     struct UserAvailableExternalEndpoint: Request {
         

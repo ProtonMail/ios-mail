@@ -59,7 +59,7 @@ final class ForceUpgradeControllerForUIKit: ForceUpgradeController {
 
         func secondaryButtonAction() {
             if case .mobile = config {
-                guard let url = URL(string: "https://protonmail.com/support/knowledge-base/update-required") else { return }
+                guard let url = URL(string: "https://proton.me/support/update-required") else { return }
                 UIApplication.openURLIfPossible(url)
             } else if case .desktop = config {
                 responseDelegate?.onQuitButtonPressed()

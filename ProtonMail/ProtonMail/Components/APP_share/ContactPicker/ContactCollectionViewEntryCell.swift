@@ -35,13 +35,8 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
     private var contactEntryTextField: UITextField?
 
     @objc dynamic var font: UIFont? {
-        get {
-            return self.contactEntryTextField?.font
-
-        }
-        set {
-            self.contactEntryTextField?.font = newValue
-        }
+        get { contactEntryTextField?.font }
+        set { contactEntryTextField?.font = newValue }
     }
 
     override init(frame: CGRect) {
@@ -72,6 +67,7 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         textField.spellCheckingType = .no
         textField.keyboardType = .emailAddress
         textField.tintColor = ColorProvider.BrandNorm
+        textField.set(text: nil, preferredFont: .subheadline)
 
 #if DEBUG_BORDERS
         self.layer.borderColor = UIColor.orange.cgColor

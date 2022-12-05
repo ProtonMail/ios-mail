@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import UIKit
+
 class SingleMessageContentViewModelFactory {
     private let components = SingleMessageComponentsFactory()
 
@@ -27,24 +29,25 @@ class SingleMessageContentViewModelFactory {
         context: SingleMessageContentViewContext,
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
-        isDarkModeEnableClosure: @escaping () -> Bool
+        systemUpTime: SystemUpTimeProtocol,
+        goToDraft: @escaping (MessageID) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
-                message: context.message,
-                user: user,
-                isDarkModeEnableClosure: isDarkModeEnableClosure
+                spamType: context.message.spam,
+                user: user
             ),
-            nonExpandedHeader: .init(labelId: context.labelId, message: context.message, user: user),
+            nonExpandedHeader: .init(isScheduledSend: context.message.isScheduledSend),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
-            attachments: components.attachments(message: context.message)
+            attachments: .init()
         )
-        return .init(
-            context: context,
-            childViewModels: childViewModels,
-            user: user,
-            internetStatusProvider: internetStatusProvider
-        )
+        return .init(context: context,
+                     childViewModels: childViewModels,
+                     user: user,
+                     internetStatusProvider: internetStatusProvider,
+                     systemUpTime: systemUpTime,
+                     userIntroductionProgressProvider: userCachedStatus,
+                     goToDraft: goToDraft)
     }
 
 }
@@ -55,43 +58,37 @@ class SingleMessageViewModelFactory {
     func createViewModel(labelId: LabelID,
                          message: MessageEntity,
                          user: UserManager,
-                         isDarkModeEnableClosure: @escaping () -> Bool) -> SingleMessageViewModel {
+                         systemUpTime: SystemUpTimeProtocol,
+                         goToDraft: @escaping (MessageID) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
-                message: message,
-                user: user,
-                isDarkModeEnableClosure: isDarkModeEnableClosure
+                spamType: message.spam,
+                user: user
             ),
-            nonExpandedHeader: .init(labelId: labelId, message: message, user: user),
+            nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
-            attachments: components.attachments(message: message)
+            attachments: .init()
         )
-
         return .init(
             labelId: labelId,
             message: message,
             user: user,
             childViewModels: childViewModels,
-            internetStatusProvider: InternetConnectionStatusProvider()
+            internetStatusProvider: InternetConnectionStatusProvider(),
+            systemUpTime: systemUpTime,
+			goToDraft: goToDraft
         )
     }
 
 }
 
-class SingleMessageComponentsFactory {
+private class SingleMessageComponentsFactory {
 
-    func messageBody(message: MessageEntity,
-                             user: UserManager,
-                             isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
-        .init(
-            message: message,
-            messageDataProcessor: user.messageService,
-            userAddressUpdater: user,
-            shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
-            shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
+    func messageBody(spamType: SpamType?, user: UserManager) -> NewMessageBodyViewModel {
+        return .init(
+            spamType: spamType,
             internetStatusProvider: InternetConnectionStatusProvider(),
-            isDarkModeEnableClosure: isDarkModeEnableClosure,
-            linkConfirmation: user.userinfo.linkConfirmation
+            linkConfirmation: user.userInfo.linkConfirmation
         )
     }
 
@@ -109,20 +106,13 @@ class SingleMessageComponentsFactory {
         let receiptService = ReceiptService(labelID: labelId,
                                             apiService: user.apiService,
                                             eventsService: user.eventsService)
-        return .init(
-            message: message,
-            shouldAutoLoadRemoteContent: user.userinfo.showImages.contains(.remote),
-            expirationTime: message.expirationTime,
-            shouldAutoLoadEmbeddedImage: user.userinfo.showImages.contains(.embedded),
-            unsubscribeService: unsubscribeService,
-            markLegitimateService: markLegitimateService,
-            receiptService: receiptService
-        )
+        return .init(shouldAutoLoadRemoteContent: user.userInfo.isAutoLoadRemoteContentEnabled,
+                     expirationTime: message.expirationTime,
+                     shouldAutoLoadEmbeddedImage: user.userInfo.isAutoLoadEmbeddedImagesEnabled,
+                     unsubscribeActionHandler: unsubscribeService,
+                     markLegitimateActionHandler: markLegitimateService,
+                     receiptActionHandler: receiptService,
+                     weekStart: user.userInfo.weekStartValue,
+                     urlOpener: UIApplication.shared)
     }
-
-    func attachments(message: MessageEntity) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init)
-        return .init(attachments: attachments)
-    }
-
 }

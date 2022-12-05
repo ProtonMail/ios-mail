@@ -23,6 +23,7 @@
 import Contacts
 import CoreData
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import UIKit
 
@@ -118,19 +119,19 @@ class ContactImportViewController: UIViewController {
     }
 
     private func getContacts() {
-        let store = CNContactStore()
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .notDetermined:
+            let store = CNContactStore()
             store.requestAccess(for: .contacts, completionHandler: { authorized, _ in
                 if authorized {
-                    self.retrieveContactsWithStore(store: store)
+                    self.retrieveContacts()
                 } else {
                     { "Contacts access is not authorized".alertToast() } ~> .main
                     self.dismiss()
                 }
             })
         case .authorized:
-            self.retrieveContactsWithStore(store: store)
+            self.retrieveContacts()
         case .denied: { "Contacts access denied, please allow access from settings".alertToast() } ~> .main
             self.dismiss()
         case .restricted: { "The application is not authorized to access contact data".alertToast() } ~> .main
@@ -140,7 +141,7 @@ class ContactImportViewController: UIViewController {
         }
     }
 
-    private func retrieveContactsWithStore(store: CNContactStore) {
+    private func retrieveContacts() {
         self.appleContactParser?.queueImport(contacts: self.contacts)
     }
 }
@@ -176,7 +177,7 @@ extension ContactImportViewController: AppleContactParserDelegate {
         }
     }
 
-    func updateUserData() -> (userKey: Key, passphrase: String, existedContactIDs: [String])? {
+    func updateUserData() -> (userKey: Key, passphrase: Passphrase, existedContactIDs: [String])? {
         guard let userKey = self.user.userInfo.firstUserKey() else { return nil }
         let passphrase = self.user.mailboxPassword
         var uuids: [String] = []

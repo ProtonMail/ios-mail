@@ -21,6 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
 
 protocol QueueHandler {
     var userID: UserID { get }
@@ -50,6 +53,16 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
     private let internetStatusProvider = InternetConnectionStatusProvider()
+    private var connectionStatus: ConnectionStatus? {
+        willSet {
+            guard let previousStatus = connectionStatus,
+                  let nextStatus = newValue else { return }
+            if previousStatus.isConnected == false && nextStatus.isConnected {
+                // connection is back
+                dequeueIfNeeded()
+            }
+        }
+    }
     /// Handle the fetching data related things
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
@@ -69,6 +82,13 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
          miscQueue: PMPersistentQueueProtocol) {
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
+
+        internetStatusProvider.registerConnectionStatus { [weak self] status in
+            self?.connectionStatus = status
+        }
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
     }
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
@@ -530,13 +550,11 @@ extension QueueManager {
     }
 
     struct TaskResult {
-        var response: [[String: Any]]?
         var action: TaskAction
         /// The update won't be written into disk
         var retry: Int = 0
 
-        init(response: [[String: Any]]? = nil, action: TaskAction = .none) {
-            self.response = response
+        init(action: TaskAction = .none) {
             self.action = action
         }
     }
@@ -613,3 +631,11 @@ extension QueueManager: QueueManagerProtocol {
         self.queue(block)
     }
 }
+
+#if !APP_EXTENSION
+extension QueueManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif

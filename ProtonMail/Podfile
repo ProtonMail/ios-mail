@@ -1,20 +1,31 @@
 source 'https://cdn.cocoapods.org/'
 
 def proton_core_path
-  "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+  if ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] == nil
+      return "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+  else
+      return 'https://proton-ci:' + ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] + '@gitlab.protontech.ch/apple/shared/protoncore.git'
+  end
+end
+
+def proton_test_path
+  if ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] == nil
+    return "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
+  else
+    return 'https://proton-ci:' + ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] + '@gitlab.protontech.ch/apple/shared/pmtestautomation.git'
+  end
 end
 
 # proton url is set to env variable because the core module podspecs expect it.
 # it's part of transition into open sourced core modules and it will not be necessary when they are on github
 ENV['PROTON_CORE_GIT_URL'] = proton_core_path
-source proton_core_path
 
 platform :ios, '11.0'
 inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.21.3'
+  '3.23.4'
 end
 
 def common_pods
@@ -24,41 +35,46 @@ def common_pods
   pod 'MBProgressHUD' , '1.1.0'
   pod 'MCSwipeTableViewCell', '2.1.4'
   pod 'PromiseKit', '6.13.1'
-  pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto', proton_core_version
-  pod 'ProtonCore-Authentication/UsingCrypto', proton_core_version
-  pod 'ProtonCore-Common-V5', proton_core_version
-  pod 'ProtonCore-Crypto', proton_core_version
-  pod 'ProtonCore-Hash', proton_core_version
-  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
-  pod 'ProtonCore-Networking', proton_core_version
-  pod 'ProtonCore-Services', proton_core_version
-  pod 'ProtonCore-UIFoundations-V5', proton_core_version
-  pod 'SwiftGen', '~> 6.0'
+  pod 'ProtonCore-APIClient', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Authentication/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Common-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
 end
 
 def pm_pods
   common_pods
-  pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
+  pod 'DKImagePickerController/PhotoGallery', '4.3.4'
   pod 'LifetimeTracker'
-  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'EnterpriseDebug']
-  pod 'ProtonCore-AccountDeletion-V5/UsingCrypto', proton_core_version
-  pod 'ProtonCore-AccountSwitcher-V5', proton_core_version
-  pod 'ProtonCore-Challenge', proton_core_version
-  pod 'ProtonCore-CoreTranslation-V5', proton_core_version
-  pod 'ProtonCore-CoreTranslation', proton_core_version
-  pod 'ProtonCore-ForceUpgrade-V5', proton_core_version
-  pod 'ProtonCore-HumanVerification-V5', proton_core_version
-  pod 'ProtonCore-Log', proton_core_version
-  pod 'ProtonCore-Login/UsingCrypto', proton_core_version
-  pod 'ProtonCore-LoginUI-V5/UsingCrypto', proton_core_version
-  pod 'ProtonCore-OpenPGP', proton_core_version
-  pod 'ProtonCore-Payments/UsingCrypto', proton_core_version
-  pod 'ProtonCore-PaymentsUI-V5/UsingCrypto', proton_core_version
+  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'Enterprise Debug']
+  pod 'ProtonCore-AccountDeletion-V5/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-AccountSwitcher-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-ForceUpgrade-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-HumanVerification-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Login/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-LoginUI-V5/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Payments/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-PaymentsUI-V5/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
   pod "SkeletonView", '1.11.0'
+  pod 'SQLite.swift', '~> 0.13.3'
 end
 
 def pm_share
@@ -66,15 +82,15 @@ def pm_share
 end
 
 def pm_siri
-  pod 'ProtonCore-Crypto', proton_core_version
-  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
 end
 
 def pm_pushService
-  pod 'ProtonCore-Crypto', proton_core_version
-  pod 'ProtonCore-Doh', proton_core_version
-  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
-  pod 'ProtonCore-DataModel', proton_core_version
+  pod 'ProtonCore-Crypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
 end
 
 target 'ProtonMail' do
@@ -90,26 +106,27 @@ target 'ProtonMailTests' do
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
   pod 'PromiseKit', '6.13.1'
-  pod 'ProtonCore-TestingToolkit/UnitTests/Core', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Services', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCrypto', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Networking', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto', proton_core_version
-  pod 'swift-snapshot-testing', :git=> proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Services', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Networking', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto', :git => proton_core_path, :tag => proton_core_version
   pm_pods
 end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch => 'master'
-  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', proton_core_version
-  pod 'ProtonCore-QuarkCommands', proton_core_version
+  pod 'pmtest', :git => proton_test_path, :branch => 'master'
+  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
+  pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
 end
 
 target 'Share' do
@@ -132,7 +149,7 @@ post_install do | installer |
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
       config.build_settings['SWIFT_VERSION'] = '5.0'
       config.build_settings['ENABLE_BITCODE'] = 'NO'
-      if config.name == 'Release'
+      if config.name.include? 'Release'
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
         else
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'

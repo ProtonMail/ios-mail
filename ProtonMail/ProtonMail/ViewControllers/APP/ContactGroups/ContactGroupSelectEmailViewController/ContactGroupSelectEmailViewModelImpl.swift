@@ -60,7 +60,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
         let usersManager: UsersManager = sharedServices.get()
         if let currentUser = usersManager.firstUser {
             self.emailsForDisplay = self.allEmails
-                .filter({$0.userID.rawValue == currentUser.userinfo.userId})
+                .filter({$0.userID.rawValue == currentUser.userInfo.userId})
         } else {
             self.emailsForDisplay = self.allEmails
         }
@@ -128,7 +128,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
         let usersManager: UsersManager = sharedServices.get()
         if let currentUser = usersManager.firstUser {
             self.emailsForDisplay = self.allEmails
-                .filter({$0.userID.rawValue == currentUser.userinfo.userId})
+                .filter({$0.userID.rawValue == currentUser.userInfo.userId})
                 .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
         } else {
             self.emailsForDisplay = self.allEmails.sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})

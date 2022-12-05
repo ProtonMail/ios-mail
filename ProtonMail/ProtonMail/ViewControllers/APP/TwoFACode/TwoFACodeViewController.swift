@@ -24,7 +24,7 @@ import ProtonCore_Foundations
 
 protocol TwoFACodeViewControllerDelegate {
     func cancel2FA()
-    func confirmedCode(_ code: String, pwd: String)
+    func confirmedCode(_ code: String)
 }
 
 class TwoFACodeViewController: UIViewController, AccessibleView {
@@ -93,8 +93,8 @@ extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol 
 
 extension TwoFACodeViewController: TwoFACodeViewDelegate {
 
-    func ConfirmedCode(_ code: String, pwd: String) {
-        delegate?.confirmedCode(code, pwd: pwd)
+    func ConfirmedCode(_ code: String) {
+        delegate?.confirmedCode(code)
         self.dismiss(animated: true, completion: nil)
     }
 

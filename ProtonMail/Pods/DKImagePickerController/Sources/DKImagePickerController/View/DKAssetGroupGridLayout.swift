@@ -14,7 +14,7 @@ open class DKAssetGroupGridLayout: UICollectionViewFlowLayout {
 		super.prepare()
 		
 		var minItemWidth: CGFloat = 100
-		if UI_USER_INTERFACE_IDIOM() == .pad {
+		if UIDevice.current.userInterfaceIdiom == .pad {
 			minItemWidth = 120
 		}
 		

@@ -23,10 +23,14 @@
 import Foundation
 import CoreData
 
-extension MessageDataService {
+protocol MessageDataActionProtocol {
+    func mark(messages: [MessageEntity], labelID: LabelID, unRead: Bool) -> Bool
+}
+
+extension MessageDataService: MessageDataActionProtocol {
 
     static func findMessagesWithSourceIds(messages: [MessageEntity], customFolderIds: [LabelID], to tLabel: LabelID) -> [(MessageEntity, LabelID)] {
-        let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft]
+        let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft, .scheduled]
         let defaultFoldersLabelIds = defaultFoldersLocations.map(\.labelID)
         let sourceIdCandidates = customFolderIds + defaultFoldersLabelIds
 
@@ -74,7 +78,17 @@ extension MessageDataService {
         }
 
         for (index, message) in messages.enumerated() {
-            _ = self.cacheService.move(message: message, from: fLabels[index], to: tLabel)
+            if message.contains(location: .scheduled) && tLabel == LabelLocation.trash.labelID {
+                // Trash schedule message, should move to draft
+                let target = LabelLocation.draft.labelID
+                let scheduled = LabelLocation.scheduled.labelID
+                let sent = LabelLocation.sent.labelID
+                _ = self.cacheService.move(message: message, from: fLabels[index], to: target)
+                _ = self.cacheService.move(message: message, from: scheduled, to: target)
+                _ = self.cacheService.move(message: message, from: sent, to: target)
+            } else {
+                _ = self.cacheService.move(message: message, from: fLabels[index], to: tLabel)
+            }
         }
 
         if queue {
@@ -154,18 +168,6 @@ extension MessageDataService {
         } catch {
         }
         return [Message]()
-    }
-
-    func fetchMessages(with messageIDs: [MessageID]) -> [MessageEntity] {
-        let context = contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, NSSet(array: messageIDs))
-        do {
-            let messages = try context.fetch(fetchRequest)
-            return messages.map(MessageEntity.init)
-        } catch {
-        }
-        return []
     }
 
     func isMessageBeingSent(id messageID: MessageID) -> Bool {

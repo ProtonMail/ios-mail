@@ -56,7 +56,7 @@ final class SettingsSingleCheckMarkViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: Key.cell, for: indexPath)
         cell.backgroundColor = ColorProvider.BackgroundNorm
         if let title = viewModel.cellTitle(of: indexPath) {
-            cell.textLabel?.attributedText = title.apply(style: FontManager.Default)
+            cell.textLabel?.set(text: title, preferredFont: .body)
             if viewModel.cellShouldShowSelection(of: indexPath) {
                 cell.accessoryType = .checkmark
             } else {
@@ -124,12 +124,14 @@ extension SettingsSingleCheckMarkViewController {
         hfView.contentView.backgroundColor = ColorProvider.BackgroundSecondary
         hfView.contentView.subviews.forEach { $0.removeFromSuperview() }
 
-        let textLabel = UILabel(attributedString: text)
+        let textLabel = UILabel()
+        textLabel.set(text: text.string,
+                      preferredFont: .footnote,
+                      textColor: ColorProvider.TextWeak)
         textLabel.numberOfLines = 0
         hfView.contentView.addSubview(textLabel)
 
         [
-            textLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20.0),
             textLabel.topAnchor.constraint(equalTo: hfView.contentView.topAnchor, constant: titleTopPadding),
             textLabel.bottomAnchor.constraint(equalTo: hfView.contentView.bottomAnchor, constant: -8),
             textLabel.leftAnchor.constraint(equalTo: hfView.contentView.leftAnchor, constant: 16),

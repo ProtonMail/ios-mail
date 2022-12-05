@@ -30,7 +30,6 @@ import ProtonCore_Services
 
 final class MainQueueHandler: QueueHandler {
     let userID: UserID
-    private let cacheService: CacheService
     private let coreDataService: CoreDataService
     private let apiService: APIService
     private let messageDataService: MessageDataService
@@ -42,8 +41,7 @@ final class MainQueueHandler: QueueHandler {
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
 
-    init(cacheService: CacheService,
-         coreDataService: CoreDataService,
+    init(coreDataService: CoreDataService,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
@@ -52,7 +50,6 @@ final class MainQueueHandler: QueueHandler {
          undoActionManager: UndoActionManagerProtocol,
          user: UserManager) {
         self.userID = user.userID
-        self.cacheService = cacheService
         self.coreDataService = coreDataService
         self.apiService = apiService
         self.messageDataService = messageDataService
@@ -70,7 +67,6 @@ final class MainQueueHandler: QueueHandler {
         let action = task.action
 
         let UID = task.userID.rawValue
-        let uuid = task.uuid
         let isConversation = task.isConversation
 
         if isConversation {
@@ -87,37 +83,31 @@ final class MainQueueHandler: QueueHandler {
             case .empty(let labelID):
                 self.empty(labelId: labelID, UID: UID, completion: completeHandler)
             case .unread(let currentLabelID, let itemIDs, _):
-                self.unreadConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                self.unreadConversations(itemIDs, labelID: currentLabelID, completion: completeHandler)
             case .read(let itemIDs, _):
-                self.readConversations(itemIDs, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                self.readConversations(itemIDs, completion: completeHandler)
             case .delete(let currentLabelID, let itemIDs):
-                self.deleteConversations(itemIDs, labelID: currentLabelID ?? "", writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                self.deleteConversations(itemIDs, labelID: currentLabelID ?? "", completion: completeHandler)
             case .label(let currentLabelID, _, let isSwipeAction, let itemIDs, _):
                 self.labelConversations(itemIDs,
                                         labelID: currentLabelID,
-                                        writeQueueUUID: uuid,
-                                        UID: UID,
                                         isSwipeAction: isSwipeAction,
                                         completion: completeHandler)
             case .unlabel(let currentLabelID, _, let isSwipeAction, let itemIDs, _):
                 self.unlabelConversations(itemIDs,
                                           labelID: currentLabelID,
-                                          writeQueueUUID: uuid,
-                                          UID: UID,
                                           isSwipeAction: isSwipeAction,
                                           completion: completeHandler)
             case .folder(let nextLabelID, _, let isSwipeAction, let itemIDs, _):
                 self.labelConversations(itemIDs,
                                         labelID: nextLabelID,
-                                        writeQueueUUID: uuid,
-                                        UID: UID,
                                         isSwipeAction: isSwipeAction,
                                         completion: completeHandler)
             }
         } else {
             switch action {
             case .saveDraft(let messageObjectID):
-                self.draft(save: messageObjectID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+                self.draft(save: messageObjectID, UID: UID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID):
                 self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
             case .uploadPubkey(let attachmentObjectID):
@@ -126,14 +116,18 @@ final class MainQueueHandler: QueueHandler {
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
                     attachmentID: attachmentID,
-                    writeQueueUUID: uuid,
                     UID: UID,
                     completion: completeHandler
                 )
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
-            case .send(let messageObjectID, let body):
-                messageDataService.send(byID: messageObjectID, bodyForDebug: body, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .send:
+                if case let .send(messageObjectID, deliveryTime) = action {
+                    // This looks like duplicated but we need it
+                    // Some how the value of deliveryTime in switch case .send(...) is wrong
+                    // But correct in if case let
+                    messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
+                }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
             case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
@@ -141,27 +135,27 @@ final class MainQueueHandler: QueueHandler {
             case .empty(let currentLabelID):
                 self.empty(labelId: currentLabelID, UID: UID, completion: completeHandler)
             case .read(_, let objectIDs):
-                self.messageAction(objectIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
+                self.messageAction(objectIDs, action: action.rawValue, UID: UID, completion: completeHandler)
             case .unread(_, _, let objectIDs):
-                self.messageAction(objectIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
+                self.messageAction(objectIDs, action: action.rawValue, UID: UID, completion: completeHandler)
             case .delete(_, let itemIDs):
-                self.messageDelete(itemIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
+                self.messageDelete(itemIDs, action: action.rawValue, UID: UID, completion: completeHandler)
             case .label(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
-                self.labelMessage(currentLabelID,
+                self.labelMessage(LabelID(currentLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
                                   isSwipeAction: isSwipeAction,
                                   completion: completeHandler)
             case .unlabel(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
-                self.unLabelMessage(currentLabelID,
+                self.unLabelMessage(LabelID(currentLabelID),
                                     messageIDs: itemIDs,
                                     UID: UID,
                                     shouldFetchEvent: shouldFetch ?? false,
                                     isSwipeAction: isSwipeAction,
                                     completion: completeHandler)
             case .folder(let nextLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
-                self.labelMessage(nextLabelID,
+                self.labelMessage(LabelID(nextLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
@@ -199,7 +193,6 @@ final class MainQueueHandler: QueueHandler {
         return { task, response, error in
             let helper = TaskCompletionHelper()
             helper.handleResult(queueTask: queueTask,
-                                response: response,
                                 error: error,
                                 notifyQueueManager: notifyQueueManager)
         }
@@ -223,7 +216,7 @@ extension MainQueueHandler {
             return
         }
 
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -258,7 +251,7 @@ extension MainQueueHandler {
 // MARK: queue actions for single message
 extension MainQueueHandler {
     /// - parameter messageObjectID: message objectID string
-    fileprivate func draft(save messageObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    fileprivate func draft(save messageObjectID: String, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         var isAttachmentKeyChanged = false
         self.coreDataService.enqueue(context: context) { (context) in
@@ -268,7 +261,7 @@ extension MainQueueHandler {
                 return
             }
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -312,9 +305,7 @@ extension MainQueueHandler {
                     guard let message = try? context.existingObject(with: objectID) as? Message else {
                         // If the message is nil
                         // That means this message is deleted
-                        // Should send delete API to make sure this message is deleted
-                        let mockAction: MessageAction = .delete(currentLabelID: nil, itemIDs: [])
-                        self.messageDelete([messageID], writeQueueUUID: UUID(), action: mockAction.rawValue, UID: UID, completion: nil)
+                        // Don't handle response
                         completion?(task, nil, nil)
                         return
                     }
@@ -420,8 +411,7 @@ extension MainQueueHandler {
     }
 
     private func uploadPubKey(_ attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
-        let context = self.coreDataService.operationContext
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard
                 let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
                 let managedObject = try? context.existingObject(with: managedObjectID),
@@ -484,8 +474,7 @@ extension MainQueueHandler {
     }
 
     private func uploadAttachment(with attachmentURI: String, UID: String, completion: @escaping CompletionBlock) {
-        let context = self.coreDataService.operationContext
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
                   let managedObject = try? context.existingObject(with: managedObjectID),
                   let attachment = managedObject as? Attachment else {
@@ -493,7 +482,7 @@ extension MainQueueHandler {
                 return
             }
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -537,7 +526,7 @@ extension MainQueueHandler {
                         return
                     }
 
-                    Crypto().freeGolangMem()
+                    Crypto.freeGolangMem()
                     let signed = attachment.sign(byKey: key,
                                                  userKeys: userKeys,
                                                  passphrase: passphrase)
@@ -574,12 +563,10 @@ extension MainQueueHandler {
     private func deleteAttachmentWithAttachmentID(
         _ deleteObjectID: String,
         attachmentID: String?,
-        writeQueueUUID: UUID,
         UID: String,
         completion: CompletionBlock?
     ) {
-        let context = self.coreDataService.operationContext
-        context.perform { [weak self] in
+        coreDataService.performOnRootSavingContext { [weak self] context in
             guard let self = self else {
                 completion?(nil, nil, nil)
                 return
@@ -593,7 +580,7 @@ extension MainQueueHandler {
                   }
             authCredential = att.message.cachedAuthCredential
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -642,7 +629,7 @@ extension MainQueueHandler {
                     return
                 }
 
-                guard let address = user.userinfo.userAddresses.address(byID: addressID),
+                guard let address = user.userInfo.userAddresses.address(byID: addressID),
                       let key = address.keys.first else {
                     completion?(nil, nil, NSError.badParameter("Address ID"))
                     return
@@ -653,11 +640,11 @@ extension MainQueueHandler {
                             try att.getSession(userKey: user.userPrivateKeys,
                                                keys: user.addressKeys,
                                                mailboxPassword: user.mailboxPassword) :
-                            try att.getSession(keys: user.addressPrivateKeys,
+                            try att.getSession(keys: user.addressKeys,
                                                mailboxPassword: user.mailboxPassword) else { // DONE
                         continue
                     }
-                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                    guard let newKeyPack = try sessionPack.sessionKey.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo.value)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                         continue
                     }
                     att.keyPacket = newKeyPack
@@ -682,9 +669,8 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        let context = self.coreDataService.operationContext
-        context.performAndWait {
+    fileprivate func messageAction(_ managedObjectIds: [String], action: String, UID: String, completion: CompletionBlock?) {
+        coreDataService.performAndWaitOnRootSavingContext { context in
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
                     let managedObject = try? context.existingObject(with: objectID) {
@@ -693,7 +679,7 @@ extension MainQueueHandler {
                 return nil
             }
 
-            guard self.user?.userinfo.userId == UID else {
+            guard self.user?.userInfo.userId == UID else {
                 completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -714,11 +700,10 @@ extension MainQueueHandler {
     ///
     /// - Parameters:
     ///   - messageIDs: must be the real message id. becuase the message is deleted before this triggered
-    ///   - writeQueueUUID: queue UID
     ///   - action: action type. should .delete here
     ///   - completion: call back
-    fileprivate func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
-        guard user?.userinfo.userId == UID else {
+    fileprivate func messageDelete(_ messageIDs: [String], action: String, UID: String, completion: CompletionBlock?) {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -733,13 +718,13 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func labelMessage(_ labelID: String,
+    fileprivate func labelMessage(_ labelID: LabelID,
                                   messageIDs: [String],
                                   UID: String,
                                   shouldFetchEvent: Bool,
                                   isSwipeAction: Bool,
                                   completion: CompletionBlock?) {
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -747,7 +732,7 @@ extension MainQueueHandler {
         let api = ApplyLabelToMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<ApplyLabelToMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
-                self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
+                self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
             switch result {
             case .success(let response):
@@ -763,13 +748,13 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func unLabelMessage(_ labelID: String,
+    fileprivate func unLabelMessage(_ labelID: LabelID,
                                     messageIDs: [String],
                                     UID: String,
                                     shouldFetchEvent: Bool,
                                     isSwipeAction: Bool,
                                     completion: CompletionBlock?) {
-        guard user?.userinfo.userId == UID else {
+        guard user?.userInfo.userId == UID else {
             completion?(nil, nil, NSError.userLoggedOut())
             return
         }
@@ -777,7 +762,7 @@ extension MainQueueHandler {
         let api = RemoveLabelFromMessagesRequest(labelID: labelID, messages: messageIDs)
         apiService.exec(route: api) { [weak self] (result: Swift.Result<RemoveLabelFromMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
-                self?.user?.eventsService.fetchEvents(labelID: LabelID(labelID))
+                self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
             switch result {
             case .success(let response):
@@ -853,9 +838,8 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     private func updateContact(objectID: String, cardDatas: [CardData], completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let contact = managedObject as? Contact else {
@@ -870,9 +854,8 @@ extension MainQueueHandler {
 
     private func deleteContact(objectID: String, completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let contact = managedObject as? Contact else {
@@ -924,9 +907,8 @@ extension MainQueueHandler {
     ///   - completion: Completion
     private func updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String], completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactGroupService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let label = managedObject as? Label else {
@@ -954,9 +936,8 @@ extension MainQueueHandler {
 
     private func deleteContactGroup(objectID: String, completion: CompletionBlock?) {
         let dataService = self.coreDataService
-        let context = self.coreDataService.operationContext
         let service = self.contactGroupService
-        context.perform {
+        coreDataService.performOnRootSavingContext { context in
             guard let managedID = dataService.managedObjectIDForURIRepresentation(objectID),
                   let managedObject = try? context.existingObject(with: managedID),
                   let label = managedObject as? Label else {
@@ -975,7 +956,7 @@ extension MainQueueHandler {
 
 // MARK: queue actions for conversation
 extension MainQueueHandler {
-    fileprivate func unreadConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    fileprivate func unreadConversations(_ conversationIds: [String], labelID: String, completion: CompletionBlock?) {
         conversationDataService
             .markAsUnread(conversationIDs: conversationIds.map{ConversationID($0)},
                           labelID: LabelID(labelID)) { result in
@@ -983,7 +964,7 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func readConversations(_ conversationIds: [String], writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    fileprivate func readConversations(_ conversationIds: [String], completion: CompletionBlock?) {
         conversationDataService
             .markAsRead(conversationIDs: conversationIds.map{ConversationID($0)},
                         labelID: "") { result in
@@ -991,7 +972,7 @@ extension MainQueueHandler {
         }
     }
 
-    fileprivate func deleteConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    fileprivate func deleteConversations(_ conversationIds: [String], labelID: String, completion: CompletionBlock?) {
         conversationDataService
             .deleteConversations(with: conversationIds.map{ConversationID($0)},
                                  labelID: LabelID(labelID)) { result in
@@ -1001,8 +982,6 @@ extension MainQueueHandler {
 
     fileprivate func labelConversations(_ conversationIds: [String],
                                         labelID: String,
-                                        writeQueueUUID: UUID,
-                                        UID: String,
                                         isSwipeAction: Bool,
                                         completion: CompletionBlock?) {
         conversationDataService
@@ -1015,8 +994,6 @@ extension MainQueueHandler {
 
     fileprivate func unlabelConversations(_ conversationIds: [String],
                                           labelID: String,
-                                          writeQueueUUID: UUID,
-                                          UID: String,
                                           isSwipeAction: Bool,
                                           completion: CompletionBlock?) {
         conversationDataService

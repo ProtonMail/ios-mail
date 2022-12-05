@@ -18,11 +18,6 @@
 import UIKit
 
 final class InAppFeedbackTransitioner: NSObject, UIViewControllerAnimatedTransitioning {
-    private func transitionDuration(using transitionContext: UIViewControllerContextTransitioning,
-                                    isPresenting: Bool) -> TimeInterval {
-        transitionDuration(using: transitionContext)
-    }
-
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         0.3
     }
@@ -38,7 +33,7 @@ final class InAppFeedbackTransitioner: NSObject, UIViewControllerAnimatedTransit
             let finalFrame = toVC.actionSheetView.frame
             toVC.actionSheetView.frame.origin.y += finalFrame.height
             transitionContext.containerView.addSubview(toVC.view)
-            UIView.animate(withDuration: transitionDuration(using: transitionContext, isPresenting: true),
+            UIView.animate(withDuration: transitionDuration(using: transitionContext),
                            animations: {
                             toVC.view.alpha = 1.0
                             toVC.actionSheetView.frame = finalFrame
@@ -46,7 +41,7 @@ final class InAppFeedbackTransitioner: NSObject, UIViewControllerAnimatedTransit
                 transitionContext.completeTransition(true)
             })
         } else if let fromVC = fromVC as? InAppFeedbackViewController {
-            UIView.animate(withDuration: transitionDuration(using: transitionContext, isPresenting: false),
+            UIView.animate(withDuration: transitionDuration(using: transitionContext),
                            animations: {
                             fromVC.view.alpha = 0.0
                             fromVC.actionSheetView.frame.origin.y += fromVC.actionSheetView.frame.height

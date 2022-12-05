@@ -32,16 +32,17 @@ extension MailboxViewController {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
+        let senderName = message.getSenderName(replacingEmailsMap: replacingEmailsMap, groupContacts: contactGroups)
         let initial = message.getInitial(senderName: senderName)
         let sender = message.getSender(senderName: senderName)
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 
+        let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: listEditing ? .selection(isSelected: isSelected) : .normal,
-            initial: initial.apply(style: FontManager.body3RegularNorm),
+            style: listEditing ? .selection(isSelected: isSelected) : style,
+            initial: initial,
             isRead: !message.unRead,
             sender: sender,
             time: isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
@@ -53,7 +54,9 @@ extension MailboxViewController {
             hasAttachment: message.numAttachments > 0,
             tags: message.createTags(),
             messageCount: 0,
-            folderIcons: []
+            folderIcons: [],
+            scheduledTime: message.contains(location: .scheduled) ? dateForScheduled(of: message) : nil,
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message)
         )
         if mailboxViewModel.displayOriginIcon {
             mailboxViewModel.folderIcons = message.getFolderIcons(customFolderLabels: customFolderLabels)
@@ -69,16 +72,17 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
-        let sender = conversation.getJoinedSendersName(replacingEmails)
-        let initial = conversation.initial(replacingEmails)
+        let sender = conversation.getJoinedSendersName(replacingEmailsMap)
+        let initial = conversation.initial(replacingEmailsMap)
         let messageCount = conversation.messageCount
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
+        let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
-            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder ,
+            isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
-            initial: initial.apply(style: FontManager.body3RegularNorm),
+            initial: initial,
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: sender,
             time: date(of: conversation, labelId: labelId, weekStart: weekStart),
@@ -90,7 +94,9 @@ extension MailboxViewController {
             hasAttachment: conversation.attachmentCount > 0,
             tags: conversationTagUIModels,
             messageCount: messageCount > 0 ? messageCount : 0,
-            folderIcons: [])
+            folderIcons: [],
+            scheduledTime: isHavingScheduled ? dateForScheduled(of: conversation) : nil,
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation))
         if mailboxViewModel.displayOriginIcon {
             mailboxViewModel.folderIcons = conversation.getFolderIcons(customFolderLabels: customFolderLabels)
         }
@@ -107,4 +113,25 @@ extension MailboxViewController {
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }
 
+    private func dateForScheduled(of message: MessageEntity) -> String? {
+        guard message.contains(location: .scheduled),
+              let date = message.time else { return nil }
+        return PMDateFormatter.shared.stringForScheduledMsg(from: date, inListView: true)
+    }
+
+    private func dateForScheduled(of conversation: ConversationEntity) -> String? {
+        guard let date = conversation.getTime(labelID: Message.Location.scheduled.labelID) else { return nil }
+        return PMDateFormatter.shared.stringForScheduledMsg(from: date, inListView: true)
+    }
+
+    private func checkIsDateWillHappenInTheNext10Mins(of conversation: ConversationEntity) -> Bool {
+        guard let date = conversation.getTime(labelID: Message.Location.scheduled.labelID) else { return false }
+        return PMDateFormatter.shared.checkIsDateWillHappenInTheNext10Mins(date)
+    }
+
+    private func checkIsDateWillHappenInTheNext10Mins(of message: MessageEntity) -> Bool {
+        guard message.contains(location: .scheduled),
+              let date = message.time else { return false }
+        return PMDateFormatter.shared.checkIsDateWillHappenInTheNext10Mins(date)
+    }
 }

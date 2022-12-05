@@ -41,7 +41,7 @@ extension CurrentPlanDetails {
     // swiftlint:disable function_parameter_count
     static func createPlan(from details: Plan,
                            plan: InAppPurchasePlan,
-                           currentSubscription: Subscription?,
+                           servicePlan: ServicePlanDataServiceProtocol,
                            countriesCount: Int?,
                            clientApp: ClientApp,
                            storeKitManager: StoreKitManagerProtocol,
@@ -49,7 +49,7 @@ extension CurrentPlanDetails {
                            protonPrice: String?,
                            hasPaymentMethods: Bool,
                            endDate: NSAttributedString?) -> CurrentPlanDetails {
-        let planDetails = planDataDetails(from: details, currentSubscription: currentSubscription, countriesCount: countriesCount, clientApp: clientApp, isMultiUser: isMultiUser)
+        let planDetails = planDataDetails(from: details, servicePlan: servicePlan, countriesCount: countriesCount, clientApp: clientApp, isMultiUser: isMultiUser)
         let name = planDetails.name ?? details.titleDescription
         let price: String?
         if hasPaymentMethods {
@@ -59,20 +59,42 @@ extension CurrentPlanDetails {
         } else {
             price = plan.planPrice(from: storeKitManager) ?? protonPrice
         }
-        return CurrentPlanDetails(name: name, price: price, cycle: details.cycleDescription, details: planDetails.details, endDate: endDate, usedSpace: currentSubscription?.organization?.usedSpace ?? 0, maxSpace: details.maxSpace, usedSpaceDescription: planDetails.usedSpace)
+        
+        let space = planDetailsSpace(plan: details, servicePlan: servicePlan)
+        return CurrentPlanDetails(name: name, price: price, cycle: details.cycleDescription, details: planDetails.details, endDate: endDate, usedSpace: space.usedSpace, maxSpace: space.maxSpace, usedSpaceDescription: space.description)
     }
     
-    typealias PlanDataDetails = (name: String?, usedSpace: String?, details: [(DetailType, String)])
-    typealias PlanDataOptDetails = (name: String?, usedSpace: String?, optDetails: [(DetailType, String?)])
+    struct PlanDetailsSpace {
+        let usedSpace: Int64
+        let maxSpace: Int64
+        let description: String
+    }
+    
+    private static func planDetailsSpace(plan: Plan, servicePlan: ServicePlanDataServiceProtocol) -> PlanDetailsSpace {
+        var usedSpace: Int64
+        var maxSpace: Int64
+        if let user = servicePlan.user {
+            maxSpace = Int64(user.maxSpace)
+            usedSpace = Int64(user.usedSpace)
+        } else {
+            maxSpace = plan.maxSpace
+            usedSpace = servicePlan.currentSubscription?.organization?.usedSpace ?? servicePlan.currentSubscription?.usedSpace ?? 0
+        }
+        let description = plan.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace, maxSpace: maxSpace)
+        return PlanDetailsSpace(usedSpace: usedSpace, maxSpace: maxSpace, description: description)
+    }
+    
+    typealias PlanDataDetails = (name: String?, usedSpace: Bool, details: [(DetailType, String)])
+    typealias PlanDataOptDetails = (name: String?, usedSpace: Bool, optDetails: [(DetailType, String?)])
     
     // swiftlint:disable function_body_length
-    private static func planDataDetails(from details: Plan, currentSubscription: Subscription?, countriesCount: Int?, clientApp: ClientApp, isMultiUser: Bool) -> PlanDataDetails {
+    private static func planDataDetails(from details: Plan, servicePlan: ServicePlanDataServiceProtocol, countriesCount: Int?, clientApp: ClientApp, isMultiUser: Bool) -> PlanDataDetails {
         let strDetails: PlanDataOptDetails
-        let usedSpace = currentSubscription?.organization?.usedSpace ?? currentSubscription?.usedSpace
+        let currentSubscription = servicePlan.currentSubscription
         switch details.hashedName {
         case "383ef36928344f56ffe8fe23ceed2ad8c0db8ec222c5f56c47163747dc738a0e":
             strDetails = (name: "Plus",
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.checkmark, details.XGBStorageDescription),
                             (.checkmark, details.YAddressesDescription),
@@ -83,7 +105,7 @@ extension CurrentPlanDetails {
 
         case "3193add47e3d68efb9f1bbb968faf769c1c14707526145e517e262812aab4a58":
             strDetails = (name: "Basic",
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.checkmark, details.vpnPaidCountriesDescriptionV5(countries: countriesCount)),
                             (.checkmark, details.UConnectionsDescription),
@@ -92,7 +114,7 @@ extension CurrentPlanDetails {
             
         case "c277c92ffb58ea9aeef4d621a3cc83991c402db7a0f61b598454e34286061711":
             strDetails = (name: "Plus",
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.checkmark, details.vpnPaidCountriesDescriptionV5(countries: countriesCount)),
                             (.checkmark, details.UConnectionsDescription),
@@ -103,7 +125,7 @@ extension CurrentPlanDetails {
             
         case "cd340d1a5c4151dea2fb7e52ab3f27aebf9a4135f4506d4d6e03089f066e99d2":
             strDetails = (name: "Professional",
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.checkmark, isMultiUser ? details.XGBStorageDescription : details.XGBStoragePerUserDescription),
                             (.checkmark, isMultiUser ? details.YAddressesDescription : details.YAddressesPerUserDescription),
@@ -113,7 +135,7 @@ extension CurrentPlanDetails {
             
         case "11d40417959631d3d2420e8cd8709893c11cd7a4db737af63e8d56cfa7866f85":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.checkmark, isMultiUser ? details.XGBStorageDescription : details.XGBStoragePerUserDescription),
                             (.checkmark, isMultiUser ? details.YAddressesDescription : details.YAddressesPerUserDescription),
@@ -123,7 +145,7 @@ extension CurrentPlanDetails {
 
         case "2b8644e24f72dbea9f07b372550ee4d051f02517c07db4c14dfe3ee14e6d892a":
             strDetails = (name: "Visionary",
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.checkmark, details.XGBStorageDescription),
                             (.checkmark, details.YAddressesDescription),
@@ -135,7 +157,7 @@ extension CurrentPlanDetails {
             
         case "b1fedaf0300a6a79f73918565cc0870abffd391e3e1899ed6d602c3339e1c3bb":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
@@ -145,7 +167,7 @@ extension CurrentPlanDetails {
 
         case "f6df8a2c854381704084384cd102951c2caa33cdcca15ab740b34569acfbfc10":
             strDetails = (name: nil,
-                          usedSpace: nil,
+                          usedSpace: false,
                           optDetails: [
                             (.powerOff, details.UVPNConnectionsDescription),
                             (.rocket, details.VPNHighestSpeedDescription),
@@ -158,7 +180,7 @@ extension CurrentPlanDetails {
                           ])
         case "93d6ab89dfe0ef0cadbb77402d21e1b485937d4b9cef19390b1f5d8e7876b66a":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
@@ -168,7 +190,7 @@ extension CurrentPlanDetails {
 
         case "04567dee288f15bb533814cf89f3ab5a4fa3c25d1aed703a409672181f8a900a":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
@@ -177,7 +199,7 @@ extension CurrentPlanDetails {
                           ])
         case "1fe4f100fd26c9595c13754becb070a4e9e5f9844e4fdb03312ca5a5cedeacde":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
@@ -186,7 +208,7 @@ extension CurrentPlanDetails {
                           ])
         case "349669448939e91acc4b777fabe73559c67bd1de4362e9bb93734a1266ff34eb":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
@@ -195,7 +217,7 @@ extension CurrentPlanDetails {
                           ])
         case "f6b76fa97bf94acb7ca1add9302fafd370a6e29a634900239f1ea6920b05d542":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.WUsersDescription),
                             (.envelope, details.YAddressesPerUserDescriptionV5),
@@ -204,7 +226,7 @@ extension CurrentPlanDetails {
             
         case "edec477fd23bc034218f4db7932a71540517ebb2247ccaf408d1ffbfe12c4d43":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                             (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),
@@ -214,7 +236,7 @@ extension CurrentPlanDetails {
             
         case "b61a62275e3d7d6d26d239cdd1eaf106a7bd8933cfc4a2f2dd25f1279663b188":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.user, details.WUsersDescription),
                             (.envelope, details.YAddressesPerUserDescriptionV5),
@@ -224,7 +246,7 @@ extension CurrentPlanDetails {
             
         case "65b6f529cb429faa1d8ba151e7ae84c2d16c8eb484e81b28683a3a0862554607":
             strDetails = (name: nil,
-                          usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                          usedSpace: true,
                           optDetails: [
                             (.envelope, details.YAddressesPerUserDescriptionV5),
                             (.calendarCheckmark, details.ZPersonalCalendarsPerUserDescription),
@@ -236,7 +258,7 @@ extension CurrentPlanDetails {
             switch clientApp {
             case .vpn:
                 strDetails = (name: "Free",
-                              usedSpace: nil,
+                              usedSpace: false,
                               optDetails: [
                                 (.servers, details.VPNFreeServersDescription(countries: countriesCount)),
                                 (.rocket, details.VPNFreeSpeedDescription),
@@ -244,7 +266,7 @@ extension CurrentPlanDetails {
                               ])
             default:
                 strDetails = (name: "Free",
-                              usedSpace: details.RSGBUsedStorageSpaceDescription(usedSpace: usedSpace),
+                              usedSpace: true,
                               optDetails: [
                                 (.user, details.TWUsersDescription(usedMembers: currentSubscription?.organization?.usedMembers)),
                                 (.envelope, details.PYAddressesDescription(usedAddresses: currentSubscription?.organization?.usedAddresses)),

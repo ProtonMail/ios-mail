@@ -52,6 +52,14 @@ extension JSONDecoder.KeyDecodingStrategy {
     }
 }
 
+extension JSONDecoder {
+    public static let decapitalisingFirstLetter: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .decapitaliseFirstLetter
+        return decoder
+    }()
+}
+
 /// String value becomes the key
 struct BasicCodingKey: CodingKey {
   var stringValue: String

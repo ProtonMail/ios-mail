@@ -112,7 +112,7 @@ class MailButton: UIControl {
 
         static var titleView: UILabel {
             let label = UILabel()
-            label.font = UIFont.systemFont(ofSize: 14.0)
+            label.set(text: nil, preferredFont: .footnote)
             label.numberOfLines = 2
             label.preferredMaxLayoutWidth = 200
             return label

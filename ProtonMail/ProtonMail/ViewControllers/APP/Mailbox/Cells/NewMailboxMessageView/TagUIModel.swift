@@ -23,7 +23,9 @@
 import UIKit
 
 struct TagUIModel {
-    let title: NSAttributedString?
+    let title: String
+    let titleColor: UIColor
+    let titleWeight: UIFont.Weight?
     let icon: UIImage?
-    let color: UIColor
+    let tagColor: UIColor
 }

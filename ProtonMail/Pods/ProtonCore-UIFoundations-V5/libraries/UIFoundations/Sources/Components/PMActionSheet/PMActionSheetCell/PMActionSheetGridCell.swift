@@ -30,7 +30,6 @@ final class PMActionSheetGridCell: UITableViewCell, AccessibleView {
     // MARK: Constants
     private let ROW_HEIGHT: CGFloat = 100
     private let TAGOFFSET = 10
-    private let FONT_SIZE: CGFloat = 17
     private let ICON_SIZE: CGFloat = 32
     private let PADDING: CGFloat = 2
 
@@ -143,7 +142,7 @@ extension PMActionSheetGridCell {
         let imgView = self.createImageView(item.icon, color: item.iconColor)
         self.setupGridIconConstraint(imgView, in: view)
         let label = UILabel(item.title,
-                            font: .systemFont(ofSize: FONT_SIZE),
+                            font: .adjustedFont(forTextStyle: .body),
                             textColor: item.textColor,
                             alignment: .center,
                             useAutoLayout: true)

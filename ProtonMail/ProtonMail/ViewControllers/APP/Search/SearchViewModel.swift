@@ -19,21 +19,22 @@ import CoreData
 import Foundation
 import ProtonCore_UIFoundations
 
-protocol SearchVMProtocol {
+protocol SearchVMProtocol: AnyObject {
     var user: UserManager { get }
     var messages: [MessageEntity] { get }
     var selectedIDs: Set<String> { get }
     var selectedMessages: [MessageEntity] { get }
     var labelID: LabelID { get }
     var viewMode: ViewMode { get }
+    var uiDelegate: SearchViewUIProtocol? { get set }
 
     func viewDidLoad()
     func cleanLocalIndex()
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
-    func fetchMessageDetail(message: MessageEntity,
-                            completeHandler: @escaping ((NSError?) -> Void))
+    func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
     func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel?
+    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
@@ -44,16 +45,18 @@ protocol SearchVMProtocol {
     func getActionBarActions() -> [MailboxViewModel.ActionTypes]
     func getActionSheetViewModel() -> MailListActionSheetViewModel
     func handleBarActions(_ action: MailboxViewModel.ActionTypes)
-    func deleteSelectedMessage()
+    func deleteSelectedMessages()
     func handleActionSheetAction(_ action: MailListSheetAction)
     func getConversation(conversationID: ConversationID,
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void)
+    func scheduledMessagesFromSelected() -> [MessageEntity]
 }
 
 final class SearchViewModel: NSObject {
     typealias LocalObjectsIndexRow = [String: Any]
 
+    private let dependencies: Dependencies
     let user: UserManager
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
@@ -80,6 +83,7 @@ final class SearchViewModel: NSObject {
     private var dbContents: [LocalObjectsIndexRow] = []
     private var currentPage = 0
     private var query = ""
+    private let sharedReplacingEmailsMap: [String: EmailEntity]
 
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -90,9 +94,24 @@ final class SearchViewModel: NSObject {
     }
 
     init(user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol) {
+         coreDataContextProvider: CoreDataContextProviderProtocol,
+         queueManager: QueueManagerProtocol,
+         realAttachmentsFlagProvider: RealAttachmentsFlagProvider) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
+        let fetchMessageDetailUseCase = FetchMessageDetail(
+            dependencies: .init(queueManager: queueManager,
+                                apiService: user.apiService,
+                                contextProvider: coreDataContextProvider,
+                                realAttachmentsFlagProvider: realAttachmentsFlagProvider,
+                                messageDataAction: user.messageService,
+                                cacheService: user.cacheService)
+        )
+        self.dependencies = .init(fetchMessageDetail: fetchMessageDetailUseCase)
+        self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
+            .reduce(into: [:]) { partialResult, email in
+                partialResult[email.email] = EmailEntity(email: email)
+            }
     }
 }
 
@@ -141,8 +160,7 @@ extension SearchViewModel: SearchVMProtocol {
                     return
                 }
 
-                let context = self.coreDataContextProvider.rootSavingContext
-                context.perform {
+                self.coreDataContextProvider.performOnRootSavingContext { context in
                     let newMessageEntities = newMessages.map(MessageEntity.init)
 
                     DispatchQueue.main.async {
@@ -165,11 +183,14 @@ extension SearchViewModel: SearchVMProtocol {
         }
     }
 
-    func fetchMessageDetail(message: MessageEntity, completeHandler: @escaping ((NSError?) -> Void)) {
-        let service = self.user.messageService
-        service.forceFetchDetailForMessage(message) { _, _, _, error in
-            completeHandler(error)
-        }
+    func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
+        let params: FetchMessageDetail.Params = .init(
+            userID: user.userID,
+            message: message
+        )
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params, callback: callback)
     }
 
     func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel? {
@@ -184,10 +205,22 @@ extension SearchViewModel: SearchVMProtocol {
                                            coreDataContextProvider: coreDataContextProvider)
     }
 
+    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel? {
+        guard let msg = Message.messageForMessageID(msgID.rawValue,
+                                                    inManagedObjectContext: coreDataContextProvider.mainContext) else {
+            return nil
+        }
+        return ContainableComposeViewModel(msg: msg,
+                                           action: .openDraft,
+                                           msgService: user.messageService,
+                                           user: user,
+                                           coreDataContextProvider: coreDataContextProvider,
+                                           isEditingScheduleMsg: isEditingScheduleMsg)
+    }
+
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
-        let replacingEmails = self.user.contactService.allEmails()
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderName = message.getSenderName(replacingEmails: replacingEmails, groupContacts: contactGroups)
+        let senderName = message.getSenderName(replacingEmailsMap: sharedReplacingEmailsMap, groupContacts: contactGroups)
         let initial = message.getInitial(senderName: senderName)
         let sender = message.getSender(senderName: senderName)
         let weekStart = user.userInfo.weekStartValue
@@ -197,11 +230,12 @@ extension SearchViewModel: SearchVMProtocol {
         ).compactMap { LabelEntity(label: $0) }
         let isSelected = self.selectedMessages.contains(message)
         let isEditing = self.uiDelegate?.listEditing ?? false
+        let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
         return .init(
             location: nil,
             isLabelLocation: true, // to show origin location icons
-            style: isEditing ? .selection(isSelected: isSelected) : .normal,
-            initial: initial.apply(style: FontManager.body3RegularNorm),
+            style: isEditing ? .selection(isSelected: isSelected) : style,
+            initial: initial,
             isRead: !message.unRead,
             sender: sender,
             time: date(of: message, weekStart: weekStart),
@@ -213,7 +247,9 @@ extension SearchViewModel: SearchVMProtocol {
             hasAttachment: message.numAttachments > 0,
             tags: message.createTags(),
             messageCount: 0,
-            folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels)
+            folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels),
+            scheduledTime: dateForScheduled(of: message),
+            isScheduledTimeInNext10Mins: false
         )
     }
 
@@ -248,24 +284,24 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func handleBarActions(_ action: MailboxViewModel.ActionTypes) {
-        let ids = NSMutableSet(set: self.selectedIDs)
         switch action {
         case .markAsRead:
-            self.mark(IDs: ids, unread: false)
+            self.mark(messages: selectedMessages, unread: false)
         case .markAsUnread:
-            self.mark(IDs: ids, unread: true)
+            self.mark(messages: selectedMessages, unread: true)
         case .trash:
             self.move(toLabel: .trash)
         case .delete:
-            self.delete(IDs: ids)
+            self.deleteSelectedMessages()
         case .moveTo, .labelAs, .more:
             break
         }
     }
 
-    func deleteSelectedMessage() {
-        guard let ids = self.selectedIDs as? NSMutableSet else { return }
-        self.delete(IDs: ids)
+    func deleteSelectedMessages() {
+        messageService.move(messages: selectedMessages,
+                            from: [self.labelID],
+                            to: Message.Location.trash.labelID)
     }
 
     func handleActionSheetAction(_ action: MailListSheetAction) {
@@ -309,6 +345,18 @@ extension SearchViewModel: SearchVMProtocol {
                 completion(mappedResult)
             }
         }
+    }
+
+    private func dateForScheduled(of message: MessageEntity) -> String? {
+        guard message.contains(location: .scheduled),
+              let date = message.time else { return nil }
+        return PMDateFormatter.shared.stringForScheduledMsg(from: date, inListView: true)
+    }
+
+    func scheduledMessagesFromSelected() -> [MessageEntity] {
+        let ids = Array(selectedIDs)
+        return messages
+            .filter { ids.contains($0.messageID.rawValue) && $0.contains(location: .scheduled) }
     }
 }
 
@@ -379,84 +427,59 @@ extension SearchViewModel {
         selectedMessages.contains { !$0.unRead }
     }
 
-    private func mark(IDs messageIDs: NSMutableSet, unread: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
-        messageService.mark(messages: messages.map(MessageEntity.init), labelID: self.labelID, unRead: unread)
+    private func mark(messages: [MessageEntity], unread: Bool) {
+        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
     }
 
     private func move(toLabel: Message.Location) {
-        let messageIDs = NSMutableSet(set: selectedIDs)
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
+        let messages = selectedMessages
         var fLabels: [LabelID] = []
         for msg in messages {
             // the label that is not draft, sent, starred, allmail
-            fLabels.append(LabelID(msg.firstValidFolder() ?? self.labelID.rawValue))
+            fLabels.append(msg.firstValidFolder() ?? self.labelID)
         }
-        messageService.move(messages: messages.map(MessageEntity.init), from: fLabels, to: toLabel.labelID)
+        messageService.move(messages: messages, from: fLabels, to: toLabel.labelID)
     }
 
-    private func delete(IDs: NSMutableSet) {
-        let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataContextProvider.mainContext)
-        for msg in messages {
-            self.delete(message: msg)
-        }
-    }
-
-    private func delete(message: Message) {
-        messageService.move(messages: [message].map(MessageEntity.init),
-                            from: [self.labelID],
-                            to: Message.Location.trash.labelID)
-    }
-
-    private func label(IDs messageIDs: NSMutableSet, with labelID: LabelID, apply: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs,
-                                                         in: coreDataContextProvider.mainContext)
-            .map(MessageEntity.init)
+    private func label(messages: [MessageEntity], with labelID: LabelID, apply: Bool) {
         messageService.label(messages: messages, label: labelID, apply: apply)
     }
 
     private func handleUnstarAction() {
-        let starredItemsIds = selectedMessages
+        let selectedStarredMessages = selectedMessages
             .filter { $0.isStarred }
-            .map(\.messageID)
-            .map(\.rawValue)
-        label(IDs: NSMutableSet(array: starredItemsIds), with: Message.Location.starred.labelID, apply: false)
+        label(messages: selectedStarredMessages, with: Message.Location.starred.labelID, apply: false)
     }
 
     private func handleStarAction() {
-        let unstarredItemsIds = selectedMessages
+        let selectedUnstarredMessages = selectedMessages
             .filter { !$0.isStarred }
-            .map(\.messageID)
-            .map(\.rawValue)
-        label(IDs: NSMutableSet(array: unstarredItemsIds), with: Message.Location.starred.labelID, apply: true)
+        label(messages: selectedUnstarredMessages, with: Message.Location.starred.labelID, apply: true)
     }
 
     private func handleMarkReadAction() {
-        let unreadItemsIds = selectedMessages
+        let selectedUnreadMessages = selectedMessages
             .filter { $0.unRead }
-            .map(\.messageID)
-        mark(IDs: NSMutableSet(array: unreadItemsIds), unread: false)
+        mark(messages: selectedUnreadMessages, unread: false)
     }
 
     private func handleMarkUnreadAction() {
-        let unreadItemsIds = selectedMessages
+        let selectedReadMessages = selectedMessages
             .filter { !$0.unRead }
-            .map(\.messageID)
-        mark(IDs: NSMutableSet(array: unreadItemsIds), unread: true)
+        mark(messages: selectedReadMessages, unread: true)
     }
 }
 
 extension SearchViewModel {
     // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
-        let context = coreDataContextProvider.rootSavingContext
         var count = 0
-        context.performAndWait {
+        coreDataContextProvider.performAndWaitOnRootSavingContext { context in
             let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             overallCountRequest.resultType = .countResultType
             overallCountRequest.predicate = NSPredicate(format: "%K == %@",
                                                         Message.Attributes.userID,
-                                                        self.user.userinfo.userId)
+                                                        self.user.userInfo.userId)
             do {
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
@@ -466,7 +489,7 @@ extension SearchViewModel {
         }
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userInfo.userId)
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: Message.Attributes.time, ascending: false),
             NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
@@ -488,7 +511,7 @@ extension SearchViewModel {
             completion()
         })
 
-        context.perform {
+        coreDataContextProvider.performOnRootSavingContext { context in
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
                 let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
@@ -576,5 +599,11 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
             self.messages = dbObjects.map(MessageEntity.init)
         }
         self.uiDelegate?.refreshActionBarItems()
+    }
+}
+
+extension SearchViewModel {
+    struct Dependencies {
+        let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }

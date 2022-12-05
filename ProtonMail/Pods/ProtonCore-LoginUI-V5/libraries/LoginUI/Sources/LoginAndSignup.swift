@@ -29,7 +29,9 @@ import typealias ProtonCore_Payments.ListOfIAPIdentifiers
 import enum ProtonCore_Payments.StoreKitManagerErrors
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
+import ProtonCore_Environment
 import UIKit
+import TrustKit
 
 public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
     case mail(SpecificScreenData)
@@ -161,7 +163,7 @@ extension LoginAndSignupInterface {
 
 public final class LoginAndSignup {
     
-    private let container: Container
+    let container: Container
     private let isCloseButtonAvailable: Bool
     private let minimumAccountType: AccountType
     private var loginCoordinator: LoginCoordinator?
@@ -177,10 +179,53 @@ public final class LoginAndSignup {
     
     public init(appName: String,
                 clientApp: ClientApp,
-                doh: DoH & ServerConfig,
+                environment: Environment,
+                trustKit: TrustKit? = nil,
                 apiServiceDelegate: APIServiceDelegate,
                 forceUpgradeDelegate: ForceUpgradeDelegate,
-                humanVerificationVersion: HumanVerificationVersion,
+                minimumAccountType: AccountType,
+                isCloseButtonAvailable: Bool = true,
+                paymentsAvailability: PaymentsAvailability,
+                signupAvailability: SignupAvailability = .notAvailable) {
+        container = Container(appName: appName,
+                              clientApp: clientApp,
+                              environment: environment,
+                              trustKit: trustKit,
+                              apiServiceDelegate: apiServiceDelegate,
+                              forceUpgradeDelegate: forceUpgradeDelegate,
+                              minimumAccountType: minimumAccountType)
+        self.isCloseButtonAvailable = isCloseButtonAvailable
+        self.paymentsAvailability = paymentsAvailability
+        self.signupAvailability = signupAvailability
+        self.minimumAccountType = minimumAccountType
+    }
+    
+    @available(*, deprecated, message: "HumanVerificationVersion is removed")
+    public convenience init(appName: String,
+                            clientApp: ClientApp,
+                            environment: Environment,
+                            trustKit: TrustKit? = nil,
+                            apiServiceDelegate: APIServiceDelegate,
+                            forceUpgradeDelegate: ForceUpgradeDelegate,
+                            humanVerificationVersion: HumanVerificationVersion,
+                            minimumAccountType: AccountType,
+                            isCloseButtonAvailable: Bool = true,
+                            paymentsAvailability: PaymentsAvailability,
+                            signupAvailability: SignupAvailability = .notAvailable) {
+        self.init(appName: appName, clientApp: clientApp,
+                  environment: environment, trustKit: trustKit, apiServiceDelegate: apiServiceDelegate,
+                  forceUpgradeDelegate: forceUpgradeDelegate, minimumAccountType: minimumAccountType,
+                  isCloseButtonAvailable: isCloseButtonAvailable, paymentsAvailability: paymentsAvailability,
+                  signupAvailability: signupAvailability)
+    }
+    
+    @available(*, deprecated, message: "DoHInterface is deprecated try to use Environment")
+    public init(appName: String,
+                clientApp: ClientApp,
+                doh: DoHInterface,
+                trustKit: TrustKit? = nil,
+                apiServiceDelegate: APIServiceDelegate,
+                forceUpgradeDelegate: ForceUpgradeDelegate,
                 minimumAccountType: AccountType,
                 isCloseButtonAvailable: Bool = true,
                 paymentsAvailability: PaymentsAvailability,
@@ -188,14 +233,32 @@ public final class LoginAndSignup {
         container = Container(appName: appName,
                               clientApp: clientApp,
                               doh: doh,
+                              trustKit: trustKit,
                               apiServiceDelegate: apiServiceDelegate,
                               forceUpgradeDelegate: forceUpgradeDelegate,
-                              humanVerificationVersion: humanVerificationVersion,
                               minimumAccountType: minimumAccountType)
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.paymentsAvailability = paymentsAvailability
         self.signupAvailability = signupAvailability
         self.minimumAccountType = minimumAccountType
+    }
+    
+    @available(*, deprecated, message: "HumanVerificationVersion is removed and DoHInterface is deprecated try to use Environment")
+    public convenience init(appName: String,
+                            clientApp: ClientApp,
+                            doh: DoHInterface,
+                            trustKit: TrustKit? = nil,
+                            apiServiceDelegate: APIServiceDelegate,
+                            forceUpgradeDelegate: ForceUpgradeDelegate,
+                            humanVerificationVersion: HumanVerificationVersion,
+                            minimumAccountType: AccountType,
+                            isCloseButtonAvailable: Bool = true,
+                            paymentsAvailability: PaymentsAvailability,
+                            signupAvailability: SignupAvailability = .notAvailable) {
+        self.init(appName: appName, clientApp: clientApp, doh: doh, trustKit: trustKit,
+                  apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate,
+                  minimumAccountType: minimumAccountType, isCloseButtonAvailable: isCloseButtonAvailable,
+                  paymentsAvailability: paymentsAvailability, signupAvailability: signupAvailability)
     }
 
     @discardableResult
@@ -478,31 +541,3 @@ extension LoginAndSignupInterface {
 
 @available(*, deprecated, renamed: "LoginAndSignup")
 public typealias PMLogin = LoginAndSignup
-
-extension LoginAndSignup {
-    @available(*, deprecated, message: "Use the new initializer with payment plans for a particular app. Otherwise the no plans will be available.")
-    public convenience init(appName: String,
-                            clientApp: ClientApp,
-                            doh: DoH & ServerConfig,
-                            apiServiceDelegate: APIServiceDelegate,
-                            forceUpgradeDelegate: ForceUpgradeDelegate,
-                            minimumAccountType: AccountType,
-                            isCloseButtonAvailable: Bool = true,
-                            isPlanSelectorAvailable: Bool,
-                            signupAvailability: SignupAvailability = .notAvailable) {
-        self.init(appName: appName, clientApp: clientApp, doh: doh, apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate, minimumAccountType: minimumAccountType, isCloseButtonAvailable: isCloseButtonAvailable, paymentsAvailability: isPlanSelectorAvailable ? .available(parameters: .init(listOfIAPIdentifiers: [], listOfShownPlanNames: [], reportBugAlertHandler: nil)) : .notAvailable)
-    }
-
-    @available(*, deprecated, message: "Use the initializer that specifies the human verification version")
-    public convenience init(appName: String,
-                            clientApp: ClientApp,
-                            doh: DoH & ServerConfig,
-                            apiServiceDelegate: APIServiceDelegate,
-                            forceUpgradeDelegate: ForceUpgradeDelegate,
-                            minimumAccountType: AccountType,
-                            isCloseButtonAvailable: Bool = true,
-                            paymentsAvailability: PaymentsAvailability,
-                            signupAvailability: SignupAvailability = .notAvailable) {
-        self.init(appName: appName, clientApp: clientApp, doh: doh, apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate, humanVerificationVersion: .v2, minimumAccountType: minimumAccountType, isCloseButtonAvailable: isCloseButtonAvailable, paymentsAvailability: paymentsAvailability, signupAvailability: signupAvailability)
-    }
-}

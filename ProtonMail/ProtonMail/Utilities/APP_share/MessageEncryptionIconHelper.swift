@@ -295,7 +295,7 @@ struct MessageEncryptionIconHelper {
                              isNonePM: false)
             }
         }
-        if sendPreferences.pgpScheme == .encryptOutside {
+        if sendPreferences.pgpScheme == .encryptedToOutside {
             return .init(iconColor: .blue,
                          icon: IconProvider.lockFilled,
                          text: LocalString._end_to_end_encrypted_of_recipient,
@@ -352,10 +352,6 @@ struct MessageEncryptionIconHelper {
 }
 
 extension MessageEncryptionIconHelper {
-    func getAuthenticationMap(headerValue: [String: Any]) -> [String: String] {
-        return getHeaderMap(headerValue: headerValue, headerKey: MessageHeaderKey.pmRecipientAuthentication)
-    }
-
     func getEncryptionMap(headerValue: [String: Any]) -> [String: String] {
         return getHeaderMap(headerValue: headerValue, headerKey: MessageHeaderKey.pmRecipientEncryption)
     }

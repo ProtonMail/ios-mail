@@ -30,4 +30,38 @@ public extension NSMutableAttributedString {
         }
         return false
     }
+    
+    func addHyperLink(subString: String, link: String, font: UIFont? = nil) {
+        if let subStrRange = self.string.range(of: subString) {
+            let nsRange = NSRange(subStrRange, in: self.string)
+            self.addAttributes([.link: link], range: nsRange)
+            if let font = font {
+                self.addAttributes([.font: font], range: nsRange)
+            }
+        }
+    }
+    
+    func addHyperLinks(hyperlinks: [String: String]) {
+        for (key, value) in hyperlinks {
+            self.addHyperLink(subString: key, link: value)
+        }
+    }
+}
+
+public extension NSAttributedString {
+    static func hyperlink(in string: String, as substring: String, path: String, subfont: UIFont?) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        let attributerString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        attributerString.addHyperLink(subString: substring, link: path, font: subfont)
+        return attributerString
+    }
+}
+
+public extension String {
+    func buildAttributedString(font: UIFont, color: UIColor) -> NSMutableAttributedString {
+        return NSMutableAttributedString(string: self,
+                                         attributes: [NSAttributedString.Key.font: font,
+                                                      NSAttributedString.Key.foregroundColor: color])
+    }
 }

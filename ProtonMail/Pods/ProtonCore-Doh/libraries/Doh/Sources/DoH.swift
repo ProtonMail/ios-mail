@@ -23,6 +23,9 @@ import Foundation
 import ProtonCore_Log
 import ProtonCore_Utilities
 
+// constant. tests can reach this value
+let dohLifeTime: Double = 90 * 60 // 90 mins
+
 open class DoH: DoHInterface {
 
     open var status: DoHStatus = .off
@@ -35,10 +38,10 @@ open class DoH: DoHInterface {
     private let networkingEngine: DoHNetworkingEngine
     private let currentTimeProvider: () -> Date
     
-    private var cookiesSynchronizer: DoHCookieSynchronizer?
+    private var cookiesSynchronizer: DoHCookieSynchronizer?    
     
-    var config: DoH & ServerConfig {
-        guard let config = self as? DoH & ServerConfig else {
+    var config: DoHInterface & ServerConfig {
+        guard let config = self as? DoHInterface & ServerConfig else {
             fatalError("DoH subclass must also conform to ServerConfig")
         }
         return config
@@ -87,7 +90,7 @@ open class DoH: DoHInterface {
     /// - Returns: currently used host url string
     open func getCurrentlyUsedHostUrl() -> String {
         getCurrentlyUsedUrl(defaultingTo: config.defaultHost) + config.defaultPath
-        }
+    }
     
     private func getCurrentlyUsedUrl(defaultingTo defaultHost: String) -> String {
         guard doHProxyDomainsMechanismIsActive() else { return defaultHost }
@@ -192,7 +195,7 @@ open class DoH: DoHInterface {
     private func fetchCurrentlyUsedUrlFromCacheUpdatingIfNeeded(for host: ProductionHosts) -> DNSCache? {
         return cacheQueue.sync {
             guard let dnsCaches = caches[host] else { return nil }
-            caches[host] = dnsCaches.filter { $0.fetchTime + 24 * 60 * 60 > currentTimeProvider().timeIntervalSince1970 }
+            caches[host] = dnsCaches.filter { $0.fetchTime + dohLifeTime > currentTimeProvider().timeIntervalSince1970 }
             return caches[host]?.first
         }
     }
@@ -200,7 +203,7 @@ open class DoH: DoHInterface {
     func fetchAllProxyDomainUrls(for host: ProductionHosts) -> [String] {
         return cacheQueue.sync {
             guard let dnsCaches = caches[host] else { return [] }
-            caches[host] = dnsCaches.filter { $0.fetchTime + 24 * 60 * 60 > currentTimeProvider().timeIntervalSince1970 }
+            caches[host] = dnsCaches.filter { $0.fetchTime + dohLifeTime > currentTimeProvider().timeIntervalSince1970 }
             return caches[host]?.map { $0.dns.host } ?? []
         }
     }

@@ -20,23 +20,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import Foundation
 
-class BannerViewModel {
+final class BannerViewModel {
 
     let shouldAutoLoadRemoteContent: Bool
     let shouldAutoLoadEmbeddedImage: Bool
     private(set) var expirationTime: Date = .distantFuture
     private var timer: Timer?
-    private let unsubscribeService: UnsubscribeService
-    private let markLegitimateService: MarkLegitimateService
-    private let receiptService: ReceiptService
+    private let unsubscribeActionHandler: UnsubscribeActionHandler
+    private let markLegitimateActionHandler: MarkLegitimateActionHandler
+    private let receiptActionHandler: ReceiptActionHandler
     private let urlOpener: URLOpener
+    private let weekStart: WeekStart
     var shouldShowReceiptBanner: Bool {
+        guard let message = infoProvider?.message else { return false }
         return message.hasReceiptRequest && !message.isSent
     }
     var hasSentReceipt: Bool {
-        return message.hasSentReceipt
+        infoProvider?.message.hasSentReceipt ?? false
     }
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
@@ -44,42 +46,46 @@ class BannerViewModel {
     var updateExpirationTime: ((Int) -> Void)?
     var messageExpired: (() -> Void)?
     var reloadBanners: (() -> Void)?
+    var editScheduledMessage: (() -> Void)?
 
     var canUnsubscribe: Bool {
-        let unsubscribeMethods = self.message.unsubscribeMethods
+        guard let message = infoProvider?.message else { return false }
+        let unsubscribeMethods = message.unsubscribeMethods
         let isAvailable = unsubscribeMethods?.oneClick != nil || unsubscribeMethods?.httpClient != nil
         return isAvailable && !message.flag.contains(.unsubscribed)
     }
 
     var isAutoReply: Bool {
-        message.isAutoReply
+        infoProvider?.message.isAutoReply ?? false
     }
 
-    private(set) var message: MessageEntity {
-        didSet {
-            reloadBanners?()
-        }
+    private(set) var infoProvider: MessageInfoProvider? {
+        didSet { reloadBanners?() }
     }
 
     var spamType: SpamType? {
-        message.spam
+        infoProvider?.message.spam
     }
 
-    init(message: MessageEntity,
-         shouldAutoLoadRemoteContent: Bool,
+    var scheduledSendingTime: (String, String)? {
+        return infoProvider?.scheduledSendingTime
+    }
+
+    init(shouldAutoLoadRemoteContent: Bool,
          expirationTime: Date?,
          shouldAutoLoadEmbeddedImage: Bool,
-         unsubscribeService: UnsubscribeService,
-         markLegitimateService: MarkLegitimateService,
-         receiptService: ReceiptService,
-         urlOpener: URLOpener = UIApplication.shared) {
-        self.message = message
+         unsubscribeActionHandler: UnsubscribeActionHandler,
+         markLegitimateActionHandler: MarkLegitimateActionHandler,
+         receiptActionHandler: ReceiptActionHandler,
+         weekStart: WeekStart,
+         urlOpener: URLOpener) {
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
-        self.unsubscribeService = unsubscribeService
-        self.markLegitimateService = markLegitimateService
-        self.receiptService = receiptService
+        self.unsubscribeActionHandler = unsubscribeActionHandler
+        self.markLegitimateActionHandler = markLegitimateActionHandler
+        self.receiptActionHandler = receiptActionHandler
         self.urlOpener = urlOpener
+        self.weekStart = weekStart
         setUpTimer(expirationTime: expirationTime)
     }
 
@@ -95,7 +101,6 @@ class BannerViewModel {
                 target: self,
                 selector: #selector(self.timerUpdate),
                 userInfo: nil,
-
                 repeats: true
             )
         }
@@ -106,32 +111,36 @@ class BannerViewModel {
         return Int(self.expirationTime.timeIntervalSince(referenceDate))
     }
 
-    func messageHasChanged(message: MessageEntity) {
-        self.message = message
+    func providerHasChanged(provider: MessageInfoProvider) {
+        infoProvider = provider
     }
 
     @objc
     func unsubscribe() {
+        guard let message = infoProvider?.message else { return }
         let unsubscribeMethods = message.unsubscribeMethods
         if unsubscribeMethods?.oneClick != nil {
-            unsubscribeService.oneClickUnsubscribe(messageId: message.messageID)
+            unsubscribeActionHandler.oneClickUnsubscribe(messageId: message.messageID)
         } else if let httpClient = unsubscribeMethods?.httpClient {
             open(url: httpClient)
         }
     }
 
     func markAsLegitimate() {
-        markLegitimateService.markAsLegitimate(messageId: message.messageID)
+        guard let message = infoProvider?.message else { return }
+        markLegitimateActionHandler.markAsLegitimate(messageId: message.messageID)
     }
 
     func sendReceipt() {
-        self.receiptService.sendReceipt(messageID: self.message.messageID)
+        guard let message = infoProvider?.message else { return }
+        receiptActionHandler.sendReceipt(messageID: message.messageID)
     }
 
     private func open(url: String) {
+        guard let message = infoProvider?.message else { return }
         guard let url = URL(string: url), urlOpener.canOpenURL(url) else { return }
         urlOpener.open(url)
-        unsubscribeService.markAsUnsubscribed(messageId: message.messageID, finish: {})
+        unsubscribeActionHandler.markAsUnsubscribed(messageId: message.messageID, finish: {})
     }
 
     @objc

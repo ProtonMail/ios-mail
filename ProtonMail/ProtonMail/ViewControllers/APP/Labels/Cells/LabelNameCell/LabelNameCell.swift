@@ -42,8 +42,7 @@ final class LabelNameCell: UITableViewCell, AccessibleCell {
     }
 
     func config(name: String, type: PMLabelType, delegate: LabelNameDelegate?) {
-        self.nameField.attributedText = name.apply(style: FontManager.subHeadline)
-        self.nameField.typingAttributes = FontManager.subHeadline
+        nameField.set(text: name, preferredFont: .title2)
         self.delegate = delegate
 
         let labelPlaceHolder = LocalString._labels_label_name_text

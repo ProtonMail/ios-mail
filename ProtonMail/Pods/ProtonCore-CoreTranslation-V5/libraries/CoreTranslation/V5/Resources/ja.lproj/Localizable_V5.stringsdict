@@ -47,7 +47,7 @@
 	<key>New_Plans %d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@/%#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -70,7 +70,7 @@
 	<key>New_Plans %d of %d personal calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@/%#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -93,7 +93,7 @@
 	<key>New_Plans %d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@/%#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

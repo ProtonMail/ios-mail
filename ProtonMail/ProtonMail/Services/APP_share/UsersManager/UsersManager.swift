@@ -22,6 +22,9 @@
 
 import Crypto
 import Foundation
+#if !APP_EXTENSION
+import LifetimeTracker
+#endif
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Doh
@@ -76,7 +79,7 @@ class UsersManager: Service {
 
     var users: [UserManager] = [] {
         didSet {
-            userCachedStatus.primaryUserSessionId = self.users.first?.auth.sessionID
+            userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }
     }
 
@@ -102,6 +105,9 @@ class UsersManager: Service {
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
         self.internetConnectionStatusProvider = internetConnectionStatusProvider
         setupValueTransforms()
+        #if !APP_EXTENSION
+        trackLifetime()
+        #endif
     }
 
     /**
@@ -119,7 +125,7 @@ class UsersManager: Service {
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
-        let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+        let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
         self.add(newUser: newUser)
     }
 
@@ -140,15 +146,11 @@ class UsersManager: Service {
         return true
     }
 
-    func update(auth: AuthCredential, user: UserInfo) {
-        for index in 0 ..< self.users.count {
-            let usr = self.users[index]
-            if usr.isMatch(sessionID: auth.sessionID) {
-                usr.update(credential: auth, userInfo: user)
-            }
+    func update(auth: AuthCredential, userInfo: UserInfo) {
+        for user in users where user.isMatch(sessionID: auth.sessionID) {
+            user.update(credential: auth, userInfo: userInfo)
+            user.save()
         }
-
-        self.save()
     }
 
     func user(at index: Int) -> UserManager? {
@@ -156,15 +158,14 @@ class UsersManager: Service {
     }
 
     func active(by sessionID: String) {
-        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
+        guard let index = users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
             return
         }
-        self.firstUser?.deactivatePayments()
-        let user = self.users.remove(at: index)
-        self.users.insert(user, at: 0)
-        self.save()
-        self.firstUser?.refreshFeatureFlags()
-        self.firstUser?.activatePayments()
+        firstUser?.resignAsActiveUser()
+        let user = users.remove(at: index)
+        users.insert(user, at: 0)
+        save()
+        firstUser?.becomeActiveUser()
     }
 
     func getUser(by sessionID: String) -> UserManager? {
@@ -245,7 +246,7 @@ class UsersManager: Service {
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
             #endif
-            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
+            let newUser = UserManager(api: apiService, userInfo: user, authCredential: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
                 oldAuth.udpate(password: pwd)
@@ -290,7 +291,7 @@ class UsersManager: Service {
 
             // Check if the existing users is the same as the users stored on the device
             let userIds = userinfos.map { $0.userId }
-            let existUserIds = self.users.map { $0.userinfo.userId }
+            let existUserIds = self.users.map { $0.userInfo.userId }
             if !self.users.isEmpty,
                existUserIds.count == userIds.count,
                existUserIds.map({ userIds.contains($0) }).filter({ $0 }).count == userIds.count {
@@ -307,7 +308,7 @@ class UsersManager: Service {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+                let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
                 newUser.delegate = self
                 self.users.append(newUser)
             }
@@ -323,7 +324,7 @@ class UsersManager: Service {
             return
         }
 
-        let authList = self.users.compactMap { $0.auth }
+        let authList = self.users.compactMap { $0.authCredential }
         userCachedStatus.isForcedLogout = false
         guard let lockedAuth = try? Locked<[AuthCredential]>(clearValue: authList, with: mainKey)
         else {
@@ -331,7 +332,7 @@ class UsersManager: Service {
         }
         SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
-        let userList = self.users.compactMap { $0.userinfo }
+        let userList = self.users.compactMap { $0.userInfo }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
@@ -343,7 +344,7 @@ class UsersManager: Service {
 }
 
 extension UsersManager: UserManagerSave {
-    func onSave(userManger: UserManager) {
+    func onSave() {
         DispatchQueue.main.async {
             self.save()
         }
@@ -369,7 +370,7 @@ extension UsersManager {
                 return
             }
 
-            if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.auth.sessionID) {
+            if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.authCredential.sessionID) {
                 self.remove(user: userToDelete)
                 isPrimaryAccountLogout = true
             } else {
@@ -384,7 +385,7 @@ extension UsersManager {
                                    self.users.first?.defaultEmail ?? ""]).alertToast()
             }
 
-            if isPrimaryAccountLogout {
+            if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
                 NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
             completion?()
@@ -393,10 +394,10 @@ extension UsersManager {
 
     @discardableResult
     func addDisconnectedUserIfNeeded(user: UserManager) -> Bool {
-        if !self.disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
+        if !self.disconnectedUsers.contains(where: { $0.userID == user.userInfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
                                                     defaultEmail: user.defaultEmail,
-                                                    userID: user.userinfo.userId)
+                                                    userID: user.userInfo.userId)
             self.disconnectedUsers.insert(logoutUser, at: 0)
             self.save()
             return true
@@ -405,16 +406,16 @@ extension UsersManager {
     }
 
     func remove(user: UserManager) {
-        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
-            self.active(by: nextFirst)
+        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.authCredential.sessionID) }) {
+            self.active(by: nextFirst.authCredential.sessionID)
         }
-        if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
+        if !disconnectedUsers.contains(where: { $0.userID == user.userInfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
                                                     defaultEmail: user.defaultEmail,
-                                                    userID: user.userinfo.userId)
+                                                    userID: user.userInfo.userId)
             self.disconnectedUsers.insert(logoutUser, at: 0)
         }
-        self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
+        self.users.removeAll(where: { $0.isMatch(sessionID: user.authCredential.sessionID) })
         self.save()
     }
 
@@ -436,12 +437,12 @@ extension UsersManager {
 
             self.currentVersion = self.latestVersion
 
-            sharedUserDataService.signOut(true)
+            sharedUserDataService.signOut()
 
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
             self.users.forEach { user in
-                user.userService.signOut(true)
+                user.userService.signOut()
             }
             self.users = []
             self.save()
@@ -454,7 +455,7 @@ extension UsersManager {
             // some tests are messed up without tmp folder, so let's keep it for consistency
             #if targetEnvironment(simulator)
             try? FileManager.default
-                .createDirectory(at: FileManager.default.temporaryDirectoryUrl,
+                .createDirectory(at: FileManager.default.temporaryDirectory,
                                  withIntermediateDirectories: true,
                                  attributes:
                                     nil)
@@ -570,7 +571,7 @@ extension UsersManager {
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
             #endif
-            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
+            let newUser = UserManager(api: apiService, userInfo: user, authCredential: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
                 oldAuth.udpate(password: pwd)
@@ -618,7 +619,7 @@ extension UsersManager {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+                let newUser = UserManager(api: apiService, userInfo: user, authCredential: auth, parent: self)
                 newUser.delegate = self
                 self.users.append(newUser)
             }
@@ -742,3 +743,11 @@ extension UsersManager: APIServiceDelegate {
 
     func onDohTroubleshot() {}
 }
+
+#if !APP_EXTENSION
+extension UsersManager: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif

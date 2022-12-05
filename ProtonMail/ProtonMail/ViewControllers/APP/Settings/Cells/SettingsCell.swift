@@ -30,10 +30,10 @@ class SettingsCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
 
         if #available(iOS 10, *) {
-            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
+            LeftText.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             LeftText.adjustsFontForContentSizeCategory = true
 
-            RightText.font = UIFont.preferredFont(forTextStyle: .caption1)
+            RightText.font = UIFont.preferredFont(for: .caption1, weight: .regular)
             RightText.adjustsFontForContentSizeCategory = true
         }
     }

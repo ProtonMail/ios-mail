@@ -2,7 +2,6 @@
 //  LoginAndSignup+DataTypes.swift
 //  ProtonCore-Login - Created on 27/05/2021.
 //
-//
 //  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
@@ -36,14 +35,14 @@ public enum LoginData {
 }
 
 public extension LoginData {
-    
+
     var credential: Credential {
         switch self {
         case .userData(let userData): return Credential(userData.credential, scope: userData.scopes)
         case .credential(let credential): return credential
         }
     }
-    
+
     func updated(credential: Credential) -> LoginData {
         switch self {
         case .credential:
@@ -57,7 +56,7 @@ public extension LoginData {
                                       scopes: credential.scope))
         }
     }
-    
+
     func updated(user: User) -> LoginData {
         switch self {
         case .credential: return self
@@ -96,6 +95,9 @@ public struct UserData {
 
     public var toUserInfo: UserInfo {
         UserInfo(displayName: user.displayName,
+                 hideEmbeddedImages: nil,
+                 hideRemoteImages: nil,
+                 imageProxy: nil,
                  maxSpace: Int64(user.maxSpace),
                  notificationEmail: nil,
                  signature: nil,
@@ -105,9 +107,9 @@ public struct UserData {
                  language: nil,
                  maxUpload: Int64(user.maxUpload),
                  notify: nil,
-                 showImage: nil,
-                 swipeL: nil,
-                 swipeR: nil,
+                 showImages: nil,
+                 swipeLeft: nil,
+                 swipeRight: nil,
                  role: user.role,
                  delinquent: user.delinquent,
                  keys: user.keys,
@@ -124,7 +126,13 @@ public struct UserData {
                  subscribed: user.subscribed,
                  groupingMode: nil,
                  weekStart: nil,
-                 delaySendSeconds: nil)
+                 delaySendSeconds: nil,
+                 telemetry: nil,
+                 crashReports: nil,
+                 conversationToolbarActions: nil,
+                 messageToolbarActions: nil,
+                 listToolbarActions: nil
+        )
     }
 }
 

@@ -22,7 +22,7 @@
 import Foundation
 import ProtonCore_CoreTranslation
 
-public enum StoreKitManagerErrors: LocalizedError, Equatable {
+public enum StoreKitManagerErrors: LocalizedError {
     case unavailableProduct
     case invalidPurchase
     case receiptLost
@@ -36,6 +36,7 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
     case unknown(code: Int, originalError: NSError)
     case appIsLocked
     case pleaseSignIn
+    case apiMightBeBlocked(message: String, originalError: Error)
     
     @available(*, deprecated, message: "This is never returned anymore — the success callback with `.resolvingIAPToCreditsCausedByError` is returned instead")
     static var creditsApplied: StoreKitManagerErrors { .transactionFailedByUnknownReason }
@@ -64,6 +65,34 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
         case .pleaseSignIn: return CoreString._error_please_sign_in_iap
         case .wrongTokenStatus: return CoreString._error_wrong_token_status
         case .notAllowed, .unknown: return nil
+        case .apiMightBeBlocked(let message, _): return message
+        }
+    }
+}
+
+extension StoreKitManagerErrors: Equatable {
+    public static func == (lhs: StoreKitManagerErrors, rhs: StoreKitManagerErrors) -> Bool {
+        switch (lhs, rhs) {
+        case (.unavailableProduct, .unavailableProduct),
+             (.invalidPurchase, .invalidPurchase),
+             (.receiptLost, .receiptLost),
+             (.haveTransactionOfAnotherUser, .haveTransactionOfAnotherUser),
+             (.alreadyPurchasedPlanDoesNotMatchBackend, .alreadyPurchasedPlanDoesNotMatchBackend),
+             (.noActiveUsername, .noActiveUsername),
+             (.transactionFailedByUnknownReason, .transactionFailedByUnknownReason),
+             (.noNewSubscriptionInSuccessfullResponse, .noNewSubscriptionInSuccessfullResponse),
+             (.notAllowed, .notAllowed),
+             (.appIsLocked, .appIsLocked),
+             (.pleaseSignIn, .pleaseSignIn):
+            return true
+        case let (.wrongTokenStatus(ltoken), .wrongTokenStatus(rtoken)):
+            return ltoken == rtoken
+        case let (.unknown(lcode, loriginalError), .unknown(rcode, roriginalError)):
+            return lcode == rcode && loriginalError == roriginalError
+        case let (.apiMightBeBlocked(lmessage, _), .apiMightBeBlocked(rmessage, _)):
+            return lmessage == rmessage
+        default:
+            return false
         }
     }
 }

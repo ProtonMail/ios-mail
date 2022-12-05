@@ -113,9 +113,11 @@ extension LabelEditViewModel {
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
-                self?.uiDelegate?.hideLoadingHUD()
-                self?.router.closeView()
+            self.dependencies.labelService.fetchV4Labels { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.hideLoadingHUD()
+                    self?.router.closeView()
+                }
             }
         }
     }
@@ -135,9 +137,11 @@ extension LabelEditViewModel {
                 self.uiDelegate?.showAlert(message: error.localizedDescription)
                 return
             }
-            _ = self.dependencies.labelService.fetchV4Labels().done { [weak self] _ in
-                self?.uiDelegate?.hideLoadingHUD()
-                self?.router.closeView()
+            self.dependencies.labelService.fetchV4Labels { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.hideLoadingHUD()
+                    self?.router.closeView()
+                }
             }
         }
     }

@@ -32,7 +32,7 @@ class SettingsContactCombineViewController: ProtonMailTableViewController {
         static let headerCell: String = "header_cell"
     }
 
-    init(viewModel: SettingsCombineContactViewModel, coordinator: SettingsDeviceCoordinator) {
+    init(viewModel: SettingsCombineContactViewModel) {
         self.viewModel = viewModel
 
         super.init(style: .grouped)
@@ -81,7 +81,7 @@ extension SettingsContactCombineViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
 
             if let switchCell = cell as? SwitchTableViewCell {
-                switchCell.configCell(eSection.title, status: viewModel.isContactCombined) { _, _, _ in
+                switchCell.configCell(eSection.title, isOn: viewModel.isContactCombined) { _, _ in
                     let status = self.viewModel.isContactCombined
                     self.viewModel.isContactCombined = !status
                 }
@@ -101,7 +101,9 @@ extension SettingsContactCombineViewController {
             textLabel.translatesAutoresizingMaskIntoConstraints = false
 
             let eSection = self.viewModel.sections[section]
-            textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+            textLabel.set(text: eSection.foot,
+                          preferredFont: .footnote,
+                          textColor: ColorProvider.TextWeak)
 
             headerCell.contentView.addSubview(textLabel)
 

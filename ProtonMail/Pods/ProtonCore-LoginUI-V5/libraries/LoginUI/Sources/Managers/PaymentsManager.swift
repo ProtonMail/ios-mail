@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_CoreTranslation
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_Payments
@@ -76,6 +77,8 @@ class PaymentsManager {
                         planShownHandler?()
                     }
                     completionHandler(.failure(error))
+                case let .apiMightBeBlocked(message, originalError):
+                    completionHandler(.failure(LoginError.apiMightBeBlocked(message: message, originalError: originalError)))
                 case .close:
                     break
                 case .toppedUpCredits:
@@ -204,12 +207,18 @@ protocol PaymentErrorCapable: ErrorCapable {
 
 extension PaymentErrorCapable {
     func showError(error: StoreKitManagerErrors) {
-        guard let errorDescription = error.errorDescription else { return }
-        showBanner(message: errorDescription)
+        if case let .apiMightBeBlocked(message, _) = error {
+            showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                self?.onDohTroubleshooting()
+            }
+        } else {
+            guard let errorDescription = error.errorDescription else { return }
+            showBanner(message: errorDescription)
+        }
     }
     
-    func showBanner(message: String) {
-        showBanner(message: message, position: bannerPosition)
+    func showBanner(message: String, button: String? = nil, action: (() -> Void)? = nil) {
+        showBanner(message: message, button: button, action: action, position: bannerPosition)
     }
 }
 

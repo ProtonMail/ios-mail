@@ -37,4 +37,3 @@ struct UndoSendRequest: Request {
 struct UndoSendResponse: Codable {
     let code: Int
 }
-

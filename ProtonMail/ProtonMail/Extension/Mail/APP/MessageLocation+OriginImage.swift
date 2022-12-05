@@ -42,6 +42,8 @@ extension Message.Location {
             return IconProvider.inbox
         case .starred, .allmail:
             return nil
+        case .scheduled:
+            return IconProvider.clock
         }
     }
 

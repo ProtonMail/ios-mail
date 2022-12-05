@@ -39,17 +39,20 @@ class ConversationViewModelTests: XCTestCase {
         conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
 
+        let dependencies = ConversationViewModel.Dependencies(
+             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        )
+
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    isDarkModeEnableClosure: {
-            return false
-        },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
-                                    labelProvider: labelProviderMock)
+                                    labelProvider: labelProviderMock,
+                                    goToDraft: { _ in },
+                                    dependencies: dependencies)
     }
 
     override func tearDownWithError() throws {
@@ -293,19 +296,21 @@ class ConversationViewModelTests: XCTestCase {
             .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
-        let e = expectation(description: "Closure should be called")
 
         sut.handleActionSheetAction(.viewInLightMode,
                                     message: messageMock,
                                     body: nil) { shouldDismissView in
             XCTAssertFalse(shouldDismissView)
-            e.fulfill()
         }
-
-        let result = try XCTUnwrap(sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })).messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.currentMessageRenderStyle
-        XCTAssertEqual(result, .lightOnly)
-
-        waitForExpectations(timeout: 0.5, handler: nil)
+        let bodyModel = try XCTUnwrap(sut.messagesDataSource.first(where: { $0.message?.messageID == messageMock.messageID })?.messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel)
+        // Render update switch thread, wait for 1 second to get updated value
+        let exp = expectation(description: "wait for 1 second")
+        let result = XCTWaiter.wait(for: [exp], timeout: 1)
+        if result == XCTWaiter.Result.timedOut {
+            XCTAssertEqual(bodyModel.currentMessageRenderStyle, .lightOnly)
+        } else {
+            XCTFail("Delay interrupted")
+        }
     }
 
     func testHandleActionSheetAction_viewInLightModeAction_messageNotFound_completionNotCalled() throws {
@@ -371,17 +376,21 @@ class ConversationViewModelTests: XCTestCase {
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+
+        let dependencies = ConversationViewModel.Dependencies(
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+        )
+
         sut = ConversationViewModel(labelId: labelID,
                                     conversation: fakeConversation,
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    isDarkModeEnableClosure: {
-            return false
-        },
                                     conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
-                                    labelProvider: labelProviderMock)
+                                    labelProvider: labelProviderMock,
+                                    goToDraft: { _ in },
+                                    dependencies: dependencies)
     }
 
     private func makeFakeViewModel(
@@ -399,11 +408,10 @@ class ConversationViewModelTests: XCTestCase {
             labelId: "",
             message: fakeMessageEntity,
             user: fakeUserManager,
-            replacingEmails: [],
-            internetStatusProvider: fakeInternetProvider
-        ) {
-            return false
-        }
+            replacingEmailsMap: [:],
+            contactGroups: [],
+            internetStatusProvider: fakeInternetProvider,
+            goToDraft: { _ in })
         if isExpanded {
             viewModel.toggleState()
         }

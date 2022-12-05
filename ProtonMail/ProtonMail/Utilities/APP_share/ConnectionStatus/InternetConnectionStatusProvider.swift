@@ -12,7 +12,12 @@ enum ConnectionStatus: Int {
          notConnected
 
     var isConnected: Bool {
-        return self != .notConnected
+        switch self {
+        case .connected, .connectedViaCellular, .connectedViaEthernet, .connectedViaWiFi:
+            return true
+        case .notConnected, .connectedViaWiFiWithoutInternet, .connectedViaCellularWithoutInternet, .connectedViaEthernetWithoutInternet:
+            return false
+        }
     }
 }
 

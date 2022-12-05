@@ -23,6 +23,7 @@ import Foundation
 import UIKit
 
 extension NSAttributedString {
+    @available(*, deprecated, message: "Please Find the replacement in UIFoundation")
     static func hyperlink(path: String, in string: String, as substring: String, alignment: NSTextAlignment = .left, font: UIFont?) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = alignment

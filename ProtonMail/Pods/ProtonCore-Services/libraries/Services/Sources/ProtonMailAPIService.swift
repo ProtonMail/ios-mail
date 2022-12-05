@@ -24,9 +24,11 @@ import ProtonCore_Doh
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Utilities
+import ProtonCore_Environment
 
 #if canImport(TrustKit)
 import TrustKit
+import SwiftUI
 #endif
 
 // MARK: - Public API types
@@ -48,7 +50,85 @@ public enum PMAPIServiceTrustKitProviderWrapper: TrustKitProvider {
     public var trustKit: TrustKit? { PMAPIService.trustKit }
 }
 
+extension PMAPIService.APIResponseCompletion {
+ 
+    func call<T>(task: URLSessionDataTask?, error: API.APIError)
+    where Left == API.JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
+        switch self {
+        case .left(let jsonCompletion): jsonCompletion(task, .failure(error))
+        case .right(let decodableCompletion): decodableCompletion(task, .failure(error))
+        }
+    }
+    
+    func call<T>(task: URLSessionDataTask?, response: Either<[String: Any], T>)
+    where Left == API.JSONCompletion, Right == (_ task: URLSessionDataTask?, _ result: Result<T, API.APIError>) -> Void, T: APIDecodableResponse {
+        switch (self, response) {
+        case (.left(let jsonCompletion), .left(let jsonObject)): jsonCompletion(task, .success(jsonObject))
+        case (.right(let decodableCompletion), .right(let decodableObject)): decodableCompletion(task, .success(decodableObject))
+        default:
+            assertionFailure("Passing wrong response here indicates a programmers error")
+        }
+    }
+}
+
+extension PMAPIService.ResponseFromSession {
+    
+    func possibleError<T>() -> SessionResponseError?
+    where Left == Result<JSONDictionary, SessionResponseError>, Right == Result<T, SessionResponseError>, T: SessionDecodableResponse {
+        switch self {
+        case .left(.success), .right(.success): return nil
+        case .left(.failure(let error)), .right(.failure(let error)): return error
+        }
+    }
+}
+
+extension ResponseError: APIResponse {
+    
+    public var code: Int? {
+        get { responseCode }
+        set { self = ResponseError(httpCode: httpCode, responseCode: newValue, userFacingMessage: userFacingMessage, underlyingError: underlyingError) }
+    }
+    
+    public var error: String? {
+        get { userFacingMessage }
+        set { self = ResponseError(httpCode: httpCode, responseCode: responseCode, userFacingMessage: newValue, underlyingError: underlyingError) }
+    }
+    
+    public var details: HumanVerificationDetails? {
+        guard let sessionError = underlyingError as? SessionResponseError else { return nil }
+        switch sessionError {
+        case .responseBodyIsNotAJSONDictionary(let body?, _), .responseBodyIsNotADecodableObject(let body?, _):
+            struct ResponseWithHumanVerificationDetails: Codable { var details: HumanVerificationDetails? }
+            return try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithHumanVerificationDetails.self, from: body).details
+        case .configurationError, .networkingEngineError, .responseBodyIsNotAJSONDictionary(body: nil, _), .responseBodyIsNotADecodableObject(body: nil, _): return nil
+        }
+    }
+}
+
+extension Either: APIResponse where Left == JSONDictionary, Right == ResponseError {
+    
+    var responseDictionary: JSONDictionary { mapRight { $0.serialized }.value() }
+    
+    public var code: Int? {
+        get { mapLeft { $0.code }.mapRight { $0.code }.value() }
+        set { self = mapLeft { var tmp = $0; tmp.code = newValue; return tmp }.mapRight { var tmp = $0; tmp.code = newValue; return tmp } }
+    }
+    
+    public var error: String? {
+        get { mapLeft { $0.error }.mapRight { $0.error }.value() }
+        set { self = mapLeft { var tmp = $0; tmp.error = newValue; return tmp }.mapRight { var tmp = $0; tmp.error = newValue; return tmp } }
+    }
+    
+    public var details: HumanVerificationDetails? {
+        mapLeft { $0.details }.mapRight { $0.details }.value()
+    }
+}
+
 public class PMAPIService: APIService {
+    
+    typealias ResponseFromSession<T> = Either<Result<JSONDictionary, SessionResponseError>, Result<T, SessionResponseError>> where T: SessionDecodableResponse
+    typealias ResponseInPMAPIService<T> = Either<Result<JSONDictionary, API.APIError>, Result<T, API.APIError>> where T: APIDecodableResponse
+    typealias APIResponseCompletion<T> = Either<JSONCompletion, DecodableCompletion<T>> where T: APIDecodableResponse
 
     public weak var forceUpgradeDelegate: ForceUpgradeDelegate?
     
@@ -64,12 +144,14 @@ public class PMAPIService: APIService {
     /// the session ID. this can be changed
     public var sessionUID: String = ""
     
+    @available(*, deprecated, message: "This will be changed to DoHInterface type")
     public var doh: DoH & ServerConfig
-//    public var doh: DoHInterface & ServerConfig
     
     public var signUpDomain: String {
         return self.doh.getSignUpString()
     }
+    
+    let jsonDecoder: JSONDecoder = .decapitalisingFirstLetter
     
     private(set) var session: Session
     
@@ -84,15 +166,14 @@ public class PMAPIService: APIService {
     )
     
     /// by default will create a non auth api service. after calling the auth function, it will set the session. then use the delation to fetch the auth data  for this session.
+    @available(*, deprecated, message: "this will be removed. use initializer with doh: DoHInterface type")
     public required init(doh: DoH & ServerConfig,
                          sessionUID: String = "",
                          sessionFactory: SessionFactoryInterface = SessionFactory.instance,
                          cacheToClear: URLCacheInterface = URLCache.shared,
                          trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
         self.doh = doh
-        
         self.sessionUID = sessionUID
-        
         cacheToClear.removeAllCachedResponses()
         
         let apiHostUrl = self.doh.getCurrentlyUsedHostUrl()
@@ -103,11 +184,63 @@ public class PMAPIService: APIService {
         doh.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
     }
     
+    public required convenience init(doh: DoHInterface,
+                                     sessionUID: String = "",
+                                     sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                                     cacheToClear: URLCacheInterface = URLCache.shared,
+                                     trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
+        guard let dohI = doh as? (DoH & ServerConfig) else {
+            fatalError("DoH doesn't conform to DoH & ServerConfig")
+        }
+        self.init(doh: dohI, sessionUID: sessionUID,
+                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
+                  trustKitProvider: trustKitProvider)
+    }
+
+    public convenience init(environment: ProtonCore_Environment.Environment,
+                            sessionUID: String = "",
+                            sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                            cacheToClear: URLCacheInterface = URLCache.shared,
+                            trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
+        self.init(doh: environment.doh, sessionUID: sessionUID,
+                  sessionFactory: sessionFactory, cacheToClear: cacheToClear,
+                  trustKitProvider: trustKitProvider)
+    }
+    
     public func getSession() -> Session? {
         return session
     }
     
     public func setSessionUID(uid: String) {
         self.sessionUID = uid
+    }
+    
+    func transformJSONCompletion(_ jsonCompletion: @escaping JSONCompletion) -> JSONCompletion {
+        
+        { task, result in
+            switch result {
+            case .failure: jsonCompletion(task, result)
+            case .success(let dict):
+                if let httpResponse = task?.response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                    let error: NSError
+                    if let responseCode = dict["Code"] as? Int {
+                        error = NSError(
+                            domain: ResponseErrorDomains.withResponseCode.rawValue,
+                            code: responseCode,
+                            localizedDescription: dict["Error"] as? String ?? ""
+                        )
+                    } else {
+                        error = NSError(
+                            domain: ResponseErrorDomains.withStatusCode.rawValue,
+                            code: httpResponse.statusCode,
+                            localizedDescription: dict["Error"] as? String ?? ""
+                        )
+                    }
+                    jsonCompletion(task, .failure(error))
+                } else {
+                    jsonCompletion(task, .success(dict))
+                }
+            }
+        }
     }
 }

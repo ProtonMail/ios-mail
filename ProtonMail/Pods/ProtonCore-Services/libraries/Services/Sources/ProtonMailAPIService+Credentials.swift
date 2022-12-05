@@ -61,12 +61,14 @@ extension PMAPIService {
         case noCredentialsToBeRefreshed
         case logout(underlyingError: ResponseError)
         case refreshingError(underlyingError: AuthErrors)
-        case unknownError
     }
     
-    func refreshAuthCredential(credentialsCausing401: AuthCredential, completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
+    func refreshAuthCredential(credentialsCausing401: AuthCredential, refreshCounter: Int = 3, completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
         performSeriallyInAuthCredentialQueue { continuation in
-            self.refreshAuthCredentialNoSync(credentialsCausing401: credentialsCausing401, continuation: continuation, completion: completion)
+            self.refreshAuthCredentialNoSync(credentialsCausing401: credentialsCausing401,
+                                             refreshCounter: refreshCounter,
+                                             continuation: continuation,
+                                             completion: completion)
         }
     }
     
@@ -96,7 +98,7 @@ extension PMAPIService {
             return
         }
 
-        guard let credential = authDelegate.getToken(bySessionUID: sessionUID) else {
+        guard let credential = authDelegate.authCredential(sessionUID: sessionUID) else {
             finalize(result: .notFound, continuation: continuation, completion: completion)
             return
         }
@@ -108,6 +110,7 @@ extension PMAPIService {
     }
     
     private func refreshAuthCredentialNoSync(credentialsCausing401: AuthCredential,
+                                             refreshCounter: Int,
                                              continuation: @escaping () -> Void,
                                              completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
 
@@ -116,7 +119,7 @@ extension PMAPIService {
             return
         }
         
-        guard let currentCredentials = authDelegate.getToken(bySessionUID: sessionUID) else {
+        guard let currentCredentials = authDelegate.authCredential(sessionUID: sessionUID) else {
             finalize(result: .noCredentialsToBeRefreshed, continuation: continuation, completion: completion)
             return
         }
@@ -129,38 +132,44 @@ extension PMAPIService {
             return
         }
         
-        authDelegate.onRefresh(bySessionUID: sessionUID) { newCredential, error in
-            self.debugError(error)
-            
-            if case .networkingError(let responseError) = error,
-               // according to documentation 422 indicates expired refresh token and 400 indicates invalid refresh token
-               // both situations should result in user logout
-               responseError.httpCode == 422 || responseError.httpCode == 400 {
-                DispatchQueue.main.async {
-                    completion(.logout(underlyingError: responseError))
-                    self.authDelegate?.onLogout(sessionUID: self.sessionUID)
-                    // this is the only place in which we wait with the continuation until after the completion block call
-                    // the reason being we want to call completion after the delegate call
-                    // and in all the places in this service we call completion block before `onLogout` delegate method
-                    continuation()
-                }
-                
-            } else if case .networkingError(let responseError) = error,
-                      let underlyingError = responseError.underlyingError,
-                      underlyingError.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                // TODO: the original logic: we're just refreshing again. seems to me like a possibility for a loop. I believe we should introduce an exit condition here
-                continuation()
-                self.refreshAuthCredential(credentialsCausing401: credentialsCausing401, completion: completion)
-                
-            } else if let error = error {
-                self.finalize(result: .refreshingError(underlyingError: error), continuation: continuation, completion: completion)
-            } else if let credential = newCredential {
-                self.authDelegate?.onUpdate(auth: credential)
-                // originally, this completion block was called on the main queue, but I think it's not required anymore
-                self.finalize(result: .refreshed(credentials: AuthCredential(credential)), continuation: continuation, completion: completion)
-            } else {
-                self.finalize(result: .unknownError, continuation: continuation, completion: completion)
+        authDelegate.onRefresh(sessionUID: sessionUID, service: self) { result in
+            self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
+                self.handleRefreshingResults(result, credentialsCausing401, refreshCounter, continuation, completion)
             }
+        }
+    }
+    
+    private func handleRefreshingResults(_ result: Result<Credential, AuthErrors>,
+                                         _ credentialsCausing401: AuthCredential,
+                                         _ refreshCounter: Int,
+                                         _ continuation: @escaping () -> Void,
+                                         _ completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
+        debugError(result.error)
+        
+        switch result {
+        case .success(let credential):
+            authDelegate?.onUpdate(credential: credential, sessionUID: sessionUID)
+            setSessionUID(uid: credential.UID)
+            // originally, this completion block was called on the main queue, but I think it's not required anymore
+            continuation()
+            completion(.refreshed(credentials: AuthCredential(credential)))
+            
+        // according to documentation 422 indicates expired refresh token and 400 indicates invalid refresh token
+        // both situations should result in user logout
+        case .failure(.networkingError(let responseError)) where responseError.httpCode == 422 || responseError.httpCode == 400:
+            authDelegate?.onLogout(sessionUID: sessionUID)
+            continuation()
+            completion(.logout(underlyingError: responseError))
+        
+        case .failure(.networkingError(let responseError)) where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
+            // the original logic: we're just refreshing again. seems to me like a possibility for a loop. I believe we should introduce an exit condition here
+            continuation()
+            refreshAuthCredential(credentialsCausing401: credentialsCausing401,
+                                  refreshCounter: refreshCounter - 1,
+                                  completion: completion)
+        case .failure(let error):
+            continuation()
+            completion(.refreshingError(underlyingError: error))
         }
     }
 }

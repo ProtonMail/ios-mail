@@ -29,7 +29,6 @@ final class LabelColorCell: UICollectionViewCell {
     @IBOutlet private var selectedBorder: UIImageView!
     @IBOutlet private var checkMark: UIView!
     @IBOutlet private var checkMarkCenterY: NSLayoutConstraint!
-    private var intenseColor: UIColor!
 
     static var identifier = "LabelColorCell"
 
@@ -44,7 +43,6 @@ final class LabelColorCell: UICollectionViewCell {
                 isSelected: Bool) {
         self.icon.tintColor = color
         self.selectedBorder.tintColor = intenseColor
-        self.intenseColor = intenseColor
         if type == .folder {
             self.icon.image = IconProvider.folderFilled
             self.selectedBorder.image = IconProvider.folder

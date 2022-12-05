@@ -28,7 +28,9 @@ class NewMailboxMessageCellPresenter {
     private let tagsPresenter = TagsPresenter()
 
     func present(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageCellContentView) {
-        view.initialsLabel.text = viewModel.initial.string
+        view.initialsLabel.set(text: viewModel.initial,
+                               preferredFont: .footnote,
+                               weight: .regular)
         view.initialsLabel.textAlignment = .center
         presentContent(viewModel: viewModel, in: view.messageContentView)
         presentTags(tags: viewModel.tags, in: view.messageContentView)
@@ -39,10 +41,16 @@ class NewMailboxMessageCellPresenter {
         switch style {
         case .normal:
             view.initialsLabel.isHidden = false
+            view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = true
+            view.scheduledIconView.isHidden = true
+            view.scheduledContainer.isHidden = true
         case .selection(let isSelected):
             view.initialsLabel.isHidden = true
+            view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = false
+            view.scheduledIconView.isHidden = true
+            view.scheduledContainer.isHidden = true
             let backgroundColor: UIColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
             view.checkBoxView.backgroundColor = backgroundColor
             view.checkBoxView.tickImageView.image = isSelected ? IconProvider.checkmark : nil
@@ -52,6 +60,12 @@ class NewMailboxMessageCellPresenter {
             } else {
                 view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
             }
+        case .scheduled:
+            view.scheduledIconView.isHidden = false
+            view.scheduledContainer.isHidden = false
+            view.initialsContainer.isHidden = true
+            view.initialsLabel.isHidden = true
+            view.checkBoxView.isHidden = true
         }
     }
 
@@ -75,31 +89,44 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
-        let sender = viewModel.sender
-            .apply(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
-        view.senderLabel.attributedText = sender
-        view.senderLabel.lineBreakMode = .byTruncatingTail
+        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
+        view.senderLabel.set(text: viewModel.sender,
+                             preferredFont: .body,
+                             weight: viewModel.isRead ? .regular: .bold,
+                             textColor: color)
 
-        let time = viewModel.time
-            .apply(style: viewModel.isRead ? FontManager.CaptionWeak : FontManager.CaptionStrong)
-        view.timeLabel.attributedText = time
-        view.timeLabel.lineBreakMode = .byTruncatingTail
+        let weight: UIFont.Weight = viewModel.isRead ? .regular: .semibold
+        if let scheduledTime = viewModel.scheduledTime {
+            var scheduledColor = color
+            if viewModel.isScheduledTimeInNext10Mins {
+                scheduledColor = ColorProvider.NotificationError
+            }
+            view.timeLabel.set(text: scheduledTime,
+                               preferredFont: .footnote,
+                               weight: weight,
+                               textColor: scheduledColor)
+        } else {
+            view.timeLabel.set(text: viewModel.time,
+                               preferredFont: .footnote,
+                               weight: weight,
+                               textColor: color)
+        }
+
+        view.titleLabel.set(text: viewModel.topic,
+                            preferredFont: .subheadline,
+                            weight: weight,
+                            textColor: color)
 
         view.attachmentImageView.isHidden = !viewModel.hasAttachment
-
         view.starImageView.isHidden = !viewModel.isStarred
-
-        let topic = viewModel.topic
-            .apply(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
-        view.titleLabel.attributedText = topic
-        view.titleLabel.lineBreakMode = .byTruncatingTail
-
         view.draftImageView.isHidden = viewModel.location != .draft
 
-        let colorForCount = viewModel.isRead ? FontManager.OverlineSemiBoldTextWeak : FontManager.OverlineSemiBoldText
-        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)".apply(style: colorForCount) : nil
+        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)": nil
         view.messageCountLabel.isHidden = count == nil
-        view.messageCountLabel.attributedText = count
+        view.messageCountLabel.set(text: count,
+                                   preferredFont: .caption2,
+                                   weight: .semibold,
+                                   textColor: color)
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
             ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm.cgColor
 

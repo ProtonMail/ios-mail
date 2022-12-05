@@ -373,7 +373,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                     signed_vcard2 = try Crypto().signDetached(
                         plainText: vcard2Str,
                         privateKey: userkey.privateKey,
-                        passphrase: user.mailboxPassword
+                        passphrase: user.mailboxPassword.value
                     )
                 } catch {
                     onError(error as NSError)
@@ -528,7 +528,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                     signed_vcard3 = try Crypto().signDetached(
                         plainText: vcard3Str,
                         privateKey: userkey.privateKey,
-                        passphrase: user.mailboxPassword
+                        passphrase: user.mailboxPassword.value
                     )
                 } catch {
                     onError(error as NSError)
@@ -556,7 +556,6 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 }
             }
             self.user.contactService.queueUpdate(objectID: c.objectID.rawValue,
-                                                 contactID: c.contactID.rawValue,
                                                  cardDatas: cards,
                                                  newName: self.profile.newDisplayName,
                                                  emails: self.emails,

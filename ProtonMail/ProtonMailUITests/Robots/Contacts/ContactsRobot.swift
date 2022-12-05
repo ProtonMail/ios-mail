@@ -20,7 +20,7 @@ fileprivate struct id {
     static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
     static func groupStaticTextIdentifier(_ name: String) -> String { return "\(name).nameLabel" }
     static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
-    static let menuButtonIdentifier = "UINavigationItem.openMenu"
+    static let menuButtonIdentifier = "UINavigationItem.leftBarButtonItem"
     static let addContactNavBarButtonText = LocalString._general_create_action
     static let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
     static let contactsTableViewIdentifier = "ContactsViewController.tableView"
@@ -82,7 +82,7 @@ class ContactsRobot: CoreElements {
         }
 
         func clickContact(_ name: String) -> ContactDetailsRobot {
-            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().waitForHittable().tap()
+            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible(maxAttempts: 20).waitForHittable().tap()
             return ContactDetailsRobot()
         }
         

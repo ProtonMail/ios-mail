@@ -31,11 +31,6 @@ protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)
     func openMailUrl(_ mailUrl: URL)
     func openFullCryptoPage()
-    func updateContentBanner(shouldShowRemoteContentBanner: Bool,
-                             shouldShowEmbeddedContentBanner: Bool)
-    func showDecryptionErrorBanner()
-    func hideDecryptionErrorBanner()
-    func sendDarkModeMetric(isApply: Bool)
 }
 
 class NewMessageBodyViewController: UIViewController {
@@ -106,7 +101,7 @@ class NewMessageBodyViewController: UIViewController {
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
         } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
-                    !viewModel.message.isDetailDownloaded {
+                    viewModel.contents == nil {
             prepareReloadView()
         } else {
             placeholder = true
@@ -118,10 +113,6 @@ class NewMessageBodyViewController: UIViewController {
         }
 
         setupContentSizeObservation()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.viewModel.sendMetricAPIIfNeeded()
     }
 
     func prepareReloadView() {
@@ -306,11 +297,6 @@ class NewMessageBodyViewController: UIViewController {
 }
 
 extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
-    func updateBannerStatus() {
-        delegate?.updateContentBanner(shouldShowRemoteContentBanner: viewModel.shouldShowRemoteBanner,
-                                      shouldShowEmbeddedContentBanner: viewModel.shouldShowEmbeddedBanner)
-    }
-
     func showReloadError() {
         self.prepareReloadView()
     }
@@ -345,23 +331,6 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
                 }
             }
         }
-    }
-
-    func showDecryptionErrorBanner() {
-        self.delegate?.showDecryptionErrorBanner()
-    }
-
-    func hideDecryptionErrorBanner() {
-        self.delegate?.hideDecryptionErrorBanner()
-    }
-
-    @available(iOS 12.0, *)
-    func getUserInterfaceStyle() -> UIUserInterfaceStyle {
-        self.traitCollection.userInterfaceStyle
-    }
-
-    func sendDarkModeMetric(isApply: Bool) {
-        self.delegate?.sendDarkModeMetric(isApply: isApply)
     }
 }
 
@@ -411,7 +380,7 @@ extension NewMessageBodyViewController {
 
             url = url.removeProtonSchemeIfNeeded()
 
-            let isFromPhishingMail = viewModel.message.spam == .autoPhishing
+            let isFromPhishingMail = viewModel.spam == .autoPhishing
             guard viewModel.shouldOpenPhishingAlert(url, isFromPhishingMsg: isFromPhishingMail) else {
                 self.delegate?.openUrl(url)
                 return

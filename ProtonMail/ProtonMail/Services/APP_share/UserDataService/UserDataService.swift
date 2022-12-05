@@ -35,7 +35,7 @@ typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
 // TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
-    func onLogout(animated: Bool)
+    func onLogout()
 }
 
 /// Stores information related to the user
@@ -154,25 +154,37 @@ class UserDataService: Service, HasLocalStorage {
                     let key = addr.keys[index]
                     if let activation = key.activation {
                         let token = try activation.decryptMessageNonOptional(binKeys: user.userPrivateKeysArray, passphrase: pwd)
-                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.privateKey, oldPassphrase: token, newPassphrase: pwd)
+                        let new_private_key = try Crypto.updatePassphrase(
+                            privateKey: ArmoredKey(value: key.privateKey),
+                            oldPassphrase: Passphrase(value: token),
+                            newPassphrase: Passphrase(value: pwd)
+                        )
                         let keylist: [[String: Any]] = [[
                             "Fingerprint": key.fingerprint,
                             "Primary": 1,
                             "Flags": 3
                         ]]
                         let jsonKeylist = keylist.json()
-                        let signed = try Crypto().signDetached(plainText: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
+                        let signed = try Crypto().signDetached(
+                            plainText: jsonKeylist,
+                            privateKey: new_private_key.value,
+                            passphrase: pwd
+                        )
                         let signedKeyList: [String: Any] = [
                             "Data": jsonKeylist,
                             "Signature": signed
                         ]
-                        let api = ActivateKey(addrID: key.keyID, privKey: new_private_key, signedKL: signedKeyList)
+                        let api = ActivateKey(
+                            addrID: key.keyID,
+                            privKey: new_private_key.value,
+                            signedKL: signedKeyList
+                        )
                         api.auth = auth
 
                         do {
                             let activateKeyResponse = try `await`(self.apiService.run(route: api))
                             if activateKeyResponse.responseCode == 1000 {
-                                addr.keys[index].privateKey = new_private_key
+                                addr.keys[index].privateKey = new_private_key.value
                                 addr.keys[index].activation = nil
                             }
                         } catch {
@@ -188,7 +200,7 @@ class UserDataService: Service, HasLocalStorage {
         return Promise()
     }
 
-    func signOut(_ animated: Bool) {
+    func signOut() {
 #if APP_EXTENSION
 #else
         sharedVMService.signOut()
@@ -198,7 +210,7 @@ class UserDataService: Service, HasLocalStorage {
             NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         }
         clearAll()
-        delegate?.onLogout(animated: animated)
+        delegate?.onLogout()
     }
 
     func updateAddress(auth currentAuth: AuthCredential,
@@ -225,57 +237,58 @@ class UserDataService: Service, HasLocalStorage {
         }
     }
 
-    func updateAutoLoadImage(auth currentAuth: AuthCredential,
-                             user: UserInfo,
-                             remote status: Bool, completion: @escaping UserInfoBlock) {
-
-        let authCredential = currentAuth
-        let userInfo = user
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
-            return
-        }
-
-        var newStatus = userInfo.showImages
-        if status {
-            newStatus.insert(.remote)
-        } else {
-            newStatus.remove(.remote)
-        }
-
-        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
-            if response.error == nil {
-                userInfo.showImages = newStatus
-            }
-            completion(userInfo, nil, response.error?.toNSError)
-        }
-    }
-
-    func updateAutoLoadEmbeddedImage(auth currentAuth: AuthCredential,
-                                     userInfo: UserInfo,
-                                     remote status: Bool,
-                                     completion: @escaping UserInfoBlock) {
+    #if !APP_EXTENSION
+    func updateImageAutoloadSetting(
+        currentAuth: AuthCredential,
+        userInfo: UserInfo,
+        imageType: UpdateImageAutoloadSetting.ImageType,
+        setting: UpdateImageAutoloadSetting.Setting,
+        completion: @escaping UserInfoBlock
+    ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(nil, nil, NSError.lockError())
             return
         }
 
-        var newStatus = userInfo.showImages
-        if status {
-            newStatus.insert(.embedded)
-        } else {
-            newStatus.remove(.embedded)
-        }
-
-        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: currentAuth)
+        let api = UpdateImageAutoloadSetting(imageType: imageType, setting: setting, authCredential: currentAuth)
         self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             if response.error == nil {
-                userInfo.showImages = newStatus
+                userInfo[keyPath: imageType.userInfoKeyPath] = setting.rawValue
             }
             completion(userInfo, nil, response.error?.toNSError)
         }
     }
+
+    func updateBlockEmailTracking(
+        authCredential: AuthCredential,
+        userInfo: UserInfo,
+        action: UpdateImageProxy.Action,
+        completion: @escaping UserInfoBlock
+    ) {
+        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        // currently Image Incorporator is not yet supported by any Proton product
+        let flag: ProtonCore_DataModel.ImageProxy = .imageProxy
+
+        let api = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
+            if response.error == nil {
+                var newStatus = userInfo.imageProxy
+                switch action {
+                case .add:
+                    newStatus.insert(flag)
+                case .remove:
+                    newStatus.remove(flag)
+                }
+                userInfo.imageProxy = newStatus
+            }
+            completion(userInfo, nil, response.error?.toNSError)
+        }
+    }
+    #endif
 
     func updateDelaySeconds(userInfo: UserInfo,
                             delaySeconds: Int,
@@ -318,7 +331,7 @@ class UserDataService: Service, HasLocalStorage {
     func updatePassword(auth currentAuth: AuthCredential,
                         user: UserInfo,
                         login_password: String,
-                        new_password: String,
+                        new_password: Passphrase,
                         twoFACode: String?,
                         completion: @escaping CompletionBlock) {
         let oldAuthCredential = currentAuth
@@ -415,12 +428,12 @@ class UserDataService: Service, HasLocalStorage {
     func updateMailboxPassword(auth currentAuth: AuthCredential,
                                user: UserInfo,
                                loginPassword: String,
-                               newPassword: String,
+                               newPassword: Passphrase,
                                twoFACode: String?,
                                buildAuth: Bool, completion: @escaping CompletionBlock) {
         let oldAuthCredential = currentAuth
         let userInfo = user
-        let old_password = oldAuthCredential.mailboxpassword
+        let old_password = Passphrase(value: oldAuthCredential.mailboxpassword)
         var _username = "" // oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = userInfo.userAddresses.defaultAddress() {
@@ -450,14 +463,14 @@ class UserDataService: Service, HasLocalStorage {
                                                                   newPassword: newPassword)
                 }
 
-                var new_org_key: String?
+                var new_org_key: ArmoredKey?
                 // check user role if equal 2 try to get the org key.
                 if userInfo.role == 2 {
                     let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
                     if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                         do {
                             new_org_key = try Crypto
-                                .updatePassphrase(privateKey: org_priv_key,
+                                .updatePassphrase(privateKey: ArmoredKey(value: org_priv_key),
                                                   oldPassphrase: old_password,
                                                   newPassphrase: resultOfKeyUpdate.hashedNewPassword)
                         } catch {
@@ -518,28 +531,31 @@ class UserDataService: Service, HasLocalStorage {
                     do {
                         let request: UpdatePrivateKeyRequest
                         if userInfo.isKeyV2 {
-                            request = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                        clientProof: clientProof.encodeBase64(),
-                                                                        SRPSession: session,
-                                                                        keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
-                                                                        tfaCode: twoFACode,
-                                                                        orgKey: new_org_key,
-                                                                        userKeys: resultOfKeyUpdate.updatedUserKeys,
-                                                                        auth: authPacket,
-                                                                        authCredential: oldAuthCredential)
+                            request = UpdatePrivateKeyRequest(
+                                clientEphemeral: clientEphemeral.encodeBase64(),
+                                clientProof: clientProof.encodeBase64(),
+                                SRPSession: session,
+                                keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
+                                tfaCode: twoFACode,
+                                orgKey: new_org_key?.value,
+                                userKeys: resultOfKeyUpdate.updatedUserKeys,
+                                auth: authPacket,
+                                authCredential: oldAuthCredential
+                            )
                         } else {
-                            request = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                  clientProof: clientProof.encodeBase64(),
-                                                                  SRPSession: session,
-                                                                  keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
-                                                                  userlevelKeys: resultOfKeyUpdate.updatedUserKeys,
-                                                                  addressKeys:
-                                                                resultOfKeyUpdate.updatedAddresses?.toKeys() ?? [],
-                                                                  tfaCode: twoFACode,
-                                                                  orgKey: new_org_key,
-                                                                  userKeys: nil,
-                                                                  auth: authPacket,
-                                                                  authCredential: oldAuthCredential)
+                            request = UpdatePrivateKeyRequest(
+                                clientEphemeral: clientEphemeral.encodeBase64(),
+                                clientProof: clientProof.encodeBase64(),
+                                SRPSession: session,
+                                keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
+                                userlevelKeys: resultOfKeyUpdate.updatedUserKeys,
+                                addressKeys: resultOfKeyUpdate.updatedAddresses?.toKeys() ?? [],
+                                tfaCode: twoFACode,
+                                orgKey: new_org_key?.value,
+                                userKeys: resultOfKeyUpdate.updatedUserKeys,
+                                auth: authPacket,
+                                authCredential: oldAuthCredential
+                            )
                         }
 
                         let update_res = try `await`(self.apiService.run(route: request))
@@ -554,7 +570,7 @@ class UserDataService: Service, HasLocalStorage {
                             userInfo.userKeys = resultOfKeyUpdate.updatedUserKeys + resultOfKeyUpdate.originalUserKeys
                             userInfo.userAddresses = resultOfKeyUpdate.updatedAddresses ?? []
                         }
-                        oldAuthCredential.udpate(password: resultOfKeyUpdate.hashedNewPassword)
+                        oldAuthCredential.udpate(password: resultOfKeyUpdate.hashedNewPassword.value)
 
                         forceRetry = false
                     } catch let error as NSError {

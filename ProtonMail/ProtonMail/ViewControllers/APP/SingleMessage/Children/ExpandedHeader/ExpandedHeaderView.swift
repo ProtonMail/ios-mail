@@ -28,12 +28,12 @@ class ExpandedHeaderView: UIView {
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, distribution: .fill, alignment: .fill)
-    let senderNameLabel = UILabel()
+    let senderNameLabel = SubviewsFactory.senderLabel
     let senderEmailControl = TextControl()
     let lockImageView = SubviewsFactory.imageView
     let lockImageControl = UIControl(frame: .zero)
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
-    let timeLabel = UILabel()
+    let timeLabel = SubviewsFactory.timeLabel
     let starImageView = SubviewsFactory.starImageView
 
     init() {
@@ -89,7 +89,7 @@ extension ExpandedHeaderView {
     private func setUpFirstLineLayout() {
         [
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
-            senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
             senderNameLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8),
             senderNameLabel.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
@@ -156,5 +156,20 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
         return imageView
+    }
+
+    static var timeLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.textAlignment = .right
+        label.set(text: nil,
+                  preferredFont: .footnote,
+                  textColor: ColorProvider.TextWeak)
+        return label
+    }
+
+    static var senderLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.set(text: nil, preferredFont: .subheadline)
+        return label
     }
 }

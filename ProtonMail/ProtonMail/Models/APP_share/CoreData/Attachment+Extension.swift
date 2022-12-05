@@ -85,29 +85,23 @@ extension Attachment {
         return (keyPacket, cipherURL)
     }
 
-    func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
+    func sign(byKey key: Key, userKeys: [Data], passphrase: Passphrase) -> Data? {
         do {
             let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
                 userKeys: userKeys,
                 passphrase: passphrase,
                 key: key
             )
-            let signature: String
+            let signingKey = SigningKey(privateKey: ArmoredKey(value: key.privateKey), passphrase: addressKeyPassphrase)
+            let dataToSign: Data
             if let fileData = fileData {
-                signature = try fileData.signAttachmentNonOptional(
-                    byPrivKey: key.privateKey,
-                    passphrase: addressKeyPassphrase
-                )
+                dataToSign = fileData
             } else if let localURL = localURL {
-                let fileData = try Data(contentsOf: localURL)
-                signature = try Crypto.signDetachedNonOptional(
-                    plainData: fileData,
-                    privateKey: key.privateKey,
-                    passphrase: addressKeyPassphrase
-                )
+                dataToSign = try Data(contentsOf: localURL)
             } else {
                 return nil
             }
+            let signature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign).value
             var error: NSError?
             let data = ArmorUnarmor(signature, &error)
             if error != nil {
@@ -120,7 +114,7 @@ extension Attachment {
         }
     }
 
-    func getSession(keys: [Data], mailboxPassword: String) throws -> SymmetricKey? {
+    func getSession(keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
         guard let keyPacket = self.keyPacket else {
             return nil // TODO:: error throw
         }
@@ -133,7 +127,7 @@ extension Attachment {
         return sessionKey
     }
 
-    func getSession(userKey: [Data], keys: [Key], mailboxPassword: String) throws -> SymmetricKey? {
+    func getSession(userKey: [Data], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
         guard let keyPacket = self.keyPacket else {
             return nil
         }
@@ -144,7 +138,7 @@ extension Attachment {
         return sessionKey
     }
 
-    func base64DecryptAttachment(userInfo: UserInfo, passphrase: String) -> String {
+    func base64DecryptAttachment(userInfo: UserInfo, passphrase: Passphrase) -> String {
         let userPrivKeys = userInfo.userPrivateKeysArray
         let addrPrivKeys = userInfo.addressKeys
 
@@ -160,7 +154,7 @@ extension Attachment {
                                                                passphrase: passphrase,
                                                                keys: addrPrivKeys) :
                                     try data.decryptAttachmentNonOptional(keydata,
-                                                                          passphrase: passphrase,
+                                                                          passphrase: passphrase.value,
                                                                           privKeys: addrPrivKeys.binPrivKeysArray) {
                                 let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
@@ -180,7 +174,7 @@ extension Attachment {
                                                                passphrase: passphrase,
                                                                keys: addrPrivKeys) :
                                     try data.decryptAttachmentNonOptional(keydata,
-                                                                          passphrase: passphrase,
+                                                                          passphrase: passphrase.value,
                                                                           privKeys: addrPrivKeys.binPrivKeysArray) {
                                 let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64

@@ -1,0 +1,176 @@
+{
+  "name": "ProtonCore-Login",
+  "version": "3.23.4",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.23.4"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "dependencies": {
+    "TrustKit": [
+
+    ],
+    "ProtonCore-Log": [
+      "3.23.4"
+    ],
+    "ProtonCore-OpenPGP": [
+      "3.23.4"
+    ],
+    "ProtonCore-Foundations": [
+      "3.23.4"
+    ],
+    "ProtonCore-CoreTranslation": [
+      "3.23.4"
+    ],
+    "ProtonCore-DataModel": [
+      "3.23.4"
+    ]
+  },
+  "default_subspecs": [
+    "ErrorWarningEmittingDefaultSubspec"
+  ],
+  "testspecs": [
+    {
+      "name": "TestsUsingCrypto",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-Crypto": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication/UsingCrypto": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication-KeyGeneration/UsingCrypto": [
+          "3.23.4"
+        ],
+        "ProtonCore-ObfuscatedConstants": [
+          "3.23.4"
+        ],
+        "ProtonCore-TestingToolkit/TestData": [
+          "3.23.4"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto": [
+          "3.23.4"
+        ],
+        "OHHTTPStubs/Swift": [
+
+        ],
+        "TrustKit": [
+
+        ]
+      },
+      "resources": "libraries/Login/Tests/Mocks/Responses/**/*",
+      "source_files": [
+        "libraries/Login/Tests/*.swift",
+        "libraries/Login/Tests/**/*.swift"
+      ]
+    },
+    {
+      "name": "TestsUsingCryptoVPN",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-Crypto-VPN": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication/UsingCryptoVPN": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN": [
+          "3.23.4"
+        ],
+        "ProtonCore-ObfuscatedConstants": [
+          "3.23.4"
+        ],
+        "ProtonCore-TestingToolkit/TestData": [
+          "3.23.4"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Login/UsingCryptoVPN": [
+          "3.23.4"
+        ],
+        "OHHTTPStubs/Swift": [
+
+        ],
+        "TrustKit": [
+
+        ]
+      },
+      "resources": "libraries/Login/Tests/Mocks/Responses/**/*",
+      "source_files": [
+        "libraries/Login/Tests/*.swift",
+        "libraries/Login/Tests/**/*.swift"
+      ]
+    }
+  ],
+  "subspecs": [
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
+    },
+    {
+      "name": "UsingCrypto",
+      "dependencies": {
+        "ProtonCore-Crypto": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication/UsingCrypto": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication-KeyGeneration/UsingCrypto": [
+          "3.23.4"
+        ]
+      },
+      "source_files": [
+        "libraries/Login/Sources/*.swift",
+        "libraries/Login/Sources/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-Login": [
+          "libraries/Login/Tests/Mocks/Responses/**/*.json"
+        ]
+      }
+    },
+    {
+      "name": "UsingCryptoVPN",
+      "dependencies": {
+        "ProtonCore-Crypto-VPN": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication/UsingCryptoVPN": [
+          "3.23.4"
+        ],
+        "ProtonCore-Authentication-KeyGeneration/UsingCryptoVPN": [
+          "3.23.4"
+        ]
+      },
+      "source_files": [
+        "libraries/Login/Sources/*.swift",
+        "libraries/Login/Sources/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-Login": [
+          "libraries/Login/Tests/Mocks/Responses/**/*.json"
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.6"
+}

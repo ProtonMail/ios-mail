@@ -19,21 +19,27 @@ import ProtonMailAnalytics
 
 extension MailboxViewModel {
     func checkIsIndexPathMatch(with itemID: String, indexPath: IndexPath) -> Bool {
+        let idOfItemAtIndexPath: String
         if let message = item(index: indexPath) {
-            return message.messageID.rawValue == itemID
+            idOfItemAtIndexPath = message.messageID.rawValue
         } else if let conversation = itemOfConversation(index: indexPath, collectBreadcrumbs: true) {
-            let idOfItemAtIndexPath = conversation.conversationID.rawValue
-            let idsMatch = idOfItemAtIndexPath == itemID
-            if !idsMatch {
-                Breadcrumbs.shared.add(
-                    message: "received \(idOfItemAtIndexPath) is not equal to requested \(itemID)",
-                    to: .invalidSwipeAction
-                )
-            }
-            return idsMatch
+            idOfItemAtIndexPath = conversation.conversationID.rawValue
         } else {
             return false
         }
+
+        let idsMatch = idOfItemAtIndexPath == itemID
+        if !idsMatch {
+            Breadcrumbs.shared.add(
+                message: "received \(idOfItemAtIndexPath) is not equal to requested \(itemID)",
+                to: .invalidSwipeAction
+            )
+            Breadcrumbs.shared.add(
+                message: "currentViewMode: \(currentViewMode), locationViewMode: \(locationViewMode)",
+                to: .invalidSwipeAction
+            )
+        }
+        return idsMatch
     }
 
     func archive(index: IndexPath, isSwipeAction: Bool) {

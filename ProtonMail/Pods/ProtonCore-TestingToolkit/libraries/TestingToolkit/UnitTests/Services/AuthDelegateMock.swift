@@ -23,20 +23,24 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 public final class AuthDelegateMock: AuthDelegate {
-    
+
     public init() {}
 
-    @FuncStub(AuthDelegateMock.getToken, initialReturn: nil) public var getTokenStub
-    public func getToken(bySessionUID uid: String) -> AuthCredential? { getTokenStub(uid) }
+    @FuncStub(AuthDelegateMock.authCredential(sessionUID:), initialReturn: nil) public var getTokenAuthCredentialStub
+    public func authCredential(sessionUID: String) -> AuthCredential? { getTokenAuthCredentialStub(sessionUID) }
+    
+    @FuncStub(AuthDelegateMock.credential(sessionUID:), initialReturn: nil) public var getTokenCredentialStub
+    public func credential(sessionUID: String) -> Credential? { getTokenCredentialStub(sessionUID) }
     
     @FuncStub(AuthDelegateMock.onLogout) public var onLogoutStub
     public func onLogout(sessionUID uid: String) { onLogoutStub(uid) }
     
     @FuncStub(AuthDelegateMock.onUpdate) public var onUpdateStub
-    public func onUpdate(auth: Credential) { onUpdateStub(auth) }
+    public func onUpdate(credential: Credential, sessionUID: String) { onUpdateStub(credential, sessionUID) }
     
     @FuncStub(AuthDelegateMock.onRefresh) public var onRefreshStub
-    public func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
-        onRefreshStub(uid, complete)
+    public func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion) {
+        onRefreshStub(sessionUID, service, complete)
     }
+    
 }

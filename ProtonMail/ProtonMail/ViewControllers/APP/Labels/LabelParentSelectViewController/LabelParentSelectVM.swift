@@ -82,8 +82,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
             self.update(parentID: "")
             return
         }
-        let path = IndexPath(row: row - 1, section: 0)
-        guard let item = self.labels.getFolderItem(by: path) else {
+        guard let item = self.labels.getFolderItem(at: row - 1) else {
             return
         }
         self.update(parentID: item.location.rawLabelID)
@@ -101,8 +100,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
         }
 
         let realRow = row - 1
-        let path = IndexPath(row: realRow, section: 0)
-        guard let item = self.labels.getFolderItem(by: path) else {
+        guard let item = self.labels.getFolderItem(at: realRow) else {
             self.allowed[row] = false
             return false
         }

@@ -56,6 +56,9 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     @IBOutlet weak var tableFooterTextLabel: UILabel! {
         didSet {
             tableFooterTextLabel.textColor = ColorProvider.TextWeak
+            tableFooterTextLabel.font = .adjustedFont(forTextStyle: .subheadline)
+            tableFooterTextLabel.adjustsFontForContentSizeCategory = true
+            tableFooterTextLabel.adjustsFontSizeToFitWidth = false
         }
     }
     @IBOutlet weak var tableView: UITableView! {
@@ -105,6 +108,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     var modalPresentation = false
     var hideFooter = false
     private let planConnectionErrorView = PlanConnectionErrorView()
+    public var onDohTroubleshooting: () -> Void = {}
 
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
     

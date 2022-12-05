@@ -58,12 +58,12 @@ public struct ReportBug {
     }
 }
 
-public struct ReportsBugsResponse: Codable {
+public struct ReportsBugsResponse: APIDecodableResponse {
     let code: Int
 }
 
 public final class ReportsBugs: Request {
-    
+
     public let bug: ReportBug
     
     public init( _ bug: ReportBug) {

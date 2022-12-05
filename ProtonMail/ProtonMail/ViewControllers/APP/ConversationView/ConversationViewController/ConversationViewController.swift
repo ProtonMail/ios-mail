@@ -26,7 +26,8 @@ import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
 
-class ConversationViewController: UIViewController, ComposeSaveHintProtocol, LifetimeTrackable {
+class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
+                                  LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -100,8 +101,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol, Lif
         setUpToolBarIfNeeded()
 
         registerNotification()
-        let info = "ConversationVC is opened, id \(viewModel.conversation.conversationID.rawValue)"
-        Breadcrumbs.shared.add(message: info, to: .inconsistentBody)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -335,7 +334,7 @@ extension ConversationViewController: UITableViewDataSource {
                        delegate: self.viewModel)
             return cell
         case .header(let subject):
-            return headerCell(tableView, indexPath: indexPath, subject: subject)
+            return headerCell(tableView, subject: subject)
         case .message(let viewModel):
             if (viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly) ||
                 (!viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly) {
@@ -398,7 +397,8 @@ private extension ConversationViewController {
                                                         isStarred: message.isStarred,
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
-                                                        shouldShowRenderModeOption: shouldShowRenderModeOption)
+                                                        shouldShowRenderModeOption: shouldShowRenderModeOption,
+                                                        isScheduledSend: message.isScheduledSend)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
@@ -474,12 +474,12 @@ private extension ConversationViewController {
 
     private func headerCell(
         _ tableView: UITableView,
-        indexPath: IndexPath,
         subject: String
     ) -> UITableViewCell {
         let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
-        let style = FontManager.MessageHeader.alignment(.center)
-        cell.customView.titleTextView.attributedText = subject.apply(style: style)
+        cell.customView.titleTextView.set(text: subject,
+                                          preferredFont: .title3)
+        cell.customView.titleTextView.textAlignment = .center
         return cell
     }
 
@@ -511,7 +511,7 @@ private extension ConversationViewController {
             if let cachedViewController = cachedViewControllers[indexPath] {
                 viewController = cachedViewController
             } else {
-                viewController = embedController(viewModel: expandedViewModel, in: cell, indexPath: indexPath)
+                viewController = embedController(viewModel: expandedViewModel, in: cell)
                 cachedViewControllers[indexPath] = viewController
             }
             embed(viewController, inside: cell.container)
@@ -528,8 +528,7 @@ private extension ConversationViewController {
 
     private func embedController(
         viewModel: ConversationExpandedMessageViewModel,
-        in cell: ConversationExpandedMessageCell,
-        indexPath: IndexPath
+        in cell: ConversationExpandedMessageCell
     ) -> ConversationExpandedMessageViewController {
         cell.container.subviews.forEach { $0.removeFromSuperview() }
         let contentViewModel = viewModel.messageContent
@@ -641,19 +640,14 @@ private extension ConversationViewController {
             MBProgressHUD.hide(for: self.view, animated: true)
             return
         }
-        messageDataService
-            .forceFetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
-                guard let self = self else { return }
-                if error != nil {
-                    let alert = LocalString._unable_to_edit_offline.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
-                    return
-                }
-                guard let objectID = container?.objectID.rawValue else {
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    return
-                }
+        viewModel.fetchMessageDetail(message: draft) { result in
+            switch result {
+            case .failure(_):
+                let alert = LocalString._unable_to_edit_offline.alertController()
+                alert.addOKAction()
+                self.present(alert, animated: true, completion: nil)
+            case .success(let draft):
+                let objectID = draft.objectID.rawValue
                 // The fetch API is saved on operationContext
                 // But the fetchController is working on mainContext
                 // It take sometime to sync data
@@ -665,21 +659,22 @@ private extension ConversationViewController {
                     self.coordinator.handle(navigationAction: .draft(message: message))
                 }
             }
+        }
     }
 
     private func displayConversationNoticeIfNeeded() {
-        guard viewModel.shouldDisplayConversationNoticeView else {
-            return
-        }
-        viewModel.conversationNoticeViewIsOpened()
-        let view = ConversationViewNoticeView()
-        view.presentAt(self.navigationController ?? self,
-                       animated: true) {
-            let link = DeepLink(String(describing: SettingsDeviceViewController.self))
-            link.append(.accountSetting)
-            link.append(.conversationMode)
-            NotificationCenter.default.post(name: .switchView, object: link)
-        }
+//        guard viewModel.shouldDisplayConversationNoticeView else {
+//            return
+//        }
+//        viewModel.conversationNoticeViewIsOpened()
+//        let view = ConversationViewNoticeView()
+//        view.presentAt(self.navigationController ?? self,
+//                       animated: true) {
+//            let link = DeepLink(String(describing: SettingsDeviceViewController.self))
+//            link.append(.accountSetting)
+//            link.append(.conversationMode)
+//            NotificationCenter.default.post(name: .switchView, object: link)
+//        }
     }
 }
 
@@ -739,8 +734,15 @@ private extension ConversationViewController {
 
     @objc
     private func trashAction() {
-        viewModel.handleToolBarAction(.trash)
-        navigationController?.popViewController(animated: true)
+        let continueAction = { [weak self] in
+            self?.viewModel.handleToolBarAction(.trash)
+            self?.navigationController?.popViewController(animated: true)
+        }
+        viewModel.searchForScheduled { [weak self] scheduledNum in
+            self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+        } continueAction: {
+            continueAction()
+        }
     }
 
     @objc
@@ -816,6 +818,15 @@ private extension ConversationViewController {
                     self?.navigationController?.popViewController(animated: true)
                 })
             })
+        case .trash:
+            let continueAction: () -> Void = { [weak self] in
+                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+            }
+            viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
+                self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+            }, continueAction: continueAction)
         default:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
@@ -878,17 +889,18 @@ private extension ConversationViewController {
     private func handleMoreAction(messageId: MessageID, message: MessageEntity) {
         let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
         let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
-            .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
-        let bodyViewModel = viewModel?.messageViewModel?.state
-            .expandedViewModel?.messageContent
-            .messageBodyViewModel
-        let renderStyle = bodyViewModel?.currentMessageRenderStyle ?? .dark
-        let shouldDisplayRenderModeOptions = bodyViewModel?.shouldDisplayRenderModeOptions ?? false
+            .messageContent.messageInfoProvider.isBodyDecryptable ?? false
+
+        let singleMessageVM = viewModel?.messageViewModel?.state.expandedViewModel?.messageContent
+        let infoProvider = singleMessageVM?.messageInfoProvider
+        let renderStyle = infoProvider?.currentMessageRenderStyle ?? .dark
+        let shouldDisplayRenderModeOptions = infoProvider?.shouldDisplayRenderModeOptions ?? false
+
         presentActionSheet(for: message,
                            isBodyDecrpytable: isBodyDecryptable,
                            messageRenderStyle: renderStyle,
                            shouldShowRenderModeOption: shouldDisplayRenderModeOptions,
-                           body: bodyViewModel?.bodyParts?.originalBody)
+                           body: infoProvider?.bodyParts?.originalBody)
     }
 }
 
@@ -1099,10 +1111,11 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         )
     }
 
+    // swiftlint:disable function_body_length
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        let messagesOfConversation = viewModel.messagesDataSource.compactMap({ $0.message })
+        let messagesOfConversation = viewModel.messagesDataSource.compactMap { $0.message }
 
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: viewModel.getFolderMenuItems(),
@@ -1111,11 +1124,11 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             isInherit: isInherit
         )
 
-        moveToActionSheetPresenter
-            .present(on: self.navigationController ?? self,
-                     listener: self,
-                     viewModel: moveToViewModel,
-                     addNewFolder: { [weak self] in
+        moveToActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            listener: self,
+            viewModel: moveToViewModel,
+            addNewFolder: { [weak self] in
                 guard let self = self else { return }
                 if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
                     self.coordinator.pendingActionAfterDismissal = { [weak self] in
@@ -1125,9 +1138,11 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 } else {
                     self.showAlertFolderCreationNotAllowed()
                 }
-            }, selected: { [weak self] menuLabel, isOn in
+            },
+            selected: { [weak self] menuLabel, isOn in
                 self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-            }, cancel: { [weak self] isHavingUnsavedChanges in
+            },
+            cancel: { [weak self] isHavingUnsavedChanges in
                 if isHavingUnsavedChanges {
                     self?.showDiscardAlert(handleDiscard: {
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
@@ -1136,7 +1151,8 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 } else {
                     self?.dismissActionSheet()
                 }
-            }, done: { [weak self] isHavingUnsavedChanges in
+            },
+            done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
                     self?.navigationController?.popViewController(animated: true)
@@ -1144,10 +1160,21 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 guard isHavingUnsavedChanges, let conversation = self?.viewModel.conversation else {
                     return
                 }
-                self?.moveToActionHandler
-                    .handleMoveToAction(conversations: [conversation],
-                                        isFromSwipeAction: false,
-                                        completion: nil)
+
+                let continueAction: () -> Void = { [weak self] in
+                    self?.moveToActionHandler.handleMoveToAction(conversations: [conversation],
+                                                                 isFromSwipeAction: false,
+                                                                 completion: nil)
+                }
+
+                if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
+                    self?.viewModel.searchForScheduled(conversation: conversation,
+                                                       displayAlert: { scheduledNum in
+                        self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+                    }, continueAction: continueAction)
+                } else {
+                    continueAction()
+                }
             })
     }
 
@@ -1157,7 +1184,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 extension ConversationViewController {
     private func showNewMessageFloatyView(messageId: MessageID) {
 
-        let floatyView = customView.showNewMessageFloatyView(messageId: messageId, didHide: {})
+        let floatyView = customView.showNewMessageFloatyView(didHide: {})
 
         floatyView.handleTapAction { [weak self] in
             guard let index = self?.viewModel.messagesDataSource

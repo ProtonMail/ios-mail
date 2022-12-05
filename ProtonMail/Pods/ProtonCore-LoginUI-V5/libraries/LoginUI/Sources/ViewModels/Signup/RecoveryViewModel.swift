@@ -54,6 +54,7 @@ class RecoveryViewModel {
     }
     
     func termsAttributedString(textView: UITextView) -> NSAttributedString {
+        /// Fix me poissble bug: if _su_recovery_t_c_desc translated string doesnt match in _su_recovery_t_c_link translated string. the hyper link could be failed when clicking.
         var text = CoreString._su_recovery_t_c_desc
         let linkText = CoreString._su_recovery_t_c_link
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
@@ -63,7 +64,7 @@ class RecoveryViewModel {
                 text = texts[0] + "\n" + linkText + texts[1]
             }
         }
-        let attributedString = NSAttributedString.hyperlink(path: "", in: text, as: linkText, font: textView.font)
-        return attributedString
+        
+        return .hyperlink(in: text, as: linkText, path: "", subfont: textView.font)
     }
 }

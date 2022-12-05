@@ -1,0 +1,38 @@
+{
+  "name": "ProtonCore-CoreTranslation",
+  "version": "3.23.4",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.23.4"
+  },
+  "platforms": {
+    "ios": "11.0",
+    "osx": "10.13"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
+  },
+  "default_subspecs": [
+
+  ],
+  "source_files": "libraries/CoreTranslation/Sources/**/*.{h,m,swift}",
+  "resource_bundles": {
+    "Resources-CoreTranslation": [
+      "libraries/CoreTranslation/Sources/**/*.{lproj,strings,stringsdict}"
+    ]
+  },
+  "swift_version": "5.6"
+}

@@ -113,6 +113,10 @@ extension MessageEntity {
         self.flag.contains(.forwarded)
     }
 
+    var isScheduledSend: Bool {
+        self.flag.contains(.scheduledSend)
+    }
+
     func isLabelLocation(labelId: LabelID) -> Bool {
         self.labels
             .filter { $0.type == .messageLabel }
@@ -143,7 +147,7 @@ extension MessageEntity {
     }
 
     var isHavingMoreThanOneContact: Bool {
-        (toList + ccList).count > 1
+        (recipientsTo + recipientsCc).count > 1
     }
 }
 
@@ -213,14 +217,27 @@ extension MessageEntity {
             }
         return publicKeyAttachments
     }
+
+    func firstValidFolder() -> LabelID? {
+        for label in labels {
+            if label.type == .folder {
+                return label.labelID
+            }
+
+            if !label.labelID.rawValue.preg_match("(?!^\\d+$)^.+$") {
+                if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
+                    return label.labelID
+                }
+            }
+        }
+
+        return nil
+    }
 }
 
 // MARK: - Sender related
 
 extension MessageEntity {
-    var recipients: [ContactPickerModelProtocol] {
-        return self.toList + self.ccList + self.bccList
-    }
 
     func getInitial(senderName: String) -> String {
         return senderName.isEmpty ? "?" : senderName.initials()
@@ -230,20 +247,22 @@ extension MessageEntity {
         return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
     }
 
-    func getSenderName(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
-        if isSent || isDraft {
-            return allEmailAddresses(replacingEmails, allGroupContacts: groupContacts)
+    func getSenderName(replacingEmailsMap: [String: EmailEntity], groupContacts: [ContactGroupVO]) -> String {
+        if isSent || isDraft || isScheduledSend {
+            return allEmailAddresses(replacingEmailsMap, allGroupContacts: groupContacts)
         } else {
-            return displaySender(replacingEmails)
+            return displaySender(replacingEmailsMap)
         }
     }
 
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
-    private func allEmailAddresses(_ replacingEmails: [Email],
-                                   allGroupContacts: [ContactGroupVO]) -> String {
-        var recipientLists = self.recipients
+    private func allEmailAddresses(_ replacingEmails: [String: EmailEntity], allGroupContacts: [ContactGroupVO]) -> String {
+        var recipientLists = ContactPickerModelHelper.contacts(from: rawTOList)
+        + ContactPickerModelHelper.contacts(from: rawCCList)
+        + ContactPickerModelHelper.contacts(from: rawBCCList)
+
         let groups = recipientLists.compactMap { $0 as? ContactGroupVO }
         var groupList: [String] = []
         if !groups.isEmpty {
@@ -255,7 +274,7 @@ extension MessageEntity {
         let lists: [String] = recipientLists.map { recipient in
             let address = recipient.displayEmail ?? ""
             let name = recipient.displayName ?? ""
-            let email = replacingEmails.first(where: { $0.email == address })
+            let email = replacingEmails[address]
             let emailName = email?.name ?? ""
             let displayName = emailName.isEmpty ? name : emailName
             return displayName.isEmpty ? address : displayName
@@ -278,25 +297,24 @@ extension MessageEntity {
         return nameList
     }
 
-    func displaySender(_ replacingEmails: [Email]) -> String {
+    func displaySender(_ replacingEmails: [String: EmailEntity]) -> String {
         guard let sender = sender else {
             assertionFailure("Sender with no name or address")
             return ""
         }
 
-        // will this be deadly slow?
-        let mails = replacingEmails.filter { $0.email == sender.email }
-            .sorted { mail1, mail2 in
-                guard let time1 = mail1.contact.createTime,
-                      let time2 = mail2.contact.createTime else {
-                    return true
-                }
-                return time1 < time2
-            }
-        if mails.isEmpty {
+        guard let email = replacingEmails[sender.email] else {
             return sender.name.isEmpty ? sender.email : sender.name
         }
-        let contact = mails[0].contact
-        return contact.name.isEmpty ? mails[0].name : contact.name
+
+        if !email.contactName.isEmpty {
+            return email.contactName
+        } else if !email.name.isEmpty {
+            return email.name
+        } else if let displayName = sender.displayName, !displayName.isEmpty {
+            return displayName
+        } else {
+            return sender.email
+        }
     }
 }

@@ -46,6 +46,13 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
 
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        name.set(text: nil,
+                 preferredFont: .subheadline,
+                 weight: .regular)
+        badge.set(text: nil,
+                  preferredFont: .footnote,
+                  weight: .regular,
+                  textColor: ColorProvider.SidebarTextNorm)
 
         self.badgeBGView.setCornerRadius(radius: 10)
         self.arrow.image = IconProvider.chevronDown
@@ -81,7 +88,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.isUsedInSideBar = isUsedInSideBar
         self.labelID = label.location.labelID
         self.delegate = delegate
-        self.setupIcon(label: label, useFillIcon: useFillIcon, isSelected: label.isSelected)
+        self.setupIcon(label: label, useFillIcon: useFillIcon)
         let num = label.expanded ? label.unread: label.aggreateUnread
         self.setup(badge: num)
         self.setupArrow(label: label, showArrow: showArrow)
@@ -103,8 +110,10 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.icon.alpha = alpha
     }
 
-    func update(attribure: [NSAttributedString.Key: Any]) {
-        self.name.attributedText = self.name.text?.apply(style: attribure)
+    func update(preferredFont: UIFont.TextStyle, textColor: UIColor) {
+        name.set(text: name.text,
+                 preferredFont: preferredFont,
+                 textColor: textColor)
     }
 
     func update(badge: Int) {
@@ -114,7 +123,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
 
 // MARK: Private functions
 extension MenuItemTableViewCell {
-    private func setupIcon(label: MenuLabel, useFillIcon: Bool, isSelected: Bool) {
+    private func setupIcon(label: MenuLabel, useFillIcon: Bool) {
         let location = label.location
         if let icon = location.icon {
             self.icon.image = icon
