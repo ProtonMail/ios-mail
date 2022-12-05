@@ -23,6 +23,7 @@ final class SingleMessageViewModelTests: XCTestCase {
     var contextProviderMock: MockCoreDataContextProvider!
     var sut: SingleMessageViewModel!
     var toolbarProviderMock: MockToolbarActionProvider!
+    var realAttachmentFlagProviderMock: MockRealAttachmentsFlagProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
@@ -31,6 +32,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         super.setUp()
         toolbarProviderMock = MockToolbarActionProvider()
         contextProviderMock = MockCoreDataContextProvider()
+        realAttachmentFlagProviderMock = .init()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
@@ -41,6 +43,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         sut = nil
         contextProviderMock = nil
         toolbarProviderMock = nil
+        realAttachmentFlagProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         toolbarCustomizeSpotlightStatusProvider = nil
     }
@@ -187,6 +190,18 @@ final class SingleMessageViewModelTests: XCTestCase {
             attachments: .init()
         )
 
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: nil,
+                apiService: fakeUser.apiService,
+                contextProvider: contextProviderMock,
+                realAttachmentsFlagProvider: realAttachmentFlagProviderMock,
+                messageDataAction: fakeUser.messageService,
+                cacheService: fakeUser.cacheService
+            )
+        )
+        let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
+
         sut = .init(
             labelId: labelID,
             message: message,
@@ -198,6 +213,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             toolbarActionProvider: toolbarProviderMock,
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
             systemUpTime: systemTime,
+            dependencies: dependencies,
             goToDraft: { _ in }
         )
     }

@@ -35,16 +35,21 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
-        if params.hasToBeQueued {
-            dependencies.queueManager?.addBlock { [weak self] in
-                self?.fetchMessageDetail(params: params, callback: callback)
+        let isMessageMissingData = params.message.body.isEmpty || !params.message.isDetailDownloaded
+
+        if params.ignoreDownloaded || isMessageMissingData || params.message.parsedHeaders.isEmpty {
+            if params.hasToBeQueued {
+                dependencies.queueManager?.addBlock { [weak self] in
+                    self?.fetchMessageDetail(params: params, callback: callback)
+                }
+            } else {
+                fetchMessageDetail(params: params, callback: callback)
             }
         } else {
-            fetchMessageDetail(params: params, callback: callback)
+            handleDownloaded(entity: params.message, callback: callback)
         }
     }
 
-    // TODO: error handling in this method seems a little unexpected
     private func fetchMessageDetail(params: Params, callback: @escaping Callback) {
         dependencies
             .apiService
@@ -69,11 +74,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     }
 
                     guard let message = context.object(with: params.message.objectID.rawValue) as? Message else {
-                        // why are we throwing unableToParseResponse in case of a Core Data failure?
-                        // should be more like "no matching message in database", however surprising that is
-                        // btw we could perform this load even before we fetch details from the backend
-                        let error = NSError.unableToParseResponse(response)
-                        callback(.failure(error))
+                        callback(.failure(Errors.coreDataObjectNotExist))
                         return
                     }
                     guard let messageDict = response["Message"] as? [String: Any] else {
@@ -177,7 +178,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func updateUnread(message: Message) {
-        if let labelID = message.firstValidFolder() {
+        if let labelID = message.firstValidFolder(), message.unRead {
             _ = dependencies.messageDataAction.mark(messages: [MessageEntity(message)],
                                                     labelID: LabelID(labelID),
                                                     unRead: false)
@@ -187,6 +188,18 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         }
         message.unRead = false
         PushUpdater().remove(notificationIdentifiers: [message.notificationId])
+    }
+
+    private func handleDownloaded(entity: MessageEntity, callback: @escaping Callback) {
+        dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
+            guard let message = context.object(with: entity.objectID.rawValue) as? Message else {
+                callback(.failure(Errors.coreDataObjectNotExist))
+                return
+            }
+            self?.updateUnread(message: message)
+            callback(.success(MessageEntity(message)))
+        }
+
     }
 }
 
@@ -223,5 +236,6 @@ extension FetchMessageDetail {
     enum Errors: Error {
         case selfIsReleased
         case emptyResponse
+        case coreDataObjectNotExist
     }
 }

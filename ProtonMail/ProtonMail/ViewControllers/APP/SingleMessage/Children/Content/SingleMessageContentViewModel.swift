@@ -30,6 +30,7 @@ class SingleMessageContentViewModel {
     let messageBodyViewModel: NewMessageBodyViewModel
     let attachmentViewModel: AttachmentViewModel
     let bannerViewModel: BannerViewModel
+    let dependencies: Dependencies
 
     var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
@@ -105,6 +106,7 @@ class SingleMessageContentViewModel {
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
+         dependencies: Dependencies,
          goToDraft: @escaping (MessageID) -> Void) {
         self.context = context
         self.user = user
@@ -128,6 +130,7 @@ class SingleMessageContentViewModel {
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.dependencies = dependencies
         self.goToDraft = goToDraft
 
         self.bannerViewModel.editScheduledMessage = { [weak self] in
@@ -190,14 +193,15 @@ class SingleMessageContentViewModel {
             return
         }
         hasAlreadyFetchedMessageData = true
-        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] error in
+        let params: FetchMessageDetail.Params = .init(userID: user.userID, message: message)
+        dependencies.fetchMessageDetail.executionBlock(params: params) { [weak self] result in
             guard let self = self else { return }
-            self.updateErrorBanner?(error as NSError?)
-            if error != nil && !self.message.isDetailDownloaded {
+            switch result {
+            case .success(_):
+                self.updateErrorBanner?(nil)
+            case .failure(let error):
+                self.updateErrorBanner?(error as NSError)
                 self.messageBodyViewModel.errorHappens()
-            }
-            if !self.isEmbedInConversationView {
-                self.markReadIfNeeded()
             }
         }
     }
@@ -346,5 +350,11 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         DispatchQueue.main.async {
             self.uiDelegate?.trackerProtectionSummaryChanged()
         }
+    }
+}
+
+extension SingleMessageContentViewModel {
+    struct Dependencies {
+        let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }
