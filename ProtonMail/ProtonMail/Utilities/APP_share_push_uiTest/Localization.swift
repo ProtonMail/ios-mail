@@ -757,9 +757,6 @@ class LocalizedString {
     /// "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full."
     lazy var _reporting_a_message_as_a_phishing_ = NSLocalizedString("Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.", comment: "alert message")
 
-    /// "Loading…"
-    lazy var _loading_ = NSLocalizedString("Loading…", comment: "")
-
 
     /// "Can't decrypt this attachment!"
     lazy var _cant_decrypt_this_attachment = NSLocalizedString("Can't decrypt this attachment!", comment: "When quick look attachment but can't decrypt it!")
