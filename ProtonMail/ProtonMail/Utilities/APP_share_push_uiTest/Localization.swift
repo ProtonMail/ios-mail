@@ -1517,6 +1517,7 @@ enum L11n {
         static let shareTitle = NSLocalizedString("Share", comment: "The title of the share button in referral share view.")
         static let trackRewardTitle = NSLocalizedString("Track your rewards", comment: "The title of the track reward button in referral share view.")
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
+        static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 	}
 
     struct PushNotificationAction {
