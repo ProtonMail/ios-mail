@@ -30,8 +30,10 @@ struct ProductionEnvironment: BackendEnvironment {
 }
 
 struct AtlasEnvironment: BackendEnvironment {
-    let appDomain = "ray.proton.black"
-    let apiDomain = "ray.proton.black"
+    let appDomain = "boyle.proton.black"
+    var apiDomain: String {
+        appDomain
+    }
     let apiPath = "/api"
 }
 
