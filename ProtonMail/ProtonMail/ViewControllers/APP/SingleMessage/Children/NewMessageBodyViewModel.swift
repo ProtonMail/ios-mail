@@ -114,7 +114,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         let htmlString = """
                             <html><head>\(meta)<style type='text/css'>
                             \(css)</style>
-                            </head><body>\(LocalString._loading_)</body></html>
+                            </head></html>
                          """
         return htmlString
     }

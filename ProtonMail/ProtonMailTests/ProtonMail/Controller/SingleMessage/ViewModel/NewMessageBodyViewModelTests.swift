@@ -48,7 +48,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
         let expected = """
                             <html><head>\(meta)<style type='text/css'>
                             \(WebContents.css)</style>
-                            </head><body>\(LocalString._loading_)</body></html>
+                            </head></html>
                          """
         XCTAssertEqual(sut.placeholderContent, expected)
 
@@ -57,7 +57,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
         let expected1 = """
                             <html><head>\(meta)<style type='text/css'>
                             \(WebContents.cssLightModeOnly)</style>
-                            </head><body>\(LocalString._loading_)</body></html>
+                            </head></html>
                          """
         XCTAssertEqual(sut.placeholderContent, expected1)
     }
