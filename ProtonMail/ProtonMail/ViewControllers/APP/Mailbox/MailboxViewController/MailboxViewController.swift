@@ -1570,6 +1570,7 @@ extension MailboxViewController {
                         var scheduledSendNum: Int?
                         let continueAction: () -> Void = { [weak self] in
                             guard let self = self else { return }
+                            self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
                             if action != .markRead && action != .markUnread {
                                 let message: String
                                 if let num = scheduledSendNum {
@@ -1591,7 +1592,7 @@ extension MailboxViewController {
                         )
                     default:
                         self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
-                        if ![.markRead, .markUnread].contains(action) {
+                        if ![.markRead, .markUnread, .star, .unstar].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
                         }
