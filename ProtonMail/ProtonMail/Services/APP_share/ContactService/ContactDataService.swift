@@ -234,10 +234,13 @@ class ContactDataService: Service, HasLocalStorage {
      delete a contact
 
      - Parameter contactID: delete contact id
-     - Parameter completion: async delete prcess complete response
+     - Parameter completion: async delete process complete response
      **/
     func delete(contactID: ContactID, completion: @escaping ContactDeleteComplete) {
-        let api = ContactDeleteRequest(ids: [contactID.rawValue])
+        guard let api = ContactDeleteRequest(ids: [contactID.rawValue]) else {
+            completion(NSError.badParameter(contactID.rawValue))
+            return
+        }
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.coreDataService.performOnRootSavingContext { context in
