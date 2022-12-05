@@ -188,14 +188,19 @@ extension FetchAndVerifyContactsTests {
         hasSendPreferences: Bool = true,
         isContactDownloaded: Bool = false
     ) {
-        mockContactProvider.allEmailsToReturn = makeMockEmails(
+        let emails = makeMockEmails(
             emails,
             hasSendPreferences: existsInContacts && hasSendPreferences,
             isContactDownloaded: existsInContacts && isContactDownloaded
         )
+        mockContactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
+            self.mockContext.performAndWait {
+                emails.map(EmailEntity.init)
+            }
+        }
         if existsInContacts {
             mockContactProvider.allContactsToReturn = makeMockContacts(
-                with: mockContactProvider.allEmailsToReturn,
+                with: emails,
                 mockCardData: mockCardData
             )
         }

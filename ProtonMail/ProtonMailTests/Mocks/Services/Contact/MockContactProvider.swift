@@ -17,6 +17,7 @@
 
 import CoreData
 import PromiseKit
+import ProtonCore_TestingToolkit
 
 @testable import ProtonMail
 
@@ -36,12 +37,9 @@ class MockContactProvider: ContactProviderProtocol {
         return allContactsToReturn
     }
 
+    @FuncStub(MockContactProvider.getEmailsByAddress, initialReturn: []) var getEmailsByAddressStub
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
-        allEmailsToReturn.map { email in
-            email.managedObjectContext!.performAndWait {
-                EmailEntity(email: email)
-            }
-        }
+        getEmailsByAddressStub(emailAddresses, userId)
     }
 
     func getAllEmails() -> [Email] {
