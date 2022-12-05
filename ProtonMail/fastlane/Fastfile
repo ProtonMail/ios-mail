@@ -284,7 +284,8 @@ platform :ios do
     scan(
       device: "iPhone 8",
       scheme: "ProtonMailTests",
-      app_identifier: APP_IDENTIFIER
+      app_identifier: APP_IDENTIFIER,
+      reset_simulator: true
     )
 
     slather(sonarqube_xml: true, configuration: "Debug")
