@@ -58,6 +58,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     func start() {
+        let viewController = makeSingleMessageVC()
+        self.viewController = viewController
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func makeSingleMessageVC() -> SingleMessageViewController {
         let singleMessageViewModelFactory = SingleMessageViewModelFactory()
         let viewModel = singleMessageViewModelFactory.createViewModel(
             labelId: labelId,
@@ -72,7 +78,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         )
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        return viewController
     }
 
     func follow(_ deeplink: DeepLink) {

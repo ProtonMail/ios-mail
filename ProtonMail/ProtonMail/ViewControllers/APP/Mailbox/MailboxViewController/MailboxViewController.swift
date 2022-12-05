@@ -106,7 +106,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var shouldAnimateSkeletonLoading = false
     private var shouldKeepSkeletonUntilManualDismissal = false
-    private var isShowingUnreadMessageOnly: Bool {
+    var isShowingUnreadMessageOnly: Bool {
         return self.unreadFilterButton.isSelected
     }
 

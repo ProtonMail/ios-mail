@@ -93,6 +93,10 @@ extension Notification.Name {
         return .init("shouldUpdateUserInterfaceStyle")
     }
 
+    static var pagesSwipeExpectation: Notification.Name {
+       return .init(rawValue: "pagesSwipeExpectation")
+    }
+
     static var appExtraSecurityEnabled: Notification.Name {
         return .init("appExtraSecurityEnabled")
     }
