@@ -180,11 +180,9 @@ class NonExpandedHeaderView: UIView {
     }
 
     private func setUpGestures() {
-        for view in [recipientStack, trackerProtectionImageView] {
-            view.isUserInteractionEnabled = true
-            let tapGR = UITapGestureRecognizer(target: self, action: #selector(expandTapped))
-            view.addGestureRecognizer(tapGR)
-        }
+        isUserInteractionEnabled = true
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(expandTapped))
+        addGestureRecognizer(tapGR)
     }
 
     @objc

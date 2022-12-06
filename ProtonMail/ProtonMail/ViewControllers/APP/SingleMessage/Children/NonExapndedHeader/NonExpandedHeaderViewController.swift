@@ -66,10 +66,6 @@ class NonExpandedHeaderViewController: UIViewController {
                                                 preferredFont: .footnote,
                                                 textColor: ColorProvider.InteractionNorm,
                                                 lineBreakMode: .byTruncatingMiddle)
-        customView.senderAddressLabel.tap = { [weak self] in
-            guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
-            self?.contactTapped(sheetType: .sender, contact: sender)
-        }
         customView.timeLabel.set(text: viewModel.infoProvider?.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
