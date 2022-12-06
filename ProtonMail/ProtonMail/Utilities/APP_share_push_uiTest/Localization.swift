@@ -50,12 +50,10 @@ class LocalizedString {
     /// "Signature"
     lazy var _settings_signature_title = NSLocalizedString("Signature", comment: "Title in signature settings")
     /// "Enable Default Signature"
-    lazy var _settings_enable_default_signature_title = NSLocalizedString("Enable signature", comment: "Title")
+    lazy var _settings_enable_signature_title = NSLocalizedString("Enable signature", comment: "Title")
     lazy var _settings_default_signature_placeholder = NSLocalizedString("Enter your signature here", comment: "")
     /// "Mobile Signature"
     lazy var _settings_mobile_signature_title = NSLocalizedString("Mobile Signature", comment: "Mobile Signature title in settings")
-    /// "Enable Mobile Signature"
-    lazy var _settings_enable_mobile_signature_title = NSLocalizedString("Enable signature", comment: "Title")
     /// "Notification Email"
     lazy var _settings_notification_email = NSLocalizedString("Recovery email", comment: "Title")
     /// "Enable Notification Email"
@@ -116,18 +114,8 @@ class LocalizedString {
     lazy var _menu_refer_a_friend = NSLocalizedString("Refer a friend", comment: "menu title")
 
     // Mark Message localtion
+     lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
 
-    lazy var _locations_all_mail_title = NSLocalizedString("All Mail", comment: "mail location title")
-    lazy var _locations_inbox_title    = NSLocalizedString("Inbox", comment: "mail location title")
-    lazy var _locations_starred_title  = NSLocalizedString("Starred", comment: "mail location title")
-    lazy var _locations_draft_title    = NSLocalizedString("Drafts", comment: "mail location title")
-    lazy var _locations_outbox_title   = NSLocalizedString("Sent", comment: "mail location title")
-    lazy var _locations_trash_title    = NSLocalizedString("Trash", comment: "mail location title")
-    lazy var _locations_archive_title  = NSLocalizedString("Archive", comment: "mail location title")
-    lazy var _locations_spam_title     = NSLocalizedString("Spam", comment: "mail location title")
-    lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
-
-    var _locations_trash_desc : String { _locations_trash_title }
     /// "Add Star"
     lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
 
@@ -213,10 +201,6 @@ class LocalizedString {
     lazy var _composer_sending_messages_from_a_paid_feature = NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer")
     /// "From"
     lazy var _composer_from_label = NSLocalizedString("From", comment: "Title")
-    /// "To"
-    lazy var _composer_to_label = NSLocalizedString("To", comment: "Title")
-    /// "Cc"
-    lazy var _composer_cc_label = NSLocalizedString("Cc", comment: "Title")
     /// "Bcc"
     lazy var _composer_bcc_label = NSLocalizedString("Bcc", comment: "Title")
     /// "Subject"
@@ -910,8 +894,6 @@ class LocalizedString {
     lazy var _folders = NSLocalizedString("Folders", comment: "VoiceOver: email belongs to folders")
     /// "Labels"
     lazy var _labels = NSLocalizedString("Labels", comment: "VoiceOver: email has lables")
-    /// "Starred"
-    lazy var _starred = NSLocalizedString("Starred", comment: "VoiceOver: email is starred")
 
     // MARK: - IAP
 
@@ -1015,7 +997,6 @@ class LocalizedString {
 
     // Springboard shortcuts
     lazy var _springboard_shortcuts_search = NSLocalizedString("Search", comment: "Springboard (3D Touch) shortcuts action")
-    lazy var _springboard_shortcuts_starred = NSLocalizedString("Starred", comment: "Springboard (3D Touch) shortcuts action")
     lazy var _springboard_shortcuts_composer = NSLocalizedString("Compose", comment: "Springboard (3D Touch) shortcuts action")
 
     /// Account Manger
@@ -1132,8 +1113,6 @@ class LocalizedString {
 
     lazy var _title_of_delete_action_in_action_sheet = NSLocalizedString("Delete", comment: "The title of the delete action in action sheet")
 
-    lazy var _title_of_archive_action_in_action_sheet = NSLocalizedString("Archive", comment: "The title of the archive action in action sheet")
-
     lazy var _title_of_spam_action_in_action_sheet = NSLocalizedString("Move to spam", comment: "The title of the spam action in action sheet")
 
     lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
@@ -1153,7 +1132,6 @@ class LocalizedString {
     lazy var _pin_code_setup2_title = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
     lazy var _pin_code_setup2_textfield_title = NSLocalizedString("Repeat PIN code", comment: "The title of textfield of PIN code setup2")
     lazy var _pin_code_setup2_textfield_invalid_password = NSLocalizedString("The PIN codes must match!", comment: "The error message of entering an invalid password")
-    lazy var _pin_code_setup2_button_title = NSLocalizedString("Confirm", comment: "The title of button of PIN code setup2")
 
     lazy var _settings_alternative_routing_footer = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "The footer of alternative routing setting")
     lazy var _settings_alternative_routing_title = NSLocalizedString("Networking", comment: "The title of alternative routing settings")
@@ -1186,8 +1164,6 @@ class LocalizedString {
     lazy var _swipe_action_read = NSLocalizedString("Read", comment: "")
     lazy var _swipe_action_star = NSLocalizedString("Star", comment: "")
     lazy var _swipe_action_unstar = NSLocalizedString("Unstar", comment: "")
-    lazy var _swipe_action_archive = NSLocalizedString("Archive", comment: "")
-    lazy var _swipe_action_spam = NSLocalizedString("Spam", comment: "")
 
     lazy var _setting_swipe_action_info_title = NSLocalizedString("Set up swipe gestures to access most used actions.", comment: "")
 
@@ -1236,7 +1212,6 @@ class LocalizedString {
     lazy var _action_sheet_group_title_more = NSLocalizedString("More", comment: "")
 
     // MARK: Action sheet action title
-    lazy var _action_sheet_action_title_archive = NSLocalizedString("Archive", comment: "")
     lazy var _action_sheet_action_title_reply = NSLocalizedString("Reply", comment: "")
     lazy var _action_sheet_action_title_replyAll = NSLocalizedString("Reply all", comment: "")
     lazy var _action_sheet_action_title_forward = NSLocalizedString("Forward", comment: "")
@@ -1252,7 +1227,6 @@ class LocalizedString {
     lazy var _action_sheet_action_title_phishing = NSLocalizedString("Report phishing", comment: "")
     lazy var _action_sheet_action_title_inbox = NSLocalizedString("Move to inbox", comment: "")
     lazy var _action_sheet_action_title_spam_to_inbox = NSLocalizedString("Not a spam (move to inbox)", comment: "")
-    lazy var _action_sheet_action_title_toolbar_customize = NSLocalizedString("Customize toolbar", comment: "")
 
     lazy var _move_to_done_button_title = NSLocalizedString("Done", comment: "")
     lazy var _move_to_title = NSLocalizedString("Move to", comment: "")
@@ -1499,17 +1473,13 @@ class LocalizedString {
     lazy var _toolbar_customize_info_title: String = NSLocalizedString("You can choose and rearrange the actions in your toolbar", comment: "The title of the info bubble view in toolbar customization view.")
     lazy var _toolbar_customize_reset_alert_title: String = NSLocalizedString("Reset to default?", comment: "The title of the alert after tapping reset in toolbar customization view.")
     lazy var _toolbar_customize_reset_alert_content: String = NSLocalizedString("The actions in the toolbar will be reset to default", comment: "The content of the alert after tapping reset in toolbar customization view.")
-    lazy var _toolbar_customize_reset_alert_ok_title: String = NSLocalizedString("Confirm", comment: "The title of the action of the alert after tapping reset in toolbar customization view.")
     lazy var _toolbar_customize_reset_button__title: String = NSLocalizedString("Reset to default", comment: "The title of the reset button in toolbar customization view.")
 
-    lazy var _toolbar_customize_setting_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the item in the App settings section of the device setting view.")
+    lazy var _toolbar_customize_general_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the item in the App settings section of the device setting view.")
     lazy var _toolbar_setting_segment_title_message: String = NSLocalizedString("Message", comment: "The title of the first item in the segment control of the Customize toolbar setting view.")
     lazy var _toolbar_setting_info_title_message: String = NSLocalizedString("This toolbar is visible when reading a message.", comment: "The title of the info label in the first segment of the Customize toolbar setting view.")
-    lazy var _toolbar_setting_segment_title_inbox: String = NSLocalizedString("Inbox", comment: "The title of the second item in the segment control of the Customize toolbar setting view.")
     lazy var _toolbar_setting_info_title_inbox: String = NSLocalizedString("This toolbar appears when selecting multiple messages in your inbox.", comment: "The title of the info label in the second segment of the Customize toolbar setting view.")
-    lazy var _toolbar_setting_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the Customize toolbar setting view.")
 
-    lazy var _toolbar_spotlight_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the Customize toolbar spotlight view.")
     lazy var _toolbar_spotlight_content: String = NSLocalizedString("You can now choose and rearrange the actions in this bar", comment: "The content of the Customize toolbar spotlight view.")
 
     var _title_notification_action_mark_as_read: String {
@@ -1551,7 +1521,7 @@ enum L11n {
 
     fileprivate struct PushNotificationAction {
         static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
-        static let archive = NSLocalizedString("Archive", comment: "Push notification action to archive")
+        static var archive: String { LocalString._menu_archive_title }
         static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
     }
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3
 
 # Check if there is wrong translation
 # For example, it should be `Proton Mail` rather than `ProtonMail`
@@ -8,20 +8,20 @@
 # python wrong_translation_check.py
 # if it find errors, will print information you need on the terminal
 
+import pathlib
 import os
 import re
 
 
 def find_localizations() -> list:
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    parent = os.path.abspath(os.path.join(script_path, '..'))
-    proton_dir = os.path.abspath(os.path.join(parent, 'ProtonMail/ProtonMail/Resource/Localization'))
-    dirs = [path for path in os.listdir(proton_dir) if path.endswith('.lproj')]
+    script_path  = pathlib.Path(__file__).resolve().parent
+    parent = script_path / '..' / '..'
+    proton_dir = parent / 'ProtonMail' / 'ProtonMail' / 'Resource' / 'Localization'
+    dirs = [path for path in proton_dir.iterdir() if path.name.endswith('.lproj')]
     paths = []
-    for dir_name in dirs:
-        path = os.path.abspath(os.path.join(
-            proton_dir, '{}/Localizable.strings'.format(dir_name)))
-        paths.append(path)
+    for directory in dirs:
+        path = proton_dir / directory.name / 'Localizable.strings'
+        paths.append(path.resolve())
     return paths
 
 
@@ -73,5 +73,7 @@ def warning_if_contain_protonmail(target: str) -> str:
 
 if __name__ == '__main__':
     paths = find_localizations()
+    if len(paths) == 0:
+        raise("ERROR: Can't find localization files")
     for path in paths:
         find_translation_needed_to_be_fixed(path)

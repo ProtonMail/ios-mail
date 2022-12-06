@@ -207,7 +207,7 @@ private enum SubviewsFactory {
 
     static var titleLabel: UILabel {
         let label = UILabel()
-        label.text = LocalString._toolbar_spotlight_title
+        label.text = LocalString._toolbar_customize_general_title
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = ColorProvider.TextNorm
         label.numberOfLines = 0

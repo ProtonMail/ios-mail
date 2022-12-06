@@ -50,7 +50,7 @@ extension MailListActionSheetItemViewModel {
 
     static func moveToArchive() -> MailListActionSheetItemViewModel {
         return .init(type: .archive,
-                     title: LocalString._title_of_archive_action_in_action_sheet,
+                     title: LocalString._menu_archive_title,
                      icon: IconProvider.archiveBox)
     }
 
@@ -98,7 +98,7 @@ extension MailListActionSheetItemViewModel {
 
     static func customizeToolbarActionViewModel() -> MailListActionSheetItemViewModel {
         return .init(type: .toolbarCustomization,
-                     title: LocalString._action_sheet_action_title_toolbar_customize,
+                     title: LocalString._toolbar_customize_general_title,
                      icon: Asset.icMagicWand.image)
     }
 }

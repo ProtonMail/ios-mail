@@ -321,7 +321,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
 
         if #available(iOS 13.0, *) {
-            self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
+            self.view.window?.windowScene?.title = self.title ?? LocalString._menu_inbox_title
         }
 
         guard viewModel.isHavingUser else {

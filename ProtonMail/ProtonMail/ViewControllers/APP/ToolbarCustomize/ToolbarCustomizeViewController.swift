@@ -52,7 +52,7 @@ final class ToolbarCustomizeViewController<T: ToolbarAction>: UIViewController, 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = LocalString._action_sheet_action_title_toolbar_customize
+        title = LocalString._toolbar_customize_general_title
 
         setupNavigationBarItems()
         setupTableView()
@@ -183,7 +183,7 @@ final class ToolbarCustomizeViewController<T: ToolbarAction>: UIViewController, 
                                       preferredStyle: .alert)
         alert.addCancelAction(handler: nil)
         let resetAction = UIAlertAction(
-            title: LocalString._toolbar_customize_reset_alert_ok_title,
+            title: LocalString._general_confirm_action,
             style: .default
         ) { [weak self] _ in
             self?.viewModel.resetActionsToDefault()

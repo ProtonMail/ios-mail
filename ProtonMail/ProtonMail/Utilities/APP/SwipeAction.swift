@@ -41,7 +41,7 @@ enum SwipeActionSettingType: Int, CustomStringConvertible, CaseIterable {
     var description: String {
         switch self {
         case .trash:
-            return LocalString._locations_trash_desc
+            return LocalString._menu_trash_title
         case .spam:
             return LocalString._move_to_spam
         case .starAndUnstar:
@@ -77,9 +77,9 @@ enum SwipeActionSettingType: Int, CustomStringConvertible, CaseIterable {
         case .starAndUnstar:
             return LocalString._swipe_action_star
         case .archive:
-            return LocalString._swipe_action_archive
+            return LocalString._menu_archive_title
         case .spam:
-            return LocalString._swipe_action_spam
+            return LocalString._menu_spam_title
         default:
             return description
         }
@@ -171,15 +171,15 @@ enum MessageSwipeAction: CustomStringConvertible {
         case .unstar:
             return LocalString._swipe_action_unstar
         case .trash:
-            return LocalString._locations_trash_desc
+            return LocalString._menu_trash_title
         case .labelAs:
             return LocalString._label_as_
         case .moveTo:
             return LocalString._move_to_
         case .archive:
-            return LocalString._swipe_action_archive
+            return LocalString._menu_archive_title
         case .spam:
-            return LocalString._swipe_action_spam
+            return LocalString._menu_spam_title
         }
     }
 

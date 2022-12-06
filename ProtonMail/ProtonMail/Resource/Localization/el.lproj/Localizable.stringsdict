@@ -5,7 +5,7 @@
 	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@μέλος@</string>
+		<string>%#@member@</string>
 		<key>member</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -258,7 +258,7 @@
 			<string>%d λεπτά</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ΛΕΠΤΟ@</string>
+		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>
@@ -290,12 +290,12 @@
 			<string>%u συνομιλίες</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ΣΥΖΗΤΗΣΗ@</string>
+		<string>%#@CONVERSATION@</string>
 	</dict>
 	<key>%u message</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@μήνυμα@</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
