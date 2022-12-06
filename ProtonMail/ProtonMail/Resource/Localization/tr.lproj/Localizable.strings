@@ -31,9 +31,6 @@
 /* Title of the tracker list. Only used if there is at least one tracker. */
 "%d email trackers blocked" = "%d e-posta izleyici engellendi";
 
-/* Short hint in the header view */
-"%d email trackers found" = "%d e-posta izleyici bulundu";
-
 /* The title of swipe banner after swiping to label messages */
 "%d message labeled" = "%d ileti etiketlendi";
 

@@ -19,9 +19,6 @@
 /* Title of the tracker list. Only used if there is at least one tracker. */
 "%d email trackers blocked" = "%d email trackers blocked";
 
-/* Short hint in the header view */
-"%d email trackers found" = "%d email trackers found";
-
 /* The title of swipe banner after swiping to label messages */
 "%d message labeled" = "%d message labeled";
 

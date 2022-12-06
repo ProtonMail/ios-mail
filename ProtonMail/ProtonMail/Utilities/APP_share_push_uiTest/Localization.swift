@@ -1497,7 +1497,7 @@ enum L11n {
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
         static let spotlight_title = NSLocalizedString("You’re safe from email trackers", comment: "Title of the spotlight for tracker protection")
-        static let n_email_trackers_found = NSLocalizedString("%d email trackers found", comment: "Short hint in the header view")
+        static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")
         static let n_email_trackers_blocked = NSLocalizedString("%d email trackers blocked", comment: "Title of the tracker list. Only used if there is at least one tracker.")
         static let email_trackers_can_violate_your_privacy = NSLocalizedString("Email trackers can violate your privacy.", comment: "Tracker protection feature explanation")
         static let proton_found_n_trackers_on_this_message = NSLocalizedString("Proton found %d trackers on this message.", comment: "Tracker protection results")
