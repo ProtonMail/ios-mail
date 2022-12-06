@@ -30,8 +30,6 @@ stages:
   - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
   - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
   - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
-  - SENTRY_PROJECT=$SENTRY_PROJECT_ENTERPRISE
-  - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN_ENTERPRISE
 
 # --- includes ---
 include:
@@ -124,7 +122,7 @@ ui_tests_smoke:
     paths:
       - bundler-cache/
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_UITEST
   allow_failure: false
   
 report:ui-tests-smoke:
@@ -178,7 +176,7 @@ ui_feature_tests:
   after_script:
     - xchtmlreport -r ./TestResults -j
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_UITEST
 
 report:ui_feature_tests:
   image: $CI_REGISTRY/tpe/test-scripts
@@ -239,7 +237,7 @@ build-app-and-upload:
     paths:
       - bundler-cache/
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_BUILD
 
 nightly-build-and-upload:
   dependencies: []

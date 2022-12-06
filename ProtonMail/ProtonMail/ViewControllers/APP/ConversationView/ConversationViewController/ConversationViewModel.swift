@@ -321,6 +321,10 @@ class ConversationViewModel {
     }
 
 	func shouldShowToolbarCustomizeSpotlight() -> Bool {
+        guard UserInfo.isToolbarCustomizationEnable else {
+            return false
+        }
+
         if !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .toolbarCustomization) {
             return true
         }

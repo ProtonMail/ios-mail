@@ -467,6 +467,26 @@ class ConversationViewModelTests: XCTestCase {
         waitForExpectations(timeout: 0.5, handler: nil)
     }
 
+    func testShouldShowToolbarCustomizeSpotlight_userHasNotSeenSpotlight_returnTrue() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userIntroductionProgressProviderMock.callHasUserSeenSpotlight.bodyIs { _, key in
+            XCTAssertEqual(key, .toolbarCustomization)
+            return false
+        }
+
+        XCTAssertTrue(sut.shouldShowToolbarCustomizeSpotlight())
+    }
+
+    func testShouldShowToolbarCustomizeSpotlight_userHasSeenSpotlight_returnFalse() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userIntroductionProgressProviderMock.callHasUserSeenSpotlight.bodyIs { _, key in
+            XCTAssertEqual(key, .toolbarCustomization)
+            return true
+        }
+
+        XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
+    }
+
     private func makeConversationWithUnread(of labelID: LabelID, unreadCount: Int) -> Conversation {
         let fakeConversation = Conversation(context: contextProviderMock.mainContext)
         let fakeContextLabel = ContextLabel(context: contextProviderMock.mainContext)

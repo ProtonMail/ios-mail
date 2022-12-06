@@ -46,6 +46,11 @@ extension UserInfo {
         if ProcessInfo.isRunningUnitTests {
             return true
         }
+        if ProcessInfo.processInfo.arguments.contains(
+            BackendConfiguration.Arguments.disableToolbarSpotlight
+        ) {
+            return false
+        }
         return false
     }
 
