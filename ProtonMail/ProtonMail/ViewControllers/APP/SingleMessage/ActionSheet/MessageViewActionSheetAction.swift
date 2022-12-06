@@ -53,7 +53,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
     var title: String? {
         switch self {
         case .archive:
-            return LocalString._action_sheet_action_title_archive
+            return LocalString._menu_archive_title
         case .reply:
             return LocalString._action_sheet_action_title_reply
         case .replyAll:
@@ -99,7 +99,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         case .viewInDarkMode:
             return LocalString._title_of_viewInDarkMode_action_in_action_sheet
         case .toolbarCustomization:
-            return LocalString._action_sheet_action_title_toolbar_customize
+            return LocalString._toolbar_customize_general_title
         case .more:
             return nil
         case .replyOrReplyAll:

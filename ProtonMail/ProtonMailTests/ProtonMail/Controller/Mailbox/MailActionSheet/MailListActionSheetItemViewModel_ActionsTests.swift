@@ -78,7 +78,7 @@ class MailListActionSheetItemViewModel_ActionsTests: XCTestCase {
     func testMoveToArchiveActionViewModel() {
         sut = .moveToArchive()
         XCTAssertEqual(sut.type, .archive)
-        let singleMessageFormat = LocalString._title_of_archive_action_in_action_sheet
+        let singleMessageFormat = LocalString._menu_archive_title
         XCTAssertEqual(sut.title, String(format: singleMessageFormat, 1))
     }
 

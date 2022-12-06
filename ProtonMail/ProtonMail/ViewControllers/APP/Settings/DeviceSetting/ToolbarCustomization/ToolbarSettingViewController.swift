@@ -31,7 +31,7 @@ final class ToolbarSettingViewController: UIViewController, LifetimeTrackable {
     init(viewModel: ToolbarSettingViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        title = LocalString._toolbar_setting_title
+        title = LocalString._toolbar_customize_general_title
         trackLifetime()
     }
 

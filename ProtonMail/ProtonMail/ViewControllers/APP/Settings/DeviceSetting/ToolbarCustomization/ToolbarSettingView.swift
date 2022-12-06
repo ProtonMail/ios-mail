@@ -66,7 +66,7 @@ final class ToolbarSettingView: UIView {
 private enum SubviewsFactory {
     static var segmentControl: UISegmentedControl {
         let control = UISegmentedControl(items: [LocalString._toolbar_setting_segment_title_message,
-                                                 LocalString._toolbar_setting_segment_title_inbox])
+                                                 LocalString._menu_inbox_title])
         return control
     }
 

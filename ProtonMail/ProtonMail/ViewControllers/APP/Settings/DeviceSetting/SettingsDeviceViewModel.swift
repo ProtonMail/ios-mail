@@ -67,7 +67,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
         case .alternativeRouting:
             return LocalString._alternative_routing
         case .toolbar:
-            return LocalString._toolbar_customize_setting_title
+            return LocalString._toolbar_customize_general_title
         }
     }
 }

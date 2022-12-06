@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4 
+#!/usr/bin/env python3
 
 # Check keys in plural localization files
 # Here is an example, the key of NSStringLocalizedFormatKey is DAY
@@ -24,8 +24,8 @@
 # if it find errors, will print information you need on the terminal
 
 import re
+import pathlib
 import plistlib
-import os
 
 # Check the whole plural localization file
 # Return: bad plural key list, list[str]
@@ -73,23 +73,24 @@ def find_plural_keys(dict) -> list:
 # Find *.stringsdict in the project 
 # Return: list[str], e.g. ['/Users/anson/Documents/cache/ProtonMail/ProtonMail/nl.lproj/Localizable.stringsdict']
 def find_localizations() -> list:
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    parent = os.path.abspath(os.path.join(script_path, '..'))
-    proton_dir = os.path.abspath(os.path.join(parent, 'ProtonMail/ProtonMail/Resource/Localization'))
-    dirs = [path for path in os.listdir(proton_dir) if path.endswith('.lproj')]
+    script_path  = pathlib.Path(__file__).resolve().parent
+    parent = script_path / '..' / '..'
+    proton_dir = parent / 'ProtonMail' / 'ProtonMail' / 'Resource' / 'Localization'
+    dirs = [path for path in proton_dir.iterdir() if path.name.endswith('.lproj')]
     paths = []
-    for dir_name in dirs:
-        path = os.path.abspath(os.path.join(proton_dir, '{}/Localizable.stringsdict'.format(dir_name)))
-        paths.append(path)
+    for directory in dirs:
+        path = proton_dir / directory.name / 'Localizable.stringsdict'
+        paths.append(path.resolve())
     return paths
 
 if __name__ == '__main__':
-    # paths = find_localizations()
-    paths = ['/Users/anson/Documents/v4/ProtonMail/ProtonMail/Resource/Localization/Base.lproj/Localizable.stringsdict']
+    paths = find_localizations()
+    if len(paths) == 0:
+        raise("ERROR: Can't find localization files")
     for path in paths:
         bugs_key = check_plural_file(path)
         if len(bugs_key) > 0:
             bugs_key = ['【%#@{}@】'.format(key) for key in bugs_key]
             keys = ','.join(bugs_key)
-            print('Please check file {}'.format(path))
+            print('\033[91mPlease check file {}\033[0m'.format(path))
             print('For keys {}'.format(keys))

@@ -426,9 +426,9 @@ extension ComposeHeaderViewController: ContactPickerDataSource {
 
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         if contactPickerView == toContactPicker {
-            contactPickerView.prompt = "\(LocalString._composer_to_label):"
+            contactPickerView.prompt = "\(LocalString._general_to_label):"
         } else if contactPickerView == ccContactPicker {
-            contactPickerView.prompt = "\(LocalString._composer_cc_label):"
+            contactPickerView.prompt = "\(LocalString._general_cc_label):"
         } else if contactPickerView == bccContactPicker {
             contactPickerView.prompt = "\(LocalString._composer_bcc_label):"
         }
