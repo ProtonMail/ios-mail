@@ -243,16 +243,16 @@ platform :ios do
 
     build_enterprise_app
 
-    begin
-      sentry_upload_dsym(
-        auth_token: ENV["SENTRY_AUTH_TOKEN"],
-        org_slug: ENV["SENTRY_ORG"],
-        project_slug: ENV["SENTRY_PROJECT"],
-        url: ENV["SENTRY_URL"]
-      )
-    rescue => ex
-      puts("Sentry upload error: #{ex}")
-    end
+    # begin
+    #   sentry_upload_dsym(
+    #     auth_token: ENV["SENTRY_AUTH_TOKEN"],
+    #     org_slug: ENV["SENTRY_ORG"],
+    #     project_slug: ENV["SENTRY_PROJECT"],
+    #     url: ENV["SENTRY_URL"]
+    #   )
+    # rescue => ex
+    #   puts("Sentry upload error: #{ex}")
+    # end
 
     branchName = git_branch
     lastGitCommitHash = last_git_commit[:commit_hash]

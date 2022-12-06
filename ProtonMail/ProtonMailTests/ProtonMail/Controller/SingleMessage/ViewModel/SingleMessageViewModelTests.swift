@@ -168,6 +168,26 @@ final class SingleMessageViewModelTests: XCTestCase {
         XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.messageActions, [.unstar, .markRead])
     }
 
+    func testShouldShowToolbarCustomizeSpotlight_userHasNotSeenSpotlight_returnTrue() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userIntroductionProgressProviderMock.callHasUserSeenSpotlight.bodyIs { _, key in
+            XCTAssertEqual(key, .toolbarCustomization)
+            return false
+        }
+
+        XCTAssertTrue(sut.shouldShowToolbarCustomizeSpotlight())
+    }
+
+    func testShouldShowToolbarCustomizeSpotlight_userHasSeenSpotlight_returnFalse() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userIntroductionProgressProviderMock.callHasUserSeenSpotlight.bodyIs { _, key in
+            XCTAssertEqual(key, .toolbarCustomization)
+            return true
+        }
+
+        XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
+    }
+
     private func makeSUT(labelID: LabelID, message: MessageEntity? = nil) {
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
