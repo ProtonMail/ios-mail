@@ -444,20 +444,20 @@ extension MenuViewModel {
                 userID: user.userID
             )
 
-        let currentCount = observer.observe(countUpdate: { [weak self] newCount in
-            self?.updateInboxItems(by: newCount)
-        })
-        updateInboxItems(by: currentCount)
+        let status = observer.observe { [weak self] currentStatus in
+            self?.updateInboxItems(hasScheduledMessage: currentStatus)
+        }
+        updateInboxItems(hasScheduledMessage: status)
         self.scheduleSendLocationStatusObserver = observer
     }
 
-    func updateInboxItems(by scheduledMsgCount: Int) {
-        if scheduledMsgCount > 0 && !inboxItems.contains(where: { $0.location == .scheduled }) {
+    func updateInboxItems(hasScheduledMessage: Bool) {
+        if hasScheduledMessage && !inboxItems.contains(where: { $0.location == .scheduled }) {
             if let insertIndex = inboxItems.firstIndex(where: { $0.location == .sent }) {
                 inboxItems.insert(MenuLabel(location: .scheduled), at: insertIndex)
                 reloadClosure?()
             }
-        } else if scheduledMsgCount <= 0 {
+        } else if hasScheduledMessage == false {
             inboxItems.removeAll(where: { $0.location == .scheduled })
             reloadClosure?()
         }

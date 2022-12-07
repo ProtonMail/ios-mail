@@ -22,8 +22,14 @@ import ProtonCore_DataModel
 /// This class is used to observe the message count of the location (LabelID == 12).
 final class ScheduleSendLocationStatusObserver: NSObject, NSFetchedResultsControllerDelegate {
     private let context: NSManagedObjectContext
-    private var countUpdate: ((Int) -> Void)?
-    private var currentCount = 0
+    private var havingScheduledSendMessageUpdate: ((Bool) -> Void)?
+    private var isHavingScheduledSendMessage = false {
+        didSet {
+            if isHavingScheduledSendMessage != oldValue {
+                havingScheduledSendMessageUpdate?(isHavingScheduledSendMessage)
+            }
+        }
+    }
     private let userID: UserID
 
     init(
@@ -58,27 +64,70 @@ final class ScheduleSendLocationStatusObserver: NSObject, NSFetchedResultsContro
         )
     }()
 
-    func observe(countUpdate: @escaping (Int) -> Void) -> Int {
-        self.countUpdate = countUpdate
+    private lazy var conversationCountFetchedController: NSFetchedResultsController<ConversationCount>? = {
+        let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(
+            format: "%K == %@ AND %K == %@",
+            ConversationCount.Attributes.userID,
+            userID.rawValue,
+            ConversationCount.Attributes.labelID,
+            Message.Location.scheduled.rawValue
+        )
+        let sortDescriptor = NSSortDescriptor(key: ConversationCount.Attributes.userID,
+                                              ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return NSFetchedResultsController(fetchRequest: fetchRequest,
+                                          managedObjectContext: context,
+                                          sectionNameKeyPath: nil,
+                                          cacheName: nil)
+    }()
+
+    private lazy var messageCountController: NSFetchedResultsController<LabelUpdate>? = {
+        let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(
+            format: "%K == %@ AND %K == %@",
+            LabelUpdate.Attributes.userID,
+            userID.rawValue,
+            LabelUpdate.Attributes.labelID,
+            Message.Location.scheduled.rawValue
+        )
+        let sortDescriptor = NSSortDescriptor(key: LabelUpdate.Attributes.userID,
+                                              ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return NSFetchedResultsController(fetchRequest: fetchRequest,
+                                          managedObjectContext: context,
+                                          sectionNameKeyPath: nil,
+                                          cacheName: nil)
+    }()
+
+    func observe(statusUpdate: @escaping (Bool) -> Void) -> Bool {
+        self.havingScheduledSendMessageUpdate = statusUpdate
 
         fetchResultsController?.delegate = self
         try? fetchResultsController?.performFetch()
 
-        currentCount = Int(fetchResultsController?.fetchedObjects?.count ?? 0)
+        conversationCountFetchedController?.delegate = self
+        try? conversationCountFetchedController?.performFetch()
 
-        return currentCount
+        messageCountController?.delegate = self
+        try? messageCountController?.performFetch()
+
+        let isHavingScheduledSendMessage = calculateIsHavingScheduledMessage()
+
+        return isHavingScheduledSendMessage
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        var newValue: Int = 0
-        guard let msgCount = controller.fetchedObjects?.count else {
-            return
-        }
-        newValue = max(msgCount, 0)
+        let newValue = calculateIsHavingScheduledMessage()
+        isHavingScheduledSendMessage = newValue
+    }
 
-        if currentCount != newValue {
-            countUpdate?(newValue)
-            currentCount = newValue
-        }
+    private func calculateIsHavingScheduledMessage() -> Bool {
+        let scheduledMsgCount = fetchResultsController?.fetchedObjects?.count ?? 0
+        let conversationCount = Int(conversationCountFetchedController?.fetchedObjects?.first?.total ?? 0)
+        let messageCount = Int(messageCountController?.fetchedObjects?.first?.total ?? 0)
+
+        let isHavingScheduledSendMessage = scheduledMsgCount > 0 || conversationCount > 0 || messageCount > 0
+        return isHavingScheduledSendMessage
     }
 }

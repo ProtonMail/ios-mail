@@ -215,7 +215,7 @@ class MenuViewModelTests: XCTestCase {
         sut.reloadClosure = {
             expectation1.fulfill()
         }
-        sut.updateInboxItems(by: 1)
+        sut.updateInboxItems(hasScheduledMessage: true)
         XCTAssertTrue(sut.inboxItems.contains(where: { $0.location == .scheduled }))
         waitForExpectations(timeout: 1, handler: nil)
 
@@ -254,7 +254,7 @@ class MenuViewModelTests: XCTestCase {
         sut.reloadClosure = {
             expectation1.fulfill()
         }
-        sut.updateInboxItems(by: 1) // Add scheduled location
+        sut.updateInboxItems(hasScheduledMessage: true) // Add scheduled location
         XCTAssertTrue(sut.inboxItems.contains(where: { $0.location == .scheduled }))
         waitForExpectations(timeout: 1, handler: nil)
 
@@ -263,14 +263,14 @@ class MenuViewModelTests: XCTestCase {
         sut.reloadClosure = {
             expectation2.fulfill()
         }
-        sut.updateInboxItems(by: 12) // scheduled location not touched
+        sut.updateInboxItems(hasScheduledMessage: true) // scheduled location not touched
         waitForExpectations(timeout: 1, handler: nil)
 
         let expectation3 = expectation(description: "Closure is called")
         sut.reloadClosure = {
             expectation3.fulfill()
         }
-        sut.updateInboxItems(by: 0) // Remove scheduled location
+        sut.updateInboxItems(hasScheduledMessage: false) // Remove scheduled location
         waitForExpectations(timeout: 1, handler: nil)
     }
 
