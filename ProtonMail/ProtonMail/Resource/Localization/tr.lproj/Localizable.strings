@@ -239,9 +239,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Arşivle";
 
-/* mail location title */
-"ARCHIVE" = "ARŞİV";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
 
@@ -417,7 +414,7 @@
 "Change account password" = "Hesap parolasını değiştir";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Varsayılan adresi şuna değiştir…";
 
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
@@ -433,7 +430,7 @@
 "Change PIN code" = "PIN kodunu değiştir";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Gönderici adresini şuna değiştir…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Aygıtınızı şarj edin ya da el ile sürdürün.";
@@ -667,6 +664,9 @@
 /* Action */
 "Discard changes" = "Değişiklikleri sil";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Yok sayıldı";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Klavyeyi yok say";
 
@@ -752,9 +752,6 @@
 
 /* menu title */
 "Drafts" = "Taslaklar";
-
-/* mail location title */
-"DRAFTS" = "TASLAKLAR";
 
 /* Onboarding title */
 "Easily up-to-date" = "Kolayca güncel";
@@ -1034,9 +1031,6 @@
 
 /* menu title */
 "Inbox" = "Gelen kutusu";
-
-/* mail location title */
-"INBOX" = "GELEN KUTUSU";
 
 /* Error */
 "Incorrect PIN." = "PIN kodu yanlış.";
@@ -1689,11 +1683,14 @@
 "Save Changes" = "Değişiklikleri kaydet";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Gönderimi zamanla";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Zamanlama kaldırılacak";
+
+/* mail location title */
+"Scheduled" = "Zamanlanmış";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "İleti zamanlanıyor...";
@@ -1765,9 +1762,6 @@
 
 /* menu title */
 "Sent" = "Gönderilmiş";
-
-/* mail location title */
-"SENT" = "GÖNDERİLMİŞ";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
@@ -1848,9 +1842,6 @@
 /* menu title */
 "Spam" = "İstenmeyen";
 
-/* mail location title */
-"SPAM" = "İSTENMEYEN";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Yıldız koy/kaldır";
@@ -1862,9 +1853,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Yıldızlı";
-
-/* mail location title */
-"STARRED" = "YILDIZLI";
 
 /* contact placeholder */
 "State" = "Bölge";
@@ -1979,7 +1967,7 @@
 "The new password needs to be at least 8 characters long" = "Yeni parola en az 8 karakter uzunluğunda olmalıdır";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Parola yanlış.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Parola uzunluğu 8 ile 21 karakter arasında olmalıdır";
@@ -2012,7 +2000,7 @@
 "There are unsent messages that will be lost if you sign out" = "Gönderilmemiş iletiler var. Oturumu kapatırsanız bunlar silinecek";
 
 /* The content of the alert that will be shown when user tries to delete a scheduled message. */
-"These %d messages will move to Drafts and have their schedule removed." = "Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.";
+"These %d messages will move to Drafts and have their schedule removed." = "Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlamaları kaldırılacak.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Bu işlem geri alınamaz.";
@@ -2111,9 +2099,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Çöp kutusu";
-
-/* mail location title */
-"TRASH" = "ÇÖP KUTUSU";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Sorun giderme";

@@ -194,9 +194,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiveren";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIEF";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
 
@@ -362,9 +359,6 @@
 /* settings general section title */
 "Change account password" = "Account-wachtwoord veranderen";
 
-/* Title */
-"Change default address to…" = "Change default address to…";
-
 /* settings general section title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
@@ -377,9 +371,6 @@
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Wijzig PIN-code";
-
-/* Title */
-"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Laad uw apparaat op of hervat manueel.";
@@ -672,6 +663,12 @@
 /* The text for the number of downloaded messages. */
 "Downloading message %1d out of %2d" = "Bericht %1$d van de %2$d downloaden";
 
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Metagegevens downloaden...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Nieuwe berichten downloaden...";
+
 /* Action */
 "Draft" = "Concept";
 
@@ -683,9 +680,6 @@
 
 /* menu title */
 "Drafts" = "Concepten";
-
-/* mail location title */
-"DRAFTS" = "CONCEPTEN";
 
 /* Onboarding title */
 "Easily up-to-date" = "Gemakkelijk up-to-date";
@@ -734,7 +728,7 @@
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
 
 /* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Traceerbescherming van e-mails is nu beschikbaar. Afzenders zullen niet weten waar of wanneer je hun e-mails heb geopend.";
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Traceerbescherming van e-mails is nu beschikbaar. Afzenders zullen niet weten waar of wanneer u hun e-mails heb geopend.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam leegmaken";
@@ -947,9 +941,6 @@
 
 /* menu title */
 "Inbox" = "Inbox";
-
-/* mail location title */
-"INBOX" = "POSTVAK IN";
 
 /* Error */
 "Incorrect PIN." = "Onjuiste PIN-code.";
@@ -1542,7 +1533,7 @@
 "Report phishing" = "Phishing rapporteren";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit bericht kunnen zien.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar Proton Mail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit bericht kunnen zien.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Bevestigingslink aanvragen";
@@ -1575,7 +1566,7 @@
 "Save Changes" = "Wijzigingen opslaan";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Ingepland versturen";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
@@ -1642,9 +1633,6 @@
 
 /* menu title */
 "Sent" = "Verzonden";
-
-/* mail location title */
-"SENT" = "VERZONDEN";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Verzonden door Proton Mail met zero-access-versleuteling";
@@ -1725,9 +1713,6 @@
 /* menu title */
 "Spam" = "Spam";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Ster";
@@ -1739,9 +1724,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Met ster";
-
-/* mail location title */
-"STARRED" = "MET STER";
 
 /* contact placeholder */
 "State" = "Land/Staat";
@@ -1845,9 +1827,6 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Het nieuwe wachtwoord moet ten minste 8 tekens lang zijn";
-
-/* update password error */
-"The password is wrong." = "The password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Het wachtwoord moet tussen 8 en 21 tekens lang zijn";
@@ -1967,9 +1946,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Prullenbak";
-
-/* mail location title */
-"TRASH" = "PRULLENBAK";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Probleemoplossing";

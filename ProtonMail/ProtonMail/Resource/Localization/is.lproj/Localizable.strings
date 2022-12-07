@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Safn";
 
-/* mail location title */
-"ARCHIVE" = "SAFN";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
 
@@ -368,9 +365,6 @@
 /* settings general section title */
 "Change account password" = "Breyta lykilorði innskráningar";
 
-/* Title */
-"Change default address to…" = "Change default address to…";
-
 /* settings general section title */
 "Change mailbox password" = "Breyta lykilorði á pósthólfi";
 
@@ -383,9 +377,6 @@
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Breyta PIN kóða";
-
-/* Title */
-"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Hladdu tækið þitt eða haltu áfram handvirkt.";
@@ -702,9 +693,6 @@
 /* menu title */
 "Drafts" = "Drög";
 
-/* mail location title */
-"DRAFTS" = "DRÖG";
-
 /* Onboarding title */
 "Easily up-to-date" = "Auðveldlega uppfærð";
 
@@ -971,9 +959,6 @@
 
 /* menu title */
 "Inbox" = "Innhólf";
-
-/* mail location title */
-"INBOX" = "INNHÓLF";
 
 /* Error */
 "Incorrect PIN." = "Rangt PIN.";
@@ -1614,7 +1599,7 @@
 "Save Changes" = "Vista breytingar";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Áætla sendingu";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
@@ -1690,9 +1675,6 @@
 
 /* menu title */
 "Sent" = "Sent";
-
-/* mail location title */
-"SENT" = "SENT";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Sent frá Proton tölvupósti með órjúfanlegri dulritun";
@@ -1773,9 +1755,6 @@
 /* menu title */
 "Spam" = "Ruslpóstur";
 
-/* mail location title */
-"SPAM" = "RUSLPÓSTUR";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Stjörnumerkja";
@@ -1787,9 +1766,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Stjörnumerkt";
-
-/* mail location title */
-"STARRED" = "STJÖRNUMERKT";
 
 /* contact placeholder */
 "State" = "Hérað/Fylki";
@@ -1899,9 +1875,6 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Nýja lykilorðið þarf að vera að lágmarki 8 stafir";
-
-/* update password error */
-"The password is wrong." = "The password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Lykilorðið verður að vera á milli 8 og 21 stafur að lengd";
@@ -2015,9 +1988,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Rusl";
-
-/* mail location title */
-"TRASH" = "RUSL";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Bilanagreining";

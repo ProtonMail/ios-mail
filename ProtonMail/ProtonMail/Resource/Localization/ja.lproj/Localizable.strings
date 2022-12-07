@@ -34,6 +34,9 @@
 /* Placeholder */
 "8 to 21 characters long" = "8 ~ 21 文字";
 
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "未払いのため、このアカウントへのアクセスはできません。 未払いの請求書をお支払いいただくには、proton.me からログインしてください。";
+
 /* Account manager title */
 "Account" = "アカウント";
 
@@ -123,6 +126,9 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "アプリからログアウトすると、すべての保護設定がリセットされます。";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "すべてのメッセージがダウンロードされました";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "代替ルーティングを許可";
 
@@ -179,11 +185,11 @@
    The title of the archive action in action sheet */
 "Archive" = "アーカイブ";
 
-/* mail location title */
-"ARCHIVE" = "アーカイブ";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "%d 件のメッセージを完全に削除してよろしいですか?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
@@ -228,11 +234,17 @@
 /* Title */
 "Authentication" = "認証";
 
+/* Title */
+"Auto Lock Time" = "自動ロックまでの時間";
+
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
 
 /* settings general section title */
 "Auto-load remote content" = "外部コンテンツを自動で読み込む";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "利用可能なアクション";
 
 /* Example feedback */
 "Awful" = "ひどい";
@@ -260,6 +272,9 @@
 
 /* Settings row */
 "Block email tracking" = "メールのトラッキングをブロック";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "あなたがメッセージを閲覧したかどうか、いつ閲覧したかを送信者が確認できないようにします";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会話モードでスレッドのメッセージを読み進めることができます。";
@@ -478,12 +493,20 @@
 /* No comment provided by engineer. */
 "Current Recovery Email" = "現在の回復用メールアドレス";
 
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "現在のセッション: ";
+
 /* Title */
 "Current sign-in password" = "現在のサインインパスワード";
 
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "カスタム設定";
+
+/* The title of the Customize toolbar setting view.
+   The title of the Customize toolbar spotlight view.
+   The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "ツールバーのカスタマイズ";
 
 /* Title */
 "Cut" = "カット";
@@ -497,11 +520,17 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "日付: %@";
 
+/* days */
+"days" = "日";
+
 /* error title */
 "Decryption error" = "復号エラー";
 
 /* error details */
 "Decryption of this content failed" = "コンテンツの復号に失敗しました";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "暗号化されたコンテンツの復号に失敗しました。";
 
 /* Title */
 "Default" = "既定";
@@ -516,6 +545,9 @@
 
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "%d 件のメッセージを削除";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "ダウンロードされたすべてのメッセージを削除しますか？";
 
 /* Title-Contacts */
 "Delete contact" = "連絡先を削除";
@@ -556,6 +588,12 @@
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "キーボードを隠す";
+
+/* Title in settings */
+"Display Name" = "表示名";
+
+/* Title in display name settings */
+"DisplayName" = "表示名";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "この添付ファイルを削除してよろしいですか?";
@@ -846,6 +884,9 @@
 /* Title */
 "Hide details" = "詳細を非表示";
 
+/* hours */
+"hours" = "時間";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
 
@@ -963,8 +1004,14 @@
 /* settings swipe actions section title */
 "Left to Right" = "左から右";
 
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "1 分未満";
+
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "アカウントの利用上限に到達しました";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "リンクをコピーしました。";
 
 /* Button inside the banner */
 "Load anyway" = "読み込む";
@@ -984,6 +1031,9 @@
 
 /* cell title in device settings */
 "Local storage limit" = "ストレージ容量の上限";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "ストレージ容量の上限です。";
 
 /* menu title */
 "Lock The App" = "アプリをロック";
@@ -1017,7 +1067,7 @@
 "Mark as read" = "既読にする";
 
 /* Action */
-"Mark as read/unread" = "既読と未読を入れ替える";
+"Mark as read/unread" = "既読と未読を切り替える";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "未読にする";
@@ -1027,6 +1077,9 @@
 
 /* menu title */
 "Menu" = "メニュー";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "メッセージ";
 
 /* No comment provided by engineer. */
 "Message actions" = "メッセージの操作";
@@ -1051,6 +1104,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "メッセージヘッダー";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "メッセージ履歴";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "メッセージをごみ箱に移動しました";
@@ -1188,6 +1244,12 @@
 
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "迷惑メールではありません (受信トレイに移動)";
+
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "一部のメッセージがダウンロードされていません。すべてダウンロードするには、デバイスの容量を空けてください。";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "一部のメッセージがダウンロードされていません。すべてダウンロードするには、ストレージの上限を増やしてください。";
 
 /* No comment provided by engineer. */
 "Not set" = "未設定";
@@ -1452,6 +1514,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "リンク先を開くときに確認する";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "初期値に戻す";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "初期値に戻しますか?";
+
 /* Title */
 "Resetting message cache…" = "メッセージキャッシュをリセットしています...";
 
@@ -1474,11 +1542,14 @@
 "Save Changes" = "変更を保存";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "スケジュールを送信";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "送信予約は削除されます";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "メッセージをスケジューリングしています...";
 
 /* Springboard (3D Touch) shortcuts action
    Title */
@@ -1487,6 +1558,9 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "メッセージ内容の検索";
+
+/* The link in local storage downloaded messages. */
+"See details" = "詳細を表示";
 
 /* section title */
 "Select colour" = "色を選択";
@@ -1578,6 +1652,9 @@
 /* menu title */
 "Settings" = "設定";
 
+/* The title of the share button in referral share view. */
+"Share" = "共有";
+
 /* action */
 "Share contact" = "連絡先を共有";
 
@@ -1620,7 +1697,7 @@
 "Star" = "星印を付ける";
 
 /* Title */
-"Star/unstar" = "星印を 付ける/外す";
+"Star/unstar" = "星印を切り替える";
 
 /* menu title
    Springboard (3D Touch) shortcuts action
@@ -1709,6 +1786,9 @@
 /* Error message */
 "The 2 passwords are not matching" = "2 つのパスワードが一致しません";
 
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Proton Mail を閉じると、ダウンロードは停止します。";
+
 /* Description */
 "The draft cache is broken. Please try again." = "下書きのキャッシュが壊れています。再度試してください。";
 
@@ -1728,7 +1808,7 @@
 "The new password needs to be at least 8 characters long" = "パスワードは 8 文字以上である必要があります。";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "パスワードが間違っています。";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "パスワードは 8 ~ 21 文字である必要があります";
@@ -1808,8 +1888,14 @@
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "自動ロックまでの時間";
+
 /* contacts talbe cell Title title */
 "Title" = "肩書き";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS 証明書の検証に失敗しました。接続が監視されている可能性があり、安全のため一時的にアプリがブロックされています。";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS 証明書の検証に失敗しました。接続が監視されている可能性があり、安全のため一時的にアプリがブロックされています。\n\nネットワークを直ちに切り替えてください。";
@@ -1827,15 +1913,15 @@
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
 "Tomorrow, %@" = "明日、%@";
 
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "送信予定のメールがたくさんあるため、これ以上追加できません。\nメールが送られ次第、追加できるようになります。";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
 /* mail location desc
    menu title */
 "Trash" = "ごみ箱";
-
-/* mail location title */
-"TRASH" = "ごみ箱";
 
 /* network troubleshot view title */
 "TroubleShooting" = "トラブルシューティング";
@@ -1864,6 +1950,9 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "応答オブジェクトを解析できません:%@";
 
+/* error when sending the message */
+"Unable to send the email" = "メールを送信できません";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開の宛先";
 
@@ -1878,6 +1967,9 @@
 
 /* Error */
 "Unknown Error" = "不明なエラーが発生しました";
+
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "無制限";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "ロック解除が必要です";
@@ -2020,6 +2112,9 @@
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "1 件以上の不明な宛先が入力されています。宛先を確認してください。";
 
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "メッセージがありません。";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "保存されていない変更があります。保存しますか？";
 
@@ -2050,8 +2145,14 @@
 /* The section title of folder manager table */
 "Your folders" = "あなたのフォルダー";
 
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "招待リンク";
+
 /* The section title of label manager table */
 "Your labels" = "あなたのラベル";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "メッセージをダウンロード中...";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "しばらくの間未使用だったか失効させられているため、セッションが無効になりました。再度ログインしてください";

@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d membre</string>
-			<key>other</key>
-			<string>%d membres</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -91,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentative restante avant l&apos;effacement sécurisé des données !</string>
+			<string>%d tentative restante avant l'effacement sécurisé des données !</string>
 			<key>other</key>
-			<string>%d tentatives restantes avant l&apos;effacement sécurisé des données !</string>
+			<string>%d tentatives restantes avant l'effacement sécurisé des données !</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -157,9 +141,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d&apos;e-mails bloqué</string>
+			<string>%d traqueur d'e-mails bloqué</string>
 			<key>other</key>
-			<string>%d traqueurs d&apos;e-mails bloqués</string>
+			<string>%d traqueurs d'e-mails bloqués</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -173,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d&apos;e-mails trouvé</string>
+			<string>%d traqueur d'e-mails trouvé</string>
 			<key>other</key>
-			<string>%d traqueurs d&apos;e-mails trouvés</string>
+			<string>%d traqueurs d'e-mails trouvés</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -195,6 +179,22 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d membre</string>
+			<key>other</key>
+			<string>%d membres</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -405,7 +405,7 @@
 			<key>one</key>
 			<string>Ce message sera déplacé dans le dossier Brouillons et sa programmation sera supprimée.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Ces %d messages seront déplacés dans le dossier Brouillons et leur programmation sera supprimée.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

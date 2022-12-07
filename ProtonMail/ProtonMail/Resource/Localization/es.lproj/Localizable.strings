@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archivo";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIVO";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "¿Estás seguro que quieres eliminar permanentemente este mensaje?";
 
@@ -257,6 +254,9 @@
 
 /* settings general section title */
 "Auto-load remote content" = "Cargar automáticamente el contenido remoto";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Acciones disponibles";
 
 /* Example feedback */
 "Awful" = "Terrible";
@@ -366,7 +366,7 @@
 "Change account password" = "Cambiar contraseña de la cuenta";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Cambiar la dirección predeterminada a…";
 
 /* settings general section title */
 "Change mailbox password" = "Cambiar contraseña del buzón";
@@ -382,7 +382,7 @@
 "Change PIN code" = "Cambiar código PIN";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Cambiar la dirección del remitente a…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Carga tu dispositivo o reanuda manualmente.";
@@ -530,6 +530,11 @@
    Custom option for time config picker */
 "Custom" = "Personalizado";
 
+/* The title of the Customize toolbar setting view.
+   The title of the Customize toolbar spotlight view.
+   The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Personalizar barra de herramientas";
+
 /* Title */
 "Cut" = "Cortar";
 
@@ -610,6 +615,9 @@
 
 /* Action */
 "Discard changes" = "Descartar cambios";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Descartado";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Descartar teclado";
@@ -697,9 +705,6 @@
 /* menu title */
 "Drafts" = "Borradores";
 
-/* mail location title */
-"DRAFTS" = "BORRADORES";
-
 /* Onboarding title */
 "Easily up-to-date" = "Actualizado fácilmente";
 
@@ -742,6 +747,9 @@
 
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Correo de contacto";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "Error al enviar el correo. Mensaje guardado como borrador.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Los rastreadores de correo pueden violar tu privacidad.";
@@ -973,9 +981,6 @@
 /* menu title */
 "Inbox" = "Bandeja de entrada";
 
-/* mail location title */
-"INBOX" = "BUZÓN";
-
 /* Error */
 "Incorrect PIN." = "PIN incorrecto.";
 
@@ -1135,6 +1140,9 @@
 
 /* menu title */
 "Menu" = "Menú";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Mensaje";
 
 /* No comment provided by engineer. */
 "Message actions" = "Acciones sobre el mensaje";
@@ -1590,6 +1598,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Solicitar confirmación de enlace";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Restablecer valores por defecto";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "¿Restablecer valores por defecto?";
+
 /* Title */
 "Resetting message cache…" = "Restableciendo caché de mensajes…";
 
@@ -1615,7 +1629,7 @@
 "Save Changes" = "Guardar cambios";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programar envío";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
@@ -1691,9 +1705,6 @@
 
 /* menu title */
 "Sent" = "Enviados";
-
-/* mail location title */
-"SENT" = "ENVIADO";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Enviado por Proton Mail con cifrado de conocimiento cero";
@@ -1774,9 +1785,6 @@
 /* menu title */
 "Spam" = "Spam";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Destacar";
@@ -1788,9 +1796,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Destacados";
-
-/* mail location title */
-"STARRED" = "DESTACADOS";
 
 /* contact placeholder */
 "State" = "Estado";
@@ -1880,6 +1885,9 @@
 /* Error message */
 "The 2 passwords are not matching" = "Las dos contraseñas no coinciden";
 
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Las acciones en la barra de herramientas serán restablecidas a sus valores por defecto";
+
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Se parará la descarga si la aplicación Proton Mail se cierra.";
 
@@ -1902,7 +1910,7 @@
 "The new password needs to be at least 8 characters long" = "La nueva contraseña debe tener al menos 8 caracteres";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "La contraseña es incorrecta.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "La contraseña debe tener entre 8 y 21 caracteres";
@@ -1982,6 +1990,12 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Esta preferencia se revertirá a Safari si el navegador elegido es desinstalado.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Esta barra de herramientas aparece al seleccionar múltiples mensajes en tu bandeja de entrada.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Esta barra de herramientas es visible cuando se lee un mensaje.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Tiempo para relajarse";
 
@@ -2013,6 +2027,9 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Demasiados mensajes esperando a ser enviados.\nPor favor espere hasta que otro mensaje se envíe para programar este.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Acciones de la barra de herramientas (seleccionar hasta 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
@@ -2022,9 +2039,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Papelera";
-
-/* mail location title */
-"TRASH" = "PAPELERA";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Solución de problemas";
@@ -2191,8 +2205,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "No estás conectado";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Puedes elegir y reordenar las acciones en tu barra de herramientas";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Puede desactivar las conversaciones desde los ajustes en cualquier momento.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Ahora puedes elegir y reordenar las acciones en esta barra";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Ahora puedes programar tus mensajes para que sean enviados más tarde";

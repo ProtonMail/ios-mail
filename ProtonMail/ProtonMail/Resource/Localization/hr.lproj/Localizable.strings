@@ -493,10 +493,6 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Uredi avatar";
 
-/* *
- *  Edit Contact view controller */
-"Edit Contact" = "Uredi kontakt";
-
 /* The title of edit folder page */
 "Edit folder" = "Uredi mapu";
 
@@ -851,9 +847,6 @@
 /* default vcard types */
 "Mobile" = "Mobitel";
 
-/* Mobile Signature title in settings */
-"Mobile Signature" = "Potpis na mobilnim uređajima";
-
 /* More actions button */
 "More" = "Više";
 
@@ -1201,7 +1194,7 @@
 "Save Changes" = "Spremi promjene";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Zakaži slanje";
 
 /* Springboard (3D Touch) shortcuts action

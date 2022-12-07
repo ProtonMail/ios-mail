@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d Membro</string>
-			<key>other</key>
-			<string>%d Membri</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -195,6 +179,22 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d membro</string>
+			<key>other</key>
+			<string>%d membri</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -405,7 +405,7 @@
 			<key>one</key>
 			<string>Questo messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Questi %d messaggi verranno spostati nelle Bozze e la loro programmazione verrà rimossa.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

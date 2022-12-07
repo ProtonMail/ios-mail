@@ -236,9 +236,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Arkiv";
 
-/* mail location title */
-"ARCHIVE" = "ARKIV";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Är du säker på att du vill ta bort detta meddelande permanent?";
 
@@ -414,7 +411,7 @@
 "Change account password" = "Ändra kontolösenord";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Ändra standardadress till…";
 
 /* settings general section title */
 "Change mailbox password" = "Ändra lösenord för brevlådan";
@@ -430,7 +427,7 @@
 "Change PIN code" = "Ändra PIN-kod";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Ändra avsändaradress till…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Ladda din enhet eller återstarta manuellt.";
@@ -750,9 +747,6 @@
 /* menu title */
 "Drafts" = "Utkast";
 
-/* mail location title */
-"DRAFTS" = "UTKAST";
-
 /* Onboarding title */
 "Easily up-to-date" = "Enkelt att uppdatera";
 
@@ -1031,9 +1025,6 @@
 
 /* menu title */
 "Inbox" = "Inkorg";
-
-/* mail location title */
-"INBOX" = "INKORG";
 
 /* Error */
 "Incorrect PIN." = "Felaktig PIN-kod.";
@@ -1686,11 +1677,14 @@
 "Save Changes" = "Spara ändringar";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Schemalägg sändning";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Schema kommer att tas bort";
+
+/* mail location title */
+"Scheduled" = "Schemalagd";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Schemalägger meddelande …";
@@ -1762,9 +1756,6 @@
 
 /* menu title */
 "Sent" = "Skickat";
-
-/* mail location title */
-"SENT" = "SKICKAT";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Skickat av Proton Mail med nollåtkomst-kryptering";
@@ -1845,9 +1836,6 @@
 /* menu title */
 "Spam" = "Skräppost";
 
-/* mail location title */
-"SPAM" = "SKRÄPPOST";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Stjärnmärk";
@@ -1859,9 +1847,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Stjärnmärkt";
-
-/* mail location title */
-"STARRED" = "STJÄRNMÄRKT";
 
 /* contact placeholder */
 "State" = "Delstat";
@@ -1976,7 +1961,7 @@
 "The new password needs to be at least 8 characters long" = "Det nya lösenordet måste vara minst 8 tecken långt";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Lösenordet är fel.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Lösenordet måste vara mellan 8 och 21 tecken långt";
@@ -2007,9 +1992,6 @@
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Det finns oskickade meddelanden som går förlorade om du loggar ut";
-
-/* The content of the alert that will be shown when user tries to delete a scheduled message. */
-"These %d messages will move to Drafts and have their schedule removed." = "Detta %d meddelande kommer att flyttas till utkast och dess schema tas bort.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Denna åtgärd kan inte ångras.";
@@ -2108,9 +2090,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Papperskorg";
-
-/* mail location title */
-"TRASH" = "PAPPERSKORG";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Felsökning";

@@ -194,9 +194,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiwum";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIWUM";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Czy na pewno chcesz trwale usunąć tę wiadomość?";
 
@@ -366,7 +363,7 @@
 "Change account password" = "Zmień hasło logowania";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Zmień domyślny adres na…";
 
 /* settings general section title */
 "Change mailbox password" = "Zmień hasło skrzynki pocztowej";
@@ -382,7 +379,7 @@
 "Change PIN code" = "Zmień kod PIN";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Zmień adres nadawcy na…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Naładuj urządzenie lub wznów pobieranie ręcznie.";
@@ -616,6 +613,9 @@
 /* Action */
 "Discard changes" = "Odrzuć zmiany";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Akcja została odrzucona";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Odrzuć klawiaturę";
 
@@ -701,9 +701,6 @@
 
 /* menu title */
 "Drafts" = "Szkice";
-
-/* mail location title */
-"DRAFTS" = "SZKICE";
 
 /* Onboarding title */
 "Easily up-to-date" = "Bądź na bieżąco";
@@ -977,9 +974,6 @@
 
 /* menu title */
 "Inbox" = "Odebrane";
-
-/* mail location title */
-"INBOX" = "ODEBRANE";
 
 /* Error */
 "Incorrect PIN." = "Kod PIN jest nieprawidłowy.";
@@ -1629,11 +1623,14 @@
 "Save Changes" = "Zapisz zmiany";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Zaplanuj wysyłanie";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Zaplanowane wysyłanie zostało usunięte";
+
+/* mail location title */
+"Scheduled" = "Zaplanowane";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Planowanie wiadomości...";
@@ -1705,9 +1702,6 @@
 
 /* menu title */
 "Sent" = "Wysłane";
-
-/* mail location title */
-"SENT" = "WYSŁANE";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Wysłana przez Proton Mail z szyfrowaniem po stronie klienta";
@@ -1788,9 +1782,6 @@
 /* menu title */
 "Spam" = "Spam";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Oznacz gwiazdką";
@@ -1802,9 +1793,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Wyróżnione";
-
-/* mail location title */
-"STARRED" = "WYRÓŻNIONE";
 
 /* contact placeholder */
 "State" = "Stan";
@@ -1919,7 +1907,7 @@
 "The new password needs to be at least 8 characters long" = "Hasło musi zawierać co najmniej 8 znaków";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Hasło jest nieprawidłowe.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Hasło musi zawierać od 8 do 21 znaków";
@@ -2048,9 +2036,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Kosz";
-
-/* mail location title */
-"TRASH" = "KOSZ";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Rozwiązywanie problemów";

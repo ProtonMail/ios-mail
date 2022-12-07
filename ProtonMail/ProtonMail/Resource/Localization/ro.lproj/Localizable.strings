@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Arhivă";
 
-/* mail location title */
-"ARCHIVE" = "ARHIVĂ";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Sigur doriți să ștergeți permanent acest mesaj?";
 
@@ -369,7 +366,7 @@
 "Change account password" = "Schimbare parolă cont";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Schimbare adresă implicită cu…";
 
 /* settings general section title */
 "Change mailbox password" = "Schimbare parolă mesaje";
@@ -385,7 +382,7 @@
 "Change PIN code" = "Schimbare cod PIN";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Schimbare adresă expeditor cu…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Încărcați dispozitivul sau reluați manual.";
@@ -536,7 +533,7 @@
 /* The title of the Customize toolbar setting view.
    The title of the Customize toolbar spotlight view.
    The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Personalizați bara de instrumente";
+"Customize toolbar" = "Personalizare utilitare";
 
 /* Title */
 "Cut" = "Decupare";
@@ -614,10 +611,13 @@
 "Disabling the feature now will delete the messages that have already been downloaded." = "Dezactivând funcția acum se vor mesajele care au fost deja descărcate.";
 
 /* Action */
-"Discard" = "Renunțare";
+"Discard" = "Anulare";
 
 /* Action */
 "Discard changes" = "Anulare modificări";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Anulat";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ascundere tastatură";
@@ -705,9 +705,6 @@
 /* menu title */
 "Drafts" = "Ciorne";
 
-/* mail location title */
-"DRAFTS" = "CIORNE";
-
 /* Onboarding title */
 "Easily up-to-date" = "Ușor de actualizat";
 
@@ -752,7 +749,7 @@
 "Email contact" = "Trimitere e-mail la contact";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "Formatul ciornei nu este corect. Trimitere eșuată.";
+"Email failed to send. Message saved as draft." = "Mesajul nu s-a putut trimite. Mesajul a fost salvat în ciorne.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Agenții de urmărire din e-mail vă pot încălca intimitatea.";
@@ -983,9 +980,6 @@
 
 /* menu title */
 "Inbox" = "Primite";
-
-/* mail location title */
-"INBOX" = "PRIMITE";
 
 /* Error */
 "Incorrect PIN." = "PIN incorect.";
@@ -1605,10 +1599,10 @@
 "Request link confirmation" = "Solicitare de confirmare";
 
 /* The title of the reset button in toolbar customization view. */
-"Reset to default" = "Revenire la setări inițiale";
+"Reset to default" = "Resetare la implicite";
 
 /* The title of the alert after tapping reset in toolbar customization view. */
-"Reset to default?" = "Resetare la valorile implicite?";
+"Reset to default?" = "Revenire la setările inițiale?";
 
 /* Title */
 "Resetting message cache…" = "Resetare buffer mesaje…";
@@ -1635,11 +1629,14 @@
 "Save Changes" = "Salvare modificări";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Trimitere programată";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Programarea va fi eliminată";
+
+/* mail location title */
+"Scheduled" = "Programate";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Se programează mesajul...";
@@ -1711,9 +1708,6 @@
 
 /* menu title */
 "Sent" = "Trimise";
-
-/* mail location title */
-"SENT" = "TRIMISE";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Trimis de Proton Mail cu criptare cu acces zero.";
@@ -1794,9 +1788,6 @@
 /* menu title */
 "Spam" = "Nedorite";
 
-/* mail location title */
-"SPAM" = "NEDORITE";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Marcare cu stea";
@@ -1808,9 +1799,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Cu stea";
-
-/* mail location title */
-"STARRED" = "CU STEA";
 
 /* contact placeholder */
 "State" = "Județ";
@@ -1901,7 +1889,7 @@
 "The 2 passwords are not matching" = "Parolele nu se potrivesc.";
 
 /* The content of the alert after tapping reset in toolbar customization view. */
-"The actions in the toolbar will be reset to default" = "Acțiunile din bara de instrumente vor fi resetate la valorile implicite";
+"The actions in the toolbar will be reset to default" = "Acțiunile din bara de utilitare vor fi resetate la valorile implicite";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Descărcarea se va opri dacă aplicația Proton Mail este închisă.";
@@ -1925,7 +1913,7 @@
 "The new password needs to be at least 8 characters long" = "Parola nouă trebuie să aibă cel puțin 8 caractere.";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Parola este greșită.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Parola trebuie să aibă între 8 și 21 de caractere.";
@@ -2006,10 +1994,10 @@
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales este dezinstalat.";
 
 /* The title of the info label in the second segment of the Customize toolbar setting view. */
-"This toolbar appears when selecting multiple messages in your inbox." = "Această bară de instrumente apare atunci când selectați mai multe mesaje din cutia poștală de primire.";
+"This toolbar appears when selecting multiple messages in your inbox." = "Această bară de utilitare apare atunci când selectați mai multe mesaje primite.";
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
-"This toolbar is visible when reading a message." = "Această bară de instrumente este vizibilă atunci când se citește un mesaj.";
+"This toolbar is visible when reading a message." = "Această bară de utilitare este vizibilă atunci când se citește un mesaj.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Timp de relaxare";
@@ -2043,7 +2031,7 @@
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Prea multe mesaje așteaptă să fie trimise.\nAșteptați până când un alt mesaj va fi trimis pentru a-l programa pe acesta.";
 
 /* The title of the section header in the toolbar customize view. */
-"Toolbar actions (select up to 5)" = "Acțiuni din bara de instrumente (selectați până la 5)";
+"Toolbar actions (select up to 5)" = "Acțiuni bară utilitare (selectați max 5)";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "ID amprentă";
@@ -2054,9 +2042,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Șterse";
-
-/* mail location title */
-"TRASH" = "GUNOI";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Depanare";
@@ -2224,13 +2209,13 @@
 "You are offline" = "V-ați deconectat";
 
 /* The title of the info bubble view in toolbar customization view. */
-"You can choose and rearrange the actions in your toolbar" = "Puteți alege și rearanja acțiunile din bara de instrumente";
+"You can choose and rearrange the actions in your toolbar" = "Puteți alege și rearanja acțiunile din bara de utilitare";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Puteți oricând dezactiva conversațiile din setări.";
 
 /* The content of the Customize toolbar spotlight view. */
-"You can now choose and rearrange the actions in this bar" = "Acum puteți alege și rearanja acțiunile din această bară";
+"You can now choose and rearrange the actions in this bar" = "Puteți alege și rearanja acțiunile din această bară";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Acum puteți să vă programați mesajele pentru a fi trimise mai târziu.";

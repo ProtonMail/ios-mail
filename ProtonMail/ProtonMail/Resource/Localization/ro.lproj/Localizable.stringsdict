@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d membri</string>
-			<key>one</key>
-			<string>Un membru</string>
-			<key>other</key>
-			<string>%d de membri</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -219,6 +201,24 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d membri</string>
+			<key>one</key>
+			<string>%d membru</string>
+			<key>other</key>
+			<string>%d de membri</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -455,7 +455,7 @@
 			<key>one</key>
 			<string>Acest mesaj se va muta în «Ciorne» și i se va elimina programarea.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Aceste %d de mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
