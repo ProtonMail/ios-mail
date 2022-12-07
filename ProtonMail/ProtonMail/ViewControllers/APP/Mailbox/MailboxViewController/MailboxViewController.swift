@@ -1062,9 +1062,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
         if let type = undoActionType {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
+        } else {
+            let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+            banner.show(at: .bottom, on: self)
         }
-        let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
     }
 
     private func handleRequestError(_ error: NSError) {
