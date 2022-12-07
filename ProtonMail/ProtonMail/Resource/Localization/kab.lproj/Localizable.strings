@@ -557,10 +557,6 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Ẓreg avaṭar";
 
-/* *
- *  Edit Contact view controller */
-"Edit Contact" = "Ẓreg anermis";
-
 /* The title of edit folder page */
 "Edit folder" = "Ẓreg akaram";
 
@@ -960,9 +956,6 @@
 /* default vcard types */
 "Mobile" = "Aziraz";
 
-/* Mobile Signature title in settings */
-"Mobile Signature" = "Azmul n uziraz";
-
 /* More actions button */
 "More" = "Ugar";
 
@@ -1343,7 +1336,7 @@
 "Save Changes" = "Sekles ibeddilen";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Sɣiwes tuzna";
 
 /* Springboard (3D Touch) shortcuts action

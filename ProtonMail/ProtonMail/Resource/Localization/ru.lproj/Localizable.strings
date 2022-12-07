@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Архив";
 
-/* mail location title */
-"ARCHIVE" = "АРХИВ";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Вы уверены, что хотите навсегда удалить это сообщение?";
 
@@ -369,7 +366,7 @@
 "Change account password" = "Изменить пароль акаунта";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Изменить адрес по умолчанию на...";
 
 /* settings general section title */
 "Change mailbox password" = "Изменить пароль почтового ящика";
@@ -385,7 +382,7 @@
 "Change PIN code" = "Изменить PIN-код";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Изменить адрес отправителя на...";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Зарядите свое устройство или продолжите вручную.";
@@ -619,6 +616,9 @@
 /* Action */
 "Discard changes" = "Отменить изменения";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Сброшено";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Отключите клавиатуру";
 
@@ -704,9 +704,6 @@
 
 /* menu title */
 "Drafts" = "Черновики";
-
-/* mail location title */
-"DRAFTS" = "ЧЕРНОВИКИ";
 
 /* Onboarding title */
 "Easily up-to-date" = "Легко обновить";
@@ -983,9 +980,6 @@
 
 /* menu title */
 "Inbox" = "Входящие";
-
-/* mail location title */
-"INBOX" = "ВХОДЯЩИЕ";
 
 /* Error */
 "Incorrect PIN." = "Неверный PIN.";
@@ -1635,11 +1629,14 @@
 "Save Changes" = "Сохранить изменения";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Запланированная отправка";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Расписание будет удалено";
+
+/* mail location title */
+"Scheduled" = "Запланировано";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Сообщение ставится в очередь...";
@@ -1711,9 +1708,6 @@
 
 /* menu title */
 "Sent" = "Отправленные";
-
-/* mail location title */
-"SENT" = "ОТПРАВЛЕННЫЕ";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Отправлено Proton Mail с шифрованием нулевого доступа";
@@ -1794,9 +1788,6 @@
 /* menu title */
 "Spam" = "Спам";
 
-/* mail location title */
-"SPAM" = "СПАМ";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Добавить в Избранное";
@@ -1808,9 +1799,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Со звездочками";
-
-/* mail location title */
-"STARRED" = "СО ЗВЕЗДАМИ";
 
 /* contact placeholder */
 "State" = "Область (регион)";
@@ -1925,7 +1913,7 @@
 "The new password needs to be at least 8 characters long" = "Длина пароля должна быть не менее 8 символов";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Пароль неверный.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Пароль должен быть длинной от 8 до 21 символа";
@@ -2054,9 +2042,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Корзина";
-
-/* mail location title */
-"TRASH" = "КОРЗИНА";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Устранение неполадок";

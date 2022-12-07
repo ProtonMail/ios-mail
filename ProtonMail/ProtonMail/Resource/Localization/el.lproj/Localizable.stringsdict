@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
 			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>

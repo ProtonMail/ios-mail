@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiver";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIVES";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Voulez-vous vraiment supprimer définitivement ce message ?";
 
@@ -250,7 +247,7 @@
 "Authentication" = "Authentification";
 
 /* Title */
-"Auto Lock Time" = "Verrouillage automatique";
+"Auto Lock Time" = "Durée avant verrouillage automatique";
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images intégrées";
@@ -369,7 +366,7 @@
 "Change account password" = "Changer le mot de passe du compte";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Changer l'adresse par défaut par …";
 
 /* settings general section title */
 "Change mailbox password" = "Changer le mot de passe de messagerie";
@@ -385,7 +382,7 @@
 "Change PIN code" = "Modifier le code PIN";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Changer l'adresse de l'expéditeur par…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Chargez votre appareil ou reprenez manuellement.";
@@ -705,9 +702,6 @@
 /* menu title */
 "Drafts" = "Brouillons";
 
-/* mail location title */
-"DRAFTS" = "BROUILLONS";
-
 /* Onboarding title */
 "Easily up-to-date" = "Facile d'être à jour";
 
@@ -984,9 +978,6 @@
 /* menu title */
 "Inbox" = "Boîte de réception";
 
-/* mail location title */
-"INBOX" = "BOÎTE DE RÉCEPTION";
-
 /* Error */
 "Incorrect PIN." = "Code PIN incorrect.";
 
@@ -1211,7 +1202,7 @@
 "Mobile" = "Mobile";
 
 /* Mobile Signature title in settings */
-"Mobile Signature" = "Signature du mobile";
+"Mobile Signature" = "Signature mobile";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Lundi (%1$@) à 08:%2$d";
@@ -1608,7 +1599,7 @@
 "Reset to default" = "Rétablir les valeurs par défaut";
 
 /* The title of the alert after tapping reset in toolbar customization view. */
-"Reset to default?" = "Rétablir les valeurs par défaut ?";
+"Reset to default?" = "Rétablir les valeurs par défaut ?";
 
 /* Title */
 "Resetting message cache…" = "Réinitialisation du cache des messages…";
@@ -1635,7 +1626,7 @@
 "Save Changes" = "Enregistrer les modifications";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programmer l'envoi";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
@@ -1711,9 +1702,6 @@
 
 /* menu title */
 "Sent" = "Envoyés";
-
-/* mail location title */
-"SENT" = "ENVOYÉS";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Envoyé par Proton Mail avec chiffrement zéro accès";
@@ -1794,9 +1782,6 @@
 /* menu title */
 "Spam" = "Indésirables/spam";
 
-/* mail location title */
-"SPAM" = "INDÉSIRABLES/SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Favori";
@@ -1808,9 +1793,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Favoris";
-
-/* mail location title */
-"STARRED" = "FAVORIS";
 
 /* contact placeholder */
 "State" = "État";
@@ -1901,7 +1883,7 @@
 "The 2 passwords are not matching" = "Les 2 mots de passe ne sont pas identiques.";
 
 /* The content of the alert after tapping reset in toolbar customization view. */
-"The actions in the toolbar will be reset to default" = "Les actions dans la barre d'outils seront remises à l'état par défaut";
+"The actions in the toolbar will be reset to default" = "Les actions de la barre d'outils seront rétablies à leurs valeurs par défaut.";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Le téléchargement sera interrompu si l'application Proton Mail est fermée.";
@@ -1925,7 +1907,7 @@
 "The new password needs to be at least 8 characters long" = "Le nouveau mot de passe doit comporter au moins 8 caractères.";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Le mot de passe est incorrect.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Le mot de passe doit contenir entre 8 et 21 caractères.";
@@ -2006,16 +1988,13 @@
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Cette préférence permet de revenir à Safari si le navigateur choisi est désinstallé.";
 
 /* The title of the info label in the second segment of the Customize toolbar setting view. */
-"This toolbar appears when selecting multiple messages in your inbox." = "Cette barre d'outils apparaît lorsque vous sélectionnez plusieurs messages dans votre boite de réception.";
+"This toolbar appears when selecting multiple messages in your inbox." = "Cette barre d'outils apparaît quand vous sélectionnez plusieurs messages dans votre boîte de réception.";
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
-"This toolbar is visible when reading a message." = "Cette barre d'outils est visible lorsque vous lisez un message.";
+"This toolbar is visible when reading a message." = "Cette barre d'outils est visible lors de la lecture d'un message.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "C'est le moment pour se détendre.";
-
-/* A section title for timing section to set auto lock timing */
-"Timing" = "Délai";
 
 /* contacts talbe cell Title title */
 "Title" = "Titre";
@@ -2054,9 +2033,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Corbeille";
-
-/* mail location title */
-"TRASH" = "CORBEILLE";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Dépannage";
@@ -2224,13 +2200,13 @@
 "You are offline" = "Vous êtes hors ligne.";
 
 /* The title of the info bubble view in toolbar customization view. */
-"You can choose and rearrange the actions in your toolbar" = "Vous pouvez choisir et réarranger les actions dans votre barre d'outils";
+"You can choose and rearrange the actions in your toolbar" = "Vous pouvez choisir et réorganiser les actions dans votre barre d'outils.";
 
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Vous pouvez désactiver les conversations à tout moment depuis les paramètres.";
 
 /* The content of the Customize toolbar spotlight view. */
-"You can now choose and rearrange the actions in this bar" = "Vous pouvez à présent choisir et réarranger les actions dans cette barre d'outils";
+"You can now choose and rearrange the actions in this bar" = "Vous pouvez désormais choisir et réorganiser les actions de cette barre d'outils.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Vous pouvez désormais programmer vos messages pour les envoyer plus tard.";

@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Arsip";
 
-/* mail location title */
-"ARCHIVE" = "ARSIP";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Apakah Anda yakin untuk menghapus pesan ini secara permanen?";
 
@@ -369,7 +366,7 @@
 "Change account password" = "Ubah kata sandi akun";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Ubah alamt default menjadi…";
 
 /* settings general section title */
 "Change mailbox password" = "Ganti kata sandi kotak pesan";
@@ -385,7 +382,7 @@
 "Change PIN code" = "Ubah kode PIN";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Ubah alamat pengirim ke…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Isi ulang baterai perangkat Anda atau lanjutkan kembali unduhan secara manual.";
@@ -619,6 +616,9 @@
 /* Action */
 "Discard changes" = "Buang perubahan";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Dibuang";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Tutup keyboard";
 
@@ -704,9 +704,6 @@
 
 /* menu title */
 "Drafts" = "Draf";
-
-/* mail location title */
-"DRAFTS" = "DRAF";
 
 /* Onboarding title */
 "Easily up-to-date" = "Selalu termutakhir";
@@ -983,9 +980,6 @@
 
 /* menu title */
 "Inbox" = "Kotak masuk";
-
-/* mail location title */
-"INBOX" = "KOTAK MASUK";
 
 /* Error */
 "Incorrect PIN." = "PIN salah.";
@@ -1635,11 +1629,14 @@
 "Save Changes" = "Simpan Perubahan";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Jadwalkan pengiriman";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Jadwal akan dihapus";
+
+/* mail location title */
+"Scheduled" = "Terjadwal";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Menjadwalkan pesan...";
@@ -1711,9 +1708,6 @@
 
 /* menu title */
 "Sent" = "Terkirim";
-
-/* mail location title */
-"SENT" = "TERKIRIM";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access";
@@ -1794,9 +1788,6 @@
 /* menu title */
 "Spam" = "Spam";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Bintang";
@@ -1808,9 +1799,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Dibintangi";
-
-/* mail location title */
-"STARRED" = "DIBINTANGI";
 
 /* contact placeholder */
 "State" = "Negara Bagian";
@@ -1925,7 +1913,7 @@
 "The new password needs to be at least 8 characters long" = "Kata sandi baru harus mengandung setidaknya 8 karakter";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Kata sandi tidak tepat.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Kata sandi harus mengandung antara 8 dan 21 karakter";
@@ -2054,9 +2042,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Sampah";
-
-/* mail location title */
-"TRASH" = "SAMPAH";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Penyelesaian Masalah";

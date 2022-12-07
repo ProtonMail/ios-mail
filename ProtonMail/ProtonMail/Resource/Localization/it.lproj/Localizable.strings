@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archivio";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIVIO";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Sei sicuro di voler eliminare permanentemente questo messaggio?";
 
@@ -369,7 +366,7 @@
 "Change account password" = "Cambia la password dell'account";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Modifica l'indirizzo predefinito con…";
 
 /* settings general section title */
 "Change mailbox password" = "Cambia la password della casella email";
@@ -385,7 +382,7 @@
 "Change PIN code" = "Modifica codice PIN";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Modifica l'indirizzo del mittente con…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Carica il tuo dispositivo o riprendi manualmente.";
@@ -619,6 +616,9 @@
 /* Action */
 "Discard changes" = "Annulla modifiche";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Rimosso";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ignora la tastiera";
 
@@ -704,9 +704,6 @@
 
 /* menu title */
 "Drafts" = "Bozze";
-
-/* mail location title */
-"DRAFTS" = "BOZZE";
 
 /* Onboarding title */
 "Easily up-to-date" = "Aggiornato facilmente";
@@ -983,9 +980,6 @@
 
 /* menu title */
 "Inbox" = "Posta in arrivo";
-
-/* mail location title */
-"INBOX" = "POSTA IN ARRIVO";
 
 /* Error */
 "Incorrect PIN." = "PIN errato.";
@@ -1635,11 +1629,14 @@
 "Save Changes" = "Salva le modifiche";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Pianifica invio";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "La pianificazione sarà rimossa";
+
+/* mail location title */
+"Scheduled" = "Programmato";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Pianificazione messaggio...";
@@ -1711,9 +1708,6 @@
 
 /* menu title */
 "Sent" = "Inviata";
-
-/* mail location title */
-"SENT" = "INVIATA";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Inviato da Proton Mail con la crittografia zero-access";
@@ -1794,9 +1788,6 @@
 /* menu title */
 "Spam" = "Spam";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Preferito";
@@ -1808,9 +1799,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "Preferiti";
-
-/* mail location title */
-"STARRED" = "PREFERITI";
 
 /* contact placeholder */
 "State" = "Stato";
@@ -1925,7 +1913,7 @@
 "The new password needs to be at least 8 characters long" = "La nuova password deve contenere almeno 8 caratteri";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "La password non è corretta.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "La password dev'essere lunga tra 8 e 21 caratteri";
@@ -2054,9 +2042,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Cestino";
-
-/* mail location title */
-"TRASH" = "CESTINO";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Risoluzione problemi";

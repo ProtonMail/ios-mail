@@ -197,9 +197,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiv";
 
-/* mail location title */
-"ARCHIVE" = "ARCHIV";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Opravdu chcete tuto zprávu trvale odstranit?";
 
@@ -369,7 +366,7 @@
 "Change account password" = "Změnit heslo účtu";
 
 /* Title */
-"Change default address to…" = "Change default address to…";
+"Change default address to…" = "Změnit výchozí adresu na…";
 
 /* settings general section title */
 "Change mailbox password" = "Změnit heslo poštovní schránky";
@@ -385,7 +382,7 @@
 "Change PIN code" = "Změnit PIN kód";
 
 /* Title */
-"Change sender address to…" = "Change sender address to…";
+"Change sender address to…" = "Změnit adresu odesílatele na…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Nabijte zařízení nebo obnovte ručně.";
@@ -533,6 +530,11 @@
    Custom option for time config picker */
 "Custom" = "Vlastní";
 
+/* The title of the Customize toolbar setting view.
+   The title of the Customize toolbar spotlight view.
+   The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Přizpůsobit panel nástrojů";
+
 /* Title */
 "Cut" = "Vyjmout";
 
@@ -613,6 +615,9 @@
 
 /* Action */
 "Discard changes" = "Zahodit změny";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Zrušeno";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Schovat klávesnici";
@@ -700,9 +705,6 @@
 /* menu title */
 "Drafts" = "Koncepty";
 
-/* mail location title */
-"DRAFTS" = "KONCEPTY";
-
 /* Onboarding title */
 "Easily up-to-date" = "Jednoduše aktuální";
 
@@ -747,7 +749,7 @@
 "Email contact" = "E-mailový kontakt";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "Nesprávný formát konceptu. Odesílání selhalo.";
+"Email failed to send. Message saved as draft." = "Odeslání e-mailu selhalo. Zpráva byla uložena jako koncept.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Sledovací prvky v e-mailech můžou narušit vaše soukromí.";
@@ -756,7 +758,7 @@
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
 
 /* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "K dispozici je nyní ochrana proti sledování e-mailů. Odesílatelé nebudou vědět, zda a kdy otevřete jejich e-maily.";
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Ochrana proti sledovacím prvkům v e-mailech je nyní dostupná. Odesílatelé nebudou vědět, zda, kde a kdy jste otevřeli jejich e-maily.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vyprázdnit spam";
@@ -978,9 +980,6 @@
 
 /* menu title */
 "Inbox" = "Doručená pošta";
-
-/* mail location title */
-"INBOX" = "DORUČENÁ POŠTA";
 
 /* Error */
 "Incorrect PIN." = "Nesprávný kód PIN.";
@@ -1630,11 +1629,14 @@
 "Save Changes" = "Uložit změny";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Naplánovat odeslání";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Naplánovaná zpráva bude odstraněna";
+
+/* mail location title */
+"Scheduled" = "Naplánováno";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Plánování zprávy...";
@@ -1706,9 +1708,6 @@
 
 /* menu title */
 "Sent" = "Odeslané";
-
-/* mail location title */
-"SENT" = "ODESLANÉ";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Odesláno pomocí Proton Mail s nulovým přístupem šifrování";
@@ -1789,9 +1788,6 @@
 /* menu title */
 "Spam" = "Spam";
 
-/* mail location title */
-"SPAM" = "SPAM";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "Hvězdička";
@@ -1803,9 +1799,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "S hvězdičkou";
-
-/* mail location title */
-"STARRED" = "S HVĚZDIČKOU";
 
 /* contact placeholder */
 "State" = "Stav";
@@ -1895,6 +1888,9 @@
 /* Error message */
 "The 2 passwords are not matching" = "Tyto 2 hesla nesouhlasí";
 
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Akce na panelu nástrojů budou obnoveny na výchozí hodnoty";
+
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Stahování se zastaví, pokud je aplikace Proton Mail zavřena.";
 
@@ -1917,7 +1913,7 @@
 "The new password needs to be at least 8 characters long" = "Nové heslo musí mít délku alespoň 8 znaků";
 
 /* update password error */
-"The password is wrong." = "The password is wrong.";
+"The password is wrong." = "Heslo je nesprávné.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Heslo musí mít délku 8 až 21 znaků";
@@ -1997,6 +1993,12 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Tato priorita nastavení prohlížeče se vrátí zpět na Safari, pokud bude tento prohlížeč odinstalován.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Tento panel nástrojů se zobrazí při výběru více zpráv v doručené poště.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Tento panel nástrojů je viditelný při čtení zprávy.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Čas na odpočinek";
 
@@ -2028,6 +2030,9 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Příliš mnoho zpráv čeká na odeslání.\nProsím počkejte až bude další zpráva odeslána k naplánování této zprávy.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Akce panelu nástrojů (vyberte až 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
 
@@ -2037,9 +2042,6 @@
 /* mail location desc
    menu title */
 "Trash" = "Koš";
-
-/* mail location title */
-"TRASH" = "KOŠ";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Řešení problémů";
@@ -2206,8 +2208,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Jste v režimu offline";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Můžete vybrat a změnit uspořádání akcí na vašem panelu nástrojů";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Konverzace můžete kdykoli vypnout v nastavení.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Nyní můžete vybrat a změnit uspořádání akcí na tomto panelu nástrojů";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Nyní můžete naplánovat odesílání zpráv na později";

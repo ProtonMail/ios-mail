@@ -191,9 +191,6 @@
    The title of the archive action in action sheet */
 "Archive" = "封存";
 
-/* mail location title */
-"ARCHIVE" = "封存";
-
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
 
@@ -362,9 +359,6 @@
 /* settings general section title */
 "Change account password" = "變更帳號密碼";
 
-/* Title */
-"Change default address to…" = "Change default address to…";
-
 /* settings general section title */
 "Change mailbox password" = "變更郵箱密碼";
 
@@ -377,9 +371,6 @@
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "變更 PIN 碼";
-
-/* Title */
-"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "充電您的裝置或手動恢復。";
@@ -544,6 +535,9 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "日期： %@";
 
+/* days */
+"days" = "天";
+
 /* error title */
 "Decryption error" = "解密發生錯誤";
 
@@ -695,9 +689,6 @@
 
 /* menu title */
 "Drafts" = "草稿";
-
-/* mail location title */
-"DRAFTS" = "草稿";
 
 /* Onboarding title */
 "Easily up-to-date" = "輕鬆更新";
@@ -932,6 +923,9 @@
 /* Title */
 "Hide details" = "隱藏詳細資訊";
 
+/* hours */
+"hours" = "小時";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "歡迎告訴我們您的新版 Proton Mail 體驗，有讓您感到驚艷嗎？";
 
@@ -971,9 +965,6 @@
 
 /* menu title */
 "Inbox" = "收件匣";
-
-/* mail location title */
-"INBOX" = "收件匣";
 
 /* Error */
 "Incorrect PIN." = "PIN 碼不正確。";
@@ -1611,7 +1602,7 @@
 "Save Changes" = "儲存變更";
 
 /* Action
-   The action title of the alert of the user trying to send a message that was schedule-send.The title of the introducation view of the schedule send */
+   The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "排程送出";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
@@ -1687,9 +1678,6 @@
 
 /* menu title */
 "Sent" = "寄件備份";
-
-/* mail location title */
-"SENT" = "已傳送";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "本訊息遞送採用 Proton Mail 及其零存取加密技術";
@@ -1770,9 +1758,6 @@
 /* menu title */
 "Spam" = "垃圾郵件";
 
-/* mail location title */
-"SPAM" = "垃圾郵件";
-
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
 "Star" = "星號";
@@ -1784,9 +1769,6 @@
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
 "Starred" = "已加星號";
-
-/* mail location title */
-"STARRED" = "已加註星號";
 
 /* contact placeholder */
 "State" = "省/州";
@@ -1899,9 +1881,6 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "新密碼長度至少為八個字元";
-
-/* update password error */
-"The password is wrong." = "The password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "密碼長度必須介於 8 至 21 個字元";
@@ -2019,9 +1998,6 @@
    menu title */
 "Trash" = "垃圾桶";
 
-/* mail location title */
-"TRASH" = "垃圾桶";
-
 /* network troubleshot view title */
 "TroubleShooting" = "疑難排解";
 
@@ -2048,6 +2024,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "無法解析回應對象：\n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "無法寄送信件";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開收件者";
@@ -2246,6 +2225,9 @@
 
 /* The section title of folder manager table */
 "Your folders" = "您的資料夾";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "您的邀請連結";
 
 /* The section title of label manager table */
 "Your labels" = "您的標籤";
