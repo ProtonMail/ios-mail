@@ -304,6 +304,10 @@ extension AppDelegate: UIApplicationDelegate {
         BackgroundTimer().willEnterBackgroundOrTerminate()
     }
 
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        Crypto.freeGolangMem()
+    }
+
     func applicationWillEnterForeground(_ application: UIApplication) {
         configurePushService(launchOptions: nil)
         self.currentState = .active

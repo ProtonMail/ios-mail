@@ -83,10 +83,6 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         self.title = LocalString._account_settings
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
