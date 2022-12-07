@@ -28,7 +28,7 @@ import ProtonCore_Services
 extension PMAPIService {
     static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
-        let unauthorized = PMAPIService(doh: DoHMail.default, sessionUID: "")
+        let unauthorized = PMAPIService(doh: BackendConfiguration.shared.doh, sessionUID: "")
         #if !APP_EXTENSION
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             // TODO:: fix me

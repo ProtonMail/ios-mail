@@ -34,7 +34,7 @@ struct SignInCoordinatorEnvironment {
         (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let services: ServiceFactory
-    let doh: DoH & ServerConfig
+    let doh: DoHInterface
     let forceUpgradeDelegate: ForceUpgradeDelegate
     let apiServiceDelegate: APIServiceDelegate
     let mailboxPassword: (Passphrase, AuthCredential) -> Passphrase
@@ -78,7 +78,7 @@ extension SignInCoordinatorEnvironment {
         services: ServiceFactory,
         forceUpgradeDelegate: ForceUpgradeDelegate
     ) -> SignInCoordinatorEnvironment {
-        let doh = DoHMail.default
+        let doh = BackendConfiguration.shared.doh
         let apiServiceDelegate = services.get(by: UsersManager.self)
         return .init(services: services,
                      doh: doh,
@@ -116,10 +116,9 @@ extension SignInCoordinatorEnvironment {
                          }
                          return LoginAndSignup(appName: appName,
                                                clientApp: .mail,
-                                               doh: doh,
+                                               environment: BackendConfiguration.shared.environment,
                                                apiServiceDelegate: apiServiceDelegate,
                                                forceUpgradeDelegate: forceUpgradeDelegate,
-                                               humanVerificationVersion: .v3,
                                                minimumAccountType: minimumAccountType,
                                                isCloseButtonAvailable: isCloseButtonAvailable,
                                                paymentsAvailability: payment,

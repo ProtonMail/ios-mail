@@ -43,15 +43,7 @@ extension UserInfo {
     }
 
     static var isToolbarCustomizationEnable: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        if ProcessInfo.processInfo.arguments.contains(
-            BackendConfiguration.Arguments.disableToolbarSpotlight
-        ) {
-            return false
-        }
-        return false
+        ProcessInfo.isRunningUnitTests || !ProcessInfo.processInfo.arguments.contains("-toolbarSpotlightOff")
     }
 
     static var isImageProxyAvailable: Bool {

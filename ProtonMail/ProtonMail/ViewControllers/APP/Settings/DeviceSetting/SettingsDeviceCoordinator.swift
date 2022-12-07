@@ -52,7 +52,6 @@ class SettingsDeviceCoordinator {
     func start() {
         let viewModel = SettingsDeviceViewModel(user: userManager,
                                                 users: usersManager,
-                                                dohSetting: DoHMail.default,
                                                 biometricStatus: UIDevice.current)
 
         let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
@@ -105,7 +104,10 @@ class SettingsDeviceCoordinator {
 
     private func openAlternativeRouting() {
         let controller = SettingsNetworkTableViewController(nibName: "SettingsNetworkTableViewController", bundle: nil)
-        controller.viewModel = SettingsNetworkViewModel(userCache: userCachedStatus, dohSetting: DoHMail.default)
+        controller.viewModel = SettingsNetworkViewModel(
+            userCache: userCachedStatus,
+            dohSetting: BackendConfiguration.shared.doh
+        )
         controller.coordinator = self
         self.navigationController?.pushViewController(controller, animated: true)
     }
