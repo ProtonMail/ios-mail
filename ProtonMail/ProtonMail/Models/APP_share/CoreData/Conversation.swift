@@ -107,23 +107,6 @@ extension Conversation {
                                                    matchingValue: conversationID) as? Conversation
     }
 
-    /// Fetch the Label from local cache based on the labelIDs from contextLabel
-    /// - Returns: array of labels
-    func getLabels() -> [Label] {
-        guard let context = self.managedObjectContext else {
-            return []
-        }
-        let labelIDs = self.labels.compactMap { ($0 as? ContextLabel)?.labelID }
-
-        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        request.predicate = NSPredicate(format: "(labelID IN %@) AND (%K == 1) AND (%K == %@)", labelIDs, Label.Attributes.type, Label.Attributes.userID, self.userID)
-        do {
-            return try context.fetch(request)
-        } catch {
-            return []
-        }
-    }
-
     func getContextLabel(location: LabelLocation) -> ContextLabel? {
         guard self.managedObjectContext != nil else { return nil }
         let contextLabels = self.labels.compactMap { $0 as? ContextLabel }

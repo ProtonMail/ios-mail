@@ -24,6 +24,7 @@ import Foundation
 import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 
 struct LabelInfo {
@@ -246,6 +247,64 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     func fetchContacts() {
         contactProvider.fetchContacts(completion: nil)
+    }
+
+    func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
+        let labelIDs = conversation.contextLabelRelations.map(\.labelID.rawValue)
+        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+
+        /// This regex means "contains more than just digits" and is used to differentiate:
+        /// - system labelIDs which contains only digits
+        /// - custom labelIDs which are UUIDs
+        let isCustomLabelRegex = "(?!^\\d+$)^.+$"
+
+        let predicates: [NSPredicate] = [
+            NSPredicate(format: "%K IN %@", Label.Attributes.labelID, labelIDs),
+            NSPredicate(format: "%K == %u", Label.Attributes.type, LabelEntity.LabelType.messageLabel.rawValue),
+            NSPredicate(format: "%K == %@", Label.Attributes.userID, user.userID.rawValue),
+            NSPredicate(format: "%K MATCHES %@", Label.Attributes.labelID, isCustomLabelRegex)
+        ]
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "order", ascending: true)
+        ]
+
+        var output: [TagUIModel] = []
+
+        if let expirationTime = conversation.expirationTime {
+            let title = expirationTime.countExpirationTime(processInfo: userCachedStatus)
+            let expirationDateTag = TagUIModel(
+                title: title,
+                titleColor: ColorProvider.InteractionStrong,
+                titleWeight: .regular,
+                icon: IconProvider.hourglass,
+                tagColor: ColorProvider.InteractionWeak
+            )
+            output.append(expirationDateTag)
+        }
+
+        do {
+            let orderedCustomLabels = try coreDataContextProvider.read { context in
+                try context.fetch(request).map(LabelEntity.init(label:))
+            }
+
+            let tags = orderedCustomLabels.map { label in
+                TagUIModel(
+                    title: label.name,
+                    titleColor: .white,
+                    titleWeight: .semibold,
+                    icon: nil,
+                    tagColor: UIColor(hexString: label.color, alpha: 1.0)
+                )
+            }
+
+            output.append(contentsOf: tags)
+        } catch {
+            PMAssertionFailure(error)
+        }
+
+        return output
     }
 
     /// create a fetch controller with labelID
