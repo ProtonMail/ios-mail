@@ -81,7 +81,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     /// We only want to send a haptic signal one a state change.
     private var swipingTriggerActivated = false {
         didSet {
-            if swipingTriggerActivated != oldValue, swipingTriggerActivated {
+            if swipingTriggerActivated != oldValue {
                 sendHapticFeedback?()
             }
         }

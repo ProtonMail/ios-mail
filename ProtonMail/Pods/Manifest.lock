@@ -407,7 +407,7 @@ DEPENDENCIES:
   - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `3.24.2`)"
   - SwiftSoup (~> 2.3)
-  - SwipyCell (from `https://github.com/xxi511/SwipyCell.git`, branch `main`)
+  - SwipyCell (from `https://github.com/xxi511/SwipyCell.git`, commit `bb358ed`)
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `master`)
 
 SPEC REPOS:
@@ -542,7 +542,7 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.24.2
   SwipyCell:
-    :branch: main
+    :commit: bb358ed
     :git: https://github.com/xxi511/SwipyCell.git
   TrustKit:
     :branch: master
@@ -658,7 +658,7 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 3.24.2
   SwipyCell:
-    :commit: b939f474f10b79294ecb5b2b473fbf2dcd07ce97
+    :commit: bb358ed
     :git: https://github.com/xxi511/SwipyCell.git
   TrustKit:
     :commit: 838fba789e01c9cabff77acea3fb7135f71a220f
@@ -723,6 +723,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: b149799576a939e212afdbc0003b0ccd71349e47
+PODFILE CHECKSUM: 64a35056ee02b6e285faa244e887442f513d1f25
 
 COCOAPODS: 1.11.3
