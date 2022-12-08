@@ -119,7 +119,7 @@ private enum SubviewsFactory {
 
     static var bigSeparatorView: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = ColorProvider.BackgroundSecondary
+        view.backgroundColor = ColorProvider.BackgroundDeep
         return view
     }
 
