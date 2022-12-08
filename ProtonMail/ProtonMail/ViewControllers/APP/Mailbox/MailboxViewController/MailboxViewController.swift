@@ -263,6 +263,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: -0.75)
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
+        SwipyCellConfig.shared.shouldAnimateSwipeViews = false
+        SwipyCellConfig.shared.shouldUseSpringAnimationWhileSwipingToOrigin = false
 
         refetchAllIfNeeded()
 

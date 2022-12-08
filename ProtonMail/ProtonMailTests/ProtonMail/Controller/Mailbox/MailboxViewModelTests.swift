@@ -1116,7 +1116,7 @@ class MailboxViewModelTests: XCTestCase {
             sut.swipyCellDidSwipe(triggerActivated: false)
         }
 
-        XCTAssert(signalsSent == 1)
+        XCTAssert(signalsSent == 2)
     }
 
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {

@@ -14,6 +14,7 @@ fileprivate struct Defaults {
     static let swipeViewPadding: CGFloat    = 24.0  // Padding of the swipe view (space between cell and swipe view)
     static let shouldAnimateSwipeViews      = true
     static let defaultSwipeViewColor        = UIColor.white
+    static let shouldUseSpringAnimationWhileSwipingToOrigin = true
 }
 
 public typealias SwipyCellTriggerBlock = (SwipyCell, SwipyCellTrigger, SwipyCellState, SwipyCellMode) -> Void
@@ -148,6 +149,7 @@ public class SwipyCellConfig: SwipyCellTriggerPointEditable {
     public var swipeViewPadding: CGFloat
     public var shouldAnimateSwipeViews: Bool
     public var defaultSwipeViewColor: UIColor
+    public var shouldUseSpringAnimationWhileSwipingToOrigin: Bool
 
     init() {
         triggerPoints = [:]
@@ -159,5 +161,6 @@ public class SwipyCellConfig: SwipyCellTriggerPointEditable {
         swipeViewPadding = Defaults.swipeViewPadding
         shouldAnimateSwipeViews = Defaults.shouldAnimateSwipeViews
         defaultSwipeViewColor = Defaults.defaultSwipeViewColor
+        shouldUseSpringAnimationWhileSwipingToOrigin = Defaults.shouldUseSpringAnimationWhileSwipingToOrigin
     }
 }
