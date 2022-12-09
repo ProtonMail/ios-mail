@@ -20,7 +20,7 @@ import SwiftSoup
 
 // swiftlint:disable:file_name
 extension String {
-    private static let quoteElements: [String] = [
+    static let quoteElements: [String] = [
         ".protonmail_quote",
         ".gmail_quote",
         ".yahoo_quoted",
