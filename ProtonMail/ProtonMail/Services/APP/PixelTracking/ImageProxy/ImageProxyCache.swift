@@ -34,7 +34,7 @@ class ImageProxyCache {
         )
     }
 
-    func remoteImage(forURL remoteURL: String) throws -> RemoteImage? {
+    func remoteImage(forURL remoteURL: SafeRemoteURL) throws -> RemoteImage? {
         let key = cacheKey(forURL: remoteURL)
 
         guard let data = try encryptedCache.decryptedData(forKey: key.rawValue) else {
@@ -44,13 +44,13 @@ class ImageProxyCache {
         return try JSONDecoder().decode(RemoteImage.self, from: data)
     }
 
-    func setRemoteImage(_ remoteImage: RemoteImage, forURL remoteURL: String) throws {
+    func setRemoteImage(_ remoteImage: RemoteImage, forURL remoteURL: SafeRemoteURL) throws {
         let key = cacheKey(forURL: remoteURL)
         let data = try JSONEncoder().encode(remoteImage)
         try encryptedCache.encryptAndSaveData(data, forKey: key.rawValue)
     }
 
-    func removeRemoteImage(forURL remoteURL: String) {
+    func removeRemoteImage(forURL remoteURL: SafeRemoteURL) {
         let key = cacheKey(forURL: remoteURL)
         encryptedCache.removeData(forKey: key.rawValue)
     }
@@ -59,7 +59,7 @@ class ImageProxyCache {
         encryptedCache.purge()
     }
 
-    private func cacheKey(forURL url: String) -> CacheKey {
-        CacheKey(rawValue: url.sha512)
+    private func cacheKey(forURL url: SafeRemoteURL) -> CacheKey {
+        CacheKey(rawValue: url.value.sha512)
     }
 }

@@ -52,7 +52,7 @@ class TrackerListViewController: UIViewController, LifetimeTrackable {
             .map {
                 TrackerInfo(
                     provider: $0.key,
-                    urls: Array($0.value).sorted { $0.absoluteString.compare($1.absoluteString) == .orderedAscending }
+                    urls: $0.value.sorted()
                 )
             }
 
