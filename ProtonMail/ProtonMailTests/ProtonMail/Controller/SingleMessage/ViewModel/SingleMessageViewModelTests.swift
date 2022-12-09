@@ -243,7 +243,7 @@ final class SingleMessageViewModelTests: XCTestCase {
 
     private func makeSUT(labelID: LabelID, message: MessageEntity? = nil) {
         let apiMock = APIServiceMock()
-        let fakeUser = UserManager(api: apiMock, role: .none)
+        let fakeUser = UserManager(api: apiMock)
         let messageObject = Message(context: contextProviderMock.viewContext)
         messageObject.unRead = false
         let message = message ?? MessageEntity(messageObject)

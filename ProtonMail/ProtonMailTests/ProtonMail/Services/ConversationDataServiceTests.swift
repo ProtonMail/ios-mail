@@ -32,7 +32,6 @@ final class ConversationDataServiceTests: XCTestCase {
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
         mockEventsService = MockEventsService()
-        let user = UserManager(api: mockApiService, role: .none)
 
         let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,

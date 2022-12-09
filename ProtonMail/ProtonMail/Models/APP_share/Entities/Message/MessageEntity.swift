@@ -54,6 +54,7 @@ struct MessageEntity: Equatable, Hashable {
     let size: Int
     let spamScore: SpamScore
 
+    @available(*, deprecated, message: "use `rawParsedHeaders` instead")
     let rawHeader: String?
     let rawParsedHeaders: String?
 

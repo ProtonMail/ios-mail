@@ -106,7 +106,7 @@ final class WindowsCoordinatorTests: XCTestCase {
 
     func testStart_withPinProtection_goToLockWindowAndShowPinCodeView() {
         let e = expectation(description: "Closure is called")
-        usersManager.add(newUser: UserManager(api: APIServiceMock(), role: .none))
+        usersManager.add(newUser: UserManager(api: APIServiceMock()))
         keyMaker.activate(PinProtection(pin: String.randomString(10), keychain: keyChain)) { activated in
             XCTAssertTrue(activated)
             e.fulfill()
@@ -128,7 +128,7 @@ final class WindowsCoordinatorTests: XCTestCase {
         unlockManagerDelegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
             false
         }
-        usersManager.add(newUser: UserManager(api: APIServiceMock(), role: .none))
+        usersManager.add(newUser: UserManager(api: APIServiceMock()))
         setupSUT(showPlaceHolderViewOnly: false)
 
         sut.start()
@@ -150,7 +150,7 @@ final class WindowsCoordinatorTests: XCTestCase {
         unlockManagerDelegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
             true
         }
-        usersManager.add(newUser: UserManager(api: APIServiceMock(), role: .none))
+        usersManager.add(newUser: UserManager(api: APIServiceMock()))
         setupSUT(showPlaceHolderViewOnly: false)
 
         sut.start()

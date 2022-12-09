@@ -32,7 +32,7 @@ class MenuViewModelTests: XCTestCase {
         try super.setUpWithError()
         coordinatorMock = .init()
         let apiMock = APIServiceMock()
-        testUser = UserManager(api: apiMock, role: .none)
+        testUser = UserManager(api: apiMock)
         let globalContainer = GlobalContainer()
         globalContainer.usersManager.add(newUser: testUser)
         sut = MenuViewModel(dependencies: globalContainer)

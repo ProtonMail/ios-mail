@@ -41,7 +41,6 @@ func parseQuarkCommandJsonResponse<T: Decodable>(jsonData: Data, type: T.Type) t
 }
 
 func makeQuarkCommandTextToJson(data: Data) throws -> Data? {
-    let decoder = JSONDecoder()
     let inputString = String(data: data, encoding: .utf8)
     guard let lines = inputString?.split(separator: "\n") else {
        return nil

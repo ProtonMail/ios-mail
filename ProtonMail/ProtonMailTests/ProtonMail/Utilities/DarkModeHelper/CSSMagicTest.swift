@@ -152,7 +152,7 @@ extension CSSMagicTest {
         ]
         XCTAssertEqual(styleCSS, expected)
         newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
-        var result = try XCTUnwrap(newStyleCSS[".email"])
+        let result = try XCTUnwrap(newStyleCSS[".email"])
         XCTAssertEqual(result, ["background-color: #1C1B24 !important"])
 
         html = """
@@ -190,7 +190,7 @@ extension CSSMagicTest {
     }
 
     func testGetStyleNodes_part2() throws {
-        var html = """
+        let html = """
         <html>
         <head>
             <style>
@@ -204,15 +204,15 @@ extension CSSMagicTest {
         </head>
         </html>
         """
-        var document = try XCTUnwrap(CSSMagic.parse(htmlString: html))
-        var styleCSS = CSSMagic.getStyleCSS(from: document)
-        var expected = [
+        let document = try XCTUnwrap(CSSMagic.parse(htmlString: html))
+        let styleCSS = CSSMagic.getStyleCSS(from: document)
+        let expected = [
             "body,\n        html,\n        td {\n            font-family: \"Helvetica Neue\", Helvetica, Arial, Verdana, sans-serif; \n            color: rgb(31, 31, 31);\n        }"
         ]
         XCTAssertEqual(styleCSS, expected)
-        var newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
+        let newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
         XCTAssertEqual(newStyleCSS.count, 1)
-        var result = try XCTUnwrap(newStyleCSS["body,\n        html,\n        td"])
+        let result = try XCTUnwrap(newStyleCSS["body,\n        html,\n        td"])
         XCTAssertEqual(result, ["color: hsla(0, 0%, 100%, 1.0) !important"])
     }
 

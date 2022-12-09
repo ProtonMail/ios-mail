@@ -37,7 +37,7 @@ class BannerViewModelTests: XCTestCase {
         markLegitimateHandlerMock = MockMarkLegitimateActionHandler()
         receiptHandlerMock = MockReceiptActionHandler()
         apiServiceMock = APIServiceMock()
-        userManagerMock = UserManager(api: apiServiceMock, role: .none)
+        userManagerMock = UserManager(api: apiServiceMock)
         systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
     }
 

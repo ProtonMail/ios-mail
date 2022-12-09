@@ -401,14 +401,6 @@ extension AppDelegate {
         Analytics.shared.setup(isInDebug: false, environment: .production)
     #endif
 #endif
-
-        if !PMLog.isEnabled {
-            /**
-             We disable logs for builds that are distributed through the AppStore
-             to avoid high number of disk write operations.
-             */
-            PMLog.logsDirectory = nil
-        }
     }
 
     private func configureCrypto() {

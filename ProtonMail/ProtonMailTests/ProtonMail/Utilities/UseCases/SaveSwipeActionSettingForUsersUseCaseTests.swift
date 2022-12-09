@@ -34,7 +34,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         let globalContainer = GlobalContainer()
 
         for apiService: APIServiceMock in [firstUserAPI, secondUserAPI] {
-            let user = UserManager(api: apiService, role: .none)
+            let user = UserManager(api: apiService)
             globalContainer.usersManager.add(newUser: user)
         }
 

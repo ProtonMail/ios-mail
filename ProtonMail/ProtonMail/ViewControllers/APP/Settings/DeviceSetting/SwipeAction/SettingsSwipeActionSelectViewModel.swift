@@ -62,14 +62,14 @@ class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel
                 .callbackOn(.main)
                 .execute(params: .init(preference: .left(action))) { _ in
                     completion?()
-            }
+                }
         } else {
             dependencies
                 .saveSwipeActionSetting
                 .callbackOn(.main)
                 .execute(params: .init(preference: .right(action))) { _ in
                     completion?()
-            }
+                }
         }
     }
 

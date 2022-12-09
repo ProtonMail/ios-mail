@@ -31,7 +31,7 @@ final class ContactEditViewModelImplTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockApi = .init()
-        mockUser = .init(api: mockApi, role: .none)
+        mockUser = .init(api: mockApi)
         fakeCoreDataService = CoreDataService(
             container: MockCoreDataStore.testPersistentContainer
         )

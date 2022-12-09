@@ -38,7 +38,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
 
     func testUpdateSwipeAction_activeUserIsTheSameAsNewUser_saveSwipeActionToCache() throws {
         let mockApi = APIServiceMock()
-        let user = UserManager(api: mockApi, role: .none)
+        let user = UserManager(api: mockApi)
         user.userInfo.userId = "test"
         user.userInfo.swipeRight = 0
         user.userInfo.swipeLeft = 1
@@ -67,7 +67,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     }
 
     func testUpdateSwipeAction_activeUserHasSameActionAsNewUser_noAPIIsCalled() throws {
-        let activeUser = UserManager(api: APIServiceMock(), role: .none)
+        let activeUser = UserManager(api: APIServiceMock())
         activeUser.userInfo.userId = "test"
         activeUser.userInfo.swipeRight = 0
         activeUser.userInfo.swipeLeft = 1
@@ -75,7 +75,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         stubSwipeActionCache.rightToLeftSwipeActionType = .convertFromServer(rawValue: 1)
 
         let mockApi = APIServiceMock()
-        let newUser = UserManager(api: mockApi, role: .none)
+        let newUser = UserManager(api: mockApi)
         newUser.userInfo.userId = "test1"
         newUser.userInfo.swipeRight = 0
         newUser.userInfo.swipeLeft = 1
@@ -104,7 +104,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     }
 
     func testUpdateSwipeAction_activeUserHasNotSyncableAction_notAPIIsCalled() throws {
-        let activeUser = UserManager(api: APIServiceMock(), role: .none)
+        let activeUser = UserManager(api: APIServiceMock())
         activeUser.userInfo.userId = "test"
         activeUser.userInfo.swipeRight = 0
         activeUser.userInfo.swipeLeft = 1
@@ -112,7 +112,7 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         stubSwipeActionCache.rightToLeftSwipeActionType = .moveTo
 
         let mockApi = APIServiceMock()
-        let newUser = UserManager(api: mockApi, role: .none)
+        let newUser = UserManager(api: mockApi)
         newUser.userInfo.userId = "test1"
         newUser.userInfo.swipeRight = 2
         newUser.userInfo.swipeLeft = 3

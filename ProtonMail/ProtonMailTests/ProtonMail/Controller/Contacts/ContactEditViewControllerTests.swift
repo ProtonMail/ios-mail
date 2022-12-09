@@ -36,7 +36,7 @@ final class ContactEditViewControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockUser = .init(api: APIServiceMock(), role: .none)
+        mockUser = .init(api: APIServiceMock())
         fakeCoreDataService = CoreDataService(
             container: MockCoreDataStore.testPersistentContainer
         )

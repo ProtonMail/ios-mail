@@ -33,7 +33,7 @@ class MailboxCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         dummyAPIService = APIServiceMock()
-        let dummyUser = UserManager(api: dummyAPIService, role: .none)
+        let dummyUser = UserManager(api: dummyAPIService)
 
         conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
