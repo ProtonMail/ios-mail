@@ -19,12 +19,12 @@ import Foundation
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
 
-final class MockFetchAttachment: NewUseCase<AttachmentFile, FetchAttachment.Params> {
+final class MockResolveSendPreferences: NewUseCase<[RecipientSendPreferences], ResolveSendPreferences.Params> {
 
-    var result: Result<AttachmentFile, Error>!
+    var result: Result<[RecipientSendPreferences], Error>!
 
-    @FuncStub(MockFetchAttachment.executionBlock) var executionBlock
-    override func executionBlock(params: FetchAttachment.Params, callback: @escaping Callback) {
+    @FuncStub(MockResolveSendPreferences.executionBlock) var executionBlock
+    override func executionBlock(params: ResolveSendPreferences.Params, callback: @escaping Callback) {
         executionBlock(params, callback)
         callback(result)
     }

@@ -28,37 +28,13 @@ enum SendMessageBuilder {
         contactProvider: ContactProviderProtocol,
         messageService: MessageDataServiceProtocol
     ) -> SendMessage {
-
-        // ResolveSendPreferencesUseCase
-        let fetchContactsDependencies: FetchAndVerifyContacts.Dependencies = .init(
+        let prepareSendMetadata = PrepareSendMetadataBuilder.make(
+            userData: userData,
             apiService: apiService,
             cacheService: cacheService,
-            contactProvider: contactProvider
+            contactProvider: contactProvider,
+            messageService: messageService
         )
-        let fetchPublicKeyDependencies: FetchEmailAddressesPublicKey.Dependencies = .init(apiService: apiService)
-        let sendPreferencesDependencies: ResolveSendPreferences.Dependencies = .init(
-            fetchVerifiedContacts: FetchAndVerifyContacts(
-                currentUser: userData.userID,
-                currentUserKeys: userData.userPrivateKeys,
-                dependencies: fetchContactsDependencies
-            ),
-            fetchAddressesPublicKeys: FetchEmailAddressesPublicKey(dependencies: fetchPublicKeyDependencies)
-        )
-        let resolveSendPreferences = ResolveSendPreferences(dependencies: sendPreferencesDependencies)
-
-        // FetchAttachmentUseCase
-        let fetchAttachmentDependencies: FetchAttachment.Dependencies = .init(apiService: apiService)
-
-        // PrepareSendMetadataUseCase
-        let sendMetadatDependencies: PrepareSendMetadata.Dependencies = .init(
-            userDataSource: userData,
-            messageDataService: messageService,
-            resolveSendPreferences: resolveSendPreferences,
-            fetchAttachment: FetchAttachment(dependencies: fetchAttachmentDependencies)
-        )
-        let prepareSendMetadata = PrepareSendMetadata(dependencies: sendMetadatDependencies)
-
-        // SendMessageUseCase
         let sendMessageDependencies: SendMessage.Dependencies = .init(
             prepareSendMetadata: prepareSendMetadata,
             prepareSendRequest: PrepareSendRequest(),

@@ -31,6 +31,7 @@ class MockMessageDataService: MessageDataServiceProtocol {
 
     var fetchMessagesReturnError: Bool = false
     var fetchMessagesCountReturnEmpty: Bool = false
+    var messageSendingDataResult: MessageSendingData!
 
     func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void) {
         if fetchMessagesReturnError {
@@ -71,12 +72,14 @@ class MockMessageDataService: MessageDataServiceProtocol {
         []
     }
 
+    @FuncStub(MockMessageDataService.getMessageSendingData(for:completionQueue:completion:)) var callGetMessageSendingData
     func getMessageSendingData(
         for uri: String,
         completionQueue: DispatchQueue,
         completion: @escaping ((MessageSendingData?) -> Void)
     ) {
-        completion(nil)
+        callGetMessageSendingData(uri, completionQueue, completion)
+        completion(messageSendingDataResult)
     }
 }
 
