@@ -76,10 +76,12 @@ final class ScheduleSendLocationStatusObserver: NSObject, NSFetchedResultsContro
         let sortDescriptor = NSSortDescriptor(key: ConversationCount.Attributes.userID,
                                               ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        return NSFetchedResultsController(fetchRequest: fetchRequest,
-                                          managedObjectContext: context,
-                                          sectionNameKeyPath: nil,
-                                          cacheName: nil)
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
     }()
 
     private lazy var messageCountController: NSFetchedResultsController<LabelUpdate>? = {
