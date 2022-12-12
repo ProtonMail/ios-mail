@@ -25,10 +25,12 @@ import WebKit
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
 struct WebContents: Equatable {
+
     let body: String
     let remoteContentMode: RemoteContentPolicy
     var renderStyle: MessageRenderStyle
     let supplementCSS: String?
+    let webImages: WebImageContents?
 
     var bodyForJS: String {
         return self.body.escaped
@@ -37,12 +39,14 @@ struct WebContents: Equatable {
     init(body: String,
          remoteContentMode: RemoteContentPolicy,
          renderStyle: MessageRenderStyle = .dark,
-         supplementCSS: String? = nil) {
+         supplementCSS: String? = nil,
+         webImages: WebImageContents? = nil) {
         // \u00A0 is white space that will break dompurify
         self.body = body.preg_replace("\u{00A0}", replaceto: " ")
         self.remoteContentMode = remoteContentMode
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
+        self.webImages = webImages
     }
 
     var contentSecurityPolicy: String {
@@ -62,8 +66,9 @@ struct WebContents: Equatable {
                 return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';"
 
             case .allowed: // this cuts off only scripts and connections
+                let scheme = HTTPRequestSecureLoader.imageCacheScheme
                 // swiftlint:disable line_length
-                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
+                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid: \(scheme):; script-src 'none';"
             }
         }
     }

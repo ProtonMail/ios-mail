@@ -606,11 +606,19 @@ extension MessageInfoProvider {
     }
 
     private func updateWebContents() {
+        let attachments = (inlineAttachments ?? []) + nonInlineAttachments
+        let webImages = WebImageContents(
+            embeddedImages: attachments
+        )
+
         let body = bodyParts?.body(for: displayMode) ?? ""
-        contents = WebContents(body: body,
-                               remoteContentMode: remoteContentPolicy,
-                               renderStyle: currentMessageRenderStyle,
-                               supplementCSS: bodyParts?.darkModeCSS)
+        contents = WebContents(
+            body: body,
+            remoteContentMode: remoteContentPolicy,
+            renderStyle: currentMessageRenderStyle,
+            supplementCSS: bodyParts?.darkModeCSS,
+            webImages: webImages
+        )
     }
 }
 
@@ -663,7 +671,8 @@ extension MessageInfoProvider {
                     defer { group.leave() }
                     guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else { return }
                     stringsQueue.sync {
-                        let value = "src=\"data:\(inline.rawMimeType);base64,\(base64Att)\""
+                        let scheme = HTTPRequestSecureLoader.imageCacheScheme
+                        let value = "src=\"\(scheme)://\(inline.id)\""
                         self?.embeddedBase64["src=\"cid:\(contentID)\""] = value
                     }
                 }

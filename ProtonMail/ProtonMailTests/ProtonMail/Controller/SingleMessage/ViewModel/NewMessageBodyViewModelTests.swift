@@ -28,9 +28,12 @@ class NewMessageBodyViewModelTests: XCTestCase {
 
         let reachabilityStub = ReachabilityStub()
         let internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        sut = NewMessageBodyViewModel(spamType: nil,
-                                      internetStatusProvider: internetConnectionStatusProviderMock,
-                                      linkConfirmation: .openAtWill)
+        sut = NewMessageBodyViewModel(
+            spamType: nil,
+            internetStatusProvider: internetConnectionStatusProviderMock,
+            linkConfirmation: .openAtWill,
+            userKeys: .init(privateKeys: [], addressesPrivateKeys: [], mailboxPassphrase: .init(value: "passphrase"))
+        )
         newMessageBodyViewModelDelegateMock = NewMessageBodyViewModelDelegateMock()
         sut.delegate = newMessageBodyViewModelDelegateMock
     }

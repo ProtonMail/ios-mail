@@ -16,32 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import class ProtonCore_DataModel.Key
-import typealias ProtonCore_Crypto.ArmoredKey
-import typealias ProtonCore_Crypto.Passphrase
+import struct ProtonCore_Crypto.Armored
 
-struct UserKeys: Equatable {
-    let privateKeys: [ArmoredKey]
-    let addressesPrivateKeys: [Key]
-    let mailboxPassphrase: Passphrase
-}
-
-extension UserDataSource {
-    func toUserKeys() -> UserKeys {
-        UserKeys(
-            privateKeys: userPrivateKeys,
-            addressesPrivateKeys: addressKeys,
-            mailboxPassphrase: mailboxPassword
-        )
-    }
-}
-
-extension UserManager {
-    func toUserKeys() -> UserKeys {
-        UserKeys(
-            privateKeys: userPrivateKeys,
-            addressesPrivateKeys: addressKeys,
-            mailboxPassphrase: mailboxPassword
-        )
+extension Armored: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.value == rhs.value
     }
 }
