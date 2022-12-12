@@ -193,7 +193,7 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
 
     private func decrypt(encryptedBody: String, userKeys: UserKeys) throws -> String {
         logInfo(step: .decryptingBody)
-        var decryptedBody: String? = nil
+        var decryptedBody: String?
         for addressKey in userKeys.addressesPrivateKeys {
             if let decrypted = decrypt(encryptedBody: encryptedBody, withAddressKey: addressKey, userKeys: userKeys) {
                 decryptedBody = decrypted
