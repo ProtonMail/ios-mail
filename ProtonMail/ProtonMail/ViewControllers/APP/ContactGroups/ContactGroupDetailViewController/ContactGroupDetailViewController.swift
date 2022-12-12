@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
-import MBProgressHUD
 import PromiseKit
 import ProtonCore_Foundations
 import ProtonCore_PaymentsUI
