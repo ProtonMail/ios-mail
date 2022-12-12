@@ -88,6 +88,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     var addAndUpdateMIMEAttachments: (([MimeAttachment]) -> Void)?
     let internetStatusProvider: InternetConnectionStatusProvider
     let linkConfirmation: LinkOpeningMode
+    let userKeys: UserKeys
 
     weak var delegate: NewMessageBodyViewModelDelegate?
     private(set) var spam: SpamType?
@@ -134,11 +135,13 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     init(spamType: SpamType?,
          internetStatusProvider: InternetConnectionStatusProvider,
-         linkConfirmation: LinkOpeningMode
+         linkConfirmation: LinkOpeningMode,
+         userKeys: UserKeys
         ) {
         self.spam = spamType
         self.internetStatusProvider = internetStatusProvider
         self.linkConfirmation = linkConfirmation
+        self.userKeys = userKeys
     }
 
     func errorHappens() {

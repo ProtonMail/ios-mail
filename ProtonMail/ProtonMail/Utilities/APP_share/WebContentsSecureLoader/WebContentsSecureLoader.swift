@@ -45,14 +45,15 @@ extension WebContentsSecureLoader {
 }
 
 enum DomPurifyConfig {
-    case `default`, protonizer
+    case `default`, protonizer, imageCache
 
     var value: String {
         switch self {
         case .default:
+            let scheme = HTTPRequestSecureLoader.imageCacheScheme
             return """
             {
-            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(scheme)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
             ADD_TAGS: ['proton-src', 'base'],
             ADD_ATTR: ['target', 'proton-src'],
             FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
@@ -69,6 +70,15 @@ enum DomPurifyConfig {
             RETURN_DOM: true
             }
             """
+        case .imageCache:
+            let scheme = HTTPRequestSecureLoader.imageCacheScheme
+            return """
+            {
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(scheme)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+                        WHOLE_DOCUMENT: true,
+                        RETURN_DOM: true
+            }
+            """.replacingOccurrences(of: "\n", with: "")
         }
     }
 }

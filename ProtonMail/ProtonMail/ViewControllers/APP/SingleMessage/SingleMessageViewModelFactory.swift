@@ -109,7 +109,8 @@ class SingleMessageComponentsFactory {
         return .init(
             spamType: spamType,
             internetStatusProvider: InternetConnectionStatusProvider(),
-            linkConfirmation: user.userInfo.linkConfirmation
+            linkConfirmation: user.userInfo.linkConfirmation,
+            userKeys: user.toUserKeys()
         )
     }
 

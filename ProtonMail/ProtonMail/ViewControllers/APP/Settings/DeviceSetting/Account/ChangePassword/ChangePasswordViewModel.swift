@@ -204,9 +204,3 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
         }
     }
 }
-
-extension Passphrase: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.value == rhs.value
-    }
-}
