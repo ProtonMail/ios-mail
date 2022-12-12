@@ -52,30 +52,6 @@ class ScheduleSendLocationStatusObserverTests: XCTestCase {
         XCTAssertTrue(result)
     }
 
-    func testObserve_getCountValueFromCoreData_withConversatoinCountData_returnTrue() throws {
-        generateTestConversationCountData(total: 1)
-        let expectation1 = expectation(description: "Closure should not be called")
-        expectation1.isInverted = true
-
-        let result = sut.observe { _ in
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 0.5, handler: nil)
-        XCTAssertTrue(result)
-    }
-
-    func testObserve_getCountValueFromCoreData_withLabelUpdateData_returnTrue() throws {
-        generateTestLabelUpdateData(total: 1)
-        let expectation1 = expectation(description: "Closure should not be called")
-        expectation1.isInverted = true
-
-        let result = sut.observe { _ in
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 0.5, handler: nil)
-        XCTAssertTrue(result)
-    }
-
     func testObserve_closureBeingCalled_whenMessageCountChanged() throws {
         let expectation1 = expectation(description: "Closure is called")
 
@@ -105,24 +81,6 @@ class ScheduleSendLocationStatusObserverTests: XCTestCase {
             msg.messageStatus = NSNumber(value: 1)
             msg.isSoftDeleted = false
         }
-        _ = testContext.saveUpstreamIfNeeded()
-    }
-
-    private func generateTestConversationCountData(total: Int) {
-        let testContext = contextProviderMock.mainContext
-        let count = ConversationCount(context: testContext)
-        count.userID = userID.rawValue
-        count.labelID = "12"
-        count.total = Int32(truncatingIfNeeded: total)
-        _ = testContext.saveUpstreamIfNeeded()
-    }
-
-    private func generateTestLabelUpdateData(total: Int) {
-        let testContext = contextProviderMock.mainContext
-        let count = LabelUpdate(context: testContext)
-        count.userID = userID.rawValue
-        count.labelID = "12"
-        count.total = Int32(truncatingIfNeeded: total)
         _ = testContext.saveUpstreamIfNeeded()
     }
 }
