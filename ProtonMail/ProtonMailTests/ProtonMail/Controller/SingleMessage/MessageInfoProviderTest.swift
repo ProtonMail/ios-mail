@@ -252,7 +252,9 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testIfAnImageProxyRequestFails_promptsUserToReplaceFailedRequestMarkersWithOriginalURLs() async throws {
         imageProxy.stubbedFailedRequests = [
-            UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!: UnsafeRemoteURL(value: "https://example.com/image")
+            [
+                UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!
+            ]: UnsafeRemoteURL(value: "https://example.com/image")
         ]
         let stubbedInitialBody = "<img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img>"
         let expectedProcessedBody = "<img src=\"https://example.com/image\"></img>"
@@ -401,7 +403,7 @@ final private class ProviderDelegate: MessageInfoProviderDelegate {
 }
 
 private class ImageProxyMock: ProtonMail.ImageProxy {
-    var stubbedFailedRequests: [UUID: UnsafeRemoteURL] = [:]
+    var stubbedFailedRequests: [Set<UUID>: UnsafeRemoteURL] = [:]
     private(set) var processCallCount = 0
 
     init(apiService: APIServiceMock) {

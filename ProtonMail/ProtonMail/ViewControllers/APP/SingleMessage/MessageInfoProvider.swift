@@ -271,7 +271,7 @@ final class MessageInfoProvider {
         didSet { delegate?.update(hasStrippedVersion: hasStrippedVersion) }
     }
 
-    private var unhandledFailedProxyRequests: [UUID: UnsafeRemoteURL] = [:]
+    private var unhandledFailedProxyRequests: [Set<UUID>: UnsafeRemoteURL] = [:]
 
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
@@ -401,7 +401,7 @@ extension MessageInfoProvider {
         unhandledFailedProxyRequests.removeAll()
     }
 
-    func replaceMarkersWithURLs(_ replacements: [UUID: String]) {
+    func replaceMarkersWithURLs(_ replacements: [Set<UUID>: String]) {
         dispatchQueue.async { [weak self] in
             guard
                 let self = self,
@@ -411,14 +411,14 @@ extension MessageInfoProvider {
             }
 
             let updatedBody = replacements.reduce(into: currentlyDisplayedBody) { body, replacement in
-                let marker = replacement.key.uuidString
+                for marker in replacement.key {
+                    guard let rangeToReplace = body.range(of: marker.uuidString) else {
+                        assertionFailure("Current body should contain \(marker)")
+                        continue
+                    }
 
-                guard let rangeToReplace = body.range(of: marker, options: .caseInsensitive) else {
-                    assertionFailure("Current body should contain \(marker)")
-                    return
+                    body.replaceSubrange(rangeToReplace, with: replacement.value)
                 }
-
-                body.replaceSubrange(rangeToReplace, with: replacement.value)
             }
 
             self.updateBodyParts(with: updatedBody)
@@ -502,6 +502,7 @@ extension MessageInfoProvider {
                     let bodyWithoutRemoteURLs = try self.imageProxy.process(body: decryptedBody, delegate: self)
                     self.imageProxyHasRunOnCurrentBody = true
                     decryptedBody = bodyWithoutRemoteURLs
+                    self.updateBodyParts(with: decryptedBody)
                 } catch {
                     // ImageProxy will only fail if the HTML is malformed, the other errors are contained
                     assertionFailure("\(error)")
@@ -510,7 +511,6 @@ extension MessageInfoProvider {
                 }
             }
 
-            self.updateBodyParts(with: decryptedBody)
             self.checkBannerStatus(decryptedBody)
 
             guard self.embeddedContentPolicy == .allowed else {
