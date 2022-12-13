@@ -405,7 +405,7 @@
 			<key>one</key>
 			<string>Esta %d mensagem será movida para Rascunhos e seu agendamento removido.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Estas %d mensagens serão movidas para Rascunhos e seu agendamento removido.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

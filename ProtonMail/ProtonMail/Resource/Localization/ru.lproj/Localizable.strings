@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Пользовательский";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Настроить панель инструментов";
 
 /* Title */
@@ -1284,6 +1282,9 @@
 /* Title */
 "No connectivity detected…" = "Подключение не обнаружено…";
 
+/* Short hint in the header view */
+"No email trackers found" = "Почтовые трекеры не найдены";
+
 /* network troubleshot cell title */
 "No internet connection" = "Нет подключения к Интернету";
 
@@ -1828,7 +1829,7 @@
 "Storage Warning" = "Предупреждение о хранилище";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "Хранится с применением мгновенного шифрования";
+"Stored with zero-access encryption" = "Хранится под шифрованием с нулевым доступом";
 
 /* contact placeholder */
 "Street" = "Улица";

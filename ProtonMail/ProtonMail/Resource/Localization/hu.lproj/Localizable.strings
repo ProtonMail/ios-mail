@@ -464,9 +464,7 @@
    Custom option for time config picker */
 "Custom" = "Egyéni";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Eszköztár testreszabása";
 
 /* Title */

@@ -31,9 +31,6 @@
 /* Title of the tracker list. Only used if there is at least one tracker. */
 "%d email trackers blocked" = "%d rastreadores de e-mail bloqueados";
 
-/* Short hint in the header view */
-"%d email trackers found" = "%d rastreadores de e-mail encontrados";
-
 /* The title of swipe banner after swiping to label messages */
 "%d message labeled" = "%d mensagem marcada";
 
@@ -578,9 +575,7 @@
    Custom option for time config picker */
 "Custom" = "Personalizado";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Personalizar barra de ferramentas";
 
 /* Title */
@@ -1334,6 +1329,9 @@
 
 /* Title */
 "No connectivity detected…" = "Nenhuma conexão detectada…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Nenhum rastreador de e-mail encontrado";
 
 /* network troubleshot cell title */
 "No internet connection" = "Sem conexão com a internet";
