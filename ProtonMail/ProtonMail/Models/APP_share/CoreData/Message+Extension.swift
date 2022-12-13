@@ -309,30 +309,6 @@ extension Message {
 
     // MARK: methods
 
-    func decryptBody(keys: [Key], passphrase: Passphrase) throws -> String? {
-        var firstError: Error?
-        var errorMessages: [String] = []
-        for key in keys {
-            do {
-                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(
-                    ArmoredKey(value: key.privateKey),
-                    passphrase: passphrase
-                )
-                return decryptedBody
-            } catch {
-                if firstError == nil {
-                    firstError = error
-                    errorMessages.append(error.localizedDescription)
-                }
-            }
-        }
-
-        if let error = firstError {
-            throw error
-        }
-        return nil
-    }
-
     func decryptBody(keys: [Key], userKeys: [ArmoredKey], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []

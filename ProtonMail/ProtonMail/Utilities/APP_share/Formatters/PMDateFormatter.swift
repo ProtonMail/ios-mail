@@ -44,15 +44,6 @@ class PMDateFormatter {
     private lazy var dateFormatter = formatterFactory(localizedDateFormatFromTemplate: "EEEE, MMMM dd")
     private lazy var timeFormatter = formatterFactory(localizedDateFormatFromTemplate: "hhmm a")
 
-    private lazy var detailDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Environment.locale()
-        formatter.timeZone = Environment.timeZone
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .long
-        return formatter
-    }()
-
     private var calendar: Calendar {
         var calendar = Environment.calendar
         calendar.timeZone = Environment.timeZone
@@ -113,10 +104,6 @@ class PMDateFormatter {
         let dateString = dateFormatter.string(from: date)
         let timeString = timeFormatter.string(from: date)
         return (dateString, timeString)
-    }
-
-    func detailDateString(from date: Date) -> String {
-        return detailDateFormatter.string(from: date)
     }
 
     private func isPreviousWeek(currentDate: Date, date: Date, weekStart: WeekStart) -> Bool {

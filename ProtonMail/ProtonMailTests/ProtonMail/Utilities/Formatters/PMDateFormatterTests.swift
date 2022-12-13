@@ -234,15 +234,6 @@ class PMDateFormatterTests: XCTestCase {
                        "1:05 AM")
     }
 
-    func testGetDetailDateString() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
-
-        let date = Date.fixture("2022-04-25 01:05:00")
-        XCTAssertEqual(sut.detailDateString(from: date), "April 25, 2022 at 1:05:00 AM")
-    }
-
     func testStringForScheduledMsg_withTimeInThePast() {
         Environment.locale = { .enUS }
         Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }

@@ -300,10 +300,6 @@ class ConversationViewModel {
         }
     }
 
-    func conversationNoticeViewIsOpened() {
-        conversationNoticeViewStatusProvider.conversationNoticeIsOpened = true
-    }
-
     func areAllMessagesIn(location: LabelLocation) -> Bool {
         let numMessagesInLocation = conversation.getNumMessages(labelID: location.labelID)
         return numMessagesInLocation == conversation.messageCount

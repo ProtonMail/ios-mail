@@ -21,7 +21,6 @@ import PromiseKit
 
 class MockLabelProvider: LabelProviderProtocol {
     var customFolderToReturn: [LabelEntity] = []
-    var labelToReturnInGetLabel: Label?
     var mockLabelPublisherToReturn: MockLabelPublisher?
     private(set) var wasFetchV4LabelsCalled: Bool = false
 
@@ -31,10 +30,6 @@ class MockLabelProvider: LabelProviderProtocol {
 
     func getCustomFolders() -> [LabelEntity] {
         return customFolderToReturn
-    }
-
-    func getLabel(by labelID: LabelID) -> Label? {
-        return labelToReturnInGetLabel
     }
 
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?) {

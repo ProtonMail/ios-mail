@@ -297,24 +297,6 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(argument.count, 1)
     }
 
-    func testGeneratePairOfApiServicesAndUserInfos() {
-        let user1 = createUserManagerMock(userID: "1", isPaid: false)
-        let user2 = createUserManagerMock(userID: "2", isPaid: false)
-        sut.add(newUser: user1)
-        sut.add(newUser: user2)
-
-        let result = sut.generatePairOfApiServicesAndUserInfos()
-        let apis = result.mapValues { $0.0 }
-        let userInfos = result.mapValues { $0.1 }
-        XCTAssertEqual(apis.count, 2)
-        XCTAssertEqual(userInfos.count, 2)
-
-        XCTAssertEqual(userInfos[user1.userID], user1.userInfo)
-        XCTAssertEqual(userInfos[user2.userID], user2.userInfo)
-        XCTAssertNotNil(apis[user1.userID])
-        XCTAssertNotNil(apis[user2.userID])
-    }
-
     private func createUserManagerMock(userID: String, isPaid: Bool) -> UserManager {
         let userInfo = UserInfo(maxSpace: nil,
                                  usedSpace: nil,

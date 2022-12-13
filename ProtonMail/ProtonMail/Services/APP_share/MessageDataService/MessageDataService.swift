@@ -333,15 +333,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         queue(.empty(currentLabelID: labelID.rawValue))
     }
 
-    static func recoverAttachmentDownloadIssue(from error: NSError, attachmentID: AttachmentID) -> URL? {
-        if error.code == CocoaError.fileWriteFileExists.rawValue {
-            let destinationDirectoryURL = FileManager.default.attachmentDirectory
-            return destinationDirectoryURL.appendingPathComponent(attachmentID.rawValue)
-        } else {
-            return nil
-        }
-    }
-
     private func noQueue(_ readBlock: @escaping ReadBlock) {
         readBlock()
     }
@@ -1042,7 +1033,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
                 return sendbuilder
                     .fetchAttachmentBodyForMime(passphrase: passphrase,
-                                                msgService: self,
                                                 userInfo: userInfo)
             }.then { _ -> Promise<MessageSendingRequestBuilder> in
                 // Debug info

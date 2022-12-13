@@ -528,10 +528,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
                                        labelID: currentLabelID,
                                        completion: completion)
     }
-
-    func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.fetchConversationCounts(addressID: nil, completion: completion)
-    }
     
     func labelConversations(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
         conversationProvider.label(conversationIDs: conversationIDs,
@@ -545,15 +541,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
                                     as: labelID,
                                     isSwipeAction: false,
                                     completion: completion)
-    }
-
-    func isEventIDValid() -> Bool {
-        return messageService.isEventIDValid()
-    }
-
-    /// get the cached notification message id
-    var notificationMessageID: String? {
-        messageService.pushNotificationMessageID
     }
 
     final func resetNotificationMessage() {
