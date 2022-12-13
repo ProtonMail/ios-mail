@@ -300,7 +300,7 @@ extension String {
         let address = recipients["Address"] ?? ""
 
         if !address.isEmpty {
-            out = ContactVO(id: "", name: name, email: address)
+            out = ContactVO(name: name, email: address)
         }
         return out
     }

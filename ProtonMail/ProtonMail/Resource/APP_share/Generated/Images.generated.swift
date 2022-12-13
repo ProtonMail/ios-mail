@@ -23,7 +23,6 @@ internal enum Asset {
   internal static let launchScreenBackground = ColorAsset(name: "LaunchScreenBackground")
   internal static let launchScreenBrand = ImageAsset(name: "launchScreenBrand")
   internal static let launchScreenLogo = ImageAsset(name: "launchScreenLogo")
-  internal static let conversationNotice = ImageAsset(name: "conversationNotice")
   internal static let mailAttachmentDoc = ImageAsset(name: "mail_attachment-doc")
   internal static let mailAttachmentFile = ImageAsset(name: "mail_attachment-file")
   internal static let mailAttachmentJpeg = ImageAsset(name: "mail_attachment-jpeg")

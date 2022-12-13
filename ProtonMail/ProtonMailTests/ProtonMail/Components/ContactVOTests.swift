@@ -21,8 +21,8 @@ import XCTest
 
 final class ContactVOTests: XCTestCase {
     func testIsDuplicated() {
-        let contact1 = ContactVO(id: "", name: "name1", email: "mail1@test.com")
-        let contact2 = ContactVO(id: "", name: "name2", email: "mail2@test.com")
+        let contact1 = ContactVO(name: "name1", email: "mail1@test.com")
+        let contact2 = ContactVO(name: "name2", email: "mail2@test.com")
         let address = Address(addressID: "", domainID: "test.com", email: "mail9@test.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 0, keys: [])
         let address1 = Address(addressID: "", domainID: "test.com", email: "mail1@test.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 0, keys: [])
         XCTAssertTrue(contact1.isDuplicated([address, address1]))
@@ -30,19 +30,19 @@ final class ContactVOTests: XCTestCase {
     }
 
     func testIsDuplicatedWithContacts() {
-        let contact1 = ContactVO(id: "", name: "name1", email: "mail1@test.com")
-        let contact2 = ContactVO(id: "", name: "name2", email: "mail2@test.com")
+        let contact1 = ContactVO(name: "name1", email: "mail1@test.com")
+        let contact2 = ContactVO(name: "name2", email: "mail2@test.com")
 
         XCTAssertTrue(contact1.isDuplicatedWithContacts([contact1, contact2]))
         XCTAssertFalse(contact2.isDuplicatedWithContacts([contact1]))
     }
 
     func testGetNameInContacts() {
-        let contact1 = ContactVO(id: "", name: "name1", email: "mail1@test.com")
-        let contact2 = ContactVO(id: "", name: "name2", email: "mail1@test.com")
-        let contact3 = ContactVO(id: "", name: "name3", email: "mail3@test.com")
-        let contact4 = ContactVO(id: "", name: "mail4@test.com", email: "mail4@test.com")
-        let contact5 = ContactVO(id: "", name: "mail1@test.com", email: "mail1@test.com")
+        let contact1 = ContactVO(name: "name1", email: "mail1@test.com")
+        let contact2 = ContactVO(name: "name2", email: "mail1@test.com")
+        let contact3 = ContactVO(name: "name3", email: "mail3@test.com")
+        let contact4 = ContactVO(name: "mail4@test.com", email: "mail4@test.com")
+        let contact5 = ContactVO(name: "mail1@test.com", email: "mail1@test.com")
 
         XCTAssertEqual(contact4.getName(in: [contact1]), nil)
         XCTAssertEqual(contact3.getName(in: [contact1]), "name3")

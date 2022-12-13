@@ -70,7 +70,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             user: user,
             contextProvider: CoreDataService.shared,
             internetStatusProvider: internetStatusProvider,
-            conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
             labelProvider: user.labelService,
             userIntroductionProgressProvider: userCachedStatus,

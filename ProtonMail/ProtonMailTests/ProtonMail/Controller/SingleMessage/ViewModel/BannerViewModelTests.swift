@@ -195,7 +195,6 @@ class BannerViewModelTests: XCTestCase {
                               unsubscribeActionHandler: unsubscribeHandlerMock,
                               markLegitimateActionHandler: markLegitimateHandlerMock,
                               receiptActionHandler: receiptHandlerMock,
-                              weekStart: .automatic,
                               urlOpener: UIApplication.shared)
         sut.providerHasChanged(
             provider: .init(

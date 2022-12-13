@@ -100,14 +100,12 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let paymentMethods = "paymentMethods"
 
-        static let conversationNotice = "conversationNotice"
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
 
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
-        static let isToolbarCustomizeSpotlightShown = "isToolbarCustomizeSpotlightShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }
 
@@ -702,17 +700,7 @@ extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
     }
 }
 
-extension UserCachedStatus: ConversationNoticeViewStatusProvider {
-    var conversationNoticeIsOpened: Bool {
-        get {
-            return SharedCacheBase.getDefault().bool(forKey: Key.conversationNotice)
-        }
-        set {
-            SharedCacheBase.getDefault().set(newValue, forKey: Key.conversationNotice)
-            SharedCacheBase.getDefault()?.synchronize()
-        }
-    }
-
+extension UserCachedStatus {
     var initialUserLoggedInVersion: String? {
         get {
             return SharedCacheBase.getDefault().string(forKey: Key.initialUserLoggedInVersion)

@@ -34,8 +34,6 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         static let headerCell = "header_cell"
         static let footerCell = "footer_cell"
         static let headerCellHeight: CGFloat = 52.0
-        static let cellHeight: CGFloat = 48.0
-        static let accountCellHeight: CGFloat = 64.0
     }
 
     private let viewModel: SettingsDeviceViewModel

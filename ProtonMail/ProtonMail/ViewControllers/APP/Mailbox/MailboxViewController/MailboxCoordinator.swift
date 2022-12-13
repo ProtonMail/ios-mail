@@ -25,8 +25,6 @@ import SideMenuSwift
 import class ProtonCore_DataModel.UserInfo
 
 class MailboxCoordinator: CoordinatorDismissalObserver {
-    typealias VC = MailboxViewController
-
     let viewModel: MailboxViewModel
     var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol

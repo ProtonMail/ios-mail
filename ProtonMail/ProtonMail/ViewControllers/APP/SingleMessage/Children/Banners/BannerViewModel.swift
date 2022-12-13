@@ -32,7 +32,6 @@ final class BannerViewModel {
     private let markLegitimateActionHandler: MarkLegitimateActionHandler
     private let receiptActionHandler: ReceiptActionHandler
     private let urlOpener: URLOpener
-    private let weekStart: WeekStart
     var shouldShowReceiptBanner: Bool {
         guard let message = infoProvider?.message else { return false }
         return message.hasReceiptRequest && !message.isSent
@@ -77,7 +76,6 @@ final class BannerViewModel {
          unsubscribeActionHandler: UnsubscribeActionHandler,
          markLegitimateActionHandler: MarkLegitimateActionHandler,
          receiptActionHandler: ReceiptActionHandler,
-         weekStart: WeekStart,
          urlOpener: URLOpener) {
         self.shouldAutoLoadRemoteContent = shouldAutoLoadRemoteContent
         self.shouldAutoLoadEmbeddedImage = shouldAutoLoadEmbeddedImage
@@ -85,7 +83,6 @@ final class BannerViewModel {
         self.markLegitimateActionHandler = markLegitimateActionHandler
         self.receiptActionHandler = receiptActionHandler
         self.urlOpener = urlOpener
-        self.weekStart = weekStart
         setUpTimer(expirationTime: expirationTime)
     }
 

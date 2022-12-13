@@ -68,7 +68,7 @@ final class PushNotificationHandler {
         contentHandler(bestContent)
     }
 
-    func willTerminate(session: URLSessionProtocol = URLSession.shared) {
+    func willTerminate() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content
         // otherwise the original push payload will be used.
@@ -190,23 +190,10 @@ private extension PushNotificationHandler {
 
 extension PushNotificationHandler {
     struct Dependencies {
-        let urlSession: URLSessionProtocol
         let encryptionKitProvider: EncryptionKitProvider
 
-        init(
-            urlSession: URLSessionProtocol = URLSession.shared,
-            encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor()
-        ) {
-            self.urlSession = urlSession
+        init(encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor()) {
             self.encryptionKitProvider = encryptionKitProvider
         }
     }
 }
-
-protocol URLSessionProtocol {
-    @discardableResult
-    func dataTask(with request: URLRequest,
-                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void ) -> URLSessionDataTask
-}
-
-extension URLSession: URLSessionProtocol {}

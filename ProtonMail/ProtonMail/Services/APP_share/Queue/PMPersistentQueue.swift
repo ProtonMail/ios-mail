@@ -191,41 +191,6 @@ class BackupExcluder: BackupExcluderProtocol {
         return isFound
     }
 
-    func removeAllObject<T>(of target: [String: T]) where T: Equatable {
-        self.serialQueue.sync {
-            self.queue.removeAll { (element) -> Bool in
-                if let elementDict = element as? [String: Any] {
-                    var result = true
-                    if let dict = elementDict[Key.object] as? [String: Any] {
-                        for (key, value) in target {
-                            if let v = dict[key] as? T, v == value {
-                                break
-                            } else {
-                                result = false
-                            }
-                        }
-                    }
-                    return result
-                }
-                return false
-            }
-        }
-    }
-
-    func remove<T>(key: String, value: T) where T: Equatable {
-        self.serialQueue.sync {
-            self.queue.removeAll { (element) -> Bool in
-                if let elementDict = element as? [String: Any],
-                    let object = elementDict[Key.object] as? [String: Any],
-                    let found = object[key] as? T,
-                    found == value {
-                    return true
-                }
-                return false
-            }
-        }
-    }
-
     func contains(_ uuid: UUID) -> Bool {
         self.serialQueue.sync {
             return self.queue.contains { (element) -> Bool in

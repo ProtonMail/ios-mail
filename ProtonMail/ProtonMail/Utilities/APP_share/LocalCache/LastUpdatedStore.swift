@@ -57,7 +57,7 @@ protocol LastUpdatedStoreProtocol {
                                type: ViewMode)
 }
 
-final class LastUpdatedStore: SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
+final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service {
 
     let contextProvider: CoreDataContextProviderProtocol
 

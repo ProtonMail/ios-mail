@@ -133,7 +133,6 @@ class SingleMessageComponentsFactory {
                      unsubscribeActionHandler: unsubscribeService,
                      markLegitimateActionHandler: markLegitimateService,
                      receiptActionHandler: receiptService,
-                     weekStart: user.userInfo.weekStartValue,
                      urlOpener: UIApplication.shared)
     }
 }

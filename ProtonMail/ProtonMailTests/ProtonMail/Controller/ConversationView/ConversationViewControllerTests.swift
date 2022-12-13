@@ -31,7 +31,6 @@ class ConversationViewControllerTests: XCTestCase {
     var applicationStateMock: MockApplicationStateProvider!
     var internetStatusProviderMock: InternetConnectionStatusProvider!
     var reachabilityStub: ReachabilityStub!
-    var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var labelProviderMock: MockLabelProvider!
     var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
     var toolbarActionProviderMock: MockToolbarActionProvider!
@@ -47,7 +46,6 @@ class ConversationViewControllerTests: XCTestCase {
         fakeUser = UserManager(api: apiMock, role: .none)
         reachabilityStub = ReachabilityStub()
         internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
         toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
@@ -63,7 +61,6 @@ class ConversationViewControllerTests: XCTestCase {
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
-                                                  conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                                   conversationStateProvider: MockConversationStateProvider(),
                                                   labelProvider: labelProviderMock,
                                                   userIntroductionProgressProvider: userIntroductionProgressProviderMock,

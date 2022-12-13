@@ -45,9 +45,6 @@ class SettingsLockCoordinator {
             let nav = UINavigationController()
             nav.modalPresentationStyle = .fullScreen
             let coordinator = PinCodeSetupCoordinator(nav: nav)
-            coordinator.configuration = { vc in
-                vc.viewModel = SetPinCodeModelImpl()
-            }
             coordinator.start()
             self.navigationController?.present(nav, animated: true, completion: nil)
         }

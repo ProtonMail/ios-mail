@@ -273,12 +273,6 @@ final class SignInCoordinator {
                                    onError: { [weak self] error in
                                        self?.handleRequestError(error, wrapIn: FlowError.finalizingSignInFailed)
                                    },
-                                   reachLimit: { [weak self] in
-                                       self?.processReachLimitError()
-                                   },
-                                   existError: { [weak self] in
-                                       self?.processExistError()
-                                   },
                                    showSkeleton: { [weak self] in
                                        self?.showSkeletonTemplate()
                                    },

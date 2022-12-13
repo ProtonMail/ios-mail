@@ -175,51 +175,6 @@ class PMPersistentQueueTests: XCTestCase {
         XCTAssertFalse(queueUUIDs.contains(uuid ?? UUID()))
     }
     
-    func testRemoveAllSameObjectsFromQueue() {
-        let initialNumberOfQueues = 10
-        createTestQueues(numberOfQueues: initialNumberOfQueues)
-        XCTAssertEqual(sut.count, initialNumberOfQueues)
-
-        createTestQueue(number: 5)
-        
-        XCTAssertEqual(sut.count, initialNumberOfQueues + 1)
-        
-        sut.remove(key: "Test", value: NSNumber(value: 5))
-        
-        XCTAssertEqual(sut.count, initialNumberOfQueues - 1)
-        
-        let queue = sut.queueArray()
-        XCTAssertEqual(queue.count, initialNumberOfQueues - 1)
-        let queuesNumbers = queue.getQueuesNumbers()
-
-        XCTAssertEqual(queuesNumbers.count, initialNumberOfQueues - 1)
-        
-        XCTAssertFalse(queuesNumbers.contains(5))
-    }
-    
-    func testRemoveByDictionaryTarget() {
-        let numberOfQueues = 10
-        createTestQueues(numberOfQueues: numberOfQueues)
-        XCTAssertEqual(sut.count, numberOfQueues)
-        
-        let target = ["Test": NSNumber(value: 5)]
-        sut.removeAllObject(of: target)
-        
-        XCTAssertEqual(sut.count, numberOfQueues - 1)
-    }
-    
-    func testRemoveByWrongTarget() {
-        let numberOfQueues = 10
-        createTestQueues(numberOfQueues: numberOfQueues)
-
-        XCTAssertEqual(sut.count, numberOfQueues)
-
-        let target = ["Test": NSNumber(value: 11)]
-        sut.removeAllObject(of: target)
-
-        XCTAssertEqual(sut.count, numberOfQueues)
-    }
-    
     func testContains() {
         let numberOfQueues = 10
         createTestQueues(numberOfQueues: numberOfQueues)

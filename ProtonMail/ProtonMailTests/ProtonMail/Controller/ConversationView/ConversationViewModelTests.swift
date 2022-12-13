@@ -23,7 +23,6 @@ import ProtonCore_TestingToolkit
 class ConversationViewModelTests: XCTestCase {
 
     private var sut: ConversationViewModel!
-    var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var contextProviderMock: MockCoreDataContextProvider!
     var labelProviderMock: MockLabelProvider!
     var messageMock: MessageEntity!
@@ -42,7 +41,6 @@ class ConversationViewModelTests: XCTestCase {
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
         toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
@@ -58,7 +56,6 @@ class ConversationViewModelTests: XCTestCase {
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
                                     userIntroductionProgressProvider: userIntroductionProgressProviderMock,
@@ -101,57 +98,6 @@ class ConversationViewModelTests: XCTestCase {
         sut.scrollViewDidScroll()
 
         XCTAssertEqual(callbackCount, 1)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andMoreThanOneMessage_returnTrue() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
-                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
-
-        XCTAssertTrue(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andMoreThanOneMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
-                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andEmptyMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = []
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andEmptyMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = []
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andOneMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: false))]
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionNotNil_andMoreThanOneMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = "3.1.6"
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
-                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
     }
 
     func testAreAllMessagesInThreadInTheTrash_whenAllAreInTrash_ReturnsTrue() {
@@ -508,7 +454,6 @@ class ConversationViewModelTests: XCTestCase {
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
                                     userIntroductionProgressProvider: userIntroductionProgressProviderMock,
