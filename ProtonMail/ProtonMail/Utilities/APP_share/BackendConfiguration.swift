@@ -18,12 +18,12 @@
 import ProtonCore_Doh
 import ProtonCore_Environment
 
-typealias BackendEnvironment = ProtonCore_Environment.Environment
-
 struct BackendConfiguration {
+    typealias Environment = ProtonCore_Environment.Environment
+
     static let shared = BackendConfiguration()
 
-    let environment: BackendEnvironment
+    let environment: Environment
 
     var doh: DoH {
         environment.doh
