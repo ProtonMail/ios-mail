@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Власний";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Налаштувати панель інструментів";
 
 /* Title */
@@ -1283,6 +1281,9 @@
 
 /* Title */
 "No connectivity detected…" = "Не виявлено зʼєднання…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Стеження не виявлено";
 
 /* network troubleshot cell title */
 "No internet connection" = "Немає з’єднання з інтернетом";

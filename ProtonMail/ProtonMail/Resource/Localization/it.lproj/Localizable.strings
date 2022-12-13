@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Personalizzato";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Personalizza toolbar";
 
 /* Title */
@@ -1283,6 +1281,9 @@
 
 /* Title */
 "No connectivity detected…" = "Nessuna connettività rilevata…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Nessun tracker email trovato";
 
 /* network troubleshot cell title */
 "No internet connection" = "Nessuna connessione Internet";

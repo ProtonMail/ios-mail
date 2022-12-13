@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Detta %d meddelande kommer att flyttas till utkast och dess schema borttaget.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Dessa %d meddelanden kommer att flyttas till Utkast och få sina scheman borttagna.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

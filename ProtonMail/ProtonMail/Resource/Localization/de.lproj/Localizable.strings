@@ -325,7 +325,7 @@
 "Blocks senders from seeing if and when you opened the message" = "Verhindert, dass der Absender erfährt, ob und wann du die Nachricht geöffnet hast";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Blättere im Konversationsmodus durch zusammenhängende Nachrichten.";
+"Breeze through threaded messages in conversation mode." = "Blättere im Unterhaltungsmodus durch zusammenhängende Nachrichten.";
 
 /* Title */
 "Bug Description" = "Beschreibung des Fehlers";
@@ -521,7 +521,7 @@
 "Conversation grouping" = "Themen gruppieren";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "Themenmodus";
+"Conversation mode" = "Unterhaltungsmodus";
 
 /* The title of the conversation notice view shown in the conversation view. */
 "Conversations are optional" = "Konversationen sind optional";
@@ -566,9 +566,7 @@
    Custom option for time config picker */
 "Custom" = "Benutzerdefiniert";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Symbolleiste anpassen";
 
 /* Title */
@@ -1319,6 +1317,9 @@
 
 /* Title */
 "No connectivity detected…" = "Keine Verbindung gefunden…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Keine E-Mail-Tracker gefunden";
 
 /* network troubleshot cell title */
 "No internet connection" = "Keine Internetverbindung";

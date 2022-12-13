@@ -518,9 +518,7 @@
    Custom option for time config picker */
 "Custom" = "Aangepast";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Pas de werkbalk aan";
 
 /* Title */
@@ -642,6 +640,9 @@
 
 /* Text for estimate time label when no internet connection is available */
 "Download paused: No connectivity" = "Download gepauzeerd: Geen netwerkverbinding";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Download gepauzeerd: Geen WiFi gedetecteerd";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Download gepauzeerd: Opslag vol";

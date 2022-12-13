@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Personalizado";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Personalizar barra de herramientas";
 
 /* Title */
@@ -1284,6 +1282,9 @@
 /* Title */
 "No connectivity detected…" = "No se ha detectado ninguna conectividad…";
 
+/* Short hint in the header view */
+"No email trackers found" = "No se encontraron rastreadores de correo";
+
 /* network troubleshot cell title */
 "No internet connection" = "No hay conexión a Internet";
 
@@ -1634,6 +1635,9 @@
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Se eliminará su programación";
+
+/* mail location title */
+"Scheduled" = "Programado";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Programando mensaje...";

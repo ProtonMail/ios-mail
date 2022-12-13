@@ -518,9 +518,7 @@
    Custom option for time config picker */
 "Custom" = "自訂";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "自訂工具列";
 
 /* Title */
@@ -1256,6 +1254,9 @@
 
 /* Title */
 "No connectivity detected…" = "未偵測到網際網路連線…";
+
+/* Short hint in the header view */
+"No email trackers found" = "未找到電郵追蹤器";
 
 /* network troubleshot cell title */
 "No internet connection" = "無網路連線";

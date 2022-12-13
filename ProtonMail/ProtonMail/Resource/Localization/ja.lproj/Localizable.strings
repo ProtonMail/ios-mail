@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[すべてのメッセージを表示]";
+"…[Show full message]" = "…[全文を表示]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
@@ -285,6 +285,9 @@
 /* Title */
 "Bug Report Received" = "バグレポートを受け取りました";
 
+/* The title of cached data in local storage settings */
+"Cached data" = "キャッシュ済みデータ";
+
 /* Call the contact (button title text) */
 "Call contact" = "連絡先に発信";
 
@@ -503,9 +506,7 @@
    Custom option for time config picker */
 "Custom" = "カスタム設定";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "ツールバーのカスタマイズ";
 
 /* Title */
@@ -711,6 +712,9 @@
 
 /* Name of the feature */
 "Email tracking protection" = "メールトラッキング防止";
+
+/* Spotlight explanation of the feature */
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "メールトラッキング防止が利用可能になりました。あなたがメールを開いたか開いていないかや、いつどこで開いたかを差出人に知られないようにします。";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "迷惑メールを空にする";
@@ -1208,6 +1212,9 @@
 
 /* Title */
 "No connectivity detected…" = "接続を検出できません…";
+
+/* Short hint in the header view */
+"No email trackers found" = "メールトラッカーは見つかりませんでした";
 
 /* network troubleshot cell title */
 "No internet connection" = "インターネット接続がありません";
@@ -1885,6 +1892,9 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "選択したブラウザーがアンインストールされた場合、設定は Safari に戻されます。";
 
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "メッセージを読んでいるとき、ツールバーが表示されます。";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";
 
@@ -1936,7 +1946,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先をメールアドレスの自動補完に利用することができます。";
 
 /* Placeholder */
-"Two Factor Code" = "２要素認証コード";
+"Two Factor Code" = "二段階認証コード";
 
 /* Internal type casting error */
 "Type casting error" = "型変換エラー";
@@ -2035,7 +2045,7 @@
 "View message in Dark mode" = "ダークモードでメッセージを表示";
 
 /* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "ライトモードでメッセージを表示";
+"View message in Light mode" = "ライトモードでメールを表示";
 
 /* Title */
 "Warning" = "警告";
@@ -2132,6 +2142,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
+
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "メールトラッカーからあなたを守ります";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "変更箇所は破棄されます";

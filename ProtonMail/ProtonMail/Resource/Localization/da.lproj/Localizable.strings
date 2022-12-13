@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Tilpasset";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Tilpas værktøjsbjælker";
 
 /* Title */
@@ -1283,6 +1281,9 @@
 
 /* Title */
 "No connectivity detected…" = "Ingen forbindelse fundet…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Ingen e-mail-trackere fundet";
 
 /* network troubleshot cell title */
 "No internet connection" = "Ingen internetforbindelse";
