@@ -103,12 +103,6 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertEqual(callbackCount, 1)
     }
 
-    func testConversationNoticeViewIsOpened() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        sut.conversationNoticeViewIsOpened()
-        XCTAssertTrue(conversationNoticeViewStatusMock.conversationNoticeIsOpened)
-    }
-
     func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andMoreThanOneMessage_returnTrue() {
         conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
         conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil

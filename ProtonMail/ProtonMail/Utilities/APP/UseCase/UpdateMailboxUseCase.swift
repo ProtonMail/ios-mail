@@ -30,7 +30,6 @@ protocol UpdateMailboxUseCase: UseCase {
 }
 
 protocol UpdateMailboxSourceProtocol: AnyObject {
-    var currentViewMode: ViewMode { get }
     var locationViewMode: ViewMode { get }
 }
 
@@ -140,14 +139,6 @@ extension UpdateMailbox {
             return MessageID(id)
         }
         return nil
-    }
-
-    private var currentViewMode: ViewMode {
-        guard let source = self.sourceDelegate else {
-            assert(false, "Needs to set up source")
-            return .conversation
-        }
-        return source.currentViewMode
     }
 
     private var locationViewMode: ViewMode {
@@ -264,11 +255,6 @@ extension UpdateMailbox {
                         }
                 }
         }
-    }
-
-    private func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
-        self.dependencies.conversationProvider
-            .fetchConversationCounts(addressID: nil, completion: completion)
     }
 }
 

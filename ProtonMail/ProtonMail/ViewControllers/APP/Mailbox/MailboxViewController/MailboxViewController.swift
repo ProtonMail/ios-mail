@@ -84,11 +84,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var isCheckingHuman: Bool = false
 
-    private var fetchingStopped: Bool = true
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
-    private var isEditingMode = true
 
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -641,12 +639,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.updateUnreadButton()
     }
 
-    private func beginRefreshingManually(animated: Bool) {
-        if animated {
-            self.refreshControl.beginRefreshing()
-        }
-    }
-
     // MARK: - Private methods
 
     private func hideSelectionMode() {
@@ -685,14 +677,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func startAutoFetch(_ run: Bool = true) {
         viewModel.eventsService.start()
         viewModel.eventsService.begin(subscriber: self)
-        fetchingStopped = false
         if run {
             self.viewModel.eventsService.call()
         }
     }
 
     private func stopAutoFetch() {
-        fetchingStopped = true
         viewModel.eventsService.pause()
     }
 
@@ -1379,7 +1369,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func updateNavigationController(_ editingMode: Bool) {
-        self.isEditingMode = editingMode
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
         self.setupRightButtons(editingMode)

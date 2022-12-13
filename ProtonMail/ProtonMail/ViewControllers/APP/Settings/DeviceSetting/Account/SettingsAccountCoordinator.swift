@@ -195,7 +195,3 @@ class SettingsAccountCoordinator {
         navigationController?.topViewController?.present(alert, animated: true, completion: nil)
     }
 }
-
-extension DeepLink.Node {
-    static let conversationMode = DeepLink.Node.init(name: "conversation_mode")
-}

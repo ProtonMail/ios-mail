@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Vlastní";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Přizpůsobit panel nástrojů";
 
 /* Title */
@@ -1283,6 +1281,9 @@
 
 /* Title */
 "No connectivity detected…" = "Nerozpoznáno žádné síťové připojení…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Bez sledovacích prvků";
 
 /* network troubleshot cell title */
 "No internet connection" = "Bez připojení k Internetu";

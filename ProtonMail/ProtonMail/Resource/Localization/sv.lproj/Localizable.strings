@@ -575,9 +575,7 @@
    Custom option for time config picker */
 "Custom" = "Anpassad";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Anpassa verktygsrad";
 
 /* Title */
@@ -1328,6 +1326,9 @@
 
 /* Title */
 "No connectivity detected…" = "Ingen anslutning upptäcktes…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Inga e-postspårare hittades";
 
 /* network troubleshot cell title */
 "No internet connection" = "Ingen Internetanslutning";

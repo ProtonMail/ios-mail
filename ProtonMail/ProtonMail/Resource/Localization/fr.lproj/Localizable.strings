@@ -366,7 +366,7 @@
 "Change account password" = "Changer le mot de passe du compte";
 
 /* Title */
-"Change default address to…" = "Changer l'adresse par défaut par …";
+"Change default address to…" = "Changer l'adresse par défaut par…";
 
 /* settings general section title */
 "Change mailbox password" = "Changer le mot de passe de messagerie";
@@ -530,9 +530,7 @@
    Custom option for time config picker */
 "Custom" = "Personnalisé";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Personnaliser la barre d'outils";
 
 /* Title */
@@ -614,7 +612,10 @@
 "Discard" = "Abandonner";
 
 /* Action */
-"Discard changes" = "Annuler les changements";
+"Discard changes" = "Annuler les modifications";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Annulé";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ignorer le clavier";
@@ -1036,10 +1037,10 @@
 "Is this bug report about an in-app purchase?" = "Ce rapport de bug concerne-t-il un achat dans l'application ?";
 
 /* No comment provided by engineer. */
-"Label as" = "Labelliser comme";
+"Label as" = "Labelliser";
 
 /* Title */
-"Label as…" = "Labelliser comme…";
+"Label as…" = "Labelliser…";
 
 /* createing lable input place holder */
 "Label Name" = "Nom du Label";
@@ -1214,7 +1215,7 @@
 "Move message" = "Déplacer le message";
 
 /* No comment provided by engineer. */
-"Move to" = "Déplacer dans";
+"Move to" = "Déplacer";
 
 /* Action title of move to archive */
 "Move to archive" = "Déplacer dans le dossier Archives";
@@ -1231,7 +1232,7 @@
 "Move to trash" = "Déplacer dans le dossier Corbeille";
 
 /* Title */
-"Move to…" = "Déplacer dans…";
+"Move to…" = "Déplacer…";
 
 /* Onboarding title */
 "Neat and tidy" = "Soignée et ordonnée";
@@ -1280,6 +1281,9 @@
 
 /* Title */
 "No connectivity detected…" = "Aucune connexion détectée…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Aucun traqueur d'e-mails n'a été trouvé.";
 
 /* network troubleshot cell title */
 "No internet connection" = "Aucune connexion internet";
@@ -1632,6 +1636,9 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "La programmation sera supprimée.";
 
+/* mail location title */
+"Scheduled" = "Programmé";
+
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Programmation du message...";
 
@@ -1907,7 +1914,7 @@
 "The new password needs to be at least 8 characters long" = "Le nouveau mot de passe doit comporter au moins 8 caractères.";
 
 /* update password error */
-"The password is wrong." = "Le mot de passe est incorrect.";
+"The password is wrong." = "Le mot de passe n'est pas correct.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Le mot de passe doit contenir entre 8 et 21 caractères.";

@@ -527,9 +527,7 @@
    Custom option for time config picker */
 "Custom" = "Niestandardowe";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Dostosuj pasek narzędzi";
 
 /* Title */
@@ -1277,6 +1275,9 @@
 
 /* Title */
 "No connectivity detected…" = "Wykryto brak połączenia…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Brak elementów śledzących";
 
 /* network troubleshot cell title */
 "No internet connection" = "Brak połączenia z Internetem";

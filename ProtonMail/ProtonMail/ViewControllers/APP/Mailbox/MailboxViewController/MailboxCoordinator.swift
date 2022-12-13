@@ -275,37 +275,6 @@ extension MailboxCoordinator {
         self.viewController?.present(next, animated: true)
     }
 
-    private func followToDetails(message: MessageEntity,
-                                 navigationController: UINavigationController,
-                                 deeplink: DeepLink?) {
-        switch self.viewModel.locationViewMode {
-        case .conversation:
-            let targetID = message.messageID
-            fetchConversationFromBEIfNeeded(conversationID: message.conversationID) { [weak self] in
-                guard let self = self else { return }
-                self.showConversationView(conversationID: message.conversationID,
-                                          contextProvider: self.contextProvider,
-                                          navigationController: navigationController,
-                                          targetID: targetID)
-            }
-        case .singleMessage:
-            let coordinator = SingleMessageCoordinator(
-                navigationController: navigationController,
-                labelId: viewModel.labelID,
-                message: message,
-                user: self.viewModel.user,
-                infoBubbleViewStatusProvider: userCachedStatus
-            )
-            coordinator.goToDraft = { [weak self] msgID in
-                self?.editScheduleMsg(messageID: msgID)
-            }
-            coordinator.start()
-            if let link = deeplink {
-                coordinator.follow(link)
-            }
-        }
-    }
-
     func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
         guard internetStatusProvider.currentStatus != .notConnected else {
             goToDetailPage()
@@ -325,29 +294,6 @@ extension MailboxCoordinator {
             }
 
             goToDetailPage()
-        }
-    }
-
-    private func showConversationView(conversationID: ConversationID,
-                                      contextProvider: CoreDataContextProviderProtocol,
-                                      navigationController: UINavigationController,
-                                      targetID: MessageID?) {
-        if let conversation = Conversation
-            .conversationForConversationID(conversationID.rawValue,
-                                           inManagedObjectContext: contextProvider.mainContext) {
-            let entity = ConversationEntity(conversation)
-            let coordinator = ConversationCoordinator(
-                labelId: self.viewModel.labelID,
-                navigationController: navigationController,
-                conversation: entity,
-                user: self.viewModel.user,
-                internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
-                infoBubbleViewStatusProvider: userCachedStatus,
-                targetID: targetID)
-            coordinator.goToDraft = { [weak self] msgID in
-                self?.editScheduleMsg(messageID: msgID)
-            }
-            coordinator.start(openFromNotification: true)
         }
     }
 

@@ -578,9 +578,7 @@
    Custom option for time config picker */
 "Custom" = "Özel";
 
-/* The title of the Customize toolbar setting view.
-   The title of the Customize toolbar spotlight view.
-   The title of the item in the App settings section of the device setting view. */
+/* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Araç çubuğunu özelleştir";
 
 /* Title */
@@ -1334,6 +1332,9 @@
 
 /* Title */
 "No connectivity detected…" = "Herhangi bir bağlantı bulunamadı…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Herhangi bir e-posta izleyici bulunamadı";
 
 /* network troubleshot cell title */
 "No internet connection" = "İnternet bağlantısı yok";
