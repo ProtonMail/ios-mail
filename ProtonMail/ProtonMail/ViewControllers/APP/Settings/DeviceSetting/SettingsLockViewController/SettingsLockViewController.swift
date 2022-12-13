@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import MBProgressHUD
 import Masonry
 import ProtonCore_Foundations
 import ProtonCore_Keymaker
