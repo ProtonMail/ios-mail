@@ -39,7 +39,6 @@ enum LabelFetchType: Int {
 protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
     func getCustomFolders() -> [LabelEntity]
-    func getLabel(by labelID: LabelID) -> Label?
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
 }
 
@@ -443,9 +442,5 @@ class LabelsDataService: Service, HasLocalStorage {
 extension LabelsDataService: LabelProviderProtocol {
     func getCustomFolders() -> [LabelEntity] {
         getAllLabels(of: .folder)
-    }
-
-    func getLabel(by labelID: LabelID) -> Label? {
-        return label(by: labelID)
     }
 }

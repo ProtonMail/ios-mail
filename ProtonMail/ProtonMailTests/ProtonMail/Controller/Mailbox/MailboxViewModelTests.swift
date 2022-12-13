@@ -707,21 +707,6 @@ class MailboxViewModelTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testFetchConversationCount() {
-        let expectation1 = expectation(description: "Closure called")
-        sut.fetchConversationCount { _ in
-            XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversationCounts.lastArguments)
-                XCTAssertNil(argument.first)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
     func testDeleteConversationPermanently() {
         conversationStateProviderMock.viewMode = .conversation
 
@@ -1045,10 +1030,6 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetActionBarActions_inCustomFolder() {
-        let label = Label(context: testContext)
-        label.labelID = "qweqwe"
-        label.type = 3
-        labelProviderMock.labelToReturnInGetLabel = label
         createSut(labelID: "qweqwe", labelType: .folder, isCustom: false, labelName: nil)
 
         let result = sut.toolbarActionTypes()
@@ -1056,11 +1037,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetActionBarActions_inCustomLabel() {
-        let label = Label(context: testContext)
-        label.labelID = "qweqwe"
-        label.type = 1
-        labelProviderMock.labelToReturnInGetLabel = label
-        createSut(labelID: "qweqwe", labelType: .folder, isCustom: false, labelName: nil)
+        createSut(labelID: "qweqwe", labelType: .label, isCustom: false, labelName: nil)
 
         let result = sut.toolbarActionTypes()
         XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])

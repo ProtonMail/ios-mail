@@ -78,14 +78,9 @@ struct BodyParts {
     }
 }
 
-private enum EmbeddedDownloadStatus {
-    case none, downloading, finish
-}
-
 final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
-    var addAndUpdateMIMEAttachments: (([MimeAttachment]) -> Void)?
     let internetStatusProvider: InternetConnectionStatusProvider
     let linkConfirmation: LinkOpeningMode
     let userKeys: UserKeys

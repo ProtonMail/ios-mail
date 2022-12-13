@@ -89,7 +89,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                         }
                         model.markReadIfNeeded()
                     }
-                self?.displayConversationNoticeIfNeeded()
             }
         }
 
@@ -662,21 +661,6 @@ private extension ConversationViewController {
                 }
             }
         }
-    }
-
-    private func displayConversationNoticeIfNeeded() {
-//        guard viewModel.shouldDisplayConversationNoticeView else {
-//            return
-//        }
-//        viewModel.conversationNoticeViewIsOpened()
-//        let view = ConversationViewNoticeView()
-//        view.presentAt(self.navigationController ?? self,
-//                       animated: true) {
-//            let link = DeepLink(String(describing: SettingsDeviceViewController.self))
-//            link.append(.accountSetting)
-//            link.append(.conversationMode)
-//            NotificationCenter.default.post(name: .switchView, object: link)
-//        }
     }
 }
 

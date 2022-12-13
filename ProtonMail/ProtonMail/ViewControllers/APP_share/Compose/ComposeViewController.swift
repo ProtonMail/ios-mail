@@ -65,12 +65,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         fatalError("init(coder:) has not been implemented")
     }
 
-    func inactiveViewModel() {
-        self.stopAutoSave()
-        NotificationCenter.default.removeObserver(self)
-        self.dismissKeyboard()
-        self.dismiss(animated: true, completion: nil)
-    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)

@@ -429,7 +429,6 @@ extension MainQueueHandler {
     }
 
     private func handleAttachmentResponse(result: Swift.Result<JSONDictionary, NSError>,
-                                          context: NSManagedObjectContext,
                                           attachment: Attachment,
                                           keyPacket: Data,
                                           completion: @escaping Completion) {
@@ -531,7 +530,6 @@ extension MainQueueHandler {
                                                  passphrase: passphrase)
                     let completionWrapper: API.JSONCompletion = { _, result in
                         self.handleAttachmentResponse(result: result,
-                                                      context: context,
                                                       attachment: attachment,
                                                       keyPacket: keyPacket,
                                                       completion: completion)

@@ -179,7 +179,6 @@ extension MessageSendingRequestBuilder {
 
     func fetchAttachmentBody(
         att: AttachmentEntity,
-        messageDataService: MessageDataService,
         passphrase: Passphrase,
         userInfo: UserInfo
     ) -> Promise<String> {
@@ -202,12 +201,10 @@ extension MessageSendingRequestBuilder {
     }
 
     func fetchAttachmentBodyForMime(passphrase: Passphrase,
-                                    msgService: MessageDataService,
                                     userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
         var fetches = [Promise<String>]()
         for att in preAttachments {
             let promise = fetchAttachmentBody(att: att.att,
-                                              messageDataService: msgService,
                                               passphrase: passphrase,
                                               userInfo: userInfo)
             fetches.append(promise)

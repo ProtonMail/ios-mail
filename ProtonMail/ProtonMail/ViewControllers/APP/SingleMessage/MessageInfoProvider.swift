@@ -40,10 +40,6 @@ private enum EmbeddedDownloadStatus {
 
 // swiftlint:disable type_body_length
 final class MessageInfoProvider {
-    private var checkerDependencies: MessageSenderPGPChecker.Dependencies {
-        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-        return MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
-    }
     private(set) var message: MessageEntity {
         willSet {
             let bodyHasChanged = message.body != newValue.body
