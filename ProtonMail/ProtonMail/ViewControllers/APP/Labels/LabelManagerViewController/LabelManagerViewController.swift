@@ -290,7 +290,7 @@ extension LabelManagerViewController {
         _ tableView: UITableView,
         editingStyleForRowAt indexPath: IndexPath
     ) -> UITableViewCell.EditingStyle {
-        return .insert
+        return .none
     }
 
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
