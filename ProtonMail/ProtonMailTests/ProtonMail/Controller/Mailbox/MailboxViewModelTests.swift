@@ -27,7 +27,7 @@ import ProtonCore_UIFoundations
 class MailboxViewModelTests: XCTestCase {
 
     var sut: MailboxViewModel!
-    var coreDataContextProviderMock: MockCoreDataContextProvider!
+    var coreDataService: CoreDataService!
     var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: ConversationStateProviderProtocol!
@@ -42,15 +42,16 @@ class MailboxViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
 
     var testContext: NSManagedObjectContext {
-        coreDataContextProviderMock.viewContext
+        coreDataService.mainContext
     }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sharedServices.add(CoreDataService.self,
-                           for: CoreDataService(container: MockCoreDataStore.testPersistentContainer))
+
+        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+        sharedServices.add(CoreDataService.self, for: coreDataService)
+
         let apiServiceMock = APIServiceMock()
-        coreDataContextProviderMock = MockCoreDataContextProvider()
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -74,14 +75,13 @@ class MailboxViewModelTests: XCTestCase {
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,
-                                      parent: nil,
-                                      contextProvider: coreDataContextProviderMock)
+                                      parent: nil)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProvider()
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
-        contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataContextProviderMock)
+        contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataService)
         conversationProviderMock = MockConversationProvider(context: testContext)
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
@@ -100,7 +100,7 @@ class MailboxViewModelTests: XCTestCase {
         sut = nil
         contactGroupProviderMock = nil
         contactProviderMock = nil
-        coreDataContextProviderMock = nil
+        coreDataService = nil
         eventsServiceMock = nil
         humanCheckStatusProviderMock = nil
         userManagerMock = nil
@@ -1174,7 +1174,7 @@ extension MailboxViewModelTests {
                                labelType: labelType,
                                userManager: userManagerMock,
                                pushService: MockPushNotificationService(),
-                               coreDataContextProvider: coreDataContextProviderMock,
+                               coreDataContextProvider: coreDataService,
                                lastUpdatedStore: MockLastUpdatedStore(),
                                humanCheckStatusProvider: humanCheckStatusProviderMock,
                                conversationStateProvider: conversationStateProviderMock,
