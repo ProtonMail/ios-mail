@@ -76,7 +76,7 @@ class ThreeLinesTableViewCell: UITableViewCell {
             self.bottomLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -56)
         ])
 
-        self.icon = UIImageView(image: UIImage(named: "contact_groups_check"))
+        self.icon = UIImageView(image: IconProvider.checkmark)
         self.icon.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.icon)
 

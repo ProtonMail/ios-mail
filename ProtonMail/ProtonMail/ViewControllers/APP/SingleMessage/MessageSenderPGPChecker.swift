@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Crypto
 import ProtonCore_Log
 import ProtonCore_Services
 
@@ -26,8 +26,9 @@ final class MessageSenderPGPChecker {
     private let user: UserManager
     private var messageService: MessageDataService { user.messageService }
     private let fetchVerificationKeys: FetchVerificationKeys
+    private let dependencies: Dependencies
 
-    init(message: MessageEntity, user: UserManager) {
+    init(message: MessageEntity, user: UserManager, dependencies: Dependencies) {
         self.message = message
         self.user = user
         self.fetchVerificationKeys = FetchVerificationKeys(
@@ -37,6 +38,7 @@ final class MessageSenderPGPChecker {
             ),
             userAddresses: []
         )
+        self.dependencies = dependencies
     }
 
     func check(complete: @escaping Complete) {
@@ -97,7 +99,7 @@ final class MessageSenderPGPChecker {
 
     private func obtainVerificationKeys(
         email: String,
-        completion: @escaping (Swift.Result<(senderVerified: Bool, keys: [Data]), Error>) -> Void
+        completion: @escaping (Swift.Result<(senderVerified: Bool, keys: [ArmoredKey]), Error>) -> Void
     ) {
         fetchVerificationKeys.callbackOn(.main).execute(params: .init(email: email)) { [weak self] result in
             guard let self = self else {
@@ -129,21 +131,25 @@ final class MessageSenderPGPChecker {
 
     private func fetchPublicKeysFromAttachments(
         _ attachments: [AttachmentEntity],
-        completion: @escaping (_ publicKeys: [Data]) -> Void
+        completion: @escaping (_ publicKeys: [ArmoredKey]) -> Void
     ) {
-        var dataToReturn: [Data] = []
+        var dataToReturn: [ArmoredKey] = []
         let group = DispatchGroup()
 
+        let userKeys = user.toUserKeys()
         for attachment in attachments {
             group.enter()
-            fetchAttachmentData(attachment: attachment) { fileUrl in
-                if let url = fileUrl,
-                   let decryptedData = self.decryptAttachment(attachment, fileUrl: url),
-                   let decryptedString = String(data: decryptedData, encoding: .utf8),
-                   let publicKey = decryptedString.unArmor {
-                    dataToReturn.append(publicKey)
-                }
-                group.leave()
+            dependencies.fetchAttachment.execute(
+                params: .init(
+                    attachmentID: attachment.id,
+                    attachmentKeyPacket: attachment.keyPacket,
+                    purpose: .decryptAndEncodePublicKey,
+                    userKeys: userKeys
+                )
+            ) { result in
+                defer { group.leave() }
+                guard let encodedPublicKey = try? result.get().encoded else { return }
+                dataToReturn.append(ArmoredKey(value: encodedPublicKey))
             }
         }
 
@@ -151,37 +157,10 @@ final class MessageSenderPGPChecker {
             completion(dataToReturn)
         }
     }
+}
 
-    private func decryptAttachment(_ attachment: AttachmentEntity, fileUrl: URL) -> Data? {
-        guard let keyPacket = attachment.keyPacket,
-              let keyPackage: Data = Data(base64Encoded: keyPacket,
-                                          options: NSData.Base64DecodingOptions(rawValue: 0)) else {
-                  return nil
-              }
-        guard let data = try? Data(contentsOf: fileUrl) else {
-            return nil
-        }
-        guard let decryptData =
-                user.newSchema ?
-                try? data.decryptAttachment(keyPackage: keyPackage,
-                                            userKeys: user.userPrivateKeys,
-                                            passphrase: user.mailboxPassword,
-                                            keys: user.addressKeys) :
-                    try? data.decryptAttachmentNonOptional(keyPackage,
-                                                           passphrase: user.mailboxPassword.value,
-                                                           privKeys: user.addressPrivateKeys) else {
-            return nil
-        }
-        return decryptData
-    }
-
-    private func fetchAttachmentData(attachment: AttachmentEntity, completion: @escaping (URL?) -> Void) {
-        messageService.fetchAttachmentForAttachment(attachment, downloadTask: nil) { _, fileUrl, error in
-            if error != nil {
-                completion(nil)
-            } else {
-                completion(fileUrl)
-            }
-        }
+extension MessageSenderPGPChecker {
+    struct Dependencies {
+        let fetchAttachment: FetchAttachmentUseCase
     }
 }

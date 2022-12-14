@@ -53,7 +53,6 @@ See [LICENSE](LICENSE) file
 - [OpenPGP](OpenPGP/README.md)
 - [Keymaker](ProtonMail/Keymaker/README.md)
 - [ProtonMail](ProtonMail/ProtonMail/README.md)
-- [Push](ProtonMail/Push/README.md)
 - [PushService](ProtonMail/PushService/README.md)
 - [Share](ProtonMail/Share/README.md)
 - [Siri](ProtonMail/Siri/README.md)
@@ -73,14 +72,14 @@ See [LICENSE](LICENSE) file
 
 ## Live version
 
-Current live version 4.1.1
+Current live version 4.0.8
 
 - [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
 
 ## Articles
 
-- [Open sourcing](https://protonmail.com/blog/ios-open-source)
-- [Security model](https://protonmail.com/blog/ios-security-model)
+- [Open sourcing](https://proton.me/blog/ios-open-source)
+- [Security model](https://proton.me/blog/ios-security-model)
 
 ## Our Team
 

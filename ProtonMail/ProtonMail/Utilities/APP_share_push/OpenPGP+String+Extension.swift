@@ -21,20 +21,32 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 // MARK: - OpenPGP String extension
 
 extension String {
-    func encrypt(withKey key: Key, userKeys: [Data], mailbox_pwd: Passphrase) throws -> String {
+    func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailbox_pwd: Passphrase) throws -> String {
+        let armoredMessage: ArmoredMessage = try encrypt(withKey: key, userKeys: userKeys, mailbox_pwd: mailbox_pwd)
+        return armoredMessage.value
+    }
+
+    private func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailbox_pwd: Passphrase) throws -> ArmoredMessage {
         let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                                           passphrase: mailbox_pwd,
                                                                           key: key)
-        return try Crypto().encryptNonOptional(plainText: self,
-                                               publicKey: key.publicKey,
-                                               privateKey: key.privateKey,
-                                               passphrase: addressKeyPassphrase.value)
+
+        let signerKey = SigningKey(
+            privateKey: ArmoredKey(value: key.privateKey),
+            passphrase: addressKeyPassphrase
+        )
+
+        return try Encryptor.encrypt(
+            publicKey: ArmoredKey(value: key.publicKey),
+            cleartext: self,
+            signerKey: signerKey
+        )
     }
 }

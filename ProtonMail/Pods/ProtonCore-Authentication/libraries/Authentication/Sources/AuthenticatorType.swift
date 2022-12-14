@@ -23,11 +23,7 @@ import Foundation
 import ProtonCore_APIClient
 import ProtonCore_DataModel
 import ProtonCore_Networking
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
+import GoLibs
 
 public protocol AuthenticatorInterface {
 

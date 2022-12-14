@@ -57,16 +57,6 @@ extension Array where Element: Address {
         return nil
     }
     
-    @available(*, deprecated, renamed: "address(byID:)")
-    public func indexOfAddress(_ addressid: String) -> Address? {
-        for addr in self {
-            if addr.status == .enabled && addr.receive == .active && addr.addressID == addressid {
-                return addr
-            }
-        }
-        return nil
-    }
-    
     public func getAddressOrder() -> [String] {
         let ids = self.map { $0.addressID }
         return ids

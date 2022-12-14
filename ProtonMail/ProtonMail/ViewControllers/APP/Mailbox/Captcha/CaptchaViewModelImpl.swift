@@ -33,7 +33,7 @@ final class CaptchaViewModelImpl: HumanCheckViewModel {
 
     override func getToken(_ complete: @escaping HumanResBlock) {
         let api = GetHumanCheckToken()
-        self.apiService.exec(route: api, responseObject: GetHumanCheckResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: GetHumanCheckResponse()) { _, response in
             if let error = response.error {
                 complete(nil, error.toNSError)
             } else {
@@ -44,7 +44,7 @@ final class CaptchaViewModelImpl: HumanCheckViewModel {
 
     override func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
         let api = HumanCheckRequest(type: type, token: token)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             complete(response.error?.toNSError)
         }
     }

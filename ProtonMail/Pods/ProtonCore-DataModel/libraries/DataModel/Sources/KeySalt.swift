@@ -21,9 +21,6 @@
 
 import Foundation
 
-@available(*, deprecated, renamed: "KeySalt")
-public typealias AddressKeySalt = KeySalt
-
 public struct KeySalt: Codable, Equatable {
     public let ID: String
     public let keySalt: String?

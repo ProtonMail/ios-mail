@@ -39,8 +39,6 @@ class LocalizedString {
 
     // Mark Settings
 
-    /// "%d Minute"
-    lazy var _settings_auto_lock_minute  = NSLocalizedString("%d Minute", comment: "auto lock time format")
     /// "%d Minutes"
     lazy var _settings_auto_lock_minutes = NSLocalizedString("%d Minutes", comment: "auto lock time format")
     /// "DisplayName"
@@ -114,27 +112,22 @@ class LocalizedString {
     /// "Manage accounts"
     lazy var _menu_manage_accounts = NSLocalizedString("Manage accounts", comment: "menu title")
     lazy var _menu_add_attachment = NSLocalizedString("Add attachment", comment: "menu title")
+    /// "Refer a friend"
+    lazy var _menu_refer_a_friend = NSLocalizedString("Refer a friend", comment: "menu title")
 
     // Mark Message localtion
 
-    /// "All Mail"
     lazy var _locations_all_mail_title = NSLocalizedString("All Mail", comment: "mail location title")
-    /// "INBOX"
-    lazy var _locations_inbox_title    = NSLocalizedString("INBOX", comment: "mail location title")
-    /// "STARRED"
-    lazy var _locations_starred_title  = NSLocalizedString("STARRED", comment: "mail location title")
-    /// "DRAFTS"
-    lazy var _locations_draft_title    = NSLocalizedString("DRAFTS", comment: "mail location title")
-    /// "SENT"
-    lazy var _locations_outbox_title   = NSLocalizedString("SENT", comment: "mail location title")
-    /// "TRASH"
-    lazy var _locations_trash_title    = NSLocalizedString("TRASH", comment: "mail location title")
-    /// "ARCHIVE"
-    lazy var _locations_archive_title  = NSLocalizedString("ARCHIVE", comment: "mail location title")
-    /// "SPAM"
-    lazy var _locations_spam_title     = NSLocalizedString("SPAM", comment: "mail location title")
-    /// "Trash"
-    lazy var _locations_trash_desc    = NSLocalizedString("Trash", comment: "mail location desc")
+    lazy var _locations_inbox_title    = NSLocalizedString("Inbox", comment: "mail location title")
+    lazy var _locations_starred_title  = NSLocalizedString("Starred", comment: "mail location title")
+    lazy var _locations_draft_title    = NSLocalizedString("Drafts", comment: "mail location title")
+    lazy var _locations_outbox_title   = NSLocalizedString("Sent", comment: "mail location title")
+    lazy var _locations_trash_title    = NSLocalizedString("Trash", comment: "mail location title")
+    lazy var _locations_archive_title  = NSLocalizedString("Archive", comment: "mail location title")
+    lazy var _locations_spam_title     = NSLocalizedString("Spam", comment: "mail location title")
+    lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
+
+    var _locations_trash_desc : String { _locations_trash_title }
     /// "Add Star"
     lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
 
@@ -341,8 +334,8 @@ class LocalizedString {
 
     /// "API Server not reachable…"
     lazy var _general_api_server_not_reachable = NSLocalizedString("API Server not reachable…", comment: "when server not reachable")
-    /// "Access to this account is disabled due to non-payment. Please log in through protonmail.com to pay your outstanding invoice(s)."
-    lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "error message")
+    /// "Access to this account is disabled due to non-payment. Please log in through proton.me to pay your outstanding invoice(s)."
+    lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.", comment: "error message")
     /// "Alert"
     lazy var _general_alert_title     = NSLocalizedString("Alert", comment: "Title")
     /// "Done"
@@ -391,7 +384,6 @@ class LocalizedString {
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
     lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
     lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
-    lazy var _schedule_next_monday_send_action = NSLocalizedString("Monday (%@) at 08:%02d", comment: "scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15")
     lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
     lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
     lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
@@ -668,6 +660,8 @@ class LocalizedString {
     lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon logging out of the app.", comment: "A description string in pin & faceID setting page")
+
+    lazy var _timing = NSLocalizedString("Timing", comment: "A section title for timing section to set auto lock timing")
 
     lazy var _go_to_settings = NSLocalizedString("Go to settings", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
@@ -1020,7 +1014,7 @@ class LocalizedString {
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
     lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.", comment: "Cert pinning failed alert message")
 
-    lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n", comment: "Cert pinning failed alert message")
+    lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.", comment: "Cert pinning failed alert message")
 
     lazy var _cert_validation_failed_continue = NSLocalizedString("Disable Validation", comment: "Cert pinning failed alert message")
 
@@ -1234,9 +1228,8 @@ class LocalizedString {
     lazy var _banner_remote_content_new_title = NSLocalizedString("Load remote content", comment: "The title of loading remote content banner.")
     lazy var _one_attachment_list_title = NSLocalizedString("attachment", comment: "")
     lazy var _attachments_list_title = NSLocalizedString("attachments", comment: "")
+    lazy var _attachment = NSLocalizedString("%d attachment", comment: "e.g. 3 attachments")
 
-    lazy var _one_attachment_title = NSLocalizedString("Attachment", comment: "")
-    lazy var _attachments_title = NSLocalizedString("Attachments", comment: "")
     lazy var _remove_attachment_warning = NSLocalizedString("Do you really want to remove this file from attachments?", comment: "")
 
     lazy var _banner_embedded_image_new_title = NSLocalizedString("Load embedded images", comment: "The title of loading embedded image banner.")
@@ -1384,7 +1377,7 @@ class LocalizedString {
     lazy var _scheduled_message_time_tomorrow = NSLocalizedString("Tomorrow, %@", comment: "The title of the time label of the scheduled message that is about to be sent tomorrow.")
 
     lazy var _delete_scheduled_alert_title = NSLocalizedString("Schedule will be removed", comment: "The title of the alert that will be shown when user tries to delete a scheduled message.")
-    lazy var _delete_scheduled_alert_message = NSLocalizedString("This %d messages will move to Drafts and have its schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
+    lazy var _delete_scheduled_alert_message = NSLocalizedString("These %d messages will move to Drafts and have their schedule removed.", comment: "The content of the alert that will be shown when user tries to delete a scheduled message.")
     lazy var _message_moved_to_drafts = NSLocalizedString("%d message moved to Drafts", comment: "Banner message")
 
     lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")
@@ -1392,7 +1385,7 @@ class LocalizedString {
     lazy var _composer_send_msg_which_was_schedule_send_action_title = NSLocalizedString("Send immediately", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
     lazy var _composer_send_msg_which_was_schedule_send_action_title_schedule_send = NSLocalizedString("Schedule send", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
 
-    lazy var _schedule_introduction_view_title = NSLocalizedString("Scheduled send", comment: "The title of the introducation view of the schedule send")
+    lazy var _schedule_introduction_view_title = NSLocalizedString("Schedule send", comment: "The title of the introducation view of the schedule send")
     lazy var _schedule_introduction_view_content = NSLocalizedString("You can now schedule your messages to be sent later", comment: "The content of the introducation view of the schedule send")
     lazy var _scheduling_message_title = NSLocalizedString("Scheduling message...", comment: "The title of the banner that will be shown when you schedule a message.")
 
@@ -1507,6 +1500,16 @@ class LocalizedString {
     lazy var _encrypted_search_disable_alert_button_delete = NSLocalizedString("Okay", comment: "Title for the alert button to disable content search.")
     lazy var _encrypted_search_disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
     lazy var _encrypted_search_message_count = NSLocalizedString("Downloading message %1d out of %2d", comment: "The text for the number of downloaded messages.")
+
+    var _title_notification_action_mark_as_read: String {
+        L11n.PushNotificationAction.mark_as_read
+    }
+    var _title_notification_action_archive: String {
+        L11n.PushNotificationAction.archive
+    }
+    var _title_notification_action_move_to_trash: String {
+        L11n.PushNotificationAction.move_to_trash
+    }
 }
 
 enum L11n {
@@ -1521,6 +1524,23 @@ enum L11n {
         static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
         // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
-        static let new_feature_description = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
+        static let feature_description_if_remote_content_allowed = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
+        static let feature_description_if_remote_content_not_allowed = NSLocalizedString("Email tracking protection is now available. Senders will not know if, where, or when you opened their emails.", comment: "Spotlight explanation of the feature")
+    }
+
+    struct ReferralProgram {
+        static let linkCopied = NSLocalizedString("Link copied.", comment: "The banner title after tapping link copy button in referral share view.")
+        static let title = NSLocalizedString("Invite friends to Proton,\n get up to $90 in credits!", comment: "The article title of the referral share view.")
+        static let content = NSLocalizedString("Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan.", comment: "The article content of the referral share view.")
+        static let inviteLinkTitle = NSLocalizedString("Your invite link", comment: "The title link of the textfield of the referral link in referral share view.")
+        static let shareTitle = NSLocalizedString("Share", comment: "The title of the share button in referral share view.")
+        static let trackRewardTitle = NSLocalizedString("Track your rewards", comment: "The title of the track reward button in referral share view.")
+        static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
+	}
+
+    fileprivate struct PushNotificationAction {
+        static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
+        static let archive = NSLocalizedString("Archive", comment: "Push notification action to archive")
+        static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
     }
 }

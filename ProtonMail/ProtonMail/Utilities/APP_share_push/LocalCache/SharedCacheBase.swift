@@ -23,18 +23,14 @@
 import Foundation
 
 class SharedCacheBase {
-    fileprivate var userDefaults: UserDefaults!
-
-    func getShared() -> UserDefaults! {
-        return self.userDefaults
-    }
+    private let userDefaults: UserDefaults
 
     init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
+        self.userDefaults = UserDefaults(suiteName: Constants.AppGroup)!
     }
 
-    deinit {
-        //
+    func getShared() -> UserDefaults {
+        return self.userDefaults
     }
 
     func setValue(_ value: Any?, forKey key: String) {
@@ -43,7 +39,7 @@ class SharedCacheBase {
     }
 
     class func getDefault() -> UserDefaults! {
-        return UserDefaults(suiteName: Constants.App.APP_GROUP)
+        return UserDefaults(suiteName: Constants.AppGroup)
     }
 }
 

@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
@@ -333,7 +333,7 @@ extension Message {
         return nil
     }
 
-    func decryptBody(keys: [Key], userKeys: [Data], passphrase: Passphrase) throws -> String? {
+    func decryptBody(keys: [Key], userKeys: [ArmoredKey], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {

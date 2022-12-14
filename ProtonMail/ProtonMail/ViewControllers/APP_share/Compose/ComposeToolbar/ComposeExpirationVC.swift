@@ -292,7 +292,7 @@ extension ComposeExpirationVC: UIPickerViewDelegate, UIPickerViewDataSource {
             pickerLabel?.set(text: nil, preferredFont: .subheadline)
             pickerLabel?.textAlignment = .center
         }
-        let unit = component == 0 ? LocalString._days: LocalString._hours
+        let unit = component == 0 ? LocalString._days : LocalString._hours
         pickerLabel?.text = "\(row) \(unit)"
 
         return pickerLabel ?? UILabel()

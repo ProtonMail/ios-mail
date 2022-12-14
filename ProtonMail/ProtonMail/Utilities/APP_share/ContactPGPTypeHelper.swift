@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Crypto
+import GoLibs
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Services
@@ -67,7 +67,7 @@ struct ContactPGPTypeHelper {
                                         isMessageHavingPwd: Bool,
                                         completion: @escaping (EncryptionIconStatus?, Int?) -> Void) {
         let request = UserEmailPubKeys(email: email)
-        apiService.exec(route: request, responseObject: KeysResponse()) { result in
+        apiService.perform(request: request, response: KeysResponse()) { _, result in
             if let error = result.error {
                 var errCode = error.responseCode ?? -1
                 var errorString = ""

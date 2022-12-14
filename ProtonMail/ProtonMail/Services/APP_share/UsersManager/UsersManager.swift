@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Crypto
+import GoLibs
 import Foundation
 #if !APP_EXTENSION
 import LifetimeTracker
@@ -95,15 +95,20 @@ class UsersManager: Service {
 
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
+    private let userDataCache: CachedUserDataProvider
 
-    init(doh: DoH & ServerConfig,
-         internetConnectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()) {
+    init(
+        doh: DoH & ServerConfig,
+        userDataCache: CachedUserDataProvider = UserDataCache(),
+        internetConnectionStatusProvider: InternetConnectionStatusProvider = .init()
+    ) {
         self.doh = doh
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
         self.internetConnectionStatusProvider = internetConnectionStatusProvider
+        self.userDataCache = userDataCache
         setupValueTransforms()
         #if !APP_EXTENSION
         trackLifetime()
@@ -146,9 +151,9 @@ class UsersManager: Service {
         return true
     }
 
-    func update(auth: AuthCredential, userInfo: UserInfo) {
-        for user in users where user.isMatch(sessionID: auth.sessionID) {
-            user.update(credential: auth, userInfo: userInfo)
+    func update(userInfo: UserInfo, for sessionID: String) {
+        for user in users where user.isMatch(sessionID: sessionID) {
+            user.update(userInfo: userInfo)
             user.save()
         }
     }
@@ -520,24 +525,10 @@ extension UsersManager {
      Persisted until logout of last user, protected with MainKey. */
     var disconnectedUsers: [DisconnectedUserHandle] {
         get {
-            // this locking/unlocking can be refactored to be @propertyWrapper on Swift 5.1
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                  let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
-                  case let locked = Locked<Data>(encryptedValue: encryptedData),
-                  let data = try? locked.unlock(with: mainKey),
-                  let loggedOutUserHandles = try? JSONDecoder().decode([DisconnectedUserHandle].self, from: data)
-            else {
-                return []
-            }
-            return loggedOutUserHandles
+            userDataCache.fetchDisconnectedUsers()
         }
         set {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let data = try? JSONEncoder().encode(newValue),
-                let locked = try? Locked(clearValue: data, with: mainKey) else {
-                return
-            }
-            KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
+            userDataCache.set(disconnectedUsers: newValue)
         }
     }
 
@@ -717,7 +708,11 @@ extension UsersManager: APIServiceDelegate {
     var additionalHeaders: [String: String]? { nil }
 
     var locale: String {
-        return LanguageManager.currentLanguageCode()
+        if let local = LanguageManager.currentLanguageCode() {
+            return local
+        } else {
+            return Constants.defaultLocale
+        }
     }
 
     func isReachable() -> Bool {

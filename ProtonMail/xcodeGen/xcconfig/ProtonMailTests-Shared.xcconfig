@@ -5,11 +5,9 @@
 // https://github.com/dempseyatgithub/BuildSettingExtractor
 //
 
+#include "Production-common.xcconfig"
+
 BUNDLE_LOADER = $(TEST_HOST)
-CODE_SIGN_IDENTITY = 
-CODE_SIGN_STYLE = Manual
-DEVELOPMENT_TEAM = 2SB5Z68H26
-FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)
 INFOPLIST_FILE = ProtonMailTests/Supporting Files/Info.plist
 IPHONEOS_DEPLOYMENT_TARGET = 15.0
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
@@ -22,3 +20,6 @@ SWIFT_OBJC_BRIDGING_HEADER = ${SRCROOT}/ProtonMailTests/Supporting Files/ProtonM
 SWIFT_PRECOMPILE_BRIDGING_HEADER = YES
 SWIFT_VERSION = 5.0
 TEST_HOST = $(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail
+
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY = 

@@ -15,10 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 final class MockQueueManager: QueueManagerProtocol {
     private(set) var executeTimes: Int = 0
+    var addTaskWasCalled: Bool = false
+
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool {
+        addTaskWasCalled = true
+        return true
+    }
 
     func addBlock(_ block: @escaping () -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {

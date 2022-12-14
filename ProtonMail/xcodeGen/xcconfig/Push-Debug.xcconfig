@@ -6,13 +6,9 @@
 //
 
 #include "Push-Shared.xcconfig"
+#include "Production-common.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = Push/Push.entitlements
-CODE_SIGN_IDENTITY = iPhone Developer
-CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
-CODE_SIGN_STYLE = Manual
-DEBUG_INFORMATION_FORMAT = dwarf
-DEVELOPMENT_TEAM = 2SB5Z68H26
 INFOPLIST_FILE = Push/Info.plist
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE
 PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push

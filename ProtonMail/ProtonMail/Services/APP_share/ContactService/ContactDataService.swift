@@ -43,7 +43,7 @@ protocol ContactProviderProtocol: AnyObject {
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
 
     func getAllEmails() -> [Email]
-    func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?)
+    func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp() -> Promise<Void>
 }
 
@@ -103,8 +103,7 @@ class ContactDataService: Service, HasLocalStorage {
     static func cleanUpAll() -> Promise<Void> {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let context = coreDataService.operationContext
-            coreDataService.enqueue(context: context) { (context) in
+            coreDataService.enqueueOnRootSavingContext { context in
                 Contact.deleteAll(inContext: context)
                 Email.deleteAll(inContext: context)
                 seal.fulfill_()
@@ -158,7 +157,7 @@ class ContactDataService: Service, HasLocalStorage {
              importFromDevice: Bool,
              completion: ContactAddComplete?) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
-        self.apiService.exec(route: route, responseObject: ContactAddResponse()) { [weak self] response in
+        self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
             var contacts_json: [[String: Any]] = []
             var lasterror: NSError?
@@ -214,7 +213,7 @@ class ContactDataService: Service, HasLocalStorage {
     func update(contactID: ContactID,
                 cards: [CardData], completion: ContactUpdateComplete?) {
         let api = ContactUpdateRequest(contactid: contactID.rawValue, cards:cards)
-        self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
             if let error = response.error {
                 completion?(nil, error.toNSError)
             } else if var contactDict = response.contact {
@@ -246,7 +245,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func delete(contactID: ContactID, completion: @escaping ContactDeleteComplete) {
         let api = ContactDeleteRequest(ids: [contactID.rawValue])
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
+        self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.coreDataService.performOnRootSavingContext { context in
                 if let error = response.error {
@@ -274,7 +273,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     func fetchAndVerifyContacts(byEmails emails: [String]) -> Promise<[PreContact]> {
         let context = coreDataService.rootSavingContext
-        let cardDataParser = CardDataParser(userKeys: userInfo.userKeys)
+        let cardDataParser = CardDataParser(userKeys: userInfo.userKeys.toArmoredPrivateKeys)
 
         return Promise { seal in
             guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
@@ -345,7 +344,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     fileprivate var isFetching: Bool = false
     fileprivate var retries: Int = 0
-    func fetchContacts(fromUI: Bool = true, completion: ContactFetchComplete?) {
+    func fetchContacts(completion: ContactFetchComplete?) {
         if contactCacheStatus.contactsCached == 1 || isFetching {
             completion?(nil, nil)
             return
@@ -427,39 +426,25 @@ class ContactDataService: Service, HasLocalStorage {
                         }
 
                         let group = DispatchGroup()
-                        if fromUI {
-                            let contactsChunks = contactsArray.chunked(into: 50)
-                            for chunk in contactsChunks {
-                                group.enter()
-                                self.cacheService.addNewContact(serverResponse: chunk, shouldFixName: true) { (_, error) in
-                                    if let err = error {
-                                        DispatchQueue.main.async {
-                                            err.alertErrorToast()
-                                        }
-                                    }
-                                    group.leave()
+                        group.enter()
+                        self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
+                            if let err = error {
+                                DispatchQueue.main.async {
+                                    err.alertErrorToast()
                                 }
-                                group.wait()
-                                // sleep 50ms to avoid UI glitch
-                                usleep(50000)
                             }
-                        } else {
-                            group.enter()
-                            self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
-                                if let err = error {
-                                    DispatchQueue.main.async {
-                                        err.alertErrorToast()
-                                    }
-                                }
-                                group.leave()
-                            }
-                            group.wait()
+                            group.leave()
                         }
+                        group.wait()
                     }
                 }
                 self.contactCacheStatus.contactsCached = 1
                 self.isFetching = false
                 self.retries = 0
+
+                self.coreDataService.mainContext.performAndWait {
+                    self.coreDataService.mainContext.refreshAllObjects()
+                }
 
                 completion?(nil, nil)
 
@@ -509,7 +494,7 @@ class ContactDataService: Service, HasLocalStorage {
     func details(contactID: String) -> Promise<ContactEntity> {
         return Promise { seal in
             let api = ContactDetailRequest(cid: contactID)
-            self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
+            self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
                 if let error = response.error {
                     seal.reject(error)
                 } else if let contactDict = response.contact {

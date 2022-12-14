@@ -49,7 +49,7 @@ struct ContactParserTestData {
 
     static let passphrase = Passphrase(value: "Q0FzNt.aLUZFrZEqTLUHa./jj6b1Fm.")
 
-    static let privateKey = """
+    static let privateKey = ArmoredKey(value: """
     -----BEGIN PGP PRIVATE KEY BLOCK-----
     Version: ProtonMail
 
@@ -69,9 +69,9 @@ struct ContactParserTestData {
     oTUOSDkIz7FqfbgtF7xQqzylPw4=
     =hpdD
     -----END PGP PRIVATE KEY BLOCK-----
-    """
+    """)
 
-    static let signedOnlySignature = """
+    static let signedOnlySignature = ArmoredSignature(value: """
     -----BEGIN PGP SIGNATURE-----
     Version: ProtonMail
 
@@ -80,7 +80,7 @@ struct ContactParserTestData {
     VTHLuUUYOx9Ubm83BX/d1l89vh/B54Ar8is66Q8=
     =K1wR
     -----END PGP SIGNATURE-----
-    """
+    """)
 
     static let signedOnlyData = """
     BEGIN:VCARD

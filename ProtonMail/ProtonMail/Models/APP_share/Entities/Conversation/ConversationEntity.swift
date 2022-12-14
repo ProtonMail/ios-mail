@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_UIFoundations
 
 struct ConversationEntity: Equatable, Hashable {
     let objectID: ObjectID
@@ -139,7 +140,7 @@ extension ConversationEntity {
         return lists.asCommaSeparatedList(trailingSpace: true)
     }
 
-    func initial(_ replacingEmails:[String: EmailEntity]) -> String {
+    func initial(_ replacingEmails: [String: EmailEntity]) -> String {
         guard let senderName = getSendersName(replacingEmails).first else {
             return "?"
         }
@@ -223,7 +224,7 @@ extension ConversationEntity {
                 }
             } else if !isCustomFolderIconAdded {
                 isCustomFolderIconAdded = true
-                icon = Asset.mailCustomFolder.image
+                icon = IconProvider.folder
             }
             if let iconToAdd = icon,
                addedDict.updateValue(true, forKey: iconToAdd) == nil { // filter duplicated icon

@@ -128,6 +128,7 @@ extension AppDelegate: UIApplicationDelegate {
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService())
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
@@ -140,11 +141,13 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
 
 #if DEBUG
-        let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
-            visibility: .visibleWithIssuesDetected,
-            style: .circular
-        )
-        LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
+        if !ProcessInfo.isRunningUnitTests {
+            let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
+                visibility: .visibleWithIssuesDetected,
+                style: .circular
+            )
+            LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
+        }
 #endif
 
         SecureTemporaryFile.cleanUpResidualFiles()
@@ -168,6 +171,10 @@ extension AppDelegate: UIApplicationDelegate {
         //start network notifier
         sharedInternetReachability.startNotifier()
         self.configureLanguage()
+        /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
+        /// notification actions work. This is because the app could be inactive when an action is triggered
+        /// and `didFinishLaunchingWithOptions` will be called, but other functions
+        /// like `applicationWillEnterForeground` won't.
         self.configurePushService(launchOptions: launchOptions)
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
@@ -298,6 +305,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        configurePushService(launchOptions: nil)
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
         let queueManager = sharedServices.get(by: QueueManager.self)
@@ -411,12 +419,18 @@ extension AppDelegate: UnlockManagerDelegate {
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }
+
+    func setupCoreData() {
+        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self,
+                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+    }
 }
 
 // MARK: Appearance
 extension AppDelegate {
     private var backArrowImage: UIImage {
-        Asset.backArrow.image.withRenderingMode(.alwaysTemplate)
+        IconProvider.arrowLeft.withRenderingMode(.alwaysTemplate)
     }
 
     private func configureAppearance() {

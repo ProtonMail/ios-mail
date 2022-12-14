@@ -31,16 +31,6 @@ public extension UIImage {
         }
     }
 
-    @available(*, deprecated, renamed: "IconProvider.crossClose")
-    static var closeImage: UIImage? {
-        IconProvider.crossSmall
-    }
-
-    @available(*, deprecated, renamed: "IconProvider.arrowLeft")
-    static var backImage: UIImage? {
-        IconProvider.arrowLeft
-    }
-    
     func imageWithInsets(insets: UIEdgeInsets) -> UIImage? {
         let targetSize = CGSize(width: self.size.width + insets.left + insets.right,
                                 height: self.size.height + insets.top + insets.bottom)

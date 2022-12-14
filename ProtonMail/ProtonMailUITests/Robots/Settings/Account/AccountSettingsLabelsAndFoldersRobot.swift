@@ -58,8 +58,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     func selectFolderLabel(_ name: String) -> AddFolderLabelRobot {
         cell(id.selectLabelFolderCellIdentifiert(name))
             .firstMatch()
-            .swipeUpUntilVisible()
-            .waitForHittable()
+            .swipeUpUntilVisible(maxAttempts: 20)
             .tap()
         return AddFolderLabelRobot()
     }

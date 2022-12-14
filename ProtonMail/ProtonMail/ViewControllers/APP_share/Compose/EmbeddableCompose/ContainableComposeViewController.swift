@@ -231,8 +231,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         self.step = [.composingCanceled, .resultAcknowledged]
     }
 
-    override func sendMessageStepThree() {
-        super.sendMessageStepThree()
+    override func startSendingMessage() {
+        super.startSendingMessage()
         self.step = .sendingStarted
     }
 

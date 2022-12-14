@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
@@ -24,6 +25,7 @@ final class ComposeViewModelImplTests: XCTestCase {
     private var mockCoreDataService: MockCoreDataContextProvider!
     private var apiMock: APIServiceMock!
     private var message: Message!
+    private var testContext: NSManagedObjectContext!
     var fakeUserManager: UserManager!
     var sut: ComposeViewModelImpl!
 
@@ -33,7 +35,7 @@ final class ComposeViewModelImplTests: XCTestCase {
         self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
 
-        let testContext = self.mockCoreDataService.rootSavingContext
+        testContext = MockCoreDataStore.testPersistentContainer.viewContext
         fakeUserManager = mockUserManager()
 
         self.message = testContext.performAndWait {
@@ -53,18 +55,19 @@ final class ComposeViewModelImplTests: XCTestCase {
         self.mockCoreDataService = nil
         self.apiMock = nil
         self.message = nil
+        self.testContext = nil
 
         super.tearDown()
     }
 
     func testGetAttachment() throws {
-        let attachment1 = Attachment(context: mockCoreDataService.rootSavingContext)
+        let attachment1 = Attachment(context: testContext)
         attachment1.order = 0
         attachment1.message = message
-        let attachment2 = Attachment(context: mockCoreDataService.rootSavingContext)
+        let attachment2 = Attachment(context: testContext)
         attachment2.order = 1
         attachment2.message = message
-        let attachmentSoftDeleted = Attachment(context: mockCoreDataService.rootSavingContext)
+        let attachmentSoftDeleted = Attachment(context: testContext)
         attachmentSoftDeleted.order = 3
         attachmentSoftDeleted.isSoftDeleted = true
         attachmentSoftDeleted.message = message

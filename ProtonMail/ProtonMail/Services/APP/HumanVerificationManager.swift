@@ -22,8 +22,8 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCore_Services
 import ProtonCore_HumanVerification
+import ProtonCore_Services
 #if DEBUG
 import OHHTTPStubs
 #endif
@@ -48,8 +48,18 @@ class HumanVerificationManager: LifetimeTrackable {
         }
 
         // create new HumanVerifyDelegate
-        let url = URL(string: "https://protonmail.com/support/knowledge-base/human-verification/")!
-        let humanDelegate = HumanCheckHelper(apiService: apiService, supportURL: url, viewController: nil, clientApp: .mail, versionToBeUsed: .v3, responseDelegate: nil, paymentDelegate: nil)
+        guard let url = URL(string: "https://proton.me/support/knowledge-base/human-verification/") else {
+            fatalError("Shouldn't fail")
+        }
+        let humanDelegate = HumanCheckHelper(
+            apiService: apiService,
+            supportURL: url,
+            viewController: nil,
+            clientApp: .mail,
+            versionToBeUsed: .v3,
+            responseDelegate: nil,
+            paymentDelegate: nil
+        )
 
         // add humanVerifyDelegate to humanVerifyDelegates
         humanVerifyDelegates[apiService.sessionUID] = humanDelegate
@@ -62,14 +72,15 @@ extension HumanVerificationManager {
 
     func setupUITestsMocks() {
         HTTPStubs.setEnabled(true)
-        stub(condition: isHost("api.protonmail.ch") && isPath("/payments/status") && isMethodGET()) { request in
-            let body = self.responseString9001.data(using: String.Encoding.utf8)!
+        stub(condition: isHost("api.protonmail.ch") && isPath("/payments/status") && isMethodGET()) { _ in
+            let body = Data(self.responseString9001.utf8)
             let headers = ["Content-Type": "application/json;charset=utf-8"]
             return HTTPStubsResponse(data: body, statusCode: 200, headers: headers)
         }
     }
 
-    var responseString9001: String { """
+    var responseString9001: String {
+        """
         {
             "Code": 9001,
             "Error": "Human verification required",

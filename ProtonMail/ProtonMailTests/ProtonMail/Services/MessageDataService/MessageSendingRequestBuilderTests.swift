@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import Crypto
+import GoLibs
 import XCTest
 @testable import ProtonMail
 import ProtonCore_Crypto
@@ -26,7 +26,10 @@ import PromiseKit
 class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
+    private var mockFetchAttachment: MockFetchAttachment!
+    private var testContext: NSManagedObjectContext!
     private var coreDataContextProvider: MockCoreDataContextProvider!
+    private var context: NSManagedObjectContext!
 
     let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
@@ -36,32 +39,42 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sut = MessageSendingRequestBuilder(expirationOffset: nil)
+        let contextProviderMock = MockCoreDataContextProvider()
+        testContext = contextProviderMock.mainContext
+        mockFetchAttachment = MockFetchAttachment()
+        sut = MessageSendingRequestBuilder(
+            expirationOffset: nil,
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
+        )
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
-    }
-
-
-    private var context: NSManagedObjectContext {
-        coreDataContextProvider.rootSavingContext
     }
 
     override func setUp() {
         super.setUp()
 
-        coreDataContextProvider = MockCoreDataContextProvider()
+        context = MockCoreDataStore.testPersistentContainer.newBackgroundContext()
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        mockFetchAttachment = nil
+        testContext = nil
         coreDataContextProvider = nil
+        context = nil
     }
 
     func testInit() {
-        sut = MessageSendingRequestBuilder(expirationOffset: Int32(100))
+        sut = MessageSendingRequestBuilder(
+            expirationOffset: Int32(100),
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
+        )
         XCTAssertEqual(sut.expirationOffset, Int32(100))
 
-        sut = MessageSendingRequestBuilder(expirationOffset: nil)
+        sut = MessageSendingRequestBuilder(
+            expirationOffset: nil,
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
+        )
         XCTAssertEqual(sut.expirationOffset, Int32(0))
     }
 
@@ -111,7 +124,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testAddAttachment() {
         XCTAssertTrue(sut.preAttachments.isEmpty)
-        let testAttachment = Attachment()
+        let testAttachment = AttachmentEntity(Attachment(context: testContext))
         let testPreAttachment = PreAttachment(id: "id",
                                               session: "key".data(using: .utf8)!,
                                               algo: .AES256,
@@ -122,7 +135,10 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testContains() throws {
-        sut = MessageSendingRequestBuilder(expirationOffset: nil)
+        sut = MessageSendingRequestBuilder(
+            expirationOffset: nil,
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
+        )
         XCTAssertTrue(sut.addressSendPreferences.isEmpty)
         XCTAssertFalse(sut.contains(type: .pgpMIME))
         let testPreferences = SendPreferences(encrypt: true,
@@ -326,8 +342,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildPlainText(senderKey: testKey,
                            passphrase: testPassphrase,
                            userKeys: [],
-                           keys: [],
-                           newSchema: false).done { _ in
+                           keys: [testKey]).done { _ in
             XCTAssertNotNil(self.sut.plainTextSessionAlgo)
             XCTAssertNotNil(self.sut.plainTextSessionKey)
             XCTAssertNotNil(self.sut.plainTextDataPackage)
@@ -344,8 +359,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
             XCTAssertEqual(builder.algo, self.sut.plainTextSessionAlgo)
 
             expectation1.fulfill()
-        }.catch { _ in
-            XCTFail("Should not throw error")
+        }.catch { error in
+            XCTFail("\(error)")
         }
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -353,7 +368,10 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     func testGeneratePackageBuilder_EOAddress() throws {
         let testEoOffset: Int32 = 100
         let testEOPassword = Passphrase(value: "EO PWD")
-        sut = MessageSendingRequestBuilder(expirationOffset: testEoOffset)
+        sut = MessageSendingRequestBuilder(
+            expirationOffset: testEoOffset,
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
+        )
         sut.set(password: testEOPassword, hint: nil)
 
         let eoPreference = SendPreferences(encrypt: false,
@@ -381,7 +399,10 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_ClearAddress() throws {
-        sut = MessageSendingRequestBuilder(expirationOffset: nil)
+        sut = MessageSendingRequestBuilder(
+            expirationOffset: nil,
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
+        )
 
         let clearPreference = SendPreferences(encrypt: false,
                                               sign: false,
@@ -449,8 +470,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildMime(senderKey: testKey,
                       passphrase: testPassphrase,
                       userKeys: [],
-                      keys: [],
-                      newSchema: false,
+                      keys: [testKey],
                       in: context).done { _ in
             XCTAssertNotNil(self.sut.mimeDataPackage)
             XCTAssertNotNil(self.sut.mimeSessionAlgo)
@@ -495,8 +515,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildMime(senderKey: testKey,
                       passphrase: testPassphrase,
                       userKeys: [],
-                      keys: [],
-                      newSchema: false,
+                      keys: [testKey],
                       in: context).done { _ in
             let result = try self.sut.generatePackageBuilder()
 
@@ -556,8 +575,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut.buildMime(senderKey: testKey,
                       passphrase: testPassphrase,
                       userKeys: [],
-                      keys: [],
-                      newSchema: false,
+                      keys: [testKey],
                       in: context).done { _ in
             XCTAssertNotNil(self.sut.mimeDataPackage)
             XCTAssertNotNil(self.sut.mimeSessionAlgo)

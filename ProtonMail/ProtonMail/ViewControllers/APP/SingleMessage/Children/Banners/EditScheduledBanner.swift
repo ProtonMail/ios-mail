@@ -38,9 +38,10 @@ class EditScheduledBanner: UIView {
     }
 
     private func setUpSelf() {
-        // TODO: switch to use color from Core
-        backgroundColor = UIColor(hexColorCode: "#239ECE")
+        backgroundColor = ColorProvider.BackgroundNorm
         roundCorner(8)
+        layer.borderColor = ColorProvider.SeparatorNorm
+        layer.borderWidth = 1
     }
 
     private func addSubviews() {
@@ -77,11 +78,12 @@ class EditScheduledBanner: UIView {
     }
 
     func configure(date: String, time: String, editAction: @escaping () -> Void) {
-        infoLabel.text = String(format: LocalString._edit_scheduled_button_message,
-                                date,
-                                time)
-        infoLabel.textAlignment = .left
-        infoLabel.font = UIFont.systemFont(ofSize: 13)
+        let infoText = String(
+            format: LocalString._edit_scheduled_button_message,
+            date,
+            time
+        )
+        infoLabel.set(text: infoText, preferredFont: .footnote, textColor: ColorProvider.TextNorm)
         self.editAction = editAction
 
         editButton.contentEdgeInsets = .init(top: 0, left: 10, bottom: 0, right: 10)
@@ -102,24 +104,23 @@ private enum SubviewsFactory {
 
     static var editButton: UIButton {
         let button = UIButton(frame: .zero)
+        button.titleLabel?.set(text: nil, preferredFont: .caption1)
         button.setTitle(LocalString._edit_scheduled_button_title, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.cornerRadius = 8
+        button.backgroundColor = ColorProvider.InteractionWeak
         button.setCornerRadius(radius: 8)
+        button.setTitleColor(ColorProvider.TextNorm, for: .normal)
         return button
     }
 
     static var iconImageView: UIImageView {
-        let imageView = UIImageView(image: IconProvider.clock)
-        imageView.tintColor = UIColor.white
+        let imageView = UIImageView(image: IconProvider.clockPaperPlane)
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
     static var infoLabel: UILabel {
         let label = UILabel()
-        label.textColor = UIColor.white
+        label.textColor = ColorProvider.TextNorm
         label.numberOfLines = 0
         return label
     }

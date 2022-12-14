@@ -20,14 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_AccountDeletion
 import ProtonCore_Log
 import ProtonCore_Networking
+import UIKit
 
 class SettingsAccountCoordinator {
     private let viewModel: SettingsAccountViewModel
-    private let services: ServiceFactory
+    private let users: UsersManager
+
+    private var user: UserManager {
+        users.firstUser!
+    }
 
     private weak var navigationController: UINavigationController?
 
@@ -49,9 +53,7 @@ class SettingsAccountCoordinator {
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
         self.navigationController = navigationController
-        self.services = services
-
-        let users: UsersManager = services.get()
+        users = services.get()
         viewModel = SettingsAccountViewModelImpl(user: users.firstUser!)
     }
 
@@ -102,44 +104,43 @@ class SettingsAccountCoordinator {
     }
 
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {
-        let viewModel = T(user: self.viewModel.userManager)
+        let viewModel = T(user: user)
         let cpvc = ChangePasswordViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(cpvc, animated: true)
     }
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {
         let sdvc = SettingDetailViewController(nibName: nil, bundle: nil)
-        sdvc.setViewModel(viewModelType.init(user: self.viewModel.userManager))
+        sdvc.setViewModel(viewModelType.init(user: user))
         self.navigationController?.show(sdvc, sender: nil)
     }
 
     private func openPrivacy() {
-        let coordinator = SettingsPrivacyCoordinator(navigationController: self.navigationController, services: self.services)
-        coordinator.start()
+        let viewModel = PrivacySettingViewModel(user: user, metaStrippingProvider: userCachedStatus)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func openFolderManagement(type: PMLabelType) {
         guard let navigationController = navigationController else { return }
         let router = LabelManagerRouter(navigationController: navigationController)
-        let dependencies = LabelManagerViewModel.Dependencies(userManager: viewModel.userManager)
+        let dependencies = LabelManagerViewModel.Dependencies(userManager: user)
         let viewModel = LabelManagerViewModel(router: router, type: type, dependencies: dependencies)
         let vc = LabelManagerViewController(viewModel: viewModel)
         navigationController.pushViewController(vc, animated: true)
     }
 
     private func openConversationSettings() {
-        let user = self.viewModel.userManager
-        let viewModel = SettingsConversationViewModel(
-            conversationStateService: user.conversationStateService,
+        let viewModel = ConversationSettingViewModel(
             updateViewModeService: UpdateViewModeService(apiService: user.apiService),
+            conversationStateService: user.conversationStateService,
             eventService: user.eventsService
         )
-        let viewController = SettingsConversationViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 
     private func openUndoSendSettings() {
-        let user = self.viewModel.userManager
         let viewModel = UndoSendSettingViewModel(user: user, delaySeconds: user.userInfo.delaySendSeconds)
         let settingVC = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         viewModel.set(uiDelegate: settingVC)
@@ -147,8 +148,10 @@ class SettingsAccountCoordinator {
     }
     
     private func openAccountDeletion() {
-        let users: UsersManager = services.get()
-        guard let user = users.firstUser, let viewController = navigationController?.topViewController as? SettingsAccountViewController else { return }
+        guard let viewController = navigationController?.topViewController as? SettingsAccountViewController else {
+            return
+        }
+
         viewController.isAccountDeletionPending = true
         let accountDeletion = AccountDeletionService(api: user.apiService)
         accountDeletion.initiateAccountDeletionProcess(over: viewController) { [weak viewController] in
@@ -156,7 +159,7 @@ class SettingsAccountCoordinator {
         } completion: { [weak self] result in
             switch result {
             case .success:
-                self?.processSuccessfulAccountDeletion(user: user, users: users)
+                self?.processSuccessfulAccountDeletion()
             case .failure(let error):
                 viewController.isAccountDeletionPending = false
                 self?.presentAccountDeletionError(error)
@@ -164,7 +167,7 @@ class SettingsAccountCoordinator {
         }
     }
     
-    private func processSuccessfulAccountDeletion(user: UserManager, users: UsersManager) {
+    private func processSuccessfulAccountDeletion() {
         users.logoutAfterAccountDeletion(user: user)
     }
     

@@ -81,7 +81,7 @@ extension CacheServiceTest {
         }
         wait(for: [expect], timeout: 1)
 
-        XCTAssertNotNil(Contact.contactForContactID(contactID, inManagedObjectContext: coreDataService.mainContext))
+        XCTAssertNotNil(Contact.contactForContactID(contactID, inManagedObjectContext: testContext))
 
         let deleteExpect = expectation(description: "Delete contact")
         sut.deleteContact(by: ContactID(contactID), completion: { error in
@@ -89,7 +89,7 @@ extension CacheServiceTest {
         })
         wait(for: [deleteExpect], timeout: 1)
 
-        XCTAssertNil(Contact.contactForContactID(contactID, inManagedObjectContext: coreDataService.mainContext))
+        XCTAssertNil(Contact.contactForContactID(contactID, inManagedObjectContext: testContext))
     }
 
     func testUpdateContactDetail() throws {

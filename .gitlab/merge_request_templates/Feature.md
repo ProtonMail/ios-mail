@@ -11,8 +11,5 @@
 # Checklist
 - [ ] Tests provided? If not, why?
 
-# Ticket
-https://jira.protontech.ch/browse/MAILIOS-<TICKET NUMBER>
-
 
 /label ~"Code Review"

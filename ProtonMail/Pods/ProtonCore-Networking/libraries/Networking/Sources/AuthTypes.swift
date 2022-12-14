@@ -397,6 +397,7 @@ public enum AuthErrors: Error {
     case emptyClientSrpAuth
     case emptyUserInfoResponse
     case wrongServerProof
+    case externalAccountsNotSupported(message: String, originalError: ResponseError)
     case addressKeySetupError(Error)
     case networkingError(ResponseError)
     case apiMightBeBlocked(message: String, originalError: ResponseError)
@@ -414,7 +415,7 @@ public enum AuthErrors: Error {
             return self as NSError
         case .addressKeySetupError(let error), .parsingError(let error):
             return error as NSError
-        case .networkingError(let error), .apiMightBeBlocked(_, let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, let error):
             return error.underlyingError ?? error as NSError
         }
     }
@@ -426,7 +427,7 @@ public enum AuthErrors: Error {
             return (self as NSError).code
         case .addressKeySetupError(let error), .parsingError(let error):
             return (error as NSError).code
-        case .networkingError(let error), .apiMightBeBlocked(_, let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, let error):
             return error.bestShotAtReasonableErrorCode
         }
     }
@@ -439,7 +440,7 @@ public enum AuthErrors: Error {
             return error.localizedDescription
         case .networkingError(let error), .apiMightBeBlocked(_, let error):
             return error.localizedDescription
-        case .notImplementedYet(let message):
+        case .externalAccountsNotSupported(let message, _), .notImplementedYet(let message):
             return message
         }
     }

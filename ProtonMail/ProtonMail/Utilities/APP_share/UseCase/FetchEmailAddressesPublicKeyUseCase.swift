@@ -30,18 +30,19 @@ final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
         var keysByEmail = [String: KeysResponse]()
-        var requestError = [NSError]()
+        var requestError = [Error]()
 
         let uniqueEmails = Array(Set(params.emails))
         let group = DispatchGroup()
         uniqueEmails.forEach { email in
             let request = UserEmailPubKeys(email: email)
             group.enter()
-            dependencies.apiService.GET(request) { [weak self] _, response, error in
+            dependencies.apiService.perform(request: request) { [weak self] _, result in
                 guard let self = self else { return }
                 self.serialQueue.sync {
-                    switch self.parseResponse(response: response, error: error) {
-                    case .success(let keysResponse):
+                    switch result {
+                    case .success(let response):
+                        let keysResponse = self.parseResponse(response: response)
                         keysByEmail[email] = keysResponse
                     case .failure(let error):
                         requestError.append(error)
@@ -59,13 +60,10 @@ final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
         }
     }
 
-    private func parseResponse(response: [String: Any]?, error: NSError?) -> Result<KeysResponse, NSError> {
-        if let error = error {
-            return .failure(error)
-        }
+    private func parseResponse(response: [String: Any]) -> KeysResponse {
         let keysResponse = KeysResponse()
         _ = keysResponse.ParseResponse(response)
-        return .success(keysResponse)
+        return keysResponse
     }
 }
 

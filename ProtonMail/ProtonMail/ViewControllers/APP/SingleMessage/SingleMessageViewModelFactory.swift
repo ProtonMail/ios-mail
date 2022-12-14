@@ -59,6 +59,7 @@ class SingleMessageViewModelFactory {
                          message: MessageEntity,
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
+                         internetStatusProvider: InternetConnectionStatusProvider,
                          goToDraft: @escaping (MessageID) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
@@ -74,7 +75,7 @@ class SingleMessageViewModelFactory {
             message: message,
             user: user,
             childViewModels: childViewModels,
-            internetStatusProvider: InternetConnectionStatusProvider(),
+            internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
 			goToDraft: goToDraft
         )

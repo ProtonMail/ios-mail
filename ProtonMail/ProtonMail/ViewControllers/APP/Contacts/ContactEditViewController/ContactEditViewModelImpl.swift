@@ -85,7 +85,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 try? self.contactParser
                     .parseEncryptedOnlyContact(card: c,
                                                passphrase: user.mailboxPassword,
-                                               userKeys: user.userInfo.userKeys)
+                                               userKeys: user.userInfo.userKeys.toArmoredPrivateKeys)
             case .SignedOnly:
                 self.contactParser
                     .parsePlainTextContact(data: c.data,
@@ -94,10 +94,12 @@ class ContactEditViewModelImpl: ContactEditViewModel {
             case .SignAndEncrypt:
                 let userInfo = user.userInfo
                 try? self.contactParser
-                    .parseSignAndEncryptContact(card: c,
-                                                passphrase: user.mailboxPassword,
-                                                firstUserKey: userInfo.firstUserKey(),
-                                                userKeys: userInfo.userKeys)
+                    .parseSignAndEncryptContact(
+                        card: c,
+                        passphrase: user.mailboxPassword,
+                        firstUserKey: userInfo.firstUserKey().map { ArmoredKey(value: $0.privateKey) },
+                        userKeys: userInfo.userKeys.toArmoredPrivateKeys
+                    )
             }
         }
     }
@@ -269,9 +271,9 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 }
 
                 let vcard0Str = PMNIEzvcard.write(vCard0)
-                let card0 = CardData(t: .PlainText,
-                                     d: vcard0Str,
-                                     s: "")
+                let card0 = CardData(type: .PlainText,
+                                     data: vcard0Str,
+                                     signature: "")
 
                 cards.append(card0)
             }
@@ -285,6 +287,11 @@ class ContactEditViewModelImpl: ContactEditViewModel {
             guard let userkey = userInfo.firstUserKey() else {
                 return; // with error
             }
+
+            let signingKey = SigningKey(
+                privateKey: ArmoredKey(value: userkey.privateKey),
+                passphrase: user.mailboxPassword
+            )
 
             let onError: (NSError) -> Void = { error in
                 DispatchQueue.main.async {
@@ -368,22 +375,18 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
 
-                let signed_vcard2: String
+                let signed_vcard2: ArmoredSignature
                 do {
-                    signed_vcard2 = try Crypto().signDetached(
-                        plainText: vcard2Str,
-                        privateKey: userkey.privateKey,
-                        passphrase: user.mailboxPassword.value
-                    )
+                    signed_vcard2 = try Sign.signDetached(signingKey: signingKey, plainText: vcard2Str)
                 } catch {
                     onError(error as NSError)
                     return
                 }
 
                 // card 2 object
-                let card2 = CardData(t: .SignedOnly,
-                                     d: vcard2Str,
-                                     s: signed_vcard2)
+                let card2 = CardData(type: .SignedOnly,
+                                     data: vcard2Str,
+                                     signature: signed_vcard2.value)
 
                 cards.append(card2)
             }
@@ -525,25 +528,21 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                         privateKey: "",
                         passphrase: ""
                     )
-                    signed_vcard3 = try Crypto().signDetached(
-                        plainText: vcard3Str,
-                        privateKey: userkey.privateKey,
-                        passphrase: user.mailboxPassword.value
-                    )
+                    signed_vcard3 = try Sign.signDetached(signingKey: signingKey, plainText: vcard3Str).value
                 } catch {
                     onError(error as NSError)
                     return
                 }
 
                 // card 3 object
-                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                let card3 = CardData(type: .SignAndEncrypt, data: encrypted_vcard3, signature: signed_vcard3)
                 if isCard3Set {
                     cards.append(card3)
                 }
             }
 
             let completion = { (contacts: [Contact]?, error: NSError?) in
-                // The data merge from operationContext to mainContext take some time
+                // The data merge to mainContext take some time
                 // Delay for better UX
                 delay(0.3) {
                     if error == nil {

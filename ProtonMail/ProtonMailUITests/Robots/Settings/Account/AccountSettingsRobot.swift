@@ -12,7 +12,7 @@ import ProtonCore_TestingToolkit
 fileprivate struct id {
     static let singlePasswordLabel = LocalString._single_password
     static let recoveryEmailLabel = LocalString._recovery_email
-    static let displayNameLabel = "Display name"
+    static let displayNameLabel = "Display Name"
     static let defaultLabel = LocalString._general_default
     static let signatureLabel = LocalString._settings_signature_title
     static let deleteAccount = "Delete account"

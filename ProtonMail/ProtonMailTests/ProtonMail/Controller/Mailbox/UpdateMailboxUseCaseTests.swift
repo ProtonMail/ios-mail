@@ -34,7 +34,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.eventService = EventsServiceMock()
         self.messageDataService = MockMessageDataService()
         let contextProviderMock = MockCoreDataContextProvider()
-        self.conversationProvider = MockConversationProvider(context: contextProviderMock.mainContext)
+        self.conversationProvider = MockConversationProvider(context: contextProviderMock.viewContext)
         self.purgeOldMessages = MockPurgeOldMessages()
         self.fetchMessageWithReset = MockFetchMessagesWithReset()
         self.fetchMessage = MockFetchMessages()
@@ -59,48 +59,6 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut = nil
     }
 
-    func testConversationFirstFetchCase_succeed() {
-        let unreadOnly = false
-        let isCleanFetch = false
-        let isEventIDValid = true
-        self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
-
-        let countExpected = expectation(description: "Fetch conversation count")
-        self.conversationProvider.callFetchConversationCounts.bodyIs { _, _, completion in
-            countExpected.fulfill()
-            completion?(.success(Void()))
-        }
-
-        self.eventService.callFetchEvents.bodyIs { _, _, _, _ in
-            XCTFail("First fetch case shouldn't call event API")
-        }
-
-        let conversationExpected = expectation(description: "Fetch conversation")
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
-            XCTAssertFalse(shouldReset)
-            conversationExpected.fulfill()
-            completion?(.success)
-        }
-
-        let completionExpected = expectation(description: "completion")
-        self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
-            XCTFail("Shouldn't trigger error handling")
-        } completion: {
-            completionExpected.fulfill()
-        }
-
-        let exceptions = [countExpected, conversationExpected, completionExpected]
-        wait(for: exceptions, timeout: 2.0)
-
-        XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
-        XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
-    }
-
     func testConversationScheduledFetch_succeed() {
         // Fetch event
         // Fetch message
@@ -111,11 +69,11 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, [:], nil)
+            completion?(.success([:]))
             eventExpected.fulfill()
         }
 
@@ -137,8 +95,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -153,15 +110,15 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
         eventExpected.expectedFulfillmentCount = 2
         self.eventService.callFetchEvents.bodyIs { times, _, _, completion in
             if times == 1 {
-                completion?(nil, ["More": 1], nil)
+                completion?(.success(["More": 1]))
             } else {
-                completion?(nil, [:], nil)
+                completion?(.success([:]))
             }
 
             eventExpected.fulfill()
@@ -185,8 +142,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -200,11 +156,11 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, ["Refresh": 1], nil)
+            completion?(.success(["Refresh": 1]))
             eventExpected.fulfill()
         }
 
@@ -226,9 +182,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertTrue(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -242,7 +197,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
             XCTFail("Event ID is not valid, shouldn't trigger")
@@ -266,8 +221,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -281,11 +235,11 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, nil, NSError(domain: "test.com", code: 999, localizedDescription: "Event API failed"))
+            completion?(.failure(NSError(domain: "test.com", code: 999, localizedDescription: "Event API failed")))
             eventExpected.fulfill()
         }
 
@@ -309,9 +263,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -325,11 +278,11 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, [:], nil)
+            completion?(.success([:]))
             eventExpected.fulfill()
         }
 
@@ -353,9 +306,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -369,11 +321,11 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .singleMessage
         self.mailboxSource.locationViewMode = .singleMessage
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, [:], nil)
+            completion?(.success([:]))
             eventExpected.fulfill()
         }
 
@@ -388,9 +340,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
         XCTAssertTrue(self.fetchMessage.executeWasCalled)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -403,7 +354,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
             XCTFail("Event ID is not valid, shouldn't trigger")
@@ -427,9 +378,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertTrue(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -442,7 +392,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .singleMessage
         self.mailboxSource.locationViewMode = .singleMessage
-        self.sut.setup(isFetching: false, isFirstFetch: false)
+        self.sut.setup(isFetching: false)
 
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
             XCTFail("Event ID is not valid, shouldn't trigger")
@@ -459,8 +409,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.sut.isFirstFetch)
-        XCTAssertTrue(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertTrue(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -471,7 +420,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: true, isFirstFetch: true)
+        self.sut.setup(isFetching: true)
 
         self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
             XCTFail("isFetching, shouldn't trigger")
@@ -486,8 +435,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: [completionExpected], timeout: 2.0)
 
         XCTAssertTrue(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
-        XCTAssertFalse(self.fetchLatestEventID.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 
@@ -498,7 +447,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.messageDataService.hasValidEventID = isEventIDValid
         self.mailboxSource.currentViewMode = .conversation
         self.mailboxSource.locationViewMode = .conversation
-        self.sut.setup(isFetching: true, isFirstFetch: true)
+        self.sut.setup(isFetching: true)
 
         self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
             XCTFail("isFetching, shouldn't trigger")
@@ -516,7 +465,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: [completionExpected], timeout: 2.0)
 
         XCTAssertTrue(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessageWithReset.executeWasCalled)
+        XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNotNil(self.messageDataService.pushNotificationMessageID)
     }
 }

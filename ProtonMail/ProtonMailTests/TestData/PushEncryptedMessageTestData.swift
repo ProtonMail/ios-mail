@@ -33,7 +33,7 @@ enum PushEncryptedMessageTestData {
             "body": "\(body)",
             "sender": {
               "Name": "\(sender)",
-              "Address": "abuse@protonmail.com",
+              "Address": "abuse@proton.me",
               "Group": ""
             },
             "badge": 5,
@@ -44,6 +44,6 @@ enum PushEncryptedMessageTestData {
         }
         """
 
-        return try? Crypto().encryptNonOptional(plainText: message, publicKey: encryptionKitProvider.publicKey)
+        return try? Encryptor.encrypt(publicKey: encryptionKitProvider.publicKey, cleartext: message).value
     }
 }

@@ -21,6 +21,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case threading = "ThreadingIOS"
     case inAppFeedback = "InAppFeedbackIOS"
     case realNumAttachments = "RealNumAttachments"
+    case scheduleSend = "ScheduledSend"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
@@ -35,6 +36,7 @@ protocol FeatureFlagsDownloadServiceProtocol {
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.
 class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
+    private let userID: UserID
     private let apiService: APIService
     private let sessionID: String
     private let subscribersTable: NSHashTable<AnyObject> = NSHashTable.weakObjects()
@@ -42,10 +44,21 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         subscribersTable.allObjects.compactMap { $0 as? FeatureFlagsSubscribeProtocol }
     }
     private(set) var lastFetchingTime: Date?
+    private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
+    private let realAttachmentsFlagProvider: RealAttachmentsFlagProvider
 
-    init(apiService: APIService, sessionID: String) {
+    init(
+        userID: UserID,
+        apiService: APIService,
+        sessionID: String,
+        scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
+        realAttachmentsFlagProvider: RealAttachmentsFlagProvider
+    ) {
+        self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
+        self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
+        self.realAttachmentsFlagProvider = realAttachmentsFlagProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -66,7 +79,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         }
 
         let request = FeatureFlagsRequest()
-        apiService.exec(route: request, responseObject: FeatureFlagsResponse()) { [weak self] task, response in
+        apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] task, response in
             guard let self = self else {
                 completion?(.failure(.selfIsReleased))
                 return
@@ -81,7 +94,17 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             if !response.result.isEmpty {
                 self.subscribers.forEach { $0.handleNewFeatureFlags(response.result) }
                 if let realAttachment = response.result[FeatureFlagKey.realNumAttachments.rawValue] as? Bool {
-                    userCachedStatus.set(realAttachments: realAttachment, sessionID: self.sessionID)
+                    self.realAttachmentsFlagProvider.set(
+                        realAttachments: realAttachment,
+                        sessionID: self.sessionID
+                    )
+
+                }
+                if let isScheduleSendEnabled = response.result[FeatureFlagKey.scheduleSend.rawValue] as? Bool {
+                    self.scheduleSendEnableStatusProvider.setScheduleSendStatus(
+                        enable: isScheduleSendEnabled,
+                        userID: self.userID
+                    )
                 }
             }
             completion?(.success(response))

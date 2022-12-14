@@ -18,7 +18,7 @@ fileprivate struct id {
     static let removeAllLabel = "Remove All"
     static let signOutButtonLabel = LocalString._menu_signout_title
     static let confirmSignOutButtonLabel = LocalString._menu_signout_title
-    static let removeAccountButtonLabel = "Remove account"
+    static let removeAccountButtonLabel = "Remove account from this device"
     static let confirmRemoveButtonLabel = LocalString._general_remove_button
     static let closeManageAccountsButtonLabel = "Dismiss account switcher"
     static func userAccountMoreBtnIdentifier(_ mail: String) -> String {

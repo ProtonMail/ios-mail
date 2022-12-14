@@ -34,6 +34,8 @@ struct UndoSendRequest: Request {
     }
 }
 
-struct UndoSendResponse: Codable {
-    let code: Int
+struct UndoSendResponse: APIDecodableResponse {
+    var code: Int?
+    var error: String?
+    var details: HumanVerificationDetails?
 }

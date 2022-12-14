@@ -24,18 +24,21 @@ import UIKit
 
 @objc protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
     @objc optional func keyboardWillHideNotification(_ notification: Notification)
-    @objc optional func keyboardWillShowNotification(_ notificaiton: Notification)
+    @objc optional func keyboardWillShowNotification(_ notification: Notification)
+    @objc optional func keyboardDidShowNotification(_ notification: Notification)
 }
 
 extension NotificationCenter {
     func addKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         addObserver(observer, ifRespondsToAction: .willHide)
         addObserver(observer, ifRespondsToAction: .willShow)
+        addObserver(observer, ifRespondsToAction: .didShow)
     }
 
     func removeKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         removeObserver(observer, ifRespondsToAction: .willHide)
         removeObserver(observer, ifRespondsToAction: .willShow)
+        removeObserver(observer, ifRespondsToAction: .didShow)
     }
 
     // MARK: - Private methods
@@ -43,13 +46,16 @@ extension NotificationCenter {
     fileprivate enum KeyboardAction {
         case willHide
         case willShow
+        case didShow
 
         var notificationName: String {
             switch self {
             case .willHide:
                 return UIResponder.keyboardWillHideNotification.rawValue
-            default:
+            case .willShow:
                 return UIResponder.keyboardWillShowNotification.rawValue
+            default:
+                return UIResponder.keyboardDidShowNotification.rawValue
             }
         }
 
@@ -57,8 +63,10 @@ extension NotificationCenter {
             switch self {
             case .willHide:
                 return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillHideNotification(_:))
-            default:
+            case .willShow:
                 return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillShowNotification(_:))
+            default:
+                return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardDidShowNotification(_:))
             }
         }
     }

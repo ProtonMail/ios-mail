@@ -6,5 +6,9 @@
 	<array>
 		<string>$(AppIdentifierPrefix)com.protonmail.protonmail</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.protonmail.protonmail</string>
+	</array>
 </dict>
 </plist>

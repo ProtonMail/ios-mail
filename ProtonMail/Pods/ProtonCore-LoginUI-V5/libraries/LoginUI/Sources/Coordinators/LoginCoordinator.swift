@@ -253,6 +253,10 @@ extension LoginCoordinator: LoginStepsDelegate {
     func userAccountSetupNeeded() {
         UIApplication.openURLIfPossible(externalLinks.accountSetup)
     }
+    
+    func learnMoreAboutExternalAccountsNotSupported() {
+        UIApplication.openURLIfPossible(externalLinks.learnMoreAboutExternalAccountsNotSupported)
+    }
 }
 
 // MARK: - Login VC delegate

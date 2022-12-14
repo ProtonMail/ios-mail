@@ -78,7 +78,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
 
         let closeBtn = UIBarButtonItem(
-            image: Asset.actionSheetClose.image,
+            image: IconProvider.cross,
             style: .plain,
             target: self,
             action: #selector(self.close)

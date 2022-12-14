@@ -162,10 +162,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return container.newBackgroundContext()
     }
 
-    var operationContext: NSManagedObjectContext {
-        return rootSavingContext
-    }
-
     // MARK: - methods
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString), url.scheme == "x-coredata" {
@@ -181,6 +177,110 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             context.performAndWait {
                 block(context)
             }
+        }
+    }
+
+    /// Executes the block synchronously and immediately - without a serial queue.
+    func read<T>(block: (NSManagedObjectContext) -> T) -> T {
+        var output: T!
+
+        let context = container.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+
+        context.performAndWait {
+            output = block(context)
+        }
+
+        if output is NSManagedObject {
+            print("Warning: returning NSManagedObjects is deprecated, because it is an Core Data layer leak.")
+        }
+
+        return output
+    }
+
+    /*
+     Executes the block synchronously and immediately - without a serial queue.
+
+     This is the throwing variant of `read`. We might be able to adopt `rethrows` once we drop iOS 14 support.
+     */
+    func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T {
+        let result = read { (context: NSManagedObjectContext) -> Result<T, Error> in
+            do {
+                let output = try block(context)
+                return .success(output)
+            } catch {
+                return .failure(error)
+            }
+        }
+
+        return try result.get()
+    }
+
+    /*
+     Executes the block synchronously on a serial queue.
+     This has the following implications:
+     - calling this method will block the current thread
+     - the block will only be executed once the previously enqueued blocks are finished
+     - any changes written to the context will be saved automatically - no need to call `context.save()`
+
+     Ignore the `@escaping` annotation, the method is synchronous.
+     */
+    func write(block: @escaping (_ context: NSManagedObjectContext) throws -> Void) throws {
+        var result: Result<Void, Error>!
+
+        serialQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            let context = self.container.newBackgroundContext()
+            context.automaticallyMergesChangesFromParent = true
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+
+            context.performAndWait {
+                do {
+                    try block(context)
+
+                    if context.hasChanges {
+                        try context.save()
+                    }
+
+                    result = .success(Void())
+                } catch {
+                    result = .failure(error)
+                }
+            }
+        }
+
+        serialQueue.waitUntilAllOperationsAreFinished()
+
+        try result.get()
+    }
+
+    func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        serialQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            let context = self.rootSavingContext
+
+            context.performAndWait {
+                block(context)
+            }
+        }
+    }
+
+    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.perform {
+            block(context)
+        }
+    }
+
+    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        let context = rootSavingContext
+
+        context.performAndWait {
+            block(context)
         }
     }
 }

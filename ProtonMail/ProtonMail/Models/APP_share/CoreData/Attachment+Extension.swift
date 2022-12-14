@@ -23,7 +23,7 @@
 import Foundation
 import CoreData
 import PromiseKit
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
@@ -85,7 +85,7 @@ extension Attachment {
         return (keyPacket, cipherURL)
     }
 
-    func sign(byKey key: Key, userKeys: [Data], passphrase: Passphrase) -> Data? {
+    func sign(byKey key: Key, userKeys: [ArmoredKey], passphrase: Passphrase) -> Data? {
         do {
             let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
                 userKeys: userKeys,
@@ -101,14 +101,8 @@ extension Attachment {
             } else {
                 return nil
             }
-            let signature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign).value
-            var error: NSError?
-            let data = ArmorUnarmor(signature, &error)
-            if error != nil {
-                return nil
-            }
-
-            return data
+            let armoredSignature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign)
+            return armoredSignature.value.unArmor
         } catch {
             return nil
         }
@@ -127,70 +121,15 @@ extension Attachment {
         return sessionKey
     }
 
-    func getSession(userKey: [Data], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
+    func getSession(userKeys: [ArmoredKey], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
         guard let keyPacket = self.keyPacket else {
             return nil
         }
         let passphrase = self.message.cachedPassphrase ?? mailboxPassword
         let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
 
-        let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKey, passphrase: passphrase, keys: keys)
+        let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys)
         return sessionKey
-    }
-
-    func base64DecryptAttachment(userInfo: UserInfo, passphrase: Passphrase) -> String {
-        let userPrivKeys = userInfo.userPrivateKeysArray
-        let addrPrivKeys = userInfo.addressKeys
-
-        if let localURL = self.localURL {
-            if let data: Data = try? Data(contentsOf: localURL as URL) {
-                do {
-                    if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData =
-                                userInfo.isKeyV2 ?
-                                    try data.decryptAttachment(keyPackage: keydata,
-                                                               userKeys: userPrivKeys,
-                                                               passphrase: passphrase,
-                                                               keys: addrPrivKeys) :
-                                    try data.decryptAttachmentNonOptional(keydata,
-                                                                          passphrase: passphrase.value,
-                                                                          privKeys: addrPrivKeys.binPrivKeysArray) {
-                                let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                                return strBase64
-                            }
-                        }
-                    }
-                } catch {
-                }
-            } else if let data = self.fileData, data.count > 0 {
-                do {
-                    if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData =
-                                userInfo.isKeyV2 ?
-                                    try data.decryptAttachment(keyPackage: keydata,
-                                                               userKeys: userPrivKeys,
-                                                               passphrase: passphrase,
-                                                               keys: addrPrivKeys) :
-                                    try data.decryptAttachmentNonOptional(keydata,
-                                                                          passphrase: passphrase.value,
-                                                                          privKeys: addrPrivKeys.binPrivKeysArray) {
-                                let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                                return strBase64
-                            }
-                        }
-                    }
-                } catch {
-                }
-            }
-        }
-
-        if let data = self.fileData {
-            let strBase64: String = data.base64EncodedString(options: .lineLength64Characters)
-            return strBase64
-        }
-        return ""
     }
 
     func inline() -> Bool {

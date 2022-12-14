@@ -27,13 +27,14 @@ import Groot
 extension ConversationDataService {
     func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?) {
         let conversationCountRequest = ConversationCountRequest(addressID: addressID)
-        self.apiService.GET(conversationCountRequest) { _, response, error in
-            if let error = error {
+        self.apiService.perform(request: conversationCountRequest) { _, result in
+            switch result {
+            case .failure(let error):
                 DispatchQueue.main.async {
                     completion?(.failure(error))
                 }
-            } else {
-                let countDict = response?["Counts"] as? [[String: Any]]
+            case .success(let response):
+                let countDict = response["Counts"] as? [[String: Any]]
                 self.eventsService?.processEvents(conversationCounts: countDict)
                 DispatchQueue.main.async {
                     completion?(.success(()))
@@ -60,13 +61,13 @@ extension ConversationDataService {
         para.labelID = labelID.rawValue
 
         let request = ConversationsRequest(para)
-        self.apiService.GET(request) { _, responseDict, error in
-            if let err = error {
+        self.apiService.perform(request: request) { _, result in
+            switch result {
+            case .failure(let err):
                 DispatchQueue.main.async {
                     completion?(.failure(err))
                 }
-                return
-            } else {
+            case .success(let responseDict):
                 let response = ConversationsResponse()
                 guard response.ParseResponse(responseDict) else {
                     let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
@@ -81,7 +82,7 @@ extension ConversationDataService {
                     self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
                     self.contactCacheStatus.contactsCached = 0
                 }
-                let totalMessageCount = responseDict?["Total"] as? Int ?? 0
+                let totalMessageCount = responseDict["Total"] as? Int ?? 0
                 self.contextProvider.performOnRootSavingContext { [weak self] context in
                     do {
                         guard let self = self else { return }
@@ -181,12 +182,13 @@ extension ConversationDataService {
         para.IDs = conversationIDs.map(\.rawValue)
         
         let request = ConversationsRequest(para)
-        self.apiService.GET(request) { (task, responseDict, error) in
-            if let err = error {
+        self.apiService.perform(request: request) { _, result in
+            switch result {
+            case .failure(let err):
                 DispatchQueue.main.async {
                     completion?(.failure(err))
                 }
-            } else {
+            case .success(let responseDict):
                 let response = ConversationsResponse()
                 guard response.ParseResponse(responseDict) else {
                     let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")

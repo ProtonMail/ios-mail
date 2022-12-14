@@ -23,7 +23,7 @@ import ProtonCore_TestingToolkit
 final class FetchMessageMetaDataUseCaseTests: XCTestCase {
     var sut: FetchMessageMetaDataUseCase!
     var messageDataService: MockMessageDataService!
-    var contextProvider: CoreDataContextProviderProtocol!
+    var contextProvider: MockCoreDataContextProvider!
     var queueManager: MockQueueManager!
 
     override func setUp() {
@@ -102,7 +102,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
         XCTAssertEqual(self.messageDataService.callFetchMessageMetaData.callCounter,
                        1)
 
-        let message = try XCTUnwrap(Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: self.contextProvider.mainContext))
+        let message = try XCTUnwrap(Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: contextProvider.viewContext))
         XCTAssertEqual(message.userID, "the userID")
         XCTAssertEqual(message.messageStatus, NSNumber(1))
     }

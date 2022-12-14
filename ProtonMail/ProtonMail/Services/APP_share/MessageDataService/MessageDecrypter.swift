@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Log
@@ -29,7 +29,7 @@ protocol MessageDecrypterProtocol {
     )
 
     func decrypt(message: Message) throws -> String
-    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output
+    func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> Output
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
@@ -57,7 +57,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
         return output.body
     }
 
-    func decrypt(message: MessageEntity, verificationKeys: [Data]) throws -> Output {
+    func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> Output {
         let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
         if addressKeys.isEmpty {
             return (message.body, nil, .failure)
@@ -67,10 +67,10 @@ class MessageDecrypter: MessageDecrypterProtocol {
             throw MailCrypto.CryptoError.decryptionFailed
         }
 
-        let keysWithPassphrases = MailCrypto.keysWithPassphrases(
+        let decryptionKeys = MailCrypto.decryptionKeys(
             basedOn: addressKeys,
             mailboxPassword: dataSource.mailboxPassword,
-            userKeys: dataSource.newSchema ? dataSource.userPrivateKeys : nil
+            userKeys: dataSource.userPrivateKeys
         )
 
         if message.isMultipartMixed {
@@ -78,11 +78,18 @@ class MessageDecrypter: MessageDecrypterProtocol {
                 let messageData = try MailCrypto().decryptMIME(
                     encrypted: message.body,
                     publicKeys: verificationKeys,
-                    keys: keysWithPassphrases
+                    decryptionKeys: decryptionKeys
                 )
                 let (body, attachments) = postProcessMIME(messageData: messageData)
                 return (body, attachments, messageData.signatureVerificationResult)
             } catch {
+                // NOTE, decryption function will be called multiple times
+                // Reports on the Sentry could be triple than real situation
+                Analytics.shared.sendError(
+                    .decryptMIMEFailed(error: "\(error)",
+                                       messageID: message.messageID.rawValue)
+
+                )
                 assertionFailure("\(error)")
                 // do not throw here, make a Hail Mary fallback to the non-MIME decryption method
             }
@@ -90,8 +97,8 @@ class MessageDecrypter: MessageDecrypterProtocol {
 
         let decrypted = try Crypto().decryptVerify(
             encrypted: message.body,
-            publicKeys: verificationKeys,
-            privateKeys: keysWithPassphrases,
+            publicKeys: verificationKeys.compactMap { try? $0.unArmor().value },
+            privateKeys: decryptionKeys.map { ($0.privateKey.value, $0.passphrase.value) },
             verifyTime: CryptoGetUnixTime()
         )
         let (processedBody, verificationResult) = try postProcessNonMIME(
@@ -241,17 +248,11 @@ extension MessageDecrypter {
               }
 
         do {
-            let symmetricKey: SessionKey?
-            if userData.newSchema {
-                symmetricKey = try attachment
-                    .getSession(userKey: userData.userPrivateKeys,
-                                keys: userData.addressKeys,
-                                mailboxPassword: userData.mailboxPassword)
-            } else {
-                symmetricKey = try attachment
-                    .getSession(keys: userData.addressKeys,
-                                mailboxPassword: userData.mailboxPassword)
-            }
+            let symmetricKey = try attachment.getSession(
+                userKeys: userData.userPrivateKeys,
+                keys: userData.addressKeys,
+                mailboxPassword: userData.mailboxPassword
+            )
 
             guard let sessionPack = symmetricKey,
                   let newkp = try sessionPack.sessionKey

@@ -42,7 +42,6 @@ final class ScheduledSendHelper {
         self.delegate = delegate
     }
 
-    @objc
     func presentActionSheet() {
         guard let viewController = viewController else { return }
         let vcs = viewController.children + [viewController]
@@ -62,28 +61,12 @@ final class ScheduledSendHelper {
         self.actionSheet?.presentAt(viewController.navigationController ?? viewController,
                                     animated: true)
     }
-
-    func setUpScheduledSendButton(isEnabled: Bool, icon: UIImage) -> UIBarButtonItem {
-        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
-        let item = icon.toUIBarButtonItem(
-            target: self,
-            action: isEnabled ? #selector(self.presentActionSheet) : nil,
-            style: .plain,
-            tintColor: tintColor,
-            squareSize: 40,
-            backgroundColor: ColorProvider.BackgroundNorm,
-            backgroundSquareSize: nil,
-            isRound: true,
-            imageInsets: UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
-        )
-        return item
-    }
 }
 
 // MARK: Scheduled send action sheet related
 extension ScheduledSendHelper {
-    func setUpActionHeader() -> PMActionSheetHeaderView {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { [weak self] _ in
+    private func setUpActionHeader() -> PMActionSheetHeaderView {
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
             self?.actionSheet?.dismiss(animated: true)
         }
         let title = LocalString._general_schedule_send_action
@@ -91,7 +74,7 @@ extension ScheduledSendHelper {
         return header
     }
 
-    func setUpTomorrowAction() -> PMActionSheetPlainItem? {
+    private func setUpTomorrowAction() -> PMActionSheetPlainItem? {
         let roundDown = self.current.minute.roundDownForScheduledSend
         guard let tomorrow = self.current.tomorrow(at: 8, minute: roundDown) else {
             return nil
@@ -104,20 +87,34 @@ extension ScheduledSendHelper {
         }
     }
 
-    func setUpMondayAction() -> PMActionSheetPlainItem? {
+    private func setUpMondayAction() -> PMActionSheetPlainItem? {
         let roundDown = self.current.minute.roundDownForScheduledSend
         guard let next = self.current.next(.monday, hour: 8, minute: roundDown) else {
             return nil
         }
-        let day = next.formattedWith("MMM dd")
-        let title = String(format: LocalString._schedule_next_monday_send_action, day, roundDown)
+
+        let weekDayName = next.formattedWith("EEEE").capitalized
+        let datePart = next.formattedWith("(MMM dd)")
+
+        let timeFormatter = DateFormatter()
+        timeFormatter.locale = Locale.current
+        timeFormatter.dateStyle = .none
+        timeFormatter.timeStyle = .short
+
+        let timePart = String(
+            format: LocalString._composer_forward_header_at,
+            timeFormatter.string(from: next)
+        ).lowercased()
+
+        let title = "\(weekDayName) \(datePart) \(timePart)"
+
         return PMActionSheetPlainItem(title: title, icon: nil) { [weak self] _ in
             self?.delegate?.scheduledTimeIsSet(date: next)
             self?.actionSheet?.dismiss(animated: true)
         }
     }
 
-    func setUpCustomAction() -> PMActionSheetPlainItem {
+    private func setUpCustomAction() -> PMActionSheetPlainItem {
         PMActionSheetPlainItem(title: LocalString._composer_expiration_custom, icon: nil) { [weak self] _ in
             guard let self = self,
                   let viewController = self.viewController,

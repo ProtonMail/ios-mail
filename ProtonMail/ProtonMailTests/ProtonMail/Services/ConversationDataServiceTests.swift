@@ -183,9 +183,9 @@ final class ConversationDataServiceTests: XCTestCase {
             }
         }
 
-        mockContextProvider.rootSavingContext.performAndWait {
-            XCTAssertEqual(conversation.conversationID, "")
-        }
+        let context = try XCTUnwrap(conversation.managedObjectContext)
+        let conversationID = context.performAndWait { conversation.conversationID }
+        XCTAssertEqual(conversationID, "")
     }
 
     // MARK: Private methods

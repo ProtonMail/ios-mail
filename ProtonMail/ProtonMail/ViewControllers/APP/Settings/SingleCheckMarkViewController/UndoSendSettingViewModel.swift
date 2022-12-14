@@ -77,7 +77,7 @@ final class UndoSendSettingViewModel: SettingsSingleCheckMarkVMProtocol {
         currentUser
             .userService
             .updateDelaySeconds(userInfo: currentUser.userInfo,
-                                delaySeconds: cellSecond) { [weak self] _, _, error in
+                                delaySeconds: cellSecond) { [weak self] error in
                 DispatchQueue.main.async {
                     self?.uiDelegate?.showLoading(shouldShow: false)
                     if let error = error {

@@ -110,9 +110,9 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
         if self.isFetching == false {
             self.isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { (task, res, error) in
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { result in
                 self.isFetching = false
-                completion(error)
+                completion(result.error)
             })
             self.user.contactService.fetchContacts { (_, error) in
 
@@ -134,7 +134,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if isFetching == false {
             isFetching = true
             
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { (task, res, error) in
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { _ in
                 self.isFetching = false
             })
         }

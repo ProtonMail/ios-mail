@@ -26,7 +26,7 @@ class MessageAttachmentsRobot: CoreElements {
     }
     
     func add() -> ImageGalleryRobot {
-        cell(id.fromYourPhotoLibraryText).tap()
+        cell(id.fromYourPhotoLibraryText).firstMatch().tap()
         return ImageGalleryRobot()
     }
     

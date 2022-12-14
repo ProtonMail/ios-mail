@@ -42,14 +42,7 @@ extension UserInfo {
         }
     }
 
-    static var isScheduleSendEnable: Bool {
-#if DEBUG_ENTERPRISE
-        return true
-#endif
-        return false
-    }
-
     static var isImageProxyAvailable: Bool {
-        false
+        true
     }
 }

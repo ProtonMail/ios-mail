@@ -102,9 +102,7 @@ extension SignInCoordinatorEnvironment {
                              )
                          ))
                          let payment: PaymentsAvailability
-                         if UIApplication.isTestflightBeta {
-                             payment = .notAvailable
-                         } else {
+                         if UIApplication.arePaymentsEnabled {
                              payment = .available(parameters: .init(
                                  listOfIAPIdentifiers: Constants.mailPlanIDs,
                                  listOfShownPlanNames: Constants.shownPlanNames,
@@ -113,6 +111,8 @@ extension SignInCoordinatorEnvironment {
                                      NotificationCenter.default.post(name: .switchView, object: link)
                                  }
                              ))
+                         } else {
+                             payment = .notAvailable
                          }
                          return LoginAndSignup(appName: appName,
                                                clientApp: .mail,

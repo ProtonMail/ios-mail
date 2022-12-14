@@ -30,6 +30,7 @@ protocol ComposeSaveHintProtocol: UIViewController {
                                  coreDataContextProvider: CoreDataContextProviderProtocol)
     func showMessageSendingHintBanner(messageID: String,
                                       messageDataService: MessageDataProcessProtocol)
+    func showMessageSchedulingHintBanner(messageID: String)
 }
 
 extension ComposeSaveHintProtocol {
@@ -81,6 +82,20 @@ extension ComposeSaveHintProtocol {
         let banner = PMBanner(
             message: LocalString._messages_sending_message,
             style: PMBannerNewStyle.info,
+            userInfo: userInfo,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
+    }
+
+    func showMessageSchedulingHintBanner(messageID: String) {
+        typealias Key = PMBanner.UserInfoKey
+        let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
+                                            Key.messageID.rawValue: messageID]
+        let banner = PMBanner(
+            message: LocalString._scheduling_message_title,
+            style: PMBannerNewStyle.info,
+            dismissDuration: TimeInterval.greatestFiniteMagnitude,
             userInfo: userInfo,
             bannerHandler: PMBanner.dismiss
         )

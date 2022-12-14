@@ -70,6 +70,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case signout
     case lockapp
     case subscription
+    case referAFriend
 
     case addLabel
     case addFolder
@@ -104,6 +105,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "Account Manager": self = .accountManger
         case "Add Account": self = .addAccount
         case "12": self = .scheduled
+        case "Refer a friend": self = .referAFriend
         default:
             if let name = name {
                 self = .customize(id, name)
@@ -134,6 +136,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .signout: return "Logout"
         case .lockapp: return "Lock The App"
         case .subscription: return "Subscription"
+        case .referAFriend: return "Refer a friend"
 
         case .addLabel: return "Add Label"
         case .addFolder: return "Add Folder"
@@ -168,6 +171,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .signout: return LocalString._menu_signout_title
         case .lockapp: return LocalString._menu_lockapp_title
         case .subscription: return LocalString._menu_service_plan_title
+        case .referAFriend: return LocalString._menu_refer_a_friend
 
         case .addLabel: return LocalString._labels_add_label_action
         case .addFolder: return LocalString._labels_add_folder_action
@@ -216,6 +220,8 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return IconProvider.plus
         case .scheduled:
             return IconProvider.clock
+        case .referAFriend:
+            return IconProvider.heart
         default:
             return nil
         }

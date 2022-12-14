@@ -126,9 +126,10 @@ class ExpandedHeaderViewController: UIViewController {
         }
 
         let contact = viewModel.infoProvider.checkedSenderContact
-        if let icon = contact?.encryptionIconStatus?.iconWithColor,
+        if let icon = contact?.encryptionIconStatus?.icon,
+           let iconColor = contact?.encryptionIconStatus?.iconColor.color,
            let reason = contact?.encryptionIconStatus?.text {
-            presentLockIconRow(icon: icon, reason: reason)
+            presentLockIconRow(icon: icon, iconColor: iconColor, reason: reason)
         }
         presentHideDetailButton()
         setUpLock()
@@ -186,8 +187,8 @@ class ExpandedHeaderViewController: UIViewController {
             if dataSet.offset == 0 && doNotCoverMoreButton {
                 // 32 reply button + 8 * 2 spacing + 32 more button
                 stack.setCustomSpacing(80, after: addressController)
-                stack.addArrangedSubview(UIView())
             }
+            stack.addArrangedSubview(UIView())
             return stack
         }.forEach {
             row.contentStackView.addArrangedSubview($0)
@@ -269,10 +270,11 @@ class ExpandedHeaderViewController: UIViewController {
         trackerProtectionRow = row
     }
 
-    private func presentLockIconRow(icon: UIImage, reason: String) {
+    private func presentLockIconRow(icon: UIImage, iconColor: UIColor, reason: String) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
-        row.iconImageView.image = icon
+        row.iconImageView.image = icon.withRenderingMode(.alwaysTemplate)
+        row.iconImageView.tintColor = iconColor
         let titleLabel = UILabel()
         titleLabel.set(text: reason,
                        preferredFont: .footnote,

@@ -26,9 +26,3 @@ import ProtonCore_Foundations
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
 }
-
-extension SettingsTwoLinesCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        self.labelAtInterfaceBuilder()
-    }
-}

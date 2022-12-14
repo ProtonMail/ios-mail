@@ -49,7 +49,8 @@ class EOAddressBuilder: PackageBuilder {
 
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let encodedKeyPackage = try self.session.getSymmetricPacket(withPwd: self.password.value, algo: self.algo.value)?
+            let encodedKeyPackage = try self.session
+                .getSymmetricPacket(withPwd: self.password.value, algo: self.algo.value)?
                 .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             // create outside encrypt packet
             let token = String.randomString(32) as String

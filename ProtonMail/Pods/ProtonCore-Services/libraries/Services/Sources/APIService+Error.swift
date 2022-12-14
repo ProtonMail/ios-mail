@@ -66,6 +66,8 @@ public class APIErrorCode {
 
     public static let badAppVersion = 5003
     public static let badApiVersion = 5005
+    public static let appVersionTooOldForExternalAccounts = 5098
+    public static let appVersionNotSupportedForExternalAccounts = 5099
     public static let humanVerificationRequired = 9001
     public static let invalidVerificationCode = 12087
     public static let tooManyVerificationCodes = 12214
@@ -82,18 +84,24 @@ public extension ResponseError {
     var isApiIsBlockedError: Bool {
         return bestShotAtReasonableErrorCode == APIErrorCode.potentiallyBlocked
     }
+    
+    var isExternalAccountsNotSupportedError: Bool {
+        guard let responseCode = responseCode else { return false }
+        return responseCode == APIErrorCode.appVersionTooOldForExternalAccounts || responseCode == APIErrorCode.appVersionNotSupportedForExternalAccounts
+    }
 }
 
 public extension AuthErrors {
     static func from(_ responseError: ResponseError) -> AuthErrors {
         if responseError.isApiIsBlockedError {
             return .apiMightBeBlocked(message: responseError.networkResponseMessageForTheUser, originalError: responseError)
+        } else if responseError.isExternalAccountsNotSupportedError {
+            return .externalAccountsNotSupported(message: responseError.networkResponseMessageForTheUser, originalError: responseError)
         } else {
             return .networkingError(responseError)
         }
     }
 }
-
 // This need move to a common framwork
 public extension NSError {
 
@@ -148,5 +156,21 @@ public extension NSError {
             }
         }
         return isInternetIssue
+    }
+    
+    class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+        return NSError(
+            domain: "APIService",
+            code: code,
+            localizedDescription: localizedDescription,
+            localizedFailureReason: localizedFailureReason,
+            localizedRecoverySuggestion: localizedRecoverySuggestion)
+    }
+
+    class func badResponse() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.badResponse,
+            localizedDescription: "Bad response",
+            localizedFailureReason: "Bad response")
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -38,7 +38,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="40" id="oux-TE-YHL"/>
                                     </constraints>
-                                    <state key="normal" image="ic_lock_no_ckeck"/>
+                                    <state key="normal" image="ic-lock"/>
                                     <connections>
                                         <action selector="clickEOButton:" destination="-1" eventType="touchUpInside" id="cpk-63-TwZ"/>
                                     </connections>
@@ -69,7 +69,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="40" id="R3J-01-kAi"/>
                                     </constraints>
-                                    <state key="normal" image="ic_hourglass_no_check"/>
+                                    <state key="normal" image="ic-hourglass"/>
                                     <connections>
                                         <action selector="clickExpireButton:" destination="-1" eventType="touchUpInside" id="CJW-lQ-suF"/>
                                     </connections>
@@ -153,9 +153,9 @@
         </view>
     </objects>
     <resources>
+        <image name="ic-hourglass" width="24" height="24"/>
+        <image name="ic-lock" width="24" height="24"/>
         <image name="ic-paper-clip" width="24" height="24"/>
-        <image name="ic_hourglass_no_check" width="40" height="40"/>
-        <image name="ic_lock_no_ckeck" width="40" height="40"/>
         <image name="ic_small_checkmark" width="16" height="16"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

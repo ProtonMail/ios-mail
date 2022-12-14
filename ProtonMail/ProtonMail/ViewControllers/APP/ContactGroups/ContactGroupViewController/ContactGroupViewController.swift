@@ -99,16 +99,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        let menuButton = UIBarButtonItem(
-            image: Asset.topMenu.image,
-            style: .plain,
-            target: self,
-            action: #selector(openMenu)
-        )
-        menuButton.accessibilityLabel = LocalString._menu_button
-        // Self.setup(self, menuButton, shouldShowSideMenu())
-        navigationItem.leftBarButtonItem = menuButton
-        menuButton.action = #selector(openMenu)
+        setupMenuButton()
 
         if self.viewModel.initEditing() {
             isEditingState = true

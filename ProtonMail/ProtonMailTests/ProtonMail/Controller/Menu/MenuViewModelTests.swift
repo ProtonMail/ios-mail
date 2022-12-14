@@ -100,7 +100,8 @@ class MenuViewModelTests: XCTestCase {
         let baseInfo = MenuViewModel.MoreItemsInfo(userIsMember: nil,
                                                    subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
-                                                   isTouchIDEnabled: true)
+                                                   isTouchIDEnabled: true,
+                                                   isReferralEligible: false)
         XCTAssert(MenuViewModel.moreItems(for: baseInfo).map(\.location) == expectedItems.map(\.location))
     }
 
@@ -114,7 +115,8 @@ class MenuViewModelTests: XCTestCase {
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: true,
                                                    subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
-                                                   isTouchIDEnabled: true)
+                                                   isTouchIDEnabled: true,
+                                                   isReferralEligible: false)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
@@ -129,7 +131,8 @@ class MenuViewModelTests: XCTestCase {
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
-                                                   isTouchIDEnabled: true)
+                                                   isTouchIDEnabled: true,
+                                                   isReferralEligible: false)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
@@ -143,7 +146,8 @@ class MenuViewModelTests: XCTestCase {
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: true,
-                                                   isTouchIDEnabled: true)
+                                                   isTouchIDEnabled: true,
+                                                   isReferralEligible: false)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
@@ -157,7 +161,8 @@ class MenuViewModelTests: XCTestCase {
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
-                                                   isTouchIDEnabled: true)
+                                                   isTouchIDEnabled: true,
+                                                   isReferralEligible: false)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
@@ -171,7 +176,8 @@ class MenuViewModelTests: XCTestCase {
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: true,
-                                                   isTouchIDEnabled: false)
+                                                   isTouchIDEnabled: false,
+                                                   isReferralEligible: false)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
@@ -184,7 +190,23 @@ class MenuViewModelTests: XCTestCase {
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
-                                                   isTouchIDEnabled: false)
+                                                   isTouchIDEnabled: false,
+                                                   isReferralEligible: false)
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+    }
+
+    func testMoreItems_withReferralEligibleTrue_containsReferAFriend() {
+        let expectedItems = [MenuLabel(location: .settings),
+                             MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
+                             MenuLabel(location: .bugs),
+                             MenuLabel(location: .referAFriend),
+                             MenuLabel(location: .signout)]
+        let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
+                                                   subscriptionAvailable: false,
+                                                   isPinCodeEnabled: false,
+                                                   isTouchIDEnabled: false,
+                                                   isReferralEligible: true)
         XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 

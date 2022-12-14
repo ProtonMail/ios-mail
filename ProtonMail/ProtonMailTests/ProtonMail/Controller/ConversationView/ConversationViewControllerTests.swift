@@ -37,7 +37,7 @@ class ConversationViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextProvider = MockCoreDataContextProvider()
-        fakeConversation = ConversationEntity(Conversation(context: contextProvider.mainContext))
+        fakeConversation = ConversationEntity(Conversation(context: contextProvider.viewContext))
         coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         apiMock = APIServiceMock()
         fakeUser = UserManager(api: apiMock, role: .none)

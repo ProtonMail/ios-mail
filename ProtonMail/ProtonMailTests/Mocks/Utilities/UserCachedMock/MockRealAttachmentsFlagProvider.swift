@@ -26,4 +26,17 @@ class MockRealAttachmentsFlagProvider: RealAttachmentsFlagProvider {
     var realAttachments: Bool {
         realAttachmentStub()
     }
+
+    @FuncStub(MockRealAttachmentsFlagProvider.set) var callSet
+    func set(realAttachments: Bool, sessionID: String) {
+        callSet(realAttachments, sessionID)
+    }
+
+    func getShared() -> UserDefaults {
+        .standard
+    }
+
+    func setValue(_ value: Any?, forKey key: String) {
+
+    }
 }

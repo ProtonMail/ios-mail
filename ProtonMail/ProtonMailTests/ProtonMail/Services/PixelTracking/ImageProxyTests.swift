@@ -17,7 +17,6 @@
 
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
-import SwiftSoup
 import XCTest
 
 @testable import ProtonMail
@@ -92,7 +91,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
 
         Environment.uuid = { UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")! }
 
-        ImageProxy.purgeCache()
+        ImageProxyCache.shared.purge()
     }
 
     override func tearDownWithError() throws {
@@ -202,25 +201,6 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         _ = try sut.process(body: nonTrackingMessage, delegate: delegate)
         waitForProxyToFinishProcessing()
         XCTAssertEqual(apiServiceMock.downloadStub.callCounter, 1)
-    }
-
-    // This particular way of asserting is needed, because SwiftSoup does some minor stylistic changes, like adding
-    // missing <head> etc.
-    private func assertHTMLsAreEqual(_ first: String, _ second: String, file: StaticString = #file, line: UInt = #line) {
-        do {
-            let firstDocument = try SwiftSoup.parse(first)
-            let secondDocument = try SwiftSoup.parse(second)
-
-            // pretty print needs to be disabled so that minor whitespace differences don't matter
-            for document in [firstDocument, secondDocument] {
-                document.outputSettings().prettyPrint(pretty: false)
-            }
-
-            // for some reason, a simple == check on two Nodes does not work - it's as if it was an identity check
-            XCTAssertEqual("\(firstDocument)", "\(secondDocument)", file: file, line: line)
-        } catch {
-            XCTFail("\(error)", file: file, line: line)
-        }
     }
 
     private func assertTrackingURLHasBeenListedForReload(_ failedRequests: Set<SrcReplacement>, file: StaticString = #file, line: UInt = #line) {

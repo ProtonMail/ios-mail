@@ -294,12 +294,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                  argument: self.navigationController?.view)
         }
 
-        if viewModel.eventsService.status != .started {
-            self.startAutoFetch()
-        } else {
-            viewModel.eventsService.resume()
-            viewModel.eventsService.call()
-        }
         self.updateUnreadButton()
         deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
@@ -318,6 +312,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        if viewModel.eventsService.status != .started {
+            self.startAutoFetch()
+        } else {
+            viewModel.eventsService.resume()
+            viewModel.eventsService.call()
+        }
 
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
@@ -671,8 +672,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if viewModel.countOfFetchedObjects == 0 {
             viewModel.fetchMessages(time: 0,
                                     forceClean: false,
-                                    isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox,
-                                    completion: nil)
+                                    isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox) { _ in }
         }
 
         updateUnreadButton()
@@ -719,7 +719,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     // MARK: cell configuration methods
-    private func configure(cell inputCell: UITableViewCell?, indexPath: IndexPath) {
+    private func configure(cell inputCell: UITableViewCell, indexPath: IndexPath) {
         guard let mailboxCell = inputCell as? NewMailboxMessageCell else {
             return
         }
@@ -765,8 +765,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             UIAccessibilityCustomAction(name: LocalString._accessibility_list_view_custom_action_of_switch_editing_mode,
                                         target: self,
                                         selector: #selector(self.handleAccessibilityAction))
-        inputCell?.accessibilityCustomActions = [accessibilityAction]
-        inputCell?.isAccessibilityElement = true
+        inputCell.accessibilityCustomActions = [accessibilityAction]
+        inputCell.isAccessibilityElement = true
     }
 
     // Temp: needs to refactor the code of generating TagUIModel
@@ -777,7 +777,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         return object.createTags()
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, item: SwipeableItem) {
+    private func configureSwipeAction(_ cell: SwipyCell, item: MailboxItem) {
         cell.delegate = self
 
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
@@ -811,7 +811,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
     }
 
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: SwipeableItem) {
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: MailboxItem) {
         let breadcrumbs = Breadcrumbs.shared
 
         defer {
@@ -844,7 +844,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             cell.swipeToOrigin {}
         }
 
-        if viewModel.isScheduledSend(of: item) && action == .trash {
+        if item.isScheduledForSending && action == .trash {
             cell.swipeToOrigin {}
             displayScheduledAlert(scheduledNum: 1, continueAction: continueAction, cancelAction: cancelAction)
         } else {
@@ -2373,7 +2373,7 @@ extension MailboxViewController: UITableViewDelegate {
                         self.tableView.showLoadingFooter()
                     }
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
-                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly, completion: { (_, _, _) -> Void in
+                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly) { _ in
                         DispatchQueue.main.async {
                             self.tableView.hideLoadingFooter()
                         }
@@ -2382,7 +2382,7 @@ extension MailboxViewController: UITableViewDelegate {
                         }
                         self.fetchingOlder = false
                         self.checkHuman()
-                    })
+                    }
                 }
             }
         }

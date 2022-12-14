@@ -16,6 +16,48 @@
 			<string>%d members</string>
 		</dict>
 	</dict>
+	<key>%d Minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@minutes@</string>
+		<key>minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d minutes</string>
+		</dict>
+	</dict>
+	<key>%d Selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@selected@</string>
+		<key>selected</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d Selected</string>
+		</dict>
+	</dict>
+	<key>%d attachment</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@attachment@</string>
+		<key>attachment</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d attachments</string>
+		</dict>
+	</dict>
 	<key>%d attempt remaining</key>
 	<dict>
 		<key>ATTEMPT</key>
@@ -190,6 +232,20 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>%d seconds</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@second@</string>
+		<key>second</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d seconds</string>
+		</dict>
+	</dict>
 	<key>%u conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
@@ -292,7 +348,7 @@
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
 	</dict>
-	<key>This %d messages will move to Drafts and have its schedule removed.</key>
+	<key>These %d messages will move to Drafts and have their schedule removed.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@alertMessage@</string>
@@ -303,7 +359,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have its schedule removed.</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

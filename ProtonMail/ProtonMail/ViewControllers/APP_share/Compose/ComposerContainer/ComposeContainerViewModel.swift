@@ -34,17 +34,26 @@ class ComposeContainerViewModel: TableContainerViewModel {
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.getUser() }
     private var userIntroductionProgressProvider: UserIntroductionProgressProvider
+    private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
 
     var isScheduleSendIntroViewShown: Bool {
         userIntroductionProgressProvider.hasUserSeenSpotlight(for: .scheduledSend)
     }
 
-    init(editorViewModel: ContainableComposeViewModel,
-         uiDelegate: ComposeContainerUIProtocol?,
-         userIntroductionProgressProvider: UserIntroductionProgressProvider) {
+    var isScheduleSendEnable: Bool {
+        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID)
+    }
+
+    init(
+        editorViewModel: ContainableComposeViewModel,
+        uiDelegate: ComposeContainerUIProtocol?,
+        userIntroductionProgressProvider: UserIntroductionProgressProvider,
+        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
+    ) {
         self.childViewModel = editorViewModel
         self.uiDelegate = uiDelegate
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.scheduleSendStatusProvider = scheduleSendStatusProvider
         super.init()
         self.contactChanged = observeRecipients()
     }
@@ -98,8 +107,8 @@ class ComposeContainerViewModel: TableContainerViewModel {
             return
         }
         let scheduledLimit = 100
-        let countRequest = MessageCount()
-        self.user.apiService.exec(route: countRequest, responseObject: MessageCountResponse()) { response in
+        let countRequest = MessageCountRequest()
+        self.user.apiService.perform(request: countRequest, response: MessageCountResponse()) { _, response in
             if response.error == nil,
                let scheduledLabel = response.counts?.first(where: { $0["LabelID"] as? String == LabelLocation.scheduled.rawLabelID }) {
                 let total = (scheduledLabel["Total"] as? Int) ?? 101

@@ -73,7 +73,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         return totalUserCountClosure() > 0
     }
     var isFetchingMessage: Bool { self.dependencies.updateMailbox.isFetching }
-    var isFirstFetch: Bool { self.dependencies.updateMailbox.isFirstFetch }
+    private(set) var isFirstFetch: Bool = true
 
     private let dependencies: Dependencies
 
@@ -214,7 +214,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     func fetchContacts(completion: ContactFetchComplete? = nil) {
-        contactProvider.fetchContacts(fromUI: true, completion: completion)
+        contactProvider.fetchContacts(completion: completion)
     }
 
     /// create a fetch controller with labelID
@@ -461,7 +461,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         }
 
         group.enter()
-        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _, _, _ in
+        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _ in
             group.leave()
         }
 
@@ -775,14 +775,14 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
 // MARK: - Data fetching methods
 extension MailboxViewModel {
 
-    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: CompletionBlock?) {
+    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: @escaping (Error?) -> Void) {
         switch self.locationViewMode {
         case .singleMessage:
             dependencies.fetchMessages.execute(
                 endTime: time,
                 isUnread: isUnread,
                 callback: { result in
-                    completion?(nil, nil, result.nsError)
+                    completion(result.error)
                 },
                 onMessagesRequestSuccess: nil)
 
@@ -790,16 +790,29 @@ extension MailboxViewModel {
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
                 switch result {
                 case .success:
-                    completion?(nil, nil, nil)
+                    completion(nil)
                 case .failure(let error):
-                    completion?(nil, nil, error as NSError)
+                    completion(error)
                 }
             }
         }
     }
 
-    func updateMailbox(showUnreadOnly: Bool, isCleanFetch: Bool, time: Int = 0, errorHandler: @escaping (Error) -> Void, completion: @escaping () -> Void) {
-        self.dependencies.updateMailbox.exec(showUnreadOnly: showUnreadOnly, isCleanFetch: isCleanFetch, time: time, errorHandler: errorHandler, completion: completion)
+    func updateMailbox(
+        showUnreadOnly: Bool,
+        isCleanFetch: Bool,
+        time: Int = 0,
+        errorHandler: @escaping (Error) -> Void,
+        completion: @escaping () -> Void
+    ) {
+        isFirstFetch = false
+        dependencies.updateMailbox.exec(
+            showUnreadOnly: showUnreadOnly,
+            isCleanFetch: isCleanFetch,
+            time: time,
+            errorHandler: errorHandler,
+            completion: completion
+        )
     }
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
@@ -950,15 +963,6 @@ extension MailboxViewModel {
 
 // MARK: - Swipe actions
 extension MailboxViewModel {
-    func isScheduledSend(of item: SwipeableItem) -> Bool {
-        switch item {
-        case .message(let message):
-            return message.isScheduledSend
-        case .conversation(let conversation):
-            return conversation.contains(of: .scheduled)
-        }
-    }
-
     func isScheduledSend(in indexPath: IndexPath) -> Bool {
         if locationViewMode == .singleMessage {
             guard let message = item(index: indexPath) else { return false }
@@ -969,7 +973,7 @@ extension MailboxViewModel {
         }
     }
 
-    func isSwipeActionValid(_ action: MessageSwipeAction, item: SwipeableItem) -> Bool {
+    func isSwipeActionValid(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
         guard let location = messageLocation else {
             return true
         }

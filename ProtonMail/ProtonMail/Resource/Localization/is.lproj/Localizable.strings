@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ af %2$@";
 
-/* auto lock time format */
-"%d Minute" = "%d mínúta";
-
-/* auto lock time format */
-"%d Minutes" = "%d mínútur";
-
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d sekúndur";
 
@@ -34,9 +28,6 @@
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1m";
 
-/* default empty object */
-"<no object>" = "<ekkert atriði>";
-
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 skilaboð færð í geymslu";
 
@@ -46,36 +37,14 @@
 /* Placeholder */
 "8 to 21 characters long" = "8 til 21 stafa langt";
 
-/* *
- *  LabelTableViewCell */
-"A message cannot have more than 5 labels" = "Skilaboð geta ekki verið með fleiri en 5 merki";
-
-/* "Alert" = "Alert"; */
-"A new version of Proton Mail app is available, please update to latest version." = "Ný útgáfa af Proton tölvupóstforritinu er tiltæk, endilega uppfærðu í nýjustu útgáfuna.";
-
-/* (No Comment) */
-"A passcode has not been set, enable it in the system Settings" = "Aðgangskóði hefur ekki verið settur, virkjaðu það í kerfisstillingunum";
-
-/* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. Skráðu þig inn í protonmail.com til að greiða ófrágenginn reikning.";
-
-/* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. \n\nSkoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">upplýsingasíðurnar okkar</a> til að sjá nánari upplýsingar.";
-
 /* Account manager title */
 "Account" = "Notandaaðgangur";
-
-/* title */
-"Account password invalid" = "Ógilt aðgangslykilorð";
 
 /* section title in settings */
 "Account settings" = "Stillingar notandaaðgangs";
 
 /* The title of toast message that is shown after the undo action is done */
 "Action reverted" = "Aðgerð afturkölluð";
-
-/* (No Comment) */
-"Add" = "Bæta við";
 
 /* new contacts add Anniversary */
 "Add anniversary" = "Bæta við afmæli";
@@ -144,7 +113,7 @@
 /* cell title in device settings */
 "Addresses" = "Vistföng";
 
-/* alert title */
+/* Title */
 "Alert" = "Aðvörun";
 
 /* Title */
@@ -221,14 +190,9 @@
 "Apply Password" = "Virkja lykilorð";
 
 /* menu title
+   Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Safn";
-
-/* mail location title */
-"ARCHIVE" = "Safn";
-
-/* (No Comment) */
-"Archived" = "Geymt";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
@@ -261,9 +225,6 @@
 /* No comment provided by engineer. */
 "attachment" = "viðhengi";
 
-/* No comment provided by engineer. */
-"Attachment" = "Viðhengi";
-
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Bilun vegna viðhengis";
 
@@ -282,12 +243,6 @@
 /* Title */
 "Authentication" = "Auðkenning";
 
-/* (No Comment) */
-"Authentication Failed Wrong username or password" = "Auðkenning mistókst: rangt notandanafn eða lykilorð";
-
-/* Title */
-"Auto Lock Time" = "Sjálfvirkur læsingartími";
-
 /* settings general section title */
 "Auto-load embedded images" = "Hlaða sjálfvirkt inn ívöfnum myndum";
 
@@ -300,20 +255,14 @@
 /* top left back button */
 "Back" = "Til baka";
 
-/* title */
+/* Error title */
 "Bad parameter" = "Röng færibreyta";
 
 /* Error Description */
 "Bad parameter: %@" = "Röng færibreyta: %@";
 
-/* title */
-"Bad path" = "Gölluð slóð";
-
-/* title */
+/* Error Description */
 "Bad response" = "Rangt svar";
-
-/* Title */
-"Bcc" = "Falið afrit";
 
 /* message Bcc: feild */
 "Bcc:" = "Falið afrit:";
@@ -332,9 +281,6 @@
 
 /* Title */
 "Bug Description" = "Lýsing á villu";
-
-/* Title */
-"Bug Report Received" = "Villuskýrsla móttekin";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Gögn í skyndiminni";
@@ -356,13 +302,6 @@
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
 "Can't delete contact group through API" = "Get ekki eytt tengiliðahópi í gegnum API-forritsviðmót";
-
-/* *
- *  MessageViewController */
-"Can't download message body, please try again." = "Gat ekki sótt meginmál skilaboða Reyndu aftur.";
-
-/* (No Comment) */
-"Can't find the clicked message please try again!" = "Fann ekki skilaboðin sem smellt var á, reyndu aftur!";
 
 /* Description */
 "Can't find the value from the response body" = "Fann ekki gildið í meginmáli svarsins";
@@ -404,25 +343,8 @@
 /* Warning message */
 "Cannot empty folder right now." = "Ekki er hægt að tæma möppuna núna.";
 
-/* (No Comment) */
-"Cant' decrypt this attachment!" = "Tókst ekki að afkóða þetta viðhengi.";
-
-/* message Cc: feild
-   Title */
-"Cc" = "Afrit";
-
-/* *
- *  PhoneVerifyViewController */
-"Cell phone number" = "Farsímanúmer";
-
 /* settings general section title */
 "Change account password" = "Breyta lykilorði innskráningar";
-
-/* Title */
-"Change default address to .." = "Breyta sjálfgefnu tölvupóstfangi í ..";
-
-/* (No Comment) */
-"Change left swipe action" = "Breyta aðgerð þegar strokið er til vinstri";
 
 /* settings general section title */
 "Change mailbox password" = "Breyta lykilorði á pósthólfi";
@@ -431,20 +353,8 @@
    title */
 "Change password" = "Breyta lykilorði";
 
-/* title */
-"Change Password" = "Breyta lykilorði";
-
-/* (No Comment) */
-"Change Pin" = "Breyta PIN-númeri";
-
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Breyta PIN kóða";
-
-/* (No Comment) */
-"Change right swipe action" = "Breyta aðgerð þegar strokið er til hægri";
-
-/* Title */
-"Change sender address to .." = "Breyta tölvupóstfangi sendanda í ...";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Hladdu tækið þitt eða haltu áfram handvirkt.";
@@ -454,9 +364,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Athugaðu stöðu Proton til að sjá ástandið á kerfinu okkar.";
-
-/* "Username" */
-"Checking ...." = "Athuga ....";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "Veldu annað heimilisfang sendanda";
@@ -471,9 +378,6 @@
 
 /* cell title in device setting */
 "Clear local cache" = "Hreinsaðu staðbundið skyndiminni";
-
-/* (No Comment) */
-"Clear Local Message Cache" = "Hreinsa skyndiminni skilaboða á tækinu";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Hreinsa stíl";
@@ -497,8 +401,8 @@
    The title of combined contact in settings */
 "Combined contacts" = "Sameinaðir tengiliðir";
 
-/* *
- *  Composer Email view controller */
+/* Action
+   Springboard (3D Touch) shortcuts action */
 "Compose" = "Semja";
 
 /* An action title shows in ellipsis menu */
@@ -507,12 +411,9 @@
 /* Title */
 "Compose to" = "Semja til";
 
-/* *
- *  MenuViewController */
+/* Action
+   The title of button of PIN code setup2 */
 "Confirm" = "Staðfesta";
-
-/* "Mailbox Password" */
-"Confirm Mailbox Password" = "Staðfestu lykilorð fyrir pósthólf";
 
 /* Title */
 "Confirm new mailbox password" = "Staðfestu nýtt lykilorð á pósthólfi";
@@ -522,9 +423,6 @@
 
 /* Title */
 "Confirm new sign-in password" = "Staðfestu nýtt innskráningarlykilorð";
-
-/* (No Comment) */
-"Confirm Password" = "Staðfestu lykilorð";
 
 /* alert title */
 "Confirm phishing report" = "Staðfesta skýrslu um veiðipóst";
@@ -579,9 +477,6 @@
 /* top right action text */
 "Create" = "Búa til";
 
-/* error part & alert title */
-"Create user failed" = "Ekki tókst að búa til notanda";
-
 /* Alert title */
 "Creating folder not allowed" = "Ekki leyft að búa til möppu";
 
@@ -619,12 +514,6 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "Dagsetning: %@";
 
-/* days */
-"days" = "Dagar";
-
-/* (No Comment) */
-"Debug" = "Villukemba";
-
 /* error title */
 "Decryption error" = "Afkóðunarvilla";
 
@@ -640,14 +529,9 @@
 /* Settings row */
 "Default browser" = "Sjálfgefinn vafri";
 
-/* Placeholder */
-"Define Hint (Optional)" = "Skilgreina vísbendingu (valkvætt)";
-
-/* (No Comment) */
-"Define Password" = "Skilgreindu lykilorð";
-
-/* *
- *  Contacts View Controller */
+/* general delete action
+   The title of the delete action in action sheet
+   Title for the alert button to delete all downloaded messages. */
 "Delete" = "Eyða";
 
 /* Title of message permanent deletion alert, plural */
@@ -671,11 +555,7 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Eyða skilaboðum";
 
-/* (No Comment) */
-"Deleted" = "Eytt";
-
-/* *
- *  Email Header View */
+/* Title */
 "Details" = "Nánari upplýsingar";
 
 /* Firewall interference description. */
@@ -697,24 +577,8 @@
 /* Action */
 "Discard changes" = "Henda breytingum";
 
-/* (No Comment) */
-"Discard draft" = "Henda drögum";
-
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Sleppa lyklaborði";
-
-/* (No Comment) */
-"Display name" = "Birtingarnafn";
-
-/* Title in settings */
-"Display Name" = "Birtingarnafn";
-
-/* *
- *  SettingsViewController & alert title */
-"Display Name Updated" = "Birtingarnafn uppfært";
-
-/* Title in display name settings */
-"DisplayName" = "Birtingarnafn";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Viltu virkilega fjarlægja þessa skrá úr viðhengjum?";
@@ -750,7 +614,7 @@
 "Download paused: No connectivity" = "Hlé gert á niðurhali: Engin tenging";
 
 /* Text for estimate time label when no wifi is available */
-"Download paused: No WiFi detected" = "Hlé gert á niðurhali: Ekkert WiFi fannst";
+"Download paused: No WiFi detected" = "Hlé gert á niðurhali: Ekkert þráðlaust net fannst";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Hlé gert á niðurhali: Geymsla full";
@@ -793,9 +657,6 @@
 /* menu title */
 "Drafts" = "Drög";
 
-/* mail location title */
-"DRAFTS" = "Drög";
-
 /* Onboarding title */
 "Easily up-to-date" = "Auðveldlega uppfærð";
 
@@ -825,15 +686,11 @@
 /* default vcard types */
 "Email" = "Tölvupóstfang";
 
-/* *
- *  Email Verify View Controller */
+/* contact placeholder */
 "Email address" = "Tölvupóstfang";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Netfang er óvirkt";
-
-/* alert title */
-"Email address invalid" = "Tölvupóstfang er ógilt";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "Tölvupóstfangið er ógilt";
@@ -844,17 +701,11 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Senda tengilið tölvupóst";
 
-/* title */
-"Email domain invalid" = "Ógilt tölvupóstlén";
-
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Tölvupóstrekjarar geta brotið gegn friðhelgi einkalífsins.";
 
 /* Name of the feature */
 "Email tracking protection" = "Tölvupóstvörn gegn rakningu";
-
-/* "Cancel" */
-"Empty Folder" = "Tóm mappa";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Tæma ruslpóst";
@@ -878,14 +729,8 @@
 /* Title */
 "Enable email notices" = "Virkja tölvupósttilkynningar";
 
-/* (No Comment) */
-"Enable Pin Protection" = "Virkja varnir með PIN-númeri";
-
 /* Title */
 "Enable signature" = "Virkja undirskrift";
-
-/* (No Comment) */
-"Enable TouchID" = "Virkja Touch ID";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Dulritað af Proton";
@@ -908,9 +753,6 @@
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted to verified recipient" = "Enda-í-enda dulritað til sannvottaðs viðtakanda";
 
-/* (No Comment) */
-"End-to-End Encryption" = "Enda-í-enda dulritun";
-
 /* Action in 2fa popup view */
 "Enter" = "Setja inn";
 
@@ -919,9 +761,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Sláður inn nýtt PIN númer";
-
-/* (No Comment) */
-"Enter Verification Code" = "Settu inn sannvottunarkóða";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Sláðu inn lykilorðið þitt til að framkvæma breytingar";
@@ -934,9 +773,6 @@
 
 /* Title of alert in share extension. */
 "Error" = "Villa";
-
-/* (No Comment) */
-"Error Logs" = "Villuskráningar";
 
 /* incorrect email format error in composer */
 "Error sending" = "Villa við að senda";
@@ -956,18 +792,11 @@
 /* alert title */
 "Expiration not supported" = "Fyrning ekki studd";
 
-/* (No Comment) */
-"Expiring Messages" = "Skilaboð sem renna út";
-
 /* The protection title of Face ID protection */
 "Face ID" = "Andlits ID";
 
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
-
-/* *
- *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Mistókst að frumstilla vistuð gögn forrits";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Mistókst að hlaða efni!\nVinsamlegast reyndu aftur.";
@@ -989,9 +818,6 @@
 
 /* The title of alert that the app is not having the permission to access photo library */
 "Forbidden" = "Bannað";
-
-/* (No Comment) */
-"FORGOT PASSWORD?" = "Gleymt lykilorð?";
 
 /* forward action */
 "Forward" = "Áframsenda";
@@ -1023,9 +849,6 @@
 /* section title in settings */
 "General settings" = "Almennar stillingar";
 
-/* (No Comment) */
-"General Settings" = "Almennar stillingar";
-
 /* title of the next button */
 "Get Started" = "Byrja";
 
@@ -1056,20 +879,11 @@
 /* menu title (contact groups) */
 "Groups" = "Hópar";
 
-/* (No Comment) */
-"Help & Support" = "Hjálp og aðstoð";
-
 /* Action */
 "Hide" = "Fela";
 
 /* Title */
 "Hide details" = "Fela nánari upplýsingar";
-
-/* (No Comment) */
-"Hide Details" = "Fela nánari upplýsingar";
-
-/* hours */
-"hours" = "Klukkustundir";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvernig myndir þú lýsa upplifun þinni af nýju Proton tölvupóstforriti?";
@@ -1084,16 +898,13 @@
 "Human Check Warning" = "Aðvörun við mennskuprófun";
 
 /* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Ef þú missir þína WiFi tengingu þá mun niðurhalið halda áfram í gegnum farsímagögn.";
+"If you lose your WiFi connection, download will continue over mobile data." = "Ef þú missir tengingu við þráðlausa netið þá mun niðurhalið halda áfram í gegnum farsímagögn.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Hunsa viðvörun og halda áfram";
 
 /* Action */
 "Import Error" = "Innflutningsvilla";
-
-/* (No Comment) */
-"Import File From..." = "Flytja inn skrá úr...";
 
 /* Title */
 "Import from…" = "Flytja inn frá…";
@@ -1111,18 +922,8 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
 
-/* (No Comment) */
-"In order to use our services, you must agree to Proton Mail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála Proton tölvupósts.";
-
-/* "Deleted" */
-"Inbox" = "Pósthólf";
-
-/* *
- *  MailboxViewController */
-"INBOX" = "Innhólf";
-
-/* (No Comment) */
-"Incorrect password" = "Rangt lykilorð";
+/* menu title */
+"Inbox" = "Innhólf";
 
 /* Error */
 "Incorrect PIN." = "Rangt PIN.";
@@ -1138,9 +939,6 @@
 
 /* Title */
 "inline attachments" = "innfelld viðhengi";
-
-/* (No Comment) */
-"Input Display Name ..." = "Settu inn birtingarnafn...";
 
 /* place holder */
 "Input Display Name…" = "Settu inn birtingarnafn...";
@@ -1163,17 +961,11 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Kynni hressandi útlit Protons.\nMargar þjónustur, eitt verkefni. Velkomin á internetið þar sem næði er sjálfgefið.";
 
-/* alert title */
-"Invalid credential" = "Ógilt auðkenni";
-
 /* update password error */
 "Invalid hashed password!" = "Ógilt tætigildislykilorð!";
 
 /* Invalid URL error when click a url in contact */
 "Invalid URL" = "Ógild vefslóð";
-
-/* title */
-"Invalid UserName" = "Ógilt notandanafn";
 
 /* Error message */
 "Invalid username!" = "Ógilt notandanafn!";
@@ -1184,21 +976,11 @@
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Er þessi villuskýrsla vegna kaupa í forritinu?";
 
-/* (No Comment) */
-"Key generation failed" = "Gerð dulritunarlykla tókst ekki";
-
 /* No comment provided by engineer. */
 "Label as" = "Merkja sem";
 
-/* *
- *  MoreOptionsView */
-"Label as..." = "Merkja sem...";
-
 /* Title */
 "Label as…" = "Merkja sem…";
-
-/* (No Comment) */
-"Label Management" = "Umsýsla merkinga";
 
 /* createing lable input place holder */
 "Label Name" = "Heiti merkis";
@@ -1239,9 +1021,6 @@
    The title of loading remote content banner. */
 "Load remote content" = "Hlaða inn fjartengdu efni";
 
-/* (No Comment) */
-"Loading..." = "Hleð inn...";
-
 /* No comment provided by engineer. */
 "Loading…" = "Hleð inn...";
 
@@ -1253,10 +1032,6 @@
 
 /* Text for the link to show when indexing is stopped because of storage limit reached. */
 "local storage limit." = "takmörk staðbundinnar geymslu.";
-
-/* *
- *  file string type */
-"Localizable.strings" = "Grunn";
 
 /* menu title */
 "Lock The App" = "Læsa forritinu";
@@ -1276,16 +1051,6 @@
 /* cell title in device settings */
 "Mailbox" = "Pósthólf";
 
-/* (No Comment) */
-"Mailbox Password" = "Lykilorð á pósthólfi";
-
-/* *
- *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Lykilorð á pósthólfi";
-
-/* (No Comment) */
-"Mailbox password doesn't match" = "Lykilorð á pósthólfi samsvarar ekki";
-
 /* No comment provided by engineer. */
 "Manage" = "Stjórna";
 
@@ -1298,7 +1063,8 @@
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Merkja sem lögmætt";
 
-/* The title of the read action in action sheet */
+/* Push notification action mark as read
+   The title of the read action in action sheet */
 "Mark as read" = "Merkja sem lesið";
 
 /* Action */
@@ -1306,9 +1072,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Merkja sem ólesið";
-
-/* (No Comment) */
-"Mark Read" = "Merkja sem lesið";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1331,8 +1094,7 @@
 /* Composer expiration page title */
 "Message expiration" = "Skilaboð renna út";
 
-/* *
- *  Expiration View */
+/* No comment provided by engineer. */
 "Message expired" = "Skilaboð útrunnin";
 
 /* Title */
@@ -1353,26 +1115,14 @@
 /* Placeholder */
 "Message Password" = "Lykilorð skilaboða";
 
-/* composer view */
-"Message password does not match." = "Lykilorð skilaboða samsvarar ekki.";
-
-/* "Cancel" */
-"Message Queue" = "Skilaboð í biðröð";
-
 /* Alert title */
 "Message saved to Drafts" = "Skilaboð vistuð í Drög";
-
-/* (No Comment) */
-"Message sending failed please try again" = "Sending skilaboða mistókst, reyndu aftur";
 
 /* Description */
 "Message sending failed. Please try again." = "Sending skilaboða mistókst, reyndu aftur.";
 
 /* Description after message have been sent */
 "Message sent" = "Skilaboð send";
-
-/* (No Comment) */
-"Message Swipe Actions" = "Aðgerðir þegar strokið er á skilaboð";
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Verið er að hlaða niður skilaboðum fyrir efnisleit. Sumar niðurstöður eru hugsanlega ekki sýndar. %1$@";
@@ -1386,18 +1136,11 @@
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Skilaboðum verður hlaðið niður í gegnum WiFi. Þetta gæti tekið nokkurn tíma og tækið gæti hitnað aðeins. Þú getur gert hlé á aðgerðinni hvenær sem er.";
 
-/* (No Comment) */
-"Messages you send can be set to auto delete after a certain time period." = "Skilaboð sem þú sendir er hægt að stilla þannig að þau eyðist sjálfvirkt eftir ákveðinn tíma.";
-
 /* default vcard types */
 "Mobile" = "Farsími";
 
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Farsímaundirskrift";
-
-/* *
- *  Encryption Setup View Controller */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Mánudag (%1$@) kl. 08:%2$d";
@@ -1414,48 +1157,22 @@
 /* Action title of move to archive */
 "Move to archive" = "Flytja í safn";
 
-/* (No Comment) */
-"Move to Archive" = "Flytja í safn";
-
-/* (No Comment) */
-"Move to Draft" = "Flytja í drög";
-
 /* The title of the remove action in action sheet */
 "Move to inbox" = "Flytja í pósthólf";
-
-/* "Trash" */
-"Move to Inbox" = "Flytja í pósthólf";
-
-/* (No Comment) */
-"Move to Outbox" = "Flytja í úthólf";
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
 "Move to spam" = "Flytja í ruslpóst";
 
-/* (No Comment) */
-"Move to Spam" = "Flytja í ruslpóst";
-
-/* The title of the remove action in action sheet */
+/* Push notification action move to trash
+   The title of the remove action in action sheet */
 "Move to trash" = "Henda í ruslið";
-
-/* (No Comment) */
-"Move to Trash" = "Flytja í rusl";
-
-/* (No Comment) */
-"Move to..." = "Flytja í ...";
 
 /* Title */
 "Move to…" = "Færa í…";
 
-/* (No Comment) */
-"Multiple Addresses" = "Mörg póstföng";
-
 /* Onboarding title */
 "Neat and tidy" = "Hreint og fínt";
-
-/* (No Comment) */
-"NEED AN ACCOUNT? SIGN UP." = "Skráðu þig án kvaða";
 
 /* The title of alternative routing settings */
 "Networking" = "Netvinnsla";
@@ -1556,9 +1273,6 @@
 /* Alert title */
 "Notice" = "Tilkynning";
 
-/* (No Comment) */
-"Notification Email" = "Tilkynningapóstur";
-
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Tilkynningar";
@@ -1572,8 +1286,7 @@
 /* Sending message when device doesn't have netowrk connection description */
 "Offline, message queued for sending" = "Ótengdur, skilaboð sett í biðröð fyrir sendingu";
 
-/* *
- *  ReportBugsViewController */
+/* Action */
 "OK" = "Í lagi";
 
 /* Title for the alert button to disable content search. */
@@ -1600,9 +1313,6 @@
 /* VoiceOver title of account switcher button in the menu */
 "Open account switcher" = "Opnaðu reikningsskipti";
 
-/* (No Comment) */
-"OpenDraft" = "Opna drög";
-
 /* contacts talbe cell Organization title */
 "Organization" = "Stofnun/Félag";
 
@@ -1615,30 +1325,14 @@
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Kerfið okkar merkti þessi skilaboð sem tilraun til að veiða upplýsingar. Vinsamlega skoðaðu hvort þau séu lögmæt";
 
-/* "Draft" = "Draft"; */
-"Outbox" = "Úthólf";
-
 /* Setting option title of folder setting page */
 "Parent folder" = "Yfirmappa";
-
-/* *
- *  Login View */
-"Password" = "Lykilorð";
-
-/* (No Comment) */
-"Password cannot be empty." = "Lykilorð getur ekki verið autt.";
 
 /* title */
 "Password Hint" = "Vísbending lykilorðs";
 
-/* (No Comment) */
-"Password Mismatch" = "Lykilorðin stemma ekki";
-
 /* update password error */
 "Password update failed" = "Uppfærsla lykilorðs mistókst";
-
-/* (No Comment) */
-"Password Updated" = "Lykilorð uppfært";
 
 /* Placeholder */
 "Passwords must match" = "Lykilorðin verða að samsvara";
@@ -1679,13 +1373,6 @@
 /* contact placeholder */
 "Phone number" = "Símanúmer";
 
-/* "Verification code request failed" */
-"Phone number invalid" = "Símanúmer er ógilt";
-
-/* *
- *  Attachment table ViewController */
-"Photo Library" = "Myndasafn";
-
 /* The protection title of PIN code protection */
 "PIN code" = "PIN-númer";
 
@@ -1698,20 +1385,11 @@
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN er of stutt";
 
-/* (No Comment) */
-"Please check your cell phone for the verification code." = "Skoðaðu hvort sannvottunarkóðinn hafi borist í farsímann þinn.";
-
-/* (No Comment) */
-"Please check your email for the verification code." = "Skoðaðu hvort sannvottunarkóðinn hafi borist í tölvupóstinn þinn.";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Vinsamlegast tengdu og reyndu aftur";
 
 /* Text for status label when no internet connection is available */
 "Please connect to the internet to continue." = "Vinsamlegast tengdu við internetið til að halda áfram.";
-
-/* (No Comment) */
-"Please input a valid cell phone number." = "Settu inn gilt farsímanúmer.";
 
 /* error message */
 "Please input a valid email address." = "Settu inn gilt tölvupóstfang.";
@@ -1722,14 +1400,8 @@
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Vinsamlega gakktu úr skugga um að nettengingin þín virki.";
 
-/* (No Comment) */
-"Please pick a user name first!" = "Veldu fyrst notandanafn!";
-
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Settu inn nafn á hópi";
-
-/* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Fjarlægðu öll viðhengi til að geta breytt vistfangi sendanda";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Veldu a.m.k. eitt tölvupóstfang";
@@ -1737,29 +1409,11 @@
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Veldu a.m.k. eitt tölvupóstfang fyrir tengiliðahópinn";
 
-/* (No Comment) */
-"Please set a password." = "Stilltu lykilorð.";
-
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Vinsamlega settu inn endurheimtu-/tilkynningarnetfang";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Vinsamlegast deildu vandamálinu þínu.";
-
-/* (No Comment) */
-"Please try a different domain." = "Prófaðu eitthvað annað lén.";
-
-/* (No Comment) */
-"Please try a different email address." = "Prófaðu eitthvað annað tölvupóstfang.";
-
-/* (No Comment) */
-"Please try a different password." = "Prófaðu eitthvað annað lykilorð.";
-
-/* (No Comment) */
-"Please try a different user name." = "Prófaðu eitthvað annað notandanafn.";
-
-/* (No Comment) */
-"Please try again." = "Endilega reyndu aftur";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Vinsamlega uppfærðu í greidda áskrift til að nota fleiri en 3 möppur";
@@ -1776,15 +1430,6 @@
 /* Description */
 "Please use Proton Mail App sign-in first." = "Notaðu fyrst Proton tölvupóstforritið til að skrá þig inn.";
 
-/* (No Comment) */
-"Please use the web version of Proton Mail to change your mailbox password!" = "Vinsamlega notaðu vefútgáfu Proton tölvupósts til að breyta lykilorði á pósthólfinu þínu!";
-
-/* (No Comment) */
-"Please use your new password when signing in." = "Settu inn nýja lykilorðið þitt við innskráningu.";
-
-/* alert title */
-"Please, manage it in your phone." = "Stjórnaðu því í símanum þínum.";
-
 /* No comment provided by engineer. */
 "Print" = "Prenta";
 
@@ -1797,23 +1442,11 @@
 /* Local notification title */
 "Problem sending message" = "Vandamál við að senda skilaboð";
 
-/* (No Comment) */
-"Protection" = "Verndun";
-
-/* (No Comment) */
-"Protection Entire App" = "Vörn fyrir allt forritið";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton liggur niðri";
 
 /* Title */
 "Proton Mail" = "Proton tölvupóstur";
-
-/* (No Comment) */
-"Proton Mail doesn't sell ads or abuse your privacy. Your support is essential to keeping Proton Mail running. You can upgrade to a paid account or donate to support Proton Mail." = "Proton tölvupóstur selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda Proton tölvupósti gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja Proton tölvupóst.";
-
-/* (No Comment) */
-"Proton Mail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "Proton tölvupóstur er í augnablikinu ótengdur, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/ProtonPrivacy";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton tölvupóstur er ótengdur í augnablikinu";
@@ -1829,9 +1462,6 @@
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Truflanir vegna milliþjóna/eldveggja";
-
-/* (No Comment) */
-"Quick swipe actions" = "Flýtiaðgerðir við stroku";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Auðkenna aftur";
@@ -1857,10 +1487,6 @@
 /* Title */
 "Recovery email" = "Endurheimtupóstur";
 
-/* *
- *  SignUpEmailViewController */
-"Recovery Email" = "Endurheimtupóstur";
-
 /* No comment provided by engineer. */
 "Recovery enabled" = "Endurheimt virkjuð";
 
@@ -1882,22 +1508,15 @@
 /* textview title */
 "Repeat password" = "Endurtaka lykilorð";
 
-/* The title of PIN code setup2 view 
+/* The title of PIN code setup2 view
    The title of textfield of PIN code setup2 */
 "Repeat PIN code" = "Endurtaka PIN númer";
 
-/* *
- *  Controller Defined */
+/* reply action */
 "Reply" = "Svara";
 
 /* reply all action */
 "Reply all" = "Svara öllum";
-
-/* composer view model impl */
-"Reply message" = "Svara skilaboðum";
-
-/* (No Comment) */
-"ReplyAll" = "Svara öllum";
 
 /* menu title */
 "Report a problem" = "Tilkynna vandamál";
@@ -1923,9 +1542,6 @@
 /* Action */
 "Retry" = "Reyna aftur";
 
-/* (No Comment) */
-"Retry after %d seconds" = "Reyna aftur eftir %d sekúndur";
-
 /* settings swipe actions section title */
 "Right to Left" = "Hægri til vinstri";
 
@@ -1938,9 +1554,6 @@
 /* title */
 "Save Changes" = "Vista breytingar";
 
-/* (No Comment) */
-"Save draft" = "Vista drög";
-
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Áætla sendingu";
@@ -1949,10 +1562,13 @@
 "Schedule will be removed" = "Dagskrá verður fjarlægð";
 
 /* The title of the introducation view of the schedule send */
-"Scheduled send" = "Dagskrá send";
+"Schedule send" = "Dagskrá send";
 
-/* *
- *  SearchViewController */
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Skipulegg skilaboð...";
+
+/* Springboard (3D Touch) shortcuts action
+   Title */
 "Search" = "Leita";
 
 /* cell title in device settings
@@ -1970,9 +1586,6 @@
 
 /* section title */
 "Select colour" = "Veldu lit";
-
-/* (No Comment) */
-"Select your language" = "Veldu tungumálið þitt";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valið";
@@ -1992,14 +1605,11 @@
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Senda strax?";
 
-/* when subject not empty */
+/* Description */
 "Send message without subject?" = "Senda skilaboðin án efnislínu?";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Senda leskvittun";
-
-/* (No Comment) */
-"Send Verification Code" = "Senda sannvottunarkóða";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Sannvottun sendanda mistókst";
@@ -2009,9 +1619,6 @@
 
 /* Alert title */
 "Sending in progress" = "Sending í gangi";
-
-/* Description */
-"Sending Message" = "Sendi skilaboð";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Sendi skilaboð…";
@@ -2024,9 +1631,6 @@
 
 /* menu title */
 "Sent" = "Sent";
-
-/* mail location title */
-"SENT" = "Sent";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Sent frá Proton tölvupósti með órjúfanlegri dulritun";
@@ -2080,14 +1684,8 @@
    menu title */
 "Sign out" = "Skrá út";
 
-/* Action */
-"Sign Out" = "Skrá út";
-
 /* Title in signature settings */
 "Signature" = "Undirskrift";
-
-/* (No Comment) */
-"Signature Updated" = "Undirskrift uppfærð";
 
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Skráð inn sem %@";
@@ -2104,20 +1702,8 @@
 /* The banner shown in case of proxy failure */
 "Some images failed to load with tracking protection." = "Ekki tókst að hlaða sumum myndum með rakningarvörn.";
 
-/* (No Comment) */
-"Space Warning" = "Aðvörun vegna lítils diskpláss";
-
 /* menu title */
 "Spam" = "Ruslpóstur";
-
-/* mail location title */
-"SPAM" = "Ruslpóstur";
-
-/* (No Comment) */
-"Spammed" = "Ruslpóstur";
-
-/* Description */
-"Srp single password keyslat invalid!" = "Srp stakt lykilorð keysalt ógilt!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -2126,11 +1712,10 @@
 /* Title */
 "Star/unstar" = "Stjörnumerkja/fjarlægja stjörnu";
 
-/* "Spam" */
+/* menu title
+   Springboard (3D Touch) shortcuts action
+   VoiceOver: email is starred */
 "Starred" = "Stjörnumerkt";
-
-/* "INBOX" */
-"STARRED" = "Stjörnumerkt";
 
 /* contact placeholder */
 "State" = "Hérað/Fylki";
@@ -2178,17 +1763,8 @@
    The title of a subscription plans screen */
 "Subscription" = "Áskrift";
 
-/* (No Comment) */
-"Support Proton Mail" = "Styðja Proton tölvupóst";
-
 /* cell title in app settings */
 "Swipe actions" = "Stroku aðgerðir";
-
-/* (No Comment) */
-"Swipe Left to Right" = "Strjúka frá vinstri til hægri";
-
-/* (No Comment) */
-"Swipe Right to Left" = "Strjúka frá hægri til vinstri";
 
 /* Swiping gestures */
 "Swiping gestures" = "Strokubendingar";
@@ -2205,9 +1781,6 @@
 /* Error */
 "System can't copy the file" = "Kerfinu mistókst að afrita skrána";
 
-/* (No Comment) */
-"Take a Photo" = "Taktu mynd";
-
 /* Title */
 "Take new photo" = "Taka nýja ljósmynd";
 
@@ -2220,7 +1793,7 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Gerðu vírusvarnaforritið þitt tímabundið óvirkt.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Takk fyrir að senda inn villuskýrslu.  Við höfum bætt skýrslunni þinni í villuskráningarkerfið okkar.";
 
 /* Comment in banner thanking user for providing feedback */
@@ -2229,33 +1802,14 @@
 /* Error message */
 "The 2 passwords are not matching" = "Lykilorðin tvö passa ekki saman";
 
-/* (No Comment) */
-"The authentication credentials are invalid." = "Auðkenni sannvottunar eru ógild.";
-
-/* (No Comment) */
-"The authentication token has expired." = "Auðkenningarteiknið er útrunnið.";
-
-/* (No Comment) */
-"The display name is now %@." = "Birtingarnafnið er núna %@.";
-
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Niðurhalið hættir ef Proton tölvupóstforritinu er lokað.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Skyndiminnið fyrir skilaboðadrög er bilað, reyndu aftur.";
 
-/* error when sending the message */
-"The draft format incorrectly sending failed!" = "Snið draganna er ekki rétt, sending mistókst!";
-
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "Ekki var hægt að hengja við eftirfarandi skrár:";
-
-/* (No Comment) */
-"The mailbox password is incorrect." = "Lykilorð á pósthólfi er rangt.";
-
-/* *
- *  LabelsViewController */
-"The maximum number of labels is %d." = "Hámarksfjöldi merkinga er %d.";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Verið er að senda skilaboðin og verða færð í Sent möppuna þegar sendingu er lokið.";
@@ -2263,26 +1817,14 @@
 /* update password error */
 "The new password can't be empty." = "Nýja lykilorðið getur ekki verið autt.";
 
-/* (No Comment) */
-"The new password can't empty" = "Nýja lykilorðið getur ekki verið autt";
-
 /* update password error */
 "The new password does not match." = "Nýju lykilorðin stemma ekki.";
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Nýja lykilorðið þarf að vera að lágmarki 8 stafir";
 
-/* (No Comment) */
-"The new password not match" = "Lykilorðin stemma ekki";
-
-/* update password error */
-"The Password is wrong." = "Lykilorðið er rangt.";
-
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Lykilorðið verður að vera á milli 8 og 21 stafur að lengd";
-
-/* (No Comment) */
-"The password you entered does not match the current password." = "Lykilorðið sem þú settir inn samsvarar ekki núgildandi lykilorði.";
 
 /* The error message of entering an invalid password */
 "The PIN codes must match!" = "PIN kóðarnir verða að samsvara!";
@@ -2302,39 +1844,20 @@
 /* Description */
 "The size limit for attachments is 25 MB." = "Stærðartakmörk fyrir viðhengi eru 25 MB.";
 
-/* (No Comment) */
-"The total attachment size can't be bigger than 25MB" = "Heildarstærð viðhengja má ekki vera meiri en 25MB";
-
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Slóðin sem þú ert að reyna að opna er ekki stöðluð og gæti hlaðist rangt inn. Viltu opna hana með sjálfgefna varfranum á tækinu þínu?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Notandinn er þegar skráður inn";
 
-/* (No Comment) */
-"The username has been taken." = "Þetta notandanafn er frátekið.";
-
-/* title */
-"The verification email invalid" = "Ógildur sannvottunarpóstur";
-
-/* *
- *  RecaptchaViewController */
-"The verification failed!" = "Sannvottunin mistókst!";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Enn eru ósend skilaboð sem munu tapast ef þú skráir þig út";
-
-/* local error */
-"There was an error creating or loading the application's saved data." = "Villa kom upp við að útbúa eða hlaða inn vistuðum gögnum forritsins.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Þessa aðgerð er ekki hægt að afturkalla.";
 
 /* Alert message when user tries to delete folder */
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Þessa aðgerð er ekki hægt að afturkalla. Tölvupóstar vistaðir í þessari möppu verða ekki eyddir og verða til staðar í möppunni Allar möppur.";
-
-/* alert desc */
-"This contact belongs to your Address Book." = "Þessi tengiliður tilheyrir nafnaskránni þinni.";
 
 /* No comment provided by engineer. */
 "This conversation contains non-trashed messages." = "Þetta samtal inniheldur skilaboð sem ekki eru í ruslinu.";
@@ -2385,24 +1908,14 @@
 "Title" = "Titill";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Sannvottun TLS-skilríkis mistókst. Mögulega er fylgst með tengingunni þinni og hefur því öryggis þíns vegna verið lokað tímabundið á forritið.";
-
-/* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Staðfesting TLS vottorðs mistókst. Hægt er að fylgjast með tengingunni þinni og appinu er lokað tímabundið til öryggis.\n\nSkiptu um net strax.";
 
 /* message To: feild
    Title */
 "To" = "Til";
 
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of Proton Mail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu þínu, vinsamlega notaðu vefútgáfuna af Proton tölvupósti á protonmail.com";
-
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Í dag, %@";
-
-/* *
- *  API Error & alert title */
-"Token expired" = "Auðkenningarteiknið er útrunnið";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Á morgun klukkan 08:%02d AM";
@@ -2416,19 +1929,9 @@
 /* The protection title of Touch ID protection */
 "Touch ID" = "Snerti auðkenni";
 
-/* *
- *  SettingTableViewController */
-"TouchID is not enrolled, enable it in the system Settings" = "TouchID hefur ekki verið stillt, virkjaðu það í kerfisstillingunum";
-
-/* (No Comment) */
-"TouchID not available" = "TouchID ekki tiltækt";
-
-/* *
- *  MessageAction */
+/* mail location desc
+   menu title */
 "Trash" = "Rusl";
-
-/* mail location title */
-"TRASH" = "Rusl";
 
 /* network troubleshot view title */
 "TroubleShooting" = "Bilanagreining";
@@ -2448,33 +1951,14 @@
 /* Internal type casting error */
 "Type casting error" = "Sláðu inn casting villu";
 
-/* (No Comment) */
-"Unable to connect to the server" = "Get ekki tengst við netþjón";
-
-/* (No Comment) */
-"Unable to construct a valid URL with the following path: %@" = "Tókst ekki að búa til gilda URL-vísun með eftirfarandi slóð: %@";
-
-/* (No Comment) */
-"Unable to decrypt message." = "Tókst ekki að afkóða skilaboð.";
-
 /* Description */
 "Unable to edit this message offline" = "Gat ekki breytt þessum skilaboðum án nettengingar";
-
-/* (No Comment) */
-"Unable to parse authentication token!" = "Ekki er hægt að túlka auðkenningarteikn!";
 
 /* Description */
 "Unable to parse response" = "Ekki tókst að þátta svarið";
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Tókst ekki að þátta svarhlutann:\n%@";
-
-/* alert title */
-"Unable to parse token" = "Ekki tókst að þátta teiknið";
-
-/* *
- *  MessageDataService */
-"Unable to send the email" = "Tókst ekki að senda tölvupóstinn";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Viðtakendur ekki gefnir upp";
@@ -2485,20 +1969,11 @@
 /* No comment provided by engineer. */
 "Undo send" = "Afturkalla sendingu";
 
-/* (No Comment) */
-"Unknow Error" = "Óþekkt villa";
-
-/* (No Comment) */
-"Unknow file" = "Óþekkt skrá";
-
 /* title, default display name */
 "Unknown" = "Óþekkt";
 
 /* Error */
 "Unknown Error" = "Óþekkt villa";
-
-/* (No Comment) */
-"Unkonw Version" = "Óþekkt útgáfa";
 
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Ótakmarkað";
@@ -2548,32 +2023,11 @@
 /* Option title */
 "Use folder colors" = "Notaðu möppuliti";
 
-/* (No Comment) */
-"User already exist!" = "Notandanafnið er þegar til staðar!";
-
-/* (No Comment) */
-"User is available!" = "Notandanafnið er tiltækt!";
-
-/* title */
-"User name exist" = "Notandanafn er þegar til";
-
-/* alert title */
-"User name invalid" = "Ógilt notandanafn";
-
-/* alert title */
-"Verification code request failed" = "Beiðni um sannvottunarkóða mistókst";
-
-/* alert title */
-"Verification code sent" = "Sannvottunarkóði sendur";
-
 /* error title */
 "Verification error" = "Villa í staðfestingu";
 
 /* error details */
 "Verification of this content’s signature failed" = "Sannvottun á undirritun þessa efnis brást";
-
-/* (No Comment) */
-"Version %@ %@" = "Útgáfa %@ %@";
 
 /* View action for view scheduled message. */
 "View" = "Skoða";
@@ -2605,9 +2059,6 @@
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Við eigum í vandræðum með að tengjast netþjónunum. Vinsamlegast tengdu aftur.";
 
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Við hlöðum nú sjálfgefið inn myndum og hindrum sendendur í að fylgjast með þér.\nÞessu er hægt að breyta í stillingum.";
-
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Við mælum með því að setja upp lykilorð í staðinn fyrir eftirfarandi viðtakendur:";
 
@@ -2617,17 +2068,11 @@
 /* week */
 "week" = "vika";
 
-/* (No Comment) */
-"Welcome to Proton Mail!" = "Velkomin í Proton tölvupóst!";
-
 /* Example feedback */
 "Wonderful" = "Frábært";
 
 /* default vcard types */
 "Work" = "Vinna";
-
-/* title */
-"Wrong verification code" = "Rangur sannvottunarkóði";
 
 /* Title */
 "wrote:" = "skrifaði:";
@@ -2650,14 +2095,8 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Þú ert án nettengingar";
 
-/* (No Comment) */
-"You can customize swipe gestures in the Proton Mail App Settings." = "Þú getur sérsniðið stroku aðgerðir í stillingum fyrir Proton tölvupóstforritið.";
-
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Þú getur slökkt á samtölum úr stillingum hvenær sem er.";
-
-/* (No Comment) */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Þú getur fengið hjálp og ýmsa aðstoð á protonmail.com/support. Einnig er hægt að tilkynna um villur innan úr forritinu.";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Þú getur nú tímasett skilaboðin þín til sendingar síðar";
@@ -2692,20 +2131,13 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
 
-/* (No Comment) */
-"You have used %d%% of your storage space (%@)." = "Þú hefur notað %d%% af geymslurýminu þínu (%@).";
-
 /* Content of space warning */
 "You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Þú hefur notað %1$d%% af geymsluplássinu þínu (%2$@). Vinsamlegast uppfærðu áskriftina þína til að halda áfram að senda og taka á móti tölvupósti.";
-
-/* *
- *  StorageLimit */
-"You have used up all of your storage space (%@)." = "Þú hefur notað allt geymslurýmið þitt (%@).";
 
 /* Content of space warning */
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Þú hefur notað allt geymsluplássið þitt (%@). Vinsamlegast uppfærðu áskriftina þína til að halda áfram að senda og taka á móti tölvupósti.";
 
-/* "Alert" */
+/* Description */
 "You need at least one recipient to send" = "Bættu við a.m.k. einum viðtakanda til að geta sent";
 
 /* Alert to confirm signout */
@@ -2726,24 +2158,14 @@
 /* The section title of folder manager table */
 "Your folders" = "Þínar möppur";
 
-/* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get Proton Mail! You can also manually encrypt messages to them if they don't use Proton Mail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota Proton tölvupóst!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota Proton tölvupóst.";
-
 /* The section title of label manager table */
 "Your labels" = "Þínar merkingar";
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Verið er að hlaða niður skilaboðunum þínum...";
 
-/* *
- *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Nýi dulritaði tölvupóstaðgangurinn þinn er uppsettur og tilbúinn til að senda og taka á móti dulrituðum skilaboðum.";
-
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Setan þín er útrunnin því þú varst aðgerðalaus um tíma eða þá að hún hefur verið afturkölluð. Skráðu þig aftur inn.";
-
-/* (No Comment) */
-"Your signature has been updated." = "Undirskriftin þín hefur verið uppfærð.";
 
 /* contact placeholder */
 "ZIP" = "Póstnúmer";

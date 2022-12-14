@@ -21,19 +21,17 @@ import ProtonCore_TestingToolkit
 import XCTest
 
 final class LabelsDataServiceTests: XCTestCase {
-    var mockApiService: APIServiceMock!
-    var mockContextProvider: MockCoreDataContextProvider!
-    var mockLastUpdatedStore: MockLastUpdatedStore!
-    var mockCacheService: MockCacheService!
-    var userID = UUID().uuidString
-    var sut: LabelsDataService!
+    private var mockApiService: APIServiceMock!
+    private var mockContextProvider: MockCoreDataContextProvider!
+    private var userID = UUID().uuidString
+    private var sut: LabelsDataService!
 
     override func setUp() {
         super.setUp()
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
-        mockLastUpdatedStore = MockLastUpdatedStore()
-        mockCacheService = MockCacheService()
+        let mockLastUpdatedStore = MockLastUpdatedStore()
+        let mockCacheService = MockCacheService()
 
         sut = LabelsDataService(api: mockApiService,
                                 userID: UserID(userID),
@@ -48,12 +46,10 @@ final class LabelsDataServiceTests: XCTestCase {
         sut = nil
         mockApiService = nil
         mockContextProvider = nil
-        mockLastUpdatedStore = nil
-        mockCacheService = nil
     }
 
     func testCleanLabelAndFolder() throws {
-        let context = mockContextProvider.mainContext
+        let context = mockContextProvider.viewContext
         try prepareTestLabelData(context: context)
         let expectation1 = expectation(description: "Closure is called")
 

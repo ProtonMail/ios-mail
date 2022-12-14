@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Crypto
+import GoLibs
 import CoreData
 import Groot
 import ProtonCore_DataModel
@@ -246,7 +246,13 @@ class CacheService: CacheServiceProtocol {
         messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID.rawValue)
 
         let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
-        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID.rawValue, Conversation.Attributes.userID, self.userID.rawValue)
+        contextLabelFetch.predicate = NSPredicate(
+            format: "(%K == %@) AND (%K == %@)",
+            ContextLabel.Attributes.labelID,
+            labelID.rawValue,
+            Conversation.Attributes.userID.rawValue,
+            self.userID.rawValue
+        )
 
         coreDataService.performAndWaitOnRootSavingContext { context in
             if let messages = try? context.fetch(messageFetch) {
@@ -612,7 +618,8 @@ extension CacheService {
 // MARK: - contact related functions
 extension CacheService {
     func addNewContact(serverResponse: [[String: Any]], shouldFixName: Bool = false, objectID: String? = nil, completion: (([Contact]?, NSError?) -> Void)?) {
-        coreDataService.performOnRootSavingContext { [weak self] context in
+        let context = coreDataService.makeNewBackgroundContext()
+        context.performAndWait { [weak self] in
             guard let self = self else { return }
             do {
                 if let id = objectID,

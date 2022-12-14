@@ -23,6 +23,7 @@ import Foundation
 struct PushNotificationPayload: Decodable {
     let viewMode: Int?
     let action: String?
+    /// In remote notifications, the `uid` value corresponds to the sessionId and the app uses it to retrieve the userId
     let uid: String?
     let unreadMessages: Int?
     let unreadConversations: Int?

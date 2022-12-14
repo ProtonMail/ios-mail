@@ -188,17 +188,17 @@
         <target state="translated">Archív</target>
         <note>mail location title</note>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="translated">A fiók elérése számlatartozás miatt le van tiltva. Kérjük, lépjen be a protonmail.com weblapon és egyenlítse ki a számláit.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="translated">A fiók elérése számlatartozás miatt le van tiltva. Kérjük, lépjen be a proton.me weblapon és egyenlítse ki a számláit.</target>
         <note>error message</note>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="translated">A fiók elérése számlatartozás miatt le van tiltva.
 
-Kérjük, nézze meg a &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;tudásbázist&lt;/a&gt; további információkért.</target>
+Kérjük, nézze meg a &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;tudásbázist&lt;/a&gt; további információkért.</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid">
@@ -1614,9 +1614,9 @@ Kérjük, nézze meg a &lt;a href="https://protonmail.com/support/knowledge-base
         <target state="translated">Írja be az értesítési e-mail címet...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="translated">A ProtonMail fiók létrehozás átmenetileg nem elérhető. Kérjük, látogasson el a https://protonmail.com/invite címre és kérjen egy meghívót.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="translated">A ProtonMail fiók létrehozás átmenetileg nem elérhető. Kérjük, látogasson el a https://proton.me/invite címre és kérjen egy meghívót.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error">
@@ -1943,9 +1943,9 @@ Kérjük, nézze meg a &lt;a href="https://protonmail.com/support/knowledge-base
         <target state="translated">Mobil aláírás</target>
         <note>Mobile Signature title in settings</note>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="translated">A mobil regisztráció átmenetileg nem érhető el. Kérjük, próbálja meg később, vagy regisztráljon a protonmail.com weblapon egy számítógépről.</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="translated">A mobil regisztráció átmenetileg nem érhető el. Kérjük, próbálja meg később, vagy regisztráljon a proton.me weblapon egy számítógépről.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature.">
@@ -3133,13 +3133,13 @@ Kérjük, nézze meg a &lt;a href="https://protonmail.com/support/knowledge-base
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="translated">Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="translated">Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a proton.me címen</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="translated">Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="translated">Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a proton.me címen</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:">
@@ -3535,9 +3535,9 @@ Kérjük, nézze meg a &lt;a href="https://protonmail.com/support/knowledge-base
         <target state="translated">A csúsztatásos műveleteket a ProtonMail Beállítások menüjében állíthatja be igényeihez.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app.">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="translated">Segítséget és támogatást kaphat a protonmail.com/support webhelyen. A hibákat az alkalmazás segítségével is jelentheti.</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app.">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="translated">Segítséget és támogatást kaphat a proton.me/support webhelyen. A hibákat az alkalmazás segítségével is jelentheti.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature.">

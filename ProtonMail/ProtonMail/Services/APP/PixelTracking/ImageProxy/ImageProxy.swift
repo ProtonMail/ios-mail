@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Alamofire
 import LifetimeTracker
 import ProtonCore_Services
 import SwiftSoup
@@ -25,9 +24,7 @@ class ImageProxy: LifetimeTrackable {
         .init(maxCount: 1)
     }
 
-    private static let imageCache = Cache<URL, RemoteImage>(
-        totalCostLimit: Constants.ImageProxy.cacheMemoryLimitInBytes
-    )
+    private let imageCache = ImageProxyCache.shared
 
     private let dependencies: Dependencies
 
@@ -45,10 +42,6 @@ class ImageProxy: LifetimeTrackable {
         self.dependencies = dependencies
 
         trackLifetime()
-    }
-
-    static func purgeCache() {
-        imageCache.purge()
     }
 
     /*
@@ -125,14 +118,14 @@ class ImageProxy: LifetimeTrackable {
             }
         }
 
-        dispatchGroup.notify(queue: processingQueue) {
+        dispatchGroup.notify(queue: processingQueue) { [weak delegate] in
             let summary = TrackerProtectionSummary(trackers: trackers)
             let output = ImageProxyOutput(
                 failedUnsafeRemoteSrcs: failedUnsafeRemoteSrcs,
                 safeBase64Srcs: safeBase64Srcs,
                 summary: summary
             )
-            delegate.imageProxy(self, didFinishWithOutput: output)
+            delegate?.imageProxy(self, didFinishWithOutput: output)
         }
 
         fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
@@ -141,12 +134,18 @@ class ImageProxy: LifetimeTrackable {
     }
 
     private func fetchRemoteImage(srcURL: URL, completion: @escaping (Result<RemoteImage, Error>) -> Void) {
-        if let cachedRemoteImage = Self.imageCache[srcURL] {
-            completion(.success(cachedRemoteImage))
-            return
+        let remoteURL = proxyURL(for: srcURL)
+
+        do {
+            if let cachedRemoteImage = try imageCache.remoteImage(forURL: remoteURL) {
+                completion(.success(cachedRemoteImage))
+                return
+            }
+        } catch {
+            imageCache.removeRemoteImage(forURL: remoteURL)
+            assertionFailure("\(error)")
         }
 
-        let remoteURL = proxyURL(for: srcURL)
         let destinationURL = temporaryLocalURL()
 
         dependencies.apiService.download(
@@ -178,8 +177,8 @@ class ImageProxy: LifetimeTrackable {
                         throw ImageProxyError.responseIsNotAnImage
                     }
 
-                    let remoteImage = self.remoteImage(from: data, headers: httpURLResponse.headers)
-                    Self.imageCache[srcURL] = remoteImage
+                    let remoteImage = RemoteImage(data: data, httpURLResponse: httpURLResponse)
+                    self.cacheRemoteImage(remoteImage, for: remoteURL)
                     result = .success(remoteImage)
                 } catch {
                     result = .failure(error)
@@ -207,23 +206,12 @@ class ImageProxy: LifetimeTrackable {
         return directory.appendingPathComponent(pathComponent)
     }
 
-    private func remoteImage(from data: Data, headers: HTTPHeaders) -> RemoteImage {
-        let contentType = determineContentType(headers: headers)
-        let trackerProvider = headers["x-pm-tracker-provider"]
-        return RemoteImage(contentType: contentType, data: data, trackerProvider: trackerProvider)
-    }
-
-    private func determineContentType(headers: HTTPHeaders) -> String? {
-        guard let contentType = headers["Content-Type"] else {
-            assertionFailure("Content-Type not declared")
-            return nil
+    private func cacheRemoteImage(_ remoteImage: RemoteImage, for remoteURL: String) {
+        do {
+            try self.imageCache.setRemoteImage(remoteImage, forURL: remoteURL)
+        } catch {
+            assertionFailure("\(error)")
         }
-
-        if contentType.components(separatedBy: "/").first != "image" {
-            assertionFailure("\(contentType) does not describe an image")
-        }
-
-        return contentType
     }
 }
 

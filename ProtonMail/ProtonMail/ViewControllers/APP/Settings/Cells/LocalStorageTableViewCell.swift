@@ -42,7 +42,34 @@ class LocalStorageTableViewCell: UITableViewCell {
 
     private func createSubViews() {
         let parentView: UIView = self.contentView
+        createAndSetUpTopLabel(parentView: parentView)
+        createAndSetUpMiddleLabel(parentView: parentView)
+        createAndSetUpBottomLabel(parentView: parentView)
+        createAndSetupButton(parentView: parentView)
+        self.layoutIfNeeded()
+    }
 
+    @objc
+    func buttonPressed(_ sender: UIButton) {
+        callback?()
+    }
+
+    func configCell(_ topLine: String,
+                    _ middleLine: NSMutableAttributedString,
+                    _ bottomLine: String,
+                    _ complete: ButtonActionBlock?) {
+        topLabel.text = topLine
+        middleLabel.attributedText = middleLine
+        bottomLabel.text = bottomLine
+        callback = complete
+
+        self.layoutIfNeeded()
+    }
+}
+
+// MARK: Layout
+extension LocalStorageTableViewCell {
+    private func createAndSetUpTopLabel(parentView: UIView) {
         self.topLabel = UILabel()
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
@@ -58,7 +85,9 @@ class LocalStorageTableViewCell: UITableViewCell {
             self.topLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor,
                                                     constant: -16)
         ])
+    }
 
+    private func createAndSetUpMiddleLabel(parentView: UIView) {
         self.middleLabel = UILabel()
         self.middleLabel.textColor = ColorProvider.TextWeak
         self.middleLabel.font = UIFont.systemFont(ofSize: 14)
@@ -74,7 +103,9 @@ class LocalStorageTableViewCell: UITableViewCell {
             self.middleLabel.trailingAnchor.constraint(equalTo: parentView.leadingAnchor,
                                                        constant: UIScreen.main.bounds.width - 16)
         ])
+    }
 
+    private func createAndSetUpBottomLabel(parentView: UIView) {
         self.bottomLabel = UILabel()
         self.bottomLabel.textColor = ColorProvider.TextNorm
         self.bottomLabel.font = UIFont.systemFont(ofSize: 14)
@@ -90,7 +121,9 @@ class LocalStorageTableViewCell: UITableViewCell {
             self.bottomLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor,
                                                        constant: -96)
         ])
+    }
 
+    private func createAndSetupButton(parentView: UIView) {
         self.button = UIButton()
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         self.button.titleLabel?.numberOfLines = 1
@@ -111,23 +144,5 @@ class LocalStorageTableViewCell: UITableViewCell {
             self.button.leadingAnchor.constraint(equalTo: parentView.leadingAnchor,
                                                  constant: 327)
         ])
-
-        self.layoutIfNeeded()
-    }
-
-    @objc func buttonPressed(_ sender: UIButton) {
-        callback?()
-    }
-
-    func configCell(_ topLine: String,
-                    _ middleLine: NSMutableAttributedString,
-                    _ bottomLine: String,
-                    _ complete: ButtonActionBlock?) {
-        topLabel.text = topLine
-        middleLabel.attributedText = middleLine
-        bottomLabel.text = bottomLine
-        callback = complete
-
-        self.layoutIfNeeded()
     }
 }

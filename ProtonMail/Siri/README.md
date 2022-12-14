@@ -1,3 +1,3 @@
- # siri extnesion
+ # siri extension
  
- ios 12 Siri extension
+ iOS 12 Siri extension

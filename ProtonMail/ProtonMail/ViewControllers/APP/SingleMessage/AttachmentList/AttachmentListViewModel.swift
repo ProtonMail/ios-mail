@@ -22,7 +22,7 @@
 
 import Foundation
 
-class AttachmentListViewModel {
+final class AttachmentListViewModel {
 
     enum AttachmentSection: Int {
         case normal = 1, inline
@@ -63,12 +63,14 @@ class AttachmentListViewModel {
     }
     /// (attachmentID, tempClearFileURL)
     var attachmentDownloaded: ((AttachmentID, URL) -> Void)?
+    private let dependencies: Dependencies
 
-    init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?) {
+    init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?, dependencies: Dependencies) {
         self.user = user
         self.inlineAttachments = attachments.inlineAttachments(inlineCIDS: inlineCIDS)
         self.normalAttachments = attachments.normalAttachments(inlineCIDS: inlineCIDS)
         self.contextProvider = sharedServices.get(by: CoreDataService.self)
+        self.dependencies = dependencies
     }
 
     func open(attachmentInfo: AttachmentInfo, showPreviewer: () -> Void, failed: @escaping (NSError) -> Void) {
@@ -86,24 +88,33 @@ class AttachmentListViewModel {
             return
         }
 
-        let decryptor: (AttachmentEntity, URL) -> Void = { [weak self] in
-            guard let self = self else { return }
+        showPreviewer()
+
+        let userKeys = user.toUserKeys()
+        dependencies.fetchAttachment.execute(params: .init(
+            attachmentID: attachment.id,
+            attachmentKeyPacket: nil,
+            purpose: .onlyDownload,
+            userKeys: userKeys
+        )) { result in
             do {
-                try self.decrypt($0, encryptedFileURL: $1)
+                let attachmentFile = try result.get()
+                let fileData = try AttachmentDecrypter.decrypt(
+                    fileUrl: attachmentFile.fileUrl,
+                    attachmentKeyPacket: attachment.keyPacket,
+                    userKeys: userKeys
+                )
+                let fileName = attachment.name.clear
+                let unencryptedFileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+                try fileData.write(to: unencryptedFileUrl, options: [.atomic])
+                DispatchQueue.main.async { [weak self] in
+                    self?.attachmentDownloaded?(attachment.id, unencryptedFileUrl)
+                }
             } catch {
                 failed(error as NSError)
             }
         }
-
-        showPreviewer()
-
-        guard attachmentInfo.isDownloaded,
-              let localURL = attachmentInfo.localUrl else {
-            self.downloadAttachment(attachment, success: decryptor, fail: failed)
-            return
-        }
-
-        decryptor(attachment, localURL)
     }
 
     func isEmpty(section: AttachmentSection) -> Bool {
@@ -128,61 +139,6 @@ class AttachmentListViewModel {
         return nil
     }
 
-    private func downloadAttachment(_ attachment: AttachmentEntity,
-                                    success: @escaping ((AttachmentEntity, URL) throws -> Void),
-                                    fail: @escaping (NSError) -> Void) {
-        let attachmentID = attachment.id
-        let service = user.messageService
-        service.fetchAttachmentForAttachment(
-            attachment,
-            downloadTask: { [weak self] task in
-                self?.downloadingTask[attachmentID] = task
-            }, completion: { [weak self] _, url, error in
-                self?.downloadingTask.removeValue(forKey: attachmentID)
-                if let error = error {
-                    fail(error)
-                    return
-                } else if let url = url {
-                    do {
-                        try success(attachment, url)
-                    } catch {
-                        fail(error as NSError)
-                    }
-                }
-            })
-    }
-
-    private func decrypt(_ attachment: AttachmentEntity, encryptedFileURL: URL) throws {
-        guard let keyPacket = attachment.keyPacket,
-              let keyPackage: Data = Data(base64Encoded: keyPacket,
-                                          options: NSData.Base64DecodingOptions(rawValue: 0)) else {
-                  assert(false, "what can cause this?")
-                  return
-              }
-
-        guard let data: Data = try? Data(contentsOf: encryptedFileURL) else {
-            throw Errors.cantFindAttachment
-        }
-
-        // No way we should store this file cleartext any longer than absolutely needed
-        let tempClearFileURL =
-        FileManager.default.temporaryDirectory.appendingPathComponent(attachment.name.clear)
-
-        guard let decryptData =
-                user.newSchema ?
-                try data.decryptAttachment(keyPackage: keyPackage,
-                                           userKeys: user.userPrivateKeys,
-                                           passphrase: user.mailboxPassword,
-                                           keys: user.addressKeys) :
-                    try data.decryptAttachmentNonOptional(keyPackage,
-                                                          passphrase: user.mailboxPassword.value,
-                                                          privKeys: user.addressPrivateKeys),
-              (try? decryptData.write(to: tempClearFileURL, options: [.atomic])) != nil else {
-                  throw Errors.cantDecryptAttachment
-              }
-        attachmentDownloaded?(attachment.id, tempClearFileURL)
-    }
-
     private func getAttachment(from info: AttachmentInfo) -> AttachmentEntity? {
         var result: AttachmentEntity?
 
@@ -197,6 +153,12 @@ class AttachmentListViewModel {
         }
 
         return result
+    }
+}
+
+extension AttachmentListViewModel {
+    struct Dependencies {
+        let fetchAttachment: FetchAttachmentUseCase
     }
 }
 

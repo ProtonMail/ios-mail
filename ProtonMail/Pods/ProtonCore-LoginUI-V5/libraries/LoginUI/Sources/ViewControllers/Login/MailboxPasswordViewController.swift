@@ -201,6 +201,10 @@ extension MailboxPasswordViewController: LoginErrorCapable {
     func onUserAccountSetupNeeded() {
         delegate?.userAccountSetupNeeded()
     }
+    
+    func onLearnMoreAboutExternalAccountsNotSupported() {
+        delegate?.learnMoreAboutExternalAccountsNotSupported()
+    }
 
     var bannerPosition: PMBannerPosition { .top }
 }

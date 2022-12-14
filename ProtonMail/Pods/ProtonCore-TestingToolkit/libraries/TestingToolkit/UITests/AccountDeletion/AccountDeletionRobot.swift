@@ -84,6 +84,7 @@ private let accountDeletionConfirmationIdentifier = "Yes, I want to permanently 
 private let accountDeletionDeleteIdentifier = "Delete"
 private let accountDeletionCancelIdentifier = "Cancel"
 private let keyboardDoneButtonIdentifier = "Done"
+private let accountDeletionAuthenticateIdentifier = "Authenticate"
 
 public final class AccountDeletionWebViewRobot: CoreElements {
     
@@ -178,6 +179,13 @@ public final class AccountDeletionWebViewRobot: CoreElements {
         return T()
     }
     
+    public func tapAuthenticateButton<T: CoreElements>(to: T.Type, application: XCUIApplication = .init()) -> T {
+        let element = application.webViews[accountDeletionWebViewIndentifier].buttons[accountDeletionAuthenticateIdentifier]
+        guard element.waitForExistence(timeout: AccountDeletionWebViewRobot.defaultTimeout) else { XCTFail(); return T() }
+        element.tap()
+        return T()
+    }
+    
     private func closeKeyboard(_ application: XCUIApplication) {
         application.buttons[keyboardDoneButtonIdentifier].tap()
     }
@@ -187,8 +195,9 @@ public final class AccountDeletionWebViewRobot: CoreElements {
             .setDeletionReason()
             .fillInDeletionExplaination()
             .fillInDeletionEmail()
-            .fillInDeletionPassword(password)
             .confirmBeingAwareAccountDeletionIsPermanent()
-            .tapDeleteAccountButton(to: T.self)
+            .tapDeleteAccountButton(to: AccountDeletionWebViewRobot.self)
+            .fillInDeletionPassword(password)
+            .tapAuthenticateButton(to: T.self)
     }
 }

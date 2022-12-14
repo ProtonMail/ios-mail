@@ -87,7 +87,8 @@ final class MenuViewModel: NSObject {
         let defaultInfo = MoreItemsInfo(userIsMember: nil,
                                         subscriptionAvailable: subscriptionAvailable,
                                         isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                                        isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
+                                        isTouchIDEnabled: userCachedStatus.isTouchIDEnabled,
+                                        isReferralEligible: usersManager.firstUser?.userInfo.referralProgram?.eligible ?? false)
         self.moreItems = Self.moreItems(for: defaultInfo)
         super.init()
     }
@@ -192,7 +193,7 @@ extension MenuViewModel: MenuVMProtocol {
         case .more: return self.moreItems.count
         }
     }
-    
+
     func clickCollapsedArrow(labelID: LabelID) {
         guard let idx = self.rawData.firstIndex(where: {$0.location.labelID == labelID}) else {
             return
@@ -214,7 +215,7 @@ extension MenuViewModel: MenuVMProtocol {
         }
         self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
     }
-    
+
     func signOut(userID: UserID, completion: (() -> Void)?) {
         guard let user = self.usersManager.getUser(by: userID) else {
             completion?()
@@ -222,7 +223,7 @@ extension MenuViewModel: MenuVMProtocol {
         }
         self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
-    
+
     func removeDisconnectAccount(userID: UserID) {
         guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) else {return}
         self.usersManager.removeDisconnectedUser(user)
@@ -267,7 +268,7 @@ extension MenuViewModel: MenuVMProtocol {
         let labelID = LabelLocation.inbox.toMessageLocation.rawValue
         return user.getUnReadCount(by: labelID)
     }
-    
+
     func activateUser(id: UserID) {
         guard let user = self.usersManager.getUser(by: id) else {
             return
@@ -436,11 +437,12 @@ extension MenuViewModel {
     }
 
     private func observeScheduleSendLocationStatus() {
-        guard let user = self.currentUser,
-              let observer =
-                ScheduleSendLocationStatusObserver(contextProvider: coreDataContextProvider,
-                                                   userID: user.userID,
-                                                   viewModelDataSource: user) else { return }
+        guard let user = self.currentUser else { return }
+        let observer =
+            ScheduleSendLocationStatusObserver(
+                contextProvider: coreDataContextProvider,
+                userID: user.userID
+            )
 
         let currentCount = observer.observe(countUpdate: { [weak self] newCount in
             self?.updateInboxItems(by: newCount)
@@ -491,7 +493,8 @@ extension MenuViewModel {
         let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userInfo.isMember ?? false,
                                           subscriptionAvailable: self.subscriptionAvailable,
                                           isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                                          isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
+                                          isTouchIDEnabled: userCachedStatus.isTouchIDEnabled,
+                                          isReferralEligible: currentUser?.userInfo.referralProgram?.eligible ?? false)
         let newMore = Self.moreItems(for: moreItemsInfo)
         if newMore.count != self.moreItems.count {
             self.moreItems = newMore
@@ -634,6 +637,7 @@ extension MenuViewModel {
         var subscriptionAvailable: Bool
         var isPinCodeEnabled: Bool
         var isTouchIDEnabled: Bool
+        var isReferralEligible: Bool
     }
 
     static func inboxItems() -> [MenuLabel] {
@@ -653,6 +657,7 @@ extension MenuViewModel {
                        MenuLabel(location: .provideFeedback),
                        MenuLabel(location: .bugs),
                        MenuLabel(location: .lockapp),
+                       MenuLabel(location: .referAFriend),
                        MenuLabel(location: .signout)]
 
         if info.userIsMember == false {
@@ -665,6 +670,10 @@ extension MenuViewModel {
 
         if !info.isPinCodeEnabled, !info.isTouchIDEnabled {
             newMore = newMore.filter { $0.location != .lockapp }
+        }
+
+        if !info.isReferralEligible {
+            newMore = newMore.filter { $0.location != .referAFriend }
         }
 
         return newMore

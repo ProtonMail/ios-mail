@@ -34,9 +34,3 @@ import UIKit
         super.setSelected(selected, animated: animated)
     }
 }
-
-extension GeneralSettingViewCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        self.labelAtInterfaceBuilder()
-    }
-}

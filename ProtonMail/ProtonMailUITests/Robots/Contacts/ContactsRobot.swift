@@ -7,6 +7,7 @@
 //
 
 import pmtest
+import ProtonMail
 
 fileprivate struct id {
     static let addContactAlertButtonText = LocalString._contacts_new_contact
@@ -134,7 +135,10 @@ class ContactsRobot: CoreElements {
         }
         
         private func swipeLeftToDelete(_ withName: String) -> ContactsGroupView {
-            cell(id.groupCellIdentifier(withName)).onChild(staticText(id.groupStaticTextIdentifier(withName))).swipeUpUntilVisible().swipeLeft()
+            cell(id.groupCellIdentifier(withName))
+                .onChild(staticText(id.groupStaticTextIdentifier(withName)))
+                .swipeUpUntilVisible(maxAttempts: 20)
+                .swipeLeft()
             return self
         }
         

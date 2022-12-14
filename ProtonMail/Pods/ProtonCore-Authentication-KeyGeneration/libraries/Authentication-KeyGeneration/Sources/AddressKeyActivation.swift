@@ -19,16 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(Crypto_VPN)
-import Crypto_VPN
-#elseif canImport(Crypto)
-import Crypto
-#endif
-#if canImport(ProtonCore_Crypto_VPN)
-import ProtonCore_Crypto_VPN
-#elseif canImport(ProtonCore_Crypto)
+import GoLibs
 import ProtonCore_Crypto
-#endif
 import OpenPGP
 import Foundation
 import ProtonCore_Authentication
@@ -120,11 +112,17 @@ final class AddressKeyActivation {
                 let signer = SigningKey.init(privateKey: armoredUserKey,
                                              passphrase: mailboxPassphrase)
                 let tokenSignature = try newPassphrase.signDetached(signer: signer)
+                let keyFlags: KeyFlags
+                if address.type == .externalAddress {
+                    keyFlags = .signupExternalKeyFlags
+                } else {
+                    keyFlags = .signupKeyFlags
+                }
                 let keylist: [[String: Any]] = [[
                     "Fingerprint": updatedPrivateKey.fingerprint,
                     "SHA256Fingerprints": updatedPrivateKey.sha256Fingerprint,
                     "Primary": 1,
-                    "Flags": KeyFlags.signupKeyFlags.rawValue
+                    "Flags": keyFlags.rawValue
                 ]]
                 let jsonKeylist = keylist.json()
                 

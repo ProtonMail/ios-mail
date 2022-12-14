@@ -96,9 +96,9 @@ class SettingsDeviceCoordinator {
     }
 
     private func openCombineContacts() {
-        let viewModel = SettingsCombineContactViewModel(combineContactCache: userCachedStatus)
-        let viewController = SettingsContactCombineViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        let viewModel = ContactCombineViewModel(combineContactCache: userCachedStatus)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 
     private func openAlternativeRouting() {

@@ -145,7 +145,8 @@ class ProgressBarButtonTableViewCell: UITableViewCell {
         self.layoutIfNeeded()
     }
 
-    @objc func pauseButtonPressed(_ sender: UIButton) {
+    @objc
+    func pauseButtonPressed(_ sender: UIButton) {
         callback?()
         self.layoutIfNeeded()
     }

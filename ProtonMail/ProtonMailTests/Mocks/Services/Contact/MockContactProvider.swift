@@ -37,8 +37,10 @@ class MockContactProvider: ContactProviderProtocol {
     }
 
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
-        coreDataContextProvider.rootSavingContext.performAndWait {
-            allEmailsToReturn.map(EmailEntity.init)
+        allEmailsToReturn.map { email in
+            email.managedObjectContext!.performAndWait {
+                EmailEntity(email: email)
+            }
         }
     }
 
@@ -46,7 +48,7 @@ class MockContactProvider: ContactProviderProtocol {
         return allEmailsToReturn
     }
 
-    func fetchContacts(fromUI: Bool, completion: ContactFetchComplete?) {
+    func fetchContacts(completion: ContactFetchComplete?) {
         isFetchContactsCalled = true
         completion?([], nil)
     }

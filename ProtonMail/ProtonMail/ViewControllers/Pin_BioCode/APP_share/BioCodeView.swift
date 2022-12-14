@@ -155,7 +155,7 @@ private enum SubviewFactory {
     }
 
     static var iconView: UIImageView {
-        let view = UIImageView(image: UIImage(named: "splash-icon-mail"))
+        let view = UIImageView(image: IconProvider.mailMainTransparent)
         view.contentMode = .scaleAspectFit
         return view
     }

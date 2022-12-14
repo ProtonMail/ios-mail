@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Crypto
+import GoLibs
 import Foundation
 import OpenPGP
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Log
 
@@ -27,9 +28,9 @@ import LifetimeTracker
 #endif
 
 class CardDataParser {
-    private let userKeys: [Key]
+    private let userKeys: [ArmoredKey]
 
-    init(userKeys: [Key]) {
+    init(userKeys: [ArmoredKey]) {
         self.userKeys = userKeys
 
 #if !APP_EXTENSION
@@ -68,34 +69,23 @@ class CardDataParser {
                         let keys = vcard.getKeys(group)
                         let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
                         let schemeType = vcard.getPMScheme(group)
-                        let isMime = schemeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
                         let mimeType = vcard.getPMMimeType(group)?.getValue()
-                        let plainText = mimeType ?? "text/html" == "text/html" ? false : true
 
-                        var firstKey: Data?
                         var pubKeys: [Data] = []
                         for key in keys {
                             let keyGroup = key.getGroup()
                             if keyGroup == group {
-                                let keyPref = key.getPref()
                                 let value = key.getBinary() // based 64 key
                                 if let cryptoKey = CryptoKey(value), !cryptoKey.isExpired() {
                                     pubKeys.append(value)
-                                    if keyPref == 1 || keyPref == Int32.min {
-                                        firstKey = value
-                                    }
                                 }
                             }
                         }
                         let preContact = PreContact(
                             email: email,
-                            pubKey: firstKey,
                             pubKeys: pubKeys,
                             sign: isSign,
                             encrypt: isEncrypt,
-                            mime: isMime,
-                            plainText: plainText,
-                            isContactSignatureVerified: true,
                             scheme: schemeType?.getValue(),
                             mimeType: mimeType
                         )
@@ -112,13 +102,12 @@ class CardDataParser {
     }
 
     private func verifySignature(of cardData: CardData) -> Bool {
-        let binKeys = userKeys.compactMap { try? CryptoKey(fromArmored: $0.privateKey)?.getPublicKey() }
-
         do {
-            return try MailCrypto().verifyDetached(
-                signature: cardData.sign,
+            return try Sign.verifyDetached(
+                signature: ArmoredSignature(value: cardData.signature),
                 plainText: cardData.data,
-                binKeys: binKeys
+                verifierKeys: userKeys,
+                verifyTime: CryptoGetUnixTime()
             )
         } catch {
             PMLog.error(error)

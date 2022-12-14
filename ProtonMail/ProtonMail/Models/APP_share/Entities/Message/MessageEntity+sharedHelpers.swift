@@ -258,7 +258,10 @@ extension MessageEntity {
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
-    private func allEmailAddresses(_ replacingEmails: [String: EmailEntity], allGroupContacts: [ContactGroupVO]) -> String {
+    private func allEmailAddresses(
+        _ replacingEmails: [String: EmailEntity],
+        allGroupContacts: [ContactGroupVO]
+    ) -> String {
         var recipientLists = ContactPickerModelHelper.contacts(from: rawTOList)
         + ContactPickerModelHelper.contacts(from: rawCCList)
         + ContactPickerModelHelper.contacts(from: rawBCCList)

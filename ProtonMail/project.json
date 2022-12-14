@@ -5,10 +5,6 @@
       "relativePaths": false
     },
     {
-      "path": "./xcodeGen/specs/scheme_push.json",
-      "relativePaths": false
-    },
-    {
       "path": "./xcodeGen/specs/scheme_enterprise.json",
       "relativePaths": false
     },
@@ -54,10 +50,6 @@
     },
     {
       "path": "./xcodeGen/specs/target_push_service.json",
-      "relativePaths": false
-    },
-    {
-      "path": "./xcodeGen/specs/target_push.json",
       "relativePaths": false
     },
     {

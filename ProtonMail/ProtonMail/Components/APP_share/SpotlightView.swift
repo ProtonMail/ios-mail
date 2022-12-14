@@ -30,8 +30,8 @@ class SpotlightView: UIView {
     init(title: String, message: String, icon: ImageAsset) {
         super.init(frame: .zero)
 
-        titleLabel.attributedText = title.apply(style: .DefaultStrong)
-        msgLabel.attributedText = message.apply(style: .DefaultSmall.addTruncatingTail())
+        titleLabel.attributedText = title.apply(style: FontManager.DefaultStrong)
+        msgLabel.attributedText = message.apply(style: FontManager.DefaultSmall.addTruncatingTail())
         iconImageView.image = icon.image
 
         setup()

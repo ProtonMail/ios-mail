@@ -44,6 +44,33 @@ class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
         Keymaker(autolocker: nil, keychain: KeychainWrapper.keychain).wipeMainKey()
         PushNotificationDecryptor().wipeEncryptionKit()
 
+        // Remove all items in UserDefault
+        let userDefault = UserDefaults(suiteName: Constants.AppGroup)
+        userDefault?.dictionaryRepresentation().keys.forEach({ key in
+            userDefault?.removeObject(forKey: key)
+        })
+        removeCoreData()
+
         completion(WipeMainKeyIntentResponse(code: WipeMainKeyIntentResponseCode.success, userActivity: nil))
+    }
+
+    private func removeCoreData() {
+        let dbUrl = FileManager.default.appGroupsDirectoryURL
+            .appendingPathComponent("ProtonMail.sqlite")
+        let dbShmUrl = FileManager.default.appGroupsDirectoryURL
+            .appendingPathComponent("ProtonMail.sqlite-shm")
+        let dbWalUrl = FileManager.default.appGroupsDirectoryURL
+            .appendingPathComponent("ProtonMail.sqlite-wal")
+        let urlsToBeRemoved = [dbUrl, dbShmUrl, dbWalUrl]
+        urlsToBeRemoved.forEach { url in
+            do {
+                if FileManager.default.fileExists(atPath: url.absoluteString) {
+                    try FileManager.default.removeItem(at: url)
+                }
+            } catch {
+                SystemLogger.log(message: "Error deleting data store: \(String(describing: error))",
+                                 category: .coreData)
+            }
+        }
     }
 }

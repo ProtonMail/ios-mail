@@ -166,7 +166,7 @@ class UndoActionManagerTests: XCTestCase {
 
     func testRequestUndoSendAction() {
         eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(nil, nil, nil)
+            completion?(.success([:]))
         }
         let messageID = UUID().uuidString
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in

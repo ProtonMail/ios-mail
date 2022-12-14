@@ -22,7 +22,7 @@
 
 import Foundation
 import PromiseKit
-import Crypto
+import GoLibs
 import OpenPGP
 import ProtonCore_APIClient
 import ProtonCore_Crypto
@@ -30,8 +30,6 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Keymaker
-
-typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
 // TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
@@ -149,15 +147,22 @@ class UserDataService: Service, HasLocalStorage {
             guard let user = userInfo, let pwd = auth?.mailboxpassword else {
                 return
             }
+            let passphrase = Passphrase(value: pwd)
             for addr in user.userAddresses {
                 for index in addr.keys.indices {
                     let key = addr.keys[index]
                     if let activation = key.activation {
-                        let token = try activation.decryptMessageNonOptional(binKeys: user.userPrivateKeysArray, passphrase: pwd)
+                        let decryptionKeys = user.userPrivateKeys.map {
+                            DecryptionKey(privateKey: $0, passphrase: passphrase)
+                        }
+                        let token: String = try Decryptor.decrypt(
+                            decryptionKeys: decryptionKeys,
+                            encrypted: ArmoredMessage(value: activation)
+                        )
                         let new_private_key = try Crypto.updatePassphrase(
                             privateKey: ArmoredKey(value: key.privateKey),
                             oldPassphrase: Passphrase(value: token),
-                            newPassphrase: Passphrase(value: pwd)
+                            newPassphrase: passphrase
                         )
                         let keylist: [[String: Any]] = [[
                             "Fingerprint": key.fingerprint,
@@ -165,10 +170,9 @@ class UserDataService: Service, HasLocalStorage {
                             "Flags": 3
                         ]]
                         let jsonKeylist = keylist.json()
-                        let signed = try Crypto().signDetached(
-                            plainText: jsonKeylist,
-                            privateKey: new_private_key.value,
-                            passphrase: pwd
+                        let signed = try Sign.signDetached(
+                            signingKey: SigningKey(privateKey: new_private_key, passphrase: passphrase),
+                            plainText: jsonKeylist
                         )
                         let signedKeyList: [String: Any] = [
                             "Data": jsonKeylist,
@@ -213,27 +217,28 @@ class UserDataService: Service, HasLocalStorage {
         delegate?.onLogout()
     }
 
-    func updateAddress(auth currentAuth: AuthCredential,
-                       user: UserInfo,
-                       addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
-        let authCredential = currentAuth
-        let userInfo = user
+    func updateAddress(authCredential: AuthCredential,
+                       userInfo: UserInfo,
+                       addressId: String,
+                       displayName: String,
+                       signature: String,
+                       completion: @escaping (NSError?) -> Void) {
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion?(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
         let new_displayName = displayName.trim()
         let new_signature = signature.trim()
         let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
+        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo.userAddresses = userInfo.userAddresses.map { addr in
                     guard addr.addressID == addressId else { return addr }
                     return addr.withUpdated(displayName: new_displayName, signature: new_signature)
                 }
             }
-            completion?(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
@@ -243,19 +248,19 @@ class UserDataService: Service, HasLocalStorage {
         userInfo: UserInfo,
         imageType: UpdateImageAutoloadSetting.ImageType,
         setting: UpdateImageAutoloadSetting.Setting,
-        completion: @escaping UserInfoBlock
+        completion: @escaping (NSError?) -> Void
     ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
         let api = UpdateImageAutoloadSetting(imageType: imageType, setting: setting, authCredential: currentAuth)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo[keyPath: imageType.userInfoKeyPath] = setting.rawValue
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
@@ -263,10 +268,10 @@ class UserDataService: Service, HasLocalStorage {
         authCredential: AuthCredential,
         userInfo: UserInfo,
         action: UpdateImageProxy.Action,
-        completion: @escaping UserInfoBlock
+        completion: @escaping (NSError?) -> Void
     ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -285,45 +290,45 @@ class UserDataService: Service, HasLocalStorage {
                 }
                 userInfo.imageProxy = newStatus
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
     #endif
 
     func updateDelaySeconds(userInfo: UserInfo,
                             delaySeconds: Int,
-                            completion: @escaping UserInfoBlock) {
+                            completion: @escaping (Error?) -> Void) {
         let userInfo = userInfo
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
         let request = UpdateDelaySecondsRequest(delaySeconds: delaySeconds)
-        self.apiService.exec(route: request, responseObject: Response()) { _, response in
+        self.apiService.perform(request: request, response: Response()) { _, response in
             if response.error == nil {
                 userInfo.delaySendSeconds = delaySeconds
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
     #if !APP_EXTENSION
     func updateLinkConfirmation(auth currentAuth: AuthCredential,
                                 user: UserInfo,
-                                _ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
+                                _ status: LinkOpeningMode, completion: @escaping (NSError?) -> Void) {
         let authCredential = currentAuth
         let userInfo = user
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
         let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo.linkConfirmation = status
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
     #endif
@@ -333,7 +338,7 @@ class UserDataService: Service, HasLocalStorage {
                         login_password: String,
                         new_password: Passphrase,
                         twoFACode: String?,
-                        completion: @escaping CompletionBlock) {
+                        completion: @escaping (NSError?) -> Void) {
         let oldAuthCredential = currentAuth
         var _username = "" // oldAuthCredential.userName
         if _username.isEmpty {
@@ -418,9 +423,9 @@ class UserDataService: Service, HasLocalStorage {
                         }
                     }
                 } while(forceRetry && forceRetryVersion >= 0)
-                return { completion(nil, nil, nil) } ~> .main
+                return { completion(nil) } ~> .main
             } catch let error as NSError {
-                return { completion(nil, nil, error) } ~> .main
+                return { completion(error) } ~> .main
             }
         } ~> .async
     }
@@ -430,7 +435,8 @@ class UserDataService: Service, HasLocalStorage {
                                loginPassword: String,
                                newPassword: Passphrase,
                                twoFACode: String?,
-                               buildAuth: Bool, completion: @escaping CompletionBlock) {
+                               buildAuth: Bool,
+                               completion: @escaping (NSError?) -> Void) {
         let oldAuthCredential = currentAuth
         let userInfo = user
         let old_password = Passphrase(value: oldAuthCredential.mailboxpassword)
@@ -441,7 +447,7 @@ class UserDataService: Service, HasLocalStorage {
             }
         }
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -587,14 +593,12 @@ class UserDataService: Service, HasLocalStorage {
 
                 } while(forceRetry && forceRetryVersion >= 0)
                 DispatchQueue.main.async {
-                    completion(nil, nil, nil)
+                    completion(nil)
                 }
-                return
             } catch let error as NSError {
                 DispatchQueue.main.async {
-                    completion(nil, nil, error)
+                    completion(error)
                 }
-                return
             }
         }
     }
@@ -602,29 +606,30 @@ class UserDataService: Service, HasLocalStorage {
     // TODO:: refactor newOrders.
     func updateUserDomiansOrder(auth currentAuth: AuthCredential,
                                 user: UserInfo,
-                                _ email_domains: [Address], newOrder: [String], completion: @escaping CompletionBlock) {
-
+                                _ email_domains: [Address],
+                                newOrder: [String],
+                                completion: @escaping (NSError?) -> Void) {
         let authCredential = currentAuth
         let userInfo = user
 
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
         let addressOrder = UpdateAddressOrder(adds: newOrder, authCredential: authCredential)
-        self.apiService.exec(route: addressOrder, responseObject: VoidResponse()) { task, response in
+        self.apiService.perform(request: addressOrder, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo.userAddresses = email_domains
             }
-            completion(task, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
     func updateNotificationEmail(auth currentAuth: AuthCredential,
                                  user: UserInfo,
                                  new_notification_email: String, login_password: String,
-                                 twoFACode: String?, completion: @escaping CompletionBlock) {
+                                 twoFACode: String?, completion: @escaping (NSError?) -> Void) {
         let oldAuthCredential = currentAuth
         let userInfo = user
         //        let old_password = oldAuthCredential.mailboxpassword
@@ -636,7 +641,7 @@ class UserDataService: Service, HasLocalStorage {
         }
 
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -696,42 +701,42 @@ class UserDataService: Service, HasLocalStorage {
                         }
                     }
                 } while(forceRetry && forceRetryVersion >= 0)
-                return { completion(nil, nil, nil) } ~> .main
+                return { completion(nil) } ~> .main
             } catch let error as NSError {
-                return { completion(nil, nil, error) } ~> .main
+                return { completion(error) } ~> .main
             }
         } ~> .async
     }
 
     func updateNotify(auth currentAuth: AuthCredential,
                       user: UserInfo,
-                      _ isOn: Bool, completion: @escaping CompletionBlock) {
+                      _ isOn: Bool, completion: @escaping (NSError?) -> Void) {
         let oldAuthCredential = currentAuth
         let userInfo = user
 
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
         let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: oldAuthCredential)
-        self.apiService.exec(route: notifySetting, responseObject: VoidResponse()) { task, response in
+        self.apiService.perform(request: notifySetting, response: VoidResponse()) { _, response in
             if response.error == nil {
                 userInfo.notify = (isOn ? 1 : 0)
             }
-            completion(task, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 
     func updateSignature(auth currentAuth: AuthCredential,
-                         _ signature: String, completion: @escaping CompletionBlock) {
+                         _ signature: String, completion: @escaping (NSError?) -> Void) {
         guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
         let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
-        self.apiService.exec(route: signatureSetting, responseObject: VoidResponse()) { (task, response) in
-            completion(task, nil, response.error?.toNSError)
+        self.apiService.perform(request: signatureSetting, response: VoidResponse()) { _, response in
+            completion(response.error?.toNSError)
         }
     }
 
@@ -761,7 +766,7 @@ class UserDataService: Service, HasLocalStorage {
 
     func fetchUserAddresses(completion: ((Swift.Result<AddressesResponse, Error>) -> Void)?) {
         let req = GetAddressesRequest()
-        apiService.exec(route: req, responseObject: AddressesResponse()) { (_, res) in
+        apiService.perform(request: req, response: AddressesResponse()) { _, res in
             if let error = res.error {
                 completion?(.failure(error))
             } else {
@@ -772,26 +777,8 @@ class UserDataService: Service, HasLocalStorage {
 }
 
 extension UserInfo {
-    var userPrivateKeys: Data {
-        var out = Data()
-        var error: NSError?
-        for key in userKeys {
-            if let privK = ArmorUnarmor(key.privateKey, &error) {
-                out.append(privK)
-            }
-        }
-        return out
-    }
-
-    var userPrivateKeysArray: [Data] {
-        var out: [Data] = []
-        var error: NSError?
-        for key in userKeys {
-            if let privK = ArmorUnarmor(key.privateKey, &error) {
-                out.append(privK)
-            }
-        }
-        return out
+    var userPrivateKeys: [ArmoredKey] {
+        userKeys.toArmoredPrivateKeys
     }
 
 }

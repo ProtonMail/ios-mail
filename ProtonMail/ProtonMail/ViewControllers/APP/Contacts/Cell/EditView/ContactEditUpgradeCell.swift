@@ -27,7 +27,6 @@ final class ContactEditUpgradeCell: UITableViewCell {
     @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var upgradeButton: UIButton!
 
-    // fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     private var delegate: ContactUpgradeCellDelegate?
 
     override func awakeFromNib() {

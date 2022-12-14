@@ -1,7 +1,6 @@
 stages:
   - i18n
   - test
-  - code_quality
   - test_flight
   - enterprise
   - bot # comes from translations/generator job
@@ -15,7 +14,6 @@ stages:
   - sh Tests/TestPlans/scripts/prepare_users.sh
   - cd ..
   - *run_xcodegen_if_needed
-  - gem install xcpretty
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
@@ -87,34 +85,37 @@ ui_tests:
   stage: test
   except:
     - schedules
-    - develop
   only:
     refs:
       - master
+      - develop
       - /^release\/.*$/
+      - merge_requests
   variables:
     GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
     paths:
-      - ./index.html
-      - ./TestResults/report.junit
-      - ./TestResults.xcresult
+      - ProtonMail/fastlane/test_output/ProtonMailUITests.xcresult
     expire_in: 20 days
     reports:
-      junit: ./TestResults/report.junit
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
+      junit: ProtonMail/fastlane/test_output/report.junit
   before_script:
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
     - *before_script_mac
-    - cd ..
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
+    - bundle install
+    - bundle exec fastlane ui_test
   tags:
     - iOS_ARM_TAIPEI
+  allow_failure: true
 
 feature_tests:
   dependencies: []
@@ -171,7 +172,8 @@ build-app-and-upload:
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - fastlane ios build
+    - bundle install
+    - bundle exec fastlane ios build
     - ./fastlane/add_git_tag.sh
   tags:
     - iOS_ARM_TAIPEI
@@ -199,7 +201,8 @@ nightly-build-and-upload:
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - fastlane ios build
+    - bundle install
+    - bundle exec fastlane ios build
   tags:
     - iOS_ARM_TAIPEI
 
@@ -224,7 +227,8 @@ enterprise-test:
     - *set_up_brew_dependecies
   script:
     - *enterprise_config_setting
-    - fastlane ios enterprise usingTimeStamp:true
+    - bundle install
+    - bundle exec fastlane ios enterprise usingTimeStamp:true
   tags:
     - iOS_ARM_TAIPEI
 
@@ -255,22 +259,22 @@ commit-locales-release:
     variables:
       - $CI_COMMIT_REF_NAME == 'develop'
 
-sonarqube-check:
-  stage: code_quality
-  image:
-    name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: [""]
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-    - sonar-scanner
-  allow_failure: true
-  only:
-    - merge_requests
-    - master # or the name of your main branch
-    - develop
+# sonarqube-check:
+#   stage: code_quality
+#   image:
+#     name: sonarsource/sonar-scanner-cli:latest
+#     entrypoint: [""]
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+#     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+#   script:
+#     - sonar-scanner
+#   allow_failure: true
+#   only:
+#     - merge_requests
+#     - master # or the name of your main branch
+#     - develop

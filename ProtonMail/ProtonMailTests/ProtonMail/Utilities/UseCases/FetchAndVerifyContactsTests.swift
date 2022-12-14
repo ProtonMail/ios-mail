@@ -30,14 +30,14 @@ final class FetchAndVerifyContactsTests: XCTestCase {
     private var mockContext: NSManagedObjectContext!
 
     private static let mockValidCardData = CardData(
-        t: .SignedOnly,
-        d: ContactParserTestData.signedOnlyData,
-        s: ContactParserTestData.signedOnlySignature
+        type: .SignedOnly,
+        data: ContactParserTestData.signedOnlyData,
+        signature: ContactParserTestData.signedOnlySignature
     )
     private let mockInvalidCardData = CardData(
-        t: .SignedOnly,
-        d: ContactParserTestData.signedOnlyData,
-        s: "invalid signature"
+        type: .SignedOnly,
+        data: ContactParserTestData.signedOnlyData,
+        signature: "invalid signature"
     )
     private let emailUsedInSignedCardData = ContactParserTestData.emailUsedInSignedData
     private let dummyEmail = "dummy@email.com"
@@ -49,7 +49,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         mockContactProvider = MockContactProvider(coreDataContextProvider: coreDataContextProvider)
         mockApiService = makeMockApiService()
         mockApiServiceShouldReturnError = false
-        mockContext = coreDataContextProvider.rootSavingContext
+        mockContext = MockCoreDataStore.testPersistentContainer.viewContext
         sut = makeSUT()
     }
 
@@ -154,7 +154,7 @@ extension FetchAndVerifyContactsTests {
         )
         return FetchAndVerifyContacts(
             currentUser: "",
-            currentUserKeys: [Key(keyID: "", privateKey: ContactParserTestData.privateKey)],
+            currentUserKeys: [ContactParserTestData.privateKey],
             dependencies: dependencies
         )
     }

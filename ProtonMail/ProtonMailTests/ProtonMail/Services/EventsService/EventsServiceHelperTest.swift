@@ -21,17 +21,13 @@ import Groot
 import XCTest
 
 class EventsServiceHelperTest: XCTestCase {
-    var coreDataService: CoreDataService!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-
-        testContext = coreDataService.mainContext
+        testContext = MockCoreDataStore.testPersistentContainer.viewContext
     }
 
     override func tearDownWithError() throws {
-        coreDataService = nil
         testContext = nil
     }
 
@@ -70,17 +66,17 @@ class EventsServiceHelperTest: XCTestCase {
         let subject = "Test subject"
         let toList = [[
             "Name": "000",
-            "Address": "first@protonmail.com",
+            "Address": "first@proton.me",
             "Group": ""
         ]]
         let ccList = [[
             "Name": "001",
-            "Address": "second@protonmail.com",
+            "Address": "second@proton.me",
             "Group": ""
         ]]
         let bccList = [[
             "Name": "002",
-            "Address": "third@protonmail.com",
+            "Address": "third@proton.me",
             "Group": ""
         ]]
         let time: Double = 1637215641

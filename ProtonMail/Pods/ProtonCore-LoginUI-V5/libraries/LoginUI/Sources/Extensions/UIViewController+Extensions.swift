@@ -64,6 +64,7 @@ protocol LoginErrorCapable: ErrorCapable {
     func showError(error: LoginError)
     func onUserAccountSetupNeeded()
     func onFirstPasswordChangeNeeded()
+    func onLearnMoreAboutExternalAccountsNotSupported()
     func showInfo(message: String)
 
     var bannerPosition: PMBannerPosition { get }
@@ -87,26 +88,31 @@ extension LoginErrorCapable {
             showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
                 self?.onDohTroubleshooting()
             }
+        case .externalAccountsNotSupported(let message, _):
+            let alert = UIAlertController(title: CoreString._ls_external_eccounts_not_supported_popup_title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: CoreString._ls_external_eccounts_not_supported_popup_action_button, style: .default) { [weak self] _ in
+                self?.onLearnMoreAboutExternalAccountsNotSupported()
+            })
+            alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil))
+            present(alert, animated: true)
         case .invalidSecondPassword:
             showBanner(message: CoreString._ls_error_invalid_mailbox_password)
         case .invalidState:
             showBanner(message: CoreString._ls_error_generic)
         case .missingKeys:
             let alert = UIAlertController(title: CoreString._ls_error_missing_keys_title, message: CoreString._ls_error_missing_keys_text, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: CoreString._ls_error_missing_keys_text_button, style: .default) { _ in
-                self.onUserAccountSetupNeeded()
+            alert.addAction(UIAlertAction(title: CoreString._ls_error_missing_keys_text_button, style: .default) { [weak self] _ in
+                self?.onUserAccountSetupNeeded()
             })
             alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil))
-
-            self.present(alert, animated: true)
+            present(alert, animated: true)
         case .needsFirstTimePasswordChange:
             let alert = UIAlertController(title: CoreString._login_username_org_dialog_title, message: CoreString._login_username_org_dialog_message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: CoreString._login_username_org_dialog_action_button, style: .default) { _ in
-                self.onFirstPasswordChangeNeeded()
+            alert.addAction(UIAlertAction(title: CoreString._login_username_org_dialog_action_button, style: .default) { [weak self] _ in
+                self?.onFirstPasswordChangeNeeded()
             })
             alert.addAction(UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil))
-
-            self.present(alert, animated: true)
+            present(alert, animated: true)
         case .emailAddressAlreadyUsed:
             showBanner(message: CoreString._su_error_email_already_used)
         case .missingSubUserConfiguration:
@@ -126,6 +132,9 @@ extension LoginErrorCapable {
     }
 
     func onFirstPasswordChangeNeeded() {
+    }
+    
+    func onLearnMoreAboutExternalAccountsNotSupported() {
     }
 }
 

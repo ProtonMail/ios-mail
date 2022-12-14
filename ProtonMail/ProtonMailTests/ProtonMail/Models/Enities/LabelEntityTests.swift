@@ -32,7 +32,7 @@ class LabelEntityTests: XCTestCase {
     }
 
     func testInit() throws {
-        let testContext = contextProviderMock.mainContext
+        let testContext = contextProviderMock.viewContext
         // Prepare test data
         let label = Label(context: testContext)
         label.userID = String.randomString(100)

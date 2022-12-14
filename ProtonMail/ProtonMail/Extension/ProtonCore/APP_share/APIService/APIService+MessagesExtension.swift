@@ -33,18 +33,7 @@ private struct MessagePath {
 /// Messages extension
 extension APIService {
 
-    func GET( _ api: Request, completion: CompletionBlock?) {
-        self.request(method: .get,
-                     path: api.path,
-                     parameters: api.parameters,
-                     headers: api.header,
-                     authenticated: api.isAuth,
-                     autoRetry: api.autoRetry,
-                     customAuthCredential: api.authCredential,
-                     completion: completion)
-    }
-
-    func messageDetail(messageID: MessageID, completion: @escaping CompletionBlock) {
+    func messageDetail(messageID: MessageID, completion: @escaping API.JSONCompletion) {
         let path = MessagePath.base + "/\(messageID.rawValue)"
         self.request(method: .get,
                      path: path,
@@ -53,6 +42,8 @@ extension APIService {
                      authenticated: true,
                      autoRetry: true,
                      customAuthCredential: nil,
-                     completion: completion)
+                     nonDefaultTimeout: nil,
+                     retryPolicy: .userInitiated,
+                     jsonCompletion: completion)
     }
 }

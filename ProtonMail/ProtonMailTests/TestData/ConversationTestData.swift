@@ -110,7 +110,7 @@ let testConversationsData = """
         "Subject": "ProtonDrive security, ProtonVPN server poll, and more",
         "Senders": [
             {
-                "Address": "contact@protonmail.com",
+                "Address": "contact@proton.me",
                 "Name": "Proton Newsletter"
             }
         ],
@@ -353,7 +353,7 @@ let conversationObjetcTestData = """
                          "Subject":"Fwd: Test photo",
                          "Senders":[
                             {
-                               "Address":"test@protonmail.com",
+                               "Address":"test@proton.me",
                                "Name":"Steven Lin"
                             }
                          ],

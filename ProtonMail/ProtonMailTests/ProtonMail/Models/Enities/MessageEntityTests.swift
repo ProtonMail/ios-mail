@@ -20,17 +20,13 @@ import XCTest
 @testable import ProtonMail
 
 final class MessageEntityTests: XCTestCase {
-
-    var coreDataService: CoreDataService!
-    var testContext: NSManagedObjectContext!
+    private var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.mainContext
+        testContext = MockCoreDataStore.testPersistentContainer.viewContext
     }
 
     override func tearDownWithError() throws {
-        coreDataService = nil
         testContext = nil
     }
 
@@ -47,16 +43,16 @@ final class MessageEntityTests: XCTestCase {
         message.header = "header-0987"
         message.numAttachments = NSNumber(value: 3)
         message.sender = """
-        {"Address":"sender@protonmail.com","Name":"test00"}
+        {"Address":"sender@proton.me","Name":"test00"}
         """
         message.toList = """
-        [{"Address":"to1@protonmail.com","Name":"testTO01"},{"Address":"to2@protonmail.com","Name":"testTO02"}]
+        [{"Address":"to1@proton.me","Name":"testTO01"},{"Address":"to2@proton.me","Name":"testTO02"}]
         """
         message.ccList = """
-        [{"Address":"cc1@protonmail.com","Name":"testCC01"},{"Address":"cc2@protonmail.com","Name":"testCC02"}]
+        [{"Address":"cc1@proton.me","Name":"testCC01"},{"Address":"cc2@proton.me","Name":"testCC02"}]
         """
         message.bccList = """
-        [{"Address":"bcc1@protonmail.com","Name":"testBCC01"},{"Address":"bcc2@protonmail.com","Name":"testBCC02"}]
+        [{"Address":"bcc1@proton.me","Name":"testBCC01"},{"Address":"bcc2@proton.me","Name":"testBCC02"}]
         """
         message.size = 300
         message.spamScore = 101
@@ -84,7 +80,7 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(entity.conversationID, ConversationID("conversationID-0123"))
         XCTAssertEqual(entity.expirationTime, .distantPast)
         XCTAssertEqual(entity.numAttachments, 3)
-        XCTAssertEqual(entity.sender?.email, "sender@protonmail.com")
+        XCTAssertEqual(entity.sender?.email, "sender@proton.me")
         XCTAssertEqual(entity.sender?.name, "test00")
         XCTAssertEqual(entity.size, 300)
         XCTAssertEqual(entity.spamScore, .dmarcFail)
@@ -107,9 +103,9 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(entity.rawTOList, message.toList)
         XCTAssertEqual(entity.rawCCList, message.ccList)
         XCTAssertEqual(entity.rawBCCList, message.bccList)
-        XCTAssertEqual(entity.recipientsTo, ["to1@protonmail.com", "to2@protonmail.com"])
-        XCTAssertEqual(entity.recipientsCc, ["cc1@protonmail.com", "cc2@protonmail.com"])
-        XCTAssertEqual(entity.recipientsBcc, ["bcc1@protonmail.com", "bcc2@protonmail.com"])
+        XCTAssertEqual(entity.recipientsTo, ["to1@proton.me", "to2@proton.me"])
+        XCTAssertEqual(entity.recipientsCc, ["cc1@proton.me", "cc2@proton.me"])
+        XCTAssertEqual(entity.recipientsBcc, ["bcc1@proton.me", "bcc2@proton.me"])
     }
 
     func testContactsConvert() throws {
@@ -119,12 +115,12 @@ final class MessageEntityTests: XCTestCase {
         [
                 {
                   "Name": "test01",
-                  "Address": "test01@protonmail.com",
+                  "Address": "test01@proton.me",
                   "Group": ""
                 },
                 {
                   "Name": "test02",
-                  "Address": "test02@protonmail.com",
+                  "Address": "test02@proton.me",
                   "Group": ""
                 }
               ]
@@ -136,12 +132,12 @@ final class MessageEntityTests: XCTestCase {
         [
                 {
                   "Name": "test01",
-                  "Address": "test01@protonmail.com",
+                  "Address": "test01@proton.me",
                   "Group": "testGroup"
                 },
                 {
                   "Name": "test02",
-                  "Address": "test02@protonmail.com",
+                  "Address": "test02@proton.me",
                   "Group": "testGroup"
                 }
               ]
@@ -157,10 +153,10 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(mails.count, 2)
         for data in mails {
             if data.name == "test01" {
-                XCTAssertEqual(data.email, "test01@protonmail.com")
+                XCTAssertEqual(data.email, "test01@proton.me")
             } else {
                 XCTAssertEqual(data.name, "test02")
-                XCTAssertEqual(data.email, "test02@protonmail.com")
+                XCTAssertEqual(data.email, "test02@proton.me")
             }
         }
     }
@@ -197,8 +193,8 @@ final class MessageEntityTests: XCTestCase {
         message.parsedHeaders = """
         {
             "Return-Path": "<793-XLJ>",
-            "X-Original-To": "test01@protonmail.com",
-            "Delivered-To": "test01@protonmail.com",
+            "X-Original-To": "test01@proton.me",
+            "Delivered-To": "test01@proton.me",
             "Authentication-Results": [
               "mailin010.protonmail.ch; dkim=pass",
               "mailin010.protonmail.ch; dmarc=none",
@@ -213,8 +209,8 @@ final class MessageEntityTests: XCTestCase {
         let dict = entity.parsedHeaders
         XCTAssertEqual(dict.keys.count, 5)
         XCTAssertEqual(dict["Return-Path"] as? String, "<793-XLJ>")
-        XCTAssertEqual(dict["X-Original-To"] as? String, "test01@protonmail.com")
-        XCTAssertEqual(dict["Delivered-To"] as? String, "test01@protonmail.com")
+        XCTAssertEqual(dict["X-Original-To"] as? String, "test01@proton.me")
+        XCTAssertEqual(dict["Delivered-To"] as? String, "test01@proton.me")
         XCTAssertEqual(dict["number"] as? Int, 3)
         let authResults: [String] = try XCTUnwrap(dict["Authentication-Results"] as? [String])
         XCTAssertEqual(authResults.count, 5)

@@ -166,7 +166,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
 
     // to
     func toContactEmail() -> ContactEmail {
-        return ContactEmail(e: newEmail, t: newType.vcardType)
+        ContactEmail(email: newEmail, type: newType.vcardType)
     }
 
     private func getContactGroupIDsFromCoreData(contactID: String) {

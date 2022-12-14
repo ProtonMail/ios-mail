@@ -110,8 +110,7 @@ class LabelsDataService: Service, HasLocalStorage {
     static func cleanUpAll() -> Promise<Void> {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let context = coreDataService.operationContext
-            coreDataService.enqueue(context: context) { context in
+            coreDataService.enqueueOnRootSavingContext { context in
                 Label.deleteAll(inContext: context)
                 LabelUpdate.deleteAll(inContext: context)
                 ContextLabel.deleteAll(inContext: context)
@@ -129,13 +128,13 @@ class LabelsDataService: Service, HasLocalStorage {
 
         let group = DispatchGroup()
         group.enter()
-        self.apiService.exec(route: labelReq, responseObject: GetLabelsResponse()) { response in
+        self.apiService.perform(request: labelReq, response: GetLabelsResponse()) { _, response in
             labelsResponse = response.labels
             group.leave()
         }
 
         group.enter()
-        self.apiService.exec(route: folderReq, responseObject: GetLabelsResponse()) { response in
+        self.apiService.perform(request: folderReq, response: GetLabelsResponse()) { _, response in
             foldersResponse = response.labels
             group.leave()
         }
@@ -170,10 +169,11 @@ class LabelsDataService: Service, HasLocalStorage {
 
             let allFolders = labels + folders
             self.cleanLabelAndFolder { [weak self] in
-                guard let context = self?.contextProvider.rootSavingContext else {
+                guard let self = self else {
                     return
                 }
-                context.perform {
+
+                self.contextProvider.performOnRootSavingContext { context in
                     do {
                         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
                         let error = context.saveUpstreamIfNeeded()
@@ -193,7 +193,7 @@ class LabelsDataService: Service, HasLocalStorage {
     func fetchV4ContactGroup() -> Promise<Void> {
         return Promise { seal in
             let groupRes = GetV4LabelsRequest(type: .contactGroup)
-            self.apiService.exec(route: groupRes, responseObject: GetLabelsResponse()) { (_, res) in
+            self.apiService.perform(request: groupRes, response: GetLabelsResponse()) { _, res in
                 if let error = res.error {
                     seal.reject(error)
                     return
@@ -371,7 +371,7 @@ class LabelsDataService: Service, HasLocalStorage {
                                        parentID: parentID?.rawValue,
                                        notify: notify,
                                        expanded: true)
-        self.apiService.exec(route: route, responseObject: CreateLabelRequestResponse()) { (task, response) in
+        self.apiService.perform(request: route, response: CreateLabelRequestResponse()) { _, response in
             if let err = response.error {
                 completion?(nil, err.toNSError)
             } else {
@@ -396,7 +396,7 @@ class LabelsDataService: Service, HasLocalStorage {
                                      color: color,
                                      parentID: parentID?.rawValue,
                                      notify: notify)
-        self.apiService.exec(route: api, responseObject: UpdateLabelRequestResponse()) { (task, response) in
+        self.apiService.perform(request: api, response: UpdateLabelRequestResponse()) { _, response in
             if let err = response.error {
                 completion?(err.toNSError)
             } else {
@@ -423,7 +423,7 @@ class LabelsDataService: Service, HasLocalStorage {
                      completion: (() -> Void)?)
     {
         let api = DeleteLabelRequest(lable_id: label.labelID.rawValue)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { (_, _) in
+        self.apiService.perform(request: api, response: VoidResponse()) { _, _ in
         }
         let ids = subLabels.map{$0.objectID.rawValue} + [label.objectID.rawValue]
         self.cacheService.deleteLabels(objectIDs: ids) {

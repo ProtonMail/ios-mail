@@ -20,21 +20,18 @@ import Groot
 import XCTest
 
 class MessageExtensionTest: XCTestCase {
-    var coreDataService: CoreDataService!
-    var testContext: NSManagedObjectContext!
+    var coreDataService: MockCoreDataContextProvider!
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.mainContext
+        coreDataService = MockCoreDataContextProvider()
     }
 
     override func tearDownWithError() throws {
         coreDataService = nil
-        testContext = nil
     }
 
     // This test is not stable. Needs to work.
-//    func testMessageWithInalidIDShouldGenerateNilNotificationUUID() {
+//    func testMessageWithInvalidIDShouldGenerateNilNotificationUUID() {
 //        let bogusMessageID = String.randomString(Int.random(in: 1...100))
 //        let message = Message(context: testContext)
 //        message.messageID = bogusMessageID
@@ -50,9 +47,13 @@ class MessageExtensionTest: XCTestCase {
              "7552412d-5978-675f-4431")
         ]
         pairs.forEach { messageId, expectedUUID in
-            let message = Message(context: testContext)
-            message.messageID = messageId
-            XCTAssertEqual(message.notificationId, expectedUUID)
+            let notificationId: String? = coreDataService.enqueue { context in
+                let message = Message(context: context)
+                message.messageID = messageId
+                return message.notificationId
+
+            }
+            XCTAssertEqual(notificationId, expectedUUID)
         }
     }
 }

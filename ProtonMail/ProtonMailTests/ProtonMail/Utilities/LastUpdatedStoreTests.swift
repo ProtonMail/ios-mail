@@ -782,7 +782,7 @@ private extension LastUpdatedStoreTests {
         unread: Int,
         userID: UserID
     ) {
-        let data = LabelUpdate(context: contextProviderMock.rootSavingContext)
+        let data = LabelUpdate(context: contextProviderMock.viewContext)
         data.labelID = labelID.rawValue
         data.start = start
         data.end = end
@@ -801,7 +801,7 @@ private extension LastUpdatedStoreTests {
         unread: Int,
         userID: UserID
     ) {
-        let data = LabelUpdate(context: contextProviderMock.rootSavingContext)
+        let data = LabelUpdate(context: contextProviderMock.viewContext)
         data.labelID = labelID.rawValue
         data.unreadStart = start
         data.unreadEnd = end
@@ -820,7 +820,7 @@ private extension LastUpdatedStoreTests {
         unread: Int,
         userID: UserID
     ) {
-        let data = ConversationCount(context: contextProviderMock.rootSavingContext)
+        let data = ConversationCount(context: contextProviderMock.viewContext)
         data.labelID = labelID.rawValue
         data.start = start
         data.end = end
@@ -839,7 +839,7 @@ private extension LastUpdatedStoreTests {
         unread: Int,
         userID: UserID
     ) {
-        let data = ConversationCount(context: contextProviderMock.rootSavingContext)
+        let data = ConversationCount(context: contextProviderMock.viewContext)
         data.labelID = labelID.rawValue
         data.unreadStart = start
         data.unreadEnd = end

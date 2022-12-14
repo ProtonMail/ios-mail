@@ -23,7 +23,7 @@
 
 import Foundation
 import XCTest
-import Crypto
+import GoLibs
 import OpenPGP
 
 class OpenPGPTests: XCTestCase {

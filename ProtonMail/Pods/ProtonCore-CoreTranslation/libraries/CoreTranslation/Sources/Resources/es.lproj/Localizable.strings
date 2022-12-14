@@ -45,7 +45,7 @@
 "Antivirus interference" = "Interferencia del antivirus";
 
 /* Error message */
-"Apple informed us they could not process the purchase." = "Apple ha informado de que no se pudo procesar la compra.";
+"Apple informed us they could not process the purchase." = "Apple nos ha informado de que no se pudo procesar la compra.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos ha informado de que ha mejorado el plan de servicio, pero faltan algunos datos técnicos. Envíenos un informe de errores y nuestro equipo se pondrá en contacto con usted.";
@@ -86,7 +86,7 @@
 "Change your password" = "Cambia tu contraseña";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Consulte Estado de Proton para conocer el estado de nuestro sistema.";
+"Check Proton Status for our system status." = "Comprueba Proton Status para conocer el estado de nuestro sistema.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Cerrar";
@@ -227,6 +227,9 @@
 
 /* Error message */
 "Failed to get list of available products from App Store." = "No se ha podido obtener la lista de productos disponibles desde la App Store.";
+
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "por %@";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Por tu seguridad, debemos verificar que la dirección que has introducido te pertenece. Hemos enviado un código de verificación a %@. Introoduce el código a continuación:";

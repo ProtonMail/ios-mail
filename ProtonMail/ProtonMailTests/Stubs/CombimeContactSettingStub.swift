@@ -22,6 +22,6 @@
 
 @testable import ProtonMail
 
-class CombimeContactSettingStub: ContactCombinedCacheProtocol {
+final class CombineContactSettingStub: ContactCombinedCacheProtocol {
     var isCombineContactOn: Bool = false
 }

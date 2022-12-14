@@ -160,8 +160,6 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
                 text = LocalString._general_none
             } else if timeIndex == 0 {
                 text = LocalString._settings_every_time_enter_app
-            } else if timeIndex == 1 {
-                text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
             cell.configureCell(left: eSection.description, right: text, imageType: .arrow)
             return cell
@@ -246,8 +244,6 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
                     text = LocalString._general_none
                 } else if timeIndex == 0 {
                     text = LocalString._settings_every_time_enter_app
-                } else if timeIndex == 1 {
-                    text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                 }
                 alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
                     userCachedStatus.lockTime = AutolockTimeout(rawValue: timeIndex)

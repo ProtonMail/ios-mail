@@ -16,14 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 final class MockFetchMessagesWithReset: FetchMessagesWithResetUseCase {
     let uuid: UUID = UUID()
-    private(set) var executeWasCalled: Bool = false
 
-    func execute(endTime: Int, isUnread: Bool, cleanContact: Bool, removeAllDraft: Bool, hasToBeQueued: Bool, callback: UseCaseResult<Void>?) {
-        executeWasCalled = true
-        callback?(.success(Void()))
+    @FuncStub(MockFetchMessagesWithReset.executionBlock(params:callback:)) var callExecutionBlock
+    override func executionBlock(params: FetchMessagesWithReset.Params, callback: @escaping Callback) {
+        callExecutionBlock(params, callback)
+        callback(.success(Void()))
     }
 }

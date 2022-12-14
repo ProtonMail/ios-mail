@@ -67,11 +67,8 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(AttachmentListTableViewCell.self)
         tableView.rowHeight = 72.0
 
-        var titleToAdd = realAttachment ? "\(viewModel.normalAttachments.count) " : "\(viewModel.attachmentCount) "
-        titleToAdd += viewModel.attachmentCount > 1 ?
-            LocalString._attachments_list_title :
-            LocalString._one_attachment_list_title
-        title = titleToAdd
+        let number = realAttachment ? viewModel.normalAttachments.count : viewModel.attachmentCount
+        title = String(format: LocalString._attachment, number)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(reachabilityChanged(_:)),
@@ -197,27 +194,28 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         }
 
         self.lastClickAttachmentID = attachment.id
-        viewModel.open(attachmentInfo: attachment,
-                       showPreviewer: { [weak self] in
-            guard let self = self else { return }
-            if self.isPKPass(attachment: attachment) { return }
-            self.openQuickLook(attachmentType: .general)
-        }, failed: { [weak self] error in
-            DispatchQueue.main.async {
+        viewModel.open(
+            attachmentInfo: attachment,
+            showPreviewer: { [weak self] in
                 guard let self = self else { return }
-                let errorClosure = { [weak self] (error: NSError) in
-                    let alert = error.localizedDescription.alertController()
-                    alert.addOKAction()
-                    self?.present(alert, animated: true, completion: nil)
+                if self.isPKPass(attachment: attachment) { return }
+                self.openQuickLook(attachmentType: .general)
+            }, failed: { [weak self] error in
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    let errorClosure = { [weak self] (error: NSError) in
+                        let alert = error.localizedDescription.alertController()
+                        alert.addOKAction()
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                    if let previewer = self.previewer {
+                        previewer.dismiss(animated: true) { errorClosure(error) }
+                    } else {
+                        errorClosure(error)
+                    }
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 }
-                if let previewer = self.previewer {
-                    previewer.dismiss(animated: true) { errorClosure(error) }
-                } else {
-                    errorClosure(error)
-                }
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-        })
+            })
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }

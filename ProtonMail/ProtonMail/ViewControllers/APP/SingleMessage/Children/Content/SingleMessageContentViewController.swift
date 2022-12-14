@@ -69,7 +69,6 @@ class SingleMessageContentViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel.set(uiDelegate: self)
-        viewModel.viewDidLoad()
         viewModel.updateErrorBanner = { [weak self] error in
             if let error = error {
                 self?.showBanner()
@@ -105,6 +104,8 @@ class SingleMessageContentViewController: UIViewController {
         setUpHeaderActions()
         embedChildren()
         setUpFooterButtons()
+
+        viewModel.viewDidLoad()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -607,7 +608,7 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
     private func makeSpotlightView() -> SpotlightView {
         SpotlightView(
             title: L11n.EmailTrackerProtection.spotlight_title,
-            message: L11n.EmailTrackerProtection.new_feature_description,
+            message: viewModel.spotlightMessage,
             icon: Asset.trackingProtectionSpotlightIcon
         )
     }

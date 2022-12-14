@@ -51,9 +51,15 @@ class NewMailboxMessageCellPresenter {
             view.checkBoxView.isHidden = false
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
-            let backgroundColor: UIColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
+            let backgroundColor: UIColor
+            if isSelected {
+                backgroundColor = ColorProvider.InteractionNorm
+                view.checkBoxView.tickImageView.image = IconProvider.checkmark
+            } else {
+                backgroundColor = ColorProvider.BackgroundSecondary
+                view.checkBoxView.tickImageView.image = nil
+            }
             view.checkBoxView.backgroundColor = backgroundColor
-            view.checkBoxView.tickImageView.image = isSelected ? IconProvider.checkmark : nil
             if #available(iOS 13, *) {
                 view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
                     .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
@@ -79,23 +85,24 @@ class NewMailboxMessageCellPresenter {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func presentContent(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {
         view.forwardImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.forwardImageView.isHidden = !viewModel.isForwarded
 
         view.replyImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
-        view.replyImageView.isHidden = !viewModel.isReply
+        view.replyImageView.isHidden = !viewModel.isReply || viewModel.isReplyAll
 
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
-        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak: ColorProvider.TextNorm
+        let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
         view.senderLabel.set(text: viewModel.sender,
                              preferredFont: .body,
-                             weight: viewModel.isRead ? .regular: .bold,
+                             weight: viewModel.isRead ? .regular : .bold,
                              textColor: color)
 
-        let weight: UIFont.Weight = viewModel.isRead ? .regular: .semibold
+        let weight: UIFont.Weight = viewModel.isRead ? .regular : .semibold
         if let scheduledTime = viewModel.scheduledTime {
             var scheduledColor = color
             if viewModel.isScheduledTimeInNext10Mins {
@@ -121,7 +128,7 @@ class NewMailboxMessageCellPresenter {
         view.starImageView.isHidden = !viewModel.isStarred
         view.draftImageView.isHidden = viewModel.location != .draft
 
-        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)": nil
+        let count = viewModel.messageCount > 1 ? "\(viewModel.messageCount)" : nil
         view.messageCountLabel.isHidden = count == nil
         view.messageCountLabel.set(text: count,
                                    preferredFont: .caption2,

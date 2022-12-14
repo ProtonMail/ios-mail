@@ -60,14 +60,14 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.deleteButton.setImage(IconProvider.crossSmall, for: .normal)
         self.delegate = delegate
 
-        let color: UIColor = isUploading ? ColorProvider.TextDisabled: ColorProvider.TextNorm
+        let color: UIColor = isUploading ? ColorProvider.TextDisabled : ColorProvider.TextNorm
         fileName.set(text: name,
                      preferredFont: .subheadline,
                      textColor: color,
                      lineBreakMode: .byTruncatingMiddle)
 
         let byteCountFormatter = ByteCountFormatter()
-        let sizeColor: UIColor = isUploading ? ColorProvider.TextDisabled: ColorProvider.TextHint
+        let sizeColor: UIColor = isUploading ? ColorProvider.TextDisabled : ColorProvider.TextHint
         fileSize.set(text: "\(byteCountFormatter.string(fromByteCount: Int64(size)))",
                      preferredFont: .footnote,
                      textColor: sizeColor)

@@ -32,7 +32,7 @@ class RecipientAddressesTests: BaseTestCase {
     
     func testDeletedRecepient() {
         let user = testData.onePassUser
-        let recipient = "liletestpayment@protonmail.com"
+        let recipient = "liletestpayment@proton.me"
         LoginRobot()
             .loginUser(user)
             .compose()

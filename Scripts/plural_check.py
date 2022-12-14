@@ -84,7 +84,8 @@ def find_localizations() -> list:
     return paths
 
 if __name__ == '__main__':
-    paths = find_localizations()
+    # paths = find_localizations()
+    paths = ['/Users/anson/Documents/v4/ProtonMail/ProtonMail/Resource/Localization/Base.lproj/Localizable.stringsdict']
     for path in paths:
         bugs_key = check_plural_file(path)
         if len(bugs_key) > 0:

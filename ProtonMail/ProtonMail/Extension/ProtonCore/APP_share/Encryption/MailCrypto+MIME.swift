@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Crypto
+import GoLibs
 import ProtonCore_Crypto
 
 extension MailCrypto {
@@ -81,10 +81,10 @@ extension MailCrypto {
 
     func decryptMIME(
         encrypted message: String,
-        publicKeys: [Data],
-        keys: [(privateKey: String, passphrase: String)]
+        publicKeys: [ArmoredKey],
+        decryptionKeys: [DecryptionKey]
     ) throws -> MIMEMessageData {
-        let keyRing = try Crypto().buildPrivateKeyRing(keys: keys)
+        let keyRing = try buildPrivateKeyRing(decryptionKeys: decryptionKeys)
 
         let pgpMsg = CryptoPGPMessage(fromArmored: message)
 
@@ -93,7 +93,7 @@ extension MailCrypto {
         if publicKeys.isEmpty {
             verifierKeyRing = nil
         } else {
-            verifierKeyRing = try Crypto().buildKeyRingNonOptional(adding: publicKeys)
+            verifierKeyRing = try buildPublicKeyRing(adding: publicKeys)
         }
 
         let callbacks = CryptoMIMECallbacks()

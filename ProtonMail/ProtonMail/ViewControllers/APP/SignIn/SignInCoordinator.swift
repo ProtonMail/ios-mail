@@ -160,6 +160,11 @@ final class SignInCoordinator {
     }
 
     func start() {
+        #if DEBUG
+        if (ProcessInfo.processInfo.environment["ExtAccountNotSupportedStub"] != nil) {
+            LoginExternalAccountNotSupportedSetup.start()
+        }
+        #endif
         guard isStarted == false else { return }
         isStarted = true
         if login == nil {

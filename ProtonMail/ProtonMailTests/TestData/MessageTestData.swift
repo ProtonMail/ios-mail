@@ -37,7 +37,7 @@ let testMessageMetaData = """
 "Size" : 2217,
 "ToList" : [
 {
-"Address" : "feng88@protonmail.com",
+"Address" : "feng88@proton.me",
 "Name" : "",
 "Group" : ""
 }
@@ -90,14 +90,14 @@ let testMessageDetailData = """
 "ParsedHeaders" : {
 "Subject" : "Important phishing warning for all ProtonMail users",
 "X-Pm-Content-Encryption" : "end-to-end",
-"To" : "feng88@protonmail.com",
+"To" : "feng88@proton.me",
 "X-Auto-Response-Suppress" : "OOF",
 "Precedence" : "bulk",
-"X-Original-To" : "feng88@protonmail.com",
+"X-Original-To" : "feng88@proton.me",
 "Mime-Version" : "1.0",
 "Return-Path" : "<contact@protonmail.ch>",
 "Content-Type" : "texthtml",
-"Delivered-To" : "feng88@protonmail.com",
+"Delivered-To" : "feng88@proton.me",
 "From" : "ProtonMail <contact@protonmail.ch>",
 "Received" : "from mail.protonmail.ch by mail.protonmail.ch; Wed, 02 May 2018 12:43:19 -0400",
 "Message-Id" : "<MQV54A1N98S8ASTB7Z183NM1MG@protonmail.ch>",
@@ -106,7 +106,7 @@ let testMessageDetailData = """
 },
 "ToList" : [
 {
-"Address" : "feng88@protonmail.com",
+"Address" : "feng88@proton.me",
 "Name" : "",
 "Group" : ""
 }
@@ -190,7 +190,7 @@ let testMessageDetailData = """
 "Type" : 0,
 "CCList" : [
 {
-"Address" : "cc@protonmail.com",
+"Address" : "cc@proton.me",
 "Name" : "cc name",
 "Group" : ""
 }
@@ -203,7 +203,7 @@ let testMessageDetailData = """
 }
 """
 
-let testMessageDetailDataWithAutoReply = #"{"ID":"qeSnADkutDnf_mhEI_vJjoEkCt2YMVbxpnX4EF9qm6uTheLp2DDOYx2VHznNYYTbePG0-pCEoBt0xhAXOpmZgw==","Order":401434236846,"ConversationID":"9kzxIsU-SR-MJltgHqSehY5_WfIwyBUDQHtQ6VbMk33XgrHuCDhY8i6seQmvG-rir_u7F7B8akuhrKG4vM0itw==","Subject":"Auto: Test","Unread":0,"SenderAddress":"mt.benlechhab@protonmail.com","SenderName":"Mustapha Tarek BEN LECHHAB","Sender":{"Address":"mt.benlechhab@protonmail.com","Name":"Mustapha Tarek BEN LECHHAB"},"Flags":9237,"Type":0,"IsEncrypted":10,"IsReplied":0,"IsRepliedAll":0,"IsForwarded":0,"ToList":[{"Name":"","Address":"mousstest@protonmail.com","Group":""}],"CCList":[],"BCCList":[],"Time":1629097440,"Size":112,"NumAttachments":0,"ExpirationTime":0,"SpamScore":0,"AddressID":"SPhI2s8Fux2i2eX9BaV8IOyjqifE_mbs_Eh-34Hav6lnLvBis97jAKyMjvLALbMMUe0a-iNTLsI_GI_s9Qb17Q==","ExternalID":"WemzDJo9Oic4MwZPlsbWNOiNAJTBvH71NnrTsuksluYVL1v0mGuzbmKpGdGz8ob1ObcmsVjMrdPM_kxieuTohsguSbgTanl6G_zcmLP7Nao=@protonmail.com","Body":"-----BEGIN PGP MESSAGE-----\nVersion: ProtonMail\n\nwcBMA3bnQeSvZMOdAQgArtCoRcgXOx7duZFGJJVE2XgBOt9ed58Z9k507RBp\nKrCCWQtwRAuMf8fTImEQGTpE0kX1EiujvvPeWPPgwd3OIEKPNcY/iTwTexuR\nZ1zStaVjnJpis98w7zUmly0RDY+9EavivImCUwBkkpz2xy2OJ9DBr6A+dUbD\nJDG6KF56rQBmZzIjfQ4Q4kVKsK3gFrBqjDgigL7WNzvjhHNPLLZtWbrXT7AM\nJ+uDs+057+F4widQf0AmW+0WPFFD9PJJfyY+IC1rKSTxRBNirJsWHljI6Q0Q\nUf/RaHCziaOn7Culnk4UDAqwqFoAQO9sQcMreSxMORqUGg0zZGfCAdOUB8iw\nnNJuAY9UCFY4UdZV36p+gPAmtP/rOqg7v/dt0JPcMdZ3X54ydS/Hn/vzKaHd\nh9cIW/OpplQiGMDnapbz93Wo/QFu3vmmHB0GtTYKbtm+IBJgiU8okGii7T1O\nlG8XXLp8oRbWjRkRxqjXWxDsA2jEiHA=\n=uog7\n-----END PGP MESSAGE-----\n","MIMEType":"text/html","Header":"In-Reply-To: <7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@protonmail.com>\r\nReferences: <7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@protonmail.com>\r\nAuto-Submitted: auto-replied\r\nX-Auto-Response-Suppress: OOF\r\nX-Autoreply: yes\r\nPrecedence: bulk\r\nX-Pm-Origin: internal\r\nX-Pm-Content-Encryption: on-delivery\r\nSubject: Auto: Test\r\nTo: mousstest@protonmail.com\r\nFrom: Mustapha Tarek BEN LECHHAB <mt.benlechhab@protonmail.com>\r\nDate: Mon, 16 Aug 2021 07:04:00 +0000\r\nMime-Version: 1.0\r\nContent-Type: text/html\r\nMessage-Id: <WemzDJo9Oic4MwZPlsbWNOiNAJTBvH71NnrTsuksluYVL1v0mGuzbmKpGdGz8ob1ObcmsVjMrdPM_kxieuTohsguSbgTanl6G_zcmLP7Nao=@protonmail.com>\r\nX-Pm-Spamscore: 0\r\nReceived: from mail.protonmail.ch by mail.protonmail.ch; Mon, 16 Aug 2021 07:04:05 +0000\r\nX-Original-To: mousstest@protonmail.com\r\nReturn-Path: <mt.benlechhab@protonmail.com>\r\nDelivered-To: mousstest@protonmail.com\r\n","ParsedHeaders":{"In-Reply-To":"<7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@protonmail.com>","References":"<7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@protonmail.com>","Auto-Submitted":"auto-replied","X-Auto-Response-Suppress":"OOF","X-Autoreply":"yes","Precedence":"bulk","X-Pm-Origin":"internal","X-Pm-Content-Encryption":"on-delivery","Subject":"Auto: Test","To":"mousstest@protonmail.com","From":"Mustapha Tarek BEN LECHHAB <mt.benlechhab@protonmail.com>","Date":"Mon, 16 Aug 2021 07:04:00 +0000","Mime-Version":"1.0","Content-Type":"text/html","Message-Id":"<WemzDJo9Oic4MwZPlsbWNOiNAJTBvH71NnrTsuksluYVL1v0mGuzbmKpGdGz8ob1ObcmsVjMrdPM_kxieuTohsguSbgTanl6G_zcmLP7Nao=@protonmail.com>","X-Pm-Spamscore":"0","Received":"from mail.protonmail.ch by mail.protonmail.ch; Mon, 16 Aug 2021 07:04:05 +0000","X-Original-To":"mousstest@protonmail.com","Return-Path":"<mt.benlechhab@protonmail.com>","Delivered-To":"mousstest@protonmail.com"},"ReplyTo":{"Address":"mt.benlechhab@protonmail.com","Name":"Mustapha Tarek BEN LECHHAB"},"ReplyTos":[{"Address":"mt.benlechhab@protonmail.com","Name":"Mustapha Tarek BEN LECHHAB"}],"Attachments":[],"LabelIDs":["0","5","o5ET9fo8-AkcIrLv8fcd_-Ql0p7ae6-YmXHc29C7ZxawOOu8zRLuSjHr2WcDkGHraF0AqHEiqOjAUGCKypVpBw==","SI4NoIQm96O22oThdXunloRQn-9FJIA_dt1GIyvRZLhNxepWCWREdlsFGnRfCPJanegU-fnQ68oZnv7v3XheAw=="]}"#
+let testMessageDetailDataWithAutoReply = #"{"ID":"qeSnADkutDnf_mhEI_vJjoEkCt2YMVbxpnX4EF9qm6uTheLp2DDOYx2VHznNYYTbePG0-pCEoBt0xhAXOpmZgw==","Order":401434236846,"ConversationID":"9kzxIsU-SR-MJltgHqSehY5_WfIwyBUDQHtQ6VbMk33XgrHuCDhY8i6seQmvG-rir_u7F7B8akuhrKG4vM0itw==","Subject":"Auto: Test","Unread":0,"SenderAddress":"mt.benlechhab@proton.me","SenderName":"Mustapha Tarek BEN LECHHAB","Sender":{"Address":"mt.benlechhab@proton.me","Name":"Mustapha Tarek BEN LECHHAB"},"Flags":9237,"Type":0,"IsEncrypted":10,"IsReplied":0,"IsRepliedAll":0,"IsForwarded":0,"ToList":[{"Name":"","Address":"mousstest@proton.me","Group":""}],"CCList":[],"BCCList":[],"Time":1629097440,"Size":112,"NumAttachments":0,"ExpirationTime":0,"SpamScore":0,"AddressID":"SPhI2s8Fux2i2eX9BaV8IOyjqifE_mbs_Eh-34Hav6lnLvBis97jAKyMjvLALbMMUe0a-iNTLsI_GI_s9Qb17Q==","ExternalID":"WemzDJo9Oic4MwZPlsbWNOiNAJTBvH71NnrTsuksluYVL1v0mGuzbmKpGdGz8ob1ObcmsVjMrdPM_kxieuTohsguSbgTanl6G_zcmLP7Nao=@proton.me","Body":"-----BEGIN PGP MESSAGE-----\nVersion: ProtonMail\n\nwcBMA3bnQeSvZMOdAQgArtCoRcgXOx7duZFGJJVE2XgBOt9ed58Z9k507RBp\nKrCCWQtwRAuMf8fTImEQGTpE0kX1EiujvvPeWPPgwd3OIEKPNcY/iTwTexuR\nZ1zStaVjnJpis98w7zUmly0RDY+9EavivImCUwBkkpz2xy2OJ9DBr6A+dUbD\nJDG6KF56rQBmZzIjfQ4Q4kVKsK3gFrBqjDgigL7WNzvjhHNPLLZtWbrXT7AM\nJ+uDs+057+F4widQf0AmW+0WPFFD9PJJfyY+IC1rKSTxRBNirJsWHljI6Q0Q\nUf/RaHCziaOn7Culnk4UDAqwqFoAQO9sQcMreSxMORqUGg0zZGfCAdOUB8iw\nnNJuAY9UCFY4UdZV36p+gPAmtP/rOqg7v/dt0JPcMdZ3X54ydS/Hn/vzKaHd\nh9cIW/OpplQiGMDnapbz93Wo/QFu3vmmHB0GtTYKbtm+IBJgiU8okGii7T1O\nlG8XXLp8oRbWjRkRxqjXWxDsA2jEiHA=\n=uog7\n-----END PGP MESSAGE-----\n","MIMEType":"text/html","Header":"In-Reply-To: <7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@proton.me>\r\nReferences: <7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@proton.me>\r\nAuto-Submitted: auto-replied\r\nX-Auto-Response-Suppress: OOF\r\nX-Autoreply: yes\r\nPrecedence: bulk\r\nX-Pm-Origin: internal\r\nX-Pm-Content-Encryption: on-delivery\r\nSubject: Auto: Test\r\nTo: mousstest@proton.me\r\nFrom: Mustapha Tarek BEN LECHHAB <mt.benlechhab@proton.me>\r\nDate: Mon, 16 Aug 2021 07:04:00 +0000\r\nMime-Version: 1.0\r\nContent-Type: text/html\r\nMessage-Id: <WemzDJo9Oic4MwZPlsbWNOiNAJTBvH71NnrTsuksluYVL1v0mGuzbmKpGdGz8ob1ObcmsVjMrdPM_kxieuTohsguSbgTanl6G_zcmLP7Nao=@proton.me>\r\nX-Pm-Spamscore: 0\r\nReceived: from mail.protonmail.ch by mail.protonmail.ch; Mon, 16 Aug 2021 07:04:05 +0000\r\nX-Original-To: mousstest@proton.me\r\nReturn-Path: <mt.benlechhab@proton.me>\r\nDelivered-To: mousstest@proton.me\r\n","ParsedHeaders":{"In-Reply-To":"<7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@proton.me>","References":"<7bMpq4BTX2dHPPbeidrilXh9iEThQUdRLUg-DNDp6dtE1yENT8nTHJbTIhgVbSiiWurZlepKOPrWnkfzKHWlKBIo_c_KQKmFDYhkRlU79dE=@proton.me>","Auto-Submitted":"auto-replied","X-Auto-Response-Suppress":"OOF","X-Autoreply":"yes","Precedence":"bulk","X-Pm-Origin":"internal","X-Pm-Content-Encryption":"on-delivery","Subject":"Auto: Test","To":"mousstest@proton.me","From":"Mustapha Tarek BEN LECHHAB <mt.benlechhab@proton.me>","Date":"Mon, 16 Aug 2021 07:04:00 +0000","Mime-Version":"1.0","Content-Type":"text/html","Message-Id":"<WemzDJo9Oic4MwZPlsbWNOiNAJTBvH71NnrTsuksluYVL1v0mGuzbmKpGdGz8ob1ObcmsVjMrdPM_kxieuTohsguSbgTanl6G_zcmLP7Nao=@proton.me>","X-Pm-Spamscore":"0","Received":"from mail.protonmail.ch by mail.protonmail.ch; Mon, 16 Aug 2021 07:04:05 +0000","X-Original-To":"mousstest@proton.me","Return-Path":"<mt.benlechhab@proton.me>","Delivered-To":"mousstest@proton.me"},"ReplyTo":{"Address":"mt.benlechhab@proton.me","Name":"Mustapha Tarek BEN LECHHAB"},"ReplyTos":[{"Address":"mt.benlechhab@proton.me","Name":"Mustapha Tarek BEN LECHHAB"}],"Attachments":[],"LabelIDs":["0","5","o5ET9fo8-AkcIrLv8fcd_-Ql0p7ae6-YmXHc29C7ZxawOOu8zRLuSjHr2WcDkGHraF0AqHEiqOjAUGCKypVpBw==","SI4NoIQm96O22oThdXunloRQn-9FJIA_dt1GIyvRZLhNxepWCWREdlsFGnRfCPJanegU-fnQ68oZnv7v3XheAw=="]}"#
 
 let testFetchingMessagesDataInInbox = """
 {
@@ -230,7 +230,7 @@ let testFetchingMessagesDataInInbox = """
         "IsForwarded": 0,
         "ToList": [{
             "Name": "",
-            "Address": "gocesim@protonmail.com",
+            "Address": "gocesim@proton.me",
             "Group": ""
         }],
         "CCList": [],
@@ -262,7 +262,7 @@ let testFetchingMessagesDataInInbox = """
         "IsForwarded": 0,
         "ToList": [{
             "Name": "",
-            "Address": "gocesim@protonmail.com",
+            "Address": "gocesim@proton.me",
             "Group": ""
         }],
         "CCList": [],
@@ -280,10 +280,10 @@ let testFetchingMessagesDataInInbox = """
         "ConversationID": "fcbec1xHYjchBzX-FvS3g4DulNhXart_oTspksGLq9C7eMTGG_fN1CVQiJEg9O8J_uB9Xdp78_RC8YnCnQYjgw==",
         "Subject": "Testing cross-platform operability",
         "Unread": 0,
-        "SenderAddress": "testios12@protonmail.com",
+        "SenderAddress": "testios12@proton.me",
         "SenderName": "Filip Testira",
         "Sender": {
-            "Address": "testios12@protonmail.com",
+            "Address": "testios12@proton.me",
             "Name": "Filip Testira"
         },
         "Flags": 9229,
@@ -293,8 +293,8 @@ let testFetchingMessagesDataInInbox = """
         "IsRepliedAll": 0,
         "IsForwarded": 0,
         "ToList": [{
-            "Name": "gocesim@protonmail.com",
-            "Address": "gocesim@protonmail.com",
+            "Name": "gocesim@proton.me",
+            "Address": "gocesim@proton.me",
             "Group": ""
         }],
         "CCList": [],
@@ -304,7 +304,7 @@ let testFetchingMessagesDataInInbox = """
         "NumAttachments": 8,
         "ExpirationTime": 0,
         "AddressID": "AJIr9-obxp13KC6I-QfDmg97p0ZQ6pLC8IB-guiq5vpg1Iv-bc5yAT-cXspACnvWRhsb7FPf572ed10hhih1ww==",
-        "ExternalID": "gzZjBltAdvXB1l6h_iXhWvpCqgfzJ4AKPV2AkO5ElOgT5rjJvVRDq5BIuYLH8AY2Urmr3m7T57_DPPcEH2cXuOXNxwFla5bAq5YxlIXsWH8=@protonmail.com",
+        "ExternalID": "gzZjBltAdvXB1l6h_iXhWvpCqgfzJ4AKPV2AkO5ElOgT5rjJvVRDq5BIuYLH8AY2Urmr3m7T57_DPPcEH2cXuOXNxwFla5bAq5YxlIXsWH8=@proton.me",
         "LabelIDs": ["0", "5"]
     }, {
         "ID": "ylgAmW17HJcRJSj5FFx5XILy0WmIqXEXzNfqoR_UO1hqkeemUhN7gbGwF8-2OfFMAdJnT5MFopsMeJKG7XN2gg==",
@@ -326,7 +326,7 @@ let testFetchingMessagesDataInInbox = """
         "IsForwarded": 0,
         "ToList": [{
             "Name": "",
-            "Address": "gocesim@protonmail.com",
+            "Address": "gocesim@proton.me",
             "Group": ""
         }],
         "CCList": [],
@@ -368,7 +368,7 @@ let testBadFormatedFetchingMessagesDataInInbox = """
         "IsForwarded": 0,
         "ToList": [{
             "Name": "",
-            "Address": "gocesim@protonmail.com",
+            "Address": "gocesim@proton.me",
             "Group": ""
         }],
         "CCList": [],
@@ -488,10 +488,10 @@ let testSentMessageWithGroupToAndCC = """
   "ConversationID": "W8F_XgflBkb-",
   "Subject": "Test cc",
   "Unread": 0,
-  "SenderAddress": "testSender@protonmail.com",
+  "SenderAddress": "testSender@proton.me",
   "SenderName": "test sender",
   "Sender": {
-    "Address": "testSender@protonmail.com",
+    "Address": "testSender@proton.me",
     "Name": "test sender"
   },
   "Flags": 8198,
@@ -508,7 +508,7 @@ let testSentMessageWithGroupToAndCC = """
     },
     {
       "Name": "test1",
-      "Address": "test1@protonmail.com",
+      "Address": "test1@proton.me",
       "Group": "groupA"
     },
     {
@@ -523,7 +523,7 @@ let testSentMessageWithGroupToAndCC = """
     },
     {
       "Name": "test4",
-      "Address": "test4@protonmail.com",
+      "Address": "test4@proton.me",
       "Group": "groupA"
     }
   ],
@@ -558,10 +558,10 @@ let testSentMessageWithToAndCC = """
   "ConversationID": "W8F_XgflBkb-",
   "Subject": "Test cc",
   "Unread": 0,
-  "SenderAddress": "testSender@protonmail.com",
+  "SenderAddress": "testSender@proton.me",
   "SenderName": "test sender",
   "Sender": {
-    "Address": "testSender@protonmail.com",
+    "Address": "testSender@proton.me",
     "Name": "test sender"
   },
   "Flags": 8198,
@@ -578,7 +578,7 @@ let testSentMessageWithToAndCC = """
     },
     {
       "Name": "test1",
-      "Address": "test1@protonmail.com",
+      "Address": "test1@proton.me",
       "Group": ""
     },
     {
@@ -593,7 +593,7 @@ let testSentMessageWithToAndCC = """
     },
     {
       "Name": "test4",
-      "Address": "test4@protonmail.com",
+      "Address": "test4@proton.me",
       "Group": ""
     }
   ],
@@ -628,10 +628,10 @@ let testSentMessageWithToCCAndBCC = """
   "ConversationID": "W8F_XgflBkb-",
   "Subject": "Test cc",
   "Unread": 0,
-  "SenderAddress": "testSender@protonmail.com",
+  "SenderAddress": "testSender@proton.me",
   "SenderName": "test sender",
   "Sender": {
-    "Address": "testSender@protonmail.com",
+    "Address": "testSender@proton.me",
     "Name": "test sender"
   },
   "Flags": 8198,
@@ -648,7 +648,7 @@ let testSentMessageWithToCCAndBCC = """
     },
     {
       "Name": "test1",
-      "Address": "test1@protonmail.com",
+      "Address": "test1@proton.me",
       "Group": ""
     },
     {
@@ -672,7 +672,7 @@ let testSentMessageWithToCCAndBCC = """
         },
         {
           "Name": "test4",
-          "Address": "test4@protonmail.com",
+          "Address": "test4@proton.me",
           "Group": ""
         }
   ],

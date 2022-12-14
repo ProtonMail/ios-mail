@@ -25,7 +25,7 @@ import UIKit
 let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
 
 /// Main entry point to the app
-class ShareAppCoordinator {
+final class ShareAppCoordinator {
     // navigation controller instance -- entry
     internal weak var navigationController: UINavigationController?
     private var nextCoordinator: ShareUnlockCoordinator?
@@ -47,7 +47,6 @@ class ShareAppCoordinator {
         self.navigationController = navigation
     }
 
-    ///
     private func loadUnlockCheckView() {
         // create next coordinator
         self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: sharedServices)
@@ -56,6 +55,12 @@ class ShareAppCoordinator {
 }
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
+    func setupCoreData() {
+        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self,
+                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+    }
+
     func isUserStored() -> Bool {
         return isUserCredentialStored
     }
@@ -71,7 +76,7 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        guard let _ = uid else {
+        guard uid != nil else {
             return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
         }
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty

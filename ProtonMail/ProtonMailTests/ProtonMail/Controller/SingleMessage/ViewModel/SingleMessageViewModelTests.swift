@@ -70,9 +70,9 @@ final class SingleMessageViewModelTests: XCTestCase {
     }
 
     func testToolbarActionTypes_messageIsTrash_containsDelete() {
-        let label = Label(context: contextProviderMock.mainContext)
+        let label = Label(context: contextProviderMock.viewContext)
         label.labelID = Message.Location.trash.rawValue
-        let message = Message(context: contextProviderMock.mainContext)
+        let message = Message(context: contextProviderMock.viewContext)
         message.add(labelID: Message.Location.trash.rawValue)
         makeSUT(labelID: Message.Location.inbox.labelID, message: .init(message))
 
@@ -101,11 +101,16 @@ final class SingleMessageViewModelTests: XCTestCase {
     private func makeSUT(labelID: LabelID, message: MessageEntity? = nil) {
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
-        let message = message ?? MessageEntity(Message(context: contextProviderMock.mainContext))
+        let message = message ?? MessageEntity(Message(context: contextProviderMock.viewContext))
 
         let factory = SingleMessageViewModelFactory()
         let timeStamp = Date.now.timeIntervalSince1970
         let systemTime = SystemUpTimeMock(localServerTime: timeStamp, localSystemUpTime: 100, systemUpTime: 100)
-        sut = factory.createViewModel(labelId: labelID, message: message, user: fakeUser, systemUpTime: systemTime, goToDraft: { _ in })
+        sut = factory.createViewModel(labelId: labelID,
+                                      message: message,
+                                      user: fakeUser,
+                                      systemUpTime: systemTime,
+                                      internetStatusProvider: InternetConnectionStatusProvider(),
+                                      goToDraft: { _ in })
     }
 }

@@ -64,6 +64,7 @@ public class AlamofireSession: Session {
     
     public init() {
         self.session = AfSession(
+            configuration: URLSessionConfiguration.af.ephemeral,
             delegate: sessionChallenge,
             redirectHandler: Redirector.doNotFollow
         )
@@ -332,8 +333,8 @@ extension AlamofireSession {
             }
             data.append(keyPacket, withName: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
             data.append(dataPacket, withName: "DataPacket", fileName: "DataPacket.txt", mimeType: "" )
-            if let sign = signature {
-                data.append(sign, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
+            if let signature = signature {
+                data.append(signature, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
             }
         }, with: alamofireRequest, interceptor: alamofireRequest.interceptor)
         .onURLSessionTaskCreation { task in
@@ -481,8 +482,8 @@ extension AlamofireSession {
             }
             data.append(keyPacket, withName: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
             data.append(dataPacketSourceFileURL, withName: "DataPacket", fileName: "DataPacket.txt", mimeType: "")
-            if let sign = signature {
-                data.append(sign, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
+            if let signature = signature {
+                data.append(signature, withName: "Signature", fileName: "Signature.txt", mimeType: "" )
             }
         }, with: alamofireRequest, interceptor: alamofireRequest.interceptor)
         .onURLSessionTaskCreation { task in

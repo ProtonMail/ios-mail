@@ -32,16 +32,16 @@ class SpringboardShortcutsService: NSObject, Service {
             switch self {
             case .search:
                 let deeplink = DeepLink(String(describing: MenuViewController.self))
-                deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
+                deeplink.append(mailboxNode(location: .inbox))
                 deeplink.append(.init(name: String(describing: SearchViewController.self)))
                 return deeplink
             case .favorites:
                 let deeplink = DeepLink(String(describing: MenuViewController.self))
-                deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.starred))
+                deeplink.append(mailboxNode(location: .starred))
                 return deeplink
             case .compose:
                 let deeplink = DeepLink(String(describing: MenuViewController.self))
-                deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
+                deeplink.append(mailboxNode(location: .inbox))
                 deeplink.append(DeepLink.Node(name: String(describing: ComposeContainerViewController.self)))
                 return deeplink
             }
@@ -49,26 +49,45 @@ class SpringboardShortcutsService: NSObject, Service {
 
         var localization: String {
             switch self {
-            case .search: return LocalString._springboard_shortcuts_search
-            case .favorites: return LocalString._springboard_shortcuts_starred
-            case .compose: return LocalString._springboard_shortcuts_composer
+            case .search:
+                return LocalString._springboard_shortcuts_search
+            case .favorites:
+                return LocalString._springboard_shortcuts_starred
+            case .compose:
+                return LocalString._springboard_shortcuts_composer
             }
         }
 
         var icon: UIApplicationShortcutIcon {
             switch self {
-            case .search: return .init(templateImageName: "ic-magnifier")
-            case .favorites: return .init(templateImageName: "ic-star-filled")
-            case .compose: return .init(templateImageName: "ic-pen-square")
+            case .search:
+                return .init(templateImageName: "ic-magnifier")
+            case .favorites:
+                return .init(templateImageName: "ic-star-filled")
+            case .compose:
+                return .init(templateImageName: "ic-pen-square")
             }
+        }
+
+        private func mailboxNode(location: Message.Location) -> DeepLink.Node {
+            DeepLink.Node(
+                name: String(describing: MailboxViewController.self),
+                value: location
+            )
         }
     }
 
     override init() {
         super.init()
         self.updateShortcuts()
-        NotificationCenter.default.addObserver(forName: .didSignIn, object: nil, queue: nil, using: { [weak self] _ in self?.addShortcuts() })
-        NotificationCenter.default.addObserver(forName: .didSignOut, object: nil, queue: nil, using: { [weak self] _ in self?.removeShortcuts() })
+        NotificationCenter.default.addObserver(forName: .didSignIn, object: nil, queue: nil, using: { [weak self] _ in
+            self?.addShortcuts()
+
+        })
+        NotificationCenter.default.addObserver(forName: .didSignOut, object: nil, queue: nil, using: { [weak self] _ in
+            self?.removeShortcuts()
+
+        })
         trackLifetime()
     }
 
@@ -93,6 +112,7 @@ class SpringboardShortcutsService: NSObject, Service {
                                                     userInfo: ["deeplink": deeplink as NSSecureCoding])
         }
     }
+
     private func removeShortcuts() {
         UIApplication.shared.shortcutItems = []
     }

@@ -30,10 +30,10 @@ extension UserDataService {
         userInfo: UserInfo,
         flag: ShowImages,
         enable: Bool,
-        completion: @escaping UserInfoBlock
+        completion: @escaping (NSError?) -> Void
     ) {
         guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
-            completion(nil, nil, NSError.lockError())
+            completion(NSError.lockError())
             return
         }
 
@@ -50,7 +50,7 @@ extension UserDataService {
             if response.error == nil {
                 userInfo.showImages = newStatus
             }
-            completion(userInfo, nil, response.error?.toNSError)
+            completion(response.error?.toNSError)
         }
     }
 }

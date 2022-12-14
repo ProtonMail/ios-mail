@@ -27,7 +27,7 @@ class CardDataParserTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let userPrivateKey = Key(keyID: "", privateKey: ContactParserTestData.privateKey)
+        let userPrivateKey = ContactParserTestData.privateKey
         sut = CardDataParser(userKeys: [userPrivateKey])
     }
 
@@ -39,9 +39,9 @@ class CardDataParserTests: XCTestCase {
 
     func testParsesCorrectContactWithValidSignature() throws {
         let cardData = CardData(
-            t: .SignedOnly,
-            d: ContactParserTestData.signedOnlyData,
-            s: ContactParserTestData.signedOnlySignature
+            type: .SignedOnly,
+            data: ContactParserTestData.signedOnlyData,
+            signature: ContactParserTestData.signedOnlySignature
         )
 
         let parsed = try sut.verifyAndParseContact(with: email, from: [cardData]).wait()
@@ -50,9 +50,9 @@ class CardDataParserTests: XCTestCase {
 
     func testRejectsCorrectContactIfSignatureIsInvalid() {
         let cardData = CardData(
-            t: .SignedOnly,
-            d: ContactParserTestData.signedOnlyData,
-            s: "invalid signature"
+            type: .SignedOnly,
+            data: ContactParserTestData.signedOnlyData,
+            signature: "invalid signature"
         )
 
         XCTAssertThrowsError(try sut.verifyAndParseContact(with: email, from: [cardData]).wait())
@@ -62,9 +62,9 @@ class CardDataParserTests: XCTestCase {
         let ignoredTypes: [CardDataType] = [.PlainText, .EncryptedOnly, .SignAndEncrypt]
         let unhandledCards = ignoredTypes.map {
             CardData(
-                t: $0,
-                d: ContactParserTestData.signedOnlyData,
-                s: ContactParserTestData.signedOnlySignature
+                type: $0,
+                data: ContactParserTestData.signedOnlyData,
+                signature: ContactParserTestData.signedOnlySignature
             )
         }
 

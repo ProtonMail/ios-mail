@@ -25,99 +25,56 @@ final class ScheduleSendLocationStatusObserver: NSObject, NSFetchedResultsContro
     private var countUpdate: ((Int) -> Void)?
     private var currentCount = 0
     private let userID: UserID
-    private weak var viewModeDataSource: ViewModeDataSource?
 
-    init?(contextProvider: CoreDataContextProviderProtocol,
-          userID: UserID,
-          viewModelDataSource: ViewModeDataSource,
-          isEnable: Bool = UserInfo.isScheduleSendEnable) {
-        guard isEnable else {
-            return nil
-        }
+    init(
+        contextProvider: CoreDataContextProviderProtocol,
+        userID: UserID
+    ) {
         self.context = contextProvider.mainContext
         self.userID = userID
-        self.viewModeDataSource = viewModelDataSource
     }
 
-    private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
+    private lazy var fetchResultsController: NSFetchedResultsController<Message>? = {
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
-            format: "%K == %@ AND %K == %@",
-            LabelUpdate.Attributes.userID,
+            format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@)",
+            Message.Location.scheduled.rawValue,
+            Message.Attributes.messageStatus,
+            0,
+            Message.Attributes.userID,
             userID.rawValue,
-            LabelUpdate.Attributes.labelID,
-            Message.Location.scheduled.rawValue
+            Message.Attributes.isSoftDeleted,
+            NSNumber(false)
         )
-        let sortDescriptor = NSSortDescriptor(key: LabelUpdate.Attributes.userID,
-                                              ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        return NSFetchedResultsController(fetchRequest: fetchRequest,
-                                          managedObjectContext: context,
-                                          sectionNameKeyPath: nil,
-                                          cacheName: nil)
-    }()
-
-    private lazy var conversationCountFetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(
-            format: "%K == %@ AND %K == %@",
-            ConversationCount.Attributes.userID,
-            userID.rawValue,
-            ConversationCount.Attributes.labelID,
-            Message.Location.scheduled.rawValue
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+        ]
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
         )
-        let sortDescriptor = NSSortDescriptor(key: ConversationCount.Attributes.userID,
-                                              ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        return NSFetchedResultsController(fetchRequest: fetchRequest,
-                                          managedObjectContext: context,
-                                          sectionNameKeyPath: nil,
-                                          cacheName: nil)
     }()
 
     func observe(countUpdate: @escaping (Int) -> Void) -> Int {
         self.countUpdate = countUpdate
 
-        fetchedController?.delegate = self
-        try? fetchedController?.performFetch()
+        fetchResultsController?.delegate = self
+        try? fetchResultsController?.performFetch()
 
-        conversationCountFetchedController?.delegate = self
-        try? conversationCountFetchedController?.performFetch()
-
-        guard let viewMode = viewModeDataSource?.getCurrentViewMode() else {
-            return 0
-        }
-
-        switch viewMode {
-        case .conversation:
-            currentCount = Int(
-                (conversationCountFetchedController?.fetchedObjects?.first as? ConversationCount)?.total ?? 0
-            )
-        case .singleMessage:
-            currentCount = Int((fetchedController?.fetchedObjects?.first as? LabelUpdate)?.total ?? 0)
-        }
+        currentCount = Int(fetchResultsController?.fetchedObjects?.count ?? 0)
 
         return currentCount
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let viewMode = viewModeDataSource?.getCurrentViewMode() else {
+        var newValue: Int = 0
+        guard let msgCount = controller.fetchedObjects?.count else {
             return
         }
-
-        var newValue: Int = 0
-        switch viewMode {
-        case .conversation:
-            guard let labelUpdate = controller.fetchedObjects?.first as? ConversationCount else {
-                return
-            }
-            newValue = max(Int(labelUpdate.total), 0)
-        case .singleMessage:
-            guard let labelUpdate = controller.fetchedObjects?.first as? LabelUpdate else {
-                return
-            }
-            newValue = max(Int(labelUpdate.total), 0)
-        }
+        newValue = max(msgCount, 0)
 
         if currentCount != newValue {
             countUpdate?(newValue)

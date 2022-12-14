@@ -26,13 +26,11 @@ import CoreData
 import Groot
 
 class MessageDataServiceTests: XCTestCase {
-    var coreDataService: CoreDataService!
     var testContext: NSManagedObjectContext!
     let customLabelId: LabelID = "Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw=="
 
     override func setUpWithError() throws {
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        testContext = coreDataService.mainContext
+        testContext = MockCoreDataStore.testPersistentContainer.viewContext
 
         let parsedLabel = testLabelsData.parseJson()!
         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName,
@@ -43,7 +41,6 @@ class MessageDataServiceTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        coreDataService = nil
         testContext = nil
     }
 

@@ -6,12 +6,9 @@
 //
 
 #include "Push-Shared.xcconfig"
+#include "Enterprise-common.xcconfig"
 
 CODE_SIGN_ENTITLEMENTS = 
-CODE_SIGN_IDENTITY = Apple Development
-CODE_SIGN_STYLE = Manual
-DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
-DEVELOPMENT_TEAM = 6UN54H93QT
 INFOPLIST_FILE = Push/InfoDev.plist
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE -DEnterprise
 PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev

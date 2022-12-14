@@ -19,11 +19,1102 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-// swiftlint:disable line_length identifier_name
+// swiftlint:disable line_length identifier_name cyclomatic_complexity function_body_length
 
 import Foundation
 
-public var CoreString = LocalizedString()
+@dynamicMemberLookup
+public struct CoreString {
+    
+    private static var localizedStringInstance = LocalizedString()
+    
+    public static func reset() {
+        localizedStringInstance = LocalizedString()
+    }
+    
+    public static subscript(dynamicMember keyPath: KeyPath<LocalizedStringAccessors, LocalizedStringAccessors>) -> String {
+        // it doesn't matter which instance/case we'll use to access keyPath, __general_ok_action is just a random choice
+        // and the only reason we need to use the instance at all is that dynamic member lookup doesn't support static members (including enum cases)
+        LocalizedStringAccessors.__general_ok_action[keyPath: keyPath].localizedString(from: localizedStringInstance)
+    }
+}
+
+public enum LocalizedStringAccessors: CaseIterable {
+    
+    case __hv_title
+    public var _hv_title: LocalizedStringAccessors { .__hv_title }
+
+    case __hv_captha_method_name
+    public var _hv_captha_method_name: LocalizedStringAccessors { .__hv_captha_method_name }
+
+    case __hv_sms_method_name
+    public var _hv_sms_method_name: LocalizedStringAccessors { .__hv_sms_method_name }
+
+    case __hv_email_method_name
+    public var _hv_email_method_name: LocalizedStringAccessors { .__hv_email_method_name }
+
+    case __hv_help_button
+    public var _hv_help_button: LocalizedStringAccessors { .__hv_help_button }
+
+    case __hv_ok_button
+    public var _hv_ok_button: LocalizedStringAccessors { .__hv_ok_button }
+
+    case __hv_cancel_button
+    public var _hv_cancel_button: LocalizedStringAccessors { .__hv_cancel_button }
+
+    case __hv_email_enter_label
+    public var _hv_email_enter_label: LocalizedStringAccessors { .__hv_email_enter_label }
+
+    case __hv_email_label
+    public var _hv_email_label: LocalizedStringAccessors { .__hv_email_label }
+
+    case __hv_email_verification_button
+    public var _hv_email_verification_button: LocalizedStringAccessors { .__hv_email_verification_button }
+
+    case __hv_sms_enter_label
+    public var _hv_sms_enter_label: LocalizedStringAccessors { .__hv_sms_enter_label }
+
+    case __hv_sms_label
+    public var _hv_sms_label: LocalizedStringAccessors { .__hv_sms_label }
+
+    case __hv_sms_search_placeholder
+    public var _hv_sms_search_placeholder: LocalizedStringAccessors { .__hv_sms_search_placeholder }
+
+    case __hv_verification_enter_sms_code
+    public var _hv_verification_enter_sms_code: LocalizedStringAccessors { .__hv_verification_enter_sms_code }
+
+    case __hv_verification_enter_email_code
+    public var _hv_verification_enter_email_code: LocalizedStringAccessors { .__hv_verification_enter_email_code }
+
+    case __hv_verification_code
+    public var _hv_verification_code: LocalizedStringAccessors { .__hv_verification_code }
+
+    case __hv_verification_code_hint
+    public var _hv_verification_code_hint: LocalizedStringAccessors { .__hv_verification_code_hint }
+
+    case __hv_verification_verify_button
+    public var _hv_verification_verify_button: LocalizedStringAccessors { .__hv_verification_verify_button }
+
+    case __hv_verification_verifying_button
+    public var _hv_verification_verifying_button: LocalizedStringAccessors { .__hv_verification_verifying_button }
+
+    case __hv_verification_not_receive_code_button
+    public var _hv_verification_not_receive_code_button: LocalizedStringAccessors { .__hv_verification_not_receive_code_button }
+
+    case __hv_verification_error_alert_title
+    public var _hv_verification_error_alert_title: LocalizedStringAccessors { .__hv_verification_error_alert_title }
+
+    case __hv_verification_error_alert_message
+    public var _hv_verification_error_alert_message: LocalizedStringAccessors { .__hv_verification_error_alert_message }
+
+    case __hv_verification_error_alert_resend
+    public var _hv_verification_error_alert_resend: LocalizedStringAccessors { .__hv_verification_error_alert_resend }
+
+    case __hv_verification_error_alert_other_method
+    public var _hv_verification_error_alert_other_method: LocalizedStringAccessors { .__hv_verification_error_alert_other_method }
+
+    case __hv_verification_new_alert_title
+    public var _hv_verification_new_alert_title: LocalizedStringAccessors { .__hv_verification_new_alert_title }
+
+    case __hv_verification_new_alert_message
+    public var _hv_verification_new_alert_message: LocalizedStringAccessors { .__hv_verification_new_alert_message }
+
+    case __hv_verification_new_alert_button
+    public var _hv_verification_new_alert_button: LocalizedStringAccessors { .__hv_verification_new_alert_button }
+
+    case __hv_verification_sent_banner
+    public var _hv_verification_sent_banner: LocalizedStringAccessors { .__hv_verification_sent_banner }
+
+    case __hv_help_header
+    public var _hv_help_header: LocalizedStringAccessors { .__hv_help_header }
+
+    case __hv_help_request_item_title
+    public var _hv_help_request_item_title: LocalizedStringAccessors { .__hv_help_request_item_title }
+
+    case __hv_help_request_item_message
+    public var _hv_help_request_item_message: LocalizedStringAccessors { .__hv_help_request_item_message }
+
+    case __hv_help_visit_item_title
+    public var _hv_help_visit_item_title: LocalizedStringAccessors { .__hv_help_visit_item_title }
+
+    case __hv_help_visit_item_message
+    public var _hv_help_visit_item_message: LocalizedStringAccessors { .__hv_help_visit_item_message }
+
+    case __fu_alert_title
+    public var _fu_alert_title: LocalizedStringAccessors { .__fu_alert_title }
+
+    case __fu_alert_learn_more_button
+    public var _fu_alert_learn_more_button: LocalizedStringAccessors { .__fu_alert_learn_more_button }
+
+    case __fu_alert_update_button
+    public var _fu_alert_update_button: LocalizedStringAccessors { .__fu_alert_update_button }
+
+    case __fu_alert_quit_button
+    public var _fu_alert_quit_button: LocalizedStringAccessors { .__fu_alert_quit_button }
+
+    case __ls_screen_title
+    public var _ls_screen_title: LocalizedStringAccessors { .__ls_screen_title }
+
+    case __ls_screen_subtitle
+    public var _ls_screen_subtitle: LocalizedStringAccessors { .__ls_screen_subtitle }
+
+    case __ls_username_title
+    public var _ls_username_title: LocalizedStringAccessors { .__ls_username_title }
+
+    case __ls_password_title
+    public var _ls_password_title: LocalizedStringAccessors { .__ls_password_title }
+
+    case __ls_help_button
+    public var _ls_help_button: LocalizedStringAccessors { .__ls_help_button }
+
+    case __ls_sign_in_button
+    public var _ls_sign_in_button: LocalizedStringAccessors { .__ls_sign_in_button }
+
+    case __ls_create_account_button
+    public var _ls_create_account_button: LocalizedStringAccessors { .__ls_create_account_button }
+
+    case __ls_welcome_footer
+    public var _ls_welcome_footer: LocalizedStringAccessors { .__ls_welcome_footer }
+
+    case __ls_help_screen_title
+    public var _ls_help_screen_title: LocalizedStringAccessors { .__ls_help_screen_title }
+
+    case __ls_help_forgot_username
+    public var _ls_help_forgot_username: LocalizedStringAccessors { .__ls_help_forgot_username }
+
+    case __ls_help_forgot_password
+    public var _ls_help_forgot_password: LocalizedStringAccessors { .__ls_help_forgot_password }
+
+    case __ls_help_other_issues
+    public var _ls_help_other_issues: LocalizedStringAccessors { .__ls_help_other_issues }
+
+    case __ls_help_customer_support
+    public var _ls_help_customer_support: LocalizedStringAccessors { .__ls_help_customer_support }
+
+    case __ls_help_more_help
+    public var _ls_help_more_help: LocalizedStringAccessors { .__ls_help_more_help }
+
+    case __ls_validation_invalid_username
+    public var _ls_validation_invalid_username: LocalizedStringAccessors { .__ls_validation_invalid_username }
+
+    case __ls_validation_invalid_password
+    public var _ls_validation_invalid_password: LocalizedStringAccessors { .__ls_validation_invalid_password }
+
+    case __ls_error_missing_keys_text_button
+    public var _ls_error_missing_keys_text_button: LocalizedStringAccessors { .__ls_error_missing_keys_text_button }
+
+    case __ls_error_missing_keys_text
+    public var _ls_error_missing_keys_text: LocalizedStringAccessors { .__ls_error_missing_keys_text }
+
+    case __ls_error_missing_keys_title
+    public var _ls_error_missing_keys_title: LocalizedStringAccessors { .__ls_error_missing_keys_title }
+
+    case __ls_error_invalid_mailbox_password
+    public var _ls_error_invalid_mailbox_password: LocalizedStringAccessors { .__ls_error_invalid_mailbox_password }
+
+    case __ls_external_eccounts_not_supported_popup_title
+    public var _ls_external_eccounts_not_supported_popup_title: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_title }
+
+    case __ls_external_eccounts_not_supported_popup_action_button
+    public var _ls_external_eccounts_not_supported_popup_action_button: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_action_button }
+
+    case __ls_info_session_expired
+    public var _ls_info_session_expired: LocalizedStringAccessors { .__ls_info_session_expired }
+
+    case __ls_error_generic
+    public var _ls_error_generic: LocalizedStringAccessors { .__ls_error_generic }
+
+    case __ls_username_screen_title
+    public var _ls_username_screen_title: LocalizedStringAccessors { .__ls_username_screen_title }
+
+    case __ls_username_screen_info
+    public var _ls_username_screen_info: LocalizedStringAccessors { .__ls_username_screen_info }
+
+    case __ls_username_username_title
+    public var _ls_username_username_title: LocalizedStringAccessors { .__ls_username_username_title }
+
+    case __ls_username_button_title
+    public var _ls_username_button_title: LocalizedStringAccessors { .__ls_username_button_title }
+
+    case __ls_username_username_error
+    public var _ls_username_username_error: LocalizedStringAccessors { .__ls_username_username_error }
+
+    case __ls_create_address_button_title
+    public var _ls_create_address_button_title: LocalizedStringAccessors { .__ls_create_address_button_title }
+
+    case __ls_create_address_info
+    public var _ls_create_address_info: LocalizedStringAccessors { .__ls_create_address_info }
+
+    case __ls_create_address_recovery_title
+    public var _ls_create_address_recovery_title: LocalizedStringAccessors { .__ls_create_address_recovery_title }
+
+    case __ls_create_address_terms_full
+    public var _ls_create_address_terms_full: LocalizedStringAccessors { .__ls_create_address_terms_full }
+
+    case __ls_create_address_terms_link
+    public var _ls_create_address_terms_link: LocalizedStringAccessors { .__ls_create_address_terms_link }
+
+    case __ls_create_address_available
+    public var _ls_create_address_available: LocalizedStringAccessors { .__ls_create_address_available }
+
+    case __ls_login_mailbox_screen_title
+    public var _ls_login_mailbox_screen_title: LocalizedStringAccessors { .__ls_login_mailbox_screen_title }
+
+    case __ls_login_mailbox_field_title
+    public var _ls_login_mailbox_field_title: LocalizedStringAccessors { .__ls_login_mailbox_field_title }
+
+    case __ls_login_mailbox_button_title
+    public var _ls_login_mailbox_button_title: LocalizedStringAccessors { .__ls_login_mailbox_button_title }
+
+    case __ls_login_mailbox_forgot_password
+    public var _ls_login_mailbox_forgot_password: LocalizedStringAccessors { .__ls_login_mailbox_forgot_password }
+
+    case __ls_login_2fa_screen_title
+    public var _ls_login_2fa_screen_title: LocalizedStringAccessors { .__ls_login_2fa_screen_title }
+
+    case __ls_login_2fa_action_button_title
+    public var _ls_login_2fa_action_button_title: LocalizedStringAccessors { .__ls_login_2fa_action_button_title }
+
+    case __ls_login_2fa_field_title
+    public var _ls_login_2fa_field_title: LocalizedStringAccessors { .__ls_login_2fa_field_title }
+
+    case __ls_login_2fa_recovery_field_title
+    public var _ls_login_2fa_recovery_field_title: LocalizedStringAccessors { .__ls_login_2fa_recovery_field_title }
+
+    case __ls_login_2fa_recovery_button_title
+    public var _ls_login_2fa_recovery_button_title: LocalizedStringAccessors { .__ls_login_2fa_recovery_button_title }
+
+    case __ls_login_2fa_2fa_button_title
+    public var _ls_login_2fa_2fa_button_title: LocalizedStringAccessors { .__ls_login_2fa_2fa_button_title }
+
+    case __ls_login_2fa_field_info
+    public var _ls_login_2fa_field_info: LocalizedStringAccessors { .__ls_login_2fa_field_info }
+
+    case __ls_login_2fa_recovery_field_info
+    public var _ls_login_2fa_recovery_field_info: LocalizedStringAccessors { .__ls_login_2fa_recovery_field_info }
+
+    case __error_occured
+    public var _error_occured: LocalizedStringAccessors { .__error_occured }
+
+    case __general_ok_action
+    public var _general_ok_action: LocalizedStringAccessors { .__general_ok_action }
+
+    case __warning
+    public var _warning: LocalizedStringAccessors { .__warning }
+
+    case __do_you_want_to_bypass_validation
+    public var _do_you_want_to_bypass_validation: LocalizedStringAccessors { .__do_you_want_to_bypass_validation }
+
+    case __yes_bypass_validation
+    public var _yes_bypass_validation: LocalizedStringAccessors { .__yes_bypass_validation }
+
+    case __no_dont_bypass_validation
+    public var _no_dont_bypass_validation: LocalizedStringAccessors { .__no_dont_bypass_validation }
+
+    case __popup_credits_applied_message
+    public var _popup_credits_applied_message: LocalizedStringAccessors { .__popup_credits_applied_message }
+
+    case __popup_credits_applied_confirmation
+    public var _popup_credits_applied_confirmation: LocalizedStringAccessors { .__popup_credits_applied_confirmation }
+
+    case __popup_credits_applied_cancellation
+    public var _popup_credits_applied_cancellation: LocalizedStringAccessors { .__popup_credits_applied_cancellation }
+
+    case __error_apply_payment_on_registration_title
+    public var _error_apply_payment_on_registration_title: LocalizedStringAccessors { .__error_apply_payment_on_registration_title }
+
+    case __error_apply_payment_on_registration_message
+    public var _error_apply_payment_on_registration_message: LocalizedStringAccessors { .__error_apply_payment_on_registration_message }
+
+    case __retry
+    public var _retry: LocalizedStringAccessors { .__retry }
+
+    case __error_apply_payment_on_registration_support
+    public var _error_apply_payment_on_registration_support: LocalizedStringAccessors { .__error_apply_payment_on_registration_support }
+
+    case __error_unavailable_product
+    public var _error_unavailable_product: LocalizedStringAccessors { .__error_unavailable_product }
+
+    case __error_invalid_purchase
+    public var _error_invalid_purchase: LocalizedStringAccessors { .__error_invalid_purchase }
+
+    case __error_reciept_lost
+    public var _error_reciept_lost: LocalizedStringAccessors { .__error_reciept_lost }
+
+    case __error_another_user_transaction
+    public var _error_another_user_transaction: LocalizedStringAccessors { .__error_another_user_transaction }
+
+    case __error_backend_mismatch
+    public var _error_backend_mismatch: LocalizedStringAccessors { .__error_backend_mismatch }
+
+    case __error_sandbox_receipt
+    public var _error_sandbox_receipt: LocalizedStringAccessors { .__error_sandbox_receipt }
+
+    case __error_no_hashed_username_arrived_in_transaction
+    public var _error_no_hashed_username_arrived_in_transaction: LocalizedStringAccessors { .__error_no_hashed_username_arrived_in_transaction }
+
+    case __error_no_active_username_in_user_data_service
+    public var _error_no_active_username_in_user_data_service: LocalizedStringAccessors { .__error_no_active_username_in_user_data_service }
+
+    case __error_transaction_failed_by_unknown_reason
+    public var _error_transaction_failed_by_unknown_reason: LocalizedStringAccessors { .__error_transaction_failed_by_unknown_reason }
+
+    case __error_no_new_subscription_in_response
+    public var _error_no_new_subscription_in_response: LocalizedStringAccessors { .__error_no_new_subscription_in_response }
+
+    case __error_unlock_to_proceed_with_iap
+    public var _error_unlock_to_proceed_with_iap: LocalizedStringAccessors { .__error_unlock_to_proceed_with_iap }
+
+    case __error_please_sign_in_iap
+    public var _error_please_sign_in_iap: LocalizedStringAccessors { .__error_please_sign_in_iap }
+
+    case __error_credits_applied
+    public var _error_credits_applied: LocalizedStringAccessors { .__error_credits_applied }
+
+    case __error_wrong_token_status
+    public var _error_wrong_token_status: LocalizedStringAccessors { .__error_wrong_token_status }
+
+    case __login_username_org_dialog_title
+    public var _login_username_org_dialog_title: LocalizedStringAccessors { .__login_username_org_dialog_title }
+
+    case __login_username_org_dialog_action_button
+    public var _login_username_org_dialog_action_button: LocalizedStringAccessors { .__login_username_org_dialog_action_button }
+
+    case __login_username_org_dialog_message
+    public var _login_username_org_dialog_message: LocalizedStringAccessors { .__login_username_org_dialog_message }
+
+    case __ad_delete_account_title
+    public var _ad_delete_account_title: LocalizedStringAccessors { .__ad_delete_account_title }
+
+    case __ad_delete_account_button
+    public var _ad_delete_account_button: LocalizedStringAccessors { .__ad_delete_account_button }
+
+    case __ad_delete_account_message
+    public var _ad_delete_account_message: LocalizedStringAccessors { .__ad_delete_account_message }
+
+    case __ad_delete_account_success
+    public var _ad_delete_account_success: LocalizedStringAccessors { .__ad_delete_account_success }
+
+    case __ad_delete_network_error
+    public var _ad_delete_network_error: LocalizedStringAccessors { .__ad_delete_network_error }
+
+    case __ad_delete_close_button
+    public var _ad_delete_close_button: LocalizedStringAccessors { .__ad_delete_close_button }
+
+    case __as_switch_to_title
+    public var _as_switch_to_title: LocalizedStringAccessors { .__as_switch_to_title }
+
+    case __as_accounts
+    public var _as_accounts: LocalizedStringAccessors { .__as_accounts }
+
+    case __as_manage_accounts
+    public var _as_manage_accounts: LocalizedStringAccessors { .__as_manage_accounts }
+
+    case __as_signed_in_to_protonmail
+    public var _as_signed_in_to_protonmail: LocalizedStringAccessors { .__as_signed_in_to_protonmail }
+
+    case __as_signed_out_of_protonmail
+    public var _as_signed_out_of_protonmail: LocalizedStringAccessors { .__as_signed_out_of_protonmail }
+
+    case __as_signout
+    public var _as_signout: LocalizedStringAccessors { .__as_signout }
+
+    case __as_remove_button
+    public var _as_remove_button: LocalizedStringAccessors { .__as_remove_button }
+
+    case __as_remove_account_from_this_device
+    public var _as_remove_account_from_this_device: LocalizedStringAccessors { .__as_remove_account_from_this_device }
+
+    case __as_remove_account
+    public var _as_remove_account: LocalizedStringAccessors { .__as_remove_account }
+
+    case __as_remove_account_alert_text
+    public var _as_remove_account_alert_text: LocalizedStringAccessors { .__as_remove_account_alert_text }
+
+    case __as_signout_alert_text
+    public var _as_signout_alert_text: LocalizedStringAccessors { .__as_signout_alert_text }
+
+    case __as_dismiss_button
+    public var _as_dismiss_button: LocalizedStringAccessors { .__as_dismiss_button }
+
+    case __as_sign_in_button
+    public var _as_sign_in_button: LocalizedStringAccessors { .__as_sign_in_button }
+
+    case __su_main_view_title
+    public var _su_main_view_title: LocalizedStringAccessors { .__su_main_view_title }
+
+    case __su_main_view_desc
+    public var _su_main_view_desc: LocalizedStringAccessors { .__su_main_view_desc }
+
+    case __su_next_button
+    public var _su_next_button: LocalizedStringAccessors { .__su_next_button }
+
+    case __su_signin_button
+    public var _su_signin_button: LocalizedStringAccessors { .__su_signin_button }
+
+    case __su_email_address_button
+    public var _su_email_address_button: LocalizedStringAccessors { .__su_email_address_button }
+
+    case __su_proton_address_button
+    public var _su_proton_address_button: LocalizedStringAccessors { .__su_proton_address_button }
+
+    case __su_username_field_title
+    public var _su_username_field_title: LocalizedStringAccessors { .__su_username_field_title }
+
+    case __su_email_field_title
+    public var _su_email_field_title: LocalizedStringAccessors { .__su_email_field_title }
+
+    case __su_password_proton_view_title
+    public var _su_password_proton_view_title: LocalizedStringAccessors { .__su_password_proton_view_title }
+
+    case __su_password_email_view_title
+    public var _su_password_email_view_title: LocalizedStringAccessors { .__su_password_email_view_title }
+
+    case __su_password_field_title
+    public var _su_password_field_title: LocalizedStringAccessors { .__su_password_field_title }
+
+    case __su_password_field_hint
+    public var _su_password_field_hint: LocalizedStringAccessors { .__su_password_field_hint }
+
+    case __su_repeat_password_field_title
+    public var _su_repeat_password_field_title: LocalizedStringAccessors { .__su_repeat_password_field_title }
+
+    case __su_domains_sheet_title
+    public var _su_domains_sheet_title: LocalizedStringAccessors { .__su_domains_sheet_title }
+
+    case __su_recovery_view_title
+    public var _su_recovery_view_title: LocalizedStringAccessors { .__su_recovery_view_title }
+
+    case __su_recovery_view_title_optional
+    public var _su_recovery_view_title_optional: LocalizedStringAccessors { .__su_recovery_view_title_optional }
+
+    case __su_recovery_view_desc_old
+    public var _su_recovery_view_desc_old: LocalizedStringAccessors { .__su_recovery_view_desc_old }
+
+    case __su_recovery_view_desc
+    public var _su_recovery_view_desc: LocalizedStringAccessors { .__su_recovery_view_desc }
+
+    case __su_recovery_email_only_view_desc
+    public var _su_recovery_email_only_view_desc: LocalizedStringAccessors { .__su_recovery_email_only_view_desc }
+
+    case __su_recovery_seg_email
+    public var _su_recovery_seg_email: LocalizedStringAccessors { .__su_recovery_seg_email }
+
+    case __su_recovery_seg_phone
+    public var _su_recovery_seg_phone: LocalizedStringAccessors { .__su_recovery_seg_phone }
+
+    case __su_recovery_email_field_title
+    public var _su_recovery_email_field_title: LocalizedStringAccessors { .__su_recovery_email_field_title }
+
+    case __su_recovery_phone_field_title
+    public var _su_recovery_phone_field_title: LocalizedStringAccessors { .__su_recovery_phone_field_title }
+
+    case __su_recovery_t_c_desc
+    public var _su_recovery_t_c_desc: LocalizedStringAccessors { .__su_recovery_t_c_desc }
+
+    case __su_recovery_t_c_link
+    public var _su_recovery_t_c_link: LocalizedStringAccessors { .__su_recovery_t_c_link }
+
+    case __su_skip_button
+    public var _su_skip_button: LocalizedStringAccessors { .__su_skip_button }
+
+    case __su_recovery_skip_title
+    public var _su_recovery_skip_title: LocalizedStringAccessors { .__su_recovery_skip_title }
+
+    case __su_recovery_skip_desc
+    public var _su_recovery_skip_desc: LocalizedStringAccessors { .__su_recovery_skip_desc }
+
+    case __su_recovery_method_button
+    public var _su_recovery_method_button: LocalizedStringAccessors { .__su_recovery_method_button }
+
+    case __su_complete_view_title
+    public var _su_complete_view_title: LocalizedStringAccessors { .__su_complete_view_title }
+
+    case __su_complete_view_desc
+    public var _su_complete_view_desc: LocalizedStringAccessors { .__su_complete_view_desc }
+
+    case __su_complete_step_creation
+    public var _su_complete_step_creation: LocalizedStringAccessors { .__su_complete_step_creation }
+
+    case __su_complete_step_address_generation
+    public var _su_complete_step_address_generation: LocalizedStringAccessors { .__su_complete_step_address_generation }
+
+    case __su_complete_step_keys_generation
+    public var _su_complete_step_keys_generation: LocalizedStringAccessors { .__su_complete_step_keys_generation }
+
+    case __su_complete_step_payment_verification
+    public var _su_complete_step_payment_verification: LocalizedStringAccessors { .__su_complete_step_payment_verification }
+
+    case __su_complete_step_payment_validated
+    public var _su_complete_step_payment_validated: LocalizedStringAccessors { .__su_complete_step_payment_validated }
+
+    case __su_email_verification_view_title
+    public var _su_email_verification_view_title: LocalizedStringAccessors { .__su_email_verification_view_title }
+
+    case __su_email_verification_view_desc
+    public var _su_email_verification_view_desc: LocalizedStringAccessors { .__su_email_verification_view_desc }
+
+    case __su_email_verification_code_name
+    public var _su_email_verification_code_name: LocalizedStringAccessors { .__su_email_verification_code_name }
+
+    case __su_email_verification_code_desc
+    public var _su_email_verification_code_desc: LocalizedStringAccessors { .__su_email_verification_code_desc }
+
+    case __su_did_not_receive_code_button
+    public var _su_did_not_receive_code_button: LocalizedStringAccessors { .__su_did_not_receive_code_button }
+
+    case __su_terms_conditions_view_title
+    public var _su_terms_conditions_view_title: LocalizedStringAccessors { .__su_terms_conditions_view_title }
+
+    case __su_error_invalid_token_request
+    public var _su_error_invalid_token_request: LocalizedStringAccessors { .__su_error_invalid_token_request }
+
+    case __su_error_invalid_token
+    public var _su_error_invalid_token: LocalizedStringAccessors { .__su_error_invalid_token }
+
+    case __su_error_create_user_failed
+    public var _su_error_create_user_failed: LocalizedStringAccessors { .__su_error_create_user_failed }
+
+    case __su_error_invalid_hashed_password
+    public var _su_error_invalid_hashed_password: LocalizedStringAccessors { .__su_error_invalid_hashed_password }
+
+    case __su_error_password_empty
+    public var _su_error_password_empty: LocalizedStringAccessors { .__su_error_password_empty }
+
+    case __su_error_password_too_short
+    public var _su_error_password_too_short: LocalizedStringAccessors { .__su_error_password_too_short }
+
+    case __su_error_password_not_equal
+    public var _su_error_password_not_equal: LocalizedStringAccessors { .__su_error_password_not_equal }
+
+    case __su_error_email_already_used
+    public var _su_error_email_already_used: LocalizedStringAccessors { .__su_error_email_already_used }
+
+    case __su_error_missing_sub_user_configuration
+    public var _su_error_missing_sub_user_configuration: LocalizedStringAccessors { .__su_error_missing_sub_user_configuration }
+
+    case __su_invalid_verification_alert_message
+    public var _su_invalid_verification_alert_message: LocalizedStringAccessors { .__su_invalid_verification_alert_message }
+
+    case __su_invalid_verification_change_email_button
+    public var _su_invalid_verification_change_email_button: LocalizedStringAccessors { .__su_invalid_verification_change_email_button }
+
+    case __su_summary_title
+    public var _su_summary_title: LocalizedStringAccessors { .__su_summary_title }
+
+    case __su_summary_free_description
+    public var _su_summary_free_description: LocalizedStringAccessors { .__su_summary_free_description }
+
+    case __su_summary_free_description_replacement
+    public var _su_summary_free_description_replacement: LocalizedStringAccessors { .__su_summary_free_description_replacement }
+
+    case __su_summary_paid_description
+    public var _su_summary_paid_description: LocalizedStringAccessors { .__su_summary_paid_description }
+
+    case __su_summary_no_plan_description
+    public var _su_summary_no_plan_description: LocalizedStringAccessors { .__su_summary_no_plan_description }
+
+    case __su_summary_welcome
+    public var _su_summary_welcome: LocalizedStringAccessors { .__su_summary_welcome }
+
+    case __pu_select_plan_title
+    public var _pu_select_plan_title: LocalizedStringAccessors { .__pu_select_plan_title }
+
+    case __pu_current_plan_title
+    public var _pu_current_plan_title: LocalizedStringAccessors { .__pu_current_plan_title }
+
+    case __pu_subscription_title
+    public var _pu_subscription_title: LocalizedStringAccessors { .__pu_subscription_title }
+
+    case __pu_upgrade_plan_title
+    public var _pu_upgrade_plan_title: LocalizedStringAccessors { .__pu_upgrade_plan_title }
+
+    case __pu_plan_footer_desc
+    public var _pu_plan_footer_desc: LocalizedStringAccessors { .__pu_plan_footer_desc }
+
+    case __pu_plan_footer_desc_purchased
+    public var _pu_plan_footer_desc_purchased: LocalizedStringAccessors { .__pu_plan_footer_desc_purchased }
+
+    case __pu_select_plan_button
+    public var _pu_select_plan_button: LocalizedStringAccessors { .__pu_select_plan_button }
+
+    case __pu_upgrade_plan_button
+    public var _pu_upgrade_plan_button: LocalizedStringAccessors { .__pu_upgrade_plan_button }
+
+    case __pu_plan_details_renew_auto_expired
+    public var _pu_plan_details_renew_auto_expired: LocalizedStringAccessors { .__pu_plan_details_renew_auto_expired }
+
+    case __pu_plan_details_renew_expired
+    public var _pu_plan_details_renew_expired: LocalizedStringAccessors { .__pu_plan_details_renew_expired }
+
+    case __pu_plan_details_plan_details_unavailable_contact_administrator
+    public var _pu_plan_details_plan_details_unavailable_contact_administrator: LocalizedStringAccessors { .__pu_plan_details_plan_details_unavailable_contact_administrator }
+
+    case __pu_plan_details_storage
+    public var _pu_plan_details_storage: LocalizedStringAccessors { .__pu_plan_details_storage }
+
+    case __pu_plan_details_storage_per_user
+    public var _pu_plan_details_storage_per_user: LocalizedStringAccessors { .__pu_plan_details_storage_per_user }
+
+    case __pu_plan_details_price_time_period_no_unit
+    public var _pu_plan_details_price_time_period_no_unit: LocalizedStringAccessors { .__pu_plan_details_price_time_period_no_unit }
+
+    case __pu_plan_details_vpn_free_speed
+    public var _pu_plan_details_vpn_free_speed: LocalizedStringAccessors { .__pu_plan_details_vpn_free_speed }
+
+    case __pu_plan_details_custom_email
+    public var _pu_plan_details_custom_email: LocalizedStringAccessors { .__pu_plan_details_custom_email }
+
+    case __pu_plan_details_priority_support
+    public var _pu_plan_details_priority_support: LocalizedStringAccessors { .__pu_plan_details_priority_support }
+
+    case __pu_plan_details_adblocker
+    public var _pu_plan_details_adblocker: LocalizedStringAccessors { .__pu_plan_details_adblocker }
+
+    case __pu_plan_details_streaming_service
+    public var _pu_plan_details_streaming_service: LocalizedStringAccessors { .__pu_plan_details_streaming_service }
+
+    case __pu_plan_details_n_uneven_amounts_of_addresses_and_calendars
+    public var _pu_plan_details_n_uneven_amounts_of_addresses_and_calendars: LocalizedStringAccessors { .__pu_plan_details_n_uneven_amounts_of_addresses_and_calendars }
+
+    case __pu_plan_details_high_speed
+    public var _pu_plan_details_high_speed: LocalizedStringAccessors { .__pu_plan_details_high_speed }
+
+    case __pu_plan_details_highest_speed
+    public var _pu_plan_details_highest_speed: LocalizedStringAccessors { .__pu_plan_details_highest_speed }
+
+    case __pu_plan_details_multi_user_support
+    public var _pu_plan_details_multi_user_support: LocalizedStringAccessors { .__pu_plan_details_multi_user_support }
+
+    case __pu_plan_details_free_description
+    public var _pu_plan_details_free_description: LocalizedStringAccessors { .__pu_plan_details_free_description }
+
+    case __pu_plan_details_plus_description
+    public var _pu_plan_details_plus_description: LocalizedStringAccessors { .__pu_plan_details_plus_description }
+
+    case __pu_plan_details_pro_description
+    public var _pu_plan_details_pro_description: LocalizedStringAccessors { .__pu_plan_details_pro_description }
+
+    case __pu_plan_details_visionary_description
+    public var _pu_plan_details_visionary_description: LocalizedStringAccessors { .__pu_plan_details_visionary_description }
+
+    case __pu_plan_unfinished_error_title
+    public var _pu_plan_unfinished_error_title: LocalizedStringAccessors { .__pu_plan_unfinished_error_title }
+
+    case __pu_plan_unfinished_error_desc
+    public var _pu_plan_unfinished_error_desc: LocalizedStringAccessors { .__pu_plan_unfinished_error_desc }
+
+    case __pu_plan_unfinished_error_retry_button
+    public var _pu_plan_unfinished_error_retry_button: LocalizedStringAccessors { .__pu_plan_unfinished_error_retry_button }
+
+    case __pu_plan_unfinished_desc
+    public var _pu_plan_unfinished_desc: LocalizedStringAccessors { .__pu_plan_unfinished_desc }
+
+    case __pu_iap_in_progress_banner
+    public var _pu_iap_in_progress_banner: LocalizedStringAccessors { .__pu_iap_in_progress_banner }
+
+    case __splash_made_by
+    public var _splash_made_by: LocalizedStringAccessors { .__splash_made_by }
+
+    case __net_connection_error
+    public var _net_connection_error: LocalizedStringAccessors { .__net_connection_error }
+
+    case __net_api_might_be_blocked_message
+    public var _net_api_might_be_blocked_message: LocalizedStringAccessors { .__net_api_might_be_blocked_message }
+
+    case __net_api_might_be_blocked_button
+    public var _net_api_might_be_blocked_button: LocalizedStringAccessors { .__net_api_might_be_blocked_button }
+
+    case __net_insecure_connection_error
+    public var _net_insecure_connection_error: LocalizedStringAccessors { .__net_insecure_connection_error }
+
+    case __troubleshooting_support_from
+    public var _troubleshooting_support_from: LocalizedStringAccessors { .__troubleshooting_support_from }
+
+    case __troubleshooting_email_title
+    public var _troubleshooting_email_title: LocalizedStringAccessors { .__troubleshooting_email_title }
+
+    case __troubleshooting_twitter_title
+    public var _troubleshooting_twitter_title: LocalizedStringAccessors { .__troubleshooting_twitter_title }
+
+    case __troubleshooting_title
+    public var _troubleshooting_title: LocalizedStringAccessors { .__troubleshooting_title }
+
+    case __allow_alternative_routing
+    public var _allow_alternative_routing: LocalizedStringAccessors { .__allow_alternative_routing }
+
+    case __no_internet_connection
+    public var _no_internet_connection: LocalizedStringAccessors { .__no_internet_connection }
+
+    case __isp_problem
+    public var _isp_problem: LocalizedStringAccessors { .__isp_problem }
+
+    case __gov_block
+    public var _gov_block: LocalizedStringAccessors { .__gov_block }
+
+    case __antivirus_interference
+    public var _antivirus_interference: LocalizedStringAccessors { .__antivirus_interference }
+
+    case __firewall_interference
+    public var _firewall_interference: LocalizedStringAccessors { .__firewall_interference }
+
+    case __proton_is_down
+    public var _proton_is_down: LocalizedStringAccessors { .__proton_is_down }
+
+    case __no_solution
+    public var _no_solution: LocalizedStringAccessors { .__no_solution }
+
+    case __allow_alternative_routing_description
+    public var _allow_alternative_routing_description: LocalizedStringAccessors { .__allow_alternative_routing_description }
+
+    case __allow_alternative_routing_action_title
+    public var _allow_alternative_routing_action_title: LocalizedStringAccessors { .__allow_alternative_routing_action_title }
+
+    case __no_internet_connection_description
+    public var _no_internet_connection_description: LocalizedStringAccessors { .__no_internet_connection_description }
+
+    case __isp_problem_description
+    public var _isp_problem_description: LocalizedStringAccessors { .__isp_problem_description }
+
+    case __gov_block_description
+    public var _gov_block_description: LocalizedStringAccessors { .__gov_block_description }
+
+    case __antivirus_interference_description
+    public var _antivirus_interference_description: LocalizedStringAccessors { .__antivirus_interference_description }
+
+    case __firewall_interference_description
+    public var _firewall_interference_description: LocalizedStringAccessors { .__firewall_interference_description }
+
+    case __proton_is_down_description
+    public var _proton_is_down_description: LocalizedStringAccessors { .__proton_is_down_description }
+
+    case __proton_is_down_action_title
+    public var _proton_is_down_action_title: LocalizedStringAccessors { .__proton_is_down_action_title }
+
+    case __no_solution_description
+    public var _no_solution_description: LocalizedStringAccessors { .__no_solution_description }
+
+    case __troubleshoot_support_subject
+    public var _troubleshoot_support_subject: LocalizedStringAccessors { .__troubleshoot_support_subject }
+
+    case __troubleshoot_support_body
+    public var _troubleshoot_support_body: LocalizedStringAccessors { .__troubleshoot_support_body }
+
+    case __general_back_action
+    public var _general_back_action: LocalizedStringAccessors { .__general_back_action }
+
+    case __pu_plan_details_n_users
+    public var _pu_plan_details_n_users: LocalizedStringAccessors { .__pu_plan_details_n_users }
+
+    case __pu_plan_details_n_addresses
+    public var _pu_plan_details_n_addresses: LocalizedStringAccessors { .__pu_plan_details_n_addresses }
+
+    case __pu_plan_details_n_addresses_per_user
+    public var _pu_plan_details_n_addresses_per_user: LocalizedStringAccessors { .__pu_plan_details_n_addresses_per_user }
+
+    case __pu_plan_details_n_calendars
+    public var _pu_plan_details_n_calendars: LocalizedStringAccessors { .__pu_plan_details_n_calendars }
+
+    case __pu_plan_details_n_folders
+    public var _pu_plan_details_n_folders: LocalizedStringAccessors { .__pu_plan_details_n_folders }
+
+    case __pu_plan_details_countries
+    public var _pu_plan_details_countries: LocalizedStringAccessors { .__pu_plan_details_countries }
+
+    case __pu_plan_details_n_calendars_per_user
+    public var _pu_plan_details_n_calendars_per_user: LocalizedStringAccessors { .__pu_plan_details_n_calendars_per_user }
+
+    case __pu_plan_details_n_connections
+    public var _pu_plan_details_n_connections: LocalizedStringAccessors { .__pu_plan_details_n_connections }
+
+    case __pu_plan_details_n_vpn_connections
+    public var _pu_plan_details_n_vpn_connections: LocalizedStringAccessors { .__pu_plan_details_n_vpn_connections }
+
+    case __pu_plan_details_n_high_speed_connections
+    public var _pu_plan_details_n_high_speed_connections: LocalizedStringAccessors { .__pu_plan_details_n_high_speed_connections }
+
+    case __pu_plan_details_n_high_speed_connections_per_user
+    public var _pu_plan_details_n_high_speed_connections_per_user: LocalizedStringAccessors { .__pu_plan_details_n_high_speed_connections_per_user }
+
+    case __pu_plan_details_n_custom_domains
+    public var _pu_plan_details_n_custom_domains: LocalizedStringAccessors { .__pu_plan_details_n_custom_domains }
+
+    case __pu_plan_details_n_addresses_and_calendars
+    public var _pu_plan_details_n_addresses_and_calendars: LocalizedStringAccessors { .__pu_plan_details_n_addresses_and_calendars }
+
+    public func localizedString(from localizedStringInstance: LocalizedString) -> String {
+        switch self {
+        case .__hv_title: return localizedStringInstance._hv_title
+        case .__hv_captha_method_name: return localizedStringInstance._hv_captha_method_name
+        case .__hv_sms_method_name: return localizedStringInstance._hv_sms_method_name
+        case .__hv_email_method_name: return localizedStringInstance._hv_email_method_name
+        case .__hv_help_button: return localizedStringInstance._hv_help_button
+        case .__hv_ok_button: return localizedStringInstance._hv_ok_button
+        case .__hv_cancel_button: return localizedStringInstance._hv_cancel_button
+        case .__hv_email_enter_label: return localizedStringInstance._hv_email_enter_label
+        case .__hv_email_label: return localizedStringInstance._hv_email_label
+        case .__hv_email_verification_button: return localizedStringInstance._hv_email_verification_button
+        case .__hv_sms_enter_label: return localizedStringInstance._hv_sms_enter_label
+        case .__hv_sms_label: return localizedStringInstance._hv_sms_label
+        case .__hv_sms_search_placeholder: return localizedStringInstance._hv_sms_search_placeholder
+        case .__hv_verification_enter_sms_code: return localizedStringInstance._hv_verification_enter_sms_code
+        case .__hv_verification_enter_email_code: return localizedStringInstance._hv_verification_enter_email_code
+        case .__hv_verification_code: return localizedStringInstance._hv_verification_code
+        case .__hv_verification_code_hint: return localizedStringInstance._hv_verification_code_hint
+        case .__hv_verification_verify_button: return localizedStringInstance._hv_verification_verify_button
+        case .__hv_verification_verifying_button: return localizedStringInstance._hv_verification_verifying_button
+        case .__hv_verification_not_receive_code_button: return localizedStringInstance._hv_verification_not_receive_code_button
+        case .__hv_verification_error_alert_title: return localizedStringInstance._hv_verification_error_alert_title
+        case .__hv_verification_error_alert_message: return localizedStringInstance._hv_verification_error_alert_message
+        case .__hv_verification_error_alert_resend: return localizedStringInstance._hv_verification_error_alert_resend
+        case .__hv_verification_error_alert_other_method: return localizedStringInstance._hv_verification_error_alert_other_method
+        case .__hv_verification_new_alert_title: return localizedStringInstance._hv_verification_new_alert_title
+        case .__hv_verification_new_alert_message: return localizedStringInstance._hv_verification_new_alert_message
+        case .__hv_verification_new_alert_button: return localizedStringInstance._hv_verification_new_alert_button
+        case .__hv_verification_sent_banner: return localizedStringInstance._hv_verification_sent_banner
+        case .__hv_help_header: return localizedStringInstance._hv_help_header
+        case .__hv_help_request_item_title: return localizedStringInstance._hv_help_request_item_title
+        case .__hv_help_request_item_message: return localizedStringInstance._hv_help_request_item_message
+        case .__hv_help_visit_item_title: return localizedStringInstance._hv_help_visit_item_title
+        case .__hv_help_visit_item_message: return localizedStringInstance._hv_help_visit_item_message
+        case .__fu_alert_title: return localizedStringInstance._fu_alert_title
+        case .__fu_alert_learn_more_button: return localizedStringInstance._fu_alert_learn_more_button
+        case .__fu_alert_update_button: return localizedStringInstance._fu_alert_update_button
+        case .__fu_alert_quit_button: return localizedStringInstance._fu_alert_quit_button
+        case .__ls_screen_title: return localizedStringInstance._ls_screen_title
+        case .__ls_screen_subtitle: return localizedStringInstance._ls_screen_subtitle
+        case .__ls_username_title: return localizedStringInstance._ls_username_title
+        case .__ls_password_title: return localizedStringInstance._ls_password_title
+        case .__ls_help_button: return localizedStringInstance._ls_help_button
+        case .__ls_sign_in_button: return localizedStringInstance._ls_sign_in_button
+        case .__ls_create_account_button: return localizedStringInstance._ls_create_account_button
+        case .__ls_welcome_footer: return localizedStringInstance._ls_welcome_footer
+        case .__ls_help_screen_title: return localizedStringInstance._ls_help_screen_title
+        case .__ls_help_forgot_username: return localizedStringInstance._ls_help_forgot_username
+        case .__ls_help_forgot_password: return localizedStringInstance._ls_help_forgot_password
+        case .__ls_help_other_issues: return localizedStringInstance._ls_help_other_issues
+        case .__ls_help_customer_support: return localizedStringInstance._ls_help_customer_support
+        case .__ls_help_more_help: return localizedStringInstance._ls_help_more_help
+        case .__ls_validation_invalid_username: return localizedStringInstance._ls_validation_invalid_username
+        case .__ls_validation_invalid_password: return localizedStringInstance._ls_validation_invalid_password
+        case .__ls_error_missing_keys_text_button: return localizedStringInstance._ls_error_missing_keys_text_button
+        case .__ls_error_missing_keys_text: return localizedStringInstance._ls_error_missing_keys_text
+        case .__ls_error_missing_keys_title: return localizedStringInstance._ls_error_missing_keys_title
+        case .__ls_error_invalid_mailbox_password: return localizedStringInstance._ls_error_invalid_mailbox_password
+        case .__ls_external_eccounts_not_supported_popup_title: return localizedStringInstance._ls_external_eccounts_not_supported_popup_title
+        case .__ls_external_eccounts_not_supported_popup_action_button: return localizedStringInstance._ls_external_eccounts_not_supported_popup_action_button
+        case .__ls_info_session_expired: return localizedStringInstance._ls_info_session_expired
+        case .__ls_error_generic: return localizedStringInstance._ls_error_generic
+        case .__ls_username_screen_title: return localizedStringInstance._ls_username_screen_title
+        case .__ls_username_screen_info: return localizedStringInstance._ls_username_screen_info
+        case .__ls_username_username_title: return localizedStringInstance._ls_username_username_title
+        case .__ls_username_button_title: return localizedStringInstance._ls_username_button_title
+        case .__ls_username_username_error: return localizedStringInstance._ls_username_username_error
+        case .__ls_create_address_button_title: return localizedStringInstance._ls_create_address_button_title
+        case .__ls_create_address_info: return localizedStringInstance._ls_create_address_info
+        case .__ls_create_address_recovery_title: return localizedStringInstance._ls_create_address_recovery_title
+        case .__ls_create_address_terms_full: return localizedStringInstance._ls_create_address_terms_full
+        case .__ls_create_address_terms_link: return localizedStringInstance._ls_create_address_terms_link
+        case .__ls_create_address_available: return localizedStringInstance._ls_create_address_available
+        case .__ls_login_mailbox_screen_title: return localizedStringInstance._ls_login_mailbox_screen_title
+        case .__ls_login_mailbox_field_title: return localizedStringInstance._ls_login_mailbox_field_title
+        case .__ls_login_mailbox_button_title: return localizedStringInstance._ls_login_mailbox_button_title
+        case .__ls_login_mailbox_forgot_password: return localizedStringInstance._ls_login_mailbox_forgot_password
+        case .__ls_login_2fa_screen_title: return localizedStringInstance._ls_login_2fa_screen_title
+        case .__ls_login_2fa_action_button_title: return localizedStringInstance._ls_login_2fa_action_button_title
+        case .__ls_login_2fa_field_title: return localizedStringInstance._ls_login_2fa_field_title
+        case .__ls_login_2fa_recovery_field_title: return localizedStringInstance._ls_login_2fa_recovery_field_title
+        case .__ls_login_2fa_recovery_button_title: return localizedStringInstance._ls_login_2fa_recovery_button_title
+        case .__ls_login_2fa_2fa_button_title: return localizedStringInstance._ls_login_2fa_2fa_button_title
+        case .__ls_login_2fa_field_info: return localizedStringInstance._ls_login_2fa_field_info
+        case .__ls_login_2fa_recovery_field_info: return localizedStringInstance._ls_login_2fa_recovery_field_info
+        case .__error_occured: return localizedStringInstance._error_occured
+        case .__general_ok_action: return localizedStringInstance._general_ok_action
+        case .__warning: return localizedStringInstance._warning
+        case .__do_you_want_to_bypass_validation: return localizedStringInstance._do_you_want_to_bypass_validation
+        case .__yes_bypass_validation: return localizedStringInstance._yes_bypass_validation
+        case .__no_dont_bypass_validation: return localizedStringInstance._no_dont_bypass_validation
+        case .__popup_credits_applied_message: return localizedStringInstance._popup_credits_applied_message
+        case .__popup_credits_applied_confirmation: return localizedStringInstance._popup_credits_applied_confirmation
+        case .__popup_credits_applied_cancellation: return localizedStringInstance._popup_credits_applied_cancellation
+        case .__error_apply_payment_on_registration_title: return localizedStringInstance._error_apply_payment_on_registration_title
+        case .__error_apply_payment_on_registration_message: return localizedStringInstance._error_apply_payment_on_registration_message
+        case .__retry: return localizedStringInstance._retry
+        case .__error_apply_payment_on_registration_support: return localizedStringInstance._error_apply_payment_on_registration_support
+        case .__error_unavailable_product: return localizedStringInstance._error_unavailable_product
+        case .__error_invalid_purchase: return localizedStringInstance._error_invalid_purchase
+        case .__error_reciept_lost: return localizedStringInstance._error_reciept_lost
+        case .__error_another_user_transaction: return localizedStringInstance._error_another_user_transaction
+        case .__error_backend_mismatch: return localizedStringInstance._error_backend_mismatch
+        case .__error_sandbox_receipt: return localizedStringInstance._error_sandbox_receipt
+        case .__error_no_hashed_username_arrived_in_transaction: return localizedStringInstance._error_no_hashed_username_arrived_in_transaction
+        case .__error_no_active_username_in_user_data_service: return localizedStringInstance._error_no_active_username_in_user_data_service
+        case .__error_transaction_failed_by_unknown_reason: return localizedStringInstance._error_transaction_failed_by_unknown_reason
+        case .__error_no_new_subscription_in_response: return localizedStringInstance._error_no_new_subscription_in_response
+        case .__error_unlock_to_proceed_with_iap: return localizedStringInstance._error_unlock_to_proceed_with_iap
+        case .__error_please_sign_in_iap: return localizedStringInstance._error_please_sign_in_iap
+        case .__error_credits_applied: return localizedStringInstance._error_credits_applied
+        case .__error_wrong_token_status: return localizedStringInstance._error_wrong_token_status
+        case .__login_username_org_dialog_title: return localizedStringInstance._login_username_org_dialog_title
+        case .__login_username_org_dialog_action_button: return localizedStringInstance._login_username_org_dialog_action_button
+        case .__login_username_org_dialog_message: return localizedStringInstance._login_username_org_dialog_message
+        case .__ad_delete_account_title: return localizedStringInstance._ad_delete_account_title
+        case .__ad_delete_account_button: return localizedStringInstance._ad_delete_account_button
+        case .__ad_delete_account_message: return localizedStringInstance._ad_delete_account_message
+        case .__ad_delete_account_success: return localizedStringInstance._ad_delete_account_success
+        case .__ad_delete_network_error: return localizedStringInstance._ad_delete_network_error
+        case .__ad_delete_close_button: return localizedStringInstance._ad_delete_close_button
+        case .__as_switch_to_title: return localizedStringInstance._as_switch_to_title
+        case .__as_accounts: return localizedStringInstance._as_accounts
+        case .__as_manage_accounts: return localizedStringInstance._as_manage_accounts
+        case .__as_signed_in_to_protonmail: return localizedStringInstance._as_signed_in_to_protonmail
+        case .__as_signed_out_of_protonmail: return localizedStringInstance._as_signed_out_of_protonmail
+        case .__as_signout: return localizedStringInstance._as_signout
+        case .__as_remove_button: return localizedStringInstance._as_remove_button
+        case .__as_remove_account_from_this_device: return localizedStringInstance._as_remove_account_from_this_device
+        case .__as_remove_account: return localizedStringInstance._as_remove_account
+        case .__as_remove_account_alert_text: return localizedStringInstance._as_remove_account_alert_text
+        case .__as_signout_alert_text: return localizedStringInstance._as_signout_alert_text
+        case .__as_dismiss_button: return localizedStringInstance._as_dismiss_button
+        case .__as_sign_in_button: return localizedStringInstance._as_sign_in_button
+        case .__su_main_view_title: return localizedStringInstance._su_main_view_title
+        case .__su_main_view_desc: return localizedStringInstance._su_main_view_desc
+        case .__su_next_button: return localizedStringInstance._su_next_button
+        case .__su_signin_button: return localizedStringInstance._su_signin_button
+        case .__su_email_address_button: return localizedStringInstance._su_email_address_button
+        case .__su_proton_address_button: return localizedStringInstance._su_proton_address_button
+        case .__su_username_field_title: return localizedStringInstance._su_username_field_title
+        case .__su_email_field_title: return localizedStringInstance._su_email_field_title
+        case .__su_password_proton_view_title: return localizedStringInstance._su_password_proton_view_title
+        case .__su_password_email_view_title: return localizedStringInstance._su_password_email_view_title
+        case .__su_password_field_title: return localizedStringInstance._su_password_field_title
+        case .__su_password_field_hint: return localizedStringInstance._su_password_field_hint
+        case .__su_repeat_password_field_title: return localizedStringInstance._su_repeat_password_field_title
+        case .__su_domains_sheet_title: return localizedStringInstance._su_domains_sheet_title
+        case .__su_recovery_view_title: return localizedStringInstance._su_recovery_view_title
+        case .__su_recovery_view_title_optional: return localizedStringInstance._su_recovery_view_title_optional
+        case .__su_recovery_view_desc_old: return localizedStringInstance._su_recovery_view_desc_old
+        case .__su_recovery_view_desc: return localizedStringInstance._su_recovery_view_desc
+        case .__su_recovery_email_only_view_desc: return localizedStringInstance._su_recovery_email_only_view_desc
+        case .__su_recovery_seg_email: return localizedStringInstance._su_recovery_seg_email
+        case .__su_recovery_seg_phone: return localizedStringInstance._su_recovery_seg_phone
+        case .__su_recovery_email_field_title: return localizedStringInstance._su_recovery_email_field_title
+        case .__su_recovery_phone_field_title: return localizedStringInstance._su_recovery_phone_field_title
+        case .__su_recovery_t_c_desc: return localizedStringInstance._su_recovery_t_c_desc
+        case .__su_recovery_t_c_link: return localizedStringInstance._su_recovery_t_c_link
+        case .__su_skip_button: return localizedStringInstance._su_skip_button
+        case .__su_recovery_skip_title: return localizedStringInstance._su_recovery_skip_title
+        case .__su_recovery_skip_desc: return localizedStringInstance._su_recovery_skip_desc
+        case .__su_recovery_method_button: return localizedStringInstance._su_recovery_method_button
+        case .__su_complete_view_title: return localizedStringInstance._su_complete_view_title
+        case .__su_complete_view_desc: return localizedStringInstance._su_complete_view_desc
+        case .__su_complete_step_creation: return localizedStringInstance._su_complete_step_creation
+        case .__su_complete_step_address_generation: return localizedStringInstance._su_complete_step_address_generation
+        case .__su_complete_step_keys_generation: return localizedStringInstance._su_complete_step_keys_generation
+        case .__su_complete_step_payment_verification: return localizedStringInstance._su_complete_step_payment_verification
+        case .__su_complete_step_payment_validated: return localizedStringInstance._su_complete_step_payment_validated
+        case .__su_email_verification_view_title: return localizedStringInstance._su_email_verification_view_title
+        case .__su_email_verification_view_desc: return localizedStringInstance._su_email_verification_view_desc
+        case .__su_email_verification_code_name: return localizedStringInstance._su_email_verification_code_name
+        case .__su_email_verification_code_desc: return localizedStringInstance._su_email_verification_code_desc
+        case .__su_did_not_receive_code_button: return localizedStringInstance._su_did_not_receive_code_button
+        case .__su_terms_conditions_view_title: return localizedStringInstance._su_terms_conditions_view_title
+        case .__su_error_invalid_token_request: return localizedStringInstance._su_error_invalid_token_request
+        case .__su_error_invalid_token: return localizedStringInstance._su_error_invalid_token
+        case .__su_error_create_user_failed: return localizedStringInstance._su_error_create_user_failed
+        case .__su_error_invalid_hashed_password: return localizedStringInstance._su_error_invalid_hashed_password
+        case .__su_error_password_empty: return localizedStringInstance._su_error_password_empty
+        case .__su_error_password_too_short: return localizedStringInstance._su_error_password_too_short
+        case .__su_error_password_not_equal: return localizedStringInstance._su_error_password_not_equal
+        case .__su_error_email_already_used: return localizedStringInstance._su_error_email_already_used
+        case .__su_error_missing_sub_user_configuration: return localizedStringInstance._su_error_missing_sub_user_configuration
+        case .__su_invalid_verification_alert_message: return localizedStringInstance._su_invalid_verification_alert_message
+        case .__su_invalid_verification_change_email_button: return localizedStringInstance._su_invalid_verification_change_email_button
+        case .__su_summary_title: return localizedStringInstance._su_summary_title
+        case .__su_summary_free_description: return localizedStringInstance._su_summary_free_description
+        case .__su_summary_free_description_replacement: return localizedStringInstance._su_summary_free_description_replacement
+        case .__su_summary_paid_description: return localizedStringInstance._su_summary_paid_description
+        case .__su_summary_no_plan_description: return localizedStringInstance._su_summary_no_plan_description
+        case .__su_summary_welcome: return localizedStringInstance._su_summary_welcome
+        case .__pu_select_plan_title: return localizedStringInstance._pu_select_plan_title
+        case .__pu_current_plan_title: return localizedStringInstance._pu_current_plan_title
+        case .__pu_subscription_title: return localizedStringInstance._pu_subscription_title
+        case .__pu_upgrade_plan_title: return localizedStringInstance._pu_upgrade_plan_title
+        case .__pu_plan_footer_desc: return localizedStringInstance._pu_plan_footer_desc
+        case .__pu_plan_footer_desc_purchased: return localizedStringInstance._pu_plan_footer_desc_purchased
+        case .__pu_select_plan_button: return localizedStringInstance._pu_select_plan_button
+        case .__pu_upgrade_plan_button: return localizedStringInstance._pu_upgrade_plan_button
+        case .__pu_plan_details_renew_auto_expired: return localizedStringInstance._pu_plan_details_renew_auto_expired
+        case .__pu_plan_details_renew_expired: return localizedStringInstance._pu_plan_details_renew_expired
+        case .__pu_plan_details_plan_details_unavailable_contact_administrator: return localizedStringInstance._pu_plan_details_plan_details_unavailable_contact_administrator
+        case .__pu_plan_details_storage: return localizedStringInstance._pu_plan_details_storage
+        case .__pu_plan_details_storage_per_user: return localizedStringInstance._pu_plan_details_storage_per_user
+        case .__pu_plan_details_price_time_period_no_unit: return localizedStringInstance._pu_plan_details_price_time_period_no_unit
+        case .__pu_plan_details_vpn_free_speed: return localizedStringInstance._pu_plan_details_vpn_free_speed
+        case .__pu_plan_details_custom_email: return localizedStringInstance._pu_plan_details_custom_email
+        case .__pu_plan_details_priority_support: return localizedStringInstance._pu_plan_details_priority_support
+        case .__pu_plan_details_adblocker: return localizedStringInstance._pu_plan_details_adblocker
+        case .__pu_plan_details_streaming_service: return localizedStringInstance._pu_plan_details_streaming_service
+        case .__pu_plan_details_n_uneven_amounts_of_addresses_and_calendars: return localizedStringInstance._pu_plan_details_n_uneven_amounts_of_addresses_and_calendars
+        case .__pu_plan_details_high_speed: return localizedStringInstance._pu_plan_details_high_speed
+        case .__pu_plan_details_highest_speed: return localizedStringInstance._pu_plan_details_highest_speed
+        case .__pu_plan_details_multi_user_support: return localizedStringInstance._pu_plan_details_multi_user_support
+        case .__pu_plan_details_free_description: return localizedStringInstance._pu_plan_details_free_description
+        case .__pu_plan_details_plus_description: return localizedStringInstance._pu_plan_details_plus_description
+        case .__pu_plan_details_pro_description: return localizedStringInstance._pu_plan_details_pro_description
+        case .__pu_plan_details_visionary_description: return localizedStringInstance._pu_plan_details_visionary_description
+        case .__pu_plan_unfinished_error_title: return localizedStringInstance._pu_plan_unfinished_error_title
+        case .__pu_plan_unfinished_error_desc: return localizedStringInstance._pu_plan_unfinished_error_desc
+        case .__pu_plan_unfinished_error_retry_button: return localizedStringInstance._pu_plan_unfinished_error_retry_button
+        case .__pu_plan_unfinished_desc: return localizedStringInstance._pu_plan_unfinished_desc
+        case .__pu_iap_in_progress_banner: return localizedStringInstance._pu_iap_in_progress_banner
+        case .__splash_made_by: return localizedStringInstance._splash_made_by
+        case .__net_connection_error: return localizedStringInstance._net_connection_error
+        case .__net_api_might_be_blocked_message: return localizedStringInstance._net_api_might_be_blocked_message
+        case .__net_api_might_be_blocked_button: return localizedStringInstance._net_api_might_be_blocked_button
+        case .__net_insecure_connection_error: return localizedStringInstance._net_insecure_connection_error
+        case .__troubleshooting_support_from: return localizedStringInstance._troubleshooting_support_from
+        case .__troubleshooting_email_title: return localizedStringInstance._troubleshooting_email_title
+        case .__troubleshooting_twitter_title: return localizedStringInstance._troubleshooting_twitter_title
+        case .__troubleshooting_title: return localizedStringInstance._troubleshooting_title
+        case .__allow_alternative_routing: return localizedStringInstance._allow_alternative_routing
+        case .__no_internet_connection: return localizedStringInstance._no_internet_connection
+        case .__isp_problem: return localizedStringInstance._isp_problem
+        case .__gov_block: return localizedStringInstance._gov_block
+        case .__antivirus_interference: return localizedStringInstance._antivirus_interference
+        case .__firewall_interference: return localizedStringInstance._firewall_interference
+        case .__proton_is_down: return localizedStringInstance._proton_is_down
+        case .__no_solution: return localizedStringInstance._no_solution
+        case .__allow_alternative_routing_description: return localizedStringInstance._allow_alternative_routing_description
+        case .__allow_alternative_routing_action_title: return localizedStringInstance._allow_alternative_routing_action_title
+        case .__no_internet_connection_description: return localizedStringInstance._no_internet_connection_description
+        case .__isp_problem_description: return localizedStringInstance._isp_problem_description
+        case .__gov_block_description: return localizedStringInstance._gov_block_description
+        case .__antivirus_interference_description: return localizedStringInstance._antivirus_interference_description
+        case .__firewall_interference_description: return localizedStringInstance._firewall_interference_description
+        case .__proton_is_down_description: return localizedStringInstance._proton_is_down_description
+        case .__proton_is_down_action_title: return localizedStringInstance._proton_is_down_action_title
+        case .__no_solution_description: return localizedStringInstance._no_solution_description
+        case .__troubleshoot_support_subject: return localizedStringInstance._troubleshoot_support_subject
+        case .__troubleshoot_support_body: return localizedStringInstance._troubleshoot_support_body
+        case .__general_back_action: return localizedStringInstance._general_back_action
+        case .__pu_plan_details_n_users: return localizedStringInstance._pu_plan_details_n_users
+        case .__pu_plan_details_n_addresses: return localizedStringInstance._pu_plan_details_n_addresses
+        case .__pu_plan_details_n_addresses_per_user: return localizedStringInstance._pu_plan_details_n_addresses_per_user
+        case .__pu_plan_details_n_calendars: return localizedStringInstance._pu_plan_details_n_calendars
+        case .__pu_plan_details_n_folders: return localizedStringInstance._pu_plan_details_n_folders
+        case .__pu_plan_details_countries: return localizedStringInstance._pu_plan_details_countries
+        case .__pu_plan_details_n_calendars_per_user: return localizedStringInstance._pu_plan_details_n_calendars_per_user
+        case .__pu_plan_details_n_connections: return localizedStringInstance._pu_plan_details_n_connections
+        case .__pu_plan_details_n_vpn_connections: return localizedStringInstance._pu_plan_details_n_vpn_connections
+        case .__pu_plan_details_n_high_speed_connections: return localizedStringInstance._pu_plan_details_n_high_speed_connections
+        case .__pu_plan_details_n_high_speed_connections_per_user: return localizedStringInstance._pu_plan_details_n_high_speed_connections_per_user
+        case .__pu_plan_details_n_custom_domains: return localizedStringInstance._pu_plan_details_n_custom_domains
+        case .__pu_plan_details_n_addresses_and_calendars: return localizedStringInstance._pu_plan_details_n_addresses_and_calendars
+        }
+    }
+    
+}
 
 public class LocalizedString {
 
@@ -217,6 +1308,12 @@ public class LocalizedString {
 
     /// Incorrect mailbox password error
     public lazy var _ls_error_invalid_mailbox_password = NSLocalizedString("Incorrect mailbox password", bundle: Common.bundle, comment: "Incorrect mailbox password error")
+    
+    /// External accounts not supported popup title
+    public lazy var _ls_external_eccounts_not_supported_popup_title = NSLocalizedString("Proton address required", bundle: Common.bundle, comment: "External accounts not supported popup title")
+    
+    /// External accounts not supported popup learn more button
+    public lazy var _ls_external_eccounts_not_supported_popup_action_button = NSLocalizedString("Learn more", bundle: Common.bundle, comment: "External accounts not supported popup learn more button")
     
     /// Session expired info
     public lazy var _ls_info_session_expired = NSLocalizedString("Your session has expired. Please log in again.", bundle: Common.bundle, comment: "Session expired info")

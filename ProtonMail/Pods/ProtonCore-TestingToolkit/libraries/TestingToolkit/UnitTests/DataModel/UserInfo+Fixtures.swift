@@ -61,7 +61,8 @@ public extension UserInfo {
                  crashReports: nil,
                  conversationToolbarActions: nil,
                  messageToolbarActions: nil,
-                 listToolbarActions: nil
+                 listToolbarActions: nil,
+                 referralProgram: nil
         )
     }
 }

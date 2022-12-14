@@ -22,8 +22,6 @@
 
 import ProtonCore_Crypto
 
-typealias ChangePasswordComplete = (Bool, NSError?) -> Void
-
 protocol ChangePasswordViewModel {
     init(user: UserManager)
     func getNavigationTitle() -> String
@@ -35,7 +33,7 @@ protocol ChangePasswordViewModel {
                         newPassword: Passphrase,
                         confirmNewPassword: Passphrase,
                         tFACode: String?,
-                        complete: @escaping ChangePasswordComplete)
+                        complete: @escaping (NSError?) -> Void)
 }
 
 class ChangeLoginPWDViewModel: ChangePasswordViewModel {
@@ -70,31 +68,26 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
                         newPassword: Passphrase,
                         confirmNewPassword: Passphrase,
                         tFACode: String?,
-                        complete: @escaping ChangePasswordComplete) {
+                        complete: @escaping (NSError?) -> Void) {
         let currentPassword = current // .trim();
         let newpwd = newPassword // .trim();
         let confirmpwd = confirmNewPassword // .trim();
 
         if newpwd.isEmpty || confirmpwd.isEmpty {
-            complete(false, UpdatePasswordError.passwordEmpty.error)
+            complete(UpdatePasswordError.passwordEmpty.error)
         } else if newpwd.value.count < 8 {
-            complete(false, UpdatePasswordError.minimumLengthError.error)
+            complete(UpdatePasswordError.minimumLengthError.error)
         } else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.error)
+            complete(UpdatePasswordError.newNotMatch.error)
         } else {
             self.userManager.userService.updatePassword(
                 auth: userManager.authCredential,
                 user: userManager.userInfo,
                 login_password: currentPassword,
                 new_password: newpwd,
-                twoFACode: tFACode
-            ) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    complete(true, nil)
-                }
-            }
+                twoFACode: tFACode,
+                completion: complete
+            )
         }
     }
 }
@@ -130,15 +123,15 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
                         newPassword: Passphrase,
                         confirmNewPassword: Passphrase,
                         tFACode: String?,
-                        complete: @escaping ChangePasswordComplete) {
+                        complete: @escaping (NSError?) -> Void) {
         // passwords support empty spaces like " 1 1 "
         let currentPassword = current
         let confirmpwd = confirmNewPassword
 
         if newPassword.isEmpty || confirmpwd.isEmpty {
-            complete(false, UpdatePasswordError.passwordEmpty.error)
+            complete(UpdatePasswordError.passwordEmpty.error)
         } else if newPassword != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.error)
+            complete(UpdatePasswordError.newNotMatch.error)
         } else {
             self.userManager.userService.updateMailboxPassword(
                 auth: userManager.authCredential,
@@ -146,13 +139,9 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
                 loginPassword: currentPassword,
                 newPassword: newPassword,
                 twoFACode: tFACode,
-                buildAuth: false) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    complete(true, nil)
-                }
-            }
+                buildAuth: false,
+                completion: complete
+            )
         }
     }
 }
@@ -189,16 +178,16 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
                         newPassword: Passphrase,
                         confirmNewPassword: Passphrase,
                         tFACode: String?,
-                        complete: @escaping ChangePasswordComplete) {
+                        complete: @escaping (NSError?) -> Void) {
         // passwords support empty spaces like " * * "
         let currentPassword = current
         let confirmpwd = confirmNewPassword
         if newPassword.isEmpty || confirmpwd.isEmpty {
-            complete(false, UpdatePasswordError.passwordEmpty.error)
+            complete(UpdatePasswordError.passwordEmpty.error)
         } else if newPassword.value.count < 8 {
-            complete(false, UpdatePasswordError.minimumLengthError.error)
+            complete(UpdatePasswordError.minimumLengthError.error)
         } else if newPassword != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.error)
+            complete(UpdatePasswordError.newNotMatch.error)
         } else {
             let service = self.userManager.userService
             service.updateMailboxPassword(auth: userManager.authCredential,
@@ -206,13 +195,11 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
                                           loginPassword: currentPassword,
                                           newPassword: newPassword,
                                           twoFACode: tFACode,
-                                          buildAuth: true) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
+                                          buildAuth: true) { error in
+                if error == nil {
                     self.userManager.save()
-                    complete(true, nil)
                 }
+                complete(error)
             }
         }
     }

@@ -46,6 +46,7 @@ protocol UnlockManagerDelegate: AnyObject {
     func cleanAll()
     func isUserStored() -> Bool
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
+    func setupCoreData()
 }
 
 class UnlockManager: Service {
@@ -158,15 +159,19 @@ class UnlockManager: Service {
                                                 unlocked: (() -> Void)? = nil) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
-            self.delegate?.cleanAll()
+            delegate?.setupCoreData()
+            delegate?.cleanAll()
             unlockFailed?()
             return
         }
 
         guard self.delegate?.isMailboxPasswordStored(forUser: uid) == true else { // this will provoke mainKey obtention
+            delegate?.setupCoreData()
             requestMailboxPassword()
             return
         }
+
+        delegate?.setupCoreData()
 
         cacheStatus.pinFailedCount = 0
 

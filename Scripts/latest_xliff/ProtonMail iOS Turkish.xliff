@@ -194,16 +194,16 @@
           <target>ARŞİV</target>
         </alt-trans>
       </trans-unit>
-      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
-        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
-        <target state="final">Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen protonmail.com üzerinden oturum açın.</target>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.</source>
+        <target state="final">Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen proton.me üzerinden oturum açın.</target>
         <note>error message</note>
       </trans-unit>
       <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
         <source>Access to this account is disabled due to non-payment.
- Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+ Please visit &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
         <target state="final">Ödeme yapılmadığı için bu hesaba erişim devre dışı.
-Lütfen daha fazla bilgi için &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;bilgi tabanımızı&lt;/a&gt; ziyaret edin.</target>
+Lütfen daha fazla bilgi için &lt;a href="https://proton.me/support/knowledge-base/delinquency/"&gt;bilgi tabanımızı&lt;/a&gt; ziyaret edin.</target>
         <note/>
       </trans-unit>
       <trans-unit id="Account password invalid" approved="yes">
@@ -1718,9 +1718,9 @@ Lütfen daha fazla bilgi için &lt;a href="https://protonmail.com/support/knowle
         <target state="final">Giriş bildirimi e-postası...</target>
         <note>place holder</note>
       </trans-unit>
-      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
-        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
-        <target state="final">Anında ProtonMail hesap oluşturma geçici olarak devre dışı bırakıldı. Lütfen davetiye istemek için https://protonmail.com/invite adresine gidin.</target>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://proton.me/invite to request an invitation.</source>
+        <target state="final">Anında ProtonMail hesap oluşturma geçici olarak devre dışı bırakıldı. Lütfen davetiye istemek için https://proton.me/invite adresine gidin.</target>
         <note>Error</note>
       </trans-unit>
       <trans-unit id="Internal Error" approved="yes">
@@ -2071,9 +2071,9 @@ Lütfen daha fazla bilgi için &lt;a href="https://protonmail.com/support/knowle
           <target>Mobil İmza</target>
         </alt-trans>
       </trans-unit>
-      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
-        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
-        <target state="final">Mobil kayıt işlemleri geçici olarak devre dışı bırakıldı. Lütfen daha sonra tekrar deneyin veya bir masaüstü ya da dizüstü bilgisayar kullanarak protonmail.com'dan kaydolmayı deneyin.</target>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at proton.me using a desktop or laptop computer.</source>
+        <target state="final">Mobil kayıt işlemleri geçici olarak devre dışı bırakıldı. Lütfen daha sonra tekrar deneyin veya bir masaüstü ya da dizüstü bilgisayar kullanarak proton.me'dan kaydolmayı deneyin.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="Modifying or turning off the default mobile signature is a paid feature." approved="yes">
@@ -3348,13 +3348,13 @@ insan olduğunuzu doğrulamamız gerekiyor.</target>
         <note>human verification notes</note>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Posta kutusu parolanızı sıfırlamak için, lütfen protonmail.com adresinden ProtonMail'in web sürümünü kullanın</target>
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Posta kutusu parolanızı sıfırlamak için, lütfen proton.me adresinden ProtonMail'in web sürümünü kullanın</target>
         <note/>
       </trans-unit>
-      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
-        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
-        <target state="final">Posta kutusu şifrenizi sıfırlamak için lütfen protonmail.com adresindeki ProtonMail web sürümünü kullanın</target>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at proton.me" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at proton.me</source>
+        <target state="final">Posta kutusu şifrenizi sıfırlamak için lütfen proton.me adresindeki ProtonMail web sürümünü kullanın</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="To:" approved="yes">
@@ -3764,9 +3764,9 @@ insan olduğunuzu doğrulamamız gerekiyor.</target>
         <target state="final">Kaydırma hareketlerini ProtonMail uygulama ayarlarından özelleştirebilirsiniz.</target>
         <note>Description</note>
       </trans-unit>
-      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
-        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
-        <target state="final">protonmail.com/support adresinden yardım ve destek alabilirsiniz. Hatalar, uygulama içinden de bildirilebilir.</target>
+      <trans-unit id="You can get help and support at proton.me/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at proton.me/support. Bugs can also be reported with the app.</source>
+        <target state="final">proton.me/support adresinden yardım ve destek alabilirsiniz. Hatalar, uygulama içinden de bildirilebilir.</target>
         <note>Description</note>
       </trans-unit>
       <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">

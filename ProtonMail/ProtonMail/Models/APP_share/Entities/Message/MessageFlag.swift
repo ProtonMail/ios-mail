@@ -94,6 +94,7 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
 
     static let scheduledSend = MessageFlag(rawValue: 1 << 20)
 
+    static let dmarcPass = MessageFlag(rawValue: 1 << 23)
     static let spfFail = MessageFlag(rawValue: 1 << 24)
     static let dkimFail = MessageFlag(rawValue: 1 << 25)
 

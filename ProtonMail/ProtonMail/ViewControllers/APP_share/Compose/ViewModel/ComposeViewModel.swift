@@ -49,18 +49,26 @@ class ComposeViewModel: NSObject {
     let messageService: MessageDataService
     let coreDataContextProvider: CoreDataContextProviderProtocol
     let isEditingScheduleMsg: Bool
+    // we can't use `dependencies` as name bc it clashes with the subclass attribute of the same name
+    let deps: Dependencies
 
-    init(msgDataService: MessageDataService,
-         contextProvider: CoreDataContextProviderProtocol,
-         user: UserManager,
-         isEditingScheduleMsg: Bool = false) {
+    init(
+        msgDataService: MessageDataService,
+        contextProvider: CoreDataContextProviderProtocol,
+        user: UserManager,
+        isEditingScheduleMsg: Bool = false,
+        dependencies: Dependencies
+    ) {
         self.messageService = msgDataService
         self.coreDataContextProvider = contextProvider
-        self.composerMessageHelper = ComposerMessageHelper(msgDataService: msgDataService,
-                                                           contextProvider: contextProvider,
-                                                           user: user,
-                                                           cacheService: user.cacheService)
+        self.composerMessageHelper = ComposerMessageHelper(
+            msgDataService: msgDataService,
+            contextProvider: contextProvider,
+            user: user,
+            cacheService: user.cacheService
+        )
         self.isEditingScheduleMsg = isEditingScheduleMsg
+        self.deps = dependencies
     }
 
     /// Only to notify ComposeContainerViewModel that contacts changed
@@ -80,6 +88,7 @@ class ComposeViewModel: NSObject {
     
     private var _subject : String! = ""
     var body : String! = ""
+    var deliveryTime: Date?
 
     func getSubject() -> String {
         return self._subject
@@ -117,7 +126,6 @@ class ComposeViewModel: NSObject {
           fatalError("This method must be overridden")
     }
 
-    ///
     func sendMessage(deliveryTime: Date?) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
@@ -198,15 +206,66 @@ class ComposeViewModel: NSObject {
                                                   havingNonPMEmail: havingNonPMEmail)
     }
 
-    func needAttachRemindAlert(subject: String, body: String, attachmentNum: Int) -> Bool {
-        fatalError("This method must be overridden")
-    }
-
-    func getNormalAttachmentNum() -> Int {
+    func needAttachRemindAlert(subject: String, body: String) -> Bool {
         fatalError("This method must be overridden")
     }
 
     func isEmptyDraft() -> Bool {
         fatalError("This method must be overridden")
+    }
+
+    func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
+        guard let attachments = getAttachments() else { return }
+        let inlineAttachments = attachments
+            .filter({ attachment in
+                guard let contentId = attachment.contentID() else { return false }
+                return !contentId.isEmpty && attachment.inline()
+            })
+        let userKeys = getUser().toUserKeys()
+
+        for att in inlineAttachments {
+            guard let contentId = att.contentID() else { continue }
+            deps.fetchAttachment.callbackOn(.main).execute(
+                params: .init(
+                    attachmentID: AttachmentID(att.attachmentID),
+                    attachmentKeyPacket: att.keyPacket,
+                    purpose: .decryptAndEncodeAttachment,
+                    userKeys: userKeys
+                )
+            ) { result in
+                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
+                    return
+                }
+                htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.mimeType);base64,\(base64Att)")
+            }
+        }
+    }
+
+	func isDraftHavingEmptyRecipient() -> Bool {
+        return toSelectedContacts.isEmpty &&
+        ccSelectedContacts.isEmpty &&
+        bccSelectedContacts.isEmpty
+    }
+
+    func doesInvalidAddressExist() -> Bool {
+        let allContacts = toSelectedContacts + ccSelectedContacts + bccSelectedContacts
+        let invalidEmails = allContacts
+            .filter { $0.modelType == .contact }
+            .compactMap { $0 as? ContactVO }
+            .filter {
+                $0.encryptionIconStatus?.nonExisting == true ||
+                $0.encryptionIconStatus?.isInvalid == true
+            }
+        return !invalidEmails.isEmpty
+    }
+
+    func shouldShowScheduleSendConfirmationAlert() -> Bool {
+        return isEditingScheduleMsg && deliveryTime == nil
+	}
+}
+
+extension ComposeViewModel {
+    struct Dependencies {
+        let fetchAttachment: FetchAttachmentUseCase
     }
 }

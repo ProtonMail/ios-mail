@@ -30,8 +30,7 @@ class ShareUnlockCoordinator {
     var services: ServiceFactory
 
     enum Destination: String {
-        case pin = "pin"
-        case composer = "composer"
+        case pin, composer
     }
 
     init(navigation: UINavigationController?, services: ServiceFactory) {
@@ -43,9 +42,7 @@ class ShareUnlockCoordinator {
     }
 
     func start() {
-        guard let viewController = viewController else {
-            return
-        }
+        guard let viewController = viewController else { return }
         viewController.set(coordinator: self)
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -61,22 +58,26 @@ class ShareUnlockCoordinator {
     }
 
     private func gotoComposer() {
-        guard let vc = self.viewController,
+        guard let controller = self.viewController,
               let navigationController = self.navigationController,
               let user = self.services.get(by: UsersManager.self).firstUser else {
             return
         }
 
         let coreDataService = self.services.get(by: CoreDataService.self)
-        let editorViewModel = ContainableComposeViewModel(subject: vc.inputSubject,
-                                                          body: vc.inputContent,
-                                                          files: vc.files,
+        let editorViewModel = ContainableComposeViewModel(subject: controller.inputSubject,
+                                                          body: controller.inputContent,
+                                                          files: controller.files,
                                                           action: .newDraftFromShare,
                                                           msgService: user.messageService,
                                                           user: user,
                                                           coreDataContextProvider: coreDataService)
 
-        let coordinator = ComposeContainerViewCoordinator(embeddingController: navigationController, editorViewModel: editorViewModel, services: self.services)
+        let coordinator = ComposeContainerViewCoordinator(
+            embeddingController: navigationController,
+            editorViewModel: editorViewModel,
+            services: self.services
+        )
         coordinator.start()
     }
 
@@ -92,15 +93,17 @@ class ShareUnlockCoordinator {
 
 extension ShareUnlockCoordinator: SharePinUnlockViewControllerDelegate {
     func cancel() {
+        guard let bundleID = Bundle.main.bundleIdentifier else {
+            fatalError("Should have value")
+        }
         let users = self.services.get(by: UsersManager.self)
         users.clean().done { [weak self] _ in
-            let error = NSError(domain: Bundle.main.bundleIdentifier!, code: 0)
+            let error = NSError(domain: bundleID, code: 0)
             self?.viewController?.extensionContext?.cancelRequest(withError: error)
         }.cauterize()
     }
 
     func next() {
         UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
-
     }
 }

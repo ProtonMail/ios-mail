@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 enum PinCodeStep: Int {
@@ -36,7 +37,7 @@ class PinCodeViewModel: NSObject {
     }
 
     func backButtonIcon() -> UIImage {
-        Asset.topBack.image
+        IconProvider.arrowLeft
     }
 
     func cancel() -> String {

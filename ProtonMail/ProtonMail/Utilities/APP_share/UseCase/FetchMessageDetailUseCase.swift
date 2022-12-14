@@ -44,22 +44,34 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         }
     }
 
+    // TODO: error handling in this method seems a little unexpected
     private func fetchMessageDetail(params: Params, callback: @escaping Callback) {
         dependencies
             .apiService
-            .messageDetail(messageID: params.message.messageID) { [weak self] _, response, error in
+            .messageDetail(messageID: params.message.messageID) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-                let context = self.dependencies.contextProvider.rootSavingContext
-                context.perform { [weak self] in
+                self.dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
                     guard let self = self else {
                         callback(.failure(Errors.selfIsReleased))
                         return
                     }
-                    guard let response = response,
-                          let message = context.object(with: params.message.objectID.rawValue) as? Message else {
+
+                    let response: JSONDictionary
+                    switch result {
+                    case .success(let value):
+                        response = value
+                    case .failure(let error):
+                        callback(.failure(error))
+                        return
+                    }
+
+                    guard let message = context.object(with: params.message.objectID.rawValue) as? Message else {
+                        // why are we throwing unableToParseResponse in case of a Core Data failure?
+                        // should be more like "no matching message in database", however surprising that is
+                        // btw we could perform this load even before we fetch details from the backend
                         let error = NSError.unableToParseResponse(response)
                         callback(.failure(error))
                         return
@@ -102,12 +114,12 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             return
         }
         do {
-            let localAttachments = attachment(from: message)
+            let uploadingAttachments = uploadingAttachment(from: message)
             // This will remove all attachments that are still not uploaded to BE
             try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
                                             fromJSONDictionary: messageDict,
                                             in: context)
-            restoreUploading(attachments: localAttachments,
+            restoreUploading(attachments: uploadingAttachments,
                              to: message,
                              context: context)
 
@@ -125,14 +137,13 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         }
     }
 
-    private func attachment(from message: Message) -> [Attachment] {
+    private func uploadingAttachment(from message: Message) -> [Attachment] {
         let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let localAttachments = message.attachments.allObjects
             .compactMap { $0 as? Attachment }
             .filter { attach in
-                if attach.isSoftDeleted {
-                    return false
-                } else if realAttachments {
+                if attach.isUploaded || attach.isSoftDeleted { return false }
+                if realAttachments {
                     return !attach.inline()
                 }
                 return true
@@ -157,7 +168,12 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 }
             }
         }
-        message.numAttachments = NSNumber(value: message.attachments.count)
+        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
+        let attachmentCount = message.attachments
+            .compactMap { $0 as? Attachment }
+            .filter { !$0.inline() || !realAttachments }
+            .count
+        message.numAttachments = NSNumber(value: attachmentCount)
     }
 
     private func updateUnread(message: Message) {

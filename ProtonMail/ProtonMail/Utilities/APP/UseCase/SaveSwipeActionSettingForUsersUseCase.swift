@@ -96,9 +96,9 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
         var lastError: NSError?
         dependencies.usersApiServices.forEach({ apiService in
             group.enter()
-            apiService.exec(
-                route: request,
-                responseObject: VoidResponse()
+            apiService.perform(
+                request: request,
+                response: VoidResponse()
             ) { _, response in
                 if let error = response.error?.toNSError {
                     lastError = error

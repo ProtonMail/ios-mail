@@ -33,19 +33,25 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let coreDataService: CoreDataService
     private let user: UserManager
     private let navigationController: UINavigationController
+    private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID) -> Void)?
 
-    init(navigationController: UINavigationController,
-         labelId: LabelID,
-         message: MessageEntity,
-         user: UserManager,
-         coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)) {
+    init(
+        navigationController: UINavigationController,
+        labelId: LabelID,
+        message: MessageEntity,
+        user: UserManager,
+        coreDataService: CoreDataService =
+            sharedServices.get(by: CoreDataService.self),
+        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get()
+    ) {
         self.navigationController = navigationController
         self.labelId = labelId
         self.message = message
         self.user = user
         self.coreDataService = coreDataService
+        self.internetStatusProvider = internetStatusProvider
     }
 
     func start() {
@@ -55,6 +61,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             message: message,
             user: user,
             systemUpTime: userCachedStatus,
+            internetStatusProvider: internetStatusProvider,
             goToDraft: { [weak self] msgID in
                 self?.navigationController.popViewController(animated: false)
                 self?.goToDraft?(msgID)
@@ -179,9 +186,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
-        let viewModel = AttachmentListViewModel(attachments: attachments,
-                                                user: user,
-                                                inlineCIDS: inlineCIDS)
+        let viewModel = AttachmentListViewModel(
+            attachments: attachments,
+            user: user,
+            inlineCIDS: inlineCIDS,
+            dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
+        )
         let viewController = AttachmentListViewController(viewModel: viewModel)
         self.navigationController.pushViewController(viewController, animated: true)
     }

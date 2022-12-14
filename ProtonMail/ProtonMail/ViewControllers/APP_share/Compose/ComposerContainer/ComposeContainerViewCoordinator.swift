@@ -65,9 +65,12 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     #endif
 
     func start() {
-        let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel,
-                                                  uiDelegate: nil,
-                                                  userIntroductionProgressProvider: userCachedStatus)
+        let viewModel = ComposeContainerViewModel(
+            editorViewModel: editorViewModel,
+            uiDelegate: nil,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendStatusProvider: userCachedStatus
+        )
         let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
         viewModel.uiDelegate = viewController
 
@@ -247,6 +250,12 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
                 let number = self?.attachmentView?.attachmentCount ?? 0
                 self?.controller.updateAttachmentCount(number: number)
             }
+        }
+    }
+
+    func checkIfDraftIsValidToBeSent(continueAction: @escaping () -> Void) {
+        editor?.displayDraftNotValidAlertIfNeeded(isTriggeredFromScheduleButton: true) {
+            continueAction()
         }
     }
 }

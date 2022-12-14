@@ -26,9 +26,3 @@ import UIKit
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
 }
-
-extension SettingsDeviceGeneralCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        self.labelAtInterfaceBuilder()
-    }
-}

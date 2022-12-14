@@ -35,8 +35,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "Reklámblokkoló (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "Alternatív útválasztás engedélyezése";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Hiba történt";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Antivírus interferencia";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Az Apple azt jelezte vissza, hogy nem tudták feldolgozni a vásárlást.";
@@ -53,6 +59,9 @@
 /* *
  * Login 2FA */
 "Authenticate" = "Azonosítás";
+
+/* top left back button */
+"Back" = "Vissza";
 
 /* Terms and conditions note */
 "By clicking Create address, you agree with Proton's Terms and Conditions." = "A Cím létrehozása gombra kattintva elfogadja a Proton felhasználási feltételeit.";
@@ -75,6 +84,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "Jelszó megváltoztatása";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Ellenőrizze a Proton állapotát a rendszer jelentésekben.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Bezárás";
@@ -105,6 +117,9 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Vegye fel velünk a kapcsolatot a support@protonvpn.com címen a vásárlás befejezéséhez.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.zendesk.com), vagy a Twitter segítségével.";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Hozzon létre egy Proton fiókot a jelenlegi email címével";
@@ -152,6 +167,9 @@
 
 /* Not receive code button */
 "Did not receive the code?" = "Nem kapta meg a kódot?";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Kapcsolja ki a proxy-t vagy a tűzfalat, vagy vegye fel a kapcsolatot a hálózati rendszergazdával.";
 
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Elvetés";
@@ -226,6 +244,9 @@
 /* Verification button */
 "Get verification code" = "Ellenőrző kód küldése";
 
+/* network troubleshot cell title */
+"Government block" = "Kormányzati blokk";
+
 /* Help button */
 "Help" = "Segítség";
 
@@ -241,8 +262,14 @@
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ha problémába ütközik a fiók létrehozásakor, kérjen egy meghívót és 1 munkanapon belül segítséget nyújtunk.";
 
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Ha a Proton szolgáltatásai le vannak tiltva, ezzel a beállítással az alkalmazás alternatív hálózati útvonalakat próbál meg használni, ami hasznos lehet tűzfalak megkerüléséhez vagy hálózati problémák megoldásához. Javasoljuk, hogy tartsa ezt a beállítást bekapcsolva a nagyobb megbízhatóság érdekében. %1$@";
+
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Érvénytelen postafiók jelszó";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Internet szolgáltató (ISP) probléma";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Érvénytelen hash-elt jelszó";
@@ -294,6 +321,9 @@
 /* Action button title for picking Proton Mail username
    Next button */
 "Next" = "Következő";
+
+/* network troubleshot cell title */
+"No internet connection" = "Nincs internet kapcsolat";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Nem, egy másik Proton Mail fiókhoz";
@@ -364,6 +394,12 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be Proton Mail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Ellenőrizze, hogy az internet kapcsolat működik-e.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Kérjük, ossza meg problémáját.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Kérjük, szolgáltatási csomagjának aktiválásához oldja fel az alkalmazást";
 
@@ -376,8 +412,17 @@
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton ingyenes";
 
+/* network troubleshot cell title */
+"Proton is down" = "A Proton nem érhető el";
+
 /* Plan details pro description */
 "Proton Mail for professionals and businesses" = "Proton Mail vállalkozóknak és cégeknek";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton Állapot";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Proxy/tűzfal interferencia";
 
 /* Error message */
 "Purchase is not possible." = "A vásárlás nem lehetséges.";

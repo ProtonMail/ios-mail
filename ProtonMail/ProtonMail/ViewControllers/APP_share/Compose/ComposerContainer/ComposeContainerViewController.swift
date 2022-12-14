@@ -40,7 +40,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         .init(maxCount: 1)
     }
     #endif
-    private var childrenHeightObservations: [NSKeyValueObservation]!
+    private var childrenHeightObservations: [NSKeyValueObservation] = []
     private var cancelButton: UIBarButtonItem!
     private var sendButton: UIBarButtonItem!
     private var scheduledSendButton: UIBarButtonItem!
@@ -288,25 +288,19 @@ extension ComposeContainerViewController {
         self.setupSendButton()
         self.setupScheduledSendButton()
         var items: [UIBarButtonItem] = [self.sendButton]
-        #if DEBUG_ENTERPRISE
-        items.append(self.scheduledSendButton)
-        #endif
+        if viewModel.isScheduleSendEnable {
+            items.append(self.scheduledSendButton)
+        }
         self.navigationItem.rightBarButtonItems = items
     }
 
     private func setupSendButton() {
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
-        self.sendButton = IconProvider.paperPlaneHorizontal.toUIBarButtonItem(
+        self.sendButton = Self.makeBarButtonItem(
+            isEnabled: isEnabled,
+            icon: IconProvider.paperPlaneHorizontal,
             target: self,
-            action: isEnabled ? #selector(sendAction) : nil,
-            style: .plain,
-            tintColor: tintColor,
-            squareSize: 22,
-            backgroundColor: ColorProvider.BackgroundNorm,
-            backgroundSquareSize: 35,
-            isRound: true,
-            imageInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            action: #selector(sendAction)
         )
 
         self.sendButton.accessibilityLabel = LocalString._general_send_action
@@ -314,12 +308,38 @@ extension ComposeContainerViewController {
     }
 
     private func setupScheduledSendButton() {
-        guard UserInfo.isScheduleSendEnable else { return }
-        let icon = Asset.icClockPaperPlane.image
+        guard viewModel.isScheduleSendEnable else { return }
+        let icon = IconProvider.clockPaperPlane
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        self.scheduledSendButton = self.scheduledSendHelper.setUpScheduledSendButton(isEnabled: isEnabled, icon: icon)
+        self.scheduledSendButton = Self.makeBarButtonItem(
+            isEnabled: isEnabled,
+            icon: icon,
+            target: self,
+            action: #selector(self.presentScheduleSendActionSheetIfDraftIsReady)
+        )
         self.scheduledSendButton.accessibilityLabel = LocalString._general_schedule_send_action
         self.scheduledSendButton.accessibilityIdentifier = "ComposeContainerViewController.scheduledSend"
+    }
+
+    private static func makeBarButtonItem(
+        isEnabled: Bool,
+        icon: UIImage,
+        target: Any?,
+        action: Selector
+    ) -> UIBarButtonItem {
+        let tintColor: UIColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
+        let item = icon.toUIBarButtonItem(
+            target: target,
+            action: isEnabled ? action : nil,
+            style: .plain,
+            tintColor: tintColor,
+            squareSize: 22,
+            backgroundColor: .clear,
+            backgroundSquareSize: 35,
+            isRound: true,
+            imageInsets: .zero
+        )
+        return item
     }
 
     private func setUpTitleView() {
@@ -373,7 +393,8 @@ extension ComposeContainerViewController {
     }
 
     private func showScheduleSendIntroViewIfNeeded() {
-        guard UserInfo.isScheduleSendEnable, !viewModel.isScheduleSendIntroViewShown else {
+        guard viewModel.isScheduleSendEnable,
+              !viewModel.isScheduleSendIntroViewShown else {
             return
         }
         viewModel.userHasSeenScheduledSendSpotlight()
@@ -387,6 +408,14 @@ extension ComposeContainerViewController {
         let rect = scheduleItemView.convert(barFrame, to: navView)
         scheduleSendIntroView.presentOn(view: navView,
                                         targetFrame: rect)
+    }
+
+    @objc
+    private func presentScheduleSendActionSheetIfDraftIsReady() {
+        // Check draft is valid or not.
+        coordinator.checkIfDraftIsValidToBeSent { [weak self] in
+            self?.showScheduleSendActionSheet()
+        }
     }
 }
 
@@ -428,13 +457,28 @@ extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverPr
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            self.bottomPadding.constant = keyboardFrame.cgRectValue.height + toolBarHeight
-            self.toolbarBottom.constant = -1 * keyboardFrame.cgRectValue.height
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
-            }
+        updateLayoutWithKeyboard(notification)
+    }
 
+    func keyboardDidShowNotification(_ notification: Notification) {
+        updateLayoutWithKeyboard(notification)
+    }
+
+    private func updateLayoutWithKeyboard(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+              let window = view.window else {
+            return
+        }
+        let bottomLeftPoint = CGPoint(x: 0, y: view.frame.height)
+        let convertedPoint = view.convert(bottomLeftPoint, to: window)
+        let screenHeight = window.screen.bounds.height
+        let presentedVCToBottom = screenHeight - convertedPoint.y
+        let heightToAddForKeyboard = keyboardFrame.cgRectValue.height - presentedVCToBottom
+
+        self.bottomPadding.constant = heightToAddForKeyboard + toolBarHeight
+        self.toolbarBottom.constant = -1 * heightToAddForKeyboard
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
         }
     }
 }
@@ -647,28 +691,7 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
                 NotificationCenter.default.post(name: .showScheduleSendUnavailable, object: nil)
                 return
             }
-            if let date = date {
-                self.showScheduledSendConfirmAlert(date: date)
-            } else {
-                // Immediately send
-                self.coordinator.sendAction(deliveryTime: nil)
-            }
+            self.coordinator.sendAction(deliveryTime: date)
         }
-    }
-
-    private func showScheduledSendConfirmAlert(date: Date) {
-        let timeTuple = PMDateFormatter.shared.titleForScheduledBanner(from: date)
-        let message = String(format: LocalString._edit_scheduled_button_message,
-                             timeTuple.0,
-                             timeTuple.1)
-
-        let title = LocalString._general_schedule_send_action
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: LocalString._general_confirm_action, style: .default) { [weak self] _ in
-            self?.coordinator.sendAction(deliveryTime: date)
-        }
-        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
-        [okAction, cancelAction].forEach(alert.addAction)
-        self.present(alert, animated: true, completion: nil)
     }
 }

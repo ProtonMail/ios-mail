@@ -14,6 +14,8 @@
                ]
             },
             "ProtonMail/Extension/UIKit/APP_share",
+            "ProtonMail/Extension/Foundations/APP_share_push_siri",
+            "ProtonMail/Extension/Foundations/APP_share_siri",
             "ProtonMail/Extension/Foundations/APP_share_push",
             "ProtonMail/Extension/Foundations/APP_share",
             "ProtonMail/Extension/Foundations/share",
@@ -39,6 +41,9 @@
          "dependencies": [
             {
                "sdk": "libc++.tbd"
+            },
+            {
+               "target": "ProtonMailAnalytics"
             }
          ],
          "preBuildScripts": [

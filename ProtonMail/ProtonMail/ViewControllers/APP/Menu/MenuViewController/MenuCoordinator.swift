@@ -24,6 +24,7 @@ import Foundation
 import ProtonCore_AccountSwitcher
 import ProtonCore_Networking
 import ProtonCore_PaymentsUI
+import ProtonCore_UIFoundations
 import SideMenuSwift
 
 final class MenuCoordinator: CoordinatorDismissalObserver {
@@ -121,6 +122,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     }
 
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
+        DFSSetting.enableDFS = true
         // in some cases we should highlight a different row in the side menu, or none at all
         var labelToHighlight: MenuLabel? = labelInfo
 
@@ -135,6 +137,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
             self.navigateToSettings(deepLink: deepLink)
             labelToHighlight = nil
         case .contacts:
+            DFSSetting.enableDFS = false
             self.navigateToContact()
         case .bugs:
             self.navigateToBugReport()
@@ -158,6 +161,9 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
             } else {
                 self.navigateToMailBox(labelInfo: inboxLabel, deepLink: deepLink, showFeedbackActionSheet: true)
             }
+        case .referAFriend:
+            navigateToReferralView()
+            labelToHighlight = nil
         default:
             break
         }
@@ -277,12 +283,14 @@ extension MenuCoordinator {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
         let userID = user.userID
 
         let fetchLatestEvent = FetchLatestEventId(
-            params: .init(userId: userID),
-            dependencies: .init(eventsService: user.eventsService))
+            userId: userID,
+            dependencies: .init(eventsService: user.eventsService)
+        )
 
         let fetchMessages = FetchMessages(
             params: .init(labelID: labelID),
@@ -303,7 +311,7 @@ extension MenuCoordinator {
         )
 
         let fetchMessagesWithReset = FetchMessagesWithReset(
-            params: FetchMessagesWithReset.Parameters(userId: userID),
+            userID: userID,
             dependencies: FetchMessagesWithReset.Dependencies(
                 fetchLatestEventId: fetchLatestEvent,
                 fetchMessages: fetchMessages,
@@ -615,6 +623,19 @@ extension MenuCoordinator {
         let skeletonVC = SkeletonViewController.instance(isEnabledTimeout: isEnabledTimeout)
         guard let navigation = skeletonVC.navigationController else { return }
         self.setupContentVC(destination: navigation)
+    }
+
+    private func navigateToReferralView() {
+        guard let referralLink = usersManager.firstUser?
+            .userInfo.referralProgram?.link else {
+            return
+        }
+        let view = ReferralShareViewController(
+            referralLink: referralLink
+        )
+        let navigation = UINavigationController(rootViewController: view)
+        navigation.modalPresentationStyle = .fullScreen
+        sideMenu.present(navigation, animated: true)
     }
 }
 

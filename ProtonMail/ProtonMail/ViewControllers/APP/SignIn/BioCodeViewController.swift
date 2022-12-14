@@ -77,7 +77,7 @@ final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
     }
 
     private func configureNavigationBar() {
-        let original = Asset.menuLogout.image
+        let original = IconProvider.arrowOutFromRectangle
             .withRenderingMode(.alwaysTemplate)
 
         self.navigationItem.title = ""

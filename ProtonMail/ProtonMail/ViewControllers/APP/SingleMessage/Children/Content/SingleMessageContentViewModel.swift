@@ -73,6 +73,14 @@ class SingleMessageContentViewModel {
         !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection) && UserInfo.isImageProxyAvailable
     }
 
+    var spotlightMessage: String {
+        if user.userInfo.isAutoLoadRemoteContentEnabled {
+            return L11n.EmailTrackerProtection.feature_description_if_remote_content_allowed
+        } else {
+            return L11n.EmailTrackerProtection.feature_description_if_remote_content_not_allowed
+        }
+    }
+
     private(set) var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = nonExapndedHeaderViewModel else { return }
@@ -89,6 +97,8 @@ class SingleMessageContentViewModel {
         }
     }
 
+    private var hasAlreadyFetchedMessageData = false
+
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
@@ -99,7 +109,16 @@ class SingleMessageContentViewModel {
         self.context = context
         self.user = user
         self.message = context.message
-        self.messageInfoProvider = .init(message: context.message, user: user, systemUpTime: systemUpTime, labelID: context.labelId)
+        let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
+            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService))
+        )
+        self.messageInfoProvider = .init(
+            message: context.message,
+            user: user,
+            systemUpTime: systemUpTime,
+            labelID: context.labelId,
+            dependencies: messageInfoProviderDependencies
+        )
         messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
@@ -117,15 +136,15 @@ class SingleMessageContentViewModel {
             }
             let msgID = self.message.messageID
             self.showProgressHub?()
-            let request = UndoSendRequest(messageID: self.message.messageID)
-            self.user.apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
-                self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
-                                                     notificationMessageID: nil,
-                                                     completion: { [weak self] _, _, _ in
-                    self?.hideProgressHub?()
-                    self?.goToDraft(msgID)
-                })
-            }
+            self.user.messageService.undoSend(
+                of: msgID) { [weak self] result in
+                    self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
+                                                         notificationMessageID: nil,
+                                                         completion: { [weak self] _ in
+                        self?.hideProgressHub?()
+                        self?.goToDraft(msgID)
+                    })
+                }
         }
 
         messageInfoProvider.set(delegate: self)
@@ -170,13 +189,13 @@ class SingleMessageContentViewModel {
             messageBodyViewModel.errorHappens()
             return
         }
-        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] _, _, _, error in
+        hasAlreadyFetchedMessageData = true
+        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] error in
             guard let self = self else { return }
-            self.updateErrorBanner?(error)
+            self.updateErrorBanner?(error as NSError?)
             if error != nil && !self.message.isDetailDownloaded {
                 self.messageBodyViewModel.errorHappens()
             }
-
             if !self.isEmbedInConversationView {
                 self.markReadIfNeeded()
             }
@@ -216,7 +235,7 @@ class SingleMessageContentViewModel {
 
     func sendDarkModeMetric(isApply: Bool) {
         let request = MetricDarkMode(applyDarkStyle: isApply)
-        self.user.apiService.exec(route: request, responseObject: Response()) { _ in
+        self.user.apiService.perform(request: request, response: Response()) { _, _ in
 
         }
     }
@@ -234,6 +253,9 @@ class SingleMessageContentViewModel {
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
         internetStatusProvider.registerConnectionStatus { [weak self] networkStatus in
             guard self?.message.body.isEmpty == true else {
+                return
+            }
+            guard self?.hasAlreadyFetchedMessageData == true else {
                 return
             }
             let isApplicationActive = isApplicationActive()

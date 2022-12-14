@@ -328,13 +328,11 @@ extension AppleContactParser {
             return nil
         }
         vCardString = self.removeEItem(vCard2Data: vCardString)
-        guard let signature = try? Crypto()
-                .signDetached(plainText: vCardString,
-                              privateKey: userKey.privateKey,
-                              passphrase: passphrase.value) else {
-                    return nil
-                }
-        let card = CardData(t: .SignedOnly, d: vCardString, s: signature)
+        let signingKey = SigningKey(privateKey: ArmoredKey(value: userKey.privateKey), passphrase: passphrase)
+        guard let signature = try? Sign.signDetached(signingKey: signingKey, plainText: vCardString) else {
+            return nil
+        }
+        let card = CardData(type: .SignedOnly, data: vCardString, signature: signature)
         return card
     }
 
@@ -346,17 +344,15 @@ extension AppleContactParser {
         vCard3.setUid(uuid)
         vCard3.setVersion(version)
         vCard3.purifyGroups()
+        let signingKey = SigningKey(privateKey: ArmoredKey(value: userKey.privateKey), passphrase: passphrase)
         guard let vCardString = try? vCard3.write(),
-              let signature = try? Crypto()
-                .signDetached(plainText: vCardString,
-                              privateKey: userKey.privateKey,
-                              passphrase: passphrase.value) else {
+              let signature = try? Sign.signDetached(signingKey: signingKey, plainText: vCardString) else {
                     return nil
                 }
         let encrypted = try? vCardString.encryptNonOptional(withPubKey: userKey.publicKey,
                                                             privateKey: "",
                                                             passphrase: "")
-        let card = CardData(t: .SignAndEncrypt, d: encrypted ?? "", s: signature)
+        let card = CardData(type: .SignAndEncrypt, data: encrypted ?? "", signature: signature)
         return card
     }
 }

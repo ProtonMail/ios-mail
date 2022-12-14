@@ -192,6 +192,10 @@ extension TwoFactorViewController: LoginErrorCapable {
     func onFirstPasswordChangeNeeded() {
         delegate?.firstPasswordChangeNeeded()
     }
+    
+    func onLearnMoreAboutExternalAccountsNotSupported() {
+        delegate?.learnMoreAboutExternalAccountsNotSupported()
+    }
 
     var bannerPosition: PMBannerPosition { .top }
 }

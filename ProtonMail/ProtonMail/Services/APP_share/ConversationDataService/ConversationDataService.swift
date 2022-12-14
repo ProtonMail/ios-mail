@@ -102,7 +102,7 @@ extension ConversationDataService {
     func cleanAll() {
         contextProvider.performAndWaitOnRootSavingContext { context in
             let conversationFetch = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
-            conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID.rawValue, Conversation.Attributes.isSoftDeleted, NSNumber(false))
+            conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID.rawValue, self.userID.rawValue, Conversation.Attributes.isSoftDeleted.rawValue, NSNumber(false))
             let conversationResult = try? context.fetch(conversationFetch)
             conversationResult?.forEach(context.delete)
 
@@ -119,7 +119,7 @@ extension ConversationDataService {
 extension ConversationDataService {
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
         let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID, selected)
+        fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID.rawValue, selected)
         do {
             return try context.fetch(fetchRequest)
         } catch {

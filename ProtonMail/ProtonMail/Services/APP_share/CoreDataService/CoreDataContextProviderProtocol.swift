@@ -20,29 +20,11 @@ import Foundation
 
 protocol CoreDataContextProviderProtocol {
     var mainContext: NSManagedObjectContext { get }
-    var rootSavingContext: NSManagedObjectContext { get }
 
     func makeComposerMainContext() -> NSManagedObjectContext
-    func makeNewBackgroundContext() -> NSManagedObjectContext
-    func enqueue(context: NSManagedObjectContext,
-                 block: @escaping (_ context: NSManagedObjectContext) -> Void)
+    func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
-}
-
-extension CoreDataContextProviderProtocol {
-    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        let context = rootSavingContext
-
-        context.perform {
-            block(context)
-        }
-    }
-
-    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        let context = rootSavingContext
-
-        context.performAndWait {
-            block(context)
-        }
-    }
+    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
+    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
+    func makeNewBackgroundContext() -> NSManagedObjectContext
 }

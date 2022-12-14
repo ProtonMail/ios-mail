@@ -28,21 +28,6 @@ extension Date {
         case monday, tuesday, wednesday, thursday, friday, saturday
       }
 
-    /// Return hour minute format depends on the device settings
-    static func hourMinuteFormat() -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale.current
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-
-        let dateString = formatter.string(from: Date())
-        let amRange = dateString.range(of: formatter.amSymbol)
-        let pmRange = dateString.range(of: formatter.pmSymbol)
-
-        let isUsing12HFormat = !(pmRange == nil && amRange == nil)
-        return isUsing12HFormat ? "h:mm a": "HH:mm"
-    }
-
     // you can create a read-only computed property to return just the nanoseconds as Int
     var nanosecond: Int {
         let calendar = (Calendar.current as NSCalendar)

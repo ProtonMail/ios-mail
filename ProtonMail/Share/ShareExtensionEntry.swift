@@ -21,16 +21,16 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import UIKit
-import ProtonCore_UIFoundations
 import ProtonCore_Services
+import ProtonCore_UIFoundations
+import UIKit
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry: UINavigationController {
     var appCoordinator: ShareAppCoordinator?
 
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         self.setup()
     }
 
@@ -43,6 +43,8 @@ class ShareExtensionEntry: UINavigationController {
         #if DEBUG
         PMAPIService.noTrustKit = true
         #endif
+        DFSSetting.enableDFS = true
+        DFSSetting.limitToXXXLarge = true
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
         if #available(iOSApplicationExtension 15.0, *) {

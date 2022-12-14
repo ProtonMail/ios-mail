@@ -24,7 +24,7 @@ enum ContactResponseTestData {
           "Code": 1000,
           "Contact": {
             "ID": "79dLmGyv8zj7xHBTuM268h4EZ0VieANmHdf4RQuDzD8CsVncAerd573Kgti1NcT6z7ncZNUetabNe00DsqoeJw==",
-            "Name": "made-up@protonmail.com",
+            "Name": "made-up@proton.me",
             "UID": "proton-autosave-95ccfbab-f858-447d-8527-8a051c6beed2",
             "Size": 0,
             "CreateTime": 1646124784,
@@ -39,8 +39,8 @@ enum ContactResponseTestData {
             "ContactEmails": [
               {
                 "ID": "jChqyiDF965ct1m25JjYowUa913Gk3mnyZ6kqy67ocyy8ccp0s0YGIP-hBoOq-I8ACFRVcKICjWm7rOVz4Kveg==",
-                "Name": "made-up@protonmail.com",
-                "Email": "made-up@protonmail.com",
+                "Name": "made-up@proton.me",
+                "Email": "made-up@proton.me",
                 "Type": [],
                 "Defaults": 1,
                 "Order": 1,

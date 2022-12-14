@@ -1,3 +1,4 @@
+// swiftlint:disable:this file_name
 //
 //  MessageDataService+Builder.swift
 //  Proton Mail - Created on 4/12/18.
@@ -20,7 +21,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Crypto
+import GoLibs
 import Foundation
 import OpenPGP
 import PromiseKit
@@ -54,35 +55,23 @@ extension String {
 
 final class PreContact {
     let email: String
-    let firstPgpKey: Data?
     let pgpKeys: [Data]
     let sign: Bool
     let encrypt: Bool
-    let mime: Bool
-    let plainText: Bool
-    let isContactSignatureVerified: Bool
     let scheme: String?
     let mimeType: String?
 
     init(email: String,
-         pubKey: Data?,
          pubKeys: [Data],
          sign: Bool,
          encrypt: Bool,
-         mime: Bool,
-         plainText: Bool,
-         isContactSignatureVerified: Bool,
          scheme: String?,
          mimeType: String?
     ) {
         self.email = email
-        self.firstPgpKey = pubKey
         self.pgpKeys = pubKeys
         self.sign = sign
         self.encrypt = encrypt
-        self.mime = mime
-        self.plainText = plainText
-        self.isContactSignatureVerified = isContactSignatureVerified
         self.scheme = scheme
         self.mimeType = mimeType
     }
@@ -97,52 +86,20 @@ extension Array where Element == PreContact {
     }
 }
 
-final class PreAddress: NSObject {
-    let email: String
-    let recipientType: KeysResponse.RecipientType
-    let isEO: Bool
-    let pubKey: String?
-    let pgpKey: Data?
-    let mime: Bool
-    let sign: Bool
-    let pgpencrypt: Bool
-    let plainText: Bool
-
-    init(email: String,
-         pubKey: String?,
-         pgpKey: Data?,
-         recipientType: KeysResponse.RecipientType,
-         isEO: Bool,
-         mime: Bool,
-         sign: Bool,
-         pgpencrypt: Bool,
-         plainText: Bool) {
-        self.email = email
-        self.recipientType = recipientType
-        self.isEO = isEO
-        self.pubKey = pubKey
-        self.pgpKey = pgpKey
-        self.mime = mime
-        self.sign = sign
-        self.pgpencrypt = pgpencrypt
-        self.plainText = plainText
-    }
-}
-
 final class PreAttachment {
     /// attachment id
     let attachmentId: String
     /// clear session key
     let session: Data
     let algo: Algorithm
-    let att: Attachment
+    let att: AttachmentEntity
 
     /// initial
     ///
     /// - Parameters:
     ///   - id: att id
     ///   - key: clear encrypted attachment session key
-    init(id: String, session: Data, algo: Algorithm, att: Attachment) {
+    init(id: String, session: Data, algo: Algorithm, att: AttachmentEntity) {
         self.attachmentId = id
         self.session = session
         self.algo = algo

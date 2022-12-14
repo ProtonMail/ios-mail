@@ -17,6 +17,27 @@
 
 import Foundation
 
-protocol RealAttachmentsFlagProvider {
+protocol RealAttachmentsFlagProvider: AnyObject {
     var realAttachments: Bool { get }
+
+    func set(realAttachments: Bool, sessionID: String)
+}
+
+extension UserCachedStatus: RealAttachmentsFlagProvider {
+    var realAttachments: Bool {
+        guard let dict = getShared().object(forKey: Key.realAttachments) as? [String: Bool],
+              let sessionID = primaryUserSessionId else {
+            return false
+        }
+        return dict[sessionID] ?? false
+    }
+
+    func set(realAttachments: Bool, sessionID: String) {
+        var dictionaryToUpdate: [String: Bool] = [:]
+        if let dict = getShared().object(forKey: UserCachedStatus.Key.realAttachments) as? [String: Bool] {
+            dictionaryToUpdate = dict
+        }
+        dictionaryToUpdate[sessionID] = realAttachments
+        setValue(dictionaryToUpdate, forKey: Key.realAttachments)
+    }
 }

@@ -1,0 +1,9 @@
+#include "Target-Default.xcconfig"
+
+DEVELOPMENT_TEAM = 2SB5Z68H26
+
+// Default value is NO
+ONLY_ACTIVE_ARCH[config=debug] = YES
+
+// Default value is dwarf
+DEBUG_INFORMATION_FORMAT[config=release] = dwarf-with-dsym

@@ -24,14 +24,22 @@ import CoreData
 import Foundation
 
 final class Conversation: NSManagedObject {
-    enum Attributes {
-        static let entityName = String(describing: Conversation.self)
-        static let conversationID = "conversationID"
-        static let time = "time"
+    enum Attributes: String, CaseIterable {
+        static let entityName = "Conversation"
         static let labels = "labels"
-        static let userID = "userID"
-        static let numUnread = "numUnread"
-        static let isSoftDeleted = "isSoftDeleted"
+
+        case addressID = "addressID"
+        case conversationID = "conversationID"
+        case expirationTime = "expirationTime"
+        case numAttachments = "numAttachments"
+        case numMessages = "numMessages"
+        case order = "order"
+        case recipients = "recipients"
+        case senders = "senders"
+        case userID = "userID"
+        case isSoftDeleted = "isSoftDeleted"
+        case size = "size"
+        case subject = "subject"
     }
 
     @NSManaged var conversationID: String
@@ -94,7 +102,9 @@ extension Conversation {
     }
 
     class func conversationForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext) -> Conversation? {
-        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.conversationID, matchingValue: conversationID) as? Conversation
+        return context.managedObjectWithEntityName(Attributes.entityName,
+                                                   forKey: Attributes.conversationID.rawValue,
+                                                   matchingValue: conversationID) as? Conversation
     }
 
     /// Fetch the Label from local cache based on the labelIDs from contextLabel
@@ -138,12 +148,12 @@ extension Conversation {
     }
 
     /// Apply mark as changes to whole conversation.
-    func applyMarksAsChanges(unRead: Bool, labelID: String, context: NSManagedObjectContext) {
+    func applyMarksAsChanges(unRead: Bool, labelID: String) {
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
         let contextLabels = labels.compactMap { $0 as? ContextLabel }
         let messages = Message
             .messagesForConversationID(self.conversationID,
-                                       inManagedObjectContext: context,
+                                       inManagedObjectContext: managedObjectContext!,
                                        shouldSort: true) ?? []
 
         var changedLabels: Set<String> = []
@@ -183,7 +193,7 @@ extension Conversation {
             if let contextLabelInContext = ConversationCount
                 .lastContextUpdate(by: label.labelID,
                                 userID: self.userID,
-                                inManagedObjectContext: context) {
+                                inManagedObjectContext: managedObjectContext!) {
                 contextLabelInContext.unread += Int32(offset)
                 contextLabelInContext.unread = max(contextLabelInContext.unread, 0)
             }
@@ -224,7 +234,7 @@ extension Conversation {
     }
 
     /// Apply label changes of a conversation.
-    func applyLabelChanges(labelID: String, apply: Bool, context: NSManagedObjectContext) {
+    func applyLabelChanges(labelID: String, apply: Bool) {
         if apply {
             if self.contains(of: labelID) {
                 if let target = self.labels.compactMap({ $0 as? ContextLabel }).filter({ $0.labelID == labelID }).first {
@@ -245,7 +255,7 @@ extension Conversation {
 
                 let messages = Message
                     .messagesForConversationID(self.conversationID,
-                                               inManagedObjectContext: context) ?? []
+                                               inManagedObjectContext: managedObjectContext!) ?? []
                 newLabel.unreadCount = NSNumber(value: messages.filter { $0.unRead }.count)
             }
         } else {

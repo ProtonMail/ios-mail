@@ -92,4 +92,12 @@ extension Notification.Name {
     static var shouldUpdateUserInterfaceStyle: Notification.Name {
         return .init("shouldUpdateUserInterfaceStyle")
     }
+
+    static var appExtraSecurityEnabled: Notification.Name {
+        return .init("appExtraSecurityEnabled")
+    }
+
+    static var appExtraSecurityDisabled: Notification.Name {
+        return .init("appExtraSecurityDisabled")
+    }
 }

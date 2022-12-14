@@ -49,7 +49,7 @@ final class BugDataServiceTests: XCTestCase {
                 completion(nil, .success(["Code": 1001]))
             } else {
                 XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
+                completion(nil, .failure(NSError.badParameter(nil)))
             }
         }
 
@@ -86,7 +86,7 @@ final class BugDataServiceTests: XCTestCase {
                 completion(nil, .failure(stubbedError))
             } else {
                 XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
+                completion(nil, .failure(NSError.badParameter(nil)))
             }
         }
         let completionExpectations = expectation(description: "Wait async operation")
@@ -126,7 +126,7 @@ final class BugDataServiceTests: XCTestCase {
                 completion(nil, .success(["Code": 1001]))
             } else {
                 XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
+                completion(nil, .failure(NSError.badParameter(nil)))
             }
         }
 
@@ -149,7 +149,7 @@ final class BugDataServiceTests: XCTestCase {
                 completion(nil, .failure(stubbedError))
             } else {
                 XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
+                completion(nil, .failure(NSError.badParameter(nil)))
             }
         }
 

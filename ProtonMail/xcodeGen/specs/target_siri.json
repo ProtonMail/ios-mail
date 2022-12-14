@@ -13,6 +13,8 @@
                ]
             },
             "ProtonMail/Utilities/APP_share_push_siri",
+            "ProtonMail/Extension/Foundations/APP_share_push_siri",
+            "ProtonMail/Extension/Foundations/APP_share_siri",
             {
                "path": "ProtonMail/Resource/Localization",
                "excludes": [

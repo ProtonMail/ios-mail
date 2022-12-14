@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Crypto
+import GoLibs
 import ProtonCore_Networking
 import ProtonCore_Services
 

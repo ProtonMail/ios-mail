@@ -142,10 +142,10 @@ excluded:
   - ${PWD}/ProtonMail/Utilities/APP_share_push/LocalCache/UserCachedStatus.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/LocalCache/SharedCacheBase.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/String+Parse+Extension.swift
-  - ${PWD}/ProtonMail/Utilities/APP_share_push/BackendConfiguration.swift
+  - ${PWD}/ProtonMail/Utilities/APP_share_push_siri/BackendConfiguration.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/OpenPGP+String+Extension.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/MailCrypto.swift
-  - ${PWD}/ProtonMail/Utilities/APP_share_push/App.swift
+  - ${PWD}/ProtonMail/Utilities/APP_share_push/Constant+App.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/Keymaker+SharedKeychain.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push_uiTest/Localization.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/Header.swift
@@ -192,6 +192,7 @@ excluded:
   - ${PWD}/ProtonMail/Utilities/APP_share_push_siri/SystemLogger.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push_siri/PushNotificationDecryptor.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push_siri/PushSubscriptionSettings.swift
+  - ${PWD}/ProtonMail/Utilities/APP_share_push_siri/Constants.swift
   - ${PWD}/ProtonMail/Utilities/APP/LinkOpener.swift
   - ${PWD}/ProtonMail/Components/APP_share/Cells/ContactsTableViewCell.swift
   - ${PWD}/ProtonMail/Components/APP_share/ContactPicker/ContactCollectionViewEntryCell.swift
@@ -213,7 +214,6 @@ excluded:
   - ${PWD}/ProtonMail/Components/APP_share/BannerView/BannerView.swift
   - ${PWD}/ProtonMail/Components/APP/PMToolBarView.swift
   - ${PWD}/ProtonMail/Components/APP/IBDesignableLabeled.swift
-  - ${PWD}/ProtonMail/Components/APP/LabelDisplayView/LabelDisplayView.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ViewModel/ComposeViewModel.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ViewModel/ComposerMessageHelper.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposeCoordinator.swift
@@ -415,22 +415,15 @@ excluded:
   - ${PWD}/ProtonMail/Services/APP_share/ContactService/ContactGroupDataService.swift
   - ${PWD}/ProtonMail/Services/APP_share/UserDataService/UserDataService.swift
   - ${PWD}/ProtonMail/Services/APP/PushNotificationServiceSubscription.swift
-  - ${PWD}/ProtonMail/Services/APP/MarkLegitimateService.swift
-  - ${PWD}/ProtonMail/Services/APP/SpringboardShortcutsService.swift
   - ${PWD}/ProtonMail/Services/APP/PushNotificationService/PushNotificationService.swift
   - ${PWD}/ProtonMail/Services/APP_share/ContactService/ContactDataService.swift
   - ${PWD}/ProtonMail/Services/APP/PushNotificationService/PushNavigationResolver.swift
-  - ${PWD}/ProtonMail/Services/APP/HumanVerificationManager.swift
-  - ${PWD}/ProtonMail/Services/APP/ForceUpgradeManager.swift
   - ${PWD}/ProtonMail/Services/APP/SignInManager.swift
   - ${PWD}/ProtonMailCommon/ViewModels/ContactGroup/ContactGroupDetailViewModelImpl.swift
   - ${PWD}/ProtonMailCommon/DataServices/MonitorSavesDataService.swift
-  - ${PWD}/Share/ShareAppCoordinator.swift
-  - ${PWD}/Share/Controller/ShareUnlockCoordinator.swift
   - ${PWD}/Share/Controller/ShareUnlockViewController.swift
   - ${PWD}/Share/Controller/SharePinUnlockViewController.swift
   - ${PWD}/Share/Controller/SharePinUnlockCoordinator.swift
-  - ${PWD}/Share/ShareExtensionEntry.swift
   - ${PWD}/Pods
   - ${PWD}/ProtonMailTests
   - ${PWD}/ProtonMailUITests
@@ -452,6 +445,7 @@ identifier_name:
     - x
     - y
     - to  # as in "from, to"
+    - cc
 
 modifier_order:
   preferred_modifier_order:

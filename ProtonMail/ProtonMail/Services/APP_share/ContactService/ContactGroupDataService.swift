@@ -33,8 +33,7 @@ protocol ContactGroupsProviderProtocol: AnyObject {
 class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderProtocol {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            let context = self.coreDataService.operationContext
-            self.coreDataService.enqueue(context: context) { (context) in
+            self.coreDataService.enqueueOnRootSavingContext { context in
                 let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
                 groups.forEach {
                     context.delete($0)
@@ -94,7 +93,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void> {
         return Promise { seal in
             let route = UpdateLabelRequest(id: groupID, name: name, color: color)
-            self.apiService.exec(route: route, responseObject: CreateLabelRequestResponse()) { response in
+            self.apiService.perform(request: route, response: CreateLabelRequestResponse()) { _, response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -118,14 +117,13 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     func deleteContactGroup(groupID: String) -> Promise<Void> {
         return Promise { seal in
             let eventAPI = DeleteLabelRequest(lable_id: groupID)
-            self.apiService.exec(route: eventAPI, responseObject: DeleteLabelRequestResponse()) { response in
+            self.apiService.perform(request: eventAPI, response: DeleteLabelRequestResponse()) { _, response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
                     if response.returnedCode != nil {
                         // successfully deleted on the server
-                        let context = self.coreDataService.operationContext
-                        self.coreDataService.enqueue(context: context) { (context) in
+                        self.coreDataService.enqueueOnRootSavingContext { context in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
                             if let label = label {
                                 context.delete(label)
@@ -168,7 +166,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
             let emails = emailList.map { $0.emailID }
 
             let route = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            self.apiService.exec(route: route, responseObject: ContactLabelAnArrayOfContactEmailsResponse()) { response in
+            self.apiService.perform(request: route, response: ContactLabelAnArrayOfContactEmailsResponse()) { _, response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -231,15 +229,14 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
 
             let emails = emailList.map { $0.emailID }
             let route = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            self.apiService.exec(route: route, responseObject: ContactUnlabelAnArrayOfContactEmailsResponse()) { response in
+            self.apiService.perform(request: route, response: ContactUnlabelAnArrayOfContactEmailsResponse()) { _, response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
                     if !response.emailIDs.isEmpty {
                         // save
 
-                        let context = self.coreDataService.operationContext
-                        self.coreDataService.enqueue(context: context) { (context) in
+                        self.coreDataService.enqueueOnRootSavingContext { context in
                             let label = Label.labelForLabelID(groupID.rawValue, inManagedObjectContext: context)
 
                             // remove only the email objects in the response

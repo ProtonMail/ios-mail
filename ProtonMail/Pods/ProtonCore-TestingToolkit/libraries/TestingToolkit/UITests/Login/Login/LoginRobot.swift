@@ -102,10 +102,6 @@ public final class LoginRobot: CoreElements {
         public func changePasswordConfirm() {
             button(buttonChangePassword).wait(time: 20).checkExists()
         }
-        
-        public func bannerExtAccountErrorShown() {
-            textView(externalAccountsNotSupportedBannerText).wait().checkExists()
-        }
     }
     
     public func insertPassword(password: String) -> LoginRobot {
@@ -159,6 +155,40 @@ public final class LoginRobot: CoreElements {
     
     public func closeLoginScreen<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(loginViewCloseButtonId).tap()
+        return Robot()
+    }
+}
+
+private let externalAccountsNotSupportedText = CoreString._ls_external_eccounts_not_supported_popup_title
+private let externalAccountsNotSupportedCloseButton = CoreString._hv_cancel_button
+private let externalAccountsNotSupportedLearnMoreButton = CoreString._ls_external_eccounts_not_supported_popup_action_button
+
+public final class ExternalAccountsNotSupportedDialogRobot: CoreElements {
+    
+    public let verify = Verify()
+    
+    public final class Verify: CoreElements {
+        @discardableResult
+        public func externalAccountsNotSupportedDialog() -> ExternalAccountsNotSupportedDialogRobot {
+            alert(externalAccountsNotSupportedText).wait(time: 20).checkExists()
+            return ExternalAccountsNotSupportedDialogRobot()
+        }
+        
+        @discardableResult
+        public func isInsideTheApplication() -> ExternalAccountsNotSupportedDialogRobot {
+            let applicationState = XCUIApplication().state
+            XCTAssertTrue(applicationState == .runningForeground)
+            return ExternalAccountsNotSupportedDialogRobot()
+        }
+    }
+    
+    public func tapClose<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(externalAccountsNotSupportedCloseButton).tap()
+        return Robot()
+    }
+    
+    public func tapLearnMore<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(externalAccountsNotSupportedLearnMoreButton).tap()
         return Robot()
     }
 }
