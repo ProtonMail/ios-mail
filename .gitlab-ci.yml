@@ -18,7 +18,7 @@ stages:
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
-  - mint bootstrap
+  - mint bootstrap --link
 
 .enterprise_config_setting: &enterprise_config_setting
   - cd ProtonMail
@@ -100,14 +100,14 @@ ui_tests_smoke:
     when: always
     name: "test-report"
     paths:
-      - ProtonMail/fastlane/test_output/
-    expire_in: 20 days
+      - test_output/TestResults
+    expire_in: 10 days
     reports:
       coverage_report:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
       junit:
-        - ProtonMail/fastlane/test_output/report.junit
+        - test_output/TestResults/ProtonMailUITests.xcresult/report.junit
   before_script:
     - git submodule init
     - git submodule update --init --recursive
@@ -139,7 +139,7 @@ report:ui-tests-smoke:
       when: always
   script:
     - test_reporter.py
-      --path ProtonMail/fastlane/test_output/
+      --path test_output/TestResults/ProtonMailUITests.xcresult/
       --platform ios
       --job-name ui_tests_smoke
       --slack-channel mail-ios-uitests
@@ -156,13 +156,13 @@ ui_feature_tests:
     when: always
     name: "test-report"
     paths:
-      - ProtonMail/fastlane/test_output/
-    expire_in: 20 days
+      - test_output/TestResults
+    expire_in: 10 days
     reports:
       coverage_report:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
-      junit: ProtonMail/fastlane/test_output/report.junit
+      junit: test_output/TestResults/ProtonMailUITests.xcresult/report.junit
   before_script:
     - git submodule init
     - git submodule update --init --recursive
@@ -173,8 +173,6 @@ ui_feature_tests:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
     - bundle install
     - bundle exec fastlane feature_tests
-  after_script:
-    - xchtmlreport -r ./TestResults -j
   tags:
     - iOS_UITEST
 
@@ -197,7 +195,7 @@ report:ui_feature_tests:
     - when: manual
   script:
     - test_reporter.py
-      --path ProtonMail/fastlane/test_output/
+      --path test_output/TestResults/ProtonMailUITests.xcresult/
       --platform ios
       --job-name $TEST_PLAN
       --slack-channel mail-ios-uitests

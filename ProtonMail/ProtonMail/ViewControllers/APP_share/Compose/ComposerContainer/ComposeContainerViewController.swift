@@ -354,6 +354,7 @@ extension ComposeContainerViewController {
 
     private func setupCancelButton() {
         self.cancelButton = UIBarButtonItem(image: IconProvider.cross, style: .plain, target: self, action: #selector(cancelAction))
+        self.cancelButton.accessibilityIdentifier = "ComposeContainerViewController.cancelButton"
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
 
