@@ -285,7 +285,8 @@ platform :ios do
       device: "iPhone 8",
       scheme: "ProtonMailTests",
       app_identifier: APP_IDENTIFIER,
-      reset_simulator: true
+      reset_simulator: true,
+      xcargs: "-quiet"
     )
 
     slather(sonarqube_xml: true, configuration: "Debug")
@@ -304,15 +305,26 @@ platform :ios do
       device: "iPhone 12",
       reset_simulator: true,
       try_count: 2,
-      parallel_workers: 4,
-      try_parallel: false,
+      parallel_workers: 3,
+      try_parallel: true,
       retry_parallel: false,
       scheme: "ProtonMailUITests",
       testplan: "SmokeTests",
-      app_identifier: APP_IDENTIFIER
+      app_identifier: APP_IDENTIFIER,
+      output_types: "html",
+      reinstall_app: true,
+      output_directory: "../test_output/TestResults",
+      result_bundle: true,
+      xcargs: "-quiet"
+    )
+    xchtmlreport(
+      result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
+      enable_junit: true,
+      binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
     )
 
     slather(cobertura_xml: true, configuration: "Debug")
+    slather(simple_output: true, configuration: "Debug")
   end
 
   desc "Run feature ui test and get test coverage"
@@ -330,10 +342,16 @@ platform :ios do
       retry_parallel: false,
       scheme: "ProtonMailUITests",
       testplan: ENV["TEST_PLAN"],
-      app_identifier: APP_IDENTIFIER
+      app_identifier: APP_IDENTIFIER,
+      output_types: "junit",
+      reinstall_app: true,
+      output_directory: "../test_output/TestResults",
+      result_bundle: true,
+      xcargs: "-quiet"
     )
 
     slather(cobertura_xml: true, configuration: "Debug")
+    slather(simple_output: true, configuration: "Debug")
   end
 
   error do |lane, exception|
