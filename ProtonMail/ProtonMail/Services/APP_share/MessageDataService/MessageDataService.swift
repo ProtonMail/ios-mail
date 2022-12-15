@@ -469,15 +469,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 if let messageOut = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                     messageOut.messageStatus = 1
                                     messageOut.isDetailDownloaded = true
-                                    if let labelID = messageOut.firstValidFolder() {
-                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
-                                    }
                                     if messageOut.unRead == true {
                                         messageOut.unRead = false
                                         PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
                                         self.cacheService.updateCounterSync(markUnRead: false, on: messageOut)
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
+                                    if let labelID = messageOut.firstValidFolder() {
+                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
+                                    }
 
                                     DispatchQueue.main.async {
                                         completion(tmpError)
@@ -502,16 +502,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
 
             self.contextProvider.performOnRootSavingContext { context in
-                if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
-                    if message.isDetailDownloaded {
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                    } else {
-                        self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
-                    }
-                } else {
+                guard
+                    let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+                else {
                     self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    return
+                }
+                guard message.isDetailDownloaded else {
+                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    return
+                }
+                if let labelID = message.firstValidFolder() {
+                    self.mark(messages: [MessageEntity(message)], labelID: LabelID(labelID), unRead: false)
+                }
+                DispatchQueue.main.async {
+                    completion(nil)
                 }
             }
         }
