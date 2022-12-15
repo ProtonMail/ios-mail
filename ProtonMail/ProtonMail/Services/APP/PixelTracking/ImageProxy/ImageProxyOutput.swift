@@ -18,7 +18,7 @@
 import Foundation
 
 struct ImageProxyOutput {
-    let failedUnsafeRemoteSrcs: Set<SrcReplacement>
-    let safeBase64Srcs: Set<SrcReplacement>
+    let failedUnsafeRemoteURLs: [Set<UUID>: UnsafeRemoteURL]
+    let safeBase64Contents: [Set<UUID>: Base64Image]
     let summary: TrackerProtectionSummary
 }

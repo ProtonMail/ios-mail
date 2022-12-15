@@ -90,7 +90,6 @@ final class MessageInfoProvider {
     private let imageProxy: ImageProxy
     private let dependencies: Dependencies
 
-
     private var imageProxyHasRunOnCurrentBody = false
 
     private var shouldApplyImageProxy: Bool {
@@ -276,7 +275,7 @@ final class MessageInfoProvider {
         didSet { delegate?.update(hasStrippedVersion: hasStrippedVersion) }
     }
 
-    private var unhandledFailedProxyRequests: Set<SrcReplacement> = []
+    private var unhandledFailedProxyRequests: [Set<UUID>: UnsafeRemoteURL] = [:]
 
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
@@ -402,23 +401,27 @@ extension MessageInfoProvider {
     }
 
     func reloadImagesWithoutProtection() {
-        replaceMarkersWithURLs(unhandledFailedProxyRequests)
+        replaceMarkersWithURLs(unhandledFailedProxyRequests.mapValues(\.value))
         unhandledFailedProxyRequests.removeAll()
     }
 
-    func replaceMarkersWithURLs(_ replacements: Set<SrcReplacement>) {
+    func replaceMarkersWithURLs(_ replacements: [Set<UUID>: String]) {
         dispatchQueue.async { [weak self] in
             guard
                 let self = self,
                 let currentlyDisplayedBody = self.bodyParts?.originalBody
             else {
-                assertionFailure("This action should not be triggerable in this case.")
                 return
             }
 
             let updatedBody = replacements.reduce(into: currentlyDisplayedBody) { body, replacement in
-                if let rangeToReplace = body.range(of: replacement.marker.uuidString, options: .caseInsensitive) {
-                    body = body.replacingCharacters(in: rangeToReplace, with: replacement.value)
+                for marker in replacement.key {
+                    guard let rangeToReplace = body.range(of: marker.uuidString) else {
+                        assertionFailure("Current body should contain \(marker)")
+                        continue
+                    }
+
+                    body.replaceSubrange(rangeToReplace, with: replacement.value)
                 }
             }
 
@@ -503,6 +506,7 @@ extension MessageInfoProvider {
                     let bodyWithoutRemoteURLs = try self.imageProxy.process(body: decryptedBody, delegate: self)
                     self.imageProxyHasRunOnCurrentBody = true
                     decryptedBody = bodyWithoutRemoteURLs
+                    self.updateBodyParts(with: decryptedBody)
                 } catch {
                     // ImageProxy will only fail if the HTML is malformed, the other errors are contained
                     assertionFailure("\(error)")
@@ -511,7 +515,6 @@ extension MessageInfoProvider {
                 }
             }
 
-            self.updateBodyParts(with: decryptedBody)
             self.checkBannerStatus(decryptedBody)
 
             guard self.embeddedContentPolicy == .allowed else {
@@ -710,9 +713,9 @@ extension MessageInfoProvider {
 extension MessageInfoProvider: ImageProxyDelegate {
     func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
         trackerProtectionSummary = output.summary
-        unhandledFailedProxyRequests = output.failedUnsafeRemoteSrcs
-        replaceMarkersWithURLs(output.safeBase64Srcs)
-	}
+        unhandledFailedProxyRequests = output.failedUnsafeRemoteURLs
+        replaceMarkersWithURLs(output.safeBase64Contents.mapValues(\.url))
+    }
 }
 
 extension MessageInfoProvider {

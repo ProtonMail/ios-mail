@@ -17,7 +17,6 @@
 
 import Foundation
 
-struct SrcReplacement: Hashable {
-    let marker: UUID
+struct SafeRemoteURL {
     let value: String
 }

@@ -1,19 +1,11 @@
 source 'https://cdn.cocoapods.org/'
 
 def proton_core_path
-  if ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] == nil
-      return "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-  else
-      return 'https://proton-ci:' + ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] + '@gitlab.protontech.ch/apple/shared/protoncore.git'
-  end
+  return "git@gitlab.protontech.ch:apple/shared/protoncore.git"
 end
 
 def proton_test_path
-  if ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] == nil
-    return "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
-  else
-    return 'https://proton-ci:' + ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI'] + '@gitlab.protontech.ch/apple/shared/pmtestautomation.git'
-  end
+  return "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
 end
 
 # proton url is set to env variable because the core module podspecs expect it.
@@ -25,7 +17,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.24.2'
+  '3.24.5'
 end
 
 def crypto_variant

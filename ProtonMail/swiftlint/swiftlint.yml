@@ -429,6 +429,9 @@ excluded:
   - ${PWD}/ProtonMailUITests
 
 line_length:
+  ignores_comments: true
+  ignores_interpolated_strings: true
+  ignores_urls: true
   warning: 120
 
 type_name:
