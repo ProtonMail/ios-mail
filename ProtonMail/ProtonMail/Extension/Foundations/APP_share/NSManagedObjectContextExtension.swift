@@ -85,7 +85,11 @@ extension NSManagedObjectContext {
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self, sectionNameKeyPath: nil, cacheName: nil)
     }
 
-    func saveUpstreamIfNeeded() -> NSError? {
+    func saveUpstreamIfNeeded(
+        caller: StaticString = #function,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> NSError? {
         var error: NSError?
         do {
             if hasChanges {
@@ -108,6 +112,13 @@ extension NSManagedObjectContext {
         } catch let ex as NSError {
             error = ex
         }
+
+        if let error = error {
+            assertionFailure("\(error)")
+
+            Analytics.shared.sendError(.coreDataSavingError(error: error, caller: caller, file: file, line: line))
+        }
+
         return error
     }
 

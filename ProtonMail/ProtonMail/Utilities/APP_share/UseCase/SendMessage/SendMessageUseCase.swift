@@ -18,6 +18,7 @@
 import Foundation
 import class ProtonCore_DataModel.UserInfo
 import protocol ProtonCore_Services.APIService
+import typealias ProtonCore_Networking.JSONDictionary
 
 typealias SendMessageUseCase = NewUseCase<Void, SendMessage.Params>
 
@@ -39,7 +40,7 @@ final class SendMessage: SendMessageUseCase {
                     case .failure(let error):
                         callback(.failure(error))
                     case .success(let sendRequest):
-                        self.sendMessage(request: sendRequest, callback: callback)
+                        self.sendMessage(request: sendRequest, params: params, callback: callback)
                     }
                 }
             }
@@ -51,7 +52,7 @@ final class SendMessage: SendMessageUseCase {
         completion: @escaping (Result<SendMessageMetadata, Error>) -> Void
     ) {
         dependencies.prepareSendMetadata.execute(
-            params: .init(messageObjectURI: params.messageObjectURI),
+            params: .init(messageSendingData: params.messageSendingData),
             callback: completion
         )
     }
@@ -72,13 +73,19 @@ final class SendMessage: SendMessageUseCase {
         )
     }
 
-    private func sendMessage(request: SendMessageRequest, callback: @escaping Callback) {
-        dependencies.apiService.perform(request: request) { _, sendResult in
+    private func sendMessage(request: SendMessageRequest, params: Params, callback: @escaping Callback) {
+        dependencies.apiService.perform(request: request) { [unowned self] _, sendResult in
             switch sendResult {
             case .failure(let error):
                 callback(.failure(error))
-            case .success:
-                callback(.success(()))
+            case .success(let jsonDict):
+                dependencies.messageDataService.updateMessageAfterSend(
+                    message: params.messageSendingData.message,
+                    sendResponse: jsonDict,
+                    completionQueue: executionQueue
+                ) {
+                    callback(.success(()))
+                }
             }
         }
     }
@@ -86,8 +93,8 @@ final class SendMessage: SendMessageUseCase {
 
 extension SendMessage {
     struct Params {
-        /// URI identifying a Message CoreData object that has to be sent
-        let messageObjectURI: String
+        /// Information needed about the message we want to send
+        let messageSendingData: MessageSendingData
         /// Time at which the message is scheduled to be sent
         let scheduleSendDeliveryTime: Date?
         /// Number of seconds the message send is delayed to be able to undo the action
@@ -99,5 +106,6 @@ extension SendMessage {
         let prepareSendRequest: PrepareSendRequestUseCase
         let apiService: APIService
         let userDataSource: UserDataSource
+        let messageDataService: MessageDataServiceProtocol
     }
 }

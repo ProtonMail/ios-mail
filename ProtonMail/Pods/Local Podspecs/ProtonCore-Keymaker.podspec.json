@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "3.24.2",
+  "version": "3.24.5",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.24.2"
+    "tag": "3.24.5"
   },
   "platforms": {
     "ios": "11.0",
@@ -38,7 +38,7 @@
       "name": "Crypto-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.15.15": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -57,7 +57,7 @@
       "name": "Crypto-Go1.17.9",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.17.9": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -76,7 +76,7 @@
       "name": "Crypto-Go1.18.3",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.18.3": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -95,7 +95,7 @@
       "name": "Crypto-Go1.19.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.19.2": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -114,7 +114,7 @@
       "name": "Crypto-patched-Go1.19.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.19.2": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -133,7 +133,7 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -152,7 +152,7 @@
       "name": "Crypto+VPN-Go1.17.9",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.17.9": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -171,7 +171,7 @@
       "name": "Crypto+VPN-Go1.18.3",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.18.3": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -190,7 +190,7 @@
       "name": "Crypto+VPN-Go1.19.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.19.2": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -209,7 +209,7 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -228,7 +228,7 @@
       "name": "Crypto+Search-Go1.17.9",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.17.9": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -247,7 +247,7 @@
       "name": "Crypto+Search-Go1.18.3",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.18.3": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [
@@ -266,7 +266,7 @@
       "name": "Crypto+Search-Go1.19.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.19.2": [
-          "3.24.2"
+          "3.24.5"
         ]
       },
       "source_files": [

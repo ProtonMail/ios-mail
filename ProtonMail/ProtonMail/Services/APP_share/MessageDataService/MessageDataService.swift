@@ -54,6 +54,13 @@ protocol MessageDataServiceProtocol: Service {
         completionQueue: DispatchQueue,
         completion: @escaping ((MessageSendingData?) -> Void)
     )
+
+    func updateMessageAfterSend(
+        message: MessageEntity,
+        sendResponse: JSONDictionary,
+        completionQueue: DispatchQueue,
+        completion: @escaping () -> Void
+    )
 }
 
 protocol LocalMessageDataServiceProtocol: Service {
@@ -851,6 +858,33 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 defaultSenderAddress: self?.defaultUserAddress(for: message)
             )
             completionQueue?.async { completion(messageSendData) }
+        }
+    }
+
+    func updateMessageAfterSend(
+        message: MessageEntity,
+        sendResponse: JSONDictionary,
+        completionQueue: DispatchQueue,
+        completion: @escaping () -> Void
+    ) {
+        contextProvider.performOnRootSavingContext { [unowned self] context in
+            if let newMessage = try? GRTJSONSerialization.object(
+                withEntityName: Message.Attributes.entityName,
+                fromJSONDictionary: sendResponse["Sent"] as! [String: Any],
+                in: context
+            ) as? Message {
+                newMessage.messageStatus = 1
+                newMessage.isDetailDownloaded = true
+                newMessage.unRead = false
+            } else {
+                assertionFailure("Failed to parse response Message")
+            }
+            if context.saveUpstreamIfNeeded() == nil {
+                _ = markReplyStatus(message.originalMessageID, action: message.action)
+            }
+            completionQueue.async {
+                completion()
+            }
         }
     }
 

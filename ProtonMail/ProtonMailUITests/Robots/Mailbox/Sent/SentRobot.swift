@@ -8,6 +8,10 @@
 
 import pmtest
 
+fileprivate struct id {
+    static func messageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
+}
+
 /**
  Represents Sent view.
 */
@@ -30,7 +34,7 @@ class SentRobot : MailboxRobotInterface {
     class Verify: MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).firstMatch().wait().checkExists()
+            cell(id.messageCellIdentifier(subject)).swipeUpUntilVisible().checkExists()
         }
     }
 }

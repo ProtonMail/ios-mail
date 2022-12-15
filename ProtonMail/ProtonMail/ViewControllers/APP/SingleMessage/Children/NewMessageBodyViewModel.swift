@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_DataModel
+import SwiftSoup
 import UIKit
 import WebKit
 
@@ -48,9 +49,7 @@ struct BodyParts {
     let strippedBody: String
     let darkModeCSS: String?
 
-    var bodyHasHistory: Bool {
-        return originalBody.body(strippedFromQuotes: false) != strippedBody
-    }
+    let bodyHasHistory: Bool
 
     init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
         self.originalBody = originalBody
@@ -65,7 +64,27 @@ struct BodyParts {
         case .nativeSupport:
             self.darkModeCSS = ""
         }
-        self.strippedBody = originalBody.body(strippedFromQuotes: true)
+
+        var bodyHasHistory = false
+
+        do {
+            let fullHTMLDocument = try SwiftSoup.parse(originalBody)
+            fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
+
+            for quoteElement in String.quoteElements {
+                let elements = try fullHTMLDocument.select(quoteElement)
+                if !elements.isEmpty() {
+                    bodyHasHistory = true
+                }
+                try elements.remove()
+            }
+            strippedBody = try fullHTMLDocument.html()
+        } catch {
+            assertionFailure("\(error)")
+            strippedBody = originalBody
+        }
+
+        self.bodyHasHistory = bodyHasHistory
     }
 
     func body(for displayMode: MessageDisplayMode) -> String {

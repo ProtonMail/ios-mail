@@ -24,8 +24,7 @@ enum PrepareSendMetadataBuilder {
         userData: UserDataSource,
         apiService: APIService,
         cacheService: CacheServiceProtocol,
-        contactProvider: ContactProviderProtocol,
-        messageService: MessageDataServiceProtocol
+        contactProvider: ContactProviderProtocol
     ) -> PrepareSendMetadata {
         // ResolveSendPreferencesUseCase
         let fetchContactsDependencies: FetchAndVerifyContacts.Dependencies = .init(
@@ -50,7 +49,6 @@ enum PrepareSendMetadataBuilder {
         // PrepareSendMetadataUseCase
         let sendMetadatDependencies: PrepareSendMetadata.Dependencies = .init(
             userDataSource: userData,
-            messageDataService: messageService,
             resolveSendPreferences: resolveSendPreferences,
             fetchAttachment: FetchAttachment(dependencies: fetchAttachmentDependencies)
         )

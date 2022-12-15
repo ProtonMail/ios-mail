@@ -30,11 +30,21 @@ final class SendMessageTests: XCTestCase {
     private var mockApiService: APIServiceMock!
     private var mockPrepareSendMetadata: MockPrepareSendMetadata!
     private var mockPrepareSendRequest: MockPrepareSendRequest!
+    private var mockMessageDataService: MockMessageDataService!
+    private let mockCoreDataService = MockCoreDataContextProvider()
 
-    private let dummyMessageURI = "dummy_uri"
+    private lazy var dummyMessageSendingData: MessageSendingData = {
+        .init(
+            message: MessageEntity(Message(context: mockCoreDataService.mainContext)),
+            cachedUserInfo: nil,
+            cachedAuthCredential: nil,
+            cachedSenderAddress: nil,
+            defaultSenderAddress: nil
+        )
+    }()
     private lazy var dummyParams: SendMessage.Params = {
         SendMessage.Params(
-            messageObjectURI: dummyMessageURI,
+            messageSendingData: dummyMessageSendingData,
             scheduleSendDeliveryTime: nil,
             undoSendDelay: 0
         )
@@ -47,6 +57,7 @@ final class SendMessageTests: XCTestCase {
         mockApiService = APIServiceMock()
         mockPrepareSendMetadata = MockPrepareSendMetadata()
         mockPrepareSendRequest = MockPrepareSendRequest()
+        mockMessageDataService = MockMessageDataService()
         sut = makeSUT()
     }
 
@@ -55,10 +66,11 @@ final class SendMessageTests: XCTestCase {
         mockApiService = nil
         mockPrepareSendMetadata = nil
         mockPrepareSendRequest = nil
+        mockMessageDataService = nil
         sut = nil
     }
 
-    func testExecute_whenEverythingSucceeds_itReturnsVoid() {
+    func testExecute_whenSendingSucceeds_updateMessageIsCalled_andReturnsVoid() {
         mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/messages/") {
                 completion(nil, .success(["Code": 1000]))
@@ -71,17 +83,15 @@ final class SendMessageTests: XCTestCase {
         let expectation = expectation(description: "")
         sut.execute(params: dummyParams) { result in
             XCTAssert(try! result.get() == Void())
+            XCTAssert(self.mockMessageDataService.callUpdateMessageAfterSend.callCounter == 1)
             expectation.fulfill()
         }
         waitForExpectations(timeout: waitTimeout)
     }
 
     func testExecute_whenPrepareMetadataFails_itReturnsTheMetadataError() {
-        let metadataError: PrepareSendMessageMetadataError = [
-            PrepareSendMessageMetadataError.noMessageFoundForURI,
-            PrepareSendMessageMetadataError.decryptBodyFail
-        ].randomElement()!
-        mockPrepareSendMetadata.failureResult = metadataError
+        let metadataError = PrepareSendMessageMetadataError.decryptBodyFail
+        mockPrepareSendMetadata.failureResult = PrepareSendMessageMetadataError.decryptBodyFail
 
         let expectation = expectation(description: "")
         sut.execute(params: dummyParams) { result in
@@ -123,6 +133,7 @@ final class SendMessageTests: XCTestCase {
             switch result {
             case .failure(let error as ResponseError):
                 XCTAssert(error.underlyingError?.code == self.nsError.code)
+                XCTAssert(self.mockMessageDataService.callUpdateMessageAfterSend.wasNotCalled)
             default:
                 XCTFail("expected a ResponseError as the result")
             }
@@ -139,7 +150,8 @@ extension SendMessageTests {
             prepareSendMetadata: mockPrepareSendMetadata,
             prepareSendRequest: mockPrepareSendRequest,
             apiService: mockApiService,
-            userDataSource: makeUserManager(apiMock: mockApiService)
+            userDataSource: makeUserManager(apiMock: mockApiService),
+            messageDataService: mockMessageDataService
         )
         return SendMessage(dependencies: sendMessageDependencies)
     }
