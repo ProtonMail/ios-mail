@@ -30,11 +30,20 @@ final class SendMessageTests: XCTestCase {
     private var mockApiService: APIServiceMock!
     private var mockPrepareSendMetadata: MockPrepareSendMetadata!
     private var mockPrepareSendRequest: MockPrepareSendRequest!
+    private let mockCoreDataService = MockCoreDataContextProvider()
 
-    private let dummyMessageURI = "dummy_uri"
+    private lazy var dummyMessageSendingData: MessageSendingData = {
+        .init(
+            message: MessageEntity(Message(context: mockCoreDataService.mainContext)),
+            cachedUserInfo: nil,
+            cachedAuthCredential: nil,
+            cachedSenderAddress: nil,
+            defaultSenderAddress: nil
+        )
+    }()
     private lazy var dummyParams: SendMessage.Params = {
         SendMessage.Params(
-            messageObjectURI: dummyMessageURI,
+            messageSendingData: dummyMessageSendingData,
             scheduleSendDeliveryTime: nil,
             undoSendDelay: 0
         )
@@ -77,11 +86,8 @@ final class SendMessageTests: XCTestCase {
     }
 
     func testExecute_whenPrepareMetadataFails_itReturnsTheMetadataError() {
-        let metadataError: PrepareSendMessageMetadataError = [
-            PrepareSendMessageMetadataError.noMessageFoundForURI,
-            PrepareSendMessageMetadataError.decryptBodyFail
-        ].randomElement()!
-        mockPrepareSendMetadata.failureResult = metadataError
+        let metadataError = PrepareSendMessageMetadataError.decryptBodyFail
+        mockPrepareSendMetadata.failureResult = PrepareSendMessageMetadataError.decryptBodyFail
 
         let expectation = expectation(description: "")
         sut.execute(params: dummyParams) { result in

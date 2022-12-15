@@ -28,7 +28,6 @@ final class PrepareSendMetadataTests: XCTestCase {
     var sut: PrepareSendMetadata!
 
     private var mockApiService: APIServiceMock!
-    private var mockMessageDataService: MockMessageDataService!
     private var mockUserManager: UserManager!
     private var mockResolveSendPreferences: MockResolveSendPreferences!
     private var mockFetchAttachment: MockFetchAttachment!
@@ -60,7 +59,6 @@ final class PrepareSendMetadataTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         mockApiService = nil
-        mockMessageDataService = nil
         mockUserManager = nil
         mockResolveSendPreferences = nil
         mockFetchAttachment = nil
@@ -68,42 +66,27 @@ final class PrepareSendMetadataTests: XCTestCase {
     }
 
     func testExecution_whenEverythingSucceeds_returnsCorrectMetadata() {
-        let messageData = setUpDependenciesForSuccess()
+        let messageSendingData = setUpDependenciesForSuccess()
         let expectation = expectation(description: "")
-        sut.execute(params: .init(messageObjectURI: dummyMessageURI)) { [unowned self] result in
+        sut.execute(params: .init(messageSendingData: messageSendingData)) { [unowned self] result in
             let sendMessageMetadata = try! result.get()
-            XCTAssert(sendMessageMetadata.messageID == messageData.message.messageID)
-            XCTAssert(sendMessageMetadata.timeToExpire == messageData.message.expirationOffset)
+            XCTAssert(sendMessageMetadata.messageID == messageSendingData.message.messageID)
+            XCTAssert(sendMessageMetadata.timeToExpire == messageSendingData.message.expirationOffset)
             XCTAssert(sendMessageMetadata.decryptedBody == dummyMessageBody)
             XCTAssert(sendMessageMetadata.recipientSendPreferences.count == 1)
             XCTAssert(sendMessageMetadata.attachments.count == 1)
             XCTAssert(sendMessageMetadata.encodedAttachments.keys.count == 1)
-            XCTAssert(sendMessageMetadata.password == messageData.message.password)
-            XCTAssert(sendMessageMetadata.passwordHint == messageData.message.passwordHint)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: waitTimeout)
-    }
-
-    func testExecution_whenNoMessageFoundForURI_returnsError() {
-        setUpDependenciesForError(.noMessageFoundForURI)
-        let expectation = expectation(description: "")
-        sut.execute(params: .init(messageObjectURI: dummyMessageURI)) { result in
-            switch result {
-            case .failure(let error as PrepareSendMessageMetadataError):
-                XCTAssert(error == .noMessageFoundForURI)
-            default:
-                XCTFail()
-            }
+            XCTAssert(sendMessageMetadata.password == messageSendingData.message.password)
+            XCTAssert(sendMessageMetadata.passwordHint == messageSendingData.message.passwordHint)
             expectation.fulfill()
         }
         waitForExpectations(timeout: waitTimeout)
     }
 
     func testExecution_whenNoSenderAddressFound_returnsError() {
-        setUpDependenciesForError(.noSenderAddressFound)
+        let messageSendingData = setUpDependenciesForError(.noSenderAddressFound)
         let expectation = expectation(description: "")
-        sut.execute(params: .init(messageObjectURI: dummyMessageURI)) { result in
+        sut.execute(params: .init(messageSendingData: messageSendingData)) { result in
             switch result {
             case .failure(let error as PrepareSendMessageMetadataError):
                 XCTAssert(error == .noSenderAddressFound)
@@ -116,9 +99,9 @@ final class PrepareSendMetadataTests: XCTestCase {
     }
 
     func testExecution_whenNoSenderAddressKeyFound_returnsError() {
-        setUpDependenciesForError(.noSenderAddressKeyFound)
+        let messageSendingData = setUpDependenciesForError(.noSenderAddressKeyFound)
         let expectation = expectation(description: "")
-        sut.execute(params: .init(messageObjectURI: dummyMessageURI)) { result in
+        sut.execute(params: .init(messageSendingData: messageSendingData)) { result in
             switch result {
             case .failure(let error as PrepareSendMessageMetadataError):
                 XCTAssert(error == .noSenderAddressKeyFound)
@@ -131,9 +114,9 @@ final class PrepareSendMetadataTests: XCTestCase {
     }
 
     func testExecution_whenCryptoLibThrowsError_returnsError() {
-        setUpDependenciesForCryptoLibErrorThrow()
+        let messageSendingData = setUpDependenciesForCryptoLibErrorThrow()
         let expectation = expectation(description: "")
-        sut.execute(params: .init(messageObjectURI: dummyMessageURI)) { result in
+        sut.execute(params: .init(messageSendingData: messageSendingData)) { result in
             switch result {
             case .failure(let error as PrepareSendMessageMetadataError):
                 XCTFail(error.rawValue)
@@ -155,13 +138,11 @@ extension PrepareSendMetadataTests {
     private func makeSUT() -> PrepareSendMetadata {
         mockApiService = APIServiceMock()
         mockUserManager = makeUserManager(apiMock: mockApiService)
-        mockMessageDataService = MockMessageDataService()
         mockResolveSendPreferences = MockResolveSendPreferences()
         mockFetchAttachment = MockFetchAttachment()
 
         let dependencies = PrepareSendMetadata.Dependencies(
             userDataSource: mockUserManager,
-            messageDataService: mockMessageDataService,
             resolveSendPreferences: mockResolveSendPreferences,
             fetchAttachment: mockFetchAttachment
         )
@@ -175,36 +156,35 @@ extension PrepareSendMetadataTests {
             senderAddress: dummySenderAddress,
             encryptedBody: makeEncryptedBodyWithCorrectSenderAddressKey()
         )
-        mockMessageDataService.messageSendingDataResult = messageData
         return messageData
     }
 
-    private func setUpDependenciesForError(_ error: PrepareSendMessageMetadataError) {
+    private func setUpDependenciesForError(_ error: PrepareSendMessageMetadataError) -> MessageSendingData {
         mockResolveSendPreferences.result = .success([dummySendPreferences])
         mockFetchAttachment.result = .success(dummyAttachmentFile)
         let correctEncryptedBody = makeEncryptedBodyWithCorrectSenderAddressKey()
+        let messageSendingData: MessageSendingData
         switch error {
-        case .noMessageFoundForURI:
-            mockMessageDataService.messageSendingDataResult = nil
         case .noSenderAddressFound:
             let messageData = makeMessageSendingData(senderAddress: nil, encryptedBody: correctEncryptedBody)
-            mockMessageDataService.messageSendingDataResult = messageData
+            messageSendingData = messageData
         case .noSenderAddressKeyFound:
             let messageData = makeMessageSendingData(senderAddress: dummySenderAddressNoKeys, encryptedBody: correctEncryptedBody)
-            mockMessageDataService.messageSendingDataResult = messageData
+            messageSendingData = messageData
         default:
-            break
+            fatalError()
         }
+        return messageSendingData
     }
 
-    private func setUpDependenciesForCryptoLibErrorThrow() {
+    private func setUpDependenciesForCryptoLibErrorThrow() -> MessageSendingData {
         mockResolveSendPreferences.result = .success([dummySendPreferences])
         mockFetchAttachment.result = .success(dummyAttachmentFile)
         let messageData = makeMessageSendingData(
             senderAddress: dummySenderAddress,
             encryptedBody: makeEncryptedBodyWithWrongKey()
         )
-        mockMessageDataService.messageSendingDataResult = messageData
+        return messageData
     }
 
     private func makeUserManager(apiMock: APIServiceMock) -> UserManager {
