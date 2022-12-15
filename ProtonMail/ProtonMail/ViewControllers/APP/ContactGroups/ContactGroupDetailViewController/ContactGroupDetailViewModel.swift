@@ -57,7 +57,7 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
         fetchedController = labelsDataService.labelFetchedController(by: contactGroup.labelID)
 
         super.init()
-        self.sortEmails(emailArray: contactGroup.emailRelations ?? [])
+        self.sortEmails(emailArray: contactGroup.emailRelations)
 
         try? fetchedController.performFetch()
         fetchedController.delegate = self
@@ -99,7 +99,7 @@ extension ContactGroupDetailViewModel: NSFetchedResultsControllerDelegate {
             return
         }
         self.contactGroup = LabelEntity(label: labelObject)
-        self.sortEmails(emailArray: contactGroup.emailRelations ?? [])
+        self.sortEmails(emailArray: contactGroup.emailRelations)
         self.reloadView?()
     }
 }
