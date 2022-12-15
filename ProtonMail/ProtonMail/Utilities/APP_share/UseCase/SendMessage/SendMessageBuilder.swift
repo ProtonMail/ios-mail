@@ -25,7 +25,8 @@ enum SendMessageBuilder {
         userData: UserDataSource,
         apiService: APIService,
         cacheService: CacheServiceProtocol,
-        contactProvider: ContactProviderProtocol
+        contactProvider: ContactProviderProtocol,
+        messageDataService: MessageDataServiceProtocol
     ) -> SendMessage {
         let prepareSendMetadata = PrepareSendMetadataBuilder.make(
             userData: userData,
@@ -37,7 +38,8 @@ enum SendMessageBuilder {
             prepareSendMetadata: prepareSendMetadata,
             prepareSendRequest: PrepareSendRequest(),
             apiService: apiService,
-            userDataSource: userData
+            userDataSource: userData,
+            messageDataService: messageDataService
         )
         return SendMessage(dependencies: sendMessageDependencies)
     }

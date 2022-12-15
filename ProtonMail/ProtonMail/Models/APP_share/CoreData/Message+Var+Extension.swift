@@ -171,28 +171,7 @@ extension Message {
         }
     }
 
-    /// Push notification identifier
-    ///
-    /// This logic replicates the logic used in backend to identify a push notification sent for a specific message. This notificationId allows for example
-    /// to clear a push notification from the Notification Center once the message has been read.
     var notificationId: String? {
-        let hexStr = Data(messageID.utf8).stringFromToken()
-        guard hexStr.count > 19 else {
-            SystemLogger.log(
-                message: "notificationId is nil because messageId length is \(hexStr.count)",
-                category: .pushNotification,
-                isError: true
-            )
-            return nil
-        }
-
-        let startIndex = hexStr.startIndex
-        let firstPart = hexStr[startIndex...hexStr.index(startIndex, offsetBy: 7)]
-        let secondPart = hexStr[hexStr.index(startIndex, offsetBy: 8)...hexStr.index(startIndex, offsetBy: 11)]
-        let thirdPart = hexStr[hexStr.index(startIndex, offsetBy: 12)...hexStr.index(startIndex, offsetBy: 15)]
-        let fourthPart = hexStr[hexStr.index(startIndex, offsetBy: 16)...hexStr.index(startIndex, offsetBy: 19)]
-        let uuid = "\(firstPart)-\(secondPart)-\(thirdPart)-\(fourthPart)"
-
-        return uuid
+        MessageID(rawValue: messageID).notificationId
     }
 }
