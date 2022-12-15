@@ -32,13 +32,12 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
-        prepareSendMessageDataForURI(params.messageObjectURI, params: params) { [unowned self] result in
+        preparePreMetadataInfo(params.messageSendingData, params: params) { [unowned self] result in
             switch result {
             case .failure(let error):
                 callback(.failure(error))
 
             case .success(let data):
-                logInfo(step: .getMessageForUri, info: "message id:\(data.message.messageID.rawValue)")
                 generateSendMessageMetadata(
                     message: data.message,
                     recipients: data.recipientsSendPreferences,
@@ -51,54 +50,44 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     }
 
     /// Returns all the necessary data needed to generate the `SendMessageMetadata` object.
-    private func prepareSendMessageDataForURI(
-        _ messageObjectUri: String,
+    private func preparePreMetadataInfo(
+        _ messageSendingData: MessageSendingData,
         params: Params,
-        completion: @escaping (Result<SendMessageDataForURI, Error>) -> Void
+        completion: @escaping (Result<PreMetadataInfo, Error>) -> Void
     ) {
-        logInfo(step: .getMessageForUri, info: "\(messageObjectUri)")
-        dependencies.messageDataService.getMessageSendingData(
-            for: messageObjectUri,
-            completionQueue: executionQueue
-        ) { [unowned self] result in
-            guard let messageSendingData = result else {
-                completion(.failure(PrepareSendMessageMetadataError.noMessageFoundForURI))
+        guard !messageSendingData.message.messageID.rawValue.isEmpty else {
+            completion(.failure(PrepareSendMessageMetadataError.messageIdEmptyForURI))
+            return
+        }
+        let userPrivateData: UserSendPrivateData
+        if let cachedData = UserSendPrivateData(messageSendingData: messageSendingData) {
+            logInfo(step: .usingUserCachedData)
+            userPrivateData = cachedData
+        } else {
+            logInfo(step: .notUsingUserCachedData)
+            guard let defaultSenderAddress = messageSendingData.defaultSenderAddress else {
+                completion(.failure(PrepareSendMessageMetadataError.noSenderAddressFound))
                 return
             }
-            guard !messageSendingData.message.messageID.rawValue.isEmpty else {
-                completion(.failure(PrepareSendMessageMetadataError.messageIdEmptyForURI))
-                return
-            }
-            let userPrivateData: UserSendPrivateData
-            if let cachedData = UserSendPrivateData(messageSendingData: messageSendingData) {
-                logInfo(step: .usingUserCachedData)
-                userPrivateData = cachedData
-            } else {
-                logInfo(step: .notUsingUserCachedData)
-                guard let defaultSenderAddress = messageSendingData.defaultSenderAddress else {
-                    completion(.failure(PrepareSendMessageMetadataError.noSenderAddressFound))
-                    return
-                }
-                userPrivateData = UserSendPrivateData(
-                    userInfo: dependencies.userDataSource.userInfo,
-                    authCredential: dependencies.userDataSource.authCredential,
-                    senderAddress: defaultSenderAddress
+            userPrivateData = UserSendPrivateData(
+                userInfo: dependencies.userDataSource.userInfo,
+                authCredential: dependencies.userDataSource.authCredential,
+                senderAddress: defaultSenderAddress
+            )
+        }
+
+        recipientsSendPreferences(params: params, message: messageSendingData.message) { resultRecipients in
+            switch resultRecipients {
+            case .failure(let error):
+                completion(.failure(error))
+
+            case .success(let recipientsSendPreferences):
+                let data = PreMetadataInfo(
+                    message: messageSendingData.message,
+                    recipientsSendPreferences: recipientsSendPreferences,
+                    userData: userPrivateData
                 )
-            }
-
-            recipientsSendPreferences(params: params, message: messageSendingData.message) { resultRecipients in
-                switch resultRecipients {
-                case .failure(let error):
-                    completion(.failure(error))
-
-                case .success(let recipientsSendPreferences):
-                    let data = SendMessageDataForURI(
-                        message: messageSendingData.message,
-                        recipientsSendPreferences: recipientsSendPreferences,
-                        userData: userPrivateData
-                    )
-                    completion(.success(data))
-                }
+                completion(.success(data))
             }
         }
     }
@@ -301,13 +290,11 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
 extension PrepareSendMetadata {
 
     struct Params {
-        /// URI identifying a Message CoreData object that has to be sent
-        let messageObjectURI: String
+        let messageSendingData: MessageSendingData
     }
 
     struct Dependencies {
         let userDataSource: UserDataSource
-        let messageDataService: MessageDataServiceProtocol
         let resolveSendPreferences: ResolveSendPreferencesUseCase
         let fetchAttachment: FetchAttachmentUseCase
     }
@@ -315,7 +302,6 @@ extension PrepareSendMetadata {
 
 /// Enum describing the different steps involved in preparing a message metadata for logging and debugging purposes.
 private enum PrepareSendMessageMetadataStep: String {
-    case getMessageForUri
     case usingUserCachedData
     case notUsingUserCachedData
     case getRecipientsSendPreferences
@@ -324,8 +310,8 @@ private enum PrepareSendMessageMetadataStep: String {
     case mimeEncodingAttachments
 }
 
-/// Data obtained from a URI message object required to prepare `SendMessageMetadata`
-private struct SendMessageDataForURI {
+/// Intermediate data object required to prepare `SendMessageMetadata`
+private struct PreMetadataInfo {
     let message: MessageEntity
     let recipientsSendPreferences: [RecipientSendPreferences]
     let userData: UserSendPrivateData

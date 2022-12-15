@@ -51,7 +51,7 @@ final class SendMessage: SendMessageUseCase {
         completion: @escaping (Result<SendMessageMetadata, Error>) -> Void
     ) {
         dependencies.prepareSendMetadata.execute(
-            params: .init(messageObjectURI: params.messageObjectURI),
+            params: .init(messageSendingData: params.messageSendingData),
             callback: completion
         )
     }
@@ -86,8 +86,8 @@ final class SendMessage: SendMessageUseCase {
 
 extension SendMessage {
     struct Params {
-        /// URI identifying a Message CoreData object that has to be sent
-        let messageObjectURI: String
+        /// Information needed about the message we want to send
+        let messageSendingData: MessageSendingData
         /// Time at which the message is scheduled to be sent
         let scheduleSendDeliveryTime: Date?
         /// Number of seconds the message send is delayed to be able to undo the action

@@ -20,7 +20,7 @@ import class ProtonCore_DataModel.Address
 import class ProtonCore_DataModel.UserInfo
 import class ProtonCore_Networking.AuthCredential
 
-/// Encapsulates the data stored in the Message object needed to send a message
+/// Encapsulates the data needed to send a message that is obtained from the CoreData `Message` object
 struct MessageSendingData {
     let message: MessageEntity
 

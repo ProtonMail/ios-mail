@@ -19,7 +19,6 @@ import Foundation
 
 /// Errors that can be returned by the SendMessageMetadata use case.
 enum PrepareSendMessageMetadataError: String, Error {
-    case noMessageFoundForURI
     case messageIdEmptyForURI
     case noSenderAddressFound
     case noSenderAddressKeyFound
