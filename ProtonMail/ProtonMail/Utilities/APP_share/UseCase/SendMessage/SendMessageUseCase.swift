@@ -18,6 +18,7 @@
 import Foundation
 import class ProtonCore_DataModel.UserInfo
 import protocol ProtonCore_Services.APIService
+import typealias ProtonCore_Networking.JSONDictionary
 
 typealias SendMessageUseCase = NewUseCase<Void, SendMessage.Params>
 
@@ -39,7 +40,7 @@ final class SendMessage: SendMessageUseCase {
                     case .failure(let error):
                         callback(.failure(error))
                     case .success(let sendRequest):
-                        self.sendMessage(request: sendRequest, callback: callback)
+                        self.sendMessage(request: sendRequest, params: params, callback: callback)
                     }
                 }
             }
@@ -72,13 +73,19 @@ final class SendMessage: SendMessageUseCase {
         )
     }
 
-    private func sendMessage(request: SendMessageRequest, callback: @escaping Callback) {
-        dependencies.apiService.perform(request: request) { _, sendResult in
+    private func sendMessage(request: SendMessageRequest, params: Params, callback: @escaping Callback) {
+        dependencies.apiService.perform(request: request) { [unowned self] _, sendResult in
             switch sendResult {
             case .failure(let error):
                 callback(.failure(error))
-            case .success:
-                callback(.success(()))
+            case .success(let jsonDict):
+                dependencies.messageDataService.updateMessageAfterSend(
+                    message: params.messageSendingData.message,
+                    sendResponse: jsonDict,
+                    completionQueue: executionQueue
+                ) {
+                    callback(.success(()))
+                }
             }
         }
     }
@@ -99,5 +106,6 @@ extension SendMessage {
         let prepareSendRequest: PrepareSendRequestUseCase
         let apiService: APIService
         let userDataSource: UserDataSource
+        let messageDataService: MessageDataServiceProtocol
     }
 }

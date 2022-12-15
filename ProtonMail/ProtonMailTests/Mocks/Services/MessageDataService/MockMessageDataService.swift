@@ -81,6 +81,17 @@ class MockMessageDataService: MessageDataServiceProtocol {
         callGetMessageSendingData(uri, completionQueue, completion)
         completion(messageSendingDataResult)
     }
+
+    @FuncStub(MockMessageDataService.updateMessageAfterSend(message:sendResponse:completionQueue:completion:)) var callUpdateMessageAfterSend
+    func updateMessageAfterSend(
+        message: MessageEntity,
+        sendResponse: JSONDictionary,
+        completionQueue: DispatchQueue,
+        completion: @escaping () -> Void
+    ) {
+        callUpdateMessageAfterSend(message, sendResponse, completionQueue, completion)
+        completion()
+    }
 }
 
 final class MockMessageDataAction: MessageDataActionProtocol {
