@@ -349,6 +349,11 @@ platform :ios do
       result_bundle: true,
       xcargs: "-quiet"
     )
+    xchtmlreport(
+      result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
+      enable_junit: true,
+      binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
+    )
 
     slather(cobertura_xml: true, configuration: "Debug")
     slather(simple_output: true, configuration: "Debug")
