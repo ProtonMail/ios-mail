@@ -1519,9 +1519,9 @@ enum L11n {
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
 	}
 
-    fileprivate struct PushNotificationAction {
+    struct PushNotificationAction {
         static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
-        static var archive: String { LocalString._menu_archive_title }
+        static let archive = NSLocalizedString("Archive (verb)", comment: "Push notification action archive")
         static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
     }
 }
