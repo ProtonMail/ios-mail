@@ -72,7 +72,7 @@ See [LICENSE](LICENSE) file
 
 ## Live version
 
-Current live version 4.0.8
+Current live version 4.2.2
 
 - [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
 
