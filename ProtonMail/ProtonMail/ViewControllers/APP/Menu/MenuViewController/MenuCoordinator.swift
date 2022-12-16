@@ -365,8 +365,7 @@ extension MenuCoordinator {
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
 
         let updateMailbox = UpdateMailbox(
-            dependencies: .init(messageInfoCache: userCachedStatus,
-                                eventService: user.eventsService,
+            dependencies: .init(eventService: user.eventsService,
                                 messageDataService: user.messageService,
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,
