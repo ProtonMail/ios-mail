@@ -53,7 +53,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
     var title: String? {
         switch self {
         case .archive:
-            return LocalString._menu_archive_title
+            return L11n.PushNotificationAction.archive
         case .reply:
             return LocalString._action_sheet_action_title_reply
         case .replyAll:
