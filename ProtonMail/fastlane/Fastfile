@@ -315,8 +315,9 @@ platform :ios do
       reinstall_app: true,
       output_directory: "../test_output/TestResults",
       result_bundle: true,
-      xcargs: "-quiet"
-    )
+      xcargs: "-quiet",
+      fail_build: false # Otherwise following steps won't be executed
+   )
     xchtmlreport(
       result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
       enable_junit: true,
@@ -347,7 +348,8 @@ platform :ios do
       reinstall_app: true,
       output_directory: "../test_output/TestResults",
       result_bundle: true,
-      xcargs: "-quiet"
+      xcargs: "-quiet",
+      fail_build: false # Otherwise following steps won't be executed
     )
     xchtmlreport(
       result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
