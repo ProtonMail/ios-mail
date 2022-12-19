@@ -862,9 +862,13 @@ extension MainQueueHandler {
 
     private func addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool, completion: @escaping Completion) {
         let service = self.contactService
-        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID, importFromDevice: importFromDevice) { contacts, error in
-            completion(error)
-        }
+        service.add(
+            cards: [cardDatas],
+            authCredential: nil,
+            objectID: objectID,
+            importFromDevice: importFromDevice,
+            completion: completion
+        )
     }
 
     /// - Parameters:
