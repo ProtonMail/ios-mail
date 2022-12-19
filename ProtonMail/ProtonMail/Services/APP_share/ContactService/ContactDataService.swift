@@ -31,7 +31,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
-typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
@@ -155,7 +154,7 @@ class ContactDataService: Service, HasLocalStorage {
              authCredential: AuthCredential?,
              objectID: String? = nil,
              importFromDevice: Bool,
-             completion: ContactAddComplete?) {
+             completion: @escaping (Error?) -> Void) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
@@ -166,7 +165,7 @@ class ContactDataService: Service, HasLocalStorage {
             guard !results.isEmpty,
                   cards.count == results.count else {
                 DispatchQueue.main.async {
-                    completion?(nil, lastError)
+                    completion(lastError)
                 }
                 return
             }
@@ -181,14 +180,14 @@ class ContactDataService: Service, HasLocalStorage {
             }
 
             if !contactsData.isEmpty {
-                self.cacheService.addNewContact(serverResponse: contactsData, localContactObjectID: objectID) { (contacts, error) in
+                self.cacheService.addNewContact(serverResponse: contactsData, localContactObjectID: objectID) { error in
                     DispatchQueue.main.async {
-                        completion?(contacts, error)
+                        completion(error)
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    completion?(nil, lastError)
+                    completion(lastError)
                 }
             }
         }
@@ -381,10 +380,10 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        self.cacheService.addNewContact(serverResponse: contacts, shouldFixName: true) { (_, error) in
+                        self.cacheService.addNewContact(serverResponse: contacts, shouldFixName: true) { error in
                             if let err = error {
                                 DispatchQueue.main.async {
-                                    err.alertErrorToast()
+                                    (err as NSError).alertErrorToast()
                                 }
                             }
                         }
@@ -423,10 +422,10 @@ class ContactDataService: Service, HasLocalStorage {
 
                         let group = DispatchGroup()
                         group.enter()
-                        self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
+                        self.cacheService.addNewContact(serverResponse: contactsArray) { error in
                             if let err = error {
                                 DispatchQueue.main.async {
-                                    err.alertErrorToast()
+                                    (err as NSError).alertErrorToast()
                                 }
                             }
                             group.leave()

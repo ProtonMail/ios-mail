@@ -621,10 +621,9 @@ extension CacheService {
         serverResponse: [[String: Any]],
         shouldFixName: Bool = false,
         localContactObjectID: String? = nil,
-        completion: (([Contact]?, NSError?) -> Void)?
+        completion: @escaping (Error?) -> Void
     ) {
-        let context = coreDataService.makeNewBackgroundContext()
-        context.performAndWait { [weak self] in
+        coreDataService.performAndWaitOnRootSavingContext { [weak self]  context in
             guard let self = self else { return }
             do {
                 // Delete the temporary contact that is created locally.
@@ -651,13 +650,11 @@ extension CacheService {
                         }
                     }
                 }
-                if let error = context.saveUpstreamIfNeeded() {
-                    completion?(nil, error)
-                } else {
-                    completion?(contacts, nil)
-                }
+
+                _ = context.saveUpstreamIfNeeded()
+                completion(nil)
             } catch {
-                completion?(nil, error as NSError)
+                completion(error)
             }
         }
     }
