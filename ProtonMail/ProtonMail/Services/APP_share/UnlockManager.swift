@@ -52,13 +52,13 @@ protocol UnlockManagerDelegate: AnyObject {
 class UnlockManager: Service {
     var cacheStatus: CacheStatusInject
     private var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
-    weak var delegate: UnlockManagerDelegate?
+    unowned let delegate: UnlockManagerDelegate
 
     static var shared: UnlockManager {
         return sharedServices.get(by: UnlockManager.self)
     }
 
-    init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate?) {
+    init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
 
@@ -158,20 +158,20 @@ class UnlockManager: Service {
                                                 unlockFailed: (() -> Void)? = nil,
                                                 unlocked: (() -> Void)? = nil) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
-        guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
-            delegate?.setupCoreData()
-            delegate?.cleanAll()
+        guard keymaker.mainKeyExists(), self.delegate.isUserStored() else {
+            delegate.setupCoreData()
+            delegate.cleanAll()
             unlockFailed?()
             return
         }
 
-        guard self.delegate?.isMailboxPasswordStored(forUser: uid) == true else { // this will provoke mainKey obtention
-            delegate?.setupCoreData()
+        guard self.delegate.isMailboxPasswordStored(forUser: uid) else { // this will provoke mainKey obtention
+            delegate.setupCoreData()
             requestMailboxPassword()
             return
         }
 
-        delegate?.setupCoreData()
+        delegate.setupCoreData()
 
         cacheStatus.pinFailedCount = 0
 
