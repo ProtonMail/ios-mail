@@ -482,7 +482,16 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
                 seal.fulfill(nil)
                 return
             }
-            self.htmlEditor.getHtml().done { bodyString in
+            self.htmlEditor.getHtml().done { [weak self] bodyString in
+                guard let self = self else {
+                    return
+                }
+
+                guard let headerView = self.headerView else {
+                    assertionFailure("headerView not ready")
+                    seal.fulfill(nil)
+                    return
+                }
 
                 let head = "<html><head></head><body>"
                 let foot = "</body></html>"
@@ -499,11 +508,11 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
                 if !body.hasSuffix(foot) {
                     body = body + foot
                 }
-                let subject = self.headerView.subject.text ?? "(No Subject)"
+                let subject = headerView.subject.text ?? "(No Subject)"
                 self.viewModel.collectDraft(
                     subject,
                     body: body,
-                    expir: self.headerView.expirationTimeInterval,
+                    expir: headerView.expirationTimeInterval,
                     pwd: self.encryptionPassword,
                     pwdHit: self.encryptionPasswordHint
                 )
