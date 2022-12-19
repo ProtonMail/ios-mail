@@ -13,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d minuto</string>
 			<key>other</key>
 			<string>%d minutos</string>
 		</dict>
@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d selecionado</string>
 			<key>other</key>
-			<string>%d Selecionados</string>
+			<string>%d selecionados</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -45,7 +45,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d anexo</string>
 			<key>other</key>
 			<string>%d anexos</string>
 		</dict>
@@ -191,9 +191,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d membro</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d membros</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -205,9 +205,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message labeled</string>
+			<string>%d mensagem etiquetada</string>
 			<key>other</key>
-			<string>%d messages labeled</string>
+			<string>%d mensagens etiquetadas</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -271,7 +271,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d segundo</string>
 			<key>other</key>
 			<string>%d segundos</string>
 		</dict>

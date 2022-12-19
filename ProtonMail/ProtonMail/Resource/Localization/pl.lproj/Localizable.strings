@@ -1488,7 +1488,7 @@
 "Please upgrade your plan to continue to send and receive emails." = "Ulepsz plan, aby wysyłać i odbierać wiadomości.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Najpierw zaloguj się w aplikacji Proton Mail.";
+"Please use Proton Mail App sign-in first." = "Najpierw zaloguj się w Proton Mail.";
 
 /* No comment provided by engineer. */
 "Print" = "Drukuj";
@@ -2123,7 +2123,7 @@
 "Upload device contacts" = "Prześlij kontakty urządzenia";
 
 /* Description */
-"Upload iOS contacts to Proton Mail?" = "Przesłać kontakty z iOS do aplikacji Proton Mail?";
+"Upload iOS contacts to Proton Mail?" = "Przesłać kontakty z iOS do Proton Mail?";
 
 /* default vcard types */
 "URL" = "Adres URL";

@@ -359,6 +359,9 @@
 /* settings general section title */
 "Change account password" = "Account-wachtwoord veranderen";
 
+/* Title */
+"Change default address to…" = "Wijzig standaardadres naar…";
+
 /* settings general section title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
@@ -371,6 +374,9 @@
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Wijzig PIN-code";
+
+/* Title */
+"Change sender address to…" = "Wijzig afzenderadres naar…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Laad uw apparaat op of hervat manueel.";
@@ -725,11 +731,14 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Contact e-mailen";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "E-mail kon niet worden verzonden. Bericht bewaard als concept.";
+
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
 
 /* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Traceerbescherming van e-mails is nu beschikbaar. Afzenders zullen niet weten waar of wanneer u hun e-mails heb geopend.";
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Trackerbescherming van e-mails is nu beschikbaar. Afzenders zullen niet weten waar of wanneer u hun e-mails geopend hebt.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam leegmaken";
@@ -1829,6 +1838,9 @@
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Het nieuwe wachtwoord moet ten minste 8 tekens lang zijn";
 
+/* update password error */
+"The password is wrong." = "Het wachtwoord is onjuist.";
+
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Het wachtwoord moet tussen 8 en 21 tekens lang zijn";
 
@@ -1943,6 +1955,9 @@
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Volg uw bonussen";
 
 /* mail location desc
    menu title */
@@ -2119,6 +2134,9 @@
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "U kan nu acties kiezen en herschikken in deze balk";
+
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "U kunt nu uw berichten plannen om ze later te versturen";
 
@@ -2161,11 +2179,17 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "U gaat het bericht onherroepelijk verwijderen. Weet u het zeker?";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "U bent beveiligd voor e-mailtrackers";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Uw wijzigingen worden ongedaan gemaakt";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Uw land blokkeert mogelijk de toegang tot Proton. Probeer %1$@ te gebruiken (of een andere VPN) of %2$@ om toegang te krijgen tot Proton.";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Externe afbeeldingen worden nu standaard geladen in uw e-mails. Afzenders zullen niet weten als, waar of wanneer u hun e-mail opende.\nGa naar Instellingen → Accountinstelling → Privacy om dit te wijzigen.";
 
 /* Title of user feedback view */
 "Your feedback" = "Uw feedback";
