@@ -116,6 +116,7 @@ GEM
     fastlane-plugin-sentry (1.14.0)
       os (~> 1.1, >= 1.1.4)
     fastlane-plugin-try_scan (1.0.2)
+    fastlane-plugin-xchtmlreport (0.1.1)
     gh_inspector (1.1.3)
     google-apis-androidpublisher_v3 (0.31.0)
       google-apis-core (>= 0.9.1, < 2.a)
@@ -246,6 +247,7 @@ DEPENDENCIES
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
   fastlane-plugin-try_scan
+  fastlane-plugin-xchtmlreport
   slather
   xcode-install
 

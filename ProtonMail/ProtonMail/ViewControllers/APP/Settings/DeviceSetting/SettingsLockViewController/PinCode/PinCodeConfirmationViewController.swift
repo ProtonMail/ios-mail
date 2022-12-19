@@ -42,7 +42,7 @@ class PinCodeConfirmationViewController: ProtonMailViewController {
         passwordTextField.allowOnlyNumbers = true
 
         confirmButton.setMode(mode: .solid)
-        confirmButton.setTitle(LocalString._pin_code_setup2_button_title, for: .normal)
+        confirmButton.setTitle(LocalString._general_confirm_action, for: .normal)
     }
 
     override func viewWillAppear(_ animated: Bool) {

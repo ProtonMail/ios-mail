@@ -2,26 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d учасника</string>
-			<key>many</key>
-			<string>%d учасників</string>
-			<key>one</key>
-			<string>%d member</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -33,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d minutes</string>
+			<string>%d хвилини</string>
 			<key>many</key>
-			<string>%d minutes</string>
+			<string>%d хвилин</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d хвилина</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d хвилини</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -53,13 +33,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Selected</string>
+			<string>%d вибрано</string>
 			<key>many</key>
-			<string>%d Selected</string>
+			<string>%d вибрано</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d вибрано</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d вибрано</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -73,13 +53,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d attachments</string>
+			<string>%d вкладення</string>
 			<key>many</key>
-			<string>%d attachments</string>
+			<string>%d вкладень</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d вкладення</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d вкладення</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -178,8 +158,6 @@
 			<string>%d день</string>
 			<key>other</key>
 			<string>%d днів</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -242,11 +220,29 @@
 			<string>%d година</string>
 			<key>other</key>
 			<string>%d годин</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d учасники</string>
+			<key>many</key>
+			<string>%d учасників</string>
+			<key>one</key>
+			<string>%d учасник</string>
+			<key>other</key>
+			<string>%d учасника</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -339,13 +335,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d seconds</string>
+			<string>%d секунди</string>
 			<key>many</key>
-			<string>%d seconds</string>
+			<string>%d секунд</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d секунда</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d секунди</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -503,13 +499,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Ці %d повідомлення будуть переміщені до чернеток, а їхні заплановані дії вилучені.</string>
+			<string>Ці %d повідомлення будуть переміщені до чернеток, а їхні заплановані дії — вилучені.</string>
 			<key>many</key>
-			<string>Ці %d повідомлень будуть переміщені до чернеток, а їхні заплановані дії вилучені.</string>
+			<string>Ці %d повідомлень будуть переміщені до чернеток, а їхні заплановані дії — вилучені.</string>
 			<key>one</key>
-			<string>Це %d повідомлення буде переміщено до чернеток, а його заплановану дію вилучено.</string>
+			<string>Це %d повідомлення буде переміщено до чернеток, а його заплановану дію — вилучено.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Ці %d повідомлення будуть переміщені до чернеток, а їхні заплановані дії — вилучені.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

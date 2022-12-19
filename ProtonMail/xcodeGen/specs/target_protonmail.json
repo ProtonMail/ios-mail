@@ -16,6 +16,7 @@
             "ProtonMail/Extension/ProtonCore/APP_share",
             "ProtonMail/Extension/ProtonCore/APP",
             "ProtonMail/3rd/APP_share",
+            "ProtonMail/Models/APP",
             "ProtonMail/Models/APP_share_push",
             "ProtonMail/Models/APIs/APP_share",
             "ProtonMail/Models/APIs/APP",
@@ -78,14 +79,6 @@
             {
                "name": "SwiftLint",
                "path": "xcodeGen/swiftlint.sh"
-            },
-            {
-               "name": "Sentry Upload",
-               "path": "xcodeGen/sentry_upload.sh",
-               "inputFiles": [
-                  "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"
-               ],
-               "runOnlyWhenInstalling": true
             }
          ],
          "configFiles": {

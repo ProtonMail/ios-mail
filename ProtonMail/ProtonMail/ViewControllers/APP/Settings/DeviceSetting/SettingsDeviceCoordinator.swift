@@ -33,25 +33,27 @@ class SettingsDeviceCoordinator {
         case darkMode = "settings_dark_mode"
     }
 
+    private let usersManager: UsersManager
+    private let userManager: UserManager
     private let services: ServiceFactory
 
     private weak var navigationController: UINavigationController?
 
-    init(navigationController: UINavigationController?, services: ServiceFactory) {
+    init(navigationController: UINavigationController?,
+         user: UserManager,
+         usersManager: UsersManager,
+         services: ServiceFactory) {
         self.navigationController = navigationController
+        self.userManager = user
+        self.usersManager = usersManager
         self.services = services
     }
 
     func start() {
-        let usersManager = services.get(by: UsersManager.self)
-        guard let user = usersManager.firstUser else {
-            return
-        }
-
-        let viewModel = SettingsDeviceViewModelImpl(user: user,
-                                             users: usersManager,
-                                             dohSetting: DoHMail.default,
-                                             biometricStatus: UIDevice.current)
+        let viewModel = SettingsDeviceViewModel(user: userManager,
+                                                users: usersManager,
+                                                dohSetting: DoHMail.default,
+                                                biometricStatus: UIDevice.current)
 
         let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
         navigationController?.pushViewController(viewController, animated: false)
@@ -109,13 +111,12 @@ class SettingsDeviceCoordinator {
     }
 
     private func openGesture() {
-        let usersManager = services.get(by: UsersManager.self)
         let apiServices = usersManager.users.map(\.apiService)
-        guard let user = usersManager.firstUser, !apiServices.isEmpty else {
+        guard !apiServices.isEmpty else {
             return
         }
         let coordinator = SettingsGesturesCoordinator(navigationController: self.navigationController,
-                                                      userInfo: user.userInfo,
+                                                      userInfo: userManager.userInfo,
                                                       apiServices: apiServices)
         coordinator.start()
     }
@@ -123,6 +124,19 @@ class SettingsDeviceCoordinator {
     private func openDarkMode() {
         let viewModel = DarkModeSettingViewModel(darkModeCache: userCachedStatus)
         let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func openToolbarCustomizationView() {
+        let viewModel = ToolbarSettingViewModel(
+            viewMode: userManager.getCurrentViewMode(),
+            infoBubbleViewStatusProvider: userCachedStatus,
+            toolbarActionProvider: userManager,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(
+                dependencies: .init(user: userManager)
+            )
+        )
+        let viewController = ToolbarSettingViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

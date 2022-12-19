@@ -21,8 +21,11 @@ import ProtonCore_TestingToolkit
 
 final class MockFetchAttachment: NewUseCase<AttachmentFile, FetchAttachment.Params> {
 
+    var result: Result<AttachmentFile, Error>!
+
     @FuncStub(MockFetchAttachment.executionBlock) var executionBlock
     override func executionBlock(params: FetchAttachment.Params, callback: @escaping Callback) {
         executionBlock(params, callback)
+        callback(result)
     }
 }

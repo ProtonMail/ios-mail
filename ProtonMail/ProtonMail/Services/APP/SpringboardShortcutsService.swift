@@ -52,7 +52,7 @@ class SpringboardShortcutsService: NSObject, Service {
             case .search:
                 return LocalString._springboard_shortcuts_search
             case .favorites:
-                return LocalString._springboard_shortcuts_starred
+                return LocalString._menu_starred_title
             case .compose:
                 return LocalString._springboard_shortcuts_composer
             }

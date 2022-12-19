@@ -99,6 +99,7 @@ final class SignInCoordinator {
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void
     private var loginData: LoginData?
+    private var savingResult: SignInManager.LoginDataSavingResult?
 
     static func loginFlowForFirstAccount(startingPoint: WindowsCoordinator.Destination.SignInDestination,
                                          environment: SignInCoordinatorEnvironment,
@@ -241,6 +242,8 @@ final class SignInCoordinator {
         case .signupFinished:
             if let loginData = loginData {
                 finalizeLoginSignInProcess(loginData)
+            } else if let savingResult = savingResult {
+                handle(savingResult: savingResult)
             }
             login = nil
         }
@@ -248,6 +251,11 @@ final class SignInCoordinator {
 
     private func saveLoginData(loginData: LoginData) {
         let savingResult = environment.saveLoginData(loginData)
+        self.savingResult = savingResult
+        handle(savingResult: savingResult)
+    }
+
+    private func handle(savingResult: SignInManager.LoginDataSavingResult) {
         switch savingResult {
         case .success:
             break

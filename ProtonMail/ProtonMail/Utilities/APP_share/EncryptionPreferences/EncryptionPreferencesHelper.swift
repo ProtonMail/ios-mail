@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
 import Foundation
+import GoLibs
 import ProtonCore_DataModel
 
 // swiftlint:disable type_body_length

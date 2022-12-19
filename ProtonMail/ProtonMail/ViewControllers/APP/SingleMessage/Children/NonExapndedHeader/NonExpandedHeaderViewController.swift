@@ -29,7 +29,6 @@ class NonExpandedHeaderViewController: UIViewController {
     private let viewModel: NonExpandedHeaderViewModel
     private let tagsPresenter = TagsPresenter()
     private var showDetailsAction: (() -> Void)?
-    var contactTapped: ((MessageHeaderContactContext) -> Void)?
 
     init(viewModel: NonExpandedHeaderViewModel) {
         self.viewModel = viewModel
@@ -66,10 +65,6 @@ class NonExpandedHeaderViewController: UIViewController {
                                                 preferredFont: .footnote,
                                                 textColor: ColorProvider.InteractionNorm,
                                                 lineBreakMode: .byTruncatingMiddle)
-        customView.senderAddressLabel.tap = { [weak self] in
-            guard let sender = self?.viewModel.infoProvider?.checkedSenderContact else { return }
-            self?.contactTapped(sheetType: .sender, contact: sender)
-        }
         customView.timeLabel.set(text: viewModel.infoProvider?.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
@@ -121,11 +116,6 @@ class NonExpandedHeaderViewController: UIViewController {
         viewModel.reloadView = { [weak self] in
             self?.setUpView()
         }
-    }
-
-    private func contactTapped(sheetType: MessageDetailsContactActionSheetType, contact: ContactVO) {
-        let context = MessageHeaderContactContext(type: sheetType, contact: contact)
-        contactTapped?(context)
     }
 
     required init?(coder: NSCoder) {

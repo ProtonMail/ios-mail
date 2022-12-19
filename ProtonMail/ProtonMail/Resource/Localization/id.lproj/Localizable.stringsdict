@@ -2,20 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -27,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d menit</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -41,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d Terpilih</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -55,7 +41,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d lampiran</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -124,8 +110,6 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d hari</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -170,11 +154,23 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d jam</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d anggota</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -243,7 +239,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d detik</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -359,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>%d pesan berikut akan dipindah ke Draf dan jadwal pengiriman yang terhubung dengannya akan dihapus.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

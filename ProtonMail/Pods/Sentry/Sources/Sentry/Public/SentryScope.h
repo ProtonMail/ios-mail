@@ -6,6 +6,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * The scope holds useful information that should be sent along with the event. For instance tags or
+ * breadcrumbs are stored on the scope.
+ *
+ * For more information see:
+ * https://docs.sentry.io/platforms/apple/enriching-events/scopes/#whats-a-scope-whats-a-hub
+ */
 NS_SWIFT_NAME(Scope)
 @interface SentryScope : NSObject <SentrySerializable>
 

@@ -42,7 +42,24 @@ extension UserInfo {
         }
     }
 
+    static var isToolbarCustomizationEnable: Bool {
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        }
+        if ProcessInfo.processInfo.arguments.contains(
+            BackendConfiguration.Arguments.disableToolbarSpotlight
+        ) {
+            return false
+        }
+        return false
+    }
+
     static var isImageProxyAvailable: Bool {
         true
+    }
+
+    /// Swipe to show previous / next conversation or messages
+    static var isConversationSwipeEnabled: Bool {
+        false
     }
 }

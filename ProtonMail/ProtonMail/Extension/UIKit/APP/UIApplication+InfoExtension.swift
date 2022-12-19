@@ -50,7 +50,12 @@ extension UIApplication {
     }
 
     static var arePaymentsEnabled: Bool {
-        let isProduction = BackendConfiguration.shared.isProduction
-        return !(isTestflightBeta && isProduction)
+        #if DEBUG_ENTERPRISE
+            // Enterprise build's appStoreReceiptURL contains sandboxReceipt
+            return true
+        #else
+            let isProduction = BackendConfiguration.shared.isProduction
+            return !(isTestflightBeta && isProduction)
+        #endif
     }
 }

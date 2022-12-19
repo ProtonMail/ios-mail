@@ -32,15 +32,17 @@ extern "C" {
 #endif
 
 #include "SentryCrashThread.h"
+#include <mach/mach.h>
 #include <stdbool.h>
 
 /** Suspend the runtime environment.
  */
-void sentrycrashmc_suspendEnvironment(void);
+void sentrycrashmc_suspendEnvironment(
+    thread_act_array_t *suspendedThreads, mach_msg_type_number_t *numSuspendedThreads);
 
 /** Resume the runtime environment.
  */
-void sentrycrashmc_resumeEnvironment(void);
+void sentrycrashmc_resumeEnvironment(thread_act_array_t threads, mach_msg_type_number_t numThreads);
 
 /** Create a new machine context on the stack.
  * This macro creates a storage object on the stack, as well as a pointer of

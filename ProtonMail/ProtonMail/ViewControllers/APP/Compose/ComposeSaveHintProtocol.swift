@@ -54,8 +54,9 @@ extension ComposeSaveHintProtocol {
             style: PMBannerNewStyle.info,
             bannerHandler: PMBanner.dismiss
         )
-        banner.addButton(text: LocalString._general_discard) { _ in
+        banner.addButton(text: LocalString._general_discard) { [weak self] _ in
             messageService.delete(messages: messages.map(MessageEntity.init), label: LabelLocation.draft.labelID)
+            self?.showDiscardedBanner()
             banner.dismiss(animated: false)
         }
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
@@ -67,6 +68,15 @@ extension ComposeSaveHintProtocol {
             // the display data and data source not compatible
             listVC.tableView.reloadData()
         }
+    }
+
+    func showDiscardedBanner() {
+        let banner = PMBanner(
+            message: LocalString._general_discarded,
+            style: PMBannerNewStyle.info,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 
     func showMessageSendingHintBanner(messageID: String,

@@ -28,7 +28,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
 
     private var isFetching: Bool = false
 
-    private let refreshHandler: ((Set<String>) -> Void)?
+    private let refreshHandler: ((Set<String>) -> Void)
     private var groupCountInformation: [(ID: String, name: String, color: String, count: Int)]
     private var selectedGroupIDs: Set<String>
     
@@ -47,7 +47,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     init(user: UserManager,
          groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
          selectedGroupIDs: Set<String>? = nil,
-         refreshHandler: ((Set<String>) -> Void)? = nil) {
+         refreshHandler: (@escaping (Set<String>) -> Void)) {
         self.user = user
         self.contactGroupService = user.contactGroupService
         self.eventsService = user.eventsService
@@ -81,7 +81,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
      Call this function when we are in "ContactSelectGroups" for returning the selected conatct groups
      */
     func save() {
-        self.refreshHandler?(selectedGroupIDs)
+        self.refreshHandler(selectedGroupIDs)
     }
 
     /**

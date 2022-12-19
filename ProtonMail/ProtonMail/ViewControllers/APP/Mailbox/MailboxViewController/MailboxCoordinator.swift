@@ -22,6 +22,7 @@
 
 import ProtonMailAnalytics
 import SideMenuSwift
+import class ProtonCore_DataModel.UserInfo
 
 class MailboxCoordinator: CoordinatorDismissalObserver {
     typealias VC = MailboxViewController
@@ -38,6 +39,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
+    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -45,6 +47,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
          viewModel: MailboxViewModel,
          services: ServiceFactory,
          contextProvider: CoreDataContextProviderProtocol,
+         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
          internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
@@ -58,6 +61,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         self.contextProvider = contextProvider
         self.internetStatusProvider = internetStatusProvider
         self.getApplicationState = getApplicationState
+        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
     }
 
     enum Destination: String {
@@ -121,11 +125,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .details:
-            if viewModel.locationViewMode == .conversation {
-                presentConversation()
-            } else {
-                presentSingleMessage()
-            }
+            handleDetailDirectFromMailBox()
         case .newFolder:
             self.presentCreateFolder(type: .folder)
         case .newLabel:
@@ -154,32 +154,13 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         }
     }
 
-    // swiftlint:disable:next function_body_length
     func follow(_ deeplink: DeepLink) {
         guard let path = deeplink.popFirst, let dest = Destination(rawValue: path.name) else { return }
 
         switch dest {
         case .details:
-            guard let messageId = path.value,
-                  let message = viewModel.user.messageService.fetchMessages(
-                      withIDs: [messageId],
-                      in: contextProvider.mainContext
-                  ).first,
-                  let navigationController = viewController?.navigationController else { return }
-
-            let messageEntity = MessageEntity(message)
-            let breadcrumbMsg = """
-                follow deeplink (receivedMsgId: \(messageId),\
-                msgId: \(messageEntity.messageID.rawValue),\
-                convId: \(messageEntity.conversationID.rawValue)
-                """
-            Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
-
-            followToDetails(message: messageEntity,
-                            navigationController: navigationController,
-                            deeplink: deeplink)
-
-            self.viewModel.resetNotificationMessage()
+            handleDetailDirectFromNotification(node: path)
+            viewModel.resetNotificationMessage()
         case .composeShow where path.value != nil:
             if let messageID = path.value,
                let nav = self.navigation,
@@ -246,43 +227,6 @@ extension MailboxCoordinator {
         viewController?.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
     }
 
-    private func presentSingleMessage() {
-        guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
-              let message = self.viewModel.item(index: indexPathForSelectedRow),
-              let navigationController = viewController?.navigationController
-        else { return }
-        let coordinator = SingleMessageCoordinator(
-            navigationController: navigationController,
-            labelId: viewModel.labelID,
-            message: message,
-            user: self.viewModel.user
-        )
-        coordinator.goToDraft = { [weak self] msgID in
-            self?.editScheduleMsg(messageID: msgID)
-        }
-        singleMessageCoordinator = coordinator
-        coordinator.start()
-    }
-
-    private func presentConversation() {
-        guard let navigationController = viewController?.navigationController,
-              let selectedRowIndexPath = viewController?.tableView.indexPathForSelectedRow,
-              let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath)
-        else { return }
-        let coordinator = ConversationCoordinator(
-            labelId: viewModel.labelID,
-            navigationController: navigationController,
-            conversation: conversation,
-            user: self.viewModel.user,
-            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self)
-        )
-        conversationCoordinator = coordinator
-        coordinator.goToDraft = { [weak self] msgID in
-            self?.editScheduleMsg(messageID: msgID)
-        }
-        coordinator.start()
-    }
-
     private func presentOnboardingView() {
         let viewController = OnboardViewController()
         viewController.modalPresentationStyle = .fullScreen
@@ -331,36 +275,6 @@ extension MailboxCoordinator {
         self.viewController?.present(next, animated: true)
     }
 
-    private func followToDetails(message: MessageEntity,
-                                 navigationController: UINavigationController,
-                                 deeplink: DeepLink?) {
-        switch self.viewModel.locationViewMode {
-        case .conversation:
-            let targetID = message.messageID
-            fetchConversationFromBEIfNeeded(conversationID: message.conversationID) { [weak self] in
-                guard let self = self else { return }
-                self.showConversationView(conversationID: message.conversationID,
-                                          contextProvider: self.contextProvider,
-                                          navigationController: navigationController,
-                                          targetID: targetID)
-            }
-        case .singleMessage:
-            let coordinator = SingleMessageCoordinator(
-                navigationController: navigationController,
-                labelId: viewModel.labelID,
-                message: message,
-                user: self.viewModel.user
-            )
-            coordinator.goToDraft = { [weak self] msgID in
-                self?.editScheduleMsg(messageID: msgID)
-            }
-            coordinator.start()
-            if let link = deeplink {
-                coordinator.follow(link)
-            }
-        }
-    }
-
     func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
         guard internetStatusProvider.currentStatus != .notConnected else {
             goToDetailPage()
@@ -380,28 +294,6 @@ extension MailboxCoordinator {
             }
 
             goToDetailPage()
-        }
-    }
-
-    private func showConversationView(conversationID: ConversationID,
-                                      contextProvider: CoreDataContextProviderProtocol,
-                                      navigationController: UINavigationController,
-                                      targetID: MessageID?) {
-        if let conversation = Conversation
-            .conversationForConversationID(conversationID.rawValue,
-                                           inManagedObjectContext: contextProvider.mainContext) {
-            let entity = ConversationEntity(conversation)
-            let coordinator = ConversationCoordinator(
-                labelId: self.viewModel.labelID,
-                navigationController: navigationController,
-                conversation: entity,
-                user: self.viewModel.user,
-                internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
-                targetID: targetID)
-            coordinator.goToDraft = { [weak self] msgID in
-                self?.editScheduleMsg(messageID: msgID)
-            }
-            coordinator.start(openFromNotification: true)
         }
     }
 
@@ -430,11 +322,224 @@ extension MailboxCoordinator {
         self.viewController?.present(nav, animated: true, completion: nil)
     }
 
+    func presentToolbarCustomizationView(
+        allActions: [MessageViewActionSheetAction],
+        currentActions: [MessageViewActionSheetAction]
+    ) {
+        let view = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
+            viewModel: .init(
+                currentActions: currentActions,
+                allActions: allActions,
+                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
+                defaultActions: MessageViewActionSheetAction.defaultActions,
+                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            )
+        )
+        view.customizationIsDone = { [weak self] result in
+            self?.viewController?.showProgressHud()
+            self?.viewModel.updateToolbarActions(
+                actions: result,
+                completion: { error in
+                    if let error = error {
+                        error.alertErrorToast()
+                    }
+                    self?.viewController?.refreshActionBarItems()
+                    self?.viewController?.hideProgressHud()
+                })
+        }
+        let nav = UINavigationController(rootViewController: view)
+        viewController?.navigationController?.present(nav, animated: true)
+    }
+
     private func editScheduleMsg(messageID: MessageID) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return
         }
         navigateToComposer(existingMessage: msg, isEditingScheduleMsg: true)
+    }
+}
+
+extension MailboxCoordinator {
+    private func handleDetailDirectFromMailBox() {
+        switch viewModel.locationViewMode {
+        case .singleMessage:
+            messageToShow(isNotification: false, node: nil) { [weak self] message in
+                guard let message = message else { return }
+                if UserInfo.isConversationSwipeEnabled {
+                    self?.presentPageViewsFor(message: message)
+                } else {
+                    self?.present(message: message)
+                }
+            }
+        case .conversation:
+            conversationToShow(isNotification: false, message: nil) { [weak self] conversation in
+                guard let conversation = conversation else { return }
+                if UserInfo.isConversationSwipeEnabled {
+                    self?.presentPageViewsFor(conversation: conversation, targetID: nil)
+                } else {
+                    self?.present(conversation: conversation, targetID: nil)
+                }
+            }
+        }
+    }
+
+    private func handleDetailDirectFromNotification(node: DeepLink.Node) {
+        messageToShow(isNotification: true, node: node) { [weak self] message in
+            guard let self = self,
+                  let message = message else { return }
+            let messageID = message.messageID
+            switch self.viewModel.locationViewMode {
+            case .singleMessage:
+                if UserInfo.isConversationSwipeEnabled {
+                    self.presentPageViewsFor(message: message)
+                } else {
+                    self.present(message: message)
+                }
+            case .conversation:
+                self.conversationToShow(isNotification: true, message: message) { [weak self] conversation in
+                    guard let conversation = conversation else { return }
+                    if UserInfo.isConversationSwipeEnabled {
+                        self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
+                    } else {
+                        self?.present(conversation: conversation, targetID: messageID)
+                    }
+                }
+            }
+        }
+    }
+
+    private func conversationToShow(
+        isNotification: Bool,
+        message: MessageEntity?,
+        completion: @escaping (ConversationEntity?) -> Void
+    ) {
+        guard isNotification else {
+            // Click from mailbox list
+            guard let indexPathForSelectedRow = viewController?.tableView.indexPathForSelectedRow,
+                  let conversation = viewModel.itemOfConversation(index: indexPathForSelectedRow) else {
+                completion(nil)
+                return
+            }
+            completion(conversation)
+            return
+        }
+
+        // From notification
+        guard let conversationID = message?.conversationID else {
+            completion(nil)
+            return
+        }
+        fetchConversationFromBEIfNeeded(conversationID: conversationID) { [weak self] in
+            guard
+                let context = self?.contextProvider.mainContext,
+                let conversation = Conversation
+                    .conversationForConversationID(
+                        conversationID.rawValue,
+                        inManagedObjectContext: context
+                    )
+            else {
+                completion(nil)
+                return
+            }
+            completion(ConversationEntity(conversation))
+        }
+    }
+
+    private func messageToShow(
+        isNotification: Bool,
+        node: DeepLink.Node?,
+        completion: @escaping (MessageEntity?) -> Void
+    ) {
+        guard isNotification else {
+            // Click from mailbox list
+            guard let indexPathForSelectedRow = viewController?.tableView.indexPathForSelectedRow,
+                  let message = self.viewModel.item(index: indexPathForSelectedRow) else {
+                completion(nil)
+                return
+            }
+            completion(message)
+            return
+        }
+
+        // From notification
+        guard
+            let messageID = node?.value,
+            let message = viewModel.user.messageService.fetchMessages(
+                withIDs: [messageID],
+                in: contextProvider.mainContext
+            ).first
+        else {
+            completion(nil)
+            return
+        }
+        completion(MessageEntity(message))
+    }
+
+    private func present(message: MessageEntity) {
+        guard let navigationController = viewController?.navigationController else { return }
+        let coordinator = SingleMessageCoordinator(
+            navigationController: navigationController,
+            labelId: viewModel.labelID,
+            message: message,
+            user: viewModel.user,
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+        )
+        coordinator.goToDraft = { [weak self] msgID in
+            self?.editScheduleMsg(messageID: msgID)
+        }
+        singleMessageCoordinator = coordinator
+        coordinator.start()
+    }
+
+    private func present(conversation: ConversationEntity, targetID: MessageID?) {
+        guard let navigationController = viewController?.navigationController else { return }
+        let coordinator = ConversationCoordinator(
+            labelId: viewModel.labelID,
+            navigationController: navigationController,
+            conversation: conversation,
+            user: viewModel.user,
+            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
+            targetID: targetID
+        )
+        conversationCoordinator = coordinator
+        coordinator.goToDraft = { [weak self] msgID in
+            self?.editScheduleMsg(messageID: msgID)
+        }
+        coordinator.start()
+    }
+
+    private func presentPageViewsFor(message: MessageEntity) {
+        guard let navigationController = viewController?.navigationController else { return }
+        let pageVM = MessagePagesViewModel(
+            initialID: message.messageID,
+            isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
+            labelID: viewModel.labelID,
+            user: viewModel.user,
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
+            goToDraft: { [weak self] msgID in
+                self?.editScheduleMsg(messageID: msgID)
+            }
+        )
+        let page = PagesViewController(viewModel: pageVM, services: services)
+        navigationController.show(page, sender: nil)
+    }
+
+    private func presentPageViewsFor(conversation: ConversationEntity, targetID: MessageID?) {
+        guard let navigationController = viewController?.navigationController else { return }
+        let pageVM = ConversationPagesViewModel(
+            initialID: conversation.conversationID,
+            isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
+            labelID: viewModel.labelID,
+            user: viewModel.user,
+            targetMessageID: targetID,
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
+            goToDraft: { [weak self] msgID in
+                self?.editScheduleMsg(messageID: msgID)
+            }
+        )
+        let page = PagesViewController(viewModel: pageVM, services: services)
+        navigationController.show(page, sender: nil)
     }
 }

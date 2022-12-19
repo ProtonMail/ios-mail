@@ -20,20 +20,10 @@ import class ProtonCore_DataModel.Key
 import typealias ProtonCore_Crypto.ArmoredKey
 import typealias ProtonCore_Crypto.Passphrase
 
-struct UserKeys {
+struct UserKeys: Equatable {
     let privateKeys: [ArmoredKey]
     let addressesPrivateKeys: [Key]
     let mailboxPassphrase: Passphrase
-}
-
-extension UserDataSource {
-    func toUserKeys() -> UserKeys {
-        UserKeys(
-            privateKeys: userPrivateKeys,
-            addressesPrivateKeys: addressKeys,
-            mailboxPassphrase: mailboxPassword
-        )
-    }
 }
 
 extension UserManager {

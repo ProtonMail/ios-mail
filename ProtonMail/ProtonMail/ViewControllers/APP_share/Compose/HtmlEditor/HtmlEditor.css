@@ -162,7 +162,7 @@ pre {
 
 * {
     caret-color: auto !important;
-    
+    unicode-bidi: plaintext;
     /* debug only */
 /*    margin: 0 !important;*/
 /*    position: static !important;*/

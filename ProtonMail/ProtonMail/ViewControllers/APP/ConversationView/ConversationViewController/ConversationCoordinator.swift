@@ -17,6 +17,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let user: UserManager
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
+    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID) -> Void)?
 
@@ -25,6 +26,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
          conversation: ConversationEntity,
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
+         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
          targetID: MessageID? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
@@ -32,9 +34,16 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.user = user
         self.targetID = targetID
         self.internetStatusProvider = internetStatusProvider
+        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
     }
 
     func start(openFromNotification: Bool = false) {
+        let viewController = makeConversationVC()
+        self.viewController = viewController
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func makeConversationVC() -> ConversationViewController {
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
                 queueManager: sharedServices.get(by: QueueManager.self),
@@ -57,15 +66,21 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             conversationNoticeViewStatusProvider: userCachedStatus,
             conversationStateProvider: user.conversationStateService,
             labelProvider: user.labelService,
+            userIntroductionProgressProvider: userCachedStatus,
+            targetID: targetID,
+            toolbarActionProvider: user,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(
+                dependencies: .init(user: user)
+            ),
+            toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             goToDraft: { [weak self] msgID in
                 self?.navigationController.popViewController(animated: false)
                 self?.goToDraft?(msgID)
             },
-            targetID: targetID,
             dependencies: dependencies)
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        return viewController
     }
 
     func handle(navigationAction: ConversationNavigationAction) {
@@ -100,6 +115,10 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             presentWebView(url: url)
         case .inAppSafari(let url):
             presentInAppSafari(url: url)
+        case let .toolbarCustomization(currentActions: currentActions,
+                                       allActions: allActions):
+            presentToolbarCustomization(allActions: allActions,
+                                        currentActions: currentActions)
         }
     }
 
@@ -205,5 +224,35 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private func presentInAppSafari(url: URL) {
         let safari = SFSafariViewController(url: url)
         self.viewController?.present(safari, animated: true, completion: nil)
+    }
+
+    private func presentToolbarCustomization(
+        allActions: [MessageViewActionSheetAction],
+        currentActions: [MessageViewActionSheetAction]
+    ) {
+        let view = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
+            viewModel: .init(
+                currentActions: currentActions,
+                allActions: allActions,
+                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
+                defaultActions: MessageViewActionSheetAction.defaultActions,
+                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            )
+        )
+        view.customizationIsDone = { [weak self] result in
+            self?.viewController?.showProgressHud()
+            self?.viewController?.viewModel.updateToolbarActions(
+                actions: result,
+                completion: { error in
+                    if let error = error {
+                        error.alertErrorToast()
+                    }
+                    self?.viewController?.setUpToolBarIfNeeded()
+                    self?.viewController?.hideProgressHud()
+                }
+            )
+        }
+        let nav = UINavigationController(rootViewController: view)
+        viewController?.navigationController?.present(nav, animated: true)
     }
 }

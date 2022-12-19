@@ -42,10 +42,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         let contextProviderMock = MockCoreDataContextProvider()
         testContext = contextProviderMock.mainContext
         mockFetchAttachment = MockFetchAttachment()
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
@@ -62,20 +59,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         testContext = nil
         coreDataContextProvider = nil
         context = nil
-    }
-
-    func testInit() {
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: Int32(100),
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
-        XCTAssertEqual(sut.expirationOffset, Int32(100))
-
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
-        XCTAssertEqual(sut.expirationOffset, Int32(0))
     }
 
     func testUpdateBodyData_bodySessionAndBodyAlgorithm() {
@@ -135,10 +118,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testContains() throws {
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         XCTAssertTrue(sut.addressSendPreferences.isEmpty)
         XCTAssertFalse(sut.contains(type: .pgpMIME))
         let testPreferences = SendPreferences(encrypt: true,
@@ -366,12 +346,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_EOAddress() throws {
-        let testEoOffset: Int32 = 100
         let testEOPassword = Passphrase(value: "EO PWD")
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: testEoOffset,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         sut.set(password: testEOPassword, hint: nil)
 
         let eoPreference = SendPreferences(encrypt: false,
@@ -399,10 +375,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_ClearAddress() throws {
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
 
         let clearPreference = SendPreferences(encrypt: false,
                                               sign: false,

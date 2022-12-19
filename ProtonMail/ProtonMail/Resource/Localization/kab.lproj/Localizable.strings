@@ -881,9 +881,6 @@
 /* menu title */
 "Lock The App" = "Sekkeṛ asnas";
 
-/* comment */
-"Log out" = "Ffeɣ";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Ffeɣ seg %@";
 

@@ -40,7 +40,7 @@ struct LabelEntity: Hashable, Equatable {
     private(set) var notify: Bool
 
     // MARK: Relations
-    private(set) var emailRelations: [EmailEntity]?
+    private(set) var emailRelations: [EmailEntity]
 
     // MARK: Local properties
     private(set) var isSoftDeleted: Bool

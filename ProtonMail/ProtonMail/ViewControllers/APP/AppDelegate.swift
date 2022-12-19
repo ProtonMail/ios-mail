@@ -304,6 +304,10 @@ extension AppDelegate: UIApplicationDelegate {
         BackgroundTimer().willEnterBackgroundOrTerminate()
     }
 
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        Crypto.freeGolangMem()
+    }
+
     func applicationWillEnterForeground(_ application: UIApplication) {
         configurePushService(launchOptions: nil)
         self.currentState = .active
@@ -460,18 +464,23 @@ extension AppDelegate {
 extension AppDelegate {
 
     private func configureAnalytics() {
-        #if DEBUG
-            Analytics.shared.setup(isInDebug: true, environment: .production)
-        #else
-            #if Enterprise
-            Analytics.shared.setup(isInDebug: false, environment: .enterprise)
-            #else
-            Analytics.shared.setup(isInDebug: false, environment: .production)
-
-            // This instruction is to disable PMLogs
-            PMLog.logsDirectory = nil
-            #endif
-        #endif
+#if Enterprise
+    #if DEBUG
+        Analytics.shared.setup(isInDebug: true, environment: .enterprise)
+    #else
+        Analytics.shared.setup(isInDebug: false, environment: .enterprise)
+        // This instruction is to disable PMLogs
+        PMLog.logsDirectory = nil
+    #endif
+#else
+    #if DEBUG
+        Analytics.shared.setup(isInDebug: true, environment: .production)
+    #else
+        Analytics.shared.setup(isInDebug: false, environment: .production)
+        // This instruction is to disable PMLogs
+        PMLog.logsDirectory = nil
+    #endif
+#endif
     }
 
     private func configureCrypto() {

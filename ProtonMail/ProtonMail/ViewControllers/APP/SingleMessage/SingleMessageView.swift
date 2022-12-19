@@ -94,6 +94,12 @@ class SingleMessageView: UIView {
         nil
     }
 
+    func toolbarLastButtonCGRect() -> CGRect? {
+        guard let rect = toolBar.lastButtonCGRect() else {
+            return nil
+        }
+        return toolBar.convert(rect, to: self)
+    }
 }
 
 private enum SubviewsFactory {
@@ -113,7 +119,7 @@ private enum SubviewsFactory {
 
     static var bigSeparatorView: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = ColorProvider.BackgroundSecondary
+        view.backgroundColor = ColorProvider.BackgroundDeep
         return view
     }
 

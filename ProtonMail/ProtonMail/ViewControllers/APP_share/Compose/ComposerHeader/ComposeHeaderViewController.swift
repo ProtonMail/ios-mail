@@ -140,7 +140,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.height = self.view.heightAnchor.constraint(equalToConstant: 184)
         self.height.priority = .init(999.0)
         self.height.isActive = true
-        
+
         fromLabel.set(text: "\(LocalString._composer_from_label): ",
                       preferredFont: .subheadline,
                       textColor: ColorProvider.TextWeak)
@@ -170,7 +170,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         ccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         bccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         toContactPicker.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         setUpAccessibility()
         generateAccessibilityIdentifiers()
         if let showCcBcc = self.datasource?.ccBccIsShownInitially(),
@@ -267,11 +267,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
     internal func configureSubject() {
         configSubjectLeftView()
-        self.subject.autocapitalizationType = .sentences
-        self.subject.delegate = self
-        self.subject.accessibilityLabel = LocalString._composer_subject_placeholder
-        self.subject.tintColor = ColorProvider.BrandNorm
-        subject.adjustsFontSizeToFitWidth = false
+        subject.autocapitalizationType = .sentences
+        subject.delegate = self
+        subject.accessibilityLabel = LocalString._composer_subject_placeholder
+        subject.tintColor = ColorProvider.BrandNorm
+        subject.textAlignment = .natural
         subject.set(text: nil, preferredFont: .subheadline)
 
         self.view.removeConstraint(self.subjectTopToBccContactPicker)
@@ -426,9 +426,9 @@ extension ComposeHeaderViewController: ContactPickerDataSource {
 
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         if contactPickerView == toContactPicker {
-            contactPickerView.prompt = "\(LocalString._composer_to_label):"
+            contactPickerView.prompt = "\(LocalString._general_to_label):"
         } else if contactPickerView == ccContactPicker {
-            contactPickerView.prompt = "\(LocalString._composer_cc_label):"
+            contactPickerView.prompt = "\(LocalString._general_cc_label):"
         } else if contactPickerView == bccContactPicker {
             contactPickerView.prompt = "\(LocalString._composer_bcc_label):"
         }

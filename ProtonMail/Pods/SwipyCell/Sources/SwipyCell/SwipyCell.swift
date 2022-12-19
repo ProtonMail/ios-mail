@@ -36,6 +36,7 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
     var damping: CGFloat!
     var velocity: CGFloat!
     var animationDuration: TimeInterval!
+    var shouldUseSpringAnimationWhileSwipingToOrigin: Bool!
     
     var contentScreenshotView: UIImageView?
     var colorIndicatorView: UIView?
@@ -88,6 +89,7 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
         damping = SwipyCellConstants.damping
         velocity = SwipyCellConstants.velocity
         animationDuration = SwipyCellConstants.animationDuration
+        shouldUseSpringAnimationWhileSwipingToOrigin = SwipyCellConfig.shared.shouldUseSpringAnimationWhileSwipingToOrigin
         
         activeView = nil
         
@@ -471,23 +473,39 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
     }
     
     public func swipeToOrigin(_ block: @escaping () -> Void) {
-        UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: damping, initialSpringVelocity: velocity, options: [], animations: {
+        let animations: () -> Void = {
             var frame = self.contentScreenshotView?.frame ?? .zero
             frame.origin.x = 0
             self.contentScreenshotView?.frame = frame
-            
+
             self.colorIndicatorView?.backgroundColor = self.defaultColor
-            
+
             self.slidingView?.alpha = 0
             self.slideSwipeView(withPercentage: 0, view: self.activeView, isDragging: false)
-        }, completion: { finished in
+        }
+
+        let completion: (Bool) -> Void = { isFinished in
             self.isExited = false
             self.uninstallSwipeView()
-            
-            if finished {
+
+            if isFinished {
                 block()
             }
-        })
+        }
+
+        if shouldUseSpringAnimationWhileSwipingToOrigin {
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0,
+                           usingSpringWithDamping: damping,
+                           initialSpringVelocity: velocity,
+                           animations: animations,
+                           completion: completion)
+        } else {
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0,
+                           animations: animations,
+                           completion: completion)
+        }
     }
     
 // MARK: - View setup

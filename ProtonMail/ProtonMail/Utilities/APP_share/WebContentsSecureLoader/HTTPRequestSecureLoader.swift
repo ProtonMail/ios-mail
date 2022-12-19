@@ -46,7 +46,14 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     private var contents: WebContents?
 
     private static var loopbackScheme: String = "pm-incoming-mail"
+    static let imageCacheScheme = "pm-cache"
     private var loopbacks: [URL: Data] = [:]
+    private var latestRequest: String?
+    private let userKeys: UserKeys
+
+    init(userKeys: UserKeys) {
+        self.userKeys = userKeys
+    }
 
     func load(contents: WebContents, in webView: WKWebView) {
         addSpinnerIfNeeded(to: webView)
@@ -69,27 +76,21 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
         let request = URLRequest(url: url)
         let data = contents.body.data(using: .unicode)
+        latestRequest = urlString
         self.loopbacks[url] = data
 
-        let blockRules = """
-        [{
-            "trigger": {
-                "url-filter": ".*"
-            },
-            "action": {
-                "type": "block"
-            }
-        },
-        {
-            "trigger": {
-                "url-filter": "\(urlString)"
-            },
-            "action": {
-                "type": "ignore-previous-rules"
-            }
-        }
-        ]
-        """
+        let builder = ContentBlockRuleBuilder()
+            .add(
+                rule: ContentBlockRuleBuilder.Rule()
+                    .addTrigger(key: .urlFilter, value: ".*")
+                    .addAction(key: .type, value: .block)
+            )
+            .add(
+                rule: ContentBlockRuleBuilder.Rule()
+                    .addTrigger(key: .urlFilter, value: urlString)
+                    .addAction(key: .type, value: .ignorePreviousRules)
+            )
+        let blockRules = builder.export() ?? ""
         WKContentRuleListStore.default().compileContentRuleList(forIdentifier: "ContentBlockingRules", encodedContentRuleList: blockRules) { contentRuleList, error in
             guard error == nil, let compiledRule = contentRuleList else {
                 assert(error == nil, "Error compiling content blocker rules: \(error!.localizedDescription)")
@@ -130,7 +131,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         var dirty = document.documentElement.outerHTML.toString();
         let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
         let messageHead = protonizer.querySelector('head').innerHTML.trim()
-        var clean0 = DOMPurify.sanitize(dirty);
+        var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
         var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
@@ -174,6 +175,11 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let dict = message.body as? [String: Any] else {
             assert(false, "Unexpected message sent from JS")
+            return
+        }
+
+        guard latestRequest == nil else {
+            // There is a newer request, anything related to old request should be stoped 
             return
         }
 
@@ -238,7 +244,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
     func inject(into config: WKWebViewConfiguration) {
         config.userContentController.add(self, name: "loaded")
+        config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.imageCacheScheme)
         config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.loopbackScheme)
+
     }
 
     private func addSpinnerIfNeeded(to webView: WKWebView) {
@@ -265,6 +273,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
 @available(iOS 11.0, *) extension HTTPRequestSecureLoader: WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+        if isImageRequest(urlSchemeTask: urlSchemeTask) {
+            handleImageRequest(urlSchemeTask: urlSchemeTask)
+            return
+        }
         guard let contents = self.contents else {
             urlSchemeTask.didFinish()
             return
@@ -281,11 +293,64 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         if let url = urlSchemeTask.request.url,
             let found = self.loopbacks[url] {
             urlSchemeTask.didReceive(found)
+            if let target = latestRequest,
+               url.absoluteString.contains(check: target) {
+                latestRequest = nil
+            }
         }
         urlSchemeTask.didFinish()
     }
 
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         assert(false, "webView should not stop urlSchemeTask cuz we're providing response locally")
+    }
+
+    private func isImageRequest(urlSchemeTask: WKURLSchemeTask) -> Bool {
+        guard let url = urlSchemeTask.request.url?.absoluteString else { return false }
+        return url.starts(with: HTTPRequestSecureLoader.imageCacheScheme)
+    }
+
+    private func handleImageRequest(urlSchemeTask: WKURLSchemeTask) {
+        let error = NSError(domain: "cache.proton.ch", code: -999)
+        guard let url = urlSchemeTask.request.url,
+              let id = url.host else {
+            urlSchemeTask.didFailWithError(error)
+            return
+        }
+        guard
+            let keyPacket = contents?.webImages?.embeddedImages.first(where: { $0.id == AttachmentID(id) })?.keyPacket
+        else {
+            urlSchemeTask.didFailWithError(error)
+            return
+        }
+        guard let image = loadImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
+              let data = image.jpegData(compressionQuality: 1),
+              let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/2", headerFields: nil) else {
+            urlSchemeTask.didFailWithError(error)
+            return
+        }
+
+        urlSchemeTask.didReceive(response)
+        urlSchemeTask.didReceive(data)
+        urlSchemeTask.didFinish()
+    }
+
+    private func loadImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> UIImage? {
+        let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
+
+        do {
+            let encoded = try AttachmentDecrypter.decryptAndEncode(
+                fileUrl: path,
+                attachmentKeyPacket: keyPacket,
+                userKeys: userKeys
+            )
+            if let data = Data(base64Encoded: encoded, options: .ignoreUnknownCharacters),
+               let image = UIImage(data: data) {
+                return image
+            }
+            return nil
+        } catch {
+            return nil
+        }
     }
 }

@@ -49,17 +49,17 @@ class ScheduleSendLocationStatusObserverTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 0.5, handler: nil)
-        XCTAssertEqual(result, 1)
+        XCTAssertTrue(result)
     }
 
     func testObserve_closureBeingCalled_whenMessageCountChanged() throws {
         let expectation1 = expectation(description: "Closure is called")
 
         let result = sut.observe { newValue in
-            XCTAssertEqual(newValue, 1)
+            XCTAssertTrue(newValue)
             expectation1.fulfill()
         }
-        XCTAssertEqual(result, 0)
+        XCTAssertFalse(result)
         generateTestDataInCoreData(count: 1)
         waitForExpectations(timeout: 5, handler: nil)
     }

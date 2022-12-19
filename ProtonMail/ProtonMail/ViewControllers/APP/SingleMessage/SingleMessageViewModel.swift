@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 
 class SingleMessageViewModel {
@@ -50,13 +52,22 @@ class SingleMessageViewModel {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         return formatter
     }()
+    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
+    private let toolbarActionProvider: ToolbarActionProvider
+    private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
+    private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
 
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
          childViewModels: SingleMessageChildViewModels,
          internetStatusProvider: InternetConnectionStatusProvider,
+         userIntroductionProgressProvider: UserIntroductionProgressProvider,
+         saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
+         toolbarActionProvider: ToolbarActionProvider,
+         toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
+         dependencies: SingleMessageContentViewModel.Dependencies,
          goToDraft: @escaping (MessageID) -> Void
     ) {
         self.labelId = labelId
@@ -76,8 +87,13 @@ class SingleMessageViewModel {
             internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
             userIntroductionProgressProvider: userCachedStatus,
+            dependencies: dependencies,
             goToDraft: goToDraft
         )
+        self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.toolbarActionProvider = toolbarActionProvider
+        self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
+        self.saveToolbarActionUseCase = saveToolbarActionUseCase
     }
 
     var messageTitle: NSAttributedString {
@@ -105,13 +121,13 @@ class SingleMessageViewModel {
                              apply: !message.isStarred)
     }
 
-    func handleToolBarAction(_ action: MailboxViewModel.ActionTypes) {
+    func handleToolBarAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
-        case .markAsRead:
+        case .markRead:
             messageService.mark(messages: [message], labelID: labelId, unRead: false)
-        case .markAsUnread:
+        case .markUnread:
             messageService.mark(messages: [message], labelID: labelId, unRead: true)
         case .trash:
             messageService.move(messages: [message],
@@ -203,26 +219,29 @@ class SingleMessageViewModel {
         return try? self.writeToTemporaryUrl(body, filename: filename)
     }
 
-    func toolbarActionTypes() -> [MailboxViewModel.ActionTypes] {
-        var types: [MailboxViewModel.ActionTypes] = [
-            .markAsUnread,
-            .trash,
-            .delete,
-            .moveTo,
-            .labelAs,
-            .more
-        ]
-        let originMessageListIsSpamOrTrash = [
-            Message.Location.spam.labelID,
-            Message.Location.trash.labelID
-        ].contains(labelId)
-
-        if message.isTrash || message.isSpam || originMessageListIsSpamOrTrash {
-            types.removeAll(where: { $0 == .trash })
-        } else {
-            types.removeAll(where: { $0 == .delete })
+    func shouldShowToolbarCustomizeSpotlight() -> Bool {
+        guard UserInfo.isToolbarCustomizationEnable else {
+            return false
         }
-        return types
+        if !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .toolbarCustomization) {
+            return true
+        }
+
+        //  If 1 of the logged accounts has a non-standard set of actions, Accounts with
+        //  standard actions will see the feature spotlight once when
+        //  first opening message details.
+        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightStatusProvider
+            .toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
+        if user.hasAtLeastOneNonStandardToolbarAction,
+           user.toolbarActionsIsStandard,
+           !ifCurrentUserAlreadySeenTheSpotlight {
+            return true
+        }
+        return false
+    }
+
+    func setToolbarCustomizeSpotlightViewIsShown() {
+        userIntroductionProgressProvider.userHasSeenSpotlight(for: .toolbarCustomization)
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
@@ -240,6 +259,79 @@ class SingleMessageViewModel {
             return
         }
         displayAlert()
+    }
+}
+
+// MARK: - Toolbar action functions
+extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
+    func toolbarActionTypes() -> [MessageViewActionSheetAction] {
+        let originMessageListIsSpamOrTrash = [
+            Message.Location.spam.labelID,
+            Message.Location.trash.labelID
+        ].contains(labelId)
+        let isInTrash = message.isTrash
+        let isInArchive = message.contains(location: .archive)
+        let hasMultipleRecipients = message.allRecipients.count > 1
+        let isInSpam = message.isSpam
+        let isRead = !message.unRead
+        let isStarred = message.isStarred
+
+        let actions = toolbarActionProvider.messageToolbarActions.addMoreActionToTheLastLocation()
+        return replaceActionsLocally(actions: actions,
+                                     isInSpam: isInSpam || originMessageListIsSpamOrTrash,
+                                     isInTrash: isInTrash || originMessageListIsSpamOrTrash,
+                                     isInArchive: isInArchive,
+                                     isRead: isRead,
+                                     isStarred: isStarred,
+                                     hasMultipleRecipients: hasMultipleRecipients)
+    }
+
+    func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
+        let messageInfoProvider = contentViewModel.messageInfoProvider
+        let bodyViewModel = contentViewModel.messageBodyViewModel
+        let actionSheetViewModel = MessageViewActionSheetViewModel(
+            title: message.title,
+            labelID: labelId,
+            includeStarring: false,
+            isStarred: message.isStarred,
+            isBodyDecryptable: messageInfoProvider.isBodyDecryptable,
+            messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
+            shouldShowRenderModeOption: messageInfoProvider.shouldDisplayRenderModeOptions,
+            isScheduledSend: messageInfoProvider.message.isScheduledSend
+        )
+        let isInSpam = message.isSpam
+        let isInTrash = message.isTrash
+        let isInArchive = message.contains(location: .archive)
+        let isRead = !message.unRead
+        let isStarred = message.isStarred
+
+        return replaceActionsLocally(actions: actionSheetViewModel.items,
+                                     isInSpam: isInSpam,
+                                     isInTrash: isInTrash,
+                                     isInArchive: isInArchive,
+                                     isRead: isRead,
+                                     isStarred: isStarred,
+                                     hasMultipleRecipients: false)
+        .replaceReplyAndReplyAllAction()
+    }
+
+    func saveToolbarAction(actions: [MessageViewActionSheetAction],
+                           completion: ((NSError?) -> Void)?) {
+        let preference: ToolbarActionPreference = .init(
+            conversationActions: nil,
+            messageActions: actions,
+            listViewActions: nil
+        )
+        saveToolbarActionUseCase
+            .callbackOn(.main)
+            .executionBlock(params: .init(preference: preference)) { result in
+                switch result {
+                case .success:
+                    completion?(nil)
+                case let .failure(error):
+                    completion?(error as NSError)
+                }
+            }
     }
 }
 

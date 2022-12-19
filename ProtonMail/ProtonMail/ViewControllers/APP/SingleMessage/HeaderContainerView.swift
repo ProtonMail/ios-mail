@@ -168,14 +168,14 @@ private enum SubviewsFactory {
 
     static var replyImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.image = IconProvider.arrowUpAndLeft
+        imageView.image = IconProvider.reply
         imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
     static var replyAllImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.image = IconProvider.arrowsUpAndLeft
+        imageView.image = IconProvider.replyAll
         imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }

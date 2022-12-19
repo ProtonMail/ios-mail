@@ -3,12 +3,11 @@
 #import "SentryDefaultCurrentDateProvider.h"
 #import "SentryLog.h"
 #import <Foundation/Foundation.h>
+#import <PrivateSentrySDKOnly.h>
 #import <SentryAppStateManager.h>
-#import <SentryClient+Private.h>
-#import <SentryCrashAdapter.h>
+#import <SentryCrashWrapper.h>
+#import <SentryDependencyContainer.h>
 #import <SentryDispatchQueueWrapper.h>
-#import <SentryHub.h>
-#import <SentrySDK+Private.h>
 #import <SentrySysctl.h>
 
 @interface
@@ -22,47 +21,39 @@ SentryAppStartTrackingIntegration ()
 
 @implementation SentryAppStartTrackingIntegration
 
-- (void)installWithOptions:(SentryOptions *)options
+- (BOOL)installWithOptions:(SentryOptions *)options
 {
 #if SENTRY_HAS_UIKIT
-    if (!options.enableAutoPerformanceTracking) {
-        [SentryLog
-            logWithMessage:@"AutoUIPerformanceTracking disabled. Will not track app start up time."
-                  andLevel:kSentryLevelDebug];
-        return;
-    }
-
-    if (!options.isTracingEnabled) {
-        [SentryLog
-            logWithMessage:
-                @"No tracesSampleRate and tracesSampler set. Will not track app start up time."
-                  andLevel:kSentryLevelDebug];
-        return;
+    if (!PrivateSentrySDKOnly.appStartMeasurementHybridSDKMode
+        && ![super installWithOptions:options]) {
+        return NO;
     }
 
     SentryDefaultCurrentDateProvider *currentDateProvider =
         [SentryDefaultCurrentDateProvider sharedInstance];
-    SentryCrashAdapter *crashAdapter = [SentryCrashAdapter sharedInstance];
     SentrySysctl *sysctl = [[SentrySysctl alloc] init];
 
-    SentryAppStateManager *appStateManager = [[SentryAppStateManager alloc]
-            initWithOptions:options
-               crashAdapter:crashAdapter
-                fileManager:[[[SentrySDK currentHub] getClient] fileManager]
-        currentDateProvider:currentDateProvider
-                     sysctl:sysctl];
+    SentryAppStateManager *appStateManager =
+        [SentryDependencyContainer sharedInstance].appStateManager;
 
     self.tracker = [[SentryAppStartTracker alloc]
-        initWithCurrentDateProvider:currentDateProvider
-               dispatchQueueWrapper:[[SentryDispatchQueueWrapper alloc] init]
-                    appStateManager:appStateManager
-                             sysctl:sysctl];
+            initWithCurrentDateProvider:currentDateProvider
+                   dispatchQueueWrapper:[[SentryDispatchQueueWrapper alloc] init]
+                        appStateManager:appStateManager
+                                 sysctl:sysctl
+        enablePreWarmedAppStartTracking:options.enablePreWarmedAppStartTracking];
     [self.tracker start];
 
+    return YES;
 #else
-    [SentryLog logWithMessage:@"NO UIKit -> SentryAppStartTracker will not track app start up time."
-                     andLevel:kSentryLevelDebug];
+    SENTRY_LOG_DEBUG(@"NO UIKit -> SentryAppStartTracker will not track app start up time.");
+    return NO;
 #endif
+}
+
+- (SentryIntegrationOption)integrationOptions
+{
+    return kIntegrationOptionEnableAutoPerformanceTracking | kIntegrationOptionIsTracingEnabled;
 }
 
 - (void)uninstall

@@ -37,7 +37,6 @@ protocol UserDataSource: AnyObject {
     var addressKeys: [Key] { get }
     var userPrivateKeys: [ArmoredKey] { get }
     var userInfo: UserInfo { get }
-    var addressPrivateKeys: [Data] { get }
     var authCredential: AuthCredential { get }
     var userID: UserID { get }
 
@@ -133,7 +132,10 @@ class UserManager: Service, HasLocalStorage {
     private(set) var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
-    private let contextProvider: CoreDataContextProviderProtocol
+
+    private var coreDataService: CoreDataService {
+        sharedServices.get(by: CoreDataService.self)
+    }
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
@@ -151,7 +153,7 @@ class UserManager: Service, HasLocalStorage {
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
                                          userInfo: self.userInfo,
-                                         coreDataService: sharedServices.get(by: CoreDataService.self),
+                                         coreDataService: coreDataService,
                                          contactCacheStatus: userCachedStatus,
                                          cacheService: self.cacheService,
                                          queueManager: sharedServices.get(by: QueueManager.self))
@@ -161,7 +163,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var contactGroupService: ContactGroupsDataService = { [unowned self] in
         let service = ContactGroupsDataService(api: self.apiService,
                                                labelDataService: self.labelService,
-                                               coreDataService: sharedServices.get(by: CoreDataService.self),
+                                               coreDataService: coreDataService,
                                                queueManager: sharedServices.get(by: QueueManager.self),
                                                userID: self.userID)
         return service
@@ -179,7 +181,7 @@ class UserManager: Service, HasLocalStorage {
             contactDataService: self.contactService,
             localNotificationService: self.localNotificationService,
             queueManager: sharedServices.get(by: QueueManager.self),
-            contextProvider: contextProvider,
+            contextProvider: coreDataService,
             lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
             user: self,
             cacheService: self.cacheService,
@@ -191,7 +193,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var mainQueueHandler: MainQueueHandler = { [unowned self] in
-        let service = MainQueueHandler(coreDataService: sharedServices.get(by: CoreDataService.self),
+        let service = MainQueueHandler(coreDataService: coreDataService,
                                        apiService: self.apiService,
                                        messageDataService: self.messageService,
                                        conversationDataService: self.conversationService.conversationDataService,
@@ -207,7 +209,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
         let service = ConversationDataServiceProxy(api: apiService,
                                                    userID: userID,
-                                                   contextProvider: sharedServices.get(by: CoreDataService.self),
+                                                   contextProvider: coreDataService,
                                                    lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
                                                    messageDataService: messageService,
                                                    eventsService: eventsService,
@@ -218,7 +220,13 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var labelService: LabelsDataService = { [unowned self] in
-        let service = LabelsDataService(api: self.apiService, userID: self.userID, contextProvider: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
+        let service = LabelsDataService(
+            api: self.apiService,
+            userID: self.userID,
+            contextProvider: coreDataService,
+            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+            cacheService: self.cacheService
+        )
         service.viewModeDataSource = self
         return service
     }()
@@ -246,7 +254,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
         let manager = UndoActionManager(
             apiService: self.apiService,
-            contextProvider: contextProvider,
+            contextProvider: coreDataService,
             getEventFetching: { [weak self] in
                 self?.eventsService
             },
@@ -299,12 +307,10 @@ class UserManager: Service, HasLocalStorage {
         userInfo: UserInfo,
         authCredential: AuthCredential,
         parent: UsersManager?,
-        contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         self.userInfo = userInfo
         self.apiService = api
-        self.contextProvider = contextProvider
         self.authCredential = authCredential
         self.appTelemetry = appTelemetry
         self.authHelper = AuthHelper(authCredential: authCredential)
@@ -320,7 +326,6 @@ class UserManager: Service, HasLocalStorage {
         api: APIService,
         role: UserInfo.OrganizationRole,
         userInfo: UserInfo = UserInfo.getDefault(),
-        contextProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
@@ -329,7 +334,6 @@ class UserManager: Service, HasLocalStorage {
         userInfo.role = role.rawValue
         self.userInfo = userInfo
         self.apiService = api
-        self.contextProvider = contextProvider
         self.appTelemetry = appTelemetry
         self.authCredential = AuthCredential.none
         self.authHelper = AuthHelper(authCredential: authCredential)
@@ -452,12 +456,6 @@ extension UserManager: UserDataSource {
 
     var mailboxPassword: Passphrase {
         Passphrase(value: authCredential.mailboxpassword)
-    }
-
-    var addressPrivateKeys: [Data] {
-        get {
-            return self.userInfo.addressPrivateKeysArray
-        }
     }
 
     var notificationEmail: String {
@@ -623,6 +621,23 @@ extension UserManager {
         let maxSpace = self.userInfo.maxSpace
         let usedSpace = self.userInfo.usedSpace
         return usedSpace >= maxSpace
+    }
+
+    var hasAtLeastOneNonStandardToolbarAction: Bool {
+        guard let users = parentManager else {
+            return false
+        }
+        return users.users.contains(where: { user in
+            user.userInfo.messageToolbarActions.isCustom ||
+            user.userInfo.listToolbarActions.isCustom ||
+            user.userInfo.conversationToolbarActions.isCustom
+        })
+    }
+
+    var toolbarActionsIsStandard: Bool {
+        return !userInfo.messageToolbarActions.isCustom &&
+            !userInfo.listToolbarActions.isCustom &&
+            !userInfo.conversationToolbarActions.isCustom
     }
 }
 

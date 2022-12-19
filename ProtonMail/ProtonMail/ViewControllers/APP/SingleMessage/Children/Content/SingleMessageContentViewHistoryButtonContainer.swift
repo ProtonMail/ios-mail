@@ -44,7 +44,7 @@ final class SingleMessageContentViewHistoryButtonContainer: UIView {
         addSubview(showHideHistoryButton)
         [
             showHideHistoryButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            showHideHistoryButton.topAnchor.constraint(equalTo: topAnchor),
+            showHideHistoryButton.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             showHideHistoryButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             showHideHistoryButton.heightAnchor.constraint(equalToConstant: 21)
         ].activate()

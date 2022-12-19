@@ -84,11 +84,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var isCheckingHuman: Bool = false
 
-    private var fetchingStopped: Bool = true
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
-    private var isEditingMode = true
 
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -106,7 +104,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var shouldAnimateSkeletonLoading = false
     private var shouldKeepSkeletonUntilManualDismissal = false
-    private var isShowingUnreadMessageOnly: Bool {
+    var isShowingUnreadMessageOnly: Bool {
         return self.unreadFilterButton.isSelected
     }
 
@@ -263,6 +261,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: -0.75)
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
+        SwipyCellConfig.shared.shouldAnimateSwipeViews = false
+        SwipyCellConfig.shared.shouldUseSpringAnimationWhileSwipingToOrigin = false
 
         refetchAllIfNeeded()
 
@@ -321,7 +321,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
 
         if #available(iOS 13.0, *) {
-            self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
+            self.view.window?.windowScene?.title = self.title ?? LocalString._menu_inbox_title
         }
 
         guard viewModel.isHavingUser else {
@@ -639,12 +639,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.updateUnreadButton()
     }
 
-    private func beginRefreshingManually(animated: Bool) {
-        if animated {
-            self.refreshControl.beginRefreshing()
-        }
-    }
-
     // MARK: - Private methods
 
     private func hideSelectionMode() {
@@ -683,14 +677,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func startAutoFetch(_ run: Bool = true) {
         viewModel.eventsService.start()
         viewModel.eventsService.begin(subscriber: self)
-        fetchingStopped = false
         if run {
             self.viewModel.eventsService.call()
         }
     }
 
     private func stopAutoFetch() {
-        fetchingStopped = true
         viewModel.eventsService.pause()
     }
 
@@ -1062,9 +1054,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
         if let type = undoActionType {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
+        } else {
+            let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+            banner.show(at: .bottom, on: self)
         }
-        let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
     }
 
     private func handleRequestError(_ error: NSError) {
@@ -1376,7 +1369,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func updateNavigationController(_ editingMode: Bool) {
-        self.isEditingMode = editingMode
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
         self.setupRightButtons(editingMode)
@@ -1542,8 +1534,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
 // MARK: - Action bar
 extension MailboxViewController {
-    private func refreshActionBarItems() {
-        let actions = self.viewModel.getActionBarActions()
+    func refreshActionBarItems() {
+        let actions = self.viewModel.actionsForToolbar()
         var actionItems: [PMToolBarView.ActionItem] = []
 
         for action in actions {
@@ -1560,7 +1552,6 @@ extension MailboxViewController {
                     case .delete:
                         self.showDeleteAlert { [weak self] in
                             guard let `self` = self else { return }
-                            self.viewModel.handleBarAction(action)
                             self.showMessageMoved(title: LocalString._messages_has_been_deleted)
                         }
                     case .moveTo:
@@ -1571,8 +1562,8 @@ extension MailboxViewController {
                         var scheduledSendNum: Int?
                         let continueAction: () -> Void = { [weak self] in
                             guard let self = self else { return }
-                            self.viewModel.handleBarAction(action)
-                            if action != .markAsRead && action != .markAsUnread {
+                            self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                            if action != .markRead && action != .markUnread {
                                 let message: String
                                 if let num = scheduledSendNum {
                                     message = String(format: LocalString._message_moved_to_drafts, num)
@@ -1592,8 +1583,8 @@ extension MailboxViewController {
                             continueAction: continueAction
                         )
                     default:
-                        self.viewModel.handleBarAction(action)
-                        if ![.markAsRead, .markAsUnread].contains(action) {
+                        self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                        if ![.markRead, .markUnread, .star, .unstar].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
                         }
@@ -2008,11 +1999,11 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         showAlert(title: title, message: message)
     }
 
-    private func handleActionSheetAction(_ action: MailListSheetAction) {
+    private func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .dismiss:
             dismissActionSheet()
-        case .remove:
+        case .trash:
             var scheduledSendNum: Int?
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action)
@@ -2032,7 +2023,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                     self?.displayScheduledAlert(scheduledNum: selectedNum, continueAction: continueAction)
                 },
                 continueAction: continueAction)
-        case .moveToArchive, .moveToSpam, .moveToInbox:
+        case .archive, .spam, .inbox:
             viewModel.handleActionSheetAction(action)
             showMessageMoved(title: LocalString._messages_has_been_moved)
             hideSelectionMode()
@@ -2047,6 +2038,15 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             labelButtonTapped()
         case .moveTo:
             folderButtonTapped()
+        case .toolbarCustomization:
+            let allActions = viewModel.toolbarCustomizationAllAvailableActions()
+            let currentActions = viewModel.actionsForToolbarCustomizeView()
+            coordinator?.presentToolbarCustomizationView(
+                allActions: allActions,
+                currentActions: currentActions
+            )
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+            break
         }
     }
 }

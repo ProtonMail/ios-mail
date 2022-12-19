@@ -57,16 +57,3 @@ extension Key {
         return fignerprint
     }
 }
-
-extension Array where Element: Key {
-    var binPrivKeysArray: [Data] {
-        var out: [Data] = []
-        var error: NSError?
-        for key in self {
-            if let privK = ArmorUnarmor(key.privateKey, &error) {
-                out.append(privK)
-            }
-        }
-        return out
-    }
-}

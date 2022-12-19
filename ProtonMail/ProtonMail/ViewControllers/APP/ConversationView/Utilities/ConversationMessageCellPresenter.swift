@@ -80,7 +80,7 @@ class ConversationMessageCellPresenter {
         if let expirationTag = model.expirationTag {
             view.expirationView.tagLabel.set(text: expirationTag.title,
                                              preferredFont: .caption1,
-                                             weight: expirationTag.titleWeight ?? .regular,
+                                             weight: expirationTag.titleWeight,
                                              textColor: expirationTag.titleColor)
             view.expirationView.backgroundColor = expirationTag.tagColor
             view.expirationView.imageView.image = expirationTag.icon

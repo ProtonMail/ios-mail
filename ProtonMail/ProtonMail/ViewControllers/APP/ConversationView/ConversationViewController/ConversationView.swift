@@ -1,3 +1,4 @@
+import CoreGraphics
 import ProtonCore_UIFoundations
 
 class ConversationView: UIView {
@@ -76,6 +77,13 @@ class ConversationView: UIView {
         ].activate()
         return view
     }
+
+    func toolbarLastButtonCGRect() -> CGRect? {
+        guard let rect = toolBar.lastButtonCGRect() else {
+            return nil
+        }
+        return toolBar.convert(rect, to: self)
+    }
 }
 
 private enum SubviewsFactory {
@@ -84,7 +92,7 @@ private enum SubviewsFactory {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
-        tableView.backgroundColor = ColorProvider.BackgroundSecondary
+        tableView.backgroundColor = ColorProvider.BackgroundDeep
         return tableView
     }
 

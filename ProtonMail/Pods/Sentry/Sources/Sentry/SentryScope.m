@@ -1,14 +1,17 @@
 #import "SentryScope.h"
+#import "NSMutableDictionary+Sentry.h"
 #import "SentryAttachment.h"
 #import "SentryBreadcrumb.h"
 #import "SentryEnvelopeItemType.h"
 #import "SentryEvent.h"
 #import "SentryGlobalEventProcessor.h"
+#import "SentryLevelMapper.h"
 #import "SentryLog.h"
 #import "SentryScopeObserver.h"
 #import "SentrySession.h"
 #import "SentrySpan.h"
 #import "SentryTracer.h"
+#import "SentryTransactionContext.h"
 #import "SentryUser.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -123,8 +126,7 @@ SentryScope ()
     if (self.maxBreadcrumbs < 1) {
         return;
     }
-    [SentryLog logWithMessage:[NSString stringWithFormat:@"Add breadcrumb: %@", crumb]
-                     andLevel:kSentryLevelDebug];
+    SENTRY_LOG_DEBUG(@"Add breadcrumb: %@", crumb);
     @synchronized(_breadcrumbArray) {
         [_breadcrumbArray addObject:crumb];
         if ([_breadcrumbArray count] > self.maxBreadcrumbs) {
@@ -132,7 +134,7 @@ SentryScope ()
         }
 
         for (id<SentryScopeObserver> observer in self.observers) {
-            [observer addBreadcrumb:crumb];
+            [observer addSerializedBreadcrumb:[crumb serialize]];
         }
     }
 }
@@ -419,7 +421,7 @@ SentryScope ()
 
     SentryLevel level = self.levelEnum;
     if (level != kSentryLevelNone) {
-        [serializedData setValue:SentryLevelNames[level] forKey:@"level"];
+        [serializedData setValue:nameForSentryLevel(level) forKey:@"level"];
     }
     NSArray *crumbs = [self serializeBreadcrumbs];
     if (crumbs.count > 0) {
@@ -512,13 +514,9 @@ SentryScope ()
         event.level = level;
     }
 
-    NSMutableDictionary *newContext;
-    if (nil == event.context) {
-        newContext = [self context].mutableCopy;
-    } else {
-        newContext = [NSMutableDictionary new];
-        [newContext addEntriesFromDictionary:[self context]];
-        [newContext addEntriesFromDictionary:event.context];
+    NSMutableDictionary *newContext = [self context].mutableCopy;
+    if (event.context != nil) {
+        [newContext mergeEntriesFromDictionary:event.context];
     }
 
     if (self.span != nil) {
@@ -531,7 +529,7 @@ SentryScope ()
         if (span != nil) {
             if (![event.type isEqualToString:SentryEnvelopeItemTypeTransaction] &&
                 [span isKindOfClass:[SentryTracer class]]) {
-                event.transaction = [(SentryTracer *)span name];
+                event.transaction = [[(SentryTracer *)span transactionContext] name];
             }
             newContext[@"trace"] = [span.context serialize];
         }

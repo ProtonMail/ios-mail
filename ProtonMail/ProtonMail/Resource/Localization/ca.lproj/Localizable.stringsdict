@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d member</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -29,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d minut</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d minuts</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -45,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d seleccionat</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d seleccionats</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -61,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d adjunt</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d adjunts</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -142,8 +126,6 @@
 			<string>%d dia</string>
 			<key>other</key>
 			<string>%d dies</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -194,11 +176,25 @@
 			<string>%d hora</string>
 			<key>other</key>
 			<string>%d hores</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d membre</string>
+			<key>other</key>
+			<string>%d membres</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -275,9 +271,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d segon</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d segons</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>

@@ -911,9 +911,6 @@
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Εισέλθετε ξανά για να συνεχίσετε να λαμβάνετε ενημερώσεις";
 
-/* comment */
-"Log out" = "Αποσύνδεση";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Έχετε εξέλθει από το %@";
 

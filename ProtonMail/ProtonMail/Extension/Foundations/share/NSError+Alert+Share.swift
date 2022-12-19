@@ -50,7 +50,7 @@ extension NSError {
         NotificationCenter.default.post(
             name: NSError.errorOccuredNotification,
             object: nil,
-            userInfo: ["text": LocalString._message_draft_cache_is_broken]
+            userInfo: ["text": LocalString._email_failed_to_send]
         )
     }
 

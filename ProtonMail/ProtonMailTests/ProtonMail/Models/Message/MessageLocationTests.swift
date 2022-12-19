@@ -22,21 +22,21 @@ class MessageLocationTests: XCTestCase {
 
     func testGetLicalizedTitle() {
         XCTAssertEqual(Message.Location.inbox.localizedTitle,
-                       LocalString._locations_inbox_title)
+                       LocalString._menu_inbox_title)
         XCTAssertEqual(Message.Location.starred.localizedTitle,
-                       LocalString._locations_starred_title)
+                       LocalString._menu_starred_title)
         XCTAssertEqual(Message.Location.draft.localizedTitle,
-                       LocalString._locations_draft_title)
+                       LocalString._menu_drafts_title)
         XCTAssertEqual(Message.Location.sent.localizedTitle,
-                       LocalString._locations_outbox_title)
+                       LocalString._menu_sent_title)
         XCTAssertEqual(Message.Location.trash.localizedTitle,
-                       LocalString._locations_trash_title)
+                       LocalString._menu_trash_title)
         XCTAssertEqual(Message.Location.archive.localizedTitle,
-                       LocalString._locations_archive_title)
+                       LocalString._menu_archive_title)
         XCTAssertEqual(Message.Location.spam.localizedTitle,
-                       LocalString._locations_spam_title)
+                       LocalString._menu_spam_title)
         XCTAssertEqual(Message.Location.allmail.localizedTitle,
-                       LocalString._locations_all_mail_title)
+                       LocalString._menu_allmail_title)
     }
 
     func testInit() {

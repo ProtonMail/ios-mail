@@ -357,9 +357,6 @@ class SingleMessageContentViewController: UIViewController {
             header.observeShowDetails {
                 self?.expandButton()
             }
-            header.contactTapped = {
-                self?.presentActionSheet(context: $0)
-            }
             self?.headerViewController = header
         }
 

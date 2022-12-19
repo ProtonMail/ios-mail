@@ -36,7 +36,7 @@ class TagsPresenter {
 
         view.tagLabel.set(text: viewModel.title,
                           preferredFont: .caption1,
-                          weight: viewModel.titleWeight ?? .regular,
+                          weight: viewModel.titleWeight,
                           textColor: viewModel.titleColor)
         view.imageView.image = viewModel.icon
         view.imageView.tintColor = ColorProvider.IconNorm
@@ -50,7 +50,7 @@ class TagsPresenter {
 
         view.tagLabel.set(text: viewModel.title,
                           preferredFont: .caption1,
-                          weight: viewModel.titleWeight ?? .regular,
+                          weight: viewModel.titleWeight,
                           textColor: viewModel.titleColor)
         view.backgroundColor = viewModel.tagColor
 

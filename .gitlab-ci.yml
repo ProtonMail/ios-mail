@@ -1,6 +1,7 @@
 stages:
   - i18n
   - test
+  - report
   - test_flight
   - enterprise
   - bot # comes from translations/generator job
@@ -17,7 +18,7 @@ stages:
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
-  - mint bootstrap
+  - mint bootstrap --link
 
 .enterprise_config_setting: &enterprise_config_setting
   - cd ProtonMail
@@ -29,8 +30,6 @@ stages:
   - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
   - base64 -D -o PushService.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_PUSHSERVICE_PROVISIONPROFILE
   - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
-  - SENTRY_PROJECT=$SENTRY_PROJECT_ENTERPRISE
-  - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN_ENTERPRISE
 
 # --- includes ---
 include:
@@ -77,10 +76,14 @@ unit_tests:
     - *run_xcodegen_if_needed
     - bundle install
     - bundle exec fastlane unit_test
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
-ui_tests:
+ui_tests_smoke:
   dependencies: []
   stage: test
   except:
@@ -97,13 +100,14 @@ ui_tests:
     when: always
     name: "test-report"
     paths:
-      - ProtonMail/fastlane/test_output/ProtonMailUITests.xcresult
-    expire_in: 20 days
+      - test_output/TestResults
+    expire_in: 10 days
     reports:
       coverage_report:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
-      junit: ProtonMail/fastlane/test_output/report.junit
+      junit:
+        - test_output/TestResults/ProtonMailUITests.xcresult/report.junit
   before_script:
     - git submodule init
     - git submodule update --init --recursive
@@ -113,11 +117,35 @@ ui_tests:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - bundle install
     - bundle exec fastlane ui_test
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_UITEST
+  allow_failure: false
+  
+report:ui-tests-smoke:
+  image: $CI_REGISTRY/tpe/test-scripts
+  stage: report
+  dependencies:
+    - ui_tests_smoke
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: never
+    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: always
+  script:
+    - test_reporter.py
+      --path test_output/TestResults/ProtonMailUITests.xcresult/
+      --platform ios
+      --job-name ui_tests_smoke
+      --slack-channel mail-ios-uitests
   allow_failure: true
 
-feature_tests:
+ui_feature_tests:
   dependencies: []
   stage: test
   rules:
@@ -128,31 +156,58 @@ feature_tests:
     when: always
     name: "test-report"
     paths:
-      - ./index.html
-      - ./TestResults/report.junit
-      - ./TestResults.xcresult
-    expire_in: 20 days
+      - test_output/TestResults
+    expire_in: 10 days
     reports:
-      junit: ./TestResults/report.junit
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
+      junit: test_output/TestResults/ProtonMailUITests.xcresult/report.junit
   before_script:
-    - *set_up_brew_dependecies
-    - *before_script_mac
     - git submodule init
     - git submodule update --init --recursive
+    - *set_up_brew_dependecies
+    - *before_script_mac
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
-    - cd ..
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
-    - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL $MAIL_APP_API_PATH $MAIL_APP_API_DOMAIN
-  after_script:
-    - xchtmlreport -r ./TestResults -j
+    - bundle install
+    - bundle exec fastlane feature_tests
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_UITEST
+
+report:ui_feature_tests:
+  image: $CI_REGISTRY/tpe/test-scripts
+  stage: report
+  dependencies:
+    - ui_feature_tests
+  variables:
+    GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH'
+      when: never
+    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - when: manual
+  script:
+    - test_reporter.py
+      --path test_output/TestResults/ProtonMailUITests.xcresult/
+      --platform ios
+      --job-name $TEST_PLAN
+      --slack-channel mail-ios-uitests
+  allow_failure: true
+
 
 # --- Build app and send to testflight
 build-app-and-upload:
   dependencies: []
   stage: test_flight
+  variables:
+    GIT_STRATEGY: clone
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
@@ -175,8 +230,12 @@ build-app-and-upload:
     - bundle install
     - bundle exec fastlane ios build
     - ./fastlane/add_git_tag.sh
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_BUILD
 
 nightly-build-and-upload:
   dependencies: []
@@ -203,6 +262,10 @@ nightly-build-and-upload:
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - bundle install
     - bundle exec fastlane ios build
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
@@ -229,6 +292,10 @@ enterprise-test:
     - *enterprise_config_setting
     - bundle install
     - bundle exec fastlane ios enterprise usingTimeStamp:true
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 

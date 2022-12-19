@@ -13,7 +13,7 @@ fileprivate struct id {
     static let pinCodeViewIdentifier = "PinCodeViewController.pinCodeView"
     static let pinCodeAttemptStaticTextIdentifier = "PinCodeViewController.pinCodeView.attempsLabel"
     static let pinCodeLogoutButtonIdentifier = "PinCodeViewController.pinCodeView.backButton"
-    static let logoutButtonIdentifier = "Log out"
+    static let logoutButtonIdentifier = LocalString._sign_out
     static let pinStaticTextZero = "0"
     static let pinStaticTextOne = "1"
     static let pinStaticTextTwo = "2"

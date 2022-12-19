@@ -34,7 +34,6 @@ extern "C" {
  * - Fatal signal
  * - Uncaught C++ exception
  * - Uncaught Objective-C NSException
- * - Deadlock on the main thread
  * - User reported custom exception
  */
 typedef enum {
@@ -52,9 +51,6 @@ typedef enum {
     /* Captures and reports NSExceptions. */
     SentryCrashMonitorTypeNSException = 0x08,
 
-    /* Detects and reports a deadlock in the main thread. */
-    SentryCrashMonitorTypeMainThreadDeadlock = 0x10,
-
     /* Accepts and reports user-generated exceptions. */
     SentryCrashMonitorTypeUserReported = 0x20,
 
@@ -71,11 +67,8 @@ typedef enum {
 #define SentryCrashMonitorTypeAll                                                                  \
     (SentryCrashMonitorTypeMachException | SentryCrashMonitorTypeSignal                            \
         | SentryCrashMonitorTypeCPPException | SentryCrashMonitorTypeNSException                   \
-        | SentryCrashMonitorTypeMainThreadDeadlock | SentryCrashMonitorTypeUserReported            \
-        | SentryCrashMonitorTypeSystem | SentryCrashMonitorTypeApplicationState                    \
-        | SentryCrashMonitorTypeZombie)
-
-#define SentryCrashMonitorTypeExperimental (SentryCrashMonitorTypeMainThreadDeadlock)
+        | SentryCrashMonitorTypeUserReported | SentryCrashMonitorTypeSystem                        \
+        | SentryCrashMonitorTypeApplicationState | SentryCrashMonitorTypeZombie)
 
 #define SentryCrashMonitorTypeDebuggerUnsafe                                                       \
     (SentryCrashMonitorTypeMachException | SentryCrashMonitorTypeSignal                            \
@@ -96,8 +89,7 @@ typedef enum {
 /** Monitors that are safe to use in a production environment.
  * All other monitors should be considered experimental.
  */
-#define SentryCrashMonitorTypeProductionSafe                                                       \
-    (SentryCrashMonitorTypeAll & (~SentryCrashMonitorTypeExperimental))
+#define SentryCrashMonitorTypeProductionSafe (SentryCrashMonitorTypeAll)
 
 /** Production safe monitors, minus the optional ones. */
 #define SentryCrashMonitorTypeProductionSafeMinimal                                                \

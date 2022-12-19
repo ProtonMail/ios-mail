@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-
 #import "SentryDefines.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,6 +15,10 @@ typedef NS_ENUM(NSInteger, SentryError) {
 };
 
 SENTRY_EXTERN NSError *_Nullable NSErrorFromSentryError(SentryError error, NSString *description);
+SENTRY_EXTERN NSError *_Nullable NSErrorFromSentryErrorWithUnderlyingError(
+    SentryError error, NSString *description, NSError *underlyingError);
+SENTRY_EXTERN NSError *_Nullable NSErrorFromSentryErrorWithException(
+    SentryError error, NSString *description, NSException *exception);
 
 SENTRY_EXTERN NSString *const SentryErrorDomain;
 

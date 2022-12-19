@@ -18,7 +18,5 @@
 import Foundation
 
 protocol MessageDataProcessProtocol: AnyObject {
-    var messageDecrypter: MessageDecrypterProtocol { get }
-
     func cancelQueuedSendingTask(messageID: String)
 }

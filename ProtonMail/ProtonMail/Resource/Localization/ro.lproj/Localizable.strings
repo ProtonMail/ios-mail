@@ -37,6 +37,9 @@
 /* Placeholder */
 "8 to 21 characters long" = "între 8 și 21 de caractere";
 
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Accesul la acest cont este blocat datorită unei plăți restante. Autentificați-vă la proton.me și achitați factura restantă.";
+
 /* Account manager title */
 "Account" = "Cont";
 
@@ -243,11 +246,17 @@
 /* Title */
 "Authentication" = "Autentificare";
 
+/* Title */
+"Auto Lock Time" = "Timp autoblocare";
+
 /* settings general section title */
 "Auto-load embedded images" = "Autoîncărcare imagini incluse";
 
 /* settings general section title */
 "Auto-load remote content" = "Autoîncărcare conținut extern";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Acțiuni disponibile";
 
 /* Example feedback */
 "Awful" = "Îngrozitoare";
@@ -263,6 +272,9 @@
 
 /* Error Description */
 "Bad response" = "Răspuns greșit";
+
+/* Title */
+"Bcc" = "Ca";
 
 /* message Bcc: feild */
 "Bcc:" = "CA:";
@@ -281,6 +293,9 @@
 
 /* Title */
 "Bug Description" = "Descriere eroare";
+
+/* Title */
+"Bug Report Received" = "Raport eroare primit";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Date stocate";
@@ -343,8 +358,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "Nu se poate goli folderul în acest moment.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "C";
+
 /* settings general section title */
 "Change account password" = "Schimbare parolă cont";
+
+/* Title */
+"Change default address to…" = "Schimbare adresă implicită cu…";
 
 /* settings general section title */
 "Change mailbox password" = "Schimbare parolă mesaje";
@@ -353,8 +375,14 @@
    title */
 "Change password" = "Schimbare parolă";
 
+/* update password error title */
+"Change Password" = "Schimbare parolă";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Schimbare cod PIN";
+
+/* Title */
+"Change sender address to…" = "Schimbare adresă expeditor cu…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Încărcați dispozitivul sau reluați manual.";
@@ -502,6 +530,9 @@
    Custom option for time config picker */
 "Custom" = "Personalizat";
 
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Personalizare utilitare";
+
 /* Title */
 "Cut" = "Decupare";
 
@@ -513,6 +544,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Data: %@";
+
+/* days */
+"days" = "zile";
 
 /* error title */
 "Decryption error" = "Eroare decriptare";
@@ -528,6 +562,9 @@
 
 /* Settings row */
 "Default browser" = "Navigator implicit";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Definire indiciu (opţional)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -572,13 +609,22 @@
 "Disabling the feature now will delete the messages that have already been downloaded." = "Dezactivând funcția acum se vor mesajele care au fost deja descărcate.";
 
 /* Action */
-"Discard" = "Renunțare";
+"Discard" = "Anulare";
 
 /* Action */
 "Discard changes" = "Anulare modificări";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Anulat";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ascundere tastatură";
+
+/* Title in settings */
+"Display Name" = "Nume afișat";
+
+/* Title in display name settings */
+"DisplayName" = "Nume afișat";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Sigur doriți să eliminați această imagine din atașamente?";
@@ -667,8 +713,7 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Editare avatar";
 
-/* *
- *  Edit Contact view controller */
+/* Contacts Edit contact */
 "Edit Contact" = "Editare contact";
 
 /* The title of edit folder page */
@@ -701,11 +746,17 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Trimitere e-mail la contact";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "Mesajul nu s-a putut trimite. Mesajul a fost salvat în ciorne.";
+
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Agenții de urmărire din e-mail vă pot încălca intimitatea.";
 
 /* Name of the feature */
 "Email tracking protection" = "Protejare e-mail împotriva urmăririi";
+
+/* Spotlight explanation of the feature */
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Protejarea împotriva monitorizării mesajelor este disponibilă acum. Expeditorii nu vor ști dacă, unde sau când le-ați citit mesajele.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Golire «Nedorite»";
@@ -885,6 +936,9 @@
 /* Title */
 "Hide details" = "Ascundere detalii";
 
+/* hours */
+"hours" = "ore";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Cum ați descrie experiența avută cu noul Proton Mail?";
 
@@ -970,8 +1024,14 @@
 /* Error message */
 "Invalid username!" = "Nume de utilizator incorect!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Invitați-vă prietenii la Proton,\n obțineți până la 90$ în credite!";
+
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitați-vă contactele la Proton Mail pentru a se bucura de o criptare end-to-end perfectă sau adăugați protecție prin parolă la mesajele pe care le trimiteți.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitați-vă contactele la Proton Mail pentru a se bucura de o criptare perfectă de la un capăt la altul sau adăugați protecție prin parolă la mesajele pe care le trimiteți.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Invitați-vă prietenii la Proton: vor încerca gratuit Mail Plus și veți câștiga credite când se vor abona la un plan cu plată.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Acest raport de eroare este despre o achiziție din aplicație?";
@@ -1011,6 +1071,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limită atinsă";
 
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Legătura a fost copiată.";
+
 /* Button inside the banner */
 "Load anyway" = "Continuare încărcare";
 
@@ -1038,9 +1101,6 @@
 
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Conectați-vă din nou pentru a continua să primiți actualizări";
-
-/* comment */
-"Log out" = "Deconectare";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Deconectat de la %@";
@@ -1078,6 +1138,9 @@
 
 /* menu title */
 "Menu" = "Meniu";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Mesaj";
 
 /* No comment provided by engineer. */
 "Message actions" = "Acțiuni mesaj";
@@ -1218,6 +1281,9 @@
 
 /* Title */
 "No connectivity detected…" = "Nu există conexiune…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Nu s-au găsit funcții de monitorizare prin e-mail";
 
 /* network troubleshot cell title */
 "No internet connection" = "Nu există conexiune la internet";
@@ -1490,6 +1556,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperare activată";
 
+/* menu title */
+"Refer a friend" = "Recomandați pe cineva";
+
 /* Title */
 "Remind Me Later" = "Amintește-mi mai târziu";
 
@@ -1530,6 +1599,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Solicitare de confirmare";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Resetare la implicite";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Revenire la setările inițiale?";
+
 /* Title */
 "Resetting message cache…" = "Resetare buffer mesaje…";
 
@@ -1561,8 +1636,8 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Programarea va fi eliminată";
 
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Trimitere programată";
+/* mail location title */
+"Scheduled" = "Programate";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Se programează mesajul...";
@@ -1620,6 +1695,9 @@
 /* Alert title */
 "Sending in progress" = "Trimitere în desfășurare";
 
+/* Description */
+"Sending Message" = "Se trimite mesajul";
+
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Se trimite mesajul…";
 
@@ -1671,6 +1749,9 @@
 /* menu title */
 "Settings" = "Setări";
 
+/* The title of the share button in referral share view. */
+"Share" = "Partajare";
+
 /* action */
 "Share contact" = "Trimitere contact";
 
@@ -1683,6 +1764,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Deconectare";
+
+/* Action */
+"Sign Out" = "Deconectare";
 
 /* Title in signature settings */
 "Signature" = "Semnătura";
@@ -1793,6 +1877,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Termeni și condiții";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
 
@@ -1801,6 +1888,9 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "Parolele nu se potrivesc.";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Acțiunile din bara de utilitare vor fi resetate la valorile implicite";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Descărcarea se va opri dacă aplicația Proton Mail este închisă.";
@@ -1822,6 +1912,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Parola nouă trebuie să aibă cel puțin 8 caractere.";
+
+/* update password error */
+"The password is wrong." = "Parola este greșită.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Parola trebuie să aibă între 8 și 21 de caractere.";
@@ -1901,11 +1994,23 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales este dezinstalat.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Această bară de utilitare apare atunci când selectați mai multe mesaje primite.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Această bară de utilitare este vizibilă atunci când se citește un mesaj.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Timp de relaxare";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Temporizare";
+
 /* contacts talbe cell Title title */
 "Title" = "Titlu";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.\n\nSchimbați imediat rețeaua.";
@@ -1926,8 +2031,14 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Prea multe mesaje așteaptă să fie trimise.\nAșteptați până când un alt mesaj va fi trimis pentru a-l programa pe acesta.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Acțiuni bară utilitare (selectați max 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "ID amprentă";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Monitorizare recompense";
 
 /* mail location desc
    menu title */
@@ -1959,6 +2070,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Nu se poate analiza obiectul de răspuns:\n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "Mesajul nu poate fi trimis";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatari nedivulgați";
@@ -2095,8 +2209,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "V-ați deconectat";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Puteți alege și rearanja acțiunile din bara de utilitare";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Puteți oricând dezactiva conversațiile din setări.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Puteți alege și rearanja acțiunile din această bară";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Acum puteți să vă programați mesajele pentru a fi trimise mai târziu.";
@@ -2163,6 +2283,9 @@
 
 /* The section title of folder manager table */
 "Your folders" = "Foldere";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Legătură recomandare";
 
 /* The section title of label manager table */
 "Your labels" = "Etichete";

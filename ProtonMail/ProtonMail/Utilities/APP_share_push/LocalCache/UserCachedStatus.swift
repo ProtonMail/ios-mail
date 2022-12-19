@@ -106,6 +106,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let isContactsCached = "isContactsCached"
 
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
+        static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
+        static let isToolbarCustomizeSpotlightShown = "isToolbarCustomizeSpotlightShown"
+        static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }
 
     var keymakerRandomkey: String? {
@@ -419,6 +422,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
 
         getShared().removeObject(forKey: Key.initialUserLoggedInVersion)
+        getShared().removeObject(forKey: Key.darkModeFlag)
+        getShared().removeObject(forKey: Key.toolbarCustomizeSpotlightShownUserIds)
 
         getShared().synchronize()
     }
@@ -718,4 +723,29 @@ extension UserCachedStatus: ConversationNoticeViewStatusProvider {
         }
     }
 }
+
+extension UserCachedStatus: ToolbarCustomizationInfoBubbleViewStatusProvider {
+    var shouldHideToolbarCustomizeInfoBubbleView: Bool {
+        get {
+            return SharedCacheBase.getDefault().bool(forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
+            SharedCacheBase.getDefault().synchronize()
+        }
+    }
+}
+
+extension UserCachedStatus: ToolbarCustomizeSpotlightStatusProvider {
+    var toolbarCustomizeSpotlightShownUserIds: [String] {
+        get {
+            return (SharedCacheBase.getDefault().array(forKey: Key.toolbarCustomizeSpotlightShownUserIds) as? [String]) ?? []
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: Key.toolbarCustomizeSpotlightShownUserIds)
+            SharedCacheBase.getDefault().synchronize()
+        }
+    }
+}
+
 #endif

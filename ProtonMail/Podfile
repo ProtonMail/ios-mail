@@ -67,8 +67,8 @@ def pm_pods
   pod "ProtonCore-PaymentsUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.6'
-  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
-  pod "SkeletonView", '1.11.0'
+  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :commit => 'bb358ed'
+  pod "SkeletonView", '1.30.4'
   pod 'SQLite.swift', '~> 0.13.3'
 end
 
@@ -134,7 +134,7 @@ target 'Siri' do
 end
 
 target 'ProtonMailAnalytics' do
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.8.0'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.31.2'
 end
 
 post_install do | installer |

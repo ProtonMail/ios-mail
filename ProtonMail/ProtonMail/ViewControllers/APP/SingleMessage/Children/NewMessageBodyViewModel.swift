@@ -97,16 +97,12 @@ struct BodyParts {
     }
 }
 
-private enum EmbeddedDownloadStatus {
-    case none, downloading, finish
-}
-
 final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
-    var addAndUpdateMIMEAttachments: (([MimeAttachment]) -> Void)?
     let internetStatusProvider: InternetConnectionStatusProvider
     let linkConfirmation: LinkOpeningMode
+    let userKeys: UserKeys
 
     weak var delegate: NewMessageBodyViewModelDelegate?
     private(set) var spam: SpamType?
@@ -133,7 +129,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         let htmlString = """
                             <html><head>\(meta)<style type='text/css'>
                             \(css)</style>
-                            </head><body>\(LocalString._loading_)</body></html>
+                            </head></html>
                          """
         return htmlString
     }
@@ -153,11 +149,13 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     init(spamType: SpamType?,
          internetStatusProvider: InternetConnectionStatusProvider,
-         linkConfirmation: LinkOpeningMode
+         linkConfirmation: LinkOpeningMode,
+         userKeys: UserKeys
         ) {
         self.spam = spamType
         self.internetStatusProvider = internetStatusProvider
         self.linkConfirmation = linkConfirmation
+        self.userKeys = userKeys
     }
 
     func errorHappens() {

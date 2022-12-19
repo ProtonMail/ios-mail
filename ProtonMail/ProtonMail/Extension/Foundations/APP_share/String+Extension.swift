@@ -183,23 +183,6 @@ extension String {
         return randomString as String
     }
 
-    static func randomEmailAddress() -> String {
-        let name = String.randomString(Int.random(in: 1...7))
-        let domain = String.randomString(Int.random(in: 1...7))
-        return "\(name)@\(domain).com"
-    }
-
-    static func randomPhone(_ len: Int) -> String {
-        let letters: NSString = "0123456789"
-        let randomString: NSMutableString = NSMutableString(capacity: len)
-        let length = UInt32(letters.length)
-        for _ in 0 ..< len {
-            let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.character(at: Int(rand)))
-        }
-        return randomString as String
-    }
-
     func encodeBase64() -> String {
         Data(utf8).encodeBase64()
     }

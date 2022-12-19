@@ -46,21 +46,21 @@ extension Message {
         var localizedTitle: String {
             switch self {
             case .inbox:
-                return LocalString._locations_inbox_title
+                return LocalString._menu_inbox_title
             case .starred:
-                return LocalString._locations_starred_title
+                return LocalString._menu_starred_title
             case .draft:
-                return LocalString._locations_draft_title
+                return LocalString._menu_drafts_title
             case .sent:
-                return LocalString._locations_outbox_title
+                return LocalString._menu_sent_title
             case .trash:
-                return LocalString._locations_trash_title
+                return LocalString._menu_trash_title
             case .archive:
-                return LocalString._locations_archive_title
+                return LocalString._menu_archive_title
             case .spam:
-                return LocalString._locations_spam_title
+                return LocalString._menu_spam_title
             case .allmail:
-                return LocalString._locations_all_mail_title
+                return LocalString._menu_allmail_title
             case .scheduled:
                 return LocalString._locations_scheduled_title
             }

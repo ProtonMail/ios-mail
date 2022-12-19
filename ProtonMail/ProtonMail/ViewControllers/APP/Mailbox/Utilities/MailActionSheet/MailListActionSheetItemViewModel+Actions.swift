@@ -49,19 +49,19 @@ extension MailListActionSheetItemViewModel {
     }
 
     static func moveToArchive() -> MailListActionSheetItemViewModel {
-        return .init(type: .moveToArchive,
-                     title: LocalString._title_of_archive_action_in_action_sheet,
+        return .init(type: .archive,
+                     title: LocalString._menu_archive_title,
                      icon: IconProvider.archiveBox)
     }
 
     static func moveToSpam() -> MailListActionSheetItemViewModel {
-        return .init(type: .moveToSpam,
+        return .init(type: .spam,
                      title: LocalString._title_of_spam_action_in_action_sheet,
                      icon: IconProvider.fire)
     }
 
     static func removeActionViewModel() -> MailListActionSheetItemViewModel {
-        return .init(type: .remove,
+        return .init(type: .trash,
                      title: LocalString._title_of_remove_action_in_action_sheet,
                      icon: IconProvider.trash)
     }
@@ -85,14 +85,20 @@ extension MailListActionSheetItemViewModel {
     }
 
     static func moveToInboxActionViewModel() -> MailListActionSheetItemViewModel {
-        return .init(type: .moveToInbox,
+        return .init(type: .inbox,
                      title: LocalString._title_of_move_inbox_action_in_action_sheet,
                      icon: IconProvider.inbox)
     }
 
     static func notSpamActionViewModel() -> MailListActionSheetItemViewModel {
-        return .init(type: .moveToInbox,
+        return .init(type: .inbox,
                      title: LocalString._action_sheet_action_title_spam_to_inbox,
                      icon: IconProvider.inbox)
+    }
+
+    static func customizeToolbarActionViewModel() -> MailListActionSheetItemViewModel {
+        return .init(type: .toolbarCustomization,
+                     title: LocalString._toolbar_customize_general_title,
+                     icon: Asset.icMagicWand.image)
     }
 }

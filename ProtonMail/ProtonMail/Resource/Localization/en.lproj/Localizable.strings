@@ -16,20 +16,8 @@
 /* The title of swipe banner after swiping to move conversations */
 "%d conversation moved to %@" = "%1$d conversation moved to %2$@";
 
-/* day */
-"%d day" = "%d day";
-
 /* Title of the tracker list. Only used if there is at least one tracker. */
 "%d email trackers blocked" = "%d email trackers blocked";
-
-/* Short hint in the header view */
-"%d email trackers found" = "%d email trackers found";
-
-/* hour */
-"%d hour" = "%d hour";
-
-/* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d Member";
 
 /* The title of swipe banner after swiping to label messages */
 "%d message labeled" = "%d message labeled";
@@ -420,7 +408,7 @@
 "Change account password" = "Change account password";
 
 /* Title */
-"Change default address to .." = "Change default address to ..";
+"Change default address to…" = "Change default address to…";
 
 /* settings general section title */
 "Change mailbox password" = "Change mailbox password";
@@ -436,7 +424,7 @@
 "Change PIN code" = "Change PIN code";
 
 /* Title */
-"Change sender address to .." = "Change sender address to ..";
+"Change sender address to…" = "Change sender address to…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Charge your device or resume manually.";
@@ -1657,9 +1645,6 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Schedule will be removed";
 
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Schedule send";
-
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Scheduling message...";
 
@@ -1910,9 +1895,6 @@
 /* Description */
 "The draft cache is broken. Please try again." = "The draft cache is broken. Please try again.";
 
-/* error when sending the message */
-"The draft format incorrectly sending failed!" = "The draft format incorrectly sending failed!";
-
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "The following files couldn't be attached:";
 
@@ -1929,7 +1911,7 @@
 "The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
 
 /* update password error */
-"The Password is wrong." = "The Password is wrong.";
+"The password is wrong." = "The Password is wrong.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "The password must be between 8 and 21 characters long";

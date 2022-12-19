@@ -14,4 +14,6 @@ enum ConversationNavigationAction {
     case inAppSafari(url: URL)
     case addNewLabel
     case addNewFolder
+    case toolbarCustomization(currentActions: [MessageViewActionSheetAction],
+                              allActions: [MessageViewActionSheetAction])
 }

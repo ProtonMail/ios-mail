@@ -159,43 +159,36 @@ class ContactDataService: Service, HasLocalStorage {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
-            var contacts_json: [[String: Any]] = []
-            var lasterror: NSError?
+            var contactsData: [[String: Any]] = []
+            var lastError: NSError?
+
             let results = response.results
-            self.coreDataService.performOnRootSavingContext { context in
-                guard !results.isEmpty,
-                      cards.count == results.count else {
-                    DispatchQueue.main.async {
-                        completion?(nil, lasterror)
-                    }
-                    return
+            guard !results.isEmpty,
+                  cards.count == results.count else {
+                DispatchQueue.main.async {
+                    completion?(nil, lastError)
                 }
+                return
+            }
 
-                for (i, res) in results.enumerated() {
-                    if let error = res as? NSError {
-                        lasterror = error
-                        guard let objectID = objectID,
-                              let managedID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
-                              let managedObject = try? context.existingObject(with: managedID) else {
-                            continue
-                        }
-                        context.delete(managedObject)
-                    } else if var contact = res as? [String: Any] {
-                        contact["Cards"] = cards[i].toDictionary()
-                        contacts_json.append(contact)
+            for (i, res) in results.enumerated() {
+                if let error = res as? NSError {
+                    lastError = error
+                } else if var contact = res as? [String: Any] {
+                    contact["Cards"] = cards[i].toDictionary()
+                    contactsData.append(contact)
+                }
+            }
+
+            if !contactsData.isEmpty {
+                self.cacheService.addNewContact(serverResponse: contactsData, localContactObjectID: objectID) { (contacts, error) in
+                    DispatchQueue.main.async {
+                        completion?(contacts, error)
                     }
                 }
-
-                if !contacts_json.isEmpty {
-                    self.cacheService.addNewContact(serverResponse: contacts_json, objectID: objectID) { (contacts, error) in
-                        DispatchQueue.main.async {
-                            completion?(contacts, error)
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        completion?(nil, lasterror)
-                    }
+            } else {
+                DispatchQueue.main.async {
+                    completion?(nil, lastError)
                 }
             }
         }
@@ -241,10 +234,13 @@ class ContactDataService: Service, HasLocalStorage {
      delete a contact
 
      - Parameter contactID: delete contact id
-     - Parameter completion: async delete prcess complete response
+     - Parameter completion: async delete process complete response
      **/
     func delete(contactID: ContactID, completion: @escaping ContactDeleteComplete) {
-        let api = ContactDeleteRequest(ids: [contactID.rawValue])
+        guard let api = ContactDeleteRequest(ids: [contactID.rawValue]) else {
+            completion(NSError.badParameter(contactID.rawValue))
+            return
+        }
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.coreDataService.performOnRootSavingContext { context in
@@ -588,7 +584,7 @@ class ContactDataService: Service, HasLocalStorage {
         }
         return result
     }
-    
+
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         do {

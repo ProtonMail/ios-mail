@@ -67,11 +67,11 @@ final class DataAttachmentDecryptionTests: XCTestCase {
         let keyPacket1bis = try Data(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1bis_keyPacket", withExtension: nil)!)
         let encryptedData1bis = try Data(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1bis_dataPacket", withExtension: nil)!)
 
-        XCTAssertThrowsError(try encryptedData1bis.decryptAttachment(keyPackage: keyPacket1bis, userKeys: [userKey], passphrase: passphrase, keys: [Key(keyID: "foo", privateKey: case1bisAddressKey, token: case1bisToken, signature: case1bisSignature)]), "Should throw Crypto.CryptoError.verificationFailed Error", { error in
-            if let error = error as? MailCrypto.CryptoError, case .verificationFailed = error {
+        XCTAssertThrowsError(try encryptedData1bis.decryptAttachment(keyPackage: keyPacket1bis, userKeys: [userKey], passphrase: passphrase, keys: [Key(keyID: "foo", privateKey: case1bisAddressKey, token: case1bisToken, signature: case1bisSignature)]), "Should throw CryptoError.tokenSignatureVerificationFailed", { error in
+            if let error = error as? CryptoError, case .tokenSignatureVerificationFailed = error {
                 XCTAssertTrue(true)
             } else {
-                XCTFail("Should throw Crypto.CryptoError.verificationFailed Error")
+                XCTFail("Should throw CryptoError.tokenSignatureVerificationFailed")
             }
         })
     }
@@ -83,66 +83,6 @@ final class DataAttachmentDecryptionTests: XCTestCase {
         let decryptedData = plainData.data(using: .utf8)!
         XCTAssertEqual(outData, decryptedData)
     }
-
-    func testGetAddressKeyPassphraseShouldReturnDefaultPassphraseWhenTokenIsNil() throws {
-        let case1Signature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_signature", withExtension: "txt")!)
-        let case1AddressKey = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_addressKey", withExtension: "txt")!)
-        let keyWithoutToken = Key(keyID: "foo", privateKey: case1AddressKey, token: nil, signature: case1Signature)
-        let expectedPassphrase = passphrase
-        let returnedPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: [userKey], passphrase: expectedPassphrase, key: keyWithoutToken)
-        XCTAssertEqual(expectedPassphrase, returnedPassphrase)
-    }
-
-    func testGetAddressKeyPassphraseShouldReturnDefaultPassphraseWhenSignatureIsNil() throws {
-        let case1Token = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_token", withExtension: "txt")!)
-        let case1AddressKey = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_addressKey", withExtension: "txt")!)
-        let keyWithoutSignature = Key(keyID: "foo", privateKey: case1AddressKey, token: case1Token, signature: nil)
-        let expectedPassphrase = passphrase
-        let returnedPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: [userKey], passphrase: expectedPassphrase, key: keyWithoutSignature)
-        XCTAssertEqual(expectedPassphrase, returnedPassphrase)
-    }
-
-    func testGetAddressKeyPassphraseShouldReturnPlainTokenPassphraseWhenTokenAndSignatureAreRight() throws {
-        let case1Token = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_token", withExtension: "txt")!)
-        let case1Signature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_signature", withExtension: "txt")!)
-        let case1AddressKey = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_addressKey", withExtension: "txt")!)
-        let fullkey = Key(keyID: "foo", privateKey: case1AddressKey, token: case1Token, signature: case1Signature)
-        let expectedPassphrase = try case1Token.decryptMessageWithSingleKeyNonOptional(userKey, passphrase: passphrase)
-        let returnedPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: [userKey], passphrase: passphrase, key: fullkey)
-        XCTAssertEqual(expectedPassphrase, returnedPassphrase.value)
-    }
-
-    func testGetAddressKeyPassphraseShouldThrowErrorIfWrongPassphraseIsSupplied() throws {
-        let case1Token = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_token", withExtension: "txt")!)
-        let case1Signature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_signature", withExtension: "txt")!)
-        let case1AddressKey = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "case1_addressKey", withExtension: "txt")!)
-        let key = Key(keyID: "foo", privateKey: case1AddressKey, token: case1Token, signature: case1Signature)
-
-        XCTAssertThrowsError(
-            try MailCrypto.getAddressKeyPassphrase(userKeys: [userKey], passphrase: Passphrase(value: "wrong passphrase"), key: key),
-            "Should throw Crypto.CryptoError.messageCouldNotBeDecrypted Error",
-            { error in
-                switch error {
-                case CryptoKeyError.noKeyCouldBeUnlocked:
-                    XCTAssertTrue(true)
-                default:
-                    XCTFail("Should throw Crypto.CryptoError.messageCouldNotBeDecrypted Error")
-                }
-            }
-        )
-    }
-
-    func testGetAddressKeyPassphraseShouldThrowErrorWhenTokenHasWrongFormat() throws {
-        let malformedToken = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "malformed_token", withExtension: "txt")!)
-        let malformedSignature = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "malformed_signature", withExtension: "txt")!)
-        let malformedAddressKey = try String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "malformed_addressKey", withExtension: "txt")!)
-        let key = Key(keyID: "foo", privateKey: malformedAddressKey, token: malformedToken, signature: malformedSignature)
-
-        XCTAssertThrowsError(
-            try MailCrypto.getAddressKeyPassphrase(userKeys: [userKey], passphrase: passphrase, key: key)
-        )
-    }
-
 }
 
 final class AttachmentDecryptorMock: AttachmentDecryptor {

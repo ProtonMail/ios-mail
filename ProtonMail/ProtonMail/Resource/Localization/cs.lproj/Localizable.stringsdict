@@ -2,26 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d členové</string>
-			<key>many</key>
-			<string>%d členů</string>
-			<key>one</key>
-			<string>%d member</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -33,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d minutes</string>
+			<string>%d minuty</string>
 			<key>many</key>
-			<string>%d minutes</string>
+			<string>%d minut</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d minuta</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d minut</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -53,13 +33,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Selected</string>
+			<string>Vybráno: %d</string>
 			<key>many</key>
-			<string>%d Selected</string>
+			<string>Vybráno: %d</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>Vybráno: %d</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>Vybráno: %d</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -73,13 +53,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d attachments</string>
+			<string>%d přílohy</string>
 			<key>many</key>
-			<string>%d attachments</string>
+			<string>%d příloh</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d příloha</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d příloh</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -178,8 +158,6 @@
 			<string>%d den</string>
 			<key>other</key>
 			<string>%d dnů</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -242,11 +220,29 @@
 			<string>%d hodina</string>
 			<key>other</key>
 			<string>%d hodin</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d členové</string>
+			<key>many</key>
+			<string>%d členů</string>
+			<key>one</key>
+			<string>%d člen</string>
+			<key>other</key>
+			<string>%d členů</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -339,13 +335,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d seconds</string>
+			<string>%d sekundy</string>
 			<key>many</key>
-			<string>%d seconds</string>
+			<string>%d sekund</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d sekunda</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d sekund</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -509,7 +505,7 @@
 			<key>one</key>
 			<string>Tato %d zpráva bude přesunuta do složky Koncepty a její plán bude odstraněn.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Těchto %d zpráv bude přesunuto do složky Koncepty a jejich plán bude odstraněn.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

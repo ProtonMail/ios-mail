@@ -102,6 +102,10 @@ public final class LoginRobot: CoreElements {
         public func changePasswordConfirm() {
             button(buttonChangePassword).wait(time: 20).checkExists()
         }
+        
+        public func bannerExtAccountErrorShown() {
+            textView(externalAccountsNotSupportedBannerText).wait().checkExists()
+        }
     }
     
     public func insertPassword(password: String) -> LoginRobot {

@@ -80,6 +80,7 @@ struct BackendConfiguration {
 
     enum Arguments {
         static let UITests = "-uiTests"
+        static let disableToolbarSpotlight = "-toolbarSpotlightOff"
     }
 
     private(set) var environment: BackendEnvironment

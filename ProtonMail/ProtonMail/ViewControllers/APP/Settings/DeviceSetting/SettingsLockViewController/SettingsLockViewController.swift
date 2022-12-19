@@ -78,10 +78,6 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         self.title = viewModel.appPINTitle
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateTableProtectionSection()

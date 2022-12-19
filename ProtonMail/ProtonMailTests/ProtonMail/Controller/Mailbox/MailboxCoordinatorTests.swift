@@ -26,26 +26,45 @@ class MailboxCoordinatorTests: XCTestCase {
     var viewModelMock: MockMailBoxViewModel!
     var reachabilityStub: ReachabilityStub!
     var applicationStateStub: UIApplication.State = .active
+    var contactGroupProviderMock: MockContactGroupsProvider!
+    var labelProviderMock: MockLabelProvider!
+    var contactProviderMock: MockContactProvider!
+    var conversationProviderMock: MockConversationProvider!
+    var eventServiceMock: EventsServiceMock!
+    var infoBubbleViewStatusProviderMock: MockToolbarCustomizationInfoBubbleViewStatusProvider!
+    var toolbarActionProviderMock: MockToolbarActionProvider!
+    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
+    var uiNavigationControllerMock: UINavigationController!
+    var dummyServices: ServiceFactory!
+    var connectionStatusProviderMock: InternetConnectionStatusProvider!
+    var contextProviderMock: MockCoreDataContextProvider!
+    var pushServiceMock: MockPushNotificationService!
+    var lastUpdatedStoreMock: MockLastUpdatedStore!
+    var conversationStateProviderMock: MockConversationStateProvider!
+    var humanCheckStatusProviderMock: MockHumanCheckStatusProvider!
 
     override func setUp() {
         super.setUp()
 
-        let dummyServices = ServiceFactory()
+        dummyServices = ServiceFactory()
         let dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 
-        let conversationStateProviderMock = MockConversationStateProvider()
-        let humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
-        let lastUpdatedStoreMock = MockLastUpdatedStore()
-        let pushServiceMock = MockPushNotificationService()
-        let contextProviderMock = MockCoreDataContextProvider()
+        conversationStateProviderMock = MockConversationStateProvider()
+        humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
+        lastUpdatedStoreMock = MockLastUpdatedStore()
+        pushServiceMock = MockPushNotificationService()
+        contextProviderMock = MockCoreDataContextProvider()
         mailboxViewControllerMock = MailboxViewController()
-        let uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
-        let contactGroupProviderMock = MockContactGroupsProvider()
-        let labelProviderMock = MockLabelProvider()
-        let contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
-        let conversationProviderMock = MockConversationProvider(context: contextProviderMock.viewContext)
-        let eventServiceMock = EventsServiceMock()
+        uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
+        contactGroupProviderMock = MockContactGroupsProvider()
+        labelProviderMock = MockLabelProvider()
+        contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
+        conversationProviderMock = MockConversationProvider(context: contextProviderMock.mainContext)
+        eventServiceMock = EventsServiceMock()
+        infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
+        toolbarActionProviderMock = MockToolbarActionProvider()
+        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
@@ -67,12 +86,14 @@ class MailboxCoordinatorTests: XCTestCase {
                                              conversationProvider: conversationProviderMock,
                                              eventsService: eventServiceMock,
                                              dependencies: dependencies,
+                                             toolbarActionProvider: toolbarActionProviderMock,
+                                             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                              totalUserCountClosure: {
             return 0
         })
 
         reachabilityStub = ReachabilityStub()
-        let connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
+        connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
 
         sut = MailboxCoordinator(sideMenu: nil,
                                  nav: uiNavigationControllerMock,
@@ -80,6 +101,7 @@ class MailboxCoordinatorTests: XCTestCase {
                                  viewModel: viewModelMock,
                                  services: dummyServices,
                                  contextProvider: contextProviderMock,
+                                 infoBubbleViewStatusProvider: infoBubbleViewStatusProviderMock,
                                  internetStatusProvider: connectionStatusProviderMock,
                                  getApplicationState: {
             return self.applicationStateStub
@@ -98,6 +120,17 @@ class MailboxCoordinatorTests: XCTestCase {
         sut = nil
         viewModelMock = nil
         mailboxViewControllerMock = nil
+        uiNavigationControllerMock = nil
+        dummyServices = nil
+        contextProviderMock = nil
+        connectionStatusProviderMock = nil
+        pushServiceMock = nil
+        lastUpdatedStoreMock = nil
+        humanCheckStatusProviderMock = nil
+        conversationStateProviderMock = nil
+        infoBubbleViewStatusProviderMock = nil
+        toolbarActionProviderMock = nil
+        saveToolbarActionUseCaseMock = nil
     }
 
     func testFetchConversationFromBEIfNeeded_withNoConnection() {
