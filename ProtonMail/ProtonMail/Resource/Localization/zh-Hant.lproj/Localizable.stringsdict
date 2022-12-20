@@ -19,7 +19,7 @@
 	<key>%d Selected</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@已選@</string>
+		<string>%#@selected@</string>
 		<key>selected</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -33,7 +33,7 @@
 	<key>%d attachment</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@附件@</string>
+		<string>%#@attachment@</string>
 		<key>attachment</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -226,12 +226,12 @@
 			<string>%d 分鐘</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@分鐘@</string>
+		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@秒@</string>
+		<string>%#@second@</string>
 		<key>second</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -254,12 +254,12 @@
 			<string>%u 個會話</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@對話@</string>
+		<string>%#@CONVERSATION@</string>
 	</dict>
 	<key>%u message</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@郵件@</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
