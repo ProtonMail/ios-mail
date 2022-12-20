@@ -49,7 +49,6 @@ end
 def pm_pods
   common_pods
   pod 'DKImagePickerController/PhotoGallery', '4.3.4'
-  pod 'LifetimeTracker'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher-V5', :git => proton_core_path, :tag => proton_core_version
@@ -138,8 +137,6 @@ target 'ProtonMailAnalytics' do
 end
 
 post_install do | installer |
-  require 'fileutils'
-  FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Supporting Files/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'

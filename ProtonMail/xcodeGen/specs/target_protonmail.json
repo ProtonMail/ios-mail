@@ -73,12 +73,19 @@
             },
             {
                "sdk": "StoreKit.framework"
+            },
+            {
+               "package": "LifetimeTracker"
             }
          ],
          "postBuildScripts": [
             {
                "name": "SwiftLint",
                "path": "xcodeGen/swiftlint.sh"
+            },
+            {
+               "name": "LicensePlist",
+               "path": "xcodeGen/licensePlist.sh"
             }
          ],
          "configFiles": {
