@@ -158,11 +158,8 @@ class NewMessageBodyViewController: UIViewController {
             webView.navigationDelegate = self
             webView.uiDelegate = self
             webView.scrollView.delegate = self
-            if viewMode == .singleMessage {
-                webView.scrollView.delegate = self
-                // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
-                webView.scrollView.isScrollEnabled = false
-            }
+            // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
+            webView.scrollView.isScrollEnabled = false
             webView.scrollView.contentInsetAdjustmentBehavior = .never
             webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
             webView.scrollView.bouncesZoom = false
@@ -541,10 +538,13 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if let defaultScale = self.defaultScale {
-            if round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale {
-                scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
-            }
+        if let defaultScale = self.defaultScale,
+           round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale,
+           // Some messages could have issue while rendering inside the WebView. The content size of it will keep increasing by 1px.
+           // And this behavior causes the height of the contentSize is bigger than the height of the frame even the zoomScale is zero.
+           // Here we double check if this message has this kind of issue.
+           scrollView.contentSize.height < scrollView.frame.height {
+            scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
         }
     }
 
