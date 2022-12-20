@@ -115,8 +115,9 @@ final class ReferralShareViewController: UIViewController {
 
     @objc
     private func shareLink(_ sender: UIButton) {
+        let shareContent = "\(L11n.ReferralProgram.shareContent) \(referralLink)"
         let activityVC = UIActivityViewController(
-            activityItems: [referralLink],
+            activityItems: [shareContent],
             applicationActivities: nil
         )
         activityVC.popoverPresentationController?.sourceView = sender
