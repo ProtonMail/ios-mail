@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d λεπτό</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d λεπτά</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -45,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d συνημμένο</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d συνημμένα</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -191,9 +191,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d μέλος</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d μέλη</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>

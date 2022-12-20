@@ -1,8 +1,14 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", no seran cercats. Per cercar-hi, incrementeu el %1$@";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostra el missatge complet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Cerca al contingut del missatge' es desactivarà. Es pot tornar a activar des de la configuració i caldrà descarregar de nou tots els missatges.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
@@ -123,8 +129,20 @@
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Tots els ajustos de protecció es restabliran i s'eliminaran al sortir de l'aplicació.";
 
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Tots els vostres missatges s'han descarregat";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Autoritza un enrutament alternatiu";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Us permet obrir adjunts oberts prèviament mentre esteu fora de línia.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Us permet obrir missatges llegits prèviament mentre esteu fora de línia.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Us permet buscar dintre dels vostres missatges. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Arxivar també?";
@@ -181,6 +199,9 @@
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "N'esteu segur, de voler eliminar permanentment aquest missatge?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Esteu segurs que voleu eliminar permanentment tots aquests %d missatges?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
@@ -252,6 +273,9 @@
 /* Error Description */
 "Bad response" = "Resposta errònia";
 
+/* Title */
+"Bcc" = "Cco";
+
 /* message Bcc: feild */
 "Bcc:" = "Cco:";
 
@@ -261,6 +285,9 @@
 /* Settings row */
 "Block email tracking" = "Bloquegi el seguiment del correu electrònic";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Bloqueja que els remitents puguin veure si heu obert el missatge i quan ho heu fet";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegueu ràpidament a través dels missatges encadenats en el mode conversa.";
 
@@ -269,6 +296,9 @@
 
 /* Title */
 "Bug Report Received" = "Informe d'error rebut";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Dades en la memòria cau";
 
 /* Call the contact (button title text) */
 "Call contact" = "Trucar contacte";
@@ -328,6 +358,10 @@
 /* Warning message */
 "Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Cc";
+
 /* settings general section title */
 "Change account password" = "Canviar contrasenya del compte";
 
@@ -350,11 +384,17 @@
 /* Title */
 "Change sender address to…" = "Canvieu l'adreça del remitent a…";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Carregueu el vostre dispositiu o continueu manualment.";
+
 /* Action */
 "Check Again" = "Comprovar-ho un altre cop";
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Visiteu Proton Status per conèixer l'estat del nostre sistema.";
+
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "Escolliu una adreça de remitent diferent";
 
 /* contact placeholder */
 "City" = "Ciutat";
@@ -418,6 +458,9 @@
 /* Title */
 "Confirmation" = "Confirmació";
 
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Connecteu a WiFi o activeu \"Descarregar via dades mòbils\".";
+
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "S'ha eliminat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
@@ -430,6 +473,9 @@
 /* Action and title
    menu title */
 "Contacts" = "Contactes";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Cerca de contingut disponible";
 
 /* Action
    The title of button of PIN code setup1 */
@@ -528,6 +574,9 @@
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Eliminar %d missatges";
 
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Eliminar tots els missatges descarregats?";
+
 /* Title-Contacts */
 "Delete contact" = "Elimina el contacte";
 
@@ -556,14 +605,26 @@
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Desactivat";
 
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Desactivant la característica eliminarà els missatges que ja s'han descarregat.";
+
 /* Action */
 "Discard" = "Descarta";
 
 /* Action */
 "Discard changes" = "Descarta els canvis";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Descartat";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Tanca el teclat";
+
+/* Title in settings */
+"Display Name" = "Nom a mostrar";
+
+/* Title in display name settings */
+"DisplayName" = "Nom a mostrar";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "N'esteu segur, de voler eliminar aquest arxiu dels arxius adjunts?";
@@ -589,8 +650,46 @@
 /* Done action */
 "Done" = "Fet";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Descàrrega en pausa";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Descàrrega en pausa: nivell de bateria baix";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Descàrrega en pausa: cap connectivitat";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Descàrrega en pausa: no s'ha detectat cap WiFi";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Descàrrega en pausa: emmagatzematge ple";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Progrés de la descàrrega";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Descàrrega mitjançant dades mòbils";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Missatges descarregats";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Els missatges descarregats s'eliminaran.";
+
 /* The text for the number of downloaded messages. */
 "Downloading message %1d out of %2d" = "Baixant missatge %1$d de %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Descarregant metadades...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Descarregant missatges nous";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Descarrega els correus electrònics per tal que pugueu cercar-hi dins. Els missatges són xifrats i desats localment. %1$@";
 
 /* Action */
 "Draft" = "Esborrany";
@@ -614,8 +713,7 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Editar avatar";
 
-/* *
- *  Edit Contact view controller */
+/* Contacts Edit contact */
 "Edit Contact" = "Editar contacte";
 
 /* The title of edit folder page */
@@ -648,6 +746,18 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Contacte de correu electrònic";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "Ha fallta l'enviament del correu electrònic. El missatge s'ha guardat com a esborrany.";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Els rastrejadors de correu poden violar la vostra privacitat.";
+
+/* Name of the feature */
+"Email tracking protection" = "Protecció de seguiment de correu electrònic";
+
+/* Spotlight explanation of the feature */
+"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Ja està disponible la protecció de seguiment de correu electrònic. Els remitents no sabran si, on, o quan heu obert els seus correus electrònics.";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Buida el correu brossa";
 
@@ -663,6 +773,9 @@
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "Habilitar";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Activar la cerca de contingut";
 
 /* Title */
 "Enable email notices" = "Habilitar avisos de correu electrònic";
@@ -715,8 +828,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "Error a l'enviar";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Calculant el temps restant...";
+
 /* lock app option */
 "Every time enter app" = "Cada vegada que ingresseu a l'aplicació";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Exclou el contingut del missatge";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Amplia la carpeta";
@@ -756,6 +875,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "Missatge reenviat";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Allibereu almenys 100 MB d'emmagatzematge per a continuar.";
 
 /* Title */
 "From" = "De";
@@ -799,6 +921,9 @@
 /* network troubleshot cell title */
 "Government block" = "Bloqueig governamental";
 
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Agrupar correus electrònics de la mateixa conversa tots junts.";
+
 /* The instruction label for the group name textfield */
 "Group name" = "Nom del grup";
 
@@ -811,6 +936,9 @@
 /* Title */
 "Hide details" = "Amagar els detalls";
 
+/* hours */
+"hours" = "hores";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Com descriuria la seva experiència amb el nou Proton Mail?";
 
@@ -822,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avís de verificació humana";
+
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Si perdeu la connexió WiFi la descàrrega continuarà sobre les dades mòbils.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignora l'avís i continua";
@@ -850,6 +981,9 @@
 
 /* Error */
 "Incorrect PIN." = "PIN incorrecte.";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Informació sobre quant espai d'emmagatzematge del vostre dispositiu està utilitzant aquest compte de Proton Mail.";
 
 /* Option title */
 "Inherit color from parent folder" = "Heretat d'una carpeta principal";
@@ -890,8 +1024,14 @@
 /* Error message */
 "Invalid username!" = "Nom d'usuari invàlid!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Convida amistats a Proton.\nObtingui fins a 90 $ en crèdits.";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Convideu els vostres contactes a Proton Mail per gaudir de xifrat perfecte d'extrem a extrem, o afegiu protecció de contrasenya als missatges que els envieu.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convideu els amics a Proton: ells proven Mail Plus gratuïtament i vós guanyeu crèdits si es subscriuen a un pla de pagament.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Aquest informe és sobre una compra des de l'aplicació?";
@@ -931,6 +1071,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "S'ha assolit el límit";
 
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Enllaç copiat.";
+
 /* Button inside the banner */
 "Load anyway" = "Carrega de totes maneres";
 
@@ -950,8 +1093,14 @@
 /* cell title in device settings */
 "Local storage limit" = "Límit d'emmagatzematge local";
 
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "límit d'emmagatzematge local.";
+
 /* menu title */
 "Lock The App" = "Bloqueja l'aplicació";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Torneu a iniciar sessió per continuar rebent actualitzacions";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "S'ha tancat la sessió de %@";
@@ -990,6 +1139,9 @@
 /* menu title */
 "Menu" = "Menú";
 
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Missatge";
+
 /* No comment provided by engineer. */
 "Message actions" = "Accions del missatge";
 
@@ -998,6 +1150,9 @@
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
+
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Descàrrega del missatge pausada. Trobeu com %1$@";
 
 /* Composer expiration page title */
 "Message expiration" = "Caducitat del missatge";
@@ -1014,6 +1169,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "Capçaleres del missatge";
 
+/* The title of message history in settings for encrypted search */
+"Message history" = "Historial del missatge";
+
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "S'ha mogut el missatge a la paperera";
 
@@ -1029,14 +1187,26 @@
 /* Description after message have been sent */
 "Message sent" = "Missatge enviat";
 
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Els missatges s'estan descarregant per a la cerca de contingut. Alguns resultats podrien no mostrar-se. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Missatges anteriors ";
+
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Els missatges d'abans de %@, no seràn cercats. Per cercar entre els missatges antics allibera espai a aquest dispositiu.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Els missatges es descarregaran a través de WiFi. Això pot trigar força temps i el vostre dispositiu es mpot escalfar lleugerament. Podeu pausar l'acció en qualsevol moment.";
 
 /* default vcard types */
 "Mobile" = "Mòbil";
 
 /* Mobile Signature title in settings */
 "Mobile Signature" = "Signatura mòbil";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "Dilluns (%1$@) a les 08:%2$d";
 
 /* More actions button */
 "More" = "Més";
@@ -1112,6 +1282,9 @@
 /* Title */
 "No connectivity detected…" = "No s'ha detectat cap connectivitat…";
 
+/* Short hint in the header view */
+"No email trackers found" = "No s'han trobat rastrejadors de correu electrònic";
+
 /* network troubleshot cell title */
 "No internet connection" = "No hi ha connexió a Internet";
 
@@ -1148,6 +1321,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "No és correu brossa (mou a la safata d'entrada)";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "No s'han descarregat tots els missatges. Per a descarregar-los allibereu emmagatzematge al dispositiu.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "No s'han descarregat tots els missatges. Per a descarregar-los augmenteu el límit d'emmagatzematge aquí sota.";
+
 /* No comment provided by engineer. */
 "Not set" = "No establert";
 
@@ -1170,11 +1349,17 @@
 /* Title of the alert when the device is offline */
 "Offline" = "Fora de línia";
 
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Fora de línia, missatge a la cua per enviar";
+
 /* Action */
 "OK" = "D'acord";
 
 /* Title for the alert button to disable content search. */
 "Okay" = "D'acord";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Missatge més antic: ";
 
 /* The title of On setting options */
 "On" = "Activat";
@@ -1268,6 +1453,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Si us plau, connecteu-vos i torneu-ho a intentar";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Connecteu a internet per a continuar.";
 
 /* error message */
 "Please input a valid email address." = "Introduïu una adreça de correu electrònic vàlida.";
@@ -1423,6 +1611,9 @@
 /* Text for resume button */
 "Resume" = "Continuar";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "continuar manualment.";
+
 /* Action */
 "Retry" = "Reintentar";
 
@@ -1442,6 +1633,12 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programar enviament";
 
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "S'eliminarà la programació";
+
+/* mail location title */
+"Scheduled" = "Programat";
+
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Programant missatge...";
 
@@ -1452,6 +1649,15 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Cercar al contingut del missatge";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "La cerca triga massa? %1$@ d'aquesta cerca per a obtenir resultats més ràpids.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Veure detalls";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Veure el progrés.";
 
 /* section title */
 "Select colour" = "Seleccionar color";
@@ -1488,6 +1694,9 @@
 
 /* Alert title */
 "Sending in progress" = "Enviament en procés";
+
+/* Description */
+"Sending Message" = "S'està enviant el Missatge";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviant missatge…";
@@ -1574,6 +1783,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posposa";
 
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "La càrrega d'algunes imatges ha fallat amb la protecció de seguiment.";
+
 /* menu title */
 "Spam" = "Correu brossa";
 
@@ -1607,6 +1819,12 @@
 /* Storage warning */
 "Storage quota exceeded" = "Límit d'emmagatzematge superat";
 
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Emmagatzematge utilitzat";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Emmagatzematge utilitzat:";
+
 /* Title */
 "Storage Warning" = "Avís d'emmagatzematge";
 
@@ -1638,6 +1856,9 @@
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Canviar mode de selecció";
 
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Commutar el filtre de no llegits";
+
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Canviar al compte ‘%@’";
 
@@ -1650,8 +1871,14 @@
 /* No comment provided by engineer. */
 "Tap here to set" = "Toqueu aquí per establir";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Expliqueu-nos la vostra experiència. (Opcional)";
+
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Deshabilita temporalment o elimina el teu software d'antivirus.";
+
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Termes i condicions";
 
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gràcies per enviar un informe d'error. Hem afegit el vostre informe al nostre sistema de seguiment d'errors.";
@@ -1662,11 +1889,20 @@
 /* Error message */
 "The 2 passwords are not matching" = "Les 2 contrasenyes no coincideixen";
 
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Les accions a la barre d'eines es restablirant a les predeterminades";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "La descàrrega s'aturarà i l'aplicació de Proton Mail es tanca.";
+
 /* Description */
 "The draft cache is broken. Please try again." = "La memòria cau de l’esborrany està trencada. Si us plau, torneu-ho a provar.";
 
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "No s'han pogut adjuntar els fitxers següents:";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "El missatge s'està enviant i es mourà a la carpeta Enviats una vegada es completi l'enviament.";
 
 /* update password error */
 "The new password can't be empty." = "La nova contrasenya no pot estar buida.";
@@ -1694,6 +1930,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "La clau enviada no es vàlida";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "L'hora d'enviament ha de ser ser almenys d'aquí a 5 minuts.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límit de mida pels arxius adjunts és de 25Mb.";
@@ -1737,11 +1976,17 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Aquest enllaç porta a un lloc web que podria intentar robar-vos la vostra informació, com contrasenyes i detalls de la targeta de crèdit.%@\n\nPer a la vostra seguretat, no continueu.";
 
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Aquest missatge ja no està programat per a ser enviat més tard. Si encara voleu enviar-lo més tard podeu prémer a \"Programar enviament\"";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Aquest missatge pot ser un intent de suplantació d’identitat. Comproveu el remitent i els continguts per assegurar-vos que són legítims.";
 
 /* The title of auto reply banner */
 "This message was automatically generated" = "Aquest missatge s'ha generat automàticament";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Aquest missatge s'enviarà %1$@ a les %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Aquest missatge caducarà d'aquí %1$dD %2$dH %3$dM";
@@ -1749,8 +1994,17 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Aquesta preferència converteix al Safari si es desinstal·la el navegador escollit.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Aquesta barra d'eines apareix quan se seleccionen múltiples missatges en la vostra safata d'entrada.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Aquesta barra d'eines és visible quan s'està llegint un missatge.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "És moment de relaxar-se";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Temporització";
 
 /* contacts talbe cell Title title */
 "Title" = "Títol";
@@ -1768,14 +2022,23 @@
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Avui, %@";
 
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Demà a les 08:%02d";
+
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
 "Tomorrow, %@" = "Demà, %@";
 
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Hi ha massa missatges esperant per ser enviats.\nEspereu que s'enviï un altre missatge per programar aquest.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Accions de la barra d'eines (seleccioneu-ne fins a 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Seguiu les vostres recompenses";
 
 /* mail location desc
    menu title */
@@ -1946,8 +2209,23 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Esteu fora de línia";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Podeu escollir i reorganitzar les accions de la vostra barra d'eines";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Podeu desactivar les converses des de la configuració en qualsevol moment.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Ara podeu escollir i reorganitzar les accions d'aquesta barra";
+
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Ara podeu programar els vostres missatges per tal que s'enviïn més tard";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Ara podeu cercar dintre dels missatges. Aquesta característica es pot activar des de la configuració en qualsevol moment.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Podeu cercar dintres dels missatges descarregats. Per a tota la resta de missatges només es cercarà a la llista de destinataris i la línia de l'assumpte.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "No podeu configurar %@ adreça com a predeterminada perquè és una funció de pagament.";
@@ -1967,6 +2245,9 @@
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Heu introduït almenys un destinatari desconegut. Verifiqueu els vostres destinataris.";
 
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "No teniu cap missatges.";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Hi ha canvis no desats. Vols desar-los?";
 
@@ -1985,11 +2266,17 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Aixó esborrarà el missatge de manera irreversible. Està segur?";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "Esteu protegits dels rastrejadors de correu electrònic";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Els vostres canvis es descartaran";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "El teu país pot bloquetgar l’accés a Proton. Provi utilitzar %1$@ (o altre VPN) o %2$@ per accedir a Proton.";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Els vostres correus electrònics ara venen amb les imatges remotes carregades per defecte. Els remitents no sabran si, on, o quan heu obert els seus correus electrònics. Per a canviar-ho, aneu a Configuració → Configuració del compte → Privacitat.";
 
 /* Title of user feedback view */
 "Your feedback" = "Els teus comentaris";
@@ -2002,6 +2289,9 @@
 
 /* The section title of label manager table */
 "Your labels" = "Les vostres etiquetes";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "S'estan descarregant els missatges...";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La vostra sessió ha caducat perquè heu estat inactiva durant un temps o perquè s'ha revocat. Torneu a iniciar la sessió.";

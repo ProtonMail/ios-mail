@@ -1,8 +1,14 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "，無法進一步搜尋。若需在其中進行搜尋，請調高 %1$@ 上限";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[顯示完整郵件]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "於 E, MMM d, yyyy 時間 %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "「搜尋郵件內容」已停用。可以從設定中重新啟用，同時必須再下載所有郵件。";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%2$@ 中的 %1$@";
@@ -32,7 +38,7 @@
 "8 to 21 characters long" = "長度為 8 至 21 個字元";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "本帳號因有未付款項而被停用，請登入 proton.me 進行付款。";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "此帳號因仍有逾期待繳款項而被停用，請登入 proton.me 進行繳款。";
 
 /* Account manager title */
 "Account" = "帳號";
@@ -41,7 +47,7 @@
 "Account settings" = "帳號設定";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "操作已復原";
+"Action reverted" = "動作復原";
 
 /* new contacts add Anniversary */
 "Add anniversary" = "加入紀念日";
@@ -359,6 +365,9 @@
 /* settings general section title */
 "Change account password" = "變更帳號密碼";
 
+/* Title */
+"Change default address to…" = "變更預設郵件位址為...";
+
 /* settings general section title */
 "Change mailbox password" = "變更郵箱密碼";
 
@@ -371,6 +380,9 @@
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "變更 PIN 碼";
+
+/* Title */
+"Change sender address to…" = "變更寄件人電郵位址為...";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "充電您的裝置或手動恢復。";
@@ -601,6 +613,9 @@
 
 /* Action */
 "Discard changes" = "捨棄變更";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "取消儲存";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "收起螢幕鍵盤";
@@ -1009,8 +1024,14 @@
 /* Error message */
 "Invalid username!" = "無效的使用者名稱！";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "推薦親友加入 Proton，\n就有機會獲得高達 90 元獎勵金！";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "邀請您的親朋好友一同加入 Proton Mail，享有無縫接軌的端對端加密，也可以在您傳送給他們的郵件裡，加入密碼防護功能。";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "推薦親友加入 Proton：新手親友們可免費嚐鮮 Mail Plus，期滿後若繼續訂購授權方案，您也同享獎勵金入帳。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "這是關於APP內購買的錯誤回報嗎？";
@@ -1168,6 +1189,12 @@
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "正在下載郵件以進行內容搜尋。有些結果可能不會顯示。%1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "郵件日期等於或早於 ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "郵件日期等於或早於 %@，無法進一步搜尋。若需在該範圍內搜尋，則必須在此裝置上釋出更多儲存空間才可進行。";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "郵件將透過 WiFi 下載。這可能需要一些時間，而且您的裝置可能會稍微發熱。您可以隨時暫停操作。";
@@ -1609,6 +1636,9 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "行事曆將會被移除";
 
+/* mail location title */
+"Scheduled" = "已排程";
+
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "正在排程訊息...";
 
@@ -1883,6 +1913,9 @@
 /* update password error */
 "The new password needs to be at least 8 characters long" = "新密碼長度至少為八個字元";
 
+/* update password error */
+"The password is wrong." = "密碼錯誤。";
+
 /* Error message */
 "The password must be between 8 and 21 characters long" = "密碼長度必須介於 8 至 21 個字元";
 
@@ -1964,8 +1997,14 @@
 /* The title of the info label in the second segment of the Customize toolbar setting view. */
 "This toolbar appears when selecting multiple messages in your inbox." = "多選訊息時，收件匣會出現此工具列。";
 
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "讀取郵件時，顯示工具列。";
+
 /* The subtitle of empty inbox */
-"Time to relax" = "輕輕鬆鬆不是很棒嗎？";
+"Time to relax" = "中場休息一下";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "閒置計時";
 
 /* contacts talbe cell Title title */
 "Title" = "職銜";
@@ -1992,8 +2031,14 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "等待傳送的訊息太多了。";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "工具列動作 (最多可選 5 項)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "推薦獎勵總覽";
 
 /* mail location desc
    menu title */
@@ -2164,8 +2209,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "您現正離線";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "您可自由選擇或重新安排工具列的動作。";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "您可以在設定中隨時停用交談。";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "您可自由選擇或重新安排工具列的動作。";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "您現在可以安排稍後傳送訊息";
@@ -2215,11 +2266,17 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "此郵件一旦刪除將無法復原。您確定要刪除嗎？";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "您現在可放心不受電郵追蹤程式監控";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "您所作的變更將被捨棄";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的國家可能封鎖存取 Proton。請嘗試改用 %1$@ （或其它VPN）或 %2$@ 存取 Proton。";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "預設情況下，您收到的電郵裡會伴隨遠端載入的圖像。寄件者並不會知道您如何、何處、何時打開他們傳送的郵件。\n若要變更設定，請依序至「設定」→「帳號設定」→ 「個人隱私」。";
 
 /* Title of user feedback view */
 "Your feedback" = "您的意見回饋";

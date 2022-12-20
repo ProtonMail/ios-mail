@@ -191,9 +191,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d member</string>
+			<string>%d tag</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d tagok</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -405,7 +405,7 @@
 			<key>one</key>
 			<string>Ezt az %d üzenetet áthelyezzük a Vázlatokba és időbeosztását eltávolítjuk.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Ezeket a(z) %d üzeneteket áthelyezzük a Vázlatokba és időbeosztását eltávolítjuk.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

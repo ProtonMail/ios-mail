@@ -228,6 +228,9 @@
 /* settings general section title */
 "Auto-load embedded images" = "Αυτόματη φόρτωση ενσωματωμένων εικόνων";
 
+/* settings general section title */
+"Auto-load remote content" = "Αυτόματη φόρτωση απομακρυσμένου περιεχομένου";
+
 /* Example feedback */
 "Awful" = "Απαίσια";
 
@@ -578,10 +581,6 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Επεξεργασία avatar";
 
-/* *
- *  Edit Contact view controller */
-"Edit Contact" = "Επεξεργασία επαφής";
-
 /* The title of edit folder page */
 "Edit folder" = "Επεξεργασία φακέλου";
 
@@ -684,6 +683,9 @@
 
 /* lock app option */
 "Every time enter app" = "Κάθε φορά που ανοίγω την εφαρμογή";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Εξαιρέστε το περιεχόμενο του μηνύματος";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Ανάπτυξη φακέλου";
@@ -902,6 +904,9 @@
 /* No comment provided by engineer. */
 "Loading…" = "Γίνεται φόρτωση…";
 
+/* The title of local storage in settings */
+"Local storage" = "Τοπικός χώρος αποθήκευσης";
+
 /* cell title in device settings */
 "Local storage limit" = "Όριο τοπικής αποθήκευσης";
 
@@ -944,6 +949,9 @@
 
 /* menu title */
 "Menu" = "Μενού";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Μήνυμα";
 
 /* No comment provided by engineer. */
 "Message actions" = "Ενέργειες μηνύματος";
@@ -1063,6 +1071,9 @@
 
 /* Title */
 "No connectivity detected…" = "Δεν εντοπίστηκε σύνδεση…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Κανένας ιχνηλάτης μηνυμάτων";
 
 /* network troubleshot cell title */
 "No internet connection" = "Δεν υπάρχει σύνδεση στο Διαδίκτυο";
@@ -1320,6 +1331,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Η ανάκτηση ενεργοποιήθηκε";
 
+/* menu title */
+"Refer a friend" = "Συστήστε ένα φίλο";
+
 /* Title */
 "Remind Me Later" = "Υπενθύμιση αργότερα";
 
@@ -1360,6 +1374,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Ζητήστε σύνδεσμο επιβεβαίωσης";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Επαναφορά των προεπιλογών";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Επαναφορά των προεπιλογών?";
+
 /* Title */
 "Resetting message cache…" = "Επαναφορά της προσωρινής μνήμης μηνυμάτων…";
 
@@ -1381,6 +1401,9 @@
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Προγραμματισμός αποστολής";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Γίνεται προγραμματισμός μηνύματος...";
 
 /* Springboard (3D Touch) shortcuts action
    Title */
@@ -1433,6 +1456,12 @@
 "Sent" = "Απεσταλμένα";
 
 /* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Στάλθηκε από το Proton Mail με κρυπτογράφηση μηδενικής πρόσβασης";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Στάλθηκε από το Proton Mail με κρυπτογράφηση μηδενικής πρόσβασης στον επαληθευμένο παραλήπτη";
+
+/* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Στάλθηκε από εσάς με διατερματική κρυπτογράφηση";
 
 /* The message after tapping the encryption icon. */
@@ -1464,6 +1493,9 @@
 
 /* menu title */
 "Settings" = "Ρυθμίσεις";
+
+/* The title of the share button in referral share view. */
+"Share" = "Κοινοποίηση";
 
 /* action */
 "Share contact" = "Κοινή χρήση επαφής";
@@ -1516,6 +1548,9 @@
 
 /* Alert title */
 "Storage full" = "Αποθηκευτικός χώρος πλήρης";
+
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Όρια αποθηκευτικού χώρου";
 
 /* Storage warning */
 "Storage quota exceeded" = "Υπέρβαση ορίου αποθηκευτικού χώρου";
@@ -1572,6 +1607,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Αφαιρέστε ή απενεργοποιήστε προσωρινά το αντιιικό λογισμικό σας.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Όροι και προϋποθέσεις";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Σας ευχαριστούμε που υποβάλατε μια αναφορά σφάλματος. Προσθέσαμε την αναφορά σας στο σύστημα παρακολούθησης σφαλμάτων.";
 
@@ -1595,6 +1633,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Ο νέος κωδικός πρόσβασης πρέπει να έχει μήκος τουλάχιστον 8 χαρακτήρων";
+
+/* update password error */
+"The password is wrong." = "Ο κωδικός πρόσβασης είναι λανθασμένος.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Ο κωδικός πρόσβασης πρέπει να έχει μήκος μεταξύ 8 και 21 χαρακτήρων";
@@ -1720,6 +1761,9 @@
 
 /* Error */
 "Unknown Error" = "Άγνωστο Σφάλμα";
+
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Απεριόριστο";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Απαιτείται ξεκλείδωμα";

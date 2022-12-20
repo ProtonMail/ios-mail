@@ -283,7 +283,7 @@
 "Birthday" = "Fecha de nacimiento";
 
 /* Settings row */
-"Block email tracking" = "Bloquear el seguimiento del correo electrónico";
+"Block email tracking" = "Bloquear el rastreo de correo electrónico";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Impide que los remitentes vean si abriste el mensaje o cuando lo hiciste";

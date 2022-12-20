@@ -195,7 +195,7 @@
 /* menu title
    Push notification action to archive
    The title of the archive action in action sheet */
-"Archive" = "Archiver";
+"Archive" = "Archives";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Voulez-vous vraiment supprimer définitivement ce message ?";
@@ -265,10 +265,10 @@
 "Back" = "Précédent";
 
 /* Error title */
-"Bad parameter" = "Paramètre non valide";
+"Bad parameter" = "Le paramètre n'est pas correct.";
 
 /* Error Description */
-"Bad parameter: %@" = "Paramètre non valide : %@";
+"Bad parameter: %@" = "Le paramètre n'est pas correct : %@";
 
 /* Error Description */
 "Bad response" = "Mauvaise réponse";
@@ -552,10 +552,10 @@
 "Decryption error" = "Erreur de déchiffrement";
 
 /* error details */
-"Decryption of this content failed" = "Le déchiffrement de ce contenu a échoué.";
+"Decryption of this content failed" = "Ce contenu n'a pas pu être déchiffré.";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "Le déchiffrement du contenu chiffré de ce message a échoué.";
+"Decryption of this message's encrypted content failed." = "Le contenu de ce message chiffré n'a pas pu être déchiffré.";
 
 /* Title */
 "Default" = "Par défaut";
@@ -847,10 +847,10 @@
 "Face ID" = "Face ID";
 
 /* Error message */
-"Failed to determine type of file" = "Impossible de déterminer le type de fichier";
+"Failed to determine type of file" = "Le type de fichier n'a pas pu être déterminé.";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Impossible de charger le contenu.\nNous vous invitons à réessayer.";
+"Failed to load content!\nPlease try again." = "Le contenu n'a pas pu être chargé.\nNous vous invitons à réessayer.";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -980,7 +980,7 @@
 "Inbox" = "Boîte de réception";
 
 /* Error */
-"Incorrect PIN." = "Code PIN incorrect.";
+"Incorrect PIN." = "Le code PIN n'est pas correct.";
 
 /* The foot of downloaded messages in local storage settings */
 "Information about how much storage space this Proton Mail account is using on your device." = "Informations sur l'espace de stockage que ce compte Proton Mail utilise sur votre appareil.";
@@ -1016,13 +1016,13 @@
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Voici le nouveau look de Proton.\nPlusieurs services, une seule mission. Bienvenue sur un internet où la vie privée est la règle absolue.";
 
 /* update password error */
-"Invalid hashed password!" = "Mot de passe haché non valide";
+"Invalid hashed password!" = "Le mot de passe haché n'est pas valide.";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "URL non valide";
+"Invalid URL" = "L'URL n'est pas valide.";
 
 /* Error message */
-"Invalid username!" = "Nom d'utilisateur non valide";
+"Invalid username!" = "Le nom d'utilisateur n'est pas valide.";
 
 /* The article title of the referral share view. */
 "Invite friends to Proton,\n get up to $90 in credits!" = "Invitez des amis à rejoindre Proton et recevez jusqu'à 90 € en crédits !";
@@ -1182,13 +1182,13 @@
 "Message saved to Drafts" = "Message déplacé dans le dossier Brouillons";
 
 /* Description */
-"Message sending failed. Please try again." = "L'envoi du message a échoué, nous vous invitons à réessayer.";
+"Message sending failed. Please try again." = "Le message n'a pas pu être envoyé, nous vous invitons à réessayer.";
 
 /* Description after message have been sent */
 "Message sent" = "Message envoyé";
 
 /* Text for the search info banner when indexing is ongoing. */
-"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Les messages sont en cours de téléchargement pour la recherche de contenu. Certains résultats peuvent ne pas s'afficher. %1$@";
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Les messages sont en cours de téléchargement pour la recherche dans le contenu. Certains résultats peuvent ne pas s'afficher. %1$@";
 
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
 "Messages from before " = "Les messages antérieurs ";
@@ -1289,7 +1289,7 @@
 "No internet connection" = "Aucune connexion internet";
 
 /* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Aucune clé récupérée pour l’utilisateur interne";
+"No keys retrieved for internal user" = "Aucune clé n'a été récupérée pour l'utilisateur interne.";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "aucun objet";
@@ -1398,7 +1398,7 @@
 "Password Hint" = "Indice de mot de passe";
 
 /* update password error */
-"Password update failed" = "Échec de la mise à jour du mot de passe";
+"Password update failed" = "Le mot de passe n'a pas pu être mis à jour.";
 
 /* Placeholder */
 "Passwords must match" = "Les mots de passe doivent être identiques.";
@@ -1431,7 +1431,7 @@
 "PGP-signed message from verified sender" = "Message signé par PGP provenant d'un expéditeur vérifié";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "Message signé par PGP. La vérification de l'expéditeur a échoué.";
+"PGP-signed message. Sender verification failed" = "Message signé par PGP. L'expéditeur n'a pas pu être vérifié.";
 
 /* default vcard types */
 "Phone" = "Téléphone";
@@ -1687,7 +1687,7 @@
 "Send read receipt" = "Envoyer une confirmation de lecture";
 
 /* encryption lock description */
-"Sender Verification Failed" = "Échec de la vérification de l'expéditeur";
+"Sender Verification Failed" = "L'expéditeur n'a pas pu être vérifié.";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "L'envoi a échoué.";
@@ -1791,7 +1791,7 @@
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
-"Star" = "Favori";
+"Star" = "Ajouter aux Favoris";
 
 /* Title */
 "Star/unstar" = "Ajouter/Retirer des Favoris";
@@ -1923,7 +1923,7 @@
 "The PIN codes must match!" = "Les codes PIN doivent être identiques.";
 
 /* update password error */
-"The private key update failed." = "La mise à jour de la clé privée a échoué.";
+"The private key update failed." = "La clé privée n'a pas pu être mise à jour.";
 
 /* Title */
 "The request timed out." = "La requête a expiré.";
@@ -1953,19 +1953,19 @@
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Cette action ne peut pas être annulée. Les messages stockés dans ce dossier ne seront pas supprimés et seront accessibles dans le dossier Tous les messages.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Cette conversation contient des messages non placés dans le dossier Corbeille.";
+"This conversation contains non-trashed messages." = "Cette conversation a des messages qui ne sont pas dans le dossier Corbeille.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Cette conversation contient des messages placés dans le dossier Corbeille.";
+"This conversation contains trashed messages" = "Cette conversation a des messages qui sont dans le dossier Corbeille.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail a échoué aux tests d'authentification de son domaine. Il a peut-être été falsifié ou transféré incorrectement.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail a échoué aux exigences d'authentification de son domaine. Il a peut-être été falsifié ou transféré de manière incorrecte.";
 
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message a échoué aux exigences d'authentification de son nom de domaine. Il a peut-être été falsifié ou mal transféré.";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse Proton Mail, mais il vient de l'extérieur de notre système et a échoué aux tests d'authentification. Il a peut-être été falsifié ou transféré incorrectement.";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse Proton Mail, mais il vient de l'extérieur de notre système et a échoué à nos exigences d'authentification. Il a peut-être été falsifié ou transféré de manière incorrecte.";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Cette fonction retarde l'envoi de vos e-mails, vous donnant la possibilité d'annuler l'envoi pendant le délai choisi.";
@@ -2007,10 +2007,10 @@
 "Title" = "Titre";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "La validation du certificat TLS a échoué. Votre connexion est peut-être surveillée et l'application est temporairement bloquée pour votre sécurité.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Le certificat TLS n'a pas pu être validé. Votre connexion est peut-être surveillée et l'application est temporairement bloquée pour votre sécurité.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "La validation du certificat TLS a échoué. Votre connexion peut être surveillée et l'application est temporairement bloquée pour votre sécurité.\n\nChangez de réseau immédiatement.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Le certificat TLS n'a pas pu être validé. Votre connexion peut être surveillée et l'application est temporairement bloquée pour votre sécurité.\n\nChangez de réseau immédiatement.";
 
 /* message To: feild
    Title */
@@ -2099,7 +2099,7 @@
 "Unread" = "Non lus";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Retirer des favoris";
+"Unstar" = "Retirer des Favoris";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Se désabonner de la liste de diffusion";
@@ -2138,7 +2138,7 @@
 "Verification error" = "Erreur de vérification";
 
 /* error details */
-"Verification of this content’s signature failed" = "La vérification de la signature de ce contenu a échoué.";
+"Verification of this content’s signature failed" = "La signature de ce contenu n'a pas pu être vérifiée.";
 
 /* View action for view scheduled message. */
 "View" = "Afficher";
@@ -2237,7 +2237,7 @@
 "You have a new email!" = "Vous avez un nouveau message.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Vous avez saisi au moins une adresse électronique non valide. Nous vous invitons à vérifier vos destinataires.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Vous avez saisi au moins une adresse électronique qui n'est pas valide. Nous vous invitons à vérifier vos destinataires.";
 
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Vous avez saisi au moins un destinataire inconnu. Nous vous invitons à vérifier vos destinataires.";

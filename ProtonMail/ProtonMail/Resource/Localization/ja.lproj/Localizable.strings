@@ -1,3 +1,6 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "は検索に含まれません。検索に含めるには、%1$@を引き上げて下さい";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[全文を表示]";
 
@@ -108,7 +111,7 @@
 "Add to contacts" = "連絡先に追加";
 
 /* default vcard types */
-"Address" = "メールアドレス";
+"Address" = "住所";
 
 /* cell title in device settings */
 "Addresses" = "住所";
@@ -131,6 +134,12 @@
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "代替ルーティングを許可";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "開いたことのある添付ファイルをオフライン時に開くことを可能にします。";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "開いたことのあるメッセージをオフライン時に開くことを可能にします。";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "アーカイブも行いますか?";

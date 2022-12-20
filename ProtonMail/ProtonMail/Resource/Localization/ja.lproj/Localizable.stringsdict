@@ -323,7 +323,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>%d分後</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -339,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>メッセージ中にある %d 件のトラッカーを発見しブロックしました。</string>
+			<string>Proton は、このメッセージから %d 件のトラッカーを見つけてブロックしました。</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>この%d件のメッセージは下書きへ移動し、スケジュールは削除されます。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
