@@ -40,7 +40,9 @@ struct AttachmentEntity: Hashable, Equatable {
     let objectID: ObjectID
     let order: Int
     let contentId: String?
+}
 
+extension AttachmentEntity {
     init(_ attachment: Attachment) {
         self.headerInfo = attachment.headerInfo
         self.id = AttachmentID(attachment.attachmentID)

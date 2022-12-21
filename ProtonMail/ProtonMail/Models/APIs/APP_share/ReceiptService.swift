@@ -19,6 +19,7 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
+// sourcery: mock
 protocol ReceiptActionHandler: AnyObject {
     func sendReceipt(messageID: MessageID)
 }

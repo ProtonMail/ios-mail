@@ -35,7 +35,9 @@ struct ConversationEntity: Equatable, Hashable {
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     let isSoftDeleted: Bool
+}
 
+extension ConversationEntity {
     init(_ conversation: Conversation) {
         self.objectID = ObjectID(rawValue: conversation.objectID)
         self.conversationID = ConversationID(conversation.conversationID)
@@ -53,9 +55,7 @@ struct ConversationEntity: Equatable, Hashable {
 
         self.isSoftDeleted = conversation.isSoftDeleted
     }
-}
 
-extension ConversationEntity {
     var starred: Bool {
         return contains(of: .starred)
     }

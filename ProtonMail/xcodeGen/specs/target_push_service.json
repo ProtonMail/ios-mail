@@ -13,14 +13,15 @@
                   "**/*.md"
                ]
             },
-            "ProtonMail/Extension/Foundations/APP_share_push_siri",
-            "ProtonMail/Extension/Foundations/APP_share_push",
-            "ProtonMail/Extension/ProtonCore/APP_share_push",
-            "ProtonMail/Models/APP_share_push",
-            "ProtonMail/Utilities/APP_share_push",
-            "ProtonMail/Utilities/APP_share_push_uiTest",
-            "ProtonMail/Utilities/APP_share_push_siri",
-            "ProtonMail/Resource/Localization"
+            {
+               "path": "ProtonMail",
+               "includes": [
+                  "**/APP_share_push",
+                  "ProtonMail/Resource/Localization",
+                  "**/APP_share_push_siri",
+                  "**/APP_share_push_uiTest"
+               ]
+            }
          ],
          "dependencies": [
             {

@@ -27,8 +27,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
     private var mockFetchAttachment: MockFetchAttachment!
-    private var testContext: NSManagedObjectContext!
-    private var coreDataContextProvider: MockCoreDataContextProvider!
     private var context: NSManagedObjectContext!
 
     let testBody = "body".data(using: .utf8)!
@@ -39,8 +37,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let contextProviderMock = MockCoreDataContextProvider()
-        testContext = contextProviderMock.mainContext
         mockFetchAttachment = MockFetchAttachment()
         sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
@@ -56,8 +52,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         super.tearDown()
         sut = nil
         mockFetchAttachment = nil
-        testContext = nil
-        coreDataContextProvider = nil
         context = nil
     }
 
@@ -107,7 +101,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testAddAttachment() {
         XCTAssertTrue(sut.preAttachments.isEmpty)
-        let testAttachment = AttachmentEntity(Attachment(context: testContext))
+        let testAttachment = AttachmentEntity.make()
         let testPreAttachment = PreAttachment(id: "id",
                                               session: "key".data(using: .utf8)!,
                                               algo: .AES256,
