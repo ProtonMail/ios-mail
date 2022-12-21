@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
+import MBProgressHUD
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
@@ -150,6 +151,13 @@ class WindowsCoordinator: LifetimeTrackable {
             NotificationCenter.default.addObserver(forName: .showScheduleSendUnavailable, object: nil, queue: .main) { [weak self] _ in
                 self?.showScheduledSendUnavailableAlert()
             }
+
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(messageSendFailAddressValidationIncorrect),
+                name: .messageSendFailAddressValidationIncorrect,
+                object: nil
+            )
 
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(
@@ -569,6 +577,7 @@ class WindowsCoordinator: LifetimeTrackable {
 
 // MARK: Schedule message
 extension WindowsCoordinator {
+
     private func showScheduledSendSucceedBanner(
         messageID: MessageID,
         deliveryTime: Date,
@@ -618,6 +627,24 @@ extension WindowsCoordinator {
 
         let topVC = self.currentWindow?.topmostViewController() ?? UIViewController()
         topVC.present(alert, animated: true, completion: nil)
+    }
+
+    @objc private func messageSendFailAddressValidationIncorrect() {
+        let title = LocalString._address_invalid_error_to_draft_action_title
+        let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
+            NotificationCenter.default.post(
+                name: .switchView,
+                object: DeepLink(
+                    String(describing: MailboxViewController.self),
+                    sender: Message.Location.draft.rawValue
+                )
+            )
+        }
+        UIAlertController.showOnTopmostVC(
+            title: LocalString._address_invalid_error_sending_title,
+            message: LocalString._address_invalid_error_sending,
+            action: toDraftAction
+        )
     }
 
     private func handleEditScheduleMessage(
