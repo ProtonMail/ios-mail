@@ -49,11 +49,7 @@ protocol MessageDataServiceProtocol: Service {
     func isEventIDValid() -> Bool
     func idsOfMessagesBeingSent() -> [String]
 
-    func getMessageSendingData(
-        for uri: String,
-        completionQueue: DispatchQueue,
-        completion: @escaping ((MessageSendingData?) -> Void)
-    )
+    func getMessageSendingData(for uri: String) -> MessageSendingData?
 
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -839,31 +835,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
 
-    func getMessageSendingData(
-        for uri: String,
-        completionQueue: DispatchQueue,
-        completion: @escaping ((MessageSendingData?) -> Void)
-    ) {
+    func getMessageSendingData(for uri: String) -> MessageSendingData? {
         // TODO: Use `CoreDataContextProviderProtocol.read` when available
-        contextProvider.performOnRootSavingContext { [weak self, weak completionQueue] context in
+        var messageSendingData: MessageSendingData?
+        contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
             guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(uri) else {
-                completionQueue?.async { completion(nil) }
                 return
             }
             guard let message = context.find(with: objectID) as? Message else {
-                completionQueue?.async { completion(nil) }
                 return
             }
-            let messageEntity = MessageEntity(message)
-            let messageSendData = MessageSendingData(
-                message: messageEntity,
+            messageSendingData = MessageSendingData(
+                message: MessageEntity(message),
                 cachedUserInfo: message.cachedUser,
                 cachedAuthCredential: message.cachedAuthCredential,
                 cachedSenderAddress: message.cachedAddress,
                 defaultSenderAddress: self?.defaultUserAddress(for: message)
             )
-            completionQueue?.async { completion(messageSendData) }
         }
+        return messageSendingData
     }
 
     func updateMessageAfterSend(
@@ -1300,10 +1290,19 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             #if !APP_EXTENSION
             let title = LocalString._address_invalid_error_to_draft_action_title
             let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
-                NotificationCenter.default.post(name: .switchView,
-                                                object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+                NotificationCenter.default.post(
+                    name: .switchView,
+                    object: DeepLink(
+                        String(describing: MailboxViewController.self),
+                        sender: Message.Location.draft.rawValue
+                    )
+                )
             }
-            LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+            UIAlertController.showOnTopmostVC(
+                title: LocalString._address_invalid_error_sending_title,
+                message: LocalString._address_invalid_error_sending,
+                action: toDraftAction
+            )
             #endif
         } else {
             NSError.alertMessageSentError(details: err.localizedDescription)

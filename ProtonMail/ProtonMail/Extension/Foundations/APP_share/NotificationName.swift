@@ -104,4 +104,23 @@ extension Notification.Name {
     static var appExtraSecurityDisabled: Notification.Name {
         return .init("appExtraSecurityDisabled")
     }
+
+    static var sendMessageTaskSuccess: Notification.Name {
+        return .init("sendMessageTaskSuccess")
+    }
+
+    static var sendMessageTaskFail: Notification.Name {
+        return .init("sendMessageTaskFail")
+    }
+
+    static var messageSendFailAddressValidationIncorrect: Notification.Name {
+        return .init("messageSendFailAddressValidationIncorrect")
+    }
+}
+
+extension Notification {
+
+    enum UserInfoKey: String {
+        case errorMessage
+    }
 }

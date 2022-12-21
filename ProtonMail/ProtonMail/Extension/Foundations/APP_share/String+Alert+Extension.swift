@@ -24,25 +24,6 @@ import UIKit
 
 extension String {
 
-    func alertViewController(_ title: String?, _ action: UIAlertAction?) {
-        #if !APP_EXTENSION
-        DispatchQueue.main.async {
-            guard let window: UIWindow = UIApplication.shared.keyWindow else {
-                return
-            }
-
-            let alert = UIAlertController(title: title ?? LocalString._general_alert_title,
-                                          message: self,
-                                          preferredStyle: .alert)
-            alert.addCloseAction()
-            if let action = action {
-                alert.addAction(action)
-            }
-            window.topmostViewController()?.present(alert, animated: true, completion: nil)
-        }
-        #endif
-    }
-
     func alertController() -> UIAlertController {
         let message = self
         return UIAlertController(title: LocalString._general_alert_title,

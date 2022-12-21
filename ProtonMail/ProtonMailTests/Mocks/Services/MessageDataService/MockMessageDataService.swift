@@ -72,14 +72,8 @@ class MockMessageDataService: MessageDataServiceProtocol {
         []
     }
 
-    @FuncStub(MockMessageDataService.getMessageSendingData(for:completionQueue:completion:)) var callGetMessageSendingData
-    func getMessageSendingData(
-        for uri: String,
-        completionQueue: DispatchQueue,
-        completion: @escaping ((MessageSendingData?) -> Void)
-    ) {
-        callGetMessageSendingData(uri, completionQueue, completion)
-        completion(messageSendingDataResult)
+    func getMessageSendingData(for uri: String) -> ProtonMail.MessageSendingData? {
+        return messageSendingDataResult
     }
 
     @FuncStub(MockMessageDataService.updateMessageAfterSend(message:sendResponse:completionQueue:completion:)) var callUpdateMessageAfterSend

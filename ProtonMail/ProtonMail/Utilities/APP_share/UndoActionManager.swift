@@ -102,34 +102,36 @@ final class UndoActionManager: UndoActionManagerProtocol {
 
     /// Trigger the handler to display the undo send banner
     func showUndoSendBanner(for messageID: MessageID) {
-        guard let targetVC = self.handler else { return }
+        DispatchQueue.main.async {
+            guard let targetVC = self.handler else { return }
 
-        typealias Key = PMBanner.UserInfoKey
-        PMBanner
-            .getBanners(in: targetVC)
-            .filter {
-                $0.userInfo?[Key.type.rawValue] as? String == Key.sending.rawValue &&
-                $0.userInfo?[Key.messageID.rawValue] as? String == messageID.rawValue
-            }
-            .forEach { $0.dismiss(animated: false) }
+            typealias Key = PMBanner.UserInfoKey
+            PMBanner
+                .getBanners(in: targetVC)
+                .filter {
+                    $0.userInfo?[Key.type.rawValue] as? String == Key.sending.rawValue &&
+                    $0.userInfo?[Key.messageID.rawValue] as? String == messageID.rawValue
+                }
+                .forEach { $0.dismiss(animated: false) }
 
-        let delaySeconds = max(targetVC.delaySendSeconds, 1)
-        let banner = PMBanner(message: LocalString._message_sent_ok_desc,
-                              style: PMBannerNewStyle.info,
-                              dismissDuration: TimeInterval(delaySeconds),
-                              bannerHandler: PMBanner.dismiss)
-        if delaySeconds > 1 {
-            let buttonTitle = LocalString._messages_undo_action
-            banner.addButton(text: buttonTitle) { [weak self, weak banner] _ in
-                banner?.dismiss(animated: true)
-                self?.requestUndoSendAction(messageID: messageID) { isSuccess in
-                    if isSuccess {
-                        self?.showComposer(for: messageID)
+            let delaySeconds = max(targetVC.delaySendSeconds, 1)
+            let banner = PMBanner(message: LocalString._message_sent_ok_desc,
+                                  style: PMBannerNewStyle.info,
+                                  dismissDuration: TimeInterval(delaySeconds),
+                                  bannerHandler: PMBanner.dismiss)
+            if delaySeconds > 1 {
+                let buttonTitle = LocalString._messages_undo_action
+                banner.addButton(text: buttonTitle) { [weak self, weak banner] _ in
+                    banner?.dismiss(animated: true)
+                    self?.requestUndoSendAction(messageID: messageID) { isSuccess in
+                        if isSuccess {
+                            self?.showComposer(for: messageID)
+                        }
                     }
                 }
             }
+            banner.show(at: .bottom, on: targetVC)
         }
-        banner.show(at: .bottom, on: targetVC)
     }
 
     /// Register the current handler of undo action.
