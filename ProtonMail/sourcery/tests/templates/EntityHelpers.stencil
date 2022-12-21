@@ -1,0 +1,23 @@
+@testable import ProtonMail
+
+{% macro initParameterWithDefaultValue property %}
+        {{ property.name }}: {{ property.typeName }} = {% if property.typeName.isOptional %}nil{% elif property.typeName.generic.name == "Phantom" %}.init(rawValue: .init()){% elif property.type.kind == "enum" %}.{{ property.type.cases[0].name }}{% else %}.init(){% endif %}{{ ',' if not forloop.last }}
+{% endmacro %}
+
+{% for type in types.structs %}
+{% if type.name|hasSuffix:"Entity" %}
+extension {{ type.name }} {
+    static func make(
+        {% for property in type.storedVariables %}
+        {% call initParameterWithDefaultValue property %}
+        {% endfor %}
+    ) -> Self {
+        {{ type.name }}(
+            {% for property in type.storedVariables %}
+            {{ property.name }}: {{ property.name }}{{ ',' if not forloop.last }}
+            {% endfor %}
+        )
+    }
+}
+{% endif %}
+{% endfor %}

@@ -182,8 +182,8 @@ class BannerViewModelTests: XCTestCase {
     func testSendReceipt() {
         createSUT()
         sut.sendReceipt()
-        XCTAssertTrue(receiptHandlerMock.callSendReceipt.wasCalledExactlyOnce)
-        XCTAssertEqual(receiptHandlerMock.callSendReceipt.lastArguments?.a1, mockMessage.messageID)
+        XCTAssertTrue(receiptHandlerMock.sendReceiptStub.wasCalledExactlyOnce)
+        XCTAssertEqual(receiptHandlerMock.sendReceiptStub.lastArguments?.a1, mockMessage.messageID)
     }
 
     private func createSUT() {

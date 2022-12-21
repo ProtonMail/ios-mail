@@ -1,0 +1,9 @@
+sources:
+    - ProtonMail
+    - Push
+    - PushService
+    - Share
+    - Siri
+templates:
+    - sourcery/tests/templates
+output: ProtonMailTests/Generated

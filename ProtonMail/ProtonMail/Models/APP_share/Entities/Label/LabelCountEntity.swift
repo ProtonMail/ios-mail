@@ -32,6 +32,9 @@ struct LabelCountEntity {
 
     let viewMode: ViewMode
 
+}
+
+extension LabelCountEntity {
     init(labelCount: LabelCount, viewMode: ViewMode) {
         start = labelCount.start
         end = labelCount.end
@@ -46,9 +49,7 @@ struct LabelCountEntity {
 
         self.viewMode = viewMode
     }
-}
 
-extension LabelCountEntity {
     var isNew: Bool {
         return start == end && start == update
     }
