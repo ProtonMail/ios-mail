@@ -49,7 +49,6 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
-    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     private var isDetailedDownloaded: Bool?
 
@@ -67,18 +66,6 @@ class SingleMessageContentViewModel {
     var resetLoadedHeight: (() -> Void)? {
         didSet {
             bannerViewModel.resetLoadedHeight = { [weak self] in self?.resetLoadedHeight?() }
-        }
-    }
-
-    var shouldSpotlightTrackerProtection: Bool {
-        !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection) && UserInfo.isImageProxyAvailable
-    }
-
-    var spotlightMessage: String {
-        if user.userInfo.isAutoLoadRemoteContentEnabled {
-            return L11n.EmailTrackerProtection.feature_description_if_remote_content_allowed
-        } else {
-            return L11n.EmailTrackerProtection.feature_description_if_remote_content_not_allowed
         }
     }
 
@@ -105,7 +92,6 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         userIntroductionProgressProvider: UserIntroductionProgressProvider,
          dependencies: Dependencies,
          goToDraft: @escaping (MessageID) -> Void) {
         self.context = context
@@ -129,7 +115,6 @@ class SingleMessageContentViewModel {
         self.attachmentViewModel = childViewModels.attachments
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
-        self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
         self.goToDraft = goToDraft
 
@@ -223,10 +208,6 @@ class SingleMessageContentViewModel {
     func getCypherURL() -> URL? {
         let filename = UUID().uuidString
         return try? self.writeToTemporaryUrl(message.body, filename: filename)
-    }
-
-    func userHasSeenSpotlightForTrackerProtection() {
-        userIntroductionProgressProvider.userHasSeenSpotlight(for: .trackerProtection)
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {

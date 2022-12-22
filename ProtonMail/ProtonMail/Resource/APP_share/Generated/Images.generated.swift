@@ -51,7 +51,6 @@ internal enum Asset {
   internal static let mailStarredActive = ImageAsset(name: "mail_starred-active")
   internal static let mailStarred = ImageAsset(name: "mail_starred")
   internal static let placeholderBoundBox = ImageAsset(name: "placeholder_bound_box")
-  internal static let trackingProtectionSpotlightIcon = ImageAsset(name: "tracking-protection-spotlight-icon")
   internal static let mailFolderNoResultIcon = ImageAsset(name: "mail_folder_no_result_icon")
   internal static let mailLabelCrossIcon = ImageAsset(name: "mail_label_cross_icon")
   internal static let mailNoResultIcon = ImageAsset(name: "mail_no_result_icon")

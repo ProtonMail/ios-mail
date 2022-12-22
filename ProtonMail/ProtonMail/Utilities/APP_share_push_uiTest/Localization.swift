@@ -1495,7 +1495,6 @@ class LocalizedString {
 enum L11n {
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
-        static let spotlight_title = NSLocalizedString("You’re safe from email trackers", comment: "Title of the spotlight for tracker protection")
         static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")
         static let n_email_trackers_blocked = NSLocalizedString("%d email trackers blocked", comment: "Title of the tracker list. Only used if there is at least one tracker.")
         static let email_trackers_can_violate_your_privacy = NSLocalizedString("Email trackers can violate your privacy.", comment: "Tracker protection feature explanation")
@@ -1504,8 +1503,6 @@ enum L11n {
         static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
         // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
-        static let feature_description_if_remote_content_allowed = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
-        static let feature_description_if_remote_content_not_allowed = NSLocalizedString("Email tracking protection is now available. Senders will not know if, where, or when you opened their emails.", comment: "Spotlight explanation of the feature")
     }
 
     struct ReferralProgram {

@@ -346,10 +346,6 @@ class ExpandedHeaderViewController: UIViewController {
 }
 
 extension ExpandedHeaderViewController: HeaderViewController {
-    var spotlightableView: UIView? {
-        trackerProtectionRow?.iconImageView
-    }
-
     func trackerProtectionSummaryChanged() {
         setUpView()
     }
