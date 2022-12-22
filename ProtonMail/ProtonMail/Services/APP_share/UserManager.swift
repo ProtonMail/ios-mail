@@ -299,7 +299,12 @@ class UserManager: Service, HasLocalStorage {
     #endif
 
     var hasTelemetryEnabled: Bool {
-        userInfo.telemetry == 1
+        #if DEBUG
+        if !ProcessInfo.isRunningUnitTests {
+            return true
+        }
+        #endif
+        return userInfo.telemetry == 1
     }
 
     init(

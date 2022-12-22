@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Networking
 import class ProtonCore_Services.APIErrorCode
 
 struct TaskCompletionHelper {
@@ -49,6 +50,15 @@ struct TaskCompletionHelper {
             case .notConnected:
                 result = true
             default: break
+            }
+        }
+
+        if let responseError = error as? ResponseError {
+            // When device is having low connectivity, the core will return this error.
+            if responseError.httpCode == nil &&
+                responseError.responseCode == nil &&
+                responseError.underlyingError?.code == APIErrorCode.deviceHavingLowConnectivity {
+                result = true
             }
         }
 
