@@ -550,7 +550,7 @@ class ConversationViewModelTests: XCTestCase {
         let mockMessage = Message(context: contextProviderMock.viewContext)
         let label = Label(context: contextProviderMock.viewContext)
         mockMessage.labels = NSSet(array: [label])
-        mockMessage.messageID = UUID().uuidString
+        mockMessage.messageID = MessageID.generateLocalID().rawValue
         label.labelID = location.rawValue
         return MessageEntity(mockMessage)
     }
