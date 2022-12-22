@@ -1257,7 +1257,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 return
             }
 
-            guard connectionStatusProvider.currentStatus.isConnected else {
+            guard connectionStatusProvider.currentStatus.isConnected, !message.messageID.hasLocalFormat else {
                 defer {
                     self.updateTapped(status: false)
                 }

@@ -1577,7 +1577,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                               sendAddress: Address,
                               inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.toList = recipientList
         message.bccList = bccList
         message.ccList = ccList
