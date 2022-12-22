@@ -31,7 +31,7 @@ final class LabelsDataServiceTests: XCTestCase {
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
         let mockLastUpdatedStore = MockLastUpdatedStore()
-        let mockCacheService = MockCacheService()
+        let mockCacheService = MockCacheServiceProtocol()
 
         sut = LabelsDataService(api: mockApiService,
                                 userID: UserID(userID),

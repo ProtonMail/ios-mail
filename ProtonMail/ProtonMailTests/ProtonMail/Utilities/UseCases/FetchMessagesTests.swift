@@ -22,14 +22,18 @@ class FetchMessagesTests: XCTestCase {
     var sut: FetchMessages!
 
     var mockMessagesService: MockMessageDataService!
-    var mockCacheService: MockCacheService!
+    var mockCacheService: MockCacheServiceProtocol!
     var mockEventsService: MockEventsService!
 
     override func setUp() {
         super.setUp()
         mockMessagesService = MockMessageDataService()
-        mockCacheService = MockCacheService()
+        mockCacheService = MockCacheServiceProtocol()
         mockEventsService = MockEventsService()
+
+        mockCacheService.parseMessagesResponseStub.bodyIs { _, _, _, _, _, completion in
+            completion(nil)
+        }
 
         sut = FetchMessages(
             params: makeParams(),
@@ -59,7 +63,7 @@ class FetchMessagesTests: XCTestCase {
         }
         waitForExpectations(timeout: 2.0)
 
-        XCTAssert(mockCacheService.wasParseMessagesResponseCalled == true)
+        XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == true)
         XCTAssert(mockMessagesService.wasFetchMessagesCountCalled == true)
         XCTAssert(mockEventsService.wasProcessEventsCalled == true)
     }
@@ -77,13 +81,15 @@ class FetchMessagesTests: XCTestCase {
         }
         waitForExpectations(timeout: 2.0)
 
-        XCTAssert(mockCacheService.wasParseMessagesResponseCalled == false)
+        XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == false)
         XCTAssert(mockMessagesService.wasFetchMessagesCountCalled == false)
         XCTAssert(mockEventsService.wasProcessEventsCalled == false)
     }
 
     func testExecute_whenPersistMessagesFails() {
-        mockCacheService.returnsError = true
+        mockCacheService.parseMessagesResponseStub.bodyIs { _, _, _, _, _, completion in
+            completion(NSError.badParameter(nil))
+        }
 
         sut = FetchMessages(
             params: makeParams(),
@@ -100,7 +106,7 @@ class FetchMessagesTests: XCTestCase {
         }
         waitForExpectations(timeout: 2.0)
 
-        XCTAssert(mockCacheService.wasParseMessagesResponseCalled == true)
+        XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == true)
         XCTAssert(mockMessagesService.wasFetchMessagesCountCalled == false)
         XCTAssert(mockEventsService.wasProcessEventsCalled == false)
     }
@@ -118,7 +124,7 @@ class FetchMessagesTests: XCTestCase {
         }
         waitForExpectations(timeout: 2.0)
 
-        XCTAssert(mockCacheService.wasParseMessagesResponseCalled == true)
+        XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == true)
         XCTAssert(mockMessagesService.wasFetchMessagesCountCalled == true)
         XCTAssert(mockEventsService.wasProcessEventsCalled == false)
     }
@@ -130,7 +136,7 @@ private func makeParams() -> FetchMessages.Parameters {
 
 private func makeDependencies(
     mockMessageDataService: MessageDataServiceProtocol = MockMessageDataService(),
-    mockCacheService: CacheServiceProtocol = MockCacheService(),
+    mockCacheService: CacheServiceProtocol = MockCacheServiceProtocol(),
     mockEventsService: EventsServiceProtocol = MockEventsService()
 ) -> FetchMessages.Dependencies {
     FetchMessages.Dependencies(

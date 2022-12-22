@@ -175,8 +175,8 @@ class BannerViewModelTests: XCTestCase {
     func testMarkAsLegitimate() {
         createSUT()
         sut.markAsLegitimate()
-        XCTAssertTrue(markLegitimateHandlerMock.callMarkAsLegitimate.wasCalledExactlyOnce)
-        XCTAssertEqual(markLegitimateHandlerMock.callMarkAsLegitimate.lastArguments?.a1, mockMessage.messageID)
+        XCTAssertTrue(markLegitimateHandlerMock.markAsLegitimateStub.wasCalledExactlyOnce)
+        XCTAssertEqual(markLegitimateHandlerMock.markAsLegitimateStub.lastArguments?.a1, mockMessage.messageID)
     }
 
     func testSendReceipt() {
