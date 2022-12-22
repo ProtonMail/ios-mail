@@ -921,6 +921,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
+    private func addBreadcrumbIfNeeded(
+        addressIdFromMessage: String?,
+        cachedAddress: Address?,
+        defaultAddress: Address?
+    ) {
+        let prefix = 6
+        let areAddressesDifferent = cachedAddress?.addressID != defaultAddress?.addressID
+        if areAddressesDifferent {
+            let message = """
+            cached address \(cachedAddress?.addressID.prefix(prefix) ?? "_nil_")
+            different from default address \(defaultAddress?.addressID.prefix(prefix) ?? "_nil_")
+            | addressID in message: \(addressIdFromMessage ?? "_nil_")
+            """
+            Breadcrumbs.shared.add(message: message, to: .invalidSignatureWhenSendingMessage)
+        }
+    }
+
     private func send(
         message: Message,
         context: NSManagedObjectContext,
@@ -944,6 +961,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 completion(NSError.lockError())
                 return
             }
+            self.addBreadcrumbIfNeeded(
+                addressIdFromMessage: message.addressID,
+                cachedAddress: message.cachedAddress,
+                defaultAddress: userManager.messageService.defaultUserAddress(for: message)
+            )
 
             var requests = [UserEmailPubKeys]()
             let emails = message.allEmails
@@ -1210,6 +1232,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         }
                         NSError.alertMessageSentErrorToast()
                         // show message now
+                        self.sendInvalidSignatureEventIfNeeded(responseCode: error?.responseCode ?? -1)
                         self.localNotificationService.scheduleMessageSendingFailedNotification(
                             .init(
                                 messageID: message.messageID,
@@ -1315,7 +1338,17 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                             error: errorMsg,
                                                             timeInterval: 1,
                                                             subtitle: title))
+        sendInvalidSignatureEventIfNeeded(responseCode: responseCode)
         completion(err)
+    }
+
+    private func sendInvalidSignatureEventIfNeeded(responseCode: Int) {
+        guard responseCode == 2001 else { return }
+        Breadcrumbs.shared.add(message: "Received error code \(responseCode)", to: .invalidSignatureWhenSendingMessage)
+        Analytics.shared.sendError(
+            .sendMessageInvalidSignature,
+            trace: Breadcrumbs.shared.trace(for: .invalidSignatureWhenSendingMessage)
+        )
     }
     
     private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {

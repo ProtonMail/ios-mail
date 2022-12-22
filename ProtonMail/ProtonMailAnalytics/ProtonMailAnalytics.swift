@@ -150,6 +150,9 @@ public enum MailAnalyticsErrorEvent: Error {
     case decryptMIMEFailed(error: String, messageID: String)
     case coreDataSavingError(error: Error, caller: StaticString, file: StaticString, line: UInt)
 
+    // If the send request returns the custom error code 2001
+    case sendMessageInvalidSignature
+
     var name: String {
         let message: String
         switch self {
@@ -165,6 +168,8 @@ public enum MailAnalyticsErrorEvent: Error {
             message = "Decrypt MIME failed"
         case .coreDataSavingError:
             return "Core Data saving error"
+        case .sendMessageInvalidSignature:
+            return "Send invalid signature"
         }
         return message
     }
@@ -174,7 +179,7 @@ public enum MailAnalyticsErrorEvent: Error {
         switch self {
         case .coreDataInitialisation(let error):
             info = ["Custom Error": error]
-        case .abortedConversationRequest:
+        case .abortedConversationRequest, .sendMessageInvalidSignature:
             info = nil
         case .invalidSwipeAction(let action):
             info = ["Action": action]
