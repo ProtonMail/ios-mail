@@ -92,4 +92,10 @@ struct Constants {
                                               "visionary2022",
                                               "bundlepro2022"]
     static let defaultLocale = "en"
+
+    #if !APP_EXTENSION
+    static let defaultToolbarActions: [MessageViewActionSheetAction] = [
+        .markUnread, .trash, .moveTo, .labelAs
+    ]
+    #endif
 }

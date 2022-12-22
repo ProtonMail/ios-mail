@@ -101,6 +101,41 @@ class UserManagerTests: XCTestCase {
         XCTAssertFalse(mockAppTelemetry.disableWasCalled)
     }
 
+    func testGetMessageToolbarActions() {
+        sut.userInfo.messageToolbarActions.actions = ["label", "print"]
+
+        XCTAssertEqual(sut.messageToolbarActions, [.labelAs, .print])
+    }
+
+    func testSetMessageToolbarActions() {
+        sut.messageToolbarActions = [.labelAs, .print]
+
+        XCTAssertEqual(sut.userInfo.messageToolbarActions.actions, ["label", "print"])
+    }
+
+    func testGetConversationToolbarActions() {
+        sut.userInfo.conversationToolbarActions.actions = ["label", "print"]
+
+        XCTAssertEqual(sut.conversationToolbarActions, [.labelAs, .print])
+    }
+
+    func testSetConversationToolbarActions() {
+        sut.conversationToolbarActions = [.labelAs, .print]
+
+        XCTAssertEqual(sut.userInfo.conversationToolbarActions.actions, ["label", "print"])
+    }
+
+    func testGetListViewToolbarActions() {
+        sut.userInfo.listToolbarActions.actions = ["label", "print"]
+
+        XCTAssertEqual(sut.listViewToolbarActions, [.labelAs, .print])
+    }
+
+    func testSetListViewToolbarActions() {
+        sut.listViewToolbarActions = [.labelAs, .print]
+
+        XCTAssertEqual(sut.userInfo.listToolbarActions.actions, ["label", "print"])
+    }
 }
 
 private extension UserManagerTests {
