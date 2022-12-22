@@ -35,6 +35,7 @@ extension APIErrorCode {
     static let deviceTokenIsInvalid = 11200
     static let deviceTokenDoesNotExist = 11211
 
+    static let deviceHavingLowConnectivity = 111222333
 }
 
 // MARK: - NSError APIService extension

@@ -358,6 +358,12 @@ extension QueueManager {
             return
         }
 
+        let allTask = messageQueue.queueArray().tasks
+        SystemLogger.log(
+            message: "Tasks in msg queue: \(allTask.map(\.action))",
+            category: .queue
+        )
+
         guard task.dependencyIDs.count == 0 else {
             self.removeAllTasks(of: task.messageID, removalCondition: { action in
                 switch action {
@@ -374,10 +380,19 @@ extension QueueManager {
         }
 
         guard let handler = self.handlers[task.userID] else {
+            SystemLogger.log(
+                message: "Removing due to no handler in msg queue: \(task.action)",
+                category: .queue
+            )
             _ = self.messageQueue.remove(task.uuid)
             self.dequeueMessageQueue()
             return
         }
+
+        SystemLogger.log(
+            message: "Dequeued task in msg queue: \(task.action)",
+            category: .queue
+        )
 
         let action = task.action
         if action == .signout,
@@ -416,11 +431,26 @@ extension QueueManager {
             return
         }
 
+        let allTask = miscQueue.queueArray().tasks
+        SystemLogger.log(
+            message: "Tasks in misc queue: \(allTask.map(\.action))",
+            category: .queue
+        )
+
         guard let handler = self.handlers[task.userID] else {
+            SystemLogger.log(
+                message: "Removing due to no handler in misc queue: \(task.action)",
+                category: .queue
+            )
             _ = self.miscQueue.remove(task.uuid)
             return
         }
         let action = task.action
+
+        SystemLogger.log(
+            message: "Dequeued task in misc queue: \(task.action)",
+            category: .queue
+        )
 
         if action == .signout,
            let _ = self.getMessageTasks(of: task.userID)
@@ -460,6 +490,10 @@ extension QueueManager {
         case .checkReadQueue:
             let removed = queue.queueArray().tasks
                 .filter { $0.dependencyIDs.contains(task.uuid) }
+            SystemLogger.log(
+                message: "Removing: \(removed.map(\.action))",
+                category: .queue
+            )
             removed.forEach { _ = queue.remove($0.uuid) }
             self.remove(task: task, on: queue)
             self.dequeueReadQueue()
@@ -470,12 +504,20 @@ extension QueueManager {
         case .connectionIssue:
             // Forgot the signout task in offline mode
             if task.action == MessageAction.signout {
+                SystemLogger.log(
+                    message: "Removing: \(task.action)",
+                    category: .queue
+                )
                 _ = queue.remove(task.uuid)
             }
             completeHander(false)
         case .removeRelated:
             let removed = queue.queueArray().tasks
                 .filter { $0.dependencyIDs.contains(task.uuid) }
+            SystemLogger.log(
+                message: "Removing: \(removed.map(\.action))",
+                category: .queue
+            )
             removed.forEach { _ = queue.remove($0.uuid) }
             self.remove(task: task, on: queue)
             completeHander(true)
@@ -489,12 +531,16 @@ extension QueueManager {
         // Remove the dependency of the following tasks
         queue.queueArray().tasks
             .filter { $0.messageID == task.messageID }
-            .forEach { peddingTask in
-                if let idx = peddingTask.dependencyIDs.firstIndex(of: task.uuid) {
-                    peddingTask.dependencyIDs.remove(at: idx)
-                    queue.update(uuid: peddingTask.uuid, object: peddingTask)
+            .forEach { pendingTask in
+                if let idx = pendingTask.dependencyIDs.firstIndex(of: task.uuid) {
+                    pendingTask.dependencyIDs.remove(at: idx)
+                    queue.update(uuid: pendingTask.uuid, object: pendingTask)
                 }
             }
+        SystemLogger.log(
+            message: "Removing: \(task.action)",
+            category: .queue
+        )
         // Remove the task
         _ = queue.remove(task.uuid)
     }
