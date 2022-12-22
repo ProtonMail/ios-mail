@@ -1049,6 +1049,15 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(result, [.markRead, .trash, .moveTo, .labelAs, .more])
     }
 
+    func testGetActionBarActions_withCustomToolbarActions() {
+        createSut(labelID: "qweasd", labelType: .folder, isCustom: false, labelName: nil)
+        toolbarActionProviderMock.listViewToolbarActions = [.star, .saveAsPDF]
+
+        let result = sut.toolbarActionTypes()
+
+        XCTAssertEqual(result, [.star, .saveAsPDF, .more])
+    }
+
     func testGetOnboardingDestination() {
         // Fresh install
         self.welcomeCarrouselCache.lastTourVersion = nil

@@ -111,6 +111,19 @@ final class SingleMessageViewModelTests: XCTestCase {
         }
     }
 
+    func testToolbarActionTypes_withCustomToolbarActions() {
+        makeSUT(labelID: "0")
+        toolbarProviderMock.messageToolbarActions = [.star, .saveAsPDF]
+
+        let result = sut.toolbarActionTypes()
+
+        XCTAssertEqual(result, [
+            .star,
+            .saveAsPDF,
+            .more
+        ])
+    }
+
     func testToolbarCustomizationAllAvailableActions_sameAsActionInActionSheet() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         let bodyViewModel = sut.contentViewModel.messageBodyViewModel
