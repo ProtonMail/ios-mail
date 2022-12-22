@@ -251,10 +251,10 @@ class UsersManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.users.count, 1)
         XCTAssertTrue(
-            cachedUserDataProviderMock.callSetDisconnectedUser.wasCalled
+            cachedUserDataProviderMock.setStub.wasCalled
         )
         let argument = try XCTUnwrap(
-            cachedUserDataProviderMock.callSetDisconnectedUser.lastArguments?.a1
+            cachedUserDataProviderMock.setStub.lastArguments?.a1
         )
         XCTAssertEqual(argument.count, 1)
         let disconnectedUser = try XCTUnwrap(argument.first)
@@ -289,10 +289,10 @@ class UsersManagerTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         XCTAssertTrue(
-            cachedUserDataProviderMock.callSetDisconnectedUser.wasCalledExactlyOnce
+            cachedUserDataProviderMock.setStub.wasCalledExactlyOnce
         )
         let argument = try XCTUnwrap(
-            cachedUserDataProviderMock.callSetDisconnectedUser.lastArguments?.a1
+            cachedUserDataProviderMock.setStub.lastArguments?.a1
         )
         XCTAssertEqual(argument.count, 1)
     }

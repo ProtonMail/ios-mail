@@ -2,6 +2,7 @@ import PromiseKit
 import ProtonCore_Networking
 import ProtonCore_Services
 
+// sourcery: mock
 protocol UnsubscribeActionHandler: AnyObject {
     func oneClickUnsubscribe(messageId: MessageID)
     func markAsUnsubscribed(messageId: MessageID, finish: @escaping (() -> Void))

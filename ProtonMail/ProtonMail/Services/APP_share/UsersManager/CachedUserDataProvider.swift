@@ -18,6 +18,7 @@
 import Foundation
 import ProtonCore_Keymaker
 
+// sourcery: mock
 protocol CachedUserDataProvider {
     func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle])
     func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle]
