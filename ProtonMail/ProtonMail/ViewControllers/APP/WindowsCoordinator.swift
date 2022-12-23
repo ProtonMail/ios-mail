@@ -58,6 +58,7 @@ class WindowsCoordinator: LifetimeTrackable {
     }
 
     private lazy var snapshot = Snapshot()
+    private var launchedByNotification = false
 
     private var deeplink: DeepLink?
 
@@ -181,7 +182,8 @@ class WindowsCoordinator: LifetimeTrackable {
         trackLifetime()
     }
 
-    func start() {
+    func start(launchedByNotification: Bool = false) {
+        self.launchedByNotification = launchedByNotification
         let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
         self.currentWindow = placeholder
 
@@ -390,8 +392,9 @@ class WindowsCoordinator: LifetimeTrackable {
                     let root = PMSideMenuController()
                     let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
                     self.menuCoordinator = coordinator
-                    coordinator.start()
+                    coordinator.start(launchedByNotification: self.launchedByNotification)
                     self.appWindow = UIWindow(root: root, scene: self.scene)
+                    self.launchedByNotification = false
                 }
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene

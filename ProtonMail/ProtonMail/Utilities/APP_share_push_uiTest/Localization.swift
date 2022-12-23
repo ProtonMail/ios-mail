@@ -1525,4 +1525,8 @@ enum L11n {
         static let archive = NSLocalizedString("Archive (verb)", comment: "Push notification action archive")
         static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
     }
+
+    struct Error {
+        static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
+    }
 }

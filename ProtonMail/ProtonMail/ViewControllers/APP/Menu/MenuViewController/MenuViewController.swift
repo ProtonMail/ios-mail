@@ -305,7 +305,7 @@ extension MenuViewController: MenuUIProtocol {
 
     func updateMenu(section: Int?) {
         guard let _section = section else {
-            self.tableView.reloadData()
+            tableView?.reloadData()
             return
         }
 
