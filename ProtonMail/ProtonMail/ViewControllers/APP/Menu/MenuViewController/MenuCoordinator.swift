@@ -31,12 +31,15 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     enum Setup: String {
         case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
+        case switchInboxFolder = "SwitchInboxFolder"
         init?(rawValue: String) {
             switch rawValue {
             case "USER":
                 self = .switchUser
             case "UserFromNotification":
                 self = .switchUserFromNotification
+            case "SwitchInboxFolder":
+                self = .switchInboxFolder
             default:
                 return nil
             }
@@ -56,6 +59,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     private var mailboxCoordinator: MailboxCoordinator?
     let sideMenu: PMSideMenuController
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
+    private var currentLocation: MenuLabel?
 
     init(services: ServiceFactory,
          pushService: PushNotificationService,
@@ -90,7 +94,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         viewModel.coordinator = self
     }
 
-    func start() {
+    func start(launchedByNotification: Bool = false) {
         let menuView = MenuViewController(viewModel: self.viewModel)
         if let viewModel = self.viewModel as? MenuViewModel {
             viewModel.set(delegate: menuView)
@@ -98,6 +102,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         self.viewController = menuView
         self.viewModel.set(menuWidth: self.menuWidth)
         sideMenu.menuViewController = menuView
+
+        if launchedByNotification {
+            presentInitialPage()
+        }
     }
 
     func update(menuWidth: CGFloat) {
@@ -112,6 +120,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         }
         var start = deepLink.popFirst
         start = self.processUserInfoIn(node: start)
+        start = switchFolderIfNeeded(node: start)
 
         guard let path = start ?? deepLink.popFirst,
               let label = MenuCoordinator.getLocation(by: path.name, value: path.value)
@@ -132,7 +141,13 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
         case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
-            self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
+            if currentLocation?.location == labelInfo.location,
+               let deepLink = deepLink,
+               mailboxCoordinator?.viewModel.user.userID == viewModel.currentUser?.userID {
+                mailboxCoordinator?.follow(deepLink)
+            } else {
+                self.navigateToMailBox(labelInfo: labelInfo, deepLink: deepLink)
+            }
         case .subscription:
             self.navigateToSubscribe()
         case .settings:
@@ -169,7 +184,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         default:
             break
         }
-
+        currentLocation = labelInfo
         if let labelToHighlight = labelToHighlight {
             self.viewModel.highlight(label: labelToHighlight)
         }
@@ -209,8 +224,26 @@ extension MenuCoordinator {
                 String(format: LocalString._switch_account_by_click_notification,
                        user.defaultEmail).alertToastBottom()
             }
+        default:
+            break
         }
         self.viewModel.userDataInit()
+        return nil
+    }
+
+    private func switchFolderIfNeeded(node: DeepLink.Node?) -> DeepLink.Node? {
+        guard let node = node,
+              let dest = Setup(rawValue: node.name),
+              dest == .switchInboxFolder,
+              let folderID = node.value else {
+            return node
+        }
+        if currentLocation?.location.rawLabelID == folderID { return nil }
+        let location = LabelLocation(id: folderID, name: nil)
+        let menuLabel = MenuLabel(location: location)
+        navigateToMailBox(labelInfo: menuLabel, deepLink: nil, isSwitchEvent: true)
+        currentLocation = menuLabel
+        viewModel.highlight(label: menuLabel)
         return nil
     }
 
@@ -242,8 +275,13 @@ extension MenuCoordinator {
     }
 
     private func setupContentVC(destination: UIViewController) {
-        sideMenu.setContentViewController(to: destination)
-        sideMenu.hideMenu(animated: true, completion: nil)
+        if sideMenu.isViewLoaded {
+            sideMenu.setContentViewController(to: destination)
+            sideMenu.hideMenu(animated: true, completion: nil)
+        } else {
+            // App is just launched
+            sideMenu.contentViewController = destination
+        }
     }
 
     private func queryLabel(id: LabelID) -> LabelEntity? {
@@ -262,17 +300,18 @@ extension MenuCoordinator {
 
 extension MenuCoordinator {
     func handleSwitchView(deepLink: DeepLink?) {
-        if let deepLink = deepLink {
-            self.follow(deepLink)
-        } else {
+        guard let deepLink = deepLink else {
             // There is no previous states , navigate to inbox
             self.presentInitialPage()
+            return
         }
+        follow(deepLink)
     }
 
     private func presentInitialPage() {
+        if currentLocation?.location == .inbox { return }
         let label = MenuLabel(location: .inbox)
-        self.navigateToMailBox(labelInfo: label, deepLink: nil)
+        go(to: label)
     }
 
     private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
@@ -386,7 +425,12 @@ extension MenuCoordinator {
         )
     }
 
-    private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?, showFeedbackActionSheet: Bool = false) {
+    private func navigateToMailBox(
+        labelInfo: MenuLabel,
+        deepLink: DeepLink?,
+        showFeedbackActionSheet: Bool = false,
+        isSwitchEvent: Bool = false
+    ) {
         guard !self.scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
             return
         }
@@ -394,7 +438,16 @@ extension MenuCoordinator {
         let view = MailboxViewController()
         view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
         sharedVMService.mailbox(fromMenu: view)
-        let navigation = UINavigationController(rootViewController: view)
+        let navigation: UINavigationController
+        if isSwitchEvent,
+           let navigationController = self.mailboxCoordinator?.navigation {
+            var viewControllers = navigationController.viewControllers
+            viewControllers[0] = view
+            navigationController.setViewControllers(viewControllers, animated: false)
+            navigation = navigationController
+        } else {
+            navigation = UINavigationController(rootViewController: view)
+        }
 
         guard let user = self.usersManager.firstUser else {
             return

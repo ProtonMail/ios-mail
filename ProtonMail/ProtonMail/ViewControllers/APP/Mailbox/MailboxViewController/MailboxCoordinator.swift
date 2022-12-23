@@ -33,7 +33,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
     private let internetStatusProvider: InternetConnectionStatusProvider
 
     weak var viewController: MailboxViewController?
-    private weak var navigation: UINavigationController?
+    private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
     var pendingActionAfterDismissal: (() -> Void)?
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
@@ -385,6 +385,9 @@ extension MailboxCoordinator {
     }
 
     private func handleDetailDirectFromNotification(node: DeepLink.Node) {
+        resetNavigationViewControllersIfNeeded()
+        presentMessagePlaceholder()
+
         messageToShow(isNotification: true, node: node) { [weak self] message in
             guard let self = self,
                   let message = message else { return }
@@ -396,6 +399,8 @@ extension MailboxCoordinator {
                 } else {
                     self.present(message: message)
                 }
+                let folderID = message.firstValidFolder()
+                self.switchFolderIfNeeded(folderID: folderID?.rawValue)
             case .conversation:
                 self.conversationToShow(isNotification: true, message: message) { [weak self] conversation in
                     guard let conversation = conversation else { return }
@@ -404,6 +409,8 @@ extension MailboxCoordinator {
                     } else {
                         self?.present(conversation: conversation, targetID: messageID)
                     }
+                    let folderID = message.firstValidFolder()
+                    self?.switchFolderIfNeeded(folderID: folderID?.rawValue)
                 }
             }
         }
@@ -463,17 +470,24 @@ extension MailboxCoordinator {
         }
 
         // From notification
-        guard
-            let messageID = node?.value,
-            let message = viewModel.user.messageService.fetchMessages(
-                withIDs: [messageID],
-                in: contextProvider.mainContext
-            ).first
-        else {
+        guard let messageID = node?.value else {
             completion(nil)
             return
         }
-        completion(MessageEntity(message))
+
+        viewModel.user.messageService.fetchNotificationMessageDetail(MessageID(messageID)) { [weak self] _ in
+            guard let self = self else { return }
+            if let message = Message.messageForMessageID(
+                messageID,
+                inManagedObjectContext: self.contextProvider.mainContext
+            ) {
+                completion(MessageEntity(message))
+            } else {
+                self.viewController?.navigationController?.popViewController(animated: true)
+                L11n.Error.cant_open_message.alertToastBottom()
+                completion(nil)
+            }
+        }
     }
 
     private func present(message: MessageEntity) {
@@ -541,5 +555,27 @@ extension MailboxCoordinator {
         )
         let page = PagesViewController(viewModel: pageVM, services: services)
         navigationController.show(page, sender: nil)
+    }
+
+    private func presentMessagePlaceholder() {
+        guard let navigationController = viewController?.navigationController else { return }
+        let placeholder = MessagePlaceholderVC()
+        navigationController.pushViewController(placeholder, animated: true)
+    }
+
+    private func switchFolderIfNeeded(folderID: String?) {
+        // Wait 1 second for navigation.viewControllers update 
+        delay(1) {
+            let link = DeepLink(MenuCoordinator.Setup.switchInboxFolder.rawValue, sender: folderID)
+            NotificationCenter.default.post(name: .switchView, object: link)
+        }
+    }
+
+    private func resetNavigationViewControllersIfNeeded() {
+        if let viewStack = viewController?.navigationController?.viewControllers,
+           viewStack.count > 1,
+           let firstVC = viewStack.first {
+            viewController?.navigationController?.setViewControllers([firstVC], animated: false)
+        }
     }
 }
