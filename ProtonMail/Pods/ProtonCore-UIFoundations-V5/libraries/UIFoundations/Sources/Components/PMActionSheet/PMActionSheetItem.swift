@@ -80,9 +80,13 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     }
 
     public let title: String?
+    public let detail: String?
     public let icon: UIImage?
+    public let rightIcon: UIImage?
     public let textColor: UIColor
+    public let detailColor: UIColor
     public let iconColor: UIColor
+    public let rightIconColor: UIColor
     /// A Boolean value that determines if the item is selected
     public var isOn: Bool = false
     public let userInfo: [String: Any]?
@@ -107,12 +111,16 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     let alignment: NSTextAlignment
     /// Does the cell have bottom separator?
     let hasSeparator: Bool
+    /// CompressionResistancePriority of detail label
+    let detailCompressionResistancePriority: UILayoutPriority
 
     /// Initializer of `PMActionSheetItem`
     /// - Parameters:
     ///   - title: Title of item
+    ///   - detail: Text label on the right side
     ///   - icon: Icon of item
     ///   - textColor: Color of text, default value is `ColorProvider.TextNorm`
+    ///   - detailColor: Color of detail, default value is `ColorProvider.TextHint`
     ///   - iconColor: Color of icon, default value is `ColorProvider.TextNorm`
     ///   - isOn: A Boolean value that determines if the item is selected
     ///   - alignment: Alignment of title
@@ -121,11 +129,33 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     ///   - indentationLevel: The indentation level of the cell’s content. starts from 0
     ///   - indentationWidth:The width for each level of indentation of a cell's content.
     ///   - handler: A block to execute when the user selects the action.
-    public init(title: String?, icon: UIImage?, textColor: UIColor? = nil, iconColor: UIColor? = nil, isOn: Bool = false, markType: MarkType? = nil, alignment: NSTextAlignment = .left, hasSeparator: Bool = true, userInfo: [String: Any]? = nil, indentationLevel: Int = 0, indentationWidth: CGFloat = 24, handler: ((PMActionSheetPlainItem) -> Void)?) {
+    public init(
+        title: String?,
+        detail: String? = nil,
+        icon: UIImage?,
+        rightIcon: UIImage? = nil,
+        textColor: UIColor? = nil,
+        detailColor: UIColor? = nil,
+        iconColor: UIColor? = nil,
+        rightIconColor: UIColor? = nil,
+        isOn: Bool = false,
+        markType: MarkType? = nil,
+        alignment: NSTextAlignment = .left,
+        hasSeparator: Bool = true,
+        userInfo: [String: Any]? = nil,
+        indentationLevel: Int = 0,
+        indentationWidth: CGFloat = 24,
+        detailCompressionResistancePriority: UILayoutPriority = .defaultHigh,
+        handler: ((PMActionSheetPlainItem) -> Void)?
+    ) {
         self.title = title
+        self.detail = detail
         self.icon = icon
+        self.rightIcon = rightIcon
         self.textColor = textColor ?? ColorProvider.TextNorm
+        self.detailColor = detailColor ?? ColorProvider.TextHint
         self.iconColor = iconColor ?? ColorProvider.TextNorm
+        self.rightIconColor = rightIconColor ?? ColorProvider.IconWeak
         self.markType = isOn ? .checkMark : .none
         self.isOn = isOn
         if let type = markType {
@@ -137,6 +167,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
         self.indentationLevel = indentationLevel
         self.indentationWidth = indentationWidth
         self.handler = handler
+        self.detailCompressionResistancePriority = detailCompressionResistancePriority
     }
 }
 
@@ -160,7 +191,7 @@ public struct PMActionSheetToggleItem: PMActionSheetItem {
     ///   - iconColor: Color of icon, default value is `ColorProvider.TextNorm`
     ///   - toggleColor: Color of toggle color on `on` status, default is system value.
     ///   - isOn: A Boolean value that determines the on/off status of switch
-    ///   - userInfo: Closure will excuted after item click
+    ///   - userInfo: Closure will executed after item click
     public init(title: String?, icon: UIImage?, textColor: UIColor? = nil, iconColor: UIColor? = nil, toggleColor: UIColor? = nil,
                 isOn: Bool = false, userInfo: [String: Any]? = nil, indentationLevel: Int = 2, indentationWidth: CGFloat = 24) {
         self.title = title

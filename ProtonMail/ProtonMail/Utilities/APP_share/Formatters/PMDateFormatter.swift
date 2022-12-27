@@ -42,7 +42,7 @@ class PMDateFormatter {
         return formatter
     }()
     private lazy var dateFormatter = formatterFactory(localizedDateFormatFromTemplate: "EEEE, MMMM dd")
-    private lazy var timeFormatter = formatterFactory(localizedDateFormatFromTemplate: "hhmm a")
+    private lazy var timeFormatter = formatterFactory(localizedDateFormatFromTemplate: "jj mm")
 
     private var calendar: Calendar {
         var calendar = Environment.calendar

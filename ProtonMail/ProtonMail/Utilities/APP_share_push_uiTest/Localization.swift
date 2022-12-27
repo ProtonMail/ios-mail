@@ -367,7 +367,6 @@ class LocalizedString {
     /// "Send"
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
     lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
-    lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
     lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
     lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
     lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
@@ -1519,6 +1518,11 @@ enum L11n {
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 	}
+
+    struct ScheduledSend {
+        static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
+        static let select_date_and_time = NSLocalizedString("Select date and time", comment: "Option for set up scheduled send")
+    }
 
     struct PushNotificationAction {
         static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
