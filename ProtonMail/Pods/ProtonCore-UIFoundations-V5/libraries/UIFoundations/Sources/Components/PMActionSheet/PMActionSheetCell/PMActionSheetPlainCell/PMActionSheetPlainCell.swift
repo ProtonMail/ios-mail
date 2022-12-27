@@ -27,12 +27,16 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
     private var separator: UIView?
     @IBOutlet private var leftIcon: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var detailLabel: UILabel!
     @IBOutlet private var leftIconLeftConstraint: NSLayoutConstraint!
     @IBOutlet private var titleLeftToIcon: NSLayoutConstraint!
     @IBOutlet private var titleLeftToSuperView: NSLayoutConstraint!
     @IBOutlet private var titleRightToIcon: NSLayoutConstraint!
+    @IBOutlet private var titleRightToDetail: NSLayoutConstraint!
     @IBOutlet private var titleRightToSuperView: NSLayoutConstraint!
-    @IBOutlet weak var rightIcon: UIImageView!
+    @IBOutlet private var rightIcon: UIImageView!
+    @IBOutlet private var rightIconWidth: NSLayoutConstraint!
+    @IBOutlet private var rightIconHeight: NSLayoutConstraint!
 
     class func nib() -> UINib {
         return UINib(nibName: "PMActionSheetPlainCell", bundle: PMUIFoundations.bundle)
@@ -42,6 +46,7 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
         super.awakeFromNib()
         self.separator = self.addSeparator(leftRef: self.leftIcon, constant: -16)
         titleLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        detailLabel.font = .adjustedFont(forTextStyle: .subheadline)
     }
 
     func config(item: PMActionSheetPlainItem, indexPath: IndexPath) {
@@ -57,7 +62,13 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
         }
 
         let hasRightIcon: Bool
-        if let rightIcon = item.markType.icon {
+        if let rightIcon = item.rightIcon {
+            self.rightIcon.image = rightIcon
+            self.rightIcon.tintColor = item.rightIconColor
+            self.rightIconWidth.constant = 20
+            self.rightIconHeight.constant = 20
+            hasRightIcon = true
+        } else if let rightIcon = item.markType.icon {
             self.rightIcon.image = rightIcon
             self.rightIcon.tintColor = ColorProvider.BrandNorm
             hasRightIcon = true
@@ -66,28 +77,61 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
             hasRightIcon = false
         }
 
+        detailLabel.setContentCompressionResistancePriority(
+            item.detailCompressionResistancePriority,
+            for: .horizontal
+        )
+        detailLabel.text = item.detail
+        detailLabel.textColor = item.detailColor
+        detailLabel.textAlignment = .right
+
         self.titleLabel.text = item.title
         self.titleLabel.textColor = item.textColor
         self.titleLabel.textAlignment = item.alignment
         self.separator?.isHidden = !item.hasSeparator
         self.accessibilityIdentifier = "itemIndex_\(indexPath.section).\(indexPath.row)"
         self.accessibilityLabel = item.title
-        self.setupTitleConstraints(level: item.indentationLevel,
-                                   width: item.indentationWidth,
-                                   alignment: item.alignment,
-                                   hasLeftIcon: hasLeftIcon,
-                                   hasRightIcon: hasRightIcon)
+        self.setupTitleConstraints(
+            level: item.indentationLevel,
+            width: item.indentationWidth,
+            alignment: item.alignment,
+            hasLeftIcon: hasLeftIcon,
+            hasRightIcon: hasRightIcon,
+            hasDetail: item.detail != nil
+        )
         generateAccessibilityIdentifiers()
     }
 
     private func setupTitleConstraints(
-        level: Int, width: CGFloat, alignment: NSTextAlignment, hasLeftIcon: Bool, hasRightIcon: Bool
+        level: Int,
+        width: CGFloat,
+        alignment: NSTextAlignment,
+        hasLeftIcon: Bool,
+        hasRightIcon: Bool,
+        hasDetail: Bool
     ) {
 
         self.titleLeftToIcon.isActive = hasLeftIcon
         self.titleLeftToSuperView.isActive = !hasLeftIcon
-        self.titleRightToIcon.isActive = hasRightIcon
-        self.titleRightToSuperView.isActive = !hasRightIcon
+
+        switch (hasRightIcon, hasDetail) {
+        case (false, false):
+            titleRightToSuperView.isActive = true
+            titleRightToIcon.isActive = false
+            titleRightToDetail.isActive = false
+        case (false, true):
+            titleRightToSuperView.isActive = false
+            titleRightToIcon.isActive = false
+            titleRightToDetail.isActive = true
+        case (true, false):
+            titleRightToSuperView.isActive = false
+            titleRightToIcon.isActive = true
+            titleRightToDetail.isActive = false
+        case (true, true):
+            titleRightToSuperView.isActive = false
+            titleRightToIcon.isActive = true
+            titleRightToDetail.isActive = true
+        }
 
         let indentationOffset = CGFloat(level) * width
         if hasLeftIcon {

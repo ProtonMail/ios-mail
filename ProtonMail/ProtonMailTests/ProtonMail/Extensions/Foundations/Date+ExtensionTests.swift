@@ -221,6 +221,33 @@ final class Date_ExtensionTests: XCTestCase {
         timeInterval = try XCTUnwrap(result?.timeIntervalSince1970)
         XCTAssertEqual(dateInterval - timeInterval, 60 * 60)
     }
+
+    func testIs12H() {
+        // Seems like there is no way to set up 12H or 24H for simulator
+        // The only way is Locale
+        // France is 24-hour time as a standard
+        XCTAssertTrue(Date.is12H(locale: Locale(identifier: "en_US")))
+        XCTAssertFalse(Date.is12H(locale: Locale(identifier: "fr_GP")))
+    }
+
+    func testFormat_12H() {
+        XCTAssertTrue(Date.is12H())
+        let date = Date(timeIntervalSince1970: 1671187872)
+        XCTAssertEqual(date.localizedString(withTemplate: nil), "Dec 16 at 6:51 PM")
+        XCTAssertEqual(date.localizedString(withTemplate: "yy.MM.dd jj mm"), "12/16/22, 6:51 PM")
+        XCTAssertEqual(date.localizedString(withTemplate: "MMM.dd jj mm"), "Dec 16 at 6:51 PM")
+        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "12/16, 6:51 PM")
+    }
+
+    func testFormat_24H_with_template() {
+        Environment.locale = { .frGP }
+        XCTAssertFalse(Date.is12H())
+        let date = Date(timeIntervalSince1970: 1671187872)
+        XCTAssertEqual(date.localizedString(withTemplate: nil), "16 déc. à 18:51")
+        XCTAssertEqual(date.localizedString(withTemplate: "yyyy MM dd jj: mm"), "16/12/2022 18:51")
+        XCTAssertEqual(date.localizedString(withTemplate: "yy MM dd jj: mm"), "16/12/22 18:51")
+        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "16/12 18:51")
+    }
 }
 
 extension Date_ExtensionTests {

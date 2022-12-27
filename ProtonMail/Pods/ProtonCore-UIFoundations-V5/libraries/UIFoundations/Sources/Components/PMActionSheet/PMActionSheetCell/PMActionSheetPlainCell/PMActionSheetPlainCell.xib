@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,33 +37,40 @@
                             <constraint firstAttribute="height" constant="24" id="dCr-Ab-vIu"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0W-Z5-myx" userLabel="DetailLabel">
+                        <rect key="frame" x="275" y="21.5" width="37" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="1aK-b2-K7L" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="24U-qT-aRh"/>
                     <constraint firstAttribute="trailing" secondItem="ztN-Z9-3hW" secondAttribute="trailing" constant="16" id="5gg-e1-WMC"/>
+                    <constraint firstItem="Y0W-Z5-myx" firstAttribute="centerY" secondItem="euH-8D-gOz" secondAttribute="centerY" id="6nP-qJ-coi"/>
                     <constraint firstItem="ztN-Z9-3hW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9Q8-o8-zhU"/>
                     <constraint firstItem="1aK-b2-K7L" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="JIx-wy-ysn"/>
+                    <constraint firstItem="Y0W-Z5-myx" firstAttribute="leading" secondItem="euH-8D-gOz" secondAttribute="trailing" constant="8" id="aJd-wP-krM"/>
                     <constraint firstItem="ztN-Z9-3hW" firstAttribute="leading" secondItem="euH-8D-gOz" secondAttribute="trailing" constant="13" id="dVN-6U-IMg" userLabel="Title Right To Icon"/>
                     <constraint firstItem="euH-8D-gOz" firstAttribute="leading" secondItem="1aK-b2-K7L" secondAttribute="trailing" constant="13" id="eeh-YQ-Lvv"/>
                     <constraint firstItem="euH-8D-gOz" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="j8b-xs-h8a"/>
-                    <constraint firstAttribute="trailing" secondItem="euH-8D-gOz" secondAttribute="trailing" constant="16" id="jWl-mL-PVX" userLabel="Title Right To Super View"/>
-                    <constraint firstItem="euH-8D-gOz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="sWS-NP-OcA"/>
+                    <constraint firstAttribute="trailing" secondItem="euH-8D-gOz" secondAttribute="trailing" priority="999" constant="16" id="jWl-mL-PVX" userLabel="Title Right To Super View"/>
+                    <constraint firstItem="euH-8D-gOz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" priority="999" constant="16" id="sWS-NP-OcA"/>
+                    <constraint firstAttribute="trailing" secondItem="Y0W-Z5-myx" secondAttribute="trailing" constant="8" id="xKh-BQ-9Xe"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="jWl-mL-PVX"/>
-                        <exclude reference="sWS-NP-OcA"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="detailLabel" destination="Y0W-Z5-myx" id="1qo-wt-faR"/>
                 <outlet property="leftIcon" destination="1aK-b2-K7L" id="8m8-fI-TfJ"/>
                 <outlet property="leftIconLeftConstraint" destination="24U-qT-aRh" id="hme-H8-IDD"/>
                 <outlet property="rightIcon" destination="ztN-Z9-3hW" id="COx-B6-aOs"/>
+                <outlet property="rightIconHeight" destination="dCr-Ab-vIu" id="y18-ZU-mPb"/>
+                <outlet property="rightIconWidth" destination="4YH-W3-XTx" id="DLP-es-o59"/>
                 <outlet property="titleLabel" destination="euH-8D-gOz" id="lFY-iS-xd7"/>
                 <outlet property="titleLeftToIcon" destination="eeh-YQ-Lvv" id="uYh-jq-yc8"/>
                 <outlet property="titleLeftToSuperView" destination="sWS-NP-OcA" id="Te4-uz-SVb"/>
+                <outlet property="titleRightToDetail" destination="6nP-qJ-coi" id="LhB-bm-K0r"/>
                 <outlet property="titleRightToIcon" destination="dVN-6U-IMg" id="FpT-QH-ITg"/>
                 <outlet property="titleRightToSuperView" destination="jWl-mL-PVX" id="su5-1B-ASc"/>
             </connections>

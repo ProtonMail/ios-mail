@@ -137,8 +137,11 @@ extension String {
         self.replacingOccurrences(of: pattern, with: replaceto, options: .caseInsensitive, range: nil)
     }
 
-    func preg_replace (_ pattern: String, replaceto: String) -> String {
-        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    func preg_replace(
+        _ pattern: String,
+        replaceto: String,
+        options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    ) -> String {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: options)
             let replacedString = regex.stringByReplacingMatches(in: self,
