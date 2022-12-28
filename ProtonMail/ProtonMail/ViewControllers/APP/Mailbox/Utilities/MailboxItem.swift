@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum MailboxItem {
+enum MailboxItem: Hashable {
     case message(MessageEntity)
     case conversation(ConversationEntity)
 
@@ -45,6 +45,15 @@ enum MailboxItem {
             return message.messageID.rawValue
         case .conversation(let conversation):
             return conversation.conversationID.rawValue
+        }
+    }
+
+    var objectID: ObjectID {
+        switch self {
+        case .message(let message):
+            return message.objectID
+        case .conversation(let conversation):
+            return conversation.objectID
         }
     }
 

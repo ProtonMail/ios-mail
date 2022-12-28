@@ -21,23 +21,28 @@ protocol MailboxDataSource {
     func reloadSnapshot(shouldAnimateSkeletonLoading: Bool, animate: Bool)
 }
 
+enum MailboxRow: Hashable {
+    case real(MailboxItem)
+    // the Int is needed for diffable data sources to generate unique identifiers
+    case skeleton(Int)
+}
+
 @available(iOS 13.0, *)
-final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxDataSource {
-    private var diffableDataSource: UITableViewDiffableDataSource<Int, MailboxItem>
-    private var viewModel: MailboxViewModel
+final class MailboxDiffableDataSource: MailboxDataSource {
+    private let diffableDataSource: UITableViewDiffableDataSource<Int, MailboxRow>
+    private let viewModel: MailboxViewModel
 
     init(viewModel: MailboxViewModel,
          tableView: UITableView,
          shouldAnimateSkeletonLoading: Bool,
-         cellProvider: @escaping UITableViewDiffableDataSource<Int, MailboxItem>.CellProvider) {
+         cellProvider: @escaping UITableViewDiffableDataSource<Int, MailboxRow>.CellProvider) {
         self.viewModel = viewModel
-        self.diffableDataSource = UITableViewDiffableDataSource<Int, MailboxItem>(tableView: tableView,
-                                                                                  cellProvider: cellProvider)
+        self.diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: cellProvider)
         self.reloadSnapshot(shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading, animate: false)
     }
 
     func reloadSnapshot(shouldAnimateSkeletonLoading: Bool, animate: Bool) {
-        let newSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxItem>
+        let newSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>
         if shouldAnimateSkeletonLoading {
             newSnapshot = reloadSkeletonData()
         } else {
@@ -53,73 +58,43 @@ final class MailboxDiffableDataSource<MailboxItem: MailBoxItemType>: MailboxData
         }
     }
 
-    private func reloadSkeletonData() -> NSDiffableDataSourceSnapshot<Int, MailboxItem> {
-        var skeletonSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxItem>()
+    private func reloadSkeletonData() -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
+        var skeletonSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
 
         skeletonSnapshot.appendSections([0])
-        var itemsToReload: [MailboxItem] = []
-        for _ in 0..<10 {
-            switch viewModel.locationViewMode {
-            case .singleMessage:
-                let fakeMsg = viewModel.makeFakeRawMessage()
-                guard let item = MessageEntity(fakeMsg) as? MailboxItem else {
-                    fatalError("Misconfigured")
-                }
-                itemsToReload.append(item)
-            case .conversation:
-                let fakeConversation = viewModel.makeFakeRawConversation()
-                guard let item = ConversationEntity(fakeConversation) as? MailboxItem else {
-                    fatalError("Misconfigured")
-                }
-                itemsToReload.append(item)
-            }
-        }
+        let itemsToReload: [MailboxRow] = (0..<10).map { MailboxRow.skeleton($0) }
         skeletonSnapshot.appendItems(itemsToReload, toSection: 0)
 
         return skeletonSnapshot
     }
 
-    private func reloadMailData() -> NSDiffableDataSourceSnapshot<Int, MailboxItem> {
-        var realSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxItem>()
+    private func reloadMailData() -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
+        var realSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
+
+        var itemsToReload: [MailboxRow] = []
 
         for section in 0..<viewModel.sectionCount() {
             realSnapshot.appendSections([section])
-            var items: [MailboxItem] = []
+            var items: [MailboxRow] = []
             for row in 0..<viewModel.rowCount(section: section) {
                 let indexPath = IndexPath(row: row, section: section)
-                switch viewModel.locationViewMode {
-                case .singleMessage:
-                    if let message = viewModel.item(index: indexPath) as? MailboxItem {
-                        items.append(message)
-                    }
-                case .conversation:
-                    if let conversation = viewModel.itemOfConversation(index: indexPath) as? MailboxItem {
-                        items.append(conversation)
-                    }
+                guard let mailboxItem = viewModel.mailboxItem(at: indexPath) else {
+                    continue
+                }
+
+                let rowItem = MailboxRow.real(mailboxItem)
+
+                items.append(rowItem)
+
+                if !viewModel.isObjectUpdated(objectID: mailboxItem.objectID) {
+                    itemsToReload.append(rowItem)
                 }
             }
             realSnapshot.appendItems(items, toSection: section)
         }
 
-        let itemsToReload: [MailboxItem] = realSnapshot.itemIdentifiers.compactMap { itemIdentifier in
-            guard let currentIndex = realSnapshot.indexOfItem(itemIdentifier),
-                  let index = realSnapshot.indexOfItem(itemIdentifier), index == currentIndex else {
-                return nil
-            }
-            guard viewModel.isObjectUpdated(objectID: itemIdentifier.objectID) else {
-                return nil
-            }
-            return itemIdentifier
-        }
         realSnapshot.reloadItems(itemsToReload)
 
         return realSnapshot
     }
 }
-
-protocol CoreDataBasedObject {
-    var objectID: ObjectID { get }
-}
-typealias MailBoxItemType = CoreDataBasedObject & Hashable
-extension ConversationEntity: CoreDataBasedObject {}
-extension MessageEntity: CoreDataBasedObject {}
