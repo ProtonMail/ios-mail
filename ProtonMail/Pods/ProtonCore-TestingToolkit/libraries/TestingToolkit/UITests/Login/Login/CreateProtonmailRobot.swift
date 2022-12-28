@@ -21,11 +21,11 @@
 
 import pmtest
 
-private let createProtonmailTitleId = "ChooseUsernameViewController.titleLabel"
-private let usernameFieldId = "ChooseUsernameViewController.addressTextField.textField"
-private let buttonNextId = "ChooseUsernameViewController.nextButton"
+private let createProtonmailTitleId = "CreateAddressViewController.titleLabel"
+private let usernameFieldId = "CreateAddressViewController.addressTextField.textField"
+private let buttonNextId = "CreateAddressViewController.nextButton"
 private let buttonCreateAddressId = "CreateAddressViewController.createButton"
-private let createPMAddressTitle = "Create Proton Mail address"
+private let createPMAddressTitle = "Proton address required"
 
 public final class CreateProtonmailRobot: CoreElements {
     

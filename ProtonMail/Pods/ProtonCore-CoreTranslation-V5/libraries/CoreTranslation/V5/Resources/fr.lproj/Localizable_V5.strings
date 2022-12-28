@@ -44,13 +44,16 @@
 "New_Plans Secure Core servers" = "Serveurs Secure Core";
 
 /* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Politique stricte de non-journalisation (no-logs)";
+"New_Plans Strict no-logs policy" = "Politique stricte de non-journalisation (no log)";
 
 /* New_Plans Plan details free description */
 "New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Le compte de démarrage gratuit conçu pour que tout le monde puisse bénéficier du respect de la vie privée.";
 
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La messagerie et le calendrier qui privilégient la confidentialité et la vie privée, pour vos besoins quotidiens de communication.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "L'abonnement idéal pour le stockage avec 200 Go de stockage cloud permettant de garder vos fichiers privés.";
 
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "L'ensemble des services premium de Proton : la solution ultime pour protéger sa vie privée.";

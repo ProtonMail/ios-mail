@@ -153,6 +153,11 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
     
     var banner: PMBanner?
@@ -168,6 +173,11 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             self.banner?.dismiss(animated: true)
         }
         
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        tableFooterTextLabel.font = .adjustedFont(forTextStyle: .subheadline)
     }
 
     override public func didMove(toParent parent: UIViewController?) {

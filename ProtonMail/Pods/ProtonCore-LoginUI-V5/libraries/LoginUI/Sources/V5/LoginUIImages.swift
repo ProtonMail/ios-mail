@@ -61,7 +61,8 @@ enum LoginUIImages {
 public extension SignupParameters {
     
     init(passwordRestrictions: SignupPasswordRestrictions,
-         summaryScreenVariant: SummaryScreenVariant) {
-        self.init(true, passwordRestrictions, summaryScreenVariant)
+         summaryScreenVariant: SummaryScreenVariant,
+         signupMode: SignupMode = .internal) {
+        self.init(true, passwordRestrictions, summaryScreenVariant, signupMode)
     }
 }

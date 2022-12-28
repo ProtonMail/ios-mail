@@ -61,7 +61,6 @@ public enum CryptoError: Error {
 
 public enum CryptoKeyError: Error {
     case noKeyCouldBeUnlocked(errors: [Error])
-    case noKeyCouldBeParsed(errors: [Error])
 }
 
 public enum ArmoredError: Error {

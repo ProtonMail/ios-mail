@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Перевірте стан Proton, щоб дізнатися стан нашої системи.";
 
+/* Available addresss claim button */
+"Claim it" = "Вказати її";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Закрити";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Не вдалося створити користувача";
+
+/* Available addresss own address button */
+"Create your own" = "Створити свою власну";
 
 /* Signup password proton view title */
 "Create your password" = "Створіть пароль";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Не вдалося зіставити придбаний в App Store продукт з жодним продуктом на нашому сервері. Будь ласка, заповніть звіт про помилку і наша команда підтримки зв'яжеться з вами.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Докладніше";
 
@@ -425,6 +432,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Усталена приватність";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Адреса Proton обов'язкова";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -567,6 +577,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Основа для приватного та захищеного спілкування.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Ця адреса доступна:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Процес покупки в програмі розпочато. Дотримуйтесь інструкцій Apple для завершення чи скасування покупки.";
 
@@ -699,6 +712,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Ви користуватиметесь цією адресою е-пошти для входу до всіх служб Proton.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Вам пощастило!";
 
 /* Complete view title */
 "Your account is being created" = "Створюємо ваш обліковий запис…";

@@ -68,13 +68,20 @@ open class DoH: DoHInterface {
         cookiesSynchronizer = storage.map { DoHCookieSynchronizer(cookieStorage: $0, doh: self) }
     }
     
-    open func synchronizeCookies(with response: URLResponse?) {
+    open var currentlyUsedCookiesStorage: HTTPCookieStorage? { cookiesSynchronizer?.cookieStorage }
+    
+    open func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) {
         guard let synchronizer = cookiesSynchronizer else { return }
         guard let response = response, let httpResponse = response as? HTTPURLResponse else { return }
         guard let headers = httpResponse.allHeaderFields as? [String: String] else { return }
+        guard let responseHost = httpResponse.url?.host else { return }
         
-        guard let responseHost = httpResponse.url?.host, let host = ProductionHosts(rawValue: responseHost) else  { return }
-        
+        guard let host = ProductionHosts(rawValue: responseHost)
+                ?? productionHostForRequestHeaders(requestHeaders)
+                ?? productionHostForPossibleProxyDomain(responseHost) else {
+            return
+        }
+            
         synchronizer.synchronizeCookies(for: host, with: headers)
     }
     
@@ -302,7 +309,7 @@ open class DoH: DoHInterface {
     ) {
         handleErrorResolvingProxyDomainIfNeeded(host: host, requestHeaders: requestHeaders, sessionId: sessionId, error: error,
                                                 callCompletionBlockUsing: callCompletionBlockUsing) { [weak self] in
-            self?.synchronizeCookies(with: response)
+            self?.synchronizeCookies(with: response, requestHeaders: requestHeaders)
             completion($0)
         }
     }

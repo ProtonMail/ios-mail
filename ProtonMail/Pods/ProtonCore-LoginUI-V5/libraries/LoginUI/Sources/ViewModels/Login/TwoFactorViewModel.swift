@@ -32,7 +32,7 @@ final class TwoFactorViewModel {
     enum TwoFactorResult {
         case done(LoginData)
         case mailboxPasswordNeeded
-        case createAddressNeeded(CreateAddressData)
+        case createAddressNeeded(CreateAddressData, String?)
     }
 
     // MARK: - Properties
@@ -67,8 +67,15 @@ final class TwoFactorViewModel {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
-                    self?.finished.publish(.createAddressNeeded(data))
-                    self?.isLoading.value = false
+                    self?.login.checkUsernameFromEmail(email: data.email) { [weak self] result in
+                        switch result {
+                        case .failure(let error):
+                            self?.error.publish(.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                        case .success(let defaultUsername):
+                            self?.finished.publish(.createAddressNeeded(data, defaultUsername))
+                        }
+                        self?.isLoading.value = false
+                    }
                 case .ask2FA:
                     PMLog.error("Asking for 2FA code password after successful 2FA code is an invalid state")
                     self?.error.publish(.invalidState)

@@ -52,6 +52,9 @@
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Solusi email dan kalender yang mengedepankan privasi untuk kebutuhan komunikasi Anda sehari-hari.";
 
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Paket yang berfokus pada penyimpanan dengan ruang penyimpanan cloud sebesar 200 GB untuk menjaga agar berkas Anda tetap privat.";
+
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "Paket privasi yang menyeluruh dengan akses ke seluruh layanan premium Proton.";
 

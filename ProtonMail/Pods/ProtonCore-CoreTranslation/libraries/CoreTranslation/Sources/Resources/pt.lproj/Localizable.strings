@@ -190,6 +190,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Não foi possível comparar o produto que comprou na App Store com qualquer produto no nosso servidor. Por favor, reporte um erro e a nossa equipa de apoio ao cliente entrará em contacto consigo.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Saiba mais";
 

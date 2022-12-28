@@ -64,7 +64,7 @@ extension QuarkCommands {
         }
         
         if account.type.isNotPaid {
-        
+            
             if let recoveryEmail = account.recoveryEmail { urlString.append("&-r=\(recoveryEmail)") }
             
             if let statusValue = account.statusValue { urlString.append("&-s=\(statusValue)") }
@@ -77,6 +77,9 @@ extension QuarkCommands {
             case .addressButNoKeys:
                 urlString.append("&--create-address=null")
             case .addressWithKeys(let type):
+                urlString.append("&-k=\(type.rawValue)")
+            case .userKeyNoAddress(let type):
+                urlString.append("&--create-address=null")
                 urlString.append("&-k=\(type.rawValue)")
             }
             
@@ -106,17 +109,16 @@ extension QuarkCommands {
                 completion(.failure(.cannotFindAccountDetailsInResponseBody)); return
             }
             let detailsString = input[detailsRange].dropLast(7)
-
+            
             guard let idRange = detailsString.range(of: "ID:\\s.*", options: .regularExpression) else {
                 completion(.failure(.cannotFindAccountDetailsInResponseBody)); return
             }
             let idString = detailsString[idRange].dropFirst(4)
-
+            
             let created = CreatedAccountDetails(details: String(detailsString), id: String(idString), account: account)
             completion(.success(created))
         }.resume()
     }
-    
 }
 
 @available(*, deprecated, message: "Use asynchronous variant: create(account:currentlyUsedHostUrl:completion:)")
@@ -147,6 +149,29 @@ private func createUser(accountType: AccountAvailableForCreation,
             PMLog.debug(error.userFacingMessageInQuarkCommands)
         case .success(let details):
             result = (username: details.account.username, details.account.password)
+        }
+        semaphore.signal()
+    }
+    semaphore.wait()
+    return result
+}
+
+public func createUser(accountType: AccountAvailableForCreation,
+                       currentlyUsedHostUrl: String) -> (id: String, username: String, password: String) {
+    let semaphore = DispatchSemaphore(value: 0)
+    var result: (id: String, username: String, password: String) = ("", "user was not created, quark command failed", "")
+    QuarkCommands.create(account: accountType,
+                         currentlyUsedHostUrl: currentlyUsedHostUrl,
+                         callCompletionBlockOn: .global(qos: .userInitiated)) { completion in
+        switch completion {
+        case .failure(let error):
+            PMLog.debug(error.userFacingMessageInQuarkCommands)
+        case .success(let details):
+            guard let idRange = details.details.range(of: "ID \\(decrypt\\):\\s.*", options: .regularExpression) else {
+                return
+            }
+            let idString = details.details[idRange].dropFirst(14)
+            result = (id: String(idString), username: details.account.username, details.account.password)
         }
         semaphore.signal()
     }

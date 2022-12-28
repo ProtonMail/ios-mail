@@ -28,7 +28,7 @@ import ProtonCore_UIFoundations
 protocol LoginStepsDelegate: AnyObject {
     func twoFactorCodeNeeded()
     func mailboxPasswordNeeded()
-    func createAddressNeeded(data: CreateAddressData)
+    func createAddressNeeded(data: CreateAddressData, defaultUsername: String?)
     func userAccountSetupNeeded()
     func firstPasswordChangeNeeded()
     func learnMoreAboutExternalAccountsNotSupported()
@@ -176,8 +176,8 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
                 self?.delegate?.twoFactorCodeNeeded()
             case .mailboxPasswordNeeded:
                 self?.delegate?.mailboxPasswordNeeded()
-            case let .createAddressNeeded(data):
-                self?.delegate?.createAddressNeeded(data: data)
+            case let .createAddressNeeded(data, defaultUsername):
+                self?.delegate?.createAddressNeeded(data: data, defaultUsername: defaultUsername)
             }
         }
         viewModel.isLoading.bind { [weak self] isLoading in
@@ -199,14 +199,14 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         cancelFocus()
         dismissKeyboard()
 
-        let usernameValid = validateUsername()
+        let usernameValid = setAddressTextFieldError()
         let passwordValid = validatePassword()
 
         guard usernameValid, passwordValid else {
             return
         }
 
-        clearErrors()
+        PMBanner.dismissAll(on: self)
         viewModel.login(username: loginTextField.value, password: passwordTextField.value)
     }
 
@@ -266,7 +266,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     // MARK: - Validation
 
     @discardableResult
-    private func validateUsername() -> Bool {
+    private func setAddressTextFieldError() -> Bool {
         let usernameValid = viewModel.validate(username: loginTextField.value)
         switch usernameValid {
         case let .failure(error):
@@ -290,14 +290,6 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
             return true
         }
     }
-
-    // MARK: - Errors
-
-    private func clearErrors() {
-        PMBanner.dismissAll(on: self)
-        clearError(textField: loginTextField)
-        clearError(textField: passwordTextField)
-    }
 }
 
 // MARK: - Text field delegate
@@ -320,7 +312,7 @@ extension LoginViewController: PMTextFieldDelegate {
     func didEndEditing(textField: PMTextField) {
         switch textField {
         case loginTextField:
-            validateUsername()
+            setAddressTextFieldError()
         case passwordTextField:
             validatePassword()
         default:

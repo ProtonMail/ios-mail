@@ -26,7 +26,7 @@ import ProtonCore_Login
 final class MailboxPasswordViewModel {
     enum MailboxPasswordResult {
         case done(LoginData)
-        case createAddressNeeded(CreateAddressData)
+        case createAddressNeeded(CreateAddressData, String?)
     }
 
     // MARK: - Properties
@@ -56,8 +56,15 @@ final class MailboxPasswordViewModel {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
-                    self?.finished.publish(.createAddressNeeded(data))
-                    self?.isLoading.value = false
+                    self?.login.checkUsernameFromEmail(email: data.email) { [weak self] result in
+                        switch result {
+                        case .failure(let error):
+                            self?.error.publish(.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                        case .success(let defaultUsername):
+                            self?.finished.publish(.createAddressNeeded(data, defaultUsername))
+                        }
+                        self?.isLoading.value = false
+                    }
                 case .ask2FA, .askSecondPassword:
                     PMLog.error("Invalid state \(status) after entering Mailbox password")
                     self?.error.publish(.invalidState)

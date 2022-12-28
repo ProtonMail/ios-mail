@@ -272,7 +272,7 @@ public final class LoginAndSignup {
         let shouldShowCloseButton = viewController == nil ? false : isCloseButtonAvailable
         let loginCoordinator = LoginCoordinator(container: container,
                                                 isCloseButtonAvailable: shouldShowCloseButton,
-                                                isSignupAvailable: !signupAvailability.isNotAvailable,
+                                                isSignupAvailable: signupAvailability.isAvailable,
                                                 customization: customization)
         self.loginCoordinator = loginCoordinator
         loginCoordinator.delegate = self
@@ -424,7 +424,7 @@ extension LoginAndSignup: SignupCoordinatorDelegate {
     func userSelectedSignin(email: String?, navigationViewController: LoginNavigationViewController) {
         loginCoordinator = LoginCoordinator(container: container,
                                             isCloseButtonAvailable: isCloseButtonAvailable,
-                                            isSignupAvailable: !signupAvailability.isNotAvailable,
+                                            isSignupAvailable: signupAvailability.isAvailable,
                                             customization: customization)
         loginCoordinator?.delegate = self
         if email != nil {

@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Consultez le statut de Proton pour connaître l'état de notre système.";
 
+/* Available addresss claim button */
+"Claim it" = "La revendiquer";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Fermer";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Nous n’avons pas pu créer l'utilisateur.";
+
+/* Available addresss own address button */
+"Create your own" = "Créez la vôtre";
 
 /* Signup password proton view title */
 "Create your password" = "Créez votre mot de passe";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Il n'a pas été possible de faire correspondre votre produit acheté sur l'App Store aux produits présents sur notre serveur. Nous vous invitons à compléter le rapport de bug et notre service client vous contactera.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "En savoir plus";
 
@@ -425,6 +432,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privacy by default";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Une adresse Proton est nécessaire.";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -567,6 +577,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Le point de départ des communications privées et sécurisées.";
 
+/* Available addresss screen info */
+"The following address is available:" = "L'adresse suivante est disponible :";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Le processus d'achat dans l’application a commencé. Suivez les instructions d'Apple pour terminer ou annuler l'achat.";
 
@@ -699,6 +712,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Vous utiliserez cette adresse électronique pour vous connecter à tous les services Proton.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Vous avez de la chance !";
 
 /* Complete view title */
 "Your account is being created" = "Nous créons votre compte…";

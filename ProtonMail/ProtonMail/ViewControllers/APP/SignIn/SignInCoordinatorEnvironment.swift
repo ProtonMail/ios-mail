@@ -92,14 +92,13 @@ extension SignInCoordinatorEnvironment {
                          .finalizeSignIn(loginData:onError:reachLimit:existError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                          .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
-                     loginCreationClosure: { appName, minimumAccountType, _, _, isCloseButtonAvailable in
+                     loginCreationClosure: { appName, minimumAccountType, signupMode, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
-                             // the ability to change signup mode is temporarily disabled
-//                mode: signupMode,
-                             passwordRestrictions: .atLeastEightCharactersLong,
+                             passwordRestrictions: passwordRestrictions,
                              summaryScreenVariant: SummaryScreenVariant.screenVariant(
                                  .mail(SummaryStartButtonText("Start using Proton Mail"))
-                             )
+                             ),
+                             signupMode: signupMode
                          ))
                          let payment: PaymentsAvailability
                          if UIApplication.arePaymentsEnabled {

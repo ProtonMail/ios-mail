@@ -159,7 +159,7 @@ public final class LoginService: Login {
 
     func handleValidCredentials(credential: Credential, passwordMode: PasswordMode, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.mailboxPassword = mailboxPassword
-        authManager.onUpdate(credential: credential, sessionUID: sessionId)
+        authManager.onAuthentication(credential: credential, service: apiService)
 
         switch passwordMode {
         case .one:
