@@ -1178,7 +1178,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func showRefreshController() {
         let height = tableView.tableFooterView?.frame.height ?? 0
-        let count = tableView.visibleCells.count
+        let count = tableView.numberOfRows(inSection: 0)
         guard height == 0 && count == 0 else {return}
 
         // Show refreshControl if there is no bottom loading view
