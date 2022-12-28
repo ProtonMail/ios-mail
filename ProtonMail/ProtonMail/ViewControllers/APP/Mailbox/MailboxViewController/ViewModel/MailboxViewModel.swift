@@ -353,6 +353,16 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         return ConversationEntity(conversation)
     }
 
+    func mailboxItem(at indexPath: IndexPath) -> MailboxItem? {
+        if let message = item(index: indexPath) {
+            return .message(message)
+        } else if let conversation = itemOfConversation(index: indexPath) {
+            return .conversation(conversation)
+        } else {
+            return nil
+        }
+    }
+
     private func itemOfRawConversation(indexPath: IndexPath, collectBreadcrumbs: Bool) -> Conversation? {
         let log: (String) -> Void = { message in
             if collectBreadcrumbs {
@@ -732,16 +742,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
              from: labelID,
              to: Message.Location.trash.labelID
         )
-    }
-
-    func makeFakeRawMessage() -> Message {
-        let context = coreDataContextProvider.mainContext
-        return Message(context: context)
-    }
-
-    func makeFakeRawConversation() -> Conversation {
-        let context = coreDataContextProvider.mainContext
-        return Conversation(context: context)
     }
 
     func searchForScheduled(swipeSelectedID: [String],
