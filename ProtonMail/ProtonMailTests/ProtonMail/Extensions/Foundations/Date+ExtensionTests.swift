@@ -27,6 +27,7 @@ final class Date_ExtensionTests: XCTestCase {
 
         self.reachabilityStub = ReachabilityStub()
         Environment.locale = { .enUS }
+        Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
     }
 
     override func tearDown() {
@@ -233,20 +234,20 @@ final class Date_ExtensionTests: XCTestCase {
     func testFormat_12H() {
         XCTAssertTrue(Date.is12H())
         let date = Date(timeIntervalSince1970: 1671187872)
-        XCTAssertEqual(date.localizedString(withTemplate: nil), "Dec 16 at 6:51 PM")
-        XCTAssertEqual(date.localizedString(withTemplate: "yy.MM.dd jj mm"), "12/16/22, 6:51 PM")
-        XCTAssertEqual(date.localizedString(withTemplate: "MMM.dd jj mm"), "Dec 16 at 6:51 PM")
-        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "12/16, 6:51 PM")
+        XCTAssertEqual(date.localizedString(withTemplate: nil), "Dec 16 at 10:51 AM")
+        XCTAssertEqual(date.localizedString(withTemplate: "yy.MM.dd jj mm"), "12/16/22, 10:51 AM")
+        XCTAssertEqual(date.localizedString(withTemplate: "MMM.dd jj mm"), "Dec 16 at 10:51 AM")
+        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "12/16, 10:51 AM")
     }
 
     func testFormat_24H_with_template() {
         Environment.locale = { .frGP }
         XCTAssertFalse(Date.is12H())
         let date = Date(timeIntervalSince1970: 1671187872)
-        XCTAssertEqual(date.localizedString(withTemplate: nil), "16 déc. à 18:51")
-        XCTAssertEqual(date.localizedString(withTemplate: "yyyy MM dd jj: mm"), "16/12/2022 18:51")
-        XCTAssertEqual(date.localizedString(withTemplate: "yy MM dd jj: mm"), "16/12/22 18:51")
-        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "16/12 18:51")
+        XCTAssertEqual(date.localizedString(withTemplate: nil), "16 déc. à 10:51")
+        XCTAssertEqual(date.localizedString(withTemplate: "yyyy MM dd jj: mm"), "16/12/2022 10:51")
+        XCTAssertEqual(date.localizedString(withTemplate: "yy MM dd jj: mm"), "16/12/22 10:51")
+        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "16/12 10:51")
     }
 }
 

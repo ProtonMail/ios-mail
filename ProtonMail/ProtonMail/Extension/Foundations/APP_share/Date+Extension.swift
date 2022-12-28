@@ -51,9 +51,14 @@ extension Date {
         return formatter.string(from: self)
     }
 
-    func localizedString(withTemplate formatTemplate: String?, locale: Locale = Environment.locale()) -> String {
+    func localizedString(
+        withTemplate formatTemplate: String?,
+        locale: Locale = Environment.locale(),
+        timeZone: TimeZone = Environment.timeZone
+    ) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
+        formatter.timeZone = timeZone
         if let formatTemplate = formatTemplate {
             formatter.setLocalizedDateFormatFromTemplate(formatTemplate)
         } else {
