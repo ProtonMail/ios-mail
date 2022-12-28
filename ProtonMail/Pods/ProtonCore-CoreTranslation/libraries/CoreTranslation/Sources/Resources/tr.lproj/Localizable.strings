@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Sistemimizin durumunu görmek için Proton durumu sayfasına bakın.";
 
+/* Available addresss claim button */
+"Claim it" = "İstek yapın";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Kapat";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Kullanıcı oluşturulamadı";
+
+/* Available addresss own address button */
+"Create your own" = "Kendinizinkini oluşturun";
 
 /* Signup password proton view title */
 "Create your password" = "Parolanızı oluşturun";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Satın aldığınız App Store ürününü sunucumuzdaki hiçbir ürünle eşleştirilemedi. Lütfen hata bildirimini doldurun. Müşteri destek ekibimiz sizinle görüşecek.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Ayrıntılı bilgi alın";
 
@@ -425,6 +432,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Kişisel gizliliğe odaklanmış";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Proton adresi gereklidir";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -567,6 +577,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Kişisel ve güvenli iletişim için Basic.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Şu adres kullanılabilir:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP satın alma süreci başladı. Satın alma işlemini tamamlamak ya da iptal etmek için lütfen Apple yönergelerini izleyin.";
 
@@ -699,6 +712,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Tüm Proton hizmetlerinde oturum açmak için bu e-posta adresini kullanacaksınız.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Şanslısınız!";
 
 /* Complete view title */
 "Your account is being created" = "Hesabınız oluşturuluyor…";

@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Doh
+import Network
 import TrustKit
+import ProtonCore_Doh
 
 final class TrustKitWrapper {
     
@@ -29,7 +30,6 @@ final class TrustKitWrapper {
     static private(set) var current: TrustKit?
 
     static func setUp(delegate: TrustKitDelegate, customConfiguration: Configuration? = nil) {
-
         let config = configuration(hardfail: true)
         
         let instance = TrustKit(configuration: config)
@@ -40,8 +40,8 @@ final class TrustKitWrapper {
                 guard validatorResult.evaluationResult != .success,
                       validatorResult.finalTrustDecision != .shouldAllowConnection else { return }
 
-                if hostName.contains(check: ".compute.amazonaws.com") {
-                    //hard fail
+                if hostName.contains(check: ".compute.amazonaws.com") || isIp(hostName) {
+                    // hard fail
                     delegate.onTrustKitValidationError(.hardfailed)
                 } else {
                     // need to show a alert let user to ignore the alert or not.
@@ -51,6 +51,14 @@ final class TrustKitWrapper {
         }
         self.delegate = delegate
         self.current = instance
+    }
+
+    private static func isIp(_ hostname: String) -> Bool {
+        return hostname.withCString { cStringPtr in
+            var addr = in6_addr()
+            return inet_pton(AF_INET, cStringPtr, &addr) == 1 ||
+                   inet_pton(AF_INET6, cStringPtr, &addr) == 1
+        }
     }
 }
 

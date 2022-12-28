@@ -303,6 +303,42 @@ public class PMTextField: UIView, AccessibleView {
     
     public var textFieldTopAnchor: NSLayoutYAxisAnchor { textField.topAnchor }
     public var textFieldBottomAnchor: NSLayoutYAxisAnchor { textField.bottomAnchor }
+    
+    /**
+     textField isEnabled property
+     */
+    public var isEnabled: Bool {
+        get {
+            return textField.isEnabled
+        }
+        set {
+            textField.isEnabled = newValue
+        }
+    }
+    
+    /**
+     textField isUserInteractionEnabled property
+     */
+    override public var isUserInteractionEnabled: Bool {
+        get {
+            return textField.isUserInteractionEnabled
+        }
+        set {
+            textField.isUserInteractionEnabled = newValue
+        }
+    }
+    
+    /**
+     textField textAlignment property
+     */
+    public var textAlignment: NSTextAlignment {
+        get {
+            return textField.textAlignment
+        }
+        set {
+            textField.textAlignment = newValue
+        }
+    }
 
     // MARK: - Setup
 
@@ -361,6 +397,10 @@ public class PMTextField: UIView, AccessibleView {
     @objc
     private func preferredContentSizeChanged(_ notification: Notification) {
         textField.font = .adjustedFont(forTextStyle: .body)
+        titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+        errorLabel.font = .adjustedFont(forTextStyle: .caption1)
+        suffixLabel.font = .adjustedFont(forTextStyle: .body)
+        assistiveTextLabel.font = .adjustedFont(forTextStyle: .footnote)
     }
     
     private func updateClearMode() {

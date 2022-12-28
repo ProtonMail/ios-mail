@@ -92,18 +92,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet weak var methodStackView: UIStackView!
     @IBOutlet weak var methodSegmenedControl: PMSegmentedControl! {
         didSet {
-            if #available(iOS 13.0, *) {
-                methodSegmenedControl.setImage(image: IconProvider.envelope,
-                                               withText: CoreString._su_recovery_seg_email,
-                                               forSegmentAt: 0)
-                methodSegmenedControl.setImage(image: IconProvider.mobile,
-                                               withText: CoreString._su_recovery_seg_phone,
-                                               forSegmentAt: 1)
-            } else {
-                // don't show icons for the version below iOS 13
-                methodSegmenedControl.setTitle(CoreString._su_recovery_seg_email, forSegmentAt: 0)
-                methodSegmenedControl.setTitle(CoreString._su_recovery_seg_phone, forSegmentAt: 1)
-            }
+            configSegment()
         }
     }
     @IBOutlet weak var nextButton: ProtonButton! {
@@ -319,6 +308,12 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     private func setupNotifications() {
         NotificationCenter.default
             .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -329,6 +324,29 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
 
     @objc private func keyboardWillHide(notification: NSNotification) {
         adjust(scrollView, notification: notification, topView: recoveryMethodTitleLabel, bottomView: termsTextView)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        recoveryMethodTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+        recoveryMethodDescriptionLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        termsTextView.font = .adjustedFont(forTextStyle: .footnote)
+        configSegment()
+    }
+
+    private func configSegment() {
+        if #available(iOS 13.0, *) {
+            methodSegmenedControl.setImage(image: IconProvider.envelope,
+                                           withText: CoreString._su_recovery_seg_email,
+                                           forSegmentAt: 0)
+            methodSegmenedControl.setImage(image: IconProvider.mobile,
+                                           withText: CoreString._su_recovery_seg_phone,
+                                           forSegmentAt: 1)
+        } else {
+            // don't show icons for the version below iOS 13
+            methodSegmenedControl.setTitle(CoreString._su_recovery_seg_email, forSegmentAt: 0)
+            methodSegmenedControl.setTitle(CoreString._su_recovery_seg_phone, forSegmentAt: 1)
+        }
     }
 }
 

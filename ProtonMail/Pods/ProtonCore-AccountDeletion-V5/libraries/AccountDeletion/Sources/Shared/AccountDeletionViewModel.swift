@@ -144,7 +144,8 @@ final class AccountDeletionViewModel: AccountDeletionViewModelInterface {
     func setup(webViewConfiguration: WKWebViewConfiguration) {
         let requestInterceptor = AlternativeRoutingRequestInterceptor(
             headersGetter: doh.getAccountHeaders,
-            cookiesSynchronization: doh.synchronizeCookies(with:)
+            cookiesSynchronization: doh.synchronizeCookies(with:requestHeaders:),
+            cookiesStorage: doh.currentlyUsedCookiesStorage
         ) { challenge, completionHandler in
             handleAuthenticationChallenge(
                 didReceive: challenge,

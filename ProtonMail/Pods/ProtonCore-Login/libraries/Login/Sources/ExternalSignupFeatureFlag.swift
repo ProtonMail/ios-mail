@@ -1,6 +1,6 @@
 //
-//  TemporaryHacks.swift
-//  ProtonCore-LoginUI - Created on 17/01/2022.
+//  ExternalSignupFeatureFlag.swift
+//  ProtonCore-LoginUI-V5 - Created on 29.11.22.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -13,24 +13,17 @@
 //
 //  ProtonCore is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonCore. If not, see <https://www.gnu.org/licenses/>.
 
-#if DEBUG_CORE_INTERNALS
+import ProtonCore_FeatureSwitch
 
-public enum TemporaryHacks {
-    // Can be used only for core example app internal tests
-    public static var signupMode: SignupMode?
+extension Feature {
+    public static var externalSignup = Feature.init(name: "externalSignup", isEnable: false)
+    
+    // control cap C features
+    public static var externalAccountConversion = Feature.init(name: "externalAccountConversion", isEnable: false)
 }
-
-#else
-
-public enum TemporaryHacks {
-    // Can be used only for core example app internal tests
-    public static let signupMode: SignupMode? = nil
-}
-
-#endif

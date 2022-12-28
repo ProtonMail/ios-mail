@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Tjek Proton Status for vores systemstatus.";
 
+/* Available addresss claim button */
+"Claim it" = "Gør krav på den";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Luk";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Kunne ikke oprette bruger";
+
+/* Available addresss own address button */
+"Create your own" = "Opret din egen";
 
 /* Signup password proton view title */
 "Create your password" = "Opret din adgangskode";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Det var ikke muligt at matche dit købte App Store-produkt med noget produkt på vores server. Udfyld venligst fejlrapporten, så kontakter kundesupportteamet dig.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Få yderligere information";
 
@@ -425,6 +432,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Fortrolighed som standard";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Proton-adresse påkrævet";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -567,6 +577,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Det grundlæggende til privat og sikker kommunikation.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Den følgende adresse er tilgængelig:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Købsprocessen for IAP er startet. Følg Apples instruktioner for at gennemføre eller annullere købet.";
 
@@ -699,6 +712,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Du vil bruge denne e-mailadresse til at logge ind på alle Proton-tjenester.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Du er heldig!";
 
 /* Complete view title */
 "Your account is being created" = "Din konto oprettes…";

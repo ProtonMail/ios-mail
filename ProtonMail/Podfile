@@ -17,7 +17,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.24.5'
+  '3.25.0'
 end
 
 def crypto_variant
@@ -43,7 +43,7 @@ def common_pods
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
-  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
+  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
 end
 
 def pm_pods
@@ -120,6 +120,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
 end

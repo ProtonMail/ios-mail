@@ -25,6 +25,7 @@ import SnapshotTesting
 #if os(iOS)
 import UIKit
 #endif
+import SwiftUI
 
 open class SnapshotTestCase: XCTestCase {
     let reRecordEverything = false
@@ -34,6 +35,7 @@ open class SnapshotTestCase: XCTestCase {
     public func checkSnapshots(controller: UIViewController,
                                size: CGSize = CGSize(width: 750, height: 1334),
                                traits: UITraitCollection = .iPhoneSe(.portrait),
+                               perceptualPrecision: Float = 1,
                                name: String = #function,
                                record: Bool = false,
                                file: StaticString = #filePath,
@@ -43,6 +45,7 @@ open class SnapshotTestCase: XCTestCase {
 
         assertSnapshot(matching: controller,
                        as: .image(on: .iPhoneSe,
+                                  perceptualPrecision: perceptualPrecision,
                                   traits: .init(userInterfaceStyle: $0)),
                        named: "\($0)",
                        record: reRecordEverything || record,
@@ -51,7 +54,28 @@ open class SnapshotTestCase: XCTestCase {
                        line: line)
         }
     }
-    #endif
+
+    @available(iOS 13, *)
+    public func checkSnapshots<Content>(view: Content,
+                                        record: Bool = false,
+                                        file: StaticString = #filePath,
+                                        line: UInt = #line) where Content: View {
+
+        let vc = UIHostingController(rootView: view)
+        vc.view.frame = UIScreen.main.bounds
+
+        [UIUserInterfaceStyle.light, .dark].forEach {
+            assertSnapshot(matching: vc,
+                           as: .image(on: .iPhoneSe,
+                                      traits: .init(userInterfaceStyle: $0)),
+                           named: "\($0)",
+                           record: reRecordEverything || record,
+                           file: file,
+                           testName: "\(name)",
+                           line: line)
+        }
+    }
+#endif
 }
 
 #if os(iOS)

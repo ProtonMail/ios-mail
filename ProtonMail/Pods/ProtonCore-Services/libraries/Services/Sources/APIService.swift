@@ -505,7 +505,26 @@ public extension APIService {
             }
         }
     }
-    
+
+    /// Asynchronous variant of `perform(request:callCompletionBlockUsing:jsonDictionaryCompletion)`.
+    ///  - Return a tuple of type `(URLSessionDataTask?, JSONDictionary)` if success.
+    ///  - Throw an error of type `ResponseError` if failure.
+    @available(iOS 13.0, macOS 10.15, *)
+    func perform(request route: Request,
+                 callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
+    async throws -> (URLSessionDataTask?, JSONDictionary) {
+        try await withCheckedThrowingContinuation { continuation in
+            perform(request: route, callCompletionBlockUsing: executor) { task, result in
+                switch result {
+                case .success(let jsonDictionary):
+                    continuation.resume(returning: (task, jsonDictionary))
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
     func perform<R>(request route: Request,
                     response: R,
                     callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
@@ -552,7 +571,23 @@ public extension APIService {
             }
         }
     }
-    
+
+    /// Asynchronous variant of `perform(request:response:callCompletionBlockUsing:responseCompletion)`.
+    /// - Return a tuple of type `(URLSessionDataTask?, some ResponseType)`
+    @available(iOS 13.0, macOS 10.15, *)
+    func perform<R>(request route: Request,
+                    response: R,
+                    callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
+    async -> (URLSessionDataTask?, R) where R: ResponseType {
+        await withCheckedContinuation { continuation in
+            perform(request: route,
+                    response: response,
+                    callCompletionBlockUsing: executor) { task, result in
+                continuation.resume(returning: (task, result))
+            }
+        }
+    }
+
     func perform<T>(request route: Request,
                     callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
                     decodableCompletion: @escaping (_ task: URLSessionDataTask?, _ result: Result<T, ResponseError>) -> Void)
@@ -584,10 +619,31 @@ public extension APIService {
             }
         }
     }
+
+    /// Asynchronous variant of `perform(request:callCompletionBlockUsing:decodableCompletion)`.
+    /// - Return a tuple of type `(URLSessionDataTask?, APIDecodableResponse)` if success.
+    /// - Throw an error of type `ResponseError` if failure.
+    @available(iOS 13.0, macOS 10.15, *)
+    func perform<R>(request route: Request,
+                    callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
+    async throws -> (URLSessionDataTask?, R) where R: APIDecodableResponse {
+        try await withCheckedThrowingContinuation { continuation in
+            perform(request: route,
+                    callCompletionBlockUsing: executor,
+                    decodableCompletion: { (task: URLSessionDataTask?, result: Result<R, ResponseError>) in
+                switch result {
+                case .success(let object):
+                    continuation.resume(returning: (task, object))
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            })
+        }
+    }
 }
 
 public extension APIService {
-    
+
     func performUpload(request route: Request,
                        files: [String: URL],
                        callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,

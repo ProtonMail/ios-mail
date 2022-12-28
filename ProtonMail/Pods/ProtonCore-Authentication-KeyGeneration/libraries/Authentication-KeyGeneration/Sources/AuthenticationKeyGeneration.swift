@@ -67,7 +67,7 @@ extension Authenticator: AuthenticatorKeyGenerationInterface {
         getRandomSRPModulus { result in
             switch result {
             case let .success(data):
-                // TODO:: clean up sfter v2 tested
+                // TODO:: clean up after v2 tested
                 if FeatureFactory.shared.isEnabled(.useKeymigrationPhaseV2) {
                     let keySetup = AddressKeySetup()
                     guard let userKey = user.keys.first?.privateKey else {

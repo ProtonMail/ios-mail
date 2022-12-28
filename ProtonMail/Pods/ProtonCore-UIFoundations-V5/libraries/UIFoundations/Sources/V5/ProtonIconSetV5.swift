@@ -462,6 +462,8 @@ public struct ProtonIconSet {
 
     public let sun = ProtonIcon(name: "ic-sun")
 
+    public let swipeLeft = ProtonIcon(name: "ic-swipe-left")
+
     public let switchOff = ProtonIcon(name: "ic-switch-off")
 
     public let switchOnLock = ProtonIcon(name: "ic-switch-on-lock")

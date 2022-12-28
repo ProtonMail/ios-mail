@@ -23,6 +23,7 @@ import Foundation
 import UIKit
 import ProtonCore_UIFoundations
 import ProtonCore_Login
+import ProtonCore_FeatureSwitch
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
     func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void, createAddressCoordinator: CreateAddressCoordinator, data: LoginData)
@@ -36,51 +37,34 @@ final class CreateAddressCoordinator {
     private let container: Container
     private let externalLinks: ExternalLinks
 
-    // data is mutable because it can change during the address creation process and we need to keep it updated. see CreateAddressViewModel
-    private var data: CreateAddressData
+    private let data: CreateAddressData
     private let customErrorPresenter: LoginErrorPresenter?
+    private let defaultUsername: String?
 
     weak var delegate: CreateAddressCoordinatorDelegate?
 
     init(container: Container,
          navigationController: LoginNavigationViewController,
          data: CreateAddressData,
-         customErrorPresenter: LoginErrorPresenter?) {
+         customErrorPresenter: LoginErrorPresenter?,
+         defaultUsername: String?) {
         self.container = container
         self.navigationController = navigationController
         self.data = data
         self.customErrorPresenter = customErrorPresenter
+        self.defaultUsername = defaultUsername
         externalLinks = container.makeExternalLinks()
     }
 
     func start() {
-        showChooseUsername()
+        showCreateAddress()
     }
 
     // MARK: - Actions
 
-    private func showChooseUsername() {
-        let chooseUsernameViewController = UIStoryboard.instantiate(ChooseUsernameViewController.self)
-        chooseUsernameViewController.viewModel = container.makeChooseUsernameViewModel(data: data)
-        chooseUsernameViewController.customErrorPresenter = customErrorPresenter
-        chooseUsernameViewController.delegate = self
-        chooseUsernameViewController.onDohTroubleshooting = { [weak self] in
-            guard let self = self else { return }
-            self.container.executeDohTroubleshootMethodFromApiDelegate()
-            
-            self.container.troubleShootingHelper.showTroubleShooting(over: self.navigationController)
-        }
-        navigationController.pushViewController(chooseUsernameViewController, animated: true)
-    }
-
-    private func showCreateAddress(username: String) {
+    private func showCreateAddress() {
         let createAddressViewController = UIStoryboard.instantiate(CreateAddressViewController.self)
-        createAddressViewController.viewModel = container.makeCreateAddressViewModel(
-            username: username, data: data, updateUser: { [weak self] in
-                guard let self = self else { return }
-                self.data = self.data.withUpdatedUser($0)
-            }
-        )
+        createAddressViewController.viewModel = container.makeCreateAddressViewModel(data: data, defaultUsername: defaultUsername)
         createAddressViewController.customErrorPresenter = customErrorPresenter
         createAddressViewController.delegate = self
         createAddressViewController.onDohTroubleshooting = { [weak self] in
@@ -96,26 +80,14 @@ final class CreateAddressCoordinator {
 // MARK: - Navigation delegate
 
 extension CreateAddressCoordinator: NavigationDelegate {
-    func userDidRequestGoBack() {
+    func userDidGoBack() {
         navigationController.popViewController(animated: true)
     }
 }
 
 // MARK: - Choose username VC delegate
 
-extension CreateAddressCoordinator: ChooseUsernameViewControllerDelegate {
-    func userDidFinishChoosingUsername(username: String) {
-        showCreateAddress(username: username)
-    }
-}
-
-// MARK: - Create Address VC delegate
-
 extension CreateAddressCoordinator: CreateAddressViewControllerDelegate {
-    func userDidRequestTermsAndConditions() {
-        UIApplication.openURLIfPossible(externalLinks.termsAndConditions)
-    }
-
     func userDidFinishCreatingAddress(endLoading: @escaping () -> Void, data: LoginData) {
         delegate?.createAddressCoordinatorDidFinish(endLoading: endLoading, createAddressCoordinator: self, data: data)
     }

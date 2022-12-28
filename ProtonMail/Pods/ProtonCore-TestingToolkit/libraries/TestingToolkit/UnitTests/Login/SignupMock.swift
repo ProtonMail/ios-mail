@@ -1,5 +1,5 @@
 //
-//  SigupMock.swift
+//  SignupMock.swift
 //  ProtonCore-Login-Tests - Created on 09.04.21.
 //
 //  Copyright (c) 2022 Proton Technologies AG
@@ -25,7 +25,7 @@ import Foundation
 
 import ProtonCore_Login
 
-public class SigupMock: Signup {
+public class SignupServiceMock: Signup {
     
     public init() {}
     

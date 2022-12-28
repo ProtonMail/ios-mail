@@ -167,6 +167,12 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
     private func setupNotifications() {
         NotificationCenter.default
             .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -177,6 +183,11 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
 
     @objc private func keyboardWillHide(notification: NSNotification) {
         adjust(scrollView, notification: notification, topView: createPasswordTitleLabel, bottomView: nextButton)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        createPasswordTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
     }
 }
 

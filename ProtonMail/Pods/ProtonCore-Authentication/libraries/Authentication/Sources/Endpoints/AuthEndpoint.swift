@@ -22,7 +22,12 @@
 import Foundation
 import ProtonCore_APIClient
 import ProtonCore_DataModel
+import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
+
+extension Feature {
+    public static var externalSignupHeader = Feature.init(name: "externalSignupHeader", isEnable: false, flags: [.availableCoreInternal])
+}
 
 extension AuthService {
     
@@ -76,6 +81,13 @@ extension AuthService {
         
         var method: HTTPMethod {
             return .post
+        }
+        
+        var header: [String: Any] {
+            guard FeatureFactory.shared.isEnabled(.externalSignupHeader) else {
+                return [:]
+            }
+            return ["X-Accept-ExtAcc": true]
         }
         
         var parameters: [String: Any]? {

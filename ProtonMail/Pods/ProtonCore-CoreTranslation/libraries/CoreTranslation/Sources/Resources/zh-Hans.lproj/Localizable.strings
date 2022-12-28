@@ -297,6 +297,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我们的系统中查不到您在 App Store 上购买的项目。请提交一份问题反馈，我们的客服团队将联系您";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "了解详情";
 
@@ -418,6 +419,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "隐私优先";
+
+/* External accounts not supported popup title */
+"Proton address required" = "需要使用 Proton 地址";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton 免费版";

@@ -21,11 +21,12 @@
 
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_FeatureSwitch
 import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Login
 import ProtonCore_HumanVerification
+import ProtonCore_Login
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 
 protocol SignupViewControllerDelegate: AnyObject {
     func validatedName(name: String, signupAccountType: SignupAccountType)
@@ -51,6 +52,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var showSeparateDomainsButton = true
     var minimumAccountType: AccountType?
     var tapGesture: UITapGestureRecognizer?
+
+    private let isExternalAccountFeatureEnabled = FeatureFactory.shared.isEnabled(.externalSignup)
 
     // MARK: Outlets
 
@@ -155,6 +158,11 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
 
     // MARK: View controller life cycle
 
+    required init?(coder: NSCoder) {
+        showOtherAccountButton = isExternalAccountFeatureEnabled && minimumAccountType == .external
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
@@ -473,6 +481,12 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     private func setupNotifications() {
         NotificationCenter.default
             .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -481,6 +495,12 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
 
     @objc private func keyboardWillHide(notification: NSNotification) {
         adjust(scrollView, notification: notification, topView: createAccountTitleLabel, bottomView: signinButton)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        createAccountTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+        createAccountDescriptionLabel.font = .adjustedFont(forTextStyle: .subheadline)
     }
 }
 

@@ -65,10 +65,22 @@ public final class WelcomeRobot: CoreElements {
             image(variant.imageNameForVariant).wait().checkExists()
             return WelcomeRobot()
         }
+        
+        @discardableResult
+        public func welcomeScreenVariantIsNotShown(variant: WelcomeScreenVariant) -> WelcomeRobot {
+            image(variant.imageNameForVariant).wait().checkDoesNotExist()
+            return WelcomeRobot()
+        }
 
         @discardableResult
         public func signUpButtonExists() -> WelcomeRobot {
             button(signUpButton).wait().checkExists()
+            return WelcomeRobot()
+        }
+        
+        @discardableResult
+        public func loginButtonExists() -> WelcomeRobot {
+            button(logInButton).wait().checkExists()
             return WelcomeRobot()
         }
 

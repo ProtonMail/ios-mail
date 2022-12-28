@@ -64,6 +64,11 @@ public final class AccountManagerVC: UIViewController, AccessibleView {
         assert(self.viewModel != nil, "Please use set(viewModel:) first")
         self.setupView()
         self.generateAccessibilityIdentifiers()
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -272,6 +277,11 @@ extension AccountManagerVC {
 
     @objc private func clickAddButton() {
         self.viewModel.signinAccount(for: "", userID: nil)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
     }
 
     private func checkLogoutWill(mail: String, userID: String) {

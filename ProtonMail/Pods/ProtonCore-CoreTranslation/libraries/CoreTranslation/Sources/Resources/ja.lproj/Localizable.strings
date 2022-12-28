@@ -85,6 +85,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Proton Status でシステム状況を確認してください。";
 
+/* Available addresss claim button */
+"Claim it" = "利用可能なアドレス";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "閉じる";
 
@@ -137,6 +140,9 @@
 /* Create user failed error */
 "Create user failed" = "ユーザーを作成できませんでした";
 
+/* Available addresss own address button */
+"Create your own" = "新規作成";
+
 /* Signup password proton view title */
 "Create your password" = "パスワードを作成";
 
@@ -179,6 +185,9 @@
 
 /* Title of domains bottom action sheet */
 "Domain" = "ドメイン";
+
+/* network troubleshot view title */
+"email" = "メール";
 
 /* Email field title
    Email label
@@ -273,7 +282,7 @@
 "Incorrect mailbox password" = "無効なメールボックスのパスワードです";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "インターネット サービス プロバイダー (ISP) の問題";
+"Internet Service Provider (ISP) problem" = "インターネットサービスプロバイダー (ISP) の問題";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "無効なハッシュ化されたパスワードです";
@@ -291,6 +300,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "あなたが購入したApp Storeの商品を、当社のサーバー上の製品に一致させることができませんでした。バグ報告に記入してくだされば、当社の顧客サポートチームからご連絡いたします。";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "より詳しく";
 
@@ -401,6 +411,9 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Privacy by default";
 
+/* External accounts not supported popup title */
+"Proton address required" = "Proton アドレスが必要です";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
@@ -503,6 +516,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "申し訳ございませんがベータ版のiOSアプリからは課金ができません。\nパブリックベータにご参加頂きありがとうございます。";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "それでも問題が解決しない場合";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "問題が解決しませんか? 直接お問い合わせる.";
@@ -535,6 +551,9 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
+
+/* Available addresss screen info */
+"The following address is available:" = "以下のアドレスが利用可能です：";
 
 /* Networking insecure connection error */
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API へ接続している途中に TLS 証明書の検証に失敗しました。現在のインターネット接続は監視されている可能性があります。データを安全に保つに、アプリは Proton API へのアクセスをブロックしています。\nアカウントにログインおよびアクセスするには、新しいネットワークに切り替えてから再度お試しください。";
@@ -657,6 +676,10 @@
  * Login create address */
 "You will use this email address to log into all Proton services." = "このメールアドレスはすべての Proton サービスで使うことができます。";
 
+/* *
+ * Login available address */
+"You’re in Luck!" = "完了！";
+
 /* Complete view title */
 "Your account is being created" = "アカウントを作成しています…";
 
@@ -683,4 +706,7 @@
 
 /* Recovery address label title */
 "Your recovery email address:" = "回復用メールアドレス:";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "セッションの有効期限が切れました。再度ログインしてください。";
 

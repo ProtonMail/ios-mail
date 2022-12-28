@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Controlla lo Stato di Proton per lo stato del nostro sistema.";
 
+/* Available addresss claim button */
+"Claim it" = "Richiedilo";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Chiudi";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Creazione utente fallita";
+
+/* Available addresss own address button */
+"Create your own" = "Crea il tuo";
 
 /* Signup password proton view title */
 "Create your password" = "Crea la tua password";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Non è stato possibile abbinare il prodotto App Store acquistato ai prodotti sul nostro server. Si prega di compilare la segnalazione di bug e il nostro team di supporto clienti ti contatterà.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Per saperne di più";
 
@@ -425,6 +432,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privacy per default";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Indirizzo Proton richiesto";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -567,6 +577,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "La base per le comunicazioni private e sicure.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Il seguente indirizzo email è disponibile:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Il processo di acquisto IAP è iniziato. Segui le istruzioni di Apple per completare o annullare l'acquisto.";
 
@@ -699,6 +712,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Utilizzerai questo indirizzo email per accedere a tutti i servizi Proton.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Sei fortunato!";
 
 /* Complete view title */
 "Your account is being created" = "Il tuo account è in fase di creazione…";

@@ -33,7 +33,8 @@ extension TrustKitWrapper {
                 "protonmail.ch": [
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
-                    kForceSubdomains: true,
+                    kTSKForceSubdomainMatch: true,
+                    kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonmail.ch/reports/tls"
@@ -48,7 +49,8 @@ extension TrustKitWrapper {
                 "protonvpn.ch": [
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
-                    kForceSubdomains: true,
+                    kTSKForceSubdomainMatch: true,
+                    kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonvpn.ch/reports/tls"
@@ -175,7 +177,8 @@ extension TrustKitWrapper {
                 "proton.me": [
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
-                    kForceSubdomains: true,
+                    kTSKForceSubdomainMatch: true,
+                    kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonmail.ch/reports/tls"
@@ -190,7 +193,8 @@ extension TrustKitWrapper {
                 ".compute.amazonaws.com": [
                     kTSKEnforcePinning: true,
                     kTSKIncludeSubdomains: true,
-                    kForceSubdomains: true,
+                    kTSKForceSubdomainMatch: true,
+                    kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
                         "https://api.protonmail.ch/reports/tls"
@@ -202,7 +206,24 @@ extension TrustKitWrapper {
                         "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
                         "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
                     ]
-                ]
+                ],
+                kTSKCatchallPolicy: [
+                    kTSKEnforcePinning: true,
+                    kTSKNoSSLValidation: true,
+                    kTSKNoHostnameValidation: true,
+                    kTSKAllowIPsOnly: true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
+                    ],
+                    kTSKPublicKeyHashes: [
+                        // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
+                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
+                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=", // Backup 1
+                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
+                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
+                    ]
+                ],
             ]
         ]
     }

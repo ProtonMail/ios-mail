@@ -72,9 +72,9 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
             return SignupHumanVerificationV3Robot()
         }
         
-        public func isHumanVerificationRequired() -> HV3OrCompletionRobot {
+        public func isHumanVerificationRequired(wait: TimeInterval = 10.0) -> HV3OrCompletionRobot {
             let humanVerificationScreen = XCUIApplication().otherElements[humanVerificationScreenIdentifier]
-            Wait(time: 10.0).forElement(humanVerificationScreen)
+            Wait(time: wait).forElement(humanVerificationScreen)
             return humanVerificationScreen.exists ? .humanVerification(SignupHumanVerificationV3Robot()) : .complete(CompleteRobot())
         }
         

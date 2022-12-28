@@ -121,15 +121,20 @@
         }
         else
         {
-            //ignore self signed domain check. will verify the pinned key only
-            BOOL forceSubdomain = [domainConfig[kForceSubdomains] boolValue];
+            // ignore self signed domain check. will verify the pinned key only
+            BOOL disableSSLValidation = [domainConfig[kTSKNoSSLValidation] boolValue];
+
+            // disable any hostname checking, but perform other SSL validation
+            BOOL disableHostnameValidation = [domainConfig[kTSKNoHostnameValidation] boolValue];
+
             // The domain has a pinning policy that has not expired
             // Look for one the configured public key pins in the server's evaluated certificate chain
             TSKTrustEvaluationResult validationResult = verifyPublicKeyPin(serverTrust,
                                                                            serverHostname,
                                                                            domainConfig[kTSKPublicKeyHashes],
                                                                            self.spkiHashCache,
-                                                                           forceSubdomain == NO);
+                                                                           disableSSLValidation,
+                                                                           disableHostnameValidation);
             if (validationResult == TSKTrustEvaluationSuccess)
             {
                 // Pin validation was successful
