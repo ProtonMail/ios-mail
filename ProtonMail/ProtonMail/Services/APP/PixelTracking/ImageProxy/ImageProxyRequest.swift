@@ -15,9 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Networking
 
-protocol ImageProxyDelegate: AnyObject {
-    func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput)
-    func imageProxy(_ imageProxy: ImageProxy, didFinishDryRunWithOutput output: ImageProxyDryRunOutput)
+struct ImageProxyRequest: Request {
+    let path: String
+
+    init(unsafeURL: UnsafeRemoteURL, dryRun: Bool) {
+        let encodedImageURL: String = unsafeURL
+            .value
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? unsafeURL.value
+        let basePath = "/core/v4/images?Url=\(encodedImageURL)"
+        path = dryRun ? "\(basePath)&DryRun=1" : basePath
+    }
 }
