@@ -79,6 +79,51 @@ class ImageProxy: LifetimeTrackable {
         trackLifetime()
     }
 
+    func dryRun(body: String, delegate: ImageProxyDelegate) throws {
+        let fullHTMLDocument = try SwiftSoup.parse(body)
+        let unsafeRemoteURLs = try replaceRemoteURLsWithUUIDs(in: fullHTMLDocument).keys
+
+        var trackers: [String: Set<UnsafeRemoteURL>] = [:]
+
+        let dispatchGroup = DispatchGroup()
+
+        for unsafeURL in unsafeRemoteURLs {
+            dispatchGroup.enter()
+
+            fetchTrackerInformation(from: unsafeURL) { [weak self] result in
+                guard let self = self else {
+                    dispatchGroup.leave()
+                    return
+                }
+
+                self.processingQueue.async {
+                    defer {
+                        dispatchGroup.leave()
+                    }
+
+                    do {
+                        if let trackerProvider = try result.get() {
+                            var urlsFromProvider = trackers[trackerProvider] ?? []
+                            urlsFromProvider.insert(unsafeURL)
+                            trackers[trackerProvider] = urlsFromProvider
+                        }
+                    } catch {
+                    }
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: processingQueue) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let summary = TrackerProtectionSummary(trackers: trackers)
+            let output = ImageProxyDryRunOutput(summary: summary)
+            delegate.imageProxy(self, didFinishDryRunWithOutput: output)
+        }
+    }
+
     /*
      Find all HTML fragments (attributes, style tag contents) that point to a remote image, and:
      1. generate a UUID
@@ -333,12 +378,30 @@ class ImageProxy: LifetimeTrackable {
         }
     }
 
+    private func fetchTrackerInformation(
+        from unsafeURL: UnsafeRemoteURL,
+        completion: @escaping (Result<String?, Error>) -> Void
+    ) {
+        let request = ImageProxyRequest(unsafeURL: unsafeURL, dryRun: true)
+
+        dependencies.apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .immediateExecutor
+        ) { task, result in
+            guard let httpURLResponse = task?.response as? HTTPURLResponse else {
+                completion(.failure(result.error ?? task?.error ?? ImageProxyError.invalidState))
+                return
+            }
+
+            let trackerProvider = httpURLResponse.headers["x-pm-tracker-provider"]
+            completion(.success(trackerProvider))
+        }
+    }
+
     private func proxyURL(for unsafeURL: UnsafeRemoteURL) -> SafeRemoteURL {
         let baseURL = dependencies.apiService.doh.getCurrentlyUsedHostUrl()
-        let encodedImageURL: String = unsafeURL
-            .value
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? unsafeURL.value
-        return SafeRemoteURL(value: "\(baseURL)/core/v4/images?Url=\(encodedImageURL)")
+        let request = ImageProxyRequest(unsafeURL: unsafeURL, dryRun: false)
+        return SafeRemoteURL(value: "\(baseURL)\(request.path)")
     }
 
     private func temporaryLocalURL() -> URL {

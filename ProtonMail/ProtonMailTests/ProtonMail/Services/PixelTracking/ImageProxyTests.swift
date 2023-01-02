@@ -136,6 +136,21 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
             completion(response, destinationDirectoryURL, nil)
         }
 
+        apiServiceMock.requestJSONStub.bodyIs { _, _, urlString, _, _, _, _, _, _, _, completion in
+            let url = URL(string: urlString)!
+
+            var headers: [String: String] = [:]
+
+            let originalSrcURL = url.query!.components(separatedBy: "=")[1].removingPercentEncoding!
+            if originalSrcURL.contains(check: "track") {
+                headers["x-pm-tracker-provider"] = "{0:\"MailChimp.com\"}"
+            }
+
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: headers)!
+            let task = URLSessionDataTaskMock(response: response)
+            completion(task, .success([:]))
+        }
+
         sut.predefinedUUIDForURL = { [unowned self] url in
             self.predefinedUUIDs[url]!
         }
@@ -171,6 +186,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
     func testDetectsTrackers() throws {
         _ = try sut.process(body: incomingMessage, delegate: delegate)
         waitForProxyToFinishProcessing()
+        XCTAssert(delegate.didFinishWithOutput.wasCalledExactlyOnce)
         let trackingOutput = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
         XCTAssertEqual(trackingOutput.summary.totalTrackerCount, 8)
     }
@@ -239,6 +255,14 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         XCTAssertEqual(apiServiceMock.downloadStub.callCounter, numberOfCalls)
     }
 
+    func testDryRun() throws {
+        try sut.dryRun(body: incomingMessage, delegate: delegate)
+        waitForProxyToFinishProcessing()
+        XCTAssertEqual(delegate.didFinishDryRunWithOutput.callCounter, 1)
+        let trackingOutput = try XCTUnwrap(delegate.didFinishDryRunWithOutput.lastArguments?.a2)
+        XCTAssertEqual(trackingOutput.summary.totalTrackerCount, 8)
+    }
+
     private func assertRemoteURLsHaveBeenListedForReload(
         _ failedRequests: [Set<UUID>: UnsafeRemoteURL],
         file: StaticString = #file,
@@ -257,6 +281,14 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
 }
 
 class ImageProxyDelegateMock: ImageProxyDelegate {
+    @FuncStub(imageProxy(_:didFinishDryRunWithOutput:)) var didFinishDryRunWithOutput
+    func imageProxy(
+        _ imageProxy: ProtonMail.ImageProxy,
+        didFinishDryRunWithOutput output: ProtonMail.ImageProxyDryRunOutput
+    ) {
+        didFinishDryRunWithOutput(imageProxy, output)
+    }
+
     @FuncStub(imageProxy(_:didFinishWithOutput:)) var didFinishWithOutput
     func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
         didFinishWithOutput(imageProxy, output)

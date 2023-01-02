@@ -46,7 +46,8 @@ final class MessageInfoProvider {
             if bodyHasChanged {
                 bodyParts = nil
                 hasAutoRetriedDecrypt = false
-                imageProxyHasRunOnCurrentBody = false
+                imageProxyHasStartedRunningOnCurrentBody = false
+                imageProxyHasStartedPerformingDryRunOnCurrentBody = false
                 trackerProtectionSummary = nil
             }
         }
@@ -70,7 +71,7 @@ final class MessageInfoProvider {
     }
 
     var imageProxyEnabled: Bool {
-        UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy)
+        UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
     }
 
     private let contactService: ContactDataService
@@ -86,12 +87,15 @@ final class MessageInfoProvider {
     private let imageProxy: ImageProxy
     private let dependencies: Dependencies
 
-    private var imageProxyHasRunOnCurrentBody = false
+    private var imageProxyHasStartedRunningOnCurrentBody = false
+    private var imageProxyHasStartedPerformingDryRunOnCurrentBody = false
 
-    private var shouldApplyImageProxy: Bool {
-        let messageNotSentByUs = !message.isSent
-        let remoteContentAllowed = remoteContentPolicy == .allowed
-        return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled && !imageProxyHasRunOnCurrentBody
+    private var shouldPerformImageProxyRealRun: Bool {
+        imageProxyEnabled && remoteContentPolicy == .allowed && !imageProxyHasStartedRunningOnCurrentBody
+    }
+
+    private var shouldPerformImageProxyDryRun: Bool {
+        imageProxyEnabled && remoteContentPolicy != .allowed && !imageProxyHasStartedPerformingDryRunOnCurrentBody
     }
 
     init(
@@ -497,16 +501,25 @@ extension MessageInfoProvider {
                 return
             }
 
-            if self.shouldApplyImageProxy {
+            if self.shouldPerformImageProxyRealRun {
                 do {
                     let bodyWithoutRemoteURLs = try self.imageProxy.process(body: decryptedBody, delegate: self)
-                    self.imageProxyHasRunOnCurrentBody = true
+                    self.imageProxyHasStartedRunningOnCurrentBody = true
                     decryptedBody = bodyWithoutRemoteURLs
                     self.updateBodyParts(with: decryptedBody)
                 } catch {
                     // ImageProxy will only fail if the HTML is malformed, the other errors are contained
                     assertionFailure("\(error)")
                     self.prepareDecryptFailedBody()
+                    return
+                }
+            } else if self.shouldPerformImageProxyDryRun {
+                do {
+                    try self.imageProxy.dryRun(body: decryptedBody, delegate: self)
+                    self.imageProxyHasStartedPerformingDryRunOnCurrentBody = true
+                } catch {
+                    // dry run errors should be silenced
+                    assertionFailure("\(error)")
                     return
                 }
             }
@@ -716,6 +729,16 @@ extension MessageInfoProvider {
 }
 
 extension MessageInfoProvider: ImageProxyDelegate {
+    func imageProxy(_ imageProxy: ImageProxy, didFinishDryRunWithOutput output: ImageProxyDryRunOutput) {
+        let realRunHasAlreadyCompleted = trackerProtectionSummary != nil
+
+        guard !realRunHasAlreadyCompleted else {
+            return
+        }
+
+        trackerProtectionSummary = output.summary
+    }
+
     func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
         trackerProtectionSummary = output.summary
         unhandledFailedProxyRequests = output.failedUnsafeRemoteURLs
