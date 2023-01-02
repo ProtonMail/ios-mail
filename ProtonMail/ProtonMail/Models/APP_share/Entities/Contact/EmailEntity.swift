@@ -41,7 +41,9 @@ struct EmailEntity: Equatable, Hashable {
 
     private(set) var contactCreateTime: Date?
     let contactName: String
+}
 
+extension EmailEntity {
     init(email: Email) {
         self.objectID = .init(rawValue: email.objectID)
         self.contactID = ContactID(email.contactID)

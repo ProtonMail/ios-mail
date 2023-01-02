@@ -365,6 +365,9 @@
 /* settings general section title */
 "Change account password" = "Breyta lykilorði innskráningar";
 
+/* Title */
+"Change default address to…" = "Breyta sjálfgefnu tölvupóstfangi í…";
+
 /* settings general section title */
 "Change mailbox password" = "Breyta lykilorði á pósthólfi";
 
@@ -377,6 +380,9 @@
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Breyta PIN kóða";
+
+/* Title */
+"Change sender address to…" = "Breyta tölvupóstfangi sendanda í…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Hladdu tækið þitt eða haltu áfram handvirkt.";
@@ -538,6 +544,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Dagsetning: %@";
+
+/* days */
+"days" = "dagar";
 
 /* error title */
 "Decryption error" = "Afkóðunarvilla";
@@ -918,6 +927,9 @@
 /* Title */
 "Hide details" = "Fela nánari upplýsingar";
 
+/* hours */
+"hours" = "klukkustundir";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvernig myndir þú lýsa upplifun þinni af nýju Proton tölvupóstforriti?";
 
@@ -1251,6 +1263,9 @@
 
 /* Title */
 "No connectivity detected…" = "Engin tenging fannst";
+
+/* Short hint in the header view */
+"No email trackers found" = "Engir tölvupóstsporar fundust";
 
 /* network troubleshot cell title */
 "No internet connection" = "Engin internettenging";
@@ -1603,6 +1618,9 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Dagskrá verður fjarlægð";
 
+/* mail location title */
+"Scheduled" = "Áætlað";
+
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Skipulegg skilaboð...";
 
@@ -1874,6 +1892,9 @@
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Nýja lykilorðið þarf að vera að lágmarki 8 stafir";
 
+/* update password error */
+"The password is wrong." = "Lykilorðið er rangt.";
+
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Lykilorðið verður að vera á milli 8 og 21 stafur að lengd";
 
@@ -2013,6 +2034,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Tókst ekki að þátta svarhlutann:\n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "Tókst ekki að senda tölvupóstinn";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Viðtakendur ekki gefnir upp";

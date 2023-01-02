@@ -34,7 +34,9 @@ struct ContactEntity {
 
     // MARK: Data relations
     private(set) var emailRelations: [EmailEntity]
+}
 
+extension ContactEntity {
     init(contact: Contact) {
         self.objectID = .init(rawValue: contact.objectID)
         self.contactID = ContactID(contact.contactID)
@@ -50,9 +52,7 @@ struct ContactEntity {
 
         self.emailRelations = EmailEntity.convert(from: contact.emails)
     }
-}
 
-extension ContactEntity {
     var displayEmails: String {
         self.emailRelations
             .map(\.email)

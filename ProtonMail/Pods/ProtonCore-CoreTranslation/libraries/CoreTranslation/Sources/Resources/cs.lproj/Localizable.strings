@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Zkontrolujte Stav Protonu pro zjištění stavu našeho systému.";
 
+/* Available addresss claim button */
+"Claim it" = "Získat ji";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Zavřít";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Vytváření uživatele selhalo";
+
+/* Available addresss own address button */
+"Create your own" = "Vytvořte si vlastní";
 
 /* Signup password proton view title */
 "Create your password" = "Vytvořte si heslo";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nepodařilo se nám spojit produkt z AppStore, který jste si zakoupili s produkty na našem serveru. Prosím vyplňte zprávu o chybě a náš tým podpory Vás bude kontaktovat.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Více informací";
 
@@ -425,6 +432,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Soukromí především";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Vyžadována Proton adresa";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton zdarma";
@@ -567,6 +577,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Základ pro soukromou a bezpečnou komunikaci.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Následující adresa je dostupná:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proces nákupu IAP byl zahájen. Postupujte podle pokynů společnosti Apple a nákup dokončete nebo zrušte.";
 
@@ -699,6 +712,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Tento e-mail použijete k přihlášení ke všem službám Proton.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Máte štěstí!";
 
 /* Complete view title */
 "Your account is being created" = "Váš účet se vytváří…";

@@ -173,8 +173,6 @@ private extension SpotlightableFeatureKey {
         switch self {
         case .scheduledSend:
             return false
-        case .trackerProtection:
-            return UserInfo.isImageProxyAvailable
         case .toolbarCustomization:
             return UserInfo.isToolbarCustomizationEnable
         }

@@ -49,11 +49,7 @@ protocol MessageDataServiceProtocol: Service {
     func isEventIDValid() -> Bool
     func idsOfMessagesBeingSent() -> [String]
 
-    func getMessageSendingData(
-        for uri: String,
-        completionQueue: DispatchQueue,
-        completion: @escaping ((MessageSendingData?) -> Void)
-    )
+    func getMessageSendingData(for uri: String) -> MessageSendingData?
 
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -469,15 +465,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 if let messageOut = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                     messageOut.messageStatus = 1
                                     messageOut.isDetailDownloaded = true
-                                    if let labelID = messageOut.firstValidFolder() {
-                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
-                                    }
                                     if messageOut.unRead == true {
                                         messageOut.unRead = false
                                         PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
                                         self.cacheService.updateCounterSync(markUnRead: false, on: messageOut)
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
+                                    if let labelID = messageOut.firstValidFolder() {
+                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
+                                    }
 
                                     DispatchQueue.main.async {
                                         completion(tmpError)
@@ -502,16 +498,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             }
 
             self.contextProvider.performOnRootSavingContext { context in
-                if let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
-                    if message.isDetailDownloaded {
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                    } else {
-                        self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
-                    }
-                } else {
+                guard
+                    let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+                else {
                     self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    return
+                }
+                guard message.isDetailDownloaded else {
+                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    return
+                }
+                if let labelID = message.firstValidFolder() {
+                    self.mark(messages: [MessageEntity(message)], labelID: LabelID(labelID), unRead: false)
+                }
+                DispatchQueue.main.async {
+                    completion(nil)
                 }
             }
         }
@@ -834,31 +835,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case emptyEncodedBody
     }
 
-    func getMessageSendingData(
-        for uri: String,
-        completionQueue: DispatchQueue,
-        completion: @escaping ((MessageSendingData?) -> Void)
-    ) {
+    func getMessageSendingData(for uri: String) -> MessageSendingData? {
         // TODO: Use `CoreDataContextProviderProtocol.read` when available
-        contextProvider.performOnRootSavingContext { [weak self, weak completionQueue] context in
+        var messageSendingData: MessageSendingData?
+        contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
             guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(uri) else {
-                completionQueue?.async { completion(nil) }
                 return
             }
             guard let message = context.find(with: objectID) as? Message else {
-                completionQueue?.async { completion(nil) }
                 return
             }
-            let messageEntity = MessageEntity(message)
-            let messageSendData = MessageSendingData(
-                message: messageEntity,
+            messageSendingData = MessageSendingData(
+                message: MessageEntity(message),
                 cachedUserInfo: message.cachedUser,
                 cachedAuthCredential: message.cachedAuthCredential,
                 cachedSenderAddress: message.cachedAddress,
                 defaultSenderAddress: self?.defaultUserAddress(for: message)
             )
-            completionQueue?.async { completion(messageSendData) }
         }
+        return messageSendingData
     }
 
     func updateMessageAfterSend(
@@ -926,6 +921,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
+    private func addBreadcrumbIfNeeded(
+        addressIdFromMessage: String?,
+        cachedAddress: Address?,
+        defaultAddress: Address?
+    ) {
+        let prefix = 6
+        let areAddressesDifferent = cachedAddress?.addressID != defaultAddress?.addressID
+        if areAddressesDifferent {
+            let message = """
+            cached address \(cachedAddress?.addressID.prefix(prefix) ?? "_nil_")
+            different from default address \(defaultAddress?.addressID.prefix(prefix) ?? "_nil_")
+            | addressID in message: \(addressIdFromMessage ?? "_nil_")
+            """
+            Breadcrumbs.shared.add(message: message, to: .invalidSignatureWhenSendingMessage)
+        }
+    }
+
     private func send(
         message: Message,
         context: NSManagedObjectContext,
@@ -949,6 +961,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 completion(NSError.lockError())
                 return
             }
+            self.addBreadcrumbIfNeeded(
+                addressIdFromMessage: message.addressID,
+                cachedAddress: message.cachedAddress,
+                defaultAddress: userManager.messageService.defaultUserAddress(for: message)
+            )
 
             var requests = [UserEmailPubKeys]()
             let emails = message.allEmails
@@ -1215,6 +1232,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         }
                         NSError.alertMessageSentErrorToast()
                         // show message now
+                        self.sendInvalidSignatureEventIfNeeded(responseCode: error?.responseCode ?? -1)
                         self.localNotificationService.scheduleMessageSendingFailedNotification(
                             .init(
                                 messageID: message.messageID,
@@ -1295,10 +1313,19 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             #if !APP_EXTENSION
             let title = LocalString._address_invalid_error_to_draft_action_title
             let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
-                NotificationCenter.default.post(name: .switchView,
-                                                object: DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.draft.rawValue))
+                NotificationCenter.default.post(
+                    name: .switchView,
+                    object: DeepLink(
+                        String(describing: MailboxViewController.self),
+                        sender: Message.Location.draft.rawValue
+                    )
+                )
             }
-            LocalString._address_invalid_error_sending.alertViewController(LocalString._address_invalid_error_sending_title, toDraftAction)
+            UIAlertController.showOnTopmostVC(
+                title: LocalString._address_invalid_error_sending_title,
+                message: LocalString._address_invalid_error_sending,
+                action: toDraftAction
+            )
             #endif
         } else {
             NSError.alertMessageSentError(details: err.localizedDescription)
@@ -1311,7 +1338,17 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                             error: errorMsg,
                                                             timeInterval: 1,
                                                             subtitle: title))
+        sendInvalidSignatureEventIfNeeded(responseCode: responseCode)
         completion(err)
+    }
+
+    private func sendInvalidSignatureEventIfNeeded(responseCode: Int) {
+        guard responseCode == 2001 else { return }
+        Breadcrumbs.shared.add(message: "Received error code \(responseCode)", to: .invalidSignatureWhenSendingMessage)
+        Analytics.shared.sendError(
+            .sendMessageInvalidSignature,
+            trace: Breadcrumbs.shared.trace(for: .invalidSignatureWhenSendingMessage)
+        )
     }
     
     private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {
@@ -1540,7 +1577,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                               sendAddress: Address,
                               inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.toList = recipientList
         message.bccList = bccList
         message.ccList = ccList

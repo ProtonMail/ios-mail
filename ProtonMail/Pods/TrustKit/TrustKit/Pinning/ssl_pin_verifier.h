@@ -23,4 +23,5 @@ TSKTrustEvaluationResult verifyPublicKeyPin(SecTrustRef _Nonnull serverTrust,
                                             NSString * _Nonnull serverHostname,
                                             NSSet<NSData *> * _Nonnull knownPins,
                                             TSKSPKIHashCache * _Nullable hashCache,
-                                            BOOL verifyHostname);
+                                            BOOL noSSLValidation,
+                                            BOOL noVerifyHostname);

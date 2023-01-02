@@ -12,7 +12,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     weak var viewController: ConversationViewController?
 
     private let labelId: LabelID
-    private let navigationController: UINavigationController
+    private weak var navigationController: UINavigationController?
     let conversation: ConversationEntity
     private let user: UserManager
     private let targetID: MessageID?
@@ -40,7 +40,14 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     func start(openFromNotification: Bool = false) {
         let viewController = makeConversationVC()
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        if navigationController?.viewControllers.last is MessagePlaceholderVC,
+           var viewControllers = navigationController?.viewControllers {
+            _ = viewControllers.popLast()
+            viewControllers.append(viewController)
+            navigationController?.setViewControllers(viewControllers, animated: false)
+        } else {
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     func makeConversationVC() -> ConversationViewController {
@@ -74,7 +81,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             ),
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             goToDraft: { [weak self] msgID in
-                self?.navigationController.popViewController(animated: false)
+                self?.navigationController?.popViewController(animated: false)
                 self?.goToDraft?(msgID)
             },
             dependencies: dependencies)
@@ -140,7 +147,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
         let viewer = PlainTextViewerViewController(text: text, subType: subType)
         try? FileManager.default.removeItem(at: fileUrl)
-        self.navigationController.pushViewController(viewer, animated: true)
+        self.navigationController?.pushViewController(viewer, animated: true)
     }
 
     private func presentCompose(with contact: ContactVO) {
@@ -210,7 +217,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
         )
         let viewController = AttachmentListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func presentWebView(url: URL) {

@@ -184,6 +184,9 @@ extension PMAPIService {
             switch completion {
             case .left:
                 sessionRequestCall = { continuation in
+                    let cookies = self.session.sessionConfiguration.httpCookieStorage?.cookies(for: URL(string: url)!) ?? []
+                    let headers = HTTPCookie.requestHeaderFields(with: cookies)
+                    PMLog.debug("[COOKIES][REQUEST][SERVICE] \(headers)")
                     self.session.request(with: request) { (task, result: Result<JSONDictionary, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .left(result))
@@ -192,6 +195,9 @@ extension PMAPIService {
             case .right:
                 let decoder = jsonDecoder
                 sessionRequestCall = { continuation in
+                    let cookies = self.session.sessionConfiguration.httpCookieStorage?.cookies(for: URL(string: url)!) ?? []
+                    let headers = HTTPCookie.requestHeaderFields(with: cookies)
+                    PMLog.debug("[COOKIES][REQUEST][SERVICE] \(headers)")
                     self.session.request(with: request, jsonDecoder: decoder) { (task, result: Result<T, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .right(result))

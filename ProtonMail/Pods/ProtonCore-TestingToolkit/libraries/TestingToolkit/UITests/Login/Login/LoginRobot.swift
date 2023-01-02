@@ -36,12 +36,13 @@ private let signUpButtonId = "LoginViewController.signUpButton"
 private let helpButtonId = "LoginViewController.helpButton"
 private let loginFieldTitleLabel = "LoginViewController.loginTextField.titleLabel"
 private let passwordFieldTitleLabel = "LoginViewController.passwordTextField.titleLabel"
-private let suspendedErrorText = "This account has been suspended due to a potential policy violation. If you believe this is in error, please contact us at https://proton.me/support/abuse"
+private let suspendedErrorText = "This account has been suspended due to a potential policy violation. If you believe this is in error, please contact us at" // disable this hard coded link. because it will fail on black server. https://proton.me/support/abuse"
 private let textPredicate = NSPredicate(format: "label CONTAINS[c] %@", suspendedErrorText)
 private let textChangePassword = "Change your password"
 private let buttonChangePasswordCancel = "Cancel"
 private let buttonChangePassword = "Change password"
 private let externalAccountsNotSupportedBannerText = "This app does not support external accounts"
+private let closeButton = "UINavigationItem.leftBarButtonItem"
 
 public final class LoginRobot: CoreElements {
     
@@ -103,9 +104,12 @@ public final class LoginRobot: CoreElements {
             button(buttonChangePassword).wait(time: 20).checkExists()
         }
         
-        public func bannerExtAccountErrorShown() {
-            textView(externalAccountsNotSupportedBannerText).wait().checkExists()
+        @discardableResult
+        public func closeButtonIsShown() -> LoginRobot {
+            button(closeButton).wait().checkExists()
+            return LoginRobot()
         }
+        
     }
     
     public func insertPassword(password: String) -> LoginRobot {
@@ -194,5 +198,57 @@ public final class ExternalAccountsNotSupportedDialogRobot: CoreElements {
     public func tapLearnMore<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(externalAccountsNotSupportedLearnMoreButton).tap()
         return Robot()
+    }
+}
+
+private let createAddressTitle = CoreString._ls_create_address_screen_title
+private func createAddressDescription(email: String) -> String {
+    return String(format: CoreString._ls_create_address_screen_info, email)
+}
+private let continueButtonIdentifier = "CreateAddressViewController.continueButton"
+private let cancelButtonIdentifier = "CreateAddressViewController.cancelButton"
+private let backButtonIdentifier = "CreateAddressViewController.leftBarButtonItem"
+private let usernameTextFieldId = "CreateAddressViewController.addressTextField.textField"
+private let errorInvalidCharacters = "Username contains invalid characters"
+public final class CreateAddressRobot: CoreElements {
+    
+    public let verify = Verify()
+    
+    public final class Verify: CoreElements {
+        @discardableResult
+        public func createAddress(email: String) -> CreateAddressRobot {
+            staticText(createAddressTitle).wait().checkExists()
+            let predicate = NSPredicate(format: "label LIKE %@", createAddressDescription(email: email))
+            staticText(predicate).wait().checkExists()
+            return CreateAddressRobot()
+        }
+        
+        @discardableResult
+        public func invalidCharactersBanner() -> CreateAddressRobot {
+            textView(errorInvalidCharacters).wait().checkExists()
+            button(errorBannerButton).tap()
+            return CreateAddressRobot()
+        }
+    }
+    
+    public func fillUsername(username: String) -> CreateAddressRobot {
+        textField(usernameTextFieldId).tap().clearText().typeText(username)
+        return self
+    }
+    
+    @discardableResult
+    public func tapContinueButton() -> CreateAddressRobot{
+        button(continueButtonIdentifier).tap()
+        return self
+    }
+    
+    public func tapCancelButton() -> LoginRobot {
+        button(cancelButtonIdentifier).tap()
+        return LoginRobot()
+    }
+    
+    public func tapBackButton() -> LoginRobot {
+        button(backButtonIdentifier).tap()
+        return LoginRobot()
     }
 }

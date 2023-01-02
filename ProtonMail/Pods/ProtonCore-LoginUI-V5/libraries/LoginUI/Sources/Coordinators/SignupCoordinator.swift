@@ -28,6 +28,7 @@ import ProtonCore_Payments
 import ProtonCore_PaymentsUI
 import ProtonCore_HumanVerification
 import ProtonCore_Foundations
+import ProtonCore_FeatureSwitch
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
@@ -39,6 +40,19 @@ protocol SignupCoordinatorDelegate: AnyObject {
     func userDidDismissSignupCoordinator(signupCoordinator: SignupCoordinator)
     func signupCoordinatorDidFinish(signupCoordinator: SignupCoordinator, signupState: SignupState)
     func userSelectedSignin(email: String?, navigationViewController: LoginNavigationViewController)
+}
+
+protocol SignupAccountTypeManagerProtocol {
+    var accountType: SignupAccountType { get }
+    func setSignupAccountType(type: SignupAccountType)
+}
+
+final class SignupAccountTypeManager: SignupAccountTypeManagerProtocol {
+    var accountType: SignupAccountType = .internal
+    
+    func setSignupAccountType(type: SignupAccountType) {
+        accountType = type
+    }
 }
 
 final class SignupCoordinator {
@@ -56,7 +70,7 @@ final class SignupCoordinator {
     private var countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
     private var completeViewModel: CompleteViewModel?
     
-    private var signupAccountType: SignupAccountType = .internal
+    private let signupAccountTypeManager: SignupAccountTypeManagerProtocol
     private var name: String?
     private var password: String?
     private var verifyToken: String?
@@ -71,18 +85,24 @@ final class SignupCoordinator {
     private let paymentsAvailability: PaymentsAvailability
     private let paymentsManager: PaymentsManager?
 
+    private let isExternalSignupFeatureEnabled: Bool
+    
     init(container: Container,
          isCloseButton: Bool,
          paymentsAvailability: PaymentsAvailability,
          signupAvailability: SignupAvailability,
          performBeforeFlow: WorkBeforeFlow?,
-         customErrorPresenter: LoginErrorPresenter?) {
+         customErrorPresenter: LoginErrorPresenter?,
+         isExternalSignupFeatureEnabled: Bool = FeatureFactory.shared.isEnabled(.externalSignup),
+         signupAccountTypeManager: SignupAccountTypeManagerProtocol = SignupAccountTypeManager()) {
         self.container = container
         self.isCloseButton = isCloseButton
         self.signupAvailability = signupAvailability
         self.performBeforeFlow = performBeforeFlow
         self.customErrorPresenter = customErrorPresenter
         self.paymentsAvailability = paymentsAvailability
+        self.isExternalSignupFeatureEnabled = isExternalSignupFeatureEnabled
+        self.signupAccountTypeManager = signupAccountTypeManager
         if case .available(let paymentParameters) = paymentsAvailability {
             self.paymentsManager = container.makePaymentsCoordinator(
                 for: paymentParameters.listOfIAPIdentifiers,
@@ -103,11 +123,13 @@ final class SignupCoordinator {
             delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
         case .available(let parameters):
             signupParameters = parameters
-            switch parameters.mode {
+            switch parameters.signupMode {
             case .internal, .both(.internal):
-                signupAccountType = .internal
+                signupAccountTypeManager.setSignupAccountType(type: .internal)
             case .external, .both(.external):
-                signupAccountType = .external
+                if isExternalSignupFeatureEnabled  {
+                    signupAccountTypeManager.setSignupAccountType(type: .external)
+                }
             }
             showSignupViewController(kind: kind)
         }
@@ -122,16 +144,13 @@ final class SignupCoordinator {
         signupViewController.customErrorPresenter = customErrorPresenter
         signupViewController.delegate = self
         self.signupViewController = signupViewController
-        if case .internal = signupParameters.mode {
-            signupViewController.showOtherAccountButton = false
-        } else if case .external = signupParameters.mode {
-            signupViewController.showOtherAccountButton = false
-        } else if case .both = signupParameters.mode {
+        signupViewController.showOtherAccountButton = false
+        if case .both = signupParameters.signupMode, FeatureFactory.shared.isEnabled(.externalSignup) {
             signupViewController.showOtherAccountButton = true
         }
         signupViewController.showSeparateDomainsButton = signupParameters.separateDomainsButton
         signupViewController.showCloseButton = isCloseButton
-        signupViewController.signupAccountType = signupAccountType
+        signupViewController.signupAccountType = signupAccountTypeManager.accountType
         signupViewController.minimumAccountType = container.login.minimumAccountType
         signupViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
@@ -163,7 +182,7 @@ final class SignupCoordinator {
         passwordViewController.viewModel = container.makePasswordViewModel()
         passwordViewController.customErrorPresenter = customErrorPresenter
         passwordViewController.delegate = self
-        passwordViewController.signupAccountType = signupAccountType
+        passwordViewController.signupAccountType = signupAccountTypeManager.accountType
         passwordViewController.signupPasswordRestrictions = signupParameters.passwordRestrictions
         passwordViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
@@ -214,7 +233,7 @@ final class SignupCoordinator {
     private func showCompleteViewController(email: String? = nil, phoneNumber: String? = nil) {
         var initDisplaySteps: [DisplayProgressStep] = [.createAccount]
         if container.login.minimumAccountType != .username {
-            if signupAccountType == .internal {
+            if signupAccountTypeManager.accountType == .internal {
                 initDisplaySteps += [.generatingAddress]
             }
             initDisplaySteps += [.generatingKeys]
@@ -231,7 +250,7 @@ final class SignupCoordinator {
         completeViewModel = container.makeCompleteViewModel(initDisplaySteps: initDisplaySteps)
         completeViewController.viewModel = completeViewModel
         completeViewController.delegate = self
-        completeViewController.signupAccountType = signupAccountType
+        completeViewController.signupAccountType = signupAccountTypeManager.accountType
         completeViewController.name = self.name
         completeViewController.password = self.password
         completeViewController.email = email
@@ -415,7 +434,7 @@ final class SignupCoordinator {
 extension SignupCoordinator: SignupViewControllerDelegate {
     func validatedName(name: String, signupAccountType: SignupAccountType) {
         self.name = name
-        self.signupAccountType = signupAccountType
+        signupAccountTypeManager.setSignupAccountType(type: signupAccountType)
         if signupAccountType == .internal {
             updateAccountType(accountType: .internal)
             showPasswordViewController()
@@ -429,7 +448,7 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         self.name = email
         self.verifyToken = container.token
         self.tokenType = container.tokenType
-        self.signupAccountType = signupAccountType
+        signupAccountTypeManager.setSignupAccountType(type: signupAccountType)
         updateAccountType(accountType: .external)
         showPasswordViewController()
     }
@@ -461,7 +480,7 @@ extension SignupCoordinator: SignupViewControllerDelegate {
 extension SignupCoordinator: PasswordViewControllerDelegate {
     func passwordIsShown() {
         
-        if signupAccountType == .external {
+        if signupAccountTypeManager.accountType == .external {
             // if PasswordViewController is presented we need to remove HumanVerifyV3ViewController from the navigation stack to don't allow to come back to it.
             HumanCheckHelper.removeHumanVerification(from: navigationController)
         }
@@ -469,7 +488,7 @@ extension SignupCoordinator: PasswordViewControllerDelegate {
     
     func validatedPassword(password: String, completionHandler: (() -> Void)?) {
         self.password = password
-        if signupAccountType == .internal {
+        if signupAccountTypeManager.accountType == .internal {
             showRecoveryViewController()
             completionHandler?()
         } else {

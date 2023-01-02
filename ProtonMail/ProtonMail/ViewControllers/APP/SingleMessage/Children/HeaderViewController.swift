@@ -18,7 +18,5 @@
 import UIKit
 
 protocol HeaderViewController: UIViewController {
-    var spotlightableView: UIView? { get }
-
     func trackerProtectionSummaryChanged()
 }

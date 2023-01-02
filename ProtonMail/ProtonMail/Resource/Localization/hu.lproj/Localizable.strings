@@ -572,6 +572,9 @@
 /* Action */
 "Draft" = "Piszkozat";
 
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "A piszkozat még feltöltés alatt…";
+
 /* hint message */
 "Draft saved" = "Piszkozat mentve";
 
@@ -588,8 +591,14 @@
 /* The title of edit folder page */
 "Edit folder" = "Mappa szerkesztése";
 
+/* The title for the contact group editing view */
+"Edit group" = "Csoport szerkesztése";
+
 /* The title of edit label page */
 "Edit label" = "Címke szerkesztése";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Fénykép szerkesztése";
 
 /* default vcard types */
 "Email" = "E-mail";
@@ -605,6 +614,9 @@
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mail cím";
+
+/* Send an email to the current contact (button title text) */
+"Email contact" = "E-mail küldése";
 
 /* Description */
 "Email failed to send. Message saved as draft." = "Az e-mailt nem sikerült elküldeni. Az üzenetet elmentettük vázlatként.";
@@ -688,11 +700,20 @@
 /* incorrect email format error in composer */
 "Error sending" = "Hiba a küldés közben";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Hátralévő idő becslése ...";
+
 /* lock app option */
 "Every time enter app" = "Az alkalmazás minden megnyitásakor";
 
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Zárja ki az üzenetek tartalmában való keresést";
+
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Mappa kinyitása";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
 
 /* Error message */
 "Failed to determine type of file" = "Nem sikerült meghatározni a fájl típusát";
@@ -836,6 +857,12 @@
 /* Title */
 "inline attachments" = "beszúrt mellékletek";
 
+/* place holder */
+"Input Display Name…" = "Írja be a megjelenítendő nevet…";
+
+/* place holder */
+"Input Notification Email …" = "Írja be az értesítési e-mail címet…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nem biztonságos kapcsolat";
 
@@ -943,6 +970,9 @@
 
 /* menu title */
 "Manage accounts" = "Fiókok kezelése";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Tagok kezelése";
 
 /* Push notification action mark as read
    The title of the read action in action sheet */
@@ -1082,6 +1112,9 @@
 /* Title */
 "No connectivity detected…" = "Nincs kapcsolat…";
 
+/* Short hint in the header view */
+"No email trackers found" = "Nincs e-mail követő";
+
 /* network troubleshot cell title */
 "No internet connection" = "Nincs internet kapcsolat";
 
@@ -1136,6 +1169,9 @@
 
 /* Action */
 "OK" = "OK";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "OK";
 
 /* The title of On setting options */
 "On" = "Be";
@@ -1693,8 +1729,17 @@
    Title */
 "To" = "Címzett";
 
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Holnap, %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Túl sok üzenet vár elküldésre.\nVárjon amíg elküldődik egy üzenet, mielőtt ezt ütemezné.";
+
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Eszköztári műveletek (legfeljebb 5-öt válasszon ki)";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
 
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Jutalmak megtekintése";
@@ -1804,6 +1849,9 @@
 
 /* Title */
 "Warning" = "Figyelem";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't send email!" = "Figyelem: amíg nem teljesíti a robot kizáró ellenőrzést, nem küldhet leveleket.";
 
 /* The title of the link confirmation alert of spam email. */
 "Warning: suspected fake website" = "Figyelem: gyanítottan hamis weboldal";

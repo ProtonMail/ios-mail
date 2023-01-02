@@ -35,7 +35,7 @@ class StorefrontCoordinatorTests: XCTestCase {
 
         sideMenuMock = SideMenuMock()
         sut = StorefrontCoordinator(
-            paymentsUI: PaymentsUIMock(),
+            paymentsUI: MockPaymentsUIProtocol(),
             sideMenu: sideMenuMock,
             eventsService: EventsServiceMock()
         )

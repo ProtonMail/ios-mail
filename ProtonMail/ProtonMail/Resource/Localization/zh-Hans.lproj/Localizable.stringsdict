@@ -13,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d 分钟</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -27,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>已选择 %d 项</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -41,7 +41,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d 个附件</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -81,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d conversations labeled</string>
+			<string>%d会话已添加标签</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -95,7 +95,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d会话已移动到%@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -125,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d email trackers blocked</string>
+			<string>%d已阻挡的邮件追踪器</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -139,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d email trackers found</string>
+			<string>%d已发现的邮件追踪器</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -169,7 +169,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d 个成员</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages labeled</string>
+			<string>%d已添加标签的消息</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -195,7 +195,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages moved to %@</string>
+			<string>%d消息已移动到%@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -211,7 +211,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages moved to Drafts</string>
+			<string>%d消息已移动到草稿箱</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -239,7 +239,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d 秒</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -295,7 +295,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>确定要永久删除%d条会话吗？</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -309,7 +309,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>确定要永久删除 %d 封邮件吗？</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -323,7 +323,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>在%d分钟内</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -339,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton已经找到并阻挡此邮件中的%d跟踪器。</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>这些%d邮件将移至草稿箱并被删除发送计划。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

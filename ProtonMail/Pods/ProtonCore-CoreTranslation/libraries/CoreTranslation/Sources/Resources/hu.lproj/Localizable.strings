@@ -287,6 +287,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nem sikerült összeegyeztetni a megvásárolt AppStore terméket a rendelkezésre álló termékeinkkel. Kérjük, küldjön egy hibabejelentést és ügyfélszolgálatunk felveszi önnel a kapcsolatot.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "További információk";
 

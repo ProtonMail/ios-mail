@@ -68,8 +68,10 @@ NSDictionary *parseTrustKitConfiguration(NSDictionary *trustKitArguments)
     
     for (NSString *domainName in trustKitArguments[kTSKPinnedDomains])
     {
+        BOOL isCatchall = [domainName isEqualToString:kTSKCatchallPolicy];
+
         // Sanity checks on the domain name
-        if (GetRegistryLength([domainName UTF8String]) == 0)
+        if (GetRegistryLength([domainName UTF8String]) == 0 && !isCatchall)
         {
             [NSException raise:@"TrustKit configuration invalid"
                         format:@"TrustKit was initialized with an invalid domain %@", domainName];
@@ -90,6 +92,12 @@ NSDictionary *parseTrustKitConfiguration(NSDictionary *trustKitArguments)
             {
                 [NSException raise:@"TrustKit configuration invalid"
                             format:@"TrustKit was initialized with TSKExcludeSubdomainFromParentPolicy for domain %@ but detected additional configuration keys", domainName];
+            }
+
+            if (isCatchall)
+            {
+                [NSException raise:@"TrustKit configuration invalid"
+                            format:@"Can't use TSKExcludeSubdomainFromParentPolicy key with catchall policy"];
             }
             
             // Store the whole configuration and continue to the next domain entry
@@ -113,6 +121,12 @@ NSDictionary *parseTrustKitConfiguration(NSDictionary *trustKitArguments)
         }
         else
         {
+            if (isCatchall)
+            {
+                [NSException raise:@"TrustKit configuration invalid"
+                            format:@"Can't use TSKIncludeSubdomains key with catchall policy"];
+            }
+
             if ([shouldIncludeSubdomains boolValue] == YES)
             {
                 // Prevent pinning on *.com
@@ -126,28 +140,95 @@ NSDictionary *parseTrustKitConfiguration(NSDictionary *trustKitArguments)
             
             domainFinalConfiguration[kTSKIncludeSubdomains] = shouldIncludeSubdomains;
         }
-        
+
         // Extract the optional includeSubdomains setting
-        NSNumber *shouldForceSubdomains = domainPinningPolicy[kForceSubdomains];
-        if (shouldForceSubdomains == nil)
+        NSNumber *forceSubdomainMatch = domainPinningPolicy[kTSKForceSubdomainMatch];
+        if (forceSubdomainMatch == nil)
         {
             // Default setting is NO
-            domainFinalConfiguration[kForceSubdomains] = @(NO);
+            domainFinalConfiguration[kTSKForceSubdomainMatch] = @(NO);
         }
         else
         {
-            if ([kForceSubdomains boolValue] == YES)
+            if (isCatchall)
+            {
+                [NSException raise:@"TrustKit configuration invalid"
+                            format:@"Can't use TSKForceSubdomainMatch key with catchall policy"];
+            }
+
+            if ([forceSubdomainMatch boolValue] == YES)
             {
                 // Prevent pinning on *.com
                 // Ran into this issue with *.appspot.com which is part of the public suffix list
                 if (GetRegistryLength([domainName UTF8String]) == [domainName length])
                 {
                     [NSException raise:@"TrustKit configuration invalid"
-                                format:@"TrustKit was initialized with includeSubdomains for a domain suffix %@", domainName];
+                                format:@"TrustKit was initialized with forceSubdomainMatch for a domain suffix %@", domainName];
                 }
             }
             
-            domainFinalConfiguration[kForceSubdomains] = shouldForceSubdomains;
+            domainFinalConfiguration[kTSKForceSubdomainMatch] = forceSubdomainMatch;
+        }
+        
+        // Extract the optional disable validation setting
+        NSNumber *disableSSLValidation = domainPinningPolicy[kTSKNoSSLValidation];
+        if (disableSSLValidation == nil)
+        {
+            // Default setting is NO
+            domainFinalConfiguration[kTSKNoSSLValidation] = @(NO);
+        }
+        else
+        {
+            if ([disableSSLValidation boolValue] == YES)
+            {
+                // Prevent pinning on *.com
+                // Ran into this issue with *.appspot.com which is part of the public suffix list
+                if (GetRegistryLength([domainName UTF8String]) == [domainName length])
+                {
+                    [NSException raise:@"TrustKit configuration invalid"
+                                format:@"TrustKit was initialized with TSKNoSSLValidation for a domain suffix %@", domainName];
+                }
+            }
+            
+            domainFinalConfiguration[kTSKNoSSLValidation] = disableSSLValidation;
+        }
+
+        // Extract the optional disable validation setting
+        NSNumber *disableHostnameValidation = domainPinningPolicy[kTSKNoHostnameValidation];
+        if (disableHostnameValidation == nil)
+        {
+            // Default setting is NO
+            domainFinalConfiguration[kTSKNoHostnameValidation] = @(NO);
+        }
+        else
+        {
+            if ([disableHostnameValidation boolValue] == YES)
+            {
+                // Prevent pinning on *.com
+                // Ran into this issue with *.appspot.com which is part of the public suffix list
+                if (GetRegistryLength([domainName UTF8String]) == [domainName length])
+                {
+                    [NSException raise:@"TrustKit configuration invalid"
+                                format:@"TrustKit was initialized with TSKNoHostnameValidation for a domain suffix %@", domainName];
+                }
+            }
+
+            domainFinalConfiguration[kTSKNoHostnameValidation] = disableHostnameValidation;
+        }
+
+        NSNumber *allowIpsOnly = domainPinningPolicy[kTSKAllowIPsOnly];
+        if (allowIpsOnly == nil)
+        {
+            domainFinalConfiguration[kTSKAllowIPsOnly] = @(NO);
+        }
+        else {
+            if (!isCatchall)
+            {
+                [NSException raise:@"TrustKit configuration invalid"
+                            format:@"TSKAllowIPsOnly is only valid as part of a TSKCatchall policy"];
+            }
+
+            domainFinalConfiguration[kTSKAllowIPsOnly] = allowIpsOnly;
         }
         
         // Extract the optional expiration date setting

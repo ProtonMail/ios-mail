@@ -50,7 +50,7 @@ extension LoginService {
                     self.context = (credential: credential, passwordMode: passwordMode)
                     self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: password, completion: completion)
                 case .updatedCredential(let credential):
-                    self.authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
+                    self.authManager.onAuthentication(credential: credential, service: self.apiService)
                     PMLog.debug("No idea how to handle updatedCredential")
                     completion(.failure(.invalidState))
                 }
@@ -287,6 +287,26 @@ extension LoginService {
                     case let .failure(error):
                         completion(.failure(error.asCreateAddressKeysError()))
                     }
+                }
+            }
+        }
+    }
+    
+    public func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void) {
+        guard let username = email.components(separatedBy: "@").first else {
+            result(.success(nil))
+            return
+        }
+        checkAvailabilityForInternalAccount(username: username) { res in
+            switch res {
+            case .success:
+                result(.success(username))
+            case .failure(let error):
+                switch error {
+                case .notAvailable:
+                    result(.success(nil))
+                default:
+                    result(.failure(error))
                 }
             }
         }

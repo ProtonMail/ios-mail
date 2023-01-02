@@ -120,6 +120,11 @@ public class LoginMock: Login {
         refreshUserInfoStub(completion)
     }
     
+    @FuncStub(Login.checkUsernameFromEmail) public var checkUsernameFromEmailStub
+    public func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void) {
+        checkUsernameFromEmailStub(email, result)
+    }
+    
     public var startGeneratingAddress: (() -> Void)?
     
     public var startGeneratingKeys: (() -> Void)?

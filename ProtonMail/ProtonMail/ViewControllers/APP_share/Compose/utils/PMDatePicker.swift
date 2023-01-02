@@ -102,6 +102,9 @@ extension PMDatePicker {
     }
 
     private func dismiss(isCancelled: Bool) {
+        if isCancelled {
+            self.delegate?.cancel()
+        }
         self.delegate?.datePickerWillDisappear()
         self.containerBottom.constant = self.pickerHeight
         UIView.animate(
@@ -111,9 +114,6 @@ extension PMDatePicker {
             }, completion: { _ in
                 self.removeFromSuperview()
                 self.delegate?.datePickerDidDisappear()
-                if isCancelled {
-                    self.delegate?.cancel()
-                }
             }
         )
     }

@@ -181,7 +181,7 @@ platform :ios do
   desc "Build the app and upload to testflight"
   lane :build do |options|
     xcodes(
-      version: '14.1',
+      version: '14.2',
       select_for_current_build_only: true,
     )
     set_up_keychain(false)
@@ -228,7 +228,7 @@ platform :ios do
   desc "Build enterprise app"
   lane :enterprise do |options|
     xcodes(
-      version: '14.1',
+      version: '14.2',
       select_for_current_build_only: true,
     )
     set_up_keychain(true)
@@ -278,7 +278,7 @@ platform :ios do
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
     xcodes(
-      version: '14.1',
+      version: '14.2',
       select_for_current_build_only: true,
     )
     scan(
@@ -297,7 +297,7 @@ platform :ios do
   desc "Run ui test and get test coverage"
   lane :ui_test do |options|
     xcodes(
-      version: '14.1',
+      version: '14.2',
       select_for_current_build_only: true,
     )
 
@@ -315,8 +315,9 @@ platform :ios do
       reinstall_app: true,
       output_directory: "../test_output/TestResults",
       result_bundle: true,
-      xcargs: "-quiet"
-    )
+      xcargs: "-quiet",
+      fail_build: false # Otherwise following steps won't be executed
+   )
     xchtmlreport(
       result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
       enable_junit: true,
@@ -330,7 +331,7 @@ platform :ios do
   desc "Run feature ui test and get test coverage"
   lane :feature_tests do |options|
     xcodes(
-      version: '14.1',
+      version: '14.2',
       select_for_current_build_only: true,
     )
 
@@ -347,7 +348,8 @@ platform :ios do
       reinstall_app: true,
       output_directory: "../test_output/TestResults",
       result_bundle: true,
-      xcargs: "-quiet"
+      xcargs: "-quiet",
+      fail_build: false # Otherwise following steps won't be executed
     )
     xchtmlreport(
       result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",

@@ -32,7 +32,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     let message: MessageEntity
     private let coreDataService: CoreDataService
     private let user: UserManager
-    private let navigationController: UINavigationController
+    private weak var navigationController: UINavigationController?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
@@ -60,7 +60,14 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     func start() {
         let viewController = makeSingleMessageVC()
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        if navigationController?.viewControllers.last is MessagePlaceholderVC,
+           var viewControllers = navigationController?.viewControllers {
+            _ = viewControllers.popLast()
+            viewControllers.append(viewController)
+            navigationController?.setViewControllers(viewControllers, animated: false)
+        } else {
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     func makeSingleMessageVC() -> SingleMessageViewController {
@@ -72,7 +79,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
             goToDraft: { [weak self] msgID in
-                self?.navigationController.popViewController(animated: false)
+                self?.navigationController?.popViewController(animated: false)
                 self?.goToDraft?(msgID)
             }
         )
@@ -151,7 +158,7 @@ extension SingleMessageCoordinator {
         guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
         let viewer = PlainTextViewerViewController(text: text, subType: subType)
         try? FileManager.default.removeItem(at: fileUrl)
-        self.navigationController.pushViewController(viewer, animated: true)
+        self.navigationController?.pushViewController(viewer, animated: true)
     }
 
     private func presentCompose(action: SingleMessageNavigationAction) {
@@ -209,7 +216,7 @@ extension SingleMessageCoordinator {
             dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
         )
         let viewController = AttachmentListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func presentWebView(url: URL) {

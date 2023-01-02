@@ -35,8 +35,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "廣告攔截程式 (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "允許替代路由";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "發生錯誤";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "防毒軟體干擾";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple 通報表示無法處理訂購授權。";
@@ -76,6 +82,12 @@
  * Login upgrade username-only account */
 "Change your password" = "變更您的密碼";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "在「Proton 狀態」中查看我們的系統狀態。";
+
+/* Available addresss claim button */
+"Claim it" = "就是它了";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "關閉";
 
@@ -105,6 +117,9 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "聯絡 support@protonvpn.com 以利完成您的訂購授權。";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電郵 (support@protonmail.zendesk.com) 或 Twitter 聯絡我們。";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "以既有電郵位址創建 Proton 帳號";
@@ -178,7 +193,7 @@
 "Email address already used." = "電郵位址已在使用。";
 
 /* Username field title */
-"Email or username" = "電郵位址址或使用者名稱";
+"Email or username" = "電郵位址或使用者名稱";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "擁有隱私權的世界。";
@@ -229,6 +244,9 @@
 /* Verification button */
 "Get verification code" = "取得驗證碼";
 
+/* network troubleshot cell title */
+"Government block" = "政府封鎖";
+
 /* Help button */
 "Help" = "說明";
 
@@ -267,6 +285,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "了解更多";
 

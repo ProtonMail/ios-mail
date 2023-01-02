@@ -97,15 +97,7 @@ class HtmlEditorBehaviour: NSObject {
         // Load editor 3 parts
         do {
             let html = try Bundle.loadResource(named: "HtmlEditor", ofType: "html")
-            var css = try Bundle.loadResource(named: "HtmlEditor", ofType: "css")
-
-            let backgroundColor = ColorProvider.BackgroundNorm.toHex()
-            let textColor = ColorProvider.TextNorm.toHex()
-            let brandColor = ColorProvider.BrandNorm.toHex()
-            css = css
-                .replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
-                .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
-                .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
+            let css = try ProtonCSS.htmlEditor.content()
 
             let script = try Bundle.loadResource(named: "HtmlEditor", ofType: "js")
             let purifier = try Bundle.loadResource(named: "purify.min", ofType: "js")

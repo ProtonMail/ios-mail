@@ -22,6 +22,7 @@
 
 import ProtonCore_PaymentsUI
 
+// sourcery: mock
 protocol PaymentsUIProtocol {
     func showCurrentPlan(
         presentationType: PaymentsUIPresentationType,

@@ -28,6 +28,13 @@ extension Date {
         case monday, tuesday, wednesday, thursday, friday, saturday
       }
 
+    static func is12H(locale: Locale = Environment.locale()) -> Bool {
+        let format = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale)
+        // 12H: format = "h a"
+        // 24H: format = "HH \'h\'"
+        return format?.contains(check: "a") ?? false
+    }
+
     // you can create a read-only computed property to return just the nanoseconds as Int
     var nanosecond: Int {
         let calendar = (Calendar.current as NSCalendar)
@@ -41,6 +48,30 @@ extension Date {
         let formatter = DateFormatter()
         formatter.timeZone = timeZone        // or as local time
         formatter.dateFormat = format
+        return formatter.string(from: self)
+    }
+
+    func localizedString(
+        withTemplate formatTemplate: String?,
+        locale: Locale = Environment.locale(),
+        timeZone: TimeZone = Environment.timeZone
+    ) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.timeZone = timeZone
+        if let formatTemplate = formatTemplate {
+            formatter.setLocalizedDateFormatFromTemplate(formatTemplate)
+        } else {
+            var template = DateFormatter
+                .dateFormat(fromTemplate: "MMM dd jj mm", options: 0, locale: locale) ?? "MMM dd jj mm"
+            // Some template will return `MM`, e.g. de_DE (24 H)
+            template = template.preg_replace(
+                #"M{1,4}([\.,\\,\-,،]){0,1}"#,
+                replaceto: "MMM$1",
+                options: [.dotMatchesLineSeparators]
+            )
+            formatter.dateFormat = template
+        }
         return formatter.string(from: self)
     }
 

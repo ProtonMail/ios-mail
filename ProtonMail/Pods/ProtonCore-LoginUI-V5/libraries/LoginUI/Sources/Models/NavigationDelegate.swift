@@ -22,5 +22,5 @@
 import Foundation
 
 protocol NavigationDelegate: AnyObject {
-    func userDidRequestGoBack()
+    func userDidGoBack()
 }

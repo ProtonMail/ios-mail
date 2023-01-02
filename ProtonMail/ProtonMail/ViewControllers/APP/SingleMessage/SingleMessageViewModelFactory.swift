@@ -47,7 +47,6 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
-                     userIntroductionProgressProvider: userCachedStatus,
                      dependencies: dependencies,
                      goToDraft: goToDraft)
     }

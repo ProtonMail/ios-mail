@@ -5,7 +5,7 @@
 "…[Show full message]" = "…[Visa hela meddelandet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'Den d MMM åååå kl %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Den' d MMM yyyy 'kl' %@";
 
 /* Message for the alert to delete all downloaded messages. */
 "'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Sök meddelandeinnehåll' kommer inaktiveras. Den kan aktiveras igen från inställningar och alla meddelanden kommer laddas ner på nytt.";

@@ -21,6 +21,9 @@ import ProtonCore_DataModel
 extension UserManager: ToolbarActionProvider {
     var messageToolbarActions: [MessageViewActionSheetAction] {
         get {
+            guard UserInfo.isToolbarCustomizationEnable else {
+                return Constants.defaultToolbarActions
+            }
             let serverActions = userInfo.messageToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
             return MessageViewActionSheetAction.convert(from: serverActions)
         }
@@ -32,6 +35,9 @@ extension UserManager: ToolbarActionProvider {
 
     var conversationToolbarActions: [MessageViewActionSheetAction] {
         get {
+            guard UserInfo.isToolbarCustomizationEnable else {
+                return Constants.defaultToolbarActions
+            }
             let serverActions = userInfo.conversationToolbarActions.actions
                 .compactMap({ ServerToolbarAction(rawValue: $0) })
             return MessageViewActionSheetAction.convert(from: serverActions)
@@ -44,6 +50,9 @@ extension UserManager: ToolbarActionProvider {
 
     var listViewToolbarActions: [MessageViewActionSheetAction] {
         get {
+            guard UserInfo.isToolbarCustomizationEnable else {
+                return Constants.defaultToolbarActions
+            }
             let serverActions = userInfo.listToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
             return MessageViewActionSheetAction.convert(from: serverActions)
         }

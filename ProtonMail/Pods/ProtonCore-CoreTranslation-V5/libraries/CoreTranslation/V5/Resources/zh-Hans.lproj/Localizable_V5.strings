@@ -52,6 +52,9 @@
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "使用隐私至上的邮箱和日历服务满足您的日常通讯需求。";
 
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "存储专注型计划将提供 200 GB 的云存储空间，令你的文件保持私密。";
+
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "顶级隐私保护体系，畅享所有 Proton 高级功能。";
 

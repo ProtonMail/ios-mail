@@ -330,6 +330,7 @@ public protocol Login {
     
     func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void)
     func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void)
+    func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void)
 
     var minimumAccountType: AccountType { get }
     func updateAccountType(accountType: AccountType)

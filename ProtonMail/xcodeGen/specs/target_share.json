@@ -13,30 +13,19 @@
                   "Base.lproj"
                ]
             },
-            "ProtonMail/Extension/UIKit/APP_share",
-            "ProtonMail/Extension/Foundations/APP_share_push_siri",
-            "ProtonMail/Extension/Foundations/APP_share_siri",
-            "ProtonMail/Extension/Foundations/APP_share_push",
-            "ProtonMail/Extension/Foundations/APP_share",
-            "ProtonMail/Extension/Foundations/share",
-            "ProtonMail/Extension/ProtonCore/APP_share_push",
-            "ProtonMail/Extension/ProtonCore/APP_share",
-            "ProtonMail/3rd/APP_share",
-            "ProtonMail/Models/APP_share_push",
-            "ProtonMail/Models/APP_share",
-            "ProtonMail/Models/APIs/APP_share",
-            "ProtonMail/Utilities/APP_share",
-            "ProtonMail/Utilities/APP_share_push",
-            "ProtonMail/Utilities/APP_share_push_siri",
-            "ProtonMail/Utilities/APP_share_push_uiTest",
-            "ProtonMail/Components/APP_share",
-            "ProtonMail/ViewControllers/APP_share",
-            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/APP_share",
-            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/share",
-            "ProtonMail/ViewControllers/Pin_BioCode/APP_share",
-            "ProtonMail/Resource/APP_share",
-            "ProtonMail/Resource/Localization",
-            "ProtonMail/Services/APP_share"
+            {
+               "path": "ProtonMail",
+               "includes": [
+                  "**/share",
+                  "**/APP_share",
+                  "**/APP_share_push",
+                  "**/APP_share_push_siri",
+                  "**/APP_share_push_uiTest",
+                  "**/APP_share_siri",
+                  "Generated",
+                  "Resource/Localization"
+               ]
+            }
          ],
          "dependencies": [
             {
@@ -48,10 +37,19 @@
          ],
          "preBuildScripts": [
             {
+               "basedOnDependencyAnalysis": false,
                "name": "swiftGen",
                "path": "xcodeGen/swiftGen.sh",
                "outputFiles": [
                   "${SRCROOT}/ProtonMail/Resource/APP_share/Generated/Images.generated.swift"
+               ]
+            },
+            {
+               "basedOnDependencyAnalysis": false,
+               "name": "Sourcery",
+               "path": "xcodeGen/sourcery.sh",
+               "outputFiles": [
+                  "${SRCROOT}/ProtonMail/Generated"
                ]
             }
          ],

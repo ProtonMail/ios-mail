@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Kontrollera Proton Status för vår systemstatus.";
 
+/* Available addresss claim button */
+"Claim it" = "Gör anspråk på den";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Stäng";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Det gick inte att skapa användare";
+
+/* Available addresss own address button */
+"Create your own" = "Skapa din egen";
 
 /* Signup password proton view title */
 "Create your password" = "Skapa ditt lösenord";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Vi kunde inte matcha AppStore-produkten du köpt med någon produkt på vår server. Fyll i buggrapporten så kommer vår kundtjänst att kontakta dig.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Lär dig mer";
 
@@ -419,6 +426,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Integritet som standard";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Proton-adress krävs";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -561,6 +571,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Det grundläggande för privat och säker kommunikation.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Följande adress är tillgänglig:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP-köpprocessen har startat. Följ Apples instruktioner för att antingen slutföra eller avbryta köpet.";
 
@@ -693,6 +706,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Du kommer använda denna e-postadress för att logga in på alla Proton-tjänster.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Du har tur!";
 
 /* Complete view title */
 "Your account is being created" = "Ditt konto håller på att skapas…";

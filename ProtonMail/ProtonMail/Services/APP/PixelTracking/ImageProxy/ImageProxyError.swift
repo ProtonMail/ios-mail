@@ -20,4 +20,5 @@ import Foundation
 enum ImageProxyError: Error {
     case invalidState
     case responseIsNotAnImage
+    case selfReleased
 }

@@ -95,5 +95,6 @@ extension SystemLogger {
         case encryption = "Encryption"
         case coreData = "CoreData"
         case tests = "Tests"
+        case queue = "Queue"
     }
 }

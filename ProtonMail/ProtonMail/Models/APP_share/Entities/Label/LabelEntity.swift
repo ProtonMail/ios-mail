@@ -44,7 +44,9 @@ struct LabelEntity: Hashable, Equatable {
 
     // MARK: Local properties
     private(set) var isSoftDeleted: Bool
+}
 
+extension LabelEntity {
     init(label: Label) {
         self.userID = UserID(label.userID)
         self.labelID = LabelID(label.labelID)

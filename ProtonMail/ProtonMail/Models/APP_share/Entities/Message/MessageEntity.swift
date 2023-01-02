@@ -125,7 +125,9 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
+}
 
+extension MessageEntity {
     var sender: ContactVO? {
         rawSender?.toContact()
     }

@@ -16,23 +16,25 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 final class MessageEntityTests: XCTestCase {
     private var testContext: NSManagedObjectContext!
 
-    override func setUpWithError() throws {
+    override func setUp() {
+        super.setUp()
         testContext = MockCoreDataStore.testPersistentContainer.viewContext
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
+        super.tearDown()
         testContext = nil
     }
 
     func testInitialization() {
         let message = Message(context: testContext)
-        let messageID = UUID().uuidString
+        let messageID = MessageID.generateLocalID().rawValue
 
         message.messageID = messageID
         message.action = NSNumber(value: 2)
@@ -110,7 +112,7 @@ final class MessageEntityTests: XCTestCase {
 
     func testContactsConvert() throws {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.ccList = """
         [
                 {
@@ -220,10 +222,11 @@ final class MessageEntityTests: XCTestCase {
 }
 
 // MARK: extend variables tests
+
 extension MessageEntityTests {
     func testIsInternal() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.flags = NSNumber(value: 1157)
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isInternal)
@@ -247,7 +250,7 @@ extension MessageEntityTests {
 
     func testIsExternal() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.flags = NSNumber(value: 1)
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isExternal)
@@ -271,7 +274,7 @@ extension MessageEntityTests {
 
     func testIsE2E() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.flags = NSNumber(value: 8)
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isE2E)
@@ -291,7 +294,7 @@ extension MessageEntityTests {
 
     func testIsSignedMime() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.mimeType = "multipart/mixed"
         message.flags = NSNumber(value: 3)
         var entity = MessageEntity(message)
@@ -313,7 +316,7 @@ extension MessageEntityTests {
 
     func testIsPlainText() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.mimeType = "text/plain"
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isPlainText)
@@ -332,7 +335,7 @@ extension MessageEntityTests {
 
     func testIsMultipartMixed() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.mimeType = "multipart/mixed"
         var entity = MessageEntity(message)
         XCTAssertTrue(entity.isMultipartMixed)
@@ -348,7 +351,7 @@ extension MessageEntityTests {
 
     func testMessageLocation() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "1"
         let label2 = Label(context: testContext)
@@ -368,7 +371,7 @@ extension MessageEntityTests {
 
     func testOrderedLocation() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "1"
         let label2 = Label(context: testContext)
@@ -394,7 +397,7 @@ extension MessageEntityTests {
 
     func testOrderedLabel() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "sdfpoapvmsnd"
         label1.order = NSNumber(1)
@@ -424,7 +427,7 @@ extension MessageEntityTests {
 
     func testCustomFolder() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "sdfpoapvmsnd"
         label1.order = NSNumber(1)
@@ -450,7 +453,7 @@ extension MessageEntityTests {
 
     func testIsCustomFolder() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "sdfpoapvmsnd"
         label1.order = NSNumber(1)
@@ -472,10 +475,11 @@ extension MessageEntityTests {
         ])
 
         XCTAssertTrue(sut.isCustomFolder)
-	}
+    }
+
     func testIsScheduledSend() {
         let message = Message(context: testContext)
-        message.messageID = UUID().uuidString
+        message.messageID = MessageID.generateLocalID().rawValue
         message.flags = NSNumber(value: 1 << 20)
 
         let sut = MessageEntity(message)

@@ -88,6 +88,9 @@
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Consultați Stare Proton pentru starea sistemului nostru.";
 
+/* Available addresss claim button */
+"Claim it" = "Revendicați";
+
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Închidere";
 
@@ -139,6 +142,9 @@
 
 /* Create user failed error */
 "Create user failed" = "Eșuare creare utilizator";
+
+/* Available addresss own address button */
+"Create your own" = "Creați-vă propria";
 
 /* Signup password proton view title */
 "Create your password" = "Creare parolă";
@@ -300,6 +306,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nu am putut corela produsul din AppStore cumpărat cu vreunul din produsele de pe serverul nostru. Completați un raport de erori și echipa noastră de suport vă va contacta.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Detalii";
 
@@ -421,6 +428,9 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Confidențialitate implicită";
+
+/* External accounts not supported popup title */
+"Proton address required" = "Este necesară o adresă Proton";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton gratuit";
@@ -563,6 +573,9 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Baza pentru comunicații private și sigure.";
 
+/* Available addresss screen info */
+"The following address is available:" = "Este disponibilă următoarea adresă:";
+
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Procesul de achiziție din aplicație a început. Urmați instrucțiunile Apple pentru a finaliza sau anula achiziția.";
 
@@ -695,6 +708,10 @@
 /* *
  * Login create address */
 "You will use this email address to log into all Proton services." = "Veți folosi această adresă de e-mail pentru conectarea la toate serviciile Proton.";
+
+/* *
+ * Login available address */
+"You’re in Luck!" = "Aveți noroc!";
 
 /* Complete view title */
 "Your account is being created" = "Vi se creează contul…";

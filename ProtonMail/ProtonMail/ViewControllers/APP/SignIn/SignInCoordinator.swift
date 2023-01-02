@@ -143,8 +143,8 @@ final class SignInCoordinator {
 
     private func initLogin() {
         login = environment.loginCreationClosure(LocalString._protonmail,
-                                                 .internal,
-                                                 .internal,
+                                                 .internal, // account type required for signin
+                                                 .internal, // account type possible for signup
                                                  [.notEmpty, .atLeastEightCharactersLong],
                                                  !isFirstAccountFlow)
     }

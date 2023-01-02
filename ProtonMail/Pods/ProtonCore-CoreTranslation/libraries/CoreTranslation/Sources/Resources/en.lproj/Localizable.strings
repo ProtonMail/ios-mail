@@ -102,27 +102,18 @@
 "Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
 "An error has occured" = "An error has occured";
 "Proton address required" = "Proton address required";
+"Get a Proton Mail address linked to this account in your Proton web settings" = "Get a Proton Mail address linked to this account in your Proton web settings";
 "Learn more" = "Learn more";
-
-/**
- * Login choose username
- */
-
-"Create Proton Mail address" = "Create Proton Mail address";
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
-"Username" = "Username";
-"Next" = "Next";
-"Please enter a username." = "Please enter a username.";
 
 /**
  * Login create address
  */
-"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
-"Your recovery email address:" = "Your recovery email address:";
-"Create address" = "Create address";
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
-"Terms and Conditions" = "Terms and Conditions";
-"%@ is available" = "%@ is available";
+
+"Proton address required" = "Proton address required";
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.";
+"Username" = "Username";
+"Continue" = "Continue";
+"Please enter a username." = "Please enter a username.";
 
 /**
  * Login unlock mailbox

@@ -37,6 +37,9 @@
 /* Placeholder */
 "8 to 21 characters long" = "8 - 21 个字符";
 
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "此账户因欠费已被停用。请登录 proton.me 续费。";
+
 /* Account manager title */
 "Account" = "账户";
 
@@ -197,6 +200,9 @@
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您确定要永久删除这封邮件吗？";
 
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "您确定要永久删除这 %d 封邮件吗？";
+
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "您确定要退出登录 %@ 吗？";
 
@@ -240,8 +246,17 @@
 /* Title */
 "Authentication" = "身份验证";
 
+/* Title */
+"Auto Lock Time" = "自动锁定时间";
+
 /* settings general section title */
 "Auto-load embedded images" = "自动加载嵌入图像";
+
+/* settings general section title */
+"Auto-load remote content" = "自动加载外链内容";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "可选操作";
 
 /* Example feedback */
 "Awful" = "非常差";
@@ -258,6 +273,9 @@
 /* Error Description */
 "Bad response" = "响应错误";
 
+/* Title */
+"Bcc" = "密送";
+
 /* message Bcc: feild */
 "Bcc:" = "密送：";
 
@@ -267,11 +285,17 @@
 /* Settings row */
 "Block email tracking" = "阻止电子邮件追踪";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "阻止发件人查看您是否以及何时打开过邮件。";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会话模式能帮助您轻松应对各方的往来邮件。";
 
 /* Title */
 "Bug Description" = "问题描述";
+
+/* Title */
+"Bug Report Received" = "反馈已收到";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "已缓存的数据";
@@ -334,8 +358,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "当前无法清空文件夹。";
 
+/* message Cc: feild
+   Title */
+"Cc" = "抄送";
+
 /* settings general section title */
 "Change account password" = "更改账户密码";
+
+/* Title */
+"Change default address to…" = "修改默认邮件地址到...";
 
 /* settings general section title */
 "Change mailbox password" = "更改邮箱密码";
@@ -344,8 +375,14 @@
    title */
 "Change password" = "更改密码";
 
+/* update password error title */
+"Change Password" = "更改密码";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "更改 PIN 码";
+
+/* Title */
+"Change sender address to…" = "更改发件人地址到...";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "为您的设备充电或手动恢复。";
@@ -493,6 +530,9 @@
    Custom option for time config picker */
 "Custom" = "自定义";
 
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "自定义工具箱";
+
 /* Title */
 "Cut" = "剪切";
 
@@ -519,6 +559,9 @@
 
 /* Settings row */
 "Default browser" = "默认浏览器";
+
+/* Placeholder */
+"Define Hint (Optional)" = "密码提示（可选）";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -568,8 +611,17 @@
 /* Action */
 "Discard changes" = "放弃修改";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "已放弃";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "收起屏幕键盘";
+
+/* Title in settings */
+"Display Name" = "显示名称";
+
+/* Title in display name settings */
+"DisplayName" = "显示名称";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "确定要删除此附件吗？";
@@ -654,10 +706,6 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "编辑头像";
-
-/* *
- *  Edit Contact view controller */
-"Edit Contact" = "编辑联系人";
 
 /* The title of edit folder page */
 "Edit folder" = "更改文件夹";
@@ -798,6 +846,9 @@
 /* forwarded message title */
 "Forwarded message" = "已转发的邮件";
 
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "预留至少100MB存储以继续。";
+
 /* Title */
 "From" = "发件人";
 
@@ -866,6 +917,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "身份验证提示";
+
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "如果你失去WiFi连接，下载将在数据流量下进行。";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽视警告并继续";
@@ -1072,9 +1126,6 @@
 
 /* default vcard types */
 "Mobile" = "手机";
-
-/* Mobile Signature title in settings */
-"Mobile Signature" = "移动设备签名";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "星期一 (%1$@) 上午 08:%2$d";

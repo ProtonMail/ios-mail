@@ -83,7 +83,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 個國家</string>
+			<string>%d 個 (國家/地區)</string>
 		</dict>
 	</dict>
 	<key>%d custom domains</key>

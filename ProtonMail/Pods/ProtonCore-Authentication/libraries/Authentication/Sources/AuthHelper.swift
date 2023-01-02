@@ -154,6 +154,22 @@ public final class AuthHelper: AuthDelegate {
         }
     }
     
+    public func onAuthentication(credential: Credential, service: APIService?) {
+        authCredentials.mutate { authCredentials in
+            
+            let sessionUID = credential.UID
+            let newCredentials = (AuthCredential(credential), credential)
+            
+            service?.setSessionUID(uid: sessionUID)
+            authCredentials = newCredentials
+            
+            guard let delegate = delegate else { return }
+            delegateExecutor.execute {
+                delegate.credentialsWereUpdated(authCredential: newCredentials.0, credential: newCredentials.1, for: sessionUID)
+            }
+        }
+    }
+    
     public func updateAuth(for sessionUID: String, password: String?, salt: String?, privateKey: String?) {
         authCredentials.mutate { authCredentials in
             guard authCredentials != nil else { return }

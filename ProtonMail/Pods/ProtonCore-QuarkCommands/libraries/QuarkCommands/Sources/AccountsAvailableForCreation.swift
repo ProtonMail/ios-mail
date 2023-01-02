@@ -46,6 +46,7 @@ public struct AccountAvailableForCreation {
         case noAddress
         case addressButNoKeys
         case addressWithKeys(type: KeyTypes)
+        case userKeyNoAddress(type: KeyTypes)
     }
     
     public enum AccountStatus: Int {
@@ -158,6 +159,15 @@ public struct AccountAvailableForCreation {
               address: .addressWithKeys(type: .curve25519),
               mailboxPassword: .random,
               description: "Free account with mailbox password")
+    }
+    
+    public static func freeUserWithKeyNoAddress(
+        username: String? = nil, password: String? = nil
+    ) -> AccountAvailableForCreation {
+        .init(username: username ?? .random,
+              password: password ?? .random,
+              address: .userKeyNoAddress(type: .curve25519),
+              description: "Free account with no address nor keys")
     }
     
     public static func external(

@@ -18,7 +18,7 @@ final class SendMessageAPITest: XCTestCase {
                                     mime: SendMIMEType,
                                     expectedBody: String,
                                     shouldHaveAttachments: Bool) throws {
-        let messageID = UUID().uuidString
+        let messageID = MessageID.generateLocalID().rawValue
         let expirationTime = Int.random(in: 1...5)
         let delaySecond = Int.random(in: 1...9)
         let deliveryTime = Date()

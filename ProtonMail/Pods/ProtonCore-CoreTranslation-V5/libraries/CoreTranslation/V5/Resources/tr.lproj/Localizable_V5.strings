@@ -52,6 +52,9 @@
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Günlük iletişim gereksinimleriniz için kişisel gizliliğe öncelik veren e-posta ve takvim çözümü.";
 
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Dosyalarınızın kişisel gizliliğini koruyabileceğiniz 200 GB alan ile depolama odaklı tarife.";
+
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "Tüm ücretli Proton hizmetlerine erişim sağlayan en üst düzey kişisel gizililik paketi.";
 

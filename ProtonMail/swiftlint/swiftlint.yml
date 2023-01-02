@@ -90,6 +90,7 @@ excluded:
   - ${PWD}/ProtonMail/Extension/ProtonCore/APP_share/APIService/APIService+AttachmentExtension.swift
   - ${PWD}/ProtonMail/Extension/ProtonCore/APP/APIService+DeviceExtension.swift
   - ${PWD}/ProtonMail/Extension/ProtonCore/APP_share/APIService/APIResponse.swift
+  - ${PWD}/ProtonMail/Generated
   - ${PWD}/ProtonMail/Models/APP_share_push/PushNotificationPayload.swift
   - ${PWD}/ProtonMail/Models/APP_share/ContactsDefined.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/AttachmentAPI.swift

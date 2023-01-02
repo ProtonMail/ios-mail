@@ -21,4 +21,18 @@ extension UIAlertController {
     func addURLAction(title: String, url: URL) {
         addAction(.urlAction(title: title, url: url))
     }
+
+    static func showOnTopmostVC(title: String, message: String, action: UIAlertAction) {
+        #if !APP_EXTENSION
+        DispatchQueue.main.async {
+            guard let window: UIWindow = UIApplication.shared.keyWindow else {
+                return
+            }
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addCloseAction()
+            alert.addAction(action)
+            window.topmostViewController()?.present(alert, animated: true, completion: nil)
+        }
+        #endif
+    }
 }

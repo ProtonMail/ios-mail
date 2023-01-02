@@ -27,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>已選取 %d 個</string>
+			<string>%d 已選定</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -53,7 +53,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>剩餘%d 次嘗試機會</string>
+			<string>%d 次的可用嘗試數</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -67,7 +67,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 次嘗試失敗後，就會進行資料安全抹除！</string>
+			<string>%d 次嘗試失敗後，就會進行資料安全清除！</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -81,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個會話已加標籤</string>
+			<string>%d 個對話已加標籤</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -95,7 +95,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個交談已移至 %@</string>
+			<string>%d 個對話已移至 %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -125,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個電郵追蹤器已封鎖</string>
+			<string>%d 個電郵追蹤器已攔截</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -169,7 +169,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d members</string>
+			<string>%d 位成員</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個郵件已標籤</string>
+			<string>%d 個郵件已上標籤</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>這些 %d 郵件將移至草稿匣，並依排程順序移除。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

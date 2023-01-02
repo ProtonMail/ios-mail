@@ -1,6 +1,6 @@
 //
 //  CreateAddressViewController.swift
-//  ProtonCore-Login - Created on 27.11.2020.
+//  ProtonCore-Login - Created on 26.11.2020.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,27 +22,26 @@
 import Foundation
 import UIKit
 import ProtonCore_CoreTranslation
-import ProtonCore_Log
-import ProtonCore_Login
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_Login
 
-protocol CreateAddressViewControllerDelegate: NavigationDelegate {
+protocol CreateAddressViewControllerDelegate: AnyObject {
+    func userDidGoBack()
     func userDidFinishCreatingAddress(endLoading: @escaping () -> Void, data: LoginData)
-    func userDidRequestTermsAndConditions()
 }
 
-final class CreateAddressViewController: UIViewController, AccessibleView, ErrorCapable {
+final class CreateAddressViewController: UIViewController, AccessibleView, ErrorCapable, Focusable {
 
     // MARK: - Outlets
 
     @IBOutlet private weak var titleLabel: TitleLabel!
     @IBOutlet private weak var subtitleLabel: SubtitleLabel!
-    @IBOutlet private weak var createButton: ProtonButton!
-    @IBOutlet private weak var recoveryTitleLabel: UILabel!
-    @IBOutlet private weak var recoveryInfoLabel: UILabel!
-    @IBOutlet private weak var termsLabel: UILabel!
+    @IBOutlet private weak var addressTextField: PMTextField!
+    @IBOutlet private weak var continueButton: ProtonButton!
+    @IBOutlet private weak var cancelButton: ProtonButton!
     @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet weak var domainsButton: ProtonButton!
 
     // MARK: - Properties
 
@@ -53,7 +52,9 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
+    var focusNoMore = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+    var tapGesture: UITapGestureRecognizer?
 
     // MARK: - Setup
 
@@ -61,43 +62,45 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         super.viewDidLoad()
 
         setupUI()
+        setupGestures()
         setupBinding()
+        setupDelegates()
+        setupNotifications()
         generateAccessibilityIdentifiers()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
-        scrollView.adjust(forKeyboardVisibilityNotification: nil)
+        
+        configureDomainSuffix()
     }
 
     private func setupUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
-        titleLabel.text = String(format: CoreString._ls_create_address_available, viewModel.address)
+        titleLabel.text = CoreString._ls_create_address_screen_title
         titleLabel.textColor = ColorProvider.TextNorm
-        subtitleLabel.text = CoreString._ls_create_address_info
+        let attrFont = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+        subtitleLabel.attributedText = String(format: CoreString._ls_create_address_screen_info, viewModel.externalEmail).getAttributedString(replacement: viewModel.externalEmail, attrFont: attrFont)
         subtitleLabel.textColor = ColorProvider.TextWeak
-        recoveryTitleLabel.text = CoreString._ls_create_address_recovery_title
-        recoveryTitleLabel.textColor = ColorProvider.TextNorm
-        recoveryInfoLabel.text = viewModel.recoveryEmail
-        recoveryInfoLabel.textColor = ColorProvider.TextNorm
-        createButton.setTitle(CoreString._ls_create_address_button_title, for: .normal)
+        addressTextField.title = CoreString._ls_create_address_username_title
+        continueButton.setTitle(CoreString._ls_create_address_button_title, for: .normal)
+        cancelButton.setTitle(CoreString._hv_cancel_button, for: .normal)
+        cancelButton.setMode(mode: .text)
 
-        termsLabel.textColor = ColorProvider.TextWeak
-        termsLabel.textWithLink(text: CoreString._ls_create_address_terms_full, link: CoreString._ls_create_address_terms_link) {
-            self.delegate?.userDidRequestTermsAndConditions()
+        addressTextField.suffix = ""
+        if let defaultUsername = viewModel.defaultUsername {
+            addressTextField.value = defaultUsername
         }
-
-        recoveryTitleLabel.textColor = ColorProvider.TextNorm
-        recoveryInfoLabel.textColor = ColorProvider.TextWeak
+        addressTextField.textContentType = .username
+        addressTextField.autocapitalizationType = .none
+        addressTextField.autocorrectionType = .no
+        
+        // domain button
+        domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
 
         setUpBackArrow(action: #selector(CreateAddressViewController.goBack(_:)))
     }
-
+    
     private func setupBinding() {
         viewModel.isLoading.bind { [weak self] isLoading in
             self?.view.isUserInteractionEnabled = !isLoading
-            self?.createButton.isSelected = isLoading
+            self?.continueButton.isSelected = isLoading
         }
         viewModel.error.bind { [weak self] messageWithCode in
             guard let self = self else { return }
@@ -110,14 +113,21 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
                                button: CoreString._net_api_might_be_blocked_button) { [weak self] in
                     self?.onDohTroubleshooting()
                 }
+            case let .availabilityError(.notAvailable(message: message)):
+                self.setError(textField: self.addressTextField, error: nil)
+                guard self.customErrorPresenter?.willPresentError(error: .notAvailable(message: message), from: self) == true else {
+                    self.showError(message: message)
+                    return
+                }
             default:
-                if self.customErrorPresenter?.willPresentError(
+                guard self.customErrorPresenter?.willPresentError(
                     error: CreateAddressError.generic(message: messageWithCode.0,
                                                       code: messageWithCode.1,
                                                       originalError: messageWithCode.2.originalError),
                     from: self
-                ) == true { } else {
+                ) == true else {
                     self.showError(message: messageWithCode.0)
+                    return
                 }
             }
         }
@@ -126,18 +136,157 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         }
     }
 
-    private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
-        showBanner(message: message, button: button, action: action, position: PMBannerPosition.top)
+    private func setupDelegates() {
+        addressTextField.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        focusOnce(view: addressTextField)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationBarAdjuster.setUp(for: scrollView, parent: parent)
+        scrollView.adjust(forKeyboardVisibilityNotification: nil)
+    }
+
+    // MARK: - Keyboard
+
+    private func setupNotifications() {
+        NotificationCenter.default
+            .setupKeyboardNotifications(target: self, show: #selector(keyboardWillShow), hide: #selector(keyboardWillHide))
+    }
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: addressTextField, bottomView: continueButton)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        adjust(scrollView, notification: notification, topView: titleLabel, bottomView: continueButton)
     }
 
     // MARK: - Actions
 
-    @IBAction private func createPressed(_ sender: Any) {
-        PMBanner.dismissAll(on: self)
-        viewModel.finish()
+    private func setupGestures() {
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
+        tapGesture?.delaysTouchesBegan = false
+        tapGesture?.delaysTouchesEnded = false
+        guard let tapGesture = tapGesture else { return }
+        self.view.addGestureRecognizer(tapGesture)
     }
 
-    @objc private func goBack(_ sender: Any) {
-        delegate?.userDidRequestGoBack()
+    @IBAction private func continuePressed(_ sender: Any) {
+        guard setAddressTextFieldError() else {
+            return
+        }
+
+        PMBanner.dismissAll(on: self)
+        _ = addressTextField.resignFirstResponder()
+        viewModel.finish(username: addressTextField.value)
     }
+    
+    @IBAction private func cancelPressed(_ sender: Any) {
+        viewModel.logout()
+        delegate?.userDidGoBack()
+    }
+    
+    @objc private func goBack(_ sender: Any) {
+        viewModel.logout()
+        delegate?.userDidGoBack()
+    }
+
+    private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
+        showBanner(message: message, position: .top)
+    }
+
+    // MARK: - Validation
+
+    @discardableResult
+    private func setAddressTextFieldError() -> Bool {
+        let usernameValid = viewModel.validate(username: addressTextField.value)
+        switch usernameValid {
+        case let .failure(error):
+            setError(textField: addressTextField, error: error)
+            return false
+        case .success:
+            clearError(textField: addressTextField)
+            return true
+        }
+    }
+    
+    private func configureDomainSuffix() {
+        domainsButton.setTitle("@\(viewModel.currentlyChosenSignUpDomain)", for: .normal)
+        if viewModel.allSignUpDomains.count > 1 {
+            domainsButton.isUserInteractionEnabled = true
+            domainsButton.setMode(mode: .image(type: .textWithChevron))
+        } else {
+            domainsButton.isUserInteractionEnabled = false
+            domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
+        }
+    }
+    
+    @IBAction private func onDomainsButtonTapped() {
+        dismissKeyboard()
+        var sheet: PMActionSheet?
+        let currentDomain = viewModel.currentlyChosenSignUpDomain
+        let items = viewModel.allSignUpDomains.map { [weak self] domain in
+            PMActionSheetPlainItem(title: "@\(domain)", icon: nil, isOn: domain == currentDomain) { [weak self] _ in
+                sheet?.dismiss(animated: true)
+                self?.viewModel.currentlyChosenSignUpDomain = domain
+                self?.configureDomainSuffix()
+            }
+        }
+        let header = PMActionSheetHeaderView(title: CoreString._su_domains_sheet_title,
+                                             subtitle: nil,
+                                             leftItem: PMActionSheetPlainItem(title: nil, icon: IconProvider.crossSmall) { _ in sheet?.dismiss(animated: true) },
+                                             rightItem: nil,
+                                             hasSeparator: false)
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        sheet?.eventsListener = self
+        sheet?.presentAt(self, animated: true)
+    }
+    
+    @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+    
+    private func dismissKeyboard() {
+        if addressTextField.isFirstResponder {
+            _ = addressTextField.resignFirstResponder()
+        }
+    }
+}
+
+// MARK: - Text field delegate
+
+extension CreateAddressViewController: PMTextFieldDelegate {
+
+    func didChangeValue(_ textField: PMTextField, value: String) {}
+
+    func textFieldShouldReturn(_ textField: PMTextField) -> Bool {
+        _ = textField.resignFirstResponder()
+        return true
+    }
+
+    func didBeginEditing(textField: PMTextField) {}
+
+    func didEndEditing(textField: PMTextField) {
+        setAddressTextFieldError()
+    }
+}
+
+extension CreateAddressViewController: PMActionSheetEventsListener {
+    func willPresent() {
+        tapGesture?.cancelsTouchesInView = false
+        domainsButton?.isSelected = true
+    }
+
+    func willDismiss() {
+        tapGesture?.cancelsTouchesInView = true
+        domainsButton?.isSelected = false
+    }
+    
+    func didDismiss() { }
 }

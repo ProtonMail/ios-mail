@@ -96,7 +96,7 @@ class PMToolBarView: UIView {
             btnStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             btnStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             btnStackView.topAnchor.constraint(equalTo: topAnchor),
-            btnStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            btnStackView.bottomAnchor.constraint(equalTo: bottomAnchor).setPriority(as: .defaultLow),
             btnStackView.heightAnchor.constraint(equalToConstant: 56),
         ].activate()
 

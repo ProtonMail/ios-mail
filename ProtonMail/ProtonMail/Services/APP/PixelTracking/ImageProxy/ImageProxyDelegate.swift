@@ -19,4 +19,5 @@ import Foundation
 
 protocol ImageProxyDelegate: AnyObject {
     func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput)
+    func imageProxy(_ imageProxy: ImageProxy, didFinishDryRunWithOutput output: ImageProxyDryRunOutput)
 }

@@ -17,7 +17,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.24.5'
+  '3.25.0'
 end
 
 def crypto_variant
@@ -43,13 +43,12 @@ def common_pods
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
-  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
+  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
 end
 
 def pm_pods
   common_pods
   pod 'DKImagePickerController/PhotoGallery', '4.3.4'
-  pod 'LifetimeTracker'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher-V5', :git => proton_core_path, :tag => proton_core_version
@@ -121,6 +120,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
 end
@@ -138,8 +138,6 @@ target 'ProtonMailAnalytics' do
 end
 
 post_install do | installer |
-  require 'fileutils'
-  FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Supporting Files/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'

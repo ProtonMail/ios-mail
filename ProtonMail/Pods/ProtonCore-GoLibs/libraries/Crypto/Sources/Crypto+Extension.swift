@@ -26,8 +26,6 @@ import ProtonCore_Utilities
 /// core module layer go crypto wraper
 public class Crypto {
     
-    private let keyRingBuilder = KeyRingBuilder()
-    
     /// default init
     public init() { }
     
@@ -91,7 +89,7 @@ public class Crypto {
     internal func encryptAndSign(plainRaw: Either<String, Data>,
                                  publicKey: ArmoredKey, signingKey: SigningKey?) throws -> ArmoredMessage {
         
-        let publicKeyRing = try self.keyRingBuilder.buildPublicKeyRing(armoredKeys: [publicKey])
+        let publicKeyRing = try self.buildPublicKeyRing(armoredKeys: [publicKey])
         
         let plainMessage: CryptoPlainMessage?
         switch plainRaw {
@@ -118,6 +116,50 @@ public class Crypto {
         return ArmoredMessage.init(value: armoredMessage)
     }
     
+    /// internal function to build up go crypto key ring. will auto convert private to public key
+    /// - Parameter armoredKeys: armored key list
+    /// - Returns: crypto key ring
+    private func buildPublicKeyRing(armoredKeys: [ArmoredKey]) throws -> CryptoKeyRing {
+        let keyRing = try throwingNotNil { error in CryptoNewKeyRing(nil, &error) }
+        for armoredKey in armoredKeys {
+            let keyToAdd = try throwingNotNil { error in CryptoNewKeyFromArmored(armoredKey.value, &error) }
+            if keyToAdd.isPrivate() {
+                let publicKey = try keyToAdd.toPublic()
+                try keyRing.add(publicKey)
+            } else {
+                try keyRing.add(keyToAdd)
+            }
+        }
+        return keyRing
+    }
+    
+    private func buildPrivateKeyRingUnlock(privateKeys: [DecryptionKey]) throws -> CryptoKeyRing {
+        let newKeyRing = try throwing { error in CryptoNewKeyRing(nil, &error) }
+        
+        guard let keyRing = newKeyRing else {
+            throw CryptoError.couldNotCreateKeyRing
+        }
+        
+        var unlockKeyErrors = [Error]()
+        
+        for key in privateKeys {
+            let passSlice = key.passphrase.data
+            do {
+                let lockedKey = try throwing { error in CryptoNewKeyFromArmored(key.privateKey.value, &error) }
+                if let unlockedKey = try lockedKey?.unlock(passSlice) {
+                    try keyRing.add(unlockedKey)
+                }
+            } catch let error {
+                unlockKeyErrors.append(error)
+                continue
+            }
+        }
+        guard unlockKeyErrors.count != privateKeys.count else {
+            throw CryptoKeyError.noKeyCouldBeUnlocked(errors: unlockKeyErrors)
+        }
+        return keyRing
+    }
+    
     public func encryptSessionKey(publicKey: ArmoredKey, sessionKey: SessionKey) throws -> Based64String {
         let keyPacket = try self.encryptSessionRaw(publicKey: publicKey, session: sessionKey.sessionKey, algo: sessionKey.algo)
         return Based64String.init(raw: keyPacket)
@@ -130,7 +172,7 @@ public class Crypto {
     /// - Returns: SymmetricKey
     internal func decryptSessionKey(decryptionKeys: [DecryptionKey], keyPacket: Data) throws -> SessionKey {
         
-        let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         defer { decryptionKeyRing.clearPrivateParams() }
         
@@ -206,7 +248,7 @@ public class Crypto {
             throw CryptoError.couldNotCreateKey // EncryptError.unableToMakeWriter
         }
         
-        let keyRing = try self.keyRingBuilder.buildPublicKeyRing(armoredKeys: [publicKey])
+        let keyRing = try self.buildPublicKeyRing(armoredKeys: [publicKey])
         
         let plaintextWriter = try keyRing.encryptSplitStream(cipherTextWriter,
                                                              plainMessageMetadata: nil,
@@ -328,7 +370,7 @@ public class Crypto {
     func decryptAndVerify(decryptionKey: DecryptionKey, encrypted: ArmoredMessage,
                           signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64) throws -> VerifiedString {
         
-        let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
         defer { decryptionKeyRing.clearPrivateParams() }
         
         let pgpMsg = try throwingNotNil { error in
@@ -337,7 +379,7 @@ public class Crypto {
         
         let decrypted = try decryptionKeyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString()
         
-        let verificationKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verificationKeys)
+        let verificationKeyRing = try buildPublicKeyRing(armoredKeys: verificationKeys)
         
         let signature = CryptoPGPSignature(fromArmored: signature.value)
         
@@ -354,14 +396,14 @@ public class Crypto {
     func decryptAndVerify(decryptionKey: DecryptionKey, keyPacket: Data,
                           signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64) throws -> VerifiedData {
         
-        let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
         defer { decryptionKeyRing.clearPrivateParams() }
         
         guard let sessionKey = try decryptionKeyRing.decryptSessionKey(keyPacket.mutable as Data).key else {
             throw CryptoError.sessionKeyCouldNotBeDecrypted
         }
         
-        let verificationKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verificationKeys)
+        let verificationKeyRing = try buildPublicKeyRing(armoredKeys: verificationKeys)
         
         let signature = CryptoPGPSignature(fromArmored: signature.value)
         
@@ -385,9 +427,9 @@ public class Crypto {
                                   verifications: [ArmoredKey],
                                   verifyTime: Int64) throws -> ExplicitVerifyMessage {
         
-        let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
-        let verifierKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verifications)
+        let verifierKeyRing = try buildPublicKeyRing(armoredKeys: verifications)
         
         let verified = try throwingNotNil { error in
             HelperDecryptExplicitVerify(encrypted, privateKeyRing, verifierKeyRing, verifyTime, &error)
@@ -397,7 +439,7 @@ public class Crypto {
     
     internal func decrypt(decryptionKeys: [DecryptionKey], encrypted: ArmoredMessage) throws -> String {
         
-        let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         let pgpMsg = try throwingNotNil { error in
             CryptoPGPMessage(fromArmored: encrypted.value)
@@ -411,7 +453,7 @@ public class Crypto {
     
     internal func decrypt(decryptionKeys: [DecryptionKey], encrypted: ArmoredMessage) throws -> Data {
         
-        let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         let pgpMsg = try throwingNotNil { error in
             CryptoPGPMessage(fromArmored: encrypted.value)
@@ -429,7 +471,7 @@ public class Crypto {
     
     internal func decrypt(decryptionKeys: [DecryptionKey], split: SplitPacket) throws -> Data {
         
-        let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         let splitMsg = try throwingNotNil { error in
             CryptoPGPSplitMessage(split.keyPacket, dataPacket: split.dataPacket)
@@ -453,7 +495,7 @@ public class Crypto {
                          encrypted: PGPMessage,
                          verifyTime: Int64) throws -> String {
         
-        let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         let plainMessageString = try privateKeyRing.decrypt(encrypted, verifyKey: nil,
                                                             verifyTime: CryptoGetUnixTime())
@@ -465,7 +507,7 @@ public class Crypto {
                          encrypted: PGPMessage,
                          verifyTime: Int64) throws -> Data {
         
-        let privateKeyRing = try self.keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let privateKeyRing = try self.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         
         let plainMessageString = try privateKeyRing.decrypt(encrypted, verifyKey: nil,
                                                             verifyTime: CryptoGetUnixTime())
@@ -503,7 +545,7 @@ public class Crypto {
         defer { writeFileHandle.closeFile() }
         // cryptography
         
-        let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        let decryptionKeyRing = try buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
         defer { decryptionKeyRing.clearPrivateParams() }
         let sessionKey = try decryptionKeyRing.decryptSessionKey(keyPacket)
         
@@ -511,7 +553,7 @@ public class Crypto {
         
         let verifyFileHandle = try FileHandle(forReadingFrom: cleartextUrl)
         defer { verifyFileHandle.closeFile() }
-        let verificationKeyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: verificationKeys)
+        let verificationKeyRing = try buildPublicKeyRing(armoredKeys: verificationKeys)
         
         try self.verifyStream(verificationKeyRing, decryptionKeyRing, verifyFileHandle, signature)
     }
@@ -598,7 +640,7 @@ public class Crypto {
     internal func verifyDetached(input: Either<String, Data>, signature: Either<ArmoredSignature, UnArmoredSignature>,
                                  verifiers: [ArmoredKey], verifyTime: Int64) throws -> Bool {
         
-        let publicKeyRing = try self.keyRingBuilder.buildPublicKeyRing(armoredKeys: verifiers)
+        let publicKeyRing = try self.buildPublicKeyRing(armoredKeys: verifiers)
         let plainMessage: CryptoPlainMessage?
         switch input {
         case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
@@ -682,13 +724,13 @@ public class Crypto {
     }
     
     public func encryptAttachmentLowMemory(fileName: String, totalSize: Int, publicKey: ArmoredKey) throws -> AttachmentProcessor {
-        let keyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: [publicKey])
+        let keyRing = try buildPublicKeyRing(armoredKeys: [publicKey])
         let processor = try keyRing.newLowMemoryAttachmentProcessor(totalSize, filename: fileName)
         return processor
     }
     
     public func encryptAttachmentNonOptional(plainData: Data, fileName: String, publicKey: ArmoredKey) throws -> SplitMessage {
-        let keyRing = try keyRingBuilder.buildPublicKeyRing(armoredKeys: [publicKey])
+        let keyRing = try buildPublicKeyRing(armoredKeys: [publicKey])
         // without mutable
         let splitMessage = try throwing { error in HelperEncryptAttachment(plainData, fileName, keyRing, &error) }
         guard let splitMessage = splitMessage else {

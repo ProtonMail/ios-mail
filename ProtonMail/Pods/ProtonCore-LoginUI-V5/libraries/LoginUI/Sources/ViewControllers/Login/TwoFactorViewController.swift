@@ -112,8 +112,8 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
                 self?.delegate?.twoFactorViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
             case .mailboxPasswordNeeded:
                 self?.delegate?.mailboxPasswordNeeded()
-            case let .createAddressNeeded(data):
-                self?.delegate?.createAddressNeeded(data: data)
+            case let .createAddressNeeded(data, defaultUsername):
+                self?.delegate?.createAddressNeeded(data: data, defaultUsername: defaultUsername)
             }
         }
     }
@@ -152,7 +152,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     // MARK: - Actions
 
     @objc private func goBack(_ sender: Any) {
-        delegate?.userDidRequestGoBack()
+        delegate?.userDidGoBack()
     }
 
     @IBAction private func recoveryPressed(_ sender: Any) {

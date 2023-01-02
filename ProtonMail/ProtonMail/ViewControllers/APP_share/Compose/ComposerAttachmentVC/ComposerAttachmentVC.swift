@@ -58,7 +58,7 @@ final class ComposerAttachmentVC: UIViewController {
     private var tableView: UITableView?
     private let coreDataService: CoreDataService
     @objc dynamic private(set) var tableHeight: CGFloat = 0
-    private let attachInfoUpdateQueue = DispatchQueue(label: "AttachInfo update queue", attributes: .concurrent)
+    private let attachInfoUpdateQueue = DispatchQueue(label: "AttachInfo update queue")
     var isUploading: ((Bool) -> Void)?
 
     // `datas` is mostly updated on `self.queue`, but is also used to populate the table view.
@@ -72,7 +72,7 @@ final class ComposerAttachmentVC: UIViewController {
             }
         }
         set {
-            attachInfoUpdateQueue.sync(flags: .barrier) {
+            attachInfoUpdateQueue.sync {
                 _datas = newValue
             }
         }
@@ -333,13 +333,13 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellID = ComposerAttachmentCellTableViewCell.defaultID()
+        let row = indexPath.row
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
-                as? ComposerAttachmentCellTableViewCell else {
+                as? ComposerAttachmentCellTableViewCell,
+              let data = self.datas[safe: row] else {
             return ComposerAttachmentCellTableViewCell()
         }
 
-        let row = indexPath.row
-        let data = self.datas[row]
         cell.config(objectID: data.objectID,
                     name: data.name,
                     size: data.size,

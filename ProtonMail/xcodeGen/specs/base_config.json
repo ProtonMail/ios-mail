@@ -19,6 +19,12 @@
       "Enterprise Debug": "debug",
       "Enterprise Release": "release"
    },
+   "packages": {
+      "LifetimeTracker": {
+         "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
+         "version": "1.8.1"
+      }
+   },
    "configFiles": {
       "Debug": "xcodeGen/xcconfig/Project-Debug.xcconfig",
       "Release": "xcodeGen/xcconfig/Project-Release.xcconfig",

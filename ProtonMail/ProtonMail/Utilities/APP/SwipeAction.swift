@@ -77,7 +77,7 @@ enum SwipeActionSettingType: Int, CustomStringConvertible, CaseIterable {
         case .starAndUnstar:
             return LocalString._swipe_action_star
         case .archive:
-            return LocalString._menu_archive_title
+            return L11n.PushNotificationAction.archive
         case .spam:
             return LocalString._menu_spam_title
         default:

@@ -125,11 +125,6 @@ class NonExpandedHeaderViewController: UIViewController {
 }
 
 extension NonExpandedHeaderViewController: HeaderViewController {
-    var spotlightableView: UIView? {
-        let view = customView.trackerProtectionImageView
-        return view.isHidden ? nil : view
-    }
-
     func trackerProtectionSummaryChanged() {
         updateTrackerDetectionStatus()
     }

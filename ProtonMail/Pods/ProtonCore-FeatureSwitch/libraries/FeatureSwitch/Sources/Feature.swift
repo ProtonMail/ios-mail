@@ -46,4 +46,18 @@ public struct Feature {
     
     // more visiblity/modification control
     var featureFlags: FeatureFlag
+    
+    public func `copy`(isEnable: Bool) -> Feature {
+        return Feature.init(name: self.name, isEnable: isEnable, flags: self.featureFlags)
+    }
+    
+    public static func Parse(dict: [String: Any]) -> Feature? {
+        guard let name = dict["name"] as? String else {
+            return nil
+        }
+        guard let isEnable = dict["isEnable"] as? Bool else {
+            return nil
+        }
+        return .init(name: name, isEnable: isEnable, flags: [])
+    }
 }

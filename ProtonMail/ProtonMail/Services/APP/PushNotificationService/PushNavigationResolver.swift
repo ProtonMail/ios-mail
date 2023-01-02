@@ -77,29 +77,16 @@ private extension PushNavigationResolver {
     ) {
         guard
             let uid = payload.uid,
-            let messageId = content?.messageId,
-            let userManager = sharedServices.get(by: UsersManager.self).getUser(by: uid)
+            let messageId = content?.messageId
         else {
             completion(nil)
             return
         }
-        fetchMessage(userManager: userManager, messageId: MessageID(messageId)) { success in
-            guard success else {
-                logPushNotificationError(message: "Fail fetching message.", redactedInfo: "messageId \(messageId)")
-                completion(nil)
-                return
-            }
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            let message = Message.messageForMessageID(messageId, inManagedObjectContext: coreDataService.mainContext)
-            let firstValidFolder = message?.firstValidFolder()
+        let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uid)
+        link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
+        link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageId))
 
-            userManager.messageService.pushNotificationMessageID = messageId
-            let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uid)
-            link.append(.init(name: String(describing: MailboxViewController.self), value: firstValidFolder))
-            link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageId))
-
-            completion(link)
-        }
+        completion(link)
     }
 
     private func handleOpenUrlRemoteNotification(url: URL?, completion: @escaping (DeepLink?) -> Void) {

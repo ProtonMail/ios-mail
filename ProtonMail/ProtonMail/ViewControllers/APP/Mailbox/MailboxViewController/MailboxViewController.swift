@@ -397,7 +397,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     @available(iOS 13.0, *)
     private func loadDiffableDataSource() {
-        let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath) -> UITableViewCell in
+        let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath, rowItem: MailboxRow) -> UITableViewCell in
 #if DEBUG
             /*
              Without this, Go runtime runs out of memory during UI tests, because they cause _all_ cells of the
@@ -423,31 +423,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
             let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-
-            if self?.shouldAnimateSkeletonLoading == true {
-                cell.showAnimatedGradientSkeleton()
-                cell.backgroundColor = ColorProvider.BackgroundNorm
-            } else {
-                self?.configure(cell: cell, indexPath: indexPath)
-            }
+            self?.configure(cell: cell, rowItem: rowItem)
             return cell
         }
-        switch viewModel.locationViewMode {
-        case .singleMessage:
-            self.diffableDataSource = MailboxDiffableDataSource<MessageEntity>(viewModel: viewModel,
-                                                                         tableView: self.tableView,
-                                                                         shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
-                                                                         cellProvider: { tableView, indexPath, _ in
-                cellConfigurator(tableView, indexPath)
-            })
-        case .conversation:
-            self.diffableDataSource = MailboxDiffableDataSource<ConversationEntity>(viewModel: viewModel,
-                                                                              tableView: self.tableView,
-                                                                              shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
-                                                                              cellProvider: { tableView, indexPath, _ in
-                cellConfigurator(tableView, indexPath)
-            })
-        }
+
+        self.diffableDataSource = MailboxDiffableDataSource(
+            viewModel: viewModel,
+            tableView: self.tableView,
+            shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
+            cellProvider: cellConfigurator
+        )
     }
 
     private func addSubViews() {
@@ -711,48 +696,50 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     // MARK: cell configuration methods
-    private func configure(cell inputCell: UITableViewCell, indexPath: IndexPath) {
-        guard let mailboxCell = inputCell as? NewMailboxMessageCell else {
-            return
-        }
-
-        switch self.viewModel.locationViewMode {
-        case .singleMessage:
-            guard let message = self.viewModel.item(index: indexPath) else {
+    private func configure(cell inputCell: UITableViewCell, rowItem: MailboxRow) {
+        switch rowItem {
+        case .real(let mailboxItem):
+            guard let mailboxCell = inputCell as? NewMailboxMessageCell else {
+                assertionFailure("NewMailboxMessageCell was expected for MailboxRow.real")
                 return
             }
-            let viewModel = buildNewMailboxMessageViewModel(
-                message: message,
-                customFolderLabels: self.viewModel.customFolders,
-                weekStart: viewModel.user.userInfo.weekStartValue
-            )
-            mailboxCell.id = message.messageID.rawValue
+
+            mailboxCell.id = mailboxItem.itemID
             mailboxCell.cellDelegate = self
-            messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
-            if message.expirationTime != nil &&
-                message.messageLocation != .draft {
-                mailboxCell.startUpdateExpiration()
+
+            switch mailboxItem {
+            case .message(let message):
+                let viewModel = buildNewMailboxMessageViewModel(
+                    message: message,
+                    customFolderLabels: self.viewModel.customFolders,
+                    weekStart: viewModel.user.userInfo.weekStartValue
+                )
+                messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+
+                if message.expirationTime != nil &&
+                    message.messageLocation != .draft {
+                    mailboxCell.startUpdateExpiration()
+                }
+            case .conversation(let conversation):
+                let viewModel = buildNewMailboxMessageViewModel(
+                    conversation: conversation,
+                    conversationTagUIModels: getTagUIModelFrom(conversation: conversation),
+                    customFolderLabels: self.viewModel.customFolders,
+                    weekStart: viewModel.user.userInfo.weekStartValue
+                )
+                messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             }
 
-            configureSwipeAction(mailboxCell, item: .message(message))
-        case .conversation:
-            guard let conversation = self.viewModel.itemOfConversation(index: indexPath) else {
-                return
-            }
-            let viewModel = buildNewMailboxMessageViewModel(
-                conversation: conversation,
-                conversationTagUIModels: getTagUIModelFrom(conversation: conversation),
-                customFolderLabels: self.viewModel.customFolders,
-                weekStart: viewModel.user.userInfo.weekStartValue
-            )
-            mailboxCell.id = conversation.conversationID.rawValue
-            mailboxCell.cellDelegate = self
-            messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
-            configureSwipeAction(mailboxCell, item: .conversation(conversation))
-        }
-        #if DEBUG
+            configureSwipeAction(mailboxCell, item: mailboxItem)
+
+#if DEBUG
             mailboxCell.generateCellAccessibilityIdentifiers(mailboxCell.customView.messageContentView.titleLabel.text!)
-        #endif
+#endif
+        case .skeleton:
+            inputCell.showAnimatedGradientSkeleton()
+            inputCell.backgroundColor = ColorProvider.BackgroundNorm
+        }
+
         let accessibilityAction =
             UIAccessibilityCustomAction(name: LocalString._accessibility_list_view_custom_action_of_switch_editing_mode,
                                         target: self,
@@ -1178,7 +1165,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func showRefreshController() {
         let height = tableView.tableFooterView?.frame.height ?? 0
-        let count = tableView.visibleCells.count
+        let count = tableView.numberOfRows(inSection: 0)
         guard height == 0 && count == 0 else {return}
 
         // Show refreshControl if there is no bottom loading view
@@ -1257,7 +1244,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 return
             }
 
-            guard connectionStatusProvider.currentStatus.isConnected else {
+            guard connectionStatusProvider.currentStatus.isConnected, !message.messageID.hasLocalFormat else {
                 defer {
                     self.updateTapped(status: false)
                 }
@@ -2197,10 +2184,11 @@ extension MailboxViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 
         if self.shouldAnimateSkeletonLoading {
-            cell.showAnimatedGradientSkeleton()
-            cell.backgroundColor = ColorProvider.BackgroundNorm
+            self.configure(cell: cell, rowItem: .skeleton(indexPath.row))
+        } else if let mailboxItem = viewModel.mailboxItem(at: indexPath) {
+            self.configure(cell: cell, rowItem: .real(mailboxItem))
         } else {
-            self.configure(cell: cell, indexPath: indexPath)
+            assertionFailure("Should be either showing skeleton cells or receive a real MailboxItem")
         }
         return cell
 

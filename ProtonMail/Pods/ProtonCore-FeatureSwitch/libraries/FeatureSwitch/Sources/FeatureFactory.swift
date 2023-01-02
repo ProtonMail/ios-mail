@@ -22,8 +22,12 @@
 
 public class FeatureFactory {
     internal init() { }
-    public static let shared = FeatureFactory()
-
+    
+    public static let shared: FeatureFactory = {
+        let instance = FeatureFactory()
+        // Setup code
+        return instance
+    }()
     
     /// this list will override the static features
     internal var currentFeatures: [Feature] = []
@@ -33,14 +37,32 @@ public class FeatureFactory {
     }
     
     public func setCurrentFeatures(features: [Feature]) {
-        // for feature in features {
-        //  //TODO:: loop inputs. and release the exsiting one in currentFeature
-        // }
+        self.currentFeatures = features
     }
     
     func clear() {
         currentFeatures.removeAll()
     }
+    
+    public func loadEnv() {
+        if let featureJson = ProcessInfo.processInfo.environment["FeatureSwitch"] {
+            if let data = featureJson.data(using: String.Encoding.utf8) {
+                do {
+                    if let dictonary = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                        for dict in dictonary {
+                            if let feature = Feature.Parse(dict: dict) {
+                                self.currentFeatures.append(feature)
+                            }
+                        }
+                    }
+                } catch {
+                    //ignore
+                }
+            }
+        } 
+    }
+    
+
     
     /// pass in the environment
     public func setup(env: String) {
@@ -79,6 +101,11 @@ public class FeatureFactory {
                 
             }
         }
+        
+        if let first = self.currentFeatures.first(where: { item in item.name == feature.name }) {
+            return first.isEnable
+        }
+        
         return isEnabled
     }
     
