@@ -256,8 +256,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         let emails = viewModel.getEmails()
         let email = emails[0]
         let contact = viewModel.contact
-        let contactVO = ContactVO(id: contact.contactID.rawValue,
-                                  name: contact.name,
+        let contactVO = ContactVO(name: contact.name,
                                   email: email.newEmail,
                                   isProtonMailContact: false)
         presentComposer(contact: contactVO)
@@ -280,10 +279,6 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             tableView.reloadData()
         }
         self.viewModel.user.undoActionManager.register(handler: self)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
 
     override func viewDidLayoutSubviews() {
@@ -610,8 +605,7 @@ extension ContactDetailViewController: UITableViewDelegate {
             let emails = viewModel.getEmails()
             let email = emails[row]
             let contact = viewModel.contact
-            let contactVO = ContactVO(id: contact.contactID.rawValue,
-                                      name: contact.name,
+            let contactVO = ContactVO(name: contact.name,
                                       email: email.newEmail,
                                       isProtonMailContact: false)
             presentComposer(contact: contactVO)

@@ -31,8 +31,6 @@ import ProtonCore_DataModel
 import ProtonCore_Foundations
 
 class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
-    typealias viewModelType = ComposeViewModel
-
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
     var navigateTo: ((ComposeCoordinator.Destination) -> Void)?

@@ -30,7 +30,6 @@ class PinCodeSetupCoordinator {
 
     var viewController: PinCodeSetUpViewController?
     let pinCodeSetupViewModel: SetPinCodeModelImpl?
-    var configuration: ((PinCodeSetUpViewController) -> Void)?
 
     var navigationController: UINavigationController?
 

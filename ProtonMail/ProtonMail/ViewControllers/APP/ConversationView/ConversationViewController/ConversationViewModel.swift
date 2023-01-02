@@ -76,14 +76,6 @@ class ConversationViewModel {
         messagesDataSource.firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false })
     }
 
-    var shouldDisplayConversationNoticeView: Bool {
-        return conversationNoticeViewStatusProvider
-            .conversationNoticeIsOpened == false
-        // Check if the account is logged-in on the app with version before 3.1.6.
-        && conversationNoticeViewStatusProvider.initialUserLoggedInVersion == nil
-        && messagesDataSource.count > 1
-    }
-
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
@@ -107,7 +99,6 @@ class ConversationViewModel {
     }
 
     let connectionStatusProvider: InternetConnectionStatusProvider
-    private var conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
@@ -130,7 +121,6 @@ class ConversationViewModel {
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
-         conversationNoticeViewStatusProvider: ConversationNoticeViewStatusProvider,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
@@ -158,7 +148,6 @@ class ConversationViewModel {
             }
         self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID
-        self.conversationNoticeViewStatusProvider = conversationNoticeViewStatusProvider
         self.conversationStateProvider = conversationStateProvider
         self.goToDraft = goToDraft
         self.labelProvider = labelProvider

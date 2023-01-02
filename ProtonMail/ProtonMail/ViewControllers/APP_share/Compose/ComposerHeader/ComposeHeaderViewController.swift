@@ -466,7 +466,7 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
 
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
         if self.shouldValidateTheEmail {
-            let customContact = ContactVO(id: "", name: text, email: text)
+            let customContact = ContactVO(name: text, email: text)
             contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
         }
     }
@@ -479,7 +479,7 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
-                    let customContact = ContactVO(id: "", name: trimmed, email: trimmed)
+                    let customContact = ContactVO(name: trimmed, email: trimmed)
                     picker.addToSelectedContacts(model: customContact, needFocus: focus)
                 }
             }
@@ -490,12 +490,12 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
-                    let customContact = ContactVO(id: "", name: trimmed, email: trimmed)
+                    let customContact = ContactVO(name: trimmed, email: trimmed)
                     picker.addToSelectedContacts(model: customContact, needFocus: focus)
                 }
             }
         } else {
-            let customContact = ContactVO(id: "", name: text, email: text)
+            let customContact = ContactVO(name: text, email: text)
             picker.addToSelectedContacts(model: customContact, needFocus: focus)
         }
     }

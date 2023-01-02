@@ -30,7 +30,7 @@ protocol ContactGroupsProviderProtocol: AnyObject {
     func getAllContactGroupVOs() -> [ContactGroupVO]
 }
 
-class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderProtocol {
+class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueueOnRootSavingContext { context in

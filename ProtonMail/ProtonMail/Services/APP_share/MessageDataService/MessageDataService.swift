@@ -65,7 +65,7 @@ protocol LocalMessageDataServiceProtocol: Service {
 }
 
 /// Message data service
-class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, HasLocalStorage, MessageDataProcessProtocol {
+class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServiceProtocol, MessageDataProcessProtocol {
 
     typealias ReadBlock = (() -> Void)
 

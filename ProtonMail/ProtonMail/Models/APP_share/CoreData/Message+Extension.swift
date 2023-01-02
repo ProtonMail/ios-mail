@@ -352,9 +352,7 @@ extension Message {
             sender = decoded
         }
 
-        return ContactVO(id: "",
-                         name: sender?.name ?? "",
-                         email: sender?.address ?? "")
+        return ContactVO(name: sender?.name ?? "", email: sender?.address ?? "")
     }
 
     var hasMetaData: Bool {

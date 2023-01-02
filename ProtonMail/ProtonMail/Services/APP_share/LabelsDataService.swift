@@ -42,7 +42,7 @@ protocol LabelProviderProtocol: AnyObject {
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
 }
 
-class LabelsDataService: Service, HasLocalStorage {
+class LabelsDataService: Service {
     let apiService: APIService
     private let userID: UserID
     private let contextProvider: CoreDataContextProviderProtocol

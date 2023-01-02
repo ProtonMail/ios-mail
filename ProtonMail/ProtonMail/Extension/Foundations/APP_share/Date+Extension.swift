@@ -35,14 +35,6 @@ extension Date {
         return format?.contains(check: "a") ?? false
     }
 
-    // you can create a read-only computed property to return just the nanoseconds as Int
-    var nanosecond: Int {
-        let calendar = (Calendar.current as NSCalendar)
-        let component = calendar.components(.nanosecond, from: self)
-        let seconds = component.nanosecond
-        return seconds ?? -1
-    }
-
     // or an extension function to format your date
     func formattedWith(_ format: String, timeZone: TimeZone = .autoupdatingCurrent) -> String {
         let formatter = DateFormatter()

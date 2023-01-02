@@ -30,7 +30,7 @@ struct ContactPickerModelHelper {
 
             if group.isEmpty {
                 // contact
-                results.append(ContactVO(id: "", name: name, email: address))
+                results.append(ContactVO(name: name, email: address))
             } else {
                 // contact group
                 let toInsert = DraftEmailData(name: name, email: address)

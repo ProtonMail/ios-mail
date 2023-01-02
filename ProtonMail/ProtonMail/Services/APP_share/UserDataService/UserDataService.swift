@@ -37,7 +37,7 @@ protocol UserDataServiceDelegate {
 }
 
 /// Stores information related to the user
-class UserDataService: Service, HasLocalStorage {
+class UserDataService: Service {
     let apiService: APIService
     var delegate: UserDataServiceDelegate?
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)

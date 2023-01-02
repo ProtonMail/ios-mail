@@ -94,8 +94,6 @@ class SignInManager: Service {
 
     func finalizeSignIn(loginData: LoginData,
                         onError: @escaping (NSError) -> Void,
-                        reachLimit: () -> Void,
-                        existError: () -> Void,
                         showSkeleton: () -> Void,
                         tryUnlock: @escaping () -> Void)
     {

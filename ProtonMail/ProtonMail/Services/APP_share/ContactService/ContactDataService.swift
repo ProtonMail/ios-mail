@@ -46,7 +46,7 @@ protocol ContactProviderProtocol: AnyObject {
     func cleanUp() -> Promise<Void>
 }
 
-class ContactDataService: Service, HasLocalStorage {
+class ContactDataService: Service {
 
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
@@ -706,7 +706,7 @@ extension ContactDataService {
     func allContactVOs() -> [ContactVO] {
         allEmails()
             .filter { $0.userID == userID.rawValue }
-            .map { ContactVO(id: $0.contactID, name: $0.name, email: $0.email, isProtonMailContact: true) }
+            .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
 
     func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
@@ -743,7 +743,7 @@ extension ContactDataService {
                 var pm_contacts: [ContactWrapper] = []
                 for email in emailsCache {
                     if email.managedObjectContext != nil {
-                        let contact = ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true)
+                        let contact = ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
                         pm_contacts.append(ContactWrapper(contact: contact, lastUsedTime: email.lastUsedTime))
                     }
                 }

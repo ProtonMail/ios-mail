@@ -132,16 +132,3 @@ final class PushUpdaterTests: XCTestCase {
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 }
-
-private final class MockDataTask: URLSessionDataTask {
-    var completionHandler: (Data?, URLResponse?, Error?) -> Void
-    init(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        self.completionHandler = completionHandler
-    }
-
-    override func resume() {
-        delay(0.1) {
-            self.completionHandler(nil, nil, nil)
-        }
-    }
-}
