@@ -271,7 +271,8 @@ class UserManager: Service {
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             scheduleSendEnableStatusProvider: userCachedStatus,
-            realAttachmentsFlagProvider: userCachedStatus
+            realAttachmentsFlagProvider: userCachedStatus,
+            userIntroductionProgressProvider: userCachedStatus
         )
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)

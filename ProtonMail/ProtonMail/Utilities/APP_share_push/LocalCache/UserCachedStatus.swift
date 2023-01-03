@@ -101,7 +101,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let paymentMethods = "paymentMethods"
 
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
-        static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
 
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
@@ -514,27 +513,6 @@ extension UserCachedStatus: MessageInfoCacheProtocol {
         }
         set {
             setValue(newValue, forKey: Key.newMessageFromNotification)
-        }
-    }
-}
-
-extension UserCachedStatus: UserIntroductionProgressProvider {
-    func hasUserSeenSpotlight(for feature: SpotlightableFeatureKey) -> Bool {
-        featuresSeenByUser.contains(feature)
-    }
-
-    func userHasSeenSpotlight(for feature: SpotlightableFeatureKey) {
-        var featuresSeenByUserSoFar = featuresSeenByUser
-        featuresSeenByUserSoFar.insert(feature)
-        featuresSeenByUser = featuresSeenByUserSoFar
-    }
-
-    private var featuresSeenByUser: Set<SpotlightableFeatureKey> {
-        get {
-            getShared().decodableValue(forKey: Key.scheduleSendIntroView) ?? []
-        }
-        set {
-            getShared().setEncodableValue(newValue, forKey: Key.scheduleSendIntroView)
         }
     }
 }

@@ -70,6 +70,16 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
         markAsUnsubscribedStub(messageId, finish)
     }
 }
+class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
+    @FuncStub(MockUserIntroductionProgressProvider.shouldShowSpotlight, initialReturn: Bool()) var shouldShowSpotlightStub
+    func shouldShowSpotlight(for feature: SpotlightableFeatureKey, toUserWith userID: UserID) -> Bool {
+        shouldShowSpotlightStub(feature, userID)
+    }
+    @FuncStub(MockUserIntroductionProgressProvider.markSpotlight) var markSpotlightStub
+    func markSpotlight(for feature: SpotlightableFeatureKey, asSeen seen: Bool, byUserWith userID: UserID) {
+        markSpotlightStub(feature, seen, userID)
+    }
+}
 class MockViewModeUpdater: ViewModeUpdater {
     @FuncStub(MockViewModeUpdater.update) var updateStub
     func update(viewMode: ViewMode, completion: ((Swift.Result<ViewMode?, Error>) -> Void)?) {
