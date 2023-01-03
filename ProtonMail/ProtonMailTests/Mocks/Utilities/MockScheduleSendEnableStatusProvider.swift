@@ -19,8 +19,8 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockScheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider {
-    @FuncStub(MockScheduleSendEnableStatusProvider.isScheduleSendEnabled, initialReturn: false) var callIsScheduleSendEnable
-    func isScheduleSendEnabled(userID: UserID) -> Bool {
+    @FuncStub(MockScheduleSendEnableStatusProvider.isScheduleSendEnabled, initialReturn: .notSet) var callIsScheduleSendEnable
+    func isScheduleSendEnabled(userID: UserID) -> ScheduledSendStatus {
         return callIsScheduleSendEnable(userID)
     }
 

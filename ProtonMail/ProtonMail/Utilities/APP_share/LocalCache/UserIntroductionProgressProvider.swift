@@ -17,12 +17,13 @@
 
 import Foundation
 
-enum SpotlightableFeatureKey: CaseIterable, Codable {
+enum SpotlightableFeatureKey: String, CaseIterable {
     case scheduledSend
     case toolbarCustomization
 }
 
+// sourcery: mock
 protocol UserIntroductionProgressProvider {
-    func hasUserSeenSpotlight(for feature: SpotlightableFeatureKey) -> Bool
-    func userHasSeenSpotlight(for feature: SpotlightableFeatureKey)
+    func shouldShowSpotlight(for feature: SpotlightableFeatureKey, toUserWith userID: UserID) -> Bool
+    func markSpotlight(for feature: SpotlightableFeatureKey, asSeen seen: Bool, byUserWith userID: UserID)
 }

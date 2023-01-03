@@ -34,4 +34,23 @@ final class PhantomTests: XCTestCase {
         let predicate = NSPredicate(format: "%K IN %@", labelID.rawValue, [labelID, labelID])
         XCTAssertEqual(predicate.description, "foo IN {foo, foo}")
     }
+
+    func testCodableSupport() throws {
+        let phantomTag = UserID(rawValue: "foo")
+
+        let encodedPhantomTag = try JSONEncoder().encode(phantomTag)
+        let decodedPhantomTag = try JSONDecoder().decode(UserID.self, from: encodedPhantomTag)
+
+        XCTAssertEqual(decodedPhantomTag, phantomTag)
+    }
+
+    func testEncodesToRawValue() throws {
+        let rawValue = "foo"
+        let phantomTag = UserID(rawValue: rawValue)
+
+        let encodedPhantomTag = try JSONEncoder().encode(phantomTag)
+        let encodedRawValue = try JSONEncoder().encode(rawValue)
+
+        XCTAssertEqual(encodedPhantomTag, encodedRawValue)
+    }
 }

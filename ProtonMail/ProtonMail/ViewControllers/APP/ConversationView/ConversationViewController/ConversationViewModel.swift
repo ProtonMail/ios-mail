@@ -310,7 +310,7 @@ class ConversationViewModel {
             return false
         }
 
-        if !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .toolbarCustomization) {
+        if userIntroductionProgressProvider.shouldShowSpotlight(for: .toolbarCustomization, toUserWith: user.userID) {
             return true
         }
 
@@ -328,7 +328,11 @@ class ConversationViewModel {
     }
 
     func setToolbarCustomizeSpotlightViewIsShown() {
-        userIntroductionProgressProvider.userHasSeenSpotlight(for: .toolbarCustomization)
+        userIntroductionProgressProvider.markSpotlight(
+            for: .toolbarCustomization,
+            asSeen: true,
+            byUserWith: user.userID
+        )
         var ids = toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds
         ids.append(user.userID.rawValue)
         toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids

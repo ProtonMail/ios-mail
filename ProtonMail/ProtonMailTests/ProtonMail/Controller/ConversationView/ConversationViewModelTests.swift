@@ -409,9 +409,9 @@ class ConversationViewModelTests: XCTestCase {
 
     func testShouldShowToolbarCustomizeSpotlight_userHasNotSeenSpotlight_returnTrue() {
         makeSUT(labelID: Message.Location.inbox.labelID)
-        userIntroductionProgressProviderMock.callHasUserSeenSpotlight.bodyIs { _, key in
+        userIntroductionProgressProviderMock.shouldShowSpotlightStub.bodyIs { _, key, _ in
             XCTAssertEqual(key, .toolbarCustomization)
-            return false
+            return true
         }
 
         XCTAssertTrue(sut.shouldShowToolbarCustomizeSpotlight())
@@ -419,9 +419,9 @@ class ConversationViewModelTests: XCTestCase {
 
     func testShouldShowToolbarCustomizeSpotlight_userHasSeenSpotlight_returnFalse() {
         makeSUT(labelID: Message.Location.inbox.labelID)
-        userIntroductionProgressProviderMock.callHasUserSeenSpotlight.bodyIs { _, key in
+        userIntroductionProgressProviderMock.shouldShowSpotlightStub.bodyIs { _, key, _ in
             XCTAssertEqual(key, .toolbarCustomization)
-            return true
+            return false
         }
 
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
