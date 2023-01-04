@@ -1,3 +1,6 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "worden niet doorzocht. Verhoog de %1$@ om daarin te zoeken.";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Toon volledig bericht]";
 
@@ -194,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiveren";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archiveren";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
 
@@ -293,6 +299,9 @@
 
 /* Title */
 "Bug Report Received" = "Bugmelding ontvangen";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Gecachete gegevens";
 
 /* Call the contact (button title text) */
 "Call contact" = "Contact bellen";
@@ -493,6 +502,9 @@
 /* Title */
 "Copy name" = "Kopieer naam";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Kon bericht niet openen, probeer opnieuw.";
+
 /* contact placeholder */
 "Country" = "Land";
 
@@ -599,11 +611,17 @@
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Uitgeschakeld";
 
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Door de functie nu uit te schakelen zullen de berichten die al zijn gedownload worden verwijderd.";
+
 /* Action */
 "Discard" = "Verwijderen";
 
 /* Action */
 "Discard changes" = "Wijzigingen niet opslaan";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Verwijderd";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Toetsenbord verbergen";
@@ -676,6 +694,9 @@
 /* The text to download new message when search index is refreshed. */
 "Downloading new messages ..." = "Nieuwe berichten downloaden...";
 
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloadt e-mails zodat ze kunnen worden doorzocht. De berichten worden versleuteld en lokaal opgeslagen. %1$@";
+
 /* Action */
 "Draft" = "Concept";
 
@@ -734,11 +755,11 @@
 /* Description */
 "Email failed to send. Message saved as draft." = "E-mail kon niet worden verzonden. Bericht bewaard als concept.";
 
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-mailtrackers kunnen uw privacy schenden.";
+
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Trackerbescherming van e-mails is nu beschikbaar. Afzenders zullen niet weten waar of wanneer u hun e-mails geopend hebt.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam leegmaken";
@@ -755,6 +776,9 @@
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "Inschakelen";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Zoeken op inhoud inschakelen";
 
 /* Title */
 "Enable email notices" = "Schakel e-mailberichten in";
@@ -855,6 +879,9 @@
 /* forwarded message title */
 "Forwarded message" = "Doorgestuurd bericht";
 
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Maak minstens 100 MB ruimte vrij om door te gaan.";
+
 /* Title */
 "From" = "Afzender";
 
@@ -926,6 +953,12 @@
 
 /* human check warning title */
 "Human Check Warning" = "Waarschuwing van persoonsverificatie";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Ik ben Proton Mail aan het gebruiken en dacht dat het misschien iets voor u zou kunnen zijn. Het is een beveiligde e-maildienst die uw privacy beschermt. Registreer u met deze link om 1 maand gratis premium functies te krijgen:";
+
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Als u uw wifiverbinding verliest, zal de download verdergaan op mobiele data.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Waarschuwing negeren en doorgaan";
@@ -1067,7 +1100,7 @@
 "Local storage limit" = "Lokale opslaglimiet";
 
 /* Text for the link to show when indexing is stopped because of storage limit reached. */
-"local storage limit." = "lokale opslaglimiet.";
+"local storage limit." = "lokale opslaglimiet";
 
 /* menu title */
 "Lock The App" = "App vergrendelen";
@@ -1124,6 +1157,9 @@
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
 
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Downloaden van het bericht gepauzeerd. Ontdek hoe %1$@";
+
 /* Composer expiration page title */
 "Message expiration" = "Vervaldatum bericht";
 
@@ -1138,6 +1174,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Berichtkoppen";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Berichtengeschiedenis";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Bericht naar de prullenbak verplaatst";
@@ -1154,11 +1193,17 @@
 /* Description after message have been sent */
 "Message sent" = "Bericht verzonden";
 
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "De berichten worden gedownload om op inhoud te zoeken. Sommige resultaten worden mogelijk niet weergeven. %1$@";
+
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
 "Messages from before " = "Eerdere berichten ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Berichten worden gedownload via wifi. Dit kan enkele momenten duren en uw apparaat kan een beetje warm worden. U kunt de handeling op elk moment pauzeren.";
 
 /* default vcard types */
 "Mobile" = "Mobiel";
@@ -1243,6 +1288,9 @@
 /* Title */
 "No connectivity detected…" = "Geen netwerkverbinding gedetecteerd…";
 
+/* Short hint in the header view */
+"No email trackers found" = "Geen e-mailtrackers gevonden";
+
 /* network troubleshot cell title */
 "No internet connection" = "Geen internetverbinding";
 
@@ -1278,6 +1326,12 @@
 
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Geen spam (verplaats naar inbox)";
+
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Niet alle berichten zijn gedownload. Maak ruimte vrij op dit apparaat om ze te downloaden.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Niet alle berichten zijn gedownload. Verhoog het opslaglimiet hieronder om ze te downloaden.";
 
 /* No comment provided by engineer. */
 "Not set" = "Niet ingesteld";
@@ -1405,6 +1459,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Maak verbinding en probeer het opnieuw";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Verbind met het internet om door te gaan.";
 
 /* error message */
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
@@ -1560,6 +1617,9 @@
 /* Text for resume button */
 "Resume" = "Hervatten";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "u zelf verder kunt gaan.";
+
 /* Action */
 "Retry" = "Opnieuw proberen";
 
@@ -1582,6 +1642,9 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Inplanning wordt verwijderd";
 
+/* mail location title */
+"Scheduled" = "Gepland";
+
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Bericht plannen...";
 
@@ -1593,8 +1656,20 @@
    The title of encrypted search in settings */
 "Search message content" = "Doorzoek berichtinhoud";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Duurt de zoekopdracht te lang? %1$@ van deze zoekopdracht voor een sneller resultaat.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Details bekijken";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Voortgang bekijken.";
+
 /* section title */
 "Select colour" = "Kleur selecteren";
+
+/* Option for set up scheduled send */
+"Select date and time" = "Selecteer datum en tijd";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Geselecteerd";
@@ -1753,6 +1828,12 @@
 /* Storage warning */
 "Storage quota exceeded" = "Opslagquota overschreden";
 
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Gebruikte opslag";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Gebruikte opslag: ";
+
 /* Title */
 "Storage Warning" = "Opslagwaarschuwing";
 
@@ -1819,6 +1900,9 @@
 
 /* The content of the alert after tapping reset in toolbar customization view. */
 "The actions in the toolbar will be reset to default" = "De werkbalk wordt herzet naar de standaard werkbalk-acties";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "De download stopt als de Proton Mail-app wordt gesloten.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "De concepten-cache is beschadigd. Probeer het opnieuw.";
@@ -1940,6 +2024,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Vandaag, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Morgen";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Morgen om 08:%02d";
@@ -2139,6 +2226,12 @@
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "U kunt nu uw berichten plannen om ze later te versturen";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "U kan nu zoeken in uw berichten. Deze functie kan op elk moment worden ingeschakeld in de instellingen.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "U kan zoeken in gedownloade berichten. Voor alle andere berichten kan er alleen in de ontvangerslijst en onderwerpregel worden gezocht.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";

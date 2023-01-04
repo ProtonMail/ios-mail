@@ -194,6 +194,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiwum";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archiwizuj";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Czy na pewno chcesz trwale usunąć tę wiadomość?";
 
@@ -496,6 +499,9 @@
 /* Title */
 "Copy name" = "Kopiuj nazwę";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Nie można otworzyć wiadomości. Spróbuj ponownie.";
+
 /* contact placeholder */
 "Country" = "Kraj";
 
@@ -752,9 +758,6 @@
 /* Name of the feature */
 "Email tracking protection" = "Ochrona przed śledzeniem wiadomości";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Ochrona przed śledzeniem wiadomości jest dostępna. Nadawca nie będzie wiedział, czy i kiedy otwierasz wiadomości.";
-
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Opróżnij Spam";
 
@@ -944,6 +947,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Ostrzeżenie weryfikacji antyspamowej";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Używam poczty Proton Mail i myślę, że może Ci się spodobać. To bezpieczna poczta e-mail, która chroni Twoją prywatność. Zarejestruj się przez ten link, aby uzyskać miesiąc funkcji premium za darmo:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Jeśli stracisz połączenie z siecią Wi-Fi, pobieranie zostanie wznowione przez dane mobilne.";
@@ -1656,6 +1662,9 @@
 /* section title */
 "Select colour" = "Wybierz kolor";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Wybierz datę i czas";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Zaznaczone";
 
@@ -2015,6 +2024,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Dzisiaj, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Jutro";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Jutro o godzinie 08:%02d";

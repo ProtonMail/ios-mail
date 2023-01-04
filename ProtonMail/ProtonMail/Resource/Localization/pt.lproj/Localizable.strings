@@ -492,7 +492,7 @@
 "Custom" = "Personalizado";
 
 /* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Personalizar barra de ferramentas";
+"Customize toolbar" = "Personalizar a barra de ferramentas";
 
 /* Title */
 "Cut" = "Cortar";
@@ -671,6 +671,9 @@
 
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Contacto por email";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "O email não foi enviado. Mensagem guardada como rascunho.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Esvaziar spam";
@@ -1719,6 +1722,9 @@
 /* Error message */
 "The 2 passwords are not matching" = "As 2 senhas não coincidem";
 
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "As ações na barra de ferramentas serão redefinidas para os valores padrão";
+
 /* Description */
 "The draft cache is broken. Please try again." = "A memória do rascunho está danificada. Por favor, tente novamente.";
 
@@ -1797,6 +1803,12 @@
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Esta mensagem expirará em %1$dD %2$dH %3$dM";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Esta barra de ferramentas aparece quando seleciona várias mensagens na sua caixa de entrada.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Esta barra de ferramentas é visível quando se lê uma mensagem.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Hora de relaxar";
 
@@ -1821,6 +1833,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
 "Tomorrow, %@" = "Amanhã, ás %@";
+
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Ações da Barra de Tarefas (selecione até 5)";
 
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
@@ -1996,6 +2011,12 @@
 
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Está sem rede";
+
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Pode escolher e reordenar as ações na sua barra de ferramentas";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Pode agora escolher e reordenar as ações nesta barra";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Não pode predefinir o endereço %@, é uma funcionalidade paga.";

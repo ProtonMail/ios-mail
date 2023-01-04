@@ -627,9 +627,6 @@
 /* Name of the feature */
 "Email tracking protection" = "E-mail követési védelem";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Az e-mail nyomon követési védelem már elérhető. A feladók nem fogják tudni, hogy hol vagy mikor nyitotta meg az e-maileiket.";
-
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Nincs spam";
 
