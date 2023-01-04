@@ -17,7 +17,7 @@
                "path": "ProtonMail",
                "includes": [
                   "**/APP_share_push",
-                  "ProtonMail/Resource/Localization",
+                  "Resource/Localization",
                   "**/APP_share_push_siri",
                   "**/APP_share_push_uiTest"
                ]

@@ -405,7 +405,7 @@
 			<key>one</key>
 			<string>Aquest %d missatge es mourà a Esborranys i se n'eliminarà la programació.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Aquests %d missatges es mouran a Esborranys i se n'eliminarà la programació.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

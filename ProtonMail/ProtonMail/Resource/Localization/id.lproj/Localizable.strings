@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Arsip";
 
+/* Push notification action archive */
+"Archive (verb)" = "Arsip";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Apakah Anda yakin untuk menghapus pesan ini secara permanen?";
 
@@ -244,7 +247,7 @@
 "Attachments" = "Lampiran";
 
 /* Title */
-"Authentication" = "Otentikasi";
+"Authentication" = "Autentikasi";
 
 /* Title */
 "Auto Lock Time" = "Waktu Penguncian Otomatis";
@@ -331,7 +334,7 @@
 "Can't get a Modulus!" = "Modulus tidak dapat diperoleh!";
 
 /* update password error */
-"Can't get user auth info" = "Info otentikasi pengguna tidak dapat diperoleh";
+"Can't get user auth info" = "Info autentikasi pengguna tidak dapat diperoleh";
 
 /* Error */
 "Can't load the file" = "Berkas tidak dapat dimuat";
@@ -498,6 +501,9 @@
 
 /* Title */
 "Copy name" = "Salin nama";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Pesan tidak dapat dibuka. Silakan coba lagi.";
 
 /* contact placeholder */
 "Country" = "Negara";
@@ -755,9 +761,6 @@
 /* Name of the feature */
 "Email tracking protection" = "Perlindungan pelacak email";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Perlindungan pelacak email kini telah tersedia. Pengirim pesan tidak akan dapat mengetahui kapan, di mana, atau apakah Anda telah membuka email mereka.";
-
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Kosongkan Spam";
 
@@ -951,6 +954,9 @@
 /* human check warning title */
 "Human Check Warning" = "Verifikasi Manusia";
 
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Saya telah menggunakan Proton Mail dan saya pikir layanan ini cocok untuk Anda. Layanan ini merupakan layanan email aman yang melindungi privasi Anda. Daftar sekarang juga melalui tautan berikut dan nikmati berbagai fitur premium selama 1 bulan secara gratis:";
+
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Apabila Anda kehilangan koneksi WiFi Anda, unduhan akan berlanjut dengan menggunakan data seluler.";
 
@@ -1106,7 +1112,7 @@
 "Logged out of %@" = "Anda telah keluar dari %@";
 
 /* error title */
-"Logs" = "Log";
+"Logs" = "Catatan";
 
 /* cell title in device settings */
 "Mailbox" = "Kotak Pesan";
@@ -1530,7 +1536,7 @@
 "Proxy/Firewall interference" = "Hadangan Proxy/Firewall";
 
 /* The title of re auth alert */
-"Re-authenticate" = "Otentikasi ulang";
+"Re-authenticate" = "Autentikasi ulang";
 
 /* abbreviation of reply: */
 "Re:" = "Ttg:";
@@ -1662,6 +1668,9 @@
 /* section title */
 "Select colour" = "Pilih warna";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Pilih tanggal dan waktu";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Terpilih";
 
@@ -1711,10 +1720,10 @@
 "Sent" = "Terkirim";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access";
+"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi nol akses";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access kepada penerima yang terverifikasi";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi nol akses kepada penerima yang terverifikasi";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Dikirim oleh Anda dengan enkripsi ujung ke ujung";
@@ -1959,13 +1968,13 @@
 "This conversation contains trashed messages" = "Percakapan ini berisi pesan yang dibuang";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat otentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat otentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan otentikasi yang kami miliki. Email ini mungkin palsu atau tidak diteruskan dengan benar!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Email ini mungkin palsu atau tidak diteruskan dengan benar!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Fitur ini akan menunda pengiriman email Anda, yang memberikan Anda kesempatan untuk dapat membatalkan pengiriman dalam rentang waktu yang dipilih.";
@@ -2021,6 +2030,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hari ini, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Besok";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Besok pada 08:%02d AM";

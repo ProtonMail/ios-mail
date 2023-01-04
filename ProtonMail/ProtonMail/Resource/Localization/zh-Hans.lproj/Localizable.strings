@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "存档";
 
+/* Push notification action archive */
+"Archive (verb)" = "存档";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "您确定要永久删除这封邮件吗？";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "复制名称";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "无法打开该邮件。请重试。";
+
 /* contact placeholder */
 "Country" = "国家";
 
@@ -685,6 +691,9 @@
 /* The text to download new message when search index is refreshed. */
 "Downloading new messages ..." = "正在下载新邮件 ...";
 
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下载邮件以在其中搜索。邮件被加密，且被储存在本地。%1$@";
+
 /* Action */
 "Draft" = "草稿";
 
@@ -706,6 +715,9 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "编辑头像";
+
+/* Contacts Edit contact */
+"Edit Contact" = "编辑联系人";
 
 /* The title of edit folder page */
 "Edit folder" = "更改文件夹";
@@ -737,6 +749,15 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "邮件联系人";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "邮件发送失败，已被保存为草稿。";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "邮件追踪器会侵犯您的隐私。";
+
+/* Name of the feature */
+"Email tracking protection" = "邮件追踪保护";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "清空垃圾邮件";
 
@@ -752,6 +773,9 @@
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "启用";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "启用内容搜索";
 
 /* Title */
 "Enable email notices" = "开启邮件提醒";
@@ -804,8 +828,14 @@
 /* incorrect email format error in composer */
 "Error sending" = "发送时出现错误";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "正在估算剩余时间...";
+
 /* lock app option */
 "Every time enter app" = "每次进入应用程序时";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "关闭邮件搜索";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "展开文件夹";
@@ -918,6 +948,9 @@
 /* human check warning title */
 "Human Check Warning" = "身份验证提示";
 
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "我正在使用 Proton Mail，你们可能也会感兴趣。这是一款安全的邮箱服务，能够保护你的隐私。通过这个链接注册还能免费体验一个月的高级功能：";
+
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "如果你失去WiFi连接，下载将在数据流量下进行。";
 
@@ -948,6 +981,9 @@
 
 /* Error */
 "Incorrect PIN." = "PIN 码不正确。";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "关于此 Proton Mail 账户在你的设备上使用多少存储空间的信息。";
 
 /* Option title */
 "Inherit color from parent folder" = "颜色与上层文件夹一致";
@@ -988,8 +1024,14 @@
 /* Error message */
 "Invalid username!" = "用户名无效！";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "邀请朋友使用 Proton，获得高达90美元的余额！";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "邀请亲朋好友一起使用 Proton Mail 体验便捷的端到端加密技术，或者向他们发送经过密码保护的邮件。";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "邀请朋友加入 Proton：他们可以免费试用 Mail Plus，当他们订阅付费计划时，你可以赚取奖励金。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "这个bug报告是关于 App 内购买项目的吗？";
@@ -1017,6 +1059,9 @@
    The title of learn more link */
 "Learn more" = "了解详情";
 
+/* The title of learn more link */
+"Learn more." = "了解更多。";
+
 /* settings swipe actions section title */
 "Left to Right" = "从左到右";
 
@@ -1025,6 +1070,12 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "数量已达上限";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "已复制链接。";
+
+/* Button inside the banner */
+"Load anyway" = "仍然加载";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "加载嵌入图像";
@@ -1035,6 +1086,9 @@
 
 /* No comment provided by engineer. */
 "Loading…" = "加载中...";
+
+/* The title of local storage in settings */
+"Local storage" = "本地储存";
 
 /* cell title in device settings */
 "Local storage limit" = "本机存储限制";
@@ -1085,6 +1139,9 @@
 /* menu title */
 "Menu" = "菜单";
 
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "邮件";
+
 /* No comment provided by engineer. */
 "Message actions" = "邮件操作";
 
@@ -1093,6 +1150,9 @@
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "部分收件人的邮箱地址/域名不存在或格式不正确，因此无法发送邮件。";
+
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "邮件下载已暂停。了解如何 %1$@";
 
 /* Composer expiration page title */
 "Message expiration" = "邮件有效期";
@@ -1109,6 +1169,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "邮件标头";
 
+/* The title of message history in settings for encrypted search */
+"Message history" = "邮件历史记录";
+
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "邮件已移动到垃圾箱";
 
@@ -1123,6 +1186,18 @@
 
 /* Description after message have been sent */
 "Message sent" = "邮件已发送";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "正在下载邮件以进行内容搜索。部分结果可能无法显示。%1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "以前的邮件 ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "早于 %@ 的邮件将无法被搜索到。要在其中搜索，请释放设备的存储空间。";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "邮件将通过 WiFi 下载。这可能需要一点时间，且你的设备可能会稍微发热。你可以在任何时候暂停该操作。";
 
 /* default vcard types */
 "Mobile" = "手机";
@@ -1531,6 +1606,9 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "将删除计划";
 
+/* mail location title */
+"Scheduled" = "已计划";
+
 /* Springboard (3D Touch) shortcuts action
    Title */
 "Search" = "搜索";
@@ -1541,6 +1619,9 @@
 
 /* The link in local storage downloaded messages. */
 "See details" = "查看详细信息";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "查看进度。";
 
 /* section title */
 "Select colour" = "选择颜色";
@@ -1577,6 +1658,9 @@
 
 /* Alert title */
 "Sending in progress" = "正在发送中";
+
+/* Description */
+"Sending Message" = "邮件发送中";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "正在发送邮件…";
@@ -1629,6 +1713,9 @@
 /* menu title */
 "Settings" = "设置";
 
+/* The title of the share button in referral share view. */
+"Share" = "分享";
+
 /* action */
 "Share contact" = "分享联系人";
 
@@ -1641,6 +1728,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "退出";
+
+/* Action */
+"Sign Out" = "退出登录";
 
 /* Title in signature settings */
 "Signature" = "落款";
@@ -1689,6 +1779,12 @@
 
 /* Storage warning */
 "Storage quota exceeded" = "存储配额超标";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "使用的储存空间";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "使用的储存空间： ";
 
 /* Title */
 "Storage Warning" = "存储空间提示";
@@ -1768,6 +1864,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "新密码的长度必须至少为 8 个字符";
+
+/* update password error */
+"The password is wrong." = "密码错误。";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "密码长度必须介于 8 到 21 个字符之间";
