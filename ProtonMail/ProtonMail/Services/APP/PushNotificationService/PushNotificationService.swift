@@ -271,7 +271,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     func processCachedLaunchOptions() {
         if let options = self.launchOptions {
-            self.didReceiveRemoteNotification(options, completionHandler: { })
+            try? self.didReceiveRemoteNotification(options, completionHandler: { })
         }
     }
 
@@ -284,7 +284,11 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private func handleRemoteNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if UnlockManager.shared.isUnlocked() { // unlocked
-            didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
+            do {
+                try didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
+            } catch {
+                setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+            }
         } else if UIApplication.shared.applicationState == .inactive { // opened by push
             setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
         } else {
@@ -330,13 +334,16 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         notificationActions.handle(action: payload.actionIdentifier, userId: userId, messageId: payload.messageId)
     }
 
-    private func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
+    enum PushNotificationServiceError: Error {
+        case userIsNotReady
+    }
+
+    private func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) throws {
         guard
             let payload = pushNotificationPayload(userInfo: userInfo),
             shouldHandleNotification(payload: payload)
         else {
-            completionHandler()
-            return
+            throw PushNotificationServiceError.userIsNotReady
         }
         launchOptions = nil
         completionHandler()
