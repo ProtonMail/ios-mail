@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ tersedia";
-
 /* Plan details storage */
 "%@ storage" = "%@ penyimpanan";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Kembali";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Dengan mengklik Buat alamat, Anda setuju dengan Syarat dan Ketentuan Proton.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Dengan mengklik Selanjutnya, Anda setuju dengan Syarat dan Ketentuan Proton";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Periksa Status Proton untuk status sistem kami.";
-
-/* Available addresss claim button */
-"Claim it" = "Klaim";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Tutup";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Buat alamat Proton Mail yang aman";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Buat alamat";
-
 /* Create account button */
 "Create an account" = "Buat akun";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Buat alamat Proton Mail";
-
 /* Create user failed error */
 "Create user failed" = "Tidak dapat membuat pengguna";
-
-/* Available addresss own address button */
-"Create your own" = "Tentukan alamat email Anda sendiri";
 
 /* Signup password proton view title */
 "Create your password" = "Buat kata sandi Anda";
@@ -338,8 +319,7 @@
  * Networking */
 "Network connection error" = "Koneksi jaringan eror";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Selanjutnya";
 
 /* network troubleshot cell title */
@@ -429,7 +409,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Privasi sebagai hal yang baku";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Alamat Proton dibutuhkan";
 
 /* Signup summary free plan description replacement */
@@ -563,7 +544,6 @@
 "Temporarily disable or remove your antivirus software." = "Nonaktifkan sementara atau hapus perangkat antivirus Anda.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Syarat dan Ketentuan";
 
@@ -572,9 +552,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Dasar untuk komunikasi pribadi dan aman.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Alamat berikut tersedia untuk digunakan:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proses pembelian IAP sudah dimulai. Silakan mengikuti instruksi Apple untuk menuntaskan atau membatalkan pembelian.";
@@ -705,14 +682,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Anda akan dikeluarkan dan semua data yang berhubungan dengan akun ini akan dihapus dari perangkat ini.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Anda akan menggunakan alamat email ini untuk masuk ke semua layanan Proton.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Anda Beruntung!";
-
 /* Complete view title */
 "Your account is being created" = "Akun Anda sedang dibuat…";
 
@@ -734,17 +703,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Paket Anda akan otomatis diperbarui pada %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Akun Proton Anda terasosiasi dengan %@. Untuk menggunakan %@, silakan membuat alamat email.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Akun Proton Anda berhasil dibuat.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Akun Proton Free Anda berhasil dibuat.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Alamat email pemulihan Anda:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Masa berlaku sesi Anda telah berakhir. Silakan masuk kembali.";

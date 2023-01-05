@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ är tillgänglig";
-
 /* Plan details storage */
 "%@ storage" = "%@ lagringsutrymme";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Tillbaka";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Genom att klicka på ”Skapa adress” godkänner du Protons användarvillkor.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Genom att klicka på Nästa godkänner du Proton’s Villkor";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Kontrollera Proton Status för vår systemstatus.";
-
-/* Available addresss claim button */
-"Claim it" = "Gör anspråk på den";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Stäng";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Skapa en säker Proton Mail-adress istället";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Skapa adress";
-
 /* Create account button */
 "Create an account" = "Skapa ett konto";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Skapa Proton Mail-adress";
-
 /* Create user failed error */
 "Create user failed" = "Det gick inte att skapa användare";
-
-/* Available addresss own address button */
-"Create your own" = "Skapa din egen";
 
 /* Signup password proton view title */
 "Create your password" = "Skapa ditt lösenord";
@@ -342,8 +323,7 @@
  * Networking */
 "Network connection error" = "Nätverksanslutningsfel";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Nästa";
 
 /* network troubleshot cell title */
@@ -427,7 +407,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Integritet som standard";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Proton-adress krävs";
 
 /* Signup summary free plan description replacement */
@@ -561,7 +542,6 @@
 "Temporarily disable or remove your antivirus software." = "Inaktivera eller ta bort ditt antivirusprogram tillfälligt.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Användarvillkor";
 
@@ -570,9 +550,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Det grundläggande för privat och säker kommunikation.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Följande adress är tillgänglig:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP-köpprocessen har startat. Följ Apples instruktioner för att antingen slutföra eller avbryta köpet.";
@@ -703,14 +680,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Du kommer att loggas ut och all data som är associerat till detta konto kommer att tas bort från denna enhet.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Du kommer använda denna e-postadress för att logga in på alla Proton-tjänster.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Du har tur!";
-
 /* Complete view title */
 "Your account is being created" = "Ditt konto håller på att skapas…";
 
@@ -732,17 +701,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Ditt paket kommer att förnyas automatiskt den %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Ditt Proton-konto är associerat med %@. För att använda %@, skapa en adress.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Ditt Proton-konto skapades utan problem.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ditt Proton Free-konto har skapats.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Din e-postadress för återställning:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Din session har löpt ut. Logga in igen.";

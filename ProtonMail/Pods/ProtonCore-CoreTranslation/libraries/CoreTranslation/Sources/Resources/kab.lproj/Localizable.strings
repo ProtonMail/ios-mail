@@ -1,6 +1,3 @@
-/* Proton Mail address availability */
-"%@ is available" = "Yella %@";
-
 /* Email verification view title */
 "Account verification" = "Asenqed n umiḍan";
 
@@ -43,9 +40,6 @@
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Rnu tansa n Proton Mail taɣellsant deg ubdil";
-
-/* Action button title for creating Proton Mail address */
-"Create address" = "Snulfu-d tansa";
 
 /* Create account button */
 "Create an account" = "Snulfud amiḍan";
@@ -144,8 +138,7 @@
 /* Help button */
 "Need help?" = "Tesriḍ tallelt?";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Ɣer sdat";
 
 /* Warning message option when user want to relogin to another account */
@@ -240,7 +233,6 @@
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Tiwtilin n useqdec";
 
@@ -315,7 +307,4 @@
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Uṭṭun-ik n tiliɣṛi ad yettwaseqdec kan tikkelt deg usenqed-agi.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Tansa-inek·inem n yimayl n tririt:";
 

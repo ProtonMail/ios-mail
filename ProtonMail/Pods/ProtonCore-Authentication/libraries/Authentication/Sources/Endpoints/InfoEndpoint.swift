@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
 
 extension AuthService {
@@ -65,6 +66,11 @@ extension AuthService {
         
         var isAuth: Bool {
             return false
+        }
+
+        var header: [String: Any] {
+            guard FeatureFactory.shared.isEnabled(.externalSignupHeader) else { return [:] }
+            return ["X-Accept-ExtAcc": true]
         }
     }
 }

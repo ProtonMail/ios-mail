@@ -1,6 +1,3 @@
-/* Proton Mail address availability */
-"%@ is available" = "%@ er tiltækt";
-
 /* Plan details storage */
 "%@ storage" = "%@ geymslurými";
 
@@ -35,9 +32,6 @@
 
 /* Signup summary title */
 "Congratulations" = "Til hamingju!";
-
-/* Action button title for creating Proton Mail address */
-"Create address" = "Búa til vistfang";
 
 /* Create account button */
 "Create an account" = "Stofna notandaaðgang";
@@ -130,8 +124,7 @@
 /* Help button */
 "Need help?" = "Þarftu hjálp?";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Næsta";
 
 /* Action

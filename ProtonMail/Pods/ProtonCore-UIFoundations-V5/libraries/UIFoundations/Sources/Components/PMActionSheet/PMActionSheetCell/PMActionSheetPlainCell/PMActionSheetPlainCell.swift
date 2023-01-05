@@ -31,8 +31,8 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
     @IBOutlet private var leftIconLeftConstraint: NSLayoutConstraint!
     @IBOutlet private var titleLeftToIcon: NSLayoutConstraint!
     @IBOutlet private var titleLeftToSuperView: NSLayoutConstraint!
-    @IBOutlet private var titleRightToIcon: NSLayoutConstraint!
     @IBOutlet private var titleRightToDetail: NSLayoutConstraint!
+    @IBOutlet private var titleRightToIcon: NSLayoutConstraint!
     @IBOutlet private var titleRightToSuperView: NSLayoutConstraint!
     @IBOutlet private var rightIcon: UIImageView!
     @IBOutlet private var rightIconWidth: NSLayoutConstraint!

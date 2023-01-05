@@ -28,7 +28,9 @@ private let welcomeLabel = "CompleteViewController.completeTitleLabel"
 private let startUsingAppButtonId = "SummaryViewController.startButton"
 
 public final class AccountSummaryRobot: CoreElements {
-    
+
+    public let verify = Verify()
+
     public func accountSummaryElementsDisplayed<T: CoreElements>(robot _: T.Type) -> T {
         staticText(congratulationHeaderId).wait(time: 120).checkExists()
         staticText(accountCreationLabel).checkExists()
@@ -39,5 +41,13 @@ public final class AccountSummaryRobot: CoreElements {
     public func startUsingAppTap<T: CoreElements>(robot _: T.Type) -> T{
         button(startUsingAppButtonId).wait(time: 100).tap()
         return T()
+    }
+
+    public final class Verify: CoreElements {
+        @discardableResult
+        public func startUsingPassButtonIsShown() -> AccountSummaryRobot {
+            button(startUsingAppButtonId).wait().checkExists()
+            return AccountSummaryRobot()
+        }
     }
 }

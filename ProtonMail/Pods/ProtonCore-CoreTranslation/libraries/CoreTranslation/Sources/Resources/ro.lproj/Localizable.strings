@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ este disponibilă";
-
 /* Plan details storage */
 "%@ storage" = "%@ spațiu";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Înapoi";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Făcând clic pe «Creare adresă», sunteți de acord cu termenii și condițiile Proton.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Apăsând pe «Înainte», sunteți de acord cu termenii și condițiile Proton.";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Consultați Stare Proton pentru starea sistemului nostru.";
-
-/* Available addresss claim button */
-"Claim it" = "Revendicați";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Închidere";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Creați în schimb o adresă sigură Proton Mail";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Creare adresă";
-
 /* Create account button */
 "Create an account" = "Creare cont";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Creare adresă Proton Mail";
-
 /* Create user failed error */
 "Create user failed" = "Eșuare creare utilizator";
-
-/* Available addresss own address button */
-"Create your own" = "Creați-vă propria";
 
 /* Signup password proton view title */
 "Create your password" = "Creare parolă";
@@ -338,8 +319,7 @@
  * Networking */
 "Network connection error" = "Eroare conexiune la rețea";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Înainte";
 
 /* network troubleshot cell title */
@@ -429,7 +409,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Confidențialitate implicită";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Este necesară o adresă Proton";
 
 /* Signup summary free plan description replacement */
@@ -563,7 +544,6 @@
 "Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Termeni și condiții";
 
@@ -572,9 +552,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Baza pentru comunicații private și sigure.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Este disponibilă următoarea adresă:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Procesul de achiziție din aplicație a început. Urmați instrucțiunile Apple pentru a finaliza sau anula achiziția.";
@@ -705,14 +682,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Contul va fi deconectat și toate datele asociate cu acesta vor fi eliminate din acest dispozitiv.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Veți folosi această adresă de e-mail pentru conectarea la toate serviciile Proton.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Aveți noroc!";
-
 /* Complete view title */
 "Your account is being created" = "Vi se creează contul…";
 
@@ -734,17 +703,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Abonamentul se va reînnoi automat la %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Acest cont Proton este asociat cu %@. Pentru a utiliza %@, trebuie să creați o adresă.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Contul Proton v-a fost creat cu succes.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Contul Proton gratuit v-a fost creat cu succes.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Adresa de e-mail de recuperare:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Sesiunea a expirat. Reconectați-vă.";

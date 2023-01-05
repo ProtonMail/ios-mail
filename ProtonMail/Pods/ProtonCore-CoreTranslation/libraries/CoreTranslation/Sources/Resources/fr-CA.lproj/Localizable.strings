@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ est disponible";
-
 /* Plan details storage */
 "%@ storage" = "%@ de stockage";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Retour";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "En cliquant sur « Créer une adresse », vous acceptez de respecter les conditions générales d'utilisation de Proton.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "En cliquant sur « Suivant », vous acceptez de respecter les conditions générales d'utilisation de Proton";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Créer plutôt une adresse Proton Mail sécurisée";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Créer une adresse";
-
 /* Create account button */
 "Create an account" = "Créer un compte";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Créer une adresse Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "Impossible de créer l'utilisateur";
@@ -333,8 +320,7 @@
  * Networking */
 "Network connection error" = "Erreur de connexion réseau";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Suivant";
 
 /* network troubleshot cell title */
@@ -555,7 +541,6 @@
 "Temporarily disable or remove your antivirus software." = "Désactivez ou supprimez temporairement votre logiciel antivirus.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Conditions générales d’utilisation";
 
@@ -691,10 +676,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Vous serez déconnecté·e et toutes les données associées à ce compte seront supprimées de cet appareil.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Vous utiliserez cette adresse électronique pour vous connecter à tous les services Proton.";
-
 /* Complete view title */
 "Your account is being created" = "Votre compte a été créé…";
 
@@ -716,17 +697,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Votre offre sera automatiquement renouvelée le %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Votre compte Proton est associé à %@. Pour utiliser %@, veuillez créer une adresse.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Votre compte Proton a bien été créé.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Votre compte Proton FREE a été correctement créé.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Votre adresse électronique de récupération:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Votre session a expiré. Reconnectez-vous.";

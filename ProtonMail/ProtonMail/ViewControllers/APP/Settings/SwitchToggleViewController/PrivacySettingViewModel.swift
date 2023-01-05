@@ -81,19 +81,11 @@ extension PrivacySettingViewModel: SwitchToggleVMInput {
         }
         switch item {
         case .autoLoadRemoteContent:
-            if UserInfo.isImageProxyAvailable {
-                let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
-                updateAutoLoadImageStatus(to: status, imageType: .remote, completion: completion)
-            } else {
-                updateAutoLoadImageStatus(flag: .remote, newStatus: newStatus, completion: completion)
-            }
+            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
+            updateAutoLoadImageStatus(to: status, imageType: .remote, completion: completion)
         case .autoLoadEmbeddedImage:
-            if UserInfo.isImageProxyAvailable {
-                let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
-                updateAutoLoadImageStatus(to: status, imageType: .embedded, completion: completion)
-            } else {
-                updateAutoLoadImageStatus(flag: .embedded, newStatus: newStatus, completion: completion)
-            }
+            let status: UpdateImageAutoloadSetting.Setting = newStatus ? .show : .hide
+            updateAutoLoadImageStatus(to: status, imageType: .embedded, completion: completion)
         case .blockEmailTracking:
             updateBlockEmailTrackingStatus(newStatus: newStatus, completion: completion)
         case .linkOpeningMode:
@@ -154,25 +146,6 @@ extension PrivacySettingViewModel {
             userInfo: user.userInfo,
             imageType: imageType,
             setting: newStatus,
-            completion: saveData(thenPerform: completion)
-        )
-    }
-
-    @available(
-        *,
-         deprecated,
-         message: "Switch to the UpdateImageAutoloadSetting-based variant once Image Proxy is ready to be shipped."
-    )
-    private func updateAutoLoadImageStatus(
-        flag: ShowImages,
-        newStatus: Bool,
-        completion: @escaping (NSError?) -> Void
-    ) {
-        self.user.userService.updateAutoLoadImages(
-            currentAuth: user.authCredential,
-            userInfo: user.userInfo,
-            flag: flag,
-            enable: newStatus,
             completion: saveData(thenPerform: completion)
         )
     }

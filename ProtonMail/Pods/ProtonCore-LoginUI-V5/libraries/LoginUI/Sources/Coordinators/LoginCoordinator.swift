@@ -332,7 +332,7 @@ extension LoginCoordinator: NavigationDelegate {
         guard navigationController?.viewControllers.contains(where: { $0 is TwoFactorViewController }) == false else {
             // Special case for situation in which we've already sent a valid 2FA code to server.
             // Once we do it, the user auth session on the backend is past the 2FA step and doesn't allow sending another 2FA code again.
-            // The technical details are: the access token contains `twofactor` scope before `POST /auth/2fa` and doesn't contain it after.
+            // The technical details are: the access token contains `twofactor` scope before `POST /auth/v4/2fa` and doesn't contain it after.
             // It makes navigating back to two factor screen useless (user cannot send another code), so we navigate back to root screen instead.
             navigationController?.popToRootViewController(animated: true)
             return
