@@ -223,56 +223,6 @@ public extension API {
     }
     
     @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func request(method: HTTPMethod,
-                 path: String,
-                 parameters: Any?,
-                 headers: [String: Any]?,
-                 authenticated: Bool,
-                 nonDefaultTimeout: TimeInterval?,
-                 completion: CompletionBlock?) {
-        // TODO: should autoRetry be false or true
-        self.request(method: method, path: path, parameters: parameters, headers: headers,
-                     authenticated: authenticated, autoRetry: false, customAuthCredential: nil,
-                     nonDefaultTimeout: nil, completion: completion)
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func download(byUrl url: String,
-                  destinationDirectoryURL: URL,
-                  headers: [String: Any]?,
-                  authenticated: Bool,
-                  customAuthCredential: AuthCredential?,
-                  retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated,
-                  downloadTask: ((URLSessionDownloadTask) -> Void)?,
-                  completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        self.download(byUrl: url, destinationDirectoryURL: destinationDirectoryURL, headers: headers,
-                      authenticated: authenticated, customAuthCredential: customAuthCredential, nonDefaultTimeout: nil, retryPolicy: retryPolicy,
-                      downloadTask: downloadTask, downloadCompletion: completion)
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func upload(byPath path: String,
-                parameters: [String: String],
-                keyPackets: Data,
-                dataPacket: Data,
-                signature: Data?,
-                headers: [String: Any]?,
-                authenticated: Bool,
-                customAuthCredential: AuthCredential?,
-                nonDefaultTimeout: TimeInterval?,
-                retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated,
-                completion: @escaping CompletionBlock) {
-        upload(byPath: path, parameters: parameters, keyPackets: keyPackets, dataPacket: dataPacket, signature: signature,
-               headers: headers, authenticated: authenticated, customAuthCredential: customAuthCredential,
-               nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, uploadProgress: nil) { task, result in
-            switch result {
-            case .success(let dict): completion(task, dict, nil)
-            case .failure(let error): completion(task, nil, error)
-            }
-        }
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
     func upload(byPath path: String,
                 parameters: Any?,
                 files: [String: URL],
@@ -291,73 +241,6 @@ public extension API {
             case .failure(let error): completion(task, nil, error)
             }
         }
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func uploadFromFile(byPath path: String,
-                        parameters: [String: String],
-                        keyPackets: Data,
-                        dataPacketSourceFileURL: URL,
-                        signature: Data?,
-                        headers: [String: Any]?,
-                        authenticated: Bool,
-                        customAuthCredential: AuthCredential?,
-                        nonDefaultTimeout: TimeInterval?,
-                        retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated,
-                        completion: @escaping CompletionBlock) {
-        uploadFromFile(byPath: path, parameters: parameters, keyPackets: keyPackets, dataPacketSourceFileURL: dataPacketSourceFileURL,
-                       signature: signature, headers: headers, authenticated: authenticated, customAuthCredential: customAuthCredential,
-                       nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, uploadProgress: nil) { task, result in
-            switch result {
-            case .success(let dict): completion(task, dict, nil)
-            case .failure(let error): completion(task, nil, error)
-            }
-        }
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func uploadFromFile(byPath path: String,
-                        parameters: [String: String],
-                        keyPackets: Data,
-                        dataPacketSourceFileURL: URL,
-                        signature: Data?,
-                        headers: [String: Any]?,
-                        authenticated: Bool,
-                        customAuthCredential: AuthCredential?,
-                        completion: @escaping CompletionBlock) {
-        self.uploadFromFile(byPath: path, parameters: parameters, keyPackets: keyPackets, dataPacketSourceFileURL: dataPacketSourceFileURL,
-                            signature: signature, headers: headers, authenticated: authenticated, customAuthCredential: customAuthCredential,
-                            nonDefaultTimeout: nil, retryPolicy: .userInitiated, completion: completion)
-        
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func upload(byPath path: String,
-                parameters: [String: String],
-                keyPackets: Data,
-                dataPacket: Data,
-                signature: Data?,
-                headers: [String: Any]?,
-                authenticated: Bool,
-                customAuthCredential: AuthCredential?,
-                completion: @escaping CompletionBlock) {
-        self.upload(byPath: path, parameters: parameters, keyPackets: keyPackets, dataPacket: dataPacket,
-                    signature: signature, headers: headers, authenticated: authenticated, customAuthCredential: customAuthCredential,
-                    nonDefaultTimeout: nil, retryPolicy: .userInitiated, completion: completion)
-    }
-    
-    @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
-    func upload(byPath path: String,
-                parameters: Any?,
-                files: [String: URL],
-                headers: [String: Any]?,
-                authenticated: Bool,
-                customAuthCredential: AuthCredential?,
-                uploadProgress: ProgressCompletion?,
-                completion: @escaping CompletionBlock) {
-        self.upload(byPath: path, parameters: parameters, files: files, headers: headers, authenticated: authenticated,
-                    customAuthCredential: customAuthCredential, nonDefaultTimeout: nil, retryPolicy: .userInitiated,
-                    uploadProgress: uploadProgress, completion: completion)
     }
 }
 

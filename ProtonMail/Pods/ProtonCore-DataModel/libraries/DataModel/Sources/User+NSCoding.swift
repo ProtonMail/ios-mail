@@ -40,7 +40,6 @@ extension UserInfo: NSCoding {
         static let language = "language"
         static let maxUpload = "maxUpload"
         static let notify = "notify"
-        static let showImages = "showImages"
 
         static let swipeLeft = "swipeLeft"
         static let swipeRight = "swipeRight"
@@ -96,7 +95,6 @@ extension UserInfo: NSCoding {
             language: aDecoder.string(forKey: CoderKey.language),
             maxUpload: aDecoder.decodeInt64(forKey: CoderKey.maxUpload),
             notify: aDecoder.decodeInteger(forKey: CoderKey.notify),
-            showImages: aDecoder.decodeInteger(forKey: CoderKey.showImages),
 
             swipeLeft: aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
             swipeRight: aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
@@ -150,7 +148,6 @@ extension UserInfo: NSCoding {
         aCoder.encode(displayName, forKey: CoderKey.displayName)
         aCoder.encode(defaultSignature, forKey: CoderKey.signature)
         aCoder.encode(autoSaveContact, forKey: CoderKey.autoSaveContact)
-        aCoder.encode(showImages.rawValue, forKey: CoderKey.showImages)
         aCoder.encode(hideEmbeddedImages, forKey: CoderKey.hideEmbeddedImages)
         aCoder.encode(hideRemoteImages, forKey: CoderKey.hideRemoteImages)
         aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)

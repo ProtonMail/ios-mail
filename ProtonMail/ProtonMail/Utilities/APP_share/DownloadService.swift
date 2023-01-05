@@ -104,8 +104,10 @@ final class DownloadService {
             headers: .empty,
             authenticated: true,
             customAuthCredential: nil,
-            downloadTask: nil, // this parameter is ignored in the function being called
-            completion: { _, downloadedFileUrl, error in
+            nonDefaultTimeout: nil,
+            retryPolicy: .background,
+            downloadTask: nil,
+            downloadCompletion: { _, downloadedFileUrl, error in
                 if let error = error {
                     completion(.failure(error))
                     return
@@ -115,7 +117,8 @@ final class DownloadService {
                     return
                 }
                 completion(.success(downloadedFile))
-            })
+            }
+        )
     }
 }
 

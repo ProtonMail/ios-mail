@@ -13,7 +13,6 @@
     "nondelinquent",
     "mail"
   ],
-  "Scope" : "full self organization payments keys parent user loggedin paid nondelinquent mail",
   "AccessToken" : "AccessToken",
   "UserID" : "UserID",
   "EventID" : "EventID",
@@ -28,7 +27,6 @@
     "TOTP" : 0
   },
   "Uid" : "Uid",
-  "ExpiresIn" : 864000,
   "UID" : "test session ID",
   "TwoFactor" : 0
 }

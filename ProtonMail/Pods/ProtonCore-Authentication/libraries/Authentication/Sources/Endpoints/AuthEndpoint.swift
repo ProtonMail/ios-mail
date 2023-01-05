@@ -44,10 +44,9 @@ extension AuthService {
         }
         
         var accessToken: String
-        var expiresIn: TimeInterval
         var tokenType: String
         var refreshToken: String
-        var scope: Scope
+        var scopes: Scopes
         var UID: String
         var userID: String
         var eventID: String
@@ -63,6 +62,7 @@ extension AuthService {
         let proof: Data
         let session: String
         let challenge: ChallengeProperties?
+        
         init(username: String,
              ephemeral: Data,
              proof: Data,
@@ -76,11 +76,11 @@ extension AuthService {
         }
         
         var path: String {
-            return "/auth"
+            "/auth/v4"
         }
         
         var method: HTTPMethod {
-            return .post
+            .post
         }
         
         var header: [String: Any] {
@@ -102,8 +102,9 @@ extension AuthService {
             }
             return dict
         }
+        
         var isAuth: Bool {
-            return false
+            false
         }
     }
 }

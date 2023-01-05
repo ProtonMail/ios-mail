@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ ve %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ kullanılabilir";
-
 /* Plan details storage */
 "%@ storage" = "%@ depolama alanı";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Geri";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Adres oluştur üzerine tıklayarak Proton Hüküm ve Koşullarını kabul etmiş olursunuz.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Sonraki üzerine tıklayarak Proton Hüküm ve Koşullarını kabul etmiş olursunuz";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Sistemimizin durumunu görmek için Proton durumu sayfasına bakın.";
-
-/* Available addresss claim button */
-"Claim it" = "İstek yapın";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Kapat";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Bunun yerine güvenli bir Proton Mail adresi oluşturun";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Adres oluştur";
-
 /* Create account button */
 "Create an account" = "Hesap oluştur";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Proton Mail adresi oluşturun";
-
 /* Create user failed error */
 "Create user failed" = "Kullanıcı oluşturulamadı";
-
-/* Available addresss own address button */
-"Create your own" = "Kendinizinkini oluşturun";
 
 /* Signup password proton view title */
 "Create your password" = "Parolanızı oluşturun";
@@ -342,8 +323,7 @@
  * Networking */
 "Network connection error" = "Ağ bağlantı sorunu";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Sonraki";
 
 /* network troubleshot cell title */
@@ -433,7 +413,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Kişisel gizliliğe odaklanmış";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Proton adresi gereklidir";
 
 /* Signup summary free plan description replacement */
@@ -567,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Antivirus uygulamanızı geçici olarak devre dışı bırakın veya kaldırın.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Hüküm ve Koşullar";
 
@@ -576,9 +556,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Kişisel ve güvenli iletişim için Basic.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Şu adres kullanılabilir:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP satın alma süreci başladı. Satın alma işlemini tamamlamak ya da iptal etmek için lütfen Apple yönergelerini izleyin.";
@@ -709,14 +686,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Oturumunuz kapatılacak ve bu aygıttan bu hesapla ilişkili tüm veriler kaldırılacak.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Tüm Proton hizmetlerinde oturum açmak için bu e-posta adresini kullanacaksınız.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Şanslısınız!";
-
 /* Complete view title */
 "Your account is being created" = "Hesabınız oluşturuluyor…";
 
@@ -738,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Tarifeniz %@ tarihinde otomatik olarak yenilenecek";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Proton hesabınız %@ ile ilişkili. %@ kullanmak için lütfen bir adres oluşturun.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Proton hesabınız oluşturuldu.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free hesabınız oluşturuldu.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Kurtarma e-postası adresiniz:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Oturumunuz zaman aşımına uğradı. Lütfen yeniden oturum açın.";

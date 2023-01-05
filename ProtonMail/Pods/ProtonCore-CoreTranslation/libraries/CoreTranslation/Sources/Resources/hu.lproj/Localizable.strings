@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ &erősítő; %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ elérhető";
-
 /* Plan details storage */
 "%@ storage" = "%@ tárhely";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Vissza";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "A Cím létrehozása gombra kattintva elfogadja a Proton felhasználási feltételeit.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "A Tovább gombra kattintva elfogadja a Proton felhasználási feltételeit";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Inkább egy biztonságos Proton Mail cím létrehozása";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Cím létrehozása";
-
 /* Create account button */
 "Create an account" = "Fiók létrehozása";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Proton Mail cím létrehozása";
 
 /* Signup password proton view title */
 "Create your password" = "Hozzon létre egy jelszót";
@@ -319,8 +306,7 @@
  * Networking */
 "Network connection error" = "Kapcsolati hiba";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Következő";
 
 /* network troubleshot cell title */
@@ -526,7 +512,6 @@
 "switch to" = "váltás:";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Szerződési feltételeket";
 
@@ -647,10 +632,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Kijelentkezik a fiókból és a fiókhoz tartozó összes adat törlésre kerül erről az eszközről.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Ezzel a címmel tud majd bejelentkezni az összes Proton szolgáltatásba.";
-
 /* Complete view title */
 "Your account is being created" = "Fiókja létrehozás alatt…";
 
@@ -669,12 +650,6 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Csomagja automatikusan megújításra kerül: %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "A Proton fiókja %@ -hez kapcsolódik. A %@ használatához, hozzon létre egy címet.";
-
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Az ingyenes Proton fiókja elkészült.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Az ön helyreállító e-mail címe:";
 

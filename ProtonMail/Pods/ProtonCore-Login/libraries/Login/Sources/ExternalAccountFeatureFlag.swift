@@ -1,5 +1,5 @@
 //
-//  ExternalSignupFeatureFlag.swift
+//  ExternalAccountFeatureFlag.swift
 //  ProtonCore-LoginUI-V5 - Created on 29.11.22.
 //
 //  Copyright (c) 2022 Proton Technologies AG

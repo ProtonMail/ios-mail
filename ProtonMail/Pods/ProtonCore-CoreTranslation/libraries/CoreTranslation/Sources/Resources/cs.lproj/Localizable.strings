@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ je k dispozici";
-
 /* Plan details storage */
 "%@ storage" = "%@ úložiště";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Zpět";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Klepnutím na tlačítko Vytvořit adresu souhlasíte s obchodními podmínkami Proton.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Klepnutím na tlačítko Další souhlasíte s obchodními podmínkami Proton";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Zkontrolujte Stav Protonu pro zjištění stavu našeho systému.";
-
-/* Available addresss claim button */
-"Claim it" = "Získat ji";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Zavřít";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Namísto toho vytvořit zabezpečenou Proton Mail adresu";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Vytvořit adresu";
-
 /* Create account button */
 "Create an account" = "Vytvořit účet";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Vytvořit adresu Proton Mail";
-
 /* Create user failed error */
 "Create user failed" = "Vytváření uživatele selhalo";
-
-/* Available addresss own address button */
-"Create your own" = "Vytvořte si vlastní";
 
 /* Signup password proton view title */
 "Create your password" = "Vytvořte si heslo";
@@ -342,8 +323,7 @@
  * Networking */
 "Network connection error" = "Chyba síťového připojení";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Další";
 
 /* network troubleshot cell title */
@@ -433,7 +413,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Soukromí především";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Vyžadována Proton adresa";
 
 /* Signup summary free plan description replacement */
@@ -567,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte váš antivirový program.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Smluvní podmínky užívání";
 
@@ -576,9 +556,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Základ pro soukromou a bezpečnou komunikaci.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Následující adresa je dostupná:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proces nákupu IAP byl zahájen. Postupujte podle pokynů společnosti Apple a nákup dokončete nebo zrušte.";
@@ -709,14 +686,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Budete odhlášeni a všechna data spojená s tímto účtem budou z tohoto zařízení odstraněna.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Tento e-mail použijete k přihlášení ke všem službám Proton.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Máte štěstí!";
-
 /* Complete view title */
 "Your account is being created" = "Váš účet se vytváří…";
 
@@ -738,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Váš plán se automaticky obnoví dne %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Váš Proton účet je spojen s %@. Chcete-li použít %@, vytvořte prosím adresu.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Váš účet Proton byl úspěšně vytvořen.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Váš účet Proton Free byl úspěšně vytvořen.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "E-mailová adresa pro obnovení:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Platnost vaší relace vypršela. Znovu se přihlaste.";

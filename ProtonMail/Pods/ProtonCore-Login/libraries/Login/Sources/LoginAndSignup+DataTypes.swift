@@ -38,7 +38,7 @@ public extension LoginData {
 
     var credential: Credential {
         switch self {
-        case .userData(let userData): return Credential(userData.credential, scope: userData.scopes)
+        case .userData(let userData): return Credential(userData.credential, scopes: userData.scopes)
         case .credential(let credential): return credential
         }
     }
@@ -53,7 +53,7 @@ public extension LoginData {
                                       salts: userData.salts,
                                       passphrases: userData.passphrases,
                                       addresses: userData.addresses,
-                                      scopes: credential.scope))
+                                      scopes: credential.scopes))
         }
     }
 
@@ -107,7 +107,6 @@ public struct UserData {
                  language: nil,
                  maxUpload: Int64(user.maxUpload),
                  notify: nil,
-                 showImages: nil,
                  swipeLeft: nil,
                  swipeRight: nil,
                  role: user.role,

@@ -38,12 +38,12 @@ public final class PMChallenge: ChallengeProtocol {
     private var copyDebounce: TimeInterval = 0
 
     public init() {
-        self.subscribeNotification()
+        subscribeNotification()
     }
 
     deinit {
-        self.unsubscribeNotification()
-        self.reset()
+        unsubscribeNotification()
+        reset()
     }
 
     /// Get shared instance, thread safe
@@ -72,11 +72,11 @@ public final class PMChallenge: ChallengeProtocol {
 extension PMChallenge {
     /// Reset collected data, should called this function before collect data
     public func reset() {
-        self.challenge.reset()
+        challenge.reset()
 
-        self.interceptors.forEach({ $0.destroy() })
-        self.interceptors = []
-        self.usernameEditingTime = 0
+        interceptors.forEach({ $0.destroy() })
+        interceptors = []
+        usernameEditingTime = 0
     }
 
     /// Export collected challenge data
@@ -105,8 +105,8 @@ extension PMChallenge {
     public func observeTextField(_ textField: UITextField, type: TextFieldType, ignoreDelegate: Bool = false) throws {
 
         while true {
-            if let idx = self.interceptors.firstIndex(where: { $0.type == type || $0.textField == textField }) {
-                let interceptor = self.interceptors.remove(at: idx)
+            if let idx = interceptors.firstIndex(where: { $0.type == type || $0.textField == textField }) {
+                let interceptor = interceptors.remove(at: idx)
                 interceptor.destroy()
             } else {
                 break
@@ -117,17 +117,17 @@ extension PMChallenge {
             let interceptor = try TextFieldDelegateInterceptor(textField: textField,
                                                                type: type, delegate: self,
                                                                ignoreDelegate: ignoreDelegate)
-            self.interceptors.append(interceptor)
+            interceptors.append(interceptor)
         } catch {
             throw error
         }
 
         switch type {
         case .username, .username_email:
-            self.usernameEditingTime = 0
-            self.challenge.timeUsername = []
+            usernameEditingTime = 0
+            challenge.behaviouralFingerprint.timeUsername = []
         case .recoveryMail, .recoveryPhone:
-            self.recoveryEditingTime = 0
+            recoveryEditingTime = 0
         default:
             break
         }
@@ -135,7 +135,7 @@ extension PMChallenge {
 
     /// Record username that checks availability
     public func appendCheckedUsername(_ username: String) {
-        guard let interceptor = self.interceptors.first(where: { $0.type == .username }) else {
+        guard let interceptor = interceptors.first(where: { $0.type == .username }) else {
             return
         }
         // make sure the textField is not focused after check username.
@@ -170,24 +170,24 @@ extension PMChallenge {
     }
 
     @objc private func copyEvent() {
-        guard let interceptor = self.interceptors.first(where: { $0.textField?.isFirstResponder ?? false }) else {
+        guard let interceptor = interceptors.first(where: { $0.textField?.isFirstResponder ?? false }) else {
             return
         }
 
         let now = Date().timeIntervalSince1970
-        if now - self.copyDebounce < 1 {
+        if now - copyDebounce < 1 {
             return
         }
-        self.copyDebounce = now
+        copyDebounce = now
 
         guard let copyText = UIPasteboard.general.string else { return }
         switch interceptor.type {
         case .username, .username_email:
-            self.challenge.copyUsername.append(copyText)
-            self.challenge.keydownUsername.append("Copy")
+            challenge.behaviouralFingerprint.copyUsername.append(copyText)
+            challenge.behaviouralFingerprint.keydownUsername.append("Copy")
         case .recoveryMail, .recoveryPhone:
-            self.challenge.copyRecovery.append(copyText)
-            self.challenge.keydownRecovery.append("Copy")
+            challenge.behaviouralFingerprint.copyRecovery.append(copyText)
+            challenge.behaviouralFingerprint.keydownRecovery.append("Copy")
         default:
             break
         }
@@ -199,11 +199,11 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     func beginEditing(type: TextFieldType) {
         switch type {
         case .username, .username_email:
-            if self.usernameEditingTime == 0 {
-                self.usernameEditingTime = Date().timeIntervalSince1970
+            if usernameEditingTime == 0 {
+                usernameEditingTime = Date().timeIntervalSince1970
             }
         case .recoveryPhone, .recoveryMail:
-            self.recoveryEditingTime = Date().timeIntervalSince1970
+            recoveryEditingTime = Date().timeIntervalSince1970
         default:
             break
         }
@@ -212,22 +212,21 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     func endEditing(type: TextFieldType) {
         switch type {
         case .recoveryMail, .recoveryPhone:
-            let diff = Int(Date().timeIntervalSince1970 - self.recoveryEditingTime)
-            guard self.recoveryEditingTime > 0,
+            let diff = Int(Date().timeIntervalSince1970 - recoveryEditingTime)
+            guard recoveryEditingTime > 0,
                   diff > 0 else { return }
-            self.challenge.timeRecovery.append(diff)
-            self.recoveryEditingTime = 0
+            challenge.behaviouralFingerprint.timeRecovery.append(diff)
+            recoveryEditingTime = 0
         case .username, .username_email:
-            guard self.usernameEditingTime > 0 else {
+            guard usernameEditingTime > 0 else {
                 // Ignore if editing time is zero
                 // Sometimes app will check the same username in very short time.
                 return
             }
 
-            let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
-            self.challenge.timeUsername.append(time)
-
-            self.usernameEditingTime = 0
+            let time = Int(Date().timeIntervalSince1970 - usernameEditingTime)
+            challenge.behaviouralFingerprint.timeUsername.append(time)
+            usernameEditingTime = 0
         default:
             break
         }
@@ -237,14 +236,14 @@ extension PMChallenge: TextFieldInterceptorDelegate {
         let value: String = chars.count > 1 ? "Paste": chars
         switch type {
         case .username, .username_email:
-            self.challenge.keydownUsername.append(value)
+            challenge.behaviouralFingerprint.keydownUsername.append(value)
             if chars.count > 1 {
-                self.challenge.pasteUsername.append(chars)
+                challenge.behaviouralFingerprint.pasteUsername.append(chars)
             }
         case .recoveryMail, .recoveryPhone:
-            self.challenge.keydownRecovery.append(value)
+            challenge.behaviouralFingerprint.keydownRecovery.append(value)
             if chars.count > 1 {
-                self.challenge.pasteRecovery.append(chars)
+                challenge.behaviouralFingerprint.pasteRecovery.append(chars)
             }
         default:
             break
@@ -254,9 +253,9 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     func charactersDeleted(chars: String, type: TextFieldType) {
         switch type {
         case .username, .username_email:
-            self.challenge.keydownUsername.append("Backspace")
+            challenge.behaviouralFingerprint.keydownUsername.append("Backspace")
         case .recoveryMail, .recoveryPhone:
-            self.challenge.keydownRecovery.append("Backspace")
+            challenge.behaviouralFingerprint.keydownRecovery.append("Backspace")
         default:
             break
         }
@@ -265,9 +264,9 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     func tap(textField: UITextField, type: TextFieldType) {
         switch type {
         case .username, .username_email:
-            self.challenge.clickUsername += 1
+            challenge.behaviouralFingerprint.clickUsername += 1
         case .recoveryMail, .recoveryPhone:
-            self.challenge.clickRecovery += 1
+            challenge.behaviouralFingerprint.clickRecovery += 1
         default:
             break
         }
@@ -276,6 +275,6 @@ extension PMChallenge: TextFieldInterceptorDelegate {
 
 extension PMChallenge {
     func getInterceptor(textField: UITextField) -> TextFieldDelegateInterceptor? {
-        return interceptors.first { $0.textField == textField }
+        interceptors.first { $0.textField == textField }
     }
 }
