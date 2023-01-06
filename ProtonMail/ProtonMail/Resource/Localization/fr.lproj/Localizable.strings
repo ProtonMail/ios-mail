@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archives";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archiver";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Voulez-vous vraiment supprimer définitivement ce message ?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Copier le nom";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Le message n'a pas pu être ouvert, veuillez réessayer.";
+
 /* contact placeholder */
 "Country" = "Pays";
 
@@ -755,9 +761,6 @@
 /* Name of the feature */
 "Email tracking protection" = "Protection contre le suivi des e-mails";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "La protection contre le suivi des e-mails est désormais disponible. Les expéditeurs ne sauront pas si, où et quand vous avez ouvert leurs e-mails.";
-
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vider le dossier Indésirables/spam";
 
@@ -950,6 +953,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avertissement pour la vérification humaine";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "J'utilise Proton Mail et je pense que ça te plaira. C'est une messagerie sécurisée qui protège ta vie privée. Tu peux tester gratuitement un abonnement payant pendant 1 mois avec ce lien :";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Si vous perdez votre connexion wifi, le téléchargement se poursuivra sur les données mobiles.";
@@ -1662,6 +1668,9 @@
 /* section title */
 "Select colour" = "Sélectionner la couleur";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Sélectionnez la date et l’heure";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Sélectionné";
 
@@ -2003,6 +2012,9 @@
 /* The subtitle of empty inbox */
 "Time to relax" = "C'est le moment pour se détendre.";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Synchronisation";
+
 /* contacts talbe cell Title title */
 "Title" = "Titre";
 
@@ -2018,6 +2030,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Aujourd'hui, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Demain";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Demain à 08:%02d";
