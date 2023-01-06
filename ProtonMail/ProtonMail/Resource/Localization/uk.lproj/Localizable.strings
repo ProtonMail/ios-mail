@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Архів";
 
+/* Push notification action archive */
+"Archive (verb)" = "Архівувати";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ви дійсно хочете остаточно видалити це повідомлення?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Копіювати ім'я";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Не вдалося відкрити повідомлення, спробуйте ще раз.";
+
 /* contact placeholder */
 "Country" = "Країна";
 
@@ -755,9 +761,6 @@
 /* Name of the feature */
 "Email tracking protection" = "Захист від стеження електронної пошти";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Відтепер доступний захист від стеження електронної пошти. Відправники не знатимуть, чи відкривали ви їхні листи, де і коли ви це зробили.";
-
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Спорожнити спам";
 
@@ -950,6 +953,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Попередження про перевірку \"Я не робот\"";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Я користуюся службою Proton Mail і думаю, що вам вона теж може сподобатися. Це безпечна служба електронної пошти, яка захищає вашу приватність. Зареєструйтеся за цим посиланням, щоб отримати 1 місяць користування преміумфункціями безплатно:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Якщо ви втратите WiFi-з'єднання, завантаження продовжиться через мобільні дані.";
@@ -1662,6 +1668,9 @@
 /* section title */
 "Select colour" = "Оберіть колір";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Виберіть дату і час";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Вибрані";
 
@@ -2021,6 +2030,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Сьогодні, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Завтра";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Завтра о 08:%02d AM";

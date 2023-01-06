@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>この%d件のメッセージは下書きへ移動し、スケジュールは削除されます。</string>
+			<string>%d 件のメッセージが下書きに移動され、送信予約が削除されます。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

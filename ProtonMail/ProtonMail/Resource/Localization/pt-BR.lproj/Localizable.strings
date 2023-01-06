@@ -236,6 +236,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Arquivo";
 
+/* Push notification action archive */
+"Archive (verb)" = "Arquivar";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Você tem certeza de que deseja excluir permanentemente esta mensagem?";
 
@@ -301,7 +304,7 @@
 "Auto-load remote content" = "Carregar conteúdo remoto automaticamente";
 
 /* The title of the section header in the toolbar customize view. */
-"Available actions" = "Ações disponível";
+"Available actions" = "Ações disponíveis";
 
 /* Example feedback */
 "Awful" = "Horrível";
@@ -543,6 +546,9 @@
 
 /* Title */
 "Copy name" = "Copiar nome";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Não foi possível abrir a mensagem, tente novamente.";
 
 /* contact placeholder */
 "Country" = "País";
@@ -800,9 +806,6 @@
 /* Name of the feature */
 "Email tracking protection" = "Proteção de rastreamento de e-mail";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "A proteção de rastreamento de e-mail agora está disponível. Os remetentes não saberão se, onde ou quando você abriu seus e-mails.";
-
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Esvaziar spam";
 
@@ -996,6 +999,9 @@
 /* human check warning title */
 "Human Check Warning" = "Aviso de verificação humana";
 
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Estou usando o Proton Mail e achei que você poderia gostar. É um serviço de e-mail seguro que protege sua privacidade. Inscreva-se com este link para obter 1 mês de recursos premium de graça:";
+
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Se você perder sua conexão Wi-Fi, continuará baixando por dados móveis.";
 
@@ -1006,7 +1012,7 @@
 "Import Error" = "Erro de importação";
 
 /* Title */
-"Import from…" = "Importe de…";
+"Import from…" = "Importar de…";
 
 /* Downloading attachments from cloud */
 "Importing" = "Importando";
@@ -1713,6 +1719,9 @@
 /* section title */
 "Select colour" = "Selecionar cor";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Selecionar data e hora";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selecionado";
 
@@ -1823,7 +1832,7 @@
 "Signature" = "Assinatura";
 
 /* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "Conectado com %@";
+"Signed in as %@" = "Iniciado sessão com %@";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Encerrado sessão de %1$@ e conectando com %2$@";
@@ -2072,6 +2081,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hoje, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Amanhã";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Amanhã às 08:%02d AM";
