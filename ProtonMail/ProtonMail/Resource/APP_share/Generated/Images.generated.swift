@@ -19,6 +19,7 @@ internal enum Asset {
   internal static let icMinusCircleFilled = ImageAsset(name: "ic-minus-circle-filled")
   internal static let composeScheduleStar = ImageAsset(name: "compose_schedule_star")
   internal static let icThreeDotsHorizontal = ImageAsset(name: "ic-three-dots-horizontal")
+  internal static let icSmallCheckmark = ImageAsset(name: "ic_small_checkmark")
   internal static let esIcon = ImageAsset(name: "es-icon")
   internal static let launchScreenBackground = ColorAsset(name: "LaunchScreenBackground")
   internal static let launchScreenBrand = ImageAsset(name: "launchScreenBrand")
