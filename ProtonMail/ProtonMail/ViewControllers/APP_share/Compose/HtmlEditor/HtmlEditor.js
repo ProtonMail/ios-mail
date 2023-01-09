@@ -224,10 +224,12 @@ html_editor.absorbImage = function(event, items, target) {
 
 // Remove color information of pasted data
 html_editor.handlePastedData = function(event) {
-    const item = event.clipboardData
+    let item = event.clipboardData
         .getData('text/html')
         .replace(/<meta (.*?)>/g, '')
-        .replace(/(border-){0,}(background-){0,}(bg){0,}color:(.*?);/g, '');
+        .replace(/((\w|-)*?color\s*:.*?)("|;)/g, '')
+        .replace(new RegExp('font-.*?(?!&quot);', 'g'), '');
+
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
 
