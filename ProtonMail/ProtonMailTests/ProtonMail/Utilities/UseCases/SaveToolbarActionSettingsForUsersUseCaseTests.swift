@@ -58,7 +58,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
             messageActions: nil,
             listViewActions: nil
         )
-        sut.executionBlock(params: .init(preference: preference)) { result in
+        sut.execute(params: .init(preference: preference)) { result in
             switch result {
             case .failure(_):
                 XCTFail("Should not return error")
@@ -85,7 +85,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
             messageActions: nil,
             listViewActions: nil
         )
-        sut.executionBlock(params: .init(preference: preference)) { result in
+        sut.execute(params: .init(preference: preference)) { result in
             switch result {
             case .failure(let error):
                 XCTAssertTrue(error is UpdateToolbarActionError)
@@ -106,7 +106,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
             messageActions: nil,
             listViewActions: nil
         )
-        sut.executionBlock(params: .init(preference: preference)) { result in
+        sut.execute(params: .init(preference: preference)) { result in
             switch result {
             case .failure(let error):
                 XCTAssertTrue(error is UpdateToolbarActionError)
