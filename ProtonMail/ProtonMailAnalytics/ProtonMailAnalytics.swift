@@ -142,9 +142,6 @@ public enum MailAnalyticsErrorEvent: Error {
     /// used to track when the app sends a conversation reqeust without a conversation ID.
     case abortedConversationRequest
 
-    // user attempted a swipe action that should not be allowed
-    case invalidSwipeAction(action: String)
-
     // called MenuViewModel.menuItem(indexPath:) method with a nonexistent index path
     case invalidMenuItemRequested(section: String, row: Int, itemCount: Int, caller: StaticString)
     case decryptMIMEFailed(error: String, messageID: String)
@@ -160,8 +157,6 @@ public enum MailAnalyticsErrorEvent: Error {
             message = "Core Data initialisation error"
         case .abortedConversationRequest:
             message = "Aborted request without conversation ID"
-        case .invalidSwipeAction:
-            message = "Invalid swipe action"
         case .invalidMenuItemRequested:
             message = "Invalid menu item requested"
         case .decryptMIMEFailed:
@@ -181,8 +176,6 @@ public enum MailAnalyticsErrorEvent: Error {
             info = ["Custom Error": error]
         case .abortedConversationRequest, .sendMessageInvalidSignature:
             info = nil
-        case .invalidSwipeAction(let action):
-            info = ["Action": action]
         case let .invalidMenuItemRequested(section, row, itemCount, caller):
             info = [
                 "Section": section,

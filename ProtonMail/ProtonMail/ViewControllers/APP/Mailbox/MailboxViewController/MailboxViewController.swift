@@ -756,288 +756,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         return object.createTags()
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, item: MailboxItem) {
-        cell.delegate = self
-
-        var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
-        actions[.left] = userCachedStatus.leftToRightSwipeActionType
-        actions[.right] = userCachedStatus.rightToLeftSwipeActionType
-
-        for (direction, action) in actions {
-            let msgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(
-                action,
-                isStarred: item.isStarred,
-                isUnread: item.isUnread(labelID: viewModel.labelID)
-            )
-
-            guard msgAction != .none && viewModel.isSwipeActionValid(msgAction, item: item) else {
-                cell.removeSwipeTrigger(forState: .state(0, direction))
-                continue
-            }
-
-            let swipeView = makeSwipeView(messageSwipeAction: msgAction)
-            cell.addSwipeTrigger(forState: .state(0, direction),
-                                 withMode: .exit,
-                                 swipeView: swipeView,
-                                 swipeColor: msgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
-                guard let self = self else { return }
-                self.isSwipingCell = true
-                self.handleSwipeAction(on: cell, action: msgAction, item: item)
-                delay(0.5) {
-                    self.isSwipingCell = false
-                }
-            }
-        }
-    }
-
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: MailboxItem) {
-        let breadcrumbs = Breadcrumbs.shared
-
-        defer {
-            if let trace = breadcrumbs.trace(for: .invalidSwipeAction) {
-                Analytics.shared.sendError(.invalidSwipeAction(action: action.description), trace: trace)
-            }
-        }
-
-        guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
-            self.reloadTableViewDataSource(animate: false)
-            return
-        }
-
-        let continueAction = { [weak self] in
-            defer { cell.swipeToOrigin {} }
-            let hasBeenMoved = self?.processSwipeActions(action, indexPath: indexPathOfCell, itemID: item.itemID)
-
-            guard hasBeenMoved == false else {
-                return
-            }
-
-            // Since the read action will try to swipe the cell to origin. It conflicts with the animation of removing the cell from tableView.
-            // Here to prevent the cell swiping to origin to remove weird animation.
-            guard self?.unreadFilterButton.isSelected == false && action != .read else {
-                return
-            }
-        }
-
-        let cancelAction = {
-            cell.swipeToOrigin {}
-        }
-
-        if item.isScheduledForSending && action == .trash {
-            cell.swipeToOrigin {}
-            displayScheduledAlert(scheduledNum: 1, continueAction: continueAction, cancelAction: cancelAction)
-        } else {
-            continueAction()
-        }
-    }
-
-    /// - returns: true if the message has been moved (trash, delete, spam)
-    private func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath, itemID: String) -> Bool {
-        /// UIAccessibility
-        UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
-        // TODO: handle conversation
-        switch action {
-        case .none:
-            return false
-        case .labelAs:
-            labelAs(indexPath, itemID: itemID, isSwipeAction: true)
-            return false
-        case .moveTo:
-            moveTo(indexPath, itemID: itemID, isSwipeAction: true)
-            return true
-        case .unread:
-            self.unread(indexPath, itemID: itemID)
-            return false
-        case .read:
-            self.read(indexPath, itemID: itemID)
-            return false
-        case .star:
-            self.star(indexPath, itemID: itemID)
-            return false
-        case .unstar:
-            self.unstar(indexPath, itemID: itemID)
-            return false
-        case .trash:
-            self.delete(indexPath, itemID: itemID, isSwipeAction: true)
-            return true
-        case .archive:
-            self.archive(indexPath, itemID: itemID, isSwipeAction: true)
-            return true
-        case .spam:
-            self.spam(indexPath, itemID: itemID, isSwipeAction: true)
-            return true
-        }
-    }
-
-    private func labelAs(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
-            return
-        }
-        if let message = viewModel.item(index: index) {
-            showLabelAsActionSheet(messages: [message],
-                                   isFromSwipeAction: isSwipeAction)
-        } else if let conversation = viewModel.itemOfConversation(index: index) {
-            showLabelAsActionSheet(conversations: [conversation],
-                                   isFromSwipeAction: isSwipeAction)
-        }
-    }
-
-    private func moveTo(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
-            return
-        }
-        let isEnableColor = viewModel.user.isEnableFolderColor
-        let isInherit = viewModel.user.isInheritParentFolderColor
-        if let message = viewModel.item(index: index) {
-            showMoveToActionSheet(messages: [message],
-                                  isEnableColor: isEnableColor,
-                                  isInherit: isInherit,
-                                  isFromSwipeAction: isSwipeAction)
-        } else if let conversation = viewModel.itemOfConversation(index: index) {
-            showMoveToActionSheet(conversations: [conversation],
-                                  isEnableColor: isEnableColor,
-                                  isInherit: isInherit,
-                                  isFromSwipeAction: isSwipeAction)
-        }
-    }
-
-    private func archive(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
-            return
-        }
-        viewModel.archive(index: index, isSwipeAction: isSwipeAction)
-        showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title,
-                         undoActionType: .archive)
-    }
-
-    private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.labelID != Message.Location.trash.labelID else {
-            let cell = self.tableView.cellForRow(at: index) as? SwipyCell
-            cell?.swipeToOrigin { }
-            return
-        }
-
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
-            Breadcrumbs.shared.add(message: "viewModel.labelID: \(viewModel.labelID)", to: .invalidSwipeAction)
-            let cell = self.tableView.cellForRow(at: index) as? SwipyCell
-            cell?.swipeToOrigin { }
-            return
-        }
-
-        let message: String
-        let undoAction: UndoAction?
-        if viewModel.isScheduledSend(in: index) {
-            message = String(format: LocalString._message_moved_to_drafts, 1)
-            undoAction = nil
-        } else {
-            message = LocalString._inbox_swipe_to_trash_banner_title
-            undoAction = .trash
-        }
-
-        showMessageMoved(title: message,
-                         undoActionType: undoAction)
-        viewModel.delete(index: index, isSwipeAction: isSwipeAction)
-    }
-
-    private func spam(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
-            return
-        }
-        viewModel.spam(index: index, isSwipeAction: isSwipeAction)
-        showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title,
-                         undoActionType: .spam)
-    }
-
-    private func star(_ indexPath: IndexPath, itemID: String) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
-            return
-        }
-        if let message = self.viewModel.item(index: indexPath) {
-            self.viewModel.label(msg: message, with: Message.Location.starred.labelID)
-        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.labelConversations(conversationIDs: [conversation.conversationID],
-                                         labelID: Message.Location.starred.labelID) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
-                }
-            }
-        }
-    }
-
-    private func unstar(_ indexPath: IndexPath, itemID: String) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
-            return
-        }
-        if let message = self.viewModel.item(index: indexPath) {
-            self.viewModel.label(msg: message, with: Message.Location.starred.labelID, apply: false)
-        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.unlabelConversations(conversationIDs: [conversation.conversationID],
-                                         labelID: Message.Location.starred.labelID) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
-                }
-            }
-        }
-    }
-
-    private func unread(_ indexPath: IndexPath, itemID: String) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
-            return
-        }
-        if let message = self.viewModel.item(index: indexPath) {
-            self.viewModel.mark(messages: [message])
-        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.markConversationAsUnread(conversationIDs: [conversation.conversationID],
-                                               currentLabelID: viewModel.labelID,
-                                               completion: nil)
-        }
-    }
-
-    private func read(_ indexPath: IndexPath, itemID: String) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
-            return
-        }
-        if let message = self.viewModel.item(index: indexPath) {
-            self.viewModel.mark(messages: [message], unread: false)
-        } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
-            viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID],
-                                             currentLabelID: viewModel.labelID,
-                                             completion: nil)
-        }
-    }
-
-    private func makeSwipeView(messageSwipeAction: MessageSwipeAction) -> UIView {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        stackView.alignment = .center
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-        let iconView = UIImageView()
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        [
-            iconView.widthAnchor.constraint(equalToConstant: 24),
-            iconView.heightAnchor.constraint(equalToConstant: 24)
-        ].activate()
-
-        stackView.addArrangedSubview(iconView)
-        stackView.addArrangedSubview(label)
-
-        var attribute = FontManager.CaptionStrong
-        attribute[.foregroundColor] = ColorProvider.TextInverted as UIColor
-        label.attributedText = messageSwipeAction.description.apply(style: attribute)
-        iconView.image = messageSwipeAction.icon
-        iconView.tintColor = ColorProvider.TextInverted
-
-        return stackView
-    }
-
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
         if let type = undoActionType {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
@@ -1519,6 +1237,143 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 }
 
+// MARK: - Swipe action
+extension MailboxViewController {
+    private func configureSwipeAction(_ cell: SwipyCell, item: MailboxItem) {
+        cell.delegate = self
+
+        var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
+        actions[.left] = userCachedStatus.leftToRightSwipeActionType
+        actions[.right] = userCachedStatus.rightToLeftSwipeActionType
+
+        for (direction, action) in actions {
+            let msgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(
+                action,
+                isStarred: item.isStarred,
+                isUnread: item.isUnread(labelID: viewModel.labelID)
+            )
+
+            guard msgAction != .none && viewModel.isSwipeActionValid(msgAction, item: item) else {
+                cell.removeSwipeTrigger(forState: .state(0, direction))
+                continue
+            }
+
+            cell.addSwipeTrigger(
+                forState: .state(0, direction),
+                withMode: .exit,
+                swipeView: makeSwipeView(messageSwipeAction: msgAction),
+                swipeColor: msgAction.actionColor
+            ) { [weak self] (cell, trigger, state, mode) in
+                guard let self = self else { return }
+                self.isSwipingCell = true
+                self.handleSwipeAction(on: cell, action: msgAction, item: item)
+                delay(0.5) {
+                    self.isSwipingCell = false
+                }
+            }
+        }
+    }
+
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: MailboxItem) {
+        let continueAction = { [weak self] in
+            defer {
+                cell.swipeToOrigin {}
+                self?.viewModel.removeAllSelectedIDs()
+            }
+            let hasBeenMoved = self?.processSwipeActions(action, item: item)
+
+            guard hasBeenMoved == false else {
+                return
+            }
+
+            // Since the read action will try to swipe the cell to origin. It conflicts with the animation of removing the cell from tableView.
+            // Here to prevent the cell swiping to origin to remove weird animation.
+            guard self?.unreadFilterButton.isSelected == false && action != .read else {
+                return
+            }
+        }
+
+        if item.isScheduledForSending && action == .trash {
+            cell.swipeToOrigin {}
+            displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
+        } else {
+            continueAction()
+        }
+    }
+
+    private func processSwipeActions(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
+        /// UIAccessibility
+        UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
+        viewModel.select(id: item.itemID)
+        switch action {
+        case .none:
+            return false
+        case .labelAs:
+            labelButtonTapped(isFromSwipeAction: true)
+            return false
+        case .moveTo:
+            folderButtonTapped(isFromSwipeAction: true)
+            return true
+        case .unread, .read, .star, .unstar:
+            viewModel.handleSwipeAction(action)
+            return false
+        case .trash:
+            guard viewModel.labelID != Message.Location.trash.labelID else { return true }
+            let message: String
+            let undoAction: UndoAction?
+            if item.isScheduledForSending {
+                message = String(format: LocalString._message_moved_to_drafts, 1)
+                undoAction = nil
+            } else {
+                message = LocalString._inbox_swipe_to_trash_banner_title
+                undoAction = .trash
+            }
+
+            showMessageMoved(title: message, undoActionType: undoAction)
+            viewModel.handleSwipeAction(.trash)
+            return true
+        case .archive:
+            viewModel.handleSwipeAction(.archive)
+            showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title, undoActionType: .archive)
+            return true
+        case .spam:
+            viewModel.handleSwipeAction(.spam)
+            showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title, undoActionType: .spam)
+            return true
+        }
+    }
+
+    private func makeSwipeView(messageSwipeAction: MessageSwipeAction) -> UIView {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        let iconView = UIImageView()
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        [
+            iconView.widthAnchor.constraint(equalToConstant: 24),
+            iconView.heightAnchor.constraint(equalToConstant: 24)
+        ].activate()
+
+        stackView.addArrangedSubview(iconView)
+        stackView.addArrangedSubview(label)
+
+        var attribute = FontManager.CaptionStrong
+        attribute[.foregroundColor] = ColorProvider.TextInverted as UIColor
+        label.attributedText = messageSwipeAction.description.apply(style: attribute)
+        iconView.image = messageSwipeAction.icon
+        iconView.tintColor = ColorProvider.TextInverted
+
+        return stackView
+    }
+}
+
 // MARK: - Action bar
 extension MailboxViewController {
     func refreshActionBarItems() {
@@ -1666,16 +1521,16 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
         return viewModel
     }
 
-    func labelButtonTapped() {
+    func labelButtonTapped(isFromSwipeAction: Bool = false) {
         guard !viewModel.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
         }
         switch viewModel.locationViewMode {
         case .conversation:
-            showLabelAsActionSheet(conversations: viewModel.selectedConversations)
+            showLabelAsActionSheet(conversations: viewModel.selectedConversations, isFromSwipeAction: isFromSwipeAction)
         case .singleMessage:
-            showLabelAsActionSheet(messages: viewModel.selectedMessages)
+            showLabelAsActionSheet(messages: viewModel.selectedMessages, isFromSwipeAction: isFromSwipeAction)
         }
     }
 
@@ -1806,7 +1661,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         return viewModel
     }
 
-    func folderButtonTapped() {
+    func folderButtonTapped(isFromSwipeAction: Bool = false) {
         guard !self.viewModel.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
             return
@@ -1819,11 +1674,15 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         if !messages.isEmpty {
             showMoveToActionSheet(messages: messages,
                                   isEnableColor: isEnableColor,
-                                  isInherit: isInherit)
+                                  isInherit: isInherit,
+                                  isFromSwipeAction: isFromSwipeAction
+            )
         } else if !conversations.isEmpty {
             showMoveToActionSheet(conversations: conversations,
                                   isEnableColor: isEnableColor,
-                                  isInherit: isInherit)
+                                  isInherit: isInherit,
+                                  isFromSwipeAction: isFromSwipeAction
+            )
         }
     }
 
