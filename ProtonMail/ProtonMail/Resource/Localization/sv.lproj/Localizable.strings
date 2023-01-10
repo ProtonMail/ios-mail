@@ -671,9 +671,6 @@
 /* Title in settings */
 "Display Name" = "Visningsnamn";
 
-/* Title in display name settings */
-"DisplayName" = "Visningsnamn";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Vill du verkligen ta bort denna fil från bilagor?";
 

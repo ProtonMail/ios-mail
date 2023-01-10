@@ -629,9 +629,6 @@
 /* Title in settings */
 "Display Name" = "Zobrazované jméno";
 
-/* Title in display name settings */
-"DisplayName" = "Zobrazované jméno";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Opravdu chcete tento soubor odebrat z příloh?";
 

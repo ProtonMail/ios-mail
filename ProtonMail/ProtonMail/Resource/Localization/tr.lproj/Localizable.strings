@@ -504,7 +504,7 @@
 "Confirm new sign-in password" = "Yeni oturum açma parolası onayı";
 
 /* alert title */
-"Confirm phishing report" = "Kimlik avı bildirimini onayla";
+"Confirm phishing report" = "Kimlik avı girişimi bildirimini onayla";
 
 /* Title */
 "Confirmation" = "Onayla";
@@ -677,9 +677,6 @@
 /* Title in settings */
 "Display Name" = "Görüntülenecek ad";
 
-/* Title in display name settings */
-"DisplayName" = "Görüntülenecek ad";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Bu dosyayı ek dosyalar içinden kaldırmak istediğinize emin misiniz?";
 
@@ -804,7 +801,7 @@
 "Email failed to send. Message saved as draft." = "E-posta gönderilemedi. İleti taslak olarak kaydedildi.";
 
 /* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "E-posta izleyiciler kişisel gizliliğinizi tehlikeye düşürebilir.";
+"Email trackers can violate your privacy." = "E-posta izleyiciler gizliliğinizi tehlikeye düşürebilir.";
 
 /* Name of the feature */
 "Email tracking protection" = "E-posta izleme koruması";
@@ -1003,7 +1000,7 @@
 "Human Check Warning" = "İnsan doğrulaması uyarısı";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Bir süredir kişisel gizliliğimi koruyan Proton Mail e-posta hizmetini kullanıyorum ve senin de beğeneceğini düşündüm. Ücretli özellikleri bir ay süreyle ücretsiz olarak kullanmak için bu bağlantıya giderek bir hesap açabilirsin:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Bir süredir gizliliğimi koruyan Proton Mail e-posta hizmetini kullanıyorum ve senin de beğeneceğini düşündüm. Ücretli özellikleri bir ay süreyle ücretsiz olarak kullanmak için bu bağlantıya giderek bir hesap açabilirsin:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "WiFi bağlantınız kesilirse indirme işlemi mobil veri üzerinden yapılır.";
@@ -1070,7 +1067,7 @@
 "Internet Service Provider (ISP) problem" = "İnternet hizmeti sağlayıcı (ISP) sorunu";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Kişisel gizliliğin doğal sayıldığı internet fikrine hoş geldiniz.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğin doğal sayıldığı internet fikrine hoş geldiniz.";
 
 /* update password error */
 "Invalid hashed password!" = "Karılmış parola geçersiz!";
@@ -1557,10 +1554,10 @@
 "Print" = "Yazdır";
 
 /* cell title in device settings */
-"Privacy" = "Kişisel gizlilik";
+"Privacy" = "Gizlilik";
 
 /* Onboarding title */
-"Privacy for all" = "Herkes için kişisel gizlilik";
+"Privacy for all" = "Herkes için gizlilik";
 
 /* Local notification title */
 "Problem sending message" = "İleti gönderme sorunu";
@@ -1651,7 +1648,7 @@
 "Report a problem" = "Bir sorun bildireceğim";
 
 /* No comment provided by engineer. */
-"Report phishing" = "Kimlik avı bildir";
+"Report phishing" = "Kimlik avı girişimi bildir";
 
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.";
@@ -2126,7 +2123,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği etkinleştirin.";
 
 /* Placeholder */
-"Two Factor Code" = "İki aşamalı kimlik doğrulama kodu";
+"Two Factor Code" = "İki aşamalı doğrulama kodu";
 
 /* Internal type casting error */
 "Type casting error" = "Tür döküm hatası";
@@ -2348,7 +2345,7 @@
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ülkeniz Proton ağına erişimi engelliyor olabilir. Proton ağına erişmek için %1$@ (ya da başka bir VPN) ya da %2$@ kullanmayı deneyin.";
 
 /* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "E-postalarınız artık varsayılan olarak yüklenen uzak görseller ile geliyor. Göndericiler, e-postalarını açıp açmadığınızı, nerede veya ne zaman açtığınızı bilemezler.\nBu seçeneği değiştirmek için Ayarlar → Hesap ayarları → Kişisel gizlilik bölümüne gidin.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "E-postalarınız artık varsayılan olarak yüklenen uzak görseller ile geliyor. Göndericiler, e-postalarını açıp açmadığınızı, nerede veya ne zaman açtığınızı bilemezler.\nAyarlar → Hesap ayarları → Gizlilik bölümüne giderek bu seçeneği değiştirebilirsiniz.";
 
 /* Title of user feedback view */
 "Your feedback" = "Geri bildiriminiz";
