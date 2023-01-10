@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ 可以注册";
-
 /* Plan details storage */
 "%@ storage" = "%@ 存储空间";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "返回";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "点击创建地址即表示您同意 Proton 的条款和条件";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "点击下一步即表示您同意 Proton 的条款和条件";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "创建一个安全的 Proton Mail 邮箱地址";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "创建地址";
-
 /* Create account button */
 "Create an account" = "创建账户";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "创建 Proton Mail 地址";
 
 /* Create user failed error */
 "Create user failed" = "无法创建账户";
@@ -329,8 +316,7 @@
  * Networking */
 "Network connection error" = "网络连接错误";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "下一步";
 
 /* network troubleshot cell title */
@@ -420,7 +406,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "隐私优先";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "需要使用 Proton 地址";
 
 /* Signup summary free plan description replacement */
@@ -554,7 +541,6 @@
 "Temporarily disable or remove your antivirus software." = "暂时关闭或卸载杀毒软件。";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "条款和条件";
 
@@ -693,10 +679,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "您即将登出，与此账户相关的所有数据都将从此设备中删除";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "您将能使用该邮箱地址登录到所有 Proton 服务";
-
 /* Complete view title */
 "Your account is being created" = "正在创建您的账户…";
 
@@ -718,17 +700,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "下次自动续费日期为 %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "您的 Proton 账户已关联至 %@，要使用 %@，请先创建一个地址";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "您已经成功创建Proton账号。";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您已经成功创建Proton免费账号。";
-
-/* Recovery address label title */
-"Your recovery email address:" = "您的密保邮箱：";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "登录状态已过期，请重新登录。";

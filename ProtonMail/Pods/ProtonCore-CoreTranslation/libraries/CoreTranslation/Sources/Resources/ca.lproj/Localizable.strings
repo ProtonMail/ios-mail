@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ i %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ està disponible";
-
 /* Plan details storage */
 "%@ storage" = "%@ d'emmagatzematge";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Anterior";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Clicant a Crear adreça accepteu els Termes i Condicions de Proton.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Clicant a Següent accepteu els Termes i Condicions de Proton";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Visiteu «Estat de Proton» per conèixer l'estat del sistema.";
-
-/* Available addresss claim button */
-"Claim it" = "Reclameu-la";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Tanca";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Creeu una adreça Proton Mail segura";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Crear adreça";
-
 /* Create account button */
 "Create an account" = "Crear un compte";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Crear adreça Proton Mail";
-
 /* Create user failed error */
 "Create user failed" = "No s'ha pogut crear l'usuari.";
-
-/* Available addresss own address button */
-"Create your own" = "Crea la teva pròpia";
 
 /* Signup password proton view title */
 "Create your password" = "Creeu la vostra contrasenya";
@@ -342,8 +323,7 @@
  * Networking */
 "Network connection error" = "Error de connexió de xarxa";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Següent";
 
 /* network troubleshot cell title */
@@ -433,7 +413,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Privadesa per defecte";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Es requereix l'adreça del Proton";
 
 /* Signup summary free plan description replacement */
@@ -567,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Deshabilita temporalment o elimina el teu software d'antivirus.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Termes i Condicions";
 
@@ -576,9 +556,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "La base de les comunicacions privades i segures.";
-
-/* Available addresss screen info */
-"The following address is available:" = "La següent adreça està disponible:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "El procés de compra de IAP ha començat. Seguiu les instruccions d'Apple per completar o cancel·lar la compra.";
@@ -709,10 +686,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Es tancarà la sessió i totes les dades relacionades amb aquest compte s'esborraran d'aquest dispositiu.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Utilitzareu aquesta adreça de correu electrònic per iniciar sessió a tots els serveis de Proton.";
-
 /* Complete view title */
 "Your account is being created" = "S'està creant el vostre compte…";
 
@@ -734,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "El vostre pla es renovarà automàticament el %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "El vostre compte de Proton està associat amb %@. Per utilitzar %@, creeu una adreça.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "S'ha creat correctament el vostre compte Proton.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "S'ha creat correctament el vostre compte Proton Free.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "La vostra adreça de correu electrònic de recuperació:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "La vostra sessió ha caducat. Torneu a iniciar sessió.";

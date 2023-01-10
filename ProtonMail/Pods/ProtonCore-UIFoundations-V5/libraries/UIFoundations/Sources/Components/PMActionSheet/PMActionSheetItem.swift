@@ -49,6 +49,7 @@ public struct PMActionSheetItemGroup {
         /// Items in multiSelection style will be laid out as a list, the checkmark will be shown when items are selected, only support `PMActionSheetPlainItem`
         case multiSelection
     }
+
     public let title: String?
     public internal(set) var items: [PMActionSheetItem]
     public let style: Style
@@ -61,7 +62,6 @@ public struct PMActionSheetItemGroup {
 }
 
 public struct PMActionSheetPlainItem: PMActionSheetItem {
-
     public enum MarkType {
         case checkMark
         case dash
@@ -101,6 +101,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
             }
         }
     }
+
     /// The indentation level of the cell’s content. starts from 0
     let indentationLevel: Int
     /// The width for each level of indentation of a cell's content.
@@ -172,7 +173,6 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
 }
 
 public struct PMActionSheetToggleItem: PMActionSheetItem {
-
     public let title: String?
     public let icon: UIImage?
     public let textColor: UIColor

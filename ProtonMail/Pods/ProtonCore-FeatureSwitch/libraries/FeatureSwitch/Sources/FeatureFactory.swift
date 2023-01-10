@@ -40,7 +40,7 @@ public class FeatureFactory {
         self.currentFeatures = features
     }
     
-    func clear() {
+    public func clear() {
         currentFeatures.removeAll()
     }
     
@@ -111,9 +111,13 @@ public class FeatureFactory {
     
     public func setEnabled(_ feature: inout Feature, isEnable: Bool) {
         if isEnable {
-            self.enable(&feature)
+            enable(&feature)
+            currentFeatures.append(feature)
         } else {
-            self.disable(&feature)
+            disable(&feature)
+            if let index = currentFeatures.firstIndex(where: { $0.name == feature.name }) {
+                currentFeatures.remove(at: index)
+            }
         }
     }
     

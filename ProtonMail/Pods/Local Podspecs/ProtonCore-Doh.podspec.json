@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Doh",
-  "version": "3.25.0",
+  "version": "3.25.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.25.0"
+    "tag": "3.25.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -27,10 +27,10 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "3.25.0"
+      "3.25.2"
     ],
     "ProtonCore-Utilities": [
-      "3.25.0"
+      "3.25.2"
     ]
   },
   "default_subspecs": [
@@ -43,7 +43,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "3.25.0"
+          "3.25.2"
         ],
         "OHHTTPStubs/Swift": [
 

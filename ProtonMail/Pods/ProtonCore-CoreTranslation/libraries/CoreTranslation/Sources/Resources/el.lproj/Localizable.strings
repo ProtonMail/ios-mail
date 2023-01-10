@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "Το %@ είναι διαθέσιμο";
-
 /* Plan details storage */
 "%@ storage" = "%@ αποθηκευτικού χώρου";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Πίσω";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Με κλικ στη Δημιουργία διεύθυνσης, συμφωνείτε με τους Όρους και Προϋποθέσεις της Proton.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Με κλικ στο Επόμενο, συμφωνείτε με τους Όρους και Προϋποθέσεις της Proton";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Εναλλακτικά, δημιουργήστε μια διασφαλισμένη διεύθυνση Proton Mail";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Δημιουργία διεύθυνσης";
-
 /* Create account button */
 "Create an account" = "Δημιουργία λογαριασμού";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Δημιουργία διεύθυνσης Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "Αποτυχία δημιουργίας χρήστη";
@@ -332,8 +319,7 @@
  * Networking */
 "Network connection error" = "Σφάλμα σύνδεσης δικτύου";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Επόμενο";
 
 /* network troubleshot cell title */
@@ -554,7 +540,6 @@
 "Temporarily disable or remove your antivirus software." = "Αφαιρέστε ή απενεργοποιήστε προσωρινά το αντιιικό λογισμικό σας.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Όροι και Προϋποθέσεις";
 
@@ -693,10 +678,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Θα αποσυνδεθείτε και όλα τα δεδομένα που σχετίζονται με αυτόν τον λογαριασμό θα διαγραφούν από αυτήν τη συσκευή.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Θα χρησιμοποιείτε αυτήν τη διεύθυνση για είσοδο σε όλες τις υπηρεσίες Proton.";
-
 /* Complete view title */
 "Your account is being created" = "Ο λογαριασμός σας δημιουργείται…";
 
@@ -718,17 +699,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Το πρόγραμμά σας θα ανανεωθεί αυτόματα στις %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Ο λογαριασμός σας Proton έχει συσχετιστεί με το %@. Για να χρησιμοποιήσετε το %@, παρακαλούμε δημιουργήστε μια διεύθυνση.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Ο λογαριασμός σας Proton δημιουργήθηκε επιτυχώς.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ο λογαριασμός σας Proton Free δημιουργήθηκε επιτυχώς.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Η διεύθυνση email ανάκτησης:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Η συνεδρία σας έχει λήξει. Παρακαλώ συνδεθείτε ξανά.";

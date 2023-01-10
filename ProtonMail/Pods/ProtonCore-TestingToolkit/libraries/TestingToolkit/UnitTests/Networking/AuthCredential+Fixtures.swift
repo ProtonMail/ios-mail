@@ -23,13 +23,12 @@ import ProtonCore_Networking
 
 public extension AuthCredential {
     static var dummy: AuthCredential {
-        .init(sessionID: .empty, accessToken: .empty, refreshToken: .empty, expiration: .distantFuture, userName: .empty, userID: .empty, privateKey: nil, passwordKeySalt: nil)
+        .init(sessionID: .empty, accessToken: .empty, refreshToken: .empty, userName: .empty, userID: .empty, privateKey: nil, passwordKeySalt: nil)
     }
     
     func updated(sessionID: String? = nil,
                  accessToken: String? = nil,
                  refreshToken: String? = nil,
-                 expiration: Date? = nil,
                  userName: String? = nil,
                  userID: String? = nil,
                  privateKey: String?? = nil,
@@ -37,7 +36,6 @@ public extension AuthCredential {
         AuthCredential(sessionID: sessionID ?? self.sessionID,
                        accessToken: accessToken ?? self.accessToken,
                        refreshToken: refreshToken ?? self.refreshToken,
-                       expiration: expiration ?? self.expiration,
                        userName: userName ?? self.userName,
                        userID: userID ?? self.userID,
                        privateKey: privateKey ?? self.privateKey,
@@ -48,7 +46,6 @@ public extension AuthCredential {
         return lhs.sessionID == rhs.sessionID &&
                lhs.accessToken == rhs.accessToken &&
                lhs.refreshToken == rhs.refreshToken &&
-               lhs.expiration == rhs.expiration &&
                lhs.userName == rhs.userName &&
                lhs.userID == rhs.userID &&
                lhs.privateKey == rhs.privateKey &&

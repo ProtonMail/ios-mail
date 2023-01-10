@@ -52,7 +52,7 @@ public struct AuthAPI: APIClient {
         static let hashedPassword = "HashedPassword"
         static let grantType = "GrantType"
         static let redirectUrl = "RedirectURI"
-        static let scope = "Scope"
+        static let scopes = "Scope"
 
         static let ephemeral = "ClientEphemeral"
         static let proof = "ClientProof"
@@ -72,7 +72,7 @@ public struct AuthAPI: APIClient {
             case .modulus:
                 return route + "/modulus"
             case .auth:
-                return route
+                return route + "/v4"
             }
         }
 
