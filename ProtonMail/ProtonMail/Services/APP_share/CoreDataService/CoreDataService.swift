@@ -192,10 +192,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             output = block(context)
         }
 
-        if output is NSManagedObject {
-            print("Warning: returning NSManagedObjects is deprecated, because it is an Core Data layer leak.")
-        }
-
         return output
     }
 
@@ -235,6 +231,20 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             let context = self.container.newBackgroundContext()
             context.automaticallyMergesChangesFromParent = true
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+
+            let contextSavingObserver = NotificationCenter.default.addObserver(
+                forName: .NSManagedObjectContextDidSave,
+                object: context,
+                queue: nil
+            ) { [weak self] notification in
+                self?.mainContext.perform {
+                    self?.mainContext.mergeChanges(fromContextDidSave: notification)
+                }
+            }
+
+            defer {
+                NotificationCenter.default.removeObserver(contextSavingObserver)
+            }
 
             context.performAndWait {
                 do {
