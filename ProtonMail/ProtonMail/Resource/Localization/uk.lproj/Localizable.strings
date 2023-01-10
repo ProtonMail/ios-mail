@@ -629,9 +629,6 @@
 /* Title in settings */
 "Display Name" = "Ім'я";
 
-/* Title in display name settings */
-"DisplayName" = "Ім'я";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Ви дійсно хочете вилучити цей файл із вкладень?";
 

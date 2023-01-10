@@ -198,7 +198,7 @@
 "Archive" = "Arsip";
 
 /* Push notification action archive */
-"Archive (verb)" = "Arsip";
+"Archive (verb)" = "Arsipkan";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Apakah Anda yakin untuk menghapus pesan ini secara permanen?";
@@ -628,9 +628,6 @@
 
 /* Title in settings */
 "Display Name" = "Nama Tampilan";
-
-/* Title in display name settings */
-"DisplayName" = "NamaTampilan";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Apakah Anda yakin untuk menghapus berkas ini dari daftar lampiran?";

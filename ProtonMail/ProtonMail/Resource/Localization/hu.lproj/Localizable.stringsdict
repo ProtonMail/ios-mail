@@ -45,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d csatolmány</string>
+			<string>%d melléklet</string>
 			<key>other</key>
-			<string>%d csatolmány</string>
+			<string>%d melléklet</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -141,9 +141,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email-követő blokkolva</string>
+			<string>%d e-mail-követő blokkolva</string>
 			<key>other</key>
-			<string>%d email-követő blokkolva</string>
+			<string>%d e-mail-követő blokkolva</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -157,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d email-követőt találtunk</string>
+			<string>%d e-mail-követőt találtunk</string>
 			<key>other</key>
-			<string>%d email-követőt találtunk</string>
+			<string>%d e-mail-követőt találtunk</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -193,7 +193,7 @@
 			<key>one</key>
 			<string>%d tag</string>
 			<key>other</key>
-			<string>%d tagok</string>
+			<string>%d tag</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -253,7 +253,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d min</string>
+			<string>%d perc</string>
 			<key>other</key>
 			<string>%d perc</string>
 		</dict>
@@ -285,9 +285,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u conversation</string>
+			<string>%u beszélgetés</string>
 			<key>other</key>
-			<string>%u beszélgetések</string>
+			<string>%u beszélgetés</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -303,9 +303,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u message</string>
+			<string>%u üzenet</string>
 			<key>other</key>
-			<string>%u üzenetek</string>
+			<string>%u üzenet</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Ezt az %d üzenetet áthelyezzük a Vázlatokba és időbeosztását eltávolítjuk.</string>
+			<string>Ezt az %d üzenet átkerül a Vázlatokba és az ütemezése törlődik.</string>
 			<key>other</key>
-			<string>Ezeket a(z) %d üzeneteket áthelyezzük a Vázlatokba és időbeosztását eltávolítjuk.</string>
+			<string>Ezt a(z) %d üzenet átkerül a Vázlatokba és az ütemezése törlődik.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

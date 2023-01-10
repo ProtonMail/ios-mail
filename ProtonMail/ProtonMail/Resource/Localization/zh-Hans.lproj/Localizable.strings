@@ -626,9 +626,6 @@
 /* Title in settings */
 "Display Name" = "显示名称";
 
-/* Title in display name settings */
-"DisplayName" = "显示名称";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "确定要删除此附件吗？";
 

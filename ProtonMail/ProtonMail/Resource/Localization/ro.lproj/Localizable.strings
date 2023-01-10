@@ -629,9 +629,6 @@
 /* Title in settings */
 "Display Name" = "Nume afișat";
 
-/* Title in display name settings */
-"DisplayName" = "Nume afișat";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Sigur doriți să eliminați această imagine din atașamente?";
 

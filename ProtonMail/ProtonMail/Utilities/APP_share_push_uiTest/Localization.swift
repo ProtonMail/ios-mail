@@ -41,8 +41,6 @@ class LocalizedString {
 
     /// "%d Minutes"
     lazy var _settings_auto_lock_minutes = NSLocalizedString("%d Minutes", comment: "auto lock time format")
-    /// "DisplayName"
-    lazy var _settings_displayname_title = NSLocalizedString("DisplayName", comment: "Title in display name settings")
     /// "DISPLAY NAME"
     lazy var _settings_display_name_title = NSLocalizedString("Display Name", comment: "Title in settings")
     /// "Input Display Name…"

@@ -205,7 +205,7 @@
 "Any unsaved changes will be lost." = "Todas as alterações não salvas serão perdidas.";
 
 /* when server not reachable */
-"API Server not reachable…" = "Servidor API fora de alcançe…";
+"API Server not reachable…" = "Servidor da API não está disponível…";
 
 /* security title in settings */
 "App PIN" = "PIN do aplicativo";
@@ -433,7 +433,7 @@
 "Change sender address to…" = "Altere o endereço do remetente para…";
 
 /* Text for status label when low battery */
-"Charge your device or resume manually." = "Carregue seu dispositivo ou retorne manualmente.";
+"Charge your device or resume manually." = "Carregue seu dispositivo ou continue manualmente.";
 
 /* Action */
 "Check Again" = "Verificar novamente";
@@ -468,7 +468,7 @@
 "Closing" = "Fechando";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Colapsar pastas";
+"Collapse folder" = "Recolher pasta";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Recolher mensagem";
@@ -673,9 +673,6 @@
 
 /* Title in settings */
 "Display Name" = "Nome de exibição";
-
-/* Title in display name settings */
-"DisplayName" = "Nome de exibição";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Deseja realmente remover este arquivo dos anexos?";
