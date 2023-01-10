@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ is beschikbaar";
-
 /* Plan details storage */
 "%@ storage" = "%@ opslagruimte";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Terug";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Door op Adres aanmaken te klikken, gaat u akkoord met de Algemene Voorwaarden van Proton.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Door op Volgende te klikken gaat u akkoord met de algemene voorwaarden van Proton";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Controleer Proton Status voor onze systeemstatus.";
-
-/* Available addresss claim button */
-"Claim it" = "Eis het op";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Sluiten";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Maak in plaats daarvan een veilig Proton Mail e-mailadres";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Adres toevoegen";
-
 /* Create account button */
 "Create an account" = "Een account aanmaken";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Maak een Proton Mail e-mailadres aan";
-
 /* Create user failed error */
 "Create user failed" = "Gebruiker aanmaken mislukt";
-
-/* Available addresss own address button */
-"Create your own" = "Maak uw eigen";
 
 /* Signup password proton view title */
 "Create your password" = "Maak uw wachtwoord";
@@ -338,8 +319,7 @@
  * Networking */
 "Network connection error" = "Netwerk verbindingsfout";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Volgende";
 
 /* network troubleshot cell title */
@@ -429,7 +409,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Privacy als standaard";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Proton-adres vereist";
 
 /* Signup summary free plan description replacement */
@@ -563,7 +544,6 @@
 "Temporarily disable or remove your antivirus software." = "Uw antivirus software tijdelijk uitschakelen of verwijderen.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Algemene voorwaarden";
 
@@ -572,9 +552,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "De basis voor privé-en veilige communicatie.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Het volgende adres is beschikbaar:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Het IAP-aankoopproces is gestart. Volg de instructies van Apple om de aankoop te voltooien of te annuleren.";
@@ -705,14 +682,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "U wordt afgemeld en alle gegevens die bij deze account horen worden van dit apparaat verwijderd.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "U zult dit e-mailadres gebruiken om in te loggen op alle Proton diensten.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "U hebt geluk!";
-
 /* Complete view title */
 "Your account is being created" = "Uw account wordt aangemaakt…";
 
@@ -734,17 +703,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Uw plan zal automatisch vernieuwen op %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Uw Proton Account is geassocieerd met %@. Om %@ te gebruiken, gelieve een adres aan te maken.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Uw Proton-account is aangemaakt.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Uw Proton Free account is succesvol aangemaakt.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Uw herstel e-mailadres:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "De sessie is verlopen. Log opnieuw in.";

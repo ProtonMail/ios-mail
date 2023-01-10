@@ -4,6 +4,8 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.fram
 ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCore_Environment.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCore_FeatureSwitch.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework

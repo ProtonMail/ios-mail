@@ -26,19 +26,26 @@ extension AuthService {
     
     struct RefreshResponse: APIDecodableResponse, CredentialConvertible, Encodable {
         var accessToken: String
-        var expiresIn: TimeInterval
         var tokenType: String
-        var scope: AuthRouteResponse.Scope
+        var scopes: AuthRouteResponse.Scopes
         var refreshToken: String
     }
     
     struct RefreshEndpoint: Request {
+        let refreshToken: String
+        var credential: AuthCredential?
+        
+        init(authCredential: AuthCredential) {
+            self.credential = authCredential
+            self.refreshToken = authCredential.refreshToken
+        }
+        
         var path: String {
-            return "/auth/refresh"
+            "/auth/v4/refresh"
         }
         
         var method: HTTPMethod {
-            return .post
+            .post
         }
         
         var parameters: [String: Any]? {
@@ -52,17 +59,10 @@ extension AuthService {
         }
         
         var isAuth: Bool {
-            return true
+            true
         }
         var authCredential: AuthCredential? {
-            return credential
-        }
-
-        var credential: AuthCredential?
-        let refreshToken: String
-        init(authCredential: AuthCredential) {
-            self.credential = authCredential
-            self.refreshToken = authCredential.refreshToken
+            credential
         }
     }
 }

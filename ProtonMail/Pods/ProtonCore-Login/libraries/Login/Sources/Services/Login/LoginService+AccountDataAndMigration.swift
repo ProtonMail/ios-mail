@@ -180,7 +180,7 @@ extension LoginService {
                                                                           salts: [],
                                                                           passphrases: [:],
                                                                           addresses: addresses,
-                                                                          scopes: credential.scope)))))
+                                                                          scopes: credential.scopes)))))
                 return
             } else {
                 fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
@@ -442,7 +442,7 @@ extension LoginService {
                                                                       salts: salts,
                                                                       passphrases: passphrases,
                                                                       addresses: addresses,
-                                                                      scopes: credentials.scope)))))
+                                                                      scopes: credentials.scopes)))))
 
         case let .failure(error):
             PMLog.debug("Making passphrases failed with \(error)")

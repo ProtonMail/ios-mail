@@ -25,39 +25,40 @@ import ProtonCore_Networking
 extension AuthService {
     
     struct TwoFAResponse: APIDecodableResponse, Encodable {
-        var scope: CredentialConvertible.Scope
+        var scopes: CredentialConvertible.Scopes
     }
     
     struct TwoFAEndpoint: Request {
-        var path: String {
-            return "/auth/2fa"
-        }
-        
-        var method: HTTPMethod {
-            return .post
-        }
-        
-        var parameters: [String: Any]? {
-            return  [
-                "TwoFactorCode": code
-            ]
-        }
-        var isAuth: Bool {
-            return true
-        }
-        
         let code: String
+        
         init(code: String)  {
             self.code = code
         }
         
+        var path: String {
+            "/auth/v4/2fa"
+        }
+        
+        var method: HTTPMethod {
+            .post
+        }
+        
+        var parameters: [String: Any]? {
+            ["TwoFactorCode": code]
+        }
+        
+        var isAuth: Bool {
+            true
+        }
+        
         var auth: AuthCredential?
+        
         var authCredential: AuthCredential? {
-            return self.auth
+            auth
         }
         
         var autoRetry: Bool {
-            return false
+            false
         }
     }
 }

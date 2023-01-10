@@ -53,7 +53,7 @@ final class LoginViewModel {
 
         let userFrame = ["name": "username"]
         let challengeData = self.challenge.export()
-            .toDictArray()
+            .allFingerprintDict()
             .first(where: { $0["frame"] as? [String: String] == userFrame })
 
         login.login(username: username, password: password, challenge: challengeData) { [weak self] result in

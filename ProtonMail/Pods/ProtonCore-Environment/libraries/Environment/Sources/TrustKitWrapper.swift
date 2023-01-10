@@ -24,12 +24,12 @@ import Network
 import TrustKit
 import ProtonCore_Doh
 
-final class TrustKitWrapper {
+public final class TrustKitWrapper {
     
-    static private weak var delegate: TrustKitDelegate?
-    static private(set) var current: TrustKit?
+    public static private(set) weak var delegate: TrustKitDelegate?
+    public static private(set) var current: TrustKit?
 
-    static func setUp(delegate: TrustKitDelegate, customConfiguration: Configuration? = nil) {
+    public static func setUp(delegate: TrustKitDelegate, customConfiguration: Configuration? = nil) {
         let config = configuration(hardfail: true)
         
         let instance = TrustKit(configuration: config)

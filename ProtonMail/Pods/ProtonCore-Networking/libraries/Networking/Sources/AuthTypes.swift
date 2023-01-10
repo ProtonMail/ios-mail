@@ -31,7 +31,6 @@ public final class AuthCredential: NSObject, NSCoding {
         static let accessToken   = "accessTokenCoderKey"
         static let refreshToken  = "refreshTokenCoderKey"
         static let sessionID     = "userIDCoderKey"
-        static let expiration    = "expirationCoderKey"
         static let key           = "privateKeyCoderKey"
         static let plainToken    = "plainCoderKey"
         static let pwd           = "pwdKey"
@@ -51,7 +50,8 @@ public final class AuthCredential: NSObject, NSCoding {
     // refresh token use to renew access token
     public var refreshToken: String
     // the expiration time
-    public var expiration: Date
+    @available(*, deprecated, message: "Please do not use expiration property")
+    public var expiration: Date = .distantPast
     // user ID
     public var userID: String
     // user name
@@ -66,13 +66,29 @@ public final class AuthCredential: NSObject, NSCoding {
         return """
         AccessToken: \(accessToken)
         RefreshToken: \(refreshToken)
-        Expiration: \(expiration))
         SessionID: \(sessionID)
         UserName: \(userName)
         UserUD: \(userID)
         """
     }
     
+    public init(sessionID: String,
+                accessToken: String,
+                refreshToken: String,
+                userName: String,
+                userID: String,
+                privateKey: String?,
+                passwordKeySalt: String?) {
+        self.sessionID = sessionID
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.userName = userName
+        self.userID = userID
+        self.privateKey = privateKey
+        self.passwordKeySalt = passwordKeySalt
+    }
+    
+    @available(*, deprecated, message: "Please use the init method without expiration")
     public init(sessionID: String,
                 accessToken: String,
                 refreshToken: String,
@@ -84,7 +100,6 @@ public final class AuthCredential: NSObject, NSCoding {
         self.sessionID = sessionID
         self.accessToken = accessToken
         self.refreshToken = refreshToken
-        self.expiration = expiration
         self.userName = userName
         self.userID = userID
         self.privateKey = privateKey
@@ -95,7 +110,6 @@ public final class AuthCredential: NSObject, NSCoding {
         self.sessionID = other.sessionID
         self.accessToken = other.accessToken
         self.refreshToken = other.refreshToken
-        self.expiration = other.expiration
         self.userName = other.userName
         self.userID = other.userID
         self.privateKey = other.privateKey
@@ -112,7 +126,6 @@ public final class AuthCredential: NSObject, NSCoding {
     @available(*, deprecated, message: "This method no longer does anything. Client apps should not depend on the expiration date, please don't use this for anything")
     public func expire() {
         assertionFailure("This method should never be called")
-        expiration = Date.distantPast
     }
 
     public func update(salt: String?, privateKey: String?) {
@@ -126,19 +139,26 @@ public final class AuthCredential: NSObject, NSCoding {
 
     public func udpate(sessionID: String,
                        accessToken: String,
+                       refreshToken: String) {
+        self.sessionID = sessionID
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+    }
+    
+    @available(*, deprecated, message: "Please use the update method without expiration")
+    public func udpate(sessionID: String,
+                       accessToken: String,
                        refreshToken: String,
                        expiration: Date) {
         self.sessionID = sessionID
         self.accessToken = accessToken
         self.refreshToken = refreshToken
-        self.expiration = expiration
     }
 
     required init(res: AuthResponse, userName: String) {
         self.sessionID = res.sessionID ?? ""
         self.accessToken = res.accessToken
         self.refreshToken = res.refreshToken
-        self.expiration = Date(timeIntervalSinceNow: res.expiresIn )
         self.userName = userName
         self.userID = res.userID
     }
@@ -147,8 +167,7 @@ public final class AuthCredential: NSObject, NSCoding {
         guard
             let token = aDecoder.decodeObject(forKey: CoderKey.accessToken) as? String,
             let refreshToken = aDecoder.decodeObject(forKey: CoderKey.refreshToken) as? String,
-            let sessionID = aDecoder.decodeObject(forKey: CoderKey.sessionID) as? String,
-            let expirationDate = aDecoder.decodeObject(forKey: CoderKey.expiration) as? Date else
+            let sessionID = aDecoder.decodeObject(forKey: CoderKey.sessionID) as? String else
         {
                 return nil
         }
@@ -156,7 +175,6 @@ public final class AuthCredential: NSObject, NSCoding {
         self.accessToken = token
         self.sessionID = sessionID
         self.refreshToken = refreshToken
-        self.expiration = expirationDate
 
         self.privateKey = aDecoder.decodeObject(forKey: CoderKey.key) as? String
         self.passwordKeySalt = aDecoder.decodeObject(forKey: CoderKey.salt) as? String
@@ -189,7 +207,6 @@ public final class AuthCredential: NSObject, NSCoding {
         aCoder.encode(sessionID, forKey: CoderKey.sessionID)
         aCoder.encode(accessToken, forKey: CoderKey.accessToken)
         aCoder.encode(refreshToken, forKey: CoderKey.refreshToken)
-        aCoder.encode(expiration, forKey: CoderKey.expiration)
         aCoder.encode(privateKey, forKey: CoderKey.key)
         aCoder.encode(mailboxpassword, forKey: CoderKey.password)
         aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
@@ -203,7 +220,6 @@ extension AuthCredential {
         self.init(sessionID: credential.UID,
                   accessToken: credential.accessToken,
                   refreshToken: credential.refreshToken,
-                  expiration: credential.expiration,
                   userName: credential.userName,
                   userID: credential.userID,
                   privateKey: nil,
@@ -214,7 +230,6 @@ extension AuthCredential {
         self.sessionID = credential.UID
         self.accessToken = credential.accessToken
         self.refreshToken = credential.refreshToken
-        self.expiration = credential.expiration
         self.userName = credential.userName
         self.userID = credential.userID
         // we deliberately not update nor nil out privateKey, passwordKeySalt and mailboxpassword here
@@ -223,52 +238,66 @@ extension AuthCredential {
 }
 
 public struct Credential: Equatable {
+    @available(*, deprecated, message: "Please use BackendScopes instead of BackendScope")
     public typealias BackendScope = CredentialConvertible.Scope
+    public typealias BackendScopes = CredentialConvertible.Scopes
     public typealias Scopes = [String]
 
     public var UID: String
     public var accessToken: String
     public var refreshToken: String
-    public var expiration: Date
+    @available(*, deprecated, message: "Please do not use expiration property")
+    public var expiration: Date = .distantPast
     public var userName: String
     public var userID: String
-    public var scope: Scopes
+    @available(*, deprecated, renamed: "scopes")
+    public var scope: Scopes { scopes }
+    public var scopes: Scopes
     
-    public var hasFullScope: Bool { scope.contains("full") }
+    public var hasFullScope: Bool { scopes.contains("full") }
 
+    public init(UID: String, accessToken: String, refreshToken: String, userName: String, userID: String, scopes: Scopes) {
+        self.UID = UID
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.userName = userName
+        self.userID = userID
+        self.scopes = scopes
+    }
+    
+    @available(*, deprecated, message: "Please use the init method without expiration and with scopes")
     public init(UID: String, accessToken: String, refreshToken: String, expiration: Date, userName: String, userID: String, scope: Scopes) {
         self.UID = UID
         self.accessToken = accessToken
         self.refreshToken = refreshToken
-        self.expiration = expiration
         self.userName = userName
         self.userID = userID
-        self.scope = scope
+        self.scopes = scope
     }
 
     public init(res: CredentialConvertible, UID: String = "", userName: String, userID: String) {
         self.UID = res.UID ?? res.sessionID ?? UID
         self.accessToken = res.accessToken
         self.refreshToken = res.refreshToken
-        self.expiration = Date(timeIntervalSinceNow: res.expiresIn)
         self.userName = userName
         self.userID = userID
-        self.scope = res.scope.components(separatedBy: " ")
+        self.scopes = res.scopes
     }
-
+    
+    @available(*, deprecated, message: "Please update scopes property directly")
     public mutating func updateScope(_ newScope: BackendScope) {
-        self.scope = newScope.components(separatedBy: " ")
+        self.scopes = newScope.components(separatedBy: " ")
     }
 }
 
 @dynamicMemberLookup
 public protocol CredentialConvertible {
+    typealias Scopes = [String]
     typealias Scope = String
 
     var accessToken: String { get }
-    var expiresIn: TimeInterval { get }
     var tokenType: String { get }
-    var scope: Scope { get }
+    var scopes: Scopes { get }
     var refreshToken: String { get }
 }
 
@@ -286,20 +315,28 @@ extension Credential {
         self.init(UID: authCredential.sessionID,
                   accessToken: authCredential.accessToken,
                   refreshToken: authCredential.refreshToken,
-                  expiration: authCredential.expiration,
                   userName: authCredential.userName,
                   userID: authCredential.userID,
-                  scope: [])
+                  scopes: [])
     }
     
+    public init(_ authCredential: AuthCredential, scopes: Scopes) {
+        self.init(UID: authCredential.sessionID,
+                  accessToken: authCredential.accessToken,
+                  refreshToken: authCredential.refreshToken,
+                  userName: authCredential.userName,
+                  userID: authCredential.userID,
+                  scopes: scopes)
+    }
+    
+    @available(*, deprecated, message: "Please use the init method with scopes")
     public init(_ authCredential: AuthCredential, scope: Scopes) {
         self.init(UID: authCredential.sessionID,
                   accessToken: authCredential.accessToken,
                   refreshToken: authCredential.refreshToken,
-                  expiration: authCredential.expiration,
                   userName: authCredential.userName,
                   userID: authCredential.userID,
-                  scope: scope)
+                  scopes: scope)
     }
 }
 
@@ -348,10 +385,13 @@ extension VerifyMethod {
 // MARK: Response part
 public final class AuthResponse: Response, CredentialConvertible, Codable {
     public var accessToken: String = ""
+    @available(*, deprecated, message: "Please do not use expiresIn property")
     public var expiresIn: TimeInterval = 0.0
     public var tokenType: String = ""
     public var userID: String = ""
-    public var scope: Scope = ""
+    @available(*, deprecated, renamed: "scopes")
+    public var scope: Scopes { scopes }
+    public var scopes: Scopes = []
     public var refreshToken: String = ""
 
     override public func ParseResponse(_ response: [String: Any]!) -> Bool {

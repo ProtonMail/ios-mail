@@ -110,7 +110,8 @@ public class SignupUITestCases {
     public func testSignupNewIntAccountSuccess(signupRobot: SignupRobot,
                                                randomName: String,
                                                password: String,
-                                               randomEmail: String) -> AccountSummaryRobot {
+                                               randomEmail: String,
+                                               emailVerificationCode: String) -> AccountSummaryRobot {
         return signupRobot
             .verify.signupScreenIsShown()
             .insertName(name: randomName)
@@ -126,7 +127,7 @@ public class SignupUITestCases {
             .verify.completeScreenIsShown(robot: SignupHumanVerificationRobot.self)
             .verify.humanVerificationScreenIsShown()
             .performEmailVerification(
-                email: randomEmail, code: "666666", to: AccountSummaryRobot.self
+                email: randomEmail, code: emailVerificationCode, to: AccountSummaryRobot.self
             )
             .accountSummaryElementsDisplayed(robot: AccountSummaryRobot.self)
     }

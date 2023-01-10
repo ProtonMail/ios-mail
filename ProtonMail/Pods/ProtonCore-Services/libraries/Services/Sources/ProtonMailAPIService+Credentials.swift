@@ -27,12 +27,6 @@ import ProtonCore_Utilities
 
 // MARK: - Fetching and refreshing credentials
 
-extension String {
-    var isRefreshPath: Bool {
-        return self.contains("/auth/refresh")
-    }
-}
-
 extension PMAPIService {
     
     enum AuthCredentialFetchingResult: Equatable {

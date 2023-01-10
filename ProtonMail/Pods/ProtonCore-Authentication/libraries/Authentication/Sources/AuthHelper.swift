@@ -61,7 +61,6 @@ public final class AuthHelper: AuthDelegate {
         guard authCredential.sessionID == credential.UID,
               authCredential.accessToken == credential.accessToken,
               authCredential.refreshToken == credential.refreshToken,
-              authCredential.expiration == credential.expiration,
               authCredential.userID == credential.userID,
               authCredential.userName == credential.userName else {
             return nil
@@ -141,8 +140,8 @@ public final class AuthHelper: AuthDelegate {
             var updatedCredentials = credential
             
             // if there's no update in scopes, assume the same scope as previously
-            if updatedCredentials.scope.isEmpty {
-                updatedCredentials.scope = existingCredentials.1.scope
+            if updatedCredentials.scopes.isEmpty {
+                updatedCredentials.scopes = existingCredentials.1.scopes
             }
 
             credentialsToBeUpdated = (updatedAuth, updatedCredentials)

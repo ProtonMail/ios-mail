@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ er tilgængelig";
-
 /* Plan details storage */
 "%@ storage" = "%@ lagerplads";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Tilbage";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Ved at klikke på Opret adresse accepterer du Proton's Vilkår og Betingelser.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Ved at klikke på Næste accepterer du Proton's Vilkår og Betingelser";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Tjek Proton Status for vores systemstatus.";
-
-/* Available addresss claim button */
-"Claim it" = "Gør krav på den";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Luk";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Opret en sikker Proton Mail-adresse i stedet";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Opret adresse";
-
 /* Create account button */
 "Create an account" = "Opret en konto";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Opret en Proton Mail-adresse";
-
 /* Create user failed error */
 "Create user failed" = "Kunne ikke oprette bruger";
-
-/* Available addresss own address button */
-"Create your own" = "Opret din egen";
 
 /* Signup password proton view title */
 "Create your password" = "Opret din adgangskode";
@@ -342,8 +323,7 @@
  * Networking */
 "Network connection error" = "Fejl i netværksforbindelse";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Næste";
 
 /* network troubleshot cell title */
@@ -433,7 +413,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Fortrolighed som standard";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Proton-adresse påkrævet";
 
 /* Signup summary free plan description replacement */
@@ -567,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Deaktiver midlertidigt eller fjern din antivirussoftware.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Vilkår og Betingelser";
 
@@ -576,9 +556,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Det grundlæggende til privat og sikker kommunikation.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Den følgende adresse er tilgængelig:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Købsprocessen for IAP er startet. Følg Apples instruktioner for at gennemføre eller annullere købet.";
@@ -709,14 +686,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Du vil blive logget ud og alle de data, der er knyttet til denne konto, vil blive fjernet fra denne enhed.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Du vil bruge denne e-mailadresse til at logge ind på alle Proton-tjenester.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Du er heldig!";
-
 /* Complete view title */
 "Your account is being created" = "Din konto oprettes…";
 
@@ -738,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Dit abonnement fornys automatisk den %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Din Proton-konto er tilknyttet %@. For at bruge %@ bedes du oprette en adresse.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Din Proton-konto blev oprettet.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Din Proton Free-konto blev oprettet.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Din e-mailadresse til gendannelse:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Din session er udløbet. Log venligst ind igen.";

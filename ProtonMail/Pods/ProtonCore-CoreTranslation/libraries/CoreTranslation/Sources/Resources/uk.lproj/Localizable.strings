@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ та %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ доступно";
-
 /* Plan details storage */
 "%@ storage" = "%@ сховища";
 
@@ -63,9 +60,6 @@
 /* top left back button */
 "Back" = "Назад";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Натискаючи Створити адресу, ви погоджуєтеся з Умовами та положеннями Proton.";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Натискаючи Далі, ви погоджуєтеся з Умовами та положеннями Proton";
 
@@ -87,9 +81,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Перевірте стан Proton, щоб дізнатися стан нашої системи.";
-
-/* Available addresss claim button */
-"Claim it" = "Вказати її";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Закрити";
@@ -130,21 +121,11 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Створити натомість захищену електронну адресу Proton";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Створити адресу";
-
 /* Create account button */
 "Create an account" = "Зареєструватися";
 
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Створити електронну адресу Proton";
-
 /* Create user failed error */
 "Create user failed" = "Не вдалося створити користувача";
-
-/* Available addresss own address button */
-"Create your own" = "Створити свою власну";
 
 /* Signup password proton view title */
 "Create your password" = "Створіть пароль";
@@ -342,8 +323,7 @@
  * Networking */
 "Network connection error" = "Помилка зв'язку з мережею";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Далі";
 
 /* network troubleshot cell title */
@@ -433,7 +413,8 @@
 /* Welcome screen footer label */
 "Privacy by default" = "Усталена приватність";
 
-/* External accounts not supported popup title */
+/* *
+ * Login create address */
 "Proton address required" = "Адреса Proton обов'язкова";
 
 /* Signup summary free plan description replacement */
@@ -567,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Тимчасово вимкніть чи вилучіть свою антивірусну програму.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Умови та положення";
 
@@ -576,9 +556,6 @@
 
 /* Plan details free description */
 "The basic for private and secure communications." = "Основа для приватного та захищеного спілкування.";
-
-/* Available addresss screen info */
-"The following address is available:" = "Ця адреса доступна:";
 
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Процес покупки в програмі розпочато. Дотримуйтесь інструкцій Apple для завершення чи скасування покупки.";
@@ -709,14 +686,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Ви вийдете з системи, а всі дані, пов'язані з цим обліковим записом будуть вилучені з цього пристрою.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Ви користуватиметесь цією адресою е-пошти для входу до всіх служб Proton.";
-
-/* *
- * Login available address */
-"You’re in Luck!" = "Вам пощастило!";
-
 /* Complete view title */
 "Your account is being created" = "Створюємо ваш обліковий запис…";
 
@@ -738,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Ваш тарифний план автоматично поновиться %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Ваш обліковий запис Proton пов'язаний з %@. Щоб використовувати %@, створіть адресу.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Ваш обліковий запис Proton успішно створено.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Ваша електронна пошта для відновлення:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Термін дії вашого сеансу завершився. Увійдіть знову.";
