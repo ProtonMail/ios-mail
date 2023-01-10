@@ -328,7 +328,7 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(params: .init(preference: preference)) { result in
+            .execute(params: .init(preference: preference)) { result in
                 switch result {
                 case .success:
                     completion?(nil)
