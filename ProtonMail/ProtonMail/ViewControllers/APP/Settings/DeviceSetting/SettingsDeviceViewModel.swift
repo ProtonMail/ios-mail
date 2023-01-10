@@ -88,7 +88,7 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
 
 final class SettingsDeviceViewModel {
     let sections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
-    private(set) var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction, .toolbar]
+    private(set) var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
     let generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private(set) var userManager: UserManager
@@ -137,6 +137,10 @@ final class SettingsDeviceViewModel {
         self.biometricStatus = biometricStatus
         if #available(iOS 13, *), UserInfo.isDarkModeEnable {
             appSettigns.insert(.darkMode, at: 0)
+        }
+
+        if UserInfo.isToolbarCustomizationEnable {
+            appSettigns.append(.toolbar)
         }
     }
 
