@@ -76,17 +76,16 @@ extension CacheServiceTest {
         contactDict["Cards"] = testUpdatedContactCardData.parseJson()!
 
         let updateExpect = expectation(description: "Update Contact")
-        sut.updateContact(contactID: ContactID(contactToUpdate.contactID), cardsJson: contactDict) { result in
-            switch result {
-            case .failure:
-                XCTFail()
-            case .success(let contacts):
-                XCTAssertFalse(contacts.isEmpty)
-                XCTAssertEqual(contacts.first?.name, "New Test")
+        sut.updateContact(contactID: ContactID(contactToUpdate.contactID), cardsJson: contactDict) { error in
+            if let error = error {
+                XCTFail("\(error)")
             }
+
             updateExpect.fulfill()
         }
         wait(for: [updateExpect], timeout: 1)
+
+        XCTAssertEqual(contactToUpdate.name, "New Test")
     }
 
     func testDeleteContact() throws {

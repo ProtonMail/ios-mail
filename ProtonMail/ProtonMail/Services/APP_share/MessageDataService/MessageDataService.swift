@@ -1477,7 +1477,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let completionBlock: () -> Void = {
                 self.labelDataService.fetchV4Labels { _ in
                     self.contactDataService.cleanUp().ensure {
-                        self.contactDataService.fetchContacts { (_, error) in
+                        self.contactDataService.fetchContacts { error in
                             if error == nil {
                                 _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
                                     completion(error)

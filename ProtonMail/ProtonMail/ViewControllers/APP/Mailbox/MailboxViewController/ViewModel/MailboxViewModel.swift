@@ -221,8 +221,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         contactGroupProvider.getAllContactGroupVOs()
     }
 
-    func fetchContacts(completion: ContactFetchComplete? = nil) {
-        contactProvider.fetchContacts(completion: completion)
+    func fetchContacts() {
+        contactProvider.fetchContacts(completion: nil)
     }
 
     /// create a fetch controller with labelID

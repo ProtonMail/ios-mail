@@ -114,7 +114,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
                 self.isFetching = false
                 completion(result.error)
             })
-            self.user.contactService.fetchContacts { (_, error) in
+            self.user.contactService.fetchContacts { error in
 
             }
         } else {
