@@ -629,9 +629,6 @@
 /* Title in settings */
 "Display Name" = "Vist navn";
 
-/* Title in display name settings */
-"DisplayName" = "Vis navn";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Vil du virkelig fjerne denne fil fra vedhæftninger?";
 
@@ -1667,6 +1664,9 @@
 
 /* section title */
 "Select colour" = "Vælg farve";
+
+/* Option for set up scheduled send */
+"Select date and time" = "Vælg dato og tid";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valgte";

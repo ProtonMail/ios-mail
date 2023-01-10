@@ -629,9 +629,6 @@
 /* Title in settings */
 "Display Name" = "Отображаемое имя";
 
-/* Title in display name settings */
-"DisplayName" = "Отображаемое имя";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Вы действительно хотите удалить этот файл из вложений?";
 

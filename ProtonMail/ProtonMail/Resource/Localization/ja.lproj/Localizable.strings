@@ -502,6 +502,9 @@
 /* Title */
 "Copy name" = "名前をコピー";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "メッセージを開けませんでした。もう一度やり直してください。";
+
 /* contact placeholder */
 "Country" = "国";
 
@@ -617,14 +620,14 @@
 /* Action */
 "Discard changes" = "変更を破棄";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "破棄しました";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "キーボードを隠す";
 
 /* Title in settings */
 "Display Name" = "表示名";
-
-/* Title in display name settings */
-"DisplayName" = "表示名";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "この添付ファイルを削除してよろしいですか?";
@@ -866,6 +869,9 @@
 
 /* forwarded message title */
 "Forwarded message" = "転送されたメッセージ";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "続行するには最低 100 MBのストレージを解放してください。";
 
 /* Title */
 "From" = "差出人";
@@ -1575,6 +1581,9 @@
 /* Text for resume button */
 "Resume" = "再開";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "手動で再開。";
+
 /* Action */
 "Retry" = "再試行";
 
@@ -1776,6 +1785,12 @@
 
 /* Storage warning */
 "Storage quota exceeded" = "ストレージの容量制限を超過しました";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "使用中のストレージ";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "使用中のストレージ: ";
 
 /* Title */
 "Storage Warning" = "ストレージ容量の警告";

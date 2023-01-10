@@ -179,6 +179,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Αρχειοθετημένα";
 
+/* Push notification action archive */
+"Archive (verb)" = "Αρχειοθέτηση";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτό το μήνυμα;";
 

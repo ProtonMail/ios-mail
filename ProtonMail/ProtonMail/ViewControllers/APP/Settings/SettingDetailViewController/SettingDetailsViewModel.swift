@@ -53,7 +53,7 @@ class ChangeDisplayNameViewModel: SettingDetailsViewModel {
     }
 
     func getNavigationTitle() -> String {
-        return LocalString._settings_displayname_title
+        return LocalString._settings_display_name_title
     }
 
     func isDisplaySwitch() -> Bool {

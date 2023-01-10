@@ -629,9 +629,6 @@
 /* Title in settings */
 "Display Name" = "Weergavenaam";
 
-/* Title in display name settings */
-"DisplayName" = "Weergavenaam";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Weet u zeker dat u dit bestand uit de bijlagen wilt verwijderen?";
 
@@ -1984,6 +1981,9 @@
 
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Deze link leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.\n%@\n\nGa voor uw veiligheid niet verder.";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Dit bericht is niet langer ingepland om later te worden verstuurd. Als u het nog steeds later wilt versturen, kunt op \"Ingepland versturen\"";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Dit bericht is mogelijk een poging tot phishing. Controleer de afzender en de inhoud om te controleren dat de afzender van het bericht van legitiem is.";

@@ -575,9 +575,6 @@
 /* Title in settings */
 "Display Name" = "Nome a exibir";
 
-/* Title in display name settings */
-"DisplayName" = "Nome";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Deseja realmente remover o ficheiro dos anexos?";
 

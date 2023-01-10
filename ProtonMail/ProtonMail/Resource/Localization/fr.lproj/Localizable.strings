@@ -250,7 +250,7 @@
 "Authentication" = "Authentification";
 
 /* Title */
-"Auto Lock Time" = "Durée avant verrouillage automatique";
+"Auto Lock Time" = "Délai avant verrouillage automatique";
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images intégrées";
@@ -621,16 +621,13 @@
 "Discard changes" = "Annuler les modifications";
 
 /* Message shown to user after discarding action is done */
-"Discarded" = "Annulé";
+"Discarded" = "L'action a été abandonnée.";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ignorer le clavier";
 
 /* Title in settings */
 "Display Name" = "Nom d'affichage";
-
-/* Title in display name settings */
-"DisplayName" = "Nom d'affichage";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Voulez-vous vraiment supprimer ce fichier des pièces jointes ?";
@@ -2013,7 +2010,7 @@
 "Time to relax" = "C'est le moment pour se détendre.";
 
 /* A section title for timing section to set auto lock timing */
-"Timing" = "Synchronisation";
+"Timing" = "Délai";
 
 /* contacts talbe cell Title title */
 "Title" = "Titre";
