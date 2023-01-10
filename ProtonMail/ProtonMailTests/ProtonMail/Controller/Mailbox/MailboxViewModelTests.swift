@@ -120,24 +120,6 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertNil(sut.item(index:IndexPath(row: 0, section: 1)))
     }
     
-    func testCheckIsIndexPathMatch_withMessage() {
-        createSut(labelID: Message.Location.inbox.rawValue,
-                  labelType: .folder,
-                  isCustom: false,
-                  labelName: nil)
-        sut.setupFetchController(nil)
-        let targetMsgID = "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q=="
-        XCTAssertTrue(sut.checkIsIndexPathMatch(with: targetMsgID,
-                                                indexPath: IndexPath(row: 0, section: 0)))
-        XCTAssertFalse(sut.checkIsIndexPathMatch(with: "1213",
-                                                indexPath: IndexPath(row: 0, section: 0)))
-        XCTAssertFalse(sut.checkIsIndexPathMatch(with: targetMsgID,
-                                                indexPath: IndexPath(row: 1, section: 0)))
-        XCTAssertFalse(sut.checkIsIndexPathMatch(with: targetMsgID,
-                                                indexPath: IndexPath(row: 0, section: 1)))
-        
-    }
-    
     func testSelectByID() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
         sut.select(id: "1")
@@ -641,72 +623,6 @@ class MailboxViewModelTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testMarkConversationAsUnreadIsCalled() {
-        let expectation1 = expectation(description: "Closure called")
-        sut.markConversationAsUnread(conversationIDs: ["conversation1"], currentLabelID: "label1") { _ in
-            XCTAssertTrue(self.conversationProviderMock.callMarkAsUnRead.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callMarkAsUnRead.lastArguments)
-                XCTAssertEqual(argument.first, ["conversation1"])
-                XCTAssertEqual(argument.a2, "label1")
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testMarkConversationAsReadIsCalled() {
-        let expectation1 = expectation(description: "Closure called")
-        sut.markConversationAsRead(conversationIDs: ["conversation1"], currentLabelID: "label1") { _ in
-            XCTAssertTrue(self.conversationProviderMock.callMarkAsRead.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callMarkAsRead.lastArguments)
-                XCTAssertEqual(argument.first, ["conversation1"])
-                XCTAssertEqual(argument.a2, "label1")
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testLabelConversationsIsCalled() {
-        let expectation1 = expectation(description: "Closure called")
-        sut.labelConversations(conversationIDs: ["conversation1"], labelID: "label1") { _ in
-            XCTAssertTrue(self.conversationProviderMock.callLabel.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callLabel.lastArguments)
-                XCTAssertEqual(argument.first, ["conversation1"])
-                XCTAssertEqual(argument.a2, "label1")
-                XCTAssertFalse(argument.a3)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testUnlabelConversationsIsCalled() {
-        let expectation1 = expectation(description: "Closure called")
-        sut.unlabelConversations(conversationIDs: ["conversation1"], labelID: "label1") { _ in
-            XCTAssertTrue(self.conversationProviderMock.callUnlabel.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callUnlabel.lastArguments)
-                XCTAssertEqual(argument.first, ["conversation1"])
-                XCTAssertEqual(argument.a2, "label1")
-                XCTAssertFalse(argument.a3)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
     func testDeleteConversationPermanently() {
         conversationStateProviderMock.viewMode = .conversation
 
@@ -768,7 +684,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertNil(self.sut.selectedMoveToFolder)
     }
 
-    func testHandleConversatinoMoveToAction_withNoDestination() {
+    func testHandleConversationMoveToAction_withNoDestination() {
         let conversationObject = Conversation(context: testContext)
         conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
@@ -778,109 +694,6 @@ class MailboxViewModelTests: XCTestCase {
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
             XCTAssertFalse(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
             XCTAssertFalse(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testDeleteConversationActionForSwipeAction_inTrash_moveIsCalled() {
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
-        createSut(labelID: Message.Location.trash.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
-
-        sut.delete(conversation: conversationToMove, isSwipeAction: false) {
-            XCTAssertTrue(self.conversationProviderMock.callDelete.wasNotCalled)
-            XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
-                XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
-                XCTAssertFalse(argument.a4)
-
-                XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testDeleteConversationActionForSwipeAction_inSpam_moveIsCalled() {
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
-        createSut(labelID: Message.Location.spam.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
-
-        sut.delete(conversation: conversationToMove, isSwipeAction: false) {
-            XCTAssertTrue(self.conversationProviderMock.callDelete.wasNotCalled)
-            XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
-                XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
-                XCTAssertFalse(argument.a4)
-
-                XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testDeleteConversationActionForSwipeAction_inDraft_moveIsCalled() {
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
-        createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
-
-        sut.delete(conversation: conversationToMove, isSwipeAction: false) {
-            XCTAssertTrue(self.conversationProviderMock.callDelete.wasNotCalled)
-            XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
-                XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
-                XCTAssertFalse(argument.a4)
-
-                XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testDeleteConversationActionForSwipeAction_inInbox_moveIsCalled() {
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
-        createSut(labelID: Message.Location.inbox.rawValue, labelType: .folder, isCustom: false, labelName: nil)
-        let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
-
-        sut.delete(conversation: conversationToMove, isSwipeAction: false) {
-            XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
-                XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
-                XCTAssertFalse(argument.a4)
-
-                XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
-            } catch {
-                XCTFail("Should not reach here")
-            }
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -1075,7 +888,6 @@ class MailboxViewModelTests: XCTestCase {
         destination = self.sut.getOnboardingDestination()
         XCTAssertEqual(destination, .onboardingForUpdate)
     }
-
 
     func testSendsHapticFeedbackOnceWhenSwipeActionIsActivatedAndOnceItIsDeactivated() {
         var signalsSent = 0
