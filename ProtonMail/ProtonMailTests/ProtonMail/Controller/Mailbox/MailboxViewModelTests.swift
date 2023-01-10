@@ -480,12 +480,8 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testFetchContacts() {
-        let expectation1 = expectation(description: "Closure is called")
-        sut.fetchContacts(completion: { _, _ in
-            XCTAssertTrue(self.contactProviderMock.isFetchContactsCalled)
-            expectation1.fulfill()
-        })
-        waitForExpectations(timeout: 1, handler: nil)
+        sut.fetchContacts()
+        XCTAssertTrue(self.contactProviderMock.isFetchContactsCalled)
     }
 
     func testGetAllEmails() {

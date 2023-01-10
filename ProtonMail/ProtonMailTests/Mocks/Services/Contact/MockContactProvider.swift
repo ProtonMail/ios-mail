@@ -48,7 +48,7 @@ class MockContactProvider: ContactProviderProtocol {
 
     func fetchContacts(completion: ContactFetchComplete?) {
         isFetchContactsCalled = true
-        completion?([], nil)
+        completion?(nil)
     }
 
     func cleanUp() -> Promise<Void> {
