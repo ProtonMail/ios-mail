@@ -24,15 +24,15 @@ extension MailboxViewModelTests {
         conversationStateProviderMock.viewMode = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
-        self.conversationProviderMock.callFetchConversations.bodyIs { _, _, _, _, _, completion in
+        self.conversationProviderMock.fetchConversationsStub.bodyIs { _, _, _, _, _, completion in
             completion?(.success)
         }
 
         let expectation1 = expectation(description: "Closure is called")
         sut.fetchMessages(time: 999, forceClean: false, isUnread: false) { _ in
-            XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
+            XCTAssertTrue(self.conversationProviderMock.fetchConversationsStub.wasCalledExactlyOnce)
             do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversations.lastArguments)
+                let argument = try XCTUnwrap(self.conversationProviderMock.fetchConversationsStub.lastArguments)
                 XCTAssertEqual(argument.first, self.sut.labelID)
                 XCTAssertEqual(argument.a2, 999)
                 XCTAssertFalse(argument.a3)
@@ -49,7 +49,7 @@ extension MailboxViewModelTests {
         conversationStateProviderMock.viewMode = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
-        self.conversationProviderMock.callFetchConversations.bodyIs { _, _, _, _, _, completion in
+        self.conversationProviderMock.fetchConversationsStub.bodyIs { _, _, _, _, _, completion in
             completion?(.success)
         }
 
@@ -57,16 +57,16 @@ extension MailboxViewModelTests {
         sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
             XCTFail("Shouldn't have error")
         } completion: {
-            XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
-            XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
+            XCTAssertTrue(self.conversationProviderMock.fetchConversationsStub.wasCalledExactlyOnce)
+            XCTAssertTrue(self.conversationProviderMock.fetchConversationCountsStub.wasCalledExactlyOnce)
             do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversations.lastArguments)
+                let argument = try XCTUnwrap(self.conversationProviderMock.fetchConversationsStub.lastArguments)
                 XCTAssertEqual(argument.first, self.sut.labelID)
                 XCTAssertEqual(argument.a2, 999)
                 XCTAssertFalse(argument.a3)
                 XCTAssertTrue(argument.a4)
 
-                let argument2 = try XCTUnwrap(self.conversationProviderMock.callFetchConversationCounts.lastArguments)
+                let argument2 = try XCTUnwrap(self.conversationProviderMock.fetchConversationCountsStub.lastArguments)
                 XCTAssertNil(argument2.first)
             } catch {
                 XCTFail("Should not reach here")
@@ -85,11 +85,11 @@ extension MailboxViewModelTests {
 //        sut.fetchDataWithReset(time: 999,
 //                               cleanContact: false,
 //                               unreadOnly: false) { _, _, _ in
-//            XCTAssertTrue(self.conversationProviderMock.callFetchConversations.wasCalledExactlyOnce)
+//            XCTAssertTrue(self.conversationProviderMock.fetchConversationsStub.wasCalledExactlyOnce)
 //            XCTAssertTrue(self.conversationProviderMock.callFetchConversationCounts.wasCalledExactlyOnce)
 //            XCTAssertTrue(self.mockFetchLatestEventId.executeWasCalled)
 //            do {
-//                let argument = try XCTUnwrap(self.conversationProviderMock.callFetchConversations.lastArguments)
+//                let argument = try XCTUnwrap(self.conversationProviderMock.fetchConversationsStub.lastArguments)
 //                XCTAssertEqual(argument.first, self.sut.labelID)
 //                XCTAssertEqual(argument.a2, 999)
 //                XCTAssertFalse(argument.a3)

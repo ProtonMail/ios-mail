@@ -60,6 +60,7 @@ final class SettingsGestureViewModelImpl: SettingsGestureViewModel {
     }
 }
 
+// sourcery: mock
 protocol SwipeActionInfo {
     var swipeLeft: Int { get }
     var swipeRight: Int { get }

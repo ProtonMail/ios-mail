@@ -60,7 +60,7 @@ class MailboxCoordinatorTests: XCTestCase {
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
-        conversationProviderMock = MockConversationProvider(context: contextProviderMock.mainContext)
+        conversationProviderMock = MockConversationProvider()
         eventServiceMock = EventsServiceMock()
         infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
