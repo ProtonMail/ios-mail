@@ -17,6 +17,7 @@
 
 import Foundation
 
+// sourcery: mock
 protocol ContactCacheStatusProtocol: AnyObject {
     var contactsCached: Int { get set }
 }

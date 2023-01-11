@@ -236,12 +236,12 @@ final class ToolbarCustomizeViewModelTests: XCTestCase {
     }
 
     func testHideInfoBubbleView() {
-        toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldShowViewStub.fixture = false
+        toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldHideToolbarCustomizeInfoBubbleViewStub.fixture = false
         XCTAssertTrue(sut.shouldShowInfoBubbleView)
 
         sut.hideInfoBubbleView()
 
-        XCTAssertTrue(toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldShowViewStub.getWasCalled)
+        XCTAssertTrue(toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldHideToolbarCustomizeInfoBubbleViewStub.getWasCalled)
     }
 
     func testMoveAction_toInvalidSection_noChangeIsApplied() {

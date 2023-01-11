@@ -8,7 +8,6 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     var notificationCenter: NotificationCenter!
     var reachabilityStub: ReachabilityStub!
     var emitedStatuses: [ConnectionStatus]!
-    var connectMonitorMock: MockConnectionMonitor!
 
     override func setUp() {
         super.setUp()
@@ -16,7 +15,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
         notificationCenter = NotificationCenter()
         reachabilityStub = ReachabilityStub()
         reachabilityStub.currentReachabilityStatusStub = .NotReachable
-        sut = InternetConnectionStatusProvider(notificationCenter: notificationCenter, reachability: reachabilityStub, connectionMonitor: connectMonitorMock)
+        sut = InternetConnectionStatusProvider(notificationCenter: notificationCenter, reachability: reachabilityStub, connectionMonitor: nil)
         emitedStatuses = []
     }
 

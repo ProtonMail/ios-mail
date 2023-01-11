@@ -17,6 +17,7 @@
 
 import Foundation
 
+// sourcery: mock
 protocol ToolbarCustomizationInfoBubbleViewStatusProvider: AnyObject {
     var shouldHideToolbarCustomizeInfoBubbleView: Bool { get set }
 }

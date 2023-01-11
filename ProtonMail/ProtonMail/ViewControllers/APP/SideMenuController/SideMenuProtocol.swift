@@ -22,6 +22,7 @@
 
 import SideMenuSwift
 
+// sourcery: mock
 protocol SideMenuProtocol: AnyObject {
     var menuViewController: UIViewController! { get set }
 
