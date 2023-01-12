@@ -34,7 +34,7 @@ class SentRobot : MailboxRobotInterface {
     class Verify: MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            cell(id.messageCellIdentifier(subject)).swipeUpUntilVisible().checkExists()
+            cell(id.messageCellIdentifier(subject)).firstMatch().swipeUpUntilVisible().checkExists()
         }
     }
 }

@@ -719,6 +719,36 @@ extension ContactDataService {
         completion(addressBookService.contacts(), nil)
     }
 
+    func makeAllEmailsFetchedResultController() -> NSFetchedResultsController<Email>? {
+        let context = coreDataService.mainContext
+        let isContactCombine = userCachedStatus.isCombineContactOn
+        let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
+        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
+        fetchRequest.predicate = predicate
+        let sortByTime = NSSortDescriptor(
+            key: Email.Attributes.lastUsedTime,
+            ascending: false
+        )
+        let sortByName = NSSortDescriptor(
+            key: Email.Attributes.name,
+            ascending: true,
+            selector: #selector(NSString.caseInsensitiveCompare(_:))
+        )
+        let sortByEmail = NSSortDescriptor(
+            key: Email.Attributes.email,
+            ascending: true,
+            selector: #selector(NSString.caseInsensitiveCompare(_:))
+        )
+        fetchRequest.sortDescriptors = [sortByTime, sortByName, sortByEmail]
+        let fetchedResultController = NSFetchedResultsController<Email>(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        return fetchedResultController
+    }
+
     private func processContacts(lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
         struct ContactWrapper: Swift.Hashable {
             let contact: ContactVO
