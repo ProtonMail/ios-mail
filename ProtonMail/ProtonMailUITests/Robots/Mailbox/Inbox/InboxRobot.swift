@@ -14,6 +14,7 @@ fileprivate struct id {
     static let inboxTitleLabel = LocalString._menu_inbox_title
     static let composeButtonLabel = "MailboxViewController.composeBarButtonItem"
     static let buttonSkipTutorial = LocalString._skip_btn_title
+    static let skeletonCell = "SkeletonCell"
 }
 
 /**
@@ -33,6 +34,7 @@ class InboxRobot : MailboxRobotInterface {
     
     override func refreshMailbox() -> InboxRobot {
         super.refreshMailbox()
+        cell(id.skeletonCell).firstMatch().waitUntilGone()
         return self
     }
     

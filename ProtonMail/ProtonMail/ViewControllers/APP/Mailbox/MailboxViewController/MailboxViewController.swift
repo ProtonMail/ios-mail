@@ -738,6 +738,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         case .skeleton:
             inputCell.showAnimatedGradientSkeleton()
             inputCell.backgroundColor = ColorProvider.BackgroundNorm
+            inputCell.accessibilityIdentifier = "SkeletonCell"
         }
 
         let accessibilityAction =

@@ -52,6 +52,11 @@ class ComposeViewModel: NSObject {
     // we can't use `dependencies` as name bc it clashes with the subclass attribute of the same name
     let deps: Dependencies
 
+    private(set) var contacts: [ContactPickerModelProtocol] = []
+    private var emailsController: NSFetchedResultsController<Email>?
+
+    private(set) var phoneContacts: [ContactPickerModelProtocol] = []
+
     init(
         msgDataService: MessageDataService,
         contextProvider: CoreDataContextProviderProtocol,
@@ -262,10 +267,84 @@ class ComposeViewModel: NSObject {
     func shouldShowScheduleSendConfirmationAlert() -> Bool {
         return isEditingScheduleMsg && deliveryTime == nil
 	}
+
+    func fetchContacts() {
+        let service = getUser().contactService
+        emailsController = service.makeAllEmailsFetchedResultController()
+        emailsController?.delegate = self
+        try? emailsController?.performFetch()
+        let allContacts = (emailsController?.fetchedObjects ?? [])
+            .map { email in
+                ContactVO(
+                    name: email.name,
+                    email: email.email,
+                    isProtonMailContact: true
+                )
+            }
+        // Remove the duplicated items
+        var set = Set<ContactVO>()
+        var filteredResult = [ContactVO]()
+        for contact in allContacts {
+            if !set.contains(contact) {
+                set.insert(contact)
+                filteredResult.append(contact)
+            }
+        }
+        self.contacts = filteredResult
+    }
+
+    func fetchPhoneContacts(completion: (() -> Void)?) {
+        let service = getUser().contactService
+        service.getContactVOsFromPhone { contacts, error in
+            self.phoneContacts = contacts
+            completion?()
+        }
+    }
+
+    func addContactWithPhoneContact() {
+        let user = getUser()
+        var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = phoneContacts
+
+        if user.hasPaidMailPlan {
+            let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter {
+                $0.contactCount > 0
+            }
+            contactsWithoutLastTimeUsed.append(contentsOf: contactGroupsToAdd)
+        }
+        // sort the contact group and phone address together
+        contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+
+        self.contacts += contactsWithoutLastTimeUsed
+    }
 }
 
 extension ComposeViewModel {
     struct Dependencies {
         let fetchAttachment: FetchAttachmentUseCase
+    }
+}
+
+extension ComposeViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard let emails = controller.fetchedObjects as? [Email] else {
+            return
+        }
+        let allContacts = emails.map { email in
+            ContactVO(
+                name: email.name,
+                email: email.email,
+                isProtonMailContact: true
+            )
+        }
+        // Remove the duplicated items
+        var set = Set<ContactVO>()
+        var filteredResult = [ContactVO]()
+        for contact in allContacts {
+            if !set.contains(contact) {
+                set.insert(contact)
+                filteredResult.append(contact)
+            }
+        }
+        self.contacts = filteredResult
     }
 }
