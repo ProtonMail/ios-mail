@@ -182,6 +182,11 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
 
     /// Executes the block synchronously and immediately - without a serial queue.
     func read<T>(block: (NSManagedObjectContext) -> T) -> T {
+        let hasBeenCalledFromTheWriteMethod = OperationQueue.current == serialQueue
+        if hasBeenCalledFromTheWriteMethod && !ProcessInfo.isRunningUnitTests {
+            assertionFailure("Do not call `read` from `write`, reuse the context!")
+        }
+
         var output: T!
 
         let context = container.newBackgroundContext()
@@ -219,49 +224,79 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
      - calling this method will block the current thread
      - the block will only be executed once the previously enqueued blocks are finished
      - any changes written to the context will be saved automatically - no need to call `context.save()`
+     - This method mimics `context.performAndWait` in that it can be called from within itself. Doing so will not cause
+     a deadlock: the nested call will be executed immediately, without adding it to the queue.
 
      Ignore the `@escaping` annotation, the method is synchronous.
      */
-    func write(block: @escaping (_ context: NSManagedObjectContext) throws -> Void) throws {
-        var result: Result<Void, Error>!
+    func write(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
+        let hasBeenCalledFromAnotherWriteMethod = OperationQueue.current == serialQueue
 
-        serialQueue.addOperation { [weak self] in
-            guard let self = self else { return }
-
-            let context = self.container.newBackgroundContext()
-            context.automaticallyMergesChangesFromParent = true
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-
-            let contextSavingObserver = NotificationCenter.default.addObserver(
-                forName: .NSManagedObjectContextDidSave,
-                object: context,
-                queue: nil
-            ) { [weak self] notification in
-                self?.mainContext.perform {
-                    self?.mainContext.mergeChanges(fromContextDidSave: notification)
-                }
+        if hasBeenCalledFromAnotherWriteMethod {
+            if !ProcessInfo.isRunningUnitTests {
+                assertionFailure("Do not nest writes!")
             }
 
-            defer {
-                NotificationCenter.default.removeObserver(contextSavingObserver)
-            }
+            try executeBlockAndSaveContext(block: block)
+        } else {
+            /*
+             `Result<Void, Error>` is preferred over `Error?` because if for some reason the property is not written in
+             time in case of failure, it will be detected.
+             */
+            var result: Result<Void, Error>!
 
-            context.performAndWait {
+            serialQueue.addOperation { [weak self] in
+                guard let self = self else { return }
+
                 do {
-                    try block(context)
-
-                    if context.hasChanges {
-                        try context.save()
-                    }
-
+                    try self.executeBlockAndSaveContext(block: block)
                     result = .success(Void())
                 } catch {
                     result = .failure(error)
                 }
             }
+
+            serialQueue.waitUntilAllOperationsAreFinished()
+
+            try result.get()
+        }
+    }
+
+    private func executeBlockAndSaveContext(block: (NSManagedObjectContext) throws -> Void) throws {
+        let context = container.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+
+        let contextSavingObserver = NotificationCenter.default.addObserver(
+            forName: .NSManagedObjectContextDidSave,
+            object: context,
+            queue: nil
+        ) { [weak self] notification in
+            self?.mainContext.perform {
+                self?.mainContext.mergeChanges(fromContextDidSave: notification)
+            }
         }
 
-        serialQueue.waitUntilAllOperationsAreFinished()
+        defer {
+            NotificationCenter.default.removeObserver(contextSavingObserver)
+        }
+
+        // See above for reasoning. After we drop iOS 14, we'll be able to use the newer `performAndWait() throws`.
+        var result: Result<Void, Error>!
+
+        context.performAndWait {
+            do {
+                try block(context)
+
+                if context.hasChanges {
+                    try context.save()
+                }
+
+                result = .success(Void())
+            } catch {
+                result = .failure(error)
+            }
+        }
 
         try result.get()
     }
