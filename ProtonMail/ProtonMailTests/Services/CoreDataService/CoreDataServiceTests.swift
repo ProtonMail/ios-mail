@@ -198,6 +198,104 @@ class CoreDataServiceTests: XCTestCase {
         XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 2)
     }
 
+    func testWrite_isReentrant() throws {
+        let outerWillStart = expectation(description: "outer write will start")
+        let outerIsRunning = expectation(description: "outer write is running")
+        let outerHasFinished = expectation(description: "outer write has finished")
+        let innerWillStart = expectation(description: "inner write will start")
+        let innerIsRunning = expectation(description: "inner write is running")
+        let innerHasFinished = expectation(description: "inner write has finished")
+
+        DispatchQueue.global().async {
+            do {
+                outerWillStart.fulfill()
+
+                try self.sut.write { _ in
+                    outerIsRunning.fulfill()
+
+                    innerWillStart.fulfill()
+
+                    try self.sut.write { _ in
+                        Thread.sleep(forTimeInterval: 0.2)
+                        innerIsRunning.fulfill()
+                    }
+
+                    innerHasFinished.fulfill()
+                }
+
+                outerHasFinished.fulfill()
+            } catch {
+                XCTFail("\(error)")
+            }
+        }
+
+        wait(
+            for: [outerWillStart, outerIsRunning, innerWillStart, innerIsRunning, innerHasFinished, outerHasFinished],
+            timeout: 1,
+            enforceOrder: true
+        )
+    }
+
+    func testWrite_savesContextAtTheEndOfTheBlock() throws {
+        try sut.write { writeContext in
+            let messageInWriteContext = Message(context: writeContext)
+            messageInWriteContext.messageID = "1"
+
+            // Notice that by the time this `read` occurs, `writeContext` hasn't been saved yet.
+            self.sut.read { readContext in
+                XCTAssertNil(readContext.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]))
+            }
+        }
+
+        // Now that we're out of the `write` block, the context has been saved, so the messageID is available.
+        let messageIDAfterTheEndOfTheWriteBlock = try sut.read { context in
+            let message = try XCTUnwrap(
+                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
+            )
+            return message.messageID
+        }
+
+        XCTAssertEqual(messageIDAfterTheEndOfTheWriteBlock, "1")
+    }
+
+    func testNestedWrite_canOperateOnObjectFromOuterWrite() throws {
+        let exp = expectation(description: "operations have finished")
+
+        DispatchQueue.global().async {
+            do {
+                try self.sut.write { outerContext in
+                    let messageInOuterContext = Message(context: outerContext)
+                    messageInOuterContext.messageID = "1"
+
+                    try self.sut.write { _ in
+                        messageInOuterContext.messageID = messageInOuterContext.messageID.appending("2")
+                    }
+
+                    messageInOuterContext.messageID = messageInOuterContext.messageID.appending("3")
+
+                    try self.sut.write { _ in
+                        messageInOuterContext.messageID = messageInOuterContext.messageID.appending("4")
+                    }
+                }
+            } catch {
+                XCTFail("\(error)")
+            }
+
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        let messageIDAfterAllWrites = try sut.read { context in
+            let message = try XCTUnwrap(
+                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
+            )
+            return message.messageID
+        }
+
+        XCTAssertEqual(messageIDAfterAllWrites, "1234")
+    }
+
     private func waitUntilChangesAreMergedIntoMainContext() async throws {
         try await Task.sleep(nanoseconds: 5_000_000)
     }
