@@ -265,25 +265,28 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
 
     func presentScheduleSendPromotionView() {
         #if !APP_EXTENSION
-        guard let nav = controller.navigationController?.view else {
-            return
-        }
-        let promotion = ScheduleSendPromotionView()
-        promotion.presentPaymentUpgradeView = { [weak self] in
-            guard let strongSelf = self else {
+        editor?.collectDraftData().ensure { [weak self] in
+            editorViewModel.updateDraft()
+            guard let nav = self?.controller.navigationController?.view else {
                 return
             }
-            strongSelf.paymentsUI = PaymentsUI(
-                payments: strongSelf.editorViewModel.getUser().payments,
-                clientApp: .mail,
-                shownPlanNames: Constants.shownPlanNames
-            )
-            strongSelf.paymentsUI?.showUpgradePlan(
-                presentationType: .modal,
-                backendFetch: true
-            ) { _ in }
-        }
-        promotion.present(on: nav)
+            let promotion = ScheduleSendPromotionView()
+            promotion.presentPaymentUpgradeView = { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.paymentsUI = PaymentsUI(
+                    payments: strongSelf.editorViewModel.getUser().payments,
+                    clientApp: .mail,
+                    shownPlanNames: Constants.shownPlanNames
+                )
+                strongSelf.paymentsUI?.showUpgradePlan(
+                    presentationType: .modal,
+                    backendFetch: true
+                ) { _ in }
+            }
+            promotion.present(on: nav)
+        }.cauterize()
         #endif
     }
 }
