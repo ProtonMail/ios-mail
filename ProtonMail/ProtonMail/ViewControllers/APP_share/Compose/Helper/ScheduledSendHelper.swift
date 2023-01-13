@@ -24,6 +24,8 @@ protocol ScheduledSendHelperDelegate: AnyObject {
     func actionSheetWillDisappear()
     func scheduledTimeIsSet(date: Date?)
     func showSendInTheFutureAlert()
+    func isItAPaidUser() -> Bool
+    func showScheduleSendPromotionView()
 }
 
 extension ScheduledSendHelperDelegate {
@@ -120,10 +122,14 @@ extension ScheduledSendHelper {
             guard let self = self,
                   let viewController = self.viewController,
                   let parentView = viewController.navigationController?.view ?? viewController.view else { return }
-            let picker = PMDatePicker(delegate: self,
-                                      cancelTitle: LocalString._general_cancel_action,
-                                      saveTitle: LocalString._general_schedule_send_action)
-            picker.present(on: parentView)
+            if self.delegate?.isItAPaidUser() == true {
+                let picker = PMDatePicker(delegate: self,
+                                          cancelTitle: LocalString._general_cancel_action,
+                                          saveTitle: LocalString._general_schedule_send_action)
+                picker.present(on: parentView)
+            } else {
+                self.delegate?.showScheduleSendPromotionView()
+            }
             self.actionSheet?.dismiss(animated: true)
         }
     }

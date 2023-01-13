@@ -679,6 +679,14 @@ extension ComposeContainerViewController: AttachmentController {
 
 // MARK: Scheduled send related
 extension ComposeContainerViewController: ScheduledSendHelperDelegate {
+    func showScheduleSendPromotionView() {
+        coordinator.presentScheduleSendPromotionView()
+    }
+
+    func isItAPaidUser() -> Bool {
+        return viewModel.user.isPaid
+    }
+
     func showSendInTheFutureAlert() {
         let alert = LocalString._schedule_send_future_warning.alertController()
         alert.addOKAction()

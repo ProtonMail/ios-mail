@@ -41,7 +41,9 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     var isScheduleSendEnable: Bool {
-        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID) == .enabled
+        // TODO: Remove it after the feature is done.
+        return true
+//        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID) == .enabled
     }
 
     init(
