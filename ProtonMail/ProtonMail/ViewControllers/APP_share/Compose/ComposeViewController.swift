@@ -474,7 +474,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         }
     }
 
-    private func collectDraftData() -> Promise<(String, String)?> {
+    func collectDraftData() -> Promise<(String, String)?> {
         return Promise { [weak self] seal in
             guard let self = self else {
                 seal.fulfill(nil)
