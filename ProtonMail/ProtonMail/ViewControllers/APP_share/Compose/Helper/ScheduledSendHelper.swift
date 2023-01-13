@@ -115,7 +115,7 @@ extension ScheduledSendHelper {
     private func setUpCustomAction() -> PMActionSheetPlainItem {
         let icon = IconProvider.chevronRight
         return PMActionSheetPlainItem(
-            title: L11n.ScheduledSend.select_date_and_time,
+            title: L11n.ScheduledSend.custom,
             icon: nil,
             rightIcon: icon
         ) { [weak self] _ in
