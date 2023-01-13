@@ -20,6 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+#if !APP_EXTENSION
+import ProtonCore_PaymentsUI
+#endif
 import ProtonCore_UIFoundations
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
@@ -36,6 +39,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
 
 
 #if !APP_EXTENSION
+    private var paymentsUI: PaymentsUI?
     private weak var presentingViewController: UIViewController?
 
     init(presentingViewController: UIViewController?, editorViewModel: ContainableComposeViewModel, services: ServiceFactory = sharedServices) {
@@ -257,6 +261,30 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         editor?.displayDraftNotValidAlertIfNeeded(isTriggeredFromScheduleButton: true) {
             continueAction()
         }
+    }
+
+    func presentScheduleSendPromotionView() {
+        #if !APP_EXTENSION
+        guard let nav = controller.navigationController?.view else {
+            return
+        }
+        let promotion = ScheduleSendPromotionView()
+        promotion.presentPaymentUpgradeView = { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.paymentsUI = PaymentsUI(
+                payments: strongSelf.editorViewModel.getUser().payments,
+                clientApp: .mail,
+                shownPlanNames: Constants.shownPlanNames
+            )
+            strongSelf.paymentsUI?.showUpgradePlan(
+                presentationType: .modal,
+                backendFetch: true
+            ) { _ in }
+        }
+        promotion.present(on: nav)
+        #endif
     }
 }
 
