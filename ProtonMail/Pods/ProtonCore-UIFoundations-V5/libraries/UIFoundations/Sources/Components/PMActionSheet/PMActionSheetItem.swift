@@ -87,6 +87,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     public let detailColor: UIColor
     public let iconColor: UIColor
     public let rightIconColor: UIColor
+    public let titleRightIcon: UIImage?
     /// A Boolean value that determines if the item is selected
     public var isOn: Bool = false
     public let userInfo: [String: Any]?
@@ -139,6 +140,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
         detailColor: UIColor? = nil,
         iconColor: UIColor? = nil,
         rightIconColor: UIColor? = nil,
+        titleRightIcon: UIImage? = nil,
         isOn: Bool = false,
         markType: MarkType? = nil,
         alignment: NSTextAlignment = .left,
@@ -158,6 +160,7 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
         self.iconColor = iconColor ?? ColorProvider.TextNorm
         self.rightIconColor = rightIconColor ?? ColorProvider.IconWeak
         self.markType = isOn ? .checkMark : .none
+        self.titleRightIcon = titleRightIcon
         self.isOn = isOn
         if let type = markType {
             self.markType = type
