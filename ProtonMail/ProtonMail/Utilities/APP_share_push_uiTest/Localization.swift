@@ -1517,6 +1517,7 @@ enum L11n {
     struct ScheduledSend {
         static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
         static let custom = NSLocalizedString("Custom", comment: "Option for set up custom schedule send date")
+        static let asSchedule = NSLocalizedString("As scheduled", comment: "One of the schedule time options")
     }
 
     struct PushNotificationAction {

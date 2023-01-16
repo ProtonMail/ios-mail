@@ -38,10 +38,16 @@ final class ScheduledSendHelper {
     private weak var viewController: UIViewController?
     private var actionSheet: PMActionSheet?
     private weak var delegate: ScheduledSendHelperDelegate?
+    private let originalScheduledTime: Date?
 
-    init(viewController: UIViewController, delegate: ScheduledSendHelperDelegate) {
+    init(
+        viewController: UIViewController,
+        delegate: ScheduledSendHelperDelegate,
+        originalScheduledTime: Date?
+    ) {
         self.viewController = viewController
         self.delegate = delegate
+        self.originalScheduledTime = originalScheduledTime
     }
 
     func presentActionSheet() {
@@ -55,7 +61,12 @@ final class ScheduledSendHelper {
 
         let header = self.setUpActionHeader()
 
-        let actions = [self.setUpTomorrowAction(), self.setUpMondayAction(), self.setUpCustomAction()].compactMap { $0 }
+        let actions = [
+            setUpAsScheduledAction(),
+            setUpTomorrowAction(),
+            setUpMondayAction(),
+            setUpCustomAction()
+        ].compactMap { $0 }
         let items = PMActionSheetItemGroup(items: actions, style: .clickable)
 
         self.actionSheet = PMActionSheet(headerView: header, itemGroups: [items], showDragBar: false, enableBGTap: true)
@@ -132,6 +143,21 @@ extension ScheduledSendHelper {
                 self.delegate?.showScheduleSendPromotionView()
             }
             self.actionSheet?.dismiss(animated: true)
+        }
+    }
+
+    private func setUpAsScheduledAction() -> PMActionSheetPlainItem? {
+        guard let originalTime = originalScheduledTime else {
+            return nil
+        }
+        return PMActionSheetPlainItem(
+            title: L11n.ScheduledSend.asSchedule,
+            detail: originalTime.localizedString(withTemplate: nil),
+            icon: nil,
+            detailCompressionResistancePriority: .required
+        ) { [weak self] _ in
+            self?.delegate?.scheduledTimeIsSet(date: originalTime)
+            self?.actionSheet?.dismiss(animated: true)
         }
     }
 }

@@ -124,7 +124,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         NotificationCenter.default.addKeyboardObserver(self)
 
         self.scheduledSendHelper = ScheduledSendHelper(viewController: self,
-                                                       delegate: self)
+                                                       delegate: self,
+                                                       originalScheduledTime: viewModel.childViewModel.originalScheduledTime)
         self.setupBottomPadding()
         self.configureNavigationBar()
         self.setupChildViewModel()

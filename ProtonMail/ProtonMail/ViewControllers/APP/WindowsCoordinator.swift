@@ -613,7 +613,7 @@ extension WindowsCoordinator {
                 )
                 deepLink.append(
                     .init(name: MailboxCoordinator.Destination.composeScheduledMessage.rawValue,
-                          value: messageID.rawValue)
+                          value: messageID.rawValue, states: ["originalScheduledTime": deliveryTime])
                 )
                 NotificationCenter.default.post(name: .switchView, object: deepLink)
             }

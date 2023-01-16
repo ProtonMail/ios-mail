@@ -96,6 +96,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
         isEditingScheduleMsg: Bool = false,
+        originalScheduledTime: Date? = nil,
         dependencies: Dependencies? = nil
     ) {
         self.user = user
@@ -113,6 +114,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             contextProvider: coreDataContextProvider,
             user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
+            originalScheduledTime: originalScheduledTime,
             dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
         )
 

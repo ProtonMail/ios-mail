@@ -31,7 +31,7 @@ class SingleMessageContentViewModelFactory {
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
         dependencies: SingleMessageContentViewModel.Dependencies,
-        goToDraft: @escaping (MessageID) -> Void
+        goToDraft: @escaping (MessageID, Date?) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
@@ -61,7 +61,7 @@ class SingleMessageViewModelFactory {
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
-                         goToDraft: @escaping (MessageID) -> Void) -> SingleMessageViewModel {
+                         goToDraft: @escaping (MessageID, Date?) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: message.spam,
