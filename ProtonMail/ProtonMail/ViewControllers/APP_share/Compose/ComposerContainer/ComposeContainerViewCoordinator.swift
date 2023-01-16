@@ -89,7 +89,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     internal func cancelAction(_ sender: UIBarButtonItem) {
-        self.editor?.cancelAction(sender)
+        self.editor?.cancelAction()
     }
     @IBAction func sendAction(_ sender: UIBarButtonItem) {
         self.editor?.sendAction(sender)
@@ -287,6 +287,13 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             }
             promotion.present(on: nav)
         }.cauterize()
+        #else
+        // Close the share extension and open the draft in main app.
+        if let msgID = editorViewModel.composerMessageHelper.messageID,
+           let url = URL(string: "protonmail://\(msgID)") {
+            editor?.cancelAction()
+            _ = editor?.openURL(url)
+        }
         #endif
     }
 }

@@ -295,6 +295,12 @@ extension MailboxCoordinator {
     }
 
     private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
+        if let msgID = path,
+           let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
+            navigateToComposer(existingMessage: existingMsg)
+            return
+        }
+
         if let nav = self.navigation,
            let value = path,
            let mailToURL = URL(string: value) {
