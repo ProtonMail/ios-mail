@@ -30,6 +30,8 @@ final class ScheduleSendPromotionView: UIView {
     private let upgradeContainerView = SubviewsFactory.upgradeContainerView
     private let scrollContentView = UIView()
     private let planStackView = SubviewsFactory.planStackView
+ 
+    private var containerTopConstraint: NSLayoutConstraint?
 
     var presentPaymentUpgradeView: (() -> Void)?
 
@@ -50,6 +52,13 @@ final class ScheduleSendPromotionView: UIView {
     func present(on view: UIView) {
         view.addSubview(self)
         self.fillSuperview()
+        view.layoutIfNeeded()
+
+        UIView.animate(withDuration: 0.25, delay: 0) {
+            let height = self.frame.height * 0.75
+            self.containerTopConstraint?.constant = -height
+            self.layoutIfNeeded()
+        }
     }
 
     @objc
@@ -82,10 +91,12 @@ final class ScheduleSendPromotionView: UIView {
 
     // swiftlint:disable function_body_length
     private func setupLayout() {
+        let topConstraint = containerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        containerTopConstraint = topConstraint
         [
+            topConstraint,
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             containerView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.75)
         ].activate()
 
