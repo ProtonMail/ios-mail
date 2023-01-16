@@ -184,13 +184,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
 
         if let sanitized = dict["clearBody"] as? String {
-            if sanitized.contains("<body></body>"),
-               let content = self.contents,
-               !content.body.isEmpty,
-               let webView = self.webView {
-                self.prepareRendering(content, into: webView.configuration)
-                return
-            }
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
 
