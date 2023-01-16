@@ -117,7 +117,8 @@ extension ScheduledSendHelper {
         return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.custom,
             icon: nil,
-            rightIcon: icon
+            rightIcon: icon,
+            titleRightIcon: Asset.upgradeIcon.image
         ) { [weak self] _ in
             guard let self = self,
                   let viewController = self.viewController,
