@@ -44,7 +44,7 @@ class WebContentsTests: XCTestCase {
         XCTAssertEqual(sut.contentSecurityPolicy, "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid: \(scheme):; script-src 'none';")
 
         sut = WebContents(body: "testBody", remoteContentMode: .disallowed)
-        XCTAssertEqual(sut.contentSecurityPolicy, "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';")
+        XCTAssertEqual(sut.contentSecurityPolicy, "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(scheme):; script-src 'none';")
 
         sut = WebContents(body: "testBody", remoteContentMode: .lockdown)
         XCTAssertEqual(sut.contentSecurityPolicy, "default-src 'none'; style-src 'self' 'unsafe-inline';")

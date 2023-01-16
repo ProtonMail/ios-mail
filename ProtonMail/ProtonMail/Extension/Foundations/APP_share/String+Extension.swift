@@ -169,7 +169,8 @@ extension String {
     }
 
     func hasRemoteImage() -> Bool {
-        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!(cid:|data:image))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
+        let scheme = HTTPRequestSecureLoader.imageCacheScheme
+        if self.preg_match("\\ssrc=[',\"](?!(cid:|data:image|\(scheme):))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false
