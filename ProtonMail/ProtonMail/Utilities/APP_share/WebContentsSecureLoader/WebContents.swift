@@ -57,16 +57,16 @@ struct WebContents: Equatable {
         case allowed, disallowed, lockdown
 
         var cspRaw: String {
+            let scheme = HTTPRequestSecureLoader.imageCacheScheme
             switch self {
             case .lockdown:
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
 
             case .disallowed: // this cuts off all remote content
                 // swiftlint:disable line_length
-                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';"
+                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(scheme):; script-src 'none';"
 
             case .allowed: // this cuts off only scripts and connections
-                let scheme = HTTPRequestSecureLoader.imageCacheScheme
                 // swiftlint:disable line_length
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid: \(scheme):; script-src 'none';"
             }
