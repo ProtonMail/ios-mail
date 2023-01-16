@@ -129,5 +129,5 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
 class FakeQueueHandlerRegister: QueueHandlerRegister {
     func registerHandler(_ handler: QueueHandler) {}
 
-    func unregisterHandler(_ handler: QueueHandler) {}
+    func unregisterHandler(for userID: UserID) {}
 }

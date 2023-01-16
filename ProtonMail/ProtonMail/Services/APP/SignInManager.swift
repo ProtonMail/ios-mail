@@ -118,7 +118,8 @@ class SignInManager: Service {
             return
         }
 
-        self.queueHandlerRegister.registerHandler(user.mainQueueHandler)
+        let queueHandler = user.makeQueueHandler()
+        queueHandlerRegister.registerHandler(queueHandler)
 
         showSkeleton()
 
@@ -134,7 +135,7 @@ class SignInManager: Service {
                 self.usersManager.update(userInfo: userInfo, for: auth.sessionID)
 
                 guard userInfo.delinquentParsed.isAvailable else {
-                    self.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
+                    self.queueHandlerRegister.unregisterHandler(for: user.userID)
                     self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
                         onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                     }
@@ -146,7 +147,7 @@ class SignInManager: Service {
                 NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             }
         }.catch(on: .main) { [weak self] error in
-            self?.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
+            self?.queueHandlerRegister.unregisterHandler(for: user.userID)
             _ = self?.usersManager.logout(user: user, completion: {
                 onError(error as NSError)
             })
