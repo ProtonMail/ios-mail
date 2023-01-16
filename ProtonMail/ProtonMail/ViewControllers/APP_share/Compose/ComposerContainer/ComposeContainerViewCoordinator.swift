@@ -266,7 +266,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     func presentScheduleSendPromotionView() {
         #if !APP_EXTENSION
         editor?.collectDraftData().ensure { [weak self] in
-            editorViewModel.updateDraft()
+            self?.editorViewModel.updateDraft()
             guard let nav = self?.controller.navigationController?.view else {
                 return
             }
