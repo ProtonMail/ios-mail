@@ -401,7 +401,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         // overriden in Share
     }
 
-    func cancelAction(_ sender: UIBarButtonItem) {
+    func cancelAction() {
         self.handleDismissDraft()
     }
 
