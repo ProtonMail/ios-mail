@@ -125,11 +125,12 @@ extension ScheduledSendHelper {
 
     private func setUpCustomAction() -> PMActionSheetPlainItem {
         let icon = IconProvider.chevronRight
+        let isPaid = delegate?.isItAPaidUser() ?? false
         return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.custom,
             icon: nil,
             rightIcon: icon,
-            titleRightIcon: Asset.upgradeIcon.image
+            titleRightIcon: isPaid ? nil : Asset.upgradeIcon.image
         ) { [weak self] _ in
             guard let self = self,
                   let viewController = self.viewController,
@@ -150,12 +151,18 @@ extension ScheduledSendHelper {
         guard let originalTime = originalScheduledTime else {
             return nil
         }
+
         return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.asSchedule,
             detail: originalTime.localizedString(withTemplate: nil),
             icon: nil,
             detailCompressionResistancePriority: .required
         ) { [weak self] _ in
+            guard Date(timeInterval: Constants.ScheduleSend.minNumberOfSeconds, since: Date()) < originalTime else {
+                self?.showSendInTheFutureAlert()
+                return
+            }
+
             self?.delegate?.scheduledTimeIsSet(date: originalTime)
             self?.actionSheet?.dismiss(animated: true)
         }
