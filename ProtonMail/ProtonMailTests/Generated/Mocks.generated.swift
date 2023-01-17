@@ -156,6 +156,24 @@ class MockConversationProvider: ConversationProvider {
 
 }
 
+class MockConversationStateProviderProtocol: ConversationStateProviderProtocol {
+    @PropertyStub(\MockConversationStateProviderProtocol.viewMode, initialGet: .conversation) var viewModeStub
+    var viewMode: ViewMode {
+        get {
+            viewModeStub()
+        }
+        set {
+            viewModeStub(newValue)
+        }
+    }
+
+    @FuncStub(MockConversationStateProviderProtocol.add) var addStub
+    func add(delegate: ConversationStateServiceDelegate) {
+        addStub(delegate)
+    }
+
+}
+
 class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {

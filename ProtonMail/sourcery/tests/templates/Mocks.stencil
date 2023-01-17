@@ -7,7 +7,7 @@ import ProtonCore_TestingToolkit
 {% for type in types.protocols where type|annotated:"mock" %}
 class Mock{{ type.name }}: {{ type.name }} {
     {% for variable in type.instanceVariables %}
-    @PropertyStub(\Mock{{ type.name }}.{{ variable.name }}, initialGet: {% if variable.typeName.isOptional %}nil{% else %}{{ variable.typeName }}(){% endif %}) var {{ variable.name }}Stub
+    @PropertyStub(\Mock{{ type.name }}.{{ variable.name }}, initialGet: {% if variable.typeName.isOptional %}nil{% elif variable.type.kind == "enum" %}.{{ variable.type.cases[0].name }}{% else %}{{ variable.typeName }}(){% endif %}) var {{ variable.name }}Stub
     var {{ variable.name }}: {{ variable.typeName }} {
     {% if variable.isMutable %}
         get {

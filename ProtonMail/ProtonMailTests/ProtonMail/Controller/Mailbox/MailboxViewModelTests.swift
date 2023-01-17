@@ -30,7 +30,7 @@ class MailboxViewModelTests: XCTestCase {
     var coreDataService: CoreDataService!
     var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
-    var conversationStateProviderMock: ConversationStateProviderProtocol!
+    var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProvider!
     var labelProviderMock: MockLabelProvider!
     var contactProviderMock: MockContactProvider!
@@ -55,7 +55,6 @@ class MailboxViewModelTests: XCTestCase {
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
-                                      expiration: Date(),
                                       userName: "",
                                       userID: "1",
                                       privateKey: nil,
@@ -78,7 +77,7 @@ class MailboxViewModelTests: XCTestCase {
                                       parent: nil)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
-        conversationStateProviderMock = MockConversationStateProvider()
+        conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataService)
@@ -142,6 +141,7 @@ class MailboxViewModelTests: XCTestCase {
     }
     
     func testMessageItemOfIndexPath() {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -221,9 +221,9 @@ class MailboxViewModelTests: XCTestCase {
     
     func testGetCurrentViewMode() {
         XCTAssertEqual(sut.currentViewMode, conversationStateProviderMock.viewMode)
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.currentViewMode, .conversation)
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.currentViewMode, .singleMessage)
     }
     
@@ -232,18 +232,18 @@ class MailboxViewModelTests: XCTestCase {
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
         
         createSut(labelID: Message.Location.sent.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
     }
     
@@ -252,27 +252,27 @@ class MailboxViewModelTests: XCTestCase {
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
         
         createSut(labelID: "custom",
                   labelType: .folder,
                   isCustom: true,
                   labelName: "1")
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
         
         createSut(labelID: "custom1",
                   labelType: .label,
                   isCustom: true,
                   labelName: "2")
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
     }
     
@@ -455,7 +455,7 @@ class MailboxViewModelTests: XCTestCase {
     }
     
     func testGetActionSheetViewModel() {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -464,7 +464,7 @@ class MailboxViewModelTests: XCTestCase {
         let model = sut.actionSheetViewModel
         XCTAssertEqual(model.title, .localizedStringWithFormat(LocalString._general_message, 0))
         
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -476,7 +476,7 @@ class MailboxViewModelTests: XCTestCase {
     }
     
     func testGetEmptyFolderCheckMessage() {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -484,7 +484,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.getEmptyFolderCheckMessage(count: 1),
                        String(format: LocalString._clean_message_warning, 1))
         
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -527,7 +527,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testMoveConversation() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
 
         let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
         sut.setupFetchController(nil)
@@ -552,7 +552,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testMarkConversationAsRead() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
         let expectation1 = expectation(description: "Closure called")
@@ -573,7 +573,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testMarkConversationAsUnread() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
         let expectation1 = expectation(description: "Closure called")
@@ -594,7 +594,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testLabelConversation_applyLabel() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
         let expectation1 = expectation(description: "Closure called")
@@ -616,7 +616,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testLabelConversation_removeLabel() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
         let expectation1 = expectation(description: "Closure called")
@@ -652,7 +652,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationPermanently() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
 
         let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
         sut.setupFetchController(nil)
