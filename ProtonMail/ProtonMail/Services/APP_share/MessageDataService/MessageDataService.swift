@@ -1358,36 +1358,40 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             return Promise()
         }
 
-        let fetchedMessageController = self.fetchedMessageControllerForID(originMessageID)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, originMessageID.rawValue)
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+        ]
 
         return Promise { seal in
-            do {
-                try fetchedMessageController.performFetch()
-                guard let message: Message = fetchedMessageController.fetchedObjects?.first as? Message,
-                    message.managedObjectContext != nil else {
+            self.contextProvider.performOnRootSavingContext { context in
+                do {
+                    guard let msgToUpdate = try fetchRequest.execute().first else {
                         seal.fulfill_()
                         return
-                }
-                self.contextProvider.performOnRootSavingContext { context in
-                    defer {
-                        seal.fulfill_()
                     }
-                    if let msgToUpdate = try? context.existingObject(with: message.objectID) as? Message {
-                        // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
-                        if act == 0 {
-                            msgToUpdate.replied = true
-                        } else if act == 1 {
-                            msgToUpdate.repliedAll = true
-                        } else if act == 2 {
-                            msgToUpdate.forwarded = true
-                        } else {
-                            // ignore
-                        }
-                        _ = context.saveUpstreamIfNeeded()
+
+                    // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                    if act == 0 {
+                        msgToUpdate.replied = true
+                    } else if act == 1 {
+                        msgToUpdate.repliedAll = true
+                    } else if act == 2 {
+                        msgToUpdate.forwarded = true
+                    } else {
+                        // ignore
                     }
+
+                    if let error = context.saveUpstreamIfNeeded(){
+                        throw error
+                    }
+
+                    seal.fulfill_()
+                } catch {
+                    seal.reject(error)
                 }
-            } catch {
-                seal.fulfill_()
             }
         }
     }
