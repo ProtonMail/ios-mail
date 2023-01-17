@@ -83,6 +83,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
 #if !APP_EXTENSION
         let navigationController = UINavigationController(rootViewController: viewController)
         presentingViewController?.present(navigationController, animated: true)
+        if editorViewModel.isOpenedFromShare {
+            presentPaymentView()
+        }
 #else
         embeddingController?.setViewControllers([viewController], animated: true)
 #endif
@@ -264,7 +267,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     func presentScheduleSendPromotionView() {
-        #if !APP_EXTENSION
         editor?.collectDraftData().ensure { [weak self] in
             self?.editorViewModel.updateDraft()
             guard let nav = self?.controller.navigationController?.view else {
@@ -272,30 +274,34 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
             }
             let promotion = ScheduleSendPromotionView()
             promotion.presentPaymentUpgradeView = { [weak self] in
-                guard let strongSelf = self else {
-                    return
+#if !APP_EXTENSION
+                self?.presentPaymentView()
+#else
+                // Close the share extension and open the draft in main app.
+                if let msgID = self?.editorViewModel.composerMessageHelper.messageID,
+                   let url = URL(string: "protonmail://\(msgID)") {
+                    self?.editor?.cancelAction()
+                    _ = self?.editor?.openURL(url)
                 }
-                strongSelf.paymentsUI = PaymentsUI(
-                    payments: strongSelf.editorViewModel.getUser().payments,
-                    clientApp: .mail,
-                    shownPlanNames: Constants.shownPlanNames
-                )
-                strongSelf.paymentsUI?.showUpgradePlan(
-                    presentationType: .modal,
-                    backendFetch: true
-                ) { _ in }
+#endif
             }
             promotion.present(on: nav)
         }.cauterize()
-        #else
-        // Close the share extension and open the draft in main app.
-        if let msgID = editorViewModel.composerMessageHelper.messageID,
-           let url = URL(string: "protonmail://\(msgID)") {
-            editor?.cancelAction()
-            _ = editor?.openURL(url)
-        }
-        #endif
     }
+
+#if !APP_EXTENSION
+    private func presentPaymentView() {
+        paymentsUI = PaymentsUI(
+            payments: editorViewModel.getUser().payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames
+        )
+        paymentsUI?.showUpgradePlan(
+            presentationType: .modal,
+            backendFetch: true
+        ) { _ in }
+    }
+#endif
 }
 
 extension ComposeContainerViewCoordinator: ComposePasswordDelegate {

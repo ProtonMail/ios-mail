@@ -241,6 +241,7 @@ extension MailboxCoordinator {
     private func navigateToComposer(
         existingMessage: Message?,
         isEditingScheduleMsg: Bool = false,
+        isOpenedFromShare: Bool = false,
         originalScheduledTime: Date? = nil
     ) {
         let user = self.viewModel.user
@@ -250,6 +251,7 @@ extension MailboxCoordinator {
                                                     user: user,
                                                     coreDataContextProvider: contextProvider,
                                                     isEditingScheduleMsg: isEditingScheduleMsg,
+                                                    isOpenedFromShare: isOpenedFromShare,
                                                     originalScheduledTime: originalScheduledTime)
         let composer = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
                                                        editorViewModel: viewModel)
@@ -303,7 +305,7 @@ extension MailboxCoordinator {
     private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
         if let msgID = path,
            let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
-            navigateToComposer(existingMessage: existingMsg)
+            navigateToComposer(existingMessage: existingMsg, isOpenedFromShare: true)
             return
         }
 
