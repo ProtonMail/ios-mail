@@ -32,8 +32,8 @@ class MailboxViewModelTests: XCTestCase {
     var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
-    var contactGroupProviderMock: MockContactGroupsProvider!
-    var labelProviderMock: MockLabelProvider!
+    var contactGroupProviderMock: MockContactGroupsProviderProtocol!
+    var labelProviderMock: MockLabelProviderProtocol!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
     var eventsServiceMock: EventsServiceMock!
@@ -85,8 +85,8 @@ class MailboxViewModelTests: XCTestCase {
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProviderProtocol()
-        contactGroupProviderMock = MockContactGroupsProvider()
-        labelProviderMock = MockLabelProvider()
+        contactGroupProviderMock = MockContactGroupsProviderProtocol()
+        labelProviderMock = MockLabelProviderProtocol()
         contactProviderMock = MockContactProvider(coreDataContextProvider: coreDataService)
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
@@ -512,7 +512,9 @@ class MailboxViewModelTests: XCTestCase {
 
     func testGetGroupContacts() {
         let testData = ContactGroupVO(ID: "1", name: "name1")
-        contactGroupProviderMock.contactGroupsToReturn = [testData]
+        contactGroupProviderMock.getAllContactGroupVOsStub.bodyIs { _ in
+            [testData]
+        }
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
         XCTAssertEqual(sut.contactGroups(), [testData])
@@ -522,7 +524,9 @@ class MailboxViewModelTests: XCTestCase {
         let testData = Label(context: testContext)
         testData.labelID = "1"
         testData.name = "name1"
-        labelProviderMock.customFolderToReturn = [testData].map(LabelEntity.init(label:))
+        labelProviderMock.getCustomFoldersStub.bodyIs { _ in
+            [testData].map(LabelEntity.init(label:))
+        }
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
         XCTAssertEqual(sut.customFolders, [LabelEntity(label: testData)])

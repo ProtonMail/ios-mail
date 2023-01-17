@@ -26,6 +26,7 @@ import Groot
 import PromiseKit
 import ProtonCore_Services
 
+// sourcery: mock
 protocol ContactGroupsProviderProtocol: AnyObject {
     func getAllContactGroupVOs() -> [ContactGroupVO]
 }

@@ -51,6 +51,7 @@ protocol LabelManagerViewModelOutput: AnyObject {
     func getRowOfLabelID(_ labelID: LabelID) -> Int?
 }
 
+// sourcery: mock
 protocol LabelManagerUIProtocol: AnyObject {
     func viewModeDidChange(mode: LabelManagerViewModel.ViewMode)
     func showLoadingHUD()
