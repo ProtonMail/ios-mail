@@ -49,6 +49,7 @@ class ComposeViewModel: NSObject {
     let messageService: MessageDataService
     let coreDataContextProvider: CoreDataContextProviderProtocol
     let isEditingScheduleMsg: Bool
+    let isOpenedFromShare: Bool
     let originalScheduledTime: Date?
     // we can't use `dependencies` as name bc it clashes with the subclass attribute of the same name
     let deps: Dependencies
@@ -58,6 +59,7 @@ class ComposeViewModel: NSObject {
         contextProvider: CoreDataContextProviderProtocol,
         user: UserManager,
         isEditingScheduleMsg: Bool = false,
+        isOpenedFromShare: Bool = false,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
@@ -70,6 +72,7 @@ class ComposeViewModel: NSObject {
             cacheService: user.cacheService
         )
         self.isEditingScheduleMsg = isEditingScheduleMsg
+        self.isOpenedFromShare = isOpenedFromShare
         self.originalScheduledTime = originalScheduledTime
         self.deps = dependencies
     }
