@@ -135,7 +135,6 @@ extension Conversation {
 extension Conversation {
     /// Apply single mark as changes for single message in conversation.
     func applySingleMarkAsChanges(unRead: Bool, labelID: String) {
-        willChangeValue(forKey: Conversation.Attributes.labels)
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
         let contextLabels = labels.compactMap { $0 as? ContextLabel }
 
@@ -146,7 +145,6 @@ extension Conversation {
             let newUnreadCount = max(label.unreadCount.intValue + offset, 0)
             label.unreadCount = NSNumber(value: newUnreadCount)
         }
-        didChangeValue(forKey: Conversation.Attributes.labels)
     }
 
     /// Apply mark as changes to whole conversation.

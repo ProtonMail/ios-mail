@@ -61,6 +61,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
     func testConversationScheduledFetch_succeed() {
         // Fetch event
+        // Fetch message
         // Done
         let unreadOnly = false
         let isCleanFetch = false
@@ -76,6 +77,13 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             eventExpected.fulfill()
         }
 
+        let conversationExpected = expectation(description: "Fetch conversation")
+        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+            XCTAssertFalse(shouldReset)
+            conversationExpected.fulfill()
+            completion?(.success)
+        }
+
         let completionExpected = expectation(description: "completion")
         self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
@@ -83,7 +91,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             completionExpected.fulfill()
         }
 
-        let exceptions = [eventExpected, completionExpected]
+        let exceptions = [eventExpected, conversationExpected, completionExpected]
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
@@ -94,6 +102,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     func testConversationScheduledFetch_oneMoreEvent() {
         // Fetch event
         // Fetch event
+        // Fetch messages
         // Done
         let unreadOnly = false
         let isCleanFetch = false
@@ -115,6 +124,13 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             eventExpected.fulfill()
         }
 
+        let conversationExpected = expectation(description: "Fetch conversation")
+        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+            XCTAssertFalse(shouldReset)
+            conversationExpected.fulfill()
+            completion?(.success)
+        }
+
         let completionExpected = expectation(description: "completion")
         self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
             XCTFail("Shouldn't trigger error handling")
@@ -122,7 +138,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             completionExpected.fulfill()
         }
 
-        let exceptions = [eventExpected, completionExpected]
+        let exceptions = [eventExpected, conversationExpected, completionExpected]
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
@@ -211,6 +227,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
     func testConversationScheduledFetch_eventFailed() {
         // Fetch event > failed > trigger error handling
+        // Fetch message
         // Done
         let unreadOnly = false
         let isCleanFetch = false
@@ -226,6 +243,13 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             eventExpected.fulfill()
         }
 
+        let conversationExpected = expectation(description: "Fetch conversation")
+        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+            XCTAssertFalse(shouldReset)
+            conversationExpected.fulfill()
+            completion?(.success)
+        }
+
         let completionExpected = expectation(description: "completion")
         let errorExpected = expectation(description: "error happens")
         self.sut.exec(showUnreadOnly: unreadOnly, isCleanFetch: isCleanFetch, time: 0) { error in
@@ -235,7 +259,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             completionExpected.fulfill()
         }
 
-        let exceptions = [eventExpected, errorExpected, completionExpected]
+        let exceptions = [eventExpected, conversationExpected, errorExpected, completionExpected]
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
@@ -246,6 +270,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
     func testConversationScheduledFetch_messageFailed() {
         // Fetch event > failed > trigger error handling
+        // Fetch message
         // Done
         let unreadOnly = false
         let isCleanFetch = false
@@ -257,8 +282,15 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
 
         let eventExpected = expectation(description: "Fetch event")
         self.eventService.callFetchEvents.bodyIs { _, _, _, completion in
-            completion?(.failure(NSError(domain: "test.com", code: 999, localizedDescription: "conversation failed")))
+            completion?(.success([:]))
             eventExpected.fulfill()
+        }
+
+        let conversationExpected = expectation(description: "Fetch conversation")
+        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+            XCTAssertFalse(shouldReset)
+            conversationExpected.fulfill()
+            completion?(.failure(NSError(domain: "test.com", code: 999, localizedDescription: "conversation failed")))
         }
 
         let completionExpected = expectation(description: "completion")
@@ -270,16 +302,18 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             completionExpected.fulfill()
         }
 
-        let exceptions = [eventExpected, errorExpected, completionExpected]
+        let exceptions = [eventExpected, conversationExpected, errorExpected, completionExpected]
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
         XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertFalse(self.fetchLatestEventID.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }
 
     func testMessageScheduledFetch_succeed() {
         // Fetch event
+        // Fetch message
         // Done
         let unreadOnly = false
         let isCleanFetch = false
@@ -306,7 +340,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         wait(for: exceptions, timeout: 2.0)
 
         XCTAssertFalse(self.sut.isFetching)
-        XCTAssertFalse(self.fetchMessage.executeWasCalled)
+        XCTAssertTrue(self.fetchMessage.executeWasCalled)
         XCTAssertFalse(self.fetchMessageWithReset.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertNil(self.messageDataService.pushNotificationMessageID)
     }

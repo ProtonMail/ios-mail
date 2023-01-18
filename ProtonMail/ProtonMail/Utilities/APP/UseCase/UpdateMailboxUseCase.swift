@@ -303,8 +303,11 @@ extension UpdateMailbox {
             }
         }
 
-        self.isFetching = false
-        completion()
+        self.fetchMessages(time: 0, forceClean: false, isUnread: showUnreadOnly) { [weak self] error in
+            self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
+            self?.isFetching = false
+            completion()
+        }
     }
 }
 
