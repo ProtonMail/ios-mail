@@ -1518,6 +1518,15 @@ enum L11n {
         static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
         static let custom = NSLocalizedString("Custom", comment: "Option for set up custom schedule send date")
         static let asSchedule = NSLocalizedString("As scheduled", comment: "One of the schedule time options")
+        static let upSellTitle = NSLocalizedString("Set your own schedule", comment: "The title of the up sell content of the scheduled send.")
+        static let upSellContent = NSLocalizedString("Unlock custom message scheduling and other benefits when you upgrade your plan.", comment: "The content of the up sell content of the scheduled send.")
+        static let upgradeTitle = NSLocalizedString("Upgrade now", comment: "The title of the upgrade button in the schedule send promotion view.")
+        static let itemSchedule = NSLocalizedString("Schedule messages at any time", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemFolder = NSLocalizedString("Unlimited folders and labels", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemStorage = NSLocalizedString("Up to 500 GB of storage", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAliases = NSLocalizedString("Hide My Email aliases", comment: "The up sell bullet point in the schedule send promotion view.")
     }
 
     struct PushNotificationAction {

@@ -208,17 +208,17 @@ private enum SubviewsFactory {
         var title: String {
             switch self {
             case .schedule:
-                return "Schedule messages at any time"
+                return L11n.ScheduledSend.itemSchedule
             case .folder:
-                return "Unlimited folders and labels"
+                return L11n.ScheduledSend.itemFolder
             case .storage:
-                return "Up to 500 GB of storage "
+                return L11n.ScheduledSend.itemStorage
             case .addresses:
-                return "Up to 15 email addresses "
+                return L11n.ScheduledSend.itemAddresses
             case .domains:
-                return "Up to 3 custom email domains"
+                return L11n.ScheduledSend.itemDomain
             case .aliases:
-                return "Hide My Email aliases"
+                return L11n.ScheduledSend.itemAliases
             }
         }
     }
@@ -246,7 +246,7 @@ private enum SubviewsFactory {
     static var titleLabel: UILabel {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "Set your own schedule"
+        label.text = L11n.ScheduledSend.upSellTitle
         label.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
         label.textAlignment = .center
         label.adjustsFontForContentSizeCategory = true
@@ -257,7 +257,7 @@ private enum SubviewsFactory {
     static var contentLabel: UILabel {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "Unlock custom message scheduling and other benefits when you upgrade your plan."
+        label.text = L11n.ScheduledSend.upSellContent
         label.textAlignment = .center
         label.font = .adjustedFont(forTextStyle: .subheadline)
         label.adjustsFontForContentSizeCategory = true
@@ -276,7 +276,7 @@ private enum SubviewsFactory {
     static var upgradeButton: ProtonButton {
         let button = ProtonButton()
         button.setMode(mode: .solid)
-        button.setTitle("Upgrade now", for: .normal)
+        button.setTitle(L11n.ScheduledSend.upgradeTitle, for: .normal)
         return button
     }
 
