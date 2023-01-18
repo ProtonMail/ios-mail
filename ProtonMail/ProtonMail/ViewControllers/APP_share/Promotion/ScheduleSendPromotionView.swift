@@ -30,7 +30,7 @@ final class ScheduleSendPromotionView: UIView {
     private let upgradeContainerView = SubviewsFactory.upgradeContainerView
     private let scrollContentView = UIView()
     private let planStackView = SubviewsFactory.planStackView
- 
+
     private var containerTopConstraint: NSLayoutConstraint?
 
     var presentPaymentUpgradeView: (() -> Void)?
@@ -54,7 +54,7 @@ final class ScheduleSendPromotionView: UIView {
         self.fillSuperview()
         view.layoutIfNeeded()
 
-        UIView.animate(withDuration: 0.25, delay: 0) {
+        UIView.animate(withDuration: 0.25) {
             let height = self.frame.height * 0.75
             self.containerTopConstraint?.constant = -height
             self.layoutIfNeeded()
@@ -63,7 +63,16 @@ final class ScheduleSendPromotionView: UIView {
 
     @objc
     func dismiss() {
-        removeFromSuperview()
+        UIView.animate(
+            withDuration: 0.25,
+            animations: {
+                let height = self.frame.height * 0.75
+                self.containerTopConstraint?.constant = height
+                self.layoutIfNeeded()
+            }, completion: { _ in
+                self.removeFromSuperview()
+            }
+        )
     }
 
     @objc
@@ -222,6 +231,7 @@ private enum SubviewsFactory {
     static var closeButton: UIButton {
         let button = UIButton()
         button.setImage(IconProvider.cross, for: .normal)
+        button.imageView?.tintColor = ColorProvider.IconNorm
         button.tintColor = ColorProvider.IconInverted
         return button
     }
