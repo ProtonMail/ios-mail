@@ -72,9 +72,9 @@ final class ScheduleSendPromotionView: UIView {
                 self.layoutIfNeeded()
             }, completion: { _ in
                 self.removeFromSuperview()
-                self.viewDidRemoved?()
             }
         )
+        viewDidRemoved?()
     }
 
     @objc
@@ -165,6 +165,10 @@ final class ScheduleSendPromotionView: UIView {
     private func setupFunction() {
         closeButton.addTarget(self, action: #selector(self.dismiss), for: .touchUpInside)
         upgradeButton.addTarget(self, action: #selector(self.handleUpgrade), for: .touchUpInside)
+
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismiss))
+        gesture.delegate = self
+        addGestureRecognizer(gesture)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -176,6 +180,20 @@ final class ScheduleSendPromotionView: UIView {
                 label.font = .adjustedFont(forTextStyle: .subheadline)
             }
         }
+    }
+}
+
+extension ScheduleSendPromotionView: UIGestureRecognizerDelegate {
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UITapGestureRecognizer {
+            // Check user tap position is gray overlay or container view
+            let point = gestureRecognizer.location(in: containerView)
+            // tap gray overlay
+            if point.y < 0 {
+                return true
+            }
+        }
+        return false
     }
 }
 
