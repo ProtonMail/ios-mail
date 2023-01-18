@@ -52,6 +52,11 @@ final class ScheduledSendHelper {
 
     func presentActionSheet() {
         guard let viewController = viewController else { return }
+        guard !(viewController.navigationController ?? viewController).view.subviews
+            .contains(where: { $0 is PMActionSheet }) else {
+            return
+        }
+
         let vcs = viewController.children + [viewController]
         vcs.forEach { controller in
             controller.view.becomeFirstResponder()

@@ -34,6 +34,7 @@ final class ScheduleSendPromotionView: UIView {
     private var containerTopConstraint: NSLayoutConstraint?
 
     var presentPaymentUpgradeView: (() -> Void)?
+    var viewDidRemoved: (() -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -71,13 +72,14 @@ final class ScheduleSendPromotionView: UIView {
                 self.layoutIfNeeded()
             }, completion: { _ in
                 self.removeFromSuperview()
+                self.viewDidRemoved?()
             }
         )
     }
 
     @objc
     func handleUpgrade() {
-        dismiss()
+        removeFromSuperview()
         presentPaymentUpgradeView?()
     }
 

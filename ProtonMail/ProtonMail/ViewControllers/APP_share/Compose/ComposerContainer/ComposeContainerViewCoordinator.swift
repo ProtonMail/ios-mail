@@ -285,6 +285,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
                 }
 #endif
             }
+            promotion.viewDidRemoved = { [weak self] in
+                self?.controller.showScheduleSendActionSheet()
+            }
             promotion.present(on: nav)
         }.cauterize()
     }
