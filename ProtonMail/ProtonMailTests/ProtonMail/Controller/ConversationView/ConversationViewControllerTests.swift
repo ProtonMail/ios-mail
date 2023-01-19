@@ -49,7 +49,7 @@ class ConversationViewControllerTests: XCTestCase {
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
-                                                  conversationStateProvider: MockConversationStateProvider(),
+                                                  conversationStateProvider: MockConversationStateProviderProtocol(),
                                                   labelProvider: labelProviderMock,
                                                   userIntroductionProgressProvider: userIntroductionProgressProviderMock,
                                                   targetID: nil,

@@ -21,7 +21,7 @@ import XCTest
 
 extension MailboxViewModelTests {
     func testFetchConversation() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
         self.conversationProviderMock.fetchConversationsStub.bodyIs { _, _, _, _, _, completion in
@@ -46,7 +46,7 @@ extension MailboxViewModelTests {
     }
 
     func testFetchConversationWithReset() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
 
         self.conversationProviderMock.fetchConversationsStub.bodyIs { _, _, _, _, _, completion in
@@ -106,7 +106,7 @@ extension MailboxViewModelTests {
     }
 
     func testSelectionContainsReadItems_inConversation_withReadConversation() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
 
         let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, false])
         sut.setupFetchController(nil)
@@ -122,7 +122,7 @@ extension MailboxViewModelTests {
     }
 
     func testSelectionContainsReadItems_inConversation_withoutReadConversation() {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
 
         let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, true])
         sut.setupFetchController(nil)
@@ -138,7 +138,7 @@ extension MailboxViewModelTests {
     }
 
     func testSelectionContainsReadItems_inSingleMode_withReadMessage() {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
 
         let messageIDs = setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, false])
         sut.setupFetchController(nil)
@@ -154,7 +154,7 @@ extension MailboxViewModelTests {
     }
 
     func testSelectionContainsReadItems_inSingleMode_withoutReadMessage() {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
 
         let messageIDs = setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, true])
         sut.setupFetchController(nil)
