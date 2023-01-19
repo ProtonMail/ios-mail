@@ -27,7 +27,6 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     private var fetchMessage: MockFetchMessages!
     private var fetchLatestEventID: MockFetchLatestEventId!
     private var mailboxSource: MockUpdateMailboxSource!
-    private var messageInfoCache: MessageInfoCacheMock!
     private var sut: UpdateMailbox!
 
     override func setUpWithError() throws {
@@ -39,9 +38,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchMessage = MockFetchMessages()
         self.fetchLatestEventID = MockFetchLatestEventId()
         self.mailboxSource = MockUpdateMailboxSource()
-        self.messageInfoCache = MessageInfoCacheMock()
         self.sut = UpdateMailbox(
-            dependencies: .init(messageInfoCache: self.messageInfoCache, eventService: self.eventService, messageDataService: self.messageDataService, conversationProvider: self.conversationProvider, purgeOldMessages: self.purgeOldMessages, fetchMessageWithReset: self.fetchMessageWithReset, fetchMessage: self.fetchMessage, fetchLatestEventID: self.fetchLatestEventID), parameters: .init(labelID: LabelID("TestID")))
+            dependencies: .init(eventService: self.eventService, messageDataService: self.messageDataService, conversationProvider: self.conversationProvider, purgeOldMessages: self.purgeOldMessages, fetchMessageWithReset: self.fetchMessageWithReset, fetchMessage: self.fetchMessage, fetchLatestEventID: self.fetchLatestEventID), parameters: .init(labelID: LabelID("TestID")))
         self.sut.setup(source: self.mailboxSource)
 
         conversationProvider.fetchConversationCountsStub.bodyIs { _, _, completion in
@@ -58,7 +56,6 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchMessage = nil
         self.fetchLatestEventID = nil
         self.mailboxSource = nil
-        self.messageInfoCache = nil
         self.sut = nil
     }
 
