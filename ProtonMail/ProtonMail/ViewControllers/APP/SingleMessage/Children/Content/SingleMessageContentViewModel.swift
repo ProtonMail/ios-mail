@@ -36,7 +36,7 @@ class SingleMessageContentViewModel {
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
-    let goToDraft: ((MessageID, Date?) -> Void)
+    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)
     var showProgressHub: (() -> Void)?
     var hideProgressHub: (() -> Void)?
 
@@ -93,7 +93,7 @@ class SingleMessageContentViewModel {
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
          dependencies: Dependencies,
-         goToDraft: @escaping (MessageID, Date?) -> Void) {
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
@@ -131,7 +131,7 @@ class SingleMessageContentViewModel {
                                                          notificationMessageID: nil,
                                                          completion: { [weak self] _ in
                         self?.hideProgressHub?()
-                        self?.goToDraft(msgID, originalScheduledTime)
+                        self?.goToDraft(msgID, .init(originalScheduledTime))
                     })
                 }
         }

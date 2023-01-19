@@ -19,6 +19,18 @@ import Foundation
 
 struct Phantom<Tag, RawValue> {
     let rawValue: RawValue
+
+    init(rawValue: RawValue) {
+        self.rawValue = rawValue
+    }
+
+    init?(_ value: RawValue?) {
+        if let value = value {
+            self.rawValue = value
+        } else {
+            return nil
+        }
+    }
 }
 
 extension Phantom: CustomStringConvertible where RawValue: CustomStringConvertible {

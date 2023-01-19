@@ -264,7 +264,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         }
     }
 
-    @objc func openURL(_ url: URL) -> Bool {
+    @objc
+    func openURL(_ url: URL) -> Bool {
         var responder: UIResponder? = self
         while responder != nil {
             if let application = responder as? UIApplication {

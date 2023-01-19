@@ -97,7 +97,7 @@ class ComposeViewModelImpl: ComposeViewModel {
         coreDataContextProvider: CoreDataContextProviderProtocol,
         isEditingScheduleMsg: Bool = false,
         isOpenedFromShare: Bool = false,
-        originalScheduledTime: Date? = nil,
+        originalScheduledTime: OriginalScheduleDate? = nil,
         dependencies: Dependencies? = nil
     ) {
         self.user = user

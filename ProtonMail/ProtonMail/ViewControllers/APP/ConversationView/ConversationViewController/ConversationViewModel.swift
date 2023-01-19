@@ -103,7 +103,7 @@ class ConversationViewModel {
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
     var messageIDsOfMarkedAsRead: [MessageID] = []
-    private let goToDraft: (MessageID, Date?) -> Void
+    private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy private(set) var customFolders: [LabelEntity] = {
@@ -128,7 +128,7 @@ class ConversationViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
-         goToDraft: @escaping (MessageID, Date?) -> Void,
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation

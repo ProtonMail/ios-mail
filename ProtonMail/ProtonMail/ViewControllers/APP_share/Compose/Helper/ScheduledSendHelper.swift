@@ -38,12 +38,21 @@ final class ScheduledSendHelper {
     private weak var viewController: UIViewController?
     private var actionSheet: PMActionSheet?
     private weak var delegate: ScheduledSendHelperDelegate?
-    private let originalScheduledTime: Date?
+    private let originalScheduledTime: OriginalScheduleDate?
+
+    var isActionSheetShownOnView: Bool {
+        guard let viewController = self.viewController else {
+            return false
+        }
+        return (viewController.navigationController ?? viewController)
+            .view.subviews
+            .contains(where: { $0 is PMActionSheet })
+    }
 
     init(
         viewController: UIViewController,
         delegate: ScheduledSendHelperDelegate,
-        originalScheduledTime: Date?
+        originalScheduledTime: OriginalScheduleDate?
     ) {
         self.viewController = viewController
         self.delegate = delegate
@@ -52,8 +61,7 @@ final class ScheduledSendHelper {
 
     func presentActionSheet() {
         guard let viewController = viewController else { return }
-        guard !(viewController.navigationController ?? viewController).view.subviews
-            .contains(where: { $0 is PMActionSheet }) else {
+        guard !isActionSheetShownOnView else {
             return
         }
 
@@ -153,7 +161,7 @@ extension ScheduledSendHelper {
     }
 
     private func setUpAsScheduledAction() -> PMActionSheetPlainItem? {
-        guard let originalTime = originalScheduledTime else {
+        guard let originalTime = originalScheduledTime?.rawValue else {
             return nil
         }
 

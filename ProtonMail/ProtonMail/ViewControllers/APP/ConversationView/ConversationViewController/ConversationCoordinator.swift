@@ -2,7 +2,7 @@ import SafariServices
 
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
-    var goToDraft: ((MessageID, Date?) -> Void)? { get set }
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? { get set }
 
     func handle(navigationAction: ConversationNavigationAction)
 }
@@ -19,7 +19,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
-    var goToDraft: ((MessageID, Date?) -> Void)?
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
     init(labelId: LabelID,
          navigationController: UINavigationController,

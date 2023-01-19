@@ -34,7 +34,7 @@ final class ScheduleSendPromotionView: UIView {
     private var containerTopConstraint: NSLayoutConstraint?
 
     var presentPaymentUpgradeView: (() -> Void)?
-    var viewDidRemoved: (() -> Void)?
+    var viewDidDismiss: (() -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -63,7 +63,7 @@ final class ScheduleSendPromotionView: UIView {
     }
 
     @objc
-    func dismiss() {
+    private func dismiss() {
         UIView.animate(
             withDuration: 0.25,
             animations: {
@@ -74,11 +74,11 @@ final class ScheduleSendPromotionView: UIView {
                 self.removeFromSuperview()
             }
         )
-        viewDidRemoved?()
+        viewDidDismiss?()
     }
 
     @objc
-    func handleUpgrade() {
+    private func handleUpgrade() {
         removeFromSuperview()
         presentPaymentUpgradeView?()
     }
@@ -241,27 +241,27 @@ private enum SubviewsFactory {
         }
     }
 
-    static var containerView: UIView {
+    static var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = ColorProvider.BackgroundNorm
         view.roundCorner(8.0)
         return view
-    }
+    }()
 
-    static var closeButton: UIButton {
+    static var closeButton: UIButton = {
         let button = UIButton()
         button.setImage(IconProvider.cross, for: .normal)
         button.imageView?.tintColor = ColorProvider.IconNorm
         button.tintColor = ColorProvider.IconInverted
         return button
-    }
+    }()
 
-    static var upperView: UIImageView {
+    static var upperView: UIImageView = {
         let view = UIImageView(image: Asset.schedulePromotion.image)
         return view
-    }
+    }()
 
-    static var titleLabel: UILabel {
+    static var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.text = L11n.ScheduledSend.upSellTitle
@@ -270,9 +270,9 @@ private enum SubviewsFactory {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = false
         return label
-    }
+    }()
 
-    static var contentLabel: UILabel {
+    static var contentLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.text = L11n.ScheduledSend.upSellContent
@@ -281,32 +281,32 @@ private enum SubviewsFactory {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = false
         return label
-    }
+    }()
 
-    static var upgradeContainerView: UIView {
+    static var upgradeContainerView: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1
         view.layer.borderColor = ColorProvider.BrandNorm.cgColor
         view.roundCorner(12.0)
         return view
-    }
+    }()
 
-    static var upgradeButton: ProtonButton {
+    static var upgradeButton: ProtonButton = {
         let button = ProtonButton()
         button.setMode(mode: .solid)
         button.setTitle(L11n.ScheduledSend.upgradeTitle, for: .normal)
         return button
-    }
+    }()
 
-    static var planScrollView: UIScrollView {
+    static var planScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.bounces = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         return scrollView
-    }
+    }()
 
-    static var planStackView: UIStackView {
+    static var planStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -318,7 +318,7 @@ private enum SubviewsFactory {
         }
 
         return stackView
-    }
+    }()
 
     static func createPlanView(plan: Plan) -> UIView {
         let view = UIView()

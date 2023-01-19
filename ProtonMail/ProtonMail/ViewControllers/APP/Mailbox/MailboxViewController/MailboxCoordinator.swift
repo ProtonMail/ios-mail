@@ -193,7 +193,11 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
             if case let user = self.viewModel.user,
                case let msgService = user.messageService,
                let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
-                navigateToComposer(existingMessage: message, isEditingScheduleMsg: true, originalScheduledTime: originalScheduledTime)
+                navigateToComposer(
+                    existingMessage: message,
+                    isEditingScheduleMsg: true,
+                    originalScheduledTime: .init(rawValue: originalScheduledTime)
+                )
             }
         default:
             self.go(to: dest, sender: deeplink)
@@ -242,7 +246,7 @@ extension MailboxCoordinator {
         existingMessage: Message?,
         isEditingScheduleMsg: Bool = false,
         isOpenedFromShare: Bool = false,
-        originalScheduledTime: Date? = nil
+        originalScheduledTime: OriginalScheduleDate? = nil
     ) {
         let user = self.viewModel.user
         let viewModel = ContainableComposeViewModel(msg: existingMessage,
@@ -362,7 +366,7 @@ extension MailboxCoordinator {
         viewController?.navigationController?.present(nav, animated: true)
     }
 
-    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: Date?) {
+    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: OriginalScheduleDate?) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return

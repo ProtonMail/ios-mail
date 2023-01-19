@@ -30,7 +30,7 @@ class ConversationMessageViewModel {
     private let replacingEmailsMap: [String: EmailEntity]
     private let contactGroups: [ContactGroupVO]
     private let internetStatusProvider: InternetConnectionStatusProvider
-    private let goToDraft: (MessageID, Date?) -> Void
+    private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
 
     init(labelId: LabelID,
          message: MessageEntity,
@@ -38,7 +38,7 @@ class ConversationMessageViewModel {
          replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
          internetStatusProvider: InternetConnectionStatusProvider,
-         goToDraft: @escaping (MessageID, Date?) -> Void
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) {
         self.labelId = labelId
         self.message = message

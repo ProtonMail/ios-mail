@@ -50,7 +50,7 @@ class ComposeViewModel: NSObject {
     let coreDataContextProvider: CoreDataContextProviderProtocol
     let isEditingScheduleMsg: Bool
     let isOpenedFromShare: Bool
-    let originalScheduledTime: Date?
+    let originalScheduledTime: OriginalScheduleDate?
     // we can't use `dependencies` as name bc it clashes with the subclass attribute of the same name
     let deps: Dependencies
 
@@ -60,7 +60,7 @@ class ComposeViewModel: NSObject {
         user: UserManager,
         isEditingScheduleMsg: Bool = false,
         isOpenedFromShare: Bool = false,
-        originalScheduledTime: Date? = nil,
+        originalScheduledTime: OriginalScheduleDate? = nil,
         dependencies: Dependencies
     ) {
         self.messageService = msgDataService

@@ -36,7 +36,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    var goToDraft: ((MessageID, Date?) -> Void)?
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
     init(
         navigationController: UINavigationController,

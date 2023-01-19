@@ -30,7 +30,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     let user: UserManager
     /// For conversation mode, which message in this conversation should display
     private var targetMessageID: MessageID?
-    let goToDraft: ((MessageID, Date?) -> Void)?
+    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
     private let isUnread: Bool
     var messageService: MessageDataService { user.messageService }
     var fetchedResultsController: NSFetchedResultsController<FetchResultType>?
@@ -44,7 +44,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         user: UserManager,
         targetMessageID: MessageID?,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID, Date?) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         self.labelID = labelID
         self.isUnread = isUnread
@@ -96,7 +96,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         labelID: LabelID,
         user: UserManager,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID, Date?) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         super.init(
             viewMode: .singleMessage,
@@ -127,7 +127,7 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
         user: UserManager,
         targetMessageID: MessageID?,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID, Date?) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         super.init(
             viewMode: .conversation,
