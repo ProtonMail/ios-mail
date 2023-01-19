@@ -34,7 +34,7 @@ final class ScheduleSendPromotionView: UIView {
     private var containerTopConstraint: NSLayoutConstraint?
 
     var presentPaymentUpgradeView: (() -> Void)?
-    var viewDidDismiss: (() -> Void)?
+    var viewWasDismissed: (() -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -74,7 +74,7 @@ final class ScheduleSendPromotionView: UIView {
                 self.removeFromSuperview()
             }
         )
-        viewDidDismiss?()
+        viewWasDismissed?()
     }
 
     @objc
