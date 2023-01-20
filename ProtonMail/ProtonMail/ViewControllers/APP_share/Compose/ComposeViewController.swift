@@ -20,13 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import MBProgressHUD
+import PromiseKit
 import ProtonMailAnalytics
 import UIKit
-import PromiseKit
-import MBProgressHUD
 #if !APP_EXTENSION
 import SideMenuSwift
 #endif
+import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Foundations
 
@@ -39,9 +40,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     lazy var htmlEditor = HtmlEditorBehaviour()
 
     private var timer: Timer? // auto save timer
-
-    private var contacts: [ContactPickerModelProtocol] = []
-    private var phoneContacts: [ContactPickerModelProtocol] = []
 
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
@@ -62,7 +60,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -102,18 +99,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         }).done { [weak self] in
             guard let self = self else { return }
 
-            let user = self.viewModel.getUser()
-
-            var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = self.phoneContacts
-
-            if user.hasPaidMailPlan {
-                let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter { $0.contactCount > 0 }
-                contactsWithoutLastTimeUsed.append(contentsOf: contactGroupsToAdd)
-            }
-            // sort the contact group and phone address together
-            contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
-
-            self.contacts = self.contacts + contactsWithoutLastTimeUsed
+            self.viewModel.addContactWithPhoneContact()
 
             self.headerView?.toContactPicker?.reloadData()
             self.headerView?.ccContactPicker?.reloadData()
@@ -146,19 +132,14 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
 
     private func retrievePMContacts() -> Promise<Void> {
         return Promise { seal in
-            let service = self.viewModel.getUser().contactService
-            service.getContactVOs { (contacts, _) in
-                self.contacts = contacts
-                seal.fulfill(())
-            }
+            self.viewModel.fetchContacts()
+            seal.fulfill(())
         }
     }
 
     private func retrievePhoneContacts() -> Promise<Void> {
         return Promise { seal in
-            let service = self.viewModel.getUser().contactService
-            service.getContactVOsFromPhone { phoneContacts, _ in
-                self.phoneContacts = phoneContacts
+            viewModel.fetchPhoneContacts {
                 seal.fulfill(())
             }
         }
@@ -953,7 +934,7 @@ extension ComposeViewController: ComposeViewDelegate {
 extension ComposeViewController: ComposeViewDataSource {
 
     func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol] {
-        return contacts
+        return viewModel.contacts
     }
 
     func ccBccIsShownInitially() -> Bool {

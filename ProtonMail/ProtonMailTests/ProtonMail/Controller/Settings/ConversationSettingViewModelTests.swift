@@ -20,12 +20,12 @@ import XCTest
 
 final class ConversationSettingViewModelTests: XCTestCase {
     private var sut: ConversationSettingViewModel!
-    private var conversationStateProviderMock: MockConversationStateProvider!
+    private var conversationStateProviderMock: MockConversationStateProviderProtocol!
     private var eventServiceMock: EventsServiceMock!
     private var viewModeUpdaterMock: MockViewModeUpdater!
 
     override func setUpWithError() throws {
-        conversationStateProviderMock = MockConversationStateProvider()
+        conversationStateProviderMock = MockConversationStateProviderProtocol()
         eventServiceMock = EventsServiceMock()
         viewModeUpdaterMock = MockViewModeUpdater()
         sut = ConversationSettingViewModel(
@@ -49,13 +49,13 @@ final class ConversationSettingViewModelTests: XCTestCase {
         XCTAssertEqual(sut.output.headerTopPadding, 8)
         XCTAssertEqual(sut.output.footerTopPadding, 8)
 
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         let indexPath = IndexPath(row: 0, section: 0)
         var item = try XCTUnwrap(sut.output.cellData(for: indexPath))
         XCTAssertEqual(item.title, LocalString._conversation_settings_row_title)
         XCTAssertEqual(item.status, true)
 
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         item = try XCTUnwrap(sut.output.cellData(for: indexPath))
         XCTAssertEqual(item.status, false)
 
@@ -64,7 +64,7 @@ final class ConversationSettingViewModelTests: XCTestCase {
     }
 
     func testToggle_disable() throws {
-        conversationStateProviderMock.viewMode = .conversation
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
         viewModeUpdaterMock.updateStub.bodyIs { _, newViewMode, completion in
             completion?(.success(newViewMode))
         }
@@ -75,13 +75,14 @@ final class ConversationSettingViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
         wait(for: [expectation1], timeout: 2)
-        XCTAssertEqual(conversationStateProviderMock.viewMode, .singleMessage)
+        XCTAssertEqual(conversationStateProviderMock.viewModeStub.setCallCounter, 1)
+        XCTAssertEqual(conversationStateProviderMock.viewModeStub.setLastArguments?.value, .singleMessage)
         XCTAssertEqual(viewModeUpdaterMock.updateStub.callCounter, 1)
         XCTAssertEqual(eventServiceMock.callFetchEvents.callCounter, 1)
     }
 
     func testToggle_enable() throws {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         viewModeUpdaterMock.updateStub.bodyIs { _, newViewMode, completion in
             completion?(.success(newViewMode))
         }
@@ -92,13 +93,14 @@ final class ConversationSettingViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
         wait(for: [expectation1], timeout: 2)
-        XCTAssertEqual(conversationStateProviderMock.viewMode, .conversation)
+        XCTAssertEqual(conversationStateProviderMock.viewModeStub.setCallCounter, 1)
+        XCTAssertEqual(conversationStateProviderMock.viewModeStub.setLastArguments?.value, .conversation)
         XCTAssertEqual(viewModeUpdaterMock.updateStub.callCounter, 1)
         XCTAssertEqual(eventServiceMock.callFetchEvents.callCounter, 1)
     }
 
     func testToggle_enable_failure() throws {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         viewModeUpdaterMock.updateStub.bodyIs { _, newViewMode, completion in
             let error = NSError(domain: "test.com", code: -99, localizedDescription: "update conversation failed")
             completion?(.failure(error))
@@ -110,13 +112,13 @@ final class ConversationSettingViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
         wait(for: [expectation1], timeout: 2)
-        XCTAssertEqual(conversationStateProviderMock.viewMode, .singleMessage)
+        XCTAssertEqual(conversationStateProviderMock.viewModeStub.setCallCounter, 0)
         XCTAssertEqual(viewModeUpdaterMock.updateStub.callCounter, 1)
         XCTAssertEqual(eventServiceMock.callFetchEvents.callCounter, 0)
     }
 
     func testToggle_noUpdate() throws {
-        conversationStateProviderMock.viewMode = .singleMessage
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         viewModeUpdaterMock.updateStub.bodyIs { _, newViewMode, completion in
             completion?(.success(newViewMode))
         }
@@ -127,7 +129,7 @@ final class ConversationSettingViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
         wait(for: [expectation1], timeout: 2)
-        XCTAssertEqual(conversationStateProviderMock.viewMode, .singleMessage)
+        XCTAssertEqual(conversationStateProviderMock.viewModeStub.setCallCounter, 0)
         XCTAssertEqual(viewModeUpdaterMock.updateStub.callCounter, 0)
         XCTAssertEqual(eventServiceMock.callFetchEvents.callCounter, 0)
     }

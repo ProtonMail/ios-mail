@@ -1,5 +1,6 @@
 import SafariServices
 
+// sourcery: mock
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
     var goToDraft: ((MessageID) -> Void)? { get set }

@@ -27,6 +27,11 @@ class DraftsRobot: MailboxRobotInterface {
         return super.searchBar()
     }
 
+    override func refreshMailbox() -> DraftsRobot {
+        super.refreshMailbox()
+        return self
+    }
+
     func clickDraftBySubject(_ subject: String) -> ComposerRobot {
         super.clickMessageBySubject(subject)
         return ComposerRobot()
@@ -51,7 +56,10 @@ class DraftsRobot: MailboxRobotInterface {
         }
         
         func messageWithSubjectAndRecipientExists(_ subject: String, _ to: String) {
-            staticText(subject).wait().checkExists()
+            staticText(subject)
+                .firstMatch()
+                .wait()
+                .checkExists()
         }
     }
 }

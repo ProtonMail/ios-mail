@@ -689,16 +689,14 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(
-            params: .init(preference: preference)
-        ) { result in
-            switch result {
-            case .success:
-                completion?(nil)
-            case let .failure(error):
-                completion?(error as NSError)
+            .execute(params: .init(preference: preference)) { result in
+                switch result {
+                case .success:
+                    completion?(nil)
+                case let .failure(error):
+                    completion?(error as NSError)
+                }
             }
-        }
     }
 }
 

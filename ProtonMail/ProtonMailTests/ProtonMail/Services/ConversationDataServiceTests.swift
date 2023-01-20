@@ -28,7 +28,6 @@ final class ConversationDataServiceTests: XCTestCase {
     var mockLastUpdatedStore: MockLastUpdatedStore!
     var mockEventsService: MockEventsService!
     var fakeUndoActionManager: UndoActionManagerProtocol!
-    var mockContactCacheStatus: MockContactCacheStatus!
 
     override func setUp() {
         super.setUp()
@@ -40,7 +39,7 @@ final class ConversationDataServiceTests: XCTestCase {
                                                   contextProvider: mockContextProvider,
                                                   getEventFetching: {return nil},
                                                   getUserManager: {return nil})
-        mockContactCacheStatus = MockContactCacheStatus()
+        let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
                                       contextProvider: mockContextProvider,
@@ -59,7 +58,6 @@ final class ConversationDataServiceTests: XCTestCase {
         mockLastUpdatedStore = nil
         mockEventsService = nil
         fakeUndoActionManager = nil
-        mockContactCacheStatus = nil
     }
 
     func testFilterMessagesDictionary() {

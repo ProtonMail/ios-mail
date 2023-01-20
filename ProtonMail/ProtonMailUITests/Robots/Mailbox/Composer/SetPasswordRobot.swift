@@ -52,19 +52,25 @@ class SetPasswordRobot: CoreElements {
 
     private func confirmPassword(_ password: String) -> SetPasswordRobot {
         secureTextField(id.confirmPasswordSecureTextFieldIdentifier)
+            .firstMatch()
             .tap()
             .typeText(password)
         return self
     }
 
     private func defineHint(_ hint: String) -> SetPasswordRobot {
-        textView(id.hintPasswordTextViewIdentifier).tap().typeText(hint)
-        textView(id.infoTextTextViewIdentifier).tap()
+        textView(id.hintPasswordTextViewIdentifier)
+            .firstMatch()
+            .tap()
+            .typeText(hint)
+        textView(id.infoTextTextViewIdentifier)
+            .firstMatch()
+            .tap()
         return self
     }
 
     private func applyPassword() -> ComposerRobot {
-        button(id.applyButtonIdentifier).tap()
+        button(id.applyButtonIdentifier).firstMatch().tap()
         return ComposerRobot()
     }
 }

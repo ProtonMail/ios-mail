@@ -40,7 +40,7 @@ class MailboxCoordinatorTests: XCTestCase {
     var contextProviderMock: MockCoreDataContextProvider!
     var pushServiceMock: MockPushNotificationService!
     var lastUpdatedStoreMock: MockLastUpdatedStore!
-    var conversationStateProviderMock: MockConversationStateProvider!
+    var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var humanCheckStatusProviderMock: MockHumanCheckStatusProvider!
 
     override func setUp() {
@@ -50,7 +50,7 @@ class MailboxCoordinatorTests: XCTestCase {
         let dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 
-        conversationStateProviderMock = MockConversationStateProvider()
+        conversationStateProviderMock = MockConversationStateProviderProtocol()
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         lastUpdatedStoreMock = MockLastUpdatedStore()
         pushServiceMock = MockPushNotificationService()
@@ -60,7 +60,7 @@ class MailboxCoordinatorTests: XCTestCase {
         contactGroupProviderMock = MockContactGroupsProvider()
         labelProviderMock = MockLabelProvider()
         contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
-        conversationProviderMock = MockConversationProvider(context: contextProviderMock.mainContext)
+        conversationProviderMock = MockConversationProvider()
         eventServiceMock = EventsServiceMock()
         infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()

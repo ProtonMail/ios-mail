@@ -27,11 +27,10 @@ import XCTest
 class SettingsGestureViewModelTests: XCTestCase {
     var sut: SettingsGestureViewModelImpl!
     var swipeActionCacheStub: SwipeActionCacheStub!
-    var swipeActionInfoStub: SwipeActionInfoStub!
 
     override func setUp() {
         swipeActionCacheStub = SwipeActionCacheStub()
-        swipeActionInfoStub = SwipeActionInfoStub()
+        let swipeActionInfoStub = MockSwipeActionInfo()
         sut = SettingsGestureViewModelImpl(cache: swipeActionCacheStub, swipeActionInfo: swipeActionInfoStub)
     }
 

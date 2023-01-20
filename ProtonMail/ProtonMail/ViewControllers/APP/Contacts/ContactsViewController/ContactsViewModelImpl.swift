@@ -177,9 +177,9 @@ final class ContactsViewModelImpl: ContactsViewModel {
                                                  notificationMessageID: nil,
                                                  completion: { _ in
             })
-            self.user.contactService.fetchContacts { (_, error) in
+            self.user.contactService.fetchContacts { error in
                 self.isFetching = false
-                self.fetchComplete?(nil, nil)
+                self.fetchComplete?(nil)
             }
         }
     }

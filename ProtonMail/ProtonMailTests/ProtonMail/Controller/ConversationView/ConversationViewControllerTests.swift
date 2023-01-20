@@ -22,35 +22,23 @@ import ProtonCore_TestingToolkit
 class ConversationViewControllerTests: XCTestCase {
 
     var sut: ConversationViewController!
-    var coordinatorMock: MockConversationCoordinator!
-    var fakeConversation: ConversationEntity!
-    var contextProvider: MockCoreDataContextProvider!
     var viewModelMock: MockConversationViewModel!
-    var apiMock: APIServiceMock!
-    var fakeUser: UserManager!
     var applicationStateMock: MockApplicationStateProvider!
-    var internetStatusProviderMock: InternetConnectionStatusProvider!
-    var reachabilityStub: ReachabilityStub!
-    var labelProviderMock: MockLabelProvider!
-    var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
-    var toolbarActionProviderMock: MockToolbarActionProvider!
-    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
 
     override func setUp() {
         super.setUp()
-        contextProvider = MockCoreDataContextProvider()
-        fakeConversation = ConversationEntity(Conversation(context: contextProvider.viewContext))
-        coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
-        apiMock = APIServiceMock()
-        fakeUser = UserManager(api: apiMock, role: .none)
-        reachabilityStub = ReachabilityStub()
-        internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        labelProviderMock = MockLabelProvider()
-        toolbarActionProviderMock = MockToolbarActionProvider()
-        toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
-        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
+        let contextProvider = MockCoreDataContextProvider()
+        let fakeConversation = ConversationEntity(Conversation(context: contextProvider.viewContext))
+        let coordinatorMock = MockConversationCoordinatorProtocol()
+        let apiMock = APIServiceMock()
+        let fakeUser = UserManager(api: apiMock, role: .none)
+        let reachabilityStub = ReachabilityStub()
+        let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        let labelProviderMock = MockLabelProvider()
+        let toolbarActionProviderMock = MockToolbarActionProvider()
+        let toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
+        let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        let userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
 
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
@@ -61,7 +49,7 @@ class ConversationViewControllerTests: XCTestCase {
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
-                                                  conversationStateProvider: MockConversationStateProvider(),
+                                                  conversationStateProvider: MockConversationStateProviderProtocol(),
                                                   labelProvider: labelProviderMock,
                                                   userIntroductionProgressProvider: userIntroductionProgressProviderMock,
                                                   targetID: nil,
@@ -80,15 +68,7 @@ class ConversationViewControllerTests: XCTestCase {
         super.tearDown()
         sut = nil
         viewModelMock = nil
-        fakeUser = nil
-        coordinatorMock = nil
-        fakeConversation = nil
-        contextProvider = nil
-        apiMock = nil
         applicationStateMock = nil
-        labelProviderMock = nil
-        toolbarActionProviderMock = nil
-        saveToolbarActionUseCaseMock = nil
     }
 
     @available(iOS 13.0, *)
