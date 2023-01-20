@@ -12,7 +12,7 @@ fileprivate struct SwipyCellConstants {
     static let bounceAmplitude              = 20.0  // Maximum bounce amplitude whe using the switch mode
     static let damping: CGFloat             = 0.6   // Damping of the spring animation
     static let velocity: CGFloat            = 0.9   // Velocity of the spring animation
-    static let animationDuration            = 0.4   // Duration of the animation
+    static let animationDuration            = 0.2   // Duration of the animation
     static let bounceDuration1              = 0.2   // Duration of the first part of the bounce animation
     static let bounceDuration2              = 0.1   // Duration of the second part of the bounce animation
     static let durationLowLimit             = 0.25  // Lowest duration when swiping the cell because we try to simulate velocity

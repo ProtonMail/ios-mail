@@ -498,7 +498,7 @@ class LocalizedString {
     lazy var _unsupported_url = NSLocalizedString("The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?", comment: "Unsupported url alert message")
 
     /// "Auto Lock Time"
-    lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "Title")
+    lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "A Title of available auto lock time action sheet")
 
     /// "Change default address to…"
     lazy var _settings_change_default_address_to = NSLocalizedString("Change default address to…", comment: "Title")
@@ -921,7 +921,7 @@ class LocalizedString {
                                                         comment: "The description of the button for deleting the contact group")
 
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
-                                                                          comment: "The string that describes whether there are 0 or 1 member in the contact group")
+                                                                          comment: "How many members in the contact group, e.g. 0 member, 2 members")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")
     lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
