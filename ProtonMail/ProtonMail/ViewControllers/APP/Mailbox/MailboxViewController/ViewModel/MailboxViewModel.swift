@@ -750,10 +750,14 @@ extension MailboxViewModel {
         completion: @escaping () -> Void
     ) {
         isFirstFetch = false
+
+        let isCurrentLocationEmpty = fetchedResultsController?.fetchedObjects?.isEmpty ?? true
+
         dependencies.updateMailbox.exec(
             showUnreadOnly: showUnreadOnly,
             isCleanFetch: isCleanFetch,
             time: time,
+            fetchMessagesAtTheEnd: isCurrentLocationEmpty,
             errorHandler: errorHandler,
             completion: completion
         )
