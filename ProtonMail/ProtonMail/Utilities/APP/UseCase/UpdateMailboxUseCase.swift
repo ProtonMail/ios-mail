@@ -21,11 +21,14 @@ import ProtonCore_Services
 protocol UpdateMailboxUseCase: UseCase {
     var isFetching: Bool { get }
 
-    func exec(showUnreadOnly: Bool,
-              isCleanFetch: Bool,
-              time: Int,
-              errorHandler: @escaping (Error) -> Void,
-              completion: @escaping () -> Void)
+    func exec(
+        showUnreadOnly: Bool,
+        isCleanFetch: Bool,
+        time: Int,
+        fetchMessagesAtTheEnd: Bool,
+        errorHandler: @escaping (Error) -> Void,
+        completion: @escaping () -> Void
+    )
     func setup(source: UpdateMailboxSourceProtocol)
 }
 
@@ -58,12 +61,14 @@ final class UpdateMailbox: UpdateMailboxUseCase {
         }
     }
 
-    func exec(showUnreadOnly: Bool,
-              isCleanFetch: Bool,
-              time: Int,
-              errorHandler: @escaping ErrorHandler,
-              completion: @escaping UpdateCompletion) {
-
+    func exec(
+        showUnreadOnly: Bool,
+        isCleanFetch: Bool,
+        time: Int,
+        fetchMessagesAtTheEnd: Bool,
+        errorHandler: @escaping ErrorHandler,
+        completion: @escaping UpdateCompletion
+    ) {
         if self.isFetching {
             completion()
             return
@@ -73,6 +78,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
         guard isCleanFetch else {
             self.scheduledFetch(showUnreadOnly: showUnreadOnly,
                                 time: time,
+                                fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
                                 errorHandler: errorHandler,
                                 completion: completion)
             return
@@ -86,6 +92,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     /// Scheduled task to update inbox / event data
     private func scheduledFetch(showUnreadOnly: Bool,
                                 time: Int,
+                                fetchMessagesAtTheEnd: Bool,
                                 errorHandler: @escaping ErrorHandler,
                                 completion: @escaping UpdateCompletion) {
 
@@ -105,6 +112,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
             notificationMessageID: self.notificationMessageID,
             showUnreadOnly: showUnreadOnly,
             time: time,
+            fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
             errorHandler: errorHandler,
             completion: completion
         )
@@ -157,6 +165,7 @@ extension UpdateMailbox {
     private func fetchEvents(notificationMessageID: MessageID?,
                              showUnreadOnly: Bool,
                              time: Int,
+                             fetchMessagesAtTheEnd: Bool,
                              errorHandler: @escaping ErrorHandler,
                              completion: @escaping UpdateCompletion) {
 
@@ -167,6 +176,7 @@ extension UpdateMailbox {
                 self?.handleFetchEventResponse(showUnreadOnly: showUnreadOnly,
                                                time: time,
                                                result: result,
+                                               fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
                                                errorHandler: errorHandler,
                                                completion: completion)
             }
@@ -272,6 +282,7 @@ extension UpdateMailbox {
     func handleFetchEventResponse(showUnreadOnly: Bool,
                                   time: Int,
                                   result: Swift.Result<[String: Any], Error>,
+                                  fetchMessagesAtTheEnd: Bool,
                                   errorHandler: @escaping ErrorHandler,
                                   completion: @escaping UpdateCompletion) {
         switch result {
@@ -297,15 +308,21 @@ extension UpdateMailbox {
                 self.fetchEvents(notificationMessageID: self.notificationMessageID,
                                  showUnreadOnly: showUnreadOnly,
                                  time: time,
+                                 fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
                                  errorHandler: errorHandler,
                                  completion: completion)
                 return
             }
         }
 
-        self.fetchMessages(time: 0, forceClean: false, isUnread: showUnreadOnly) { [weak self] error in
-            self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
-            self?.isFetching = false
+        if fetchMessagesAtTheEnd {
+            self.fetchMessages(time: 0, forceClean: false, isUnread: showUnreadOnly) { [weak self] error in
+                self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
+                self?.isFetching = false
+                completion()
+            }
+        } else {
+            self.isFetching = false
             completion()
         }
     }
