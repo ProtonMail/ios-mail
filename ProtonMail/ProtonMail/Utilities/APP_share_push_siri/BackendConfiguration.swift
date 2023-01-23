@@ -100,9 +100,7 @@ struct BackendConfiguration {
             let message = "Custom api configuration - app: \(environment.appDomain), domain: \(environment.apiDomain), path: \(environment.apiPath)"
             SystemLogger.log(message: message, category: .appLifeCycle)
         } else {
-
-            // Production Environment
-            self.environment = ProductionEnvironment()
+            self.environment = AtlasEnvironment()
         }
     }
 }
