@@ -50,6 +50,20 @@ class LabelsDataService: Service {
     private let cacheService: CacheServiceProtocol
     weak var viewModeDataSource: ViewModeDataSource?
 
+    static let defaultFolderIDs: [String] = [
+        Message.Location.inbox.rawValue,
+        Message.Location.draft.rawValue,
+        Message.HiddenLocation.draft.rawValue,
+        Message.Location.sent.rawValue,
+        Message.HiddenLocation.sent.rawValue,
+        Message.Location.starred.rawValue,
+        Message.Location.archive.rawValue,
+        Message.Location.spam.rawValue,
+        Message.Location.trash.rawValue,
+        Message.Location.allmail.rawValue,
+        Message.Location.scheduled.rawValue
+    ]
+
     init(api: APIService,
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
@@ -63,24 +77,22 @@ class LabelsDataService: Service {
         self.cacheService = cacheService
     }
 
-    func cleanLabelAndFolder(completion: @escaping () -> Void) {
+    private func cleanLabelAndFolder(context: NSManagedObjectContext) {
         let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(
             format: "%K == %@ AND (%K == 1 OR %K == 3)",
             Label.Attributes.userID,
             userID.rawValue,
             Label.Attributes.type,
-            Label.Attributes.type)
-        self.contextProvider.performOnRootSavingContext { context in
-            guard let labels = try? context.fetch(request) else {
-                completion()
-                return
-            }
-            labels.forEach {
-                context.delete($0)
-            }
-            _ = context.saveUpstreamIfNeeded()
-            completion()
+            Label.Attributes.type
+        )
+
+        guard let labels = try? context.fetch(request) else {
+            return
+        }
+
+        labels.forEach {
+            context.delete($0)
         }
     }
 
@@ -154,36 +166,33 @@ class LabelsDataService: Service {
                 folders[index]["UserID"] = self.userID.rawValue
             }
 
-            folders.append(["ID": "0"]) // case inbox   = "0"
-            folders.append(["ID": "8"]) // case draft   = "8"
-            folders.append(["ID": "1"]) // case draft   = "1"
-            folders.append(["ID": "7"]) // case sent    = "7"
-            folders.append(["ID": "2"]) // case sent    = "2"
-            folders.append(["ID": "10"]) // case starred = "10"
-            folders.append(["ID": "6"]) // case archive = "6"
-            folders.append(["ID": "4"]) // case spam    = "4"
-            folders.append(["ID": "3"]) // case trash   = "3"
-            folders.append(["ID": "5"]) // case allmail = "5"
-            folders.append(["ID": "12"]) // case scheduled = "12"
+            folders.append(contentsOf: Self.defaultFolderIDs.map { ["ID": $0] })
 
             let allFolders = labels + folders
-            self.cleanLabelAndFolder { [weak self] in
+
+            self.contextProvider.performOnRootSavingContext { [weak self] context in
                 guard let self = self else {
                     return
                 }
 
-                self.contextProvider.performOnRootSavingContext { context in
-                    do {
-                        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
-                        let error = context.saveUpstreamIfNeeded()
-                        if let error = error {
-                            completion?(.failure(error))
-                        } else {
-                            completion?(.success(()))
-                        }
-                    } catch let ex as NSError {
-                        completion?(.failure(ex))
+                self.cleanLabelAndFolder(context: context)
+
+                do {
+                    _ = try GRTJSONSerialization.objects(
+                        withEntityName: Label.Attributes.entityName,
+                        fromJSONArray: allFolders,
+                        in: context
+                    )
+
+                    let error = context.saveUpstreamIfNeeded()
+
+                    if let error = error {
+                        throw error
+                    } else {
+                        completion?(.success(()))
                     }
+                } catch let ex as NSError {
+                    completion?(.failure(ex))
                 }
             }
         }
