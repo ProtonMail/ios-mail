@@ -35,8 +35,6 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     private let dummyMessageId = "dummy_message_id"
     private let dummyUserId = UserID(rawValue: "dummy_user_id")
 
-    private let sleepWaitingForAsyncCall: UInt32 = 1
-
     override func setUp() {
         super.setUp()
         dummyUserManager = createUserManager(userID: dummyUserId.rawValue)
@@ -103,29 +101,48 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
 
     func testHandleAction_whenNetworkUnavailable() {
         mockIsNetworkAvailable = false
-        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId)
-
-        sleep(sleepWaitingForAsyncCall)
-        XCTAssertTrue(mockQueueManager.addTaskWasCalled)
-        XCTAssertFalse(mockExecuteNotificationAction.executionBlock.wasCalled)
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssert(self.mockQueueManager.addTaskWasCalled == true)
+            XCTAssert(self.mockExecuteNotificationAction.executionBlock.wasCalled == false)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
     }
 
-    func testHandleAction_whenNetworkAvailable() {
+    func testHandleAction_whenNetworkAvailableAndRequestSucceeds() {
         mockIsNetworkAvailable = true
-        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId)
+        mockExecuteNotificationAction.result = .success(Void())
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssert(self.mockQueueManager.addTaskWasCalled == false)
+            XCTAssert(self.mockExecuteNotificationAction.executionBlock.wasCalled == true)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
+    }
 
-        sleep(sleepWaitingForAsyncCall)
-        XCTAssertFalse(mockQueueManager.addTaskWasCalled)
-        XCTAssertTrue(mockExecuteNotificationAction.executionBlock.wasCalled)
+    func testHandleAction_whenNetworkAvailableAndRequestFails() {
+        mockIsNetworkAvailable = true
+        mockExecuteNotificationAction.result = .failure(NSError.badResponse())
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssert(self.mockQueueManager.addTaskWasCalled == true)
+            XCTAssert(self.mockExecuteNotificationAction.executionBlock.wasCalled == true)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
     }
 
     func testHandleAction_whenUnrecognisedAction() {
         mockIsNetworkAvailable = Bool.random()
-        sut.handle(action: "unexisting action", userId: dummyUserId, messageId: dummyMessageId)
-
-        sleep(sleepWaitingForAsyncCall)
-        XCTAssertFalse(mockQueueManager.addTaskWasCalled)
-        XCTAssertFalse(mockExecuteNotificationAction.executionBlock.wasCalled)
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: "unexisting action", userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssertFalse(self.mockQueueManager.addTaskWasCalled)
+            XCTAssertFalse(self.mockExecuteNotificationAction.executionBlock.wasCalled)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
     }
 
     func testRegisterActions_whenActionsAreRegisteredAndSecurityEnabledReceived_itShouldDeregisterActions() {
