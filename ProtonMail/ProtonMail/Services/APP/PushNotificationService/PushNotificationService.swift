@@ -50,7 +50,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
 
     /// The notification action is pending because the app has been just launched and can't make a request yet
-    private var notificationActionPendingUnlock: NotificationActionPayload?
+    private var notificationActionPendingUnlock: PendingNotificationAction?
 
     init(subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -186,9 +186,9 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
         finalizeReporting(settingsToReport: settingsToReport)
 
-        if let notificationPayload = notificationActionPendingUnlock {
+        if let notificationAction = notificationActionPendingUnlock {
             notificationActionPendingUnlock = nil
-            handleNotificationActionTask(payload: notificationPayload)
+            handleNotificationActionTask(notificationAction: notificationAction)
         }
     }
 
@@ -297,12 +297,12 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private func handleNotificationAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let usersManager = sharedServices.get(by: UsersManager.self)
         let userInfo = response.notification.request.content.userInfo
-        defer { completionHandler() }
         guard
             let sessionId = userInfo["UID"] as? String,
             let messageId = userInfo["messageId"] as? String
         else {
             SystemLogger.log(message: "Action info parameters not found", category: .pushNotification, isError: true)
+            completionHandler()
             return
         }
         let notificationActionPayload = NotificationActionPayload(
@@ -310,26 +310,38 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
             messageId: messageId,
             actionIdentifier: response.actionIdentifier
         )
+        let pendingNotificationAction = PendingNotificationAction(
+            payload: notificationActionPayload,
+            completionHandler: completionHandler
+        )
         guard !usersManager.users.isEmpty else {
             // This might mean the app is locked and not able to access
             // authenticated users info yet or that there are no users.
             if usersManager.hasUsers() {
-                notificationActionPendingUnlock = notificationActionPayload
+                notificationActionPendingUnlock = pendingNotificationAction
                 SystemLogger.log(message: "Action pending \(response.actionIdentifier)", category: .pushNotification)
+            } else {
+                completionHandler()
             }
             return
         }
-        handleNotificationActionTask(payload: notificationActionPayload)
+        handleNotificationActionTask(notificationAction: pendingNotificationAction)
     }
 
-    private func handleNotificationActionTask(payload: NotificationActionPayload) {
+    private func handleNotificationActionTask(notificationAction action: PendingNotificationAction) {
         let usersManager = sharedServices.get(by: UsersManager.self)
-        guard let userId = usersManager.getUser(by: payload.sessionId)?.userID else {
-            let message = "Action \(payload.actionIdentifier): User not found for specific session"
+        guard let userId = usersManager.getUser(by: action.payload.sessionId)?.userID else {
+            let message = "Action \(action.payload.actionIdentifier): User not found for specific session"
             SystemLogger.log(message: message, category: .pushNotification, isError: true)
+            action.completionHandler()
             return
         }
-        notificationActions.handle(action: payload.actionIdentifier, userId: userId, messageId: payload.messageId)
+        notificationActions.handle(
+            action: action.payload.actionIdentifier,
+            userId: userId,
+            messageId: action.payload.messageId,
+            completion: action.completionHandler
+        )
     }
 
     enum PushNotificationServiceError: Error {
@@ -427,6 +439,12 @@ extension PushNotificationService {
 }
 
 private extension PushNotificationService {
+
+    struct PendingNotificationAction {
+        let payload: NotificationActionPayload
+        let completionHandler: () -> Void
+    }
+
     struct NotificationActionPayload {
         let sessionId: String
         let messageId: String
