@@ -173,6 +173,10 @@ ui_feature_tests:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
     - bundle install
     - bundle exec fastlane feature_tests
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_UITEST
 

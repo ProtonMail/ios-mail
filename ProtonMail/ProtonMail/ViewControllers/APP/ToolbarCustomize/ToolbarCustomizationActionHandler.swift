@@ -21,7 +21,6 @@ protocol ToolbarCustomizationActionHandler: AnyObject {
     func actionsForToolbarCustomizeView() -> [MessageViewActionSheetAction]
     func toolbarActionTypes() -> [MessageViewActionSheetAction]
     func updateToolbarActions(actions: [MessageViewActionSheetAction], completion: ((NSError?) -> Void)?)
-    func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction]
     func saveToolbarAction(actions: [MessageViewActionSheetAction], completion: ((NSError?) -> Void)?)
     func replaceActionsLocally(
         actions: [MessageViewActionSheetAction],
@@ -60,21 +59,5 @@ extension ToolbarCustomizationActionHandler {
             .replaceCorrectArchiveAction(isInArchiveOrTrash: isInTrash || isInArchive)
             .replaceCorrectMoveToSpamOrInbox(isInSpam: isInSpam)
             .replaceCorrectTrashOrDeleteAction(isInTrashOrSpam: isInTrash || isInSpam)
-    }
-
-    /// Replace actions that have been replaced back to server accepted actions.
-    private func replaceLocalReplacedActionWithServerAction(
-        _ input: [MessageViewActionSheetAction]
-    ) -> [MessageViewActionSheetAction] {
-        var newActions = input.replaceDeleteActionWithTrashAction()
-        if let index = newActions.firstIndex(where: { $0 == .spamMoveToInbox }) {
-            newActions.remove(at: index)
-            newActions.insert(.spam, at: index)
-        }
-        if let index = newActions.firstIndex(where: { $0 == .inbox }) {
-            newActions.remove(at: index)
-            newActions.insert(.archive, at: index)
-        }
-        return newActions.removeMoreAction()
     }
 }

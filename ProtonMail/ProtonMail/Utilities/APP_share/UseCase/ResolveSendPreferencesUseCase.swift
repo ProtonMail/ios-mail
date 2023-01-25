@@ -33,7 +33,7 @@ final class ResolveSendPreferences: ResolveSendPreferencesUseCase {
             dependencies
                 .fetchAddressesPublicKeys
                 .callbackOn(executionQueue)
-                .executionBlock(params: fetchParams) { result in
+                .execute(params: fetchParams) { result in
                     switch result {
                     case .success(let keysDict):
                         let recipientsSendPreferences = params.recipientsEmailAddresses.map { [unowned self] in
@@ -57,7 +57,7 @@ final class ResolveSendPreferences: ResolveSendPreferencesUseCase {
         dependencies
             .fetchVerifiedContacts
             .callbackOn(executionQueue)
-            .executionBlock(params: params) { result in
+            .execute(params: params) { result in
                 // FetchVerifiedContacts never returns error. However it follows
                 // the NewUseCase.Callback convention that requires to declare a
                 // Result as return type.

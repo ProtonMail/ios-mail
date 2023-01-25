@@ -158,7 +158,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
         #if DEBUG
-        if CommandLine.arguments.contains("-disableAnimations") {
+        if ProcessInfo.isRunningUITests {
             UIView.setAnimationsEnabled(false)
         }
         #endif

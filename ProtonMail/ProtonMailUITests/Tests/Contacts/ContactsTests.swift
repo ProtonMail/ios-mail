@@ -132,6 +132,7 @@ class ContactsTests : BaseTestCase {
             .sendMessageToGroup(subject)
             .menuDrawer()
             .sent()
+            .refreshMailbox()
             .verify.messageWithSubjectExists(subject)
     }
 }

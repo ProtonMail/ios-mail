@@ -33,15 +33,14 @@ extension Message {
     /// Predefined location. matches with exclusive label id
     enum Location: String, CaseIterable {
         case inbox   = "0"
-        case draft   = "8"  // "8"   //1 can't be removed
-        case sent    = "7"  // "7"    //2 can't be removed
+        case draft   = "8"
+        case sent    = "7"
         case starred = "10"
         case archive = "6"
         case spam    = "4"
         case trash   = "3"
         case allmail = "5"
         case scheduled = "12"
-        // 8 , 7  another type of draft,sent
 
         var localizedTitle: String {
             switch self {

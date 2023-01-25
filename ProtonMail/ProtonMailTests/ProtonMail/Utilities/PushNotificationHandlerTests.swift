@@ -22,14 +22,11 @@ import ProtonCore_Crypto
 final class PushNotificationHandlerTests: XCTestCase {
     var sut: PushNotificationHandler!
     private var mockEncryptionKitProvider: EncryptionKitProviderMock!
-    private var mockUrlSession: URLSessionMock!
 
     override func setUp() {
         super.setUp()
-        mockUrlSession = URLSessionMock()
         mockEncryptionKitProvider = EncryptionKitProviderMock()
         let dependencies = PushNotificationHandler.Dependencies(
-            urlSession: mockUrlSession,
             encryptionKitProvider: mockEncryptionKitProvider
         )
         sut = PushNotificationHandler(dependencies: dependencies)
@@ -38,7 +35,6 @@ final class PushNotificationHandlerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        mockUrlSession = nil
         mockEncryptionKitProvider = nil
     }
 
@@ -140,32 +136,5 @@ private extension PushNotificationHandlerTests {
                                             content: content,
                                             trigger: nil)
         return request
-    }
-}
-
-private final class MockDataTask: URLSessionDataTask {
-    var completionHandler: (Data?, URLResponse?, Error?) -> Void
-    init(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        self.completionHandler = completionHandler
-    }
-
-    override func resume() {
-        delay(0.1) {
-            self.completionHandler(nil, nil, nil)
-        }
-    }
-}
-
-private class URLSessionMock: URLSessionProtocol {
-    var dataTaskCallCount = 0
-    var dataTaskArgsRequest: [URLRequest] = []
-
-    func dataTask(
-        with request: URLRequest,
-        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
-    ) -> URLSessionDataTask {
-        dataTaskCallCount += 1
-        dataTaskArgsRequest.append(request)
-        return MockDataTask(completionHandler: completionHandler)
     }
 }

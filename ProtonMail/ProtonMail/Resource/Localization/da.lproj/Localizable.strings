@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Arkivér";
 
+/* Push notification action archive */
+"Archive (verb)" = "Arkivér";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Er du sikker på, at du vil slette denne besked permanent?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Kopiér navn";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Kunne ikke åbne beskeden, forsøg igen.";
+
 /* contact placeholder */
 "Country" = "Land";
 
@@ -622,9 +628,6 @@
 
 /* Title in settings */
 "Display Name" = "Vist navn";
-
-/* Title in display name settings */
-"DisplayName" = "Vis navn";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Vil du virkelig fjerne denne fil fra vedhæftninger?";
@@ -754,9 +757,6 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Beskyttelse mod sporing af e-mail";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Der er nu mulighed for beskyttelse mod sporing af e-mail. Afsenderne vil ikke vide om, hvor eller hvornår du har åbnet deres e-mails.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Tøm spam";
@@ -950,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Robottjek -advarsel";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jeg har brugt Proton Mail og tror, at du også vil kunne lide den. Det er en sikker e-mailtjeneste, der beskytter dit privatliv. Tilmeld dig med dette link for at få 1 måned med premium-funktioner gratis:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Hvis du mister din WiFi-forbindelse, fortsætter download via mobildata.";
@@ -1662,6 +1665,9 @@
 /* section title */
 "Select colour" = "Vælg farve";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Vælg dato og tid";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valgte";
 
@@ -2021,6 +2027,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "I dag, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "I morgen";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "I morgen kl. 08:%02d AM";

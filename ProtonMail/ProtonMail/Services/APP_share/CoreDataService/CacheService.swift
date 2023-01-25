@@ -660,7 +660,7 @@ extension CacheService {
         }
     }
 
-    func updateContact(contactID: ContactID, cardsJson: [String: Any], completion: ((Result<[Contact], NSError>) -> Void)?) {
+    func updateContact(contactID: ContactID, cardsJson: [String: Any], completion: @escaping (NSError?) -> Void) {
         coreDataService.performOnRootSavingContext { context in
             do {
                 // remove all emailID associated with the current contact in the core data
@@ -675,12 +675,14 @@ extension CacheService {
 
                 if let newContact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: cardsJson, in: context) as? Contact {
                     newContact.needsRebuild = true
-                    if context.saveUpstreamIfNeeded() == nil {
-                        completion?(.success([newContact]))
-                    }
+                    let savingError = context.saveUpstreamIfNeeded()
+                    completion(savingError)
+                } else {
+                    assertionFailure("Groot should output a Contact")
+                    completion(nil)
                 }
             } catch {
-                completion?(.failure(error as NSError))
+                completion(error as NSError)
             }
         }
     }

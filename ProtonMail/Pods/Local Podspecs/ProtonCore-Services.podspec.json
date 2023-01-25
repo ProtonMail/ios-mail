@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Services",
-  "version": "3.25.0",
+  "version": "3.25.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.25.0"
+    "tag": "3.25.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -30,22 +30,25 @@
 
     ],
     "ProtonCore-DataModel": [
-      "3.25.0"
+      "3.25.2"
     ],
     "ProtonCore-Doh": [
-      "3.25.0"
+      "3.25.2"
     ],
     "ProtonCore-Log": [
-      "3.25.0"
+      "3.25.2"
     ],
     "ProtonCore-Networking": [
-      "3.25.0"
+      "3.25.2"
     ],
     "ProtonCore-Utilities": [
-      "3.25.0"
+      "3.25.2"
     ],
     "ProtonCore-Environment": [
-      "3.25.0"
+      "3.25.2"
+    ],
+    "ProtonCore-FeatureSwitch": [
+      "3.25.2"
     ]
   },
   "default_subspecs": [
@@ -59,10 +62,10 @@
       "source_files": "libraries/Services/Tests/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "3.25.0"
+          "3.25.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "3.25.0"
+          "3.25.2"
         ]
       }
     }

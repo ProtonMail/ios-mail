@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archivio";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archivia";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Sei sicuro di voler eliminare permanentemente questo messaggio?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Copia nome";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Impossibile aprire il messaggio, riprova.";
+
 /* contact placeholder */
 "Country" = "Paese";
 
@@ -622,9 +628,6 @@
 
 /* Title in settings */
 "Display Name" = "Nome visualizzato";
-
-/* Title in display name settings */
-"DisplayName" = "Nomevisualizzato";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Sei sicuro di voler rimuovere questo file dagli allegati?";
@@ -754,9 +757,6 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Protezione dal tracciamento email";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "È ora disponibile la protezione anti-tracciamento delle email. I mittenti non sapranno se, dove, e quando hai aperto le loro email.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Svuota Spam";
@@ -950,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avviso di controllo umano";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Sto usando Proton Mail e ho pensato che ti potrebbe piacere. È un servizio di posta elettronica sicuro che protegge la tua privacy. Iscriviti con questo link per ottenere 1 mese di funzioni premium gratis:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Se perdi la connessione WiFi, i download continueranno usando i dati mobili.";
@@ -1662,6 +1665,9 @@
 /* section title */
 "Select colour" = "Seleziona colore";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Seleziona data e ora dell'evento";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selezionato";
 
@@ -2021,6 +2027,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Oggi, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Domani";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Domani alle 08:%02d AM";

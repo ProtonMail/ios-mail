@@ -17,13 +17,13 @@
 "1 message moved to archive" = "1 üzenet archiválva";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 üzenet a spam mappába áthelyezve";
+"1 Message moved to spam" = "1 üzenet a levélszemét mappába áthelyezve";
 
 /* Placeholder */
 "8 to 21 characters long" = "8-től 21 karakter hosszúságig";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "A fiókhoz való hozzáférés nem fizetés miatt le van tiltva. Kérjük, jelentkezzen be a proton.me oldalon a kifizetetlen számla kifizetéséhez.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "A fiókhoz való hozzáférés számlatartozás miatt le van tiltva. Kérjük, jelentkezzen be a proton.me oldalon a kifizetetlen számla kifizetéséhez.";
 
 /* Account manager title */
 "Account" = "Fiók";
@@ -115,16 +115,16 @@
 "All protection settings will be reset and wiped upon logging out of the app." = "Az app-ból kilépéssel minden biztonsági beállítás reset-elve és törölve lesz.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Az összes üzeneted letöltésre került";
+"All your messages are downloaded" = "Az összes üzenete letöltésre került";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatív útválasztó engedélyezése";
 
 /* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Engedélyezi, hogy megnyissa a már korábban megtekintett csatolmányokat offline.";
+"Allows you to open previously opened attachments while offline." = "Lehetővé teszi, hogy internetkapcsolat nélkül is megnyissa a már korábban megtekintett mellékleteket.";
 
 /* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Engedélyezi, hogy megnyissa a korábban elolvasott üzeneteket offline.";
+"Allows you to open previously read messages while offline." = "Lehetővé teszi, hogy internetkapcsolat nélkül is megnyissa a korábban elolvasott üzeneteket.";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Archiválás is?";
@@ -167,6 +167,12 @@
    The title of the archive action in action sheet */
 "Archive" = "Archívum";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archiválás";
+
+/* Message of message permanent deletion alert, singular */
+"Are you sure you want to delete permanently this message?" = "Biztos, hogy véglegesen törli ezt az üzenetet?";
+
 /* Message of message permanent deletion alert, plural */
 "Are you sure you want to delete these %d messages permanently?" = "Biztos benne, hogy véglegesen törölni akar %d üzenetet?";
 
@@ -199,7 +205,7 @@
 "Attachment imported" = "A melléklet importálva";
 
 /* Alert title */
-"Attachment limit" = "Csatolmány limit";
+"Attachment limit" = "Melléklet korlát";
 
 /* No comment provided by engineer. */
 "attachments" = "mellékletek";
@@ -257,6 +263,12 @@
 
 /* Title */
 "Bug Report Received" = "Hibajelentés megérkezett";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Gyorsítótárazott adatok";
+
+/* Call the contact (button title text) */
+"Call contact" = "Partner felhívása";
 
 /* Error */
 "Can't copy the file" = "Nem másolható a fájl";
@@ -480,7 +492,7 @@
 "Date: %@" = "Dátum: %@";
 
 /* days */
-"days" = "napok";
+"days" = "nap";
 
 /* error title */
 "Decryption error" = "Visszafejtési hiba";
@@ -551,9 +563,6 @@
 /* Title in settings */
 "Display Name" = "Megjelenített név";
 
-/* Title in display name settings */
-"DisplayName" = "Megjelenített név";
-
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
 
@@ -619,28 +628,25 @@
 "Email contact" = "E-mail küldése";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "Az e-mailt nem sikerült elküldeni. Az üzenetet elmentettük vázlatként.";
+"Email failed to send. Message saved as draft." = "Az e-mailt nem sikerült elküldeni. Az üzenet vázlatként mentve.";
 
 /* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "Az email követők megsérthetik az ön adatainak védelmét.";
+"Email trackers can violate your privacy." = "Az e-mail követők megsérthetik az ön adatainak védelmét.";
 
 /* Name of the feature */
 "Email tracking protection" = "E-mail követési védelem";
 
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Az e-mail nyomon követési védelem már elérhető. A feladók nem fogják tudni, hogy hol vagy mikor nyitotta meg az e-maileiket.";
-
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Nincs spam";
+"Empty Spam" = "Levélszemét ürítése";
 
 /* Alert title */
-"Empty spam folder" = "Üres a spam mappa";
+"Empty spam folder" = "Lomtár ürítése";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Üres a lomtár";
+"Empty Trash" = "Lomtár ürítése";
 
 /* Alert title */
-"Empty trash folder" = "Üres a lomtár mappa";
+"Empty trash folder" = "Lomtár ürítése";
 
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
@@ -650,7 +656,7 @@
 "Enable content search" = "Tartalom keresés engedélyezése";
 
 /* Title */
-"Enable email notices" = "Email értesítők engedélyezése";
+"Enable email notices" = "E-mail értesítők engedélyezése";
 
 /* Title */
 "Enable signature" = "Aláírás bekapcsolása";
@@ -785,7 +791,7 @@
 "Government block" = "Kormányzati blokk";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Emailek csoportosítása ugyanabból a beszélgetésből.";
+"Group emails from the same conversation together." = "E-mailek csoportosítása ugyanabból a beszélgetésből.";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Csoport neve";
@@ -800,7 +806,7 @@
 "Hide details" = "Részletek elrejtése";
 
 /* hours */
-"hours" = "órák";
+"hours" = "óra";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hogyan értékelné a tapasztalatait az új Proton Maillel kapcsolatban?";
@@ -894,7 +900,7 @@
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Hívja meg ismerőseit a Proton Mailbe, hogy élvezzék a zökkenőmentes végpontok közti titkosítást, vagy lássa el jelszóvédelemmel az elküldött üzeneteit.";
 
 /* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Hívja meg barátait a Protonba: ingyenesen kipróbálják a Mail Plust, Ön pedig krediteket kap, ha feliratkoznak egy fizetős csomagra.";
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Hívja meg barátait a Protonba: ingyenesen kipróbálják a Mail Plus csomagot, Ön pedig krediteket kap, ha előfizetnek egy csomagra.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Ez a hiba bejelentés egy alkalmazáson belüli vásárlást érint?";
@@ -935,7 +941,7 @@
 "Limit reached" = "Korlát elérve";
 
 /* The banner title after tapping link copy button in referral share view. */
-"Link copied." = "Link másolva.";
+"Link copied." = "Hivatkozás másolva.";
 
 /* Button inside the banner */
 "Load anyway" = "Betöltés mindenképp";
@@ -1092,7 +1098,7 @@
 "New mailbox password" = "Új e-mail titkosítási jelszó";
 
 /* The title of the button that shows in the conversation view when there is new message coming. */
-"New Message" = "Új Üzenet";
+"New Message" = "Új üzenet";
 
 /* Placeholder */
 "New password" = "Új jelszó";
@@ -1615,7 +1621,7 @@
 "The actions in the toolbar will be reset to default" = "Az eszköztár műveletei vissza lesznek állítva az alapbeállításokra";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
-"The download will stop if the Proton Mail app is closed." = "A letöltés le fog állni, ha a Proton Mail app bezárásra kerül.";
+"The download will stop if the Proton Mail app is closed." = "A letöltés le fog állni, ha a Proton Mail alkalmazást bezárja.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "A piszkozat gyorstár elromlott. Próbálja meg újra.";
@@ -1624,7 +1630,7 @@
 "The following files couldn't be attached:" = "A következő mellkéletek csatolása nem sikerült:";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
-"The message is being sent and will move to the Sent folder once sending is complete." = "Az üzenet küldés alatt áll. Az elküldött levelek mappába lesz áthelyezve, amint el lett küldve.";
+"The message is being sent and will move to the Sent folder once sending is complete." = "Az üzenet küldés alatt áll. Az elküldött üzenetek mappába kerül az küldés befejezésekor.";
 
 /* update password error */
 "The new password can't be empty." = "Az új jelszó nem lehet üres.";
@@ -1636,7 +1642,7 @@
 "The new password needs to be at least 8 characters long" = "Az új jelszónak minimum 8 karakter hosszúságúnak kell lennie";
 
 /* update password error */
-"The password is wrong." = "A jelszó rossz.";
+"The password is wrong." = "A jelszó hibás.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "A jelszó hosszának 8 és 21 karakter között kell lennie";
@@ -1654,7 +1660,7 @@
 "The sending key is not valid" = "A küldő kulcs érvénytelen";
 
 /* Description */
-"The size limit for attachments is 25 MB." = "A maximális csatolmány mérete 25 MB.";
+"The size limit for attachments is 25 MB." = "A mellékletek maximális mérete 25 MB.";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "A megnyitni kívánt URL nem szabványos és nem biztos, hogy helyesen megjeleníthető. Megnyitja az eszköz alapértelmezett böngészőjével?";
@@ -1681,7 +1687,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet, hogy hamisítva lett, vagy hibásan volt továbbítva!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ez az e-mail a Proton Mailról feladottnak tűnik, de külső rendszerből érkezett és nem felelt meg az ellenőrzési követelményeknek. Lehet becsapós üzenet vagy hibásan továbbított!";
@@ -1723,7 +1729,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS tanúsítvány ellenőrzése nem sikerült. A kapcsolatot megfigyelhetik. Az ön biztonsága érdekében az alkalmazás átmenetileg lezárt.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "A TLS tanusítvány ellenőrzése sikertelen. A kapcsolatát lehallgathatják, a biztonsága érdekében ideiglenesen le lett tiltva az app.\n\nVáltoztasson hálózatot azonnal.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "A TLS tanúsítvány ellenőrzése sikertelen. A kapcsolatát lehallgathatják, a biztonsága érdekében az alkalmazás ideiglenesen letiltásra került.\n\nVáltoztasson hálózatot azonnal.";
 
 /* message To: feild
    Title */
@@ -1899,7 +1905,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Kikapcsolta a Face ID-t a rendszerbeállításokban. A Face ID fontos fiókinformációk védelméhez be volt állítva, hogy hozzáférhessen a fiókjához, aktiválja a Face ID-t, és jelentkezzen be újra.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Kikapcsolta a Face ID-t a rendszerbeállításokban. A Face ID fontos fiókinformációk védelméhez volt beállítva. Ahhoz, hogy hozzáférhessen a fiókjához, aktiválja a Face ID-t a beállításokban, vagy jelentkezzen be újra.";
 
 /* Message */
 "You have %d new emails!" = "%d új üzenete van!";
@@ -1908,10 +1914,10 @@
 "You have a new email!" = "Új üzenete érkezett!";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Legalább egy érvénytelen email címet írt be. Kérem, ellenőrízze a címzetteket.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Legalább egy érvénytelen e-mail címet írt be. Ellenőrizze a címzetteket.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Legalább egy ismeretlen címzettett írt be. Kérem, ellenőrízze a címzetteket.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Legalább egy ismeretlen címzettet írt be. Ellenőrizze a címzetteket.";
 
 /* The status text of message history in downloaded messages if the user has no messages. */
 "You have no messages." = "Nincsenek üzenetei.";
@@ -1920,7 +1926,7 @@
 "You have unsaved changes. Do you want to save it?" = "A változtatások nincsenek elmentve. Szeretné megtartani őket?";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Felhasználta az összes rendelkezésre álló tárhelyét (%@). Fizessen elő egy magasabb csomagra, hogy küldeni és fogadni tudjon emaileket.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Felhasználta az összes rendelkezésre álló tárhelyét (%@). Fizessen elő egy nagyobb csomagra, hogy továbbra is küldeni és fogadni tudjon e-maileket.";
 
 /* Description */
 "You need at least one recipient to send" = "A küldéshez legalább 1 címzett megadása szükséges";
@@ -1941,7 +1947,7 @@
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon %1$@-t (vagy bármely más VPN-t) vagy %2$@-t a Proton eléréshez.";
 
 /* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Az e-mailjeinél a távoli képek betöltése már eleve be van kapcsolva. A feladók nem fogják tudni, hogy hol vagy mikor nyitotta meg e-mailjait, vagy egyáltalán megnyitotta-e őket. Ahhoz, hogy ezt megváltoztassa menjen a Beállítások → Fiókbeállítások → Adatvédelem oldalra.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Az e-mailjeinél a távoli képek betöltése már eleve be van kapcsolva. A feladók nem fogják tudni, hogy hol vagy mikor nyitotta meg e-mailjeit, vagy egyáltalán megnyitotta-e őket. Ahhoz, hogy ezt megváltoztassa nyissa meg a Beállítások → Fiókbeállítások → Adatvédelem oldalt.";
 
 /* Title of user feedback view */
 "Your feedback" = "Az ön visszajelzése";
@@ -1950,7 +1956,7 @@
 "Your folders" = "Mappák";
 
 /* The title link of the textfield of the referral link in referral share view. */
-"Your invite link" = "A meghívó linkje";
+"Your invite link" = "Az Ön meghívó hivatkozása";
 
 /* The section title of label manager table */
 "Your labels" = "Cimkék";

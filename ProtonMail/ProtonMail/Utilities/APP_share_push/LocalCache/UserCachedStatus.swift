@@ -84,9 +84,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let primaryUserSessionId = "primary_user_session_id"
 
-        // new value to check new messages
-        static let newMessageFromNotification = "new_message_from_notification"
-
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
@@ -100,14 +97,11 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let paymentMethods = "paymentMethods"
 
-        static let conversationNotice = "conversationNotice"
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
-        static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
 
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
-        static let isToolbarCustomizeSpotlightShown = "isToolbarCustomizeSpotlightShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }
 
@@ -506,41 +500,6 @@ extension UserCachedStatus: DarkModeCacheProtocol {
     }
 }
 
-extension UserCachedStatus: MessageInfoCacheProtocol {
-    var hasMessageFromNotification: Bool {
-        get {
-            if getShared().object(forKey: Key.newMessageFromNotification) == nil {
-                return true
-            }
-            return getShared().bool(forKey: Key.newMessageFromNotification)
-        }
-        set {
-            setValue(newValue, forKey: Key.newMessageFromNotification)
-        }
-    }
-}
-
-extension UserCachedStatus: UserIntroductionProgressProvider {
-    func hasUserSeenSpotlight(for feature: SpotlightableFeatureKey) -> Bool {
-        featuresSeenByUser.contains(feature)
-    }
-
-    func userHasSeenSpotlight(for feature: SpotlightableFeatureKey) {
-        var featuresSeenByUserSoFar = featuresSeenByUser
-        featuresSeenByUserSoFar.insert(feature)
-        featuresSeenByUser = featuresSeenByUserSoFar
-    }
-
-    private var featuresSeenByUser: Set<SpotlightableFeatureKey> {
-        get {
-            getShared().decodableValue(forKey: Key.scheduleSendIntroView) ?? []
-        }
-        set {
-            getShared().setEncodableValue(newValue, forKey: Key.scheduleSendIntroView)
-        }
-    }
-}
-
 extension UserCachedStatus: ContactCacheStatusProtocol {
     var contactsCached: Int {
         get {
@@ -702,17 +661,7 @@ extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
     }
 }
 
-extension UserCachedStatus: ConversationNoticeViewStatusProvider {
-    var conversationNoticeIsOpened: Bool {
-        get {
-            return SharedCacheBase.getDefault().bool(forKey: Key.conversationNotice)
-        }
-        set {
-            SharedCacheBase.getDefault().set(newValue, forKey: Key.conversationNotice)
-            SharedCacheBase.getDefault()?.synchronize()
-        }
-    }
-
+extension UserCachedStatus {
     var initialUserLoggedInVersion: String? {
         get {
             return SharedCacheBase.getDefault().string(forKey: Key.initialUserLoggedInVersion)

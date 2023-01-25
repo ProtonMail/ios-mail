@@ -620,9 +620,6 @@
 /* Title in settings */
 "Display Name" = "Birtingarnafn";
 
-/* Title in display name settings */
-"DisplayName" = "Birtingarnafn";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Viltu virkilega fjarlægja þessa skrá úr viðhengjum?";
 
@@ -1362,7 +1359,7 @@
 "Open account switcher" = "Opnaðu reikningsskipti";
 
 /* contacts talbe cell Organization title */
-"Organization" = "Stofnun/Félag";
+"Organization" = "Stofnun";
 
 /* default vcard types */
 "Other" = "Annað";

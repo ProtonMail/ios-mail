@@ -233,6 +233,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiv";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archivieren";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Bist du sicher, dass diese Nachricht dauerhaft gelöscht werden soll?";
 
@@ -535,6 +538,9 @@
 /* Title */
 "Copy name" = "Name kopieren";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Nachricht konnte nicht geöffnet werden, bitte versuche es erneut.";
+
 /* contact placeholder */
 "Country" = "Land";
 
@@ -658,9 +664,6 @@
 
 /* Title in settings */
 "Display Name" = "Anzeigename";
-
-/* Title in display name settings */
-"DisplayName" = "Anzeigename";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Möchtest du diese Datei wirklich aus dem Anhang entfernen?";
@@ -790,9 +793,6 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Schutz vor E-Mail-Trackern";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Der E-Mail-Tracking-Schutz ist jetzt verfügbar. Die Absender werden nicht erfahren ob, wo oder wann du die E-Mails geöffnet hast.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam-Ordner leeren";
@@ -986,6 +986,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Warnhinweis zur menschliche Überprüfung";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Ich benutze Proton Mail und dachte, es könnte auch dir gefallen. Es ist ein sicherer E-Mail-Dienst, der deine Privatsphäre schützt. Melde dich über diesen Link an und erhalte 1 Monat lang kostenlos die Premiumfunktionen:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Wenn du deine WLAN-Verbindung verlierst, wird der Download über mobile Daten fortgesetzt.";
@@ -1698,6 +1701,9 @@
 /* section title */
 "Select colour" = "Farbe auswählen";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Datum und Uhrzeit auswählen";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Ausgewählt";
 
@@ -2039,6 +2045,9 @@
 /* The subtitle of empty inbox */
 "Time to relax" = "Zeit zum Entspannen";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Zeitplan";
+
 /* contacts talbe cell Title title */
 "Title" = "Titel";
 
@@ -2054,6 +2063,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Heute, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Morgen";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Morgen Vormittag um 08:%02d";

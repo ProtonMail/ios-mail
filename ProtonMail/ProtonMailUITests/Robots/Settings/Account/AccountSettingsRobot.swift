@@ -16,10 +16,10 @@ fileprivate struct id {
     static let defaultLabel = LocalString._general_default
     static let signatureLabel = LocalString._settings_signature_title
     static let deleteAccount = "Delete account"
-    static let mobileSignatureLabel = "Mobile signature"
+    static let mobileSignatureLabel = "Mobile Signature"
     
     static let signatureRightStaticTextIdentifier = "Signature.rightText"
-    static let mobileSignatureRightStaticTextIdentifier = "Mobile_signature.rightText"
+    static let mobileSignatureRightStaticTextIdentifier = "Mobile_Signature.rightText"
     static let onStaticTextLabel = LocalString._settings_On_title
     static let offStaticTextLabel = LocalString._settings_Off_title
 

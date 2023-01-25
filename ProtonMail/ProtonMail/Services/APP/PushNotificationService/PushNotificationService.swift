@@ -21,14 +21,13 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import UIKit
-import UserNotifications
+import ProtonCore_Common
 import ProtonCore_Networking
 import ProtonCore_Services
-import ProtonCore_Common
+import UIKit
+import UserNotifications
 
 class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
-
     typealias SubscriptionSettings = PushSubscriptionSettings
 
     enum Key {
@@ -51,7 +50,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
 
     /// The notification action is pending because the app has been just launched and can't make a request yet
-    private var notificationActionPendingUnlock: NotificationActionPayload?
+    private var notificationActionPendingUnlock: PendingNotificationAction?
 
     init(subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -61,8 +60,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
          signInProvider: SignInProvider = SignInManagerProvider(),
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider(),
-         notificationCenter: NotificationCenter = NotificationCenter.default
-    ) {
+         notificationCenter: NotificationCenter = NotificationCenter.default) {
         self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
         self.deviceRegistrator = deviceRegistrator
@@ -95,14 +93,15 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
                 self.currentSubscriptions.update(setting, toState: .notReported)
             }
         }
-        didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken)} // but we have to save one for PushNotificationDecryptor
+        didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken) } // but we have to save one for PushNotificationDecryptor
     }
+
     fileprivate let currentSubscriptions: SubscriptionsPack
 
     // MARK: - register for notificaitons
 
     func registerForRemoteNotifications() {
-        /// TODO::fixme we don't need to request this remote when start until logged in. we only need to register after user logged in
+        // TODO: fixme we don't need to request this remote when start until logged in. we only need to register after user logged in
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             guard granted else { return }
             DispatchQueue.main.async {
@@ -122,7 +121,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     @objc private func didUnlockAsync() {
         unlockQueue.async {
-            self.didUnlock()    // cuz encryption kit generation can take significant time
+            self.didUnlock() // cuz encryption kit generation can take significant time
         }
     }
 
@@ -130,11 +129,10 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         var newSettings = settings
         do {
             try newSettings.generateEncryptionKit()
-        } catch let error {
-            assert(false, "failed to generate enryption kit: \(error)")
+        } catch {
+            assertionFailure("failed to generate enryption kit: \(error)")
         }
         return newSettings
-
     }
 
     private func finalizeReporting(settingsToReport: Set<PushNotificationService.SubscriptionSettings>) {
@@ -165,7 +163,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
         let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter {
             ($0.state == .reported || $0.state == .pending) &&
-            !settingsToUnreport.contains($0.settings)
+                !settingsToUnreport.contains($0.settings)
         }
         var settingsToReport = Set(settingsWeNeedToHave)
 
@@ -188,15 +186,15 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
         finalizeReporting(settingsToReport: settingsToReport)
 
-        if let notificationPayload = notificationActionPendingUnlock {
+        if let notificationAction = notificationActionPendingUnlock {
             notificationActionPendingUnlock = nil
-            handleNotificationActionTask(payload: notificationPayload)
+            handleNotificationActionTask(notificationAction: notificationAction)
         }
     }
 
     @objc private func didSignOut() {
         let settingsToUnreport = self.currentSubscriptions.subscriptions.compactMap { subscription -> SubscriptionSettings? in
-            return subscription.state == .notReported ? nil : subscription.settings
+            subscription.state == .notReported ? nil : subscription.settings
         }
         self.currentSubscriptions.outdate(Set(settingsToUnreport))
         self.unreportOutdatedSettings()
@@ -219,14 +217,14 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
                     group.leave()
                 }
                 switch result {
-                case .success(_):
+                case .success:
                     reportResult[settings] = .reported
-                case .failure(_):
+                case .failure:
                     reportResult[settings] = .notReported
                 }
             }
             reportResult[settings] = .pending
-            
+
             let auth = sharedServices.get(by: UsersManager.self).getUser(by: settings.UID)?.authCredential
             self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
@@ -241,11 +239,11 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
                 var tokenDeleted = false
                 var tokenUnrecognized = false
                 switch result {
-                case .success(_):
-                   tokenDeleted = true
+                case .success:
+                    tokenDeleted = true
                 case .failure(let error):
                     tokenUnrecognized = (error.code == APIErrorCode.deviceTokenDoesNotExist
-                                         || error.code == APIErrorCode.deviceTokenIsInvalid)
+                        || error.code == APIErrorCode.deviceTokenIsInvalid)
                 }
                 if tokenDeleted || tokenUnrecognized {
                     self?.currentSubscriptions.removed(setting)
@@ -256,22 +254,22 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     // MARK: - launch options
 
-    func setLaunchOptions (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+    func setLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
-            if let remoteNotification = launchoption[UIApplication.LaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
+            if let remoteNotification = launchoption[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] {
                 self.launchOptions = remoteNotification
             }
         }
     }
 
-    func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping () -> Void) {
+    func setNotificationOptions(_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         self.launchOptions = userInfo
         completionHandler()
     }
 
     func processCachedLaunchOptions() {
         if let options = self.launchOptions {
-            self.didReceiveRemoteNotification(options, completionHandler: { })
+            try? self.didReceiveRemoteNotification(options, completionHandler: {})
         }
     }
 
@@ -284,7 +282,11 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private func handleRemoteNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if UnlockManager.shared.isUnlocked() { // unlocked
-            didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
+            do {
+                try didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
+            } catch {
+                setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+            }
         } else if UIApplication.shared.applicationState == .inactive { // opened by push
             setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
         } else {
@@ -295,12 +297,12 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private func handleNotificationAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let usersManager = sharedServices.get(by: UsersManager.self)
         let userInfo = response.notification.request.content.userInfo
-        defer { completionHandler() }
         guard
             let sessionId = userInfo["UID"] as? String,
             let messageId = userInfo["messageId"] as? String
         else {
             SystemLogger.log(message: "Action info parameters not found", category: .pushNotification, isError: true)
+            completionHandler()
             return
         }
         let notificationActionPayload = NotificationActionPayload(
@@ -308,35 +310,50 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
             messageId: messageId,
             actionIdentifier: response.actionIdentifier
         )
+        let pendingNotificationAction = PendingNotificationAction(
+            payload: notificationActionPayload,
+            completionHandler: completionHandler
+        )
         guard !usersManager.users.isEmpty else {
             // This might mean the app is locked and not able to access
             // authenticated users info yet or that there are no users.
             if usersManager.hasUsers() {
-                notificationActionPendingUnlock = notificationActionPayload
+                notificationActionPendingUnlock = pendingNotificationAction
                 SystemLogger.log(message: "Action pending \(response.actionIdentifier)", category: .pushNotification)
+            } else {
+                completionHandler()
             }
             return
         }
-        handleNotificationActionTask(payload: notificationActionPayload)
+        handleNotificationActionTask(notificationAction: pendingNotificationAction)
     }
 
-    private func handleNotificationActionTask(payload: NotificationActionPayload) {
+    private func handleNotificationActionTask(notificationAction action: PendingNotificationAction) {
         let usersManager = sharedServices.get(by: UsersManager.self)
-        guard let userId = usersManager.getUser(by: payload.sessionId)?.userID else {
-            let message = "Action \(payload.actionIdentifier): User not found for specific session"
+        guard let userId = usersManager.getUser(by: action.payload.sessionId)?.userID else {
+            let message = "Action \(action.payload.actionIdentifier): User not found for specific session"
             SystemLogger.log(message: message, category: .pushNotification, isError: true)
+            action.completionHandler()
             return
         }
-        notificationActions.handle(action: payload.actionIdentifier, userId: userId, messageId: payload.messageId)
+        notificationActions.handle(
+            action: action.payload.actionIdentifier,
+            userId: userId,
+            messageId: action.payload.messageId,
+            completion: action.completionHandler
+        )
     }
 
-    private func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
+    enum PushNotificationServiceError: Error {
+        case userIsNotReady
+    }
+
+    private func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) throws {
         guard
             let payload = pushNotificationPayload(userInfo: userInfo),
             shouldHandleNotification(payload: payload)
         else {
-            completionHandler()
-            return
+            throw PushNotificationServiceError.userIsNotReady
         }
         launchOptions = nil
         completionHandler()
@@ -375,7 +392,6 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 }
 
 extension PushNotificationService: UNUserNotificationCenterDelegate {
-
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -395,8 +411,8 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                       willPresent notification: UNNotification,
-                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let options: UNNotificationPresentationOptions = [.alert, .sound]
         completionHandler(options)
     }
@@ -404,13 +420,12 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
 
 extension PushNotificationService {
     static func updateSettingsIfNeeded(reportResult: [PushNotificationService.SubscriptionSettings: PushNotificationService.SubscriptionState],
-                                currentSubscriptions: Set<PushNotificationService.SubscriptionWithSettings>,
-                                updateSubscriptionClosure: ((PushNotificationService.SubscriptionSettings, PushNotificationService.SubscriptionState)) -> Void) {
-
+                                       currentSubscriptions: Set<PushNotificationService.SubscriptionWithSettings>,
+                                       updateSubscriptionClosure: ((PushNotificationService.SubscriptionSettings, PushNotificationService.SubscriptionState)) -> Void) {
         for result in reportResult {
             // Check if the setting is already reported successfully before.
             // If that's the case, ignore the result to prevent the failing result overriding the successful registration before.
-            let currentSubscription = currentSubscriptions.first(where: {$0.settings.UID == result.key.UID})
+            let currentSubscription = currentSubscriptions.first(where: { $0.settings.UID == result.key.UID })
             let isReportedBefore = currentSubscription?.state == .reported
             let isEncryptionKitTheSame = currentSubscription?.settings.encryptionKit == result.key.encryptionKit
 
@@ -424,6 +439,11 @@ extension PushNotificationService {
 }
 
 private extension PushNotificationService {
+
+    struct PendingNotificationAction {
+        let payload: NotificationActionPayload
+        let completionHandler: () -> Void
+    }
 
     struct NotificationActionPayload {
         let sessionId: String
@@ -447,6 +467,7 @@ struct AuthCredentialSessionIDProvider: SessionIdProvider {
 protocol SignInProvider {
     var isSignedIn: Bool { get }
 }
+
 struct SignInManagerProvider: SignInProvider {
     var isSignedIn: Bool {
         return sharedServices.get(by: UsersManager.self).hasUsers()
@@ -456,6 +477,7 @@ struct SignInManagerProvider: SignInProvider {
 protocol UnlockProvider {
     var isUnlocked: Bool { get }
 }
+
 struct UnlockManagerProvider: UnlockProvider {
     var isUnlocked: Bool {
         return sharedServices.get(by: UnlockManager.self).isUnlocked()

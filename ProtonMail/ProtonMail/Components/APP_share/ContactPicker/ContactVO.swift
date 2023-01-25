@@ -32,7 +32,6 @@ enum PGPTypeErrorCode: Int {
 class ContactVO: NSObject, ContactPickerModelProtocol {
     let title: String
     let subtitle: String
-    let contactId: String
     let name: String
     let email: String
     let isProtonMailContact: Bool
@@ -87,8 +86,7 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
         return encryptionIconStatus?.isNonePM ?? true
     }
 
-    init(id: String = "", name: String, email: String, isProtonMailContact: Bool = false) {
-        self.contactId = id
+    init(name: String, email: String, isProtonMailContact: Bool = false) {
         self.name = name
         self.email = email
         self.isProtonMailContact = isProtonMailContact
@@ -121,7 +119,7 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
 
 extension ContactVO {
     func copy(with zone: NSZone? = nil) -> Any {
-        let contact = ContactVO(id: contactId, name: name, email: email, isProtonMailContact: isProtonMailContact)
+        let contact = ContactVO(name: name, email: email, isProtonMailContact: isProtonMailContact)
         return contact
     }
 }

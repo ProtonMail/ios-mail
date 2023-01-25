@@ -54,7 +54,7 @@ protocol UserManagerSaveAction: AnyObject {
     func save()
 }
 
-class UserManager: Service, HasLocalStorage {
+class UserManager: Service {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {
@@ -271,7 +271,8 @@ class UserManager: Service, HasLocalStorage {
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             scheduleSendEnableStatusProvider: userCachedStatus,
-            realAttachmentsFlagProvider: userCachedStatus
+            realAttachmentsFlagProvider: userCachedStatus,
+            userIntroductionProgressProvider: userCachedStatus
         )
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)

@@ -17,17 +17,28 @@
 
 import Foundation
 
+enum ScheduledSendStatus {
+    case enabled
+    case disabled
+    case notSet
+}
+
 protocol ScheduleSendEnableStatusProvider: AnyObject {
-    func isScheduleSendEnabled(userID: UserID) -> Bool
+    func isScheduleSendEnabled(userID: UserID) -> ScheduledSendStatus
     func setScheduleSendStatus(enable: Bool, userID: UserID)
 }
 
 extension UserCachedStatus: ScheduleSendEnableStatusProvider {
-    func isScheduleSendEnabled(userID: UserID) -> Bool {
+    func isScheduleSendEnabled(userID: UserID) -> ScheduledSendStatus {
         guard let dict = getShared().object(forKey: Key.isScheduleSendEnabled) as? [String: Bool] else {
-            return false
+            return .notSet
         }
-        return dict[userID.rawValue] ?? false
+
+        if let explicitStatus = dict[userID.rawValue] {
+            return explicitStatus ? .enabled : .disabled
+        } else {
+            return .notSet
+        }
     }
 
     func setScheduleSendStatus(enable: Bool, userID: UserID) {

@@ -46,7 +46,7 @@ final class PushNotificationActionsHandler {
     /// Registers the relevant UNNotificationActions to be shown in push notifications if any
     func registerActions() {
         guard dependencies.isNotificationActionsFeatureEnabled else {
-            // we remove actions in case it they were registered in a previous test build
+            // we remove actions in case they were registered in a previous test build
             removePushNotificationActions()
             return
         }
@@ -65,18 +65,20 @@ final class PushNotificationActionsHandler {
         PushNotificationAction(rawValue: actionIdentifier) != nil
     }
 
-    func handle(action actionIdentifier: String, userId: UserID, messageId: String) {
+    func handle(action actionIdentifier: String, userId: UserID, messageId: String, completion: @escaping () -> Void) {
         guard let action = PushNotificationAction(rawValue: actionIdentifier) else {
             let message = "Unrecognised action \(actionIdentifier)"
             SystemLogger.log(message: message, category: .pushNotification, isError: true)
+            completion()
             return
         }
         guard dependencies.isNetworkAvailable() else {
             SystemLogger.log(message: "Network unavailable", category: .pushNotification)
             enqueueTask(action: action, userId: userId, messageId: messageId)
+            completion()
             return
         }
-        executeTask(action: action, userId: userId, messageId: messageId)
+        executeTask(action: action, userId: userId, messageId: messageId, completion: completion)
     }
 }
 
@@ -114,9 +116,15 @@ private extension PushNotificationActionsHandler {
         SystemLogger.log(message: "Action enqueued \(action)", category: .pushNotification)
     }
 
-    private func executeTask(action: PushNotificationAction, userId: UserID, messageId: String) {
+    private func executeTask(
+        action: PushNotificationAction,
+        userId: UserID,
+        messageId: String,
+        completion: @escaping () -> Void
+    ) {
         guard let userManager = sharedServices.get(by: UsersManager.self).getUser(by: userId) else {
             SystemLogger.log(message: "User not found for \(action)", category: .pushNotification, isError: true)
+            completion()
             return
         }
         let params = ExecuteNotificationAction.Parameters(
@@ -128,11 +136,12 @@ private extension PushNotificationActionsHandler {
         dependencies.actionRequest.execute(params: params) { [weak self] result in
             switch result {
             case .success:
-                break
+                completion()
             case .failure(let error):
                 let message = "\(action) error: \(error)"
                 SystemLogger.log(message: message, category: .pushNotification, isError: true)
                 self?.enqueueTask(action: action, userId: userId, messageId: messageId)
+                completion()
             }
         }
     }

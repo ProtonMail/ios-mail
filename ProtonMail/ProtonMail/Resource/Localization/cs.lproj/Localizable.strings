@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiv";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archivovat";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Opravdu chcete tuto zprávu trvale odstranit?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Kopírovat jméno";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Zprávu se nepodařilo otevřít, zkuste to znovu.";
+
 /* contact placeholder */
 "Country" = "Země";
 
@@ -622,9 +628,6 @@
 
 /* Title in settings */
 "Display Name" = "Zobrazované jméno";
-
-/* Title in display name settings */
-"DisplayName" = "Zobrazované jméno";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Opravdu chcete tento soubor odebrat z příloh?";
@@ -754,9 +757,6 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Ochrana proti sledovacím prvkům v e-mailech je nyní dostupná. Odesílatelé nebudou vědět, zda, kde a kdy jste otevřeli jejich e-maily.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vyprázdnit spam";
@@ -950,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Upozornění kontroly CAPTCHA";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Používám Proton Mail a myslím, že by se vám mohl líbit. Je to bezpečná e-mailová služba, která chrání vaše soukromí. Zaregistrujte se pomocí tohoto odkazu a získejte 1 měsíc prémiových funkcí zdarma:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Pokud dojde ke ztrátě připojení Wi-Fi, stahování bude pokračovat přes mobilní data.";
@@ -1662,6 +1665,9 @@
 /* section title */
 "Select colour" = "Vyberte barvu";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Vyberte datum a čas";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Vybráno";
 
@@ -2021,6 +2027,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Dnes, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Zítra";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Zítra v 08:%02d";

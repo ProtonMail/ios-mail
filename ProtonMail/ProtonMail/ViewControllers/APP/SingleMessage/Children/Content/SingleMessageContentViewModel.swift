@@ -179,7 +179,9 @@ class SingleMessageContentViewModel {
         }
         hasAlreadyFetchedMessageData = true
         let params: FetchMessageDetail.Params = .init(userID: user.userID, message: message)
-        dependencies.fetchMessageDetail.executionBlock(params: params) { [weak self] result in
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(_):

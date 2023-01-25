@@ -24,6 +24,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var realAttachmentFlagProviderMock: MockRealAttachmentsFlagProvider!
+    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
 
@@ -32,18 +33,23 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         scheduleSendEnableStatusMock = .init()
         realAttachmentFlagProviderMock = .init()
+        userIntroductionProgressProviderMock = .init()
         sut = FeatureFlagsDownloadService(
             userID: userID,
             apiService: apiServiceMock,
             sessionID: "",
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
-            realAttachmentsFlagProvider: realAttachmentFlagProviderMock
+            realAttachmentsFlagProvider: realAttachmentFlagProviderMock,
+            userIntroductionProgressProvider: userIntroductionProgressProviderMock
         )
     }
 
     override func tearDown() {
         super.tearDown()
+        apiServiceMock = nil
+        realAttachmentFlagProviderMock = nil
         scheduleSendEnableStatusMock = nil
+        userIntroductionProgressProviderMock = nil
         sut = nil
     }
 
@@ -112,6 +118,34 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testWhenRemoteFlagIsChangedFromOffToOn_spotlightIsResetForCurrentUser() throws {
+        userIntroductionProgressProviderMock.markSpotlight(for: .scheduledSend, asSeen: false, byUserWith: userID)
+
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            if path.contains("/core/v4/features") {
+                let response = FeatureFlagTestData.data.parseObjectAny()!
+                completion(nil, .success(response))
+            } else {
+                XCTFail("Unexpected path")
+                completion(nil, .failure(.badResponse()))
+            }
+        }
+
+        let expectation1 = expectation(description: "Closure called")
+
+        sut.getFeatureFlags { _ in
+            expectation1.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertEqual(userIntroductionProgressProviderMock.markSpotlightStub.callCounter, 1)
+        let lastCallArguments = try XCTUnwrap(userIntroductionProgressProviderMock.markSpotlightStub.lastArguments)
+        XCTAssertEqual(lastCallArguments.first, .scheduledSend)
+        XCTAssertEqual(lastCallArguments.second, false)
+        XCTAssertEqual(lastCallArguments.third, userID)
     }
 }
 

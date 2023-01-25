@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Архив";
 
+/* Push notification action archive */
+"Archive (verb)" = "Архивировать";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Вы уверены, что хотите навсегда удалить это сообщение?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Скопировать имя";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Не удалось открыть сообщение, попробуйте ещё раз.";
+
 /* contact placeholder */
 "Country" = "Страна";
 
@@ -622,9 +628,6 @@
 
 /* Title in settings */
 "Display Name" = "Отображаемое имя";
-
-/* Title in display name settings */
-"DisplayName" = "Отображаемое имя";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Вы действительно хотите удалить этот файл из вложений?";
@@ -754,9 +757,6 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Защита от отслеживания электронной почты";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "Защита от отслеживания электронной почты теперь доступна. Отправители не узнают, открывали ли вы их письма, где и когда.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Очистить Спам";
@@ -950,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Предупреждение о проверке \"Я не робот\"";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Я использую Proton Mail и подумал, что она может вам понравиться. Это защищенная почтовая служба, которая оберегает вашу конфиденциальность. Зарегистрируйтесь по этой ссылке и получите 1 месяц платных функций бесплатно:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Если вы потеряете подключение к WiFi, скачивание продолжится через сотовую сеть.";
@@ -1662,6 +1665,9 @@
 /* section title */
 "Select colour" = "Выберите цвет";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Установите дату и время";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Выбрано";
 
@@ -2021,6 +2027,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Сегодня, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Завтра";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Завтра в 08:%02d ДП";

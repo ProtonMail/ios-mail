@@ -1,6 +1,3 @@
-/* Proton Mail address availability */
-"%@ is available" = "%@ está disponível";
-
 /* Delete account success */
 "Account deleted.\nLogging out..." = "Conta eliminada.\nA terminar sessão...";
 
@@ -80,9 +77,6 @@
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Criar um endereço seguro do Proton Mail";
-
-/* Action button title for creating Proton Mail address */
-"Create address" = "Criar endereço";
 
 /* Create account button */
 "Create an account" = "Criar uma conta";
@@ -212,8 +206,7 @@
 /* Help button */
 "Need help?" = "Precisa de ajuda?";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Seguinte";
 
 /* network troubleshot cell title */
@@ -362,7 +355,6 @@
 "support form" = "formulário de suporte";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Termos e condições";
 
@@ -449,7 +441,4 @@
 
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "O seu plano renova automaticamente em %@";
-
-/* Recovery address label title */
-"Your recovery email address:" = "O seu email de recuperação:";
 

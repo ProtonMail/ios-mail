@@ -27,18 +27,10 @@ import ProtonCore_DataModel
 extension UserInfo {
 
     var isAutoLoadRemoteContentEnabled: Bool {
-        if Self.isImageProxyAvailable {
-            return hideRemoteImages == 0
-        } else {
-            return showImages.contains(.remote)
-        }
+        hideRemoteImages == 0
     }
 
     var isAutoLoadEmbeddedImagesEnabled: Bool {
-        if Self.isImageProxyAvailable {
-            return hideEmbeddedImages == 0
-        } else {
-            return showImages.contains(.embedded)
-        }
+        hideEmbeddedImages == 0
     }
 }

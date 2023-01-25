@@ -95,7 +95,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d percakapan dipindah ke %@</string>
+			<string>%d percakapan dipindahkan ke %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pesan berikut akan dipindah ke Draf dan jadwal pengiriman yang terhubung dengannya akan dihapus.</string>
+			<string>%d pesan berikut akan dipindahkan ke Draf dan jadwal pengiriman yang terhubung dengannya akan dihapus.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

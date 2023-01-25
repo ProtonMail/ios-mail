@@ -90,6 +90,14 @@ final class LabelManagerViewController: UITableViewController {
     private func viewTitle() -> String {
         return viewModel.output.labelType.isFolder ? LocalString._folders : LocalString._labels
     }
+
+    /// Function to keep the scroll position after reloading the tableview data
+    private func reloadDataWithoutScroll() {
+        let contentOffset = tableView.contentOffset
+        tableView.reloadData()
+        tableView.layoutIfNeeded()
+        tableView.setContentOffset(contentOffset, animated: false)
+    }
 }
 
 // MARK: LabelManagerUIProtocol
@@ -97,7 +105,7 @@ final class LabelManagerViewController: UITableViewController {
 extension LabelManagerViewController: LabelManagerUIProtocol {
     func reloadData() {
         hideLoadingHUD()
-        tableView.reloadData()
+        reloadDataWithoutScroll()
     }
 
     func viewModeDidChange(mode: LabelManagerViewModel.ViewMode) {

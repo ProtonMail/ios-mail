@@ -25,7 +25,7 @@ extension SignInCoordinatorEnvironment {
 
     static var dummyTryRestoringPersistedUser: () -> Void {{ }}
 
-    static var dummyFinalizeSignIn: (LoginData, @escaping (NSError) -> Void, () -> Void, () -> Void, () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _, _, _ in }}
+    static var dummyFinalizeSignIn: (LoginData, @escaping (NSError) -> Void, () -> Void, @escaping () -> Void) -> Void {{ _, _, _, _ in }}
 
     static var dummyUnlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void {{ _, _, _, _ in }}
 
@@ -36,7 +36,7 @@ extension SignInCoordinatorEnvironment {
         mailboxPassword: @escaping (Passphrase, AuthCredential) -> Passphrase = dummyMailboxPassword,
         currentAuth: @escaping () -> AuthCredential? = dummyCurrentAuth,
         tryRestoringPersistedUser: @escaping () -> Void = dummyTryRestoringPersistedUser,
-        finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, () -> Void, () -> Void, () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
+        finalizeSignIn: @escaping (LoginData, @escaping (NSError) -> Void, () -> Void, @escaping () -> Void) -> Void = dummyFinalizeSignIn,
         unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials,
         saveLoginData: @escaping (LoginData) -> SignInManager.LoginDataSavingResult = dummySaveLoginData
     ) -> SignInCoordinatorEnvironment {

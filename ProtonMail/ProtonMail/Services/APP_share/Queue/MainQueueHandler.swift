@@ -843,7 +843,7 @@ extension MainQueueHandler {
                 completion(NSError.badParameter("contact objectID"))
                 return
             }
-            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { contact, error in
+            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { error in
                 completion(error)
             }
         }

@@ -222,7 +222,8 @@ class SingleMessageViewModel {
         guard UserInfo.isToolbarCustomizationEnable else {
             return false
         }
-        if !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .toolbarCustomization) {
+
+        if userIntroductionProgressProvider.shouldShowSpotlight(for: .toolbarCustomization, toUserWith: user.userID) {
             return true
         }
 
@@ -240,7 +241,11 @@ class SingleMessageViewModel {
     }
 
     func setToolbarCustomizeSpotlightViewIsShown() {
-        userIntroductionProgressProvider.userHasSeenSpotlight(for: .toolbarCustomization)
+        userIntroductionProgressProvider.markSpotlight(
+            for: .toolbarCustomization,
+            asSeen: true,
+            byUserWith: user.userID
+        )
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
@@ -323,7 +328,7 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(params: .init(preference: preference)) { result in
+            .execute(params: .init(preference: preference)) { result in
                 switch result {
                 case .success:
                     completion?(nil)

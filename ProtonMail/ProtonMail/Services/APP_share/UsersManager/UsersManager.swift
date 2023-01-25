@@ -393,6 +393,9 @@ extension UsersManager {
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
                 NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
+            #if !APP_EXTENSION
+            ImageProxyCache.shared.purge()
+            #endif
             completion?()
         }.cauterize()
     }

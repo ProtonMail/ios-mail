@@ -235,6 +235,7 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Archive";
+"Archive (verb)" = "Archive";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Are you sure you want to delete permanently this message?";

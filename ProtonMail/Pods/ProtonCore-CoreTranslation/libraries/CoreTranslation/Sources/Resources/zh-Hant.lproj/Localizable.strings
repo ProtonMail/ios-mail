@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ 可適用";
-
 /* Plan details storage */
 "%@ storage" = "%@ 雲端儲存";
 
@@ -60,9 +57,6 @@
  * Login 2FA */
 "Authenticate" = "驗證";
 
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "點擊創建電郵位址，即表示您同意 Proton 的合約條款。";
-
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "點擊下一步，即表示您同意 Proton 的合約條款";
 
@@ -84,9 +78,6 @@
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "在「Proton 狀態」中查看我們的系統狀態。";
-
-/* Available addresss claim button */
-"Claim it" = "就是它了";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "關閉";
@@ -127,15 +118,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "另行創建安全防護的 Proton Mail 電郵位址";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "創建電郵位址";
-
 /* Create account button */
 "Create an account" = "創建新帳號";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "創建 Proton Mail 電郵位址";
 
 /* Create user failed error */
 "Create user failed" = "無法創建新使用者";
@@ -317,8 +301,7 @@
  * Networking */
 "Network connection error" = "網路連線發生錯誤";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "下一步";
 
 /* Warning message option when user want to relogin to another account */
@@ -509,7 +492,6 @@
 "switch to" = "切換為";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "條款與細則";
 
@@ -633,10 +615,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "您將會被系統登出，所有與此關聯的資料也將從此裝置上移除。";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "你日後可使用此電郵位址登錄至所有 Proton 服務。";
-
 /* Complete view title */
 "Your account is being created" = "您的帳號即時創建中...";
 
@@ -655,12 +633,6 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "您的方案自動續購日期為 %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "您的 Proton 帳號已設關聯至 %@。若需使用 %@，請先創建一組電郵位址。";
-
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
-
-/* Recovery address label title */
-"Your recovery email address:" = "您的復原電郵位址：";
 

@@ -197,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archivo";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archivar";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "¿Estás seguro que quieres eliminar permanentemente este mensaje?";
 
@@ -499,6 +502,9 @@
 /* Title */
 "Copy name" = "Copiar nombre";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "No se pudo abrir el mensaje. Inténtalo de nuevo.";
+
 /* contact placeholder */
 "Country" = "País";
 
@@ -622,9 +628,6 @@
 
 /* Title in settings */
 "Display Name" = "Nombre a mostrar";
-
-/* Title in display name settings */
-"DisplayName" = "Nombre a mostrar";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "¿Realmente quieres eliminar este archivo de los archivos adjuntos?";
@@ -754,9 +757,6 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Protección de rastreo de correo electrónico";
-
-/* Spotlight explanation of the feature */
-"Email tracking protection is now available. Senders will not know if, where, or when you opened their emails." = "La protección contra rastreo de correo electrónico ya está disponible. Los remitentes no sabrán si, dónde o cuándo has abierto sus correos electrónicos.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vaciar spam";
@@ -950,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Advertencia de verificación humana";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado usando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funcionalidades premium gratis:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Si pierdes la conexión WiFi, la descarga continuará mediante los datos del móvil.";
@@ -1662,6 +1665,9 @@
 /* section title */
 "Select colour" = "Seleccionar color";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Selecciona fecha y hora";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Seleccionado";
 
@@ -2021,6 +2027,9 @@
 
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hoy, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Mañana";
 
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Mañana a las 08:%02d";

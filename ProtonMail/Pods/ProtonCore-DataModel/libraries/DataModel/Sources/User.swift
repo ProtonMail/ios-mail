@@ -108,7 +108,6 @@ public final class UserInfo: NSObject {
     public var passwordMode: Int
     public var referralProgram: ReferralProgram?
     public var role: Int
-    public var showImages: ShowImages
     public var sign: Int
     /// 0: free user, > 0: paid user
     public var subscribed: Int
@@ -144,7 +143,6 @@ public final class UserInfo: NSObject {
         language: String?,
         maxUpload: Int64?,
         notify: Int?,
-        showImages: Int?,
         swipeLeft: Int?,
         swipeRight: Int?,
         role: Int?,
@@ -205,7 +203,6 @@ public final class UserInfo: NSObject {
         self.hideEmbeddedImages = hideEmbeddedImages ?? DefaultValue.hideEmbeddedImages
         self.hideRemoteImages = hideRemoteImages ?? DefaultValue.hideRemoteImages
         self.imageProxy = imageProxy.map(ImageProxy.init(rawValue:)) ?? DefaultValue.imageProxy
-        self.showImages = showImages.map(ShowImages.init(rawValue:)) ?? DefaultValue.showImages
         self.sign = sign ?? DefaultValue.sign
         self.swipeLeft = swipeLeft ?? DefaultValue.swipeLeft
         self.swipeRight = swipeRight ?? DefaultValue.swipeRight
@@ -259,7 +256,6 @@ public final class UserInfo: NSObject {
         self.notify = DefaultValue.notify
         self.passwordMode = DefaultValue.passwordMode
         self.role = role ?? DefaultValue.role
-        self.showImages = DefaultValue.showImages
         self.sign = DefaultValue.sign
         self.subscribed = subscribed ?? DefaultValue.subscribed
         self.swipeLeft = DefaultValue.swipeLeft
@@ -383,7 +379,6 @@ extension UserInfo {
         static let notify: Int = 0
         static let passwordMode: Int = 1
         static let role: Int = 0
-        static let showImages: ShowImages = .none
         static let sign: Int = 0
         static let subscribed: Int = 0
         static let swipeLeft: Int = 3

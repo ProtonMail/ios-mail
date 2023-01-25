@@ -25,9 +25,6 @@ import PromiseKit
 import ProtonCore_Services
 
 protocol Service: AnyObject {}
-protocol HasLocalStorage {
-    static func cleanUpAll() -> Promise<Void>
-}
 
 /// temporary here: device level service
 let sharedServices: ServiceFactory = {

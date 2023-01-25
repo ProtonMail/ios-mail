@@ -221,8 +221,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         contactGroupProvider.getAllContactGroupVOs()
     }
 
-    func fetchContacts(completion: ContactFetchComplete? = nil) {
-        contactProvider.fetchContacts(completion: completion)
+    func fetchContacts() {
+        contactProvider.fetchContacts(completion: nil)
     }
 
     /// create a fetch controller with labelID
@@ -364,43 +364,22 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     private func itemOfRawConversation(indexPath: IndexPath, collectBreadcrumbs: Bool) -> Conversation? {
-        let log: (String) -> Void = { message in
-            if collectBreadcrumbs {
-                Breadcrumbs.shared.add(message: message, to: .invalidSwipeAction)
-            }
-        }
+        guard !indexPath.isEmpty else { return nil }
 
-        guard !indexPath.isEmpty else {
-            log("indexPath is empty")
-            return nil
-        }
-
-        guard let frc = fetchedResultsController else {
-            log("fetchedResultsController is nil")
-            return nil
-        }
+        guard let frc = fetchedResultsController else { return nil }
 
 
         let sections = frc.numberOfSections()
 
-        guard sections > indexPath.section else {
-            log("requested section \(indexPath.section) but only have \(sections) sections")
-            return nil
-        }
+        guard sections > indexPath.section else { return nil }
 
         let rows = frc.numberOfRows(in: indexPath.section)
 
-        guard rows > indexPath.row else {
-            log("requested row \(indexPath.row) but only have \(rows) rows")
-            return nil
-        }
+        guard rows > indexPath.row else { return nil }
 
         let managedObject = frc.object(at: indexPath)
 
-        guard let contextLabel = managedObject as? ContextLabel else {
-            log("fetched object is not a ContextLabel")
-            return nil
-        }
+        guard let contextLabel = managedObject as? ContextLabel else { return nil }
 
         return contextLabel.conversation
     }
@@ -525,32 +504,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
                 completion()
             }
         }
-    }
-
-    func markConversationAsUnread(conversationIDs: [ConversationID], currentLabelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.markAsUnread(conversationIDs: conversationIDs,
-                                         labelID: currentLabelID,
-                                         completion: completion)
-    }
-    
-    func markConversationAsRead(conversationIDs: [ConversationID], currentLabelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.markAsRead(conversationIDs: conversationIDs,
-                                       labelID: currentLabelID,
-                                       completion: completion)
-    }
-    
-    func labelConversations(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.label(conversationIDs: conversationIDs,
-                                  as: labelID,
-                                  isSwipeAction: false,
-                                  completion: completion)
-    }
-    
-    func unlabelConversations(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.unlabel(conversationIDs: conversationIDs,
-                                    as: labelID,
-                                    isSwipeAction: false,
-                                    completion: completion)
     }
 
     final func resetNotificationMessage() {
@@ -978,16 +931,6 @@ extension MailboxViewModel {
 
 // MARK: - Swipe actions
 extension MailboxViewModel {
-    func isScheduledSend(in indexPath: IndexPath) -> Bool {
-        if locationViewMode == .singleMessage {
-            guard let message = item(index: indexPath) else { return false }
-            return message.contains(location: .scheduled)
-        } else {
-            guard let conversation = itemOfConversation(index: indexPath) else { return false }
-            return conversation.contains(of: .scheduled)
-        }
-    }
-
     func isSwipeActionValid(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
         guard let location = messageLocation else {
             return true
@@ -1045,6 +988,27 @@ extension MailboxViewModel {
             return .labelAs
         case .moveTo:
             return .moveTo
+        }
+    }
+
+    func handleSwipeAction(_ action: MessageSwipeAction) {
+        switch action {
+        case .unstar:
+            handleUnstarAction()
+        case .star:
+            handleStarAction()
+        case .read:
+            handleMarkReadAction()
+        case .unread:
+            handleMarkUnreadAction()
+        case .trash:
+            handleRemoveAction()
+        case .archive:
+            handleMoveToArchiveAction()
+        case .spam:
+            handleMoveToSpamAction()
+        case .labelAs, .moveTo, .none:
+            break
         }
     }
 

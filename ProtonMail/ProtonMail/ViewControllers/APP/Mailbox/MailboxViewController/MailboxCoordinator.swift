@@ -25,8 +25,6 @@ import SideMenuSwift
 import class ProtonCore_DataModel.UserInfo
 
 class MailboxCoordinator: CoordinatorDismissalObserver {
-    typealias VC = MailboxViewController
-
     let viewModel: MailboxViewModel
     var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
@@ -292,7 +290,6 @@ extension MailboxCoordinator {
             guard self?.getApplicationState() == .active else {
                 return
             }
-
             goToDetailPage()
         }
     }
@@ -390,7 +387,11 @@ extension MailboxCoordinator {
 
         messageToShow(isNotification: true, node: node) { [weak self] message in
             guard let self = self,
-                  let message = message else { return }
+                  let message = message else {
+                self?.viewController?.navigationController?.popViewController(animated: true)
+                L11n.Error.cant_open_message.alertToastBottom()
+                return
+            }
             let messageID = message.messageID
             switch self.viewModel.locationViewMode {
             case .singleMessage:
@@ -403,7 +404,11 @@ extension MailboxCoordinator {
                 self.switchFolderIfNeeded(folderID: folderID?.rawValue)
             case .conversation:
                 self.conversationToShow(isNotification: true, message: message) { [weak self] conversation in
-                    guard let conversation = conversation else { return }
+                    guard let conversation = conversation else {
+                        self?.viewController?.navigationController?.popViewController(animated: true)
+                        L11n.Error.cant_open_message.alertToastBottom()
+                        return
+                    }
                     if UserInfo.isConversationSwipeEnabled {
                         self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                     } else {
@@ -483,8 +488,6 @@ extension MailboxCoordinator {
             ) {
                 completion(MessageEntity(message))
             } else {
-                self.viewController?.navigationController?.popViewController(animated: true)
-                L11n.Error.cant_open_message.alertToastBottom()
                 completion(nil)
             }
         }
