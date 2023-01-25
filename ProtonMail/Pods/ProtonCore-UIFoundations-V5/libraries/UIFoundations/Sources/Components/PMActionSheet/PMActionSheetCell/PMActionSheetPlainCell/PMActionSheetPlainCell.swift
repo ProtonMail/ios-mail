@@ -37,6 +37,8 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
     @IBOutlet private var rightIcon: UIImageView!
     @IBOutlet private var rightIconWidth: NSLayoutConstraint!
     @IBOutlet private var rightIconHeight: NSLayoutConstraint!
+    @IBOutlet private weak var titleRightIcon: UIImageView!
+    @IBOutlet weak var titleRightIconWidth: NSLayoutConstraint!
 
     class func nib() -> UINib {
         return UINib(nibName: "PMActionSheetPlainCell", bundle: PMUIFoundations.bundle)
@@ -75,6 +77,12 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
         } else {
             self.rightIcon.image = nil
             hasRightIcon = false
+        }
+
+        if let titleRightIcon = item.titleRightIcon {
+            self.titleRightIcon.image = titleRightIcon
+        } else {
+            titleRightIconWidth.constant = 0
         }
 
         detailLabel.setContentCompressionResistancePriority(

@@ -21,7 +21,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case threading = "ThreadingIOS"
     case inAppFeedback = "InAppFeedbackIOS"
     case realNumAttachments = "RealNumAttachments"
-    case scheduleSend = "ScheduledSend"
+    case scheduleSend = "ScheduledSendFreemium"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {

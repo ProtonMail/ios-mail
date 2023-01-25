@@ -68,7 +68,7 @@ class SingleMessageViewModel {
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
          dependencies: SingleMessageContentViewModel.Dependencies,
-         goToDraft: @escaping (MessageID) -> Void
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) {
         self.labelId = labelId
         self.message = message
