@@ -63,7 +63,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
-                                    goToDraft: { _ in },
+                                    goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
 
@@ -461,7 +461,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
-                                    goToDraft: { _ in },
+                                    goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
 
@@ -484,7 +484,7 @@ class ConversationViewModelTests: XCTestCase {
             replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
-            goToDraft: { _ in })
+            goToDraft: { _, _ in })
         if isExpanded {
             viewModel.toggleState()
         }
