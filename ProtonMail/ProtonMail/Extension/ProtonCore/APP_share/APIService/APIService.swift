@@ -23,21 +23,31 @@
 import CoreData
 import Foundation
 import TrustKit
+import ProtonCore_Authentication
 import ProtonCore_Challenge
+import ProtonCore_Log
 import ProtonCore_Services
 
 extension PMAPIService {
+
+    static var authDelegateForUnauthorized = AuthHelper()
+
     static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
-        let unauthorized = PMAPIService.createAPIServiceWithoutSession(doh: DoHMail.default,
-                                                                       challengeParametersProvider: .forAPIService(clientApp: .mail))
+        let unauthorized = PMAPIService.createAPIServiceWithoutSession(
+            doh: DoHMail.default, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+        )
         #if !APP_EXTENSION
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            // TODO:: fix me
-            // unauthorized.authDelegate = delegate
             unauthorized.serviceDelegate = delegate
         }
+        unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
+        unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
+        // TODO: consult with Mail devs if this makes sense outside of `#if !APP_EXTENSION`
+        unauthorized.authDelegate = authDelegateForUnauthorized
+        // no need to handle the results in any special way, just logging for debugging purpose is enough
+        unauthorized.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
         return unauthorized
     }()
 
@@ -46,9 +56,8 @@ extension PMAPIService {
         if let user = sharedServices.get(by: UsersManager.self).users.first {
             return user.apiService
         }
-        // TODO: Should we have unauthorized calls here at all?
         #if !APP_EXTENSION
-        self.unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
+        self.unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: .unauthorized)
         self.unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
         return self.unauthorized

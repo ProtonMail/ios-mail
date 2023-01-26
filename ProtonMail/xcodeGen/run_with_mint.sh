@@ -10,6 +10,9 @@
 if test -d "/opt/homebrew/bin/"; then
   PATH="/opt/homebrew/bin/:${PATH}"
 fi
+if test -d "/Users/proton/brew/bin/"; then
+  PATH="/Users/proton/brew/bin/:${PATH}"
+fi
 export PATH
 
 # If `mint run` is executed in a directory other than the one with the Mintfile, it will attempt to install the latest available version of the package, regardless of the version installed with `mint bootstrap`.

@@ -343,7 +343,7 @@ final class SignInCoordinator {
     }
 
     private func checkDoh(_ error: NSError, wrapIn flowError: (Error) -> FlowError) -> Bool {
-        guard environment.doh
+        guard environment.apiService.dohInterface
             .errorIndicatesDoHSolvableProblem(error: error) else { return false }
 
         let result: FlowResult = .errored(flowError(error as Error))
