@@ -125,7 +125,7 @@ class AccountManagerRobot: CoreElements {
 /**
  RemoveAllAlertRobot class contains actions for Remove all accounts alert.
  */
-class AccountManagerRemoveAllAlertRobot {
+class AccountManagerRemoveAllAlertRobot: CoreElements {
 
     func confirmRemoveAll() -> LoginRobot {
         app.alerts.buttons.element(boundBy: 1).tap()
