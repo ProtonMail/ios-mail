@@ -23,12 +23,16 @@
 import CoreData
 import Foundation
 import TrustKit
+import ProtonCore_Challenge
 import ProtonCore_Services
 
 extension PMAPIService {
     static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
-        let unauthorized = PMAPIService(doh: BackendConfiguration.shared.doh, sessionUID: "")
+        let unauthorized = PMAPIService.createAPIServiceWithoutSession(
+            environment: BackendConfiguration.shared.environment,
+            challengeParametersProvider: .forAPIService(clientApp: .mail)
+        )
         #if !APP_EXTENSION
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             // TODO:: fix me

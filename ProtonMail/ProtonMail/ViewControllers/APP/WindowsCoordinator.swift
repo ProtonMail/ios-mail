@@ -275,7 +275,7 @@ class WindowsCoordinator: LifetimeTrackable {
 
             Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
-            queueManager.unregisterHandler(user.mainQueueHandler)
+            queueManager.unregisterHandler(for: user.userID)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
                 guard let self = self else { return }
                 guard let appWindow = self.appWindow else {return}

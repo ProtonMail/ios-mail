@@ -456,7 +456,15 @@ extension CacheService {
                     _ = context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
-                        self.updateLastUpdatedTime(labelID: labelID, isUnread: isUnread, startTime: firstMsg.time ?? Date(), endTime: lastMsg.time ?? Date(), msgCount: messagesCount, msgType: .singleMessage)
+                        self.lastUpdatedStore.updateLastUpdatedTime(
+                            labelID: labelID,
+                            isUnread: isUnread,
+                            startTime: firstMsg.time ?? Date(),
+                            endTime: lastMsg.time ?? Date(),
+                            msgCount: messagesCount,
+                            userID: self.userID,
+                            type: .singleMessage
+                        )
                     }
                 }
                 completion(nil)
@@ -469,16 +477,6 @@ extension CacheService {
 
 // MARK: - Counter related functions
 extension CacheService {
-    func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: ViewMode) {
-        lastUpdatedStore.updateLastUpdatedTime(labelID: labelID,
-                                               isUnread: isUnread,
-                                               startTime: startTime,
-                                               endTime: endTime,
-                                               msgCount: msgCount,
-                                               userID: userID,
-                                               type: msgType)
-    }
-
     func updateCounterSync(markUnRead: Bool, on message: Message) {
         self.updateCounterSync(markUnRead: markUnRead,
                                on: message.getLabelIDs().map(LabelID.init(rawValue:)))

@@ -21,6 +21,7 @@
 
 import UIKit
 import Foundation
+import ProtonCore_DataModel
 import ProtonCore_Foundations
 
 public final class PMChallenge: ChallengeProtocol {
@@ -276,5 +277,21 @@ extension PMChallenge: TextFieldInterceptorDelegate {
 extension PMChallenge {
     func getInterceptor(textField: UITextField) -> TextFieldDelegateInterceptor? {
         interceptors.first { $0.textField == textField }
+    }
+}
+
+public extension ChallengeParametersProvider {
+    static func forAPIService(clientApp: ClientApp) -> ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: clientApp.name) {
+            PMChallenge().export().deviceFingerprintDict()
+        }
+    }
+}
+
+public extension ChallengeParametersProvider {
+    static func forLoginAndSignup(clientApp: ClientApp, challenge: PMChallenge) -> ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: clientApp.name) {
+            challenge.export().allFingerprintDict()
+        }
     }
 }

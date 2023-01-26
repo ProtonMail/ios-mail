@@ -49,7 +49,12 @@ public struct UserParameters {
 extension AuthService {
     struct CreateUserEndpoint: Request {
         let userParameters: UserParameters
-
+        
+        var challengeProperties: ChallengeProperties? {
+            return ChallengeProperties.init(challenges: userParameters.challenge,
+                                            productPrefix: userParameters.productPrefix)
+        }
+        
         var parameters: [String: Any]? {
             let auth: [String: Any] = [
                 "Version": 4,
@@ -57,14 +62,9 @@ extension AuthService {
                 "Salt": userParameters.salt,
                 "Verifier": userParameters.verifer
             ]
-            var payload: [String: Any] = [:]
-            for (index, data) in userParameters.challenge.enumerated() {
-                payload["\(userParameters.productPrefix)-ios-v4-challenge-\(index)"] = data
-            }
             var out: [String: Any] = [
                 "Username": userParameters.userName,
                 "Auth": auth,
-                "Payload": payload
             ]
             if let email = userParameters.email {
                 out["Email"] = email

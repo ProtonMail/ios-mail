@@ -90,6 +90,7 @@ extension SignInCoordinatorEnvironment {
                          .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
+                             separateDomainsButton: true,
                              passwordRestrictions: passwordRestrictions,
                              summaryScreenVariant: SummaryScreenVariant.screenVariant(
                                  .mail(SummaryStartButtonText("Start using Proton Mail"))

@@ -57,6 +57,7 @@ open class SnapshotTestCase: XCTestCase {
 
     @available(iOS 13, *)
     public func checkSnapshots<Content>(view: Content,
+                                        perceptualPrecision: Float = 1,
                                         record: Bool = false,
                                         file: StaticString = #filePath,
                                         line: UInt = #line) where Content: View {
@@ -67,6 +68,7 @@ open class SnapshotTestCase: XCTestCase {
         [UIUserInterfaceStyle.light, .dark].forEach {
             assertSnapshot(matching: vc,
                            as: .image(on: .iPhoneSe,
+                                      perceptualPrecision: perceptualPrecision,
                                       traits: .init(userInterfaceStyle: $0)),
                            named: "\($0)",
                            record: reRecordEverything || record,

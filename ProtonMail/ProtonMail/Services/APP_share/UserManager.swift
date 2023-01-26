@@ -192,20 +192,6 @@ class UserManager: Service {
         return service
     }()
 
-    lazy var mainQueueHandler: MainQueueHandler = { [unowned self] in
-        let service = MainQueueHandler(coreDataService: coreDataService,
-                                       apiService: self.apiService,
-                                       messageDataService: self.messageService,
-                                       conversationDataService: self.conversationService.conversationDataService,
-                                       labelDataService: self.labelService,
-                                       localNotificationService: self.localNotificationService,
-                                       undoActionManager: self.undoActionManager,
-                                       user: self)
-        let shareQueueManager = sharedServices.get(by: QueueManager.self)
-        shareQueueManager.registerHandler(service)
-        return service
-    }()
-
     lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
         let service = ConversationDataServiceProxy(api: apiService,
                                                    userID: userID,
@@ -323,7 +309,6 @@ class UserManager: Service {
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
         self.parentManager = parent
-        _ = self.mainQueueHandler.userID
         self.messageService.signin()
     }
 
@@ -378,6 +363,19 @@ class UserManager: Service {
         updateTelemetry()
         refreshFeatureFlags()
         activatePayments()
+    }
+
+    func makeQueueHandler() -> QueueHandler {
+        MainQueueHandler(
+            coreDataService: coreDataService,
+            apiService: apiService,
+            messageDataService: messageService,
+            conversationDataService: conversationService.conversationDataService,
+            labelDataService: labelService,
+            localNotificationService: localNotificationService,
+            undoActionManager: undoActionManager,
+            user: self
+        )
     }
 
     private func updateTelemetry() {

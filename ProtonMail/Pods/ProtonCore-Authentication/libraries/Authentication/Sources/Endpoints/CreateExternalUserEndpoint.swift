@@ -45,6 +45,8 @@ public struct ExternalUserParameters {
 }
 
 extension AuthService {
+    
+    /// Create a ProtonID user with a 3rd party email as username.
     struct CreateExternalUserEndpoint: Request {
         let externalUserParameters: ExternalUserParameters
 
@@ -55,16 +57,16 @@ extension AuthService {
                 "Salt": externalUserParameters.salt,
                 "Verifier": externalUserParameters.verifer
             ]
-            var payload: [String: Any] = [:]
-            for (index, data) in externalUserParameters.challenge.enumerated() {
-                payload["\(externalUserParameters.productPrefix)-ios-v4-challenge-\(index)"] = data
-            }
             let out: [String: Any] = [
                 "Email": externalUserParameters.email,
                 "Auth": auth,
-                "Payload": payload
             ]
             return out
+        }
+        
+        var challengeProperties: ChallengeProperties? {
+            return ChallengeProperties.init(challenges: externalUserParameters.challenge,
+                                            productPrefix: externalUserParameters.productPrefix)
         }
         
         var header: [String: Any] {

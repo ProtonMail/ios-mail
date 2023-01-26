@@ -22,6 +22,20 @@
 import Foundation
 
 extension String {
+
+    // Trims every line ends from trailing spaces and tabs
+    public func trimTrailingSpaces() -> String {
+        let lines = self.components(separatedBy: "\n")
+        let trimmedLines = lines.map { (line: String) -> String in
+            let trimmed = line.replacingOccurrences(
+                of: "[ |\\t|\\r]+$",
+                with: "",
+                options: .regularExpression
+            )
+            return trimmed
+        }
+        return trimmedLines.joined(separator: "\n")
+    }
     
     public var utf8: Data? {
         return self.data(using: .utf8)

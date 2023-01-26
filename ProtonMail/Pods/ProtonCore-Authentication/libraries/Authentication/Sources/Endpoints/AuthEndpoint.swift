@@ -90,16 +90,17 @@ extension AuthService {
             return ["X-Accept-ExtAcc": true]
         }
         
+        var challengeProperties: ChallengeProperties? {
+            challenge
+        }
+        
         var parameters: [String: Any]? {
-            var dict: [String: Any] = [
+            let dict: [String: Any] = [
                 "Username": username,
                 "ClientEphemeral": ephemeral.base64EncodedString(),
                 "ClientProof": proof.base64EncodedString(),
                 "SRPSession": session
             ]
-            if let challenge = challenge {
-                dict["Payload"] = ["\(challenge.productPrefix)-ios-v4-challenge-\(0)": challenge.challengeData]
-            }
             return dict
         }
         

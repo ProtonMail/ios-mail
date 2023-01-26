@@ -30,7 +30,7 @@ public final class TrustKitWrapper {
     public static private(set) var current: TrustKit?
 
     public static func setUp(delegate: TrustKitDelegate, customConfiguration: Configuration? = nil) {
-        let config = configuration(hardfail: true)
+        let config = customConfiguration ?? configuration(hardfail: true)
         
         let instance = TrustKit(configuration: config)
         

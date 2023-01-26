@@ -91,7 +91,7 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     }
     
     public func insertEmailV3(_ email: String) -> SignupHumanVerificationV3Robot {
-        let element = XCUIApplication().webViews["HumanVerifyV3ViewController.webView"].webViews.textFields.element(boundBy: 0)
+        let element = XCUIApplication().webViews["HumanVerifyViewController.webView"].webViews.textFields.element(boundBy: 0)
         Wait().forElement(element)
         element.tap()
         element.typeText(email)
@@ -104,7 +104,7 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     }
     
     public func fillInCodeV3(_ code: String) -> SignupHumanVerificationV3Robot {
-        let element = XCUIApplication().webViews["HumanVerifyV3ViewController.webView"].webViews.textFields.element(boundBy: 0)
+        let element = XCUIApplication().webViews["HumanVerifyViewController.webView"].webViews.textFields.element(boundBy: 0)
         Wait().forElement(element)
         element.tap()
         element.typeText(code)

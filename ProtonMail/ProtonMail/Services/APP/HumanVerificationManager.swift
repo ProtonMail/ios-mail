@@ -56,7 +56,6 @@ class HumanVerificationManager: LifetimeTrackable {
             supportURL: url,
             viewController: nil,
             clientApp: .mail,
-            versionToBeUsed: .v3,
             responseDelegate: nil,
             paymentDelegate: nil
         )

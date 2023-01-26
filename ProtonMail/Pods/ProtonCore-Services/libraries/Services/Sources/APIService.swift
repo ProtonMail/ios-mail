@@ -269,23 +269,9 @@ public enum HumanVerifyFinishReason {
     case closeWithError(code: Int, description: String)
 }
 
-public enum HumanVerificationVersion: Equatable {
-    @available(*, deprecated, message: "HumanVerification V2 is deprecated, please use v3 instead!")
-    case v2
-    case v3
-}
-
 public protocol HumanVerifyDelegate: AnyObject {
-    var version: HumanVerificationVersion { get }
     func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
     func getSupportURL() -> URL
-}
-
-public extension HumanVerifyDelegate {
-    @available(*, deprecated, message: "remove this. we will use v3 as default. and this is not in used anymore")
-    var version: HumanVerificationVersion {
-        return .v3
-    }
 }
 
 extension HumanVerifyDelegate {
@@ -327,6 +313,8 @@ public protocol AuthDelegate: AnyObject {
     func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion)
     func onUpdate(credential: Credential, sessionUID: String)
     func onLogout(sessionUID: String)
+
+    func eraseUnauthSessionCredentials(sessionUID: String)
 }
 
 public typealias AuthRefreshComplete = (_ auth: Credential?, _ hasError: AuthErrors?) -> Void
@@ -357,7 +345,7 @@ public extension APIService {
         // TODO: add executor to request so it can be passed to DoH
         request(method: route.method,
                 path: route.path,
-                parameters: route.parameters,
+                parameters: route.calculatedParameters,
                 headers: route.header,
                 authenticated: route.isAuth,
                 autoRetry: route.autoRetry,
@@ -414,7 +402,7 @@ public extension APIService {
                     responseCompletion: @escaping (_ task: URLSessionDataTask?, _ response: R) -> Void) where R: ResponseType {
         request(method: route.method,
                 path: route.path,
-                parameters: route.parameters,
+                parameters: route.calculatedParameters,
                 headers: route.header,
                 authenticated: route.isAuth,
                 autoRetry: route.autoRetry,
@@ -477,7 +465,7 @@ public extension APIService {
     where T: APIDecodableResponse {
         request(method: route.method,
                 path: route.path,
-                parameters: route.parameters,
+                parameters: route.calculatedParameters,
                 headers: route.header,
                 authenticated: route.isAuth,
                 autoRetry: route.autoRetry,
@@ -534,7 +522,7 @@ public extension APIService {
                        jsonDictionaryCompletion complete: @escaping (_ task: URLSessionDataTask?, _ result: Result<JSONDictionary, ResponseError>) -> Void) {
         
         upload(byPath: route.path,
-               parameters: route.parameters,
+               parameters: route.calculatedParameters,
                files: files,
                headers: route.header,
                authenticated: route.isAuth,
@@ -571,7 +559,7 @@ public extension APIService {
                           decodableCompletion complete: @escaping (_ task: URLSessionDataTask?, _ result: Result<T, ResponseError>) -> Void) where T: APIDecodableResponse {
         
         upload(byPath: route.path,
-               parameters: route.parameters,
+               parameters: route.calculatedParameters,
                files: files,
                headers: route.header,
                authenticated: route.isAuth,
@@ -624,7 +612,7 @@ public extension APIService {
         }
         self.request(method: route.method,
                      path: route.path,
-                     parameters: route.parameters,
+                     parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
@@ -672,7 +660,7 @@ public extension APIService {
         }
         
         self.request(method: route.method, path: route.path,
-                     parameters: route.parameters,
+                     parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
@@ -740,7 +728,7 @@ public extension APIService {
         }
         
         self.request(method: route.method, path: route.path,
-                     parameters: route.parameters,
+                     parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
@@ -807,7 +795,7 @@ public extension APIService {
         
         self.request(method: route.method,
                      path: route.path,
-                     parameters: route.parameters,
+                     parameters: route.calculatedParameters,
                      headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
@@ -883,7 +871,7 @@ public extension APIService {
         }
         
         self.upload(byPath: route.path,
-                    parameters: route.parameters,
+                    parameters: route.calculatedParameters,
                     files: files, headers: route.header,
                     authenticated: route.isAuth,
                     customAuthCredential: route.authCredential,

@@ -24,7 +24,7 @@ import ProtonCore_Log
 
 public struct Google: DoHProviderInternal {
     
-    let supported: [DNSType] = [.txt]
+    let supported: [DNSRecordType] = [.a, .txt]
     
     let networkingEngine: DoHNetworkingEngine
 
@@ -32,12 +32,5 @@ public struct Google: DoHProviderInternal {
         self.networkingEngine = networkingEngine
     }
 
-    public let url = "https://dns.google.com"
-
-    func query(host: String, sessionId: String?) -> String {
-        if let sessionId = sessionId {
-            return self.url + "/resolve?type=TXT&name=" + sessionId + "." + host
-        }
-        return self.url + "/resolve?type=TXT&name=" + host
-    }
+    public var queryUrl = URL(string: "https://dns.google.com/resolve")!
 }

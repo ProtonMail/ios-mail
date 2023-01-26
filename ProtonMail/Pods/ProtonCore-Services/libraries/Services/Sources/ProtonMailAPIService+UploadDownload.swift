@@ -26,6 +26,7 @@ import ProtonCore_Doh
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Utilities
+import ProtonCore_FeatureSwitch
 
 // MARK: - Performing the upload and download operation
 
@@ -223,7 +224,7 @@ extension PMAPIService {
         retryPolicy: ProtonRetryPolicy.RetryMode,
         operationAndCompletion: Either<JSONOperationAndCompletion, DecodableOperationAndCompletion<T>>
     ) where T: APIDecodableResponse {
-        let url = self.doh.getCurrentlyUsedHostUrl() + path
+        let url = self.dohInterface.getCurrentlyUsedHostUrl() + path
         
         let operation = operationAndCompletion.mapLeft(f: \.0).mapRight(f: \.0)
         let completion = operationAndCompletion.mapLeft(f: \.1).mapRight(f: \.1)
@@ -296,7 +297,7 @@ extension PMAPIService {
                                          errorOut: @escaping (APIError) -> Void,
                                          operation: @escaping (_ request: SessionRequest) -> Void) {
         
-        let authBlock: (String?, String?, NSError?) -> Void = { token, userID, error in
+        let authBlock: (String?, String?, NSError?) -> Void = { token, sessionUID, error in
             
             if let error = error {
                 self.debugError(error)
@@ -311,7 +312,7 @@ extension PMAPIService {
                                                      parameters: parameters,
                                                      nonDefaultTimeout: nonDefaultTimeout,
                                                      headers: headers,
-                                                     UID: userID,
+                                                     sessionUID: sessionUID,
                                                      accessToken: token,
                                                      retryPolicy: retryPolicy)
                 // the meat of this method
@@ -330,10 +331,12 @@ extension PMAPIService {
                 switch result {
                 case .found(let credentials):
                     authBlock(credentials.accessToken, credentials.sessionID, nil)
-                case .notFound where !authenticated, .wrongConfigurationNoDelegate where !authenticated:
-                    authBlock(nil, nil, nil)
-                case .notFound, .wrongConfigurationNoDelegate:
+                // legacy path
+                case .notFound where !FeatureFactory.shared.isEnabled(.unauthSession) && authenticated,
+                     .wrongConfigurationNoDelegate where !FeatureFactory.shared.isEnabled(.unauthSession) && authenticated:
                     authBlock(nil, nil, result.toNSError)
+                case .notFound, .wrongConfigurationNoDelegate:
+                    authBlock(nil, nil, nil)
                 }
             }
         }

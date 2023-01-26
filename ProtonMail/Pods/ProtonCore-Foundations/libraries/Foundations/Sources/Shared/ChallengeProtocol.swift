@@ -54,3 +54,18 @@ extension ChallengeProtocol {
   }
   #endif 
 }
+
+public struct ChallengeParametersProvider {
+    public let prefix: String
+    public let provideParameters: () -> [[String: Any]]
+    public init(prefix: String, provideParameters: @escaping () -> [[String: Any]]) {
+        self.prefix = prefix
+        self.provideParameters = provideParameters
+    }
+}
+
+public extension ChallengeParametersProvider {
+    static var empty: ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: "") { [[:]] }
+    }
+}
