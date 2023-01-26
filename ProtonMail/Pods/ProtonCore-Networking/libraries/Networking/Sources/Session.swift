@@ -436,7 +436,7 @@ public class SessionRequest {
         return self.headers.count
     }
     
-    internal func exsit(key: String) -> Bool {
+    internal func hasHeader(key: String) -> Bool {
         return self.headers[key] != nil
     }
     

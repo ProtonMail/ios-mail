@@ -27,13 +27,14 @@ public extension Credential {
     }
 
     func updated(
-        UID: String? = nil, accessToken: String? = nil, refreshToken: String? = nil, scopes: Credential.Scopes? = nil
+        UID: String? = nil, accessToken: String? = nil, refreshToken: String? = nil,
+        userName: String? = nil, userID: String? = nil, scopes: Credential.Scopes? = nil
     ) -> Credential {
         Credential(UID: UID ?? self.UID,
                    accessToken: accessToken ?? self.accessToken,
                    refreshToken: refreshToken ?? self.refreshToken,
-                   userName: userName,
-                   userID: userID,
+                   userName: userName ?? self.userName,
+                   userID: userID ?? self.userID,
                    scopes: scopes ?? self.scopes)
     }
 }

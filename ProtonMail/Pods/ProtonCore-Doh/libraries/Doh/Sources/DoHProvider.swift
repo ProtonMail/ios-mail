@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCore_Log
+import ProtonCore_FeatureSwitch
 
 enum DoHProvider {
     case google
@@ -44,19 +45,46 @@ extension URLSession: DoHNetworkingEngine {
 }
 
 public protocol DoHProviderPublic {
-    func fetch(host: String, sessionId: String?, completion: @escaping ([DNS]?) -> Void)
-    func fetch(host: String, sessionId: String?, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void)
+    func fetch(host: String, sessionId: String?, type: DNSRecordType, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void)
 }
 
 protocol DoHProviderInternal: DoHProviderPublic {
+    static var defaultRecordType: DNSRecordType { get }
+    static var defaultTimeout: TimeInterval { get }
+
     var networkingEngine: DoHNetworkingEngine { get }
-    var supported: [DNSType] { get }
-    func query(host: String, sessionId: String?) -> String
+    var supported: [DNSRecordType] { get }
+    var queryUrl: URL { get }
+
+    func query(host: String, type: DNSRecordType, sessionId: String?) -> String
 }
 
 extension DoHProviderInternal {
-    public func fetch(host: String, sessionId: String?, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void) {
-        let urlStr = self.query(host: host, sessionId: sessionId)
+    public static var defaultRecordType: DNSRecordType {
+        FeatureFactory.shared.isEnabled(.dohARecordQueries) ? .a : .txt
+    }
+    public static var defaultTimeout: TimeInterval { 5 }
+
+    func query(host: String, type: DNSRecordType, sessionId: String?) -> String {
+        var query = host
+        if let sessionId {
+            query = sessionId + "." + host
+        }
+
+        let queryItems: [URLQueryItem] = [
+            .init(name: "type", value: type.urlQueryStringRepresentation),
+            .init(name: "name", value: query)
+        ]
+
+        guard #available(macOS 13.0, iOS 16.0, *) else {
+            return queryUrl.appendingQueryItemsLegacy(queryItems).absoluteString
+        }
+
+        return queryUrl.appending(queryItems: queryItems).absoluteString
+    }
+
+    public func fetch(host: String, sessionId: String?, type: DNSRecordType, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void) {
+        let urlStr = self.query(host: host, type: type, sessionId: sessionId)
         let url = URL(string: urlStr)!
         
         let request = URLRequest(
@@ -69,11 +97,19 @@ extension DoHProviderInternal {
             completion(dns)
         }
     }
-    
+
     public func fetch(host: String, sessionId: String?, completion: @escaping ([DNS]?) -> Void) {
-        self.fetch(host: host, sessionId: sessionId, timeout: 5, completion: completion)
+        self.fetch(host: host, sessionId: sessionId, type: Self.defaultRecordType, completion: completion)
     }
-    
+
+    public func fetch(host: String, sessionId: String?, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void) {
+        self.fetch(host: host, sessionId: sessionId, type: Self.defaultRecordType, timeout: timeout, completion: completion)
+    }
+
+    public func fetch(host: String, sessionId: String?, type: DNSRecordType, completion: @escaping ([DNS]?) -> Void) {
+        self.fetch(host: host, sessionId: sessionId, type: type, timeout: Self.defaultTimeout, completion: completion)
+    }
+
     private func fetchAsynchronously(request: URLRequest, completion: @escaping (Data?) -> Void) {
         let task = networkingEngine.networkRequest(with: request) { taskData, response, error in
             // TODO:: log error or throw error. for now we ignore it and upper layer will use the default values
@@ -111,5 +147,23 @@ extension DoHProviderInternal {
             PMLog.debug("parse error: \(error)")
             return nil
         }
+    }
+}
+
+private extension URL {
+    func appendingQueryItemsLegacy(_ queryItems: [URLQueryItem]) -> URL {
+        let queryString: [String] = queryItems.compactMap { queryItem in
+            var result = ""
+
+            guard let escapedName = queryItem.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
+            result += escapedName
+
+            guard let escapedValue = queryItem.value?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
+            result += "=" + escapedValue
+
+            return result
+        }
+
+        return URL(string: absoluteString + "?" + queryString.joined(separator: "&"))!
     }
 }

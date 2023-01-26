@@ -24,7 +24,7 @@ enum ExternalLink {
     static let alternativeRouting = "https://proton.me/blog/anti-censorship-alternative-routing"
     static let protonvpn = "https://protonvpn.com"
     static let tor = "https://www.torproject.org"
-    static let protonStatus = "https://protonstatus.com"
+    static let protonStatus = "https://status.proton.me"
     static let supprotForm = "https://proton.me/support/contact"
     static let protonTwitter = "https://twitter.com/ProtonMail"
     static let protonSupportMailTo = "mailto:support@protonmail.zendesk.com"

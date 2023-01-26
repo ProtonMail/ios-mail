@@ -24,15 +24,26 @@ import Foundation
 import XCTest
 import ProtonCore_FeatureSwitch
 
+/// Performs the included closure in a separate environment in which only the specified switches are enabled
 extension XCTestCase {
-    /// Performs the included closure in a separate environment in which only the specified switches are enabled
-    public func withFeatureSwitches<T>(_ switches: [Feature], perform block: () -> T) -> T {
+    public func withFeatureSwitches<T>(_ switches: [Feature], perform block: () throws -> T) rethrows -> T {
         let currentValues = FeatureFactory.shared.getCurrentFeatures()
 
         defer { FeatureFactory.shared.setCurrentFeatures(features: currentValues) }
 
         FeatureFactory.shared.clear()
         FeatureFactory.shared.setCurrentFeatures(features: switches)
-        return block()
+        return try block()
+    }
+
+    @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+    public func withFeatureSwitches<T>(_ switches: [Feature], perform block: () async throws -> T) async rethrows -> T {
+        let currentValues = FeatureFactory.shared.getCurrentFeatures()
+
+        defer { FeatureFactory.shared.setCurrentFeatures(features: currentValues) }
+
+        FeatureFactory.shared.clear()
+        FeatureFactory.shared.setCurrentFeatures(features: switches)
+        return try await block()
     }
 }

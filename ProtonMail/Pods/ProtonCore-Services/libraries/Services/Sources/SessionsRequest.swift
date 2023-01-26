@@ -23,7 +23,7 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Doh
 
-final class SessionsRequestResponse: Response, Codable {
+public final class SessionsRequestResponse: Response, Codable {
     public let accessToken: String
     public let refreshToken: String
     public let tokenType: String
@@ -31,16 +31,25 @@ final class SessionsRequestResponse: Response, Codable {
     public let UID: String
 }
 
-final class SessionsRequest: Request {
-    let path = "/auth/v4/sessions"
-    let method: HTTPMethod = .post
-    let isAuth = false
+public final class SessionsRequest: Request {
+    public let path = "/auth/v4/sessions"
+    public let method: HTTPMethod = .post
+    public let isAuth = false
+    public let challenge: ChallengeProperties?
+    
+    public var challengeProperties: ChallengeProperties? {
+        return challenge
+    }
+    public init(challenge: ChallengeProperties?) {
+        self.challenge = challenge
+    }
 }
 
+// TODO: remove
 extension PMAPIService {
-    
-    func performSessionsRequest(completion: @escaping (Result<Credential, ResponseError>) -> Void) {
-        let sessionsRequest = SessionsRequest()
+    func performSessionsRequest(challenge: ChallengeProperties?,
+                                completion: @escaping (Result<Credential, ResponseError>) -> Void) {
+        let sessionsRequest = SessionsRequest.init(challenge: challenge)
         sessionRequest(request: sessionsRequest) { (task, result: Result<SessionsRequestResponse, APIError>) in
             switch result {
             case .success(let sessionsResponse):

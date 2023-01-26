@@ -27,6 +27,7 @@ import ProtonCore_Doh
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Utilities
+import ProtonCore_FeatureSwitch
 
 extension Result {
     
@@ -99,7 +100,8 @@ extension PMAPIService {
                          retryPolicy: ProtonRetryPolicy.RetryMode,
                          completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
-        if !authenticated {
+        if !FeatureFactory.shared.isEnabled(.unauthSession), !authenticated {
+            // legacy path: we don't include the credentials in the request at all
             performRequestHavingFetchedCredentials(method: method,
                                                    path: path,
                                                    parameters: parameters,
@@ -140,19 +142,19 @@ extension PMAPIService {
         }
     }
     
-    private func performRequestHavingFetchedCredentials<T>(method: HTTPMethod,
-                                                           path: String,
-                                                           parameters: Any?,
-                                                           headers: [String: Any]?,
-                                                           authenticated: Bool,
-                                                           authRetry: Bool,
-                                                           authRetryRemains: Int,
-                                                           fetchingCredentialsResult: AuthCredentialFetchingResult,
-                                                           nonDefaultTimeout: TimeInterval?,
-                                                           retryPolicy: ProtonRetryPolicy.RetryMode,
-                                                           completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
+    func performRequestHavingFetchedCredentials<T>(method: HTTPMethod,
+                                                   path: String,
+                                                   parameters: Any?,
+                                                   headers: [String: Any]?,
+                                                   authenticated: Bool,
+                                                   authRetry: Bool,
+                                                   authRetryRemains: Int,
+                                                   fetchingCredentialsResult: AuthCredentialFetchingResult,
+                                                   nonDefaultTimeout: TimeInterval?,
+                                                   retryPolicy: ProtonRetryPolicy.RetryMode,
+                                                   completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
-        if authenticated, let error = fetchingCredentialsResult.toNSError {
+        if !FeatureFactory.shared.isEnabled(.unauthSession), authenticated, let error = fetchingCredentialsResult.toNSError {
             self.debugError(error)
             completion.call(task: nil, error: error)
             return
@@ -171,22 +173,19 @@ extension PMAPIService {
             UID = nil
         }
         
-        let url = self.doh.getCurrentlyUsedHostUrl() + path
+        let url = self.dohInterface.getCurrentlyUsedHostUrl() + path
         
         do {
             
             let request = try self.createRequest(
                 url: url, method: method, parameters: parameters, nonDefaultTimeout: nonDefaultTimeout,
-                headers: headers, UID: UID, accessToken: accessToken, retryPolicy: retryPolicy
+                headers: headers, sessionUID: UID, accessToken: accessToken, retryPolicy: retryPolicy
             )
 
             let sessionRequestCall: (@escaping (URLSessionDataTask?, ResponseFromSession<T>) -> Void) -> Void
             switch completion {
             case .left:
                 sessionRequestCall = { continuation in
-                    let cookies = self.session.sessionConfiguration.httpCookieStorage?.cookies(for: URL(string: url)!) ?? []
-                    let headers = HTTPCookie.requestHeaderFields(with: cookies)
-                    PMLog.debug("[COOKIES][REQUEST][SERVICE] \(headers)")
                     self.session.request(with: request) { (task, result: Result<JSONDictionary, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .left(result))
@@ -195,9 +194,6 @@ extension PMAPIService {
             case .right:
                 let decoder = jsonDecoder
                 sessionRequestCall = { continuation in
-                    let cookies = self.session.sessionConfiguration.httpCookieStorage?.cookies(for: URL(string: url)!) ?? []
-                    let headers = HTTPCookie.requestHeaderFields(with: cookies)
-                    PMLog.debug("[COOKIES][REQUEST][SERVICE] \(headers)")
                     self.session.request(with: request, jsonDecoder: decoder) { (task, result: Result<T, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .right(result))
@@ -217,7 +213,7 @@ extension PMAPIService {
                     error = NSError.protonMailError(APIErrorCode.tls, localizedDescription: tlsErrorDescription)
                 }
                 let requestHeaders = task?.originalRequest?.allHTTPHeaderFields ?? request.request?.allHTTPHeaderFields ?? [:]
-                self.doh.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+                self.dohInterface.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
                     host: url, requestHeaders: requestHeaders, sessionId: UID, response: task?.response, error: error, callCompletionBlockUsing: .asyncMainExecutor) { shouldRetry in
                     
                     if shouldRetry {
@@ -235,7 +231,7 @@ extension PMAPIService {
                                           completion: completion)
                     } else {
                         // finish the request if it should not be retried
-                        if self.doh.errorIndicatesDoHSolvableProblem(error: error) {
+                        if self.dohInterface.errorIndicatesDoHSolvableProblem(error: error) {
                             let apiBlockedError = NSError.protonMailError(APIErrorCode.potentiallyBlocked,
                                                                           localizedDescription: CoreString._net_api_might_be_blocked_message)
                             response = response.mapLeft { _ in .failure(apiBlockedError) }.mapRight { _ in .failure(apiBlockedError) }
@@ -283,7 +279,7 @@ extension PMAPIService {
             handleAPIError(task, error, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
         }
     }
-    
+
     private func handleAPIError<T>(
         _ task: URLSessionDataTask?, _ error: API.APIError, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
@@ -297,10 +293,56 @@ extension PMAPIService {
         } else {
             httpCode = error.code
         }
-                
-        if authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
+
+        // 401 handling for legacy path, without unauth sessions
+        if !FeatureFactory.shared.isEnabled(.unauthSession),
+           authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
             
-            handleRefreshingCredentials(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+            handleRefreshingCredentialsInLegacyPath(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+
+        // 401 handling for unauth sessions, when no credentials were sent
+        } else if FeatureFactory.shared.isEnabled(.unauthSession),
+                    httpCode == 401, authCredential == nil {
+
+            handleSessionAquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
+
+        // 401 handling for unauth sessions, when credentials were sent
+        } else if FeatureFactory.shared.isEnabled(.unauthSession),
+                    httpCode == 401, authRetry, authRetryRemains > 0, let authCredential = authCredential {
+
+            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+                                                         productPrefix: challengeParametersProvider.prefix)
+            refreshAuthCredential(credentialsCausing401: authCredential,
+                                  legacyPath: false,
+                                  deviceFingerprints: deviceFingerprints) { (result: AuthCredentialRefreshingResult) in
+                switch result {
+                case .refreshed(let credentials):
+                    // retry the original call
+                    self.performRequestHavingFetchedCredentials(method: method,
+                                                                path: path,
+                                                                parameters: parameters,
+                                                                headers: [:],
+                                                                authenticated: authenticated,
+                                                                authRetry: false,
+                                                                authRetryRemains: 0,
+                                                                fetchingCredentialsResult: .found(credentials: credentials),
+                                                                nonDefaultTimeout: nonDefaultTimeout,
+                                                                retryPolicy: .userInitiated,
+                                                                completion: completion)
+                case .logout(let underlyingError):
+                    let error = underlyingError.underlyingError
+                        ?? NSError.protonMailError(underlyingError.bestShotAtReasonableErrorCode,
+                                                   localizedDescription: underlyingError.localizedDescription)
+                    completion.call(task: task, error: error)
+                case .refreshingError(let underlyingError):
+                    let error = NSError.protonMailError(underlyingError.codeInNetworking,
+                                                        localizedDescription: underlyingError.localizedDescription)
+                    completion.call(task: task, error: error)
+                case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed, .tooManyRefreshingAttempts:
+                    let error = NSError.protonMailError(0, localizedDescription: "Refreshing credentials failed")
+                    completion.call(task: task, error: error)
+                }
+            }
             
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
             
@@ -338,10 +380,58 @@ extension PMAPIService {
                                             localizedFailureReason: errorMessage,
                                             localizedRecoverySuggestion: nil)
         }
-        
-        if authenticated, responseCode == 401, authRetry, let authCredential = authCredential {
-            
-            handleRefreshingCredentials(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+
+        let httpCode = (task?.response as? HTTPURLResponse)?.statusCode ?? responseCode
+
+        // 401 handling for legacy path, without unauth sessions
+        if !FeatureFactory.shared.isEnabled(.unauthSession),
+           authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
+
+            handleRefreshingCredentialsInLegacyPath(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+
+        // 401 handling for unauth sessions, when no credentials were sent
+        } else if FeatureFactory.shared.isEnabled(.unauthSession),
+                    httpCode == 401, authCredential == nil {
+
+            handleSessionAquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
+
+        // 401 handling for unauth sessions, when credentials were sent
+        } else if FeatureFactory.shared.isEnabled(.unauthSession),
+                    httpCode == 401, authRetry, authRetryRemains > 0, let authCredential = authCredential {
+
+            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+                                                         productPrefix: challengeParametersProvider.prefix)
+            refreshAuthCredential(credentialsCausing401: authCredential,
+                                  legacyPath: false,
+                                  deviceFingerprints: deviceFingerprints) { (result: AuthCredentialRefreshingResult) in
+                switch result {
+                case .refreshed(let credentials):
+                    // retry the original call
+                    self.performRequestHavingFetchedCredentials(method: method,
+                                                                path: path,
+                                                                parameters: parameters,
+                                                                headers: [:],
+                                                                authenticated: authenticated,
+                                                                authRetry: false,
+                                                                authRetryRemains: 0,
+                                                                fetchingCredentialsResult: .found(credentials: credentials),
+                                                                nonDefaultTimeout: nonDefaultTimeout,
+                                                                retryPolicy: .userInitiated,
+                                                                completion: completion)
+                case .logout(let underlyingError):
+                    let error = underlyingError.underlyingError
+                        ?? NSError.protonMailError(underlyingError.bestShotAtReasonableErrorCode,
+                                                   localizedDescription: underlyingError.localizedDescription)
+                    completion.call(task: task, error: error)
+                case .refreshingError(let underlyingError):
+                    let error = NSError.protonMailError(underlyingError.codeInNetworking,
+                                                        localizedDescription: underlyingError.localizedDescription)
+                    completion.call(task: task, error: error)
+                case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed, .tooManyRefreshingAttempts:
+                    let error = NSError.protonMailError(0, localizedDescription: "Refreshing credentials failed")
+                    completion.call(task: task, error: error)
+                }
+            }
             
         } else {
             handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
@@ -349,7 +439,7 @@ extension PMAPIService {
         self.debugError(error)
     }
     
-    private func handleRefreshingCredentials<T>(
+    private func handleRefreshingCredentialsInLegacyPath<T>(
         _ authCredential: AuthCredential, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authenticated: Bool,
         _ authRetry: Bool, _ authRetryRemains: Int, _ nonDefaultTimeout: TimeInterval?, _ completion: APIResponseCompletion<T>,
         _ error: NSError?, _ task: URLSessionDataTask?
@@ -360,8 +450,10 @@ extension PMAPIService {
             completion.call(task: task, error: error ?? NSError.protonMailError(0, localizedDescription: ""))
             return
         }
-        
-        refreshAuthCredential(credentialsCausing401: authCredential) { result in
+
+        let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+                                                     productPrefix: challengeParametersProvider.prefix)
+        refreshAuthCredential(credentialsCausing401: authCredential, legacyPath: true, deviceFingerprints: deviceFingerprints) { result in
             switch result {
             case .refreshed(let credentials):
                 self.performRequestHavingFetchedCredentials(method: method,
@@ -384,14 +476,42 @@ extension PMAPIService {
                 let error = NSError.protonMailError(underlyingError.codeInNetworking,
                                                     localizedDescription: underlyingError.localizedDescription)
                 completion.call(task: task, error: error)
-            case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed:
-                let error = NSError.protonMailError(0, localizedDescription: "User was logged out")
+            case .wrongConfigurationNoDelegate, .noCredentialsToBeRefreshed, .tooManyRefreshingAttempts:
+                let error = NSError.protonMailError(0, localizedDescription: "Refreshing credentials failed")
                 completion.call(task: task, error: error)
             }
         }
     }
+
+    private func handleSessionAquiring<T>(_ method: HTTPMethod, _ path: String, _ parameters: Any?, _ headers: [String: Any]?,
+                                          _ authenticated: Bool, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+                                          _ completion: PMAPIService.APIResponseCompletion<T>, _ task: URLSessionDataTask?,
+                                          _ authRetry: Bool, _ authRetryRemains: Int, _ authCredential: AuthCredential?) where T: APIDecodableResponse {
+
+        let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+                                                     productPrefix: challengeParametersProvider.prefix)
+        aquireSession(deviceFingerprints: deviceFingerprints) { (result: SessionAquisitionResult) in
+            switch result {
+            case .aquired(let newCredentials):
+                self.performRequestHavingFetchedCredentials(
+                    method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated,
+                    authRetry: false, authRetryRemains: 0, fetchingCredentialsResult: .found(credentials: newCredentials),
+                    nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: completion
+                )
+            case .aquiringError(let responseError):
+                guard let responseCode = responseError.responseCode else {
+                    completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
+                    return
+                }
+                self.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
+            case .wrongConfigurationNoDelegate(let error):
+                self.debugError(error)
+                completion.call(task: nil, error: error)
+            }
+        }
+    }
     
-    fileprivate func handleProtonResponseCode<T>(
+    private func handleProtonResponseCode<T>(
         _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, ResponseError>, _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
         _ headers: [String: Any]?, _ authenticated: Bool, _ authRetry: Bool, _ authRetryRemains: Int,
         _ authCredential: AuthCredential?, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
@@ -437,15 +557,15 @@ extension PMAPIService {
                        parameters: Any?,
                        nonDefaultTimeout: TimeInterval?,
                        headers: [String: Any]?,
-                       UID: String?,
+                       sessionUID: String?,
                        accessToken: String?,
                        retryPolicy: ProtonRetryPolicy.RetryMode = .userInitiated) throws -> SessionRequest {
         
-        let defaultTimeout = doh.status == .off ? 60.0 : 30.0
+        let defaultTimeout = dohInterface.status == .off ? 60.0 : 30.0
         let requestTimeout = nonDefaultTimeout ?? defaultTimeout
         let request = try session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout, retryPolicy: retryPolicy)
         
-        let dohHeaders = doh.getCurrentlyUsedUrlHeaders()
+        let dohHeaders = dohInterface.getCurrentlyUsedUrlHeaders()
         dohHeaders.forEach { header, value in
             request.setValue(header: header, value)
         }
@@ -466,8 +586,12 @@ extension PMAPIService {
             request.setValue(header: "Authorization", "Bearer \(accessToken)")
         }
         
-        if let UID = UID, !UID.isEmpty {
-            request.setValue(header: "x-pm-uid", UID)
+        if let sessionUID = sessionUID, !sessionUID.isEmpty {
+            request.setValue(header: "x-pm-uid", sessionUID)
+        }
+
+        if FeatureFactory.shared.isEnabled(.enforceUnauthSessionStrictVerificationOnBackend) {
+            request.setValue(header: "X-Enforce-UnauthSession", "true")
         }
 
         var appversion = "iOS_\(Bundle.main.majorVersion)"
@@ -541,21 +665,25 @@ extension PMAPIService {
     
 }
 
+// TODO: remove
 extension PMAPIService {
     
-    func sessionRequest<T: Decodable>(request: Request, result: @escaping (URLSessionDataTask?, Result<T, APIError>) -> Void) {
+    public func sessionRequest<T: Decodable>(request: Request,
+                                             result: @escaping (URLSessionDataTask?, Result<T, APIError>) -> Void) {
         let decoder: JSONDecoder = .decapitalisingFirstLetter
         let session = getSession()
-        let url = doh.getCurrentlyUsedHostUrl() + request.path
+        let url = dohInterface.getCurrentlyUsedHostUrl() + request.path
         do {
             let request = try createRequest(
-                url: url, method: request.method, parameters: request.parameters, nonDefaultTimeout: nil,
-                headers: request.header, UID: nil, accessToken: nil)
+                url: url, method: request.method, parameters: request.calculatedParameters, nonDefaultTimeout: nil,
+                headers: request.header, sessionUID: nil, accessToken: nil)
             session?.request(with: request, jsonDecoder: decoder) { (task, res: Result<T, SessionResponseError>) in
                 switch res {
                 case .success(let decodable):
+                    self.debug(task, decodable, nil)
                     result(task, .success(decodable))
                 case .failure(let sessionResponseError):
+                    self.debug(task, nil, sessionResponseError.underlyingError)
                     let error = sessionResponseError.underlyingError
                     result(nil, .failure(error))
                 }
