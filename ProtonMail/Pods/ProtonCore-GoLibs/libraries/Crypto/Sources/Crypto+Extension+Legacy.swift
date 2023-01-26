@@ -496,7 +496,7 @@ extension Crypto {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 
@@ -561,7 +561,7 @@ extension Crypto {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 
@@ -633,7 +633,7 @@ extension Crypto {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 
@@ -706,7 +706,7 @@ extension Crypto {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
         }
 
@@ -940,8 +940,7 @@ extension Crypto {
         let passSlice = passphrase.data(using: .utf8)
         let unlockedKey = try key?.unlock(passSlice)
         let keyRing = try throwing { error in CryptoNewKeyRing(unlockedKey, &error) }
-
-        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         let pgpSignature = try keyRing!.signDetached(plainMessage)
         let signature = try throwing { error in pgpSignature.getArmored(&error) }
 
@@ -950,7 +949,8 @@ extension Crypto {
 
     @available(*, deprecated, message: "Please find the replacement in signer")
     public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
-        try verifyDetached(signature: signature, input: .left(plainText), publicKey: publicKey, verifyTime: verifyTime)
+        let trimmed = plainText.trimTrailingSpaces()
+        return try verifyDetached(signature: signature, input: .left(trimmed), publicKey: publicKey, verifyTime: verifyTime)
     }
 
     @available(*, deprecated, message: "Please find the replacement in signer")
@@ -965,7 +965,7 @@ extension Crypto {
 
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
+        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText.trimTrailingSpaces())
         case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
         }
 

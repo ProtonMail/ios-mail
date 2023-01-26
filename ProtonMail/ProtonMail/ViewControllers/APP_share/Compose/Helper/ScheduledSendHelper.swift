@@ -74,8 +74,7 @@ extension ScheduledSendHelper {
             title: title,
             subtitle: "",
             leftItem: cancelItem,
-            rightItem: nil,
-            showDragBar: false
+            rightItem: nil
         )
         return header
     }
@@ -84,48 +83,40 @@ extension ScheduledSendHelper {
         guard let tomorrow = self.current.tomorrow(at: 8, minute: 0) else {
             return nil
         }
-        return PMActionSheetPlainItem(
+        return PMActionSheetPlainItem.init(
             title: L11n.ScheduledSend.tomorrow,
-            detail: tomorrow.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
-            self?.delegate?.scheduledTimeIsSet(date: tomorrow)
-            self?.actionSheet?.dismiss(animated: true)
-        }
+            icon: nil) { [weak self] _ in
+                self?.delegate?.scheduledTimeIsSet(date: tomorrow)
+                self?.actionSheet?.dismiss(animated: true)
+            }
     }
-
+    
     private func setUpMondayAction() -> PMActionSheetPlainItem? {
         guard let next = self.current.next(.monday, hour: 8, minute: 0) else {
             return nil
         }
         return PMActionSheetPlainItem(
             title: next.formattedWith("EEEE").capitalized,
-            detail: next.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
-            self?.delegate?.scheduledTimeIsSet(date: next)
-            self?.actionSheet?.dismiss(animated: true)
-        }
+            icon: nil ) { [weak self] _ in
+                self?.delegate?.scheduledTimeIsSet(date: next)
+                self?.actionSheet?.dismiss(animated: true)
+            }
     }
-
+    
     private func setUpCustomAction() -> PMActionSheetPlainItem {
         let icon = IconProvider.chevronRight
         return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.select_date_and_time,
-            icon: nil,
-            rightIcon: icon
-        ) { [weak self] _ in
-            guard let self = self,
-                  let viewController = self.viewController,
-                  let parentView = viewController.navigationController?.view ?? viewController.view else { return }
-            let picker = PMDatePicker(delegate: self,
-                                      cancelTitle: LocalString._general_cancel_action,
-                                      saveTitle: LocalString._general_schedule_send_action)
-            picker.present(on: parentView)
-            self.actionSheet?.dismiss(animated: true)
-        }
+            icon: nil) { [weak self] _ in
+                guard let self = self,
+                      let viewController = self.viewController,
+                      let parentView = viewController.navigationController?.view ?? viewController.view else { return }
+                let picker = PMDatePicker(delegate: self,
+                                          cancelTitle: LocalString._general_cancel_action,
+                                          saveTitle: LocalString._general_schedule_send_action)
+                picker.present(on: parentView)
+                self.actionSheet?.dismiss(animated: true)
+            }
     }
 }
 

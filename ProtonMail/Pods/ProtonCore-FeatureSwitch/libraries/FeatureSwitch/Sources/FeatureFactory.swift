@@ -20,6 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+import ProtonCore_Utilities
+
 public class FeatureFactory {
     internal init() { }
     
@@ -31,6 +33,9 @@ public class FeatureFactory {
     
     /// this list will override the static features
     internal var currentFeatures: [Feature] = []
+    
+    /// run once check for load env
+    internal var envLoaded = false
     
     public func getCurrentFeatures() -> [Feature] {
         return self.currentFeatures
@@ -45,6 +50,9 @@ public class FeatureFactory {
     }
     
     public func loadEnv() {
+        guard !envLoaded else { return }
+        envLoaded = true
+        
         if let featureJson = ProcessInfo.processInfo.environment["FeatureSwitch"] {
             if let data = featureJson.data(using: String.Encoding.utf8) {
                 do {
@@ -61,8 +69,6 @@ public class FeatureFactory {
             }
         } 
     }
-    
-
     
     /// pass in the environment
     public func setup(env: String) {
@@ -102,8 +108,8 @@ public class FeatureFactory {
             }
         }
         
-        if let first = self.currentFeatures.first(where: { item in item.name == feature.name }) {
-            return first.isEnable
+        if self.currentFeatures.contains(where: { item in item.name == feature.name }) {
+            return true
         }
         
         return isEnabled

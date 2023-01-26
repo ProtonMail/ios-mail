@@ -34,7 +34,7 @@ extension LoginService {
         self.mailboxPassword = password
         var data: ChallengeProperties?
         if let challenge = challenge {
-            data = ChallengeProperties(challengeData: challenge, productPrefix: self.clientApp.name)
+            data = ChallengeProperties(challenge: challenge, productPrefix: self.clientApp.name)
         }
         PMLog.debug("Logging in with username and password")
 

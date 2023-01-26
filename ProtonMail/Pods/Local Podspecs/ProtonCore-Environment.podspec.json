@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Environment",
-  "version": "3.25.2",
+  "version": "3.26.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -9,11 +9,15 @@
     "file": "LICENSE"
   },
   "authors": {
-    "zhj4478": "feng@pm.me"
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "gbiegaj": "grzegorz.biegaj@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.25.2"
+    "git": null,
+    "tag": "3.26.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -27,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-Doh": [
-      "3.25.2"
+      "3.26.2"
     ],
     "TrustKit": [
 
@@ -37,19 +41,31 @@
 
   ],
   "source_files": "libraries/Environment/Sources/*.swift",
+  "ios": {
+    "exclude_files": "libraries/Environment/Sources/TrustKitConfiguration+macOS.swift"
+  },
+  "osx": {
+    "exclude_files": "libraries/Environment/Sources/TrustKitConfiguration+iOS.swift"
+  },
   "testspecs": [
     {
       "name": "Tests",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "3.25.2"
+          "3.26.2"
         ],
         "OHHTTPStubs/Swift": [
 
         ]
       },
       "source_files": "libraries/Environment/Tests/*.swift",
+      "ios": {
+        "exclude_files": "libraries/Environment/Tests/TrustKitConfigurationTests+macOS.swift"
+      },
+      "osx": {
+        "exclude_files": "libraries/Environment/Tests/TrustKitConfigurationTests+iOS.swift"
+      },
       "pod_target_xcconfig": {
         "APPLICATION_EXTENSION_API_ONLY": "NO"
       }

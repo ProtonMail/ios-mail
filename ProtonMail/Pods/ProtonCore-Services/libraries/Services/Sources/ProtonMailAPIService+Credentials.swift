@@ -25,6 +25,8 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Utilities
 
+// swiftlint:disable function_parameter_count
+
 // MARK: - Fetching and refreshing credentials
 
 extension PMAPIService {
@@ -52,17 +54,38 @@ extension PMAPIService {
     enum AuthCredentialRefreshingResult {
         case refreshed(credentials: AuthCredential)
         case wrongConfigurationNoDelegate
+        case tooManyRefreshingAttempts
         case noCredentialsToBeRefreshed
         case logout(underlyingError: ResponseError)
         case refreshingError(underlyingError: AuthErrors)
     }
     
-    func refreshAuthCredential(credentialsCausing401: AuthCredential, refreshCounter: Int = 3, completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
+    func refreshAuthCredential(credentialsCausing401: AuthCredential,
+                               refreshCounter: Int = 3,
+                               legacyPath: Bool,
+                               deviceFingerprints: ChallengeProperties,
+                               completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
         performSeriallyInAuthCredentialQueue { continuation in
             self.refreshAuthCredentialNoSync(credentialsCausing401: credentialsCausing401,
                                              refreshCounter: refreshCounter,
+                                             legacyPath: legacyPath,
+                                             deviceFingerprints: deviceFingerprints,
                                              continuation: continuation,
                                              completion: completion)
+        }
+    }
+
+    enum SessionAquisitionResult {
+        case aquired(AuthCredential)
+        case aquiringError(ResponseError)
+        case wrongConfigurationNoDelegate(NSError)
+    }
+
+    func aquireSession(deviceFingerprints: ChallengeProperties, completion: @escaping (SessionAquisitionResult) -> Void) {
+        performSeriallyInAuthCredentialQueue { continuation in
+            self.aquireSessionNoSync(deviceFingerprints: deviceFingerprints,
+                                     continuation: continuation,
+                                     completion: completion)
         }
     }
     
@@ -105,6 +128,8 @@ extension PMAPIService {
     
     private func refreshAuthCredentialNoSync(credentialsCausing401: AuthCredential,
                                              refreshCounter: Int,
+                                             legacyPath: Bool,
+                                             deviceFingerprints: ChallengeProperties,
                                              continuation: @escaping () -> Void,
                                              completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
 
@@ -125,19 +150,83 @@ extension PMAPIService {
                      completion: completion)
             return
         }
+
+        guard refreshCounter > 0 else {
+            finalize(result: .tooManyRefreshingAttempts, continuation: continuation, completion: completion)
+            return
+        }
         
         authDelegate.onRefresh(sessionUID: sessionUID, service: self) { result in
             self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
-                self.handleRefreshingResults(result, credentialsCausing401, refreshCounter, continuation, completion)
+                if legacyPath {
+                    self.handleRefreshingResultsInLegacyPath(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
+                } else {
+                    self.handleRefreshingResults(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
+                }
             }
         }
     }
-    
+
     private func handleRefreshingResults(_ result: Result<Credential, AuthErrors>,
                                          _ credentialsCausing401: AuthCredential,
                                          _ refreshCounter: Int,
+                                         _ deviceFingerprints: ChallengeProperties,
                                          _ continuation: @escaping () -> Void,
                                          _ completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
+        debugError(result.error)
+
+        switch result {
+        case .success(let credential):
+            authDelegate?.onUpdate(credential: credential, sessionUID: sessionUID)
+            setSessionUID(uid: credential.UID)
+            continuation()
+            completion(.refreshed(credentials: AuthCredential(credential)))
+
+        case .failure(.networkingError(let responseError))
+            where credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
+
+            authDelegate?.eraseUnauthSessionCredentials(sessionUID: sessionUID)
+
+            self.aquireSessionNoSync(deviceFingerprints: deviceFingerprints, continuation: continuation) { (result: SessionAquisitionResult) in
+                switch result {
+                case .wrongConfigurationNoDelegate:
+                    completion(.wrongConfigurationNoDelegate)
+                case .aquiringError(let error):
+                    completion(.refreshingError(underlyingError: .networkingError(error)))
+                case .aquired(let credentials):
+                    completion(.refreshed(credentials: credentials))
+                }
+            }
+
+        case .failure(.networkingError(let responseError))
+            where !credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
+            authDelegate?.onLogout(sessionUID: sessionUID)
+
+            continuation()
+            completion(.logout(underlyingError: responseError))
+
+        // should we bring this logic over? I'm really unsure
+        case .failure(.networkingError(let responseError)) where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
+            continuation()
+            refreshAuthCredential(credentialsCausing401: credentialsCausing401,
+                                  refreshCounter: refreshCounter - 1,
+                                  legacyPath: false,
+                                  deviceFingerprints: deviceFingerprints,
+                                  completion: completion)
+
+        // if the credentials refresh fails with error OTHER THAN 400 or 422, return error
+        case .failure(let error):
+            continuation()
+            completion(.refreshingError(underlyingError: error))
+        }
+    }
+    
+    private func handleRefreshingResultsInLegacyPath(_ result: Result<Credential, AuthErrors>,
+                                                     _ credentialsCausing401: AuthCredential,
+                                                     _ refreshCounter: Int,
+                                                     _ deviceFingerprints: ChallengeProperties,
+                                                     _ continuation: @escaping () -> Void,
+                                                     _ completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
         debugError(result.error)
         
         switch result {
@@ -156,14 +245,65 @@ extension PMAPIService {
             completion(.logout(underlyingError: responseError))
         
         case .failure(.networkingError(let responseError)) where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
-            // the original logic: we're just refreshing again. seems to me like a possibility for a loop. I believe we should introduce an exit condition here
+            // the original logic: we're just refreshing again
             continuation()
             refreshAuthCredential(credentialsCausing401: credentialsCausing401,
                                   refreshCounter: refreshCounter - 1,
+                                  legacyPath: true,
+                                  deviceFingerprints: deviceFingerprints,
                                   completion: completion)
         case .failure(let error):
             continuation()
             completion(.refreshingError(underlyingError: error))
         }
+    }
+
+    private func aquireSessionNoSync(deviceFingerprints: ChallengeProperties,
+                                     continuation: @escaping () -> Void,
+                                     completion: @escaping (SessionAquisitionResult) -> Void) {
+        guard let authDelegate = authDelegate else {
+            let nsError = NSError.protonMailError(0, localizedDescription: "AuthDelegate is required")
+            finalize(result: .wrongConfigurationNoDelegate(nsError),
+                     continuation: continuation, completion: completion)
+            return
+        }
+
+        let sessionsRequest = SessionsRequest(challenge: deviceFingerprints)
+
+        performRequestHavingFetchedCredentials(method: sessionsRequest.method,
+                                               path: sessionsRequest.path,
+                                               parameters: sessionsRequest.parameters,
+                                               headers: sessionsRequest.header,
+                                               authenticated: false,
+                                               authRetry: false,
+                                               authRetryRemains: 0,
+                                               fetchingCredentialsResult: .notFound,
+                                               nonDefaultTimeout: nil,
+                                               retryPolicy: .background,
+                                               completion: .right({ (task, result: Result<SessionsRequestResponse, APIError>) in
+            switch result {
+            case .success(let sessionsResponse):
+                self.debug(task, sessionsResponse, nil)
+                let credential = Credential(UID: sessionsResponse.UID,
+                                            accessToken: sessionsResponse.accessToken,
+                                            refreshToken: sessionsResponse.refreshToken,
+                                            userName: "",
+                                            userID: "",
+                                            scopes: sessionsResponse.scopes)
+                authDelegate.onUpdate(credential: credential, sessionUID: self.sessionUID)
+                self.setSessionUID(uid: sessionsResponse.UID)
+                continuation()
+                completion(.aquired(AuthCredential(credential)))
+            case .failure(let error):
+                self.debug(task, nil, error)
+                let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)
+                let responseCode = error.domain == ResponseErrorDomains.withResponseCode.rawValue ? error.code : nil
+                continuation()
+                completion(.aquiringError(.init(
+                    httpCode: httpCode, responseCode: responseCode,
+                    userFacingMessage: error.localizedDescription, underlyingError: error
+                )))
+            }
+        }))
     }
 }

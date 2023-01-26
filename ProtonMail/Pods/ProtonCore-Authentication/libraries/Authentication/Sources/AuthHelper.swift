@@ -206,6 +206,17 @@ public final class AuthHelper: AuthDelegate {
             }
         }
     }
+
+    public func eraseUnauthSessionCredentials(sessionUID: String) {
+        authCredentials.mutate { authCredentials in
+            guard let existingCredentials = authCredentials else { return }
+            guard existingCredentials.0.sessionID == sessionUID else {
+                PMLog.error("Asked for erasing the credentials of a wrong session. It's a programmers error and should be investigated")
+                return
+            }
+            authCredentials = nil
+        }
+    }
 }
     
 extension AuthHelper {
