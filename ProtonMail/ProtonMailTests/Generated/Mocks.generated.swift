@@ -28,8 +28,8 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent, completion)
     }
     @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
-    func updateCounterSync(markUnRead: Bool, on message: Message) {
-        updateCounterSyncStub(markUnRead, message)
+    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
+        updateCounterSyncStub(markUnRead, labelIDs)
     }
 }
 class MockCachedUserDataProvider: CachedUserDataProvider {

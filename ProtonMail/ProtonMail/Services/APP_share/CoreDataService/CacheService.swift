@@ -39,7 +39,7 @@ protocol CacheServiceProtocol: Service {
         idsOfMessagesBeingSent: [String],
         completion: @escaping (Error?) -> Void
     )
-    func updateCounterSync(markUnRead: Bool, on message: Message)
+    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
 }
 
 class CacheService: CacheServiceProtocol {
