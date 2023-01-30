@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Seleccionado</string>
+			<string>%d seleccionado</string>
 			<key>other</key>
-			<string>%d Seleccionados</string>
+			<string>%d seleccionados</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Este %d mensaje se moverá a Borradores y se eliminará su programación.</string>
+			<string>Este %d mensaje se moverá a la carpeta Borradores y se eliminará su programación.</string>
 			<key>other</key>
-			<string>Estos %d mensajes se moverán a Borradores y se eliminarán sus programaciones.</string>
+			<string>Estos %d mensajes se moverán a la carpeta Borradores y se eliminarán sus programaciones.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

@@ -1,6 +1,9 @@
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Teljes üzenet megtekintése]";
 
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ / %2$@";
+
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d másodperc";
 
@@ -317,7 +320,7 @@
 "Cancel Check" = "Ellenőrzés megszakítása";
 
 /* Title */
-"Cancelling" = "Megszakítás";
+"Cancelling" = "Canceling";
 
 /* message Cc: feild
    Title */
@@ -1195,7 +1198,7 @@
 "Other" = "Egyéb";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "A rendszerünk úgy érzékelte, hogy ez egy adathalász kísérlet. Kérjük ellenőrizze, hogy esetleg mégsem az";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Szülő mappa";
@@ -1455,6 +1458,12 @@
 
 /* menu title */
 "Sent" = "Elküldött";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "A Proton Mail küldte, zéró hozzáférés titkosítással";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "A Proton Mail küldte, zéró-hozzáférés titkosítással, ellenőrzött címzettnek";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Ön küldte, végpontok közt titkosítva";
@@ -1735,6 +1744,9 @@
    Title */
 "To" = "Címzett";
 
+/* One of schedule time options */
+"Tomorrow" = "Holnap";
+
 /* The title of the time label of the scheduled message that is about to be sent tomorrow. */
 "Tomorrow, %@" = "Holnap, %@";
 
@@ -1852,6 +1864,9 @@
 
 /* No comment provided by engineer. */
 "View HTML" = "HTML megjelenítése";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Üzenet megtekintése világos módban";
 
 /* Title */
 "Warning" = "Figyelem";

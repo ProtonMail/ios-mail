@@ -446,8 +446,8 @@ class LocalizedString {
     /// "Confirm"
     lazy var _general_confirm_action = NSLocalizedString("Confirm", comment: "Action")
 
-    /// "Cancelling"
-    lazy var _contacts_cancelling_title = NSLocalizedString("Cancelling", comment: "Title")
+    /// "Canceling"
+    lazy var _contacts_cancelling_title = NSLocalizedString("Canceling", comment: "Title")
 
     /// "Unknown"
     lazy var _general_unknown_title = NSLocalizedString("Unknown", comment: "title, default display name")
@@ -1239,7 +1239,7 @@ class LocalizedString {
 
     lazy var _unsubscribe_compact_banner_description = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
 
-    lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate", comment: "")
+    lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate.", comment: "")
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
     lazy var _autoreply_compact_banner_description = NSLocalizedString("This message was automatically generated", comment: "The title of auto reply banner")

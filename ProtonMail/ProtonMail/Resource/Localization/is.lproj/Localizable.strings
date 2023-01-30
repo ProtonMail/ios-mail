@@ -198,6 +198,9 @@
 "Archive" = "Safn";
 "Archive (verb)" = "Safn";
 
+/* Push notification action archive */
+"Archive (verb)" = "Safn";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
 
@@ -354,7 +357,7 @@
 "Cancel Check" = "Hætta við athugun";
 
 /* Title */
-"Cancelling" = "Hætti við";
+"Cancelling" = "Canceling";
 
 /* Warning message */
 "Cannot empty folder right now." = "Ekki er hægt að tæma möppuna núna.";
@@ -500,6 +503,9 @@
 /* Title */
 "Copy name" = "Afrita nafn";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Ekki tókst að opna skilaboðin, reyndu aftur.";
+
 /* contact placeholder */
 "Country" = "Land";
 
@@ -614,6 +620,9 @@
 
 /* Action */
 "Discard changes" = "Henda breytingum";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Hent";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Sleppa lyklaborði";
@@ -740,6 +749,9 @@
 
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Senda tengilið tölvupóst";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "Mistókst að senda tölvupóst. Skilaboð vistað sem drög.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Tölvupóstrekjarar geta brotið gegn friðhelgi einkalífsins.";
@@ -940,6 +952,9 @@
 /* human check warning title */
 "Human Check Warning" = "Aðvörun við mennskuprófun";
 
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Ég hef verið að nota Proton Mail og datt í hug að þér gæti líkað það. Þetta er örugg tölvupóstþjónusta sem verndar friðhelgi þína. Skráðu þig með þessum hlekk til að fá 1 mánuð af úrvalsaðgerðum ókeypis:";
+
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Ef þú missir tengingu við þráðlausa netið þá mun niðurhalið halda áfram í gegnum farsímagögn.";
 
@@ -1013,8 +1028,14 @@
 /* Error message */
 "Invalid username!" = "Ógilt notandanafn!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Bjóddu vinum til Proton,\nfáðu allt að $90 í inneign!";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Bjóddu tengiliðum þínum í Proton tölvupóst til að njóta óaðfinnanlegrar enda-í-enda dulkóðunar, eða bæta lykilorðsvörn við skilaboð sem þú sendir þeim.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Bjóddu vinum þínum til Proton: þeir prófa Mail Plus ókeypis og þú færð inneign þegar þeir gerast áskrifendur að greiddri áskrift.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Er þessi villuskýrsla vegna kaupa í forritinu?";
@@ -1053,6 +1074,9 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Takmörkum náð";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Krækja afrituð.";
 
 /* Button inside the banner */
 "Load anyway" = "Hlaða samt inn";
@@ -1369,7 +1393,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Þjónustudeild okkar mun reyna að virkja þjónustuáætlun þína handvirkt ef þú samþykkir að hengja við tæknigögn sem App Store útvegaði appinu þegar það var keypt. Þessi gögn innihalda engar upplýsingar um iTunes reikninginn þinn, Apple ID, tengd greiðslukort eða aðrar notendaupplýsingar. Tæknigögn hjálpa okkur aðeins að athuga og sannreyna að viðskiptin hafi verið framkvæmd á netþjónum App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Kerfið okkar merkti þessi skilaboð sem tilraun til að veiða upplýsingar. Vinsamlega skoðaðu hvort þau séu lögmæt";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Yfirmappa";
@@ -1642,6 +1666,9 @@
 /* section title */
 "Select colour" = "Veldu lit";
 
+/* Option for set up scheduled send */
+"Select date and time" = "Veldu dagsetningu og tíma";
+
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valið";
 
@@ -1869,6 +1896,9 @@
 /* Error message */
 "The 2 passwords are not matching" = "Lykilorðin tvö passa ekki saman";
 
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Aðgerðirnar á tækjastikunni verða endurstilltar í sjálfgefið";
+
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Niðurhalið hættir ef Proton tölvupóstforritinu er lokað.";
 
@@ -1971,8 +2001,17 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Þessi stilling mun velja aftur Safari ef valinn vafri verður tekinn út.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Þessi tækjastika birtist þegar þú velur mörg skilaboð í pósthólfinu þínu.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Þessi tækjastika er sýnileg þegar skilaboð eru lesin.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Tími til að slaka á";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Tímasetning";
 
 /* contacts talbe cell Title title */
 "Title" = "Titill";
@@ -1990,6 +2029,9 @@
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Í dag, %@";
 
+/* One of schedule time options */
+"Tomorrow" = "Á morgun";
+
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Á morgun klukkan 08:%02d AM";
 
@@ -1999,8 +2041,14 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Of mörg skilaboð bíða sendingar.\nVinsamlegast bíddu þar til önnur skilaboð hafa verið send til að áætla þetta.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Aðgerðir á tækjastiku (velja allt að 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Snerti auðkenni";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Fylgstu með verðlaununum þínum";
 
 /* mail location desc
    menu title */
@@ -2171,8 +2219,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Þú ert án nettengingar";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Þú getur valið og endurraðað aðgerðunum á tækjastikunni þinni";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Þú getur slökkt á samtölum úr stillingum hvenær sem er.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Þú getur nú valið og endurraðað aðgerðunum á þessari stiku";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Þú getur nú tímasett skilaboðin þín til sendingar síðar";
@@ -2222,17 +2276,26 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Þú ert að fara að eyða skilaboðunum óafturkræft. Ertu viss?";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "Þú ert öruggur fyrir sporarakningu tölvupósts";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Breytingum þínum verður hent";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Yfirvöld í landinu þínu gætu verið að hindra aðgang að Proton. Prófaðu að nota %1$@ (eða einhverja VPN-þjónustu) eða %2$@ til að tengjast Proton.";
 
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Tölvupósturinn þinn kemur núna með fjartengdum myndum sem eru sjálfgefið upphlaðnar. Sendendur munu ekki vita hvort, hvar eða hvenær þú opnaðir tölvupóstinn þeirra.\nTil að breyta þessu skaltu fara í Stillingar → Reikningsstillingar → Gagnaleynd.";
+
 /* Title of user feedback view */
 "Your feedback" = "Þín umsögn";
 
 /* The section title of folder manager table */
 "Your folders" = "Þínar möppur";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Boðskrækjan þín";
 
 /* The section title of label manager table */
 "Your labels" = "Þínar merkingar";
