@@ -20,7 +20,7 @@ import XCTest
 
 @testable import ProtonMail
 
-class SwipeableItemTests: XCTestCase {
+class MailboxItemTests: XCTestCase {
     private var conversation: Conversation!
     private var message: Message!
     private var testContext: NSManagedObjectContext!
@@ -53,7 +53,29 @@ class SwipeableItemTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testIsStarredMessage() throws {
+    func testIsScheduledForSending_message() {
+        let nonScheduledEntity = MessageEntity.make()
+        let nonScheduledSUT = MailboxItem.message(nonScheduledEntity)
+        XCTAssertFalse(nonScheduledSUT.isScheduledForSending)
+
+        let scheduledEntity = MessageEntity.make(rawFlag: MessageFlag.scheduledSend.rawValue)
+        let scheduledSUT = MailboxItem.message(scheduledEntity)
+        XCTAssert(scheduledSUT.isScheduledForSending)
+    }
+
+    func testIsScheduledForSending_conversation() {
+        let nonScheduledEntity = ConversationEntity.make()
+        let nonScheduledSUT = MailboxItem.conversation(nonScheduledEntity)
+        XCTAssertFalse(nonScheduledSUT.isScheduledForSending)
+
+        let scheduledEntity = ConversationEntity.make(
+            contextLabelRelations: [.make(labelID: Message.Location.scheduled.labelID)]
+        )
+        let scheduledSUT = MailboxItem.conversation(scheduledEntity)
+        XCTAssert(scheduledSUT.isScheduledForSending)
+    }
+
+    func testIsStarred_message() throws {
         let nonStarredMessage = MessageEntity(message)
         let nonStarredSUT = MailboxItem.message(nonStarredMessage)
         XCTAssertFalse(nonStarredSUT.isStarred)
@@ -67,7 +89,7 @@ class SwipeableItemTests: XCTestCase {
         XCTAssert(starredSUT.isStarred)
     }
 
-    func testIsStarredConversation() throws {
+    func testIsStarred_conversation() throws {
         let nonStarredConversation = ConversationEntity(conversation)
         let nonStarredSUT = MailboxItem.conversation(nonStarredConversation)
         XCTAssertFalse(nonStarredSUT.isStarred)
@@ -79,19 +101,31 @@ class SwipeableItemTests: XCTestCase {
         XCTAssert(starredSUT.isStarred)
     }
 
-    func testItemIDMessage() throws {
+    func testItemID_message() throws {
         let messageEntity = MessageEntity(message)
         let sut = MailboxItem.message(messageEntity)
         XCTAssertEqual(sut.itemID, messageID)
     }
 
-    func testItemIDConversation() throws {
+    func testItemID_conversation() throws {
         let conversationEntity = ConversationEntity(conversation)
         let sut = MailboxItem.conversation(conversationEntity)
         XCTAssertEqual(sut.itemID, conversationID)
     }
 
-    func testIsUnreadMessage() throws {
+    func testObjectID_message() throws {
+        let entity = MessageEntity(message)
+        let sut = MailboxItem.message(entity)
+        XCTAssertEqual(sut.objectID.rawValue, message.objectID)
+    }
+
+    func testObjectID_conversation() throws {
+        let entity = ConversationEntity(conversation)
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.objectID.rawValue, conversation.objectID)
+    }
+
+    func testIsUnread_message() throws {
         let unreadMessage = MessageEntity(message)
         let unreadSUT = MailboxItem.message(unreadMessage)
         XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
@@ -103,7 +137,7 @@ class SwipeableItemTests: XCTestCase {
         XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }
 
-    func testIsUnreadConversation() throws {
+    func testIsUnread_conversation() throws {
         conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel.rawValue)
 
         let unreadConversation = ConversationEntity(conversation)
@@ -115,5 +149,19 @@ class SwipeableItemTests: XCTestCase {
         let readConversation = ConversationEntity(conversation)
         let readSUT = MailboxItem.conversation(readConversation)
         XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
+    }
+
+    func testTime_message() {
+        let date = Date()
+        let entity = MessageEntity.make(time: date)
+        let sut = MailboxItem.message(entity)
+        XCTAssertEqual(sut.time(labelID: inboxLabel), date)
+    }
+
+    func testTime_conversation() {
+        let date = Date()
+        let entity = ConversationEntity.make(contextLabelRelations: [.make(time: date, labelID: inboxLabel)])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.time(labelID: inboxLabel), date)
     }
 }
