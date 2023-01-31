@@ -430,7 +430,7 @@ extension SearchViewModel {
     }
 
     private func mark(messages: [MessageEntity], unread: Bool) {
-        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+        messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
     }
 
     private func move(toLabel: Message.Location) {

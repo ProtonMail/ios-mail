@@ -126,7 +126,11 @@ final class ComposerMessageHelper: NSObject {
 
     func markAsRead() {
         if let msg = message, msg.unRead {
-            messageDataService.mark(messages: [MessageEntity(msg)], labelID: Message.Location.draft.labelID, unRead: false)
+            messageDataService.mark(
+                messageObjectIDs: [msg.objectID],
+                labelID: Message.Location.draft.labelID,
+                unRead: false
+            )
         }
     }
 

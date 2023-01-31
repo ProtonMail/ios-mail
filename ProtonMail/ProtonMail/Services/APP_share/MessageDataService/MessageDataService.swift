@@ -414,7 +414,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messages: [MessageEntity(newMessage)], labelID: LabelID(labelID), unRead: false)
+                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
                                 }
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
@@ -472,7 +472,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
                                     if let labelID = messageOut.firstValidFolder() {
-                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
+                                        self.mark(
+                                            messageObjectIDs: [messageOut.objectID],
+                                            labelID: LabelID(labelID),
+                                            unRead: false
+                                        )
                                     }
 
                                     DispatchQueue.main.async {
@@ -509,7 +513,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     return
                 }
                 if let labelID = message.firstValidFolder() {
-                    self.mark(messages: [MessageEntity(message)], labelID: LabelID(labelID), unRead: false)
+                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
                 }
                 DispatchQueue.main.async {
                     completion(nil)

@@ -518,7 +518,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
     
     func mark(messages: [MessageEntity], unread: Bool = true) {
-        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+        messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
     }
     
     func label(msg message: MessageEntity, with labelID: LabelID, apply: Bool = true) {
@@ -845,7 +845,7 @@ extension MailboxViewModel {
         switch self.locationViewMode {
         case .singleMessage:
             let messages = selectedMessages.filter { messageIDs.contains($0.messageID.rawValue) }
-            messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+            messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
             completion?()
         case .conversation:
             if unread {

@@ -16,7 +16,7 @@ extension ConversationViewModel {
             self.shouldIgnoreUpdateOnce = true
             let indexPath = IndexPath(row: index, section: 1)
             conversationViewController?.cellTapped(messageId: message.messageID)
-            messageService.mark(messages: [message], labelID: messageLocation, unRead: true)
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: messageLocation, unRead: true)
             self.conversationViewController?.attemptAutoScroll(to: indexPath, position: .top)
         case .star:
             messageService.label(messages: [message], label: Message.Location.starred.labelID, apply: true, shouldFetchEvent: true)

@@ -182,6 +182,14 @@ class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
 
 }
 
+class MockMessageDataActionProtocol: MessageDataActionProtocol {
+    @FuncStub(MockMessageDataActionProtocol.mark, initialReturn: Bool()) var markStub
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
+        markStub(messageObjectIDs, labelID, unRead)
+    }
+
+}
+
 class MockPaymentsUIProtocol: PaymentsUIProtocol {
     @FuncStub(MockPaymentsUIProtocol.showCurrentPlan) var showCurrentPlanStub
     func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping (PaymentsUIResultReason) -> Void) {
