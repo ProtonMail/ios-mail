@@ -143,7 +143,7 @@ extension String {
         options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
     ) -> String {
         do {
-            let regex = try NSRegularExpression(pattern: pattern, options: options)
+            let regex = try RegularExpressionCache.regex(for: pattern, options: options)
             let replacedString = regex.stringByReplacingMatches(in: self,
                                                                 options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                                                 range: NSRange(location: 0, length: self.count),
@@ -156,10 +156,12 @@ extension String {
         return self
     }
 
-    func preg_match(_ pattern: String) -> Bool {
-        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    func preg_match(
+        _ pattern: String,
+        options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    ) -> Bool {
         do {
-            let regex = try NSRegularExpression(pattern: pattern, options: options)
+            let regex = try RegularExpressionCache.regex(for: pattern, options: options)
             return regex.firstMatch(in: self,
                                     options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                     range: NSRange(location: 0, length: self.count)) != nil

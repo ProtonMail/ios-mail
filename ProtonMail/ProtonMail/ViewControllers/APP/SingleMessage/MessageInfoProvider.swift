@@ -43,7 +43,7 @@ final class MessageInfoProvider {
     private(set) var message: MessageEntity {
         willSet {
             let bodyHasChanged = message.body != newValue.body
-            if bodyHasChanged {
+            if bodyHasChanged || bodyParts == nil {
                 bodyParts = nil
                 hasAutoRetriedDecrypt = false
                 imageProxyHasStartedRunningOnCurrentBody = false
@@ -52,11 +52,14 @@ final class MessageInfoProvider {
             }
         }
         didSet {
-            let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-            let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
-            pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
-            prepareDisplayBody()
-            checkSenderPGP()
+            let bodyHasChanged = message.body != oldValue.body
+            if bodyHasChanged || bodyParts == nil {
+                let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+                let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
+                pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
+                prepareDisplayBody()
+                checkSenderPGP()
+            }
         }
     }
 
@@ -127,7 +130,7 @@ final class MessageInfoProvider {
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
         } else {
-            self.currentMessageRenderStyle = message.isNewsLetter ? .lightOnly : .dark
+            self.currentMessageRenderStyle = .dark
         }
     }
 
@@ -334,14 +337,16 @@ final class MessageInfoProvider {
     }
 
     var shouldDisplayRenderModeOptions: Bool {
-        if message.isNewsLetter { return false }
-        guard let css = self.bodyParts?.darkModeCSS, !css.isEmpty else {
-            // darkModeCSS is nil or empty
-            return false
-        }
-
         if #available(iOS 12.0, *) {
-            return UIApplication.shared.windows[0].traitCollection.userInterfaceStyle == .dark
+            if userCachedStatus.darkModeStatus == .forceOff {
+                return false
+            }
+            let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
+            if keywords.contains(where: { bodyParts?.originalBody.preg_match($0) ?? false }) {
+                return true
+            } else {
+                return false
+            }
         } else {
             return false
         }
@@ -607,11 +612,7 @@ extension MessageInfoProvider {
     }
 
     private func updateBodyParts(with newBody: String) {
-        bodyParts = BodyParts(
-            originalBody: newBody,
-            isNewsLetter: message.isNewsLetter,
-            isPlainText: message.isPlainText
-        )
+        bodyParts = BodyParts(originalBody: newBody)
     }
 
     private func updateWebContents() {
@@ -621,11 +622,12 @@ extension MessageInfoProvider {
         )
 
         let body = bodyParts?.body(for: displayMode) ?? ""
+        let css = bodyParts?.darkModeCSS(body: body)
         contents = WebContents(
             body: body,
             remoteContentMode: remoteContentPolicy,
             renderStyle: currentMessageRenderStyle,
-            supplementCSS: bodyParts?.darkModeCSS,
+            supplementCSS: css,
             webImages: webImages
         )
     }
