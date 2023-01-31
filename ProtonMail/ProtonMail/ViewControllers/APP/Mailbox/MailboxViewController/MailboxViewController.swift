@@ -1316,7 +1316,7 @@ extension MailboxViewController {
             folderButtonTapped(isFromSwipeAction: true)
             return true
         case .unread, .read, .star, .unstar:
-            viewModel.handleSwipeAction(action)
+            viewModel.handleSwipeAction(action, on: item)
             return false
         case .trash:
             guard viewModel.labelID != Message.Location.trash.labelID else { return true }
@@ -1331,14 +1331,14 @@ extension MailboxViewController {
             }
 
             showMessageMoved(title: message, undoActionType: undoAction)
-            viewModel.handleSwipeAction(.trash)
+            viewModel.handleSwipeAction(.trash, on: item)
             return true
         case .archive:
-            viewModel.handleSwipeAction(.archive)
+            viewModel.handleSwipeAction(.archive, on: item)
             showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title, undoActionType: .archive)
             return true
         case .spam:
-            viewModel.handleSwipeAction(.spam)
+            viewModel.handleSwipeAction(.spam, on: item)
             showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title, undoActionType: .spam)
             return true
         }
@@ -1406,7 +1406,7 @@ extension MailboxViewController {
                         var scheduledSendNum: Int?
                         let continueAction: () -> Void = { [weak self] in
                             guard let self = self else { return }
-                            self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                            self.viewModel.handleBarActions(action)
                             if action != .markRead && action != .markUnread {
                                 let message: String
                                 if let num = scheduledSendNum {
@@ -1427,7 +1427,7 @@ extension MailboxViewController {
                             continueAction: continueAction
                         )
                     default:
-                        self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                        self.viewModel.handleBarActions(action)
                         if ![.markRead, .markUnread, .star, .unstar].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()

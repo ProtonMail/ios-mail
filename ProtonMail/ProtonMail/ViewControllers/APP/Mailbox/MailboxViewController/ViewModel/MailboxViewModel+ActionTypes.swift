@@ -95,7 +95,7 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
             }
     }
 
-    func handleBarActions(_ action: MessageViewActionSheetAction, selectedIDs: Set<String>) {
+    func handleBarActions(_ action: MessageViewActionSheetAction) {
         switch action {
         case .markRead:
             mark(IDs: selectedIDs, unread: false)
