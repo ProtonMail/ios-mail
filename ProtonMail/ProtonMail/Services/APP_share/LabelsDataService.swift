@@ -63,14 +63,17 @@ class LabelsDataService: Service {
         self.cacheService = cacheService
     }
 
-    func cleanLabelAndFolder(completion: @escaping () -> Void) {
+    func cleanLabelsAndFolders(except labelIDToPreserve: [String], completion: @escaping () -> Void) {
         let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(
-            format: "%K == %@ AND (%K == 1 OR %K == 3)",
+            format: "%K == %@ AND (%K == 1 OR %K == 3) AND (NOT (%K IN %@))",
             Label.Attributes.userID,
             userID.rawValue,
             Label.Attributes.type,
-            Label.Attributes.type)
+            Label.Attributes.type,
+            Label.Attributes.labelID,
+            labelIDToPreserve
+        )
         self.contextProvider.performOnRootSavingContext { context in
             guard let labels = try? context.fetch(request) else {
                 completion()
@@ -167,7 +170,9 @@ class LabelsDataService: Service {
             folders.append(["ID": "12"]) // case scheduled = "12"
 
             let allFolders = labels + folders
-            self.cleanLabelAndFolder { [weak self] in
+            // to prevent deleted label won't be delete due to pull down to refresh
+            let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
+            self.cleanLabelsAndFolders(except: labelIDToPreserve) { [weak self] in
                 guard let self = self else {
                     return
                 }
