@@ -477,6 +477,7 @@ extension EventsService {
                                     if let labels = conversationObject.labels as? Set<ContextLabel> {
                                         for label in labels {
                                             label.order = conversationObject.order
+                                            label.userID = self.userManager.userID.rawValue
                                         }
                                     }
                                 }
