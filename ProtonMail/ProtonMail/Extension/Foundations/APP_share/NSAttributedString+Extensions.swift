@@ -49,7 +49,7 @@ extension NSAttributedString {
         let pattern = "(\(searchTerm))"
         let range = NSMakeRange(0, resultText.count)
         do {
-            let regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+            let regex = try RegularExpressionCache.regex(for: pattern, options: .caseInsensitive)
             regex.enumerateMatches(
                 in: resultText,
                 options: NSRegularExpression.MatchingOptions(),

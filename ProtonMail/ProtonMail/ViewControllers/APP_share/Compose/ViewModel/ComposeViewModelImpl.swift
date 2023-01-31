@@ -611,8 +611,9 @@ class ComposeViewModelImpl: ComposeViewModel {
             var css: String?
             do {
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
-                if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                    css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+                let document = CSSMagic.parse(htmlString: body)
+                if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                    css = CSSMagic.generateCSSForDarkMode(document: document)
                 }
             } catch {
                 body = msg.bodyToHtml()
@@ -642,8 +643,9 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
             var css: String?
-            if CSSMagic.darkStyleSupportLevel(htmlString: result, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            let document = CSSMagic.parse(htmlString: result)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
             }
             return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .forward:
@@ -688,8 +690,9 @@ class ComposeViewModelImpl: ComposeViewModel {
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
-            if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            let document = CSSMagic.parse(htmlString: body)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
             }
             return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .newDraftFromShare:

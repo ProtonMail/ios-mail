@@ -19,7 +19,7 @@ import Foundation
 import SwiftSoup
 
 private enum CSSKeys: String {
-    case style, color, transparent, background
+    case style, color, transparent, background, border
     case bgColor = "bgcolor"
     case backgroundColor = "background-color"
 
@@ -51,6 +51,15 @@ struct HSLA {
 
     var isLight: Bool {
         !isDark
+    }
+
+    var color: UIColor {
+        UIColor(
+            hue: CGFloat(h) / 360.0,
+            saturation: CGFloat(s) / 100.0,
+            lightness: CGFloat(l) / 100.0,
+            alpha: a
+        )
     }
 }
 
@@ -213,7 +222,8 @@ struct CSSMagic {
         let keywords = [
             CSSKeys.style.rawValue,
             CSSKeys.bgColor.rawValue,
-            CSSKeys.color.rawValue
+            CSSKeys.color.rawValue,
+            CSSKeys.border.rawValue
         ]
         for keyword in keywords {
             guard node.hasAttr(keyword) else { continue }
@@ -222,27 +232,13 @@ struct CSSMagic {
         return false
     }
 
-    static func darkStyleSupportLevel(htmlString: String,
-                                      isNewsLetter: Bool,
-                                      isPlainText: Bool,
+    static func darkStyleSupportLevel(document: Document?,
                                       darkModeCache: DarkModeCacheProtocol = userCachedStatus) -> DarkStyleSupportLevel {
         if darkModeCache.darkModeStatus == .forceOff {
             return .notSupport
         }
 
-        if isPlainText {
-            return .protonSupport
-        }
-
-        if isNewsLetter {
-            return .notSupport
-        }
-
-        if htmlString.contains(check: "!important") {
-            return .notSupport
-        }
-
-        guard let document = CSSMagic.parse(htmlString: htmlString) else {
+        guard let document = document else {
             return .notSupport
         }
         // If the meta tag color-scheme is present, we assume that the email supports dark mode
@@ -260,7 +256,7 @@ struct CSSMagic {
         // If the media query prefers-color-scheme is present, we assume that the email supports dark mode
         if let style = try? document.select("style"),
            let content = try? style.html(),
-           content.contains(check: "color-scheme") {
+           content.preg_match(#"color-scheme:\s?\S{0,}\s?dark"#) {
             return .nativeSupport
         }
         // The last condition is contrast between foreground and background
@@ -270,10 +266,10 @@ struct CSSMagic {
     }
 
     /// Generate css for dark mode
-    /// - Parameter htmlString: Message html string
+    /// - Parameter document: Message html parsed document
     /// - Returns: CSS needs to be overridden
-    static func generateCSSForDarkMode(htmlString: String) -> String {
-        guard let document = CSSMagic.parse(htmlString: htmlString) else {
+    static func generateCSSForDarkMode(document: Document?) -> String {
+        guard let document = document else {
             return ""
         }
         let styleCSS = CSSMagic.getStyleCSS(from: document)
@@ -346,7 +342,7 @@ extension CSSMagic {
                   let selectorValue = data.last else { continue }
             let attributes = CSSMagic.splitInline(attributes: selectorValue)
             guard hasGoodContrast(attributes: attributes) else {
-                return nil
+                continue
             }
             let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
             result[selectorKey] = newAttributes
@@ -359,19 +355,14 @@ extension CSSMagic {
     /// - Returns: dark mode css style or `nil` if one of nodes doesn't have good contrast
     static func getDarkModeCSSDict(for colorNodes: [Element]) -> [String: [String]]? {
         var darkModeCSS: [String: [String]] = [:]
-        var hasBadContrast = false
         for node in colorNodes {
-            guard let styleCSS = CSSMagic.getDarkModeCSS(from: node) else {
-                hasBadContrast = true
-                break
+            guard let styleCSS = CSSMagic.getDarkModeCSS(from: node),
+                  !styleCSS.isEmpty else {
+                continue
             }
             let anchor = CSSMagic.getCSSAnchor(of: node)
-            guard styleCSS.isEmpty == false,
-                  anchor.isEmpty == false else { continue }
+            guard anchor.isEmpty == false else { continue }
             darkModeCSS[anchor] = styleCSS
-        }
-        if hasBadContrast {
-            return nil
         }
         return darkModeCSS
     }
@@ -391,9 +382,7 @@ extension CSSMagic {
             if colorStyle.isEmpty == false {
                 attributes.append((CSSKeys.color.rawValue, colorStyle))
             }
-            guard hasGoodContrast(attributes: attributes) else {
-                return nil
-            }
+            guard hasGoodContrast(attributes: attributes) else { return [] }
             return CSSMagic.switchToDarkModeStyle(attributes: attributes)
         } catch {
             return []
@@ -401,8 +390,7 @@ extension CSSMagic {
     }
 
     /// Check if the background and foreground has good contrast
-    /// Only see the brightness
-    /// Less than 128 is dark, equal or greater is light
+    /// Color contrast ratio greater than 1 is good contrast
     /// - Parameter attributes: attributes array
     /// - Returns: bool result
     static func hasGoodContrast(attributes: [CSSMagic.CSSAttribute]) -> Bool {
@@ -413,19 +401,31 @@ extension CSSMagic {
         let foregroundStyle = attributes.first(where: {$0.key == foregroundKey})?.value ?? "#000"
         let backgroundStyle = attributes.first(where: {backgroundKeys.contains($0.key)})?.value ?? "#fff"
 
-        let color = getHSLA(attribute: foregroundStyle) ?? HSLA(h: 0, s: 0, l: 100, a: 1)
-        let background = getHSLA(attribute: backgroundStyle) ?? HSLA(h: 0, s: 0, l: 0, a: 1)
-        let result = (color.isDark && (background.isLight || background.a == 0)) ||
-        (color.isLight && background.isDark)
-        return result
+        let foregroundColor = parseAttribute(attribute: foregroundStyle)?.colorAttribute ?? "#000"
+        let backgroundColor = parseAttribute(attribute: backgroundStyle)?.colorAttribute ?? "#fff"
+        let color = getHSLA(attribute: foregroundColor) ?? HSLA(h: 0, s: 0, l: 100, a: 1)
+        let background = getHSLA(attribute: backgroundColor) ?? HSLA(h: 0, s: 0, l: 0, a: 1)
+
+        // https://www.w3.org/TR/WCAG20/#relativeluminancedef
+        guard let colorRL = getRelativeLuminance(from: color),
+              let backgroundRL = getRelativeLuminance(from: background) else {
+            let result = (color.isDark && (background.isLight || background.a == 0)) ||
+            (color.isLight && background.isDark)
+            return result
+        }
+        let lighter = max(colorRL, backgroundRL)
+        let darker = min(colorRL, backgroundRL)
+        let colorContrastRatio = (lighter + 0.05) / (darker + 0.05)
+        return colorContrastRatio >= 2
     }
 
     static func switchToDarkModeStyle(attributes: [CSSMagic.CSSAttribute]) -> [String] {
-        var cssDict: [String: String] = [:]
+        var cssArray: [String] = []
         let keywords = [CSSKeys.color.rawValue,
                         CSSKeys.backgroundColor.rawValue,
                         CSSKeys.bgColor.rawValue,
-                        CSSKeys.background.rawValue]
+                        CSSKeys.background.rawValue,
+                        CSSKeys.border.rawValue]
         for attribute in attributes {
             guard keywords.contains(attribute.key) else { continue }
             let color = attribute.value
@@ -440,17 +440,21 @@ extension CSSMagic {
                 // So in theory, bgcolor and background-color won't use at the same time
                 key = CSSKeys.backgroundColor.rawValue
             }
-            cssDict[key] = "\(hsla) !important"
+            cssArray.append("\(key): \(hsla) !important")
+            if key == CSSKeys.border.rawValue {
+                attributes
+                    .filter { $0.key.hasPrefix("\(CSSKeys.border.rawValue)-")}
+                    .forEach { attribute in
+                        cssArray.append("\(attribute.key): \(attribute.value) !important")
+                    }
+
+            }
         }
-        return cssDict.map({ "\($0.key): \($0.value)"})
+        return cssArray
     }
 
     static func getHSLA(attribute: String) -> HSLA? {
-        var color = attribute
-        if color.contains("!important") {
-            color = color.preg_replace("!important", replaceto: "")
-        }
-        color = color.trim()
+        let color = attribute.trim()
 
         var hsla: HSLA?
         if let value = CSSMagic.definedColors[color] {
@@ -474,9 +478,11 @@ extension CSSMagic {
     /// - Parameter color: CSS color representation, could be rgba, hex...etc
     /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
     static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
-        guard let hsla = getHSLA(attribute: color) else { return nil }
-        return CSSMagic.hslaForDarkMode(hsla: hsla,
-                                        isForeground: isForeground)
+        guard var (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
+        guard let hsla = getHSLA(attribute: colorAttribute) else { return nil }
+        let darkModeHSLA = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: isForeground)
+        others.insert(darkModeHSLA, at: index)
+        return others.joined(separator: " ")
     }
 }
 
@@ -655,12 +661,33 @@ extension CSSMagic {
             return "hsla(230, 12%, 10%, \(hsla.a))"
         case (true, false), (false, false):
             if isForeground {
-                l = max(l, 60)
+                l = max(l, 100)
             } else {
                 l = min(30, l)
             }
         }
         return "hsla(\(hsla.h), \(hsla.s)%, \(l)%, \(hsla.a))"
+    }
+
+    static func getRelativeLuminance(from hsla: HSLA) -> CGFloat? {
+        let color = hsla.color
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        guard color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else { return nil }
+        let rValue = transformToRLSpace(from: red)
+        let gValue = transformToRLSpace(from: green)
+        let bValue = transformToRLSpace(from: blue)
+        return 0.2126 * rValue + 0.7152 * gValue + 0.0722 * bValue
+    }
+
+    private static func transformToRLSpace(from value: CGFloat) -> CGFloat {
+        if value <= 0.03928 {
+            return value / 12.92
+        } else {
+            return pow(((value + 0.055) / 1.055), 2.4)
+        }
     }
 }
 
@@ -720,6 +747,9 @@ extension CSSMagic {
     }
 
     static func getCSSAnchor(of node: Element) -> String {
+        if !node.id().isEmpty {
+            return "#\(node.id())"
+        }
         var anchor = node.tagNameNormal()
         if let classSet = try? node.classNames() {
             let className = Array(classSet).joined(separator: ".")
@@ -738,7 +768,7 @@ extension CSSMagic {
                     let containQuotes = value.contains("\"") || value.contains("&quot;")
                     return !ignoreKeys.contains(key) && !containQuotes
                 })
-                .map({ return "[\($0.getKey())=\"\($0.getValue())\"]" })
+                .map(anchorMapper(attribute:))
                 .joined(separator: "")
             anchor = "\(anchor)\(selector)"
         }
@@ -750,6 +780,35 @@ extension CSSMagic {
         }
     }
 
+    static func anchorMapper(attribute: Attribute) -> String {
+        let key = attribute.getKey()
+        let value = attribute.getValue()
+            .trim()
+            .preg_replace("\\n", replaceto: "")
+            .preg_replace("font-family:([\\s\\S]*?);", replaceto: "")
+        if key == "style" {
+            let colorKeys = [
+                CSSKeys.color.rawValue,
+                CSSKeys.border.rawValue,
+                CSSKeys.backgroundColor.rawValue
+            ]
+            let values = value
+                .components(separatedBy: ";")
+                .filter { !$0.isEmpty }
+                .filter { styleValue in
+                    colorKeys.reduce(false) { partialResult, colorKey in
+                        styleValue.contains(check: colorKey) || partialResult
+                    }
+                }
+            let assemble = values
+                .map { "[\(key)*=\"\($0.trim())\"]" }
+                .joined()
+            return assemble
+        } else {
+            return "[\(key)=\"\(value)\"]"
+        }
+    }
+
     static func assemble(cssDict: [String: [String]]) -> String {
         var css = ""
         for (anchor, values) in cssDict {
@@ -758,6 +817,35 @@ extension CSSMagic {
             css += "\(anchor) { \(value) }"
         }
         return css
+    }
+
+    static func isColor(attribute: String) -> Bool {
+        let count = [4, 5, 7, 9]
+        if attribute.hasPrefix("rgb") || attribute.hasPrefix("rgba") {
+            return attribute.preg_match("rgba?(.*,.*,.*)")
+        } else if attribute.hasPrefix("hsl") || attribute.hasPrefix("hsla") {
+            return attribute.preg_match("hsla?(.*,.*,.*)")
+        } else if definedColors.keys.contains(attribute) {
+            return true
+        } else if attribute.hasPrefix("#") && count.firstIndex(of: attribute.count) != nil {
+            return true
+        }
+        return false
+    }
+
+    static func splitAttributeIfNeeded(attribute: String) -> [String] {
+        if isColor(attribute: attribute) {
+            return [attribute]
+        } else {
+            return attribute.components(separatedBy: .whitespacesAndNewlines)
+        }
+    }
+
+    static func parseAttribute(attribute: String) -> (colorAttribute: String, index: Int, others: [String])? {
+        var splits = splitAttributeIfNeeded(attribute: attribute)
+        guard let index = splits.firstIndex(where: { isColor(attribute: $0)} ) else { return nil }
+        let colorAttribute = splits.remove(at: index)
+        return (colorAttribute, index, splits)
     }
 }
 
