@@ -38,7 +38,6 @@ class SingleMessageContentViewModelFactory {
                 spamType: context.message.spam,
                 user: user
             ),
-            nonExpandedHeader: .init(isScheduledSend: context.message.isScheduledSend),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
             attachments: .init()
         )
@@ -67,7 +66,6 @@ class SingleMessageViewModelFactory {
                 spamType: message.spam,
                 user: user
             ),
-            nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )

@@ -68,10 +68,12 @@ class ExpandedHeaderViewController: UIViewController {
         customView.initialsLabel.set(text: viewModel.infoProvider.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
 
-        customView.senderNameLabel.set(text: viewModel.infoProvider.senderName,
-                                       preferredFont: .subheadline,
-                                       weight: .semibold,
-                                       lineBreakMode: .byTruncatingMiddle)
+        customView.senderLabel.set(
+            text: viewModel.infoProvider.senderName,
+            preferredFont: .subheadline,
+            weight: .semibold,
+            lineBreakMode: .byTruncatingMiddle
+        )
 
         customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
