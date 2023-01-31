@@ -199,12 +199,12 @@ class SingleMessageContentViewModel {
 
     func markReadIfNeeded() {
         guard message.unRead else { return }
-        messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
+        messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: context.labelId, unRead: false)
     }
 
     func markUnreadIfNeeded() {
         guard !message.unRead else { return }
-        messageService.mark(messages: [message], labelID: context.labelId, unRead: true)
+        messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: context.labelId, unRead: true)
     }
 
     func getCypherURL() -> URL? {

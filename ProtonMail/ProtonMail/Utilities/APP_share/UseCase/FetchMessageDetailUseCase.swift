@@ -179,7 +179,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
 
     private func updateUnread(message: Message) {
         if let labelID = message.firstValidFolder(), message.unRead {
-            _ = dependencies.messageDataAction.mark(messages: [MessageEntity(message)],
+            _ = dependencies.messageDataAction.mark(messageObjectIDs: [message.objectID],
                                                     labelID: LabelID(labelID),
                                                     unRead: false)
         }
