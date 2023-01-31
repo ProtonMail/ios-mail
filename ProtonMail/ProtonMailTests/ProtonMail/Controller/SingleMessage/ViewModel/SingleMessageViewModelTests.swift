@@ -218,7 +218,6 @@ final class SingleMessageViewModelTests: XCTestCase {
                 spamType: .none,
                 user: fakeUser
             ),
-            nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelID, message: message, user: fakeUser),
             attachments: .init()
         )
