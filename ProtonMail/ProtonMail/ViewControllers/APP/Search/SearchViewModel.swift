@@ -95,15 +95,13 @@ final class SearchViewModel: NSObject {
 
     init(user: UserManager,
          coreDataContextProvider: CoreDataContextProviderProtocol,
-         queueManager: QueueManagerProtocol,
-         realAttachmentsFlagProvider: RealAttachmentsFlagProvider) {
+         queueManager: QueueManagerProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         let fetchMessageDetailUseCase = FetchMessageDetail(
             dependencies: .init(queueManager: queueManager,
                                 apiService: user.apiService,
                                 contextProvider: coreDataContextProvider,
-                                realAttachmentsFlagProvider: realAttachmentsFlagProvider,
                                 messageDataAction: user.messageService,
                                 cacheService: user.cacheService)
         )

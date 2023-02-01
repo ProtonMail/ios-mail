@@ -139,15 +139,11 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {
-        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let localAttachments = message.attachments.allObjects
             .compactMap { $0 as? Attachment }
             .filter { attach in
                 if attach.isUploaded || attach.isSoftDeleted { return false }
-                if realAttachments {
-                    return !attach.inline()
-                }
-                return true
+                return !attach.inline()
             }
         return localAttachments
     }
@@ -169,10 +165,9 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 }
             }
         }
-        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let attachmentCount = message.attachments
             .compactMap { $0 as? Attachment }
-            .filter { !$0.inline() || !realAttachments }
+            .filter { !$0.inline() }
             .count
         message.numAttachments = NSNumber(value: attachmentCount)
     }
@@ -228,7 +223,6 @@ extension FetchMessageDetail {
         let queueManager: QueueManagerProtocol?
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
-        let realAttachmentsFlagProvider: RealAttachmentsFlagProvider
         let messageDataAction: MessageDataActionProtocol
         let cacheService: CacheServiceProtocol
     }

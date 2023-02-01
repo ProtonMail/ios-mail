@@ -978,10 +978,6 @@ extension MailboxViewModel: ConversationStateServiceDelegate {
     func viewModeHasChanged(viewMode: ViewMode) {
         viewModeIsChanged?()
     }
-
-    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-
-    }
 }
 
 extension MailboxViewModel {

@@ -377,14 +377,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         return
                                     }
                                 }
-                                let realAttachments = userCachedStatus.realAttachments
                                 let localAttachments = newMessage.attachments.allObjects.compactMap { $0 as? Attachment}.filter { attach in
                                     if attach.isSoftDeleted {
                                         return false
-                                    } else if realAttachments {
-                                        return !attach.inline()
                                     }
-                                    return true
+                                    return !attach.inline()
                                 }
                                 let localAttachmentCount = localAttachments.count
 

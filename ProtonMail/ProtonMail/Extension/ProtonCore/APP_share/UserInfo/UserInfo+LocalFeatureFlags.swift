@@ -30,10 +30,6 @@ extension UserInfo {
         return true
     }
 
-    static var isDarkModeEnable: Bool {
-        return true
-    }
-
     static var isDiffableDataSourceEnabled: Bool {
         if #available(iOS 13, *) {
             return true
