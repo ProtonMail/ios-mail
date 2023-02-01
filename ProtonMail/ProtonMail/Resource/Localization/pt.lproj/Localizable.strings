@@ -169,6 +169,7 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Arquivo";
+"Archive (verb)" = "Arquivo";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tem certeza de que deseja eliminar permanentemente esta mensagem?";

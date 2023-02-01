@@ -196,6 +196,7 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Safn";
+"Archive (verb)" = "Safn";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";

@@ -160,6 +160,7 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Tarcivt";
+"Archive (verb)" = "Tarcivt";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda izen-agi?";
