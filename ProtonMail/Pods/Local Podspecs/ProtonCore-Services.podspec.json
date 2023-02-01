@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Services",
-  "version": "3.26.2",
+  "version": "3.27.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": null,
-    "tag": "3.26.2"
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.27.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,25 +34,25 @@
 
     ],
     "ProtonCore-DataModel": [
-      "3.26.2"
+      "3.27.0"
     ],
     "ProtonCore-Doh": [
-      "3.26.2"
+      "3.27.0"
     ],
     "ProtonCore-Log": [
-      "3.26.2"
+      "3.27.0"
     ],
     "ProtonCore-Networking": [
-      "3.26.2"
+      "3.27.0"
     ],
     "ProtonCore-Utilities": [
-      "3.26.2"
+      "3.27.0"
     ],
     "ProtonCore-Environment": [
-      "3.26.2"
+      "3.27.0"
     ],
     "ProtonCore-FeatureSwitch": [
-      "3.26.2"
+      "3.27.0"
     ]
   },
   "default_subspecs": [
@@ -66,28 +66,31 @@
       "source_files": "libraries/Services/Tests/Unit/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "3.26.2"
+          "3.27.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "3.26.2"
+          "3.27.0"
         ]
       }
     },
     {
       "name": "IntegrationTests",
       "test_type": "unit",
-      "source_files": "libraries/Services/Tests/Integration/*.swift",
       "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
+          "3.27.0"
+        ],
         "ProtonCore-Challenge": [
-          "3.26.2"
+          "3.27.0"
         ],
         "ProtonCore-Authentication": [
-          "3.26.2"
+          "3.27.0"
         ],
         "ProtonCore-Login": [
-          "3.26.2"
+          "3.27.0"
         ]
-      }
+      },
+      "source_files": "libraries/Services/Tests/Integration/*.swift"
     }
   ],
   "swift_version": "5.6"

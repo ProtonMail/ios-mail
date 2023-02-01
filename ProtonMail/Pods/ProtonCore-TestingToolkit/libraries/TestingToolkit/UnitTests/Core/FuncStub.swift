@@ -42,12 +42,12 @@ public final class FuncStub<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A
 
 public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
 
-    public private(set) var callCounter: UInt = .zero
+    public var callCounter: UInt { capturedArgumentsAndCounterStorage.value.0 }
     public var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] {
-        capturedArgumentsStorage.value
+        capturedArgumentsAndCounterStorage.value.1
     }
     
-    private var capturedArgumentsStorage: Atomic<[CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>]> = .init([])
+    private var capturedArgumentsAndCounterStorage: Atomic<(UInt, [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>])> = .init((.zero, .empty))
 
     public var description: String
     public var ensureWasCalled = false
@@ -91,8 +91,10 @@ public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8
     }
 
     func callAsFunction(input: Input, arguments: CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>) -> Output {
-        callCounter += 1
-        capturedArgumentsStorage.mutate { $0.append(arguments) } 
+        capturedArgumentsAndCounterStorage.mutate {
+            $0.0 += 1
+            $0.1.append(arguments)
+        }
         return implementation(callCounter, input)
     }
 

@@ -331,8 +331,10 @@ public protocol APIService: API {
     var signUpDomain: String { get }
 }
 
-class TestResponse: Response {
-    
+public enum SessionAcquiringResult {
+    case sessionFetchedAndAvailable
+    case sessionAlreadyPresent
+    case sessionUnavailableAndNotFetched
 }
 
 typealias RequestComplete = (_ task: URLSessionDataTask?, _ response: Response) -> Void
@@ -584,7 +586,7 @@ public extension APIService {
     
 }
 
-// MARK: - deprecated APIs
+// MARK: - Deprecated APIs
 
 public extension APIService {
     

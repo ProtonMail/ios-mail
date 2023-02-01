@@ -31,10 +31,12 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     private let MIN_ICON_BUTTON_SIZE: CGFloat = 24
 
     // MARK: Customize variable
-    private var leftItem: PMActionSheetPlainItem?
-    private var rightItem: PMActionSheetPlainItem?
-    private var title: String?
-    private var subtitle: String?
+    private let leftItem: PMActionSheetPlainItem?
+    private let rightItem: PMActionSheetPlainItem?
+    private let title: String
+    private let subtitle: String?
+    private let leftTitleViews: [UIView]
+    private let rightTitleViews: [UIView]
 
     private var titleLabel: UILabel?
     private var subTitleLabel: UILabel?
@@ -46,16 +48,26 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     ///   - subtitle: Subtitle of action sheet
     ///   - leftItem: Left item of header view, if `title` set, `icon` will be ignored
     ///   - rightItem: Right item of header view, if `title` set, `icon` will be ignored
-    public convenience init(title: String, subtitle: String?,
-                            leftItem: PMActionSheetPlainItem?,
-                            rightItem: PMActionSheetPlainItem?,
-                            hasSeparator: Bool = false) {
-        self.init(frame: .zero)
-        self.leftItem = leftItem
-        self.rightItem = rightItem
+    public init(
+        title: String,
+        subtitle: String?,
+        leftItem: PMActionSheetPlainItem?,
+        rightItem: PMActionSheetPlainItem?,
+        leftTitleViews: [UIView] = [],
+        rightTitleViews: [UIView] = [],
+        hasSeparator: Bool = false
+    ) {
         self.title = title
         self.subtitle = subtitle
+        self.leftItem = leftItem
+        self.rightItem = rightItem
+        self.leftTitleViews = leftTitleViews
+        self.rightTitleViews = rightTitleViews
+
+        super.init(frame: .zero)
+
         self.setup(hasSeparator: hasSeparator)
+
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(preferredContentSizeChanged(_:)),
@@ -63,21 +75,14 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
                          object: nil)
     }
 
-    override private init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setup()
-    }
-
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setup()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 // MARK: UI Relative
 extension PMActionSheetHeaderView {
     private func setup(hasSeparator: Bool = false) {
-        guard self.title != nil else { return }
         self.backgroundColor = ColorProvider.BackgroundNorm
         let titleView = self.createTitleView()
         self.setupTitleViewConstraint(titleView)
@@ -97,20 +102,24 @@ extension PMActionSheetHeaderView {
 
     private func createTitleView() -> UIStackView {
         let stack = UIStackView(.vertical, alignment: .center, distribution: .fillProportionally, useAutoLayout: true)
-        if let title = self.title {
-            let font: UIFont
-            if subtitle == nil {
-                font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
-            } else {
-                font = .adjustedFont(forTextStyle: .subheadline, weight: .semibold)
-            }
-
-            let color: UIColor = ColorProvider.TextNorm
-            let lbl = UILabel(title, font: font, textColor: color)
-            lbl.sizeToFit()
-            titleLabel = lbl
-            stack.addArrangedSubview(lbl)
+        let font: UIFont
+        if subtitle == nil {
+            font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
+        } else {
+            font = .adjustedFont(forTextStyle: .subheadline, weight: .semibold)
         }
+
+        let color: UIColor = ColorProvider.TextNorm
+        let lbl = UILabel(title, font: font, textColor: color)
+        lbl.sizeToFit()
+        titleLabel = lbl
+
+        let titleRow = UIStackView(.horizontal, alignment: .center, distribution: .equalSpacing, useAutoLayout: true)
+        titleRow.spacing = 4
+        leftTitleViews.forEach(titleRow.addArrangedSubview)
+        titleRow.addArrangedSubview(lbl)
+        rightTitleViews.forEach(titleRow.addArrangedSubview)
+        stack.addArrangedSubview(titleRow)
 
         if let subtitle = self.subtitle {
             let font: UIFont = .adjustedFont(forTextStyle: .caption1)

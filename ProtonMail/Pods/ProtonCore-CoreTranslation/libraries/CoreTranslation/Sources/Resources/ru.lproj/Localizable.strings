@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ хранилища";
 
@@ -11,7 +8,7 @@
 "A networking error has occured" = "Произошла ошибка сети";
 
 /* Unfinished operation error dialog description */
-"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Покупка тарифа Proton Bundle уже начата. Нажмите кнопку \"Gродолжить\", чтобы завершить обработку платежа и создать свой аккаунт";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Покупка тарифа Proton Bundle уже начата. Нажмите кнопку \"Продолжить\", чтобы завершить обработку платежа и создать свой аккаунт";
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метод восстановления поможет вам получить доступ к аккаунту, если вы забудете пароль или он будет заблокирован.";
@@ -77,7 +74,7 @@
 
 /* *
  * Login upgrade username-only account */
-"Change your password" = "Изменить пароль";
+"Change your password" = "Измените пароль";
 
 /* Proton is down description. */
 "Check Proton Status for our system status." = "Проверьте состояние Proton, чтобы узнать состояние системы.";
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Свяжитесь с нами напрямую через форму поддержки, по электронной почте (support@protonmail.zendesk.com) или через Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Создать аккаунт Proton с вашим текущим адресом электронной почты";
 
@@ -128,14 +128,14 @@
 "Create user failed" = "Не удалось создать пользователя";
 
 /* Signup password proton view title */
-"Create your password" = "Создать пароль";
+"Create your password" = "Создайте пароль";
 
 /* *
  * Signup */
-"Create your Proton Account" = "Создать аккаунт Proton";
+"Create your Proton Account" = "Создайте свой аккаунт Proton";
 
 /* Signup complete progress step creation */
-"Creating your account" = "Создание учетной записи";
+"Creating your account" = "Создание аккаунта";
 
 /* Plan selection title */
 "Current plan" = "Текущий тариф";
@@ -180,13 +180,10 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "Электронная почта";
+"Email" = "Эл. почта";
 
 /* Email address already used error */
 "Email address already used." = "Адрес электронной почты уже используется.";
-
-/* Username field title */
-"Email or username" = "Электронная почта или имя пользователя";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Пользуйтесь миром конфиденциальности.";
@@ -234,8 +231,11 @@
 /* Signup complete progress step address generation */
 "Generating your address" = "Генерирование вашего адреса";
 
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Получите адрес Proton Mail, привязанный к этому аккаунту в веб-настройках Proton.";
+
 /* alert message */
-"Get a replacement code sent to %@." = "Получите код замены, отправленный на %@.";
+"Get a replacement code sent to %@." = "Получить замену кода на %@.";
 
 /* Verification button */
 "Get verification code" = "Получить код подтверждения";
@@ -269,7 +269,7 @@
 "Incorrect mailbox password" = "Неверный пароль почтового ящика";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Проблема с поставщиком услуг (ISP)";
+"Internet Service Provider (ISP) problem" = "Проблема с интернет-провайдером";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Неверный хешированный пароль";
@@ -298,17 +298,11 @@
  * Splash */
 "Made by" = "Сделано";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Пакет Mail + VPN для семей и малого бизнеса";
-
 /* Mailbox password field title */
 "Mailbox password" = "Пароль почтового ящика";
 
 /* Manage accounts button */
-"Manage accounts" = "Управление учетными записями";
-
-/* Plan details medium speed */
-"Medium speed" = "Средняя скорость";
+"Manage accounts" = "Управление учётными записями";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Многопользовательская поддержка";
@@ -323,6 +317,78 @@
  * Networking */
 "Network connection error" = "Ошибка подключения к сети";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ из %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Доступ к службам трансляции по всему миру";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Встроенный блокировщик рекламы (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Проверьте подключение к Интернету";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Проблемы с подключением";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Продлить подписку";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "VPN бесплатно на одном устройстве";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Получить %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Получить Proton бесплатно";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Максимальная скорость VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Единый тариф для всех служб Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступна только годовая подписка без автоматического продления";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Тариф успешно обновлен";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Серверы Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Строгая политика отсутствия журналов активности";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Бесплатный стартовый аккаунт, созданный для предоставления всем конфиденциальности по умолчанию.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Решение для электронной почты и календаря, обеспечивающее конфиденциальность, для ваших повседневных целей коммуникации.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тариф, ориентированный на хранение данных, с 200 ГБ облачного хранилища для сохранения конфиденциальности ваших файлов.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Максимальный набор конфиденциальности с доступом ко всем платным службам Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor через VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "До %@ хранилища";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Наш приоритет — ваша конфиденциальность и безопасность.";
+
 /* Next button */
 "Next" = "Далее";
 
@@ -336,8 +402,7 @@
    OK button */
 "OK" = "ОК";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Один аккаунт для всех служб Proton.";
 
 /* Plan footer description */
@@ -390,7 +455,7 @@
 "Please enter your Proton Account email or username." = "Пожалуйста, введите электронную почту или имя пользователя вашего аккаунта Proton.";
 
 /* Invalid password hint */
-"Please enter your Proton Account password." = "Пожалуйста, введите ваш пароль для вашего аккаунта Proton.";
+"Please enter your Proton Account password." = "Введите пароль вашего аккаунта Proton.";
 
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Пожалуйста, войдите в аккаунт Proton Mail, для которого вы обновляете тариф обслуживания, чтобы мы могли оформить покупку.";
@@ -410,21 +475,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Приоритетная поддержка клиентов";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Конфиденциальность по умолчанию";
 
 /* *
  * Login create address */
 "Proton address required" = "Требуется адрес Proton";
 
+/* Username field title */
+"Proton email or username" = "Электронная почта или имя пользователя Proton";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton не работает";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail для профессионалов и предприятий";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Состояние Proton";
@@ -480,9 +545,6 @@
 /* Signup complete progress step keys generation */
 "Securing your account" = "Защита вашей учетной записи";
 
-/* Select plan button */
-"Select" = "Выбрать";
-
 /* *
  *  Payments UI */
 "Select a plan" = "Выбрать тариф";
@@ -499,7 +561,7 @@
 "Sign in" = "Войти";
 
 /* Button for signing into another account */
-"Sign in to another account" = "Войдите в другой аккаунт";
+"Sign in to another account" = "Войти в другой аккаунт";
 
 /* Sign out button/ title */
 "Sign out" = "Выйти";
@@ -527,10 +589,10 @@
 
 /* *
  *  Login help */
-"Still need help? Contact us directly." = "Все еще нужна помощь? Свяжитесь с нами напрямую.";
+"Still need help? Contact us directly." = "Все ещё нужна помощь? Свяжитесь с нами напрямую.";
 
 /* Plan details streaming service support */
-"Streaming service support" = "Поддержка служб трансляции";
+"Streaming service support" = "Поддержка стриминговых сервисов";
 
 /* The subject of the email draft created in the network troubleshoot view. */
 "Subject..." = "Тема...";
@@ -564,7 +626,7 @@
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton недоступны. Это может быть вызвано неправильной настройкой сети, сбоем серверов Proton или тем, что сервисы Proton были заблокированы";
 
 /* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Сбой проверки TLS-сертификата при попытке подключения к API Proton VPN. Возможно, ваше подключение к Интернету отслеживается. Чтобы сохранить ваши данные в безопасности, мы предотвратили доступ приложения к Proton VPN API.\nДля входа в приложение или доступа к аккаунту подключитесь к другой сети и попробуйте снова.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Сбой проверки TLS-сертификата при попытке подключения к API Proton VPN. Возможно, ваше подключение к Интернету отслеживается. Чтобы сохранить ваши данные в безопасности, мы предотвратили доступ приложения к Proton API.\nДля входа в приложение или доступа к аккаунту подключитесь к другой сети и попробуйте снова.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Обычно на это требуется менее минуты.";
@@ -613,9 +675,6 @@
  *  Force upgrade */
 "Update required" = "Требуется обновление";
 
-/* Upgrade plan button */
-"Upgrade" = "Улучшить";
-
 /* Plan selection title */
 "Upgrade your plan" = "Улучшить тариф";
 
@@ -657,10 +716,10 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Мы успешно активировали вашу подписку. Пожалуйста, перезапустите приложение, чтобы начать пользоваться новым тарифом на услуги.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Мы не смогли обновить ваш аккаунт до выбранного вами тарифа, поэтому мы добавили ваш платеж в качестве кредитов на вашу учетную запись. Для получения дополнительной информации и завершения обновления, пожалуйста, обратитесь в службу поддержки.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Мы не смогли обновить ваш аккаунт до выбранного вами тарифа, поэтому мы добавили ваш платеж в качестве кредита на вашу учетную запись. Для получения дополнительной информации и завершения обновления, пожалуйста, обратитесь в службу поддержки.";
 
 /* Recovery view description */
-"We will send recovery instructions to this email if you get locked out of your account." = "Мы вышлем инструкции по восстановлению на этот адрес электронной почты, если вы заблокируете свой аккаунт.";
+"We will send recovery instructions to this email if you get locked out of your account." = "Мы вышлем инструкции по восстановлению на этот адрес электронной почты, если ваш аккаунт будет заблокирован.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "Мы отправим инструкции для аварийного восстановления доступа на эту почту или телефон, если по каким-то причинам вы не сможете получить доступ к вашему аккаунту.";
@@ -682,6 +741,9 @@
 
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Вы успешно зарегистрированы, но ваш платеж не был обработан. Чтобы повторно отправить платежную информацию, нажмите «Повторить». Плата взимается только один раз. Если проблема не устранена, обратитесь в службу поддержки.";
+
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Чтобы использовать Proton Mail и Proton Calendar, вам нужна эл. почта Proton.\nВы также сможете использовать %@ для входа, и для восстановления вашей учетной записи.";
 
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Вы выйдете, и все данные, связанные с этим аккаунтом, будут удалены с этого устройства.";
@@ -715,79 +777,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Время сеанса истекло. Пожалуйста, войдите снова.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ из %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Доступ к службам трансляции по всему миру";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Встроенный блокировщик рекламы (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Проверьте подключение к Интернету.";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Проблемы с подключением";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Продлить подписку";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Бесплатная VPN на одном устройстве";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Получить %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Получить Proton бесплатно";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Наивысшая скорость VPN";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Единый тариф для всех служб Proton";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступна только годовая подписка без автоматического продления";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Тариф успешно обновлен";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Серверы Secure Core";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Строгая политика отсутствия журналов активности";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Бесплатный стартовый аккаунт для всех, кому важна конфиденциальность.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Почта и календарь с приоритетом конфиденциальности для повседневных коммуникаций.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тариф, ориентированный на хранение данных, с 200 ГБ облачного хранилища для сохранения конфиденциальности ваших файлов.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Максимальный набор с полным доступом ко всем платным службам Proton.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor через VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Хранилище до %@";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Наш приоритет — ваша конфиденциальность и безопасность.";
-
-/* Welcome screen */
-"Privacy by default" = "Конфиденциальность по умолчанию";
 
