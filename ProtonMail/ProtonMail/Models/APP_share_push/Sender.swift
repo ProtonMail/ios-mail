@@ -22,14 +22,50 @@
 
 import Foundation
 
+/// Sender fields available for Conversation and Messages
+/// They hold information that are useful when we want to parse senders as contact
+/// as well as information if the sender is authenticated for whom we would show
+/// a verification badge (to combat phising)
 struct Sender: Codable {
     let name: String
     let address: String
-    // Unused on iOS fields:
-    //    let group: Any
+    let bimiSelector: String? /// Brand Indicators for Message Identification. String to attach a logo to a sender
+    private let isProton: Int?
+    private let isSimpleLogin: Int?
+    private let displaySenderImage: Int?
 
     private enum CodingKeys: String, CodingKey {
         case name = "Name"
         case address = "Address"
+        case isProton = "IsProton"
+        case isSimpleLogin = "IsSimpleLogin"
+        case displaySenderImage = "DisplaySenderImage"
+        case bimiSelector = "BimiSelector"
     }
+
+    var isFromProton: Bool {
+        isProton == 1
+    }
+
+    var isFromSimpleLogin: Bool {
+        isSimpleLogin == 1
+    }
+
+    var shouldDislaySenderImage: Bool {
+        displaySenderImage == 1
+    }
+}
+
+extension Sender {
+    static func makeFromMessage(senderObject: String) throws -> Sender {
+        try JSONDecoder().decode(Sender.self, from: Data(senderObject.utf8))
+    }
+
+    static func makeFromConversation(sendersObject: String) throws -> [Sender] {
+        try JSONDecoder().decode([Sender].self, from: Data(sendersObject.utf8))
+    }
+}
+
+enum SenderError: Error {
+    case senderStringIsNil
 }

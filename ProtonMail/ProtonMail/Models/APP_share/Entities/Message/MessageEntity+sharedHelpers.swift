@@ -259,6 +259,13 @@ extension MessageEntity {
         }
     }
 
+    func parseSender() throws -> Sender {
+        guard let rawSender = self.rawSender else {
+            throw SenderError.senderStringIsNil
+        }
+        return try Sender.makeFromMessage(senderObject: rawSender)
+    }
+
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
