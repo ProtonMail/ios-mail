@@ -103,7 +103,7 @@ extension SingleMessageContentViewController: CustomViewPrintable {
         newHeader.updateSpamScoreConstraints()
 
         if self.viewModel.isExpanded {
-            newHeader.detailsButtonTapped()
+            newHeader.showingDetail()
         }
 
         newHeader.layoutIfNeeded()
