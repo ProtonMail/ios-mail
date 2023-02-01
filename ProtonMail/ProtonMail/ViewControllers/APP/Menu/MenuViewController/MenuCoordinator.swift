@@ -378,7 +378,6 @@ extension MenuCoordinator {
                 queueManager: services.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: coreDataService,
-                realAttachmentsFlagProvider: userCachedStatus,
                 messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )

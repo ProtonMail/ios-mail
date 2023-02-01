@@ -36,8 +36,8 @@ class FeatureFlagsRequestTests: XCTestCase {
     }
 
     func testInitWithKeys() {
-        sut = FeatureFlagsRequest(keys: [.threading])
-        XCTAssertEqual(sut.keysToFetch, [.threading])
+        sut = FeatureFlagsRequest(keys: [.inAppFeedback])
+        XCTAssertEqual(sut.keysToFetch, [.inAppFeedback])
     }
 
     func testInitWithEmptyKeys() {

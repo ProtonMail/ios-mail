@@ -317,7 +317,6 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         DispatchQueue.main.async {
             self.attachmentViewModel.attachmentHasChanged(
                 attachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
-                inlines: (self.messageInfoProvider.inlineAttachments ?? []).map(AttachmentNormal.init),
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
             self.uiDelegate?.updateAttachmentBannerIfNeeded()

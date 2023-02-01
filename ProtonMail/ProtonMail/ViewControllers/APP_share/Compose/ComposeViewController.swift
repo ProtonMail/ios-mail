@@ -539,9 +539,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
             return
         }
 
-        let realAttachments = userCachedStatus.realAttachments
-        viewModel.composerMessageHelper.removeInlineAttachment(fileName: sid,
-                                                               isRealAttachment: realAttachments) { [weak self] in
+        viewModel.composerMessageHelper.removeInlineAttachment(fileName: sid, isRealAttachment: true) { [weak self] in
             self?.viewModel.updateDraft()
         }
 
@@ -979,8 +977,7 @@ extension ComposeViewController {
                 guard let self = self else { return Promise() }
                 return self.viewModel.deleteAtt(attachment)
             }.ensure {
-                let realAttachments = userCachedStatus.realAttachments
-                self.viewModel.composerMessageHelper.updateAttachmentCount(isRealAttachment: realAttachments)
+                self.viewModel.composerMessageHelper.updateAttachmentCount(isRealAttachment: true)
                 seal.fulfill_()
             }.cauterize()
         }

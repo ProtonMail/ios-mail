@@ -254,8 +254,7 @@ extension MailboxCoordinator {
         let viewModel = SearchViewModel(
             user: viewModel.user,
             coreDataContextProvider: services.get(by: CoreDataService.self),
-            queueManager: services.get(by: QueueManager.self),
-            realAttachmentsFlagProvider: userCachedStatus
+            queueManager: services.get(by: QueueManager.self)
         )
         let viewController = SearchViewController(viewModel: viewModel)
         viewModel.uiDelegate = viewController
