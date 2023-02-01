@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Masonry
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
