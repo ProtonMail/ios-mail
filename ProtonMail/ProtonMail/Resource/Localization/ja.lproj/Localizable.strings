@@ -356,7 +356,7 @@
 "Cancel Check" = "チェックをキャンセル";
 
 /* Title */
-"Cancelling" = "キャンセル中";
+"Cancelling" = "Canceling";
 
 /* Warning message */
 "Cannot empty folder right now." = "現在、フォルダーを空にできません。";
@@ -369,7 +369,7 @@
 "Change account password" = "アカウントパスワードの変更";
 
 /* Title */
-"Change default address to…" = "既定のアドレスを…に変更";
+"Change default address to…" = "既定のアドレスを以下に変更…";
 
 /* settings general section title */
 "Change mailbox password" = "メールボックスのパスワードを変更";
@@ -682,6 +682,9 @@
 /* Title for the alert to disable content search. */
 "Downloaded messages will be deleted" = "ダウンロード済みのメッセージは削除されます";
 
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "%2$d/%1$d のアイテムをダウンロードしています";
+
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "メタデータをダウンロードしています...";
 
@@ -945,6 +948,9 @@
 /* human check warning title */
 "Human Check Warning" = "人間による操作であることの確認";
 
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "私は Proton Mail を使用しており、あなたに気に入ってもらえると思いました。これはプライバシーを保護できる安全なメールサービスです。このリンクを使ってサインアップすると 1 か月間、プレミアム機能を無料で使うことができます:";
+
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "警告を無視して続行";
 
@@ -1014,6 +1020,9 @@
 
 /* Error message */
 "Invalid username!" = "無効なユーザー名です!";
+
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "友人を Proton に招待し、\n 最大 $90 のクレジットを受けとりましょう！";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "連絡先を Proton Mail に招待することで、エンドツーエンド暗号化をシームレスに利用でき、メッセージを送信する際にパスワード保護を追加できます。";
@@ -1171,6 +1180,12 @@
 
 /* Text for the search info banner when indexing is ongoing. */
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "内容の検索を使用するために、メッセージをダウンロード中です。一部の結果は表示されない場合があります。%1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "過去のメッセージ ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ 以前のメッセージは検索されません。その内容を検索するには、このデバイスのストレージ容量を空けてください。";
 
 /* default vcard types */
 "Mobile" = "携帯電話";
@@ -1362,7 +1377,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store が購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、iTunes アカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 App Store のサーバー上での決済の検証と確認のためのデータのみ含まれます。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Proton Mail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "親フォルダー";
@@ -1426,6 +1441,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "接続して再試行してください";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "続行するには、インターネットに接続してください。";
 
 /* error message */
 "Please input a valid email address." = "有効なメールアドレスを入力してください。";
@@ -1542,7 +1560,7 @@
 "Remove password" = "パスワードを削除";
 
 /* The button to enable label list reorder */
-"Reorder" = "再整理";
+"Reorder" = "並べ替え";
 
 /* textview title */
 "Repeat password" = "パスワードを再度入力";
@@ -1570,10 +1588,10 @@
 "Request link confirmation" = "リンク先を開くときに確認する";
 
 /* The title of the reset button in toolbar customization view. */
-"Reset to default" = "初期値に戻す";
+"Reset to default" = "既定値にリセット";
 
 /* The title of the alert after tapping reset in toolbar customization view. */
-"Reset to default?" = "初期値に戻しますか?";
+"Reset to default?" = "既定値にリセットしますか？";
 
 /* Title */
 "Resetting message cache…" = "メッセージキャッシュをリセットしています...";
@@ -1622,6 +1640,9 @@
 
 /* The link in local storage downloaded messages. */
 "See details" = "詳細を表示";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "状況を確認する。";
 
 /* section title */
 "Select colour" = "色を選択";
@@ -1855,6 +1876,9 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "2 つのパスワードが一致しません";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "ツールバーのアクションが既定値にリセットされます";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Proton Mail を閉じると、ダウンロードは停止します。";
@@ -2167,8 +2191,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "オフラインです";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "ツールバーのアクションを変更できます";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "会話モードは設定からいつでもオフにできます。";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "このバーのアクションを変更できます";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "メッセージの送信を予約できます";
@@ -2226,6 +2256,9 @@
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "あなたの国の政府が、Proton への接続をブロックしている可能性があります。Proton にアクセスするには %1$@ (または他社のVPN) もしくは %2$@ を使用してください。";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "メールの外部画像が既定で読み込まれるようになりました。送信者は、あなたがメールを開いたかどうか、いつ、どこで開いたかを知ることはできません。\n設定 → アカウント設定 → プライバシーで、この動作を変更できます。";
 
 /* Title of user feedback view */
 "Your feedback" = "あなたのご意見";

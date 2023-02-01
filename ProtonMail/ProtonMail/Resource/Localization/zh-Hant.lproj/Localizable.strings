@@ -356,7 +356,7 @@
 "Cancel Check" = "取消檢查";
 
 /* Title */
-"Cancelling" = "正在取消";
+"Cancelling" = "Canceling";
 
 /* Warning message */
 "Cannot empty folder right now." = "目前無法清空資料夾。";
@@ -951,6 +951,9 @@
 /* human check warning title */
 "Human Check Warning" = "真人驗證警告";
 
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "我正在用 Proton Mail ，我覺得您也會喜歡它。他是一個主打安全性的電郵服務，可以保護您的隱私權。用我的連結註冊的話還可以免費獲得一個月的加值帳號哦：";
+
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "若您失去了 WiFi 連線，下載將會透過行動數據來繼續。";
 
@@ -1389,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "如果您同意附上AppStore 在購買時提供給應用程序的技術數據，我們的客戶支援小組將嘗試手動啟用您的服務方案。此資料不包括有關您的 iTunes 帳戶、Apple ID、已連結的信用卡或任何其他使用者資訊的詳細資料。技術數據僅協助我們檢查和驗證購買交易是否已在 AppStore 的伺服器上完成。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "我們的系統已將此郵件認定為釣魚郵件。請檢查這是否正當郵件";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "上層資料夾";

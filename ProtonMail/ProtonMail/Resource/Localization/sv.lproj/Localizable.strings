@@ -401,7 +401,7 @@
 "Cancel Check" = "Avbryt kontroll";
 
 /* Title */
-"Cancelling" = "Avbryter";
+"Cancelling" = "Canceling";
 
 /* Warning message */
 "Cannot empty folder right now." = "Kan inte tömma mapp just nu.";
@@ -664,6 +664,9 @@
 
 /* Action */
 "Discard changes" = "Ignorera ändringar";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Kastad";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Avfärda tangentbord";
@@ -1437,7 +1440,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var uppfylld på Appstores servrar.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Överordnad mapp";

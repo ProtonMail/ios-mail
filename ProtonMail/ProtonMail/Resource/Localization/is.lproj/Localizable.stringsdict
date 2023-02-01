@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Þetta %d skilaboð verður fært í Drög og dagskrá þess fjarlægð.</string>
+			<string>Þetta %d skilaboð verður fært í Drög og áætlun þess fjarlægð.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Þessi %d skilaboð verður færð í Drög og áætlun þeirra fjarlægð.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

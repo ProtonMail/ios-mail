@@ -4,6 +4,9 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Deg' EE, d MMM, yyyy 'ɣef' %@";
 
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ seg %2$@";
+
 /* undo send seconds options, e.g. 5 seconds */
 "%d seconds" = "%d n tsinin";
 
@@ -294,7 +297,7 @@
 "Cancel Check" = "Sesfex Asenqed";
 
 /* Title */
-"Cancelling" = "Asefsex";
+"Cancelling" = "Canceling";
 
 /* Warning message */
 "Cannot empty folder right now." = "D awezɣi ad yettwasilem ukaram akka tura.";
@@ -455,6 +458,9 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "Azemz:%@";
 
+/* days */
+"days" = "ussan";
+
 /* error title */
 "Decryption error" = "Tuccḍa n uzmak";
 
@@ -557,6 +563,9 @@
 
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Ẓreg avaṭar";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Ẓreg anermis";
 
 /* The title of edit folder page */
 "Edit folder" = "Ẓreg akaram";
@@ -751,6 +760,9 @@
 /* Title */
 "Hide details" = "Ffer ifutas";
 
+/* hours */
+"hours" = "isragen";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Amek ara tgelmeḍ tarmit-inek•inem akked Proton Mail amaynut?";
 
@@ -856,11 +868,23 @@
    The title of learn more link */
 "Learn more" = "Issin ugar";
 
+/* The title of learn more link */
+"Learn more." = "Issin ugar.";
+
 /* settings swipe actions section title */
 "Left to Right" = "Seg uzelmad s ayeffus";
 
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "ddaw n 1 n tesdat";
+
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Tewwḍeḍ tilist";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Aseɣwen yettwanɣel.";
+
+/* Button inside the banner */
+"Load anyway" = "Sali-d akken ibɣu yili";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Sali tugniwin tusliɣin";
@@ -872,8 +896,14 @@
 /* No comment provided by engineer. */
 "Loading…" = "Asali…";
 
+/* The title of local storage in settings */
+"Local storage" = "Akalas adigan";
+
 /* cell title in device settings */
 "Local storage limit" = "Tilist n weḥraz adigan";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "talast n tkatut tadigant.";
 
 /* menu title */
 "Lock The App" = "Sekkeṛ asnas";
@@ -915,6 +945,9 @@
 /* menu title */
 "Menu" = "Umuɣ";
 
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Izen";
+
 /* No comment provided by engineer. */
 "Message actions" = "Tigawin n yizen";
 
@@ -938,6 +971,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "Inixfan n yizen";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Azray n yiznan";
 
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Izen yettwasnekzen ar ar iḍumman";
@@ -1117,7 +1153,7 @@
 "Other" = "Wayeḍ";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Anagraw-nneɣ yecreḍ izen-agi am uneɛruḍ n ukellex. Ttxil-k m senqed belli izen-agi iṣeḥḥa";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Akaram amaraw";
@@ -1324,6 +1360,9 @@
 /* Text for resume button */
 "Resume" = "Kemmel";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "kemmel s ufus.";
+
 /* Action */
 "Retry" = "Ɛref̣ tikelt-nniḍen";
 
@@ -1378,6 +1417,9 @@
 /* Alert title */
 "Sending in progress" = "Tuzna tetteddu";
 
+/* Description */
+"Sending Message" = "Tuzna n yizen";
+
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Tuzna n yizen…";
 
@@ -1389,6 +1431,12 @@
 
 /* menu title */
 "Sent" = "Yettwazen";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Yettwazen s Proton Mail s uwgelhen ilem n unekcum";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Yettwazen s Proton Mail s uwgelhen ilem n unekcum i usenqed n uɣerwaḍ";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Tuzneḍ-t s yiman-ik s uwgelhen seg yixef ɣer yixef";
@@ -1423,6 +1471,9 @@
 /* menu title */
 "Settings" = "Iɣewwaren";
 
+/* The title of the share button in referral share view. */
+"Share" = "Bḍu";
+
 /* action */
 "Share contact" = "Bḍu Anermis";
 
@@ -1435,6 +1486,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Ffeɣ";
+
+/* Action */
+"Sign Out" = "Ffeɣ";
 
 /* Title in signature settings */
 "Signature" = "Azmul";
@@ -1478,8 +1532,17 @@
 /* Alert title */
 "Storage full" = "Aḥraz ummud";
 
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Talast n ukalas";
+
 /* Storage warning */
 "Storage quota exceeded" = "Amur n usekles iɛedda";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Akalas yettwaseqdec";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Akalas yettwaseqdec: ";
 
 /* Title */
 "Storage Warning" = "Alɣu n uḥraz";
@@ -1530,6 +1593,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Sens kra n wakud aseɣẓan antivirus-inek/m neɣ kkes-it.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Tiwtilin n useqdec &";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tanemmirt ɣef tuzna n ubug. Nerna-t ar unagraw-nneɣ n uḍfaṛ n ibugen.";
 
@@ -1554,6 +1620,9 @@
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Awal uffir amaynut ilaq ad yesɛu ma drus 8 n yisekkilen";
 
+/* update password error */
+"The password is wrong." = "Awal uffir mačči d ameɣtu.";
+
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Awal uffir ilaq ad yili gar 8 ar 21 n yisekkilen";
 
@@ -1568,6 +1637,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "Tasarut n tuzna ur d tameɣtut";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Akud n tuzna yesra ma drus 5 n tesdatin sya d asawen.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Tilist n tiddi n ufaylu yeddan d 25 MB.";
@@ -1623,6 +1695,9 @@
 /* The subtitle of empty inbox */
 "Time to relax" = "D lawan n usgunfu";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Tanzagt";
+
 /* contacts talbe cell Title title */
 "Title" = "Azwel";
 
@@ -1630,8 +1705,29 @@
    Title */
 "To" = "I";
 
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Ass-a, %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Azekka";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Azekka ɣef 08:%02d n tsebḥit";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Azekka, %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Aṭas n yimaylen i yettraǧun ad ttwaznen. Ttxil raǧu almi yettwazen yimayl-nniḍen akken ad tesɣiwseḍ wa.";
+
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Tigawin n ufeggag n yifecka (fren almi d 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Ḍfer arazen-ik·im";
 
 /* mail location desc
    menu title */
@@ -1664,6 +1760,9 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "Ur izmir ara ad yesleḍ asentel n tririt:\n%@";
 
+/* error when sending the message */
+"Unable to send the email" = "Ur izmir ara ad yazen imayl";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Iɣerwaḍen ur ttwaskanen ara";
 
@@ -1678,6 +1777,9 @@
 
 /* Error */
 "Unknown Error" = "Tuccḍa tarussint";
+
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "War talast";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Tukksa n usekkeṛ tettusra";
@@ -1817,6 +1919,9 @@
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "Teskecmeḍ ma drus yiwen n uɣerwaḍ arussin. Ma ulac uɣilif senqed iɣerwaḍen-ik•im.";
 
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Ur tesɛid ara iznan.";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Ɣur-k ibeddilen ur nettwasekles ara. Tebɣiḍ ad ten-teskelseḍ?";
 
@@ -1835,6 +1940,9 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Aql-ak·akem tettedduḍ ad tekkseḍ izen ideg ulac tuɣalin ɣer deffir. Tebɣiḍ?";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "Tettummsetneḍ seg yimeḍfaren n yimayl";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ibeddilen-ik•im ttwasfesxen";
 
@@ -1847,8 +1955,14 @@
 /* The section title of folder manager table */
 "Your folders" = "Ikaramen-ik•im";
 
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Aseɣwen-ik·im n tnubga";
+
 /* The section title of label manager table */
 "Your labels" = "Tibzimin-ik•im";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Iznan-ik·im mazal ad d-ttalin...";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tiɣimit-inek tfuk acku ulac-ik.kem taswiɛt aya neɣ ahat tettwafsex. Ttxil-k.m qqen tikelt-nniḍen.";

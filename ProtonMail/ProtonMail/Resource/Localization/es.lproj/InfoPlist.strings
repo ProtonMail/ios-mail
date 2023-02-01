@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Requerido para adjuntar imágenes al correo electrónico.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Se utiliza para acceder a las direcciones de correo de los contactos guardados en el dispositivo, de modo que pueden ser usadas al redactar un mensaje o al cargar manualmente los contactos del dispositivo en tu cuenta. La información de los contactos no se sube a nuestros servidores sin una acción explícita para hacerlo.";
+"NSContactsUsageDescription" = "Se utiliza para acceder a las direcciones de correo electrónico de los contactos guardados en el dispositivo, de modo que pueden ser usadas al redactar un mensaje o al cargar manualmente los contactos del dispositivo en tu cuenta. La información de los contactos no se carga a nuestros servidores sin una acción explícita para hacerlo.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Te permite desbloquear tu aplicación de forma rápida y segura.";
