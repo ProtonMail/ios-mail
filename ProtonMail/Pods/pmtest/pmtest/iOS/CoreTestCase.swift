@@ -1,7 +1,7 @@
 //
-//  StringUtils.swift
+//  CoreTestCase.swift
 //
-//  ProtonMail - Created on 09.09.20.
+//  ProtonMail - Created on 08.06.21.
 //
 //  The MIT License
 //
@@ -25,37 +25,26 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+import XCTest
 
-public struct StringUtils {
+open class CoreTestCase: XCTestCase, ElementsProtocol {
+    lazy var testRecorder = XCUITestCaseRecorder(testName: getTestMethodName())
 
-    public static func randomEmailString(length: Int = 5) -> String {
-        let allowedChars = "abcdefghijklmnopqrstuuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&*+-=?^`{|}~"
-        return generateString(allowedChars, length)
+    override open func setUp() {
+        super.setUp()
+        testRecorder.resumeRecording()
     }
 
-    public static func randomAlphanumericString(length: Int = 10) -> String {
-        let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        return generateString(allowedChars, length)
+    override open func setUpWithError() throws {
+        try super.setUpWithError()
     }
 
-    private static func generateString(_ allowedChars: String, _ length: Int) -> String {
-        let allowedCharsCount = UInt32(allowedChars.count)
-        var randomString = ""
-
-        for _ in 0..<length {
-            let randomNum = Int(arc4random_uniform(allowedCharsCount))
-            let randomIndex = allowedChars.index(allowedChars.startIndex, offsetBy: randomNum)
-            let newCharacter = allowedChars[randomIndex]
-            randomString += String(newCharacter)
+    override open func tearDownWithError() throws {
+        let attachment = testRecorder.generateGifAttachment()
+        if attachment != nil {
+            attachment!.lifetime = .keepAlways
+            self.add(attachment!)
         }
-        return randomString
-    }
-}
-
-extension String {
-
-    func replaceSpaces() -> String {
-        return self.replacingOccurrences(of: " ", with: "_")
+        try super.tearDownWithError()
     }
 }

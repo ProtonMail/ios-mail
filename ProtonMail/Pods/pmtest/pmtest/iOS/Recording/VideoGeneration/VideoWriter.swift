@@ -63,7 +63,7 @@ final class VideoWriter {
         pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: videoWriterInput,
                                                                   sourcePixelBufferAttributes: attributes)
     }
-    
+
     // MARK: - Public
 
     func start() -> Bool {

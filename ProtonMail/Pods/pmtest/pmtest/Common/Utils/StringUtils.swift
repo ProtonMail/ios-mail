@@ -1,11 +1,11 @@
 //
-//  Condition.swift
+//  StringUtils.swift
 //
-//  ProtonMail - Created on 10.05.21.
+//  ProtonMail - Created on 09.09.20.
 //
 //  The MIT License
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2020 Proton Technologies AG
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,27 +25,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-/**
- * Predicates that are used by Wait functions.
- */
-internal struct Predicate {
+import Foundation
 
-    static let enabled = NSPredicate(format: "isEnabled == true")
-    static let disabled = NSPredicate(format: "isEnabled == false")
-    static let hittable = NSPredicate(format: "hittable == true")
-    static let doesNotExist = NSPredicate(format: "exists == false")
-    static let exists = NSPredicate(format: "exists == true")
-    static let hasKeyboardFocus = NSPredicate(format: "hasKeyboardFocus == true")
+public struct StringUtils {
 
-    static func labelEquals(_ label: String) -> NSPredicate {
-       return NSPredicate(format: "label == '\(label)'")
+    public static func randomEmailString(length: Int = 5) -> String {
+        let allowedChars = "abcdefghijklmnopqrstuuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&*+-=?^`{|}~"
+        return randomString(allowedChars, length: length)
     }
 
-    static func titleEquals(_ title: String) -> NSPredicate {
-       return NSPredicate(format: "title == '\(title)'")
+    public static func randomAlphanumericString(length: Int = 10) -> String {
+        let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return  randomString(allowedChars, length: length)
     }
 
-    static func valueEquals(_ value: String) -> NSPredicate {
-       return NSPredicate(format: "value == '\(value)'")
+    private static func randomString(_ allowedChars: String, length: Int) -> String {
+        return String((0..<length).map { _ in allowedChars.randomElement()! })
+    }
+}
+
+extension String {
+
+    func replaceSpaces() -> String {
+        return self.replacingOccurrences(of: " ", with: "_")
     }
 }

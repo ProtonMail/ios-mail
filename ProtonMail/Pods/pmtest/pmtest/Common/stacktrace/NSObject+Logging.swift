@@ -1,11 +1,8 @@
 //
-//  CoreTestCase.swift
-//
-//  ProtonMail - Created on 08.06.21.
+//  Created by Georgiy Malyukov on 26.05.2018.
+//  Copyright © 2022 Georgiy Malyukov. All rights reserved.
 //
 //  The MIT License
-//
-//  Copyright (c) 2020 Proton Technologies AG
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +22,27 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import XCTest
+import Foundation
 
-open class CoreTestCase: XCTestCase, ElementsProtocol {
-    lazy var testRecorder = XCUITestCaseRecorder(testName: getTestMethodName())
+extension NSObject {
+
+    var fullTypename: String {
+        NSStringFromClass(type(of: self))
+    }
+
+    var shortTypename: String {
+        fullTypename.replacingOccurrences(of: "^[^\\.]+\\.", with: "", options: .regularExpression, range: nil)
+    }
+
+    func d(_ string: String) {
+        let dt = Date().description
+
+        for symbol in Thread.callStackSymbols[1...] {
+            if let parsed = CallStackParser.parse(stackSymbol: symbol) {
+                print("\(dt) [\(parsed.0)] \(parsed.1) \(string)")
+                return
+            }
+        }
+        print("\(dt) [\(shortTypename)] \(string)")
+    }
 }
