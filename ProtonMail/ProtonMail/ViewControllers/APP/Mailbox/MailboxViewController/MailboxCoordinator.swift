@@ -533,6 +533,7 @@ extension MailboxCoordinator {
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
             labelID: viewModel.labelID,
             user: viewModel.user,
+            userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID in
                 self?.editScheduleMsg(messageID: msgID)
@@ -550,6 +551,7 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             targetMessageID: targetID,
+            userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID in
                 self?.editScheduleMsg(messageID: msgID)

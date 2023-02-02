@@ -20,6 +20,7 @@ import Foundation
 enum SpotlightableFeatureKey: String, CaseIterable {
     case scheduledSend
     case toolbarCustomization
+    case messageSwipeNavigation
 }
 
 // sourcery: mock

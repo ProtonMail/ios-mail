@@ -20,21 +20,26 @@ import Foundation
 import LifetimeTracker
 
 class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>: LifetimeTrackable {
+    enum SpotlightPosition {
+        case left, right
+    }
+
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
-    let viewMode: ViewMode
+    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     let initialID: IDType
     let labelID: LabelID
     let user: UserManager
+    let viewMode: ViewMode
+    let goToDraft: ((MessageID) -> Void)?
+    var fetchedResultsController: NSFetchedResultsController<FetchResultType>?
+    var messageService: MessageDataService { user.messageService }
+    private let isUnread: Bool
     /// For conversation mode, which message in this conversation should display
     private var targetMessageID: MessageID?
-    let goToDraft: ((MessageID) -> Void)?
-    private let isUnread: Bool
-    var messageService: MessageDataService { user.messageService }
-    var fetchedResultsController: NSFetchedResultsController<FetchResultType>?
-    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private let userIntroduction: UserIntroductionProgressProvider
 
     init(
         viewMode: ViewMode,
@@ -43,17 +48,19 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         labelID: LabelID,
         user: UserManager,
         targetMessageID: MessageID?,
+        userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         goToDraft: @escaping ((MessageID) -> Void)
     ) {
-        self.labelID = labelID
-        self.isUnread = isUnread
-        self.user = user
-        self.initialID = initialID
-        self.viewMode = viewMode
-        self.targetMessageID = targetMessageID
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.goToDraft = goToDraft
+        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.initialID = initialID
+        self.isUnread = isUnread
+        self.labelID = labelID
+        self.targetMessageID = targetMessageID
+        self.user = user
+        self.userIntroduction = userIntroduction
+        self.viewMode = viewMode
 
         self.fetchedResultsController = prepareFetchedResultsController()
         do {
@@ -86,6 +93,24 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         defer { targetMessageID = nil }
         return targetMessageID
     }
+
+    // MARK: - Spotlight
+    func hasUserSeenSpotlight() -> Bool {
+        !userIntroduction.shouldShowSpotlight(for: .messageSwipeNavigation, toUserWith: user.userID)
+    }
+
+    func userHasSeenSpotlight() {
+        userIntroduction.markSpotlight(for: .messageSwipeNavigation, asSeen: true, byUserWith: user.userID)
+    }
+
+    func spotlightPosition() -> SpotlightPosition? {
+        if item(for: initialID, offset: 1).0 != nil {
+            return .right
+        } else if item(for: initialID, offset: -1).0 != nil {
+            return .left
+        }
+        return nil
+    }
 }
 
 final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Message> {
@@ -95,6 +120,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         isUnread: Bool,
         labelID: LabelID,
         user: UserManager,
+        userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         goToDraft: @escaping ((MessageID) -> Void)
     ) {
@@ -105,6 +131,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
             labelID: labelID,
             user: user,
             targetMessageID: nil,
+            userIntroduction: userIntroduction,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: goToDraft
         )
@@ -126,6 +153,7 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
         labelID: LabelID,
         user: UserManager,
         targetMessageID: MessageID?,
+        userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         goToDraft: @escaping ((MessageID) -> Void)
     ) {
@@ -136,6 +164,7 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
             labelID: labelID,
             user: user,
             targetMessageID: targetMessageID,
+            userIntroduction: userIntroduction,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: goToDraft
         )
