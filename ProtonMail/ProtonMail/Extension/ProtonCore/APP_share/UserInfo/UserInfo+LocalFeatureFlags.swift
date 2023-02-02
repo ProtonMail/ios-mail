@@ -56,6 +56,10 @@ extension UserInfo {
 
     /// Swipe to show previous / next conversation or messages
     static var isConversationSwipeEnabled: Bool {
-        false
+        #if DEBUG_ENTERPRISE
+        return true
+        #else
+        return false
+        #endif
     }
 }
