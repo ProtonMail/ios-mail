@@ -1,7 +1,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ConversationMessageView: UIView {
+class ConversationMessageView: BaseMessageView {
 
     var tapAction: (() -> Void)?
 
@@ -16,27 +16,18 @@ class ConversationMessageView: UIView {
     let contentStackView = UIStackView.stackView(axis: .horizontal, alignment: .center, spacing: 4)
     let initialsContainer = SubviewsFactory.initialsContainer
     let initialsLabel = UILabel.initialsLabel
-    let initialsIcon = SubviewsFactory.draftIconImageView
+    let initialsIcon = SubviewsFactory.draftImageView
     let initialsView = UIView()
     let scheduledIcon = SubviewsFactory.scheduledIconImageView
 
-    let replyImageView = SubviewsFactory.replyImageView
-    let replyAllImageView = SubviewsFactory.replyAllImageView
-    let forwardImageView = SubviewsFactory.forwardImageView
-
     let senderLabel = UILabel()
-    let attachmentImageView = SubviewsFactory.attachmentImageView
-    let starImageView = SubviewsFactory.starImageView
 
     let sentImageView = SubviewsFactory.sentImageView
     let originImageView = SubviewsFactory.originImageView
 
-    let timeLabel = UILabel()
-
     let spacer = UIView()
 
     let expirationView = SubviewsFactory.expirationView
-    let tagsView = SingleRowTagsView()
 
     init() {
         super.init(frame: .zero)
@@ -161,105 +152,47 @@ class ConversationMessageView: UIView {
     required init?(coder: NSCoder) {
         nil
     }
-
 }
 
-private enum SubviewsFactory {
+private extension ConversationMessageView {
+    class SubviewsFactory: BaseMessageView.SubviewsFactory {
+        static var originImageView: UIImageView {
+            let imageView = UIImageView(frame: .zero)
+            imageView.contentMode = .scaleAspectFit
+            imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+            return imageView
+        }
 
-    static var attachmentImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.paperClip
-        imageView.tintColor = ColorProvider.IconWeak
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
-    }
+        static var container: UIView {
+            let view = UIView()
+            view.backgroundColor = ColorProvider.BackgroundNorm
+            view.layer.cornerRadius = 6
+            view.isUserInteractionEnabled = false
+            return view
+        }
 
-    static var starImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.starFilled
-        imageView.tintColor = ColorProvider.NotificationWarning
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
-    }
+        static var initialsContainer: UIView {
+            let view = UIView()
+            view.backgroundColor = ColorProvider.InteractionWeak
+            view.layer.cornerRadius = 8
+            view.isUserInteractionEnabled = false
+            return view
+        }
 
-    static var originImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
-    }
+        static var expirationView: TagIconView {
+            let tagView = TagIconView()
+            tagView.imageView.image = IconProvider.hourglass
+            tagView.imageView.tintColor = ColorProvider.IconNorm
+            tagView.backgroundColor = ColorProvider.InteractionWeak
+            return tagView
+        }
 
-    static var draftIconImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = IconProvider.pencil
-        imageView.tintColor = ColorProvider.IconNorm
-        imageView.contentMode = .scaleAspectFit
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
-    }
+        static var sentImageView: UIImageView {
+            .make(icon: \.paperPlane, tintColor: \.IconWeak)
+        }
 
-    static var container: UIView {
-        let view = UIView()
-        view.backgroundColor = ColorProvider.BackgroundNorm
-        view.layer.cornerRadius = 6
-        view.isUserInteractionEnabled = false
-        return view
-    }
-
-    static var initialsContainer: UIView {
-        let view = UIView()
-        view.backgroundColor = ColorProvider.InteractionWeak
-        view.layer.cornerRadius = 8
-        view.isUserInteractionEnabled = false
-        return view
-    }
-
-    static var expirationView: TagIconView {
-        let tagView = TagIconView()
-        tagView.imageView.image = IconProvider.hourglass
-        tagView.imageView.tintColor = ColorProvider.IconNorm
-        tagView.backgroundColor = ColorProvider.InteractionWeak
-        return tagView
-    }
-
-    static var forwardImageView: UIImageView {
-        imageView(IconProvider.arrowRight)
-    }
-
-    static var replyImageView: UIImageView {
-        imageView(IconProvider.arrowUpAndLeft)
-    }
-
-    static var replyAllImageView: UIImageView {
-        imageView(IconProvider.arrowsUpAndLeft)
-    }
-
-    static var sentImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        imageView.image = IconProvider.paperPlane
-        imageView.tintColor = ColorProvider.IconWeak
-        return imageView
-    }
-
-    private static func imageView(_ image: UIImage) -> UIImageView {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = image
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        imageView.tintColor = ColorProvider.IconNorm
-        return imageView
-    }
-
-    static var scheduledIconImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = IconProvider.clock
-        imageView.tintColor = ColorProvider.IconNorm
-        imageView.contentMode = .scaleAspectFit
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
+        static var scheduledIconImageView: UIImageView {
+            .make(icon: \.clock, tintColor: \.IconNorm)
+        }
     }
 }
