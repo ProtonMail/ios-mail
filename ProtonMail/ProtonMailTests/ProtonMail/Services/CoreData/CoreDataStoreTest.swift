@@ -26,18 +26,26 @@ import Groot
 import XCTest
 
 class CoreDataStoreTest: XCTestCase {
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        //
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
         // Generate test data
-        //
         let oldModelUrl = Bundle.main.url(forResource: "ProtonMail.momd/ProtonMail", withExtension: "mom")!
         let oldManagedObjectModel = NSManagedObjectModel(contentsOf: oldModelUrl)
         XCTAssertNotNil(oldManagedObjectModel)
 
+        // Legacy value transformers
+        ValueTransformer.setValueTransformer(withName: "JsonStringTransformer") { value in
+            ValueTransformer(forName: .init("JsonArrayToStringTransformer"))!.transformedValue(value)
+        }
+
+        ValueTransformer.setValueTransformer(withName: "JsonToObjectTransformer") { value in
+            ValueTransformer(forName: .init("JsonDictionaryToStringTransformer"))!.transformedValue(value)
+        }
+
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: oldManagedObjectModel!)
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
-        _ = try? coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+        _ = try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         XCTAssertNotNil(managedObjectContext)
@@ -124,8 +132,9 @@ class CoreDataStoreTest: XCTestCase {
             return
         }
 
-        let managedObj = try? GRTJSONSerialization.object(withEntityName: "Message",
-                                                          fromJSONDictionary: out, in: managedObjectContext)
+        let managedObj = try GRTJSONSerialization.object(withEntityName: "Message",
+                                                         fromJSONDictionary: out,
+                                                         in: managedObjectContext)
         XCTAssertNotNil(managedObj)
     }
 

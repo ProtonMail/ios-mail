@@ -32,7 +32,7 @@ final class MessageEntityTests: XCTestCase {
         testContext = nil
     }
 
-    func testInitialization() {
+    func testInitialization() throws {
         let message = Message(context: testContext)
         let messageID = MessageID.generateLocalID().rawValue
 
@@ -45,7 +45,7 @@ final class MessageEntityTests: XCTestCase {
         message.header = "header-0987"
         message.numAttachments = NSNumber(value: 3)
         message.sender = """
-        {"Address":"sender@proton.me","Name":"test00"}
+        {"Address":"sender@proton.me","Name":"test00","IsProton": 1}
         """
         message.toList = """
         [{"Address":"to1@proton.me","Name":"testTO01"},{"Address":"to2@proton.me","Name":"testTO02"}]
@@ -82,8 +82,10 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(entity.conversationID, ConversationID("conversationID-0123"))
         XCTAssertEqual(entity.expirationTime, .distantPast)
         XCTAssertEqual(entity.numAttachments, 3)
-        XCTAssertEqual(entity.sender?.email, "sender@proton.me")
-        XCTAssertEqual(entity.sender?.name, "test00")
+        let sender = try entity.parseSender()
+        XCTAssertEqual(sender.address, "sender@proton.me")
+        XCTAssertEqual(sender.name, "test00")
+        XCTAssertTrue(sender.isFromProton)
         XCTAssertEqual(entity.size, 300)
         XCTAssertEqual(entity.spamScore, .dmarcFail)
         XCTAssertEqual(entity.time, .distantFuture)

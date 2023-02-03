@@ -162,7 +162,7 @@ extension ConversationEntity {
     }
 
     func parseSenders() throws -> [Sender] {
-        try Sender.makeFromConversation(sendersObject: self.senders)
+        try Sender.decodeListOfDictionaries(jsonString: senders)
     }
 }
 

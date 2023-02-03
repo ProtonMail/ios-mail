@@ -294,19 +294,6 @@ extension String {
         }
         return lists.joined(separator: ",")
     }
-
-    func toContact() -> ContactVO? {
-        var out: ContactVO?
-        let recipients: [String: String] = self.parseObject()
-
-        let name = recipients["Name"] ?? ""
-        let address = recipients["Address"] ?? ""
-
-        if !address.isEmpty {
-            out = ContactVO(name: name, email: address)
-        }
-        return out
-    }
 }
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any { // email name

@@ -263,7 +263,7 @@ extension MessageEntity {
         guard let rawSender = self.rawSender else {
             throw SenderError.senderStringIsNil
         }
-        return try Sender.makeFromMessage(senderObject: rawSender)
+        return try Sender.decodeDictionary(jsonString: rawSender)
     }
 
     // Although the time complexity of high order function is O(N)
@@ -312,23 +312,27 @@ extension MessageEntity {
     }
 
     func displaySender(_ replacingEmails: [String: EmailEntity]) -> String {
-        guard let sender = sender else {
-            assertionFailure("Sender with no name or address")
+        let sender: Sender
+
+        do {
+            sender = try parseSender()
+        } catch {
+            assertionFailure("\(error)")
             return ""
         }
 
-        guard let email = replacingEmails[sender.email] else {
-            return sender.name.isEmpty ? sender.email : sender.name
+        guard let email = replacingEmails[sender.address] else {
+            return sender.name.isEmpty ? sender.address : sender.name
         }
 
         if !email.contactName.isEmpty {
             return email.contactName
         } else if !email.name.isEmpty {
             return email.name
-        } else if let displayName = sender.displayName, !displayName.isEmpty {
-            return displayName
+        } else if !sender.name.isEmpty {
+            return sender.name
         } else {
-            return sender.email
+            return sender.address
         }
     }
 }

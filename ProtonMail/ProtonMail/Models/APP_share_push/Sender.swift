@@ -57,12 +57,12 @@ struct Sender: Codable {
 }
 
 extension Sender {
-    static func makeFromMessage(senderObject: String) throws -> Sender {
-        try JSONDecoder().decode(Sender.self, from: Data(senderObject.utf8))
+    static func decodeDictionary(jsonString: String) throws -> Sender {
+        try JSONDecoder().decode(Sender.self, from: Data(jsonString.utf8))
     }
 
-    static func makeFromConversation(sendersObject: String) throws -> [Sender] {
-        try JSONDecoder().decode([Sender].self, from: Data(sendersObject.utf8))
+    static func decodeListOfDictionaries(jsonString: String) throws -> [Sender] {
+        try JSONDecoder().decode([Sender].self, from: Data(jsonString.utf8))
     }
 }
 

@@ -800,10 +800,10 @@ extension ComposeViewModelImpl {
             let recipients = try JSONDecoder().decode([DecodableRecipient].self, from: jsonData)
 
             for recipient in recipients {
-                let group = recipient.group
+                let group = recipient.group ?? ""
                 let name = displayNameForRecipient(recipient)
 
-                if recipient.group.isEmpty {
+                if group.isEmpty {
                     // contact
                     out.append(ContactVO(name: name, email: recipient.address))
                 } else {
@@ -841,30 +841,14 @@ extension ComposeViewModelImpl {
         }
     }
 
-    func toContact(_ json: String) -> ContactVO? {
-        var out: ContactVO?
-        let recipients: [String: String] = self.parse(json)
-
-        let name = recipients["Name"] ?? ""
-        let address = recipients["Address"] ?? ""
-
-        if !address.isEmpty {
-            out = ContactVO(name: name, email: address)
-        }
-        return out
-    }
-
-    func parse (_ json: String) -> [String: String] {
-        if json.isEmpty {
-            return ["": ""]
-        }
+    private func toContact(_ json: String) -> ContactVO? {
         do {
-            let data: Data! = json.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: String]
-            return decoded ?? ["": ""]
+            let sender = try Sender.decodeDictionary(jsonString: json)
+            return ContactVO(name: sender.name, email: sender.address)
         } catch {
+            assertionFailure("\(error)")
+            return nil
         }
-        return ["": ""]
     }
 
     func htmlSignature() -> String {
@@ -918,7 +902,7 @@ extension ComposeViewModelImpl {
         }
 
         let address: String
-        let group: String
+        let group: String?
         let name: String?
     }
 }
