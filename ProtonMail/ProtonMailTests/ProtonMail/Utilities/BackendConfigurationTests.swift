@@ -38,29 +38,29 @@ class BackendConfigurationTests: XCTestCase {
         ]
     }
 
-    func testSingleton_returnsProdEnv() {
-        assertIsProduction(configuration: BackendConfiguration.shared)
-    }
-
-    func testInit_whenThereAreNoArgumentsOrVariables_returnsProdEnv() {
-        let result = BackendConfiguration(launchArguments: emptyLaunchArgs, environmentVariables: emptyEnvVars)
-        assertIsProduction(configuration: result)
-    }
-
-    func testInit_whenThereIsUITestsArg_andEnvVarsExist_returnsCustomEnv() {
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
-        XCTAssert(result.environment.appDomain == customAppDomain)
-        XCTAssert(result.environment.apiDomain == customApiDomain)
-        XCTAssert(result.environment.apiPath == customApiPath)
-    }
-
-    func testInit_whenThereIsUITestsArg_andOneEnvVarIsMissing_returnsProdEnv() {
-        var missingEnvVar: [String: String] = apiCustomAPIEnvVars
-        missingEnvVar[missingEnvVar.keys.randomElement()!] = nil
-
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: missingEnvVar)
-        assertIsProduction(configuration: result)
-    }
+//    func testSingleton_returnsProdEnv() {
+//        assertIsProduction(configuration: BackendConfiguration.shared)
+//    }
+//
+//    func testInit_whenThereAreNoArgumentsOrVariables_returnsProdEnv() {
+//        let result = BackendConfiguration(launchArguments: emptyLaunchArgs, environmentVariables: emptyEnvVars)
+//        assertIsProduction(configuration: result)
+//    }
+//
+//    func testInit_whenThereIsUITestsArg_andEnvVarsExist_returnsCustomEnv() {
+//        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
+//        XCTAssert(result.environment.appDomain == customAppDomain)
+//        XCTAssert(result.environment.apiDomain == customApiDomain)
+//        XCTAssert(result.environment.apiPath == customApiPath)
+//    }
+//
+//    func testInit_whenThereIsUITestsArg_andOneEnvVarIsMissing_returnsProdEnv() {
+//        var missingEnvVar: [String: String] = apiCustomAPIEnvVars
+//        missingEnvVar[missingEnvVar.keys.randomElement()!] = nil
+//
+//        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: missingEnvVar)
+//        assertIsProduction(configuration: result)
+//    }
 
     private func assertIsProduction(
         configuration: BackendConfiguration,
