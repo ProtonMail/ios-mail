@@ -25,26 +25,14 @@ import Foundation
 extension UsersManager {
 
     fileprivate struct TransType {
-        static let boolean          = "BoolTransformer"
-        static let date             = "DateTransformer"
-        static let number           = "NumberTransformer"
-        static let jsonString       = "JsonStringTransformer"
-        static let jsonObject       = "JsonToObjectTransformer"
-        static let anyJsonToString  = "AnyJsonToStringTransformer"
-        static let encodedData      = "EncodedDataTransformer"
+        static let date                     = "DateTransformer"
+        static let number                   = "NumberTransformer"
+        static let jsonArrayToString        = "JsonArrayToStringTransformer"
+        static let jsonDictionaryToString   = "JsonDictionaryToStringTransformer"
     }
 
     // MARK: - Private methods
     internal func setupValueTransforms() {
-        ValueTransformer.grt_setValueTransformer(withName: TransType.boolean) { (value) -> Any? in
-            if let bool = value as? NSString {
-                return bool.boolValue
-            } else if let bool = value as? Bool {
-                return bool
-            }
-            return nil
-        }
-
         ValueTransformer.grt_setValueTransformer(withName: TransType.date) { (value) -> Any? in
             if let timeString = value as? NSString {
                 let time = timeString.doubleValue as TimeInterval
@@ -71,7 +59,7 @@ extension UsersManager {
             return nil
         }
 
-        ValueTransformer.grt_setValueTransformer(withName: TransType.jsonString) { (value) -> Any? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.jsonArrayToString) { (value) -> Any? in
             do {
                 if let tag = value as? NSArray {
                     let bytes: Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
@@ -82,34 +70,9 @@ extension UsersManager {
             }
             return ""
         }
-
-        ValueTransformer.grt_setValueTransformer(withName: TransType.jsonObject) { (value) -> Any? in
-            do {
-                if let tag = value as? [String: String] {
-                    let bytes: Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
-                    let strJson: String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
-                    return strJson
-                }
-            } catch {
-            }
-            return ""
-        }
-
-        ValueTransformer.grt_setValueTransformer(withName: TransType.anyJsonToString) { (value) -> Any? in
-            if let tag = value as? [String: Any] {
-                return tag.toString()
-            } else {
-                return ""
-            }
-        }
-
-        ValueTransformer.grt_setValueTransformer(withName: TransType.encodedData) { (value) -> Any? in
-            if let tag = value as? String {
-                if let data: Data = Data(base64Encoded: tag, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                    return data
-                }
-            }
-            return nil
+        ValueTransformer.grt_setValueTransformer(withName: TransType.jsonDictionaryToString) { value -> Any? in
+            let dictionary = value as? [String: Any]
+            return dictionary?.toString() ?? ""
         }
     }
 }

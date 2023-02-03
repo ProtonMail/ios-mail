@@ -78,19 +78,18 @@ class NonExpandedHeaderViewController: UIViewController {
         let tags = viewModel.infoProvider.message.tagUIModels
         tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
         let contact = viewModel.infoProvider.checkedSenderContact
-        update(senderContact: contact)
+        update(senderEncryptionIconStatus: contact?.encryptionIconStatus)
     }
 
     func updateTrackerDetectionStatus() {
         customView.showTrackerDetectionStatus(viewModel.trackerDetectionStatus)
     }
 
-    func update(senderContact: ContactVO?) {
-        if let contact = senderContact {
-            let icon = contact.encryptionIconStatus?.icon
-            customView.lockImageView.image = icon
-            customView.lockImageView.tintColor = contact.encryptionIconStatus?.iconColor.color ?? .black
-            customView.lockContainer.isHidden = icon == nil
+    private func update(senderEncryptionIconStatus: EncryptionIconStatus?) {
+        if let senderEncryptionIconStatus = senderEncryptionIconStatus {
+            customView.lockImageView.image = senderEncryptionIconStatus.icon
+            customView.lockImageView.tintColor = senderEncryptionIconStatus.iconColor.color
+            customView.lockContainer.isHidden = false
         } else {
             customView.lockContainer.isHidden = true
         }

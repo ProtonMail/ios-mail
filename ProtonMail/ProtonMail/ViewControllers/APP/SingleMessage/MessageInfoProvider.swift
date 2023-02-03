@@ -159,12 +159,17 @@ final class MessageInfoProvider {
     }
 
     lazy var senderName: String = {
-        guard let senderInfo = message.sender else {
-            assert(false, "Sender with no name or address")
+        let sender: Sender
+
+        do {
+            sender = try message.parseSender()
+        } catch {
+            assertionFailure("\(error)")
             return ""
         }
-        guard let contactName = contactService.getName(of: senderInfo.email) else {
-            return senderInfo.name.isEmpty ? senderInfo.email : senderInfo.name
+
+        guard let contactName = contactService.getName(of: sender.address) else {
+            return sender.name.isEmpty ? sender.address : sender.name
         }
         return contactName
     }()
@@ -177,7 +182,15 @@ final class MessageInfoProvider {
 
     var initials: String { senderName.initials() }
 
-    var senderEmail: String { "\((message.sender?.email ?? ""))" }
+    var senderEmail: String {
+        do {
+            let sender = try message.parseSender()
+            return sender.address
+        } catch {
+            assertionFailure("\(error)")
+            return ""
+        }
+    }
 
     var time: String {
         if message.contains(location: .scheduled), let date = message.time {

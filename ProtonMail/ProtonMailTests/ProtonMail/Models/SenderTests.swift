@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import XCTest
 
 @testable import ProtonMail
@@ -30,7 +29,7 @@ class SenderTests: XCTestCase {
                                   isSimpleLogin: isSimpleLogin,
                                   shouldDisplaySenderImage: shouldDisplaySenderImage,
                                   bimiSelector: bimiRandomString)
-        let auth = try Sender.makeFromMessage(senderObject: jsonString)
+        let auth = try Sender.decodeDictionary(jsonString: jsonString)
         XCTAssertEqual(auth.isFromProton, isProton == 1)
         XCTAssertEqual(auth.isFromSimpleLogin, isSimpleLogin == 1)
         XCTAssertEqual(auth.shouldDislaySenderImage, shouldDisplaySenderImage == 1)
@@ -59,7 +58,7 @@ class SenderTests: XCTestCase {
                                   shouldDisplaySenderImage: shouldDisplaySenderImage1,
                                   bimiSelector: bimiRandomString1)
         let json = "[\(jsonString0),\(jsonString1)]"
-        let auth = try Sender.makeFromConversation(sendersObject: json)
+        let auth = try Sender.decodeListOfDictionaries(jsonString: json)
         XCTAssertEqual(auth.count, 2)
         XCTAssertEqual(auth[0].isFromProton, isProton0 == 1)
         XCTAssertEqual(auth[0].isFromSimpleLogin, isSimpleLogin0 == 1)
