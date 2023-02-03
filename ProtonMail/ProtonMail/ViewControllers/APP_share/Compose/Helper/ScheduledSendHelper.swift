@@ -83,31 +83,33 @@ extension ScheduledSendHelper {
         guard let tomorrow = self.current.tomorrow(at: 8, minute: 0) else {
             return nil
         }
-        return PMActionSheetPlainItem.init(
+        return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.tomorrow,
-            icon: nil) { [weak self] _ in
+            icon: nil,
+            handler: { [weak self] _ in
                 self?.delegate?.scheduledTimeIsSet(date: tomorrow)
                 self?.actionSheet?.dismiss(animated: true)
-            }
+            })
     }
-    
+
     private func setUpMondayAction() -> PMActionSheetPlainItem? {
         guard let next = self.current.next(.monday, hour: 8, minute: 0) else {
             return nil
         }
         return PMActionSheetPlainItem(
             title: next.formattedWith("EEEE").capitalized,
-            icon: nil ) { [weak self] _ in
+            icon: nil,
+            handler: { [weak self] _ in
                 self?.delegate?.scheduledTimeIsSet(date: next)
                 self?.actionSheet?.dismiss(animated: true)
-            }
+            })
     }
-    
+
     private func setUpCustomAction() -> PMActionSheetPlainItem {
-        let icon = IconProvider.chevronRight
         return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.select_date_and_time,
-            icon: nil) { [weak self] _ in
+            icon: nil,
+            handler: { [weak self] _ in
                 guard let self = self,
                       let viewController = self.viewController,
                       let parentView = viewController.navigationController?.view ?? viewController.view else { return }
@@ -116,7 +118,7 @@ extension ScheduledSendHelper {
                                           saveTitle: LocalString._general_schedule_send_action)
                 picker.present(on: parentView)
                 self.actionSheet?.dismiss(animated: true)
-            }
+            })
     }
 }
 
