@@ -102,7 +102,7 @@ struct BackendConfiguration {
         } else {
 
             // Production Environment
-            self.environment = ProductionEnvironment()
+            self.environment = AtlasEnvironment()
         }
     }
 }
