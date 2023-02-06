@@ -48,7 +48,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     internal let eventsService: EventsFetching
     private let pushService: PushNotificationServiceProtocol
     /// fetch controller
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
 
     private(set) var selectedIDs: Set<String> = Set()
