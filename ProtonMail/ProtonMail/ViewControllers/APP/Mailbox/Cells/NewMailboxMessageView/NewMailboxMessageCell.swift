@@ -26,15 +26,17 @@ import SwipyCell
 import UIKit
 
 protocol NewMailboxMessageCellDelegate: AnyObject {
-    func didSelectButtonStatusChange(id: String?)
-    func getExpirationDate(id: String) -> String?
+    func didSelectButtonStatusChange(cell: NewMailboxMessageCell)
 }
 
 class NewMailboxMessageCell: SwipyCell, AccessibleCell {
 
     weak var cellDelegate: NewMailboxMessageCellDelegate?
     private var shouldUpdateTime: Bool = false
-    var id: String?
+
+    var mailboxItem: MailboxItem?
+    var swipeActions: [SwipyCellDirection: MessageSwipeAction] = [:]
+
     private var workItem: DispatchWorkItem?
 
     let customView = NewMailboxMessageCellContentView()
@@ -50,6 +52,8 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         super.prepareForReuse()
 
         shouldUpdateTime = false
+        mailboxItem = nil
+        swipeActions.removeAll()
         workItem?.cancel()
         workItem = nil
 
@@ -82,8 +86,8 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
     private func getExpirationOffset() {
         let workItem = DispatchWorkItem { [weak self] in
             if self?.shouldUpdateTime == true,
-               let id = self?.id,
-               let expiration = self?.cellDelegate?.getExpirationDate(id: id) {
+               let mailboxItem = self?.mailboxItem,
+               let expiration = mailboxItem.expirationTime?.countExpirationTime(processInfo: userCachedStatus) {
                 let tag = self?.customView.messageContentView.tagsView.tagViews.compactMap({ $0 as? TagIconView })
                     .first(where: { $0.imageView.image == IconProvider.hourglass })
                 tag?.tagLabel.attributedText = expiration.apply(style: FontManager.OverlineRegularInteractionStrong)
@@ -117,7 +121,7 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
 
     @objc
     private func avatarTapped(_ sender: UIControl) {
-        cellDelegate?.didSelectButtonStatusChange(id: id)
+        cellDelegate?.didSelectButtonStatusChange(cell: self)
     }
 
     required init?(coder: NSCoder) {

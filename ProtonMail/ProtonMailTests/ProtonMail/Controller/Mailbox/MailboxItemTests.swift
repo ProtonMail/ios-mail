@@ -53,6 +53,20 @@ class MailboxItemTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testExpirationTime_message() {
+        let date = Date()
+        let entity = MessageEntity.make(expirationTime: date)
+        let sut = MailboxItem.message(entity)
+        XCTAssertEqual(sut.expirationTime, date)
+    }
+
+    func testExpirationTime_conversation() {
+        let date = Date()
+        let entity = ConversationEntity.make(expirationTime: date)
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.expirationTime, date)
+    }
+
     func testIsScheduledForSending_message() {
         let nonScheduledEntity = MessageEntity.make()
         let nonScheduledSUT = MailboxItem.message(nonScheduledEntity)

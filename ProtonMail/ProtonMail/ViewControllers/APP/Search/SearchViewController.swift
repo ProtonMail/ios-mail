@@ -751,7 +751,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
 
-        mailboxCell.id = message.messageID.rawValue
+        mailboxCell.mailboxItem = .message(message)
         mailboxCell.cellDelegate = self
         mailboxCell.generateCellAccessibilityIdentifiers(message.title)
         return mailboxCell
@@ -781,22 +781,14 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension SearchViewController: NewMailboxMessageCellDelegate {
-    func didSelectButtonStatusChange(id: String?) {
-        let tappedCell = tableView.visibleCells
-            .compactMap { $0 as? NewMailboxMessageCell }
-            .first(where: { $0.id == id })
-        guard let cell = tappedCell, let indexPath = tableView.indexPath(for: cell) else { return }
+    func didSelectButtonStatusChange(cell: NewMailboxMessageCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
 
         if !listEditing {
             self.enterListEditingMode(indexPath: indexPath)
         } else {
             tableView(self.tableView, didSelectRowAt: indexPath)
         }
-    }
-
-    func getExpirationDate(id: String) -> String? {
-        // todo
-        return nil
     }
 }
 
