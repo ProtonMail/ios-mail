@@ -348,7 +348,7 @@ extension ContactsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
+        return self.viewModel.sectionForSectionIndexTitle(title: title, at: index)
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {

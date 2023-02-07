@@ -985,11 +985,22 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             )
             let sendBuilder = MessageSendingRequestBuilder(dependencies: dependencies)
 
+            let fetchAndVerifyContacts = FetchAndVerifyContacts(user: userManager)
+            let fetchAndVerifyContactsParams = FetchAndVerifyContacts.Parameters(emailAddresses: emails)
+
             // build contacts if user setup key pinning
             var contacts = [PreContact]()
             firstly {
-                // fech addresses contact
-                userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails)
+                Promise<[PreContact]> { seal in
+                    fetchAndVerifyContacts.execute(params: fetchAndVerifyContactsParams) { result in
+                        switch result {
+                        case .success(let preContacts):
+                            seal.fulfill(preContacts)
+                        case .failure(let error):
+                            seal.reject(error)
+                        }
+                    }
+                }
             }.then { cs -> Guarantee<[Result<KeysResponse>]> in
                 // Debug info
                 status.insert(SendStatus.fetchEmailOK)
