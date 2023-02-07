@@ -142,7 +142,6 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Arhiva";
-"Archive (verb)" = "Arhiva";
 
 /* Push notification action archive */
 "Archive (verb)" = "Arhiva";
@@ -277,9 +276,6 @@
 
 /* Action */
 "Cancel Check" = "Poništi provjeru";
-
-/* Title */
-"Cancelling" = "Canceling";
 
 /* settings general section title */
 "Change account password" = "Promijeni lozinku računa";
@@ -1073,9 +1069,6 @@
 
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Roditeljska mapa";

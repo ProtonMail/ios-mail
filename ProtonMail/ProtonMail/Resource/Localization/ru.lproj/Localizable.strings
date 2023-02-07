@@ -356,8 +356,7 @@
 "Cancel Check" = "Отменить проверку";
 
 /* Title */
-"Cancelling" = "Canceling";
-
+"Canceling" = "Отмена";
 /* Warning message */
 "Cannot empty folder right now." = "В данный момент невозможно очистить папку.";
 
@@ -1392,7 +1391,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша поддержка клиентов попытается активировать ваш тариф вручную, если вы согласитесь вложить технические данные, которые App Store предоставил приложению в момент покупки. Эти данные не содержат сведений о вашем аккаунте iTunes, Apple ID, привязанных платежных картах или любой другой пользовательской информации. Технические данные только помогают нам проверить и удостовериться в том, что транзакция была совершена на серверах App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно подлинным.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Родительская папка";

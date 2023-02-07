@@ -214,6 +214,12 @@
 /* settings general section title */
 "Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";
 
+/* settings general section title */
+"Auto-load remote content" = "Sali-d agbur anmeggag s wudem awurman";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Tigawin yellan";
+
 /* Example feedback */
 "Awful" = "Yessewḥac";
 
@@ -243,6 +249,9 @@
 
 /* Title */
 "Bug Description" = "Aglam n ubug";
+
+/* Title */
+"Bug Report Received" = "Tuzna n ubug tettwarmes";
 
 /* Call the contact (button title text) */
 "Call contact" = "Siwel i unermis";
@@ -297,13 +306,20 @@
 "Cancel Check" = "Sesfex Asenqed";
 
 /* Title */
-"Cancelling" = "Canceling";
+"Canceling" = "Asefsex";
 
 /* Warning message */
 "Cannot empty folder right now." = "D awezɣi ad yettwasilem ukaram akka tura.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Anɣ. I";
+
 /* settings general section title */
 "Change account password" = "Snifel awal uffir n umiḍan";
+
+/* Title */
+"Change default address to…" = "Beddel tansa s lexṣas ɣer…";
 
 /* settings general section title */
 "Change mailbox password" = "Snifel awal uffir n tnaka n yimayl";
@@ -312,8 +328,14 @@
    title */
 "Change password" = "Snifel awal uffir";
 
+/* update password error title */
+"Change Password" = "Snifel awal uffir";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Beddel tangalt n PIN";
+
+/* Title */
+"Change sender address to…" = "Beddel tansa n umesgal ɣer…";
 
 /* Action */
 "Check Again" = "Senqed tikelt nniḍen";
@@ -1153,7 +1175,7 @@
 "Other" = "Wayeḍ";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Anagraw-nneɣ yecreḍ izen-agi am uneɛruḍ n ukellex. Ttxil-k m senqed belli izen-agi iṣeḥḥa.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Akaram amaraw";
@@ -1314,6 +1336,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Tiririt termed";
 
+/* menu title */
+"Refer a friend" = "Snubget-d ameddakkel";
+
 /* Title */
 "Remind Me Later" = "Smekti-yid-d ticki";
 
@@ -1354,6 +1379,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Suter aseɣwen n usentem";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Wennez ɣer umezwer";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Wennez ɣer umezwer?";
+
 /* Title */
 "Resetting message cache…" = "Tulsa n wennez n tuffirt n yizen…";
 
@@ -1372,12 +1403,18 @@
 /* Title */
 "Save" = "Sekles";
 
+/* No comment provided by engineer. */
+"Save as PDF" = "Sekles am PDF";
+
 /* title */
 "Save Changes" = "Sekles ibeddilen";
 
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Sɣiwes tuzna";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Asɣiwes n yizen...";
 
 /* Springboard (3D Touch) shortcuts action
    Title */

@@ -355,9 +355,6 @@
 /* Action */
 "Cancel Check" = "チェックをキャンセル";
 
-/* Title */
-"Cancelling" = "Canceling";
-
 /* Warning message */
 "Cannot empty folder right now." = "現在、フォルダーを空にできません。";
 
@@ -691,6 +688,9 @@
 /* The text to download new message when search index is refreshed. */
 "Downloading new messages ..." = "新規メッセージをダウンロードしています...";
 
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "メールをダウンロードすると、メールの内容を検索できます。暗号化されたメッセージがローカルに保存されます。%1$@";
+
 /* Action */
 "Draft" = "下書き";
 
@@ -950,6 +950,9 @@
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "私は Proton Mail を使用しており、あなたに気に入ってもらえると思いました。これはプライバシーを保護できる安全なメールサービスです。このリンクを使ってサインアップすると 1 か月間、プレミアム機能を無料で使うことができます:";
+
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Wi-Fi から切断された場合、モバイルデータを使ってダウンロードを続行します。";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "警告を無視して続行";
@@ -1375,9 +1378,6 @@
 
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store が購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、iTunes アカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 App Store のサーバー上での決済の検証と確認のためのデータのみ含まれます。";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "親フォルダー";
@@ -1918,6 +1918,9 @@
 
 /* The error message while calculating the encryption preferences */
 "The sending key is not valid" = "送信用の鍵が有効ではありません";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "送信日時は、5 分以上後である必要があります。";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "添付ファイルの容量制限は 25 MB です。";

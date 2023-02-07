@@ -319,9 +319,6 @@
 /* Action */
 "Cancel Check" = "Ellenőrzés megszakítása";
 
-/* Title */
-"Cancelling" = "Canceling";
-
 /* message Cc: feild
    Title */
 "Cc" = "Másolatot kap";
@@ -523,6 +520,9 @@
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "%d üzenet törlése";
 
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Töröljem az összes letöltött üzenetet?";
+
 /* Title-Contacts */
 "Delete contact" = "Névjegy törlése";
 
@@ -581,6 +581,15 @@
 /* Done action */
 "Done" = "Kész";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Letöltés szüneteltetve";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Alacsony töltöttség, letöltés szüneteltetve";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Nincs WiFi kapcsolat, letöltés szüneteltetve";
+
 /* Action */
 "Draft" = "Piszkozat";
 
@@ -596,6 +605,9 @@
 /* Action
    The button title of the scheduled message banner. */
 "Edit" = "Szerkesztés";
+
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Profilkép szerkesztése";
 
 /* Contacts Edit contact */
 "Edit Contact" = "Névjegy szerkesztése";
@@ -1196,9 +1208,6 @@
 
 /* default vcard types */
 "Other" = "Egyéb";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Szülő mappa";
