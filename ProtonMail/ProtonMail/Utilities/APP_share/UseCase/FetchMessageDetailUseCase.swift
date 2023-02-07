@@ -51,9 +51,10 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func fetchMessageDetail(params: Params, callback: @escaping Callback) {
+        let request = MessageDetailRequest(messageID: params.message.messageID)
         dependencies
             .apiService
-            .messageDetail(messageID: params.message.messageID) { [weak self] _, result in
+            .perform(request: request) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return
