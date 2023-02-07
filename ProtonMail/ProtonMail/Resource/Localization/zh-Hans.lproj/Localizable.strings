@@ -355,9 +355,6 @@
 /* Action */
 "Cancel Check" = "取消检查";
 
-/* Title */
-"Cancelling" = "Canceling";
-
 /* Warning message */
 "Cannot empty folder right now." = "当前无法清空文件夹。";
 
@@ -1392,7 +1389,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "如果您愿意上传付款时 App Store 提供给客户端的技术数据，我们的客服团队会尝试为您人工激活服务。此数据不包含您的任何个人信息，如 iTunes 账户、Apple ID 及其关联的银行卡，我们只是用它验证 App Store 服务器上的交易是否已完成。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "系统已将此邮件识别为欺诈邮件，请确认其内容真实性。";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "上层文件夹";

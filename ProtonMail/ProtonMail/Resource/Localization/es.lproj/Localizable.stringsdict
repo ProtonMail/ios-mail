@@ -353,7 +353,7 @@
 			<key>one</key>
 			<string>¿Estás seguro de que quieres eliminar permanentemente $%d mensaje?</string>
 			<key>other</key>
-			<string>¿Estás seguro de que deseas eliminar permanentemente $%d mensajes?</string>
+			<string>¿Estás seguro de que quieres eliminar permanentemente $%d mensajes?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -385,9 +385,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton encontró y bloqueó %d rastreador en este mensaje.</string>
+			<string>Proton ha encontrado y bloqueado %d rastreador en este mensaje.</string>
 			<key>other</key>
-			<string>Proton encontró y bloqueó %d rastreadores en este mensaje.</string>
+			<string>Proton ha encontrado y bloqueado %d rastreadores en este mensaje.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>

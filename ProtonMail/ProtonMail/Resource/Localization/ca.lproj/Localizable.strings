@@ -356,7 +356,7 @@
 "Cancel Check" = "Cancel·la la comprovació";
 
 /* Title */
-"Cancelling" = "Canceling";
+"Canceling" = "Cancel·lant";
 
 /* Warning message */
 "Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "El nostre equip intentarà activar el vostre abonament manualment si està d'acord en adjuntar les dades tècniques que l'App Store ens proporcionà en el moment de la compra. Aquestes dades no inclouen detalls del seu compte d'iTunes, d'Apple ID, de tarjetes de crèdit o cap altra informació personal. Solament servirà per verificar que la transacció s'ha realitzat en els servidors d'App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "El nostre sistema ha marcat aquest missatge com un intent de suplantació d'identitat. Comproveu que sigui legítim.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Carpeta superior";

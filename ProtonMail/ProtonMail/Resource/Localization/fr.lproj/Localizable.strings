@@ -356,7 +356,7 @@
 "Cancel Check" = "Annuler la vérification";
 
 /* Title */
-"Cancelling" = "Canceling";
+"Canceling" = "Annulation en cours";
 
 /* Warning message */
 "Cannot empty folder right now." = "Impossible de vider le dossier maintenant.";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Notre équipe du service client essaiera d'activer votre abonnement manuellement si vous acceptez de joindre les données techniques que l'App Store a fournies à l'application au moment de l'achat. Ces données ne comprennent aucun détail sur votre compte iTunes, votre identifiant Apple, les cartes de paiement liées ou toute autre information sur l'utilisateur. Les données techniques nous aident uniquement à contrôler et à vérifier que la transaction a été effectuée sur les serveurs de l'App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Notre système a signalé ce message comme tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu'il est légitime.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Dossier parent";

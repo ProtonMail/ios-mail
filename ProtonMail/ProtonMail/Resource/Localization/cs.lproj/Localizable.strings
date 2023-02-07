@@ -356,7 +356,7 @@
 "Cancel Check" = "Zrušit zaškrtnutí";
 
 /* Title */
-"Cancelling" = "Canceling";
+"Canceling" = "Ruší se";
 
 /* Warning message */
 "Cannot empty folder right now." = "Nyní nelze složku vyprázdnit.";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Náš tým pro podporu zákazníků se pokusí aktivovat váš plán poskytovaných služeb ručně, pokud souhlasíte s přiložením technických údajů, které App Store poskytl v okamžiku nákupu. Tyto údaje neobsahují žádné informace o vašem iTunes účtu, Apple ID, připojených platebních kartách, nebo jakékoli jiné informace o uživateli. Technická data nám jenom pomůžou ověřit, že transakce byla provedena na serverech App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Náš systém označil tuto zprávu jako pokus o phishing. Zkontrolujte prosím, že se jedná o legitimní zprávu.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Nadřazená složka";

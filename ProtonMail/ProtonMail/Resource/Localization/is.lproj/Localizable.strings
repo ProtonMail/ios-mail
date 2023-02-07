@@ -196,7 +196,6 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Safn";
-"Archive (verb)" = "Safn";
 
 /* Push notification action archive */
 "Archive (verb)" = "Safn";
@@ -357,7 +356,7 @@
 "Cancel Check" = "Hætta við athugun";
 
 /* Title */
-"Cancelling" = "Canceling";
+"Canceling" = "Hætti við";
 
 /* Warning message */
 "Cannot empty folder right now." = "Ekki er hægt að tæma möppuna núna.";
@@ -1393,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Þjónustudeild okkar mun reyna að virkja þjónustuáætlun þína handvirkt ef þú samþykkir að hengja við tæknigögn sem App Store útvegaði appinu þegar það var keypt. Þessi gögn innihalda engar upplýsingar um iTunes reikninginn þinn, Apple ID, tengd greiðslukort eða aðrar notendaupplýsingar. Tæknigögn hjálpa okkur aðeins að athuga og sannreyna að viðskiptin hafi verið framkvæmd á netþjónum App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Kerfið okkar merkti þessi skilaboð sem tilraun til vefveiða. Vinsamlegast athugaðu hvort það sé lögmætt.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Yfirmappa";

@@ -356,7 +356,7 @@
 "Cancel Check" = "Anulare verificare";
 
 /* Title */
-"Cancelling" = "Canceling";
+"Canceling" = "Se anulează";
 
 /* Warning message */
 "Cannot empty folder right now." = "Nu se poate goli folderul în acest moment.";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Echipa noastră de asistență pentru clienți va încerca să activeze manual abonamentul dacă sunteți de acord să atașați datele tehnice pe care App Store le-a furnizat aplicației la momentul cumpărării. Aceste date nu includ detalii despre contul iTunes, ID-ul Apple, cardurile de plată asociate sau orice alte informații despre utilizator. Datele tehnice ne ajută doar să verificăm dacă tranzacția a fost realizară pe serverele magazinului de aplicații App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistemul nostru a marcat acest mesaj ca o încercare de înșelăciune. Verificați dacă este legitim.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder părinte";

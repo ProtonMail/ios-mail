@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "dia ,mês , ano %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Pesquisar conteúdo da mensagem' será desativado. Ele pode ser ativado novamente nas configurações e todas as mensagens terão que ser baixadas novamente.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Pesquisar conteúdo da mensagem' será desativado. Pode ser ativado novamente nas configurações e todas as mensagens terão que ser baixadas novamente.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
@@ -401,8 +401,7 @@
 "Cancel Check" = "Cancelar verificação";
 
 /* Title */
-"Cancelling" = "Canceling";
-
+"Canceling" = "Cancelando";
 /* Warning message */
 "Cannot empty folder right now." = "Não é possível esvaziar a pasta agora.";
 
@@ -1440,7 +1439,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Nossa equipe de suporte ao cliente tentará ativar seu plano de serviço manualmente se você concordar em anexar dados técnicos que a App Store forneceu ao aplicativo no momento da compra. Esses dados não incluem detalhes sobre sua conta do iTunes, ID Apple, cartões de pagamento vinculados ou qualquer outra informação do usuário. Os dados técnicos apenas nos ajudam a verificar e verificar se a transação foi realizada nos servidores da App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Por favor, verifique se é legítimo.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Pasta principal";
@@ -2067,7 +2066,7 @@
 "Title" = "Título";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "A validação do certificado TLS falhou. Sua conexão pode ser monitorada e o app temporariamente bloqueado para sua segurança.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Falha na validação do certificado TLS. Sua conexão pode estar sendo monitorada e o aplicativo está temporariamente bloqueado para sua segurança.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Falha na validação do certificado TLS. Sua conexão pode estar sendo monitorada e o aplicativo está temporariamente bloqueado para sua segurança.\n\nTroque imediatamente de rede.";
