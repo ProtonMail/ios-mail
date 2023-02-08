@@ -47,15 +47,15 @@ extension EmailHeaderView {
         self.emailDetailButton.clipsToBounds = beforePrinting
 
         // zero height constraints, first four copied from makeHeaderConstraints()
-        self.emailDetailButton.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
-            _ = make?.bottom.equalTo()(self.emailShortTime)
-            _ = make?.top.equalTo()(self.emailShortTime)
-            _ = make?.width.equalTo()(self.emailDetailButton)
-            if beforePrinting {
-                _ = make?.height.equalTo()(0)
-            }
+        emailDetailButton.removeConstraints(emailDetailButton.constraints)
+        [
+            emailDetailButton.leftAnchor.constraint(equalTo: emailShortTime.rightAnchor, constant: kEmailDetailButtonMarginLeft),
+            emailDetailButton.bottomAnchor.constraint(equalTo: emailShortTime.bottomAnchor),
+            emailDetailButton.topAnchor.constraint(equalTo: emailShortTime.topAnchor)
+        ].activate()
+
+        if beforePrinting {
+            emailDetailButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
         }
 
         self.emailFavoriteButton.isHidden = beforePrinting
@@ -459,6 +459,11 @@ class EmailHeaderView: UIView, AccessibleView {
         return self.attachments[indexPath.row]
     }
 
+    func showingDetail() {
+        self.isShowingDetail = !self.isShowingDetail
+        self.updateDetailsView(self.isShowingDetail)
+    }
+
     // MARK: - Subviews
     func addSubviews() {
         self.createHeaderView()
@@ -590,7 +595,6 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailHeaderView.addSubview(emailShortTime)
 
         self.emailDetailButton = UIButton()
-        self.emailDetailButton.addTarget(self, action: #selector(EmailHeaderView.detailsButtonTapped), for: UIControl.Event.touchUpInside)
         self.emailDetailButton.contentEdgeInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         self.emailDetailButton.titleLabel?.font = Fonts.h6.medium
         self.emailDetailButton.setTitle(LocalString._details, for: UIControl.State())
@@ -633,62 +637,62 @@ class EmailHeaderView: UIView, AccessibleView {
     }
 
     func updateExpirationConstraints() {
-        separatorHeader.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
-            _ = make?.height.equalTo()(1)
-        }
+        separatorHeader.removeConstraints(separatorHeader.constraints)
+        [
+            separatorHeader.leftAnchor.constraint(equalTo: self.leftAnchor),
+         separatorHeader.rightAnchor.constraint(equalTo: self.rightAnchor),
+         separatorHeader.topAnchor.constraint(equalTo: labelsView.bottomAnchor, constant: kSeparatorBetweenHeaderAndBodyMarginTop),
+         separatorHeader.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
 
         let viewHeight = self.hasExpiration ? 26 : 0
-        self.expirationView.mas_updateConstraints({ (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.separatorHeader.mas_bottom)
-            _ = make?.height.equalTo()(viewHeight)
-        })
+        expirationView.removeConstraints(expirationView.constraints)
+        [
+            expirationView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            expirationView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            expirationView.topAnchor.constraint(equalTo: separatorHeader.bottomAnchor),
+            expirationView.heightAnchor.constraint(equalToConstant: CGFloat(viewHeight))
+        ].activate()
 
         let separatorHeight = self.hasExpiration ? 1 : 0
-        separatorExpiration.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.expirationView.mas_bottom)?.with()
-            _ = make?.height.equalTo()(separatorHeight)
-        }
+        separatorExpiration.removeConstraints(separatorExpiration.constraints)
+        [
+            separatorExpiration.leftAnchor.constraint(equalTo: self.leftAnchor),
+            separatorExpiration.rightAnchor.constraint(equalTo: self.rightAnchor),
+            separatorExpiration.topAnchor.constraint(equalTo: expirationView.bottomAnchor),
+            separatorExpiration.heightAnchor.constraint(equalToConstant: CGFloat(separatorHeight))
+        ].activate()
     }
 
     func updateSpamScoreConstraints() {
         let size = self.spamScore == .others ? 0.0 : self.spamScoreView.fitHeight()
         self.spamScoreView.alpha = self.spamScore == .others ? 0.0 : 1.0
-        self.spamScoreView.mas_updateConstraints({ (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.separatorAttachment.mas_bottom)
-            _ = make?.height.equalTo()(size)
-        })
+        spamScoreView.removeConstraints(spamScoreView.constraints)
+        [
+            spamScoreView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            spamScoreView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            spamScoreView.topAnchor.constraint(equalTo: separatorAttachment.bottomAnchor),
+            spamScoreView.heightAnchor.constraint(equalToConstant: size)
+        ].activate()
     }
 
     func updateShowImageConstraints() {
         let viewHeight = self.hasShowImageCheck ? 36 : 0
-        self.showImageView.mas_updateConstraints({ (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.spamScoreView.mas_bottom)
-            _ = make?.height.equalTo()(viewHeight)
-        })
+        showImageView.removeConstraints(showImageView.constraints)
+        [
+            showImageView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            showImageView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            showImageView.topAnchor.constraint(equalTo: spamScoreView.bottomAnchor),
+            showImageView.heightAnchor.constraint(equalToConstant: CGFloat(viewHeight))
+        ].activate()
 
-        self.separatorShowImage.mas_updateConstraints({ (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.showImageView!.mas_bottom)
-            _ = make?.height.equalTo()(0)
-        })
+        separatorShowImage.removeConstraints(separatorShowImage.constraints)
+        [
+            separatorShowImage.leftAnchor.constraint(equalTo: self.leftAnchor),
+            separatorShowImage.rightAnchor.constraint(equalTo: self.rightAnchor),
+            separatorShowImage.topAnchor.constraint(equalTo: showImageView!.bottomAnchor),
+            separatorShowImage.heightAnchor.constraint(equalToConstant: 0)
+        ].activate()
     }
 
     func updateAttConstraints (_ animition: Bool) {
@@ -698,22 +702,22 @@ class EmailHeaderView: UIView, AccessibleView {
         attachmentView!.reloadData()
         attachmentView!.layoutIfNeeded()
         let viewHeight = self.attachmentCount > 0 ? attachmentView!.contentSize.height : 0
-        self.attachmentView!.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.separatorExpiration.mas_bottom)
-            _ = make?.height.equalTo()(viewHeight)
-        }
+        attachmentView!.removeConstraints(attachmentView!.constraints)
+        [
+            attachmentView!.leftAnchor.constraint(equalTo: self.leftAnchor),
+            attachmentView!.rightAnchor.constraint(equalTo: self.rightAnchor),
+            attachmentView!.topAnchor.constraint(equalTo: separatorExpiration!.bottomAnchor),
+            attachmentView!.heightAnchor.constraint(equalToConstant: viewHeight)
+        ].activate()
 
         let separatorHeight = self.attachmentCount == 0 ? 0 : 1
-        separatorAttachment.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self)
-            _ = make?.right.equalTo()(self)
-            _ = make?.top.equalTo()(self.attachmentView!.mas_bottom)
-            _ = make?.height.equalTo()(separatorHeight)
-        }
+        separatorAttachment.removeConstraints(separatorAttachment.constraints)
+        [
+            separatorAttachment.leftAnchor.constraint(equalTo: self.leftAnchor),
+            separatorAttachment.rightAnchor.constraint(equalTo: self.rightAnchor),
+            separatorAttachment.topAnchor.constraint(equalTo: attachmentView!.bottomAnchor),
+            separatorAttachment.heightAnchor.constraint(equalToConstant: CGFloat(separatorHeight))
+        ].activate()
 
         self.updateExpirationConstraints()
         self.updateShowImageConstraints()
@@ -742,169 +746,168 @@ class EmailHeaderView: UIView, AccessibleView {
         self.addSubview(labelsView)
     }
 
-    fileprivate func makeHeaderConstraints() {
-        emailHeaderView.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            make?.top.equalTo()(self)
-            make?.left.equalTo()(self)?.offset()(self.kEmailHeaderViewMarginLeft)
-            make?.right.equalTo()(self)
-            make?.bottom.equalTo()(self.emailDetailView)
-        }
+    private func makeHeaderConstraints() {
+        emailHeaderView.removeConstraints(emailHeaderView.constraints)
+        [
+            emailHeaderView.topAnchor.constraint(equalTo: self.topAnchor),
+            emailHeaderView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: kEmailHeaderViewMarginLeft),
+            emailHeaderView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            emailHeaderView.bottomAnchor.constraint(equalTo: emailDetailView.bottomAnchor)
+        ].activate()
 
-        emailFavoriteButton.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.top.equalTo()(self.emailHeaderView)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.height.equalTo()(self.kEmailFavoriteButtonHeight)
-            _ = make?.width.equalTo()(self.kEmailFavoriteButtonWidth)
-        }
+        emailFavoriteButton.removeConstraints(emailFavoriteButton.constraints)
+        [
+            emailFavoriteButton.topAnchor.constraint(equalTo: emailHeaderView.topAnchor),
+            emailFavoriteButton.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+            emailFavoriteButton.heightAnchor.constraint(equalToConstant: kEmailFavoriteButtonHeight),
+            emailFavoriteButton.widthAnchor.constraint(equalToConstant: kEmailFavoriteButtonWidth)
+        ].activate()
 
-        emailTitle.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailHeaderView)?.offset()(self.kEmailHeaderViewMarginTop)
-            _ = make?.right.equalTo()(self.emailFavoriteButton.mas_left)?.with().offset()(self.kEmailTitleViewMarginRight)
-        }
+        emailTitle.removeConstraints(emailTitle.constraints)
+        [
+            emailTitle.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+            emailTitle.topAnchor.constraint(equalTo: emailHeaderView.topAnchor, constant: kEmailHeaderViewMarginTop),
+            emailTitle.rightAnchor.constraint(equalTo: emailFavoriteButton.leftAnchor, constant: -kEmailTitleViewMarginRight)
+        ].activate()
 
-        emailDetailView.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailTitle)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailDetailButton.mas_bottom)
-            _ = make?.height.equalTo()(0)
-        }
+        emailDetailView.removeConstraints(emailDetailView.constraints)
+        [
+            emailDetailView.leftAnchor.constraint(equalTo: emailTitle.leftAnchor),
+            emailDetailView.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+            emailDetailView.topAnchor.constraint(equalTo: emailDetailButton.bottomAnchor),
+            emailDetailView.heightAnchor.constraint(equalToConstant: 0)
+        ].activate()
 
-        emailFrom.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailHeaderView)
-            _ = make?.right.equalTo()(self.emailTitle)
-            _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-        }
 
-        emailFromTable.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(36)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-            _ = make?.height.equalTo()(self.emailFrom)
-        }
+        emailFrom.removeConstraints(emailFrom.constraints)
+        [
+            emailFrom.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+            emailFrom.rightAnchor.constraint(equalTo: emailTitle.rightAnchor),
+            emailFrom.topAnchor.constraint(equalTo: emailTitle.bottomAnchor, constant: kEmailRecipientsViewMarginTop),
+        ].activate()
+
+        let efh = emailFromTable.getContentSize().height
+        emailFromTable.removeConstraints(emailFromTable.constraints)
+        [
+            emailFromTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 40),
+            emailFromTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+            emailFromTable.topAnchor.constraint(equalTo: emailTitle.bottomAnchor, constant: kEmailRecipientsViewMarginTop),
+            emailFromTable.heightAnchor.constraint(equalToConstant: efh)
+        ].activate()
 
         let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
         let toHeight = self.showTo ? 16 : 0
-        emailTo.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailHeaderView)
-            _ = make?.right.equalTo()(self.emailTitle)
-            _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
-            _ = make?.height.equalTo()(toHeight)
-        }
-        emailToTable.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(36)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
-            _ = make?.height.equalTo()(self.emailTo)
-        }
+        emailTo.removeConstraints(emailTo.constraints)
+        [
+            emailTo.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+            emailTo.rightAnchor.constraint(equalTo: emailTitle.rightAnchor),
+            emailTo.topAnchor.constraint(equalTo: emailFromTable.bottomAnchor, constant: toOffset),
+            emailTo.heightAnchor.constraint(equalToConstant: CGFloat(toHeight))
+        ].activate()
+
+        let eth = emailToTable.getContentSize().height
+        emailToTable.removeConstraints(emailToTable.constraints)
+        [
+            emailToTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+            emailToTable.rightAnchor.constraint(equalTo: self.emailHeaderView.rightAnchor),
+            emailToTable.topAnchor.constraint(equalTo: self.emailFromTable.bottomAnchor, constant: toOffset),
+            emailToTable.heightAnchor.constraint(equalToConstant: eth)
+        ].activate()
 
         let ccOffset = self.showCc ? kEmailRecipientsViewMarginTop : 0
-        emailCc.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailHeaderView)
-            _ = make?.right.equalTo()(self.emailTitle)
-            _ = make?.top.equalTo()(self.emailTo.mas_bottom)?.with().offset()(ccOffset)
-        }
-        emailCcTable.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(36)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailTo.mas_bottom)?.with().offset()(ccOffset)
-            _ = make?.height.equalTo()(self.emailCc)
-        }
+        emailCc.removeConstraints(emailCc.constraints)
+        [
+            emailCc.leftAnchor.constraint(equalTo: self.emailHeaderView.leftAnchor),
+            emailCc.rightAnchor.constraint(equalTo: self.emailTitle.rightAnchor),
+            emailCc.topAnchor.constraint(equalTo: self.emailToTable.bottomAnchor, constant: ccOffset)
+        ].activate()
+
+        let ech = emailCcTable.getContentSize().height
+        emailCcTable.removeConstraints(emailCcTable.constraints)
+        [
+            emailCcTable.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36),
+            emailCcTable.rightAnchor.constraint(equalTo: self.emailHeaderView.rightAnchor),
+            emailCcTable.topAnchor.constraint(equalTo: self.emailCc.bottomAnchor, constant: ccOffset),
+            emailCcTable.heightAnchor.constraint(equalToConstant: ech)
+        ].activate()
 
         let bccOffset = self.showBcc ? kEmailRecipientsViewMarginTop : 0
-        emailBcc.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailHeaderView)
-            _ = make?.right.equalTo()(self.emailTitle)
-            _ = make?.top.equalTo()(self.emailCc.mas_bottom)?.with().offset()(bccOffset)
-        }
-        emailBccTable.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(36)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailCc.mas_bottom)?.with().offset()(bccOffset)
-            _ = make?.height.equalTo()(self.emailBcc)
-        }
+        emailBcc.removeConstraints(emailBcc.constraints)
+        [
+            emailBcc.leftAnchor.constraint(equalTo: self.emailHeaderView.leftAnchor),
+            emailBcc.rightAnchor.constraint(equalTo: self.emailTitle.rightAnchor),
+            emailBcc.topAnchor.constraint(equalTo: self.emailCc.bottomAnchor, constant: bccOffset)
+        ].activate()
+
+        let ebh = emailBccTable.getContentSize().height
+        emailBccTable.removeConstraints(emailBccTable.constraints)
+        [
+            emailBccTable.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36),
+            emailBccTable.rightAnchor.constraint(equalTo: self.emailHeaderView.rightAnchor),
+            emailBccTable.topAnchor.constraint(equalTo: self.emailBcc.bottomAnchor, constant: bccOffset),
+            emailBccTable.heightAnchor.constraint(equalToConstant: ebh)
+        ].activate()
 
         emailShortTime.sizeToFit()
-        emailShortTime.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailHeaderView)
-            _ = make?.width.equalTo()(self.emailShortTime.frame.size.width)
-            _ = make?.height.equalTo()(self.emailShortTime.frame.size.height)
-            _ = make?.top.equalTo()(self.emailTo.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
-        }
+        emailShortTime.removeConstraints(emailShortTime.constraints)
+        [
+            emailShortTime.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+            emailShortTime.widthAnchor.constraint(equalToConstant: emailShortTime.frame.size.width),
+            emailShortTime.heightAnchor.constraint(equalToConstant: emailShortTime.frame.size.height),
+            emailShortTime.topAnchor.constraint(equalTo: emailToTable.bottomAnchor, constant: kEmailTimeViewMarginTop)
+        ].activate()
 
-        emailDetailButton.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
-            _ = make?.bottom.equalTo()(self.emailShortTime)
-            _ = make?.top.equalTo()(self.emailShortTime)
-            _ = make?.width.equalTo()(self.emailDetailButton)
-        }
+        emailShortTime.removeConstraints(emailShortTime.constraints)
+        [
+            emailShortTime.leftAnchor.constraint(equalTo: self.emailHeaderView.leftAnchor),
+            emailShortTime.widthAnchor.constraint(equalToConstant: emailShortTime.frame.size.width),
+            emailShortTime.heightAnchor.constraint(equalToConstant: emailShortTime.frame.size.height),
+            emailShortTime.topAnchor.constraint(equalTo: self.emailToTable.bottomAnchor, constant: self.kEmailTimeViewMarginTop)
+        ].activate()
 
-        emailDetailView.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailTitle)
-            _ = make?.right.equalTo()(self.emailHeaderView)
-            _ = make?.top.equalTo()(self.emailDetailButton.mas_bottom)
-            _ = make?.height.equalTo()(0)
-        }
+        emailDetailView.removeConstraints(emailDetailView.constraints)
+        [
+            emailDetailView.leftAnchor.constraint(equalTo: self.emailTitle.leftAnchor),
+            emailDetailView.rightAnchor.constraint(equalTo: self.emailHeaderView.rightAnchor),
+            emailDetailView.topAnchor.constraint(equalTo: self.emailDetailButton.bottomAnchor),
+            emailDetailView.heightAnchor.constraint(equalToConstant: 0)
+        ].activate()
 
         emailDetailDateLabel.sizeToFit()
-        emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.left.equalTo()(self.emailDetailView)
-            _ = make?.top.equalTo()(self.emailDetailView)
-            _ = make?.width.equalTo()(self.emailDetailDateLabel.frame.size.width)
-            _ = make?.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
-        }
+        emailDetailDateLabel.removeConstraints(emailDetailDateLabel.constraints)
+        [
+            emailDetailDateLabel.leftAnchor.constraint(equalTo: self.emailDetailView.leftAnchor),
+            emailDetailDateLabel.topAnchor.constraint(equalTo: self.emailDetailView.topAnchor),
+            emailDetailDateLabel.rightAnchor.constraint(equalTo: self.emailDetailView.rightAnchor),
+            emailDetailDateLabel.heightAnchor.constraint(equalToConstant: self.emailDetailDateLabel.frame.size.height)
+        ].activate()
 
         let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let labelViewHeight = labelsView.getContentSize().height
-        self.labelsView.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            make?.left.equalTo()(self.emailHeaderView)
-            make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
-            make?.right.equalTo()(self)?.with()?.offset()(kEmailHeaderViewMarginRight)
-            make?.height.equalTo()(labelViewHeight)
-        }
+        labelsView.removeConstraints(labelsView.constraints)
+        [
+            labelsView.leftAnchor.constraint(equalTo: self.emailHeaderView.leftAnchor),
+            labelsView.topAnchor.constraint(equalTo: self.emailDetailView.bottomAnchor, constant: lbOffset),
+            labelsView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: kEmailHeaderViewMarginRight),
+            labelsView.heightAnchor.constraint(equalToConstant: labelViewHeight)
+        ].activate()
 
         emailAttachmentsAmount.sizeToFit()
-        emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.right.equalTo()(self.emailHeaderView)?.offset()(-16)
-            _ = make?.bottom.equalTo()(self.emailDetailButton)
-            _ = make?.height.equalTo()(self.emailAttachmentsAmount.frame.height)
-            _ = make?.width.equalTo()(self.emailAttachmentsAmount.frame.width)
-        }
+        emailAttachmentsAmount.removeConstraints(emailAttachmentsAmount.constraints)
+        [
+            emailAttachmentsAmount.rightAnchor.constraint(equalTo: self.emailHeaderView.rightAnchor, constant: -16),
+            emailAttachmentsAmount.bottomAnchor.constraint(equalTo: self.emailDetailButton.bottomAnchor),
+            emailAttachmentsAmount.heightAnchor.constraint(equalToConstant: emailAttachmentsAmount.frame.height),
+            emailAttachmentsAmount.widthAnchor.constraint(equalToConstant: emailAttachmentsAmount.frame.width)
+        ].activate()
 
-        emailHasAttachmentsImageView.mas_makeConstraints { (make) -> Void in
-            make?.removeExisting = true
-            _ = make?.right.equalTo()(self.emailAttachmentsAmount.mas_left)?.with().offset()(self.kEmailHasAttachmentsImageViewMarginRight)
-            _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
-            _ = make?.height.equalTo()(self.emailHasAttachmentsImageView.frame.height)
-            _ = make?.width.equalTo()(self.emailHasAttachmentsImageView.frame.width)
-        }
-    }
-
-    @objc internal func detailsButtonTapped() {
-        self.isShowingDetail = !self.isShowingDetail
-        self.updateDetailsView(self.isShowingDetail)
-
-        // accessibility
-        UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged,
-                             argument: self.isShowingDetail ? self.emailCc : self.emailDetailButton)
+        emailHasAttachmentsImageView.removeConstraints(emailHasAttachmentsImageView.constraints)
+        [
+            emailHasAttachmentsImageView.rightAnchor.constraint(equalTo: self.emailAttachmentsAmount.leftAnchor, constant: -kEmailHasAttachmentsImageViewMarginRight),
+            emailHasAttachmentsImageView.bottomAnchor.constraint(equalTo: self.emailAttachmentsAmount.bottomAnchor),
+            emailHasAttachmentsImageView.heightAnchor.constraint(equalToConstant: emailHasAttachmentsImageView.frame.height),
+            emailHasAttachmentsImageView.widthAnchor.constraint(equalToConstant: emailHasAttachmentsImageView.frame.width)
+        ].activate()
     }
 
     @objc internal func emailFavoriteButtonTapped() {
@@ -951,112 +954,115 @@ class EmailHeaderView: UIView, AccessibleView {
                 }, completion: nil)
 
             let efh = emailFromTable.getContentSize().height
-            emailFromTable.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-                _ = make?.height.equalTo()(efh)
-            }
+            emailFromTable.removeConstraints(emailFromTable.constraints)
+            [
+                emailFromTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 40),
+                emailFromTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailFromTable.topAnchor.constraint(equalTo: emailTitle.bottomAnchor, constant: kEmailRecipientsViewMarginTop),
+                emailFromTable.heightAnchor.constraint(equalToConstant: efh)
+            ].activate()
 
             let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
             let toHeight = self.showTo ? 16 : 0
-            emailTo.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.right.equalTo()(self.emailTitle)
-                _ = make?.top.equalTo()(self.emailFromTable.mas_bottom)?.with().offset()(toOffset)
-                _ = make?.height.equalTo()(toHeight)
-            }
+            emailTo.removeConstraints(emailTo.constraints)
+            [
+                emailTo.leftAnchor.constraint(equalTo: self.emailHeaderView.leftAnchor),
+                emailTo.rightAnchor.constraint(equalTo: self.emailTitle.rightAnchor),
+                emailTo.topAnchor.constraint(equalTo: self.emailFromTable.bottomAnchor, constant: toOffset),
+                emailTo.heightAnchor.constraint(equalToConstant: CGFloat(toHeight))
+            ].activate()
 
             let eth = emailToTable.getContentSize().height
-            emailToTable.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailFromTable.mas_bottom)?.with().offset()(toOffset)
-                _ = make?.height.equalTo()(eth)
-            }
+            emailToTable.removeConstraints(emailToTable.constraints)
+            [
+                emailToTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+                emailToTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailToTable.topAnchor.constraint(equalTo: emailFromTable.bottomAnchor),
+                emailToTable.heightAnchor.constraint(equalToConstant: eth)
+            ].activate()
 
             let ccOffset = self.showCc ? kEmailRecipientsViewMarginTop : 0
             let ccHeight = self.showCc ? 16 : 0
-            emailCc.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.right.equalTo()(self.emailTitle)
-                _ = make?.top.equalTo()(self.emailToTable.mas_bottom)?.with().offset()(ccOffset)
-                _ = make?.height.equalTo()(ccHeight)
-            }
+            emailCc.removeConstraints(emailCc.constraints)
+            [
+                emailCc.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailCc.rightAnchor.constraint(equalTo: emailTitle.rightAnchor),
+                emailCc.topAnchor.constraint(equalTo: emailToTable.bottomAnchor, constant: ccOffset),
+                emailCc.heightAnchor.constraint(equalToConstant: CGFloat(ccHeight))
+            ].activate()
+
             let ecch = emailCcTable.getContentSize().height
-            emailCcTable.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailToTable.mas_bottom)?.with().offset()(ccOffset)
-                _ = make?.height.equalTo()(ecch)
-            }
+            emailCcTable.removeConstraints(emailCcTable.constraints)
+            [
+                emailCcTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+                emailCcTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailCcTable.topAnchor.constraint(equalTo: emailToTable.bottomAnchor),
+                emailCcTable.heightAnchor.constraint(equalToConstant: ecch)
+            ].activate()
 
             let bccOffset = self.showBcc ? kEmailRecipientsViewMarginTop : 0
             let bccHeight = self.showBcc ? 16 : 0
-            emailBcc.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.right.equalTo()(self.emailTitle)
-                _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(bccOffset)
-                _ = make?.height.equalTo()(bccHeight)
-            }
-            let ebcch = emailBccTable.getContentSize().height
-            emailBccTable.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(bccOffset)
-                _ = make?.height.equalTo()(ebcch)
-            }
+            emailBcc.removeConstraints(emailBcc.constraints)
+            [
+                emailBcc.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailBcc.rightAnchor.constraint(equalTo: emailTitle.rightAnchor),
+                emailBcc.topAnchor.constraint(equalTo: emailCcTable.bottomAnchor, constant: bccOffset),
+                emailBcc.heightAnchor.constraint(equalToConstant: CGFloat(bccHeight))
+            ].activate()
 
-            self.emailShortTime.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.width.equalTo()(0)
-                _ = make?.height.equalTo()(self.emailShortTime.frame.size.height)
-                _ = make?.top.equalTo()(self.emailBccTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
-            })
+            let ebcch = emailBccTable.getContentSize().height
+            emailBccTable.removeConstraints(emailBccTable.constraints)
+            [
+                emailBccTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+                emailBccTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailBccTable.topAnchor.constraint(equalTo: emailCcTable.bottomAnchor),
+                emailBccTable.heightAnchor.constraint(equalToConstant: ebcch)
+            ].activate()
+
+            emailShortTime.removeConstraints(emailShortTime.constraints)
+            [
+                emailShortTime.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailShortTime.widthAnchor.constraint(equalToConstant: 0),
+                emailShortTime.heightAnchor.constraint(equalToConstant: emailShortTime.frame.size.height),
+                emailShortTime.topAnchor.constraint(equalTo: emailBccTable.bottomAnchor, constant: kEmailTimeViewMarginTop)
+            ].activate()
 
             self.emailDetailButton.setTitle(LocalString._hide_details, for: UIControl.State())
-            self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailShortTime)
-                _ = make?.bottom.equalTo()(self.emailShortTime)
-                _ = make?.top.equalTo()(self.emailShortTime)
-                _ = make?.width.equalTo()(self.emailDetailButton)
-            })
+            emailDetailButton.removeConstraints(emailDetailButton.constraints)
+            [
+                emailDetailButton.leftAnchor.constraint(equalTo: emailShortTime.rightAnchor),
+                emailDetailButton.bottomAnchor.constraint(equalTo: emailShortTime.bottomAnchor),
+                emailDetailButton.topAnchor.constraint(equalTo: emailShortTime.topAnchor),
+                emailDetailButton.widthAnchor.constraint(equalTo: emailDetailButton.widthAnchor)
+            ].activate()
+
+            emailDetailView.removeConstraints(emailDetailView.constraints)
+            [
+                emailDetailView.leftAnchor.constraint(equalTo: emailTitle.leftAnchor),
+                emailDetailView.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailDetailView.topAnchor.constraint(equalTo: emailDetailButton.bottomAnchor, constant: 10)
+            ].activate()
 
             emailDetailDateLabel.sizeToFit()
-            emailDetailDateLabel.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailDetailView)
-                _ = make?.top.equalTo()(self.emailDetailView)
-                _ = make?.width.equalTo()(self.emailDetailDateLabel.frame.size.width)
-                _ = make?.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
-            }
+            emailDetailDateLabel.removeConstraints(emailDetailDateLabel.constraints)
+            [
+                emailDetailDateLabel.leftAnchor.constraint(equalTo: emailDetailView.leftAnchor),
+                emailDetailDateLabel.topAnchor.constraint(equalTo: emailDetailView.topAnchor),
+                emailDetailDateLabel.rightAnchor.constraint(equalTo: emailDetailView.rightAnchor),
+                emailDetailDateLabel.heightAnchor.constraint(equalToConstant: emailDetailDateLabel.frame.size.height),
+                emailDetailDateLabel.bottomAnchor.constraint(equalTo: emailDetailView.bottomAnchor)
+            ].activate()
 
             let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
             let labelViewHeight = labelsView.getContentSize().height
-            self.labelsView.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                make?.left.equalTo()(self.emailHeaderView)
-                make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
-                make?.right.equalTo()(self)?.with()?.offset()(kEmailHeaderViewMarginRight)
-                make?.height.equalTo()(labelViewHeight)
-            }
+            labelsView.removeConstraints(labelsView.constraints)
+            [
+                labelsView.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                labelsView.topAnchor.constraint(equalTo: emailDetailView.bottomAnchor, constant: lbOffset),
+                labelsView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -kEmailHeaderViewMarginRight),
+                labelsView.heightAnchor.constraint(equalToConstant: labelViewHeight)
+            ].activate()
 
-            self.emailDetailView.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailTitle)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailDetailButton.mas_bottom)?.with().offset()(10)
-                _ = make?.bottom.equalTo()(self.emailDetailDateLabel)
-            })
         } else {
 
             UIView.transition(with: self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
@@ -1072,107 +1078,109 @@ class EmailHeaderView: UIView, AccessibleView {
                 }, completion: nil)
 
             let efh = emailFromTable.getContentSize().height
-            emailFromTable.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-                _ = make?.height.equalTo()(efh)
-            }
-            //
+            emailFromTable.removeConstraints(emailFromTable.constraints)
+            [
+                emailFromTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 40),
+                emailFromTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailFromTable.topAnchor.constraint(equalTo: emailTitle.bottomAnchor, constant: kEmailRecipientsViewMarginTop),
+                emailFromTable.heightAnchor.constraint(equalToConstant: efh)
+            ].activate()
 
             let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
             let toHeight = self.showTo ? 16 : 0
-            emailTo.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.right.equalTo()(self.emailTitle)
-                _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
-                _ = make?.height.equalTo()(toHeight)
-            }
+            emailTo.removeConstraints(emailTo.constraints)
+            [
+                emailTo.leftAnchor.constraint(equalTo: self.emailHeaderView.leftAnchor),
+                emailTo.rightAnchor.constraint(equalTo: self.emailTitle.rightAnchor),
+                emailTo.topAnchor.constraint(equalTo: self.emailFromTable.bottomAnchor, constant: toOffset),
+                emailTo.heightAnchor.constraint(equalToConstant: CGFloat(toHeight))
+            ].activate()
 
-            emailToTable.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailTo)
-                _ = make?.height.equalTo()(toHeight)
-            }
+            let eth = emailToTable.getContentSize().height
+            emailToTable.removeConstraints(emailToTable.constraints)
+            [
+                emailToTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+                emailToTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailToTable.topAnchor.constraint(equalTo: emailFromTable.bottomAnchor, constant: toOffset),
+                emailToTable.heightAnchor.constraint(equalToConstant: eth)
+            ].activate()
 
-            emailCc.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.right.equalTo()(self.emailTitle)
-                _ = make?.top.equalTo()(self.emailToTable.mas_bottom)?.with().offset()(0)
-                _ = make?.height.equalTo()(0)
-            }
-            emailCcTable.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailCc)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-                _ = make?.height.equalTo()(0)
-            }
-            emailBcc.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.right.equalTo()(self.emailTitle)
-                _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(0)
-                _ = make?.height.equalTo()(0)
-            }
-            emailBccTable.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(36)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailBcc)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-                _ = make?.height.equalTo()(0)
-            }
+            emailCc.removeConstraints(emailCc.constraints)
+            [
+                emailCc.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailCc.rightAnchor.constraint(equalTo: emailTitle.rightAnchor),
+                emailCc.topAnchor.constraint(equalTo: emailToTable.bottomAnchor, constant: 0),
+                emailCc.heightAnchor.constraint(equalToConstant: 0)
+            ].activate()
+
+            emailCcTable.removeConstraints(emailCcTable.constraints)
+            [
+                emailCcTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+                emailCcTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailCcTable.topAnchor.constraint(equalTo: emailCc.topAnchor, constant: kEmailRecipientsViewMarginTop),
+                emailCcTable.heightAnchor.constraint(equalToConstant: 0)
+            ].activate()
+
+            emailBcc.removeConstraints(emailBcc.constraints)
+            [
+                emailBcc.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailBcc.rightAnchor.constraint(equalTo: emailTitle.rightAnchor),
+                emailBcc.topAnchor.constraint(equalTo: emailCcTable.bottomAnchor, constant: 0),
+                emailBcc.heightAnchor.constraint(equalToConstant: 0)
+            ].activate()
+
+            emailBccTable.removeConstraints(emailBccTable.constraints)
+            [
+                emailBccTable.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor, constant: 36),
+                emailBccTable.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailBccTable.topAnchor.constraint(equalTo: emailBcc.topAnchor, constant: kEmailRecipientsViewMarginTop),
+                emailBccTable.heightAnchor.constraint(equalToConstant: 0)
+            ].activate()
 
             self.emailDetailButton.setTitle(LocalString._details, for: UIControl.State())
-            self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
-                _ = make?.bottom.equalTo()(self.emailShortTime)
-                _ = make?.top.equalTo()(self.emailShortTime)
-                _ = make?.width.equalTo()(self.emailDetailButton)
-            })
+
+            emailDetailButton.removeConstraints(emailDetailButton.constraints)
+            [
+                emailDetailButton.leftAnchor.constraint(equalTo: emailShortTime.rightAnchor, constant: kEmailDetailButtonMarginLeft),
+                emailDetailButton.bottomAnchor.constraint(equalTo: emailShortTime.bottomAnchor),
+                emailDetailButton.topAnchor.constraint(equalTo: emailShortTime.topAnchor),
+            ].activate()
 
             self.emailTo.sizeToFit()
-            emailTo.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.width.equalTo()(self.emailTo.frame.size.width)
-                _ = make?.height.equalTo()(self.emailTo.frame.size.height)
-                // let _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
-                _ = make?.top.equalTo()(self.emailFromTable.mas_bottom)?.with().offset()(toOffset)
-            }
+            emailTo.removeConstraints(emailTo.constraints)
+            [
+                emailTo.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailTo.widthAnchor.constraint(equalToConstant: emailTo.frame.size.width),
+                emailTo.heightAnchor.constraint(equalToConstant: emailTo.frame.size.height),
+                emailTo.topAnchor.constraint(equalTo: emailFromTable.bottomAnchor, constant: toOffset)
+            ].activate()
 
             self.emailShortTime.sizeToFit()
-            self.emailShortTime.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailHeaderView)
-                _ = make?.width.equalTo()(self.emailShortTime.frame.size.width)
-                _ = make?.height.equalTo()(self.emailShortTime.frame.size.height)
-                _ = make?.top.equalTo()(self.emailToTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
-            }
+            emailShortTime.removeConstraints(emailShortTime.constraints)
+            [
+                emailShortTime.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                emailShortTime.widthAnchor.constraint(equalToConstant: emailShortTime.frame.size.width),
+                emailShortTime.heightAnchor.constraint(equalToConstant: emailShortTime.frame.size.height),
+                emailShortTime.topAnchor.constraint(equalTo: emailToTable.bottomAnchor, constant: kEmailTimeViewMarginTop)
+            ].activate()
 
-            self.emailDetailView.mas_updateConstraints({ (make) -> Void in
-                make?.removeExisting = true
-                _ = make?.left.equalTo()(self.emailTitle)
-                _ = make?.right.equalTo()(self.emailHeaderView)
-                _ = make?.top.equalTo()(self.emailDetailButton.mas_bottom)
-                _ = make?.height.equalTo()(0)
-            })
+            emailDetailView.removeConstraints(emailDetailView.constraints)
+            [
+                emailDetailView.leftAnchor.constraint(equalTo: emailTitle.leftAnchor),
+                emailDetailView.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
+                emailDetailView.topAnchor.constraint(equalTo: emailDetailButton.bottomAnchor),
+                emailDetailView.heightAnchor.constraint(equalToConstant: 0)
+            ].activate()
 
             let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
             let labelViewHeight = labelsView.getContentSize().height
-            self.labelsView.mas_makeConstraints { (make) -> Void in
-                make?.removeExisting = true
-                make?.left.equalTo()(self.emailHeaderView)
-                make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
-                make?.right.equalTo()(self)?.with()?.offset()(kEmailHeaderViewMarginRight)
-                make?.height.equalTo()(labelViewHeight)
-            }
+            labelsView.removeConstraints(labelsView.constraints)
+            [
+                labelsView.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
+                labelsView.topAnchor.constraint(equalTo: emailDetailView.bottomAnchor, constant: lbOffset),
+                labelsView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -kEmailHeaderViewMarginRight),
+                labelsView.heightAnchor.constraint(equalToConstant: labelViewHeight)
+            ].activate()
         }
 
         self.updateSelf(true)

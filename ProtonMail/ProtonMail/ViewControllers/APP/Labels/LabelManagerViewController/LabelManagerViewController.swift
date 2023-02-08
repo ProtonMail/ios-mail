@@ -395,23 +395,23 @@ extension LabelManagerViewController {
 extension LabelManagerViewController {
 
     private enum SubviewFactory {
-        static var navBarButtonTextAttr: [NSAttributedString.Key : Any] = {
+        static var navBarButtonTextAttr: [NSAttributedString.Key : Any] {
             var attr = FontManager.HeadlineSmall
             attr[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
             return attr
-        }()
+        }
 
-        static var navBarReorderButton: UIBarButtonItem = {
+        static var navBarReorderButton: UIBarButtonItem {
             let button = UIBarButtonItem(title: LocalString._reorder, style: .plain, target: nil, action: nil)
             button.setTitleTextAttributes(navBarButtonTextAttr, for: .normal)
             return button
-        }()
+        }
 
-        static var navBarDoneButton: UIBarButtonItem = {
+        static var navBarDoneButton: UIBarButtonItem {
             let button = UIBarButtonItem(title: LocalString._general_done_button, style: .plain, target: nil, action: nil)
             button.setTitleTextAttributes(navBarButtonTextAttr, for: .normal)
             return button
-        }()
+        }
     }
 }
 

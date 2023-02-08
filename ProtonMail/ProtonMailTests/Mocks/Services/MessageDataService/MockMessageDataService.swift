@@ -87,12 +87,3 @@ class MockMessageDataService: MessageDataServiceProtocol {
         completion()
     }
 }
-
-final class MockMessageDataAction: MessageDataActionProtocol {
-
-    func mark(messages: [MessageEntity], labelID: LabelID, unRead: Bool) -> Bool {
-        return true
-    }
-
-
-}

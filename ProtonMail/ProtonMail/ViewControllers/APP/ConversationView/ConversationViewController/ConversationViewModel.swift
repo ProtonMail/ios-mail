@@ -1015,10 +1015,6 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
     func viewModeHasChanged(viewMode: ViewMode) {
         viewModeIsChanged?(viewMode)
     }
-
-    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-
-    }
 }
 
 extension ConversationViewModel {

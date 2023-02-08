@@ -51,9 +51,10 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func fetchMessageDetail(params: Params, callback: @escaping Callback) {
+        let request = MessageDetailRequest(messageID: params.message.messageID)
         dependencies
             .apiService
-            .messageDetail(messageID: params.message.messageID) { [weak self] _, result in
+            .perform(request: request) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return
@@ -139,15 +140,11 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {
-        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let localAttachments = message.attachments.allObjects
             .compactMap { $0 as? Attachment }
             .filter { attach in
                 if attach.isUploaded || attach.isSoftDeleted { return false }
-                if realAttachments {
-                    return !attach.inline()
-                }
-                return true
+                return !attach.inline()
             }
         return localAttachments
     }
@@ -169,17 +166,16 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 }
             }
         }
-        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let attachmentCount = message.attachments
             .compactMap { $0 as? Attachment }
-            .filter { !$0.inline() || !realAttachments }
+            .filter { !$0.inline() }
             .count
         message.numAttachments = NSNumber(value: attachmentCount)
     }
 
     private func updateUnread(message: Message) {
         if let labelID = message.firstValidFolder(), message.unRead {
-            _ = dependencies.messageDataAction.mark(messages: [MessageEntity(message)],
+            _ = dependencies.messageDataAction.mark(messageObjectIDs: [message.objectID],
                                                     labelID: LabelID(labelID),
                                                     unRead: false)
         }
@@ -228,7 +224,6 @@ extension FetchMessageDetail {
         let queueManager: QueueManagerProtocol?
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
-        let realAttachmentsFlagProvider: RealAttachmentsFlagProvider
         let messageDataAction: MessageDataActionProtocol
         let cacheService: CacheServiceProtocol
     }

@@ -23,7 +23,7 @@
 import PromiseKit
 import ProtonCore_UIFoundations
 
-class NonExpandedHeaderViewModel {
+class NonExpandedHeaderViewModel: HeaderViewModel {
     enum TrackerDetectionStatus {
         case trackersFound
         case noTrackersFound
@@ -31,16 +31,15 @@ class NonExpandedHeaderViewModel {
         case proxyNotEnabled
     }
 
-    var reloadView: (() -> Void)?
     var updateTimeLabel: (() -> Void)?
 
     var shouldShowSentImage: Bool {
-        guard let message = infoProvider?.message else { return false }
+        let message = infoProvider.message
         return message.isSent && message.messageLocation != .sent
     }
 
     var trackerDetectionStatus: TrackerDetectionStatus {
-        guard let infoProvider = infoProvider, infoProvider.imageProxyEnabled else {
+        guard infoProvider.imageProxyEnabled else {
             return .proxyNotEnabled
         }
 
@@ -51,27 +50,14 @@ class NonExpandedHeaderViewModel {
         return trackerProtectionSummary.trackers.isEmpty ? .noTrackersFound : .trackersFound
     }
 
-    private(set) var infoProvider: MessageInfoProvider? {
-        didSet { reloadView?() }
-    }
-
     private var timer: Timer?
-    private let isScheduledSend: Bool
-
-    init(isScheduledSend: Bool) {
-        self.isScheduledSend = isScheduledSend
-    }
 
     deinit {
         timer?.invalidate()
     }
 
-    func providerHasChanged(provider: MessageInfoProvider) {
-        infoProvider = provider
-    }
-
     func setupTimerIfNeeded() {
-        guard isScheduledSend else {
+        guard infoProvider.message.isScheduledSend else {
             return
         }
         #if DEBUG

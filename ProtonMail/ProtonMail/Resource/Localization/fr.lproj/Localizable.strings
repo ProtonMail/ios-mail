@@ -356,7 +356,7 @@
 "Cancel Check" = "Annuler la vérification";
 
 /* Title */
-"Cancelling" = "Annulation en cours";
+"Canceling" = "Annulation en cours";
 
 /* Warning message */
 "Cannot empty folder right now." = "Impossible de vider le dossier maintenant.";
@@ -841,7 +841,7 @@
 "Expand folder" = "Agrandir le dossier";
 
 /* alert title */
-"Expiration not supported" = "Fonction de message avec délai d'expiration non prise en charge";
+"Expiration not supported" = "La fonction de message avec délai d'expiration n'est pas prise en charge.";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Notre équipe du service client essaiera d'activer votre abonnement manuellement si vous acceptez de joindre les données techniques que l'App Store a fournies à l'application au moment de l'achat. Ces données ne comprennent aucun détail sur votre compte iTunes, votre identifiant Apple, les cartes de paiement liées ou toute autre information sur l'utilisateur. Les données techniques nous aident uniquement à contrôler et à vérifier que la transaction a été effectuée sur les serveurs de l'App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Notre système a marqué ce message comme étant une tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu'il est légitime.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Notre système a signalé ce message comme tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu'il est légitime.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Dossier parent";

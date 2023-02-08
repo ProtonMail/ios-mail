@@ -19,7 +19,8 @@ protocol SingleMessageContentUIProtocol: AnyObject {
 
 class SingleMessageContentViewModel {
 
-    private(set) var messageInfoProvider: MessageInfoProvider
+    let messageInfoProvider: MessageInfoProvider
+
     private(set) var message: MessageEntity {
         didSet { propagateMessageData() }
     }
@@ -50,8 +51,6 @@ class SingleMessageContentViewModel {
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
 
-    private var isDetailedDownloaded: Bool?
-
     var isExpanded = false {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
     }
@@ -69,16 +68,15 @@ class SingleMessageContentViewModel {
         }
     }
 
-    private(set) var nonExapndedHeaderViewModel: NonExpandedHeaderViewModel? {
+    private var nonExpandedHeaderViewModel: NonExpandedHeaderViewModel? {
         didSet {
-            guard let viewModel = nonExapndedHeaderViewModel else { return }
-            viewModel.providerHasChanged(provider: messageInfoProvider)
+            guard let viewModel = nonExpandedHeaderViewModel else { return }
             embedNonExpandedHeader?(viewModel)
             expandedHeaderViewModel = nil
         }
     }
 
-    private(set) var expandedHeaderViewModel: ExpandedHeaderViewModel? {
+    private var expandedHeaderViewModel: ExpandedHeaderViewModel? {
         didSet {
             guard let viewModel = expandedHeaderViewModel else { return }
             embedExpandedHeader?(viewModel)
@@ -109,7 +107,6 @@ class SingleMessageContentViewModel {
         )
         messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
-        self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader
         self.bannerViewModel = childViewModels.bannerViewModel
         bannerViewModel.providerHasChanged(provider: messageInfoProvider)
         self.attachmentViewModel = childViewModels.attachments
@@ -117,6 +114,8 @@ class SingleMessageContentViewModel {
         self.messageService = user.messageService
         self.dependencies = dependencies
         self.goToDraft = goToDraft
+
+        createNonExpandedHeaderViewModel()
 
         self.bannerViewModel.editScheduledMessage = { [weak self] in
             guard let self = self else {
@@ -145,12 +144,8 @@ class SingleMessageContentViewModel {
     }
 
     func propagateMessageData() {
-        if self.isDetailedDownloaded != message.isDetailDownloaded && message.isDetailDownloaded {
-            self.isDetailedDownloaded = true
-        }
-
         messageInfoProvider.update(message: message)
-        nonExapndedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
+        nonExpandedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
         expandedHeaderViewModel?.providerHasChanged(provider: messageInfoProvider)
         bannerViewModel.providerHasChanged(provider: messageInfoProvider)
         messageBodyViewModel.update(spam: message.spam)
@@ -166,8 +161,8 @@ class SingleMessageContentViewModel {
         // The parsedHeader is added in the MAILIOS-2335
         // the user update from the older app doesn't have the parsedHeader
         // have to call api again to fetch it
-        self.isDetailedDownloaded = !shouldLoadBody && !message.parsedHeaders.isEmpty
-        guard !(self.isDetailedDownloaded ?? false) else {
+        let isDetailedDownloaded = !shouldLoadBody && !message.parsedHeaders.isEmpty
+        guard !isDetailedDownloaded else {
             if !isEmbedInConversationView {
                 markReadIfNeeded()
             }
@@ -199,12 +194,12 @@ class SingleMessageContentViewModel {
 
     func markReadIfNeeded() {
         guard message.unRead else { return }
-        messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
+        messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: context.labelId, unRead: false)
     }
 
     func markUnreadIfNeeded() {
         guard !message.unRead else { return }
-        messageService.mark(messages: [message], labelID: context.labelId, unRead: true)
+        messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: context.labelId, unRead: true)
     }
 
     func getCypherURL() -> URL? {
@@ -233,7 +228,7 @@ class SingleMessageContentViewModel {
     }
 
     private func createNonExpandedHeaderViewModel() {
-        nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(isScheduledSend: messageInfoProvider.message.isScheduledSend)
+        nonExpandedHeaderViewModel = NonExpandedHeaderViewModel(infoProvider: messageInfoProvider)
     }
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
@@ -306,7 +301,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 
     func update(senderContact: ContactVO?) {
         DispatchQueue.main.async {
-            self.nonExapndedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
+            self.nonExpandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
             self.expandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
             self.bannerViewModel.providerHasChanged(provider: self.messageInfoProvider)
         }
@@ -322,7 +317,6 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         DispatchQueue.main.async {
             self.attachmentViewModel.attachmentHasChanged(
                 attachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
-                inlines: (self.messageInfoProvider.inlineAttachments ?? []).map(AttachmentNormal.init),
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
             self.uiDelegate?.updateAttachmentBannerIfNeeded()

@@ -158,17 +158,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     let addrItems: [SettingsAddressItem] = [.addr, .displayName, .signature, .mobileSignature]
 
-    var mailboxItems: [SettingsMailboxItem] {
-        var items: [SettingsMailboxItem] = [.privacy, .undoSend]
-
-        if userManager.conversationStateService.isConversationFeatureEnabled {
-            items.append(.conversation)
-        }
-
-        items.append(contentsOf: [.labels, .folders])
-
-        return items
-    }
+    var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
 
     private let userManager: UserManager
 
@@ -176,7 +166,6 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     init(user: UserManager) {
         self.userManager = user
-        user.conversationStateService.add(delegate: self)
     }
 
     var storageText: String {
@@ -267,12 +256,4 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             }
         }
     }
-}
-
-extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {
-    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-        reloadTable?()
-    }
-
-    func viewModeHasChanged(viewMode: ViewMode) {}
 }

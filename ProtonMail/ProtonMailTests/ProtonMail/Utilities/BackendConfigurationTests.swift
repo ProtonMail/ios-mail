@@ -30,10 +30,6 @@ class BackendConfigurationTests: XCTestCase {
         ]
     }
 
-    func testSingleton_returnsProdEnv() {
-        assertIsProduction(configuration: BackendConfiguration.shared)
-    }
-
     func testInit_whenNoCustomDomain_returnsProdEnv() {
         let result = BackendConfiguration(environmentVariables: [:])
         assertIsProduction(configuration: result)

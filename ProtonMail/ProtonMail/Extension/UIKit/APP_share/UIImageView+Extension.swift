@@ -20,9 +20,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_UIFoundations
 
 extension UIImageView {
+    class func make(
+        icon iconKeyPath: KeyPath<ProtonIconSet, ProtonIcon>,
+        contentMode: UIView.ContentMode = .scaleAspectFit,
+        tintColor tintColorKeyPath: KeyPath<ProtonColorPaletteiOS, ProtonColor>
+    ) -> UIImageView {
+        make(image: IconProvider[dynamicMember: iconKeyPath], contentMode: contentMode, tintColor: tintColorKeyPath)
+    }
+
+    class func make(
+        image: UIImage,
+        contentMode: UIView.ContentMode = .scaleAspectFit,
+        tintColor tintColorKeyPath: KeyPath<ProtonColorPaletteiOS, ProtonColor>
+    ) -> UIImageView {
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = contentMode
+        imageView.tintColor = ColorProvider[dynamicMember: tintColorKeyPath]
+        return imageView
+    }
+
     func setupImage(contentMode: UIView.ContentMode = .center,
                     renderingMode: UIImage.RenderingMode = .alwaysTemplate,
                     scale: CGFloat = 0.5,

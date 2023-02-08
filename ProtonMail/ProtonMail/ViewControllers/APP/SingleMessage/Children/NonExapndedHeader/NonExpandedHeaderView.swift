@@ -23,26 +23,18 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class NonExpandedHeaderView: UIView {
+class NonExpandedHeaderView: HeaderView {
 
-    let initialsContainer = SubviewsFactory.container
-    let initialsLabel = UILabel.initialsLabel
-    let senderLabel = SubviewsFactory.senderLabel
     let senderAddressLabel = TextControl()
-    let lockImageView = SubviewsFactory.lockImageView
-    let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
     lazy var originImageContainer = StackViewContainer(view: originImageView)
     let sentImageView = SubviewsFactory.sentImageView
     lazy var sentImageContainer = StackViewContainer(view: sentImageView)
-    let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientTitle = SubviewsFactory.recipientTitle
     let recipientLabel = SubviewsFactory.recipientLabel
     let tagsView = SingleRowTagsView()
     let trackerProtectionImageView = SubviewsFactory.trackerProtectionImageView
-    let starImageView = SubviewsFactory.starImageView
-    private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
     var expandView: (() -> Void)?
 
@@ -196,79 +188,41 @@ class NonExpandedHeaderView: UIView {
 
 }
 
-private enum SubviewsFactory {
+extension NonExpandedHeaderView {
+    private class SubviewsFactory: HeaderView.SubviewsFactory {
+        class var originImageView: UIImageView {
+            let imageView = UIImageView(frame: .zero)
+            imageView.contentMode = .scaleAspectFit
+            imageView.tintColor = ColorProvider.IconWeak
+            return imageView
+        }
 
-    static var originImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = ColorProvider.IconWeak
-        return imageView
-    }
+        class var sentImageView: UIImageView {
+            let imageView = UIImageView(frame: .zero)
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = IconProvider.paperPlane
+            imageView.tintColor = ColorProvider.IconWeak
+            return imageView
+        }
 
-    static var sentImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.paperPlane
-        imageView.tintColor = ColorProvider.IconWeak
-        return imageView
-    }
+        class var recipientTitle: UILabel {
+            let label = UILabel(frame: .zero)
+            label.set(text: "\(LocalString._general_to_label): ", preferredFont: .footnote)
+            label.setContentCompressionResistancePriority(.required, for: .horizontal)
+            return label
+        }
 
-    static var container: UIView {
-        let view = UIView()
-        view.backgroundColor = ColorProvider.InteractionWeak
-        view.layer.cornerRadius = 8
-        view.isUserInteractionEnabled = false
-        return view
-    }
+        static var recipientLabel: UILabel {
+            let label = UILabel(frame: .zero)
+            label.set(text: nil, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
+            return label
+        }
 
-    static var starImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.starFilled
-        imageView.tintColor = ColorProvider.NotificationWarning
-        return imageView
-    }
-
-    static var lockImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }
-
-    static var timeLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.textAlignment = .right
-        label.set(text: nil,
-                  preferredFont: .footnote,
-                  textColor: ColorProvider.TextWeak)
-        return label
-    }
-
-    static var senderLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.set(text: nil, preferredFont: .subheadline)
-        return label
-    }
-
-    static var recipientTitle: UILabel {
-        let label = UILabel(frame: .zero)
-        label.set(text: "\(LocalString._general_to_label): ", preferredFont: .footnote)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return label
-    }
-
-    static var recipientLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.set(text: nil,
-                  preferredFont: .footnote,
-                  textColor: ColorProvider.TextWeak)
-        return label
-    }
-
-    static var trackerProtectionImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = true
-        return imageView
+        static var trackerProtectionImageView: UIImageView {
+            let imageView = UIImageView(frame: .zero)
+            imageView.contentMode = .scaleAspectFit
+            imageView.isHidden = true
+            return imageView
+        }
     }
 }

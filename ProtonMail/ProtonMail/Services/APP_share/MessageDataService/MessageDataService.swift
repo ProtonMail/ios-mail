@@ -350,7 +350,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let msgID = message.messageID
         let closure = runInQueue ? self.queueManager?.queue: noQueue
         closure? {
-            let completionWrapper: API.JSONCompletion = { _, result in
+            let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { _, result in
                 let objectId = message.objectID.rawValue
                 self.contextProvider.performOnRootSavingContext { context in
                     let response = try? result.get()
@@ -377,14 +377,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         return
                                     }
                                 }
-                                let realAttachments = userCachedStatus.realAttachments
                                 let localAttachments = newMessage.attachments.allObjects.compactMap { $0 as? Attachment}.filter { attach in
                                     if attach.isSoftDeleted {
                                         return false
-                                    } else if realAttachments {
-                                        return !attach.inline()
                                     }
-                                    return true
+                                    return !attach.inline()
                                 }
                                 let localAttachmentCount = localAttachments.count
 
@@ -414,7 +411,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messages: [MessageEntity(newMessage)], labelID: LabelID(labelID), unRead: false)
+                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
                                 }
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
@@ -443,13 +440,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 }
             }
-            self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
+            let request = MessageDetailRequest(messageID: msgID)
+            self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
         }
     }
 
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Error?) -> Void) {
         self.queueManager?.queue {
-            let completionWrapper: API.JSONCompletion = { task, result in
+            let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
                 self.contextProvider.performOnRootSavingContext { context in
                     switch result {
                     case .success(let response):
@@ -472,7 +470,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
                                     if let labelID = messageOut.firstValidFolder() {
-                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
+                                        self.mark(
+                                            messageObjectIDs: [messageOut.objectID],
+                                            labelID: LabelID(labelID),
+                                            unRead: false
+                                        )
                                     }
 
                                     DispatchQueue.main.async {
@@ -499,17 +501,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             self.contextProvider.performOnRootSavingContext { context in
                 guard
-                    let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+                    let message = Message.messageForMessageID(messageID.rawValue,
+                                                              inManagedObjectContext: context),
+                    message.isDetailDownloaded
                 else {
-                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
-                    return
-                }
-                guard message.isDetailDownloaded else {
-                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    let request = MessageDetailRequest(messageID: messageID)
+                    self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
                     return
                 }
                 if let labelID = message.firstValidFolder() {
-                    self.mark(messages: [MessageEntity(message)], labelID: LabelID(labelID), unRead: false)
+                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
                 }
                 DispatchQueue.main.async {
                     completion(nil)

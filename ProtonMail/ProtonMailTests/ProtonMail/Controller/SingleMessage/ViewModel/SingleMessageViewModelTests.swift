@@ -23,7 +23,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var contextProviderMock: MockCoreDataContextProvider!
     var sut: SingleMessageViewModel!
     var toolbarProviderMock: MockToolbarActionProvider!
-    var realAttachmentFlagProviderMock: MockRealAttachmentsFlagProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
@@ -32,7 +31,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         super.setUp()
         toolbarProviderMock = MockToolbarActionProvider()
         contextProviderMock = MockCoreDataContextProvider()
-        realAttachmentFlagProviderMock = .init()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
@@ -43,7 +41,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         sut = nil
         contextProviderMock = nil
         toolbarProviderMock = nil
-        realAttachmentFlagProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         toolbarCustomizeSpotlightStatusProvider = nil
     }
@@ -218,7 +215,6 @@ final class SingleMessageViewModelTests: XCTestCase {
                 spamType: .none,
                 user: fakeUser
             ),
-            nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelID, message: message, user: fakeUser),
             attachments: .init()
         )
@@ -228,7 +224,6 @@ final class SingleMessageViewModelTests: XCTestCase {
                 queueManager: nil,
                 apiService: fakeUser.apiService,
                 contextProvider: contextProviderMock,
-                realAttachmentsFlagProvider: realAttachmentFlagProviderMock,
                 messageDataAction: fakeUser.messageService,
                 cacheService: fakeUser.cacheService
             )

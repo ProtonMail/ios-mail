@@ -232,16 +232,10 @@ extension UIImage: AttachmentConvertible {
 
                     attachment.message = message
 
-                    if userCachedStatus.realAttachments {
-                        let attachments = message.attachments
-                            .compactMap({ $0 as? Attachment })
-                            .filter { !$0.inline() }
-                        message.numAttachments = NSNumber(value: attachments.count)
-                    } else {
-                        let number = message.numAttachments.int32Value
-                        let newNum = number > 0 ? number + 1 : 1
-                        message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                    }
+                    let attachments = message.attachments
+                        .compactMap({ $0 as? Attachment })
+                        .filter { !$0.inline() }
+                    message.numAttachments = NSNumber(value: attachments.count)
                     attachment.order = message.numAttachments.int32Value
                     _ = context.saveUpstreamIfNeeded()
                     fulfill(attachment)
@@ -286,16 +280,10 @@ extension Data: AttachmentConvertible {
                 }
                 attachment.message = message
 
-                if userCachedStatus.realAttachments {
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                } else {
-                    let number = message.numAttachments.int32Value
-                    let newNum = number > 0 ? number + 1 : 1
-                    message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
-                }
+                let attachments = message.attachments
+                    .compactMap({ $0 as? Attachment })
+                    .filter { !$0.inline() }
+                message.numAttachments = NSNumber(value: attachments.count)
                 attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
                 fulfill(attachment)
@@ -333,16 +321,10 @@ extension URL: AttachmentConvertible {
                 }
                 attachment.message = message
 
-                if userCachedStatus.realAttachments {
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                } else {
-                    let number = message.numAttachments.int32Value
-                    let newNum = number > 0 ? number + 1 : 1
-                    message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                }
+                let attachments = message.attachments
+                    .compactMap({ $0 as? Attachment })
+                    .filter { !$0.inline() }
+                message.numAttachments = NSNumber(value: attachments.count)
                 attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
                 fulfill(attachment)

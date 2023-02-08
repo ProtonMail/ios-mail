@@ -47,28 +47,20 @@ enum MessageDisplayMode {
 struct BodyParts {
     let originalBody: String
     let strippedBody: String
-    let darkModeCSS: String?
 
     let bodyHasHistory: Bool
 
-    init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
+    init(originalBody: String) {
+        // Remove color related `!important`
         self.originalBody = originalBody
-        let level = CSSMagic.darkStyleSupportLevel(htmlString: originalBody,
-                                                   isNewsLetter: isNewsLetter,
-                                                   isPlainText: isPlainText)
-        switch level {
-        case .protonSupport:
-            self.darkModeCSS = CSSMagic.generateCSSForDarkMode(htmlString: originalBody)
-        case .notSupport:
-            self.darkModeCSS = nil
-        case .nativeSupport:
-            self.darkModeCSS = ""
-        }
-
+            .preg_replace(
+                "((color|bgcolor|background-color|background|border): .*) (!important);?",
+                replaceto: "$1;"
+            )
         var bodyHasHistory = false
 
         do {
-            let fullHTMLDocument = try SwiftSoup.parse(originalBody)
+            let fullHTMLDocument = try SwiftSoup.parse(self.originalBody)
             fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
 
             for quoteElement in String.quoteElements {
@@ -94,6 +86,21 @@ struct BodyParts {
         case .expanded:
             return originalBody
         }
+    }
+
+    func darkModeCSS(body: String) -> String? {
+        let document = CSSMagic.parse(htmlString: body)
+        let level = CSSMagic.darkStyleSupportLevel(document: document)
+        let css: String?
+        switch level {
+        case .protonSupport:
+            css = CSSMagic.generateCSSForDarkMode(document: document)
+        case .notSupport:
+            css = nil
+        case .nativeSupport:
+            css = ""
+        }
+        return css
     }
 }
 

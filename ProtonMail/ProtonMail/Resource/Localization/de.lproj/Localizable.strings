@@ -138,7 +138,7 @@
 "Add photo" = "Foto hinzufügen";
 
 /* mark message star */
-"Add Star" = "Kennzeichnung hinzufügen";
+"Add Star" = "Markierung hinzufügen";
 
 /* new contacts add Title */
 "Add title" = "Titel hinzufügen";
@@ -392,7 +392,7 @@
 "Cancel Check" = "Überprüfung abbrechen";
 
 /* Title */
-"Cancelling" = "Wird abgebrochen";
+"Canceling" = "Wird abgebrochen";
 
 /* Warning message */
 "Cannot empty folder right now." = "Leeren des Ordners ist derzeit nicht möglich.";
@@ -1428,7 +1428,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Unser Kundendienstteam wird versuchen, deinen Serviceplan manuell zu aktivieren, wenn du zustimmst, die technischen Daten anzuhängen, die der App Store der App zum Zeitpunkt des Kaufs zur Verfügung gestellt hat. Diese Daten enthalten keine Details über dein iTunes-Konto, deine Apple-ID, verknüpfte Zahlungskarten oder andere Benutzerinformationen. Die technischen Daten helfen uns lediglich zu überprüfen, ob die Transaktion auf den Servern des App Stores durchgeführt wurde.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Unser System hat diese Nachricht als Phishing-Versuch gekennzeichnet. Bitte überprüfe, ob sie seriös ist.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Unser System hat diese Nachricht als Phishing-Versuch gekennzeichnet. Bitte überprüfe, ob sie seriös ist.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Übergeordneter Ordner";
@@ -1833,15 +1833,15 @@
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
-"Star" = "Kennzeichnen";
+"Star" = "Markieren";
 
 /* Title */
-"Star/unstar" = "Kennzeichnen/Kennzeichnung aufheben";
+"Star/unstar" = "Markieren/Markierung entfernen";
 
 /* menu title
    Springboard (3D Touch) shortcuts action
    VoiceOver: email is starred */
-"Starred" = "Gekennzeichnet";
+"Starred" = "Markiert";
 
 /* contact placeholder */
 "State" = "Bundesstaat";
@@ -2083,7 +2083,7 @@
 "Touch ID" = "Touch ID";
 
 /* The title of the track reward button in referral share view. */
-"Track your rewards" = "Deine Belohnungen verfolgen";
+"Track your rewards" = "Verfolge deine Belohnungen";
 
 /* mail location desc
    menu title */
@@ -2147,7 +2147,7 @@
 "Unread" = "Ungelesen";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Kennzeichnung entfernen";
+"Unstar" = "Markierung entfernen";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Aus Verteilerliste austragen";

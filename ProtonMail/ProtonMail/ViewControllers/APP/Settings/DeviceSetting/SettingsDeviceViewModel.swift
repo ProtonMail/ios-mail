@@ -133,7 +133,7 @@ final class SettingsDeviceViewModel {
         self.userManager = user
         self.users = users
         self.biometricStatus = biometricStatus
-        if #available(iOS 13, *), UserInfo.isDarkModeEnable {
+        if #available(iOS 13, *) {
             appSettigns.insert(.darkMode, at: 0)
         }
 

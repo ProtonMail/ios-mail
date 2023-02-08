@@ -526,29 +526,24 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.allEmails, [testData])
     }
 
-    func testMoveConversation() {
+    func testTrashFromActionSheet_trashedSelectedConversations() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
         let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
         sut.setupFetchController(nil)
 
-        let expectation1 = expectation(description: "Closure called")
         for id in conversationIDs {
             sut.select(id: id)
         }
-        sut.moveSelectedIDs(
-            from: Message.Location.inbox.labelID,
-            to: Message.Location.trash.labelID
-        ) {
-            XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
-            let argument = self.conversationProviderMock.moveStub.lastArguments!
-            XCTAssertEqual(Set(argument.first.map(\.rawValue)), Set(conversationIDs))
 
-            XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
-            XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
+        sut.handleActionSheetAction(.trash)
+
+        XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
+        let argument = self.conversationProviderMock.moveStub.lastArguments!
+        XCTAssertEqual(Set(argument.first.map(\.rawValue)), Set(conversationIDs))
+
+        XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
+        XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
     }
 
     func testMarkConversationAsRead() {
@@ -651,28 +646,22 @@ class MailboxViewModelTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testDeleteConversationPermanently() {
+    func testDeleteConversationPermanently() throws {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
         let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
         sut.setupFetchController(nil)
 
-        let expectation1 = expectation(description: "Closure called")
         for id in conversationIDs {
             sut.select(id: id)
         }
-        sut.deleteSelectedIDs()
-            XCTAssertTrue(self.conversationProviderMock.deleteConversationsStub.wasCalledExactlyOnce)
-            do {
-                let argument = try XCTUnwrap(self.conversationProviderMock.deleteConversationsStub.lastArguments)
-                XCTAssertEqual(Set(argument.first.map(\.rawValue)), Set(conversationIDs))
-                XCTAssertEqual(argument.a2, self.sut.labelID)
-            } catch {
-                XCTFail("Should not reach here")
-            }
-            expectation1.fulfill()
 
-        waitForExpectations(timeout: 1, handler: nil)
+        sut.deleteSelectedIDs()
+
+        XCTAssertTrue(self.conversationProviderMock.deleteConversationsStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(self.conversationProviderMock.deleteConversationsStub.lastArguments)
+        XCTAssertEqual(Set(argument.first.map(\.rawValue)), Set(conversationIDs))
+        XCTAssertEqual(argument.a2, self.sut.labelID)
     }
 
     func testHandleConversationMoveToAction() {
@@ -980,6 +969,22 @@ class MailboxViewModelTests: XCTestCase {
 
         XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalled)
         XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.listViewActions, [.unstar, .markRead])
+    }
+
+    func testSwipeGesturesIgnoreSelection() throws {
+        let selectedConversationIDs = ["foo", "bar"]
+
+        for conversationID in selectedConversationIDs {
+            sut.select(id: conversationID)
+        }
+
+        sut.handleSwipeAction(.trash, on: .conversation(.make(conversationID: ConversationID("xyz"))))
+
+        XCTAssertEqual(conversationProviderMock.moveStub.callCounter, 1)
+        let lastMoveArguments = try XCTUnwrap(conversationProviderMock.moveStub.lastArguments)
+        XCTAssertEqual(lastMoveArguments.a1, ["xyz"])
+        XCTAssertEqual(lastMoveArguments.a3, Message.Location.trash.labelID)
+
     }
 }
 

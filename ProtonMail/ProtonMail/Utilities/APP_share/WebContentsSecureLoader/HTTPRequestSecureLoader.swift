@@ -118,9 +118,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             css = WebContents.cssLightModeOnly
         case .dark:
             css = WebContents.css
-			if let supplementCSS = contents.supplementCSS,
-               !supplementCSS.isEmpty {
-				css += supplementCSS
+			if let supplementCSS = contents.supplementCSS {
+				css = supplementCSS + css
             } else {
                 // means this message doesn't support dark mode style
                 css = WebContents.cssLightModeOnly
@@ -139,10 +138,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         var style = document.createElement('style');
         style.type = 'text/css';
         style.appendChild(document.createTextNode(`\(css)`));
-        document.getElementsByTagName('head')[0].appendChild(style);
 
         let wrapper = document.createElement('div');
         wrapper.innerHTML = messageHead;
+        wrapper.append(style);
         Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
 
         var metaWidth = document.createElement('meta');
