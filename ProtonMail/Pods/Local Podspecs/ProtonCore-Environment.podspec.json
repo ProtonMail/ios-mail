@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Environment",
-  "version": "3.27.0",
+  "version": "3.28.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "tag": "3.28.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-Doh": [
-      "3.27.0"
+      "3.28.0"
     ],
     "TrustKit": [
 
@@ -53,7 +53,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "3.27.0"
+          "3.28.0"
         ],
         "OHHTTPStubs/Swift": [
 

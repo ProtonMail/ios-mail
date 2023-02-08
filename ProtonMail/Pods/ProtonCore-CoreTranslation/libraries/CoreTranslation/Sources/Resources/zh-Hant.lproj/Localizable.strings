@@ -212,6 +212,9 @@
 /* Error message */
 "Failed to get list of available products from App Store." = "無法從 App Store 取得可用產品清單。";
 
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "為期 %@";
+
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "為保障您帳號安全，我們必須驗證您確實擁有輸入的電郵位址。我們已傳送一組驗證碼至 %@ ，請在下方輸入驗證碼：";
 
@@ -364,6 +367,9 @@
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "隱私權第一的電郵與行事曆解決方案，是您日常聯繫通訊需求的最佳選擇。";
 
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "著重儲存空間的方案，提供 200 GB 雲端儲存空間，以便保護您的檔案私密。";
+
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "隱私權第一，無限量 Proton 服務吃到飽的終極套裝包。";
 
@@ -471,6 +477,9 @@
 /* *
  * Login create address */
 "Proton address required" = "需要 Proton 地址";
+
+/* Username field title */
+"Proton email or username" = "Proton 電子郵件或使用者名稱";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton 免費版";
@@ -609,6 +618,9 @@
 /* IAP in progress banner message */
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP 訂購授權已在處理中，請參考 Apple 訂購與取消授權的相關說明。";
 
+/* Message shown when we suspect that the Proton servers are blocked */
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "無法連線到 Proton 伺服器。可能是錯誤的網路組態設定、Proton 伺服器暫停服務，又或者 Proton 伺服器遭到封鎖所導致";
+
 /* Networking insecure connection error */
 "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "連接 Proton API 時，TLS 憑證驗證失敗。您現階段網路連線很可能會受到監控。基於防禦您的資料安全無虞，我們正管制此應用程式存取 Proton API。若需登入或存取您的帳號，請切換至新的網路後，再試著連接。";
 
@@ -726,6 +738,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功登記，但您的繳款未被處理。\n欲重新傳送繳款資訊，請按重試。\n您只會被收取一次款項。\n如果問題持續，請聯絡客戶支援。";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "您需要一個 Proton 電子郵件地址，以便使用 Proton Mail 和 Proton Calendar。\n您將仍可使用 %@ 登入，以及復原您的帳號。";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "您將會被系統登出，所有與此關聯的資料也將從此裝置上移除。";
 
@@ -750,6 +765,12 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "您的方案自動續購日期為 %@";
 
+/* Signup summary no plan description */
+"Your Proton account was successfully created." = "您的 Proton 帳號已成功建立。";
+
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "您的工作階段已逾期。請重新登入。";
 

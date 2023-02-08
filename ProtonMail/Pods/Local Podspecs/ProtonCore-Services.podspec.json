@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Services",
-  "version": "3.27.0",
+  "version": "3.28.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "tag": "3.28.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,31 +34,34 @@
 
     ],
     "ProtonCore-DataModel": [
-      "3.27.0"
+      "3.28.0"
     ],
     "ProtonCore-Doh": [
-      "3.27.0"
+      "3.28.0"
     ],
     "ProtonCore-Log": [
-      "3.27.0"
+      "3.28.0"
     ],
     "ProtonCore-Networking": [
-      "3.27.0"
+      "3.28.0"
     ],
     "ProtonCore-Utilities": [
-      "3.27.0"
+      "3.28.0"
     ],
     "ProtonCore-Environment": [
-      "3.27.0"
+      "3.28.0"
     ],
     "ProtonCore-FeatureSwitch": [
-      "3.27.0"
+      "3.28.0"
     ]
   },
   "default_subspecs": [
 
   ],
-  "source_files": "libraries/Services/Sources/*.swift",
+  "source_files": [
+    "libraries/Services/Sources/*.swift",
+    "libraries/Services/Sources/**/*.swift"
+  ],
   "testspecs": [
     {
       "name": "UnitTests",
@@ -66,10 +69,10 @@
       "source_files": "libraries/Services/Tests/Unit/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "3.27.0"
+          "3.28.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "3.27.0"
+          "3.28.0"
         ]
       }
     },
@@ -78,16 +81,16 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "3.27.0"
+          "3.28.0"
         ],
         "ProtonCore-Challenge": [
-          "3.27.0"
+          "3.28.0"
         ],
         "ProtonCore-Authentication": [
-          "3.27.0"
+          "3.28.0"
         ],
         "ProtonCore-Login": [
-          "3.27.0"
+          "3.28.0"
         ]
       },
       "source_files": "libraries/Services/Tests/Integration/*.swift"

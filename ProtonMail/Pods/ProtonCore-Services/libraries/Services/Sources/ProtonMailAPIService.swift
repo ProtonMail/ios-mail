@@ -167,9 +167,9 @@ public class PMAPIService: APIService {
         label: "ch.proton.api.refresh_completion", qos: .userInitiated, attributes: [.concurrent]
     )
 
-    let challengeParametersProvider: ChallengeParametersProvider
+    public let challengeParametersProvider: ChallengeParametersProvider
     var deviceFingerprints: ChallengeProperties {
-        ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+        ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
                             productPrefix: challengeParametersProvider.prefix)
     }
     

@@ -166,12 +166,10 @@ final class SignupCoordinator {
         case let .over(viewController, modalTransitionStyle):
             let navigationController = LoginNavigationViewController(rootViewController: signupViewController)
             self.navigationController = navigationController
-            container.setupHumanVerification(viewController: navigationController)
             navigationController.modalTransitionStyle = modalTransitionStyle
             viewController.present(navigationController, animated: true, completion: nil)
         case .inside(let navigationViewController):
             self.navigationController = navigationViewController
-            container.setupHumanVerification(viewController: navigationViewController)
             navigationViewController.setViewControllers([signupViewController], animated: true)
         }
     }

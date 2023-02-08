@@ -310,7 +310,7 @@ extension PMAPIService {
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authRetry, authRetryRemains > 0, let authCredential = authCredential {
 
-            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
                                                          productPrefix: challengeParametersProvider.prefix)
             refreshAuthCredential(credentialsCausing401: authCredential,
                                   withoutSupportForUnauthenticatedSessions: false,
@@ -399,7 +399,7 @@ extension PMAPIService {
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authRetry, authRetryRemains > 0, let authCredential = authCredential {
 
-            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
                                                          productPrefix: challengeParametersProvider.prefix)
             refreshAuthCredential(credentialsCausing401: authCredential,
                                   withoutSupportForUnauthenticatedSessions: false,
