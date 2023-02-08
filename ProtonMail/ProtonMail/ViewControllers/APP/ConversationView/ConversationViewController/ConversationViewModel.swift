@@ -1,6 +1,7 @@
 import CoreData
 import ProtonCore_UIFoundations
 import ProtonCore_DataModel
+import ProtonMailAnalytics
 
 enum MessageDisplayRule {
     case showNonTrashedOnly
@@ -522,7 +523,26 @@ extension ConversationViewModel {
             tableView.beginUpdates()
         case let .didUpdate(messages):
             updateDataSource(with: messages)
-            tableView.endUpdates()
+            do {
+                try ObjC.catchException {
+                    tableView.endUpdates()
+                }
+                Breadcrumbs.shared.clearCrumbs(for: .conversationViewEndUpdatesCrash)
+            } catch {
+                // unfortunately the error doesn't contain anything useful
+                assertionFailure("\(error)")
+
+                let trace = Breadcrumbs.shared.trace(for: .conversationViewEndUpdatesCrash)
+                Analytics.shared.sendError(.conversationViewEndUpdatesCrash, trace: trace)
+
+                // this call will sync the data again at the expense of no animation
+                tableView.reloadData()
+
+                /// It's necessary to call this again for the changes made by `reloadData` to be visible,
+                /// because we're in the middle of an update after the `beginUpdates` call above.
+                /// Now it's safe, so we don't need to catch again.
+                tableView.endUpdates()
+            }
 
             observeNewMessages()
 
@@ -538,7 +558,7 @@ extension ConversationViewModel {
             refreshView?()
         case let .insert(row):
             tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
-        case let .update(message, _, _):
+        case let .update(message):
             let messageId = message.messageID
             guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }),
                   let viewModel = messagesDataSource[index].messageViewModel else {
