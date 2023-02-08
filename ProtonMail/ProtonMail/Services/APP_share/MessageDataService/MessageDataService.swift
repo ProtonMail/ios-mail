@@ -350,7 +350,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let msgID = message.messageID
         let closure = runInQueue ? self.queueManager?.queue: noQueue
         closure? {
-            let completionWrapper: API.JSONCompletion = { _, result in
+            let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { _, result in
                 let objectId = message.objectID.rawValue
                 self.contextProvider.performOnRootSavingContext { context in
                     let response = try? result.get()
@@ -440,13 +440,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 }
             }
-            self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
+            let request = MessageDetailRequest(messageID: msgID)
+            self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
         }
     }
 
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Error?) -> Void) {
         self.queueManager?.queue {
-            let completionWrapper: API.JSONCompletion = { task, result in
+            let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
                 self.contextProvider.performOnRootSavingContext { context in
                     switch result {
                     case .success(let response):
@@ -500,13 +501,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             self.contextProvider.performOnRootSavingContext { context in
                 guard
-                    let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+                    let message = Message.messageForMessageID(messageID.rawValue,
+                                                              inManagedObjectContext: context),
+                    message.isDetailDownloaded
                 else {
-                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
-                    return
-                }
-                guard message.isDetailDownloaded else {
-                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    let request = MessageDetailRequest(messageID: messageID)
+                    self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
                     return
                 }
                 if let labelID = message.firstValidFolder() {
