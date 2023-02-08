@@ -48,15 +48,13 @@ public protocol Signup {
 public class SignupService: Signup {
     private let apiService: APIService
     private let authenticator: Authenticator
-    private let challengeParametersProvider: ChallengeParametersProvider
     private let clientApp: ClientApp
 
     // MARK: Public interface
 
-    public init(api: APIService, challengeParametersProvider: ChallengeParametersProvider, clientApp: ClientApp) {
+    public init(api: APIService, clientApp: ClientApp) {
         self.apiService = api
         self.authenticator = Authenticator(api: apiService)
-        self.challengeParametersProvider = challengeParametersProvider
         self.clientApp = clientApp
     }
 
@@ -206,7 +204,7 @@ public class SignupService: Signup {
             throw SignupError.cantHashPassword
         }
         let verifier = try auth.generateVerifier(2048)
-        let challenge = challengeParametersProvider.provideParameters()
+        let challenge = apiService.challengeParametersProvider.provideParametersForLoginAndSignup()
         return AuthParameters(salt: salt, verifier: verifier, challenge: challenge, productPrefix: clientApp.name)
     }
 

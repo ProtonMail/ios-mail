@@ -143,26 +143,12 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     
     // Refresh expired access token using refresh token
     public func refreshCredential(_ oldCredential: Credential, completion: @escaping Completion) {
-        refreshCredential(oldCredential) { (result: Result<Credential, ResponseError>) in
+        self.apiService.refreshCredential(oldCredential) { (result: Result<Credential, ResponseError>) in
             switch result {
             case .failure(let responseError):
                 completion(.failure(.from(responseError)))
             case .success(let credential):
                 completion(.success(.updatedCredential(credential)))
-            }
-        }
-    }
-
-    // Refresh expired access token using refresh token
-    fileprivate func refreshCredential(_ oldCredential: Credential, completion: @escaping (Result<Credential, ResponseError>) -> Void) {
-        let route = AuthService.RefreshEndpoint(authCredential: AuthCredential( oldCredential))
-        self.apiService.perform(request: route) { (_, result: Result<AuthService.RefreshResponse, ResponseError>) in
-            switch result {
-            case .failure(let responseError):
-                completion(.failure(responseError))
-            case .success(let response):
-                let credential = Credential(res: response, UID: oldCredential.UID, userName: oldCredential.userName, userID: oldCredential.userID)
-                completion(.success(credential))
             }
         }
     }
@@ -332,7 +318,7 @@ public enum RefreshAccessToken {
     private static func refresh(
         credential: Credential, using authenticator: Authenticator, completion: @escaping (Result<Credential, ResponseError>) -> Void
     ) {
-        authenticator.refreshCredential(credential, completion: completion)
+        authenticator.apiService.refreshCredential(credential, completion: completion)
     }
 
 }

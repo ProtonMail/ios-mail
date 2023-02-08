@@ -35,14 +35,13 @@ public final class LoginService: Login {
     // MARK: - Properties
 
     let apiService: APIService
-    let clientApp: ClientApp
     var sessionId: String { apiService.sessionUID }
+    let clientApp: ClientApp
     let manager: AuthenticationManager
     var context: TwoFactorContext?
     var mailboxPassword: String?
     public private(set) var minimumAccountType: AccountType
     var username: String?
-    let authManager: AuthHelper
 
     var defaultSignUpDomain = "protonmail.com"
     var updatedSignUpDomains: [String]?
@@ -62,33 +61,12 @@ public final class LoginService: Login {
     }
     public var startGeneratingAddress: (() -> Void)?
     public var startGeneratingKeys: (() -> Void)?
-    
-    @available(*, deprecated, message: "Use variant without sessionId, this parameter no longer used")
-    public convenience init(api: APIService, authManager: AuthHelper, clientApp: ClientApp,
-                            sessionId _: String, minimumAccountType: AccountType,
-                            authenticator: AuthenticationManager? = nil) {
-        self.init(api: api, authManager: authManager, clientApp: clientApp, minimumAccountType: minimumAccountType, authenticator: authenticator)
-    }
 
-    public init(api: APIService, authManager: AuthHelper, clientApp: ClientApp,
-                minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil) {
+    public init(api: APIService, clientApp: ClientApp, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
-        self.authManager = authManager
         self.clientApp = clientApp
         manager = authenticator ?? Authenticator(api: api)
-    }
-    
-    @available(*, deprecated, message: "this will be removed. use the function with clientApp")
-    public convenience init(api: APIService, authManager: AuthHelper,
-                            sessionId: String, minimumAccountType: AccountType,
-                            authenticator: AuthenticationManager? = nil) {
-        self.init(api: api,
-                  authManager: authManager,
-                  clientApp: .other(named: "Unknown"),
-                  sessionId: sessionId,
-                  minimumAccountType: minimumAccountType,
-                  authenticator: authenticator)
     }
 
     // MARK: - Configuration
@@ -127,31 +105,35 @@ public final class LoginService: Login {
     }
     
     public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
-        let sessionId = self.sessionId
-        guard let old = authManager.credential(sessionUID: sessionId) else {
-            completion(.failure(.invalidState))
-            return
-        }
-        manager.refreshCredential(old) { [weak self] result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error.asLoginError()))
-            case .success(.ask2FA):
+        withAuthDelegateAvailable(completion) { authManager in
+            guard let old = authManager.credential(sessionUID: self.sessionId) else {
                 completion(.failure(.invalidState))
-            case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
-                self?.authManager.onUpdate(credential: credential, sessionUID: sessionId)
-                completion(.success(credential))
+                return
+            }
+            manager.refreshCredential(old) { result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error.asLoginError()))
+                case .success(.ask2FA):
+                    completion(.failure(.invalidState))
+                case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
+                    authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
+                    self.apiService.setSessionUID(uid: credential.UID)
+                    completion(.success(credential))
+                }
             }
         }
     }
     
     public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
-        guard let credential = authManager.credential(sessionUID: sessionId) else {
-            completion(.failure(.invalidState))
-            return
-        }
-        manager.getUserInfo(credential) {
-            completion($0.mapError { $0.asLoginError() })
+        withAuthDelegateAvailable(completion) { authManager in
+            guard let credential = authManager.credential(sessionUID: sessionId) else {
+                completion(.failure(.invalidState))
+                return
+            }
+            manager.getUserInfo(credential) {
+                completion($0.mapError { $0.asLoginError() })
+            }
         }
     }
 
@@ -159,32 +141,43 @@ public final class LoginService: Login {
 
     func handleValidCredentials(credential: Credential, passwordMode: PasswordMode, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.mailboxPassword = mailboxPassword
-        authManager.onAuthentication(credential: credential, service: apiService)
-
-        switch passwordMode {
-        case .one:
-            PMLog.debug("No mailbox password required, finishing up")
-            getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
-        case .two:
-            if minimumAccountType == .username {
-                completion(.success(.finished(LoginData.credential(credential))))
-                return
-            }
+        withAuthDelegateAvailable(completion) { authManager in
+            authManager.onSessionObtaining(credential: credential)
+            self.apiService.setSessionUID(uid: credential.UID)
             
-            manager.getUserInfo(credential) { result in
-                switch result {
-                case let .success(user):
-                    // This is because of a bug on the API, where accounts with no keys return PasswordMode = 2. (according to Android code)
-                    guard user.keys.isEmpty else {
-                        completion(.success(.askSecondPassword))
-                        return
+            switch passwordMode {
+            case .one:
+                PMLog.debug("No mailbox password required, finishing up")
+                getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
+            case .two:
+                if minimumAccountType == .username {
+                    completion(.success(.finished(LoginData.credential(credential))))
+                    return
+                }
+                
+                manager.getUserInfo(credential) { result in
+                    switch result {
+                    case let .success(user):
+                        // This is because of a bug on the API, where accounts with no keys return PasswordMode = 2. (according to Android code)
+                        guard user.keys.isEmpty else {
+                            completion(.success(.askSecondPassword))
+                            return
+                        }
+                        self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
+                    case let .failure(error):
+                        PMLog.debug("Getting user info failed with \(error)")
+                        completion(.failure(error.asLoginError()))
                     }
-                    self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
-                case let .failure(error):
-                    PMLog.debug("Getting user info failed with \(error)")
-                    completion(.failure(error.asLoginError()))
                 }
             }
         }
+    }
+
+    func withAuthDelegateAvailable<T>(_ completion: (Result<T, LoginError>) -> Void, continuation: (AuthDelegate) -> Void) {
+        guard let authDelegate = apiService.authDelegate else {
+            completion(.failure(.invalidState))
+            return
+        }
+        continuation(authDelegate)
     }
 }

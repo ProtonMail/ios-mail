@@ -67,7 +67,7 @@ class HumanVerifyViewModel {
     }
 
     var getURLRequest: URLRequest {
-        let host = apiService.doh.getHumanVerificationV3Host()
+        let host = apiService.dohInterface.getHumanVerificationV3Host()
         let token = "?token=\(startToken ?? "")"
         let methodsStrings = methods?.map { $0.method } ?? []
         let methods = "&methods=\(methodsStrings.joined(separator: ","))"
@@ -83,15 +83,15 @@ class HumanVerifyViewModel {
     }
     
     func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (Bool) -> Void) {
-        let requestHeaders = apiService.doh.getHumanVerificationV3Headers()
-        apiService.doh.handleErrorResolvingProxyDomainIfNeeded(host: host, requestHeaders: requestHeaders, sessionId: apiService.sessionUID, error: error, callCompletionBlockUsing: .asyncMainExecutor, completion: shouldReloadWebView)
+        let requestHeaders = apiService.dohInterface.getHumanVerificationV3Headers()
+        apiService.dohInterface.handleErrorResolvingProxyDomainIfNeeded(host: host, requestHeaders: requestHeaders, sessionId: apiService.sessionUID, error: error, callCompletionBlockUsing: .asyncMainExecutor, completion: shouldReloadWebView)
     }
     
     func setup(webViewConfiguration: WKWebViewConfiguration) {
         let requestInterceptor = AlternativeRoutingRequestInterceptor(
-            headersGetter: apiService.doh.getHumanVerificationV3Headers,
-            cookiesSynchronization: apiService.doh.synchronizeCookies(with:requestHeaders:),
-            cookiesStorage: apiService.doh.currentlyUsedCookiesStorage
+            headersGetter: apiService.dohInterface.getHumanVerificationV3Headers,
+            cookiesSynchronization: apiService.dohInterface.synchronizeCookies(with:requestHeaders:),
+            cookiesStorage: apiService.dohInterface.currentlyUsedCookiesStorage
         ) { challenge, completionHandler in
             handleAuthenticationChallenge(
                 didReceive: challenge,

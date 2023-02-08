@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCore_Doh
+import ProtonCore_Foundations
 import ProtonCore_Networking
 import ProtonCore_Services
 
@@ -43,6 +44,11 @@ public struct APIServiceMock: APIService {
     
     @PropertyStub(\APIServiceMock.sessionUID, initialGet: .crash) public var sessionUIDStub
     public var sessionUID: String { sessionUIDStub() }
+
+    @FuncStub(APIServiceMock.acquireSessionIfNeeded) public var acquireSessionIfNeededStub
+    public func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void) {
+        acquireSessionIfNeededStub(completion)
+    }
     
     @PropertyStub(\APIServiceMock.serviceDelegate, initialGet: .crash) public var serviceDelegateStub
     public var serviceDelegate: APIServiceDelegate? { get { serviceDelegateStub() } set { serviceDelegateStub(newValue) } }
@@ -52,6 +58,15 @@ public struct APIServiceMock: APIService {
     
     @PropertyStub(\APIServiceMock.humanDelegate, initialGet: .crash) public var humanDelegateStub
     public var humanDelegate: HumanVerifyDelegate? { get { humanDelegateStub() } set { humanDelegateStub(newValue) } }
+
+    @PropertyStub(\APIServiceMock.forceUpgradeDelegate, initialGet: .crash) public var forceUpgradeDelegateStub
+    public var forceUpgradeDelegate: ForceUpgradeDelegate? { get { forceUpgradeDelegateStub() } set { forceUpgradeDelegateStub(newValue) } }
+
+    @PropertyStub(\APIServiceMock.challengeParametersProvider, initialGet: .crash) public var challengeParametersProviderStub
+    public var challengeParametersProvider: ChallengeParametersProvider { challengeParametersProviderStub() }
+
+    @PropertyStub(\APIServiceMock.dohInterface, initialGet: .crash) public var dohInterfaceStub
+    public var dohInterface: DoHInterface { get { dohInterfaceStub() } set { dohInterfaceStub(newValue) } }
     
     @available(*, deprecated, message: "This will be changed to DoHInterface type")
     @PropertyStub(\APIServiceMock.doh, initialGet: .crash) public var dohStub

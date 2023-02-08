@@ -281,17 +281,9 @@ extension PMChallenge {
 }
 
 public extension ChallengeParametersProvider {
-    static func forAPIService(clientApp: ClientApp) -> ChallengeParametersProvider {
-        ChallengeParametersProvider(prefix: clientApp.name) {
-            PMChallenge().export().deviceFingerprintDict()
-        }
-    }
-}
-
-public extension ChallengeParametersProvider {
-    static func forLoginAndSignup(clientApp: ClientApp, challenge: PMChallenge) -> ChallengeParametersProvider {
-        ChallengeParametersProvider(prefix: clientApp.name) {
-            challenge.export().allFingerprintDict()
-        }
+    static func forAPIService(clientApp: ClientApp, challenge: PMChallenge) -> ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: clientApp.name,
+                                    provideParametersForLoginAndSignup: { challenge.export().allFingerprintDict() },
+                                    provideParametersForSessionFetching: { challenge.export().deviceFingerprintDict() })
     }
 }

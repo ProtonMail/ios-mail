@@ -57,15 +57,21 @@ extension ChallengeProtocol {
 
 public struct ChallengeParametersProvider {
     public let prefix: String
-    public let provideParameters: () -> [[String: Any]]
-    public init(prefix: String, provideParameters: @escaping () -> [[String: Any]]) {
+    public let provideParametersForLoginAndSignup: () -> [[String: Any]]
+    public let provideParametersForSessionFetching: () -> [[String: Any]]
+    public init(prefix: String,
+                provideParametersForLoginAndSignup: @escaping () -> [[String: Any]],
+                provideParametersForSessionFetching: @escaping () -> [[String: Any]]) {
         self.prefix = prefix
-        self.provideParameters = provideParameters
+        self.provideParametersForLoginAndSignup = provideParametersForLoginAndSignup
+        self.provideParametersForSessionFetching = provideParametersForSessionFetching
     }
 }
 
 public extension ChallengeParametersProvider {
     static var empty: ChallengeParametersProvider {
-        ChallengeParametersProvider(prefix: "") { [[:]] }
+        ChallengeParametersProvider(prefix: "",
+                                    provideParametersForLoginAndSignup: { [[:]] },
+                                    provideParametersForSessionFetching: { [[:]] })
     }
 }
