@@ -124,21 +124,6 @@ public enum ESBannerStyle: PMBannerStyleProtocol {
 }
 
 extension ESBannerStyle {
-    // TODO: remove this after merging EncryptedSearchService
-    enum EncryptedSearchIndexState: Int {
-        case disabled = 0
-        case partial
-        case lowstorage
-        case downloading
-        case paused
-        case refresh
-        case complete
-        case undetermined
-        case background
-        case backgroundStopped
-        case metadataIndexing
-        case metadataIndexingComplete
-    }
 
 //    How to get topOffset from searchVC
 //    let topOffset: CGFloat
