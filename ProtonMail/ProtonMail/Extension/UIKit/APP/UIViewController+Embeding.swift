@@ -3,8 +3,9 @@ import UIKit
 extension UIViewController {
 
     func embed(_ childController: UIViewController, inside targetView: UIView) {
-        embed(childController) { [weak targetView] controllerView in
-            guard let targetView = targetView else { return }
+        addChild(childController)
+
+        if let controllerView = childController.view {
             targetView.addSubview(controllerView)
 
             [
@@ -14,11 +15,7 @@ extension UIViewController {
                 controllerView.bottomAnchor.constraint(equalTo: targetView.bottomAnchor)
             ].activate()
         }
-    }
 
-    func embed(_ childController: UIViewController, using embeddingMethod: (UIView) -> Void) {
-        addChild(childController)
-        embeddingMethod(childController.view)
         childController.didMove(toParent: self)
     }
 

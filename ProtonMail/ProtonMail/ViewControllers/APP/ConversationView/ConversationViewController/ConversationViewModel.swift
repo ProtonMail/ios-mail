@@ -153,7 +153,7 @@ class ConversationViewModel {
         self.labelProvider = labelProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
-        headerSectionDataSource = [.header(subject: conversation.subject)]
+        headerSectionDataSource = []
 
         recordNumOfMessages = conversation.messageCount
         self.connectionStatusProvider = internetStatusProvider
@@ -338,6 +338,56 @@ class ConversationViewModel {
         toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
     }
 
+    func headerCellVisibility(at index: Int) -> CellVisibility {
+        guard focusedMode else {
+            return .full
+        }
+
+        switch headerSectionDataSource[index] {
+        case .trashedHint:
+            // in focused mode, the trashed hint should only be partially visible if there's no previous message to partially show
+            let numberOfNonTrashedMessages = messagesDataSource
+                .filter { $0.messageViewModel?.isTrashed == false }
+                .count
+
+            return numberOfNonTrashedMessages == 1 ? .partial : .hidden
+        case .message:
+            assertionFailure("headerSectionDataSource should not contain ConversationViewItemType.message")
+            return .full
+        }
+    }
+
+    func messageCellVisibility(at index: Int) -> CellVisibility {
+        guard focusedMode, let firstExpandedMessageIndex = firstExpandedMessageIndex else {
+            return .full
+        }
+
+        if index > firstExpandedMessageIndex {
+            return .full
+        } else {
+            let messagesBeforeAndIncludingExpandedOne = messagesDataSource[0...firstExpandedMessageIndex]
+
+            let indexesOfNonTrashedMessages: [Int] = messagesBeforeAndIncludingExpandedOne
+                .enumerated()
+                .compactMap { index, item in
+                    if item.messageViewModel?.isTrashed == false {
+                        return index
+                    } else {
+                        return nil
+                    }
+                }
+
+            switch index {
+            case indexesOfNonTrashedMessages.last:
+                return .full
+            case indexesOfNonTrashedMessages.dropLast().last:
+                return .partial
+            default:
+                return .hidden
+            }
+        }
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
         let hasMessages = !self.messagesDataSource.isEmpty
@@ -408,7 +458,7 @@ class ConversationViewModel {
         self.headerSectionDataSource.append(.trashedHint)
         let visible = self.tableView?.visibleCells.count ?? 0
         if visible > 0 {
-            let row = IndexPath(row: 1, section: 0)
+            let row = IndexPath(row: 0, section: 0)
             self.tableView?.insertRows(at: [row], with: .automatic)
         }
     }
@@ -952,6 +1002,11 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
 
 extension ConversationViewModel: ConversationViewTrashedHintDelegate {
     func clickTrashedMessageSettingButton() {
+        // If we're in the focused mode, the trash banner is only partially visible (if at all).
+        guard !focusedMode else {
+            return
+        }
+
         switch self.displayRule {
         case .showTrashedOnly:
             self.displayRule = .showAll
@@ -960,7 +1015,7 @@ extension ConversationViewModel: ConversationViewTrashedHintDelegate {
         case .showAll:
             self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         }
-        let row = IndexPath(row: 1, section: 0)
+        let row = IndexPath(row: 0, section: 0)
         self.reloadRowsIfNeeded(additional: row)
     }
 
@@ -1020,5 +1075,14 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 extension ConversationViewModel {
     struct Dependencies {
         let fetchMessageDetail: FetchMessageDetailUseCase
+    }
+
+    enum CellVisibility {
+        /// The cell is fully visible.
+        case full
+        /// Only a few pixels are visible, used for showing a part of the previous message in focused mode.
+        case partial
+        /// The cell is not visible.
+        case hidden
     }
 }

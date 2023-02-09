@@ -17,6 +17,7 @@ class SingleMessageContentView: UIView {
     init(replyState: HeaderContainerView.ReplyState) {
         self.replyState = replyState
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         setUpLayout()
         accessibilityElements = [

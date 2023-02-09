@@ -50,6 +50,7 @@ class NonExpandedHeaderView: HeaderView {
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.BackgroundNorm
+        translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         setUpLayout()
         setUpGestures()
