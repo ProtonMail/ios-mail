@@ -4,6 +4,15 @@
 /* Title of account switcher */
 "Accounts" = "Imiḍanen";
 
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Amsewḥel n udellel (NetShield)";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Rnu aseglu amlellay";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Iguren akked umgal-avirus";
+
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple yenna-yaɣ-d d akken ur yezmir ara ad yessesfer tiɣint-agi.";
 
@@ -20,6 +29,9 @@
  * Login 2FA */
 "Authenticate" = "Asesteb";
 
+/* top left back button */
+"Back" = "Ɣer deffir";
+
 /* Cancel button */
 "Cancel" = "Sefsex";
 
@@ -29,6 +41,12 @@
 /* Dialog action button title for organization user first login */
 "Change password" = "Snifel awal uffir";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Senqed addad n Proton i waddad n unagraw-nneɣ.";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Mdel";
+
 /* Signup summary title */
 "Congratulations" = "Ayuz!";
 
@@ -37,6 +55,12 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Nermes support@protonvpn.com i wakken ad temmed tiɣin-inek·inem.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Nermes-aɣ-d srid s tferkit-nneɣ n tallalt seg, yimayl (support@protonmail.zendesk.com), neɣ Twitter.";
+
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Rnu tansa n Proton Mail taɣellsant deg ubdil";
@@ -48,14 +72,23 @@
  * Signup */
 "Create your Proton Account" = "Snulfu-d amiḍan-inek/m Proton";
 
+/* Signup complete progress step creation */
+"Creating your account" = "Timerna n umiḍan-ik·im";
+
 /* Plan selection title */
 "Current plan" = "Aɣawas amiran";
 
 /* Plan details renew expired */
 "Current plan will expire on %@" = "Aɣawas amiran ad yemmet deg %@";
 
+/* Plan details custom email addresses */
+"Custom email addresses" = "Tansiwin n yimayl tudmawanin";
+
 /* Customer support button */
 "Customer support" = "Tallalt tudmawant";
+
+/* *  Account Deletion */
+"Delete account" = "Kkes amiḍan";
 
 /* Did not receive code button */
 "Did not receive a code?" = "Ur d-teṭṭifeḍ ara tangalt?";
@@ -63,8 +96,20 @@
 /* Not receive code button */
 "Did not receive the code?" = "Ur d-teṭṭifeḍ ara tangalt?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Sens akk ipṛuksiten neɣ iɣraben n tmes, neɣ nermes anedbal-nwen n uzeṭṭa.";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Zgel";
+
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Tebɣiḍ ad tremdeḍ tiɣin i tansa %@ address?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Taɣult";
+
+/* network troubleshot view title */
+"email" = "imayl";
 
 /* Email field title
    Email label
@@ -75,9 +120,6 @@
 /* Email address already used error */
 "Email address already used." = "Tans-a n yimayl tettuseqdec yakan.";
 
-/* Username field title */
-"Email or username" = "Imayl neɣ isem n useqdac";
-
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
@@ -86,6 +128,9 @@
 /* *
  *  Payments */
 "Error occured" = "Tella-d tuccḍa";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Tella-d tuccḍa deg tiffin n tebdart n ifarisen deg App Store.";
 
 /* Forgot password button title
    Forgot password help button */
@@ -100,6 +145,9 @@
 /* Verification button */
 "Get verification code" = "Awi tangalt n usentem";
 
+/* network troubleshot cell title */
+"Government block" = "Asewḥel n udabu";
+
 /* Help button */
 "Help" = "Tallelt";
 
@@ -108,6 +156,16 @@
 
 /* Plan details highest speed message */
 "Highest speed" = "Arured afellay maḍi";
+
+/* *
+ *  Human verification */
+"Human Verification" = "Asenqed b-umdan";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Ugur n usaǧǧaw n umeẓlu n internet (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Awal uffir n udway mačči d ameɣtu";
@@ -123,9 +181,6 @@
    learn more button */
 "Learn more" = "Issin ugar";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Imayl + VPN ttwamudden i twaculin akked businesses imecṭaḥ";
-
 /* Mailbox password field title */
 "Mailbox password" = "Awal uffir n Tnaka n yimayl";
 
@@ -138,8 +193,32 @@
 /* Help button */
 "Need help?" = "Tesriḍ tallelt?";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ si %@";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Awi-d %@";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Arured afellay maḍi VPN";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Iqeddacen n Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Tasertit tuḥrist war aɣmis";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor ɣef VPN";
+
 /* Next button */
 "Next" = "Ɣer sdat";
+
+/* network troubleshot cell title */
+"No internet connection" = "Ulac tuqqna internet";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Uhu, i umiḍan nniḍen Proton Mail";
@@ -148,8 +227,7 @@
    OK button */
 "OK" = "IH";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Yiwen n umiḍan i meṛṛa imeẓla n Proton.";
 
 /* Password field title */
@@ -173,8 +251,26 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Ttxil qqen ɣer umiḍan-ik•im Proton Mail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed armad n uɣawas n useqdec.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Ttxil-k•m senqed d akken tuqqna-inek/m internet tetteddu akken iwata.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Ma ulac aɣilif, bḍu ugur-inek•inem.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Ma ulac aɣilif kkes aseḍru i usnas akken ad tkemmleḍ deg urmad n uɣawas n umeẓlu";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Tallelt n umsaɣ yezwaren";
+
+/* network troubleshot cell title */
+"Proton is down" = "Proton yuɣ-it wugur";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Addad n Proton";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Uguren akked Apriksi/Aɣrab n tmes";
 
 /* quit button */
 "Quit" = "Ffeɣ";
@@ -184,6 +280,9 @@
 
 /* Recovery email field title */
 "Recovery email" = "Imayl n tririt";
+
+/* Recovery phone field title */
+"Recovery phone number" = "Uṭṭun n usawal n tririt";
 
 /* Remove button */
 "Remove" = "Kkes";
@@ -209,8 +308,8 @@
 /* Search country placeholder */
 "Search country" = "Nadi tamurt";
 
-/* Select plan button */
-"Select" = "Fren";
+/* Signup complete progress step keys generation */
+"Securing your account" = "Aseɣles n umiḍan-ik·im";
 
 /* *
  *  Payments UI */
@@ -232,6 +331,27 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Urɛad d-nufi tifrat";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Tallalt n umeẓlu n usuddem";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Asentel...";
+
+/* Subscription title */
+"Subscription" = "Amultaɣ";
+
+/* network troubleshooting */
+"support form" = "talɣa n tallalt";
+
+/* *  Account Manager */
+"switch to" = "ddu ɣer";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Sens kra n wakud aseɣẓan antivirus-inek/m neɣ kkes-it.";
+
 /* Recovery terms and conditions link
    Terms and conditions view title */
 "Terms and Conditions" = "Tiwtilin n useqdec";
@@ -239,8 +359,23 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Lsas i teywalt tbaḍnit, taɣelsant.";
 
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Aya ad yekkes i lebda amiḍan-ik·im d meṛṛa isefka-ines. Ur tettizmireḍ ara ad talseḍ armad n umiḍan-a.";
+
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Tifrat i wuguren";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Tifrat i wuguren";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec %1$@ neɣ %2$@).";
+
 /* other method alert button */
 "Try other method" = "Ɛreḍ tarrayt nniḍen";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Asesteb s snat n tarrayin";
@@ -262,8 +397,8 @@
  *  Force upgrade */
 "Update required" = "Ilaq uleqqem";
 
-/* Upgrade plan button */
-"Upgrade" = "Leqqem";
+/* Plan selection title */
+"Upgrade your plan" = "Sali aɣawas-ik";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Seqdec tangalt n tririt";
@@ -280,6 +415,9 @@
 
 /* Verify button */
 "Verify" = "Senqed";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Asefqed n lexlaṣ-ik•im";
 
 /* Title */
 "Warning" = "Γur-k";
@@ -302,81 +440,12 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ajerred-ik·im yedda akken iwata maca axelleṣ-inek·inem ur yettusesfar ara. I tuzna i tikkelt-nniḍen n telɣut n uxelleṣ-inek·inem, sit ales aneɛruḍ. Yiwet n tikkelt kan ad ak·am-d-tettwazen tfaṭurt. Ma yella yettuɣal-d wugur, ttxil-k·m nermes tallalt n umsaɣ.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ahat tamurt-ik/m isewḥel anekcum ɣer Proton. Ɛṛeḍ aseqdec n %1$@ (neɣ kra n VPN nniḍen) neɣ %2$@ akken ad tkecmeḍ ɣer Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Imayl-ik ad yettwaseqdec kan tikkelt deg usenqed-agi.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Uṭṭun-ik n tiliɣṛi ad yettwaseqdec kan tikkelt deg usenqed-agi.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ of %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Access to streaming services globally";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Built-in ad-blocker (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Check your internet connection";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Connection issues";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Extend subscription";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Free VPN on a single device";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Get %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Get Proton for free";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Highest VPN speed";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "One plan for all Proton services";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plan successfully upgraded";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servers";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strict no-logs policy";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR over VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Up to %@ storage";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
 

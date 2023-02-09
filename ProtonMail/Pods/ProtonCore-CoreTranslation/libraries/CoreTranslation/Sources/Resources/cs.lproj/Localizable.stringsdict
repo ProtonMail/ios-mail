@@ -22,26 +22,6 @@
 			<string>%d VPN připojení</string>
 		</dict>
 	</dict>
-	<key>%d addresses &amp; calendars</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d adresy &amp; kalendáře</string>
-			<key>many</key>
-			<string>%d adres &amp; kalendářů</string>
-			<key>one</key>
-			<string>%d adresa &amp; kalendář</string>
-			<key>other</key>
-			<string>%d adres &amp; kalendářů</string>
-		</dict>
-	</dict>
 	<key>%d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -60,26 +40,6 @@
 			<string>%d kalendář</string>
 			<key>other</key>
 			<string>%d kalendářů</string>
-		</dict>
-	</dict>
-	<key>%d calendars / user</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d calendars / user</string>
-			<key>many</key>
-			<string>%d calendars / user</string>
-			<key>one</key>
-			<string>%d calendar / user</string>
-			<key>other</key>
-			<string>%d calendars / user</string>
 		</dict>
 	</dict>
 	<key>%d connections</key>
@@ -220,26 +180,6 @@
 			<string>%d vysokorychlostní připojení VPN</string>
 			<key>other</key>
 			<string>%d vysokorychlostních připojení VPN</string>
-		</dict>
-	</dict>
-	<key>%d high-speed VPN connections / user</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d high-speed VPN connections / user</string>
-			<key>many</key>
-			<string>%d high-speed VPN connections / user</string>
-			<key>one</key>
-			<string>%d high-speed VPN connection / user</string>
-			<key>other</key>
-			<string>%d high-speed VPN connections / user</string>
 		</dict>
 	</dict>
 	<key>%d users</key>
@@ -520,7 +460,7 @@
 			<string>%d zemí</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@SERVERS@ z %#@COUNTRIES@</string>
+		<string>%#@SERVERS@ v %#@COUNTRIES@</string>
 		<key>SERVERS</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -550,11 +490,11 @@
 			<key>few</key>
 			<string>Vysokorychlostní VPN na %d zařízení</string>
 			<key>many</key>
-			<string>Vysokorychlostní VPN na %d zařízení</string>
+			<string>Vysokorychlostní VPN na $%d zařízeních</string>
 			<key>one</key>
 			<string>Vysokorychlostní VPN na %d zařízení</string>
 			<key>other</key>
-			<string>Vysokorychlostní VPN na %d zařízení</string>
+			<string>Vysokorychlostní VPN na $%d zařízeních</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>
@@ -588,13 +528,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>Podpora %d vlastních e-mailové domén</string>
+			<string>Podpora %d vlastních e-mailových domén</string>
 			<key>many</key>
-			<string>Podpora %d vlastních e-mailové domén</string>
+			<string>Podpora %d vlastních e-mailových domén</string>
 			<key>one</key>
 			<string>Podpora %d vlastní e-mailové domény</string>
 			<key>other</key>
-			<string>Podpora %d vlastních e-mailové domén</string>
+			<string>Podpora %d vlastních e-mailových domén</string>
 		</dict>
 	</dict>
 </dict>

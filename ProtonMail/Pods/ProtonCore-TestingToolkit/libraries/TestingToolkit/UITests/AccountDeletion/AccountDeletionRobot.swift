@@ -34,7 +34,7 @@ public final class AccountDeletionButtonRobot: CoreElements {
 
     public let verify = Verify()
     
-    private func elementOfKind(_ type: Kind) -> UiElement {
+    private func elementOfKind(_ type: Kind) -> UIElement {
         switch type {
         case .button: return button(accountDeletionButtonText)
         case .staticText: return staticText(accountDeletionButtonText)
@@ -66,7 +66,7 @@ public final class AccountDeletionButtonRobot: CoreElements {
         @discardableResult
         public func accountDeletionButtonIsNotShown(type: Kind) -> AccountDeletionButtonRobot {
             let robot = AccountDeletionButtonRobot()
-            robot.elementOfKind(type).wait().checkDoesNotExist()
+            robot.elementOfKind(type).waitUntilGone()
             return robot
         }
     }

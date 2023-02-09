@@ -4,6 +4,15 @@
 /* Email verification view title */
 "Account verification" = "Sannvottun notandaaðgangs";
 
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Auglýsingabani (NetShield)";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Leyfa varaleið beiningar";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Truflanir vegna vírusvarna";
+
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple hefur tilkynnt okkur að þeir geti ekki meðhöndlað þessi kaup.";
 
@@ -13,9 +22,15 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en við sjáum að þú hefur skráð þig út af notandaaðgangnum síðan þá.";
 
+/* Alert message of sign out the email address */
+"Are you sure you want to sign out %@?" = "Ertu viss um að þú viljir skrá þig út %@?";
+
 /* *
  * Login 2FA */
 "Authenticate" = "Auðkenna";
+
+/* top left back button */
+"Back" = "Til baka";
 
 /* Cancel button */
 "Cancel" = "Hætta við";
@@ -30,21 +45,54 @@
  * Login upgrade username-only account */
 "Change your password" = "Breyta lykilorðinu þínu";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Athugaðu stöðu Proton til að sjá ástandið á kerfinu okkar.";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Loka";
+
+/* sent baner title */
+"Code sent to %@" = "Kóði var sendur á %@";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Ljúka uppsetningu";
+
 /* Signup summary title */
 "Congratulations" = "Til hamingju!";
 
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hafðu beint samband við okkur í gegnum aðstoðarsíðuna okkar, með tölvupósti (support@protonmail.zendesk.com) eða á Twitter.";
+
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
+/* Proton Mail address button */
+"Create a secure Proton Mail address instead" = "Búðu frekar til öruggt Proton Mail tölvupóstnetfang";
+
 /* Create account button */
 "Create an account" = "Stofna notandaaðgang";
+
+/* Create user failed error */
+"Create user failed" = "Ekki tókst að búa til notanda";
 
 /* *
  * Signup */
 "Create your Proton Account" = "Búa til Proton-notandaaðgang fyrir þig";
 
+/* Signup complete progress step creation */
+"Creating your account" = "Bý til þinn reikning";
+
 /* Plan selection title */
 "Current plan" = "Núverandi áskriftarleið";
 
+/* Plan details custom email addresses */
+"Custom email addresses" = "Sérsniðin tölvupóstföng";
+
 /* Customer support button */
 "Customer support" = "Aðstoð við viðskiptavini";
+
+/* *  Account Deletion */
+"Delete account" = "Eyða notandaaðgangi";
 
 /* Did not receive code button */
 "Did not receive a code?" = "Fékkstu ekki kóða?";
@@ -52,8 +100,20 @@
 /* Not receive code button */
 "Did not receive the code?" = "Fékkstu ekki kóðann?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Gerðu alla eldveggi og milliþjóna (proxies) óvirka, eða hafðu samband við kerfisstjórann þinn.";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Vísa frá";
+
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Viltu virkja kaupin fyrir %@ póstfangið?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Lén";
+
+/* network troubleshot view title */
+"email" = "tölvupóstur";
 
 /* Email field title
    Email label
@@ -61,17 +121,29 @@
    Recovery segmenet email */
 "Email" = "Tölvupóstur";
 
-/* Username field title */
-"Email or username" = "Tölvupóstfang eða notandanafn";
-
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
 "Enter the 6-digit code." = "Settu inn 6-stafa kóðann.";
 
+/* Verification */
+"Enter the verification code that was sent to %@" = "Settu inn sannvottunarkóðann sem sendur var til %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Settu inn sannvottunarkóðann sem sendur var til %@. Ef þú finnur ekki tölvupóstinn í pósthólfinu þínu, skaltu skoða í ruslpóstmöppuna þína.";
+
+/* Login screen subtitle */
+"Enter your Proton Account details." = "Sláðu inn þínum Proton reikningsupplýsingum.";
+
 /* *
  *  Payments */
 "Error occured" = "Villa kom upp";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Það tókst ekki að sækja lista yfir tiltækar vörur í App Store.";
+
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "Í %@";
 
 /* Forgot password button title
    Forgot password help button */
@@ -82,6 +154,9 @@
 
 /* Verification button */
 "Get verification code" = "Sækja staðfestingarkóða";
+
+/* network troubleshot cell title */
+"Government block" = "Lokun á vegum stjórnvalda";
 
 /* Help button */
 "Help" = "Hjálp";
@@ -95,8 +170,18 @@
 /* Login help screen title */
 "How can we help?" = "Hvernig getum við aðstoðað?";
 
+/* *
+ *  Human verification */
+"Human Verification" = "Mennskupróf";
+
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ef þú átt í vandræðum með að útbúa notandaaðgang, geturðu sent inn beiðni um aðgang og við munum svara innan næsta virka dags.";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Vandamál hjá internetþjónustuaðila";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Ógilt tætigildislykilorð";
@@ -124,19 +209,48 @@
 /* Help button */
 "Need help?" = "Þarftu hjálp?";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ af %@";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Innbyggður auglýsingabani (NetShield)";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Fáðu %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Fáðu Proton ókeypis";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Ströng stefna varðandi enga-atvikaskráningu";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor yfir VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Ótakmarkaðar möppur, merkimiðar og síur";
+
 /* Next button */
 "Next" = "Næsta";
+
+/* network troubleshot cell title */
+"No internet connection" = "Engin internettenging";
 
 /* Action
    OK button */
 "OK" = "Í lagi";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Einn aðgangur fyrir allar Proton-þjónustur.";
 
 /* Password field title */
 "Password" = "Lykilorð";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Lykilorð verður að innihalda að lágmarki 8 stafi";
 
 /* Recovery segmenet phone */
 "Phone" = "Sími";
@@ -144,8 +258,29 @@
 /* SMS label */
 "Phone number" = "Símanúmer";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Vinsamlega gakktu úr skugga um að nettengingin þín virki.";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Vinsamlegast deildu vandamálinu þínu.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Aflæstu forritinu til að halda áfram með virkjun þjónustuáskriftarinnar þinnar";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Forgangsstuðningur viðskiptavina";
+
+/* Welcome screen */
+"Privacy by default" = "Privacy by default";
+
+/* network troubleshot cell title */
+"Proton is down" = "Proton liggur niðri";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Staða Proton";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Truflanir vegna milliþjóna/eldveggja";
 
 /* quit button */
 "Quit" = "Hætta";
@@ -156,8 +291,14 @@
 /* Recovery email field title */
 "Recovery email" = "Endurheimtupóstur";
 
+/* Recovery phone field title */
+"Recovery phone number" = "Endurheimtusímanúmer";
+
 /* Remove button */
 "Remove" = "Fjarlægja";
+
+/* old value of remove account button in account manager */
+"Remove account" = "Fjarlægja notandaaðgang";
 
 /* Repeat password field title */
 "Repeat password" = "Endurtaka lykilorð";
@@ -180,12 +321,19 @@
 /* Search country placeholder */
 "Search country" = "Leita að landi";
 
-/* Select plan button */
-"Select" = "Velja";
+/* Signup complete progress step keys generation */
+"Securing your account" = "Tryggi reikninginn þinn";
 
 /* *
  *  Payments UI */
 "Select a plan" = "Veldu áskriftarleið";
+
+/* Recovery view title
+   Set recovery method button */
+"Set recovery method" = "Stilltu endurheimtuaðferð";
+
+/* Recovery view title optional */
+"Set recovery method (optional)" = "Stilltu endurheimtuaðferð (valfrjálst)";
 
 /* *
  *  Login screen */
@@ -203,8 +351,39 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Því miður getum við ekki meðhöndlað viðskipti í beta-þróunarútgáfu iOS-forritsins. Við þökkum þér hinsvegar fyrir að taka þátt í þróunarvinnu opinberu beta-útgáfunnar.";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Finn ekki ennþá neina lausn";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Viðfangsefni...";
+
+/* Subscription title */
+"Subscription" = "Áskrift";
+
+/* network troubleshooting */
+"support form" = "aðstoðareyðublað";
+
 /* *  Account Manager */
 "switch to" = "skipta yfir í";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Gerðu vírusvarnaforritið þitt tímabundið óvirkt.";
+
+/* Recovery terms and conditions link
+   Terms and conditions view title */
+"Terms and Conditions" = "Skilmálar og kvaðir";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Þetta mun eyða reikningnum þínum og öllum gögnum hans varanlega. Þú getur ekki endurvirkjað þennan notandareikning.";
+
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Leysa vandamál";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Tveggja-þátta auðkenning";
@@ -226,14 +405,17 @@
  *  Force upgrade */
 "Update required" = "Uppfærsla nauðsynleg";
 
-/* Upgrade plan button */
-"Upgrade" = "Uppfæra";
+/* Plan selection title */
+"Upgrade your plan" = "Uppfærðu áskriftina þína";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Nota endurheimtukóða";
 
 /* 2FA screen 2FA button title */
 "Use two-factor code" = "Nota tveggja-þátta kóða";
+
+/* Email address button */
+"Use your current email instead" = "Nota núverandi netfang þitt í staðinn";
 
 /* Username field title */
 "Username" = "Notandanafn";
@@ -244,6 +426,9 @@
 
 /* Verify button */
 "Verify" = "Sannreyna";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Staðfestir greiðsluna þína";
 
 /* Title */
 "Warning" = "Aðvörun";
@@ -260,81 +445,12 @@
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Já, virkja það fyrir ";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Yfirvöld í landinu þínu gætu verið að hindra aðgang að Proton. Prófaðu að nota %1$@ (eða einhverja VPN-þjónustu) eða %2$@ til að tengjast Proton.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Netfangið þitt verður aðeins notað við þessa einu sinni staðfestingu.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Símanúmerið þitt verður aðeins notað við þessa einu sinni staðfestingu.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ of %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Access to streaming services globally";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Built-in ad-blocker (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Check your internet connection";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Connection issues";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Extend subscription";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Free VPN on a single device";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Get %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Get Proton for free";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Highest VPN speed";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "One plan for all Proton services";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plan successfully upgraded";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servers";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strict no-logs policy";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR over VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Up to %@ storage";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
 

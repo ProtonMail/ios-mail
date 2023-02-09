@@ -80,7 +80,7 @@ public class Keymaker: NSObject {
     private var _key: MainKey? {
         didSet {
             if _key != nil {
-                self.setupCryptoTransformers(key: _mainKey)
+                self.setupCryptoTransformers(key: _key)
             } else {
                 NotificationCenter.default.post(name: Const.removedMainKeyFromMemory, object: self)
             }

@@ -44,22 +44,3 @@ public final class SessionsRequest: Request {
         self.challenge = challenge
     }
 }
-
-// TODO: remove
-extension PMAPIService {
-    func performSessionsRequest(challenge: ChallengeProperties?,
-                                completion: @escaping (Result<Credential, ResponseError>) -> Void) {
-        let sessionsRequest = SessionsRequest.init(challenge: challenge)
-        sessionRequest(request: sessionsRequest) { (task, result: Result<SessionsRequestResponse, APIError>) in
-            switch result {
-            case .success(let sessionsResponse):
-                let credential = Credential(UID: sessionsResponse.UID, accessToken: sessionsResponse.accessToken, refreshToken: sessionsResponse.refreshToken, userName: "", userID: "", scopes: sessionsResponse.scopes)
-                completion(.success(credential))
-            case .failure(let error):
-                let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)
-                let responseCode = error.domain == ResponseErrorDomains.withResponseCode.rawValue ? error.code : nil
-                completion(.failure(.init(httpCode: httpCode, responseCode: responseCode, userFacingMessage: error.localizedDescription, underlyingError: error)))
-            }
-        }
-    }
-}

@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ archiviazione";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contattaci attraverso il nostro modulo di supporto, email (support@protonmail.zendesk.com), o Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Crea un account Proton con la tua email attuale";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "Indirizzo email già in uso.";
 
-/* Username field title */
-"Email or username" = "Email o nome utente";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Goditi il ​​mondo della privacy.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Generazione del tuo indirizzo";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Ottieni un indirizzo di posta Proton collegato a questo account nelle impostazioni web di Proton.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Ricevi un codice sostitutivo inviato a %@.";
@@ -298,17 +298,11 @@
  * Splash */
 "Made by" = "Creato da";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Pacchetto Mail + VPN per famiglie e piccole imprese";
-
 /* Mailbox password field title */
 "Mailbox password" = "Password della casella email";
 
 /* Manage accounts button */
 "Manage accounts" = "Gestisci account";
-
-/* Plan details medium speed */
-"Medium speed" = "Velocità media";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Supporto multi-utente";
@@ -323,6 +317,78 @@
  * Networking */
 "Network connection error" = "Errore connessione di rete";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ di %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Accedi ai servizi di streaming in tutto il mondo";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Adblocker Integrato (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Controlla la connessione internet";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Problemi di connessione";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Proroga l'abbonamento";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "VPN gratuita su un solo dispositivo";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Ottieni %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Ottieni Proton gratis";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Massima velocità della VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Un piano per tutti i servizi Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Solo gli abbonamenti annuali non rinnovabili sono disponibili tramite questa app";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Piano aggiornato con successo";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Server Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Rigorosa politica di non conservazione dei log";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "L'account di base gratuito che offre privacy assicurata a ogni utente.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La soluzione per email e calendario con la privacy al primo posto, per le tue esigenze di comunicazione quotidiane.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Il piano incentrato sull'archiviazione con 200 GB di spazio di archiviazione cloud per mantenere privati ​​i tuoi file.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Il pacchetto per la privacy definitivo con accesso a tutti i servizi premium di Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor su VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Cartelle, etichette e filtri illimitati";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Fino a %@ di archiviazione";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "La tua privacy e la tua sicurezza sono la nostra priorità.";
+
 /* Next button */
 "Next" = "Prossimo";
 
@@ -336,8 +402,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Un account per tutti i servizi Proton.";
 
 /* Plan footer description */
@@ -410,21 +475,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Assistenza clienti prioritaria";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Privacy per default";
 
 /* *
  * Login create address */
 "Proton address required" = "Indirizzo Proton richiesto";
 
+/* Username field title */
+"Proton email or username" = "Email Proton o nome utente";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton è offline";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail per professionisti e aziende";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Stato Proton";
@@ -479,9 +544,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Protezione del tuo account";
-
-/* Select plan button */
-"Select" = "Seleziona";
 
 /* *
  *  Payments UI */
@@ -613,9 +675,6 @@
  *  Force upgrade */
 "Update required" = "Aggiornamento richiesto";
 
-/* Upgrade plan button */
-"Upgrade" = "Effettua l'upgrade";
-
 /* Plan selection title */
 "Upgrade your plan" = "Effettua l'upgrade del piano";
 
@@ -683,6 +742,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ti sei registrato correttamente ma il tuo pagamento non è stato elaborato. Per inviare nuovamente i dati di pagamento, fai clic su Riprova. Ti verrà addebitato solo una volta. Se il problema persiste, contattare l'assistenza clienti.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "È necessario un indirizzo email Proton per utilizzare Proton Mail e Proton Calendar.\nPotrai ancora utilizzare %@ per accedere e recuperare il tuo account.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Verrai disconnesso e tutti i dati associati a questo account verranno rimossi da questo dispositivo.";
 
@@ -715,79 +777,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "La tua sessione è scaduta. Per favore esegui l'accesso di nuovo.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ di %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Accedi ai servizi di streaming in tutto il mondo";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Blocco degli annunci integrato (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Controlla la connessione internet";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Problemi di connessione";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Proroga l'abbonamento";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "VPN gratuita su un solo dispositivo";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Ottieni %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Ottieni Proton gratis";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Massima velocità della VPN";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Un piano per tutti i servizi Proton";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Solo gli abbonamenti annuali non rinnovabili sono disponibili tramite questa app";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Piano aggiornato con successo";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Server Secure Core";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Rigorosa politica di non conservazione dei log";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "L'account di base gratuito che offre privacy assicurata a ogni utente.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La soluzione per email e calendario con la privacy al primo posto, per le tue esigenze di comunicazione quotidiane.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Il piano incentrato sull'archiviazione con 200 GB di spazio di archiviazione cloud per mantenere privati ​​i tuoi file.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Il pacchetto per la privacy definitivo con accesso a tutti i servizi premium di Proton.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor su VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Cartelle, etichette e filtri illimitati";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Fino a %@ di archiviazione";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "La tua privacy e la tua sicurezza sono la nostra priorità.";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy per default";
 
