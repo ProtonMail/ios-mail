@@ -80,7 +80,9 @@ class ContactPicker: UIView, AccessibleView {
     private var _enabled: Bool = true
     private var hideWhenNoResult: Bool = false
 
-    private var contacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
+    private var contacts: [ContactPickerModelProtocol] {
+        return self.datasource?.contactModelsForContactPicker(contactPickerView: self) ?? [ContactPickerModelProtocol]()
+    }
 
     internal var contactCollectionView: ContactCollectionView!
     private var promptLabel: UILabel!
@@ -227,7 +229,6 @@ class ContactPicker: UIView, AccessibleView {
              self.contactCollectionView.selectedContacts.append(contentsOf: selected)
         }
 
-        self.contacts = self.datasource?.contactModelsForContactPicker(contactPickerView: self) ?? [ContactPickerModelProtocol]()
 //        self.contactCollectionView.reloadData()
 
         self.layoutIfNeeded()

@@ -1,5 +1,6 @@
 import SafariServices
 
+// sourcery: mock
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? { get set }
@@ -56,7 +57,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 queueManager: sharedServices.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: sharedServices.get(by: CoreDataService.self),
-                realAttachmentsFlagProvider: userCachedStatus,
                 messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )

@@ -100,9 +100,8 @@ final class ComposerAttachmentVC: UIViewController {
                 }
             }
         }
-        let realAttachments = userCachedStatus.realAttachments
         self.datas = attachments
-            .filter({ $0.inline() == false || !realAttachments })
+            .filter({ $0.inline() == false })
             .map { AttachInfo(attachment: $0) }
         self.delegate = delegate
     }
@@ -168,11 +167,10 @@ final class ComposerAttachmentVC: UIViewController {
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
             let existedID = self.datas.map { $0.objectID }
-            let realAttachments = userCachedStatus.realAttachments
             let attachments = attachments
                 .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) &&
                     !$0.isSoftDeleted &&
-                    ($0.inline() == false || !realAttachments)
+                    $0.inline() == false
                 }
 
             self.datas.append(contentsOf: attachments.map { AttachInfo(attachment: $0) })
@@ -186,14 +184,11 @@ final class ComposerAttachmentVC: UIViewController {
     }
 
     func set(attachments: [Attachment], context: NSManagedObjectContext, completeHandler: @escaping () -> Void) {
-        let realAttachments = userCachedStatus.realAttachments
         var attachmentInfos: [AttachInfo] = []
 
         context.performAndWait {
             let relevantAttachments = attachments
-                .filter { !$0.isSoftDeleted &&
-                    ($0.inline() == false || !realAttachments)
-                }
+                .filter { !$0.isSoftDeleted && $0.inline() == false }
             attachmentInfos = relevantAttachments.map(AttachInfo.init(attachment:))
         }
 

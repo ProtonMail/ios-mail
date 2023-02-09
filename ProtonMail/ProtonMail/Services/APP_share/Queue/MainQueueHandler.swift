@@ -117,10 +117,8 @@ final class MainQueueHandler: QueueHandler {
             switch action {
             case .saveDraft(let messageObjectID):
                 self.draft(save: messageObjectID, UID: UID, completion: completeHandler)
-            case .uploadAtt(let attachmentObjectID):
+            case .uploadAtt(let attachmentObjectID), .uploadPubkey(let attachmentObjectID):
                 self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
-            case .uploadPubkey(let attachmentObjectID):
-                self.uploadPubKey(attachmentObjectID, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
@@ -415,21 +413,6 @@ extension MainQueueHandler {
                 completion(ex)
                 return
             }
-        }
-    }
-
-    private func uploadPubKey(_ attachmentURI: String, UID: String, completion: @escaping Completion) {
-        coreDataService.performOnRootSavingContext { context in
-            guard
-                let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
-                let managedObject = try? context.existingObject(with: managedObjectID),
-                let _ = managedObject as? Attachment
-            else {
-                completion(NSError.badParameter(attachmentURI))
-                return
-            }
-
-            self.uploadAttachment(with: attachmentURI, UID: UID, completion: completion)
         }
     }
 
@@ -843,7 +826,7 @@ extension MainQueueHandler {
                 completion(NSError.badParameter("contact objectID"))
                 return
             }
-            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { contact, error in
+            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { error in
                 completion(error)
             }
         }

@@ -456,7 +456,7 @@ extension LoginService {
         guard FeatureFactory.shared.isEnabled(.externalAccountConversion) else {
             let localError = NSError.asProtonAddrRequiredError()
             completion(.failure(.externalAccountsNotSupported(
-                message: CoreString._ls_external_eccounts_not_supported_popup_local_desc,
+                message: CoreString._ls_external_accounts_not_supported_popup_local_desc, title: CoreString._ls_external_accounts_address_required_popup_title,
                 originalError: localError
             )))
             return false
@@ -471,6 +471,6 @@ extension NSError {
     class func asProtonAddrRequiredError() -> Error {
         return NSError.init(domain: "protoncore-login",
                             code: -100,
-                            localizedDescription: CoreString._ls_external_eccounts_not_supported_popup_local_desc)
+                            localizedDescription: CoreString._ls_external_accounts_not_supported_popup_local_desc)
     }
 }

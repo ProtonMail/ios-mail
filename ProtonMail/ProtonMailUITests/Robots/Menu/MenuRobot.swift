@@ -161,15 +161,21 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                staticText(id.primaryUserMailStaticTextIdentifier(user.name))
+                staticText(user.name)
                     .checkExists()
-                    .checkHasLabel(user.email)
+                staticText(user.email)
+                    .checkExists()
             }
             
             func accountAdded(_ primaryUser: User, _ secondaryUser: User) {
-                staticText(id.primaryUserMailStaticTextIdentifier(secondaryUser.name))
+                staticText(primaryUser.name)
                     .checkExists()
-                    .checkHasLabel(primaryUser.email)
+                staticText(primaryUser.email)
+                    .checkExists()
+                staticText(secondaryUser.name)
+                    .checkExists()
+                staticText(secondaryUser.email)
+                    .checkExists()
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {

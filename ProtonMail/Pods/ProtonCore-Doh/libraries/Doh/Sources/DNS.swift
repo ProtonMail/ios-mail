@@ -42,9 +42,20 @@ extension DNS {
     }
 }
 
-/// dns type, right now only support 16 - txt
-enum DNSType: Int {
+/// DNS type. Type IDs for the different records can be found at:
+/// https://en.wikipedia.org/wiki/List_of_DNS_record_types
+public enum DNSRecordType: Int {
+    case a = 1
     case txt = 16
+
+    var urlQueryStringRepresentation: String {
+        switch self {
+        case .a:
+            return "A"
+        case .txt:
+            return "TXT"
+        }
+    }
 }
 
 /// dns result format

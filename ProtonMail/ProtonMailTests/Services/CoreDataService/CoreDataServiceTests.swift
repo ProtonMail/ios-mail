@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
+import ProtonCore_TestingToolkit
 import XCTest
 
 @testable import ProtonMail
@@ -110,7 +111,7 @@ class CoreDataServiceTests: XCTestCase {
     }
 
     // delete this test once we remove mainContext completely
-    func testWrite_changesAreNotPropagatedToMainContextAndItNeedsToBeExplicitlyRefreshed() throws {
+    func testWrite_changesArePropagatedToMainContext() async throws {
         let mainContext = sut.mainContext
 
         try sut.createNewMessage()
@@ -129,15 +130,197 @@ class CoreDataServiceTests: XCTestCase {
 
         let fetchedMessage = fetchedResultsController.object(at: IndexPath(row: 0, section: 0))
 
-        XCTAssertEqual(fetchedMessage.body, "initial body")
+        mainContext.performAndWait {
+            XCTAssertEqual(fetchedMessage.body, "initial body")
+        }
 
         try sut.modifyMessage(with: fetchedMessage.objectID)
 
-        XCTAssertEqual(fetchedMessage.body, "initial body")
+        try await waitUntilChangesAreMergedIntoMainContext()
 
-        mainContext.refreshAllObjects()
+        mainContext.performAndWait {
+            XCTAssertEqual(fetchedMessage.body, "updated body")
+        }
+    }
 
-        XCTAssertEqual(fetchedMessage.body, "updated body")
+    func testWrite_onlyNotifiesRelevantFetchedResultsControllers() async throws {
+        try sut.write { context in
+            let fooMessage = Message(context: context)
+            fooMessage.body = "initial foo body"
+            fooMessage.messageID = "foo"
+
+            let barMessage = Message(context: context)
+            barMessage.body = "initial bar body"
+            barMessage.messageID = "bar"
+        }
+
+        let (fooFetchedResultsController, fooDelegate) = try makeFetchedResultsControllerAndDelegate(messageID: "foo")
+        let (barFetchedResultsController, barDelegate) = try makeFetchedResultsControllerAndDelegate(messageID: "bar")
+
+        XCTAssertEqual(fooFetchedResultsController.fetchedObjects?.count, 1)
+        XCTAssertEqual(barFetchedResultsController.fetchedObjects?.count, 1)
+
+        XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 0)
+        XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 0)
+
+        try sut.write { context in
+            let message = try XCTUnwrap(Message.messageForMessageID("foo", inManagedObjectContext: context))
+            message.body = "updated foo body"
+        }
+
+        try await waitUntilChangesAreMergedIntoMainContext()
+
+        XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 1)
+        XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 0)
+
+        try sut.write { context in
+            let message = try XCTUnwrap(Message.messageForMessageID("bar", inManagedObjectContext: context))
+            message.body = "updated bar body"
+        }
+
+        try await waitUntilChangesAreMergedIntoMainContext()
+
+        XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 1)
+        XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 1)
+
+        try sut.write { context in
+            let request = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+            let messages = try request.execute()
+
+            for message in messages {
+                context.delete(message)
+            }
+        }
+
+        try await waitUntilChangesAreMergedIntoMainContext()
+
+        XCTAssertEqual(fooDelegate.controllerDidChangeContentStub.callCounter, 2)
+        XCTAssertEqual(barDelegate.controllerDidChangeContentStub.callCounter, 2)
+    }
+
+    func testWrite_isReentrant() throws {
+        let outerWillStart = expectation(description: "outer write will start")
+        let outerIsRunning = expectation(description: "outer write is running")
+        let outerHasFinished = expectation(description: "outer write has finished")
+        let innerWillStart = expectation(description: "inner write will start")
+        let innerIsRunning = expectation(description: "inner write is running")
+        let innerHasFinished = expectation(description: "inner write has finished")
+
+        DispatchQueue.global().async {
+            do {
+                outerWillStart.fulfill()
+
+                try self.sut.write { _ in
+                    outerIsRunning.fulfill()
+
+                    innerWillStart.fulfill()
+
+                    try self.sut.write { _ in
+                        Thread.sleep(forTimeInterval: 0.2)
+                        innerIsRunning.fulfill()
+                    }
+
+                    innerHasFinished.fulfill()
+                }
+
+                outerHasFinished.fulfill()
+            } catch {
+                XCTFail("\(error)")
+            }
+        }
+
+        wait(
+            for: [outerWillStart, outerIsRunning, innerWillStart, innerIsRunning, innerHasFinished, outerHasFinished],
+            timeout: 1,
+            enforceOrder: true
+        )
+    }
+
+    func testWrite_savesContextAtTheEndOfTheBlock() throws {
+        try sut.write { writeContext in
+            let messageInWriteContext = Message(context: writeContext)
+            messageInWriteContext.messageID = "1"
+
+            // Notice that by the time this `read` occurs, `writeContext` hasn't been saved yet.
+            self.sut.read { readContext in
+                XCTAssertNil(readContext.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]))
+            }
+        }
+
+        // Now that we're out of the `write` block, the context has been saved, so the messageID is available.
+        let messageIDAfterTheEndOfTheWriteBlock = try sut.read { context in
+            let message = try XCTUnwrap(
+                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
+            )
+            return message.messageID
+        }
+
+        XCTAssertEqual(messageIDAfterTheEndOfTheWriteBlock, "1")
+    }
+
+    func testNestedWrite_canOperateOnObjectFromOuterWrite() throws {
+        let exp = expectation(description: "operations have finished")
+
+        DispatchQueue.global().async {
+            do {
+                try self.sut.write { outerContext in
+                    let messageInOuterContext = Message(context: outerContext)
+                    messageInOuterContext.messageID = "1"
+
+                    try self.sut.write { _ in
+                        messageInOuterContext.messageID = messageInOuterContext.messageID.appending("2")
+                    }
+
+                    messageInOuterContext.messageID = messageInOuterContext.messageID.appending("3")
+
+                    try self.sut.write { _ in
+                        messageInOuterContext.messageID = messageInOuterContext.messageID.appending("4")
+                    }
+                }
+            } catch {
+                XCTFail("\(error)")
+            }
+
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        let messageIDAfterAllWrites = try sut.read { context in
+            let message = try XCTUnwrap(
+                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
+            )
+            return message.messageID
+        }
+
+        XCTAssertEqual(messageIDAfterAllWrites, "1234")
+    }
+
+    private func waitUntilChangesAreMergedIntoMainContext() async throws {
+        try await Task.sleep(nanoseconds: 5_000_000)
+    }
+
+    private func makeFetchedResultsControllerAndDelegate(messageID: String) throws -> (
+        NSFetchedResultsController<Message>, MockFetchedResultsControllerDelegate
+    ) {
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true)]
+
+        let fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: sut.mainContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+
+        let delegate = MockFetchedResultsControllerDelegate()
+
+        fetchedResultsController.delegate = delegate
+
+        try fetchedResultsController.performFetch()
+
+        return (fetchedResultsController, delegate)
     }
 
     // delete this test once we remove rootSavingContext completely
@@ -191,5 +374,12 @@ private extension CoreDataService {
             let editableMessage = try XCTUnwrap(context.existingObject(with: objectID) as? Message)
             editableMessage.body = "updated body"
         }
+    }
+}
+
+private class MockFetchedResultsControllerDelegate: NSObject, NSFetchedResultsControllerDelegate {
+    @FuncStub(MockFetchedResultsControllerDelegate.controllerDidChangeContent) var controllerDidChangeContentStub
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        controllerDidChangeContentStub(controller)
     }
 }

@@ -84,9 +84,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let primaryUserSessionId = "primary_user_session_id"
 
-        // new value to check new messages
-        static let newMessageFromNotification = "new_message_from_notification"
-
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
@@ -499,20 +496,6 @@ extension UserCachedStatus: DarkModeCacheProtocol {
         }
         set {
             setValue(newValue.rawValue, forKey: Key.darkModeFlag)
-        }
-    }
-}
-
-extension UserCachedStatus: MessageInfoCacheProtocol {
-    var hasMessageFromNotification: Bool {
-        get {
-            if getShared().object(forKey: Key.newMessageFromNotification) == nil {
-                return true
-            }
-            return getShared().bool(forKey: Key.newMessageFromNotification)
-        }
-        set {
-            setValue(newValue, forKey: Key.newMessageFromNotification)
         }
     }
 }

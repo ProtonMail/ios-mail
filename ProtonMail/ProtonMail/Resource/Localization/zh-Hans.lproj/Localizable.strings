@@ -355,9 +355,6 @@
 /* Action */
 "Cancel Check" = "取消检查";
 
-/* Title */
-"Cancelling" = "正在取消";
-
 /* Warning message */
 "Cannot empty folder right now." = "当前无法清空文件夹。";
 
@@ -369,7 +366,7 @@
 "Change account password" = "更改账户密码";
 
 /* Title */
-"Change default address to…" = "修改默认邮件地址到...";
+"Change default address to…" = "将默认邮箱地址改为…";
 
 /* settings general section title */
 "Change mailbox password" = "更改邮箱密码";
@@ -385,7 +382,7 @@
 "Change PIN code" = "更改 PIN 码";
 
 /* Title */
-"Change sender address to…" = "更改发件人地址到...";
+"Change sender address to…" = "将发件人地址改为…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "为您的设备充电或手动恢复。";
@@ -537,7 +534,7 @@
 "Custom" = "自定义";
 
 /* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "自定义工具箱";
+"Customize toolbar" = "定制工具栏";
 
 /* Title */
 "Cut" = "剪切";
@@ -550,6 +547,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "日期：%@";
+
+/* days */
+"days" = "天";
 
 /* error title */
 "Decryption error" = "解密失败";
@@ -567,7 +567,7 @@
 "Default browser" = "默认浏览器";
 
 /* Placeholder */
-"Define Hint (Optional)" = "密码提示（可选）";
+"Define Hint (Optional)" = "密码提示（选填）";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -624,7 +624,7 @@
 "Dismiss keyboard" = "收起屏幕键盘";
 
 /* Title in settings */
-"Display Name" = "显示名称";
+"Display Name" = "称呼";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "确定要删除此附件吗？";
@@ -689,7 +689,7 @@
 "Downloading new messages ..." = "正在下载新邮件 ...";
 
 /* The footer of encrypted search in settings */
-"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下载邮件以在其中搜索。邮件被加密，且被储存在本地。%1$@";
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下载邮件以便搜索邮件内容。所有邮件均已加密且仅保存在此设备上。%1$@";
 
 /* Action */
 "Draft" = "草稿";
@@ -714,7 +714,7 @@
 "Edit avatar" = "编辑头像";
 
 /* Contacts Edit contact */
-"Edit Contact" = "编辑联系人";
+"Edit Contact" = "更改联系人信息";
 
 /* The title of edit folder page */
 "Edit folder" = "更改文件夹";
@@ -747,7 +747,7 @@
 "Email contact" = "邮件联系人";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "邮件发送失败，已被保存为草稿。";
+"Email failed to send. Message saved as draft." = "邮件发送失败，已存为草稿。";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "邮件追踪器会侵犯您的隐私。";
@@ -772,7 +772,7 @@
 "Enable" = "启用";
 
 /* Title for the alert to enable encrypted search */
-"Enable content search" = "启用内容搜索";
+"Enable content search" = "开启邮件全文搜索";
 
 /* Title */
 "Enable email notices" = "开启邮件提醒";
@@ -832,7 +832,7 @@
 "Every time enter app" = "每次进入应用程序时";
 
 /* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "关闭邮件搜索";
+"Exclude message content" = "关闭全文搜索";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "展开文件夹";
@@ -874,7 +874,7 @@
 "Forwarded message" = "已转发的邮件";
 
 /* Text for status label when storage is full */
-"Free up at least 100 MB of storage to continue." = "预留至少100MB存储以继续。";
+"Free up at least 100 MB of storage to continue." = "您至少需要释放 100 MB 存储空间后方可继续。";
 
 /* Title */
 "From" = "发件人";
@@ -933,6 +933,9 @@
 /* Title */
 "Hide details" = "隐藏详情";
 
+/* hours */
+"hours" = "时";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "您认为新版 Proton Mail的使用体验如何？";
 
@@ -949,7 +952,7 @@
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "我正在使用 Proton Mail，你们可能也会感兴趣。这是一款安全的邮箱服务，能够保护你的隐私。通过这个链接注册还能免费体验一个月的高级功能：";
 
 /* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "如果你失去WiFi连接，下载将在数据流量下进行。";
+"If you lose your WiFi connection, download will continue over mobile data." = "Wi-Fi 断开时通过数据流量继续下载。";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "忽视警告并继续";
@@ -1022,13 +1025,13 @@
 "Invalid username!" = "用户名无效！";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "邀请朋友使用 Proton，获得高达90美元的余额！";
+"Invite friends to Proton,\n get up to $90 in credits!" = "邀请好友注册 Proton，最高可获 $90 余额奖励！";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "邀请亲朋好友一起使用 Proton Mail 体验便捷的端到端加密技术，或者向他们发送经过密码保护的邮件。";
 
 /* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "邀请朋友加入 Proton：他们可以免费试用 Mail Plus，当他们订阅付费计划时，你可以赚取奖励金。";
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "邀请好友注册 Proton，受邀即可免费体验 Mail Plus，好友开通付费账户后您也可以获得余额回馈。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "这个bug报告是关于 App 内购买项目的吗？";
@@ -1057,7 +1060,7 @@
 "Learn more" = "了解详情";
 
 /* The title of learn more link */
-"Learn more." = "了解更多。";
+"Learn more." = "了解详情。";
 
 /* settings swipe actions section title */
 "Left to Right" = "从左到右";
@@ -1069,7 +1072,7 @@
 "Limit reached" = "数量已达上限";
 
 /* The banner title after tapping link copy button in referral share view. */
-"Link copied." = "已复制链接。";
+"Link copied." = "链接已复制。";
 
 /* Button inside the banner */
 "Load anyway" = "仍然加载";
@@ -1185,7 +1188,7 @@
 "Message sent" = "邮件已发送";
 
 /* Text for the search info banner when indexing is ongoing. */
-"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "正在下载邮件以进行内容搜索。部分结果可能无法显示。%1$@";
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "正在下载邮件以供全文搜索，部分结果可能尚未显示。%1$@";
 
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
 "Messages from before " = "以前的邮件 ";
@@ -1198,6 +1201,9 @@
 
 /* default vcard types */
 "Mobile" = "手机";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "移动设备标识";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "星期一 (%1$@) 上午 08:%2$d";
@@ -1276,6 +1282,9 @@
 /* Title */
 "No connectivity detected…" = "未检测到网络连接…";
 
+/* Short hint in the header view */
+"No email trackers found" = "未发现电子邮件跟踪器";
+
 /* network troubleshot cell title */
 "No internet connection" = "网络未连接";
 
@@ -1312,6 +1321,12 @@
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "非垃圾邮件（移至收件箱）";
 
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "邮件未能全部下载，请先释放部分设备存储空间再继续下载。";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "邮件未能全部下载，请先放宽下方的存储空间限制再继续下载。";
+
 /* No comment provided by engineer. */
 "Not set" = "未设置";
 
@@ -1343,6 +1358,9 @@
 /* Title for the alert button to disable content search. */
 "Okay" = "确定";
 
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "最早的邮件：";
+
 /* The title of On setting options */
 "On" = "开";
 
@@ -1371,7 +1389,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "如果您愿意上传付款时 App Store 提供给客户端的技术数据，我们的客服团队会尝试为您人工激活服务。此数据不包含您的任何个人信息，如 iTunes 账户、Apple ID 及其关联的银行卡，我们只是用它验证 App Store 服务器上的交易是否已完成。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "系统已将此邮件认定为钓鱼邮件，请确认其内容真实性。";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "系统已将此邮件识别为欺诈邮件，请确认其内容真实性。";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "上层文件夹";
@@ -1435,6 +1453,9 @@
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "请连接网络并重试";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "请联网后再继续。";
 
 /* error message */
 "Please input a valid email address." = "请输入有效的的邮件地址。";
@@ -1535,6 +1556,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "已启用密保邮箱";
 
+/* menu title */
+"Refer a friend" = "邀请好友";
+
 /* Title */
 "Remind Me Later" = "稍后提醒我";
 
@@ -1575,11 +1599,20 @@
 /* link opeining confirmation */
 "Request link confirmation" = "链接安全提示";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "重置所有选项";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "重置所有选项?";
+
 /* Title */
 "Resetting message cache…" = "正在重置邮件缓存…";
 
 /* Text for resume button */
 "Resume" = "继续";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "手动恢复。";
 
 /* Action */
 "Retry" = "重试";
@@ -1604,7 +1637,10 @@
 "Schedule will be removed" = "将删除计划";
 
 /* mail location title */
-"Scheduled" = "已计划";
+"Scheduled" = "定时发送";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "定时发送邮件中...";
 
 /* Springboard (3D Touch) shortcuts action
    Title */
@@ -1614,6 +1650,9 @@
    The title of encrypted search in settings */
 "Search message content" = "搜索邮件全文";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "搜索太慢？%1$@可加快搜索速度。";
+
 /* The link in local storage downloaded messages. */
 "See details" = "查看详细信息";
 
@@ -1622,6 +1661,9 @@
 
 /* section title */
 "Select colour" = "选择颜色";
+
+/* Option for set up scheduled send */
+"Select date and time" = "选择日期与时间";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "已选中";
@@ -1727,7 +1769,7 @@
 "Sign out" = "退出";
 
 /* Action */
-"Sign Out" = "退出登录";
+"Sign Out" = "退出账户";
 
 /* Title in signature settings */
 "Signature" = "落款";
@@ -1743,6 +1785,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延后";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "跟踪防护已阻止加载部分图像。";
 
 /* menu title */
 "Spam" = "垃圾邮件";
@@ -1778,10 +1823,10 @@
 "Storage quota exceeded" = "存储配额超标";
 
 /* The title of storage usage in settings for encrypted search */
-"Storage used" = "使用的储存空间";
+"Storage used" = "存储空间用量";
 
 /* The text for determining the size of the encrypted search index */
-"Storage used: " = "使用的储存空间： ";
+"Storage used: " = "已用存储空间：";
 
 /* Title */
 "Storage Warning" = "存储空间提示";
@@ -1835,6 +1880,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "暂时关闭或卸载杀毒软件。";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "服务条款";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感谢您提交了一个错误报告。我们已将此报告加入到我们的跟踪系统中。";
 
@@ -1843,6 +1891,12 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "两次密码不匹配";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "工具栏中的按钮将被重置";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "关闭 Proton Mail 应用将导致下载停止。";
 
 /* Description */
 "The draft cache is broken. Please try again." = "草稿缓存出错，请重试。";
@@ -1943,11 +1997,23 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "若所选浏览器被卸载则使用 Safari。";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "此工具栏将在多项选择邮件时显示。";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "此工具栏将在阅读邮件时显示。";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "该放松一下了";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "定时";
+
 /* contacts talbe cell Title title */
 "Title" = "头衔";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS 证书验证失败，您的网络可能已受到监控。为保证安全，本程序已暂停运作。";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS 证书验证失败，您的网络可能已受到监控。为保证安全，本程序已暂停运行。\n\n请立即切换网络。";
@@ -1959,6 +2025,9 @@
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "今天，%@";
 
+/* One of schedule time options */
+"Tomorrow" = "明天";
+
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "明天上午 08:%02d";
 
@@ -1968,8 +2037,14 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "待发送的邮件过多，请等待其他邮件发送后再发送此邮件。";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "工具栏操作按钮（最多可选择 5 个）";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "跟踪奖励进展";
 
 /* mail location desc
    menu title */
@@ -2002,6 +2077,9 @@
 /* Description */
 "Unable to parse the response object:\n%@" = "无法解析返回对象：%@";
 
+/* error when sending the message */
+"Unable to send the email" = "无法发送电子邮件";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公开收件人";
 
@@ -2016,6 +2094,9 @@
 
 /* Error */
 "Unknown Error" = "未知错误";
+
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "无限制";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "需要解锁";
@@ -2134,11 +2215,23 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "网络未连接";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "您可以选择并排列工具栏中的操作";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "你可以在任何时候从设置中禁用对话。";
 
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
+
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "您现在可以计划稍后发送邮件";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "现已支持搜索邮件内容，此功能可随时在设置中开启。";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "您可以搜索已下载的邮件内容，其他邮件只能搜索收件人名单和主题行。";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
@@ -2158,6 +2251,9 @@
 /* incorrect email format error while sending */
 "You have entered at least one unknown recipient. Please verify your recipients." = "您至少输入了一位未知的收件人，请验证您的收件人。";
 
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "您没有邮件。";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "您的改动尚未保存，要保存吗？";
 
@@ -2176,11 +2272,17 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "确定要彻底删除邮件吗？";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "免受邮件追踪器侵扰";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "您做出的更改将丢失";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的国家可能屏蔽了 Proton。尝试使用 %1$@（或其他 VPN）或 %2$@ 连接 Proton。";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "邮件中的外链图片现已默认加载，但发件人不会知道您于何时、何地或是否已打开邮件。此选项可以在设置 → 账户设置 → 隐私中修改。";
 
 /* Title of user feedback view */
 "Your feedback" = "意见反馈";
@@ -2188,8 +2290,14 @@
 /* The section title of folder manager table */
 "Your folders" = "您的文件夹";
 
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "您的邀请链接";
+
 /* The section title of label manager table */
 "Your labels" = "您的标签";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "正在为您下载邮件...";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";

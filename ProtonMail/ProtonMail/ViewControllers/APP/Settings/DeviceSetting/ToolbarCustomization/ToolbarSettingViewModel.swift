@@ -83,7 +83,7 @@ final class ToolbarSettingViewModel {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(params: .init(preference: preference)) { _ in
+            .execute(params: .init(preference: preference)) { _ in
                 completion()
             }
     }

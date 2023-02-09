@@ -266,8 +266,7 @@ extension MailboxCoordinator {
         let viewModel = SearchViewModel(
             user: viewModel.user,
             coreDataContextProvider: services.get(by: CoreDataService.self),
-            queueManager: services.get(by: QueueManager.self),
-            realAttachmentsFlagProvider: userCachedStatus
+            queueManager: services.get(by: QueueManager.self)
         )
         let viewController = SearchViewController(viewModel: viewModel)
         viewModel.uiDelegate = viewController
@@ -552,6 +551,7 @@ extension MailboxCoordinator {
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
             labelID: viewModel.labelID,
             user: viewModel.user,
+            userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
@@ -569,6 +569,7 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             targetMessageID: targetID,
+            userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)

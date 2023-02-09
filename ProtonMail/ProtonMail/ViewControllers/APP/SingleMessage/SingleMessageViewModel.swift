@@ -125,9 +125,9 @@ class SingleMessageViewModel {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
         case .markRead:
-            messageService.mark(messages: [message], labelID: labelId, unRead: false)
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: false)
         case .markUnread:
-            messageService.mark(messages: [message], labelID: labelId, unRead: true)
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
         case .trash:
             messageService.move(messages: [message],
                                 from: [labelId],
@@ -142,7 +142,7 @@ class SingleMessageViewModel {
                                  completion: @escaping () -> Void) {
         switch action {
         case .markUnread:
-            messageService.mark(messages: [message], labelID: labelId, unRead: true)
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
         case .trash:
             messageService.move(messages: [message],
                                 from: [labelId],
@@ -328,7 +328,7 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(params: .init(preference: preference)) { result in
+            .execute(params: .init(preference: preference)) { result in
                 switch result {
                 case .success:
                     completion?(nil)

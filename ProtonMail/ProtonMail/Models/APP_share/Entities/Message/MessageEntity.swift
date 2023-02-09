@@ -128,10 +128,6 @@ struct MessageEntity: Equatable, Hashable {
 }
 
 extension MessageEntity {
-    var sender: ContactVO? {
-        rawSender?.toContact()
-    }
-
     var parsedHeaders: [String: Any] {
         rawParsedHeaders?.parseObjectAny() ?? [:]
     }

@@ -326,7 +326,7 @@ public class Crypto {
     }
     
     func decryptAndVerify(decryptionKey: DecryptionKey, encrypted: ArmoredMessage,
-                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64) throws -> VerifiedString {
+                          signature: ArmoredSignature, verificationKeys: [ArmoredKey], verifyTime: Int64, trimTrailingSpaces: Bool = true) throws -> VerifiedString {
         
         let decryptionKeyRing = try keyRingBuilder.buildPrivateKeyRingUnlock(privateKeys: [decryptionKey])
         defer { decryptionKeyRing.clearPrivateParams() }
@@ -343,7 +343,8 @@ public class Crypto {
         
         let verifyUnixTime = verifyTime == 0 ? CryptoGetUnixTime() : verifyTime
         do {
-            let plainMessage = CryptoPlainMessage(from: decrypted)
+            let trimmed = (trimTrailingSpaces) ? decrypted.trimTrailingSpaces() : decrypted
+            let plainMessage = CryptoPlainMessage(from: trimmed)
             try verificationKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyUnixTime)
             return .verified(decrypted)
         } catch {
@@ -563,7 +564,7 @@ public class Crypto {
         }
     }
     
-    internal func signDetached(plainRaw: Either<String, Data>, signer: SigningKey) throws -> ArmoredSignature {
+    internal func signDetached(plainRaw: Either<String, Data>, signer: SigningKey, trimTrailingSpaces: Bool) throws -> ArmoredSignature {
         guard !signer.isEmpty else {
             throw SignError.invalidSigningKey
         }
@@ -578,8 +579,11 @@ public class Crypto {
         
         let plainMessage: CryptoPlainMessage?
         switch plainRaw {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData)
+        case .left(let plainText):
+            let trimmed = (trimTrailingSpaces) ? plainText.trimTrailingSpaces() : plainText
+            plainMessage = CryptoNewPlainMessageFromString(trimmed)
+        case .right(let plainData):
+            plainMessage = CryptoNewPlainMessage(plainData)
         }
         
         let pgpSignature = try keyRing.signDetached(plainMessage)
@@ -590,19 +594,22 @@ public class Crypto {
     }
     
     internal func verifyDetached(input: Either<String, Data>, signature: Either<ArmoredSignature, UnArmoredSignature>,
-                                 verifier: ArmoredKey, verifyTime: Int64) throws -> Bool {
+                                 verifier: ArmoredKey, verifyTime: Int64, trimTrailingSpaces: Bool) throws -> Bool {
         return try self.verifyDetached(input: input, signature: signature,
-                                       verifiers: [verifier], verifyTime: verifyTime)
+                                       verifiers: [verifier], verifyTime: verifyTime, trimTrailingSpaces: trimTrailingSpaces)
     }
     
     internal func verifyDetached(input: Either<String, Data>, signature: Either<ArmoredSignature, UnArmoredSignature>,
-                                 verifiers: [ArmoredKey], verifyTime: Int64) throws -> Bool {
+                                 verifiers: [ArmoredKey], verifyTime: Int64, trimTrailingSpaces: Bool) throws -> Bool {
         
         let publicKeyRing = try self.keyRingBuilder.buildPublicKeyRing(armoredKeys: verifiers)
         let plainMessage: CryptoPlainMessage?
         switch input {
-        case .left(let plainText): plainMessage = CryptoNewPlainMessageFromString(plainText)
-        case .right(let plainData): plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
+        case .left(let plainText):
+            let trimmed = (trimTrailingSpaces) ? plainText.trimTrailingSpaces() : plainText
+            plainMessage = CryptoNewPlainMessageFromString(trimmed)
+        case .right(let plainData):
+            plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
         }
         let pgpSignature: CryptoPGPSignature?
         switch signature {

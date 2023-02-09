@@ -23,14 +23,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ExpandedHeaderViewModel {
-
-    var reloadView: (() -> Void)?
-
-    private(set) var infoProvider: MessageInfoProvider {
-        didSet { reloadView?() }
-    }
-
+final class ExpandedHeaderViewModel: HeaderViewModel {
     var trackerProtectionRowInfo: (title: String, trackersFound: Bool)? {
         guard infoProvider.imageProxyEnabled else {
             return nil
@@ -43,13 +36,5 @@ final class ExpandedHeaderViewModel {
             trackerCount
         ) : L11n.EmailTrackerProtection.no_email_trackers_found
         return (text, trackersFound)
-    }
-
-    init(infoProvider: MessageInfoProvider) {
-        self.infoProvider = infoProvider
-    }
-
-    func providerHasChanged(provider: MessageInfoProvider) {
-        infoProvider = provider
     }
 }

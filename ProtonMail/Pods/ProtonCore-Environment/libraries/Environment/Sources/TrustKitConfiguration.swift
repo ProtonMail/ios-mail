@@ -26,205 +26,215 @@ import TrustKit
 public typealias Configuration = [String: Any]
 
 extension TrustKitWrapper {
-    static public func configuration(hardfail: Bool) -> Configuration {
-        [
+    // The value of `ignoreMacUserDefinedTrustAnchors` is ignored on iOS, it's macOS-only
+    // However, to make it easier to share the TrustKit configuration between iOS and macOS,
+    // we expose the same API on both platforms
+    static public func configuration(hardfail: Bool, ignoreMacUserDefinedTrustAnchors: Bool = false) -> Configuration {
+        let propertiesForAllPlatforms: Configuration = [
             kTSKSwizzleNetworkDelegates: false,
-            kTSKPinnedDomains: [
-                "protonmail.ch": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKForceSubdomainMatch: true,
-                    kTSKNoSSLValidation: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonmail.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+            kTSKPinnedDomains: pinnedDomains(hardfail: hardfail)
+        ]
+        let platformSpecificConfiguration = platformSpecificTrustKitProperties(ignoreMacUserDefinedTrustAnchors)
+        return propertiesForAllPlatforms.merging(platformSpecificConfiguration, uniquingKeysWith: { lhs, rhs in rhs })
+    }
+
+    private static func pinnedDomains(hardfail: Bool) -> [String : [String : Any]] {
+        [
+            "protonmail.ch": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKForceSubdomainMatch: true,
+                kTSKNoSSLValidation: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonmail.ch/reports/tls"
                 ],
-                "protonvpn.ch": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKForceSubdomainMatch: true,
-                    kTSKNoSSLValidation: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonvpn.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonmail.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "protonvpn.ch": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKForceSubdomainMatch: true,
+                kTSKNoSSLValidation: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "verify.protonmail.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonvpn.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonvpn.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "verify.protonmail.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "verify-api.protonmail.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonvpn.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonvpn.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "verify-api.protonmail.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "verify.protonvpn.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonvpn.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonvpn.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "verify.protonvpn.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "verify-api.protonvpn.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonvpn.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonvpn.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "verify-api.protonvpn.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "account.protonmail.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonvpn.ch certificate
-                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
-                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
-                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonvpn.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "account.protonmail.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "account.protonvpn.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // verify.protonvpn.com and verify-api.protonvpn.com
-                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
-                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
-                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonvpn.ch certificate
+                    "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
+                    "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=", // Hot backup
+                    "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw=", // Cold backup
+                ]
+            ],
+            "account.protonvpn.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "protonmail.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // verify.protonmail.com and verify-api.protonmail.com certificate
-                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
-                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
-                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // verify.protonvpn.com and verify-api.protonvpn.com
+                    "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
+                    "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
+                    "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
+                ]
+            ],
+            "protonmail.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonmail.ch/reports/tls"
                 ],
-                "protonvpn.com": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // verify.protonvpn.com and verify-api.protonvpn.com
-                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
-                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
-                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // verify.protonmail.com and verify-api.protonmail.com certificate
+                    "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
+                    "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
+                    "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
+                ]
+            ],
+            "protonvpn.com": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonvpn.ch/reports/tls"
                 ],
-                "proton.me": [
-                    kTSKEnforcePinning: hardfail,
-                    kTSKIncludeSubdomains: true,
-                    kTSKForceSubdomainMatch: true,
-                    kTSKNoSSLValidation: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // proton.me certificate
-                        "CT56BhOTmj5ZIPgb/xD5mH8rY3BLo/MlhP7oPyJUEDo=", // Current
-                        "35Dx28/uzN3LeltkCBQ8RHK0tlNSa2kCpCRGNp34Gxc=", // Hot backup
-                        "qYIukVc63DEITct8sFT7ebIq5qsWmuscaIKeJx+5J5A=", // Cold backup
-                    ]
+                kTSKPublicKeyHashes: [
+                    // verify.protonvpn.com and verify-api.protonvpn.com
+                    "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
+                    "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=", // Hot backup
+                    "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY=", // Cold backup
+                ]
+            ],
+            "proton.me": [
+                kTSKEnforcePinning: hardfail,
+                kTSKIncludeSubdomains: true,
+                kTSKForceSubdomainMatch: true,
+                kTSKNoSSLValidation: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonmail.ch/reports/tls"
                 ],
-                ".compute.amazonaws.com": [
-                    kTSKEnforcePinning: true,
-                    kTSKIncludeSubdomains: true,
-                    kTSKForceSubdomainMatch: true,
-                    kTSKNoSSLValidation: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
-                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
-                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=", // Backup 1
-                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
-                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
-                    ]
+                kTSKPublicKeyHashes: [
+                    // proton.me certificate
+                    "CT56BhOTmj5ZIPgb/xD5mH8rY3BLo/MlhP7oPyJUEDo=", // Current
+                    "35Dx28/uzN3LeltkCBQ8RHK0tlNSa2kCpCRGNp34Gxc=", // Hot backup
+                    "qYIukVc63DEITct8sFT7ebIq5qsWmuscaIKeJx+5J5A=", // Cold backup
+                ]
+            ],
+            ".compute.amazonaws.com": [
+                kTSKEnforcePinning: true,
+                kTSKIncludeSubdomains: true,
+                kTSKForceSubdomainMatch: true,
+                kTSKNoSSLValidation: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonmail.ch/reports/tls"
                 ],
-                kTSKCatchallPolicy: [
-                    kTSKEnforcePinning: true,
-                    kTSKNoSSLValidation: true,
-                    kTSKNoHostnameValidation: true,
-                    kTSKAllowIPsOnly: true,
-                    kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
-                    ],
-                    kTSKPublicKeyHashes: [
-                        // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
-                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
-                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=", // Backup 1
-                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
-                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
-                    ]
+                kTSKPublicKeyHashes: [
+                    // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
+                    "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
+                    "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=", // Backup 1
+                    "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
+                    "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
+                ]
+            ],
+            kTSKCatchallPolicy: [
+                kTSKEnforcePinning: true,
+                kTSKNoSSLValidation: true,
+                kTSKNoHostnameValidation: true,
+                kTSKAllowIPsOnly: true,
+                kTSKDisableDefaultReportUri: true,
+                kTSKReportUris: [
+                    "https://api.protonmail.ch/reports/tls"
                 ],
+                kTSKPublicKeyHashes: [
+                    // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
+                    "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
+                    "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=", // Backup 1
+                    "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
+                    "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
+                ]
             ]
         ]
     }
+
 }

@@ -38,8 +38,15 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        cell(id.mailboxMessageCellIdentifier(subject)).firstMatch().tap()
-        return MessageRobot()
+        if !cell(id.mailboxMessageCellIdentifier(subject)).exists() {
+            return refreshMailbox().clickMessageBySubject(subject)
+        } else {
+            cell(id.mailboxMessageCellIdentifier(subject))
+                .firstMatch()
+                .waitForHittable(time: 30.0)
+                .tapIfExists()
+            return MessageRobot()
+        }
     }
     
     @discardableResult
@@ -78,7 +85,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func refreshMailbox() -> MailboxRobotInterface {
-        table(id.mailboxTableViewIdentifier).tapThenSwipeDown(0.3, .slow)
+        table(id.mailboxTableViewIdentifier).firstMatch().tapThenSwipeDown(0.3, .slow)
         return self
     }
     

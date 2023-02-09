@@ -18,9 +18,7 @@
 import ProtonCore_Services
 
 enum FeatureFlagKey: String, CaseIterable {
-    case threading = "ThreadingIOS"
     case inAppFeedback = "InAppFeedbackIOS"
-    case realNumAttachments = "RealNumAttachments"
     case scheduleSend = "ScheduledSendFreemium"
 }
 
@@ -44,7 +42,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     }
     private(set) var lastFetchingTime: Date?
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
-    private let realAttachmentsFlagProvider: RealAttachmentsFlagProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     init(
@@ -52,14 +49,12 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         apiService: APIService,
         sessionID: String,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
-        realAttachmentsFlagProvider: RealAttachmentsFlagProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider
     ) {
         self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
-        self.realAttachmentsFlagProvider = realAttachmentsFlagProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
     }
 
@@ -95,13 +90,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
             if !response.result.isEmpty {
                 self.subscribers.forEach { $0.handleNewFeatureFlags(response.result) }
-            }
-
-            if let realAttachment = response.result[FeatureFlagKey.realNumAttachments.rawValue] as? Bool {
-                self.realAttachmentsFlagProvider.set(
-                    realAttachments: realAttachment,
-                    sessionID: self.sessionID
-                )
             }
 
             if let isScheduleSendEnabled = response.result[FeatureFlagKey.scheduleSend.rawValue] as? Bool {

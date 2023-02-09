@@ -76,25 +76,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/Masonry</string>
-			<key>Title</key>
-			<string>Masonry</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/MBProgressHUD</string>
 			<key>Title</key>
 			<string>MBProgressHUD</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/MCSwipeTableViewCell</string>
-			<key>Title</key>
-			<string>MCSwipeTableViewCell</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -124,17 +108,17 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-AccountDeletion-V5</string>
+			<string>Acknowledgements/ProtonCore-AccountDeletion</string>
 			<key>Title</key>
-			<string>ProtonCore-AccountDeletion-V5</string>
+			<string>ProtonCore-AccountDeletion</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-AccountSwitcher-V5</string>
+			<string>Acknowledgements/ProtonCore-AccountSwitcher</string>
 			<key>Title</key>
-			<string>ProtonCore-AccountSwitcher-V5</string>
+			<string>ProtonCore-AccountSwitcher</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -172,9 +156,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-Common-V5</string>
+			<string>Acknowledgements/ProtonCore-Common</string>
 			<key>Title</key>
-			<string>ProtonCore-Common-V5</string>
+			<string>ProtonCore-Common</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -183,14 +167,6 @@
 			<string>Acknowledgements/ProtonCore-CoreTranslation</string>
 			<key>Title</key>
 			<string>ProtonCore-CoreTranslation</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/ProtonCore-CoreTranslation-V5</string>
-			<key>Title</key>
-			<string>ProtonCore-CoreTranslation-V5</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -228,9 +204,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-ForceUpgrade-V5</string>
+			<string>Acknowledgements/ProtonCore-ForceUpgrade</string>
 			<key>Title</key>
-			<string>ProtonCore-ForceUpgrade-V5</string>
+			<string>ProtonCore-ForceUpgrade</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -260,9 +236,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-HumanVerification-V5</string>
+			<string>Acknowledgements/ProtonCore-HumanVerification</string>
 			<key>Title</key>
-			<string>ProtonCore-HumanVerification-V5</string>
+			<string>ProtonCore-HumanVerification</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -292,9 +268,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-LoginUI-V5</string>
+			<string>Acknowledgements/ProtonCore-LoginUI</string>
 			<key>Title</key>
-			<string>ProtonCore-LoginUI-V5</string>
+			<string>ProtonCore-LoginUI</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -324,9 +300,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-PaymentsUI-V5</string>
+			<string>Acknowledgements/ProtonCore-PaymentsUI</string>
 			<key>Title</key>
-			<string>ProtonCore-PaymentsUI-V5</string>
+			<string>ProtonCore-PaymentsUI</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -364,9 +340,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/ProtonCore-UIFoundations-V5</string>
+			<string>Acknowledgements/ProtonCore-UIFoundations</string>
 			<key>Title</key>
-			<string>ProtonCore-UIFoundations-V5</string>
+			<string>ProtonCore-UIFoundations</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

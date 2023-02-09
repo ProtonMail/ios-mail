@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Seleccionado</string>
+			<string>%d seleccionado</string>
 			<key>other</key>
-			<string>%d Seleccionados</string>
+			<string>%d seleccionados</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -353,7 +353,7 @@
 			<key>one</key>
 			<string>¿Estás seguro de que quieres eliminar permanentemente $%d mensaje?</string>
 			<key>other</key>
-			<string>¿Estás seguro de que deseas eliminar permanentemente $%d mensajes?</string>
+			<string>¿Estás seguro de que quieres eliminar permanentemente $%d mensajes?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -385,9 +385,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton encontró y bloqueó %d rastreador en este mensaje.</string>
+			<string>Proton ha encontrado y bloqueado %d rastreador en este mensaje.</string>
 			<key>other</key>
-			<string>Proton encontró y bloqueó %d rastreadores en este mensaje.</string>
+			<string>Proton ha encontrado y bloqueado %d rastreadores en este mensaje.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Este %d mensaje se moverá a Borradores y se eliminará su programación.</string>
+			<string>Este %d mensaje se moverá a la carpeta Borradores y se eliminará su programación.</string>
 			<key>other</key>
-			<string>Estos %d mensajes se moverán a Borradores y se eliminarán sus programaciones.</string>
+			<string>Estos %d mensajes se moverán a la carpeta Borradores y se eliminarán sus programaciones.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

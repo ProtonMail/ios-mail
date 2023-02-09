@@ -356,7 +356,7 @@
 "Cancel Check" = "Annuleer controle";
 
 /* Title */
-"Cancelling" = "Annuleren";
+"Canceling" = "Annuleren";
 
 /* Warning message */
 "Cannot empty folder right now." = "Kan de map momenteel niet leegmaken.";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Onze klantenondersteuning zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die App Store op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple-ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Bovenliggende map";

@@ -100,8 +100,7 @@ extension ScheduledSendHelper {
             title: title,
             subtitle: "",
             leftItem: cancelItem,
-            rightItem: nil,
-            showDragBar: false
+            rightItem: nil
         )
         return header
     }
@@ -110,32 +109,26 @@ extension ScheduledSendHelper {
         guard let tomorrow = self.current.tomorrow(at: 8, minute: 0) else {
             return nil
         }
-        return PMActionSheetPlainItem(
+        return PMActionSheetPlainItem.init(
             title: L11n.ScheduledSend.tomorrow,
-            detail: tomorrow.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
-            self?.delegate?.scheduledTimeIsSet(date: tomorrow)
-            self?.actionSheet?.dismiss(animated: true)
-        }
+            icon: nil) { [weak self] _ in
+                self?.delegate?.scheduledTimeIsSet(date: tomorrow)
+                self?.actionSheet?.dismiss(animated: true)
+            }
     }
-
+    
     private func setUpMondayAction() -> PMActionSheetPlainItem? {
         guard let next = self.current.next(.monday, hour: 8, minute: 0) else {
             return nil
         }
         return PMActionSheetPlainItem(
             title: next.formattedWith("EEEE").capitalized,
-            detail: next.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
-            self?.delegate?.scheduledTimeIsSet(date: next)
-            self?.actionSheet?.dismiss(animated: true)
-        }
+            icon: nil ) { [weak self] _ in
+                self?.delegate?.scheduledTimeIsSet(date: next)
+                self?.actionSheet?.dismiss(animated: true)
+            }
     }
-
+    
     private func setUpCustomAction() -> PMActionSheetPlainItem {
         let icon = IconProvider.chevronRight
         let isPaid = delegate?.isItAPaidUser() ?? false

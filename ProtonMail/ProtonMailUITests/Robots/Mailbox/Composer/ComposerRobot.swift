@@ -58,7 +58,7 @@ class ComposerRobot: CoreElements {
     }
     
     func tapCancelFromDrafts() -> DraftsRobot {
-        button(id.cancelNavBarButtonIdentifier).tap()
+        button(id.cancelNavBarButtonIdentifier).firstMatch().tap()
         return DraftsRobot()
     }
     
@@ -176,7 +176,7 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        button(id.sendButtonIdentifier).tap()
+        button(id.sendButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
     
@@ -194,7 +194,7 @@ class ComposerRobot: CoreElements {
     
     func typeAndSelectRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).firstMatch().tap().typeText(email)
-        cell(id.getContactCellIdentifier(email)).firstMatch().tap()
+        cell(id.getContactCellIdentifier(email)).firstMatch().waitForHittable().tap()
         return self
     }
 
@@ -212,7 +212,10 @@ class ComposerRobot: CoreElements {
     }
     
     func changeSubjectTo(_ subjectText: String) -> ComposerRobot {
-        textField(id.subjectTextFieldIdentifier).waitForHittable().tap().clearText().typeText(subjectText)
+        textField(id.subjectTextFieldIdentifier)
+            .firstMatch()
+            .waitForHittable().tap()
+            .clearText().typeText(subjectText)
         return ComposerRobot()
     }
     
@@ -313,7 +316,7 @@ class ComposerRobot: CoreElements {
     }
     
     private func setMessagePassword() -> SetPasswordRobot  {
-        button(id.passwordButtonIdentifier).tap()
+        button(id.passwordButtonIdentifier).firstMatch().tap()
         return SetPasswordRobot()
     }
     
@@ -328,7 +331,7 @@ class ComposerRobot: CoreElements {
     }
     
     private func messageExpiration() -> MessageExpirationRobot {
-        button(id.expirationButtonIdentifier).tap()
+        button(id.expirationButtonIdentifier).firstMatch().tap()
         return MessageExpirationRobot()
     }
     

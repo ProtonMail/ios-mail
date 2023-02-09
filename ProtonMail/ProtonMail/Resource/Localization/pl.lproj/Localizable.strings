@@ -353,7 +353,7 @@
 "Cancel Check" = "Anuluj weryfikację";
 
 /* Title */
-"Cancelling" = "Anulowanie";
+"Canceling" = "Anulowanie";
 
 /* Warning message */
 "Cannot empty folder right now." = "Nie można opróżnić folderu.";
@@ -1386,7 +1386,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Jeśli zgodzisz się dołączyć dane techniczne, które sklep App Store dostarczył aplikacji w momencie zakupu, nasz zespół wsparcia klienta spróbuje ręcznie aktywować plan. Te dane nie zawierają żadnych szczegółów dotyczących Twojego konta iTunes, identyfikatora Apple ID, powiązanych kart płatniczych ani żadnych innych informacji o użytkowniku. Pomaga nam to jedynie sprawdzić i zweryfikować, czy transakcja została wykonana na serwerach sklepu App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Nasz system oznaczył wiadomość jako próbę wyłudzenia informacji. Upewnij się, że jest ona wiarygodna";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Nasz system oznaczył wiadomość jako próbę wyłudzenia informacji. Upewnij się, że jest ona wiarygodna.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder nadrzędny";

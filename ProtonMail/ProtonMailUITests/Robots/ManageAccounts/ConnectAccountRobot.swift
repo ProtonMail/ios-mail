@@ -78,32 +78,32 @@ class ConnectAccountRobot: CoreElements {
     }
     
     private func decrypt() -> InboxRobot {
-        button(id.decryptButtonIdentifier).tap()
+        button(id.decryptButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
 
     private func confirmTwoFa() -> InboxRobot {
-        button(id.twoFaEnterButtonIdentifier).tap()
+        button(id.twoFaEnterButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
     
     private func confirmTwoFaAndProvideMailboxPassword() -> ConnectAccountRobot {
-        button(id.twoFaEnterButtonIdentifier).tap()
+        button(id.twoFaEnterButtonIdentifier).firstMatch().tap()
         return self
     }
 
     private func confirmTwoFaWithReachedLimit() -> ConnectAccountRobot {
-        button(id.twoFaEnterButtonIdentifier).tap()
+        button(id.twoFaEnterButtonIdentifier).firstMatch().tap()
         return ConnectAccountRobot()
     }
 
     private func cancelTwoFaPrompt() -> ConnectAccountRobot {
-        button(id.cancelButtonIdentifier).tap()
+        button(id.cancelButtonIdentifier).firstMatch().tap()
         return ConnectAccountRobot()
     }
 
     private func closeSignInScreen() -> AccountManagerRobot {
-        button(id.cancelButtonIdentifier).tap()
+        button(id.cancelButtonIdentifier).firstMatch().tap()
         return AccountManagerRobot()
     }
 
@@ -123,7 +123,7 @@ class ConnectAccountRobot: CoreElements {
     }
 
     private func twoFaCode(_ code: String) -> ConnectAccountRobot {
-        textField(id.twoFaCodeIdentifier).typeText(code)
+        textField(id.twoFaCodeIdentifier).firstMatch().tap().typeText(code)
         return self
     }
     
@@ -143,7 +143,8 @@ class ConnectAccountRobot: CoreElements {
 
         /// Free users limit alert is shown.
         func limitReachedDialogDisplayed() {
-            staticText(id.limitReachedText).wait().checkExists()
+            staticText(id.limitReachedText).firstMatch()
+                .wait().checkExists()
         }
     }
 }

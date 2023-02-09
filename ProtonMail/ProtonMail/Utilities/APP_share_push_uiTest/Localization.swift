@@ -446,8 +446,8 @@ class LocalizedString {
     /// "Confirm"
     lazy var _general_confirm_action = NSLocalizedString("Confirm", comment: "Action")
 
-    /// "Cancelling"
-    lazy var _contacts_cancelling_title = NSLocalizedString("Cancelling", comment: "Title")
+    /// "Canceling"
+    lazy var _contacts_cancelling_title = NSLocalizedString("Canceling", comment: "Title")
 
     /// "Unknown"
     lazy var _general_unknown_title = NSLocalizedString("Unknown", comment: "title, default display name")
@@ -1239,7 +1239,7 @@ class LocalizedString {
 
     lazy var _unsubscribe_compact_banner_description = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
 
-    lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate", comment: "")
+    lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate.", comment: "")
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
     lazy var _autoreply_compact_banner_description = NSLocalizedString("This message was automatically generated", comment: "The title of auto reply banner")
@@ -1425,16 +1425,6 @@ class LocalizedString {
     lazy var _settings_local_storage_downloaded_messages_text = NSLocalizedString("Allows you to search within your messages. %1$@", comment: "The text explaining what downloaded messages in local storage is used for.")
     lazy var _settings_local_storage_downloaded_messages_text_link = NSLocalizedString("See details", comment: "The link in local storage downloaded messages.")
     lazy var _settings_local_storage_downloaded_messages_text_disabled = NSLocalizedString("Disabled", comment: "The text for downloaded messages in local storage when encrypted search is disabled.")
-    lazy var _encrypted_search_info_search_downloading = NSLocalizedString("Messages are being downloaded for content search. Some results may not be shown. %1$@", comment: "Text for the search info banner when indexing is ongoing.")
-    lazy var _encrypted_search_info_search_downloading_link = NSLocalizedString("See progress.", comment: "Text for the link to show the current indexing progress")
-    lazy var _encrypted_search_info_search_paused = NSLocalizedString("Message downloading paused. Find out how to %1$@", comment: "Text for the search info banner when indexing is paused.")
-    lazy var _encrypted_search_info_search_paused_link = NSLocalizedString("resume manually.", comment: "Text for the link to show when indexing is paused.")
-    lazy var _encrypted_search_info_search_partial_prefix = NSLocalizedString("Messages from before ", comment: "Text for the search info banner when indexing is stopped because of storage limit reached.")
-    lazy var _encrypted_search_info_search_partial_suffix = NSLocalizedString(", will not be searched. To search within them, increase the %1$@", comment: "Text for the search info banner when indexing is stopped because of storage limit reached.")
-    lazy var _encrypted_search_info_search_partial_link = NSLocalizedString("local storage limit.", comment: "Text for the link to show when indexing is stopped because of storage limit reached.")
-    lazy var _encrypted_search_info_search_lowstorage = NSLocalizedString("Messages from before %@, will not be searched. To search within them, free up storage space on this device.", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
-    lazy var _encrypted_search_banner_slow_search = NSLocalizedString("Search taking too long? %1$@ from this search for faster results.", comment: "Text for the banner when content search is slow.")
-    lazy var _encrypted_search_banner_slow_search_link = NSLocalizedString("Exclude message content", comment: "Text for the link in the banner when content search is slow.")
     lazy var _encrypted_search_popup_title = NSLocalizedString("Content search available", comment: "The title of the pop up when encrypted search is available.")
     lazy var _encrypted_search_popup_description = NSLocalizedString("You can now search within your messages. This feature can be enabled from settings at any time.", comment: "The description of encrypted search at the pop up.")
     lazy var _encrypted_search_popup_button_title = NSLocalizedString("Enable", comment: "The title of the button to move to settings and enable encrypted search.")
@@ -1453,7 +1443,6 @@ class LocalizedString {
     lazy var _encrypted_search_alert_text = NSLocalizedString("Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time.", comment: "Text for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_cancel_button = NSLocalizedString("Cancel", comment: "Button to cancel encrypted search")
     lazy var _encrypted_search_alert_enable_button = NSLocalizedString("Enable", comment: "Button to enable encrypted search")
-    lazy var _encrypted_search_info_banner_text = NSLocalizedString("The download will stop if the Proton Mail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
     lazy var _encrypted_search_delete_messages_alert_title = NSLocalizedString("Delete all downloaded messages?", comment: "Title for the alert to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_message = NSLocalizedString("'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again.", comment: "Message for the alert to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_button_delete = NSLocalizedString("Delete", comment: "Title for the alert button to delete all downloaded messages.")
@@ -1533,6 +1522,20 @@ enum L11n {
         static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
         static let archive = NSLocalizedString("Archive (verb)", comment: "Push notification action archive")
         static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
+    }
+
+    struct EncryptedSearch {
+        static let slowSearchMessage = NSLocalizedString("Search taking too long? %1$@ from this search for faster results.", comment: "Text for the banner when content search is slow.")
+        static let slowSearchLink = NSLocalizedString("Exclude message content", comment: "Text for the link in the banner when content search is slow.")
+        static let searchInfo_downloading = NSLocalizedString("Messages are being downloaded for content search. Some results may not be shown. %1$@", comment: "Text for the search info banner when indexing is ongoing.")
+        static let searchInfo_downloading_link = NSLocalizedString("See progress.", comment: "Text for the link to show the current indexing progress")
+        static let searchInfo_paused = NSLocalizedString("Message downloading paused. Find out how to %1$@", comment: "Text for the search info banner when indexing is paused.")
+        static let searchInfo_paused_link = NSLocalizedString("resume manually.", comment: "Text for the link to show when indexing is paused.")
+        static let searchInfo_partial_prefix = NSLocalizedString("Messages from before ", comment: "Text for the search info banner when indexing is stopped because of storage limit reached.")
+        static let searchInfo_partial_suffix = NSLocalizedString(", will not be searched. To search within them, increase the %1$@", comment: "Text for the search info banner when indexing is stopped because of storage limit reached.")
+        static let searchInfo_partial_link = NSLocalizedString("local storage limit.", comment: "Text for the link to show when indexing is stopped because of storage limit reached.")
+        static let searchInfo_lowStorage = NSLocalizedString("Messages from before %@, will not be searched. To search within them, free up storage space on this device.", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
+        static let download_will_stop_desc = NSLocalizedString("The download will stop if the Proton Mail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
     }
 
     struct Error {

@@ -19,9 +19,11 @@
 import ProtonCore_TestingToolkit
 
 final class MockExecuteNotificationAction: ExecuteNotificationActionUseCase {
+    var result: Result<Void, Error>!
 
     @FuncStub(MockExecuteNotificationAction.executionBlock) var executionBlock
     override func executionBlock(params: ExecuteNotificationAction.Parameters, callback: @escaping Callback) {
         executionBlock(params, callback)
+        callback(result)
     }
 }

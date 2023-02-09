@@ -169,6 +169,7 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Arquivo";
+"Archive (verb)" = "Arquivo";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tem certeza de que deseja eliminar permanentemente esta mensagem?";
@@ -321,9 +322,6 @@
 
 /* Action */
 "Cancel Check" = "Cancelar a verificação";
-
-/* Title */
-"Cancelling" = "A cancelar";
 
 /* Warning message */
 "Cannot empty folder right now." = "Não é possível esvaziar a pasta agora.";
@@ -1253,9 +1251,6 @@
 
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "A nossa equipa de apoio ao cliente tentará activar o seu plano de serviço manualmente se concordar em anexar dados técnicos que a App Store forneceu à aplicação no momento da compra. Estes dados não incluem quaisquer detalhes sobre a sua conta do iTunes, Apple ID, cartões de pagamento associados ou qualquer outra informação de utilizador. Os dados técnicos ajudam-nos a confirmar e a verificar se a transacção foi realizada nos servidores da App Store.";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "O nosso sistema sinalizou esta mensagem como tentativa de phishing. Por favor, verifique se é legítimo";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Pasta-mãe";

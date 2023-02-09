@@ -30,10 +30,6 @@ extension UserInfo {
         return true
     }
 
-    static var isDarkModeEnable: Bool {
-        return true
-    }
-
     static var isDiffableDataSourceEnabled: Bool {
         if #available(iOS 13, *) {
             return true
@@ -60,6 +56,10 @@ extension UserInfo {
 
     /// Swipe to show previous / next conversation or messages
     static var isConversationSwipeEnabled: Bool {
-        false
+        #if DEBUG_ENTERPRISE
+        return true
+        #else
+        return false
+        #endif
     }
 }

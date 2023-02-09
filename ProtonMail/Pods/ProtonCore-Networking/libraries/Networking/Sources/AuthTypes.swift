@@ -71,6 +71,8 @@ public final class AuthCredential: NSObject, NSCoding {
         UserUD: \(userID)
         """
     }
+
+    public var isForUnauthenticatedSession: Bool { userID.isEmpty }
     
     public init(sessionID: String,
                 accessToken: String,
@@ -256,6 +258,8 @@ public struct Credential: Equatable {
     
     public var hasFullScope: Bool { scopes.contains("full") }
 
+    public var isForUnauthenticatedSession: Bool { userID.isEmpty }
+
     public init(UID: String, accessToken: String, refreshToken: String, userName: String, userID: String, scopes: Scopes) {
         self.UID = UID
         self.accessToken = accessToken
@@ -437,7 +441,7 @@ public enum AuthErrors: Error {
     case emptyClientSrpAuth
     case emptyUserInfoResponse
     case wrongServerProof
-    case externalAccountsNotSupported(message: String, originalError: ResponseError)
+    case externalAccountsNotSupported(message: String, title: String, originalError: ResponseError)
     case addressKeySetupError(Error)
     case networkingError(ResponseError)
     case apiMightBeBlocked(message: String, originalError: ResponseError)
@@ -455,7 +459,7 @@ public enum AuthErrors: Error {
             return self as NSError
         case .addressKeySetupError(let error), .parsingError(let error):
             return error as NSError
-        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, _, let error):
             return error.underlyingError ?? error as NSError
         }
     }
@@ -467,7 +471,7 @@ public enum AuthErrors: Error {
             return (self as NSError).code
         case .addressKeySetupError(let error), .parsingError(let error):
             return (error as NSError).code
-        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, let error):
+        case .networkingError(let error), .apiMightBeBlocked(_, let error), .externalAccountsNotSupported(_, _, let error):
             return error.bestShotAtReasonableErrorCode
         }
     }
@@ -480,7 +484,7 @@ public enum AuthErrors: Error {
             return error.localizedDescription
         case .networkingError(let error), .apiMightBeBlocked(_, let error):
             return error.localizedDescription
-        case .externalAccountsNotSupported(let message, _), .notImplementedYet(let message):
+        case .externalAccountsNotSupported(let message, _, _), .notImplementedYet(let message):
             return message
         }
     }

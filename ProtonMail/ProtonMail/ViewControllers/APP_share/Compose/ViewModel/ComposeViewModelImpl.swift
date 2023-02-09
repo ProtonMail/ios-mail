@@ -615,8 +615,9 @@ class ComposeViewModelImpl: ComposeViewModel {
             var css: String?
             do {
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
-                if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                    css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+                let document = CSSMagic.parse(htmlString: body)
+                if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                    css = CSSMagic.generateCSSForDarkMode(document: document)
                 }
             } catch {
                 body = msg.bodyToHtml()
@@ -646,8 +647,9 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
             var css: String?
-            if CSSMagic.darkStyleSupportLevel(htmlString: result, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            let document = CSSMagic.parse(htmlString: result)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
             }
             return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .forward:
@@ -692,8 +694,9 @@ class ComposeViewModelImpl: ComposeViewModel {
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
-            if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            let document = CSSMagic.parse(htmlString: body)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
             }
             return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .newDraftFromShare:
@@ -801,10 +804,10 @@ extension ComposeViewModelImpl {
             let recipients = try JSONDecoder().decode([DecodableRecipient].self, from: jsonData)
 
             for recipient in recipients {
-                let group = recipient.group
+                let group = recipient.group ?? ""
                 let name = displayNameForRecipient(recipient)
 
-                if recipient.group.isEmpty {
+                if group.isEmpty {
                     // contact
                     out.append(ContactVO(name: name, email: recipient.address))
                 } else {
@@ -842,30 +845,14 @@ extension ComposeViewModelImpl {
         }
     }
 
-    func toContact(_ json: String) -> ContactVO? {
-        var out: ContactVO?
-        let recipients: [String: String] = self.parse(json)
-
-        let name = recipients["Name"] ?? ""
-        let address = recipients["Address"] ?? ""
-
-        if !address.isEmpty {
-            out = ContactVO(name: name, email: address)
-        }
-        return out
-    }
-
-    func parse (_ json: String) -> [String: String] {
-        if json.isEmpty {
-            return ["": ""]
-        }
+    private func toContact(_ json: String) -> ContactVO? {
         do {
-            let data: Data! = json.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: String]
-            return decoded ?? ["": ""]
+            let sender = try Sender.decodeDictionary(jsonString: json)
+            return ContactVO(name: sender.name, email: sender.address)
         } catch {
+            assertionFailure("\(error)")
+            return nil
         }
-        return ["": ""]
     }
 
     func htmlSignature() -> String {
@@ -919,7 +906,7 @@ extension ComposeViewModelImpl {
         }
 
         let address: String
-        let group: String
+        let group: String?
         let name: String?
     }
 }

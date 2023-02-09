@@ -152,7 +152,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         completion([:])
     }
 
-    func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date?, endTime: Date?, msgCount: Int, userID: UserID, type: ViewMode) {
+    func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date?, msgCount: Int, userID: UserID, type: ViewMode) {
         switch type {
         case .singleMessage:
             let data = msgLabelUpdate[labelID] ??

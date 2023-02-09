@@ -167,9 +167,10 @@ public final class LoginRobot: CoreElements {
     }
 }
 
-private let externalAccountsNotSupportedText = CoreString._ls_external_eccounts_not_supported_popup_title
+private let externalAccountsNotSupportedText = CoreString._ls_external_accounts_address_required_popup_title
+private let externalAccountsUpdateRequiredText = CoreString._ls_external_accounts_update_required_popup_title
 private let externalAccountsNotSupportedCloseButton = CoreString._hv_cancel_button
-private let externalAccountsNotSupportedLearnMoreButton = CoreString._ls_external_eccounts_not_supported_popup_action_button
+private let externalAccountsNotSupportedLearnMoreButton = CoreString._ls_external_accounts_not_supported_popup_action_button
 
 public final class ExternalAccountsNotSupportedDialogRobot: CoreElements {
     
@@ -179,6 +180,12 @@ public final class ExternalAccountsNotSupportedDialogRobot: CoreElements {
         @discardableResult
         public func externalAccountsNotSupportedDialog() -> ExternalAccountsNotSupportedDialogRobot {
             alert(externalAccountsNotSupportedText).wait(time: 20).checkExists()
+            return ExternalAccountsNotSupportedDialogRobot()
+        }
+        
+        @discardableResult
+        public func externalAccountsUpdateRequireddDialog() -> ExternalAccountsNotSupportedDialogRobot {
+            alert(externalAccountsUpdateRequiredText).wait(time: 20).checkExists()
             return ExternalAccountsNotSupportedDialogRobot()
         }
         

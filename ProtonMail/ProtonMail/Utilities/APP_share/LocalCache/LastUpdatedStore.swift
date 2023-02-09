@@ -50,7 +50,7 @@ protocol LastUpdatedStoreProtocol {
                          completion: @escaping ([String: Int]) -> Void)
     func updateLastUpdatedTime(labelID: LabelID,
                                isUnread: Bool,
-                               startTime: Date?,
+                               startTime: Date,
                                endTime: Date?,
                                msgCount: Int,
                                userID: UserID,
@@ -270,7 +270,7 @@ extension LastUpdatedStore {
     func updateLastUpdatedTime(
         labelID: LabelID,
         isUnread: Bool,
-        startTime: Date?,
+        startTime: Date,
         endTime: Date?,
         msgCount: Int,
         userID: UserID,
@@ -283,6 +283,7 @@ extension LastUpdatedStore {
                 type: type,
                 in: context
             )
+
             if isUnread {
                 // Update unread date query time
                 if updateTime.isUnreadNew {
@@ -305,7 +306,10 @@ extension LastUpdatedStore {
                 }
                 updateTime.update = Date()
             }
-            _ = context.saveUpstreamIfNeeded()
+
+            if let error = context.saveUpstreamIfNeeded() {
+                assertionFailure("\(error)")
+            }
         }
     }
 }

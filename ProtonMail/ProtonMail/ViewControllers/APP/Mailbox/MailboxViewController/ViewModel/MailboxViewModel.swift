@@ -48,7 +48,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     internal let eventsService: EventsFetching
     private let pushService: PushNotificationServiceProtocol
     /// fetch controller
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
 
     private(set) var selectedIDs: Set<String> = Set()
@@ -208,6 +208,15 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
             .map(ConversationEntity.init) ?? []
     }
 
+    var selectedItems: [MailboxItem] {
+        switch locationViewMode {
+        case .conversation:
+            return selectedConversations.map(MailboxItem.conversation)
+        case .singleMessage:
+            return selectedMessages.map(MailboxItem.message)
+        }
+    }
+
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy private(set) var customFolders: [LabelEntity] = {
         labelProvider.getCustomFolders()
@@ -221,8 +230,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         contactGroupProvider.getAllContactGroupVOs()
     }
 
-    func fetchContacts(completion: ContactFetchComplete? = nil) {
-        contactProvider.fetchContacts(completion: completion)
+    func fetchContacts() {
+        contactProvider.fetchContacts(completion: nil)
     }
 
     /// create a fetch controller with labelID
@@ -518,7 +527,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
     
     func mark(messages: [MessageEntity], unread: Bool = true) {
-        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+        messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
     }
     
     func label(msg message: MessageEntity, with labelID: LabelID, apply: Bool = true) {
@@ -557,40 +566,31 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .unstar:
-            handleUnstarAction()
+            handleUnstarAction(on: selectedItems)
         case .star:
-            handleStarAction()
+            handleStarAction(on: selectedItems)
         case .markRead:
-            handleMarkReadAction()
+            handleMarkReadAction(on: selectedItems)
         case .markUnread:
-            handleMarkUnreadAction()
+            handleMarkUnreadAction(on: selectedItems)
         case .trash:
-            handleRemoveAction()
+            handleRemoveAction(on: selectedItems)
         case .archive:
-            handleMoveToArchiveAction()
+            handleMoveToArchiveAction(on: selectedItems)
         case .spam:
-            handleMoveToSpamAction()
+            handleMoveToSpamAction(on: selectedItems)
         case .labelAs, .moveTo:
             // TODO: add action
             break
         case .inbox:
-            handleMoveToInboxAction()
+            handleMoveToInboxAction(on: selectedItems)
         case .delete, .dismiss, .toolbarCustomization, .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
             break
         }
     }
 
     func getTimeOfItem(at indexPath: IndexPath) -> Date? {
-        switch locationViewMode {
-        case .singleMessage:
-            return item(index: indexPath)?.time
-        case .conversation:
-            let conversation = itemOfConversation(index: indexPath)
-            if conversation == nil {
-                Breadcrumbs.shared.add(message: "MailboxVM getTimeOfItem conv is nil", to: .malformedConversationRequest)
-            }
-            return conversation?.getTime(labelID: labelID)
-        }
+        mailboxItem(at: indexPath)?.time(labelID: labelID)
     }
 
     func getOnboardingDestination() -> MailboxCoordinator.Destination? {
@@ -604,97 +604,52 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
-    private func handleMoveToInboxAction() {
-        moveSelectedIDs(
-            from: labelID,
-            to: Message.Location.inbox.labelID)
+    private func handleMoveToInboxAction(on items: [MailboxItem]) {
+        move(items: items, from: labelID, to: Message.Location.inbox.labelID)
     }
 
-    private func handleMoveToArchiveAction() {
-        moveSelectedIDs(
-            from: labelID,
-            to: Message.Location.archive.labelID)
+    private func handleMoveToArchiveAction(on items: [MailboxItem]) {
+        move(items: items, from: labelID, to: Message.Location.archive.labelID)
     }
 
-    private func handleMoveToSpamAction() {
-        moveSelectedIDs(
-            from: labelID,
-            to: Message.Location.spam.labelID)
+    private func handleMoveToSpamAction(on items: [MailboxItem]) {
+        move(items: items, from: labelID, to: Message.Location.spam.labelID)
     }
 
-    private func handleUnstarAction() {
-        let starredItemsIds: [String]
-        switch locationViewMode {
-        case .conversation:
-            starredItemsIds = selectedConversations
-                .filter { $0.starred }
-                .map(\.conversationID)
-                .map(\.rawValue)
-        case .singleMessage:
-            starredItemsIds = selectedMessages
-                .filter { $0.isStarred }
-                .map(\.messageID)
-                .map(\.rawValue)
-        }
-        label(IDs: Set<String>(starredItemsIds), with: Message.Location.starred.labelID, apply: false)
+    private func handleUnstarAction(on items: [MailboxItem]) {
+        let starredItemIDs = items
+            .filter(\.isStarred)
+            .map(\.itemID)
+
+        label(IDs: Set<String>(starredItemIDs), with: Message.Location.starred.labelID, apply: false)
     }
 
-    private func handleStarAction() {
-        let unstarredItemsIds: [String]
-        switch locationViewMode {
-        case .conversation:
-            unstarredItemsIds = selectedConversations
-                .filter { !$0.starred }
-                .map(\.conversationID)
-                .map(\.rawValue)
-        case .singleMessage:
-            unstarredItemsIds = selectedMessages
-                .filter { !$0.isStarred }
-                .map(\.messageID)
-                .map(\.rawValue)
-        }
-        label(IDs: Set<String>(unstarredItemsIds), with: Message.Location.starred.labelID, apply: true)
+    private func handleStarAction(on items: [MailboxItem]) {
+        let unstarredItemIDs = items
+            .filter { !$0.isStarred }
+            .map(\.itemID)
+
+        label(IDs: Set<String>(unstarredItemIDs), with: Message.Location.starred.labelID, apply: true)
     }
 
-    private func handleMarkReadAction() {
-        let unreadItemsIds: [String]
-        switch locationViewMode {
-        case .conversation:
-            unreadItemsIds = selectedConversations
-                .filter { $0.isUnread(labelID: labelID) }
-                .map(\.conversationID)
-                .map(\.rawValue)
-        case .singleMessage:
-            unreadItemsIds = selectedMessages
-                .filter { $0.unRead }
-                .map(\.messageID)
-                .map(\.rawValue)
-        }
-        mark(IDs: Set(unreadItemsIds), unread: false)
+    private func handleMarkReadAction(on items: [MailboxItem]) {
+        let unreadItemsIDs = items
+            .filter { $0.isUnread(labelID: labelID) }
+            .map(\.itemID)
+        
+        mark(IDs: Set(unreadItemsIDs), unread: false)
     }
 
-    private func handleMarkUnreadAction() {
-        let unreadItemsIds: [String]
-        switch locationViewMode {
-        case .conversation:
-            unreadItemsIds = selectedConversations
-                .filter { !$0.isUnread(labelID: labelID) }
-                .map(\.conversationID)
-                .map(\.rawValue)
-        case .singleMessage:
-            unreadItemsIds = selectedMessages
-                .filter { !$0.unRead }
-                .map(\.messageID)
-                .map(\.rawValue)
-        }
-        mark(IDs: Set(unreadItemsIds), unread: true)
+    private func handleMarkUnreadAction(on items: [MailboxItem]) {
+        let readItemsIDs = items
+            .filter { !$0.isUnread(labelID: labelID) }
+            .map(\.itemID)
+
+        mark(IDs: Set(readItemsIDs), unread: true)
     }
 
-    private func handleRemoveAction() {
-        moveSelectedIDs(
-             from: labelID,
-             to: Message.Location.trash.labelID
-        )
+    private func handleRemoveAction(on items: [MailboxItem]) {
+        move(items: items, from: labelID, to: Message.Location.trash.labelID)
     }
 
     func searchForScheduled(swipeSelectedID: [String],
@@ -802,12 +757,7 @@ extension MailboxViewModel {
     }
 
     func selectionContainsReadItems() -> Bool {
-        switch self.locationViewMode {
-        case .conversation:
-            return selectedConversations.contains { !$0.isUnread(labelID: labelID) }
-        case .singleMessage:
-            return selectedMessages.contains { !$0.unRead }
-        }
+        selectedItems.contains { !$0.isUnread(labelID: labelID) }
     }
 
     func label(IDs messageIDs: Set<String>,
@@ -849,7 +799,7 @@ extension MailboxViewModel {
         switch self.locationViewMode {
         case .singleMessage:
             let messages = selectedMessages.filter { messageIDs.contains($0.messageID.rawValue) }
-            messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+            messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
             completion?()
         case .conversation:
             if unread {
@@ -876,15 +826,18 @@ extension MailboxViewModel {
         }
     }
 
-    func moveSelectedIDs(
-              from fLabel: LabelID,
-              to tLabel: LabelID,
-              completion: (() -> Void)? = nil
-    ) {
-        switch self.locationViewMode {
-        case .singleMessage:
+    func moveSelectedIDs(from fLabel: LabelID, to tLabel: LabelID) {
+        move(items: selectedItems, from: fLabel, to: tLabel)
+    }
+
+    func move(items: [MailboxItem], from fLabel: LabelID, to tLabel: LabelID) {
+        move(items: MailboxItemGroup(mailboxItems: items), from: fLabel, to: tLabel)
+    }
+
+    private func move(items: MailboxItemGroup, from fLabel: LabelID, to tLabel: LabelID) {
+        switch items {
+        case .messages(let messages):
             var fLabels: [LabelID] = []
-            let messages = selectedMessages
 
             for msg in messages {
                 // the label that is not draft, sent, starred, allmail
@@ -892,23 +845,21 @@ extension MailboxViewModel {
             }
 
             messageService.move(messages: messages, from: fLabels, to: tLabel)
-            completion?()
-        case .conversation:
+        case .conversations(let conversations):
             conversationProvider.move(
-                conversationIDs: selectedConversations.map(\.conversationID),
+                conversationIDs: conversations.map(\.conversationID),
                 from: fLabel,
                 to: tLabel,
                 isSwipeAction: false,
                 callOrigin: "MailboxViewModel - move"
             ) { [weak self] result in
-                defer {
-                    completion?()
-                }
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
+        case .empty:
+            break
         }
     }
 }
@@ -995,22 +946,22 @@ extension MailboxViewModel {
         }
     }
 
-    func handleSwipeAction(_ action: MessageSwipeAction) {
+    func handleSwipeAction(_ action: MessageSwipeAction, on item: MailboxItem) {
         switch action {
         case .unstar:
-            handleUnstarAction()
+            handleUnstarAction(on: [item])
         case .star:
-            handleStarAction()
+            handleStarAction(on: [item])
         case .read:
-            handleMarkReadAction()
+            handleMarkReadAction(on: [item])
         case .unread:
-            handleMarkUnreadAction()
+            handleMarkUnreadAction(on: [item])
         case .trash:
-            handleRemoveAction()
+            handleRemoveAction(on: [item])
         case .archive:
-            handleMoveToArchiveAction()
+            handleMoveToArchiveAction(on: [item])
         case .spam:
-            handleMoveToSpamAction()
+            handleMoveToSpamAction(on: [item])
         case .labelAs, .moveTo, .none:
             break
         }
@@ -1030,10 +981,6 @@ extension MailboxViewModel {
 extension MailboxViewModel: ConversationStateServiceDelegate {
     func viewModeHasChanged(viewMode: ViewMode) {
         viewModeIsChanged?()
-    }
-
-    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-
     }
 }
 

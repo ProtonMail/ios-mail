@@ -158,10 +158,10 @@ class CacheService: CacheServiceProtocol {
         return true
     }
 
-    func mark(message: MessageEntity, labelID: LabelID, unRead: Bool) -> Bool {
+    func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool) -> Bool {
         var hasError = false
         coreDataService.performAndWaitOnRootSavingContext { context in
-            guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
+            guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
                 hasError = true
                 return
             }
@@ -175,10 +175,10 @@ class CacheService: CacheServiceProtocol {
             if unRead == false {
                 PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
             }
-            if let conversation = Conversation.conversationForConversationID(message.conversationID.rawValue, inManagedObjectContext: context) {
+            if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
                 conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
             }
-            self.updateCounterSync(markUnRead: unRead, on: message.getLabelIDs())
+            self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
 
             let error = context.saveUpstreamIfNeeded()
             if error != nil {
@@ -456,7 +456,15 @@ extension CacheService {
                     _ = context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
-                        self.updateLastUpdatedTime(labelID: labelID, isUnread: isUnread, startTime: firstMsg.time ?? Date(), endTime: lastMsg.time ?? Date(), msgCount: messagesCount, msgType: .singleMessage)
+                        self.lastUpdatedStore.updateLastUpdatedTime(
+                            labelID: labelID,
+                            isUnread: isUnread,
+                            startTime: firstMsg.time ?? Date(),
+                            endTime: lastMsg.time ?? Date(),
+                            msgCount: messagesCount,
+                            userID: self.userID,
+                            type: .singleMessage
+                        )
                     }
                 }
                 completion(nil)
@@ -469,16 +477,6 @@ extension CacheService {
 
 // MARK: - Counter related functions
 extension CacheService {
-    func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: ViewMode) {
-        lastUpdatedStore.updateLastUpdatedTime(labelID: labelID,
-                                               isUnread: isUnread,
-                                               startTime: startTime,
-                                               endTime: endTime,
-                                               msgCount: msgCount,
-                                               userID: userID,
-                                               type: msgType)
-    }
-
     func updateCounterSync(markUnRead: Bool, on message: Message) {
         self.updateCounterSync(markUnRead: markUnRead,
                                on: message.getLabelIDs().map(LabelID.init(rawValue:)))
@@ -661,7 +659,7 @@ extension CacheService {
         }
     }
 
-    func updateContact(contactID: ContactID, cardsJson: [String: Any], completion: ((Result<[Contact], NSError>) -> Void)?) {
+    func updateContact(contactID: ContactID, cardsJson: [String: Any], completion: @escaping (NSError?) -> Void) {
         coreDataService.performOnRootSavingContext { context in
             do {
                 // remove all emailID associated with the current contact in the core data
@@ -676,12 +674,14 @@ extension CacheService {
 
                 if let newContact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: cardsJson, in: context) as? Contact {
                     newContact.needsRebuild = true
-                    if context.saveUpstreamIfNeeded() == nil {
-                        completion?(.success([newContact]))
-                    }
+                    let savingError = context.saveUpstreamIfNeeded()
+                    completion(savingError)
+                } else {
+                    assertionFailure("Groot should output a Contact")
+                    completion(nil)
                 }
             } catch {
-                completion?(.failure(error as NSError))
+                completion(error as NSError)
             }
         }
     }

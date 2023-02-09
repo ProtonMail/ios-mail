@@ -90,19 +90,12 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(
-            params: .init(preference: preference)
-        ) { result in
-            switch result {
-            case .success:
-                completion?(nil)
-            case let .failure(error):
-                completion?(error as NSError)
+            .execute(params: .init(preference: preference)) { result in
+                completion?(result.error as? NSError)
             }
-        }
     }
 
-    func handleBarActions(_ action: MessageViewActionSheetAction, selectedIDs: Set<String>) {
+    func handleBarActions(_ action: MessageViewActionSheetAction) {
         switch action {
         case .markRead:
             mark(IDs: selectedIDs, unread: false)

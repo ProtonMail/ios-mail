@@ -22,9 +22,9 @@
 import Foundation
 import pmtest
 
-private let congratulationHeaderId = "CompleteViewController.completeTitleLabel"
-private let accountCreationLabel = "CompleteViewController.completeDescriptionLabel"
-private let welcomeLabel = "CompleteViewController.completeTitleLabel"
+private let congratulationHeaderId = "SummaryViewController.header"
+private let accountCreationLabel = "SummaryViewController.descriptionLabel"
+private let welcomeLabel = "SummaryViewController.welcomeLabel"
 private let startUsingAppButtonId = "SummaryViewController.startButton"
 
 public final class AccountSummaryRobot: CoreElements {

@@ -26,6 +26,7 @@ import GoLibs
 import LifetimeTracker
 #endif
 import PromiseKit
+import ProtonCore_Challenge
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Keymaker
@@ -124,7 +125,8 @@ class UsersManager: Service {
     func add(auth: AuthCredential, user: UserInfo) {
         self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
-        let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+        let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                       challengeParametersProvider: .forAPIService(clientApp: .mail))
         apiService.serviceDelegate = self
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -245,7 +247,8 @@ class UsersManager: Service {
         if let oldAuth = oldAuthFetch(), let user = oldUserInfo() {
             let session = oldAuth.sessionID
 
-            let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+            let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                           challengeParametersProvider: .forAPIService(clientApp: .mail))
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -307,7 +310,8 @@ class UsersManager: Service {
 
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+                let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                               challengeParametersProvider: .forAPIService(clientApp: .mail))
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -393,6 +397,9 @@ extension UsersManager {
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
                 NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
+            #if !APP_EXTENSION
+            ImageProxyCache.shared.purge()
+            #endif
             completion?()
         }.cauterize()
     }
@@ -556,7 +563,8 @@ extension UsersManager {
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLagcy(), let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
-            let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+            let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                           challengeParametersProvider: .forAPIService(clientApp: .mail))
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -604,7 +612,8 @@ extension UsersManager {
 
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+                let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                               challengeParametersProvider: .forAPIService(clientApp: .mail))
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)

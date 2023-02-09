@@ -159,7 +159,6 @@ extension UpdateMailbox {
 
     private func resetNotificationMessage() {
         self.dependencies.messageDataService.pushNotificationMessageID = nil
-        self.dependencies.messageInfoCache.hasMessageFromNotification = false
     }
 
     private func fetchEvents(notificationMessageID: MessageID?,
@@ -334,7 +333,6 @@ extension UpdateMailbox {
     }
 
     struct Dependencies {
-        let messageInfoCache: MessageInfoCacheProtocol
         let eventService: EventsFetching
         let messageDataService: MessageDataServiceProtocol
         let conversationProvider: ConversationProvider
@@ -343,15 +341,13 @@ extension UpdateMailbox {
         let fetchMessage: FetchMessagesUseCase
         let fetchLatestEventID: FetchLatestEventIdUseCase
 
-        init(messageInfoCache: MessageInfoCacheProtocol,
-             eventService: EventsFetching,
+        init(eventService: EventsFetching,
              messageDataService: MessageDataServiceProtocol,
              conversationProvider: ConversationProvider,
              purgeOldMessages: PurgeOldMessagesUseCase,
              fetchMessageWithReset: FetchMessagesWithResetUseCase,
              fetchMessage: FetchMessagesUseCase,
              fetchLatestEventID: FetchLatestEventIdUseCase) {
-            self.messageInfoCache = messageInfoCache
             self.eventService = eventService
             self.messageDataService = messageDataService
             self.conversationProvider = conversationProvider

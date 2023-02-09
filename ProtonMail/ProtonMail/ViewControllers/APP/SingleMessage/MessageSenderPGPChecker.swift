@@ -42,10 +42,12 @@ final class MessageSenderPGPChecker {
     }
 
     func check(complete: @escaping Complete) {
-        guard let sender = message.sender, message.isDetailDownloaded else {
+        guard message.isDetailDownloaded, let senderEntity = try? message.parseSender() else {
             complete(nil)
             return
         }
+
+        let sender = ContactVO(name: senderEntity.name, email: senderEntity.address)
 
         if message.isSent {
             checkSentPGP(sender: sender, complete: complete)

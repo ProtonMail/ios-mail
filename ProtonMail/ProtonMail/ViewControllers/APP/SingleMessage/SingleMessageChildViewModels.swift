@@ -22,7 +22,6 @@
 
 struct SingleMessageChildViewModels {
     let messageBody: NewMessageBodyViewModel
-    let nonExpandedHeader: NonExpandedHeaderViewModel
     let bannerViewModel: BannerViewModel
     let attachments: AttachmentViewModel
 }

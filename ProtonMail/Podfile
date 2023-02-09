@@ -17,31 +17,30 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.25.2'
+  '3.26.2'
 end
 
 def crypto_variant
-  "Crypto-Go1.15.15"
+  "Crypto+Search-Go1.15.15"
 end
 
 def common_pods
   pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'Groot', '3.0.1'
-  pod 'Masonry', '1.1.0'
   pod 'MBProgressHUD' , '1.1.0'
-  pod 'MCSwipeTableViewCell', '2.1.4'
   pod 'PromiseKit', '6.13.1'
+  pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-APIClient', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Authentication-KeyGeneration/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Authentication/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Common-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Common', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-UIFoundations-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
 end
@@ -50,20 +49,18 @@ def pm_pods
   common_pods
   pod 'DKImagePickerController/PhotoGallery', '4.3.4'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'Enterprise Debug']
-  pod "ProtonCore-AccountDeletion-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-AccountSwitcher-V5', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-CoreTranslation-V5', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-AccountDeletion/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-ForceUpgrade-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-HumanVerification-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-LoginUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-PaymentsUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :commit => '923310a'
@@ -106,10 +103,10 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Services', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UnitTests/Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-TestingToolkit/UnitTests/LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UnitTests/Authentication/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pm_pods
 end

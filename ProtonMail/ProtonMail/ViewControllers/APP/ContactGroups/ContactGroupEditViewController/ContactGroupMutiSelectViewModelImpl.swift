@@ -156,7 +156,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
                 self.isFetching = false
                 completion(result.error)
             })
-            self.user.contactService.fetchContacts { (_, error) in
+            self.user.contactService.fetchContacts { error in
 
             }
         } else {

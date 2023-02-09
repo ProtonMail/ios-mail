@@ -356,7 +356,7 @@
 "Cancel Check" = "Batalkan Pemeriksaan";
 
 /* Title */
-"Cancelling" = "Membatalkan";
+"Canceling" = "Membatalkan";
 
 /* Warning message */
 "Cannot empty folder right now." = "Folder tidak dapat dikosongkan pada saat ini.";
@@ -970,7 +970,7 @@
 "Importing" = "Mengimpor";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Mengimpor lampiran, proses ini dapat memakan waktu hingga beberapa menit";
+"Importing attachment, that can take a while" = "Mengimpor lampiran, proses ini dapat memakan waktu sejenak";
 
 /* import contact title */
 "Importing Contacts" = "Mengimpor Kontak";
@@ -1131,10 +1131,10 @@
 "Mark as read" = "Tandai sudah dibaca";
 
 /* Action */
-"Mark as read/unread" = "Tandai telah dibaca/belum dibaca";
+"Mark as read/unread" = "Tandai telah/belum dibaca";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "Tandai sebagai belum dibaca";
+"Mark as unread" = "Tandai belum dibaca";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Tim Layanan Konsumen kami akan mencoba untuk mengaktifkan paket layanan Anda secara manual apabila Anda bersedia untuk melampirkan data teknis aplikasi yang disediakan oleh App Store pada saat pembayaran. Data ini tidak berisi rincian tentang akun iTunes, Apple ID, kartu kredit, atau informasi pengguna lain yang terhubung dengan Anda. Data teknis ini hanya akan digunakan untuk membantu kami memeriksa dan memverifikasi apakah transaksi Anda memang benar telah tuntas pada server App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Sistem kami menandai pesan ini sebagai bentuk upaya phishing. Mohon periksa keabsahan pesan ini";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistem kami menandai pesan ini sebagai bentuk upaya phishing. Mohon periksa keabsahan pesan ini.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder induk";

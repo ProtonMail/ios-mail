@@ -355,9 +355,6 @@
 /* Action */
 "Cancel Check" = "Annullér tjek";
 
-/* Title */
-"Cancelling" = "Annullerer";
-
 /* Warning message */
 "Cannot empty folder right now." = "Kan ikke tømme mappe lige nu.";
 
@@ -1390,9 +1387,6 @@
 
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og verificere, at transaktionen blev gennemført på App Store's servere.";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vores system markerede denne besked som et phishing-forsøg. Kontroller venligst, at den er legitim";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Overordnet mappe";
