@@ -81,8 +81,9 @@ extension ExpandedHeaderView {
     private func setUpFirstLineLayout() {
         [
             senderLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
-            senderLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
-            senderLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8)
+            senderLabel.topAnchor.constraint(equalTo: initialsContainer.topAnchor),
+            senderLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8),
+            senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ].activate()
 
         [
