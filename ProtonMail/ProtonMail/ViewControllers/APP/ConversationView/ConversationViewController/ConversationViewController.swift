@@ -129,6 +129,19 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         self.dismissActionSheet()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if !customView.tableView.frame.isEmpty, let headerView = customView.tableView.tableHeaderView {
+            // Apparently setting the frame and setting the tableViewHeader property again is needed
+            // https://stackoverflow.com/questions/16471846/is-it-possible-to-use-autolayout-with-uitableviews-tableheaderview
+            headerView.frame.size = headerView.systemLayoutSizeFitting(
+                CGSize(width: customView.tableView.frame.width, height: 0)
+            )
+            customView.tableView.tableHeaderView = headerView
+        }
+    }
+
     private func leaveFocusedMode() {
         // the idea is to keep the expanded cell in exactly the same spot after expansion
         // to ensure that, we add the difference in content size to the offset
@@ -140,7 +153,8 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         let contentHeightAfterExpansion = customView.tableView.contentSize.height
         let previouslyHiddenContentHeight = contentHeightAfterExpansion - contentHeightBeforeExpansion
 
-        DispatchQueue.main.async {
+        // the 1/60 second (based on 60 FPS) makes the leaving animation much smoother
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 / 60) {
             self.customView.tableView.contentOffset.y += previouslyHiddenContentHeight
         }
     }
@@ -205,11 +219,15 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     private func setUpTableView() {
         customView.tableView.dataSource = self
         customView.tableView.delegate = self
-        customView.tableView.register(cellType: ConversationViewHeaderCell.self)
         customView.tableView.register(cellType: ConversationMessageCell.self)
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
+
+        let headerView = ConversationViewHeaderView()
+        headerView.titleTextView.set(text: viewModel.conversation.subject, preferredFont: .title3)
+        headerView.titleTextView.textAlignment = .center
+        customView.tableView.tableHeaderView = headerView
     }
 
     private func registerNotification() {
@@ -334,8 +352,6 @@ extension ConversationViewController: UITableViewDataSource {
                        useShowButton: self.viewModel.shouldTrashedHintBannerUseShowButton(),
                        delegate: self.viewModel)
             return cell
-        case .header(let subject):
-            return headerCell(tableView, subject: subject)
         case .message(let viewModel):
             if (viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly) ||
                 (!viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly) {
@@ -436,52 +452,28 @@ private extension ConversationViewController {
     private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
         switch indexPath.section {
         case 0:
-            guard headerShouldBeVisible(at: indexPath.row) else {
-                return 0
-            }
-
-            return UITableView.automaticDimension
-        case 1:
-            guard messageShouldBeVisible(at: indexPath.row) else {
-                return 0
-            }
-
-            guard let viewType = self.viewModel.messagesDataSource[safe: indexPath.row] else {
+            switch viewModel.headerCellVisibility(at: indexPath.row) {
+            case .full:
                 return UITableView.automaticDimension
+            case .partial:
+                return 24
+            case .hidden:
+                return 0
             }
 
-            return countHeightFor(viewType: viewType, estimated: estimated)
+        case 1:
+            switch viewModel.messageCellVisibility(at: indexPath.row) {
+            case .full:
+                let viewType = viewModel.messagesDataSource[indexPath.row]
+                return countHeightFor(viewType: viewType, estimated: estimated)
+            case .partial:
+                return 24
+            case .hidden:
+                return 0
+            }
         default:
             fatalError("Not supported section")
         }
-    }
-
-    private func headerShouldBeVisible(at index: Int) -> Bool {
-        switch self.viewModel.headerSectionDataSource[index] {
-        case .trashedHint:
-            return !viewModel.focusedMode
-        default:
-            return true
-        }
-    }
-
-    private func messageShouldBeVisible(at index: Int) -> Bool {
-        guard viewModel.focusedMode, let firstExpandedMessageIndex = viewModel.firstExpandedMessageIndex else {
-            return true
-        }
-
-        return index >= firstExpandedMessageIndex
-    }
-
-    private func headerCell(
-        _ tableView: UITableView,
-        subject: String
-    ) -> UITableViewCell {
-        let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
-        cell.customView.titleTextView.set(text: subject,
-                                          preferredFont: .title3)
-        cell.customView.titleTextView.textAlignment = .center
-        return cell
     }
 
     private func messageCell(
@@ -585,15 +577,14 @@ private extension ConversationViewController {
     }
 
     private func checkNavigationTitle() {
-        let tableview = customView.tableView
-        guard let cell = tableview.visibleCells.compactMap({ $0 as? ConversationViewHeaderCell }).first else {
-            presentDetailedNavigationTitle()
-            customView.separator.isHidden = false
+        let tableView = customView.tableView
+
+        guard let headerView = tableView.tableHeaderView as? ConversationViewHeaderView else {
             return
         }
 
-        let headerLabelConvertedFrame = cell.convert(cell.customView.titleTextView.frame, to: customView.tableView)
-        let shouldPresentDetailedNavigationTitle = tableview.contentOffset.y >= headerLabelConvertedFrame.maxY
+        let headerLabelConvertedFrame = headerView.convert(headerView.titleTextView.frame, to: tableView)
+        let shouldPresentDetailedNavigationTitle = tableView.contentOffset.y >= headerLabelConvertedFrame.maxY
 
         if shouldPresentDetailedNavigationTitle {
             presentDetailedNavigationTitle()
@@ -601,11 +592,11 @@ private extension ConversationViewController {
             presentSimpleNavigationTitle()
         }
 
-        let separatorConvertedFrame = cell.convert(cell.customView.separator.frame, to: customView.tableView)
-        let shouldShowSeparator = customView.tableView.contentOffset.y >= separatorConvertedFrame.maxY
+        let separatorConvertedFrame = headerView.convert(headerView.separator.frame, to: tableView)
+        let shouldShowSeparator = tableView.contentOffset.y >= separatorConvertedFrame.maxY
         customView.separator.isHidden = !shouldShowSeparator
 
-        cell.customView.topSpace = tableview.contentOffset.y < 0 ? tableview.contentOffset.y : 0
+        headerView.topSpace = tableView.contentOffset.y < 0 ? tableView.contentOffset.y : 0
     }
 
     private func presentDetailedNavigationTitle() {

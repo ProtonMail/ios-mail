@@ -179,12 +179,15 @@ class SingleMessageContentViewModel {
             .callbackOn(.main)
             .execute(params: params) { [weak self] result in
             guard let self = self else { return }
-            switch result {
-            case .success(_):
-                self.updateErrorBanner?(nil)
-            case .failure(let error):
-                self.updateErrorBanner?(error as NSError)
-                self.messageBodyViewModel.errorHappens()
+
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.updateErrorBanner?(nil)
+                case .failure(let error):
+                    self.updateErrorBanner?(error as NSError)
+                    self.messageBodyViewModel.errorHappens()
+                }
             }
         }
     }

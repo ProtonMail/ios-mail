@@ -38,7 +38,7 @@ final class BannerViewController: UIViewController {
     let isScheduleBannerOnly: Bool
     weak var delegate: BannerViewControllerDelegate?
 
-    private(set) lazy var customView = UIView()
+    private let customView = UIView()
     private(set) var containerView: UIStackView?
     private(set) var expirationBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
@@ -172,8 +172,10 @@ final class BannerViewController: UIViewController {
         customView.addSubview(stackView)
 
         [
-            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0),
-            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0),
+            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0)
+                .setPriority(as: .defaultHigh),
+            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0)
+                .setPriority(as: .defaultHigh),
             stackView.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: customView.trailingAnchor)
         ].activate()

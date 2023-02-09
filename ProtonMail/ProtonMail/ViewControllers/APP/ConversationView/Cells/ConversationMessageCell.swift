@@ -25,7 +25,8 @@ class ConversationMessageCell: UITableViewCell {
 
     private func setUpLayout() {
         [
-            customView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            // `defaultLow` is used so that the bottom of the cell is visible when the cell is constrained to limited height as a result of `MessageCellVisibility.partial`
+            customView.topAnchor.constraint(equalTo: contentView.topAnchor).setPriority(as: .defaultLow),
             customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
