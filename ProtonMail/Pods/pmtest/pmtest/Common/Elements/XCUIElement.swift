@@ -28,8 +28,6 @@
 import Foundation
 import XCTest
 
-private let app = XCUIApplication()
-
 /**
  * XCUIElement extensions that help to simplify the test syntax and keep it more compact.
  */
@@ -52,7 +50,7 @@ extension XCUIElement {
     /**
     * Returns child element that matches given locator.
     */
-    func child(_ childElement: UiElement) -> XCUIElement {
+    func child(_ childElement: UIElement) -> XCUIElement {
         let type = childElement.getType()
 
         if childElement.getIdentifier() != nil {
@@ -69,7 +67,7 @@ extension XCUIElement {
     /**
     * Returns child element that matches given locator.
     */
-    func descendant(_ descendantElement: UiElement) -> XCUIElement {
+    func descendant(_ descendantElement: UIElement) -> XCUIElement {
         let type = descendantElement.getType()
 
         if descendantElement.getIdentifier() != nil {

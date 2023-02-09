@@ -1,19 +1,33 @@
 {
   "name": "pmtest",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "summary": "UI test library that simplifies XCTest syntax, reduces test flakiness and improves test code readability.",
   "homepage": "https://github.com/protonmail",
   "license": "ProtonMail",
   "authors": "Denys Zelenchuk",
   "platforms": {
-    "ios": "10.0",
-    "osx": "10.15"
+    "ios": "11.0",
+    "osx": "11.0"
   },
   "source": {
     "git": ".",
     "commit": ""
   },
-  "source_files": "pmtest/**/*.swift",
+  "ios": {
+    "source_files": [
+      "pmtest/iOS/**/*.swift",
+      "pmtest/Common/**/*.swift"
+    ]
+  },
+  "osx": {
+    "source_files": [
+      "pmtest/Mac/**/*.swift",
+      "pmtest/Common/**/*.swift"
+    ]
+  },
   "frameworks": "XCTest",
-  "static_framework": true
+  "static_framework": true,
+  "pod_target_xcconfig": {
+    "ENABLE_TESTING_SEARCH_PATHS": "YES"
+  }
 }

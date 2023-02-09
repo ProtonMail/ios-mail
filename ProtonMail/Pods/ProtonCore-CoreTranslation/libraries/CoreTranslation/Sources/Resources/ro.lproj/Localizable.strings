@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ spațiu";
 
@@ -45,10 +42,10 @@
 "Apple informed us they could not process the purchase." = "Apple ne-a informat că nu poate procesa achiziția.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ne-a informat că ați trecut la alt plan al serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ne-a informat că ați modernizat planul serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ne-a informat că ați trecut la alt plan al serviciului, dar am detectat că v-ați deconectat din cont de atunci.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ne-a informat că ați modernizat planul serviciului, dar am detectat că v-ați deconectat din cont de atunci.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
@@ -114,6 +111,9 @@
 
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contactați-ne direct prin formularul nostru de suport, e-mail (support@protonmail.zendesk.com) sau Twitter.";
+
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Creare cont Proton cu e-mailul curent";
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "Adresă de e-mail deja utilizată.";
 
-/* Username field title */
-"Email or username" = "E-mail sau utilizator";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Bucurați-vă de lumea vieții private.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Vi se generează adresa";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Obțineți o adresă Proton Mail asociată acestui cont în setările web Proton.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Obțineți un cod de înlocuire trimis la %@.";
@@ -294,17 +294,11 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Aflați mai multe despre verificarea umană și de ce o solicităm.";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Pachet Mail + VPN pentru familii și întreprinderi mici";
-
 /* Mailbox password field title */
 "Mailbox password" = "Parolă mesaje";
 
 /* Manage accounts button */
 "Manage accounts" = "Gestionare conturi";
-
-/* Plan details medium speed */
-"Medium speed" = "Viteză medie";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Suport utilizatori multipli";
@@ -319,6 +313,78 @@
  * Networking */
 "Network connection error" = "Eroare conexiune la rețea";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ din %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Acces la serviciile de transmisie în flux la nivel global";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Blocare reclame încorporată (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Verificați-vă conexiunea la internet";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Probleme de conectare";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Extindere abonament";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "VPN gratuit pe un singur dispozitiv";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Luați %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Luați Proton gratuit";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Viteză VPN maximă";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Un singur abonament pentru toate serviciile Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Numai abonamentele anuale care nu sunt reînnoite sunt disponibile prin intermediul acestei aplicații.";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P / BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Planul a fost modernizat";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Servere Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Politică strictă fără înregistrări";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Contul de început, fără costuri, creat pentru a împuternici pe toată lumea cu confidențialitate în mod implicit.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Soluția de e-mail și calendar private pentru nevoile personale de comunicații zilnice.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Plan axat pe stocare cu 200 GB spațiu în cloud pentru a vă păstra fișierele private.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Pachetul complet de confidențialitate pentru accesarea tuturor serviciilor Proton premium.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor peste VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Până la %@ spațiu";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Intimitatea și securitatea dvs. sunt prioritatea noastră.";
+
 /* Next button */
 "Next" = "Înainte";
 
@@ -332,8 +398,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Un singur cont pentru toate serviciile Proton.";
 
 /* Plan footer description */
@@ -406,21 +471,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Asistență prioritară clienți";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Confidențialitate implicită";
 
 /* *
  * Login create address */
 "Proton address required" = "Este necesară o adresă Proton";
 
+/* Username field title */
+"Proton email or username" = "Nume utilizator sau e-mail Proton";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton gratuit";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton nu este disponibil";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail pentru profesioniști și afaceri";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Stare Proton";
@@ -475,9 +540,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Securizare cont";
-
-/* Select plan button */
-"Select" = "Selectare";
 
 /* *
  *  Payments UI */
@@ -609,11 +671,8 @@
  *  Force upgrade */
 "Update required" = "Necesită actualizare";
 
-/* Upgrade plan button */
-"Upgrade" = "Upgrade";
-
 /* Plan selection title */
-"Upgrade your plan" = "Upgrade plan";
+"Upgrade your plan" = "Modernizare plan";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Folosire cod de recuperare";
@@ -653,7 +712,7 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Abonamentul a fost activat. Reporniți aplicația pentru a începe să utilizați noul tip de abonament.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Contul nu a putut fi modificat la planul selectat, de aceea suma plătită a fost adăugată ca și credit în contul personal. Pentru mai multe informații și pentru a finaliza achiziția, vă rugăm să contactați asistența.";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Contul nu a putut fi modernizat la planul selectat, de aceea suma plătită a fost adăugată ca și credit în contul personal. Pentru mai multe informații și pentru a finaliza achiziția, vă rugăm să contactați asistența.";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "Vă vom trimite instrucțiunile de recuperare la acest e-mail dacă nu vă puteți conecta la cont.";
@@ -678,6 +737,9 @@
 
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "V-ați înregistrat cu succes, dar plata nu a fost procesată. Pentru a retrimite informațiile de plată, faceți clic pe «Reîncercare». Veți fi taxat doar o singură dată. Dacă problema persistă, contactați asistența pentru clienți.";
+
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Pentru a folosi Proton Mail și Proton Calendar aveți nevoie de o adresă de e-mail Proton.\nÎncă veți putea folosi %@ pentru autentificare și recuperarea contului.";
 
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Contul va fi deconectat și toate datele asociate cu acesta vor fi eliminate din acest dispozitiv.";
@@ -711,79 +773,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Sesiunea a expirat. Reconectați-vă.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ din %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Acces la serviciile de transmisie în flux la nivel global";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Blocare reclame încorporată (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Verificați-vă conexiunea la internet";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Probleme de conectare";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Extindere abonament";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "VPN gratuit pe un singur dispozitiv";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Luați %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Luați Proton gratuit";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Viteză VPN maximă";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Un singur abonament pentru toate serviciile Proton";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Numai abonamentele anuale care nu sunt reînnoite sunt disponibile prin intermediul acestei aplicații.";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P / BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plan modificat cu succes";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Servere Secure Core";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Politică strictă fără înregistrări.";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Contul de început, fără costuri, creat pentru a împuternici pe toată lumea cu confidențialitate în mod implicit.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Soluția de e-mail și calendar private pentru nevoile personale de comunicații zilnice.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Plan axat pe stocare cu 200 GB spațiu în cloud pentru a vă păstra fișierele private.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Pachetul complet de confidențialitate pentru accesarea tuturor serviciilor Proton premium.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor peste VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Până la %@ spațiu";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Intimitatea și securitatea dvs. sunt prioritatea noastră.";
-
-/* Welcome screen */
-"Privacy by default" = "Confidențialitate implicită";
 

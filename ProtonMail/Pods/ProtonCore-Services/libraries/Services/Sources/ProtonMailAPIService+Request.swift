@@ -218,17 +218,17 @@ extension PMAPIService {
                     
                     if shouldRetry {
                         // retry. will use the proxy domain automatically if it was successfully fetched
-                        self.startRequest(method: method,
-                                          path: path,
-                                          parameters: parameters,
-                                          headers: headers,
-                                          authenticated: authenticated,
-                                          authRetry: authRetry,
-                                          authRetryRemains: authRetryRemains,
-                                          customAuthCredential: authCredential,
-                                          nonDefaultTimeout: nonDefaultTimeout,
-                                          retryPolicy: retryPolicy,
-                                          completion: completion)
+                        self.performRequestHavingFetchedCredentials(method: method,
+                                                                    path: path,
+                                                                    parameters: parameters,
+                                                                    headers: headers,
+                                                                    authenticated: authenticated,
+                                                                    authRetry: authRetry,
+                                                                    authRetryRemains: authRetryRemains,
+                                                                    fetchingCredentialsResult: fetchingCredentialsResult,
+                                                                    nonDefaultTimeout: nonDefaultTimeout,
+                                                                    retryPolicy: retryPolicy,
+                                                                    completion: completion)
                     } else {
                         // finish the request if it should not be retried
                         if self.dohInterface.errorIndicatesDoHSolvableProblem(error: error) {
@@ -298,13 +298,13 @@ extension PMAPIService {
         if !FeatureFactory.shared.isEnabled(.unauthSession),
            authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
             
-            handleRefreshingCredentialsInLegacyPath(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+            handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
 
         // 401 handling for unauth sessions, when no credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authCredential == nil {
 
-            handleSessionAquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
+            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
 
         // 401 handling for unauth sessions, when credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
@@ -313,7 +313,7 @@ extension PMAPIService {
             let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
                                                          productPrefix: challengeParametersProvider.prefix)
             refreshAuthCredential(credentialsCausing401: authCredential,
-                                  legacyPath: false,
+                                  withoutSupportForUnauthenticatedSessions: false,
                                   deviceFingerprints: deviceFingerprints) { (result: AuthCredentialRefreshingResult) in
                 switch result {
                 case .refreshed(let credentials):
@@ -387,13 +387,13 @@ extension PMAPIService {
         if !FeatureFactory.shared.isEnabled(.unauthSession),
            authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
 
-            handleRefreshingCredentialsInLegacyPath(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+            handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
 
         // 401 handling for unauth sessions, when no credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authCredential == nil {
 
-            handleSessionAquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
+            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
 
         // 401 handling for unauth sessions, when credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
@@ -402,7 +402,7 @@ extension PMAPIService {
             let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
                                                          productPrefix: challengeParametersProvider.prefix)
             refreshAuthCredential(credentialsCausing401: authCredential,
-                                  legacyPath: false,
+                                  withoutSupportForUnauthenticatedSessions: false,
                                   deviceFingerprints: deviceFingerprints) { (result: AuthCredentialRefreshingResult) in
                 switch result {
                 case .refreshed(let credentials):
@@ -439,7 +439,7 @@ extension PMAPIService {
         self.debugError(error)
     }
     
-    private func handleRefreshingCredentialsInLegacyPath<T>(
+    private func handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions<T>(
         _ authCredential: AuthCredential, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authenticated: Bool,
         _ authRetry: Bool, _ authRetryRemains: Int, _ nonDefaultTimeout: TimeInterval?, _ completion: APIResponseCompletion<T>,
         _ error: NSError?, _ task: URLSessionDataTask?
@@ -451,9 +451,7 @@ extension PMAPIService {
             return
         }
 
-        let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
-                                                     productPrefix: challengeParametersProvider.prefix)
-        refreshAuthCredential(credentialsCausing401: authCredential, legacyPath: true, deviceFingerprints: deviceFingerprints) { result in
+        refreshAuthCredential(credentialsCausing401: authCredential, withoutSupportForUnauthenticatedSessions: true, deviceFingerprints: deviceFingerprints) { result in
             switch result {
             case .refreshed(let credentials):
                 self.performRequestHavingFetchedCredentials(method: method,
@@ -483,22 +481,20 @@ extension PMAPIService {
         }
     }
 
-    private func handleSessionAquiring<T>(_ method: HTTPMethod, _ path: String, _ parameters: Any?, _ headers: [String: Any]?,
-                                          _ authenticated: Bool, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
-                                          _ completion: PMAPIService.APIResponseCompletion<T>, _ task: URLSessionDataTask?,
-                                          _ authRetry: Bool, _ authRetryRemains: Int, _ authCredential: AuthCredential?) where T: APIDecodableResponse {
+    private func handleSessionAcquiring<T>(_ method: HTTPMethod, _ path: String, _ parameters: Any?, _ headers: [String: Any]?,
+                                           _ authenticated: Bool, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+                                           _ completion: PMAPIService.APIResponseCompletion<T>, _ task: URLSessionDataTask?,
+                                           _ authRetry: Bool, _ authRetryRemains: Int, _ authCredential: AuthCredential?) where T: APIDecodableResponse {
 
-        let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
-                                                     productPrefix: challengeParametersProvider.prefix)
-        aquireSession(deviceFingerprints: deviceFingerprints) { (result: SessionAquisitionResult) in
+        acquireSession(deviceFingerprints: deviceFingerprints) { (result: SessionAcquisitionResult) in
             switch result {
-            case .aquired(let newCredentials):
+            case .acquired(let newCredentials):
                 self.performRequestHavingFetchedCredentials(
                     method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated,
                     authRetry: false, authRetryRemains: 0, fetchingCredentialsResult: .found(credentials: newCredentials),
                     nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: completion
                 )
-            case .aquiringError(let responseError):
+            case .acquiringError(let responseError):
                 guard let responseCode = responseError.responseCode else {
                     completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
                     return
@@ -629,6 +625,15 @@ extension PMAPIService {
     
     func debug(_ task: URLSessionTask?, _ response: Any?, _ error: NSError?) {
         #if DEBUG_CORE_INTERNALS
+
+        func prettyPrintedJSONString(from data: Data?) -> String? {
+            guard let data = data,
+                  let object = try? JSONSerialization.jsonObject(with: data, options: []),
+                  let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
+                  let prettyPrintedString = String(data: data, encoding: .utf8) else { return nil }
+            return prettyPrintedString
+        }
+
         if let request = task?.originalRequest, let httpResponse = task?.response as? HTTPURLResponse {
             PMLog.debug("""
                         
@@ -637,7 +642,7 @@ extension PMAPIService {
                         url: \(request.url!)
                         method: \(request.httpMethod ?? "-")
                         headers: \((request.allHTTPHeaderFields as [String: Any]?)?.json(prettyPrinted: true) ?? "")
-                        body: \(request.httpBody.flatMap { String(data: $0, encoding: .utf8) } ?? "-")
+                        body: \(prettyPrintedJSONString(from: request.httpBody) ?? "-")
                         
                         [RESPONSE]
                         url: \(httpResponse.url!)
@@ -663,33 +668,4 @@ extension PMAPIService {
         #endif
     }
     
-}
-
-// TODO: remove
-extension PMAPIService {
-    
-    public func sessionRequest<T: Decodable>(request: Request,
-                                             result: @escaping (URLSessionDataTask?, Result<T, APIError>) -> Void) {
-        let decoder: JSONDecoder = .decapitalisingFirstLetter
-        let session = getSession()
-        let url = dohInterface.getCurrentlyUsedHostUrl() + request.path
-        do {
-            let request = try createRequest(
-                url: url, method: request.method, parameters: request.calculatedParameters, nonDefaultTimeout: nil,
-                headers: request.header, sessionUID: nil, accessToken: nil)
-            session?.request(with: request, jsonDecoder: decoder) { (task, res: Result<T, SessionResponseError>) in
-                switch res {
-                case .success(let decodable):
-                    self.debug(task, decodable, nil)
-                    result(task, .success(decodable))
-                case .failure(let sessionResponseError):
-                    self.debug(task, nil, sessionResponseError.underlyingError)
-                    let error = sessionResponseError.underlyingError
-                    result(nil, .failure(error))
-                }
-            }
-        } catch let error {
-            result(nil, .failure(error as NSError))
-        }
-    }
 }

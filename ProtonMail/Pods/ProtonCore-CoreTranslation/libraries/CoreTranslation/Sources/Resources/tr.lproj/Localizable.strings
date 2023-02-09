@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ ve %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ depolama alanı";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Twitter, e-posta (support@protonmail.zendesk.com) ya da destek isteği formu aracılığıyla doğrudan bizimle görüşebilirsiniz.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Geçerli e-posta adresinizle bir Proton hesabı oluşturun";
 
@@ -185,11 +185,8 @@
 /* Email address already used error */
 "Email address already used." = "E-posta adresi zaten kullanılıyor.";
 
-/* Username field title */
-"Email or username" = "E-posta adresi ya da kullanıcı adı";
-
 /* Signup summary welcome text */
-"Enjoy the world of privacy." = "Kişisel gizlilik dünyasının tadını çıkarın.";
+"Enjoy the world of privacy." = "Gizliliğe saygı duyulan bir dünyanın tadını çıkarın.";
 
 /* 2FA screen recovery field info */
 "Enter an 8-character recovery code." = "8 karakterli kurtarma kodunu yazın.";
@@ -234,6 +231,9 @@
 /* Signup complete progress step address generation */
 "Generating your address" = "Adresiniz oluşturuluyor";
 
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Proton web ayarlarınızdan bu hesap ile ilişkilendirilmiş bir Proton Mail hesabı alın.";
+
 /* alert message */
 "Get a replacement code sent to %@." = "%@ adresine yeni bir kod gönder.";
 
@@ -260,7 +260,7 @@
 "Human Verification" = "İnsan olduğunuzu doğrulayın";
 
 /* request item message */
-"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hesap açmakta sorun yaşıyorsanız, lütfen bir davet isteyin. Bir iş günü içinde size yanıt vereceğiz.";
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Hesap açmakta sorun yaşıyorsanız, lütfen bir davet isteğinde bulunun. Bir iş günü içinde size yanıt vereceğiz.";
 
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir. %1$@";
@@ -298,17 +298,11 @@
  * Splash */
 "Made by" = "Yapan";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Aileler ve küçük işletmeler için e-posta + VPN paketi";
-
 /* Mailbox password field title */
 "Mailbox password" = "Posta kutusu parolası";
 
 /* Manage accounts button */
 "Manage accounts" = "Hesap yönetimi";
-
-/* Plan details medium speed */
-"Medium speed" = "Orta hız";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Çok kullanıcı desteği";
@@ -323,6 +317,78 @@
  * Networking */
 "Network connection error" = "Ağ bağlantı sorunu";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ / %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Tüm dünyadaki yayın akışı hizmetlerine erişim";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Yerleşik reklam engelleyici (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "İnternet bağlantınızı denetleyin";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Bağlantı sorunları";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Aboneliği uzat";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Free VPN ile tek aygıt bağlantısı";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "%@ alın";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Ücretsiz olarak Proton kullanın";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "En yüksek VPN hızı";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Tüm Proton hizmetleri için tek tarife";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Bu uygulamada yalnızca yenilenmeyen yıllık abonelikler bulunur";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Tarife yükseltildi";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Secure Core sunucuları";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Sıkı kayıt tutmama ilkesi";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ücretsiz başlangıç hesabı gizliliği doğal sayan herkesin gereksinimlerine göre tasarlanmıştır.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Günlük iletişim gereksinimleriniz için gizliliğe öncelik veren e-posta ve takvim çözümü.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Dosyalarınızın gizliliğini koruyabileceğiniz 200 GB alan ile depolama odaklı tarife.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Tüm ücretli Proton hizmetlerine erişim sağlayan en üst düzey gizlilik paketi.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "VPN üzerinden Tor";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Sınırsız klasör, etiket, süzgeç";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "%@ boyutuna kadar depolama alanı";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Gizliliğinizi korumak ve güvenliğinizi sağlamak önceliğimizdir.";
+
 /* Next button */
 "Next" = "Sonraki";
 
@@ -336,8 +402,7 @@
    OK button */
 "OK" = "Tamam";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Tüm Proton hizmetleri için tek hesap.";
 
 /* Plan footer description */
@@ -410,21 +475,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Öncelikli müşteri desteği";
 
-/* Welcome screen footer label */
-"Privacy by default" = "Kişisel gizliliğe odaklanmış";
+/* Welcome screen */
+"Privacy by default" = "Gizlilik odaklı";
 
 /* *
  * Login create address */
 "Proton address required" = "Proton adresi gereklidir";
+
+/* Username field title */
+"Proton email or username" = "Proton e-posta adresi ya da kullanıcı adı";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton çalışmıyor";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Profesyoneller ve işletmeler için Proton Mail";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton durumu";
@@ -460,7 +525,7 @@
 "Repeat password" = "Parola onayı";
 
 /* request item title */
-"Request an invite" = "Bir davet iste";
+"Request an invite" = "Davet isteğinde bulun";
 
 /* new code alert button */
 "Request new code" = "Yeni kod iste";
@@ -479,9 +544,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Hesabınız korunuyor";
-
-/* Select plan button */
-"Select" = "Seçin";
 
 /* *
  *  Payments UI */
@@ -594,10 +656,10 @@
 "Twitter" = "Twitter";
 
 /* 2FA screen title */
-"Two-factor authentication" = "İki aşamalı kimlik doğrulama";
+"Two-factor authentication" = "İki aşamalı doğrulama";
 
 /* 2FA screen field title */
-"Two-factor code" = "İki aşamalı kimlik doğrulama kodu";
+"Two-factor code" = "İki aşamalı doğrulama kodu";
 
 /* Mailbox unlock screen action button title */
 "Unlock" = "Kilidi aç";
@@ -613,9 +675,6 @@
  *  Force upgrade */
 "Update required" = "Güncelleme gerekli";
 
-/* Upgrade plan button */
-"Upgrade" = "Yükselt";
-
 /* Plan selection title */
 "Upgrade your plan" = "Tarifenizi yükseltin";
 
@@ -623,7 +682,7 @@
 "Use recovery code" = "Kurtarma kodunu kullan";
 
 /* 2FA screen 2FA button title */
-"Use two-factor code" = "İki aşamalı kimlik doğrulama kodunu kullan";
+"Use two-factor code" = "İki aşamalı doğrulama kodunu kullan";
 
 /* Email address button */
 "Use your current email instead" = "Bunun yerine var olan e-posta adresinizi kullanın";
@@ -683,6 +742,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Hesabınız açıldı ancak ödemeniz işlenemedi. Ödeme bilgilerinizi yeniden göndermek için yeniden dene üzerine tıklayın. Yalnızca bir ödeme alınacak. Sorun sürerse lütfen müşteri destek ekibimiz ile görüşün.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Proton Mail ve Proton Calendar kullanabilmek için bir Proton e-posta adresiniz olmalıdır.\nOturum açmak ve hesabınızı kurtarmak için %@ adresini kullanmayı sürdürebileceksiniz.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Oturumunuz kapatılacak ve bu aygıttan bu hesapla ilişkili tüm veriler kaldırılacak.";
 
@@ -715,79 +777,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Oturumunuz zaman aşımına uğradı. Lütfen yeniden oturum açın.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ / %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Tüm dünyadaki yayın akışı hizmetlerine erişim";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Yerleşik reklam engelleyici (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "İnternet bağlantınızı denetleyin";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Bağlantı sorunları";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Aboneliği uzat";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Free VPN ile tek aygıt bağlantısı";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "%@ alın";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Ücretsiz olarak Proton kullanın";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "En yüksek VPN hızı";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Tüm Proton hizmetleri için tek tarife";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Bu uygulamada yalnızca yenilenmeyen yıllık abonelikler bulunur";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Tarife yükseltildi";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core sunucuları";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Sıkı kayıt tutmama ilkesi";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ücretsiz başlangıç hesabı kişisel gizliliği doğal sayan herkesin gereksinimlerine göre tasarlanmıştır.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Günlük iletişim gereksinimleriniz için kişisel gizliliğe öncelik veren e-posta ve takvim çözümü.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Dosyalarınızın kişisel gizliliğini koruyabileceğiniz 200 GB alan ile depolama odaklı tarife.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Tüm ücretli Proton hizmetlerine erişim sağlayan en üst düzey kişisel gizililik paketi.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "VPN üzerinden Tor";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Sınırsız klasör, etiket, süzgeç";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "%@ boyutuna kadar depolama alanı";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Kişisel gizliliğinizi korumak ve güvenliğinizi sağlamak önceliğimizdir.";
-
-/* Welcome screen */
-"Privacy by default" = "Kişisel gizliliğe odaklanmış";
 

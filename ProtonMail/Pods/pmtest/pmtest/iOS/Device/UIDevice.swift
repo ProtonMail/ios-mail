@@ -1,5 +1,5 @@
 //
-//  UiDevice.swift
+//  UIDevice.swift
 //
 //  ProtonMail - Created on 02.07.21.
 //
@@ -27,13 +27,37 @@
 
 import XCTest
 
+public enum ForegroundType {
+    case activate
+    case launch
+}
+
+@available(*, deprecated, message: "`UiDevice` has been renamed to `UIDevice`.")
+typealias UiDevice = UIDevice
+
 /**
  Contains functions related to the device or system actions.
  */
-open class UiDevice {
+open class UIDevice {
 
-    public func pressHome() {
+    public func backgroundApp(app: XCUIApplication = XCUIApplication()) {
         XCUIDevice.shared.press(.home)
+        app.wait(for: .runningBackground, timeout: 5.0)
+    }
+
+    public func foregroundApp(_ foregroundType: ForegroundType = ForegroundType.activate, app: XCUIApplication = XCUIApplication()) {
+        switch foregroundType {
+        case .activate:
+            app.activate()
+        case .launch:
+            app.launch()
+        }
+        app.wait(for: .runningForeground, timeout: 5.0)
+    }
+
+    public func foregroundAppBySiri(_ text: String, app: XCUIApplication = XCUIApplication()) {
+        XCUIDevice.shared.siriService.activate(voiceRecognitionText: text)
+        app.wait(for: .runningForeground, timeout: 5.0)
     }
 
     public func saveTextToClipboard(_ text: String) {

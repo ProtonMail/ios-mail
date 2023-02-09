@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ lagerplads";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakt os direkte via vores supportformular, e-mail (support@protonmail.zendesk.com) eller Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Opret en Proton-konto med din aktuelle e-mail";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "E-mailadressen er allerede i brug.";
 
-/* Username field title */
-"Email or username" = "E-mail eller brugernavn";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Nyd en verden med privatliv.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Opretter din adresse";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Få en Proton Mail-adresse knyttet til denne konto i dine Proton-webindstillinger.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Få en erstatningskode sendt til %@.";
@@ -298,17 +298,11 @@
  * Splash */
 "Made by" = "Lavet af";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Mail + VPN-pakke for familier og små virksomheder";
-
 /* Mailbox password field title */
 "Mailbox password" = "Postkasseadgangskode";
 
 /* Manage accounts button */
 "Manage accounts" = "Administrer konti";
-
-/* Plan details medium speed */
-"Medium speed" = "Mellem hastighed";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Flerbrugerunderstøttelse";
@@ -323,6 +317,78 @@
  * Networking */
 "Network connection error" = "Fejl i netværksforbindelse";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ af %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Adgang til streamingtjenester i hele verden";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Indbygget annonceblokering (Netshield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Tjek din internetforbindelse";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Problemer med forbindelsen";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Forlæng abonnement";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Gratis VPN på en enkelt enhed";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Få %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Få Proton gratis";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Højeste VPN-hastighed";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Ét abonnement til alle Proton-tjenester";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Kun årsabonnementer, der ikke forlænges, er tilgængelige via denne app";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Abonnement opgraderet";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Secure Core servere";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Striks politik om ikke at logge";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Den gratis startkonto, der er designet til at give alle mulighed for at få privatlivsbeskyttelse som standard.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Den privatlivsorienterede e-mail- og kalenderløsning til dine daglige kommunikationsbehov.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Det lagerfokuserede abonnement med 200 GB cloud-lager, så dine filer forbliver private.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Den ultimative privatlivspakke med adgang til alle premium Proton-tjenester.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor over VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Ubegrænsede mapper, etiketter og filtre";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Op til %@ lagerplads";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Vores højeste prioritet er dit privatliv og sikkerhed.";
+
 /* Next button */
 "Next" = "Næste";
 
@@ -336,8 +402,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Én konto til alle Proton-tjenester.";
 
 /* Plan footer description */
@@ -410,21 +475,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Prioriteret kundesupport";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Fortrolighed som standard";
 
 /* *
  * Login create address */
 "Proton address required" = "Proton-adresse påkrævet";
 
+/* Username field title */
+"Proton email or username" = "E-mail eller brugernavn hos Proton";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton er nede";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail til erhvervsfolk og virksomheder";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
@@ -479,9 +544,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Sikrer din konto";
-
-/* Select plan button */
-"Select" = "Vælg";
 
 /* *
  *  Payments UI */
@@ -613,9 +675,6 @@
  *  Force upgrade */
 "Update required" = "Opdatering nødvendig";
 
-/* Upgrade plan button */
-"Upgrade" = "Opgradér";
-
 /* Plan selection title */
 "Upgrade your plan" = "Opgradér dit abonnement";
 
@@ -683,6 +742,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Du har registreret dig, men din betaling blev ikke behandlet. For at gensende dine betalingsoplysninger, skal du klikke på Prøv igen. Du vil kun blive opkrævet én gang. Hvis problemet fortsætter, bedes du kontakte kundeservice.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Du skal have en Proton-e-mailadresse for at bruge Proton Mail og Proton Calendar.\nDu vil stadig kunne bruge %@ til at logge ind og til at gendanne din konto.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Du vil blive logget ud og alle de data, der er knyttet til denne konto, vil blive fjernet fra denne enhed.";
 
@@ -715,79 +777,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Din session er udløbet. Log venligst ind igen.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ af %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Adgang til streamingtjenester i hele verden";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Indbygget annonceblokering (Netshield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Tjek din internetforbindelse";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Problemer med forbindelse";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Forlæng abonnement";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Gratis VPN på en enkelt enhed";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Få %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Få Proton gratis";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Højeste VPN-hastighed";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Ét abonnement til alle Proton-tjenester";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Kun årsabonnementer, der ikke forlænges, er tilgængelige via denne app";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Abonnement opgraderet";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servere";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Fast politik om ingen logger";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Den gratis startkonto, der er designet til at give alle mulighed for at få privatlivsbeskyttelse som standard.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "E-mail og kalender til dine daglige kommunikationsbehov som beskytter dit privatliv.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Det lagringsfokuserede abonnement med 200 GB cloud-lager, så dine filer forbliver private.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Den ultimative privatlivspakke med adgang til alle premium Proton-tjenester.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor over VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Ubegrænsede mapper, etiketter og filtre";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Op til %@ lagerplads";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Vores topprioritet er din ret til privatliv og sikkerhed.";
-
-/* Welcome screen */
-"Privacy by default" = "Fortrolighed som standard";
 

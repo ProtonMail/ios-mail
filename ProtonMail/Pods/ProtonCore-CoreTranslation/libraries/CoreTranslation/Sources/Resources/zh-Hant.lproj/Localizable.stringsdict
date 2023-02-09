@@ -16,20 +16,6 @@
 			<string>%d 個 VPN 連線</string>
 		</dict>
 	</dict>
-	<key>%d addresses &amp; calendars</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d 本通訊錄 &amp; 本行事曆</string>
-		</dict>
-	</dict>
 	<key>%d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -42,20 +28,6 @@
 			<string>d</string>
 			<key>other</key>
 			<string>%d 本行事曆</string>
-		</dict>
-	</dict>
-	<key>%d calendars / user</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d calendars / user</string>
 		</dict>
 	</dict>
 	<key>%d connections</key>
@@ -154,20 +126,6 @@
 			<string>d</string>
 			<key>other</key>
 			<string>%d 個飆速 VPN 連線</string>
-		</dict>
-	</dict>
-	<key>%d high-speed VPN connections / user</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d high-speed VPN connections / user</string>
 		</dict>
 	</dict>
 	<key>%d users</key>

@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-GoLibs",
   "module_name": "ProtonCore_Crypto",
-  "version": "3.26.2",
+  "version": "3.27.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,8 +17,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": null,
-    "tag": "3.26.2"
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.27.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "3.26.2"
+      "3.27.0"
     ]
   },
   "default_subspecs": [

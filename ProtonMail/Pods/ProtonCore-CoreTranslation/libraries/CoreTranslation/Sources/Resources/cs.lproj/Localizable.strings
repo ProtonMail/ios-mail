@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ úložiště";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, e-mail (support@protonmail.zendesk.com), nebo Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Vytvořte si účet Proton pomocí aktuálního e-mailu";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "E-mailová adresa už byla použita.";
 
-/* Username field title */
-"Email or username" = "E-mail nebo uživatelské jméno";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Užívejte si svět soukromí.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Generování vaší adresy";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Připojte Proton Mail adresu k tomuto účtu v nastavení webu Proton.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Získat náhradní kód zaslaný na adresu %@.";
@@ -298,17 +298,11 @@
  * Splash */
 "Made by" = "Vytvořil";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Mail + VPN balíček pro rodiny a malé podniky";
-
 /* Mailbox password field title */
 "Mailbox password" = "Heslo k poštovní schránce";
 
 /* Manage accounts button */
 "Manage accounts" = "Spravovat účty";
-
-/* Plan details medium speed */
-"Medium speed" = "Střední rychlost";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Podpora pro více uživatelů";
@@ -323,6 +317,78 @@
  * Networking */
 "Network connection error" = "Chyba síťového připojení";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ z %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Globální přístup ke streamovacím službám";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Vestavěné blokování reklam (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Zkontrolujte své internetové připojení";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Problémy s připojením";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Prodloužit předplatné";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Bezplatná VPN na jednom zařízení";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Získejte %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Získejte Proton zdarma";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Nejvyšší rychlost VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Jeden tarif pro všechny služby Protonu";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Prostřednictvím této aplikace je k dispozici pouze roční předplatné, které není obnovováno";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Tarif úspěšně navýšen";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Servery Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Přísné zásady neukládání logů";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Bezplatný startovací účet, který ve výchozím nastavení poskytuje soukromí všem.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Řešení e-mailu a kalendáře pro každodenní komunikaci s ohledem na soukromí.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Tarif zaměřený na velký úložný prostor, nabízející 200 GB cloudového prostoru, zajišťující soukromí vašich dat.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Nejvyšší balíček ochrany soukromí s přístupem ke všem prémiovým službám Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "TOR skrze VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Až %@ úložného prostoru";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Vaše soukromí a bezpečnost jsou pro nás prioritou.";
+
 /* Next button */
 "Next" = "Další";
 
@@ -336,8 +402,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Jeden účet pro všechny Proton služby.";
 
 /* Plan footer description */
@@ -410,21 +475,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Prioritní zákaznická podpora";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Soukromí především";
 
 /* *
  * Login create address */
 "Proton address required" = "Vyžadována Proton adresa";
 
+/* Username field title */
+"Proton email or username" = "E-mailová adresa Proton nebo uživatelské jméno";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton zdarma";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton je nedostupný";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail pro profesionály a podniky";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Stav Protonu";
@@ -479,9 +544,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Zabezpečení vašeho účtu";
-
-/* Select plan button */
-"Select" = "Vybrat";
 
 /* *
  *  Payments UI */
@@ -613,9 +675,6 @@
  *  Force upgrade */
 "Update required" = "Aktualizace vyžadována";
 
-/* Upgrade plan button */
-"Upgrade" = "Navýšení tarifu";
-
 /* Plan selection title */
 "Upgrade your plan" = "Přejít na vyšší tarif";
 
@@ -683,6 +742,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Úspěšně jste se zaregistrovali, ale Vaše platba nebyla zpracována. Chcete-li znovu odeslat platební údaje, klepněte na tlačítko Zkusit znovu. Částka Vám bude účtována pouze jednou. Pokud problém přetrvává, obraťte se na zákaznickou podporu.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Abyste mohli používat Proton Mail a Proton Calendar, potřebujete e-mailovou adresu Proton.\nStále můžete používat %@ k přihlášení a obnovení svého účtu.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Budete odhlášeni a všechna data spojená s tímto účtem budou z tohoto zařízení odstraněna.";
 
@@ -715,79 +777,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Platnost vaší relace vypršela. Znovu se přihlaste.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ z %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Globální přístup ke streamovacím službám";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Vestavěné blokování reklam (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Zkontrolujte své připojení";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Problémy s připojením";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Prodloužit předplatné";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Bezplatná VPN na jednom zařízení";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Získejte %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Získejte Proton zdarma";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Nejvyšší rychlost VPN";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Jeden plán pro všechny Proton služby";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Prostřednictvím této aplikace je k dispozici pouze roční předplatné, které nelze obnovit";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Tarif úspěšně navýšen";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Servery Secure Core";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Přísné zásady neukládání záznamů";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Bezplatný startovací účet, který ve výchozím nastavení poskytuje soukromí všem.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Řešení e-mailu a kalendáře pro každodenní komunikaci s ohledem na soukromí.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Tarif zaměřený na velký úložný prostor, nabízející 200 GB cloudového prostoru, zajišťující soukromí vašich dat.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Nejvyšší balíček ochrany soukromí s přístupem ke všem prémiovým službám Proton.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR skrze VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Až %@ úložného prostoru";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Vaše soukromí a bezpečnost jsou pro nás prioritou.";
-
-/* Welcome screen */
-"Privacy by default" = "Soukromí samozřejmostí";
 

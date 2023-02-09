@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ &erősítő; %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ tárhely";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.zendesk.com), vagy a Twitter segítségével.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Hozzon létre egy Proton fiókot a jelenlegi email címével";
 
@@ -170,6 +170,9 @@
 /* Title of domains bottom action sheet */
 "Domain" = "Domain név";
 
+/* network troubleshot view title */
+"email" = "email";
+
 /* Email field title
    Email label
    email method name
@@ -178,9 +181,6 @@
 
 /* Email address already used error */
 "Email address already used." = "Ez az e-mail cím már használatban van.";
-
-/* Username field title */
-"Email or username" = "Email cím, vagy felhasználónév";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Élvezze a magánélet világát.";
@@ -225,6 +225,9 @@
 /* Signup complete progress step address generation */
 "Generating your address" = "A cím létrehozása";
 
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Kösse össze Proton Mail címét ezzel a fiókkal a Proton webes beallításoknál.";
+
 /* alert message */
 "Get a replacement code sent to %@." = "Cserekód küldése a %@ címre.";
 
@@ -245,6 +248,10 @@
 
 /* Login help screen title */
 "How can we help?" = "Miben segíthetünk?";
+
+/* *
+ *  Human verification */
+"Human Verification" = "Robot ellenőrzés";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ha problémába ütközik a fiók létrehozásakor, kérjen egy meghívót és 1 munkanapon belül segítséget nyújtunk.";
@@ -281,17 +288,11 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Tudjon meg többet az emberi ellenőrzésről és hogy mi miért szükséges.";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "E-mail + VPN csomag családoknak és kisvállalkozásoknak";
-
 /* Mailbox password field title */
 "Mailbox password" = "E-mail jelszó";
 
 /* Manage accounts button */
 "Manage accounts" = "Fiókok kezelése";
-
-/* Plan details medium speed */
-"Medium speed" = "Közepes sebesség";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Többfelhasználós lehetőség";
@@ -306,6 +307,75 @@
  * Networking */
 "Network connection error" = "Kapcsolati hiba";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ / %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Videós szolgáltatásokhoz való globális elérés";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Beépített reklámblokkoló (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Ellenőrizze a kapcsolatot";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Kapcsolódási problémák";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Előfizetés kibővítése";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Ingyenes VPN egy eszközön";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "%@ beszerzése";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Szerezze be a Protont ingyen";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Legnagyobb VPN sebesség";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Egy csomag minden Proton szolgáltatáshoz";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Az alkalmazásból csak éves, nem automatikusan megújuló előfizetés érhető el";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Csomag sikeresen frissítve";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Secure Core szerverek";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Szigorú nincs-naplózás irányelv";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Az ingyenes induló fiók célja, hogy mindenkinek elérhetővé tegye az alapértelmezett adatvédelmet.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "A magánszférát előtérben tartó e-mail és naptár megoldás, a mindennapi kommunikációjához.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "A legnagyobb adatvédelmi csomag, a Proton összes prémium szolgáltatásával.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor VPN-en";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Korlátlan számú mappák, címkék és filterek";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Akár %@ tárhely";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Magánszférája és biztonsága az elődleges szempontunk.";
+
 /* Next button */
 "Next" = "Következő";
 
@@ -319,8 +389,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Egy fiók minden Proton szolgáltatáshoz.";
 
 /* Plan footer description */
@@ -393,17 +462,18 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Elsőbbségi felhasználói támogatás";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Alapértelmezett adatvédelem";
+
+/* *
+ * Login create address */
+"Proton address required" = "Proton e-mail cím szükséges";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton ingyenes";
 
 /* network troubleshot cell title */
 "Proton is down" = "A Proton nem érhető el";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail vállalkozóknak és cégeknek";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Állapot";
@@ -456,9 +526,6 @@
 /* Signup complete progress step keys generation */
 "Securing your account" = "Fiók biztosítása";
 
-/* Select plan button */
-"Select" = "Kiválasztás";
-
 /* *
  *  Payments UI */
 "Select a plan" = "Csomag kiválasztása";
@@ -498,6 +565,9 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Elnézést, de az iOS alkalmazás béta verziójából nem tudunk vásárlásokat fogadni. De azért köszönjük, hogy részt vesz a béta programban!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Még mindig nem sikerült megoldást találni";
+
 /* *
  *  Login help */
 "Still need help? Contact us directly." = "További segítségre van szüksége? Lépjen velünk kapcsolatba.";
@@ -505,11 +575,20 @@
 /* Plan details streaming service support */
 "Streaming service support" = "Közvetítési szolgáltatások támogatása";
 
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Tárgy...";
+
 /* Subscription title */
 "Subscription" = "Előfizetés";
 
+/* network troubleshooting */
+"support form" = "támogatási űrlap";
+
 /* *  Account Manager */
 "switch to" = "váltás:";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Ideiglenesen kapcsolja ki vagy távolítsa el az antivírus programot.";
 
 /* Recovery terms and conditions link
    Terms and conditions view title */
@@ -536,8 +615,20 @@
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "A Proton alkalmazás szervezeti tagként való használatához, először be kell jelentkeznie a Protonba a web böngészőből és megváltoztatnia a jelszavát.";
 
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Hibaelhárítás";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Hibaelhárítás";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
+
 /* other method alert button */
 "Try other method" = "Másik módszer";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Kétlépcsős hitelesítés";
@@ -558,9 +649,6 @@
 /* *
  *  Force upgrade */
 "Update required" = "Frissítés szükséges";
-
-/* Upgrade plan button */
-"Upgrade" = "Csomagváltás";
 
 /* Plan selection title */
 "Upgrade your plan" = "Váltás nagyobb csomagra";
@@ -638,6 +726,9 @@
 /* Dialog text for missing keys error */
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "A fiókjában kulcsok hiányoznak. Lépjen be a webböngészőből a kulcsok automatikus létrehozásához. A weben való bejelentkezés után térjen vissza az alkalmazásba és lépjen be.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon %1$@-t (vagy bármely más VPN-t) vagy %2$@-t a Proton eléréshez.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Az e-mail cím csak erre az egyszeri ellenőrzésre lesz felhasználva.";
 
@@ -652,73 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Az ingyenes Proton fiókja elkészült.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ / %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Videós szolgáltatásokhoz való globális elérés";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Beépített reklámblokkoló (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Ellenőrizze a kapcsolatot";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Kapcsolódási problémák";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Előfizetés kibővítése";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Ingyenes VPN egy eszközön";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "%@ beszerzése";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Szerezze be a Protont ingyen";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Legnagyobb VPN sebesség";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Egy csomag minden Proton szolgáltatáshoz";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Az alkalmazásból csak éves, nem automatikusan megújuló előfizetés érhető el";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Csomag sikeresen frissítve";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core szerverek";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Szigorú nincs-naplózás irányelv";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Az ingyenes induló fiók célja, hogy mindenkinek elérhetővé tegye az alapértelmezett adatvédelmet.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "A magánszférát előtérben tartó e-mail és naptár megoldás, a mindennapi kommunikációjához.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "A legnagyobb adatvédelmi csomag, a Proton összes prémium szolgáltatásával.";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Akár %@ tárhely";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Magánszférája és biztonsága az elődleges szempontunk.";
-
-/* Welcome screen */
-"Privacy by default" = "Alapértelmezett adatvédelem";
 

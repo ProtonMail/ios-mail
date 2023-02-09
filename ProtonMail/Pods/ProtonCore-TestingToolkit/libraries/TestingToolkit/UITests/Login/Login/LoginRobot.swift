@@ -65,7 +65,7 @@ public final class LoginRobot: CoreElements {
 
         @discardableResult
         public func switchToCreateAccountButtonIsNotPresented() -> LoginRobot {
-            button(signUpButtonId).wait().checkDoesNotExist()
+            button(signUpButtonId).waitUntilGone()
             return LoginRobot()
         }
         

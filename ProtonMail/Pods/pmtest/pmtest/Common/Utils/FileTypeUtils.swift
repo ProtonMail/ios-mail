@@ -26,7 +26,7 @@
 //  THE SOFTWARE.
 
 import UniformTypeIdentifiers
-import MobileCoreServices
+import CoreServices
 import AVFoundation
 
 struct UTTypeProvider {

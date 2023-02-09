@@ -40,7 +40,7 @@ extension XCTestCase {
      */
     @discardableResult
     open func addUIMonitor(elementToTap: XCUIElement) -> NSObjectProtocol {
-        return addUIInterruptionMonitor(withDescription: "Handle UI interruprion") { _ -> Bool in
+        return addUIInterruptionMonitor(withDescription: "*") { _ -> Bool in
             if elementToTap.exists {
                 elementToTap.tap()
             }
@@ -60,7 +60,7 @@ extension XCTestCase {
      */
     @discardableResult
     open func addUIMonitor(elementQueryToTap: XCUIElementQuery, identifiers: [String]) -> NSObjectProtocol {
-        return addUIInterruptionMonitor(withDescription: "Handle UI interruprions") { _ -> Bool in
+        return addUIInterruptionMonitor(withDescription: "*") { _ -> Bool in
             for (identifier) in identifiers {
                 let element = elementQueryToTap[identifier].firstMatch
                 if element.exists {
