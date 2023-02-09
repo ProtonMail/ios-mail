@@ -23,7 +23,7 @@ class Mock{{ type.name }}: {{ type.name }} {
     {% endif %}
 
     {% endfor %}
-    {% for method in type.methods %}
+    {% for method in type.methods|!definedInExtension %}
     {% if method.returnTypeName.name == "Void" %}
     @FuncStub(Mock{{ type.name }}.{{ method.callName }}) var {{ method.callName }}Stub
     func {{ method.name }} {

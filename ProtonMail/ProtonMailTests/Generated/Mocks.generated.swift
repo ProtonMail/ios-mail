@@ -33,8 +33,8 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     }
 
     @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
-    func updateCounterSync(markUnRead: Bool, on message: Message) {
-        updateCounterSyncStub(markUnRead, message)
+    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
+        updateCounterSyncStub(markUnRead, labelIDs)
     }
 
 }
@@ -77,7 +77,7 @@ class MockConversationCoordinatorProtocol: ConversationCoordinatorProtocol {
     }
 
     @PropertyStub(\MockConversationCoordinatorProtocol.goToDraft, initialGet: nil) var goToDraftStub
-    var goToDraft: ((MessageID) -> Void)? {
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? {
         get {
             goToDraftStub()
         }

@@ -3,7 +3,7 @@ import SafariServices
 // sourcery: mock
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
-    var goToDraft: ((MessageID) -> Void)? { get set }
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? { get set }
 
     func handle(navigationAction: ConversationNavigationAction)
 }
@@ -20,7 +20,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
-    var goToDraft: ((MessageID) -> Void)?
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
     init(labelId: LabelID,
          navigationController: UINavigationController,
@@ -79,9 +79,9 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 dependencies: .init(user: user)
             ),
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
-            goToDraft: { [weak self] msgID in
+            goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.navigationController?.popViewController(animated: false)
-                self?.goToDraft?(msgID)
+                self?.goToDraft?(msgID, originalScheduledTime)
             },
             dependencies: dependencies)
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)

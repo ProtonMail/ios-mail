@@ -77,14 +77,16 @@ class LabelsDataService: Service {
         self.cacheService = cacheService
     }
 
-    private func cleanLabelAndFolder(context: NSManagedObjectContext) {
+    private func cleanLabelsAndFolders(except labelIDToPreserve: [String], context: NSManagedObjectContext) {
         let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(
-            format: "%K == %@ AND (%K == 1 OR %K == 3)",
+            format: "%K == %@ AND (%K == 1 OR %K == 3) AND (NOT (%K IN %@))",
             Label.Attributes.userID,
             userID.rawValue,
             Label.Attributes.type,
-            Label.Attributes.type
+            Label.Attributes.type,
+            Label.Attributes.labelID,
+            labelIDToPreserve
         )
 
         guard let labels = try? context.fetch(request) else {
@@ -175,7 +177,10 @@ class LabelsDataService: Service {
                     return
                 }
 
-                self.cleanLabelAndFolder(context: context)
+                // to prevent deleted label won't be delete due to pull down to refresh
+                let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
+                self.cleanLabelsAndFolders(except: labelIDToPreserve, context: context)
+
 
                 do {
                     _ = try GRTJSONSerialization.objects(

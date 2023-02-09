@@ -382,7 +382,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         // overriden in Share
     }
 
-    func cancelAction(_ sender: UIBarButtonItem) {
+    func cancelAction() {
         self.handleDismissDraft()
     }
 
@@ -455,7 +455,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         }
     }
 
-    private func collectDraftData() -> Promise<(String, String)?> {
+    func collectDraftData() -> Promise<(String, String)?> {
         return Promise { [weak self] seal in
             guard let self = self else {
                 seal.fulfill(nil)

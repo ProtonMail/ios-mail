@@ -36,7 +36,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    var goToDraft: ((MessageID) -> Void)?
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
     init(
         navigationController: UINavigationController,
@@ -78,9 +78,9 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
-            goToDraft: { [weak self] msgID in
+            goToDraft: { [weak self] msgID, originalScheduleTime in
                 self?.navigationController?.popViewController(animated: false)
-                self?.goToDraft?(msgID)
+                self?.goToDraft?(msgID, originalScheduleTime)
             }
         )
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)

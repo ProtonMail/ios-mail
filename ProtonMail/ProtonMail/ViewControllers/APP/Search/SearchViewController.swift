@@ -593,7 +593,7 @@ extension SearchViewController {
             user: self.viewModel.user,
             infoBubbleViewStatusProvider: userCachedStatus
         )
-        coordinator.goToDraft = { [weak self] msgID in
+        coordinator.goToDraft = { [weak self] msgID, _ in
             guard let self = self else { return }
             // trigger the data to be updated.
             _ = self.textFieldShouldReturn(self.searchBar.textField)
@@ -627,7 +627,7 @@ extension SearchViewController {
                     infoBubbleViewStatusProvider: userCachedStatus,
                     targetID: messageID
                 )
-                coordinator.goToDraft = { [weak self] msgID in
+                coordinator.goToDraft = { [weak self] msgID, _ in
                     guard let self = self else { return }
                     // trigger the data to be updated.
                     _ = self.textFieldShouldReturn(self.searchBar.textField)

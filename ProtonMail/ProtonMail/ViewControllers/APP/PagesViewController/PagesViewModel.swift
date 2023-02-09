@@ -33,12 +33,12 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     let labelID: LabelID
     let user: UserManager
     let viewMode: ViewMode
-    let goToDraft: ((MessageID) -> Void)?
     var fetchedResultsController: NSFetchedResultsController<FetchResultType>?
     var messageService: MessageDataService { user.messageService }
     private let isUnread: Bool
     /// For conversation mode, which message in this conversation should display
     private var targetMessageID: MessageID?
+    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
     private let userIntroduction: UserIntroductionProgressProvider
 
     init(
@@ -50,7 +50,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         self.goToDraft = goToDraft
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
@@ -122,7 +122,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         user: UserManager,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         super.init(
             viewMode: .singleMessage,
@@ -155,7 +155,7 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         super.init(
             viewMode: .conversation,
