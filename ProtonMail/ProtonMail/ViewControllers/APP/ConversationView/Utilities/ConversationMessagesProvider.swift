@@ -1,4 +1,5 @@
 import CoreData
+import ProtonMailAnalytics
 
 class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate {
 
@@ -54,10 +55,12 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        Breadcrumbs.shared.add(message: "controllerWillChangeContent", to: .conversationViewEndUpdatesCrash)
         conversationUpdate?(.willUpdate)
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        Breadcrumbs.shared.add(message: "controllerDidChangeContent", to: .conversationViewEndUpdatesCrash)
         let messages = controller.fetchedObjects?.compactMap { $0 as? Message } ?? []
         conversationUpdate?(.didUpdate(messages: messages.map(MessageEntity.init)))
     }
@@ -69,16 +72,22 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         for type: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?
     ) {
+        let traceMessage = makeDebugMessageForDidChangeObjectMethod(
+            anObject: anObject,
+            at: indexPath,
+            for: type,
+            newIndexPath: newIndexPath
+        )
+        Breadcrumbs.shared.add(message: traceMessage, to: .conversationViewEndUpdatesCrash)
+
         switch type {
         case .insert:
             if let indexPath = newIndexPath {
                 conversationUpdate?(.insert(row: indexPath.row))
             }
         case .update:
-            if let message = anObject as? Message, let indexPath = indexPath, let newIndexPath = newIndexPath {
-                conversationUpdate?(.update(message: MessageEntity(message),
-                                            fromRow: indexPath.row,
-                                            toRow: newIndexPath.row))
+            if let message = anObject as? Message {
+                conversationUpdate?(.update(message: MessageEntity(message)))
             }
         case .move:
             if let oldIndexPath = indexPath, let newIndexPath = newIndexPath {
@@ -93,4 +102,54 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         }
     }
 
+    private func makeDebugMessageForDidChangeObjectMethod(
+        anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+    ) -> String {
+        let anObjectValueString: String
+        if let message = anObject as? Message {
+            anObjectValueString = "message \(message.messageID)"
+        } else {
+            anObjectValueString = "\(Swift.type(of: anObject))"
+        }
+
+        let atValueString: String
+        if let indexPathBeforeInsertsAndDeletes = indexPath {
+            atValueString = "(\(indexPathBeforeInsertsAndDeletes.section), \(indexPathBeforeInsertsAndDeletes.row))"
+        } else {
+            atValueString = "nil"
+        }
+
+        let typeValueString: String
+        switch type {
+        case .insert:
+            typeValueString = "insert"
+        case .delete:
+            typeValueString = "delete"
+        case .move:
+            typeValueString = "move"
+        case .update:
+            typeValueString = "update"
+        @unknown default:
+            typeValueString = "unknown (\(type))"
+        }
+
+        let newIndexPathValueString: String
+        if let indexPathAfterInsertsAndDeletes = newIndexPath {
+            newIndexPathValueString = "(\(indexPathAfterInsertsAndDeletes.section), \(indexPathAfterInsertsAndDeletes.row))"
+        } else {
+            newIndexPathValueString = "nil"
+        }
+
+        let messageComponents: [String] = [
+            "controller didChange anObject: \(anObjectValueString)",
+            "at: \(atValueString)",
+            "for: \(typeValueString)",
+            "newIndexPath: \(newIndexPathValueString)"
+        ]
+
+        return messageComponents.joined(separator: ", ")
+    }
 }

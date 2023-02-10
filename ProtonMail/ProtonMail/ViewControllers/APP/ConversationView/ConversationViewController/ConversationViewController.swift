@@ -165,7 +165,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         }
     }
 
-    func cellTapped(messageId: MessageID) {
+    func cellTapped(messageId: MessageID, caller: StaticString = #function) {
+        // this method sometimes appears in the stack trace for this crash
+        Breadcrumbs.shared.add(message: "\(caller)", to: .conversationViewEndUpdatesCrash)
+        Breadcrumbs.shared.add(message: "cellTapped(messageId: \(messageId)", to: .conversationViewEndUpdatesCrash)
+
         guard let index = self.viewModel.messagesDataSource
                 .firstIndex(where: { $0.message?.messageID == messageId }),
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
