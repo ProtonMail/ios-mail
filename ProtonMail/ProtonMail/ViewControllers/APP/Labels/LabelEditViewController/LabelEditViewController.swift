@@ -23,8 +23,9 @@
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
+import ProtonCore_Foundations
 
-final class LabelEditViewController: UITableViewController {
+final class LabelEditViewController: UITableViewController, AccessibleView {
     private var navBarDoneButton: UIBarButtonItem = SubviewFactory.navBarButton
 
     private var viewModel: LabelEditViewModelProtocol
@@ -42,6 +43,7 @@ final class LabelEditViewController: UITableViewController {
         super.viewDidLoad()
         setupUI()
         viewModel.output.setUIDelegate(self)
+        generateAccessibilityIdentifiers()
     }
 }
 
@@ -95,6 +97,7 @@ extension LabelEditViewController {
         navBarDoneButton.action = #selector(didTapDoneButton)
         navigationItem.rightBarButtonItem = navBarDoneButton
         checkDoneButtonStatus()
+        navigationItem.assignNavItemIndentifiers()
     }
 
     private func setupTableView() {
