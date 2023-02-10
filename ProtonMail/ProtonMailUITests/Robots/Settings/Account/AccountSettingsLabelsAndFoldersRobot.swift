@@ -31,23 +31,23 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     
     var verify = Verify()
 
-    func addFolder() -> AddFolderLabelRobot {
+    func addFolder() -> AccountSettingsAddFolderLabelRobot {
         staticText(id.newFolderText).tap()
-        return AddFolderLabelRobot()
+        return AccountSettingsAddFolderLabelRobot()
     }
     
-    func addLabel() -> AddFolderLabelRobot {
+    func addLabel() -> AccountSettingsAddFolderLabelRobot {
         staticText(id.newLabel).tap()
-        return AddFolderLabelRobot()
+        return AccountSettingsAddFolderLabelRobot()
     }
     
     func deleteFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
         return selectFolderLabel(name).delete().confirmDelete()
     }
     
-    func editFolderLabel(_ folderName: String) -> AddFolderLabelRobot {
+    func editFolderLabel(_ folderName: String) -> AccountSettingsAddFolderLabelRobot {
         cell(id.selectLabelFolderCellIdentifiert(folderName)).tap()
-        return AddFolderLabelRobot()
+        return AccountSettingsAddFolderLabelRobot()
     }
     
     func close() -> AccountSettingsRobot {
@@ -55,60 +55,14 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
         return AccountSettingsRobot()
     }
     
-    func selectFolderLabel(_ name: String) -> AddFolderLabelRobot {
+    func selectFolderLabel(_ name: String) -> AccountSettingsAddFolderLabelRobot {
         cell(id.selectLabelFolderCellIdentifiert(name))
             .firstMatch()
             .swipeUpUntilVisible(maxAttempts: 20)
             .tap()
-        return AddFolderLabelRobot()
+        return AccountSettingsAddFolderLabelRobot()
     }
-    
-    /**
-     AddFolderLabelRobot class represents  modal state with color selection and Label/Folder name text field.
-     */
-    class AddFolderLabelRobot: CoreElements {
-        
-        func createFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
-            return setFolderLabelName(name)
-                .doneCreatingLabel()
-        }
-        
-        private func setFolderLabelName(_ name: String) -> AddFolderLabelRobot {
-            textField(id.folderNameTextFieldIdentifier).tap().typeText(name)
-            return self
-        }
-        
-        func editFolderLabelName(_ name: String) -> AddFolderLabelRobot {
-            textField(id.folderNameTextFieldIdentifier).tap().clearText().typeText(name)
-            return AddFolderLabelRobot()
-        }
-        
-        func selectFolderColorByIndex(_ index: Int) -> AddFolderLabelRobot {
-            image(id.colorCollectionViewCellIdentifier).byIndex(index).tap()
-            return AddFolderLabelRobot()
-        }
-        
-        func save() -> AccountSettingsLabelsAndFoldersRobot {
-            button(id.saveButtonLabel).tap()
-            return AccountSettingsLabelsAndFoldersRobot()
-        }
-        
-        func doneCreatingLabel() -> AccountSettingsLabelsAndFoldersRobot {
-            button(id.keyboardDoneIdentifier).tap().waitUntilGone()
-            return AccountSettingsLabelsAndFoldersRobot()
-        }
-        
-        func delete() -> AddFolderLabelRobot {
-            cell(id.deleteCellIdentifier).waitForHittable().tap()
-            return self
-        }
-        
-        func confirmDelete() -> AccountSettingsLabelsAndFoldersRobot {
-            button(id.confirmDeleteButtonText).tap()
-            return AccountSettingsLabelsAndFoldersRobot()
-        }
-    }
-    
+
     /**
      Contains all the validations that can be performed by LabelsAndFoldersRobot.
      */

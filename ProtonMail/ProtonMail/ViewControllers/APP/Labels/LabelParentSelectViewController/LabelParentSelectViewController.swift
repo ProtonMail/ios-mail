@@ -63,6 +63,7 @@ final class LabelParentSelectViewController: ProtonMailTableViewController {
         attr[.foregroundColor] = foregroundColorOverride
         btn.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = btn
+        self.navigationItem.assignNavItemIndentifiers()
     }
 
     private func setupTable() {
@@ -70,6 +71,7 @@ final class LabelParentSelectViewController: ProtonMailTableViewController {
         self.tableView.register(MenuItemTableViewCell.defaultNib(),
                                 forCellReuseIdentifier: MenuItemTableViewCell.defaultID())
         self.tableView.register(UITableViewCell.self)
+        self.tableView.accessibilityIdentifier = "\(type(of: self)).tableView"
     }
 
     @objc
