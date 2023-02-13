@@ -1,0 +1,17 @@
+struct LocalizationList {
+    let all: [String: String] = [
+        {% for type in types.classes where type.name == "LocalizedString" %}
+        {% for variable in type.allVariables %}
+        "{{ type.name }}.{{ variable.name }}": LocalString.{{ variable.name }},
+        {% endfor %}
+        {% endfor %}
+        {% for type in types.enums where type.name == "L11n" %}
+        {% for localizationGroup in type.containedTypes %}
+        // {{ localizationGroup.name }}
+        {% for variable in localizationGroup.variables %}
+        "{{ localizationGroup.name }}.{{ variable.name }}": {{ localizationGroup.name }}.{{ variable.name }},
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+    ]
+}
