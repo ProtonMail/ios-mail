@@ -248,6 +248,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                              name: UIApplication.willEnterForegroundNotification,
                              object: nil)
         }
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     private func setupViewModel() {
@@ -316,6 +321,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
         }
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        refreshNavigationViewIfNeeded(forceUpdate: true)
     }
 
     required init?(coder: NSCoder) { nil }
@@ -611,15 +621,16 @@ private extension ConversationViewController {
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
     }
 
-    private func refreshNavigationViewIfNeeded() {
+    private func refreshNavigationViewIfNeeded(forceUpdate: Bool = false) {
         // only reassign the titleView if needed
         if let titleView = navigationItem.titleView as? ConversationNavigationSimpleView {
-            if titleView.titleLabel.attributedText?.string != viewModel.messagesTitle {
+            if titleView.titleLabel.attributedText?.string != viewModel.messagesTitle || forceUpdate {
                 navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
             }
         } else if let titleView = navigationItem.titleView as? ConversationNavigationDetailView {
             if titleView.topLabel.attributedText?.string != viewModel.messagesTitle ||
-                titleView.bottomLabel.attributedText?.string != viewModel.conversation.subject {
+                titleView.bottomLabel.attributedText?.string != viewModel.conversation.subject ||
+                forceUpdate {
                 navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
             }
         }

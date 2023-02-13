@@ -183,6 +183,12 @@ class NonExpandedHeaderView: HeaderView {
         expandView?()
     }
 
+    func preferredContentSizeChanged() {
+        senderLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        [initialsLabel, senderLabel, recipientTitle, recipientLabel, senderAddressLabel.label]
+            .forEach { $0.font = .adjustedFont(forTextStyle: .footnote) }
+    }
+
     required init?(coder: NSCoder) {
         nil
     }

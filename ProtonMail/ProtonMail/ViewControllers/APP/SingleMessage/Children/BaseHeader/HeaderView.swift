@@ -63,6 +63,15 @@ class HeaderView: UIView {
             return label
         }
 
+        class var hideDetailButton: UIButton {
+            let button = UIButton()
+            button.titleLabel?.set(text: nil, preferredFont: .footnote)
+            button.setTitle(LocalString._hide_details, for: .normal)
+            button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
+            button.setContentCompressionResistancePriority(.required, for: .vertical)
+            return button
+        }
+
         private init() { }
     }
 }

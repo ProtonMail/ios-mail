@@ -24,7 +24,14 @@ final class ExpandedHeaderTagView: UIView {
     private var tagCollectionViewHeight: NSLayoutConstraint?
 
     private var isReloadData = false
-    private var tags: [TagUIModel] = []
+    private var tags: [TagUIModel] = [] {
+        didSet {
+            print("esie before")
+            tagCollectionView.reloadData()
+            print("esie after")
+            updateCollectionHeight()
+        }
+    }
 
     override init(frame: CGRect) { // for using CustomView in code
         super.init(frame: frame)
@@ -46,12 +53,14 @@ final class ExpandedHeaderTagView: UIView {
             return
         }
         isReloadData = true
-        // So collection view can get the correct frame
-        tagCollectionView.reloadData()
-        let height = tagCollectionView.collectionViewLayout.collectionViewContentSize.height
-        tagCollectionViewHeight?.constant = height
+        updateCollectionHeight()
         layoutIfNeeded()
         isReloadData = false
+    }
+
+    private func updateCollectionHeight() {
+        let height = tagCollectionView.collectionViewLayout.collectionViewContentSize.height
+        tagCollectionViewHeight?.constant = height
     }
 
     private func addSubViews() {

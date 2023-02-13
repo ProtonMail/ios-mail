@@ -71,6 +71,11 @@ final class MenuViewController: UIViewController, AccessibleView {
                                                selector: #selector(self.appDidEnterBackground),
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -282,6 +287,13 @@ extension MenuViewController {
     @objc
     private func clickAddFolderFromSection() {
         self.checkAddFolderAbility(label: .init(location: .addFolder))
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        displayName.font = .adjustedFont(forTextStyle: .subheadline, weight: .regular)
+        addressLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
+        avatarLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
     }
 }
 

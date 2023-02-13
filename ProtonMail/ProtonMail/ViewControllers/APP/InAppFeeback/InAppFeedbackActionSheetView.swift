@@ -75,6 +75,12 @@ final class InAppFeedbackActionSheetView: UIView {
 
         layer.cornerRadius = 6.0
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     private func configureLayout() {
@@ -129,6 +135,17 @@ final class InAppFeedbackActionSheetView: UIView {
 
     private func didSubmit(comment: String?) {
         onSubmit(comment)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        titleLabel.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        promptLabel.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        for view in ratingScaleView.arrangedSubviews {
+            guard let view = view as? RateView else { continue }
+            view.topLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
+            view.bottomLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
+        }
     }
 
     private enum SubviewsFactory {
@@ -198,9 +215,9 @@ final class RatingScaleView: UIStackView {
 }
 
 final class RateView: UIView {
-    private let topLabel = UILabel()
+    let topLabel = UILabel()
     let rateButton = SubviewsFactory.rateButton
-    private let bottomLabel = UILabel()
+    let bottomLabel = UILabel()
     private let rating: Rating
     private let onRatingSelection: ((Rating) -> Void)
 
