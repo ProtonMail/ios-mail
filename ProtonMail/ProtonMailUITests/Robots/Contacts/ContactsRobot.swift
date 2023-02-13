@@ -89,7 +89,7 @@ class ContactsRobot: CoreElements {
         }
         
         private func swipeLeftToDelete(_ name: String) -> ContactsView {
-            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().swipeLeft()
+            cell(id.contactCellIdentifier(name)).firstMatch().swipeUpUntilVisible(maxAttempts: 20).swipeLeft()
             return ContactsView()
         }
         
