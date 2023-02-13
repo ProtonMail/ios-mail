@@ -56,6 +56,31 @@ class ExpandedHeaderViewController: UIViewController {
         self.hideDetailsAction = action
     }
 
+    func preferredContentSizeChanged() {
+        customView.preferredContentSizeChanged()
+        customView.contentStackView.arrangedSubviews.forEach { row in
+            if let tagView = row as? ExpandedHeaderTagView {
+                let tags = viewModel.infoProvider.message.tagUIModels()
+                tagView.setUp(tags: tags)
+                return
+            }
+            guard let rowView = row as? ExpandedHeaderRowView else { return }
+            rowView.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+            rowView.contentStackView.arrangedSubviews.forEach { content in
+                if let label = content as? UILabel {
+                    label.font = .adjustedFont(forTextStyle: .footnote)
+                } else if let stack = content as? UIStackView {
+                    stack.arrangedSubviews.forEach { view in
+                        guard let control = view as? TextControl else { return }
+                        control.label.font = .adjustedFont(forTextStyle: .footnote)
+                    }
+                } else if let button = view as? UIButton {
+                    button.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
+                }
+            }
+        }
+    }
+
     private func setUpViewModelObservation() {
         viewModel.reloadView = { [weak self] in
             self?.setUpView()
@@ -109,7 +134,7 @@ class ExpandedHeaderViewController: UIViewController {
             customView.contentStackView.setCustomSpacing(18, after: rowView)
         }
 
-        let tags = viewModel.infoProvider.message.tagUIModels
+        let tags = viewModel.infoProvider.message.tagUIModels()
         tags.isEmpty ? (): presentTags()
 
         if let fullDate = viewModel.infoProvider.date {
@@ -150,7 +175,7 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentTags() {
-        let tags = viewModel.infoProvider.message.tagUIModels
+        let tags = viewModel.infoProvider.message.tagUIModels()
         guard !tags.isEmpty else { return }
         let tagViews = ExpandedHeaderTagView(frame: .zero)
         tagViews.setUp(tags: tags)
@@ -194,6 +219,10 @@ class ExpandedHeaderViewController: UIViewController {
             return stack
         }.forEach {
             row.contentStackView.addArrangedSubview($0)
+        }
+        if row.contentStackView.arrangedSubviews.count == 1 {
+            let padding = UIView(frame: .zero)
+            row.contentStackView.addArrangedSubview(padding)
         }
         customView.contentStackView.addArrangedSubview(row)
         return row
@@ -286,11 +315,7 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentHideDetailButton() {
-        let button = UIButton()
-        button.titleLabel?.set(text: nil, preferredFont: .footnote)
-        button.setTitle(LocalString._hide_details, for: .normal)
-        button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        let button = customView.hideDetailButton
         let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
         let padding = UIView(frame: .zero)
         stack.addArrangedSubview(padding)

@@ -297,6 +297,11 @@ class SingleMessageContentViewController: UIViewController {
                              name: UIApplication.willEnterForegroundNotification,
                              object: nil)
         }
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @objc
@@ -395,6 +400,16 @@ class SingleMessageContentViewController: UIViewController {
         if shouldReloadWhenAppIsActive {
             viewModel.downloadDetails()
             shouldReloadWhenAppIsActive = false
+        }
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        customView.preferredContentSizeChanged()
+        if let expandedVC = headerViewController as? ExpandedHeaderViewController {
+            expandedVC.preferredContentSizeChanged()
+        } else if let nonExpandedVC = headerViewController as? NonExpandedHeaderViewController {
+            nonExpandedVC.preferredContentSizeChanged()
         }
     }
 }

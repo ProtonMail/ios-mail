@@ -27,17 +27,14 @@ final class TagCollectionCell: UICollectionViewCell {
         super.awakeFromNib()
         backgroundColor = .clear
         tagView.roundCorner(9)
-
-        titleLabel.set(text: nil,
-                       preferredFont: .caption1,
-                       weight: .semibold,
-                       textColor: ColorProvider.TextInverted)
     }
 
     func setup(backgroundColor: UIColor, title: String, titleColor: UIColor) {
         tagView.backgroundColor = backgroundColor
-        titleLabel.text = title
-        titleLabel.textColor = titleColor
+        titleLabel.set(text: title,
+                       preferredFont: .caption1,
+                       weight: .semibold,
+                       textColor: titleColor)
         titleLabel.sizeToFit()
     }
 }

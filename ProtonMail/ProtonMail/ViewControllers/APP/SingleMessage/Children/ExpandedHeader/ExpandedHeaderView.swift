@@ -27,6 +27,7 @@ class ExpandedHeaderView: HeaderView {
 
     let contentStackView = UIStackView.stackView(axis: .vertical, distribution: .fill, alignment: .fill)
     let senderEmailControl = TextControl()
+    let hideDetailButton = SubviewsFactory.hideDetailButton
 
     init() {
         super.init(frame: .zero)
@@ -52,6 +53,13 @@ class ExpandedHeaderView: HeaderView {
         setUpFirstLineLayout()
         setUpSenderMailLineLayout()
         setUpContentStackViewLayout()
+    }
+
+    func preferredContentSizeChanged() {
+        senderLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        hideDetailButton.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
+        [initialsLabel, timeLabel, senderEmailControl.label]
+            .forEach { $0.font = .adjustedFont(forTextStyle: .footnote) }
     }
 
     required init?(coder: NSCoder) {

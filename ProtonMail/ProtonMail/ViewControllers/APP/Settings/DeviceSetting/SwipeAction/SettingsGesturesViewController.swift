@@ -73,6 +73,11 @@ class SettingsGesturesViewController: ProtonMailViewController {
 
         let backItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backItem
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -113,6 +118,11 @@ class SettingsGesturesViewController: ProtonMailViewController {
     @objc
     private func dismissView() {
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        topInfoTitle.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
     }
 }
 

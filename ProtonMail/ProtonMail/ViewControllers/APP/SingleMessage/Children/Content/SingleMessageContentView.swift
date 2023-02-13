@@ -66,6 +66,12 @@ class SingleMessageContentView: UIView {
         ].activate()
     }
 
+    func preferredContentSizeChanged() {
+        footerButtons.replyButton.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+        footerButtons.replyAllButton.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+        footerButtons.forwardButton.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+    }
+
     required init?(coder: NSCoder) {
         nil
     }

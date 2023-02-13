@@ -44,6 +44,11 @@ final class BannerWithButton: BaseBannerView {
         setUpLayout()
     }
 
+    func refreshFontSize() {
+        contentTextView.font = .adjustedFont(forTextStyle: .footnote)
+        button.titleLabel?.font = .adjustedFont(forTextStyle: .footnote, weight: .semibold)
+    }
+
     private func addSubviews() {
         row = UIStackView(arrangedSubviews: [iconView, contentTextView, button])
         row.alignment = .center
