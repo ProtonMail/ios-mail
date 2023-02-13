@@ -31,6 +31,7 @@ class SettingsDeviceCoordinator {
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
+        case LocalizationPreview = "languageDebug"
     }
 
     private let usersManager: UsersManager
@@ -73,6 +74,8 @@ class SettingsDeviceCoordinator {
             openGesture()
         case .darkMode:
             openDarkMode()
+        case .LocalizationPreview:
+            openLocalizationPreview()
         }
     }
 
@@ -125,6 +128,12 @@ class SettingsDeviceCoordinator {
         let viewModel = DarkModeSettingViewModel(darkModeCache: userCachedStatus)
         let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func openLocalizationPreview() {
+        let viewModel = LocalizationPreviewVM()
+        let languageVC = LocalizationPreviewTableViewController(viewModel: viewModel)
+        navigationController?.show(languageVC, sender: nil)
     }
 
     func openToolbarCustomizationView() {

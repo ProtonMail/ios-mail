@@ -38,6 +38,7 @@ final class MessageInfoProviderTest: XCTestCase {
 
         Environment.locale = { .enUS }
         Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        Environment.locale = { .enUS }
 
         let systemUpTime = SystemUpTimeMock(
             localServerTime: TimeInterval(1635745851),
