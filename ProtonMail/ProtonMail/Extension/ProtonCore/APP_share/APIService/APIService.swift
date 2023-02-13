@@ -26,17 +26,28 @@ import TrustKit
 import ProtonCore_Authentication
 import ProtonCore_Challenge
 import ProtonCore_Log
+import ProtonCore_Keymaker
+import ProtonCore_Networking
 import ProtonCore_Services
 
 extension PMAPIService {
 
-    static var authDelegateForUnauthorized = AuthHelper()
+    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService()
 
     static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
-        let unauthorized = PMAPIService.createAPIServiceWithoutSession(
-            doh: DoHMail.default, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-        )
+
+        let unauthorized: PMAPIService
+        if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
+            unauthorized = PMAPIService.createAPIService(
+                doh: DoHMail.default, sessionUID: initialSessionUID,
+                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            )
+        } else {
+            unauthorized = PMAPIService.createAPIServiceWithoutSession(
+                doh: DoHMail.default, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            )
+        }
         #if !APP_EXTENSION
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             unauthorized.serviceDelegate = delegate
@@ -44,10 +55,7 @@ extension PMAPIService {
         unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
         unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
-        // TODO: consult with Mail devs if this makes sense outside of `#if !APP_EXTENSION`
-        unauthorized.authDelegate = authDelegateForUnauthorized
-        // no need to handle the results in any special way, just logging for debugging purpose is enough
-        unauthorized.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
+        unauthorized.authDelegate = authManagerForUnauthorizedAPIService.authDelegateForUnauthorized
         return unauthorized
     }()
 
@@ -74,5 +82,51 @@ extension PMAPIService {
         let delegate = UIApplication.shared.delegate as? AppDelegate
         TrustKitWrapper.start(delegate: delegate)
         #endif
+    }
+}
+
+final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
+
+    private let key = "Unauthenticated_session"
+
+    let initialSessionUID: String?
+
+    let authDelegateForUnauthorized: AuthHelper
+
+    init() {
+
+        defer {
+            let dispatchQueue = DispatchQueue(label: "me.proton.mail.queue.unauth-session-auth-helper-delegate")
+            authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
+        }
+
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+              let data = SharedCacheBase.getDefault()?.data(forKey: key) else {
+            self.authDelegateForUnauthorized = AuthHelper()
+            self.initialSessionUID = nil
+            return
+        }
+
+        let authlocked = Locked<[AuthCredential]>(encryptedValue: data)
+
+        guard let authCredential = try? authlocked.unlock(with: mainKey).first else {
+            SharedCacheBase.getDefault().remove(forKey: key)
+            self.authDelegateForUnauthorized = AuthHelper()
+            self.initialSessionUID = nil
+            return
+        }
+
+        self.authDelegateForUnauthorized = AuthHelper(authCredential: authCredential)
+        self.initialSessionUID = authCredential.sessionID
+    }
+
+    func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+              let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
+        SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: key)
+    }
+
+    func sessionWasInvalidated(for _: String, isAuthenticatedSession: Bool) {
+        SharedCacheBase.getDefault()?.remove(forKey: key)
     }
 }
