@@ -40,12 +40,14 @@ extension PMAPIService {
         let unauthorized: PMAPIService
         if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
             unauthorized = PMAPIService.createAPIService(
-                doh: DoHMail.default, sessionUID: initialSessionUID,
+                doh: DoHMail.default,
+                sessionUID: initialSessionUID,
                 challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
         } else {
             unauthorized = PMAPIService.createAPIServiceWithoutSession(
-                doh: DoHMail.default, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                doh: DoHMail.default,
+                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
         }
         #if !APP_EXTENSION
