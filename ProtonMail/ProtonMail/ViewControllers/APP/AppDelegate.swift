@@ -139,6 +139,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+        sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
 
 #if DEBUG
         if !ProcessInfo.isRunningUnitTests {

@@ -78,6 +78,7 @@ class UserManager: Service {
             self.deactivatePayments()
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
+            self.encryptedSearchCache.logout(of: userID)
             #endif
             for p in promises {
                 wait = wait.then({ (_) -> Promise<Void> in
@@ -281,6 +282,10 @@ class UserManager: Service {
                                      let link = DeepLink("toBugPop", sender: nil)
                                      NotificationCenter.default.post(name: .switchView, object: link)
                                  })
+
+    private var encryptedSearchCache: EncryptedSearchUserCache {
+        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
+    }
     #endif
 
     var hasTelemetryEnabled: Bool {
