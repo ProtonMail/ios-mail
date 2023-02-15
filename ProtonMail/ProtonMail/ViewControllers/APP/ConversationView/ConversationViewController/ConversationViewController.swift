@@ -47,6 +47,10 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
 
+    // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
+    // this is to avoid making the view unusable
+    private var conversationIsReadyToBeDisplayedTimer: Timer?
+
     init(coordinator: ConversationCoordinatorProtocol,
          viewModel: ConversationViewModel,
          applicationStateProvider: ApplicationStateProvider = UIApplication.shared) {
@@ -95,6 +99,8 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         setUpToolBarIfNeeded()
 
         registerNotification()
+
+        hideConversationUntilItIsReady()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -111,15 +117,16 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard !customView.tableView.visibleCells.isEmpty,
-              !viewModel.isExpandedAtLaunch else { return }
+        guard !viewModel.messagesDataSource.isEmpty else { return }
 
-        if viewModel.firstExpandedMessageIndex != nil {
-            viewModel.setCellIsExpandedAtLaunch()
-        } else if let targetID = self.viewModel.targetID {
+        if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
         showToolbarCustomizeSpotlightIfNeeded()
+
+        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+            self?.displayConversation()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -169,6 +176,8 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         // this method sometimes appears in the stack trace for this crash
         Breadcrumbs.shared.add(message: "\(caller)", to: .conversationViewEndUpdatesCrash)
         Breadcrumbs.shared.add(message: "cellTapped(messageId: \(messageId)", to: .conversationViewEndUpdatesCrash)
+
+        viewModel.cellTapped()
 
         guard let index = self.viewModel.messagesDataSource
                 .firstIndex(where: { $0.message?.messageID == messageId }),
@@ -256,6 +265,10 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     }
 
     private func setupViewModel() {
+        viewModel.conversationIsReadyToBeDisplayed = { [weak self] in
+             self?.displayConversation()
+        }
+
         viewModel.refreshView = { [weak self] in
             guard let self = self else { return }
             self.refreshNavigationViewIfNeeded()
@@ -329,6 +342,20 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     }
 
     required init?(coder: NSCoder) { nil }
+
+    private func hideConversationUntilItIsReady() {
+        customView.tableView.alpha = 0
+    }
+
+    private func displayConversation() {
+        conversationIsReadyToBeDisplayedTimer = nil
+
+        if Int(customView.tableView.alpha) < 1 {
+            UIView.animate(withDuration: 0.25) {
+                self.customView.tableView.alpha = 1
+            }
+        }
+    }
 }
 
 extension ConversationViewController: UIScrollViewDelegate {

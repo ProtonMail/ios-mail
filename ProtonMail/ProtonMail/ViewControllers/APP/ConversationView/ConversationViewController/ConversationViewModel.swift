@@ -27,6 +27,7 @@ class ConversationViewModel {
     var leaveFocusedMode: (() -> Void)?
     var dismissDeletedMessageActionSheet: ((MessageID) -> Void)?
     var viewModeIsChanged: ((ViewMode) -> Void)?
+    var conversationIsReadyToBeDisplayed: (() -> Void)?
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
@@ -62,16 +63,20 @@ class ConversationViewModel {
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    var shouldIgnoreUpdateOnce = false
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
-    private(set) var isExpandedAtLaunch = false
 
     /// Focused mode means that the messages above the first expanded one are hidden from view.
-    private(set) var focusedMode = true
+    private(set) var focusedMode = true {
+        didSet {
+            if oldValue && !focusedMode {
+                leaveFocusedMode?()
+            }
+        }
+    }
 
     var firstExpandedMessageIndex: Int? {
         messagesDataSource.firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false })
@@ -166,11 +171,7 @@ class ConversationViewModel {
     }
 
     func scrollViewDidScroll() {
-        if focusedMode {
-            focusedMode = false
-
-            leaveFocusedMode?()
-        }
+        focusedMode = false
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
@@ -226,10 +227,6 @@ class ConversationViewModel {
     func stopObserveConversationAndMessages() {
         conversationUpdateProvider.stopObserve()
         conversationMessagesProvider.stopObserve()
-    }
-
-    func setCellIsExpandedAtLaunch() {
-        self.isExpandedAtLaunch = true
     }
 
     func messageType(with message: MessageEntity) -> ConversationViewItemType {
@@ -359,8 +356,13 @@ class ConversationViewModel {
     }
 
     func messageCellVisibility(at index: Int) -> CellVisibility {
-        guard focusedMode, let firstExpandedMessageIndex = firstExpandedMessageIndex else {
+        guard focusedMode else {
             return .full
+        }
+
+        // if we're in focused mode, but no message is expanded, it means that messages are still loading
+        guard let firstExpandedMessageIndex = firstExpandedMessageIndex else {
+            return .hidden
         }
 
         if index > firstExpandedMessageIndex {
@@ -387,6 +389,10 @@ class ConversationViewModel {
                 return .hidden
             }
         }
+    }
+
+    func cellTapped() {
+        focusedMode = false
     }
 
     /// Add trashed hint banner if the messages contain trashed message
@@ -546,14 +552,14 @@ extension ConversationViewModel {
 
             observeNewMessages()
 
-            if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
+            if recordNumOfMessages == messagesDataSource.count {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
                     self.conversationViewController?.attemptAutoScroll(to: path, position: .top)
-                    setCellIsExpandedAtLaunch()
                 }
+
+                self.conversationIsReadyToBeDisplayed?()
             }
-            shouldIgnoreUpdateOnce = false
 
             refreshView?()
         case let .insert(row):
