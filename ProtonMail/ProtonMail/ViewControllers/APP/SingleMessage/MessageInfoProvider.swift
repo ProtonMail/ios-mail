@@ -356,9 +356,9 @@ final class MessageInfoProvider {
             }
             let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
             if keywords.contains(where: { bodyParts?.originalBody.preg_match($0) ?? false }) {
-                return true
-            } else {
                 return false
+            } else {
+                return true
             }
         } else {
             return false
