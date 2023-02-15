@@ -170,7 +170,13 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func updatingUnread(message: MessageEntity) throws -> MessageEntity {
-        if let labelID = message.firstValidFolder(), message.unRead {
+        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
+
+        guard message.unRead else {
+            return message
+        }
+
+        if let labelID = message.firstValidFolder() {
             _ = dependencies.messageDataAction.mark(
                 messageObjectIDs: [message.objectID.rawValue],
                 labelID: labelID,
@@ -178,9 +184,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             )
         }
 
-        if message.unRead {
-            dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
-        }
+        dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
 
         var result: Result<MessageEntity, Error>!
 
@@ -201,8 +205,6 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 result = .failure(error)
             }
         }
-
-        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
 
         return try result.get()
     }

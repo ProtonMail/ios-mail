@@ -87,10 +87,10 @@ class ConversationMessageView: BaseMessageView {
         ].activate()
 
         [
-            container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 4),
+            container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 4).setPriority(as: .defaultHigh),
             container.leadingAnchor.constraint(equalTo: cellControl.leadingAnchor, constant: 8),
             container.trailingAnchor.constraint(equalTo: cellControl.trailingAnchor, constant: -8),
-            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -4).setPriority(as: .defaultHigh)
+            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -4)
         ].activate()
 
         [
