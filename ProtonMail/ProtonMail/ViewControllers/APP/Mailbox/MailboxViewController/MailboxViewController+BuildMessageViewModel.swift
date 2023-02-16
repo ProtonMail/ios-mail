@@ -32,9 +32,11 @@ extension MailboxViewController {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID.rawValue)
         let contactGroups = viewModel.contactGroups()
-        let senderName = message.getSenderName(replacingEmailsMap: replacingEmailsMap, groupContacts: contactGroups)
-        let initial = message.getInitial(senderName: senderName)
-        let sender = message.getSender(senderName: senderName)
+        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+            for: message,
+            basedOn: replacingEmailsMap,
+            groupContacts: contactGroups
+        )
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 
         let style: NewMailboxMessageViewStyle = message.contains(location: .scheduled) ? .scheduled : .normal
@@ -42,9 +44,9 @@ extension MailboxViewController {
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
             style: listEditing ? .selection(isSelected: isSelected) : style,
-            initial: initial,
+            initial: senderRowComponents.initials(),
             isRead: !message.unRead,
-            sender: sender,
+            sender: senderRowComponents,
             time: isSending ? LocalString._mailbox_draft_is_sending : date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReply: message.isReplied,
@@ -72,8 +74,10 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID.rawValue)
-        let sender = conversation.getJoinedSendersName(replacingEmailsMap)
-        let initial = conversation.initial(replacingEmailsMap)
+        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+            for: conversation,
+            basedOn: replacingEmailsMap
+        )
         let messageCount = conversation.messageCount
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
         let isHavingScheduled = conversation.contains(of: Message.Location.scheduled)
@@ -82,9 +86,9 @@ extension MailboxViewController {
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
             style: listEditing ? .selection(isSelected: isSelected) : .normal,
-            initial: initial,
+            initial: senderRowComponents.initials(),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
-            sender: sender,
+            sender: senderRowComponents,
             time: date(of: conversation, labelId: labelId, weekStart: weekStart),
             isForwarded: false,
             isReply: false,

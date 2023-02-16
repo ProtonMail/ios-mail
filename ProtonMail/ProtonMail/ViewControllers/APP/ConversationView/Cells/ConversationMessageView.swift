@@ -20,7 +20,6 @@ class ConversationMessageView: BaseMessageView {
     let initialsView = UIView()
     let scheduledIcon = SubviewsFactory.scheduledIconImageView
 
-    let senderLabel = UILabel()
 
     let sentImageView = SubviewsFactory.sentImageView
     let originImageView = SubviewsFactory.originImageView
@@ -50,7 +49,7 @@ class ConversationMessageView: BaseMessageView {
         contentStackView.addArrangedSubview(replyImageView)
         contentStackView.addArrangedSubview(replyAllImageView)
         contentStackView.addArrangedSubview(forwardImageView)
-        contentStackView.addArrangedSubview(StackViewContainer(view: senderLabel, bottom: -3))
+        contentStackView.addArrangedSubview(sendersStackView)
         contentStackView.addArrangedSubview(expirationView)
         contentStackView.addArrangedSubview(tagsView)
         contentStackView.addArrangedSubview(spacer)
@@ -133,7 +132,6 @@ class ConversationMessageView: BaseMessageView {
         ].activate()
 
         timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        senderLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         [
             originImageView.widthAnchor.constraint(equalToConstant: 16),

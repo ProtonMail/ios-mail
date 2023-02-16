@@ -303,7 +303,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         }
     }
 
-    func update(senderContact: ContactVO?) {
+    func providerHasChanged() {
         DispatchQueue.main.async {
             self.nonExpandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
             self.expandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)

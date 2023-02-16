@@ -22,7 +22,7 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 
 protocol MessageInfoProviderDelegate: AnyObject {
-    func update(senderContact: ContactVO?)
+    func providerHasChanged()
     func hideDecryptionErrorBanner()
     func showDecryptionErrorBanner()
     func updateBannerStatus()
@@ -174,9 +174,9 @@ final class MessageInfoProvider {
         return contactName
     }()
 
-    private(set) var checkedSenderContact: ContactVO? {
+    private(set) var checkedSenderContact: CheckedSenderContact? {
         didSet {
-            delegate?.update(senderContact: checkedSenderContact)
+            delegate?.providerHasChanged()
         }
     }
 

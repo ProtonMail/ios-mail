@@ -31,12 +31,13 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     private let MIN_ICON_BUTTON_SIZE: CGFloat = 24
 
     // MARK: Customize variable
-
-    private var leftItem: PMActionSheetPlainItem?
-    private var rightItem: PMActionSheetPlainItem?
-    private var title: String?
-    private var subtitle: String?
-    private var showDragBar: Bool?
+    private let leftItem: PMActionSheetPlainItem?
+    private let rightItem: PMActionSheetPlainItem?
+    private let leftTitleViews: [UIView]
+    private let rightTitleViews: [UIView]
+    private let title: String?
+    private let subtitle: String?
+    private let showDragBar: Bool?
 
     private var titleLabel: UILabel?
     private var subTitleLabel: UILabel?
@@ -48,17 +49,26 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     ///   - subtitle: Subtitle of action sheet
     ///   - leftItem: Left item of header view, if `title` set, `icon` will be ignored
     ///   - rightItem: Right item of header view, if `title` set, `icon` will be ignored
-    public convenience init(title: String, subtitle: String?,
-                            leftItem: PMActionSheetPlainItem?,
-                            rightItem: PMActionSheetPlainItem?,
-                            hasSeparator: Bool = false,
-                            showDragBar: Bool = true) {
-        self.init(frame: .zero)
-        self.leftItem = leftItem
-        self.rightItem = rightItem
+    public init(
+        title: String,
+        subtitle: String?,
+        leftItem: PMActionSheetPlainItem?,
+        rightItem: PMActionSheetPlainItem?,
+        leftTitleViews: [UIView] = [],
+        rightTitleViews: [UIView] = [],
+        hasSeparator: Bool = false,
+        showDragBar: Bool = true
+    ) {
         self.title = title
         self.subtitle = subtitle
+        self.leftItem = leftItem
+        self.rightItem = rightItem
+        self.leftTitleViews = leftTitleViews
+        self.rightTitleViews = rightTitleViews
         self.showDragBar = showDragBar
+
+        super.init(frame: .zero)
+
         self.setup(hasSeparator: hasSeparator)
         NotificationCenter.default
             .addObserver(self,
@@ -67,14 +77,8 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
                          object: nil)
     }
 
-    override private init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setup()
-    }
-
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setup()
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -114,7 +118,13 @@ extension PMActionSheetHeaderView {
             let lbl = UILabel(title, font: font, textColor: color)
             lbl.sizeToFit()
             titleLabel = lbl
-            stack.addArrangedSubview(lbl)
+
+            let titleRow = UIStackView(.horizontal, alignment: .center, distribution: .equalSpacing, useAutoLayout: true)
+            titleRow.spacing = 4
+            leftTitleViews.forEach(titleRow.addArrangedSubview)
+            titleRow.addArrangedSubview(lbl)
+            rightTitleViews.forEach(titleRow.addArrangedSubview)
+            stack.addArrangedSubview(titleRow)
         }
 
         if let subtitle = self.subtitle {

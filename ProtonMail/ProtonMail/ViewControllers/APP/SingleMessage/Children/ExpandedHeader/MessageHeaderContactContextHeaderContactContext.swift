@@ -20,7 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
-struct MessageHeaderContactContext {
-    let type: MessageDetailsContactActionSheetType
-    let contact: ContactVO
+enum MessageHeaderContactContext {
+    case recipient(ContactVO)
+    case sender(Sender)
+
+    var contact: ContactVO {
+        switch self {
+        case .recipient(let contactVO):
+            return contactVO
+        case .sender(let sender):
+            return ContactVO(name: sender.name, email: sender.address)
+        }
+    }
 }
