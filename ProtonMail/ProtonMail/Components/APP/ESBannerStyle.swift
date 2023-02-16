@@ -124,21 +124,6 @@ public enum ESBannerStyle: PMBannerStyleProtocol {
 }
 
 extension ESBannerStyle {
-    // TODO: remove this after merging EncryptedSearchService
-    enum EncryptedSearchIndexState: Int {
-        case disabled = 0
-        case partial
-        case lowstorage
-        case downloading
-        case paused
-        case refresh
-        case complete
-        case undetermined
-        case background
-        case backgroundStopped
-        case metadataIndexing
-        case metadataIndexingComplete
-    }
 
 //    How to get topOffset from searchVC
 //    let topOffset: CGFloat
@@ -235,36 +220,5 @@ extension ESBannerStyle {
             tapLink()
         }
         banner.show(at: .topCustom(.init(top: topOffset, left: 0, bottom: 0, right: 0)), on: viewController)
-    }
-
-//    How to get top offset from SettingsEncryptedSearchViewController
-//    let section = viewModel.sections.count - 1
-//    let indexPath = IndexPath(row: 0, section: section)
-//    guard let cell = tableView.cellForRow(at: indexPath) else { return }
-//    let rect= tableView.convert(cell.frame, to: view)
-//    let offset = rect.origin.y + rect.size.height + 20
-    static func showDownloadWillStopDescBanner(
-        on viewController: UIViewController,
-        topOffset: CGFloat
-    ) {
-        let imageView = UIImageView(image: IconProvider.exclamationCircle)
-        // It uses dark mode color in light mode
-        imageView.tintColor = ColorProvider.White
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        let banner = PMBanner(
-            message: L11n.EncryptedSearch.download_will_stop_desc,
-            style: ESBannerStyle.esBlack,
-            icon: nil,
-            dismissDuration: .infinity
-        )
-        banner.isUserInteractionEnabled = false
-        banner.show(at: .topCustom(.init(top: topOffset, left: 0, bottom: 0, right: 0)), on: viewController)
-        banner.addSubview(imageView)
-        [
-            imageView.widthAnchor.constraint(equalToConstant: 20),
-            imageView.heightAnchor.constraint(equalToConstant: 20),
-            imageView.leadingAnchor.constraint(equalTo: banner.leadingAnchor, constant: 18),
-            imageView.centerYAnchor.constraint(equalTo: banner.centerYAnchor)
-        ].activate()
     }
 }

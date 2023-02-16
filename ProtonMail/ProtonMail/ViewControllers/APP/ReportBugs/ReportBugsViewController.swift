@@ -66,15 +66,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
                                           style: UIBarButtonItem.Style.plain,
                                           target: self,
                                           action: #selector(ReportBugsViewController.sendAction(_:)))
-        let sendButtonAttributes = FontManager.HeadlineSmall
-        self.sendButton.setTitleTextAttributes(
-            sendButtonAttributes.foregroundColor(ColorProvider.InteractionNormDisabled),
-            for: .disabled
-        )
-        self.sendButton.setTitleTextAttributes(
-            sendButtonAttributes.foregroundColor(ColorProvider.InteractionNorm),
-            for: .normal
-        )
+        setUpSendButtonAttribute()
         self.navigationItem.rightBarButtonItem = sendButton
 
         if cachedBugReport.cachedBug.isEmpty {
@@ -88,6 +80,23 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         setupMenuButton()
         setupTextView()
         setupLayout()
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+    }
+
+    func setUpSendButtonAttribute() {
+        let sendButtonAttributes = FontManager.HeadlineSmall
+        self.sendButton.setTitleTextAttributes(
+            sendButtonAttributes.foregroundColor(ColorProvider.InteractionNormDisabled),
+            for: .disabled
+        )
+        self.sendButton.setTitleTextAttributes(
+            sendButtonAttributes.foregroundColor(ColorProvider.InteractionNorm),
+            for: .normal
+        )
     }
 
     func setupTextView() {
@@ -180,6 +189,12 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
 
     fileprivate func updateSendButtonForText(_ text: String?) {
         sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == LocalString._bug_description)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        textView.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        setUpSendButtonAttribute()
     }
 
     // MARK: Actions

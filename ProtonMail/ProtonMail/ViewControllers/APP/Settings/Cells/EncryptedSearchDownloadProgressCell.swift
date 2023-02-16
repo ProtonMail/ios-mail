@@ -105,7 +105,7 @@ final class EncryptedSearchDownloadProgressCell: UITableViewCell {
         }
     }
 
-    /// Call this fucntion after configuring the `downloading` state to update the progress
+    /// Call this function after configuring the `downloading` state to update the progress
     func updateDownloadingProgress(progress: DownloadingProgress) {
         downloadProgress.set(aboveText: progress.messagesDownloaded)
         downloadProgress.set(belowText: progress.timeRemaining)

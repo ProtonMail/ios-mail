@@ -63,7 +63,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
-                                    goToDraft: { _ in },
+                                    goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
 
@@ -102,7 +102,6 @@ class ConversationViewModelTests: XCTestCase {
 
     func testAreAllMessagesInThreadInTheTrash_whenAllAreInTrash_ReturnsTrue() {
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .trash)),
             .message(viewModel: makeFakeViewModel(location: .trash))
         ]
@@ -111,7 +110,6 @@ class ConversationViewModelTests: XCTestCase {
 
     func testAreAllMessagesInThreadInTheTrash_whenNotAllAreInTrash_ReturnsFalse() {
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .trash)),
             .message(viewModel: makeFakeViewModel(location: .inbox))
         ]
@@ -125,7 +123,6 @@ class ConversationViewModelTests: XCTestCase {
 
     func testAreAllMessagesInThreadInSpam_whenAllAreInSpam_ReturnsTrue() {
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam)),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
@@ -134,7 +131,6 @@ class ConversationViewModelTests: XCTestCase {
 
     func testAreAllMessagesInThreadInSpam_whenNotAllAreInSpam_ReturnsFalse() {
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam)),
             .message(viewModel: makeFakeViewModel(location: .inbox))
         ]
@@ -171,7 +167,6 @@ class ConversationViewModelTests: XCTestCase {
     func testToolbarActionTypes_allMessagesAreTrash_typesContainsDelete() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .trash))
         ]
 
@@ -186,7 +181,6 @@ class ConversationViewModelTests: XCTestCase {
     func testToolbarActionTypes_allMessagesAreSpam_typesContainsDelete() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
 
@@ -294,7 +288,6 @@ class ConversationViewModelTests: XCTestCase {
     func testHandleActionSheetAction_starAction_completionNotCalled() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
         let e = expectation(description: "Closure should be called")
@@ -312,7 +305,6 @@ class ConversationViewModelTests: XCTestCase {
     func testHandleActionSheetAction_unStarAction_completionNotCalled() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
         let e = expectation(description: "Closure should be called")
@@ -330,7 +322,6 @@ class ConversationViewModelTests: XCTestCase {
     func testHandleActionSheetAction_viewInLightModeAction_completionNotCalled() throws {
         makeSUT(labelID: Message.Location.inbox.labelID)
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
 
@@ -371,7 +362,6 @@ class ConversationViewModelTests: XCTestCase {
     func testHandleActionSheetAction_viewInDarkModeAction_completionNotCalled() throws {
         makeSUT(labelID: Message.Location.inbox.labelID)
         sut.messagesDataSource = [
-            .header(subject: "whatever"),
             .message(viewModel: makeFakeViewModel(location: .spam))
         ]
         let e = expectation(description: "Closure should be called")
@@ -427,6 +417,102 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
     }
 
+    func testFocusedMode_lastNonExpandedMessage_isPartiallyVisibile() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+
+        sut.headerSectionDataSource = [
+            .trashedHint
+        ]
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: false)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false)),
+            .message(viewModel: makeFakeViewModel(isExpanded: true))
+        ]
+
+        XCTAssertEqual(sut.headerCellVisibility(at: 0), .hidden)
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 2), .partial)
+        XCTAssertEqual(sut.messageCellVisibility(at: 3), .full)
+    }
+
+    func testFocusedMode_skipsOverTrashedMessagesAndHint() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+
+        sut.headerSectionDataSource = [
+            .trashedHint
+        ]
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .inbox)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .inbox)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: true, location: .inbox))
+        ]
+
+        XCTAssertEqual(sut.headerCellVisibility(at: 0), .hidden)
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .partial)
+        XCTAssertEqual(sut.messageCellVisibility(at: 2), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 3), .full)
+    }
+
+    func testFocusedMode_ifAllPreviousMessagesAreTrashed_partiallyShowsTrashedHint() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+
+        sut.headerSectionDataSource = [
+            .trashedHint
+        ]
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: true, location: .inbox))
+        ]
+
+        XCTAssertEqual(sut.headerCellVisibility(at: 0), .partial)
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 2), .full)
+    }
+
+    func testFocusedMode_ifTheLastMessageIsTrashed_partiallyShowsTrashedHint() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+
+        sut.headerSectionDataSource = [
+            .trashedHint
+        ]
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .inbox)),
+            .message(viewModel: makeFakeViewModel(isExpanded: true, location: .trash))
+        ]
+
+        XCTAssertEqual(sut.headerCellVisibility(at: 0), .partial)
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .full)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .hidden)
+    }
+
+    func testFocusedMode_handlesExpandedMessageInTheMiddle() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: false)),
+            .message(viewModel: makeFakeViewModel(isExpanded: true)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false))
+        ]
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .partial)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .full)
+        XCTAssertEqual(sut.messageCellVisibility(at: 2), .full)
+    }
+
     private func makeConversationWithUnread(of labelID: LabelID, unreadCount: Int) -> Conversation {
         let fakeConversation = Conversation(context: contextProviderMock.mainContext)
         let fakeContextLabel = ContextLabel(context: contextProviderMock.mainContext)
@@ -461,7 +547,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
-                                    goToDraft: { _ in },
+                                    goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
 
@@ -484,7 +570,7 @@ class ConversationViewModelTests: XCTestCase {
             replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
-            goToDraft: { _ in })
+            goToDraft: { _, _ in })
         if isExpanded {
             viewModel.toggleState()
         }

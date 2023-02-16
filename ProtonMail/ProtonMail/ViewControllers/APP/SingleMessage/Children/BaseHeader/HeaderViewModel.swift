@@ -24,6 +24,16 @@ class HeaderViewModel {
         didSet { reloadView?() }
     }
 
+    var isOfficialBadgeHidden: Bool {
+        do {
+            let sender = try infoProvider.message.parseSender()
+            return !sender.isFromProton
+        } catch {
+            assertionFailure("\(error)")
+            return true
+        }
+    }
+
     init(infoProvider: MessageInfoProvider) {
         self.infoProvider = infoProvider
     }

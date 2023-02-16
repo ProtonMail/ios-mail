@@ -1,6 +1,15 @@
 /* Email verification view title */
 "Account verification" = "Verifikacija računa";
 
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Bloker oglasa (NetShield)";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Omogući alternativno usmjeravanje";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Smetnje s antivirusom";
+
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple nas je obavijestio da ne mogu obraditi kupnju.";
 
@@ -17,6 +26,9 @@
  * Login 2FA */
 "Authenticate" = "Autenticiraj";
 
+/* top left back button */
+"Back" = "Natrag";
+
 /* Cancel button */
 "Cancel" = "Poništi";
 
@@ -26,6 +38,18 @@
 /* Dialog action button title for organization user first login */
 "Change password" = "Promjena lozinke";
 
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Provjerite Proton Status za uvid u status našeg sustava.";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Zatvori";
+
+/* sent baner title */
+"Code sent to %@" = "Kôd je poslan na %@";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Dovršite postavljanje";
+
 /* Signup summary title */
 "Congratulations" = "Čestitamo!";
 
@@ -34,6 +58,12 @@
 
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Kontaktirajte support@protonvpn.com da biste dovršili kupovinu.";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktirajte nas izravno putem obrasca za podršku, e-poštom (support@protonmail.zendesk.com) ili na Twitteru.";
+
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Umjesto toga stvorite sigurnu Proton Mail adresu";
@@ -45,14 +75,23 @@
  * Signup */
 "Create your Proton Account" = "Stvorite svoj Proton račun";
 
+/* Signup complete progress step creation */
+"Creating your account" = "Izrada vašeg računa";
+
 /* Plan selection title */
 "Current plan" = "Trenutni plan";
 
 /* Plan details renew expired */
 "Current plan will expire on %@" = "Trenutni plan istječe dana %@";
 
+/* Plan details custom email addresses */
+"Custom email addresses" = "Prilagođene adrese e-pošte";
+
 /* Customer support button */
 "Customer support" = "Korisnička podrška";
+
+/* *  Account Deletion */
+"Delete account" = "Ukloni račun";
 
 /* Did not receive code button */
 "Did not receive a code?" = "Niste primili kôd?";
@@ -60,8 +99,20 @@
 /* Not receive code button */
 "Did not receive the code?" = "Niste primili kȏd?";
 
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Onemogućite sve proxye ili vatrozide ili se obratite mrežnom administratoru.";
+
+/* Cancellation for the credits applied popup */
+"Dismiss" = "Odbaci";
+
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Želite li aktivirati kupnju za %@ adresa?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domena";
+
+/* network troubleshot view title */
+"email" = "e-pošta";
 
 /* Email field title
    Email label
@@ -72,17 +123,23 @@
 /* Email address already used error */
 "Email address already used." = "Adresa e-pošte je već u upotrebi.";
 
-/* Username field title */
-"Email or username" = "Adresa e-pošte ili korisničko ime";
-
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
 "Enter the 6-digit code." = "Unesite 6-znamenkasti kôd.";
 
+/* Verification */
+"Enter the verification code that was sent to %@" = "Unesite potvrdni kôd koji je poslan na %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Unesite potvrdni kȏd koji je poslan na %@. Ako ne pronađete e-poštu u pristigloj pošti, provjerite svoju mapu neželjene pošte.";
+
 /* *
  *  Payments */
 "Error occured" = "Došlo je do pogreške";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Nije moguće dohvatiti popis dostupnih proizvoda iz App Storea.";
 
 /* Forgot password button title
    Forgot password help button */
@@ -97,6 +154,9 @@
 /* Verification button */
 "Get verification code" = "Nabavi kôd za provjeru";
 
+/* network troubleshot cell title */
+"Government block" = "Državna cenzura";
+
 /* Help button */
 "Help" = "Pomoć";
 
@@ -105,6 +165,22 @@
 
 /* Plan details highest speed message */
 "Highest speed" = "Najviša brzina";
+
+/* Login help screen title */
+"How can we help?" = "Kako vam možemo pomoći?";
+
+/* *
+ *  Human verification */
+"Human Verification" = "Ljudska provjera";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Ako imate poteškoća s otvaranjem računa, zatražite pozivnicu i odgovorit ćemo vam u roku jednog radnog dana.";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Nevažeća hashirana lozinka";
@@ -120,9 +196,6 @@
    learn more button */
 "Learn more" = "Saznajte više";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "E-pošta + VPN paket za obitelji i male tvrtke";
-
 /* Mailbox password field title */
 "Mailbox password" = "Lozinka sandučića e-pošte";
 
@@ -135,8 +208,32 @@
 /* Help button */
 "Need help?" = "Trebate pomoć?";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ od %@";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Ugrađeni bloker oglasa (NetShield)";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Nabavite %@";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Secure Core poslužitelji";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Stroga politika ne spremanja zapisa";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor preko VPN-a";
+
 /* Next button */
 "Next" = "Sljedeće";
+
+/* network troubleshot cell title */
+"No internet connection" = "Nema internetske veze";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Ne, za drugi Proton Mail račun";
@@ -145,12 +242,17 @@
    OK button */
 "OK" = "U redu";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Jedan račun za sve Proton usluge.";
 
 /* Password field title */
 "Password" = "Lozinka";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Lozinka mora sadržavati najmanje %@ znakova.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Lozinka mora sadržavati najmanje 8 znakova";
 
 /* (No Comment) */
 "payment failed" = "neuspješno plaćanje";
@@ -170,8 +272,29 @@
 /* Error message */
 "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Prijavite se na Proton Mail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti aktivaciju plana usluga.";
 
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Provjerite da li vaša internetska veza radi.";
+
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Otključajte aplikaciju da biste nastavili s aktivacijom plana usluge";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Prioritetna korisnička podrška";
+
+/* Welcome screen */
+"Privacy by default" = "Privacy by default";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* network troubleshot cell title */
+"Proton is down" = "Proton je van mreže";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Proton Status";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Poteškoće s proxy/vatrozidom";
 
 /* quit button */
 "Quit" = "Zatvori";
@@ -184,6 +307,9 @@
 
 /* Remove button */
 "Remove" = "Ukloni";
+
+/* old value of remove account button in account manager */
+"Remove account" = "Ukloni račun";
 
 /* Repeat password field title */
 "Repeat password" = "Ponovite lozinku";
@@ -206,9 +332,6 @@
 /* Search country placeholder */
 "Search country" = "Traži državu";
 
-/* Select plan button */
-"Select" = "Odaberi";
-
 /* *
  *  Payments UI */
 "Select a plan" = "Odaberite plan";
@@ -229,6 +352,27 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u Beta verziji aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj Beta verziji!";
 
+/* network troubleshot cell title */
+"Still can't find a solution" = "Još uvijek ne mogu pronaći rješenje";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Podrška za streaming usluge";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Predmet...";
+
+/* Subscription title */
+"Subscription" = "Pretplata";
+
+/* network troubleshooting */
+"support form" = "obrazac za podršku";
+
+/* *  Account Manager */
+"switch to" = "prebacite se na";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Privremeno onemogućite ili uklonite svoj antivirusni program.";
+
 /* Recovery terms and conditions link
    Terms and conditions view title */
 "Terms and Conditions" = "Odredbe i uvjeti";
@@ -236,8 +380,23 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "Osnova za privatnu i sigurnu komunikaciju.";
 
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ovim će te trajno izbrisati vaš račun i sve podatke povezane s njim. Nećete moći ponovno aktivirati ovaj račun.";
+
+/* Button for the error banner shown when we suspect that the Proton servers are blocked */
+"Troubleshoot" = "Rješavanje problema";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Otklanjanje pogreške";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Pokušajte se povezati na Proton s druge mreže (ili upotrijebite %1$@ ili %2$@).";
+
 /* other method alert button */
 "Try other method" = "Pokušajte neki drugi način";
+
+/* network troubleshot view title */
+"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Dvofaktorska autentikacija";
@@ -259,8 +418,8 @@
  *  Force upgrade */
 "Update required" = "Potrebno ažuriranje";
 
-/* Upgrade plan button */
-"Upgrade" = "Nadogradnja";
+/* Plan selection title */
+"Upgrade your plan" = "Nadogradite vaš plan";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Koristi kȏd za oporavak";
@@ -299,81 +458,12 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Uspješno ste se registrirali, ali plaćanje nije obrađeno. Da biste ponovo poslali podatke o plaćanju, pritisnite Pokušaj ponovno. Naplatit će vam se samo jednom. Ako se problem nastavi, obratite se korisničkoj službi.";
 
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaša država možda blokira pristup Protonu. Pokušajte koristiti %1$@ (ili bilo koji drugi VPN) ili %2$@ za pristup Protonu.";
+
 /* Email method */
 "Your email will only be used for this one-time verification." = "Vaša adresa e-pošte koristit će se samo za ovu jednokratnu provjeru.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Vaš broj telefona koristit će se samo za ovu jednokratnu provjeru.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ of %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Access to streaming services globally";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Built-in ad-blocker (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Check your internet connection";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Connection issues";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Extend subscription";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Free VPN on a single device";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Get %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Get Proton for free";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Highest VPN speed";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "One plan for all Proton services";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plan successfully upgraded";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servers";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strict no-logs policy";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "TOR over VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Up to %@ storage";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
 

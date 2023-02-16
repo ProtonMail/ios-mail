@@ -38,7 +38,7 @@ final class BannerViewController: UIViewController {
     let isScheduleBannerOnly: Bool
     weak var delegate: BannerViewControllerDelegate?
 
-    private(set) lazy var customView = UIView()
+    private let customView = UIView()
     private(set) var containerView: UIStackView?
     private(set) var expirationBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
@@ -98,6 +98,11 @@ final class BannerViewController: UIViewController {
         delay(0.5) {
             self.view.alpha = 1
         }
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     func hideBanner(type: BannerType) {
@@ -172,8 +177,10 @@ final class BannerViewController: UIViewController {
         customView.addSubview(stackView)
 
         [
-            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0),
-            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0),
+            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0)
+                .setPriority(as: .defaultHigh),
+            stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor, constant: -4.0)
+                .setPriority(as: .defaultHigh),
             stackView.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: customView.trailingAnchor)
         ].activate()
@@ -298,6 +305,29 @@ final class BannerViewController: UIViewController {
             }
         }
         return indexToInsert
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        displayedBanners.forEach { key, view in
+            switch key {
+            case .imageProxyFailure:
+                guard let view = view.subviews.first as? BannerWithButton else { return }
+                view.refreshFontSize()
+            case .scheduledSend:
+                guard let view = view.subviews.first as? EditScheduledBanner else { return }
+                view.refreshFontSize()
+            case .spam:
+                guard let view = view.subviews.first as? SpamBannerView,
+                      let spamType = viewModel.spamType else { return }
+                spamBanner.infoTextView.attributedText = spamType.text
+                spamBanner.button.setAttributedTitle(spamType.buttonTitle, for: .normal)
+            default:
+                // .remoteContent, .embeddedContent, .expiration, .error, .unsubscribe, .autoReply, .sendReceipt, .decryptionError:
+                guard let view = view.subviews.first as? CompactBannerView else { return }
+                view.titleLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
+            }
+        }
     }
 }
 

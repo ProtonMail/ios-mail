@@ -38,18 +38,13 @@ class NonExpandedHeaderView: HeaderView {
 
     var expandView: (() -> Void)?
 
-    private let firstLineStackView = UIStackView.stackView(
-        axis: .horizontal,
-        distribution: .fill,
-        alignment: .center,
-        spacing: 5
-    )
     private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
     private let recipientStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.BackgroundNorm
+        translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         setUpLayout()
         setUpGestures()
@@ -84,13 +79,17 @@ class NonExpandedHeaderView: HeaderView {
         contentStackView.addArrangedSubview(firstLineStackView)
         contentStackView.setCustomSpacing(4, after: firstLineStackView)
 
-        firstLineStackView.addArrangedSubview(senderLabel)
-        firstLineStackView.addArrangedSubview(UIView())
-        firstLineStackView.addArrangedSubview(starImageView)
-        firstLineStackView.addArrangedSubview(trackerProtectionImageView)
-        firstLineStackView.addArrangedSubview(sentImageContainer)
-        firstLineStackView.addArrangedSubview(originImageContainer)
-        firstLineStackView.addArrangedSubview(timeLabel)
+        let firstLineViews: [UIView] = [
+            senderLabel,
+            officialBadge,
+            UIView(),
+            starImageView,
+            trackerProtectionImageView,
+            sentImageContainer,
+            originImageContainer,
+            timeLabel
+        ]
+        firstLineViews.forEach(firstLineStackView.addArrangedSubview(_:))
 
         contentStackView.addArrangedSubview(senderAddressStack)
         contentStackView.setCustomSpacing(4, after: senderAddressStack)
@@ -164,8 +163,6 @@ class NonExpandedHeaderView: HeaderView {
         [
             senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ].activate()
-        senderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        senderLabel.setContentHuggingPriority(.required, for: .vertical)
 
         timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -180,6 +177,12 @@ class NonExpandedHeaderView: HeaderView {
     @objc
     private func expandTapped() {
         expandView?()
+    }
+
+    func preferredContentSizeChanged() {
+        senderLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        [initialsLabel, senderLabel, recipientTitle, recipientLabel, senderAddressLabel.label]
+            .forEach { $0.font = .adjustedFont(forTextStyle: .footnote) }
     }
 
     required init?(coder: NSCoder) {

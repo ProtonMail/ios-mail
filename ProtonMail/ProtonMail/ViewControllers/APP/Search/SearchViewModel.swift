@@ -218,9 +218,11 @@ extension SearchViewModel: SearchVMProtocol {
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderName = message.getSenderName(replacingEmailsMap: sharedReplacingEmailsMap, groupContacts: contactGroups)
-        let initial = message.getInitial(senderName: senderName)
-        let sender = message.getSender(senderName: senderName)
+        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+            for: message,
+            basedOn: sharedReplacingEmailsMap,
+            groupContacts: contactGroups
+        )
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(of: .folder)
         let isSelected = self.selectedMessages.contains(message)
@@ -230,9 +232,9 @@ extension SearchViewModel: SearchVMProtocol {
             location: nil,
             isLabelLocation: true, // to show origin location icons
             style: isEditing ? .selection(isSelected: isSelected) : style,
-            initial: initial,
+            initial: senderRowComponents.initials(),
             isRead: !message.unRead,
-            sender: sender,
+            sender: senderRowComponents,
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReply: message.isReplied,

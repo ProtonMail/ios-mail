@@ -21,7 +21,7 @@ import UIKit
 
 // MARK: Extended variable only for host app
 extension MessageEntity {
-    var tagUIModels: [TagUIModel] {
+    func tagUIModels() -> [TagUIModel] {
         orderedLabel.map { label in
             TagUIModel(
                 title: label.name,
@@ -146,6 +146,6 @@ extension MessageEntity {
     }
 
     func createTags() -> [TagUIModel] {
-        [createTagFromExpirationDate()].compactMap { $0 } + tagUIModels
+        [createTagFromExpirationDate()].compactMap { $0 } + tagUIModels()
     }
 }

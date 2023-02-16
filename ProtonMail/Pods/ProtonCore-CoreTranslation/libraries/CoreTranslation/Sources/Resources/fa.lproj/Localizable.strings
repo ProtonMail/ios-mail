@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@&%@";
-
 /* Plan details storage */
 "%@ storage" = "%@ فضای ذخیره سازی";
 
@@ -9,6 +6,9 @@
 
 /* A generic error message when we have no better message from the backend */
 "A networking error has occured" = "خطایی در شبکه رخ داد";
+
+/* Recovery skip description */
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "یک روش بازیابی به شما کمک میکند که در صورت فراموشی رمز عبور یا عدم امکان ورود به حساب کاربری، به حساب کاربری خود دسترسی پیدا کنید.";
 
 /* Delete account success */
 "Account deleted.\nLogging out..." = "حساب کاربری حذف شد. \nدر حال خروج...";
@@ -106,6 +106,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "مستقیما از طریق فرم پشتیبانی، ایمیل (support@protonmail.zendesk.com) یا توییتر با ما تماس بگیرید.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "ایجاد یک حساب Proton با ایمیل فعلی خود";
 
@@ -176,9 +179,6 @@
 /* Email address already used error */
 "Email address already used." = "این رایانامه پیشتر استفاده شده است.";
 
-/* Username field title */
-"Email or username" = "رایانامه یا نام‌کاربری";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "از دنیای حریم خصوصی لذت ببرید.";
 
@@ -222,6 +222,9 @@
 /* Signup complete progress step address generation */
 "Generating your address" = "در حال ساخت آدرس شما";
 
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "از طریق تنظیمات وب Proton یک آدرس Proton Mail متصل به این حساب کاربری دریافت کنید.";
+
 /* alert message */
 "Get a replacement code sent to %@." = "کد جایگزین به %@ ارسال شود.";
 
@@ -256,6 +259,9 @@
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "گذرواژهٔ صندوق پستی نادرست است";
 
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "مشکل ارائه دهنده سرویس اینترنت (ISP)";
+
 /* Invalid hashed password error */
 "Invalid hashed password" = "گذرواژه هش شده نامعتبر است";
 
@@ -273,17 +279,14 @@
    learn more button */
 "Learn more" = "بیشتر بدانید";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "بسته رایانامه + وی‌پی‌ان برای خانواده‌ها و مشاغل کوچک";
+/* visit item message */
+"Learn more about human verification and why we ask for it." = "در مورد اعتبارسنجی و این که چرا ما آن را درخواست میکنیم بیشتر یاد بگیرید.";
 
 /* Mailbox password field title */
 "Mailbox password" = "گذرواژه نامه‌دان";
 
 /* Manage accounts button */
 "Manage accounts" = "مدیریت حساب‌ها";
-
-/* Plan details medium speed */
-"Medium speed" = "سرعت متوسط";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "پشتیبانی چند کاربره";
@@ -298,6 +301,63 @@
  * Networking */
 "Network connection error" = "خطا ارتباط با شبکه";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ از %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "به سرویس‌های پخش آنلاین به صورت جهانی دسترسی پیدا کنید";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "مسدودکنندهٔ آگهی تعبیه شده (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "اتصال اینترنت خود را بررسی کنید";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "مشکل در برقراری ارتباط";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "VPN رایگان در یک دستگاه";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "%@ را دریافت کنید";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "دریافت رایگان Proton";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "بالاترین سرعت VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "یک طرح سرویس برای همه سرویس‌های Proton";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "طرح سرویس با موفقیت ارتقا یافت";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "سرورهای Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "سیاست سخت‌گیرانه عدم ثبت رویدادها";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "حساب آغازین بدون هزینه طراحی شده تا به هر کسی با حریم خصوصی به‌ صورت پیش فرض قدرت بدهد.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor روی VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "پوشه‌ها، برچسب‌ها و فیلترهای نامحدود";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "فضای ذخیر سازی تا %@";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "حریم خصوصی و امنیت شما اولویت ماست.";
+
 /* Next button */
 "Next" = "بعدی";
 
@@ -311,8 +371,7 @@
    OK button */
 "OK" = "تایید";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "یک حساب برای همه سرویس های پروتون.";
 
 /* Other sign-in issues button */
@@ -320,6 +379,18 @@
 
 /* Password field title */
 "Password" = "گذرواژه";
+
+/* Password empty error */
+"Password can not be empty.\nPlease try again." = "گذرواژه نمیتواند خالی باشد. \nلطفا دوباره تلاش کنید.";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "گذرواژه باید حداقل %@ نویسه داشته باشد.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "گذرواژه باید حداقل ۸ نویسه داشته باشد";
+
+/* Password not equal error */
+"Passwords do not match.\nPlease try again." = "گذرواژه ها یکسان نیستند. \nلطفا دوباره تلاش کنید.";
 
 /* (No Comment) */
 "payment failed" = "پرداخت ناموفق بود";
@@ -352,12 +423,15 @@
 /* Plan details priority customer support */
 "Priority customer support" = "اولویت پشتیبانی مشتری";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Privacy by default";
 
 /* *
  * Login create address */
 "Proton address required" = "آدرس Proton نیاز است";
+
+/* Username field title */
+"Proton email or username" = "ایمیل Proton یا نام کاربری";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -418,9 +492,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "درحال امن کردن حساب شما";
-
-/* Select plan button */
-"Select" = "انتخاب";
 
 /* *
  *  Payments UI */
@@ -531,9 +602,6 @@
  *  Force upgrade */
 "Update required" = "بروزرسانی ضروری است";
 
-/* Upgrade plan button */
-"Upgrade" = "ارتقا";
-
 /* Plan selection title */
 "Upgrade your plan" = "طرح سرویس خود را ارتقا دهید";
 
@@ -571,6 +639,12 @@
 /* Error message */
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "ما از یک خرید App Store باخبر شده‌ایم اما نمی‌توانیم آن خرید را با یک حساب متعلق به شما تطبیق دهیم.";
 
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "اگر شما راهی برای دسترسی به حساب کاربری خود نداشتید ما دستورالعمل های بازیابی را به این ایمیل ارسال خواهیم کرد.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "اگر شما راهی برای دسترسی به حساب کاربری خود نداشتید ما دستورالعمل های بازیابی را به این ایمیل یا شماره تلفن ارسال خواهیم کرد.";
+
 /* alert message */
 "Would you like to receive a new verification code or use an alternative verification method?" = "آیا می‌خواهید یک کد تایید جدید دریافت نمایید یا از یک روش تایید جایگزین استفاده کنید؟";
 
@@ -603,58 +677,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "حساب کاربری Proton Free شما با موفقیت ایجاد شد.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ از %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "به سرویس‌های پخش آنلاین به صورت جهانی دسترسی پیدا کنید";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "مسدودکنندهٔ آگهی تعبیه شده (NetShield)";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "VPN رایگان در یک دستگاه";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "%@ را دریافت کنید";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "دریافت رایگان Proton";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "بالاترین سرعت VPN";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "یک طرح سرویس برای همه سرویس‌های Proton";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "طرح سرویس با موفقیت ارتقا یافت";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "سرورهای Secure Core";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "سیاست سخت‌گیرانه عدم ثبت رویدادها";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "حساب آغازین بدون هزینه طراحی شده تا به هر کسی با حریم خصوصی به‌ صورت پیش فرض قدرت بدهد.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor روی VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "پوشه‌ها، برچسب‌ها و فیلترهای نامحدود";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "فضای ذخیر سازی تا %@";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "حریم خصوصی و امنیت شما اولویت ماست.";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
 

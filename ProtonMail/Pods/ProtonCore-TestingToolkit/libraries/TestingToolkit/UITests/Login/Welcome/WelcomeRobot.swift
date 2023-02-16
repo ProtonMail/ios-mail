@@ -56,7 +56,7 @@ public final class WelcomeRobot: CoreElements {
 
         @discardableResult
         public func welcomeScreenIsNotPresented() -> WelcomeRobot {
-            staticText(footerText).wait().checkDoesNotExist()
+            staticText(footerText).waitUntilGone()
             return WelcomeRobot()
         }
 
@@ -68,7 +68,7 @@ public final class WelcomeRobot: CoreElements {
         
         @discardableResult
         public func welcomeScreenVariantIsNotShown(variant: WelcomeScreenVariant) -> WelcomeRobot {
-            image(variant.imageNameForVariant).wait().checkDoesNotExist()
+            image(variant.imageNameForVariant).waitUntilGone()
             return WelcomeRobot()
         }
 
@@ -86,7 +86,7 @@ public final class WelcomeRobot: CoreElements {
 
         @discardableResult
         public func signUpButtonDoesNotExist() -> WelcomeRobot {
-            button(signUpButton).wait().checkDoesNotExist()
+            button(signUpButton).waitUntilGone()
             return WelcomeRobot()
         }
     }

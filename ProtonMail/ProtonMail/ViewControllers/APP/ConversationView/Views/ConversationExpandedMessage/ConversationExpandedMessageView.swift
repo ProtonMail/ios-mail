@@ -11,6 +11,7 @@ class ConversationExpandedMessageView: UIView {
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.BackgroundDeep
+        translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         setUpLayout()
         setUpActions()

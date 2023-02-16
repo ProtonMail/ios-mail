@@ -37,6 +37,7 @@ final class ConversationViewTrashedHintView: UIView {
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.BackgroundNorm
+        translatesAutoresizingMaskIntoConstraints = false
         setCornerRadius(radius: 6)
         addSubviews()
         setUpLayout()
@@ -107,6 +108,7 @@ private enum SubviewsFactory {
         label.set(text: LocalString._banner_trashed_message_title,
                   preferredFont: .footnote)
         label.numberOfLines = 0
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }
 

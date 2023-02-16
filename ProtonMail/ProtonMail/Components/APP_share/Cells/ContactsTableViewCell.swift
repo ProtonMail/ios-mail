@@ -50,6 +50,7 @@ final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
         shortName.backgroundColor = ColorProvider.InteractionWeak
         shortName.textAlignment = .center
         shortName.set(text: nil, preferredFont: .footnote)
+        groupImage.image = IconProvider.users
         self.backgroundColor = ColorProvider.BackgroundNorm
 
         nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)

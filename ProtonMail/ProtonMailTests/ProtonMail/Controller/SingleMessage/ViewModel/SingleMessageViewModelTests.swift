@@ -242,7 +242,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
             systemUpTime: systemTime,
             dependencies: dependencies,
-            goToDraft: { _ in }
+            goToDraft: { _, _ in }
         )
     }
 }

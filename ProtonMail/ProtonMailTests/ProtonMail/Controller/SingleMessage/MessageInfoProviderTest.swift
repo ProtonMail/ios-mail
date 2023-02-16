@@ -38,6 +38,7 @@ final class MessageInfoProviderTest: XCTestCase {
 
         Environment.locale = { .enUS }
         Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        Environment.locale = { .enUS }
 
         let systemUpTime = SystemUpTimeMock(
             localServerTime: TimeInterval(1635745851),
@@ -107,8 +108,7 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(ccList?.recipients.first?.name, "cc name")
     }
 
-    func testPGPChecker_keysAPIFailedAndNoAddressKeys_failsVerification() {
-        let expectation1 = expectation(description: "get failed server validation error")
+    func testPGPChecker_keysAPIFailedAndNoAddressKeys_failsVerification() async throws {
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion(nil, .success(["Code": 33101, "Error": "Server failed validation"]))
@@ -119,17 +119,15 @@ final class MessageInfoProviderTest: XCTestCase {
         }
         user.addresses.removeAll()
 
-        delegateObject.senderContactUpdate.bodyIs { _, contact in
-            expectation1.fulfill()
-            let text = contact?.encryptionIconStatus?.text
-            XCTAssertEqual(text, "Sender Verification Failed")
-        }
-
         sut.initialize()
 
-        waitForExpectations(timeout: 10) { error in
-            XCTAssertNil(error)
-        }
+        waitForMessageToBePrepared()
+
+        XCTAssertEqual(delegateObject.providerHasChangedStub.callCounter, 1)
+
+        let checkedSenderContact = try XCTUnwrap(sut.checkedSenderContact)
+        let encryptionIconStatus = try XCTUnwrap(checkedSenderContact.encryptionIconStatus)
+        XCTAssertEqual(encryptionIconStatus.text, "Sender Verification Failed")
     }
 
     func testMIMEDecrypt() throws {
@@ -380,9 +378,9 @@ extension MessageInfoProviderTest {
 
 final private class ProviderDelegate: MessageInfoProviderDelegate {
 
-    @FuncStub(update(senderContact:)) var senderContactUpdate
-    func update(senderContact: ContactVO?) {
-        senderContactUpdate(senderContact)
+    @FuncStub(ProviderDelegate.providerHasChanged) var providerHasChangedStub
+    func providerHasChanged() {
+        providerHasChangedStub()
     }
 
     func hideDecryptionErrorBanner() {

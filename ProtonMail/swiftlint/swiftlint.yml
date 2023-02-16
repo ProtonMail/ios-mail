@@ -388,7 +388,7 @@ excluded:
   - ${PWD}/ProtonMail/ViewControllers/Pin_BioCode/ViewModels/share/ShareUnlockPinCodeModelImpl.swift
   - ${PWD}/ProtonMail/ViewControllers/Pin_BioCode/APP_share/BioCodeView.swift
   - ${PWD}/ProtonMail/ViewControllers/Pin_BioCode/APP_share/PinCodeViewController.swift
-  - ${PWD}/ProtonMail/Resource/APP_share/Generated/Images.generated.swift
+  - ${PWD}/ProtonMail/Resource/APP_share/Generated
   - ${PWD}/ProtonMail/Services/APP_share/LabelsDataService.swift
   - ${PWD}/ProtonMail/Services/APP_share/CoreDataService/CoreDataStore.swift
   - ${PWD}/ProtonMail/Services/APP_share/CoreDataService/CoreDataService.swift

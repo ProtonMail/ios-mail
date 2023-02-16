@@ -37,7 +37,7 @@ class SingleMessageContentViewModel {
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
-    let goToDraft: ((MessageID) -> Void)
+    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)
     var showProgressHub: (() -> Void)?
     var hideProgressHub: (() -> Void)?
 
@@ -91,7 +91,7 @@ class SingleMessageContentViewModel {
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
          dependencies: Dependencies,
-         goToDraft: @escaping (MessageID) -> Void) {
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
@@ -122,6 +122,7 @@ class SingleMessageContentViewModel {
                 return
             }
             let msgID = self.message.messageID
+            let originalScheduledTime = self.message.time
             self.showProgressHub?()
             self.user.messageService.undoSend(
                 of: msgID) { [weak self] result in
@@ -129,7 +130,7 @@ class SingleMessageContentViewModel {
                                                          notificationMessageID: nil,
                                                          completion: { [weak self] _ in
                         self?.hideProgressHub?()
-                        self?.goToDraft(msgID)
+                        self?.goToDraft(msgID, .init(originalScheduledTime))
                     })
                 }
         }
@@ -178,12 +179,15 @@ class SingleMessageContentViewModel {
             .callbackOn(.main)
             .execute(params: params) { [weak self] result in
             guard let self = self else { return }
-            switch result {
-            case .success(_):
-                self.updateErrorBanner?(nil)
-            case .failure(let error):
-                self.updateErrorBanner?(error as NSError)
-                self.messageBodyViewModel.errorHappens()
+
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.updateErrorBanner?(nil)
+                case .failure(let error):
+                    self.updateErrorBanner?(error as NSError)
+                    self.messageBodyViewModel.errorHappens()
+                }
             }
         }
     }
@@ -299,7 +303,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         }
     }
 
-    func update(senderContact: ContactVO?) {
+    func providerHasChanged() {
         DispatchQueue.main.async {
             self.nonExpandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)
             self.expandedHeaderViewModel?.providerHasChanged(provider: self.messageInfoProvider)

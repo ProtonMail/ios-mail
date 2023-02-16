@@ -56,6 +56,31 @@ class ExpandedHeaderViewController: UIViewController {
         self.hideDetailsAction = action
     }
 
+    func preferredContentSizeChanged() {
+        customView.preferredContentSizeChanged()
+        customView.contentStackView.arrangedSubviews.forEach { row in
+            if let tagView = row as? ExpandedHeaderTagView {
+                let tags = viewModel.infoProvider.message.tagUIModels()
+                tagView.setUp(tags: tags)
+                return
+            }
+            guard let rowView = row as? ExpandedHeaderRowView else { return }
+            rowView.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+            rowView.contentStackView.arrangedSubviews.forEach { content in
+                if let label = content as? UILabel {
+                    label.font = .adjustedFont(forTextStyle: .footnote)
+                } else if let stack = content as? UIStackView {
+                    stack.arrangedSubviews.forEach { view in
+                        guard let control = view as? TextControl else { return }
+                        control.label.font = .adjustedFont(forTextStyle: .footnote)
+                    }
+                } else if let button = view as? UIButton {
+                    button.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
+                }
+            }
+        }
+    }
+
     private func setUpViewModelObservation() {
         viewModel.reloadView = { [weak self] in
             self?.setUpView()
@@ -75,6 +100,8 @@ class ExpandedHeaderViewController: UIViewController {
             lineBreakMode: .byTruncatingMiddle
         )
 
+        customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
+
         customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
@@ -88,7 +115,7 @@ class ExpandedHeaderViewController: UIViewController {
 
         customView.senderEmailControl.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
-            self?.contactTapped(sheetType: .sender, contact: sender)
+            self?.contactTapped?(.sender(sender.sender))
         }
 
         var contactRow: ExpandedHeaderRowView?
@@ -109,7 +136,7 @@ class ExpandedHeaderViewController: UIViewController {
             customView.contentStackView.setCustomSpacing(18, after: rowView)
         }
 
-        let tags = viewModel.infoProvider.message.tagUIModels
+        let tags = viewModel.infoProvider.message.tagUIModels()
         tags.isEmpty ? (): presentTags()
 
         if let fullDate = viewModel.infoProvider.date {
@@ -150,7 +177,7 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentTags() {
-        let tags = viewModel.infoProvider.message.tagUIModels
+        let tags = viewModel.infoProvider.message.tagUIModels()
         guard !tags.isEmpty else { return }
         let tagViews = ExpandedHeaderTagView(frame: .zero)
         tagViews.setUp(tags: tags)
@@ -177,10 +204,10 @@ class ExpandedHeaderViewController: UIViewController {
             addressController.label.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
             if let contact = recipient.contact {
                 control.tap = { [weak self] in
-                    self?.contactTapped(sheetType: .recipient, contact: contact)
+                    self?.contactTapped?(.recipient(contact))
                 }
                 addressController.tap = { [weak self] in
-                    self?.contactTapped(sheetType: .recipient, contact: contact)
+                    self?.contactTapped?(.recipient(contact))
                 }
             }
             let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center, spacing: 4)
@@ -195,13 +222,12 @@ class ExpandedHeaderViewController: UIViewController {
         }.forEach {
             row.contentStackView.addArrangedSubview($0)
         }
+        if row.contentStackView.arrangedSubviews.count == 1 {
+            let padding = UIView(frame: .zero)
+            row.contentStackView.addArrangedSubview(padding)
+        }
         customView.contentStackView.addArrangedSubview(row)
         return row
-    }
-
-    private func contactTapped(sheetType: MessageDetailsContactActionSheetType, contact: ContactVO) {
-        let context = MessageHeaderContactContext(type: sheetType, contact: contact)
-        contactTapped?(context)
     }
 
     private func presentFullDateRow(stringDate: String) {
@@ -286,11 +312,7 @@ class ExpandedHeaderViewController: UIViewController {
     }
 
     private func presentHideDetailButton() {
-        let button = UIButton()
-        button.titleLabel?.set(text: nil, preferredFont: .footnote)
-        button.setTitle(LocalString._hide_details, for: .normal)
-        button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        let button = customView.hideDetailButton
         let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
         let padding = UIView(frame: .zero)
         stack.addArrangedSubview(padding)

@@ -17,6 +17,7 @@ class SingleMessageContentView: UIView {
     init(replyState: HeaderContainerView.ReplyState) {
         self.replyState = replyState
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         setUpLayout()
         accessibilityElements = [
@@ -63,6 +64,12 @@ class SingleMessageContentView: UIView {
             separator.bottomAnchor.constraint(equalTo: messageHeaderContainer.bottomAnchor),
             separator.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
+    }
+
+    func preferredContentSizeChanged() {
+        footerButtons.replyButton.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+        footerButtons.replyAllButton.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
+        footerButtons.forwardButton.titleLabel.font = .adjustedFont(forTextStyle: .footnote)
     }
 
     required init?(coder: NSCoder) {

@@ -175,7 +175,7 @@ extension PagesViewModelTests {
             user: user,
             userIntroduction: userIntroduction,
             infoBubbleViewStatusProvider: toolbarStatusProvider
-        ) { _ in }
+        ) { _, _ in }
         return sut
     }
 
@@ -194,7 +194,7 @@ extension PagesViewModelTests {
             targetMessageID: nil,
             userIntroduction: userIntroduction,
             infoBubbleViewStatusProvider: toolbarStatusProvider
-        ) { _ in }
+        ) { _, _ in }
         return sut
     }
 }

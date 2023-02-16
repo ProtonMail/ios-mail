@@ -67,9 +67,9 @@ class AccountManagerRobot: CoreElements {
         return InboxRobot()
     }
     
-    private func removeAll() -> RemoveAllAlertRobot {
+    private func removeAll() -> AccountManagerRemoveAllAlertRobot {
         button(id.removeAllLabel).firstMatch().tap()
-        return RemoveAllAlertRobot()
+        return AccountManagerRemoveAllAlertRobot()
     }
     
     private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
@@ -106,17 +106,6 @@ class AccountManagerRobot: CoreElements {
         button(id.confirmRemoveButtonLabel).firstMatch().tap()
         return AccountManagerRobot()
     }
-    
-    /**
-     RemoveAllAlertRobot class contains actions for Remove all accounts alert.
-     */
-    class RemoveAllAlertRobot {
-        
-        func confirmRemoveAll() -> LoginRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return LoginRobot()
-        }
-    }
 
     /**
     * Contains all the validations that can be performed by [AccountManagerRobot].
@@ -130,5 +119,16 @@ class AccountManagerRobot: CoreElements {
         func accountRemoved(_ user: User) {
             cell(id.loggedOutUserAccountCellIdentifier(user.name)).waitUntilGone(time: 15)
         }
+    }
+}
+
+/**
+ RemoveAllAlertRobot class contains actions for Remove all accounts alert.
+ */
+class AccountManagerRemoveAllAlertRobot {
+
+    func confirmRemoveAll() -> LoginRobot {
+        app.alerts.buttons.element(boundBy: 1).tap()
+        return LoginRobot()
     }
 }

@@ -26,11 +26,14 @@ final class MockUpdateMailbox: UpdateMailboxUseCase {
     var source: UpdateMailboxSourceProtocol?
 
 
-    func exec(showUnreadOnly: Bool,
-              isCleanFetch: Bool,
-              time: Int,
-              errorHandler: @escaping (Error) -> Void,
-              completion: @escaping () -> Void) {
+    func exec(
+        showUnreadOnly: Bool,
+        isCleanFetch: Bool,
+        time: Int,
+        fetchMessagesAtTheEnd: Bool,
+        errorHandler: @escaping (Error) -> Void,
+        completion: @escaping () -> Void
+    ) {
         if let error = self.error {
             errorHandler(error)
         }

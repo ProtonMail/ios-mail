@@ -31,7 +31,7 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
     static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
 
     private let container: NSPersistentContainer
-    let rootSavingContext: NSManagedObjectContext
+    private let rootSavingContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
     static var shouldIgnoreContactUpdateInMainContext = false
 

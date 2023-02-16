@@ -25,8 +25,8 @@ import Foundation
 class SharedCacheBase {
     private let userDefaults: UserDefaults
 
-    init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.AppGroup)!
+    init(userDefaults: UserDefaults = UserDefaults(suiteName: Constants.AppGroup)!) {
+        self.userDefaults = userDefaults
     }
 
     func getShared() -> UserDefaults {
@@ -40,7 +40,7 @@ class SharedCacheBase {
 
     class func getDefault() -> UserDefaults! {
         return UserDefaults(suiteName: Constants.AppGroup)
-    }
+    }    
 }
 
 extension UserDefaults {

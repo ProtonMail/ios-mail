@@ -28,7 +28,6 @@ class NewMailboxMessageContentView: BaseMessageView {
     let contentStackView = SubviewsFactory.verticalStackView
     let firstLineStackView = SubviewsFactory.horizontalStackView
     let draftImageView = SubviewsFactory.draftImageView
-    let senderLabel = SubviewsFactory.senderLabel
     let secondLineStackView = SubviewsFactory.horizontalStackView
     let titleLabel = UILabel(frame: .zero)
     let messageCountLabel = SubviewsFactory.messageCountLabel
@@ -60,7 +59,7 @@ class NewMailboxMessageContentView: BaseMessageView {
         firstLineStackView.addArrangedSubview(replyAllImageView)
         firstLineStackView.addArrangedSubview(forwardImageView)
         firstLineStackView.addArrangedSubview(draftImageView)
-        firstLineStackView.addArrangedSubview(StackViewContainer(view: senderLabel, bottom: -4))
+        firstLineStackView.addArrangedSubview(sendersStackView)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(StackViewContainer(view: timeLabel, bottom: -2))
 
@@ -83,7 +82,7 @@ class NewMailboxMessageContentView: BaseMessageView {
         ]
             .activate()
 
-        [senderLabel, titleLabel].forEach { view in
+        [titleLabel].forEach { view in
             view.setContentHuggingPriority(.defaultLow, for: .horizontal)
             view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         }
@@ -122,7 +121,7 @@ class NewMailboxMessageContentView: BaseMessageView {
 
         contentStackView.setCustomSpacing(2, after: firstLineStackView)
         contentStackView.setCustomSpacing(12, after: secondLineStackView)
-        secondLineStackView.setCustomSpacing(8, after: senderLabel)
+        secondLineStackView.setCustomSpacing(8, after: sendersStackView)
     }
 
     required init?(coder: NSCoder) {

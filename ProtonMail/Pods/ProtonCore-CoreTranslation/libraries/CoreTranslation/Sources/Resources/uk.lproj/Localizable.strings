@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ та %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ сховища";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Зверніться до нас через форму підтримки, електронною поштою (support@protonmail.zendesk.com) або у Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Створити обліковий запис Proton із поточною е-поштою";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "Ця адреса вже використовується.";
 
-/* Username field title */
-"Email or username" = "Е-пошта чи ім'я користувача";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Оцініть переваги світу приватності.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Генерування вашої адреси";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Отримайте адресу Proton Mail, пов'язану з цим обліковим записом, у вебналаштуваннях Proton.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Отримати новий код, надісланий на %@.";
@@ -298,17 +298,11 @@
  * Splash */
 "Made by" = "Зроблено";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Комплект Пошта + VPN для родин та малого бізнесу";
-
 /* Mailbox password field title */
 "Mailbox password" = "Пароль поштової скриньки";
 
 /* Manage accounts button */
 "Manage accounts" = "Керувати обліковими записами";
-
-/* Plan details medium speed */
-"Medium speed" = "Середня швидкість";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Підтримка кількох користувачів";
@@ -323,6 +317,78 @@
  * Networking */
 "Network connection error" = "Помилка зв'язку з мережею";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ з %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Доступ до сервісів трансляції по всьому світу";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Вбудований блокувальник реклами (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Перевірте своє з'єднання з інтернетом";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Проблеми зі з'єднанням";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Продовжити передплату";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Безплатна VPN для одного пристрою";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Отримати %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Отримати Proton безплатно";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Найвища швидкість VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Один тарифний план для всіх служб Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "У цьому застосунку доступні лише річні передплати без поновлення";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Тарифний план успішно покращено";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Сервери Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Суворе дотримання політики без журналювання";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Безплатний початковий обліковий запис, створений для усталеного забезпечення приватності для всіх.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Зосереджене на приватності рішення електронної пошти та календаря, що задовольняє ваші щоденні потреби для спілкування.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарифний план, орієнтований на зберігання даних, з 200 ГБ хмарного сховища для збереження приватності ваших файлів.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Винятковий комплект приватності з доступом до усіх преміумслужб Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor через VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "До %@ сховища";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Ваша приватність і безпека — наш пріоритет.";
+
 /* Next button */
 "Next" = "Далі";
 
@@ -336,8 +402,7 @@
    OK button */
 "OK" = "Гаразд";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Один обліковий запис для всіх служб Proton.";
 
 /* Plan footer description */
@@ -410,21 +475,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Пріоритетна підтримка клієнтів";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Усталена приватність";
 
 /* *
  * Login create address */
 "Proton address required" = "Адреса Proton обов'язкова";
 
+/* Username field title */
+"Proton email or username" = "Е-пошта чи ім'я користувача Proton";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton зараз недоступний";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Електронна пошта Proton для професіоналів та бізнесу";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Стан Proton";
@@ -480,9 +545,6 @@
 /* Signup complete progress step keys generation */
 "Securing your account" = "Захист вашого облікового запису";
 
-/* Select plan button */
-"Select" = "Вибрати";
-
 /* *
  *  Payments UI */
 "Select a plan" = "Оберіть тарифний план";
@@ -492,7 +554,7 @@
 "Set recovery method" = "Додати спосіб відновлення";
 
 /* Recovery view title optional */
-"Set recovery method (optional)" = "Встановити спосіб відновлення (необов’язково)";
+"Set recovery method (optional)" = "Налаштувати спосіб відновлення (необов’язково)";
 
 /* *
  *  Login screen */
@@ -520,7 +582,7 @@
 "SMS" = "SMS";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Перепрошуємо, але ми не можемо обробляти покупки в бета-версії програми для iOS. Дякуємо за участь в нашій загальній програмі тестування!";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Перепрошуємо, але ми не можемо обробляти покупки в бета-версії програми для iOS. Дякуємо за участь в нашій загальнодоступній програмі тестування!";
 
 /* network troubleshot cell title */
 "Still can't find a solution" = "Не вдалося знайти рішення";
@@ -613,9 +675,6 @@
  *  Force upgrade */
 "Update required" = "Необхідне оновлення";
 
-/* Upgrade plan button */
-"Upgrade" = "Покращити";
-
 /* Plan selection title */
 "Upgrade your plan" = "Оновіть свій тарифний план";
 
@@ -683,6 +742,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ви успішно зареєструвалися, але ваш платіж не був оброблений. Щоб знову надіслати платіжну інформацію, натисніть Повторити. Оплату буде стягнуто тільки один раз. Якщо проблема не вирішиться, будь ласка, зв'яжіться зі службою підтримки.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Вам потрібна адреса електронної пошти Proton, щоб користуватися Proton Mail і Proton Calendar.\nВи зможете використовувати %@ для входу в систему та відновлення свого облікового запису.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Ви вийдете з системи, а всі дані, пов'язані з цим обліковим записом будуть вилучені з цього пристрою.";
 
@@ -715,79 +777,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Термін дії вашого сеансу завершився. Увійдіть знову.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ з %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Доступ до сервісів трансляції по всьому світу";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Вбудований блокувальник реклами (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Перевірте своє з'єднання з інтернетом";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Проблеми зі з'єднанням";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Продовжити передплату";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Безплатна VPN для одного пристрою";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Отримати %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Отримати Proton безплатно";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Найвища швидкість VPN";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Один тарифний план для всіх служб Proton";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "У цьому застосунку доступні лише тарифні плани без поновлення";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Тарифний план успішно оновлено";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core сервери";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Дотримання політики без журналювання";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Безплатний початковий обліковий запис, створений, щоб надихнути приватністю кожного.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Зосереджені на приватності електронна пошта й календар для ваших повсякденних потреб спілкування.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарифний план, орієнтований на зберігання даних, з 200 ГБ хмарного сховища для збереження приватності ваших файлів.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Винятковий комплект приватності з доступом до усіх служб Proton.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor через VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "До %@ сховища";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Ваша приватність і безпека — наш пріоритет.";
-
-/* Welcome screen */
-"Privacy by default" = "Усталена приватність";
 

@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ 存储空间";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通过客服表单、邮箱（support@protonmail.zendesk.com）或 Twitter 联系我们。";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "使用您已有的邮箱创建一个 Proton 账户";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "邮箱地址已被使用";
 
-/* Username field title */
-"Email or username" = "电子邮件或用户名";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "享受隐私得到充分保护的世界吧。";
 
@@ -230,6 +227,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "正在为您生成地址";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "在 Proton web 设置中获取该账户链接的 Proton 电子邮件地址。";
 
 /* alert message */
 "Get a replacement code sent to %@." = "获取发送到 %@ 的替换码";
@@ -291,17 +291,11 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "了解更多有关人机验证的信息，以及我们为什么要求人机验证";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "针对家庭和小企业的邮件+VPN 套餐。";
-
 /* Mailbox password field title */
 "Mailbox password" = "邮箱密码";
 
 /* Manage accounts button */
 "Manage accounts" = "管理账户";
-
-/* Plan details medium speed */
-"Medium speed" = "中等速度";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "多用户功能";
@@ -316,6 +310,78 @@
  * Networking */
 "Network connection error" = "网络连接错误";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "邮箱容量 %@，已使用 %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "畅享全球流媒体服务";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "内置广告过滤器（NetShield）";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "检查您的网络连接";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "连接问题";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "延长订阅期限";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "单台设备免费 VPN";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "获得 %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "免费获得Proton";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "最快的 VPN 速度";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "账户等级对所有 Proton 服务均有效";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "仅可通过此应用进行非续订年度订阅";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "套餐成功升级";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "安全的核心服务器";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "严格的零日志原则";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "完全免费的普通账户，旨在助力所有人捍卫隐私。";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "使用隐私至上的邮箱和日历服务满足您的日常通讯需求。";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "存储专注型计划将提供 200 GB 的云存储空间，令你的文件保持私密。";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "顶级隐私保护体系，畅享所有 Proton 高级功能。";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor + VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "不限量文件夹、标签和筛选规则";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "最大容量达到%@";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "您的隐私和安全是我们的首要任务。";
+
 /* Next button */
 "Next" = "下一步";
 
@@ -329,8 +395,7 @@
    OK button */
 "OK" = "好的";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "一个账户即可通用所有 Proton 服务";
 
 /* Plan footer description */
@@ -403,21 +468,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "优先客服支持";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "隐私优先";
 
 /* *
  * Login create address */
 "Proton address required" = "需要使用 Proton 地址";
 
+/* Username field title */
+"Proton email or username" = "Proton 邮箱或用户名";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton 免费版";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton 出现宕机";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail 适合专业人员和企业";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 运行状态";
@@ -472,9 +537,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "确保账户安全";
-
-/* Select plan button */
-"Select" = "选择";
 
 /* *
  *  Payments UI */
@@ -606,9 +668,6 @@
  *  Force upgrade */
 "Update required" = "需要更新";
 
-/* Upgrade plan button */
-"Upgrade" = "升级账户";
-
 /* Plan selection title */
 "Upgrade your plan" = "升级您的计划";
 
@@ -676,6 +735,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功注册，但支付未能完成。点击重试可再次执行支付，请放心不会重复扣费。如果此问题仍存在，请联系客服";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "需要一个 Proton 邮箱地址来使用 Proton Mail 和 Proton Calendar 服务，你仍然可以使用 %@ 来登录并恢复你的账户。";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "您即将登出，与此账户相关的所有数据都将从此设备中删除";
 
@@ -708,79 +770,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "登录状态已过期，请重新登录。";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "邮箱容量 %@，已使用 %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "畅享全球流媒体服务";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "内置广告过滤器（NetShield）";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "检查您的网络连接";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "连接问题";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "延长订阅期限";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "单台设备免费 VPN";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "获得 %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "免费获得Proton";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "VPN 速度最快";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "账户等级对所有 Proton 服务均有效";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "仅可通过此应用进行非续订年度订阅";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "套餐成功升级";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core 服务器";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "严格的零日志原则";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "完全免费的普通账户，旨在助力所有人捍卫隐私。";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "使用隐私至上的邮箱和日历服务满足您的日常通讯需求。";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "存储专注型计划将提供 200 GB 的云存储空间，令你的文件保持私密。";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "顶级隐私保护体系，畅享所有 Proton 高级功能。";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor + VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "文件夹、标签、筛选规则不限量";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "最大容量达到%@";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "您的隐私和安全是我们的首要任务。";
-
-/* Welcome screen */
-"Privacy by default" = "隐私优先";
 

@@ -43,13 +43,19 @@ class ConversationCollapsedMessageViewModel {
             )
         }
 
+        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+            for: message,
+            basedOn: replacingEmailsMap,
+            groupContacts: contactGroups
+        )
+
         return ConversationMessageModel(
             messageLocation: message
                 .getFolderMessageLocation(customFolderLabels: customFolderLabels)?.toMessageLocation,
             isCustomFolderLocation: message.isCustomFolder,
-            initial: message.displaySender(replacingEmailsMap).initials().apply(style: FontManager.body3RegularNorm),
+            initial: senderRowComponents.initials().apply(style: FontManager.body3RegularNorm),
             isRead: !message.unRead,
-            sender: message.getSenderName(replacingEmailsMap: replacingEmailsMap, groupContacts: contactGroups),
+            sender: senderRowComponents,
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReplied: message.isReplied,

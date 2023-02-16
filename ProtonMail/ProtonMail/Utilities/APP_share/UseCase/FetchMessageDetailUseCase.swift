@@ -59,11 +59,6 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-                self.dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
-                    guard let self = self else {
-                        callback(.failure(Errors.selfIsReleased))
-                        return
-                    }
 
                     let response: JSONDictionary
                     switch result {
@@ -73,70 +68,71 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                         callback(.failure(error))
                         return
                     }
-
-                    guard let message = context.object(with: params.message.objectID.rawValue) as? Message else {
-                        callback(.failure(Errors.coreDataObjectNotExist))
-                        return
-                    }
                     guard let messageDict = response["Message"] as? [String: Any] else {
                         callback(.failure(NSError.badResponse()))
                         return
                     }
-                    self.handle(messageDict: messageDict,
-                                message: message,
-                                ignoreDownloaded: params.ignoreDownloaded,
-                                userID: params.userID,
-                                context: context,
-                                callback: callback)
+
+                    do {
+                        let handledMessage = try self.handle(
+                            messageDict: messageDict,
+                            messageObjectID: params.message.objectID,
+                            ignoreDownloaded: params.ignoreDownloaded,
+                            userID: params.userID
+                        )
+                        callback(.success(handledMessage))
+                    } catch {
+                        callback(.failure(error))
+                    }
                 }
-            }
     }
 
-    private func handle(messageDict: [String: Any],
-                        message: Message,
-                        ignoreDownloaded: Bool,
-                        userID: UserID,
-                        context: NSManagedObjectContext,
-                        callback: @escaping Callback) {
-        var messageDict = messageDict
-        messageDict.removeValue(forKey: "Location")
-        messageDict.removeValue(forKey: "Starred")
-        messageDict.removeValue(forKey: "test")
-        messageDict["UserID"] = userID.rawValue
-        messageDict.addAttachmentOrderField()
+    private func handle(
+        messageDict: [String: Any],
+        messageObjectID: ObjectID,
+        ignoreDownloaded: Bool,
+        userID: UserID
+    ) throws -> MessageEntity {
+        var result: Result<MessageEntity, Error>!
 
-        if !ignoreDownloaded,
-           message.isDetailDownloaded,
-           let responseTime = messageDict["Time"] as? Int,
-           case let responseInterval = TimeInterval(responseTime),
-           let cacheTime = message.time?.timeIntervalSince1970,
-           cacheTime > responseInterval {
-            let msgToReturn = MessageEntity(message)
-            callback(.success(msgToReturn))
-            return
-        }
-        do {
-            let uploadingAttachments = uploadingAttachment(from: message)
-            // This will remove all attachments that are still not uploaded to BE
-            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
-                                            fromJSONDictionary: messageDict,
-                                            in: context)
-            restoreUploading(attachments: uploadingAttachments,
-                             to: message,
-                             context: context)
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            do {
+                guard let message = context.object(with: messageObjectID.rawValue) as? Message else {
+                    throw Errors.coreDataObjectNotExist
+                }
 
-            message.isDetailDownloaded = true
-            message.messageStatus = 1
-            updateUnread(message: message)
-            if let error = context.saveUpstreamIfNeeded() {
-                callback(.failure(error))
-            } else {
-                let msgToReturn = MessageEntity(message)
-                callback(.success(msgToReturn))
+                if !ignoreDownloaded,
+                   message.isDetailDownloaded,
+                   let responseTime = messageDict["Time"] as? Int,
+                   case let responseInterval = TimeInterval(responseTime),
+                   let cacheTime = message.time?.timeIntervalSince1970,
+                   cacheTime > responseInterval {
+                    result = .success(MessageEntity(message))
+                    return
+                }
+
+                let uploadingAttachments = self.uploadingAttachment(from: message)
+                // This will remove all attachments that are still not uploaded to BE
+                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                                fromJSONDictionary: messageDict,
+                                                in: context)
+                self.restoreUploading(attachments: uploadingAttachments, to: message, context: context)
+
+                message.isDetailDownloaded = true
+                message.messageStatus = 1
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                } else {
+                    result = .success(MessageEntity(message))
+                }
+            } catch {
+                result = .failure(error)
             }
-        } catch {
-            callback(.failure(error))
         }
+
+        let messageEntity = try result.get()
+        return try updatingUnread(message: messageEntity)
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {
@@ -173,29 +169,53 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         message.numAttachments = NSNumber(value: attachmentCount)
     }
 
-    private func updateUnread(message: Message) {
-        if let labelID = message.firstValidFolder(), message.unRead {
-            _ = dependencies.messageDataAction.mark(messageObjectIDs: [message.objectID],
-                                                    labelID: LabelID(labelID),
-                                                    unRead: false)
+    private func updatingUnread(message: MessageEntity) throws -> MessageEntity {
+        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
+
+        guard message.unRead else {
+            return message
         }
-        if message.unRead {
-            dependencies.cacheService.updateCounterSync(markUnRead: false, on: message)
+
+        if let labelID = message.firstValidFolder() {
+            _ = dependencies.messageDataAction.mark(
+                messageObjectIDs: [message.objectID.rawValue],
+                labelID: labelID,
+                unRead: false
+            )
         }
-        message.unRead = false
-        PushUpdater().remove(notificationIdentifiers: [message.notificationId])
+
+        dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
+
+        var result: Result<MessageEntity, Error>!
+
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            do {
+                guard let messageObject = try context.existingObject(with: message.objectID.rawValue) as? Message else {
+                    throw Errors.coreDataObjectNotExist
+                }
+
+                messageObject.unRead = false
+
+                result = .success(MessageEntity(messageObject))
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+            } catch {
+                result = .failure(error)
+            }
+        }
+
+        return try result.get()
     }
 
     private func handleDownloaded(entity: MessageEntity, callback: @escaping Callback) {
-        dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
-            guard let message = context.object(with: entity.objectID.rawValue) as? Message else {
-                callback(.failure(Errors.coreDataObjectNotExist))
-                return
-            }
-            self?.updateUnread(message: message)
-            callback(.success(MessageEntity(message)))
+        do {
+            let updated = try updatingUnread(message: entity)
+            callback(.success(updated))
+        } catch {
+            callback(.failure(error))
         }
-
     }
 }
 

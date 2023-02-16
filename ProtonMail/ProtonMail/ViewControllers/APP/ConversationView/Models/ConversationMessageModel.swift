@@ -3,7 +3,7 @@ struct ConversationMessageModel {
     let isCustomFolderLocation: Bool
     let initial: NSAttributedString?
     let isRead: Bool
-    let sender: String
+    let sender: [SenderRowComponent]
     let time: String
     let isForwarded: Bool
     let isReplied: Bool

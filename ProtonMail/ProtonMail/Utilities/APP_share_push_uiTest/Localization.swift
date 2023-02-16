@@ -1492,6 +1492,10 @@ enum L11n {
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
     }
 
+    struct OfficialBadge {
+        static let title = NSLocalizedString("Official", comment: "Official badge next to sender's name")
+    }
+
     struct ReferralProgram {
         static let linkCopied = NSLocalizedString("Link copied.", comment: "The banner title after tapping link copy button in referral share view.")
         static let title = NSLocalizedString("Invite friends to Proton,\n get up to $90 in credits!", comment: "The article title of the referral share view.")
@@ -1505,7 +1509,17 @@ enum L11n {
 
     struct ScheduledSend {
         static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
-        static let select_date_and_time = NSLocalizedString("Select date and time", comment: "Option for set up scheduled send")
+        static let custom = NSLocalizedString("Custom", comment: "Option for set up custom schedule send date")
+        static let asSchedule = NSLocalizedString("As scheduled", comment: "One of the schedule time options")
+        static let upSellTitle = NSLocalizedString("Set your own schedule", comment: "The title of the up sell content of the scheduled send.")
+        static let upSellContent = NSLocalizedString("Unlock custom message scheduling and other benefits when you upgrade your plan.", comment: "The content of the up sell content of the scheduled send.")
+        static let upgradeTitle = NSLocalizedString("Upgrade now", comment: "The title of the upgrade button in the schedule send promotion view.")
+        static let itemSchedule = NSLocalizedString("Schedule messages at any time", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemFolder = NSLocalizedString("Unlimited folders and labels", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemStorage = NSLocalizedString("Up to 500 GB of storage", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAliases = NSLocalizedString("Hide My Email aliases", comment: "The up sell bullet point in the schedule send promotion view.")
     }
 
     struct PushNotificationAction {

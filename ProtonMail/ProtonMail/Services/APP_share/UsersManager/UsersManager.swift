@@ -98,6 +98,12 @@ class UsersManager: Service {
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
     private let userDataCache: CachedUserDataProvider
 
+    #if !APP_EXTENSION
+    private var encryptedSearchCache: EncryptedSearchUserCache {
+        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
+    }
+    #endif
+
     init(
         doh: DoHInterface,
         userDataCache: CachedUserDataProvider = UserDataCache(),
@@ -458,6 +464,10 @@ extension UsersManager {
             }
             self.users = []
             self.save()
+
+            #if !APP_EXTENSION
+            self.encryptedSearchCache.cleanGlobal()
+            #endif
 
             if !ProcessInfo.isRunningUnitTests {
                 keymaker.wipeMainKey()

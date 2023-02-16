@@ -33,12 +33,12 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     let labelID: LabelID
     let user: UserManager
     let viewMode: ViewMode
-    let goToDraft: ((MessageID) -> Void)?
     var fetchedResultsController: NSFetchedResultsController<FetchResultType>?
     var messageService: MessageDataService { user.messageService }
     private let isUnread: Bool
     /// For conversation mode, which message in this conversation should display
     private var targetMessageID: MessageID?
+    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
     private let userIntroduction: UserIntroductionProgressProvider
 
     init(
@@ -50,7 +50,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         self.goToDraft = goToDraft
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
@@ -122,7 +122,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         user: UserManager,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         super.init(
             viewMode: .singleMessage,
@@ -155,7 +155,7 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID) -> Void)
+        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         super.init(
             viewMode: .conversation,
@@ -173,8 +173,8 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
     override func item(for id: ConversationID, offset: Int) -> (ConversationEntity?, Int?) {
         guard let contextLabels = fetchedResultsController?.fetchedObjects,
               let targetIndex = contextLabels.firstIndex(where: { $0.conversationID == id.rawValue }),
-              let context = contextLabels[safe: targetIndex + offset] else { return (nil, nil) }
-        let conversation = context.conversation
+              let context = contextLabels[safe: targetIndex + offset],
+              let conversation = context.conversation else { return (nil, nil) }
         return (ConversationEntity(conversation), targetIndex + offset)
     }
 }

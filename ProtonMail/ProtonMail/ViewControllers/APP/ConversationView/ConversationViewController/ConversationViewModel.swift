@@ -1,6 +1,7 @@
 import CoreData
 import ProtonCore_UIFoundations
 import ProtonCore_DataModel
+import ProtonMailAnalytics
 
 enum MessageDisplayRule {
     case showNonTrashedOnly
@@ -26,6 +27,7 @@ class ConversationViewModel {
     var leaveFocusedMode: (() -> Void)?
     var dismissDeletedMessageActionSheet: ((MessageID) -> Void)?
     var viewModeIsChanged: ((ViewMode) -> Void)?
+    var conversationIsReadyToBeDisplayed: (() -> Void)?
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
@@ -61,16 +63,20 @@ class ConversationViewModel {
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    var shouldIgnoreUpdateOnce = false
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
-    private(set) var isExpandedAtLaunch = false
 
     /// Focused mode means that the messages above the first expanded one are hidden from view.
-    private(set) var focusedMode = true
+    private(set) var focusedMode = true {
+        didSet {
+            if oldValue && !focusedMode {
+                leaveFocusedMode?()
+            }
+        }
+    }
 
     var firstExpandedMessageIndex: Int? {
         messagesDataSource.firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false })
@@ -103,7 +109,7 @@ class ConversationViewModel {
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
     var messageIDsOfMarkedAsRead: [MessageID] = []
-    private let goToDraft: (MessageID) -> Void
+    private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy private(set) var customFolders: [LabelEntity] = {
@@ -128,7 +134,7 @@ class ConversationViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
-         goToDraft: @escaping (MessageID) -> Void,
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
@@ -153,7 +159,7 @@ class ConversationViewModel {
         self.labelProvider = labelProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
-        headerSectionDataSource = [.header(subject: conversation.subject)]
+        headerSectionDataSource = []
 
         recordNumOfMessages = conversation.messageCount
         self.connectionStatusProvider = internetStatusProvider
@@ -165,11 +171,7 @@ class ConversationViewModel {
     }
 
     func scrollViewDidScroll() {
-        if focusedMode {
-            focusedMode = false
-
-            leaveFocusedMode?()
-        }
+        focusedMode = false
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
@@ -225,10 +227,6 @@ class ConversationViewModel {
     func stopObserveConversationAndMessages() {
         conversationUpdateProvider.stopObserve()
         conversationMessagesProvider.stopObserve()
-    }
-
-    func setCellIsExpandedAtLaunch() {
-        self.isExpandedAtLaunch = true
     }
 
     func messageType(with message: MessageEntity) -> ConversationViewItemType {
@@ -338,6 +336,65 @@ class ConversationViewModel {
         toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
     }
 
+    func headerCellVisibility(at index: Int) -> CellVisibility {
+        guard focusedMode else {
+            return .full
+        }
+
+        switch headerSectionDataSource[index] {
+        case .trashedHint:
+            // in focused mode, the trashed hint should only be partially visible if there's no previous message to partially show
+            let numberOfNonTrashedMessages = messagesDataSource
+                .filter { $0.messageViewModel?.isTrashed == false }
+                .count
+
+            return numberOfNonTrashedMessages == 1 ? .partial : .hidden
+        case .message:
+            assertionFailure("headerSectionDataSource should not contain ConversationViewItemType.message")
+            return .full
+        }
+    }
+
+    func messageCellVisibility(at index: Int) -> CellVisibility {
+        guard focusedMode else {
+            return .full
+        }
+
+        // if we're in focused mode, but no message is expanded, it means that messages are still loading
+        guard let firstExpandedMessageIndex = firstExpandedMessageIndex else {
+            return .hidden
+        }
+
+        if index > firstExpandedMessageIndex {
+            return .full
+        } else {
+            let messagesBeforeAndIncludingExpandedOne = messagesDataSource[0...firstExpandedMessageIndex]
+
+            let indexesOfNonTrashedMessages: [Int] = messagesBeforeAndIncludingExpandedOne
+                .enumerated()
+                .compactMap { index, item in
+                    if item.messageViewModel?.isTrashed == false {
+                        return index
+                    } else {
+                        return nil
+                    }
+                }
+
+            switch index {
+            case indexesOfNonTrashedMessages.last:
+                return .full
+            case indexesOfNonTrashedMessages.dropLast().last:
+                return .partial
+            default:
+                return .hidden
+            }
+        }
+    }
+
+    func cellTapped() {
+        focusedMode = false
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
         let hasMessages = !self.messagesDataSource.isEmpty
@@ -408,7 +465,7 @@ class ConversationViewModel {
         self.headerSectionDataSource.append(.trashedHint)
         let visible = self.tableView?.visibleCells.count ?? 0
         if visible > 0 {
-            let row = IndexPath(row: 1, section: 0)
+            let row = IndexPath(row: 0, section: 0)
             self.tableView?.insertRows(at: [row], with: .automatic)
         }
     }
@@ -472,23 +529,42 @@ extension ConversationViewModel {
             tableView.beginUpdates()
         case let .didUpdate(messages):
             updateDataSource(with: messages)
-            tableView.endUpdates()
+            do {
+                try ObjC.catchException {
+                    tableView.endUpdates()
+                }
+                Breadcrumbs.shared.clearCrumbs(for: .conversationViewEndUpdatesCrash)
+            } catch {
+                // unfortunately the error doesn't contain anything useful
+                assertionFailure("\(error)")
+
+                let trace = Breadcrumbs.shared.trace(for: .conversationViewEndUpdatesCrash)
+                Analytics.shared.sendError(.conversationViewEndUpdatesCrash, trace: trace)
+
+                // this call will sync the data again at the expense of no animation
+                tableView.reloadData()
+
+                /// It's necessary to call this again for the changes made by `reloadData` to be visible,
+                /// because we're in the middle of an update after the `beginUpdates` call above.
+                /// Now it's safe, so we don't need to catch again.
+                tableView.endUpdates()
+            }
 
             observeNewMessages()
 
-            if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
+            if recordNumOfMessages == messagesDataSource.count {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
                     self.conversationViewController?.attemptAutoScroll(to: path, position: .top)
-                    setCellIsExpandedAtLaunch()
                 }
+
+                self.conversationIsReadyToBeDisplayed?()
             }
-            shouldIgnoreUpdateOnce = false
 
             refreshView?()
         case let .insert(row):
             tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
-        case let .update(message, _, _):
+        case let .update(message):
             let messageId = message.messageID
             guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }),
                   let viewModel = messagesDataSource[index].messageViewModel else {
@@ -952,6 +1028,11 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
 
 extension ConversationViewModel: ConversationViewTrashedHintDelegate {
     func clickTrashedMessageSettingButton() {
+        // If we're in the focused mode, the trash banner is only partially visible (if at all).
+        guard !focusedMode else {
+            return
+        }
+
         switch self.displayRule {
         case .showTrashedOnly:
             self.displayRule = .showAll
@@ -960,7 +1041,7 @@ extension ConversationViewModel: ConversationViewTrashedHintDelegate {
         case .showAll:
             self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         }
-        let row = IndexPath(row: 1, section: 0)
+        let row = IndexPath(row: 0, section: 0)
         self.reloadRowsIfNeeded(additional: row)
     }
 
@@ -1020,5 +1101,14 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 extension ConversationViewModel {
     struct Dependencies {
         let fetchMessageDetail: FetchMessageDetailUseCase
+    }
+
+    enum CellVisibility {
+        /// The cell is fully visible.
+        case full
+        /// Only a few pixels are visible, used for showing a part of the previous message in focused mode.
+        case partial
+        /// The cell is not visible.
+        case hidden
     }
 }

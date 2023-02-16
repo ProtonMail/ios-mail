@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "3.26.2",
+  "version": "3.27.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": null,
-    "tag": "3.26.2"
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "3.27.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -42,7 +42,7 @@
       "name": "Crypto-Go1.18.8",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.18.8": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [
@@ -61,7 +61,7 @@
       "name": "Crypto-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.19.4": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [
@@ -80,7 +80,7 @@
       "name": "Crypto-patched-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.19.4": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [
@@ -99,7 +99,7 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [
@@ -118,7 +118,7 @@
       "name": "Crypto+VPN-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.19.4": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [
@@ -137,7 +137,7 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [
@@ -156,7 +156,7 @@
       "name": "Crypto+Search-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.19.4": [
-          "3.26.2"
+          "3.27.0"
         ]
       },
       "source_files": [

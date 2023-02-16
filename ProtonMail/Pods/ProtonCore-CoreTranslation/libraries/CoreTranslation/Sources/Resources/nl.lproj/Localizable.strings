@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ opslagruimte";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Neem rechtstreeks contact met ons op via ons ondersteuningsformulier, e-mail (support@protonmail.zendesk.com) of Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Maak een Proton-account aan met uw huidige e-mail";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "E-mailadres al in gebruik.";
 
-/* Username field title */
-"Email or username" = "E-mailadres of gebruikersnaam";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Geniet van de wereld van privacy.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Uw adres genereren";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Verkrijg een Proton Mail-adres verbonden aan dit account via uw Proton-webinstellingen.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Laat een vervangende code sturen naar %@.";
@@ -294,17 +294,11 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Leer meer over menselijke verificatie en waarom we erom vragen.";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Mail + VPN-bundel voor gezinnen en kleine bedrijven";
-
 /* Mailbox password field title */
 "Mailbox password" = "Mailbox-wachtwoord";
 
 /* Manage accounts button */
 "Manage accounts" = "Accounts beheren";
-
-/* Plan details medium speed */
-"Medium speed" = "Gemiddelde snelheid";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Ondersteuning voor meerdere gebruikers";
@@ -319,6 +313,78 @@
  * Networking */
 "Network connection error" = "Netwerk verbindingsfout";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ van %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Wereldwijde toegang tot streamingdiensten";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Ingebouwde adblocker (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Controleer uw internetverbinding";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Verbindingsproblemen";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Abonnement verlengen";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Gratis VPN op één apparaat";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Kies %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Gebruik Proton gratis";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Hoogste VPN-snelheid";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Eén abonnement voor alle Proton-services";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Via deze app zijn alleen jaarabonnementen zonder automatische verlenging beschikbaar";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Upgraden van abonnement voltooid";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Secure Core servers";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Strikt geen-logboekbeleid";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "De gratis startersaccount die is ontwikkeld om iedereen standaard te voorzien van privacy.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "De e-mail- en agenda-oplossing met privacy als prioriteit voor uw dagelijkse communicatiebehoeften.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Het opslag-georiënteerd abonnement met 200 GB cloudopslag om uw bestanden privé te houden.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Het ultieme privacypakket met toegang tot alle premium Proton-services.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor via VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Tot %@ opslag";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Uw privacy en beveiliging zijn onze prioriteit.";
+
 /* Next button */
 "Next" = "Volgende";
 
@@ -332,8 +398,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Één account voor alle Proton diensten.";
 
 /* Plan footer description */
@@ -406,21 +471,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Ondersteuning met hoge prioriteit";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Privacy als standaard";
 
 /* *
  * Login create address */
 "Proton address required" = "Proton-adres vereist";
 
+/* Username field title */
+"Proton email or username" = "Proton-e-mailadres of gebruikersnaam";
+
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton is buiten werking";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail voor professionals en bedrijven";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
@@ -475,9 +540,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Beveiliging van uw account";
-
-/* Select plan button */
-"Select" = "Selecteren";
 
 /* *
  *  Payments UI */
@@ -609,9 +671,6 @@
  *  Force upgrade */
 "Update required" = "Update vereist";
 
-/* Upgrade plan button */
-"Upgrade" = "Upgraden";
-
 /* Plan selection title */
 "Upgrade your plan" = "Upgrade uw abonnement";
 
@@ -679,6 +738,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "U heeft succesvol geregistreerd maar uw betaling is niet verwerkt. Om de betalingsinformatie opnieuw te verzenden, klikt u op Opnieuw. Het bedrag wordt slechts één keer in rekening gebracht. \n\nAls dit probleem zich blijft voortdoen kunt u contact opnemen met onze klantenondersteuning.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "U hebt een Proton-e-mailadres nodig om Proton Mail en Proton Calendar te gebruiken.\nU zult nog steeds in staat zijn om %@ te gebruiken om in te loggen en uw account te herstellen.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "U wordt afgemeld en alle gegevens die bij deze account horen worden van dit apparaat verwijderd.";
 
@@ -711,79 +773,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "De sessie is verlopen. Log opnieuw in.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ van %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Wereldwijde toegang tot streamingdiensten";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Ingebouwde adblocker (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Controleer uw internetverbinding";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Verbindingsproblemen";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Abonnement verlengen";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Gratis VPN op één apparaat";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Kies %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Gebruik Proton gratis";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Hoogste VPN-snelheid";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Eén abonnement voor alle Proton-services";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Via deze app zijn alleen jaarabonnementen zonder automatische verlenging beschikbaar";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Upgraden van abonnement voltooid";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core-servers";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strikt geen-logboekbeleid";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "De gratis startersaccount die is ontwikkeld om iedereen standaard te voorzien van privacy.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "De e-mail- en agenda-oplossing met privacy als prioriteit voor uw dagelijkse communicatiebehoeften.";
-
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Het opslag-georiënteerd abonnement met 200 GB cloudopslag om uw bestanden privé te houden.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Het ultieme privacypakket met toegang tot alle premium Proton-services.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor via VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Ongelimiteerde mappen, labels en filters";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Tot %@ opslag";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Uw privacy en beveiliging zijn onze prioriteit.";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy als standaard";
 

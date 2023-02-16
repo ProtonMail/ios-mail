@@ -203,7 +203,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     var selectedConversations: [ConversationEntity] {
         fetchedResultsController?.fetchedObjects?
             .compactMap { $0 as? ContextLabel }
-            .map(\.conversation)
+            .compactMap(\.conversation)
             .filter { selectedIDs.contains($0.conversationID) }
             .map(ConversationEntity.init) ?? []
     }
@@ -705,10 +705,14 @@ extension MailboxViewModel {
         completion: @escaping () -> Void
     ) {
         isFirstFetch = false
+
+        let isCurrentLocationEmpty = fetchedResultsController?.fetchedObjects?.isEmpty ?? true
+
         dependencies.updateMailbox.exec(
             showUnreadOnly: showUnreadOnly,
             isCleanFetch: isCleanFetch,
             time: time,
+            fetchMessagesAtTheEnd: isCurrentLocationEmpty,
             errorHandler: errorHandler,
             completion: completion
         )

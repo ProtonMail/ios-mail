@@ -1,6 +1,3 @@
-/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
-"%@ & %@" = "%@ & %@";
-
 /* Plan details storage */
 "%@ storage" = "%@ αποθηκευτικού χώρου";
 
@@ -115,6 +112,9 @@
 /* No other solution description. */
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.zendesk.com) ή Twitter.";
 
+/* Action button title for picking Proton Mail username */
+"Continue" = "Продолжить";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Δημιουργήστε έναν λογαριασμό Proton με την τρέχουσα διεύθυνσή σας";
 
@@ -185,9 +185,6 @@
 /* Email address already used error */
 "Email address already used." = "Το e-mail χρησιμοποιείται ήδη.";
 
-/* Username field title */
-"Email or username" = "Διεύθυνση ή όνομα χρήστη";
-
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Απολαύστε τον κόσμο της ιδιωτικότητας.";
 
@@ -233,6 +230,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Γίνεται δημιουργία της διεύθυνσής σας";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Αποκτήστε μια διεύθυνση Proton Mail συνδεδεμένη με αυτόν τον λογαριασμό στις ρυθμίσεις ιστού του Proton.";
 
 /* alert message */
 "Get a replacement code sent to %@." = "Παραλάβετε έναν ανταλλακτικό κωδικό στο %@.";
@@ -294,17 +294,11 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Μάθετε περισσότερα σχετικά με την ανθρώπινη επαλήθευση και γιατί την ζητάμε.";
 
-/* Plan details visionary description */
-"Mail + VPN bundle for families and small businesses" = "Πακέτο αλληλογραφίας + VPN για οικογένειες και μικρές επιχειρήσεις";
-
 /* Mailbox password field title */
 "Mailbox password" = "Κωδικός Θυρίδας";
 
 /* Manage accounts button */
 "Manage accounts" = "Διαχείριση λογαριασμών";
-
-/* Plan details medium speed */
-"Medium speed" = "Μέτρια ταχύτητα";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Υποστήριξη πολλαπλών χρηστών";
@@ -319,6 +313,78 @@
  * Networking */
 "Network connection error" = "Σφάλμα σύνδεσης δικτύου";
 
+/* New_Plans Plan details used storage space */
+"New_Plans %@ of %@" = "%@ από %@";
+
+/* New_Plans Plan details Access to streaming services globally */
+"New_Plans Access to streaming services globally" = "Πρόσβαση παγκοσμίως σε υπηρεσίες μετάδοσης";
+
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Ενσωματωμένη φραγή διαφημίσεων (NetShield)";
+
+/* New_Plans Plan connection error description */
+"New_Plans Check your internet connection" = "Ελέγξτε τη σύνδεσή σας στο διαδίκτυο";
+
+/* New_Plans Plan connection error title */
+"New_Plans Connection issues" = "Προβλήματα σύνδεσης";
+
+/* New_Plans Extend subscription button */
+"New_Plans Extend subscription" = "Επέκταση συνδρομής";
+
+/* New_Plans Plan details VPN on a single device */
+"New_Plans Free VPN on a single device" = "Δωρεάν VPN σε μία μόνο συσκευή";
+
+/* New_Plans Get plan button */
+"New_Plans Get %@" = "Αποκτήστε %@";
+
+/* New_Plans Get free plan button */
+"New_Plans Get Proton for free" = "Αποκτήστε το Proton δωρεάν";
+
+/* New_Plans Plan details Highest VPN speed */
+"New_Plans Highest VPN speed" = "Ύψιστη ταχύτητα VPN";
+
+/* New_Plans */
+"New_Plans One plan for all Proton services" = "Ένα πρόγραμμα για όλες τις υπηρεσίες Proton";
+
+/* New_Plans Plan footer description */
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
+
+/* New_Plans Plan details P2P/BitTorrent */
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+/* New_Plans Plan successfully upgraded banner message */
+"New_Plans Plan successfully upgraded" = "Επιτυχημένη αναβάθμιση προγράμματος";
+
+/* New_Plans Plan details Secure Core servers */
+"New_Plans Secure Core servers" = "Διακομιστές Secure Core";
+
+/* New_Plans Plan details no logs policy */
+"New_Plans Strict no-logs policy" = "Αυστηρή πολιτική μη καταγραφής";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ο λογαριασμός εκκίνησης χωρίς κόστους έχει σχεδιαστεί για να παρέχει σε όλους το απόρρητο από προεπιλογή.";
+
+/* New_Plans Plan details plus description */
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Η κατά προτεραιότητα απόρρητη λύση ταχυδρομείου και ημερολογίου για τις καθημερινές ανάγκες επικοινωνίας σας.";
+
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Το πρόγραμμα που εστιάζει στον χώρο αποθήκευσης με 200 GB χώρου αποθήκευσης στο cloud για να διατηρείτε τα αρχεία σας ιδιωτικά.";
+
+/* New_Plans Plan details bundle description */
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Το απόλυτο πακέτο απορρήτου με πρόσβαση σε όλες τις premium υπηρεσίες Proton.";
+
+/* New_Plans Plan details TOR over VPN */
+"New_Plans TOR over VPN" = "Tor μέσω VPN";
+
+/* New_Plans Plan details unlimited folders, labels, filters */
+"New_Plans Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
+
+/* New_Plans Plan details up to storage */
+"New_Plans Up to %@ storage" = "Έως και %@ αποθηκευτικού χώρου";
+
+/* New_Plans Plan details vpn plus description */
+"New_Plans Your privacy and security are our priority." = "Η ιδιωτικότητα και διασφάλισή σας είναι η προτεραιότητά μας.";
+
 /* Next button */
 "Next" = "Επόμενο";
 
@@ -332,8 +398,7 @@
    OK button */
 "OK" = "ΟΚ";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "Ένας λογαριασμός για όλες τις υπηρεσίες Proton.";
 
 /* Plan footer description */
@@ -406,17 +471,21 @@
 /* Plan details priority customer support */
 "Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
 
-/* Welcome screen footer label */
+/* Welcome screen */
 "Privacy by default" = "Ιδιωτικότητα από προεπιλογή";
+
+/* *
+ * Login create address */
+"Proton address required" = "Απαιτείται διεύθυνση Proton";
+
+/* Username field title */
+"Proton email or username" = "Proton email ή όνομα χρήστη";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Το Proton είναι εκτός λειτουργίας";
-
-/* Plan details pro description */
-"Proton Mail for professionals and businesses" = "Proton Mail για επαγγελματίες και επιχειρήσεις";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Κατάσταση Proton";
@@ -471,9 +540,6 @@
 
 /* Signup complete progress step keys generation */
 "Securing your account" = "Γίνεται διασφάλιση του λογαριασμού σας";
-
-/* Select plan button */
-"Select" = "Επιλογή";
 
 /* *
  *  Payments UI */
@@ -605,9 +671,6 @@
  *  Force upgrade */
 "Update required" = "Απαιτείται ενημέρωση";
 
-/* Upgrade plan button */
-"Upgrade" = "Αναβάθμιση";
-
 /* Plan selection title */
 "Upgrade your plan" = "Αναβαθμίστε το πλάνο σας";
 
@@ -675,6 +738,9 @@
 /* Error applying credit after registration alert */
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Έχετε εγγραφεί επιτυχώς, αλλά η πληρωμή σας δεν υποβλήθηκε σε επεξεργασία. Για να στείλετε ξανά τα στοιχεία πληρωμής σας, κάντε κλικ στο Επανάληψη. Θα χρεωθείτε μόνο μία φορά. Εάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη πελατών.";
 
+/* Info about existing external Proton Mail address */
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Χρειάζεστε μια διεύθυνση ηλεκτρονικού ταχυδρομείου Proton για να χρησιμοποιήσετε το Proton Mail και το Ημερολόγιο Proton.\nΘα εξακολουθείτε να μπορείτε να χρησιμοποιήσετε το %@ για να συνδεθείτε και να ανακτήσετε τον λογαριασμό σας.";
+
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Θα αποσυνδεθείτε και όλα τα δεδομένα που σχετίζονται με αυτόν τον λογαριασμό θα διαγραφούν από αυτήν τη συσκευή.";
 
@@ -707,76 +773,4 @@
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Η συνεδρία σας έχει λήξει. Παρακαλώ συνδεθείτε ξανά.";
-
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ από %@";
-
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Πρόσβαση παγκοσμίως σε υπηρεσίες μετάδοσης";
-
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Ενσωματωμένη φραγή διαφημίσεων (NetShield)";
-
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Ελέγξτε τη σύνδεσή σας στο διαδίκτυο";
-
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Προβλήματα σύνδεσης";
-
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Επέκταση συνδρομής";
-
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Δωρεάν VPN σε μία μόνο συσκευή";
-
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Αποκτήστε %@";
-
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Αποκτήστε το Proton δωρεάν";
-
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Ύψιστη ταχύτητα VPN";
-
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Ένα πρόγραμμα για όλες τις υπηρεσίες Proton";
-
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Επιτυχημένη αναβάθμιση προγράμματος";
-
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Διακομιστές Secure Core";
-
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Αυστηρή πολιτική μη καταγραφής";
-
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ο λογαριασμός εκκίνησης χωρίς κόστους έχει σχεδιαστεί για να παρέχει σε όλους το απόρρητο από προεπιλογή.";
-
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Η κατά προτεραιότητα απόρρητη λύση ταχυδρομείου και ημερολογίου για τις καθημερινές ανάγκες επικοινωνίας σας.";
-
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Το απόλυτο πακέτο απορρήτου με πρόσβαση σε όλες τις premium υπηρεσίες Proton.";
-
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor μέσω VPN";
-
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες και φίλτρα";
-
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Έως και %@ αποθηκευτικού χώρου";
-
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Η ιδιωτικότητα και διασφάλισή σας είναι η προτεραιότητά μας.";
-
-/* Welcome screen */
-"Privacy by default" = "Ιδιωτικότητα από προεπιλογή";
 

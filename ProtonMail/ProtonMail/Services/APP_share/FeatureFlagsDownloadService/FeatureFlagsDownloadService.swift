@@ -19,7 +19,7 @@ import ProtonCore_Services
 
 enum FeatureFlagKey: String, CaseIterable {
     case inAppFeedback = "InAppFeedbackIOS"
-    case scheduleSend = "ScheduledSend"
+    case scheduleSend = "ScheduledSendFreemium"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {

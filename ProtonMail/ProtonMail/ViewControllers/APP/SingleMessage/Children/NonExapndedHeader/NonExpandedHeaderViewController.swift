@@ -65,6 +65,9 @@ class NonExpandedHeaderViewController: UIViewController {
                                                 preferredFont: .footnote,
                                                 textColor: ColorProvider.InteractionNorm,
                                                 lineBreakMode: .byTruncatingMiddle)
+
+        customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
+
         customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
@@ -75,7 +78,7 @@ class NonExpandedHeaderViewController: UIViewController {
         }
         let isStarred = viewModel.infoProvider.message.isStarred
         customView.starImageView.isHidden = !isStarred
-        let tags = viewModel.infoProvider.message.tagUIModels
+        let tags = viewModel.infoProvider.message.tagUIModels()
         tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
         let contact = viewModel.infoProvider.checkedSenderContact
         update(senderEncryptionIconStatus: contact?.encryptionIconStatus)
@@ -93,6 +96,16 @@ class NonExpandedHeaderViewController: UIViewController {
         } else {
             customView.lockContainer.isHidden = true
         }
+    }
+
+    func preferredContentSizeChanged() {
+        customView.preferredContentSizeChanged()
+        setUpTags()
+    }
+
+    private func setUpTags() {
+        let tags = viewModel.infoProvider.message.tagUIModels()
+        tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
     }
 
 	private func setUpTimeLabelUpdate() {

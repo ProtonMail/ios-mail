@@ -142,7 +142,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
             navigateToComposer(existingMessage: message)
         case .composeScheduledMessage:
             guard let message = sender as? Message else { return }
-            editScheduleMsg(messageID: MessageID(message.messageID))
+            editScheduleMsg(messageID: MessageID(message.messageID), originalScheduledTime: nil)
         case .troubleShoot:
             presentTroubleShootView()
         case .search:
@@ -186,13 +186,18 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         case .composeMailto where path.value != nil:
             followToComposeMailTo(path: path.value, deeplink: deeplink)
         case .composeScheduledMessage where path.value != nil:
-            guard let messageID = path.value else {
+            guard let messageID = path.value,
+                  let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
                 return
             }
             if case let user = self.viewModel.user,
                case let msgService = user.messageService,
                let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
-                navigateToComposer(existingMessage: message, isEditingScheduleMsg: true)
+                navigateToComposer(
+                    existingMessage: message,
+                    isEditingScheduleMsg: true,
+                    originalScheduledTime: .init(rawValue: originalScheduledTime)
+                )
             }
         default:
             self.go(to: dest, sender: deeplink)
@@ -237,14 +242,21 @@ extension MailboxCoordinator {
         self.viewController?.present(viewController, animated: true, completion: nil)
     }
 
-    private func navigateToComposer(existingMessage: Message?, isEditingScheduleMsg: Bool = false) {
+    private func navigateToComposer(
+        existingMessage: Message?,
+        isEditingScheduleMsg: Bool = false,
+        isOpenedFromShare: Bool = false,
+        originalScheduledTime: OriginalScheduleDate? = nil
+    ) {
         let user = self.viewModel.user
         let viewModel = ContainableComposeViewModel(msg: existingMessage,
                                                     action: existingMessage == nil ? .newDraft : .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
                                                     coreDataContextProvider: contextProvider,
-                                                    isEditingScheduleMsg: isEditingScheduleMsg)
+                                                    isEditingScheduleMsg: isEditingScheduleMsg,
+                                                    isOpenedFromShare: isOpenedFromShare,
+                                                    originalScheduledTime: originalScheduledTime)
         let composer = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
                                                        editorViewModel: viewModel)
         composer.start()
@@ -294,6 +306,12 @@ extension MailboxCoordinator {
     }
 
     private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
+        if let msgID = path,
+           let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
+            navigateToComposer(existingMessage: existingMsg, isOpenedFromShare: true)
+            return
+        }
+
         if let nav = self.navigation,
            let value = path,
            let mailToURL = URL(string: value) {
@@ -347,12 +365,12 @@ extension MailboxCoordinator {
         viewController?.navigationController?.present(nav, animated: true)
     }
 
-    private func editScheduleMsg(messageID: MessageID) {
+    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: OriginalScheduleDate?) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return
         }
-        navigateToComposer(existingMessage: msg, isEditingScheduleMsg: true)
+        navigateToComposer(existingMessage: msg, isEditingScheduleMsg: true, originalScheduledTime: originalScheduledTime)
     }
 }
 
@@ -501,8 +519,8 @@ extension MailboxCoordinator {
             user: viewModel.user,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
         )
-        coordinator.goToDraft = { [weak self] msgID in
-            self?.editScheduleMsg(messageID: msgID)
+        coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
+            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
         }
         singleMessageCoordinator = coordinator
         coordinator.start()
@@ -520,8 +538,8 @@ extension MailboxCoordinator {
             targetID: targetID
         )
         conversationCoordinator = coordinator
-        coordinator.goToDraft = { [weak self] msgID in
-            self?.editScheduleMsg(messageID: msgID)
+        coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
+            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
         }
         coordinator.start()
     }
@@ -535,8 +553,8 @@ extension MailboxCoordinator {
             user: viewModel.user,
             userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
-            goToDraft: { [weak self] msgID in
-                self?.editScheduleMsg(messageID: msgID)
+            goToDraft: { [weak self] msgID, originalScheduledTime in
+                self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
         let page = PagesViewController(viewModel: pageVM, services: services)
@@ -553,8 +571,8 @@ extension MailboxCoordinator {
             targetMessageID: targetID,
             userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
-            goToDraft: { [weak self] msgID in
-                self?.editScheduleMsg(messageID: msgID)
+            goToDraft: { [weak self] msgID, originalScheduledTime in
+                self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
         let page = PagesViewController(viewModel: pageVM, services: services)
