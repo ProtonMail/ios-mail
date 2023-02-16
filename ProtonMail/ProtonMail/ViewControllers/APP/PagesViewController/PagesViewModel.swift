@@ -173,8 +173,8 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
     override func item(for id: ConversationID, offset: Int) -> (ConversationEntity?, Int?) {
         guard let contextLabels = fetchedResultsController?.fetchedObjects,
               let targetIndex = contextLabels.firstIndex(where: { $0.conversationID == id.rawValue }),
-              let context = contextLabels[safe: targetIndex + offset] else { return (nil, nil) }
-        let conversation = context.conversation
+              let context = contextLabels[safe: targetIndex + offset],
+              let conversation = context.conversation else { return (nil, nil) }
         return (ConversationEntity(conversation), targetIndex + offset)
     }
 }

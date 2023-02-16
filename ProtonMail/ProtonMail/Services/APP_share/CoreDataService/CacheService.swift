@@ -261,9 +261,11 @@ class CacheService: CacheServiceProtocol {
             }
             if let contextLabels = try? context.fetch(contextLabelFetch) {
                 contextLabels.forEach { label in
-                    label.conversation.isSoftDeleted = true
-                    let num = max(0, label.conversation.numMessages.intValue - label.messageCount.intValue)
-                    label.conversation.numMessages = NSNumber(value: num)
+                    if let conversation = label.conversation {
+                        conversation.isSoftDeleted = true
+                        let num = max(0, conversation.numMessages.intValue - label.messageCount.intValue)
+                        conversation.numMessages = NSNumber(value: num)
+                    }
                     label.isSoftDeleted = true
                 }
             }
@@ -276,7 +278,11 @@ class CacheService: CacheServiceProtocol {
         messageFetch.predicate = NSPredicate(format: "%K = %@", Message.Attributes.isSoftDeleted, NSNumber(true))
 
         let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
-        contextLabelFetch.predicate = NSPredicate(format: "%K = %@", ContextLabel.Attributes.isSoftDeleted, NSNumber(true))
+        contextLabelFetch.predicate = NSPredicate(
+            format: "%K = %@",
+            "conversation.\(Conversation.Attributes.isSoftDeleted)",
+            NSNumber(true)
+        )
 
         coreDataService.performAndWaitOnRootSavingContext { context in
             if let messages = try? context.fetch(messageFetch) {
@@ -284,9 +290,8 @@ class CacheService: CacheServiceProtocol {
             }
             if let contextLabels = try? context.fetch(contextLabelFetch) {
                 contextLabels.forEach { label in
-                    let conversation: Conversation? = label.conversation
-                    if conversation != nil {
-                        label.conversation.isSoftDeleted = false
+                    if let conversation = label.conversation {
+                        context.delete(conversation)
                     }
                     context.delete(label)
                 }

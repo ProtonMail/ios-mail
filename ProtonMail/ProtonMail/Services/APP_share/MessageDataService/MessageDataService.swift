@@ -573,7 +573,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      ContextLabel.Attributes.userID,
                                                      self.userID.rawValue,
                                                      ContextLabel.Attributes.unreadCount,
-                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     "conversation.\(Conversation.Attributes.isSoftDeleted)",
                                                      NSNumber(false))
             } else {
                 fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K == %@)",
@@ -581,7 +581,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      labelID.rawValue,
                                                      ContextLabel.Attributes.userID,
                                                      self.userID.rawValue,
-                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     "conversation.\(Conversation.Attributes.isSoftDeleted)",
                                                      NSNumber(false))
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
