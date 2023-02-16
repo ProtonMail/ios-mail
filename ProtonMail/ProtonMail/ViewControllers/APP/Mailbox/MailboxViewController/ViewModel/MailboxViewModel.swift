@@ -203,7 +203,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     var selectedConversations: [ConversationEntity] {
         fetchedResultsController?.fetchedObjects?
             .compactMap { $0 as? ContextLabel }
-            .map(\.conversation)
+            .compactMap(\.conversation)
             .filter { selectedIDs.contains($0.conversationID) }
             .map(ConversationEntity.init) ?? []
     }
