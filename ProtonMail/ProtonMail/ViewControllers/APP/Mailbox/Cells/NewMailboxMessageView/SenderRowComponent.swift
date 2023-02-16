@@ -17,28 +17,22 @@
 
 import Foundation
 
-class HeaderViewModel {
-    var reloadView: (() -> Void)?
+enum SenderRowComponent: Equatable {
+    case string(String)
+    case officialBadge
+}
 
-    private(set) var infoProvider: MessageInfoProvider {
-        didSet { reloadView?() }
-    }
-
-    var isOfficialBadgeHidden: Bool {
-        do {
-            let sender = try infoProvider.message.parseSender()
-            return !sender.isFromProton
-        } catch {
-            assertionFailure("\(error)")
-            return true
+extension Array where Element == SenderRowComponent {
+    func initials() -> String {
+        for component in self {
+            switch component {
+            case .string(let string) where !string.isEmpty:
+                return string.initials()
+            default:
+                break
+            }
         }
-    }
 
-    init(infoProvider: MessageInfoProvider) {
-        self.infoProvider = infoProvider
-    }
-
-    func providerHasChanged(provider: MessageInfoProvider) {
-        infoProvider = provider
+        return "?"
     }
 }

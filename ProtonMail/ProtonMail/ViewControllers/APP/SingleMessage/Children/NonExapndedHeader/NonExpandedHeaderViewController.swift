@@ -65,6 +65,9 @@ class NonExpandedHeaderViewController: UIViewController {
                                                 preferredFont: .footnote,
                                                 textColor: ColorProvider.InteractionNorm,
                                                 lineBreakMode: .byTruncatingMiddle)
+
+        customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
+
         customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)

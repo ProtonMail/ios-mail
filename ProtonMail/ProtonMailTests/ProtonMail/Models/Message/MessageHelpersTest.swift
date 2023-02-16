@@ -38,7 +38,7 @@ class MessageHelpersTest: XCTestCase {
            let fakeEmailData = testEmailData_aaa.parseObjectAny()!
            let fakeEmailEntity = prepareEmail(with: fakeEmailData)
            let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 5, color: "#000000")
-           let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmailEntity.email: fakeEmailEntity], groupContacts: [vo])
+           let name = fakeMsgEntity.allEmailAddresses([fakeEmailEntity.email: fakeEmailEntity], allGroupContacts: [vo])
            XCTAssertEqual("groupA (0/5), test5", name)
        }
 
@@ -48,7 +48,7 @@ class MessageHelpersTest: XCTestCase {
 
         let fakeEmailData = testEmailData_aaa.parseObjectAny()!
         let fakeEmailEntity = prepareEmail(with: fakeEmailData)
-        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmailEntity.email: fakeEmailEntity], groupContacts: [])
+        let name = fakeMsgEntity.allEmailAddresses([fakeEmailEntity.email: fakeEmailEntity], allGroupContacts: [])
         XCTAssertEqual("test0, test1, test2, test3, test4, test5", name)
     }
 
@@ -58,7 +58,7 @@ class MessageHelpersTest: XCTestCase {
 
         let fakeEmailData = testEmailData_bbb.parseObjectAny()!
         let fakeEmailEntity = prepareEmail(with: fakeEmailData)
-        let name = fakeMsgEntity.getSenderName(replacingEmailsMap: [fakeEmailEntity.email: fakeEmailEntity], groupContacts: [])
+        let name = fakeMsgEntity.allEmailAddresses([fakeEmailEntity.email: fakeEmailEntity], allGroupContacts: [])
         XCTAssertEqual("test0, test1, test2, test3, test4, test000", name)
     }
 

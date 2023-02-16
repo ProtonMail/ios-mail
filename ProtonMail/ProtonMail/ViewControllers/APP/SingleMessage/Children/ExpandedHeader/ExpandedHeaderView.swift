@@ -39,11 +39,19 @@ class ExpandedHeaderView: HeaderView {
         lockImageControl.addSubview(lockImageView)
 
         addSubview(initialsContainer)
-        addSubview(senderLabel)
+
+        let firstLineViews: [UIView] = [
+            senderLabel,
+            officialBadge,
+            UIView(),
+            starImageView,
+            timeLabel
+        ]
+        firstLineViews.forEach(firstLineStackView.addArrangedSubview(_:))
+        addSubview(firstLineStackView)
+
         addSubview(senderEmailControl)
         addSubview(lockContainer)
-        addSubview(timeLabel)
-        addSubview(starImageView)
         addSubview(contentStackView)
         initialsContainer.addSubview(initialsLabel)
     }
@@ -88,24 +96,14 @@ extension ExpandedHeaderView {
 
     private func setUpFirstLineLayout() {
         [
-            senderLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
-            senderLabel.topAnchor.constraint(equalTo: initialsContainer.topAnchor),
-            senderLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8),
-            senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
-        ].activate()
-
-        [
-            timeLabel.centerYAnchor.constraint(equalTo: senderLabel.centerYAnchor),
-            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
-        ].activate()
-        timeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
-        [
-            starImageView.centerYAnchor.constraint(equalTo: senderLabel.centerYAnchor),
-            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4),
+            firstLineStackView.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
+            firstLineStackView.topAnchor.constraint(equalTo: initialsContainer.topAnchor),
+            firstLineStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             starImageView.widthAnchor.constraint(equalToConstant: 16),
             starImageView.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
+
+        timeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     private func setUpSenderMailLineLayout() {

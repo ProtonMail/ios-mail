@@ -68,7 +68,7 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         customView.messageContentView.replyImageView.tintColor = ColorProvider.IconWeak
         customView.messageContentView.replyAllImageView.isHidden = false
         customView.messageContentView.replyAllImageView.tintColor = ColorProvider.IconWeak
-        customView.messageContentView.senderLabel.attributedText = nil
+        customView.messageContentView.sendersStackView.clearAllViews()
         customView.messageContentView.timeLabel.attributedText = nil
         customView.messageContentView.attachmentImageView.isHidden = false
         customView.messageContentView.starImageView.isHidden = false

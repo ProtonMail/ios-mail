@@ -803,6 +803,8 @@ struct LocalizationList {
         "L11n.EmailTrackerProtection.some_images_failed_to_load": L11n.EmailTrackerProtection.some_images_failed_to_load,
         "L11n.EmailTrackerProtection.load_anyway": L11n.EmailTrackerProtection.load_anyway,
         "L11n.EmailTrackerProtection.feature_description": L11n.EmailTrackerProtection.feature_description,
+        // L11n.OfficialBadge
+        "L11n.OfficialBadge.title": L11n.OfficialBadge.title,
         // L11n.ReferralProgram
         "L11n.ReferralProgram.linkCopied": L11n.ReferralProgram.linkCopied,
         "L11n.ReferralProgram.title": L11n.ReferralProgram.title,

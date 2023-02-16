@@ -23,9 +23,17 @@ class HeaderView: UIView {
     let senderLabel = SubviewsFactory.senderLabel
     let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
+    let officialBadge = SubviewsFactory.officialBadge
     let timeLabel = SubviewsFactory.timeLabel
     let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
+
+    let firstLineStackView = UIStackView.stackView(
+        axis: .horizontal,
+        distribution: .fill,
+        alignment: .center,
+        spacing: 5
+    )
 
     class SubviewsFactory {
         class var container: UIView {
@@ -40,6 +48,14 @@ class HeaderView: UIView {
             let imageView = UIImageView(frame: .zero)
             imageView.contentMode = .scaleAspectFill
             return imageView
+        }
+
+        class var officialBadge: UIView {
+            let view = OfficialBadge()
+            view.isHidden = true
+            // this is needed to make the badge compress before the senderLabel does
+            view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            return view
         }
 
         class var senderLabel: UILabel {

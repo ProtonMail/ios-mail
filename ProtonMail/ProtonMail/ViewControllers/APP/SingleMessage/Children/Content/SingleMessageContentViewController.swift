@@ -365,14 +365,27 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func presentActionSheet(context: MessageHeaderContactContext) {
-        var title = context.contact.title
-        if context.type == .sender {
+        let title: String
+        let showOfficialBadge: Bool
+
+        switch context {
+        case .recipient(let contactVO):
+            title = contactVO.title
+            showOfficialBadge = false
+        case .sender(let sender):
             title = viewModel.messageInfoProvider.senderName
+            showOfficialBadge = sender.isFromProton
         }
-        let actionSheet = PMActionSheet.messageDetailsContact(for: title, subTitle: context.contact.subtitle) { [weak self] action in
+
+        let actionSheet = PMActionSheet.messageDetailsContact(
+            title: title,
+            subtitle: context.contact.subtitle,
+            showOfficialBadge: showOfficialBadge
+        ) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
         }
+
         actionSheet.presentAt(navigationController ?? self, hasTopConstant: false, animated: true)
     }
 

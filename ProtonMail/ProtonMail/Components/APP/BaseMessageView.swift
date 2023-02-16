@@ -18,6 +18,7 @@
 import ProtonCore_UIFoundations
 
 class BaseMessageView: UIView {
+    let sendersStackView = UIStackView.stackView(alignment: .center, spacing: 2)
     let attachmentImageView = SubviewsFactory.attachmentImageView
     let forwardImageView = SubviewsFactory.forwardImageView
     let replyAllImageView = SubviewsFactory.replyAllImageView
@@ -25,6 +26,35 @@ class BaseMessageView: UIView {
     let starImageView = SubviewsFactory.starImageView
     let tagsView = SingleRowTagsView()
     let timeLabel = UILabel()
+
+    func configureSenderRow(
+        components: [SenderRowComponent],
+        preferredFont: UIFont.TextStyle,
+        weight: UIFont.Weight,
+        textColor: UIColor
+    ) {
+        sendersStackView.clearAllViews()
+
+        let views: [UIView] = components.map { component in
+            switch component {
+            case .string(let string):
+                let label = UILabel()
+                label.lineBreakMode = .byTruncatingTail
+                label.set(text: string, preferredFont: preferredFont, weight: weight, textColor: textColor)
+                return label
+            case .officialBadge:
+                return OfficialBadge()
+            }
+        }
+
+        for (index, view) in views.enumerated() {
+            // subsequent views have lower resistance to emulate truncation
+            let priority = UILayoutPriority(rawValue: UILayoutPriority.defaultLow.rawValue - Float(index))
+            view.setContentCompressionResistancePriority(priority, for: .horizontal)
+
+            sendersStackView.addArrangedSubview(view)
+        }
+    }
 }
 
 extension BaseMessageView {

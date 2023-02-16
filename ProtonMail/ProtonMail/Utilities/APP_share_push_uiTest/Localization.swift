@@ -1492,6 +1492,10 @@ enum L11n {
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
     }
 
+    struct OfficialBadge {
+        static let title = NSLocalizedString("Official", comment: "Official badge next to sender's name")
+    }
+
     struct ReferralProgram {
         static let linkCopied = NSLocalizedString("Link copied.", comment: "The banner title after tapping link copy button in referral share view.")
         static let title = NSLocalizedString("Invite friends to Proton,\n get up to $90 in credits!", comment: "The article title of the referral share view.")

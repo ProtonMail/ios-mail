@@ -100,6 +100,8 @@ class ExpandedHeaderViewController: UIViewController {
             lineBreakMode: .byTruncatingMiddle
         )
 
+        customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
+
         customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
@@ -113,7 +115,7 @@ class ExpandedHeaderViewController: UIViewController {
 
         customView.senderEmailControl.tap = { [weak self] in
             guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
-            self?.contactTapped(sheetType: .sender, contact: sender)
+            self?.contactTapped?(.sender(sender.sender))
         }
 
         var contactRow: ExpandedHeaderRowView?
@@ -202,10 +204,10 @@ class ExpandedHeaderViewController: UIViewController {
             addressController.label.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
             if let contact = recipient.contact {
                 control.tap = { [weak self] in
-                    self?.contactTapped(sheetType: .recipient, contact: contact)
+                    self?.contactTapped?(.recipient(contact))
                 }
                 addressController.tap = { [weak self] in
-                    self?.contactTapped(sheetType: .recipient, contact: contact)
+                    self?.contactTapped?(.recipient(contact))
                 }
             }
             let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center, spacing: 4)
@@ -226,11 +228,6 @@ class ExpandedHeaderViewController: UIViewController {
         }
         customView.contentStackView.addArrangedSubview(row)
         return row
-    }
-
-    private func contactTapped(sheetType: MessageDetailsContactActionSheetType, contact: ContactVO) {
-        let context = MessageHeaderContactContext(type: sheetType, contact: contact)
-        contactTapped?(context)
     }
 
     private func presentFullDateRow(stringDate: String) {

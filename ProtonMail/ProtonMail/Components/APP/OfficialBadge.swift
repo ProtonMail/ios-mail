@@ -15,30 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_UIFoundations
 
-class HeaderViewModel {
-    var reloadView: (() -> Void)?
+final class OfficialBadge: PaddingLabel {
+    init() {
+        super.init(withInsets: 2, 2, 6, 6)
 
-    private(set) var infoProvider: MessageInfoProvider {
-        didSet { reloadView?() }
+        self.translatesAutoresizingMaskIntoConstraints = false
+
+        backgroundColor = ColorProvider.BackgroundSecondary
+
+        set(
+            text: L11n.OfficialBadge.title,
+            preferredFont: .footnote,
+            weight: .semibold,
+            textColor: ColorProvider.TextAccent
+        )
     }
 
-    var isOfficialBadgeHidden: Bool {
-        do {
-            let sender = try infoProvider.message.parseSender()
-            return !sender.isFromProton
-        } catch {
-            assertionFailure("\(error)")
-            return true
-        }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    init(infoProvider: MessageInfoProvider) {
-        self.infoProvider = infoProvider
-    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
 
-    func providerHasChanged(provider: MessageInfoProvider) {
-        infoProvider = provider
+        setCornerRadius(radius: frame.height / 2)
     }
 }

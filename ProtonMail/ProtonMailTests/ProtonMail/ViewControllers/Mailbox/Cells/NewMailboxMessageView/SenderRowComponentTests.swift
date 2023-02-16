@@ -15,30 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import XCTest
 
-class HeaderViewModel {
-    var reloadView: (() -> Void)?
+@testable import ProtonMail
 
-    private(set) var infoProvider: MessageInfoProvider {
-        didSet { reloadView?() }
+final class SenderRowComponentTests: XCTestCase {
+
+    func testInitials_whenThereAreMultipleSenders_areTakenFromTheFirstOne() throws {
+        let components: [SenderRowComponent] = [.string("John Doe"), .officialBadge, .string("Foo Bar")]
+        XCTAssertEqual(components.initials(), "JD")
     }
 
-    var isOfficialBadgeHidden: Bool {
-        do {
-            let sender = try infoProvider.message.parseSender()
-            return !sender.isFromProton
-        } catch {
-            assertionFailure("\(error)")
-            return true
-        }
+    func testInitials_whenThereAreEmptySenderNames_fallBackToAQuestionMark() throws {
+        let components: [SenderRowComponent] = [.string("")]
+        XCTAssertEqual(components.initials(), "?")
     }
 
-    init(infoProvider: MessageInfoProvider) {
-        self.infoProvider = infoProvider
-    }
-
-    func providerHasChanged(provider: MessageInfoProvider) {
-        infoProvider = provider
+    func testInitials_whenThereAreNoSenderNames_fallBackToAQuestionMark() throws {
+        let components: [SenderRowComponent] = []
+        XCTAssertEqual(components.initials(), "?")
     }
 }
