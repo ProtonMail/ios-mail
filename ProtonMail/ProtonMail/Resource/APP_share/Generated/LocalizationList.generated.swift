@@ -827,6 +827,7 @@ struct LocalizationList {
         "L11n.ScheduledSend.itemAddresses": L11n.ScheduledSend.itemAddresses,
         "L11n.ScheduledSend.itemDomain": L11n.ScheduledSend.itemDomain,
         "L11n.ScheduledSend.itemAliases": L11n.ScheduledSend.itemAliases,
+        "L11n.ScheduledSend.inTheMorning": L11n.ScheduledSend.inTheMorning,
         // L11n.PushNotificationAction
         "L11n.PushNotificationAction.mark_as_read": L11n.PushNotificationAction.mark_as_read,
         "L11n.PushNotificationAction.archive": L11n.PushNotificationAction.archive,
