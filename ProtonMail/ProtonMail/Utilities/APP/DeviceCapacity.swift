@@ -17,9 +17,6 @@
 
 import Foundation
 
-// TODO, remove this when !2596 is merged
-typealias ByteCount = Int
-
 protocol DiskUsageProtocol {
     var availableCapacity: ByteCount { get }
     var isLowOnFreeSpace: Bool { get }

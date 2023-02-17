@@ -50,6 +50,7 @@ final class SettingsEncryptedSearchViewController: UITableViewController, Access
     }
 
     private func setupUI() {
+        emptyBackButtonTitleForNextView()
         title = LocalString._encrypted_search
         view.backgroundColor = ColorProvider.BackgroundSecondary
         view.frame = CGRect(origin: .zero, size: UIScreen.main.bounds.size)
