@@ -1520,6 +1520,7 @@ enum L11n {
         static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
         static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
         static let itemAliases = NSLocalizedString("Hide My Email aliases", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let inTheMorning = NSLocalizedString("In the morning", comment: "One of schedule time options")
     }
 
     struct PushNotificationAction {

@@ -369,6 +369,39 @@ class MockReceiptActionHandler: ReceiptActionHandler {
 
 }
 
+class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
+    @FuncStub(MockScheduledSendHelperDelegate.actionSheetWillAppear) var actionSheetWillAppearStub
+    func actionSheetWillAppear() {
+        actionSheetWillAppearStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.actionSheetWillDisappear) var actionSheetWillDisappearStub
+    func actionSheetWillDisappear() {
+        actionSheetWillDisappearStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.scheduledTimeIsSet) var scheduledTimeIsSetStub
+    func scheduledTimeIsSet(date: Date?) {
+        scheduledTimeIsSetStub(date)
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.showSendInTheFutureAlert) var showSendInTheFutureAlertStub
+    func showSendInTheFutureAlert() {
+        showSendInTheFutureAlertStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.isItAPaidUser, initialReturn: Bool()) var isItAPaidUserStub
+    func isItAPaidUser() -> Bool {
+        isItAPaidUserStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.showScheduleSendPromotionView) var showScheduleSendPromotionViewStub
+    func showScheduleSendPromotionView() {
+        showScheduleSendPromotionViewStub()
+    }
+
+}
+
 class MockSideMenuProtocol: SideMenuProtocol {
     @PropertyStub(\MockSideMenuProtocol.menuViewController, initialGet: nil) var menuViewControllerStub
     var menuViewController: UIViewController! {

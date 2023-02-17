@@ -249,6 +249,20 @@ final class Date_ExtensionTests: XCTestCase {
         XCTAssertEqual(date.localizedString(withTemplate: "yy MM dd jj: mm"), "16/12/22 10:51")
         XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "16/12 10:51")
     }
+
+    func testToday() throws {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        let checker = DateFormatter()
+        checker.dateFormat = "yyyy-MM-dd HH:mm"
+
+        let date = try XCTUnwrap(formatter.date(from: "2023-02-10"))
+        let result = try XCTUnwrap(date.today(at: 8, minute: 0))
+
+        let resultText = try XCTUnwrap(checker.string(from: result))
+        XCTAssertEqual(resultText, "2023-02-10 08:00")
+    }
 }
 
 extension Date_ExtensionTests {
