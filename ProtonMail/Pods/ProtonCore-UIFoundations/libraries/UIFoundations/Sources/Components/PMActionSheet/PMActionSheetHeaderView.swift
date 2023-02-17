@@ -126,18 +126,6 @@ extension PMActionSheetHeaderView {
             stack.addArrangedSubview(titleRow)
         }
 
-        let color: UIColor = ColorProvider.TextNorm
-        let lbl = UILabel(title, font: font, textColor: color)
-        lbl.sizeToFit()
-        titleLabel = lbl
-
-        let titleRow = UIStackView(.horizontal, alignment: .center, distribution: .equalSpacing, useAutoLayout: true)
-        titleRow.spacing = 4
-        leftTitleViews.forEach(titleRow.addArrangedSubview)
-        titleRow.addArrangedSubview(lbl)
-        rightTitleViews.forEach(titleRow.addArrangedSubview)
-        stack.addArrangedSubview(titleRow)
-
         if let subtitle = self.subtitle {
             let font: UIFont = .adjustedFont(forTextStyle: .caption1)
             let color: UIColor = ColorProvider.TextWeak
