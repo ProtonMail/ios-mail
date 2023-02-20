@@ -255,9 +255,6 @@ excluded:
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/Cells/SettingsTwoLinesCell.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SettingsDeviceCoordinator.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DebugDetailsViewController.swift
-  - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SettingsLockViewController/SettingsLockCoordinator.swift
-  - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SettingsLockViewController/SettingsLockViewModel.swift
-  - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SettingsLockViewController/SettingsLockViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/SwipeAction/SettingsGesturesViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/Account/Privacy/SettingsPrivacyViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP/Settings/DeviceSetting/Account/Privacy/SettingsPrivacyCoordinator.swift

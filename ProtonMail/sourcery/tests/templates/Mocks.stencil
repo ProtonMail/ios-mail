@@ -1,6 +1,7 @@
 import CoreData
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
+import ProtonCore_Keymaker
 
 @testable import ProtonMail
 

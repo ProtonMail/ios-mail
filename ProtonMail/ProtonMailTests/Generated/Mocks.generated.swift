@@ -3,6 +3,7 @@
 import CoreData
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
+import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
@@ -337,6 +338,47 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
 
 }
 
+class MockKeymakerProtocol: KeymakerProtocol {
+    @FuncStub(MockKeymakerProtocol.activate) var activateStub
+    func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
+        activateStub(protector, completion)
+    }
+
+    @FuncStub(MockKeymakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
+    func deactivate(_ protector: ProtectionStrategy) -> Bool {
+        deactivateStub(protector)
+    }
+
+}
+
+class MockLockPreferences: LockPreferences {
+    @PropertyStub(\MockLockPreferences.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
+    var isPinCodeEnabled: Bool {
+        isPinCodeEnabledStub()
+    }
+
+    @PropertyStub(\MockLockPreferences.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
+    var isTouchIDEnabled: Bool {
+        isTouchIDEnabledStub()
+    }
+
+    @PropertyStub(\MockLockPreferences.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
+    var isAppKeyEnabled: Bool {
+        isAppKeyEnabledStub()
+    }
+
+    @FuncStub(MockLockPreferences.setKeymakerRandomkey) var setKeymakerRandomkeyStub
+    func setKeymakerRandomkey(key: String?) {
+        setKeymakerRandomkeyStub(key)
+    }
+
+    @FuncStub(MockLockPreferences.setLockTime) var setLockTimeStub
+    func setLockTime(value: AutolockTimeout) {
+        setLockTimeStub(value)
+    }
+
+}
+
 class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {
@@ -398,6 +440,22 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
     @FuncStub(MockScheduledSendHelperDelegate.showScheduleSendPromotionView) var showScheduleSendPromotionViewStub
     func showScheduleSendPromotionView() {
         showScheduleSendPromotionViewStub()
+    }
+
+}
+
+class MockSettingsLockRouterProtocol: SettingsLockRouterProtocol {
+    @FuncStub(MockSettingsLockRouterProtocol.go) var goStub
+    func go(to dest: SettingsLockRouterDestination) {
+        goStub(dest)
+    }
+
+}
+
+class MockSettingsLockUIProtocol: SettingsLockUIProtocol {
+    @FuncStub(MockSettingsLockUIProtocol.reloadData) var reloadDataStub
+    func reloadData() {
+        reloadDataStub()
     }
 
 }
