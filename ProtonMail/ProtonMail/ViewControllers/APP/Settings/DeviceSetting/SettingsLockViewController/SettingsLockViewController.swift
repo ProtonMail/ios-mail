@@ -35,7 +35,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         static let cellHeight: CGFloat = 48.0
         static let changePinCodeCell: String = "ChangePinCode"
         static let enableProtectionCell: String = "EnableProtection"
-        static let switchCell: String = "switch_table_view_cell"
+        static let switchCell: String = SwitchTableViewCell.CellID
     }
 
     init(viewModel: SettingsLockViewModel, coordinator: SettingsLockCoordinator) {
@@ -159,26 +159,33 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             return cell
         case .mainKey:
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath) as! SwitchTableViewCell
-
             let appKeyEnabled = self.viewModel.isAppKeyEnabled
-            cell.configCell(eSection.description, isOn: appKeyEnabled) { newStatus, feedback in
+            cell.configCell(L11n.SettingsLockScreen.appKeyProtection, isOn: appKeyEnabled) { [weak self] newStatus, feedback in
                 if newStatus {
-                    if let randomProtection = RandomPinProtection.randomPin {
-                        keymaker.deactivate(randomProtection)
-                    }
-                    userCachedStatus.keymakerRandomkey = nil
+                    self?.showAppKeyDisclaimer(for: cell.switchView)
                 } else {
-                    userCachedStatus.keymakerRandomkey = String.randomString(32)
-                    if let randomProtection = RandomPinProtection.randomPin {
-                        keymaker.activate(randomProtection) { _ in
-
-                        }
-                    }
+                    self?.viewModel.didTapDisableAppKey()
                 }
                 feedback(true)
             }
             return cell
         }
+    }
+
+    private func showAppKeyDisclaimer(for appKeySwitch: UISwitch) {
+        let alert = UIAlertController(
+            title: L11n.SettingsLockScreen.appKeyDisclaimerTitle,
+            message: L11n.SettingsLockScreen.appKeyDisclaimer,
+            preferredStyle: .alert
+        )
+        let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .default) { [weak self] _ in
+            self?.viewModel.didTapEnableAppKey()
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
+            appKeySwitch.setOn(false, animated: true)
+        }
+        [proceed, cancel].forEach(alert.addAction)
+        present(alert, animated: true, completion: nil)
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -205,6 +212,33 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8.0).isActive = true
         }
         return header
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let section = viewModel.sections[section]
+        guard
+            section.hasFooter,
+            let footerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
+        else { return nil }
+        configFooterCell(footerCell, for: section)
+        return footerCell
+    }
+
+    private func configFooterCell(_ footerCell: UITableViewHeaderFooterView, for section: SettingLockSection) {
+        footerCell.contentView.subviews.forEach { $0.removeFromSuperview() }
+
+        switch section {
+        case .mainKey:
+            let textView = SubviewFactory.appKeyProtectionTextView
+            footerCell.contentView.addSubview(textView)
+            [
+                textView.topAnchor.constraint(equalTo: footerCell.contentView.topAnchor, constant: 8),
+                textView.leftAnchor.constraint(equalTo: footerCell.contentView.leftAnchor, constant: 12)
+            ].activate()
+            textView.centerInSuperview()
+        default:
+            break
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -263,5 +297,38 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         default:
             return UITableView.automaticDimension
         }
+    }
+}
+
+extension SettingsLockViewController {
+
+    private enum SubviewFactory {
+
+        static let appKeyProtectionTextView: UITextView = {
+            let textView = UITextView()
+            textView.translatesAutoresizingMaskIntoConstraints = false
+            textView.isScrollEnabled = false
+            textView.isEditable = false
+            textView.backgroundColor = .clear
+            textView.font = .preferredFont(forTextStyle: .footnote)
+
+            let learnMore = LocalString._learn_more
+            let text = String.localizedStringWithFormat(L11n.SettingsLockScreen.appKeyProtectionDescription, learnMore)
+            let attributes = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
+            let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
+            if let subrange = text.range(of: learnMore) {
+                let nsRange = NSRange(subrange, in: text)
+                attributedString.addAttribute(.link, value: Link.LearnMore.appKeyProtection, range: nsRange)
+                textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
+            }
+            textView.attributedText = attributedString
+            return textView
+        }()
+    }
+}
+
+private extension SettingLockSection {
+    var hasFooter: Bool {
+        self == .mainKey
     }
 }

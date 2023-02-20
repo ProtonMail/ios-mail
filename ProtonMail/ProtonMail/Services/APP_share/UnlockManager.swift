@@ -40,6 +40,14 @@ protocol CacheStatusInject {
     var isTouchIDEnabled: Bool { get }
     var isAppKeyEnabled: Bool { get }
     var pinFailedCount: Int { get set }
+
+    /// Returns `true` if there is some kind of protection to access the app, but
+    /// the main key is accessible without the user having to interact to unlock the app.
+    var isAppLockedAndAppKeyDisabled: Bool { get }
+
+    /// Returns `true` if there is some kind of protection to access the app, and
+    /// the main key is only accessible if user interacts to unlock the app (e.g. enters pin, uses FaceID,...)
+    var isAppLockedAndAppKeyEnabled: Bool { get }
 }
 
 protocol UnlockManagerDelegate: AnyObject {
@@ -141,15 +149,19 @@ class UnlockManager: Service {
     internal func initiateUnlock(flow signinFlow: SignInUIFlow,
                                  requestPin: @escaping () -> Void,
                                  requestMailboxPassword: @escaping () -> Void) {
-        switch signinFlow {
-        case .requirePin:
-            requestPin()
+        if userCachedStatus.isAppLockedAndAppKeyDisabled {
+            unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+        } else {
+            switch signinFlow {
+            case .requirePin:
+                requestPin()
 
-        case .requireTouchID:
-            self.biometricAuthentication(requestMailboxPassword: requestMailboxPassword) // will send message
+            case .requireTouchID:
+                self.biometricAuthentication(requestMailboxPassword: requestMailboxPassword) // will send message
 
-        case .restore:
-            self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+            case .restore:
+                self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+            }
         }
     }
 
@@ -195,8 +207,9 @@ class UnlockManager: Service {
         }
         #endif
 
-        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
-
+        if !userCachedStatus.isTouchIDEnabled && !userCachedStatus.isPinCodeEnabled {
+            NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
+        }
         unlocked?()
     }
 }

@@ -32,12 +32,12 @@ enum SettingLockSection: Int {
     var description: String {
         switch self {
         case .enableProtection:
-            let title = "\n\nProtection"
+            let title = "\n\n\(L11n.SettingsLockScreen.protectionTitle)"
             return LocalString._lock_wipe_desc + title
         case .timing:
             return LocalString._timing
         case .mainKey:
-            return "Enable MainKey protection"
+            return L11n.SettingsLockScreen.advancedSettings
         default:
             return ""
         }
@@ -77,6 +77,9 @@ protocol SettingsLockViewModel: AnyObject {
     func enableBioProtection( completion: @escaping () -> Void)
     func disableProtection()
     func getBioProtectionTitle() -> String
+
+    func didTapEnableAppKey()
+    func didTapDisableAppKey()
 }
 
 class SettingsLockViewModelImpl: SettingsLockViewModel {
@@ -158,10 +161,10 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
             }
 
             if self.userCacheStatus.isPinCodeEnabled || self.userCacheStatus.isTouchIDEnabled {
-                sections.append(.timing)
                 if self.enableRandomProtection {
                     sections.append(.mainKey)
                 }
+                sections.append(.timing)
             }
         } else {
             if self.userCacheStatus.isPinCodeEnabled {
@@ -175,11 +178,11 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
 
     func enableBioProtection( completion: @escaping () -> Void) {
         keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-        keymaker.activate(BioProtection()) { activated in
+        keymaker.activate(BioProtection()) { [weak self] activated in
             if activated {
-                NotificationCenter.default.post(name: .appExtraSecurityEnabled, object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: .appLockProtectionEnabled, object: nil, userInfo: nil)
             }
-            completion()
+            self?.disableAppKey(completion: completion)
         }
     }
 
@@ -194,7 +197,7 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
             keymaker.deactivate(randomProtection)
         }
         userCachedStatus.keymakerRandomkey = nil
-        NotificationCenter.default.post(name: .appExtraSecurityDisabled, object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: .appLockProtectionDisabled, object: nil, userInfo: nil)
     }
 
     func getBioProtectionTitle() -> String {
@@ -205,6 +208,29 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
             return LocalString._security_protection_title_touchid
         default:
             return ""
+        }
+    }
+
+    func didTapEnableAppKey() {
+        if let randomProtection = RandomPinProtection.randomPin {
+            keymaker.deactivate(randomProtection)
+            NotificationCenter.default.post(name: .appKeyEnabled, object: nil, userInfo: nil)
+        }
+        userCachedStatus.keymakerRandomkey = nil
+    }
+
+    func didTapDisableAppKey() {
+        disableAppKey(completion: nil)
+    }
+
+    private func disableAppKey(completion: (() -> Void)?) {
+        userCachedStatus.keymakerRandomkey = String.randomString(32)
+        if let randomProtection = RandomPinProtection.randomPin {
+            keymaker.activate(randomProtection) { activated in
+                guard activated else { return }
+                NotificationCenter.default.post(name: .appKeyDisabled, object: nil, userInfo: nil)
+                completion?()
+            }
         }
     }
 }

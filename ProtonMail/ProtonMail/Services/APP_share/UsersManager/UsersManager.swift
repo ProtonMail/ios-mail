@@ -78,7 +78,7 @@ class UsersManager: Service {
     /// Server's config like url port path etc..
     var doh: DoH & ServerConfig
 
-    var users: [UserManager] = [] {
+    private(set) var users: [UserManager] = [] {
         didSet {
             userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }

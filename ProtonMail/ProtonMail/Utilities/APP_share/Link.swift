@@ -41,4 +41,7 @@ enum Link {
         static let trackYourRewards = "https://account.proton.me/mail/referral"
         static let referralTermsAndConditions = "https://proton.me/support/referral-program"
     }
+    enum LearnMore {
+        static let appKeyProtection = "https://proton.me/blog/ios-security-recommendations"
+    }
 }
