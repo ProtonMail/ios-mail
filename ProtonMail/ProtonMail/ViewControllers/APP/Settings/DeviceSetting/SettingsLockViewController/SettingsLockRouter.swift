@@ -22,24 +22,29 @@
 
 import UIKit
 
-class SettingsLockCoordinator {
-    private weak var navigationController: UINavigationController?
+enum SettingsLockRouterDestination: String {
+    case pinCodeSetup = "pincode_setup"
+}
 
-    enum Destination: String {
-        case pinCodeSetup = "pincode_setup"
-    }
+// sourcery: mock
+protocol SettingsLockRouterProtocol {
+    func go(to dest: SettingsLockRouterDestination)
+}
+
+final class SettingsLockRouter: SettingsLockRouterProtocol {
+    private weak var navigationController: UINavigationController?
 
     init(navigationController: UINavigationController?) {
         self.navigationController = navigationController
     }
 
     func start() {
-        let viewModel = SettingsLockViewModelImpl(biometricStatus: UIDevice.current, userCacheStatus: userCachedStatus)
-        let viewController = SettingsLockViewController(viewModel: viewModel, coordinator: self)
+        let viewModel = SettingsLockViewModel(router: self, dependencies: .init(biometricStatus: UIDevice.current))
+        let viewController = SettingsLockViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
-    func go(to dest: Destination, sender: Any? = nil) {
+    func go(to dest: SettingsLockRouterDestination) {
         switch dest {
         case .pinCodeSetup:
             let nav = UINavigationController()

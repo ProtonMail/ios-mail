@@ -180,7 +180,7 @@ extension PushNotificationActionsHandler {
             cacheStatusInject: CacheStatusInject = userCachedStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default,
             userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current(),
-            isNotificationActionsFeatureEnabled: Bool = false
+            isNotificationActionsFeatureEnabled: Bool = true
         ) {
             self.queue = queue
             self.actionRequest = actionRequest
