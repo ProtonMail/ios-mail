@@ -94,6 +94,7 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
     case undoSend
+    case localStorage
     case search
     case labels
     case folders
@@ -107,6 +108,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._conversation_settings_title
         case .undoSend:
             return LocalString._account_settings_undo_send_row_title
+        case .localStorage:
+            return LocalString._settings_title_of_local_storage
         case .search:
             return LocalString._general_search_placeholder
         case .labels:
@@ -157,8 +160,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     }
 
     let addrItems: [SettingsAddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-
-    var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
+    let mailboxItems: [SettingsMailboxItem]
 
     private let userManager: UserManager
 
@@ -166,6 +168,12 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     init(user: UserManager) {
         self.userManager = user
+
+        var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
+        if UserInfo.isEncryptedSearchEnabled {
+            mailboxItems.insert(.localStorage, at: 2)
+        }
+        self.mailboxItems = mailboxItems
     }
 
     var storageText: String {
