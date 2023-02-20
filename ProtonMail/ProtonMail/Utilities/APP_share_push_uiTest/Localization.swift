@@ -1431,14 +1431,6 @@ class LocalizedString {
     lazy var _encrypted_search_pause_button = NSLocalizedString("Pause", comment: "Text for pause button")
     lazy var _encrypted_search_resume_button = NSLocalizedString("Resume", comment: "Text for resume button")
     lazy var _encrypted_search_download_paused = NSLocalizedString("Download paused", comment: "Text for status label when pause button is pressed")
-    lazy var _encrypted_search_download_paused_no_connectivity = NSLocalizedString("Download paused: No connectivity", comment: "Text for estimate time label when no internet connection is available")
-    lazy var _encrypted_search_download_paused_no_connectivity_status = NSLocalizedString("Please connect to the internet to continue.", comment: "Text for status label when no internet connection is available")
-    lazy var _encrypted_search_download_paused_no_wifi = NSLocalizedString("Download paused: No WiFi detected", comment: "Text for estimate time label when no wifi is available")
-    lazy var _encrypted_search_download_paused_no_wifi_status = NSLocalizedString("Connect to WiFi or enable \"Download via mobile data\".", comment: "Text for status label when no wifi is available")
-    lazy var _encrypted_search_download_paused_low_battery = NSLocalizedString("Download paused: Low battery", comment: "Text for estimate time label when low battery")
-    lazy var _encrypted_search_download_paused_low_battery_status = NSLocalizedString("Charge your device or resume manually.", comment: "Text for status label when low battery")
-    lazy var _encrypted_search_download_paused_low_storage = NSLocalizedString("Download paused: Storage full", comment: "Text for estimate time label when storage is full")
-    lazy var _encrypted_search_download_paused_low_storage_status = NSLocalizedString("Free up at least 100 MB of storage to continue.", comment: "Text for status label when storage is full")
     lazy var _encrypted_search_alert_title = NSLocalizedString("Enable content search", comment: "Title for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_text = NSLocalizedString("Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time.", comment: "Text for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_cancel_button = NSLocalizedString("Cancel", comment: "Button to cancel encrypted search")
@@ -1541,6 +1533,16 @@ enum L11n {
         static let searchInfo_partial_link = NSLocalizedString("local storage limit.", comment: "Text for the link to show when indexing is stopped because of storage limit reached.")
         static let searchInfo_lowStorage = NSLocalizedString("Messages from before %@, will not be searched. To search within them, free up storage space on this device.", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
         static let download_will_stop_desc = NSLocalizedString("The download will stop if the Proton Mail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
+
+        // MARK: - Interrupt reason
+        static let download_paused_no_connectivity = NSLocalizedString("Download paused: No connectivity", comment: "Text for estimate time label when no internet connection is available")
+        static let download_paused_no_connectivity_advice = NSLocalizedString("Please connect to the internet to continue.", comment: "Text for status label when no internet connection is available")
+        static let download_paused_no_wifi = NSLocalizedString("Download paused: No WiFi detected", comment: "Text for estimate time label when no wifi is available")
+        static let download_paused_no_wifi_advice = NSLocalizedString("Connect to WiFi or enable \"Download via mobile data\".", comment: "Text for status label when no wifi is available")
+        static let download_paused_low_battery = NSLocalizedString("Download paused: Low battery", comment: "Text for estimate time label when low battery")
+        static let download_paused_low_battery_advice = NSLocalizedString("Charge your device or resume manually.", comment: "Text for status label when low battery")
+        static let download_paused_low_storage = NSLocalizedString("Download paused: Storage full", comment: "Text for estimate time label when storage is full")
+        static let download_paused_low_storage_advice = NSLocalizedString("Free up at least 100 MB of storage to continue.", comment: "Text for status label when storage is full")
     }
 
     struct Error {
