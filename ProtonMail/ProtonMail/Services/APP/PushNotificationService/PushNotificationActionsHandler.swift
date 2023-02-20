@@ -20,16 +20,14 @@ import UserNotifications
 final class PushNotificationActionsHandler {
     private let dependencies: Dependencies
 
-    private var isExtraSecurityEnabled: Bool {
-        dependencies.cacheStatusInject.isPinCodeEnabled || dependencies.cacheStatusInject.isTouchIDEnabled
-    }
-
     init(dependencies: Dependencies = Dependencies()) {
         self.dependencies = dependencies
 
         let notificationsToObserve: [Notification.Name] = [
-            .appExtraSecurityEnabled,
-            .appExtraSecurityDisabled,
+            .appLockProtectionEnabled,
+            .appLockProtectionDisabled,
+            .appKeyEnabled,
+            .appKeyDisabled,
             .didSignIn,
             .didSignOut
         ]
@@ -50,7 +48,7 @@ final class PushNotificationActionsHandler {
             removePushNotificationActions()
             return
         }
-        if isExtraSecurityEnabled {
+        if dependencies.cacheStatusInject.isAppLockedAndAppKeyEnabled {
             /// We don't show notification actions if extra security is enabled (FaceId, TouchId, PIN code, ... ).
             /// The reason for that is that the user's access token for API requests is encrypted and not accessible
             /// without user interaction. Therefore, it has been decided to not show notification actions because we
@@ -133,7 +131,7 @@ private extension PushNotificationActionsHandler {
             messageId: messageId
         )
         SystemLogger.log(message: "Request sent for action \(action)", category: .pushNotification)
-        dependencies.actionRequest.execute(params: params) { [weak self] result in
+        dependencies.actionRequest.callbackOn(.main).execute(params: params) { [weak self] result in
             switch result {
             case .success:
                 completion()

@@ -97,12 +97,20 @@ extension Notification.Name {
        return .init(rawValue: "pagesSwipeExpectation")
     }
 
-    static var appExtraSecurityEnabled: Notification.Name {
-        return .init("appExtraSecurityEnabled")
+    static var appLockProtectionEnabled: Notification.Name {
+        return .init("appLockProtectionEnabled")
     }
 
-    static var appExtraSecurityDisabled: Notification.Name {
-        return .init("appExtraSecurityDisabled")
+    static var appLockProtectionDisabled: Notification.Name {
+        return .init("appLockProtectionDisabled")
+    }
+
+    static var appKeyEnabled: Notification.Name {
+        return .init("appKeyEnabled")
+    }
+
+    static var appKeyDisabled: Notification.Name {
+        return .init("appKeyDisabled")
     }
 
     static var sendMessageTaskSuccess: Notification.Name {

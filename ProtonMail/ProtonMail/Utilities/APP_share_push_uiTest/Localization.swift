@@ -1498,6 +1498,15 @@ enum L11n {
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 	}
+    
+    struct SettingsLockScreen {
+        static let protectionTitle = NSLocalizedString("Protection", comment: "Settings lock protection section")
+        static let advancedSettings = NSLocalizedString("Advanced settings", comment: "Settings lock advanced settings section")
+        static let appKeyProtection = NSLocalizedString("AppKey protection", comment: "Settings lock AppKey feature")
+        static let appKeyProtectionDescription = NSLocalizedString("AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@", comment: "Settings lock AppKey description")
+        static let appKeyDisclaimerTitle = NSLocalizedString("Disclaimer", comment: "AppKey disclaimer title when turning on")
+        static let appKeyDisclaimer = NSLocalizedString("Notification actions and other background processes will become unavailable", comment: "AppKey disclaimer when turning on")
+    }
 
     struct ScheduledSend {
         static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")

@@ -450,6 +450,18 @@ extension UserCachedStatus: CacheStatusInject {
         }
     }
 
+    private var isAppLockEnabled: Bool {
+        return (isTouchIDEnabled || isPinCodeEnabled)
+    }
+
+    var isAppLockedAndAppKeyEnabled: Bool {
+        return isAppLockEnabled && isAppKeyEnabled
+    }
+
+    var isAppLockedAndAppKeyDisabled: Bool {
+        return isAppLockEnabled && !isAppKeyEnabled
+    }
+
     var lockTime: AutolockTimeout { // historically, it was saved as String
         get {
             guard let string = KeychainWrapper.keychain.string(forKey: Key.autoLockTime),

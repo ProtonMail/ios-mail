@@ -203,7 +203,7 @@ class WindowsCoordinator: LifetimeTrackable {
         let unlockManager: UnlockManager = self.services.get()
         let flow = unlockManager.getUnlockFlow()
         Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
-        if flow == .requireTouchID || flow == .requirePin {
+        if userCachedStatus.isAppLockedAndAppKeyEnabled {
             self.lock()
         } else {
             DispatchQueue.main.async {
