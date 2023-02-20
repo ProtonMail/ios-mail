@@ -98,7 +98,6 @@ final class AppleContactParserTest: XCTestCase {
         let contacts = self.generateContact(by: randomData)
         let existed = contacts.first?.identifier ?? ""
         self.mockDel.addExisted(id: existed)
-        self.parser.queueImport(contacts: contacts)
 
         let finish = expectation(description: "contacts import done")
         self.dismissObserver = self.mockDel.observe(\.shouldDismissImportPopup, options: [.new]) { _, change in
@@ -107,6 +106,7 @@ final class AppleContactParserTest: XCTestCase {
                 finish.fulfill()
             }
         }
+        self.parser.queueImport(contacts: contacts)
         wait(for: [finish], timeout: 10.0)
         XCTAssertEqual(self.mockDel.uploaded.count, 0)
         XCTAssertEqual(self.mockDel.progresses.count, 1)

@@ -30,7 +30,7 @@ protocol ESFeatureStatusProvider {
 /// This needs to be changed to load the actual ES state.
 class TempEsStateProvider: ESIndexingStateProvider {
     func getESState(userID: UserID) -> EncryptedSearchIndexState {
-        return .paused
+        return .paused(nil)
     }
 }
 
@@ -97,7 +97,7 @@ final class EncryptedSearchIndexService {
             .background,
             .complete,
             .partial,
-            .paused,
+            .paused(nil),
             .lowstorage,
             .metadataIndexing
         ]
@@ -237,7 +237,7 @@ final class EncryptedSearchIndexService {
         encryptedContentFile: String,
         encryptedContentSize: Int
     ) throws -> Int? {
-        guard Constant.expectedESState.contains(
+        guard Constant.expectedESState.containsCase(
             esStateProvider.getESState(userID: userID)
         ) else {
             throw EncryptedSearchIndexError.encryptedSearchDisabled

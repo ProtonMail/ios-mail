@@ -17,9 +17,24 @@
 
 import Foundation
 
-enum EncryptedSearchIndexState: Int, CaseIterable {
+enum EncryptedSearchIndexState: Equatable {
+    static var allCases: [EncryptedSearchIndexState] = [
+        .disabled,
+        .partial,
+        .lowstorage,
+        .downloading,
+        .paused(nil),
+        .refresh,
+        .complete,
+        .undetermined,
+        .background,
+        .backgroundStopped,
+        .metadataIndexing,
+        .metadataIndexingComplete
+    ]
+
     /// Content search has not yet been enabled, or is actively disabled by the user
-    case disabled = 0
+    case disabled
     /// Indexing has been stopped because the size of the search index has hit the storage limit
     case partial
     /// Indexing has been stopped because there is less than 100MB storage left on the device
@@ -27,7 +42,7 @@ enum EncryptedSearchIndexState: Int, CaseIterable {
     /// The search index is currently beeing build and downloading is in progress
     case downloading
     /// The index building is paused, either actively by the user or due to an interrupt
-    case paused
+    case paused(BuildSearchIndex.InterruptReason?)
     /// The search index has been completed, and new messages are added to the search index
     case refresh
     /// The search index is completely built and there are no newer messages on the server
@@ -42,4 +57,52 @@ enum EncryptedSearchIndexState: Int, CaseIterable {
     case metadataIndexing
     /// Currently not used (for metadata indexing of free users)
     case metadataIndexingComplete
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.disabled, .disabled):
+            return true
+        case (.partial, .partial):
+            return true
+        case (.lowstorage, .lowstorage):
+            return true
+        case (.downloading, .downloading):
+            return true
+        case let (.paused(reasonL), .paused(reasonR)):
+            return reasonL == reasonR
+        case (.refresh, .refresh):
+            return true
+        case (.complete, .complete):
+            return true
+        case (.undetermined, .undetermined):
+            return true
+        case (.background, .background):
+            return true
+        case (.backgroundStopped, .backgroundStopped):
+            return true
+        case (.metadataIndexing, .metadataIndexing):
+            return true
+        case (.metadataIndexingComplete, .metadataIndexingComplete):
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension Collection where Element == EncryptedSearchIndexState {
+    /// Doesn't care value inside associated values
+    func containsCase(_ state: Element) -> Bool {
+        for stateCase in self {
+            switch (stateCase, state) {
+            case (.paused, .paused):
+                return true
+            case let (lhs, rhs):
+                if lhs == rhs {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 }
