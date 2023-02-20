@@ -287,7 +287,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.mailboxItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .privacy, .conversation, .undoSend, .search, .labels, .folders:
+            case .privacy, .conversation, .undoSend, .search, .labels, .folders, .localStorage:
                 cellToUpdate.configure(right: "")
             case .storage:
                 cellToUpdate.configure(right: "100 MB (disabled)")
@@ -389,6 +389,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .conversation)
         case .undoSend:
             self.coordinator.go(to: .undoSend)
+        case .localStorage:
+            self.coordinator.go(to: .localStorage)
         }
     }
 

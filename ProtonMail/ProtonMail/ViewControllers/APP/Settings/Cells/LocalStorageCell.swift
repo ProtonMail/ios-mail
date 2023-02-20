@@ -67,7 +67,7 @@ final class LocalStorageCell: UITableViewCell {
 
     @objc
     private func onClearTap() {
-        delegate?.didTapClear()
+        delegate?.didTapClear(sender: self)
     }
 
     func configure(info: LocalStorageInfo) {
@@ -165,5 +165,5 @@ extension LocalStorageCell {
 }
 
 protocol LocalStorageCellDelegate: AnyObject {
-    func didTapClear()
+    func didTapClear(sender: LocalStorageCell)
 }

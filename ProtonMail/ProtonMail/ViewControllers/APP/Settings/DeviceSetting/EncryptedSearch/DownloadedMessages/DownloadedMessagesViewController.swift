@@ -192,7 +192,7 @@ extension DownloadedMessagesViewController: StorageLimitCellDelegate {
 }
 
 extension DownloadedMessagesViewController: LocalStorageCellDelegate {
-    func didTapClear() {
+    func didTapClear(sender: LocalStorageCell) {
         showDeleteMessagesAlert()
     }
 }

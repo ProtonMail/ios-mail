@@ -62,4 +62,12 @@ extension UserInfo {
         return false
         #endif
     }
+
+    static var isEncryptedSearchEnabled: Bool {
+        #if DEBUG_ENTERPRISE
+        return true
+        #else
+        return false
+        #endif
+    }
 }
