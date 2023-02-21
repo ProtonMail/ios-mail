@@ -63,7 +63,7 @@ public struct APIServiceMock: APIService {
     public var forceUpgradeDelegate: ForceUpgradeDelegate? { get { forceUpgradeDelegateStub() } set { forceUpgradeDelegateStub(newValue) } }
 
     @PropertyStub(\APIServiceMock.challengeParametersProvider, initialGet: .crash) public var challengeParametersProviderStub
-    public var challengeParametersProvider: ChallengeParametersProvider { challengeParametersProviderStub() }
+    public var challengeParametersProvider: ChallengeParametersProvider { get { challengeParametersProviderStub() } set { challengeParametersProviderStub(newValue) } }
 
     @PropertyStub(\APIServiceMock.dohInterface, initialGet: .crash) public var dohInterfaceStub
     public var dohInterface: DoHInterface { get { dohInterfaceStub() } set { dohInterfaceStub(newValue) } }

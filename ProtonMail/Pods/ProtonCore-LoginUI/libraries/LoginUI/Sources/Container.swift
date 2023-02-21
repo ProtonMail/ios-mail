@@ -44,12 +44,12 @@ final class Container {
     let login: Login
     let signupService: Signup
     
-    let api: APIService
+    private(set) var api: APIService
     private var paymentsManager: PaymentsManager?
     private let externalLinks: ExternalLinks
     private let clientApp: ClientApp
     private let appName: String
-    private let challenge: PMChallenge
+    let challenge: PMChallenge
     let troubleShootingHelper: TroubleShootingHelper
     
     var token: String?
@@ -69,8 +69,16 @@ final class Container {
             self.api.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
         }
         self.login = LoginService(api: apiService, clientApp: clientApp, minimumAccountType: minimumAccountType)
-        self.challenge = PMChallenge()
         self.signupService = SignupService(api: apiService, clientApp: clientApp)
+
+        if let challenge = apiService.challengeParametersProvider.challenge {
+            self.challenge = challenge
+        } else {
+            assertionFailure("Misconfiguration of APIService.challengeParametersProvider")
+            let newChallenge = PMChallenge()
+            self.challenge = newChallenge
+            api.challengeParametersProvider = .forAPIService(clientApp: clientApp, challenge: newChallenge)
+        }
     }
 
     // MARK: Login view models

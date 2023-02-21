@@ -33,11 +33,10 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     // MARK: Customize variable
     private let leftItem: PMActionSheetPlainItem?
     private let rightItem: PMActionSheetPlainItem?
+    private let title: String
+    private let subtitle: String?
     private let leftTitleViews: [UIView]
     private let rightTitleViews: [UIView]
-    private let title: String?
-    private let subtitle: String?
-    private let showDragBar: Bool?
 
     private var titleLabel: UILabel?
     private var subTitleLabel: UILabel?
@@ -56,8 +55,7 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
         rightItem: PMActionSheetPlainItem?,
         leftTitleViews: [UIView] = [],
         rightTitleViews: [UIView] = [],
-        hasSeparator: Bool = false,
-        showDragBar: Bool = true
+        hasSeparator: Bool = false
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -65,7 +63,6 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
         self.rightItem = rightItem
         self.leftTitleViews = leftTitleViews
         self.rightTitleViews = rightTitleViews
-        self.showDragBar = showDragBar
 
         super.init(frame: .zero)
 
@@ -105,26 +102,24 @@ extension PMActionSheetHeaderView {
 
     private func createTitleView() -> UIStackView {
         let stack = UIStackView(.vertical, alignment: .center, distribution: .fillProportionally, useAutoLayout: true)
-        if let title = self.title {
-            let font: UIFont
-            if subtitle == nil {
-                font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
-            } else {
-                font = .adjustedFont(forTextStyle: .subheadline, weight: .semibold)
-            }
-
-            let color: UIColor = ColorProvider.TextNorm
-            let lbl = UILabel(title, font: font, textColor: color)
-            lbl.sizeToFit()
-            titleLabel = lbl
-
-            let titleRow = UIStackView(.horizontal, alignment: .center, distribution: .equalSpacing, useAutoLayout: true)
-            titleRow.spacing = 4
-            leftTitleViews.forEach(titleRow.addArrangedSubview)
-            titleRow.addArrangedSubview(lbl)
-            rightTitleViews.forEach(titleRow.addArrangedSubview)
-            stack.addArrangedSubview(titleRow)
+        let font: UIFont
+        if subtitle == nil {
+            font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
+        } else {
+            font = .adjustedFont(forTextStyle: .subheadline, weight: .semibold)
         }
+
+        let color: UIColor = ColorProvider.TextNorm
+        let lbl = UILabel(title, font: font, textColor: color)
+        lbl.sizeToFit()
+        titleLabel = lbl
+
+        let titleRow = UIStackView(.horizontal, alignment: .center, distribution: .equalSpacing, useAutoLayout: true)
+        titleRow.spacing = 4
+        leftTitleViews.forEach(titleRow.addArrangedSubview)
+        titleRow.addArrangedSubview(lbl)
+        rightTitleViews.forEach(titleRow.addArrangedSubview)
+        stack.addArrangedSubview(titleRow)
 
         if let subtitle = self.subtitle {
             let font: UIFont = .adjustedFont(forTextStyle: .caption1)

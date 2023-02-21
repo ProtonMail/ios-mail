@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_Observability
 
 public typealias SummaryStartButtonText = String
 
@@ -94,6 +95,7 @@ class SummaryViewController: UIViewController, AccessibleView {
         view.backgroundColor = ColorProvider.BackgroundNorm
         setupUI()
         generateAccessibilityIdentifiers()
+        ObservabilityEnv.report(.screenLoadCountTotal(screenName: .congratulation))
     }
 
     // MARK: Actions

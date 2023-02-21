@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Doh",
-  "version": "3.28.0",
+  "version": "3.28.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.28.0"
+    "tag": "3.28.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,13 +31,13 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "3.28.0"
+      "3.28.1"
     ],
     "ProtonCore-Utilities": [
-      "3.28.0"
+      "3.28.1"
     ],
     "ProtonCore-FeatureSwitch": [
-      "3.28.0"
+      "3.28.1"
     ]
   },
   "default_subspecs": [
@@ -50,10 +50,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "3.28.0"
+          "3.28.1"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.0"
+          "3.28.1"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -69,16 +69,16 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "3.28.0"
+          "3.28.1"
         ],
         "ProtonCore-Environment": [
-          "3.28.0"
+          "3.28.1"
         ],
         "ProtonCore-Authentication": [
-          "3.28.0"
+          "3.28.1"
         ],
         "ProtonCore-Services": [
-          "3.28.0"
+          "3.28.1"
         ]
       },
       "source_files": "libraries/Doh/Tests/Integration/*.swift",

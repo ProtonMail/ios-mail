@@ -71,7 +71,7 @@ public final class AuthHelper: AuthDelegate {
         if let executor = executor {
             self.delegateExecutor = executor
         } else {
-            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated, attributes: .initiallyInactive)
+            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated)
             self.delegateExecutor = .asyncExecutor(dispatchQueue: dispatchQueue)
         }
         self.delegate = delegate
@@ -151,7 +151,7 @@ public final class AuthHelper: AuthDelegate {
             }
 
             if let password = password {
-                authCredentials?.0.udpate(password: password)
+                authCredentials?.0.update(password: password)
             }
             let saltToUpdate = salt ?? authCredentials?.0.passwordKeySalt
             let privateKeyToUpdate = privateKey ?? authCredentials?.0.privateKey

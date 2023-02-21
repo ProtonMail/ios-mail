@@ -383,7 +383,7 @@ public protocol APIService: API {
     var serviceDelegate: APIServiceDelegate? { get set }
     var humanDelegate: HumanVerifyDelegate? { get set }
     var forceUpgradeDelegate: ForceUpgradeDelegate? { get set }
-    var challengeParametersProvider: ChallengeParametersProvider { get }
+    var challengeParametersProvider: ChallengeParametersProvider { get set }
 
     // doh
     var dohInterface: DoHInterface { get }
