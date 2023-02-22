@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Er du sikker på, at du vil logge ud?";
 
+/* One of the schedule time options */
+"As scheduled" = "Som planlagt";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Kl. %@";
 
@@ -354,6 +357,9 @@
 
 /* Action */
 "Cancel Check" = "Annullér tjek";
+
+/* Title */
+"Canceling" = "Annullerer";
 
 /* Warning message */
 "Cannot empty folder right now." = "Kan ikke tømme mappe lige nu.";
@@ -933,8 +939,8 @@
 /* Title */
 "Hide details" = "Skjul detaljer";
 
-/* hours */
-"hours" = "timer";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Skjul mine e-mail-aliasser";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";
@@ -1388,6 +1394,9 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vores kundeservice vil forsøge at aktivere dit serviceabonnement manuelt, hvis du accepterer at vedhæfte de tekniske data, som App Store har leveret til appen på købstidspunktet. Disse data omfatter ikke oplysninger om din iTunes-konto, Apple ID, tilknyttede betalingskort eller andre brugeroplysninger. De tekniske data hjælper os kun med at kontrollere og verificere, at transaktionen blev gennemført på App Store's servere.";
 
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Vores system markerede denne besked som et phishing-forsøg. Kontroller, at den er legitim.";
+
 /* Setting option title of folder setting page */
 "Parent folder" = "Overordnet mappe";
 
@@ -1626,6 +1635,9 @@
 /* title */
 "Save Changes" = "Gem ændringer";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Planlæg beskeder til ethvert tidspunkt";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Planlæg afsendelse";
@@ -1658,9 +1670,6 @@
 
 /* section title */
 "Select colour" = "Vælg farve";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Vælg dato og tid";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valgte";
@@ -1745,6 +1754,9 @@
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Indstil strygebevægelser som adgang til de mest brugte handlinger.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Sæt din egen tidsplan";
 
 /* menu title */
 "Settings" = "Indstillinger";
@@ -2095,6 +2107,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Ubegrænset";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Ubegrænset mapper og etiketter";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Få adgang til brugerdefineret planlægning af beskeder og andre fordele, når du opgraderer dit abonnement.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Oplåsning kræves";
 
@@ -2113,6 +2131,15 @@
 /* Error message */
 "Unsupported file type" = "Uunderstøttet filtype";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Op til 3 brugerdefinerede e-maildomæner";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Op til 15 e-mailadresser";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Op til 500 GB lagerplads";
+
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
 
@@ -2124,6 +2151,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Opdateret Proton, forenet beskyttelse";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Opgradér nu";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Opgradér til et abonnement for at sende fra din %@-adresse";

@@ -12,10 +12,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d хвіліны</string>
+			<key>many</key>
+			<string>%d хвілін</string>
 			<key>one</key>
-			<string>%d λεπτό</string>
+			<string>%d хвіліна</string>
 			<key>other</key>
-			<string>%d λεπτά</string>
+			<string>%d хвіліны</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -28,10 +32,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d выбрана</string>
+			<key>many</key>
+			<string>%d выбрана</string>
 			<key>one</key>
-			<string>%d Επιλεγμένο</string>
+			<string>%d выбраны</string>
 			<key>other</key>
-			<string>%d Επιλεγμένα</string>
+			<string>%d выбрана</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -44,10 +52,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d далучэнні</string>
+			<key>many</key>
+			<string>%d далучэнняў</string>
 			<key>one</key>
-			<string>%d συνημμένο</string>
+			<string>%d далучэнне</string>
 			<key>other</key>
-			<string>%d συνημμένα</string>
+			<string>%d далучэнні</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -58,10 +70,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Засталося %d спробы</string>
+			<key>many</key>
+			<string>Засталося %d спроб</string>
 			<key>one</key>
-			<string>απομένει %d προσπάθεια</string>
+			<string>Засталася %d спроба</string>
 			<key>other</key>
-			<string>απομένουν %d προσπάθειες</string>
+			<string>Засталося %d спробы</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -74,10 +90,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Засталося %d спробы, пакуль абароненыя даныя не будуць выцертыя!</string>
+			<key>many</key>
+			<string>Засталося %d спроб, пакуль абароненыя даныя не будуць выцертыя!</string>
 			<key>one</key>
-			<string>απομένει %d προσπάθεια μέχρι την ασφαλή διαγραφή δεδομένων!</string>
+			<string>Засталася %d спроба, пакуль абароненыя даныя не будуць выцертыя!</string>
 			<key>other</key>
-			<string>απομένουν %d προσπάθειες μέχρι την ασφαλή διαγραφή δεδομένων!</string>
+			<string>Засталося %d спробы, пакуль абароненыя даныя не будуць выцертыя!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -90,10 +110,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Пазначаны %d размовы</string>
+			<key>many</key>
+			<string>Пазначаны %d размоў</string>
 			<key>one</key>
-			<string>%d συνομιλία με ετικέτα</string>
+			<string>Пазначана %d размова</string>
 			<key>other</key>
-			<string>%d συνομιλίες με ετικέτα</string>
+			<string>Пазначаны %d размовы</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -106,10 +130,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d размовы перамешчаны ў %@</string>
+			<key>many</key>
+			<string>%d размоў перамешчаны ў %@</string>
 			<key>one</key>
-			<string>%d η συνομιλία μεταφέρθηκε στο %@</string>
+			<string>%d размова перамешчана ў %@</string>
 			<key>other</key>
-			<string>%d οι συνομιλίες μεταφέρθηκαν στο %@</string>
+			<string>%d размовы перамешчаны ў %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -122,10 +150,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d дні</string>
+			<key>many</key>
+			<string>%d дзён</string>
 			<key>one</key>
-			<string>%d ημέρα</string>
+			<string>%d дзень</string>
 			<key>other</key>
-			<string>%d ημέρες</string>
+			<string>%d дні</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -140,10 +172,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Заблакіраваны %d праграмы сачэння</string>
+			<key>many</key>
+			<string>Заблакіраваны %d праграм сачэння</string>
 			<key>one</key>
-			<string>η εφαρμογή παρακολούθησης email %d αποκλείστηκε</string>
+			<string>Заблакіравана %d праграма сачэння</string>
 			<key>other</key>
-			<string>%d εφαρμογές παρακολούθησης email αποκλείστηκαν</string>
+			<string>Заблакіраваны %d праграмы сачэння</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -156,10 +192,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Знойдзены %d праграмы сачэння электроннай пошты</string>
+			<key>many</key>
+			<string>Знойдзены %d праграм сачэння электроннай пошты</string>
 			<key>one</key>
-			<string>%d εφαρμογή παρακολούθησης email βρέθηκε</string>
+			<string>Знойдзена %d праграма сачэння электроннай пошты</string>
 			<key>other</key>
-			<string>%d εφαρμογές παρακολούθησης email βρέθηκαν</string>
+			<string>Знойдзены %d праграмы сачэння электроннай пошты</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -172,10 +212,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d гадзіны</string>
+			<key>many</key>
+			<string>%d гадзін</string>
 			<key>one</key>
-			<string>%d ώρα</string>
+			<string>%d гадзіна</string>
 			<key>other</key>
-			<string>%d ώρες</string>
+			<string>%d гадзіны</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
@@ -190,10 +234,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d удзельнікі</string>
+			<key>many</key>
+			<string>%d удзельнікаў</string>
 			<key>one</key>
-			<string>%d μέλος</string>
+			<string>%d удзельнік</string>
 			<key>other</key>
-			<string>%d μέλη</string>
+			<string>%d удзельнікі</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -204,10 +252,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Пазначаны %d паведамленні</string>
+			<key>many</key>
+			<string>Пазначаны %d паведамленняў</string>
 			<key>one</key>
-			<string>%d μήνυμα με ετικέτα</string>
+			<string>Пазначана %d паведамленне</string>
 			<key>other</key>
-			<string>%d μηνύματα με ετικέτα</string>
+			<string>Пазначаны %d паведамленні</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -220,10 +272,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d паведамленні перамешчаны ў %@</string>
+			<key>many</key>
+			<string>%d паведамленняў перамешчаны ў %@</string>
 			<key>one</key>
-			<string>%d μήνυμα μετακινήθηκε στο %@</string>
+			<string>%d паведамленне перамешчана ў %@</string>
 			<key>other</key>
-			<string>%d μηνύματα μετακινήθηκαν στο %@</string>
+			<string>%d паведамленні перамешчаны ў %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -238,10 +294,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d паведамленні перамешчаны ў Чарнавікі</string>
+			<key>many</key>
+			<string>%d паведамленняў перамешчаны ў Чарнавікі</string>
 			<key>one</key>
-			<string>%d μήνυμα μετακινήθηκε στα Πρόχειρα</string>
+			<string>%d паведамленне перамешчана ў Чарнавікі</string>
 			<key>other</key>
-			<string>%d μηνύματα μετακινήθηκαν στα Πρόχειρα</string>
+			<string>%d паведамленні перамешчаны ў Чарнавікі</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -252,10 +312,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d хвіліны</string>
+			<key>many</key>
+			<string>%d хвілін</string>
 			<key>one</key>
-			<string>%d λεπτό</string>
+			<string>%d хвіліна</string>
 			<key>other</key>
-			<string>%d λεπτά</string>
+			<string>%d хвіліны</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -270,10 +334,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d секунды</string>
+			<key>many</key>
+			<string>%d секунд</string>
 			<key>one</key>
-			<string>%d δευτερόλεπτο</string>
+			<string>%d секунда</string>
 			<key>other</key>
-			<string>%d δευτερόλεπτα</string>
+			<string>%d секунды</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -284,10 +352,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%u размовы</string>
+			<key>many</key>
+			<string>%u размоў</string>
 			<key>one</key>
-			<string>%u συνομιλία</string>
+			<string>%u размова</string>
 			<key>other</key>
-			<string>%u συνομιλίες</string>
+			<string>%u размовы</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -302,10 +374,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%u паведамленні</string>
+			<key>many</key>
+			<string>%u паведамленняў</string>
 			<key>one</key>
-			<string>%u μήνυμα</string>
+			<string>%u паведамленне</string>
 			<key>other</key>
-			<string>%u μηνύματα</string>
+			<string>%u паведамленні</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -318,10 +394,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>%d іншыя</string>
+			<key>many</key>
+			<string>%d іншых</string>
 			<key>one</key>
-			<string>%d άλλος/η</string>
+			<string>%d іншы</string>
 			<key>other</key>
-			<string>%d άλλοι</string>
+			<string>%d іншыя</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
@@ -334,10 +414,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d размовы?</string>
+			<key>many</key>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d размоў?</string>
 			<key>one</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d συνομιλία;</string>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d размову?</string>
 			<key>other</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d συνομιλίες;</string>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d размовы?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -350,10 +434,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d паведамленні?</string>
+			<key>many</key>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d паведамленняў?</string>
 			<key>one</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d μήνυμα;</string>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d паведамленне?</string>
 			<key>other</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d μηνύματα;</string>
+			<string>Вы сапраўды хочаце незваротна выдаліць %d паведамленні?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -366,10 +454,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>За %d хвіліны</string>
+			<key>many</key>
+			<string>За %d хвілін</string>
 			<key>one</key>
-			<string>Σε %d λεπτό</string>
+			<string>За %d хвіліну</string>
 			<key>other</key>
-			<string>Σε %d λεπτά</string>
+			<string>За %d хвіліны</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -384,10 +476,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>Proton знайшоў і заблакіраваў %d праграмы сачэння ў гэтым паведамленні.</string>
+			<key>many</key>
+			<string>Proton знайшоў і заблакіраваў %d праграм сачэння ў гэтым паведамленні.</string>
 			<key>one</key>
-			<string>Το Proton βρήκε και απέκλεισε %d εφαρμογή παρακολούθησης σε αυτό το μήνυμα.</string>
+			<string>Proton знайшоў і заблакіраваў %d праграму сачэння ў гэтым паведамленні.</string>
 			<key>other</key>
-			<string>Το Proton βρήκε και απέκλεισε %d εφαρμογές παρακολούθησης σε αυτό το μήνυμα.</string>
+			<string>Proton знайшоў і заблакіраваў %d праграмы сачэння ў гэтым паведамленні.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -402,10 +498,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d паведамленні будуць перамешчаны ў Чарнавікі, а іх расклады будуць выдалены.</string>
+			<key>many</key>
+			<string>%d паведамленняў будуць перамешчаны ў Чарнавікі, а іх расклады будуць выдалены.</string>
 			<key>one</key>
-			<string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
+			<string>%d паведамленне будзе перамешчана ў Чарнавікі, а яго расклад будзе выдалены.</string>
 			<key>other</key>
-			<string>Αυτά τα %d μηνύματα θα μετακινηθούν στα Πρόχειρα και ο προγραμματισμός τους θα αφαιρεθεί.</string>
+			<string>%d паведамленні будуць перамешчаны ў Чарнавікі, а іх расклады будуць выдалены.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -416,10 +516,14 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>few</key>
+			<string>Абноўлена %d хвіліны таму</string>
+			<key>many</key>
+			<string>Абноўлена %d хвілін таму</string>
 			<key>one</key>
-			<string>Ενημερώθηκε %d λεπτό πριν</string>
+			<string>Абноўлена %d хвіліну таму</string>
 			<key>other</key>
-			<string>Ενημερώθηκε %d λεπτά πριν</string>
+			<string>Абноўлена %d хвіліны таму</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

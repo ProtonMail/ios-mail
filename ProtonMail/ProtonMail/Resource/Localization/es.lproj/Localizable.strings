@@ -213,11 +213,14 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "¿Estás seguro de que quieres cerrar la sesión?";
 
+/* One of the schedule time options */
+"As scheduled" = "Como programado";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "A las %@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "No se ha podido encontrar al menos una dirección de correo electrónico del grupo";
+"At least one email address in the group could not be found" = "No se ha podido encontrar al menos una dirección de correo electrónico del grupo.";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "No se ha podido encontrar al menos una dirección de correo en el grupo.";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Ocultar detalles";
 
-/* hours */
-"hours" = "horas";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "¿Cómo describirías tu experiencia con el nuevo Proton Mail?";
@@ -1485,16 +1488,16 @@
 "Please share your problem." = "Comparte tu problema.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Actualiza a un plan de pago para utilizar más de 3 carpetas.";
+"Please upgrade to a paid plan to use more than 3 folders" = "Pasa a un plan de pago para utilizar más de 3 carpetas.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Actualiza a un plan de pago para utilizar más de 3 etiquetas.";
+"Please upgrade to a paid plan to use more than 3 labels" = "Pasa a un plan de pago para utilizar más de 3 etiquetas.";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Actualiza tu plan.";
+"Please upgrade your plan" = "Cámbiate de plan";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Actualiza tu plan para continuar enviando y recibiendo correos electrónicos.";
+"Please upgrade your plan to continue to send and receive emails." = "Pasa a un plan superior para continuar enviando y recibiendo correos electrónicos.";
 
 /* Description */
 "Please use Proton Mail App sign-in first." = "Primero inicia sesión en la app de Proton Mail.";
@@ -1632,6 +1635,9 @@
 /* title */
 "Save Changes" = "Guardar cambios";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Programa mensajes en cualquier momento";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programar envío";
@@ -1664,9 +1670,6 @@
 
 /* section title */
 "Select colour" = "Seleccionar color";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Seleccionar fecha y hora";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Seleccionado";
@@ -1751,6 +1754,9 @@
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Establece gestos de deslizamiento para acceder a las acciones más utilizadas.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Establece tu propia programación";
 
 /* menu title */
 "Settings" = "Configuración";
@@ -1887,7 +1893,7 @@
 "Terms & conditions" = "Términos & condiciones";
 
 /* No comment provided by engineer. */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Hemos añadido tu informe a nuestro sistema de seguimiento de errores.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Se ha añadido tu informe a nuestro sistema de seguimiento de errores.";
 
 /* Comment in banner thanking user for providing feedback */
 "Thank you for your feedback!" = "¡Gracias por tus comentarios!";
@@ -2101,6 +2107,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Ilimitado";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Etiquetas y carpetas ilimitadas";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquea la programación personalizada de mensajes y otros beneficios al pasar a un plan superior.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Desbloqueo requerido";
 
@@ -2119,6 +2131,15 @@
 /* Error message */
 "Unsupported file type" = "Tipo de archivo no soportado";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Hasta 3 dominios de correo electrónico personalizados";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Hasta 15 direcciones de correo electrónico";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Hasta 500 GB de almacenamiento";
+
 /* update notification email error title */
 "Update Notification Email" = "Actualizar correo de notificación";
 
@@ -2131,8 +2152,11 @@
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton actualizado, protección unificada";
 
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Cambiar de plan";
+
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Actualiza a un plan de pago para enviar desde tu dirección %@.";
+"Upgrade to a paid plan to send from your %@ address" = "Pasa a un plan de pago para enviar desde tu dirección %@.";
 
 /* Action */
 "Upload device contacts" = "Cargar los contactos del dispositivo";
@@ -2177,7 +2201,7 @@
 "Warning: suspected fake website" = "Advertencia: sospecha de sitio web falso";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hemos podido enviar tu mensaje, posiblemente debido a una mala conexión de red. Tu mensaje ha sido guardado en Borradores y será enviado automáticamente la próxima vez que abras la aplicación.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No se ha podido enviar tu mensaje, posiblemente debido a una mala conexión de red. Tu mensaje ha sido guardado en Borradores y será enviado automáticamente la próxima vez que abras la aplicación.";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Tenemos problemas para conectar con los servidores. Vuelve a conectar.";
@@ -2261,10 +2285,10 @@
 "You have unsaved changes. Do you want to save it?" = "Tienes cambios sin guardar. ¿Quieres guardarlos?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Has utilizado %1$d%% de tu espacio de almacenamiento (%2$@). Actualiza tu plan para continuar enviando y recibiendo correos electrónicos.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Has utilizado %1$d%% de tu espacio de almacenamiento (%2$@). Pasa a un plan superior para continuar enviando y recibiendo correos electrónicos.";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Has utilizado todo tu espacio de almacenamiento (%@). Actualiza tu plan para seguir enviando y recibiendo correos electrónicos.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Has utilizado todo tu espacio de almacenamiento (%@). Pasa a un plan superior para seguir enviando y recibiendo correos electrónicos.";
 
 /* Description */
 "You need at least one recipient to send" = "Necesitas al menos un destinatario para enviar";

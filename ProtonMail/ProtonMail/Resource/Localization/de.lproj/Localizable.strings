@@ -249,6 +249,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Möchtest du dich wirklich abmelden?";
 
+/* One of the schedule time options */
+"As scheduled" = "Wie geplant";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Um %@";
 
@@ -972,8 +975,8 @@
 /* Title */
 "Hide details" = "Details ausblenden";
 
-/* hours */
-"hours" = "Stunden";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email-Aliasse";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Wie würdest du deine Erfahrungen mit dem neuen Proton Mail beschreiben?";
@@ -1668,6 +1671,9 @@
 /* title */
 "Save Changes" = "Änderungen speichern";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Nachrichten zu jeder Zeit planen";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Senden planen";
@@ -1700,9 +1706,6 @@
 
 /* section title */
 "Select colour" = "Farbe auswählen";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Datum und Uhrzeit auswählen";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Ausgewählt";
@@ -1787,6 +1790,9 @@
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Lege Wischgesten für den Zugriff auf die am häufigsten verwendeten Aktionen fest.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Eigenen Zeitplan festlegen";
 
 /* menu title */
 "Settings" = "Einstellungen";
@@ -2137,6 +2143,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Unbegrenzt";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unbegrenzte Anzahl an Ordnern und Kategorien";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Schalte benutzerdefiniertes Planen von Nachrichten und andere Vorteile frei, wenn du ein Upgrade deines Abonnements durchführst.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Entsperren erforderlich";
 
@@ -2155,6 +2167,15 @@
 /* Error message */
 "Unsupported file type" = "Nicht unterstützter Dateityp";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Bis zu 3 benutzerdefinierte E-Mail-Domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Bis zu 15 E-Mail-Adressen";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Bis zu 500 GB Speicherplatz";
+
 /* update notification email error title */
 "Update Notification Email" = "Benachrichtigungs-E-Mail-Adresse aktualisieren";
 
@@ -2166,6 +2187,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Verbessertes Proton, einheitlicher Schutz";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Jetzt upgraden";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Auf ein kostenpflichtiges Abonnement upgraden, um von deiner Adresse „%@“ senden zu können.";
