@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Segur que voleu tancar la sessió?";
 
+/* One of the schedule time options */
+"As scheduled" = "Com programat";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "A les %@";
 
@@ -223,7 +226,7 @@
 "At least one email address in the group could not be found." = "Almenys una adreça de correu del grup no s'ha pogut trobar.";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Almenys una adreça de correu de destinatari té un format incorrecte, comproveu-la.";
+"At least one recipient email address is improperly formatted, please double check them." = "Almenys una adreça de correu de destinatari té un format incorrecte. Comproveu-la.";
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Almenys una adreça de correu o domini de destinatari no existeix o té un format incorrecte. Missatge mogut a esborranys.";
@@ -369,7 +372,7 @@
 "Change account password" = "Canviar contrasenya del compte";
 
 /* Title */
-"Change default address to…" = "Canvieu l'adreça predeterminada a…";
+"Change default address to…" = "Canvieu l'adreça per defecte a…";
 
 /* settings general section title */
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
@@ -564,10 +567,10 @@
 "Decryption of this message's encrypted content failed." = "El contingut encriptat d'aquest missatge no s'ha pogut desxifrar.";
 
 /* Title */
-"Default" = "Predeterminada";
+"Default" = "Per defecte";
 
 /* Settings row */
-"Default browser" = "Navegador predeterminat";
+"Default browser" = "Navegador per defecte";
 
 /* Placeholder */
 "Define Hint (Optional)" = "Defineix pista (opcional)";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Amagar els detalls";
 
-/* hours */
-"hours" = "hores";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Àlies Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Com descriuria la seva experiència amb el nou Proton Mail?";
@@ -1016,7 +1019,7 @@
 "Internet Service Provider (ISP) problem" = "Problema amb el proveïdor d'accés a internet";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentem el nou aspecte de Proton.\nMolts serveis, una missió. Benvingut/da a l'internet on tenim la privacitat per defecte.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentem el nou aspecte de Proton.\nMolts serveis, una missió. Li donem la benvinguda l'internet on tenim la privacitat per defecte.";
 
 /* update password error */
 "Invalid hashed password!" = "Contrasenya amb contrasenya no vàlida!";
@@ -1455,7 +1458,7 @@
 "PIN is too short" = "El PIN és massa curt";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Si us plau, connecteu-vos i torneu-ho a intentar";
+"Please connect and retry" = "Connecteu-vos i torneu-ho a intentar.";
 
 /* Text for status label when no internet connection is available */
 "Please connect to the internet to continue." = "Connecteu a internet per a continuar.";
@@ -1467,16 +1470,16 @@
 "Please keep Proton Mail open until the operation is done." = "Manteniu Proton Mail obert fins que finalitzi l'operació.";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Si us plau, assegura't que la teva connexió a internet funciona.";
+"Please make sure that your internet connection is working." = "Asseieu-vos que la vostra connexió a internet funciona.";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Si us plau, indica un nom per al grup";
+"Please provide a group name" = "Indiqueu un nom per al grup.";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Seleccioneu com a mínim un correu electrònic";
+"Please select at least one email" = "Seleccioneu com a mínim un correu electrònic.";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Si us plau, seleccioneu almenys un e-mail per al grup de contacte";
+"Please select at least one email for the contact group" = "Seleccioneu almenys un e-mail per al grup de contacte.";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Establiu un correu electrònic de recuperació / notificació";
@@ -1497,7 +1500,7 @@
 "Please upgrade your plan to continue to send and receive emails." = "Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Si us plau, utilitzeu primer l'inici de sessió a l’aplicació Proton Mail.";
+"Please use Proton Mail App sign-in first." = "Utilitzeu primer l'inici de sessió a l’aplicació Proton Mail.";
 
 /* No comment provided by engineer. */
 "Print" = "Imprimir";
@@ -1665,9 +1668,6 @@
 /* section title */
 "Select colour" = "Seleccionar color";
 
-/* Option for set up scheduled send */
-"Select date and time" = "Trieu dia i hora";
-
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Seleccionat";
 
@@ -1708,7 +1708,7 @@
 "Sending message…" = "Enviant missatge…";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "S'estan enviant missatges de %1$@ L'adreça és una funció remunerada. El vostre missatge s'enviarà des de la vostra adreça predeterminada %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "S'estan enviant missatges de %1$@ L'adreça és una funció remunerada. El vostre missatge s'enviarà des de la vostra adreça per defecte %2$@.";
 
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Es podrà enviar quan\nels adjunts estiguin pujats";
@@ -1902,7 +1902,7 @@
 "The download will stop if the Proton Mail app is closed." = "La descàrrega s'aturarà i l'aplicació de Proton Mail es tanca.";
 
 /* Description */
-"The draft cache is broken. Please try again." = "La memòria cau de l’esborrany està trencada. Si us plau, torneu-ho a provar.";
+"The draft cache is broken. Please try again." = "La memòria cau de l’esborrany està trencada. Torneu-ho a provar.";
 
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "No s'han pogut adjuntar els fitxers següents:";
@@ -1944,7 +1944,7 @@
 "The size limit for attachments is 25 MB." = "El límit de mida pels arxius adjunts és de 25Mb.";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL que voleu accedir no és estàndard i no es pot carregar correctament. Voleu obrir-lo amb el navegador predeterminat del dispositiu?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL que voleu accedir no és estàndard i no es pot carregar correctament. Voleu obrir-lo amb el navegador per defecte del dispositiu?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Es usuari ja està identificat";
@@ -2016,7 +2016,7 @@
 "Title" = "Títol";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Ha fallat la validació del certificat TLS. Es pot supervisar la vostra connexió i l'aplicació es bloqueja temporalment per a la vostra seguretat. Canvia la xarxa inmediatament.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Error en la validació del certificat TLS. Es pot supervisar la vostra connexió i l'aplicació es bloqueja temporalment per a la vostra seguretat. Canvieu immediatament la xarxa .";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Ha fallat la validació del certificat TLS. La vostra connexió podria estar vigilada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\nCanvieu de xarxes immediatament.";
@@ -2101,6 +2101,9 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Il·limitat";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Carpetes i etiquetes il·limitades";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Desbloqueig requerit";
 
@@ -2119,6 +2122,15 @@
 /* Error message */
 "Unsupported file type" = "Tipus de fitxer no suportat";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Fins a 3 dominis de correu electrònic personalitzats";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Fins a 15 adreces de correu electrònic";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Fins a 500 GB d'emmagatzematge";
+
 /* update notification email error title */
 "Update Notification Email" = "Actualitza el correu electrònic de notificació";
 
@@ -2130,6 +2142,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton actualitzat, protecció unificada";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Actualitzar ara";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualitzeu a un pla de pagament per enviar des del vostre compte %@ adreça";
@@ -2144,7 +2159,7 @@
 "URL" = "URL";
 
 /* Option title */
-"Use folder colors" = "Utilitzar colors de carpeta";
+"Use folder colors" = "Utilitza colors de carpeta";
 
 /* error title */
 "Verification error" = "Error de verificació";
@@ -2237,7 +2252,7 @@
 "You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Podeu cercar dintres dels missatges descarregats. Per a tota la resta de missatges només es cercarà a la llista de destinataris i la línia de l'assumpte.";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "No podeu configurar %@ adreça com a predeterminada perquè és una funció de pagament.";
+"You can't set %@ address as default because it is a paid feature." = "No podeu configurar l'adreça %@ com per defecte perquè és una funció de pagament.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Heu deshabilitat Face ID a la vostra configuració del sistema. El Face ID s’ha utilitzat per protegir informació important del compte. Per accedir al vostre compte, aneu a la configuració i reactiveu Face ID o torneu a iniciar la sessió.";

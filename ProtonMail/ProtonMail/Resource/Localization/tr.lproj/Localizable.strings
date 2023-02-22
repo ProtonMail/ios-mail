@@ -193,10 +193,10 @@
 "Alternative routing" = "Alternatif yöneltme";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Her zaman kapalı";
+"Always off" = "Hep kapalı";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Her zaman açık";
+"Always on" = "Hep açık";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Yıl dönümü";
@@ -260,6 +260,9 @@
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Oturumu kapatmak istediğinize emin misiniz?";
+
+/* One of the schedule time options */
+"As scheduled" = "Zamanlandığı gibi";
 
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Saat: %@";
@@ -984,8 +987,8 @@
 /* Title */
 "Hide details" = "Ayrıntıları gizle";
 
-/* hours */
-"hours" = "saat";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "E-posta takma adlarım gizlensin";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
@@ -1686,6 +1689,9 @@
 /* title */
 "Save Changes" = "Değişiklikleri kaydet";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Gönderimi zamanla";
@@ -1718,9 +1724,6 @@
 
 /* section title */
 "Select colour" = "Renk seçin";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Tarih ve saat seçin";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Seçilmiş";
@@ -1805,6 +1808,9 @@
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Sık kullanılan işlemler için kaydırma hareketlerini ayarlayın.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Kendi zamanlamanızı yapın";
 
 /* menu title */
 "Settings" = "Ayarlar";
@@ -2158,6 +2164,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Sınırsız";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Sınırsız klasör ve etiket";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Tarifenizi yükselttiğinizde özel ileti zamanlaması ve diğer özelliklere erişebilirsiniz.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Kilidin açılması gerekli";
 
@@ -2176,6 +2188,15 @@
 /* Error message */
 "Unsupported file type" = "Dosya biçimi desteklenmiyor";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "3 özel e-posta etki alanına kadar";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "15 e-posta adresine kadar";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500 GB depolama alanına kadar";
+
 /* update notification email error title */
 "Update Notification Email" = "Bildirim e-posta adresini güncelle";
 
@@ -2190,6 +2211,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Güncellenmiş Proton, birleşik koruma";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Şimdi yükselt";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ adresinden gönderebilmek için ücretli bir tarifeye yükseltin";

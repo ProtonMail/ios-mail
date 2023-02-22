@@ -22,58 +22,62 @@ extension ELanguage {
     var nativeDescription: String {
         get {
             switch self {
-            case .english:
-                return "English"
-            case .german:
-                return "Deutsch"
-            case .french:
-                return "Français"
-            case .russian:
-                return "Русский"
-            case .spanish:
-                return "Español"
-            case .turkish:
-                return "Türkçe"
-            case .polish:
-                return "Polski"
-            case .ukrainian:
-                return "Українська"
-            case .dutch:
-                return "Dutch"
-            case .italian:
-                return "Italiano"
-            case .portugueseBrazil:
-                return "Português do Brasil"
+            case .belarusian:
+                return "беларуская мова"
+            case .catalan:
+                return "Català"
             case .chineseSimplified:
                 return "简体中文"
             case .chineseTraditional:
                 return "繁體中文"
-            case .catalan:
-                return "Català"
-            case .danish:
-                return "Dansk"
-            case  .czech:
-                return "Čeština"
-            case .portuguese:
-                return "Português"
-            case .romanian:
-                return "Română"
+            case .count:
+                return ""
             case .croatian:
                 return "Hrvatski"
+            case  .czech:
+                return "Čeština"
+            case .danish:
+                return "Dansk"
+            case .dutch:
+                return "Dutch"
+            case .english:
+                return "English"
+            case .french:
+                return "Français"
+            case .german:
+                return "Deutsch"
+            case .greek:
+                return "ελληνικά"
             case .hungarian:
                 return "Magyar"
             case .icelandic:
                 return "íslenska"
-            case .kabyle:
-                return "Taqbaylit"
-            case .swedish:
-                return "Svenska"
-            case .japanese:
-                return "日本語"
             case .indonesian:
                 return "bahasa Indonesia"
-            case .count:
-                return ""
+            case .italian:
+                return "Italiano"
+            case .japanese:
+                return "日本語"
+            case .kabyle:
+                return "Taqbaylit"
+            case .polish:
+                return "Polski"
+            case .portuguese:
+                return "Português"
+            case .portugueseBrazil:
+                return "Português do Brasil"
+            case .romanian:
+                return "Română"
+            case .russian:
+                return "Русский"
+            case .spanish:
+                return "Español"
+            case .swedish:
+                return "Svenska"
+            case .turkish:
+                return "Türkçe"
+            case .ukrainian:
+                return "Українська"
             @unknown default:
                 return ""
             }
@@ -84,58 +88,62 @@ extension ELanguage {
     var code: String {
         get {
             switch self {
-            case .english:
-                return "en"
-            case .german:
-                return "de"
-            case .french:
-                return "fr"
-            case .russian:
-                return "ru"
-            case .spanish:
-                 return "es"
-            case .turkish:
-                return "tr"
-            case .polish:
-                return "pl"
-            case .ukrainian:
-                return "uk"
-            case .dutch:
-                return "nl"
-            case .italian:
-                return "it"
-            case .portugueseBrazil:
-                return "pt-BR"
+            case .belarusian:
+                return "be"
+            case .catalan:
+                return "ca"
             case .chineseSimplified:
                 return "zh-Hans"
             case .chineseTraditional:
                 return "zh-Hant"
-            case .catalan:
-                return "ca"
-            case .danish:
-                return "da"
-            case .czech:
-                return "cs"
-            case .portuguese:
-                return "pt"
-            case .romanian:
-                return "ro"
+            case .count:
+                return "en"
             case .croatian:
                 return "hr"
+            case .czech:
+                return "cs"
+            case .danish:
+                return "da"
+            case .dutch:
+                return "nl"
+            case .english:
+                return "en"
+            case .french:
+                return "fr"
+            case .german:
+                return "de"
+            case .greek:
+                return "el"
             case .hungarian:
                 return "hu"
             case .icelandic:
                 return "is"
-            case .kabyle:
-                return "kab"
-            case .swedish:
-                return "sv"
-            case .japanese:
-                return "ja"
             case .indonesian:
                 return "id"
-            case .count:
-                return "en"
+            case .italian:
+                return "it"
+            case .japanese:
+                return "ja"
+            case .kabyle:
+                return "kab"
+            case .polish:
+                return "pl"
+            case .portuguese:
+                return "pt"
+            case .portugueseBrazil:
+                return "pt-BR"
+            case .romanian:
+                return "ro"
+            case .russian:
+                return "ru"
+            case .spanish:
+                 return "es"
+            case .swedish:
+                return "sv"
+            case .turkish:
+                return "tr"
+            case .ukrainian:
+                return "uk"
             @unknown default:
                 return "en"
             }
@@ -144,6 +152,7 @@ extension ELanguage {
 
     static func allItems() -> [ELanguage] {
         return [
+            .belarusian,
             .catalan,
             .croatian,
             .czech,
@@ -154,6 +163,7 @@ extension ELanguage {
             .english,
             .french,
             .german,
+            .greek,
             .hungarian,
             .icelandic,
             .indonesian,

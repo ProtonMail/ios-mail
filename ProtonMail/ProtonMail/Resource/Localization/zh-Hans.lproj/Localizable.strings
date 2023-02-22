@@ -933,9 +933,6 @@
 /* Title */
 "Hide details" = "隐藏详情";
 
-/* hours */
-"hours" = "时";
-
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "您认为新版 Proton Mail的使用体验如何？";
 
@@ -1661,9 +1658,6 @@
 
 /* section title */
 "Select colour" = "选择颜色";
-
-/* Option for set up scheduled send */
-"Select date and time" = "选择日期与时间";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "已选中";

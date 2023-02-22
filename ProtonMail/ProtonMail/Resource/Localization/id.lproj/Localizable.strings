@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Apakah Anda yakin ingin keluar?";
 
+/* One of the schedule time options */
+"As scheduled" = "Sebagaimana terjadwal";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Pukul %@";
 
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Sembunyikan rincian";
 
-/* hours */
-"hours" = "jam";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan Proton Mail yang baru?";
@@ -1037,7 +1040,7 @@
 "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Undang teman Anda ke Proton: mereka dapat mencoba Mail Plus secara gratis, dan Anda akan memperoleh saldo ketika mereka berlangganan ke paket berbayar.";
 
 /* Error message */
-"Is this bug report about an in-app purchase?" = "Apakah laporan bug ini menyangkut seputar pembelian dalam aplikasi (in-app purchase)?";
+"Is this bug report about an in-app purchase?" = "Apakah laporan bug ini menyangkut pembelian dalam aplikasi (in-app purchase)?";
 
 /* No comment provided by engineer. */
 "Label as" = "Labeli sebagai";
@@ -1632,6 +1635,9 @@
 /* title */
 "Save Changes" = "Simpan Perubahan";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Jadwalkan pesan sesuai keinginan Anda";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Jadwalkan pengiriman";
@@ -1664,9 +1670,6 @@
 
 /* section title */
 "Select colour" = "Pilih warna";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Pilih tanggal dan waktu";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Terpilih";
@@ -1751,6 +1754,9 @@
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Atur gestur usap untuk mengakses tindakan yang paling sering digunakan.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Tentukan jadwal Anda sendiri";
 
 /* menu title */
 "Settings" = "Pengaturan";
@@ -2101,6 +2107,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Tidak terbatas";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Dapatkan fitur penjadwalan pesan khusus dan berbagai kelebihan lainnya dengan meningkatkan akun Anda.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Pembukaan kunci diperlukan";
 
@@ -2119,6 +2131,15 @@
 /* Error message */
 "Unsupported file type" = "Tipe berkas tidak didukung";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Hingga 3 domain email khusus";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Hingga 15 alamat email";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Kuota penyimpanan hingga 500 GB";
+
 /* update notification email error title */
 "Update Notification Email" = "Perbarui Email Notifikasi";
 
@@ -2130,6 +2151,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton yang baru, dengan perlindungan yang tersatukan";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Tingkatkan sekarang";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Tingkatkan jenis akun Anda ke akun berbayar untuk dapat mengirim dari alamat %@ Anda";

@@ -163,7 +163,9 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Tarcivt";
-"Archive (verb)" = "Tarcivt";
+
+/* Push notification action archive */
+"Archive (verb)" = "Taṛcivt";
 
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda izen-agi?";
@@ -781,9 +783,6 @@
 
 /* Title */
 "Hide details" = "Ffer ifutas";
-
-/* hours */
-"hours" = "isragen";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Amek ara tgelmeḍ tarmit-inek•inem akked Proton Mail amaynut?";
