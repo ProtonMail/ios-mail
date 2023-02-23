@@ -557,8 +557,7 @@ extension MailboxCoordinator {
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
-        let page = PagesViewController(viewModel: pageVM, services: services)
-        navigationController.show(page, sender: nil)
+        presentPageViews(pageVM: pageVM)
     }
 
     private func presentPageViewsFor(conversation: ConversationEntity, targetID: MessageID?) {
@@ -575,8 +574,18 @@ extension MailboxCoordinator {
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
+        presentPageViews(pageVM: pageVM)
+    }
+
+    private func presentPageViews<T, U, V>(pageVM: PagesViewModel<T, U, V>) {
+        guard let navigationController = viewController?.navigationController else { return }
+        var viewControllers = navigationController.viewControllers
+        if viewControllers.last is MessagePlaceholderVC {
+            _ = viewControllers.removeLast()
+        }
         let page = PagesViewController(viewModel: pageVM, services: services)
-        navigationController.show(page, sender: nil)
+        viewControllers.append(page)
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 
     private func presentMessagePlaceholder() {
