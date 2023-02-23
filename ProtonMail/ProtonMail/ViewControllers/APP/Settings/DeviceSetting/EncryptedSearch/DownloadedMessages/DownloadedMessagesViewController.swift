@@ -51,7 +51,7 @@ final class DownloadedMessagesViewController: UITableViewController, AccessibleV
     }
 
     private func setUpUI() {
-        title = LocalString._encrypted_search_downloaded_messages
+        title = L11n.EncryptedSearch.downloaded_messages
         view.backgroundColor = ColorProvider.BackgroundSecondary
         view.frame = CGRect(origin: .zero, size: UIScreen.main.bounds.size)
 
@@ -109,7 +109,7 @@ extension DownloadedMessagesViewController {
             return UIView()
         case .localStorageUsed:
             let footer = tableView.dequeue(viewType: SettingsTextFooterView.self)
-            footer.set(text: LocalString._encrypted_search_downloaded_messages_explanation)
+            footer.set(text: L11n.EncryptedSearch.downloaded_messages_explanation)
             return footer
         }
     }
@@ -164,8 +164,8 @@ extension DownloadedMessagesViewController {
 
     private func showDeleteMessagesAlert() {
         let alert = UIAlertController(
-            title: LocalString._encrypted_search_delete_messages_alert_title,
-            message: LocalString._encrypted_search_delete_messages_alert_message,
+            title: L11n.EncryptedSearch.delete_messages_alert_title,
+            message: L11n.EncryptedSearch.delete_messages_alert_message,
             preferredStyle: .alert
         )
         let enableTitle = LocalString._general_delete_action

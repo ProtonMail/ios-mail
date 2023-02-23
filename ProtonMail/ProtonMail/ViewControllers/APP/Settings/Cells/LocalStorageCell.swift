@@ -158,7 +158,7 @@ extension LocalStorageCell {
             button.titleLabel?.adjustsFontForContentSizeCategory = true
             button.titleLabel?.numberOfLines = 1
             button.layer.cornerRadius = 8
-            button.setTitle(LocalString._encrypted_search_downloaded_messages_storage_used_button_title, for: .normal)
+            button.setTitle(L11n.EncryptedSearch.downloaded_messages_storage_used_button_title, for: .normal)
             return button
         }
     }

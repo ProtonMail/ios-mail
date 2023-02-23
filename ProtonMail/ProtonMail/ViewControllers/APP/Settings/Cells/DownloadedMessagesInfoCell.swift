@@ -107,7 +107,7 @@ extension DownloadedMessagesInfoCell {
             label.adjustsFontForContentSizeCategory = true
             label.textColor = ColorProvider.TextNorm
             label.numberOfLines = 0
-            label.text = LocalString._encrypted_search_downloaded_messages
+            label.text = L11n.EncryptedSearch.downloaded_messages
             return label
         }
 

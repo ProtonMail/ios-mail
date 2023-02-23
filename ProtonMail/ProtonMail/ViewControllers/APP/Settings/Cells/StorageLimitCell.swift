@@ -80,9 +80,9 @@ final class StorageLimitCell: UITableViewCell {
 
     private func updateCurrentSelection() {
         if slider.value == slider.maximumValue {
-            currentSelectionLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
+            currentSelectionLabel.text = L11n.EncryptedSearch.downloaded_messages_storage_limit_no_limit
         } else {
-            currentSelectionLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_selection
+            currentSelectionLabel.text = L11n.EncryptedSearch.downloaded_messages_storage_limit_selection
             + Int(slider.value).toByteCount
         }
     }
