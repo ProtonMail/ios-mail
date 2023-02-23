@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ está disponible";
-
 /* Plan details storage */
 "%@ storage" = "%@ de almacenamiento";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Volver";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Al hacer clic en Crear dirección, acepta los Términos y Condiciones de Proton.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Al hacer clic en Siguiente, acepta los Términos y Condiciones de Proton";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Cree una dirección segura de Proton Mail en su lugar";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Crear dirección";
-
 /* Create account button */
 "Create an account" = "Crear una cuenta";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Crear dirección de Proton Mail";
 
 /* Create user failed error */
 "Create user failed" = "Error al crear el usuario";
@@ -300,6 +287,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No fue posible hacer coincidir el producto de la App Store comprado con ningún producto de nuestro servidor. Rellene y envíe el reporte de errores y nuestro equipo se contactará con usted.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Más información";
 
@@ -331,8 +319,7 @@
  * Networking */
 "Network connection error" = "Error de conexión de red";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Siguiente";
 
 /* network troubleshot cell title */
@@ -421,6 +408,10 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privacidad por defecto";
+
+/* *
+ * Login create address */
+"Proton address required" = "Es necesaria una dirección de Proton";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -553,7 +544,6 @@
 "Temporarily disable or remove your antivirus software." = "Deshabilite temporalmente o elimine su software de antivirus.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Términos y Condiciones";
 
@@ -692,10 +682,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Se cerrará la sesión y todos los datos asociados a esta cuenta se eliminarán de este dispositivo.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Usará esta dirección de correo para iniciar sesión en todos los servicios de Proton.";
-
 /* Complete view title */
 "Your account is being created" = "Su cuenta está siendo creada…";
 
@@ -717,17 +703,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Su plan se renovará automáticamente en %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Su cuenta de Proton está asociada con %@. Para usar %@, cree una dirección.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Su cuenta Proton fue creada con éxito.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Su cuenta Proton Free fue creada con éxito.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Su dirección de correo de recuperación:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Su sesión ha expirado. Inicie sesión de nuevo.";

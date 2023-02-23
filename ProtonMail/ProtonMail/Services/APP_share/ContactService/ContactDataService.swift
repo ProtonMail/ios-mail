@@ -31,7 +31,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
-typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
@@ -47,7 +46,7 @@ protocol ContactProviderProtocol: AnyObject {
     func cleanUp() -> Promise<Void>
 }
 
-class ContactDataService: Service, HasLocalStorage {
+class ContactDataService: Service {
 
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
@@ -155,47 +154,40 @@ class ContactDataService: Service, HasLocalStorage {
              authCredential: AuthCredential?,
              objectID: String? = nil,
              importFromDevice: Bool,
-             completion: ContactAddComplete?) {
+             completion: @escaping (Error?) -> Void) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
-            var contacts_json: [[String: Any]] = []
-            var lasterror: NSError?
+            var contactsData: [[String: Any]] = []
+            var lastError: NSError?
+
             let results = response.results
-            self.coreDataService.performOnRootSavingContext { context in
-                guard !results.isEmpty,
-                      cards.count == results.count else {
-                    DispatchQueue.main.async {
-                        completion?(nil, lasterror)
-                    }
-                    return
+            guard !results.isEmpty,
+                  cards.count == results.count else {
+                DispatchQueue.main.async {
+                    completion(lastError)
                 }
+                return
+            }
 
-                for (i, res) in results.enumerated() {
-                    if let error = res as? NSError {
-                        lasterror = error
-                        guard let objectID = objectID,
-                              let managedID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
-                              let managedObject = try? context.existingObject(with: managedID) else {
-                            continue
-                        }
-                        context.delete(managedObject)
-                    } else if var contact = res as? [String: Any] {
-                        contact["Cards"] = cards[i].toDictionary()
-                        contacts_json.append(contact)
+            for (i, res) in results.enumerated() {
+                if let error = res as? NSError {
+                    lastError = error
+                } else if var contact = res as? [String: Any] {
+                    contact["Cards"] = cards[i].toDictionary()
+                    contactsData.append(contact)
+                }
+            }
+
+            if !contactsData.isEmpty {
+                self.cacheService.addNewContact(serverResponse: contactsData, localContactObjectID: objectID) { error in
+                    DispatchQueue.main.async {
+                        completion(error)
                     }
                 }
-
-                if !contacts_json.isEmpty {
-                    self.cacheService.addNewContact(serverResponse: contacts_json, objectID: objectID) { (contacts, error) in
-                        DispatchQueue.main.async {
-                            completion?(contacts, error)
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        completion?(nil, lasterror)
-                    }
+            } else {
+                DispatchQueue.main.async {
+                    completion(lastError)
                 }
             }
         }
@@ -241,10 +233,13 @@ class ContactDataService: Service, HasLocalStorage {
      delete a contact
 
      - Parameter contactID: delete contact id
-     - Parameter completion: async delete prcess complete response
+     - Parameter completion: async delete process complete response
      **/
     func delete(contactID: ContactID, completion: @escaping ContactDeleteComplete) {
-        let api = ContactDeleteRequest(ids: [contactID.rawValue])
+        guard let api = ContactDeleteRequest(ids: [contactID.rawValue]) else {
+            completion(NSError.badParameter(contactID.rawValue))
+            return
+        }
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.coreDataService.performOnRootSavingContext { context in
@@ -385,10 +380,10 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        self.cacheService.addNewContact(serverResponse: contacts, shouldFixName: true) { (_, error) in
+                        self.cacheService.addNewContact(serverResponse: contacts, shouldFixName: true) { error in
                             if let err = error {
                                 DispatchQueue.main.async {
-                                    err.alertErrorToast()
+                                    (err as NSError).alertErrorToast()
                                 }
                             }
                         }
@@ -427,10 +422,10 @@ class ContactDataService: Service, HasLocalStorage {
 
                         let group = DispatchGroup()
                         group.enter()
-                        self.cacheService.addNewContact(serverResponse: contactsArray) { _, error in
+                        self.cacheService.addNewContact(serverResponse: contactsArray) { error in
                             if let err = error {
                                 DispatchQueue.main.async {
-                                    err.alertErrorToast()
+                                    (err as NSError).alertErrorToast()
                                 }
                             }
                             group.leave()
@@ -588,7 +583,7 @@ class ContactDataService: Service, HasLocalStorage {
         }
         return result
     }
-    
+
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         do {
@@ -711,7 +706,7 @@ extension ContactDataService {
     func allContactVOs() -> [ContactVO] {
         allEmails()
             .filter { $0.userID == userID.rawValue }
-            .map { ContactVO(id: $0.contactID, name: $0.name, email: $0.email, isProtonMailContact: true) }
+            .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
 
     func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
@@ -748,7 +743,7 @@ extension ContactDataService {
                 var pm_contacts: [ContactWrapper] = []
                 for email in emailsCache {
                     if email.managedObjectContext != nil {
-                        let contact = ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true)
+                        let contact = ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
                         pm_contacts.append(ContactWrapper(contact: contact, lastUsedTime: email.lastUsedTime))
                     }
                 }

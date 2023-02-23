@@ -41,8 +41,6 @@ class LocalizedString {
 
     /// "%d Minutes"
     lazy var _settings_auto_lock_minutes = NSLocalizedString("%d Minutes", comment: "auto lock time format")
-    /// "DisplayName"
-    lazy var _settings_displayname_title = NSLocalizedString("DisplayName", comment: "Title in display name settings")
     /// "DISPLAY NAME"
     lazy var _settings_display_name_title = NSLocalizedString("Display Name", comment: "Title in settings")
     /// "Input Display Name…"
@@ -50,12 +48,10 @@ class LocalizedString {
     /// "Signature"
     lazy var _settings_signature_title = NSLocalizedString("Signature", comment: "Title in signature settings")
     /// "Enable Default Signature"
-    lazy var _settings_enable_default_signature_title = NSLocalizedString("Enable signature", comment: "Title")
+    lazy var _settings_enable_signature_title = NSLocalizedString("Enable signature", comment: "Title")
     lazy var _settings_default_signature_placeholder = NSLocalizedString("Enter your signature here", comment: "")
     /// "Mobile Signature"
     lazy var _settings_mobile_signature_title = NSLocalizedString("Mobile Signature", comment: "Mobile Signature title in settings")
-    /// "Enable Mobile Signature"
-    lazy var _settings_enable_mobile_signature_title = NSLocalizedString("Enable signature", comment: "Title")
     /// "Notification Email"
     lazy var _settings_notification_email = NSLocalizedString("Recovery email", comment: "Title")
     /// "Enable Notification Email"
@@ -116,18 +112,8 @@ class LocalizedString {
     lazy var _menu_refer_a_friend = NSLocalizedString("Refer a friend", comment: "menu title")
 
     // Mark Message localtion
+     lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
 
-    lazy var _locations_all_mail_title = NSLocalizedString("All Mail", comment: "mail location title")
-    lazy var _locations_inbox_title    = NSLocalizedString("Inbox", comment: "mail location title")
-    lazy var _locations_starred_title  = NSLocalizedString("Starred", comment: "mail location title")
-    lazy var _locations_draft_title    = NSLocalizedString("Drafts", comment: "mail location title")
-    lazy var _locations_outbox_title   = NSLocalizedString("Sent", comment: "mail location title")
-    lazy var _locations_trash_title    = NSLocalizedString("Trash", comment: "mail location title")
-    lazy var _locations_archive_title  = NSLocalizedString("Archive", comment: "mail location title")
-    lazy var _locations_spam_title     = NSLocalizedString("Spam", comment: "mail location title")
-    lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
-
-    var _locations_trash_desc : String { _locations_trash_title }
     /// "Add Star"
     lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
 
@@ -137,8 +123,8 @@ class LocalizedString {
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
-    /// "The draft cache is broken please try again"
-    lazy var _message_draft_cache_is_broken = NSLocalizedString("The draft cache is broken. Please try again.", comment: "Description")
+    /// "Email failed to send. Message saved as draft."
+    lazy var _email_failed_to_send = NSLocalizedString("Email failed to send. Message saved as draft.", comment: "Description")
 
     lazy var _folder_no_message = NSLocalizedString("Nothing to see here", comment: "The title will be shown when foler doesnt have emails")
     lazy var _folder_is_empty = NSLocalizedString("This folder is empty", comment: "The subtitle will be shown when folder doesnt have emails")
@@ -205,18 +191,14 @@ class LocalizedString {
     lazy var _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
     /// "You need at least one recipient to send"
     lazy var _composer_no_recipient_error = NSLocalizedString("You need at least one recipient to send", comment: "Description")
-    /// "Change sender address to .."
-    lazy var _composer_change_sender_address_to = NSLocalizedString("Change sender address to ..", comment: "Title")
+    /// "Change sender address to…"
+    lazy var _composer_change_sender_address_to = NSLocalizedString("Change sender address to…", comment: "Title")
     /// "Upgrade to a paid plan to send from your %@ address"
     lazy var _composer_change_paid_plan_sender_error = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
     /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
     lazy var _composer_sending_messages_from_a_paid_feature = NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer")
     /// "From"
     lazy var _composer_from_label = NSLocalizedString("From", comment: "Title")
-    /// "To"
-    lazy var _composer_to_label = NSLocalizedString("To", comment: "Title")
-    /// "Cc"
-    lazy var _composer_cc_label = NSLocalizedString("Cc", comment: "Title")
     /// "Bcc"
     lazy var _composer_bcc_label = NSLocalizedString("Bcc", comment: "Title")
     /// "Subject"
@@ -383,7 +365,6 @@ class LocalizedString {
     /// "Send"
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
     lazy var _general_schedule_send_action = NSLocalizedString("Schedule send", comment: "Action")
-    lazy var _schedule_tomorrow_send_action = NSLocalizedString("Tomorrow at 08:%02d AM", comment: "scheduled send message at tomorrow morning Action")
     lazy var _message_saved_to_draft = NSLocalizedString("Message saved to Drafts", comment: "Alert title")
     lazy var _schedule_send_unavailable_message = NSLocalizedString("Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.", comment: "Alert message")
     lazy var _schedule_send_future_warning = NSLocalizedString("The sending time needs to be at least 5 minutes in the future.", comment: "Warning message")
@@ -517,10 +498,10 @@ class LocalizedString {
     lazy var _unsupported_url = NSLocalizedString("The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?", comment: "Unsupported url alert message")
 
     /// "Auto Lock Time"
-    lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "Title")
+    lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "A Title of available auto lock time action sheet")
 
-    /// "Change default address to .."
-    lazy var _settings_change_default_address_to = NSLocalizedString("Change default address to ..", comment: "Title")
+    /// "Change default address to…"
+    lazy var _settings_change_default_address_to = NSLocalizedString("Change default address to…", comment: "Title")
 
     /// "You can't set the %@ address as default because it is a paid feature."
     lazy var _settings_change_paid_address_warning = NSLocalizedString("You can't set %@ address as default because it is a paid feature.", comment: "pm.me upgrade warning in composer")
@@ -579,9 +560,6 @@ class LocalizedString {
     /// "Unable to send the email"
     lazy var unable_to_send_the_email = NSLocalizedString("Unable to send the email", comment: "error when sending the message")
 
-    /// "The draft format incorrectly sending failed!"
-    lazy var _the_draft_incorrectly_sending_failed = NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message")
-
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
 
@@ -638,6 +616,7 @@ class LocalizedString {
     lazy var _discard_changes = NSLocalizedString("Discard changes", comment: "Action")
 
     lazy var _general_discard = NSLocalizedString("Discard", comment: "Action")
+    lazy var _general_discarded = NSLocalizedString("Discarded", comment: "Message shown to user after discarding action is done")
 
     /// "Add new url"
     lazy var _add_new_url = NSLocalizedString("Add new URL", comment: "action")
@@ -725,8 +704,8 @@ class LocalizedString {
     /// "Can't get user auth info"
     lazy var _cant_get_user_auth_info = NSLocalizedString("Can't get user auth info", comment: "update password error")
 
-    /// "The Password is wrong."
-    lazy var _the_password_is_wrong = NSLocalizedString("The Password is wrong.", comment: "update password error")
+    /// "The password is wrong."
+    lazy var _the_password_is_wrong = NSLocalizedString("The password is wrong.", comment: "update password error")
 
     /// "The new password does not match."
     lazy var _the_new_password_not_match = NSLocalizedString("The new password does not match.", comment: "update password error")
@@ -758,9 +737,6 @@ class LocalizedString {
 
     /// "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full."
     lazy var _reporting_a_message_as_a_phishing_ = NSLocalizedString("Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.", comment: "alert message")
-
-    /// "Loading…"
-    lazy var _loading_ = NSLocalizedString("Loading…", comment: "")
 
 
     /// "Can't decrypt this attachment!"
@@ -915,8 +891,6 @@ class LocalizedString {
     lazy var _folders = NSLocalizedString("Folders", comment: "VoiceOver: email belongs to folders")
     /// "Labels"
     lazy var _labels = NSLocalizedString("Labels", comment: "VoiceOver: email has lables")
-    /// "Starred"
-    lazy var _starred = NSLocalizedString("Starred", comment: "VoiceOver: email is starred")
 
     // MARK: - IAP
 
@@ -947,7 +921,7 @@ class LocalizedString {
                                                         comment: "The description of the button for deleting the contact group")
 
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d member",
-                                                                          comment: "The string that describes whether there are 0 or 1 member in the contact group")
+                                                                          comment: "How many members in the contact group, e.g. 0 member, 2 members")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")
     lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
@@ -1020,7 +994,6 @@ class LocalizedString {
 
     // Springboard shortcuts
     lazy var _springboard_shortcuts_search = NSLocalizedString("Search", comment: "Springboard (3D Touch) shortcuts action")
-    lazy var _springboard_shortcuts_starred = NSLocalizedString("Starred", comment: "Springboard (3D Touch) shortcuts action")
     lazy var _springboard_shortcuts_composer = NSLocalizedString("Compose", comment: "Springboard (3D Touch) shortcuts action")
 
     /// Account Manger
@@ -1100,10 +1073,8 @@ class LocalizedString {
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
     lazy var _week = NSLocalizedString("week", comment: "week")
     lazy var _day = NSLocalizedString("%d day", comment: "day")
-    lazy var _days = NSLocalizedString("days", comment: "days")
 
     lazy var _hour = NSLocalizedString("%d hour", comment: "hour")
-    lazy var _hours = NSLocalizedString("hours", comment: "hours")
 
     lazy var _minute = NSLocalizedString("%d min", comment: "minute")
 
@@ -1139,8 +1110,6 @@ class LocalizedString {
 
     lazy var _title_of_delete_action_in_action_sheet = NSLocalizedString("Delete", comment: "The title of the delete action in action sheet")
 
-    lazy var _title_of_archive_action_in_action_sheet = NSLocalizedString("Archive", comment: "The title of the archive action in action sheet")
-
     lazy var _title_of_spam_action_in_action_sheet = NSLocalizedString("Move to spam", comment: "The title of the spam action in action sheet")
 
     lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
@@ -1160,7 +1129,6 @@ class LocalizedString {
     lazy var _pin_code_setup2_title = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
     lazy var _pin_code_setup2_textfield_title = NSLocalizedString("Repeat PIN code", comment: "The title of textfield of PIN code setup2")
     lazy var _pin_code_setup2_textfield_invalid_password = NSLocalizedString("The PIN codes must match!", comment: "The error message of entering an invalid password")
-    lazy var _pin_code_setup2_button_title = NSLocalizedString("Confirm", comment: "The title of button of PIN code setup2")
 
     lazy var _settings_alternative_routing_footer = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "The footer of alternative routing setting")
     lazy var _settings_alternative_routing_title = NSLocalizedString("Networking", comment: "The title of alternative routing settings")
@@ -1193,8 +1161,6 @@ class LocalizedString {
     lazy var _swipe_action_read = NSLocalizedString("Read", comment: "")
     lazy var _swipe_action_star = NSLocalizedString("Star", comment: "")
     lazy var _swipe_action_unstar = NSLocalizedString("Unstar", comment: "")
-    lazy var _swipe_action_archive = NSLocalizedString("Archive", comment: "")
-    lazy var _swipe_action_spam = NSLocalizedString("Spam", comment: "")
 
     lazy var _setting_swipe_action_info_title = NSLocalizedString("Set up swipe gestures to access most used actions.", comment: "")
 
@@ -1243,7 +1209,6 @@ class LocalizedString {
     lazy var _action_sheet_group_title_more = NSLocalizedString("More", comment: "")
 
     // MARK: Action sheet action title
-    lazy var _action_sheet_action_title_archive = NSLocalizedString("Archive", comment: "")
     lazy var _action_sheet_action_title_reply = NSLocalizedString("Reply", comment: "")
     lazy var _action_sheet_action_title_replyAll = NSLocalizedString("Reply all", comment: "")
     lazy var _action_sheet_action_title_forward = NSLocalizedString("Forward", comment: "")
@@ -1383,9 +1348,7 @@ class LocalizedString {
     lazy var _composer_send_msg_which_was_schedule_send_title = NSLocalizedString("Send immediately?", comment: "The alert title of the user trying to send a message that was schedule-send.")
     lazy var _composer_send_msg_which_was_schedule_send_message = NSLocalizedString("This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"", comment: "The message of the alert of the user trying to send a message that was schedule-send.")
     lazy var _composer_send_msg_which_was_schedule_send_action_title = NSLocalizedString("Send immediately", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
-    lazy var _composer_send_msg_which_was_schedule_send_action_title_schedule_send = NSLocalizedString("Schedule send", comment: "The action title of the alert of the user trying to send a message that was schedule-send.")
 
-    lazy var _schedule_introduction_view_title = NSLocalizedString("Schedule send", comment: "The title of the introducation view of the schedule send")
     lazy var _schedule_introduction_view_content = NSLocalizedString("You can now schedule your messages to be sent later", comment: "The content of the introducation view of the schedule send")
     lazy var _scheduling_message_title = NSLocalizedString("Scheduling message...", comment: "The title of the banner that will be shown when you schedule a message.")
 
@@ -1501,6 +1464,21 @@ class LocalizedString {
     lazy var _encrypted_search_disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
     lazy var _encrypted_search_message_count = NSLocalizedString("Downloading message %1d out of %2d", comment: "The text for the number of downloaded messages.")
 
+    lazy var _toolbar_customize_header_title_of_first_section = NSLocalizedString("Toolbar actions (select up to 5)", comment: "The title of the section header in the toolbar customize view.")
+    lazy var _toolbar_customize_header_title_of_second_section = NSLocalizedString("Available actions", comment: "The title of the section header in the toolbar customize view.")
+
+    lazy var _toolbar_customize_info_title: String = NSLocalizedString("You can choose and rearrange the actions in your toolbar", comment: "The title of the info bubble view in toolbar customization view.")
+    lazy var _toolbar_customize_reset_alert_title: String = NSLocalizedString("Reset to default?", comment: "The title of the alert after tapping reset in toolbar customization view.")
+    lazy var _toolbar_customize_reset_alert_content: String = NSLocalizedString("The actions in the toolbar will be reset to default", comment: "The content of the alert after tapping reset in toolbar customization view.")
+    lazy var _toolbar_customize_reset_button__title: String = NSLocalizedString("Reset to default", comment: "The title of the reset button in toolbar customization view.")
+
+    lazy var _toolbar_customize_general_title: String = NSLocalizedString("Customize toolbar", comment: "The title of the item in the App settings section of the device setting view.")
+    lazy var _toolbar_setting_segment_title_message: String = NSLocalizedString("Message", comment: "The title of the first item in the segment control of the Customize toolbar setting view.")
+    lazy var _toolbar_setting_info_title_message: String = NSLocalizedString("This toolbar is visible when reading a message.", comment: "The title of the info label in the first segment of the Customize toolbar setting view.")
+    lazy var _toolbar_setting_info_title_inbox: String = NSLocalizedString("This toolbar appears when selecting multiple messages in your inbox.", comment: "The title of the info label in the second segment of the Customize toolbar setting view.")
+
+    lazy var _toolbar_spotlight_content: String = NSLocalizedString("You can now choose and rearrange the actions in this bar", comment: "The content of the Customize toolbar spotlight view.")
+
     var _title_notification_action_mark_as_read: String {
         L11n.PushNotificationAction.mark_as_read
     }
@@ -1515,8 +1493,7 @@ class LocalizedString {
 enum L11n {
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
-        static let spotlight_title = NSLocalizedString("You’re safe from email trackers", comment: "Title of the spotlight for tracker protection")
-        static let n_email_trackers_found = NSLocalizedString("%d email trackers found", comment: "Short hint in the header view")
+        static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")
         static let n_email_trackers_blocked = NSLocalizedString("%d email trackers blocked", comment: "Title of the tracker list. Only used if there is at least one tracker.")
         static let email_trackers_can_violate_your_privacy = NSLocalizedString("Email trackers can violate your privacy.", comment: "Tracker protection feature explanation")
         static let proton_found_n_trackers_on_this_message = NSLocalizedString("Proton found %d trackers on this message.", comment: "Tracker protection results")
@@ -1524,8 +1501,6 @@ enum L11n {
         static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
         // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
-        static let feature_description_if_remote_content_allowed = NSLocalizedString("Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy.", comment: "Spotlight explanation of the feature")
-        static let feature_description_if_remote_content_not_allowed = NSLocalizedString("Email tracking protection is now available. Senders will not know if, where, or when you opened their emails.", comment: "Spotlight explanation of the feature")
     }
 
     struct ReferralProgram {
@@ -1536,11 +1511,31 @@ enum L11n {
         static let shareTitle = NSLocalizedString("Share", comment: "The title of the share button in referral share view.")
         static let trackRewardTitle = NSLocalizedString("Track your rewards", comment: "The title of the track reward button in referral share view.")
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
+        static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 	}
 
-    fileprivate struct PushNotificationAction {
+    struct ScheduledSend {
+        static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
+        static let custom = NSLocalizedString("Custom", comment: "Option for set up custom schedule send date")
+        static let asSchedule = NSLocalizedString("As scheduled", comment: "One of the schedule time options")
+        static let upSellTitle = NSLocalizedString("Set your own schedule", comment: "The title of the up sell content of the scheduled send.")
+        static let upSellContent = NSLocalizedString("Unlock custom message scheduling and other benefits when you upgrade your plan.", comment: "The content of the up sell content of the scheduled send.")
+        static let upgradeTitle = NSLocalizedString("Upgrade now", comment: "The title of the upgrade button in the schedule send promotion view.")
+        static let itemSchedule = NSLocalizedString("Schedule messages at any time", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemFolder = NSLocalizedString("Unlimited folders and labels", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemStorage = NSLocalizedString("Up to 500 GB of storage", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAliases = NSLocalizedString("Hide My Email aliases", comment: "The up sell bullet point in the schedule send promotion view.")
+    }
+
+    struct PushNotificationAction {
         static let mark_as_read = NSLocalizedString("Mark as read", comment: "Push notification action mark as read")
-        static let archive = NSLocalizedString("Archive", comment: "Push notification action to archive")
+        static let archive = NSLocalizedString("Archive (verb)", comment: "Push notification action archive")
         static let move_to_trash = NSLocalizedString("Move to trash", comment: "Push notification action move to trash")
+    }
+
+    struct Error {
+        static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
     }
 }

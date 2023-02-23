@@ -42,6 +42,7 @@ final class MainQueueHandler: QueueHandler {
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
+    private let sendMessageResultHandler = SendMessageResultNotificationHandler()
     private let dependencies: Dependencies
 
     init(coreDataService: CoreDataService,
@@ -290,7 +291,11 @@ extension MainQueueHandler {
                         mess = response
                     case .failure(let err):
                         DispatchQueue.main.async {
-                            NSError.alertSavingDraftError(details: err.localizedDescription)
+                            if let responseError = err as? ResponseError, responseError.underlyingError?.code == APIErrorCode.deviceHavingLowConnectivity {
+                                NSError.alertSavingDraftError(details: responseError.localizedDescription)
+                            } else {
+                                NSError.alertSavingDraftError(details: err.localizedDescription)
+                            }
                         }
 
                         if err.isStorageExceeded {
@@ -429,7 +434,6 @@ extension MainQueueHandler {
     }
 
     private func handleAttachmentResponse(result: Swift.Result<JSONDictionary, NSError>,
-                                          context: NSManagedObjectContext,
                                           attachment: Attachment,
                                           keyPacket: Data,
                                           completion: @escaping Completion) {
@@ -531,7 +535,6 @@ extension MainQueueHandler {
                                                  passphrase: passphrase)
                     let completionWrapper: API.JSONCompletion = { _, result in
                         self.handleAttachmentResponse(result: result,
-                                                      context: context,
                                                       attachment: attachment,
                                                       keyPacket: keyPacket,
                                                       completion: completion)
@@ -864,9 +867,13 @@ extension MainQueueHandler {
 
     private func addContact(objectID: String, cardDatas: [CardData], importFromDevice: Bool, completion: @escaping Completion) {
         let service = self.contactService
-        service.add(cards: [cardDatas], authCredential: nil, objectID: objectID, importFromDevice: importFromDevice) { contacts, error in
-            completion(error)
-        }
+        service.add(
+            cards: [cardDatas],
+            authCredential: nil,
+            objectID: objectID,
+            importFromDevice: importFromDevice,
+            completion: completion
+        )
     }
 
     /// - Parameters:

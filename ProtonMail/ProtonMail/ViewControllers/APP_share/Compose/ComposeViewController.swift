@@ -31,8 +31,6 @@ import ProtonCore_DataModel
 import ProtonCore_Foundations
 
 class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
-    typealias viewModelType = ComposeViewModel
-
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
     var navigateTo: ((ComposeCoordinator.Destination) -> Void)?
@@ -65,12 +63,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         fatalError("init(coder:) has not been implemented")
     }
 
-    func inactiveViewModel() {
-        self.stopAutoSave()
-        NotificationCenter.default.removeObserver(self)
-        self.dismissKeyboard()
-        self.dismiss(animated: true, completion: nil)
-    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -409,7 +401,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         // overriden in Share
     }
 
-    func cancelAction(_ sender: UIBarButtonItem) {
+    func cancelAction() {
         self.handleDismissDraft()
     }
 
@@ -482,13 +474,22 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
         }
     }
 
-    private func collectDraftData() -> Promise<(String, String)?> {
+    func collectDraftData() -> Promise<(String, String)?> {
         return Promise { [weak self] seal in
             guard let self = self else {
                 seal.fulfill(nil)
                 return
             }
-            self.htmlEditor.getHtml().done { bodyString in
+            self.htmlEditor.getHtml().done { [weak self] bodyString in
+                guard let self = self else {
+                    return
+                }
+
+                guard let headerView = self.headerView else {
+                    assertionFailure("headerView not ready")
+                    seal.fulfill(nil)
+                    return
+                }
 
                 let head = "<html><head></head><body>"
                 let foot = "</body></html>"
@@ -505,11 +506,11 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
                 if !body.hasSuffix(foot) {
                     body = body + foot
                 }
-                let subject = self.headerView.subject.text ?? "(No Subject)"
+                let subject = headerView.subject.text ?? "(No Subject)"
                 self.viewModel.collectDraft(
                     subject,
                     body: body,
-                    expir: self.headerView.expirationTimeInterval,
+                    expir: headerView.expirationTimeInterval,
                     pwd: self.encryptionPassword,
                     pwdHit: self.encryptionPasswordHint
                 )
@@ -660,7 +661,7 @@ extension ComposeViewController {
                                                 style: .destructive, handler: { _ -> Void in
             continueAction()
         }))
-        alertController.addAction(UIAlertAction(title: LocalString._composer_send_msg_which_was_schedule_send_action_title_schedule_send,
+        alertController.addAction(UIAlertAction(title: LocalString._general_schedule_send_action,
                                                 style: .default,
                                                 handler: { [weak self] _ in
             self?.openScheduleSendActionSheet?()

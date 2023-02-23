@@ -18,6 +18,7 @@
 import Foundation
 import ProtonCore_Keymaker
 
+// sourcery: mock
 protocol CachedUserDataProvider {
     func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle])
     func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle]
@@ -53,7 +54,10 @@ class UserDataCache: CachedUserDataProvider {
               let encryptedData = keychain.data(forKey: Constant.disconnectedUsers),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.unlock(with: mainKey),
-              let loggedOutUserHandles = try? JSONDecoder().decode([UsersManager.DisconnectedUserHandle].self, from: data)
+              let loggedOutUserHandles = try? JSONDecoder().decode(
+                [UsersManager.DisconnectedUserHandle].self,
+                from: data
+              )
         else {
             return []
         }

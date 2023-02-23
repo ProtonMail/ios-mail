@@ -60,11 +60,9 @@ final class MessageSendingRequestBuilder {
     // [AttachmentID: base64 attachment body]
     private var attachmentBodys: [String: String] = [:]
 
-    let expirationOffset: Int32
     private let dependencies: Dependencies
 
-    init(expirationOffset: Int32?, dependencies: Dependencies) {
-        self.expirationOffset = expirationOffset ?? 0
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
@@ -89,6 +87,12 @@ final class MessageSendingRequestBuilder {
 
     func add(attachment: PreAttachment) {
         self.preAttachments.append(attachment)
+    }
+
+    func add(encodedAttachmentBodies: [AttachmentID: String]) {
+        self.attachmentBodys = Dictionary(
+            uniqueKeysWithValues: encodedAttachmentBodies.map { ($0.key.rawValue, $0.value) }
+        )
     }
 
     var clearBodyPackage: ClearBodyPackage? {
@@ -175,7 +179,6 @@ extension MessageSendingRequestBuilder {
 
     func fetchAttachmentBody(
         att: AttachmentEntity,
-        messageDataService: MessageDataService,
         passphrase: Passphrase,
         userInfo: UserInfo
     ) -> Promise<String> {
@@ -198,12 +201,10 @@ extension MessageSendingRequestBuilder {
     }
 
     func fetchAttachmentBodyForMime(passphrase: Passphrase,
-                                    msgService: MessageDataService,
                                     userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
         var fetches = [Promise<String>]()
         for att in preAttachments {
             let promise = fetchAttachmentBody(att: att.att,
-                                              messageDataService: msgService,
                                               passphrase: passphrase,
                                               userInfo: userInfo)
             fetches.append(promise)
@@ -229,82 +230,108 @@ extension MessageSendingRequestBuilder {
                    userKeys: [ArmoredKey],
                    keys: [Key],
                    in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
-        context.performAsPromise {
-            var messageBody = self.clearBody ?? ""
-            messageBody = QuotedPrintable.encode(string: messageBody)
-
-            let boundaryMsg = self.generateMessageBoundaryString()
-            var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
-
-            for preAttachment in self.preAttachments {
-                guard let attachmentBody = self.attachmentBodys[preAttachment.attachmentId] else {
-                    continue
-                }
-                let attachment = preAttachment.att
-                // The format is =?charset?encoding?encoded-text?=
-                // encoding = B means base64
-                let attName = "=?utf-8?B?\(attachment.name.encodeBase64())?="
-                let contentID = attachment.contentId ?? ""
-
-                let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
-                                                         base64AttachmentContent: attachmentBody,
-                                                         attachmentName: attName,
-                                                         contentID: contentID,
-                                                         attachmentMIMEType: attachment.rawMimeType)
-                signbody.append(contentsOf: bodyToAdd)
-            }
-
-            signbody.append(contentsOf: "--\(boundaryMsg)--")
-
-            let encrypted = try signbody.encrypt(withKey: senderKey,
-                                                 userKeys: userKeys,
-                                                 mailbox_pwd: passphrase)
-            let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
-
-            guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
-                userKeys: userKeys,
+        context.performAsPromise { [unowned self] in
+            try self.prepareMime(
+                senderKey: senderKey,
                 passphrase: passphrase,
+                userKeys: userKeys,
                 keys: keys
-            ) else {
-                throw BuilderError.sessionKeyFailedToCreate
-            }
-            self.mimeSessionKey = sessionKey.sessionKey
-            self.mimeSessionAlgo = sessionKey.algo
-            self.mimeDataPackage = dataPacket.base64EncodedString()
-
+            )
             return self
         }
+    }
+
+    func prepareMime(
+        senderKey: Key,
+        passphrase: Passphrase,
+        userKeys: [ArmoredKey],
+        keys: [Key]
+    ) throws {
+        var messageBody = self.clearBody ?? ""
+        messageBody = QuotedPrintable.encode(string: messageBody)
+
+        let boundaryMsg = self.generateMessageBoundaryString()
+        var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
+
+        for preAttachment in self.preAttachments {
+            guard let attachmentBody = self.attachmentBodys[preAttachment.attachmentId] else {
+                continue
+            }
+            let attachment = preAttachment.att
+            // The format is =?charset?encoding?encoded-text?=
+            // encoding = B means base64
+            let attName = "=?utf-8?B?\(attachment.name.encodeBase64())?="
+            let contentID = attachment.contentId ?? ""
+
+            let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
+                                                     base64AttachmentContent: attachmentBody,
+                                                     attachmentName: attName,
+                                                     contentID: contentID,
+                                                     attachmentMIMEType: attachment.rawMimeType)
+            signbody.append(contentsOf: bodyToAdd)
+        }
+
+        signbody.append(contentsOf: "--\(boundaryMsg)--")
+
+        let encrypted = try signbody.encrypt(withKey: senderKey,
+                                             userKeys: userKeys,
+                                             mailbox_pwd: passphrase)
+        let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
+
+        guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
+            userKeys: userKeys,
+            passphrase: passphrase,
+            keys: keys
+        ) else {
+            throw BuilderError.sessionKeyFailedToCreate
+        }
+        self.mimeSessionKey = sessionKey.sessionKey
+        self.mimeSessionAlgo = sessionKey.algo
+        self.mimeDataPackage = dataPacket.base64EncodedString()
     }
 
     func buildPlainText(senderKey: Key,
                         passphrase: Passphrase,
                         userKeys: [ArmoredKey],
                         keys: [Key]) -> Promise<MessageSendingRequestBuilder> {
-        async {
-            let plainText = self.generatePlainTextBody()
-
-            let encrypted = try plainText.encrypt(
-                withKey: senderKey,
-                userKeys: userKeys,
-                mailbox_pwd: passphrase
-            )
-
-            let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
-
-            guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
-                userKeys: userKeys,
+        async { [unowned self] in
+            try self.preparePlainText(
+                senderKey: senderKey,
                 passphrase: passphrase,
+                userKeys: userKeys,
                 keys: keys
-            ) else {
-                throw BuilderError.sessionKeyFailedToCreate
-            }
-
-            self.plainTextSessionKey = sessionKey.sessionKey
-            self.plainTextSessionAlgo = sessionKey.algo
-            self.plainTextDataPackage = dataPacket.base64EncodedString()
-
+            )
             return self
         }
+    }
+
+    func preparePlainText(
+        senderKey: Key,
+        passphrase: Passphrase,
+        userKeys: [ArmoredKey],
+        keys: [Key]
+    ) throws {
+        let plainText = self.generatePlainTextBody()
+
+        let encrypted = try plainText.encrypt(
+            withKey: senderKey,
+            userKeys: userKeys,
+            mailbox_pwd: passphrase
+        )
+
+        let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
+
+        guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
+            userKeys: userKeys,
+            passphrase: passphrase,
+            keys: keys
+        ) else {
+            throw BuilderError.sessionKeyFailedToCreate
+        }
+
+        self.plainTextSessionKey = sessionKey.sessionKey
+        self.plainTextSessionAlgo = sessionKey.algo
+        self.plainTextDataPackage = dataPacket.base64EncodedString()
     }
 
     func buildAttachmentBody(boundaryMsg: String,

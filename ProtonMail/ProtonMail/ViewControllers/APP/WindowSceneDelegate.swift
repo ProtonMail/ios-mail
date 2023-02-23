@@ -66,7 +66,8 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
 
-        if let userInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo {
+        let notificationInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo
+        if let userInfo = notificationInfo {
             sharedServices.get(by: PushNotificationService.self)
                             .setNotificationOptions(userInfo, fetchCompletionHandler: { /* nothing */ })
         }
@@ -89,7 +90,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        self.coordinator.start()
+        self.coordinator.start(launchedByNotification: notificationInfo != nil)
 
         // For default mail function
         _ = connectionOptions.urlContexts.first { context in

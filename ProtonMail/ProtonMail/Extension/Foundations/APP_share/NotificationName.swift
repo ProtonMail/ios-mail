@@ -93,11 +93,34 @@ extension Notification.Name {
         return .init("shouldUpdateUserInterfaceStyle")
     }
 
+    static var pagesSwipeExpectation: Notification.Name {
+       return .init(rawValue: "pagesSwipeExpectation")
+    }
+
     static var appExtraSecurityEnabled: Notification.Name {
         return .init("appExtraSecurityEnabled")
     }
 
     static var appExtraSecurityDisabled: Notification.Name {
         return .init("appExtraSecurityDisabled")
+    }
+
+    static var sendMessageTaskSuccess: Notification.Name {
+        return .init("sendMessageTaskSuccess")
+    }
+
+    static var sendMessageTaskFail: Notification.Name {
+        return .init("sendMessageTaskFail")
+    }
+
+    static var messageSendFailAddressValidationIncorrect: Notification.Name {
+        return .init("messageSendFailAddressValidationIncorrect")
+    }
+}
+
+extension Notification {
+
+    enum UserInfoKey: String {
+        case errorMessage
     }
 }

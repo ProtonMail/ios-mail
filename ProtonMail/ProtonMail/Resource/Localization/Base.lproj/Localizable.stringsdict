@@ -176,8 +176,6 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>zero</key>
-			<string>%d hour</string>
 			<key>one</key>
 			<string>%d hour</string>
 			<key>other</key>
@@ -194,8 +192,6 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-			<key>zero</key>
-			<string>%d day</string>
 			<key>one</key>
 			<string>%d day</string>
 			<key>other</key>
@@ -298,7 +294,7 @@
 			<string>Are you sure you want to permanently delete %d conversations?</string>
 		</dict>
 	</dict>
-	<key>%d Member</key>
+	<key>%d member</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@member@</string>
@@ -309,9 +305,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Member</string>
+			<string>%d member</string>
 			<key>other</key>
-			<string>%d Members</string>
+			<string>%d members</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>

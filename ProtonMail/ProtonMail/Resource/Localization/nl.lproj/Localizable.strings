@@ -1,3 +1,6 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = "worden niet doorzocht. Verhoog de %1$@ om daarin te zoeken.";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Toon volledig bericht]";
 
@@ -33,6 +36,9 @@
 
 /* Placeholder */
 "8 to 21 characters long" = "8 tot 21 tekens lang";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen. Meldt u aan via proton.me om uw onbetaalde factuur te betalen.";
 
 /* Account manager title */
 "Account" = "Account";
@@ -191,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiveren";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archiveren";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
 
@@ -240,11 +249,17 @@
 /* Title */
 "Authentication" = "Verificatie";
 
+/* Title */
+"Auto Lock Time" = "Tijd tot automatische vergrendeling";
+
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
 
 /* settings general section title */
 "Auto-load remote content" = "Externe inhoud automatisch laden";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Beschikbare acties";
 
 /* Example feedback */
 "Awful" = "Vreselijk";
@@ -260,6 +275,9 @@
 
 /* Error Description */
 "Bad response" = "Foutieve reactie";
+
+/* Title */
+"Bcc" = "Bcc";
 
 /* message Bcc: feild */
 "Bcc:" = "Bcc:";
@@ -278,6 +296,12 @@
 
 /* Title */
 "Bug Description" = "Omschrijving van de bug";
+
+/* Title */
+"Bug Report Received" = "Bugmelding ontvangen";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Gecachete gegevens";
 
 /* Call the contact (button title text) */
 "Call contact" = "Contact bellen";
@@ -337,8 +361,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "Kan de map momenteel niet leegmaken.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Cc";
+
 /* settings general section title */
 "Change account password" = "Account-wachtwoord veranderen";
+
+/* Title */
+"Change default address to…" = "Wijzig standaardadres naar…";
 
 /* settings general section title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
@@ -347,8 +378,14 @@
    title */
 "Change password" = "Wachtwoord wijzigen";
 
+/* update password error title */
+"Change Password" = "Wachtwoord wijzigen";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Wijzig PIN-code";
+
+/* Title */
+"Change sender address to…" = "Wijzig afzenderadres naar…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Laad uw apparaat op of hervat manueel.";
@@ -465,6 +502,9 @@
 /* Title */
 "Copy name" = "Kopieer naam";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Kon bericht niet openen, probeer opnieuw.";
+
 /* contact placeholder */
 "Country" = "Land";
 
@@ -496,6 +536,9 @@
    Custom option for time config picker */
 "Custom" = "Aangepast";
 
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Pas de werkbalk aan";
+
 /* Title */
 "Cut" = "Knippen";
 
@@ -507,6 +550,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Datum: %@";
+
+/* days */
+"days" = "dagen";
 
 /* error title */
 "Decryption error" = "Ontsleutelingsfout";
@@ -522,6 +568,9 @@
 
 /* Settings row */
 "Default browser" = "Standaard browser";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Hint opgeven (optioneel)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -562,14 +611,23 @@
    The text for downloaded messages in local storage when encrypted search is disabled. */
 "Disabled" = "Uitgeschakeld";
 
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Door de functie nu uit te schakelen zullen de berichten die al zijn gedownload worden verwijderd.";
+
 /* Action */
 "Discard" = "Verwijderen";
 
 /* Action */
 "Discard changes" = "Wijzigingen niet opslaan";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Verwijderd";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Toetsenbord verbergen";
+
+/* Title in settings */
+"Display Name" = "Weergavenaam";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Weet u zeker dat u dit bestand uit de bijlagen wilt verwijderen?";
@@ -604,6 +662,9 @@
 /* Text for estimate time label when no internet connection is available */
 "Download paused: No connectivity" = "Download gepauzeerd: Geen netwerkverbinding";
 
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Download gepauzeerd: Geen WiFi gedetecteerd";
+
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Download gepauzeerd: Opslag vol";
 
@@ -623,6 +684,15 @@
 
 /* The text for the number of downloaded messages. */
 "Downloading message %1d out of %2d" = "Bericht %1$d van de %2$d downloaden";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Metagegevens downloaden...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Nieuwe berichten downloaden...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloadt e-mails zodat ze kunnen worden doorzocht. De berichten worden versleuteld en lokaal opgeslagen. %1$@";
 
 /* Action */
 "Draft" = "Concept";
@@ -646,8 +716,7 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Profielafbeelding bewerken";
 
-/* *
- *  Edit Contact view controller */
+/* Contacts Edit contact */
 "Edit Contact" = "Contactpersoon bewerken";
 
 /* The title of edit folder page */
@@ -680,6 +749,12 @@
 /* Send an email to the current contact (button title text) */
 "Email contact" = "Contact e-mailen";
 
+/* Description */
+"Email failed to send. Message saved as draft." = "E-mail kon niet worden verzonden. Bericht bewaard als concept.";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-mailtrackers kunnen uw privacy schenden.";
+
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
 
@@ -698,6 +773,9 @@
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "Inschakelen";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Zoeken op inhoud inschakelen";
 
 /* Title */
 "Enable email notices" = "Schakel e-mailberichten in";
@@ -798,6 +876,9 @@
 /* forwarded message title */
 "Forwarded message" = "Doorgestuurd bericht";
 
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Maak minstens 100 MB ruimte vrij om door te gaan.";
+
 /* Title */
 "From" = "Afzender";
 
@@ -855,6 +936,9 @@
 /* Title */
 "Hide details" = "Verberg details";
 
+/* hours */
+"hours" = "uren";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hoe zou u uw ervaring met de nieuwe Proton Mail omschrijven?";
 
@@ -866,6 +950,12 @@
 
 /* human check warning title */
 "Human Check Warning" = "Waarschuwing van persoonsverificatie";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Ik ben Proton Mail aan het gebruiken en dacht dat het misschien iets voor u zou kunnen zijn. Het is een beveiligde e-maildienst die uw privacy beschermt. Registreer u met deze link om 1 maand gratis premium functies te krijgen:";
+
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Als u uw wifiverbinding verliest, zal de download verdergaan op mobiele data.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Waarschuwing negeren en doorgaan";
@@ -937,11 +1027,17 @@
 /* Error message */
 "Invalid username!" = "Ongeldige gebruikersnaam!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Nodig vrienden uit voor Proton, krijg tot 90 € in kortingen!";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Nodig uw contacten uit voor Proton Mail en geniet van naadloze end-to-end versleuteling, of voeg wachtwoordbeveiliging toe aan berichten die u ze stuurt.";
 
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Nodig uw vrienden uit voor Proton: ze proberen Mail Plus gratis en u verdient kortingen indien ze inschrijven op een betalend abonnement.";
+
 /* Error message */
-"Is this bug report about an in-app purchase?" = "Is dit bugrapport over een in-app aankoop?";
+"Is this bug report about an in-app purchase?" = "Gaat dit bugrapport over een in-app aankoop?";
 
 /* No comment provided by engineer. */
 "Label as" = "Labellen als";
@@ -978,6 +1074,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limiet bereikt";
 
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Koppeling gekopieerd.";
+
 /* Button inside the banner */
 "Load anyway" = "Toch laden";
 
@@ -998,16 +1097,13 @@
 "Local storage limit" = "Lokale opslaglimiet";
 
 /* Text for the link to show when indexing is stopped because of storage limit reached. */
-"local storage limit." = "lokale opslaglimiet.";
+"local storage limit." = "lokale opslaglimiet";
 
 /* menu title */
 "Lock The App" = "App vergrendelen";
 
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Meld opnieuw aan om updates blijven ontvangen";
-
-/* comment */
-"Log out" = "Afmelden";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Afgemeld van %@";
@@ -1046,6 +1142,9 @@
 /* menu title */
 "Menu" = "Menu";
 
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Bericht";
+
 /* No comment provided by engineer. */
 "Message actions" = "Berichtacties";
 
@@ -1054,6 +1153,9 @@
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
+
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Downloaden van het bericht gepauzeerd. Ontdek hoe %1$@";
 
 /* Composer expiration page title */
 "Message expiration" = "Vervaldatum bericht";
@@ -1070,6 +1172,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "Berichtkoppen";
 
+/* The title of message history in settings for encrypted search */
+"Message history" = "Berichtengeschiedenis";
+
 /* The title of banner that is shown after using swipe action to trash a message */
 "Message moved to trash" = "Bericht naar de prullenbak verplaatst";
 
@@ -1085,11 +1190,17 @@
 /* Description after message have been sent */
 "Message sent" = "Bericht verzonden";
 
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "De berichten worden gedownload om op inhoud te zoeken. Sommige resultaten worden mogelijk niet weergeven. %1$@";
+
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
 "Messages from before " = "Eerdere berichten ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Berichten worden gedownload via wifi. Dit kan enkele momenten duren en uw apparaat kan een beetje warm worden. U kunt de handeling op elk moment pauzeren.";
 
 /* default vcard types */
 "Mobile" = "Mobiel";
@@ -1174,6 +1285,9 @@
 /* Title */
 "No connectivity detected…" = "Geen netwerkverbinding gedetecteerd…";
 
+/* Short hint in the header view */
+"No email trackers found" = "Geen e-mailtrackers gevonden";
+
 /* network troubleshot cell title */
 "No internet connection" = "Geen internetverbinding";
 
@@ -1209,6 +1323,12 @@
 
 /* No comment provided by engineer. */
 "Not a spam (move to inbox)" = "Geen spam (verplaats naar inbox)";
+
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Niet alle berichten zijn gedownload. Maak ruimte vrij op dit apparaat om ze te downloaden.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Niet alle berichten zijn gedownload. Verhoog het opslaglimiet hieronder om ze te downloaden.";
 
 /* No comment provided by engineer. */
 "Not set" = "Niet ingesteld";
@@ -1337,6 +1457,9 @@
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Maak verbinding en probeer het opnieuw";
 
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Verbind met het internet om door te gaan.";
+
 /* error message */
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
 
@@ -1436,6 +1559,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Herstel ingeschakeld";
 
+/* menu title */
+"Refer a friend" = "Verwijs een vriend door";
+
 /* Title */
 "Remind Me Later" = "Herinner mij later";
 
@@ -1470,14 +1596,26 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Phishing rapporteren";
 
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Door een bericht als phishing aan te merken, wordt het naar Proton Mail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit bericht kunnen zien.";
+
 /* link opeining confirmation */
 "Request link confirmation" = "Bevestigingslink aanvragen";
+
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Terugzetten naar standaard";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Terugzetten naar standaard?";
 
 /* Title */
 "Resetting message cache…" = "Berichtencache resetten…";
 
 /* Text for resume button */
 "Resume" = "Hervatten";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "u zelf verder kunt gaan.";
 
 /* Action */
 "Retry" = "Opnieuw proberen";
@@ -1501,8 +1639,8 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Inplanning wordt verwijderd";
 
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Ingepland versturen";
+/* mail location title */
+"Scheduled" = "Gepland";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Bericht plannen...";
@@ -1515,8 +1653,20 @@
    The title of encrypted search in settings */
 "Search message content" = "Doorzoek berichtinhoud";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Duurt de zoekopdracht te lang? %1$@ van deze zoekopdracht voor een sneller resultaat.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Details bekijken";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Voortgang bekijken.";
+
 /* section title */
 "Select colour" = "Kleur selecteren";
+
+/* Option for set up scheduled send */
+"Select date and time" = "Selecteer datum en tijd";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Geselecteerd";
@@ -1550,6 +1700,9 @@
 
 /* Alert title */
 "Sending in progress" = "Verzenden aan de gang";
+
+/* Description */
+"Sending Message" = "Bericht wordt verzonden";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Bericht wordt verzonden…";
@@ -1602,6 +1755,9 @@
 /* menu title */
 "Settings" = "Instellingen";
 
+/* The title of the share button in referral share view. */
+"Share" = "Delen";
+
 /* action */
 "Share contact" = "Contactpersoon delen";
 
@@ -1614,6 +1770,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Uitloggen";
+
+/* Action */
+"Sign Out" = "Uitloggen";
 
 /* Title in signature settings */
 "Signature" = "Handtekening";
@@ -1665,6 +1824,12 @@
 
 /* Storage warning */
 "Storage quota exceeded" = "Opslagquota overschreden";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Gebruikte opslag";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Gebruikte opslag: ";
 
 /* Title */
 "Storage Warning" = "Opslagwaarschuwing";
@@ -1718,6 +1883,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Uw antivirus software tijdelijk uitschakelen of verwijderen.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Algemene voorwaarden";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Bedankt voor het indienen van een foutmelding. We hebben uw verslag toegevoegd aan ons bug tracking-systeem.";
 
@@ -1726,6 +1894,12 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "De 2 wachtwoorden komen niet overeen";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "De werkbalk wordt herzet naar de standaard werkbalk-acties";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "De download stopt als de Proton Mail-app wordt gesloten.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "De concepten-cache is beschadigd. Probeer het opnieuw.";
@@ -1744,6 +1918,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Het nieuwe wachtwoord moet ten minste 8 tekens lang zijn";
+
+/* update password error */
+"The password is wrong." = "Het wachtwoord is onjuist.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Het wachtwoord moet tussen 8 en 21 tekens lang zijn";
@@ -1805,6 +1982,9 @@
 /* The content of the link confirmation alert of spam email. */
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Deze link leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.\n%@\n\nGa voor uw veiligheid niet verder.";
 
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Dit bericht is niet langer ingepland om later te worden verstuurd. Als u het nog steeds later wilt versturen, kunt op \"Ingepland versturen\"";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Dit bericht is mogelijk een poging tot phishing. Controleer de afzender en de inhoud om te controleren dat de afzender van het bericht van legitiem is.";
 
@@ -1820,11 +2000,20 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Deze voorkeur zal terugvallen op Safari als de browser van uw keuze wordt verwijderd.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Deze werkbalk wordt zichtbaar wanneer u meerdere berichten selecteert in uw postvak in.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Deze werkbalk is zichtbaar wanneer u een bericht leest.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Tijd om te ontspannen";
 
 /* contacts talbe cell Title title */
 "Title" = "Titel";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan worden geobserveerd en de app is tijdelijk geblokkeerd voor uw veiligheid.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\nVerander direct van netwerk.";
@@ -1836,6 +2025,9 @@
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Vandaag, %@";
 
+/* One of schedule time options */
+"Tomorrow" = "Morgen";
+
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Morgen om 08:%02d";
 
@@ -1845,8 +2037,14 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Te veel berichten die wachten om te worden verzonden.\nWacht tot een ander bericht is verzonden om dit bericht te plannen.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Werkbalk acties (selecteer tot 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Volg uw bonussen";
 
 /* mail location desc
    menu title */
@@ -1878,6 +2076,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Niet in staat om het antwoord object te verwerken: %@";
+
+/* error when sending the message */
+"Unable to send the email" = "E-mail kon niet worden verzonden";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Niet-openbaar gemaakte ontvangers";
@@ -2014,11 +2215,23 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "U bent offline";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "U kan de acties in uw werkbalk selecteren en herschikken";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "U kan gesprekken op elk moment uitschakelen via de instellingen.";
 
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "U kan nu acties kiezen en herschikken in deze balk";
+
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "U kunt nu uw berichten plannen om ze later te versturen";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "U kan nu zoeken in uw berichten. Deze functie kan op elk moment worden ingeschakeld in de instellingen.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "U kan zoeken in gedownloade berichten. Voor alle andere berichten kan er alleen in de ontvangerslijst en onderwerpregel worden gezocht.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
@@ -2059,17 +2272,26 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "U gaat het bericht onherroepelijk verwijderen. Weet u het zeker?";
 
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "U bent beveiligd voor e-mailtrackers";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Uw wijzigingen worden ongedaan gemaakt";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Uw land blokkeert mogelijk de toegang tot Proton. Probeer %1$@ te gebruiken (of een andere VPN) of %2$@ om toegang te krijgen tot Proton.";
 
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Externe afbeeldingen worden nu standaard geladen in uw e-mails. Afzenders zullen niet weten als, waar of wanneer u hun e-mail opende.\nGa naar Instellingen → Accountinstelling → Privacy om dit te wijzigen.";
+
 /* Title of user feedback view */
 "Your feedback" = "Uw feedback";
 
 /* The section title of folder manager table */
 "Your folders" = "Uw mappen";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Uw uitnodigingskoppeling";
 
 /* The section title of label manager table */
 "Your labels" = "Uw labels";

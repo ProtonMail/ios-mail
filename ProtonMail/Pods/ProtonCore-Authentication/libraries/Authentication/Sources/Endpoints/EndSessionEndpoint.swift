@@ -30,20 +30,23 @@ extension AuthService {
     struct EndSessionEndpoint: Request {
 
         var path: String {
-            return "/auth"
+            "/auth/v4"
         }
+        
         var method: HTTPMethod {
-            return .delete
+            .delete
         }
+        
         var parameters: [String: Any]?
       
         var isAuth: Bool {
-            return true
+            true
         }
         
         var auth: AuthCredential?
+        
         var authCredential: AuthCredential? {
-            return self.auth
+            auth
         }
     }
 }

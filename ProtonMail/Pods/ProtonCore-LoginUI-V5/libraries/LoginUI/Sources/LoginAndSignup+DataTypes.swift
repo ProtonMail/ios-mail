@@ -34,8 +34,8 @@ public enum LoginFeatureAvailability<Parameters> {
     case notAvailable
     case available(parameters: Parameters)
     
-    public var isNotAvailable: Bool {
-        if case .notAvailable = self { return true }
+    var isAvailable: Bool {
+        if case .available = self { return true }
         return false
     }
 }
@@ -44,7 +44,7 @@ public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
 
 public struct SignupParameters {
     
-    let mode: SignupMode
+    let signupMode: SignupMode
     let separateDomainsButton: Bool
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
@@ -53,21 +53,20 @@ public struct SignupParameters {
     // until the updated flow is ready on the BE side
     init(_ separateDomainsButton: Bool,
          _ passwordRestrictions: SignupPasswordRestrictions,
-         _ summaryScreenVariant: SummaryScreenVariant) {
-        if let mode = ProtonCore_LoginUI.TemporaryHacks.signupMode {
-            self.mode = mode
-        } else {
-            self.mode = .internal
-        }
+         _ summaryScreenVariant: SummaryScreenVariant,
+         _ signupMode: SignupMode = .internal) {
+
         self.separateDomainsButton = separateDomainsButton
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
+        self.signupMode = signupMode
     }
     
     public init(separateDomainsButton: Bool,
                 passwordRestrictions: SignupPasswordRestrictions,
-                summaryScreenVariant: SummaryScreenVariant) {
-        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant)
+                summaryScreenVariant: SummaryScreenVariant,
+                signupMode: SignupMode = .internal) {
+        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, signupMode)
     }
 }
 

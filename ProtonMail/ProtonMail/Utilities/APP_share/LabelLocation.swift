@@ -177,7 +177,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .addFolder: return LocalString._labels_add_folder_action
         case .accountManger: return LocalString._menu_manage_accounts
         case .addAccount: return ""
-        case .scheduled: return "Scheduled"
+        case .scheduled: return LocalString._locations_scheduled_title
         }
     }
 

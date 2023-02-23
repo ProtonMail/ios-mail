@@ -36,6 +36,7 @@ final class MessageInfoProviderTest: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
+        Environment.locale = { .enUS }
         Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
 
         let systemUpTime = SystemUpTimeMock(
@@ -270,6 +271,28 @@ final class MessageInfoProviderTest: XCTestCase {
 
         XCTAssertFalse(sut.shouldShowImageProxyFailedBanner)
         XCTAssertEqual(sut.bodyParts?.originalBody, expectedProcessedBody)
+    }
+
+    func testStoresDryRunResults() throws {
+        let summary = TrackerProtectionSummary(trackers: ["tracker": [UnsafeRemoteURL(value: "https://example.com")]])
+        let dryRunOutput = ImageProxyDryRunOutput(summary: summary)
+        sut.imageProxy(imageProxy, didFinishDryRunWithOutput: dryRunOutput)
+
+        XCTAssertEqual(sut.trackerProtectionSummary, dryRunOutput.summary)
+    }
+
+    func testDryRunResultsDoNotOverwriteRealRunResults() {
+        let realOutput = ImageProxyOutput(
+            failedUnsafeRemoteURLs: [:],
+            safeBase64Contents: [:],
+            summary: TrackerProtectionSummary(trackers: ["tracker": [UnsafeRemoteURL(value: "https://example.com")]])
+        )
+        sut.imageProxy(imageProxy, didFinishWithOutput: realOutput)
+
+        let dryRunOutput = ImageProxyDryRunOutput(summary: TrackerProtectionSummary(trackers: [:]))
+        sut.imageProxy(imageProxy, didFinishDryRunWithOutput: dryRunOutput)
+
+        XCTAssertEqual(sut.trackerProtectionSummary, realOutput.summary)
     }
 }
 

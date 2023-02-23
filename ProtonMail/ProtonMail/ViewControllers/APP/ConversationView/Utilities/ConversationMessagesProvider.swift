@@ -38,10 +38,6 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         return self.fetchedController.managedObjectContext.object(with: objectID) as? Message
     }
 
-    func message(by messageID: MessageID) -> Message? {
-        fetchedController.fetchedObjects?.first(where: { $0.messageID == messageID.rawValue })
-    }
-
     func observe(
         conversationUpdate: @escaping (ConversationUpdateType) -> Void,
         storedMessages: @escaping ([MessageEntity]) -> Void
@@ -51,6 +47,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
         try? fetchedController.performFetch()
         let messageObjects = fetchedController.fetchedObjects ?? []
         storedMessages(messageObjects.map(MessageEntity.init))
+    }
+
+    func stopObserve() {
+        fetchedController.delegate = nil
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

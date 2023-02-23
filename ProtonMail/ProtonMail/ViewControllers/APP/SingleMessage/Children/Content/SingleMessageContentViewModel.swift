@@ -30,12 +30,13 @@ class SingleMessageContentViewModel {
     let messageBodyViewModel: NewMessageBodyViewModel
     let attachmentViewModel: AttachmentViewModel
     let bannerViewModel: BannerViewModel
+    let dependencies: Dependencies
 
     var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
-    let goToDraft: ((MessageID) -> Void)
+    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)
     var showProgressHub: (() -> Void)?
     var hideProgressHub: (() -> Void)?
 
@@ -48,7 +49,6 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
-    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     private var isDetailedDownloaded: Bool?
 
@@ -66,18 +66,6 @@ class SingleMessageContentViewModel {
     var resetLoadedHeight: (() -> Void)? {
         didSet {
             bannerViewModel.resetLoadedHeight = { [weak self] in self?.resetLoadedHeight?() }
-        }
-    }
-
-    var shouldSpotlightTrackerProtection: Bool {
-        !userIntroductionProgressProvider.hasUserSeenSpotlight(for: .trackerProtection) && UserInfo.isImageProxyAvailable
-    }
-
-    var spotlightMessage: String {
-        if user.userInfo.isAutoLoadRemoteContentEnabled {
-            return L11n.EmailTrackerProtection.feature_description_if_remote_content_allowed
-        } else {
-            return L11n.EmailTrackerProtection.feature_description_if_remote_content_not_allowed
         }
     }
 
@@ -104,8 +92,8 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-         goToDraft: @escaping (MessageID) -> Void) {
+         dependencies: Dependencies,
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
@@ -127,7 +115,7 @@ class SingleMessageContentViewModel {
         self.attachmentViewModel = childViewModels.attachments
         self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
-        self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.dependencies = dependencies
         self.goToDraft = goToDraft
 
         self.bannerViewModel.editScheduledMessage = { [weak self] in
@@ -135,6 +123,7 @@ class SingleMessageContentViewModel {
                 return
             }
             let msgID = self.message.messageID
+            let originalScheduledTime = self.message.time
             self.showProgressHub?()
             self.user.messageService.undoSend(
                 of: msgID) { [weak self] result in
@@ -142,7 +131,7 @@ class SingleMessageContentViewModel {
                                                          notificationMessageID: nil,
                                                          completion: { [weak self] _ in
                         self?.hideProgressHub?()
-                        self?.goToDraft(msgID)
+                        self?.goToDraft(msgID, .init(originalScheduledTime))
                     })
                 }
         }
@@ -190,14 +179,17 @@ class SingleMessageContentViewModel {
             return
         }
         hasAlreadyFetchedMessageData = true
-        messageService.fetchMessageDetailForMessage(message, labelID: context.labelId, runInQueue: false) { [weak self] error in
+        let params: FetchMessageDetail.Params = .init(userID: user.userID, message: message)
+        dependencies.fetchMessageDetail
+            .callbackOn(.main)
+            .execute(params: params) { [weak self] result in
             guard let self = self else { return }
-            self.updateErrorBanner?(error as NSError?)
-            if error != nil && !self.message.isDetailDownloaded {
+            switch result {
+            case .success(_):
+                self.updateErrorBanner?(nil)
+            case .failure(let error):
+                self.updateErrorBanner?(error as NSError)
                 self.messageBodyViewModel.errorHappens()
-            }
-            if !self.isEmbedInConversationView {
-                self.markReadIfNeeded()
             }
         }
     }
@@ -219,10 +211,6 @@ class SingleMessageContentViewModel {
     func getCypherURL() -> URL? {
         let filename = UUID().uuidString
         return try? self.writeToTemporaryUrl(message.body, filename: filename)
-    }
-
-    func userHasSeenSpotlightForTrackerProtection() {
-        userIntroductionProgressProvider.userHasSeenSpotlight(for: .trackerProtection)
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
@@ -346,5 +334,11 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
         DispatchQueue.main.async {
             self.uiDelegate?.trackerProtectionSummaryChanged()
         }
+    }
+}
+
+extension SingleMessageContentViewModel {
+    struct Dependencies {
+        let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }

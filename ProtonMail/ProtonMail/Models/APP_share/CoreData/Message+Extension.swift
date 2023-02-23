@@ -309,38 +309,12 @@ extension Message {
 
     // MARK: methods
 
-    func decryptBody(keys: [Key], passphrase: Passphrase) throws -> String? {
-        var firstError: Error?
-        var errorMessages: [String] = []
-        for key in keys {
-            do {
-                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(
-                    ArmoredKey(value: key.privateKey),
-                    passphrase: passphrase
-                )
-                return decryptedBody
-            } catch {
-                if firstError == nil {
-                    firstError = error
-                    errorMessages.append(error.localizedDescription)
-                }
-            }
-        }
-
-        if let error = firstError {
-            throw error
-        }
-        return nil
-    }
-
     func decryptBody(keys: [Key], userKeys: [ArmoredKey], passphrase: Passphrase) throws -> String? {
         var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
-                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                                                  passphrase: passphrase,
-                                                                                  key: key)
+                let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
                 let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
                                                                                     passphrase: addressKeyPassphrase)
                 return decryptedBody
@@ -356,10 +330,6 @@ extension Message {
 
     func split() throws -> SplitMessage? {
         return try body.split()
-    }
-
-    func getSessionKey(keys: [Key], passphrase: Passphrase) throws -> SessionKey? {
-        return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
 
     func bodyToHtml() -> String {
@@ -382,9 +352,7 @@ extension Message {
             sender = decoded
         }
 
-        return ContactVO(id: "",
-                         name: sender?.name ?? "",
-                         email: sender?.address ?? "")
+        return ContactVO(name: sender?.name ?? "", email: sender?.address ?? "")
     }
 
     var hasMetaData: Bool {

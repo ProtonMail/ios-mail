@@ -31,7 +31,7 @@ final class LabelsDataServiceTests: XCTestCase {
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
         let mockLastUpdatedStore = MockLastUpdatedStore()
-        let mockCacheService = MockCacheService()
+        let mockCacheService = MockCacheServiceProtocol()
 
         sut = LabelsDataService(api: mockApiService,
                                 userID: UserID(userID),
@@ -48,12 +48,12 @@ final class LabelsDataServiceTests: XCTestCase {
         mockContextProvider = nil
     }
 
-    func testCleanLabelAndFolder() throws {
+    func testRemoveDeletedLabelAndFolder() throws {
         let context = mockContextProvider.viewContext
         try prepareTestLabelData(context: context)
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.cleanLabelAndFolder {
+        sut.cleanLabelsAndFolders(except: ["1", "3"]) {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1)
@@ -68,7 +68,9 @@ final class LabelsDataServiceTests: XCTestCase {
             Label.Attributes.type,
             Label.Attributes.type)
         let result = try context.fetch(request)
-        XCTAssertTrue(result.isEmpty)
+        let ids = result.compactMap { $0.labelID }.sorted()
+        XCTAssertTrue(result.count == 2)
+        XCTAssertEqual(ids, ["1", "3"])
 
         let groupRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         groupRequest.predicate = NSPredicate(
@@ -97,6 +99,11 @@ extension LabelsDataServiceTests {
         folderLabel.labelID = "3"
         folderLabel.type = NSNumber(3)
         folderLabel.userID = userID
+
+        let folderLabel2 = Label(context: context)
+        folderLabel2.labelID = "4"
+        folderLabel2.type = NSNumber(3)
+        folderLabel2.userID = userID
         try context.save()
     }
 }

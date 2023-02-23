@@ -24,6 +24,8 @@ protocol ScheduledSendHelperDelegate: AnyObject {
     func actionSheetWillDisappear()
     func scheduledTimeIsSet(date: Date?)
     func showSendInTheFutureAlert()
+    func isItAPaidUser() -> Bool
+    func showScheduleSendPromotionView()
 }
 
 extension ScheduledSendHelperDelegate {
@@ -36,14 +38,33 @@ final class ScheduledSendHelper {
     private weak var viewController: UIViewController?
     private var actionSheet: PMActionSheet?
     private weak var delegate: ScheduledSendHelperDelegate?
+    private let originalScheduledTime: OriginalScheduleDate?
 
-    init(viewController: UIViewController, delegate: ScheduledSendHelperDelegate) {
+    var isActionSheetShownOnView: Bool {
+        guard let viewController = self.viewController else {
+            return false
+        }
+        return (viewController.navigationController ?? viewController)
+            .view.subviews
+            .contains(where: { $0 is PMActionSheet })
+    }
+
+    init(
+        viewController: UIViewController,
+        delegate: ScheduledSendHelperDelegate,
+        originalScheduledTime: OriginalScheduleDate?
+    ) {
         self.viewController = viewController
         self.delegate = delegate
+        self.originalScheduledTime = originalScheduledTime
     }
 
     func presentActionSheet() {
         guard let viewController = viewController else { return }
+        guard !isActionSheetShownOnView else {
+            return
+        }
+
         let vcs = viewController.children + [viewController]
         vcs.forEach { controller in
             controller.view.becomeFirstResponder()
@@ -53,7 +74,12 @@ final class ScheduledSendHelper {
 
         let header = self.setUpActionHeader()
 
-        let actions = [self.setUpTomorrowAction(), self.setUpMondayAction(), self.setUpCustomAction()].compactMap { $0 }
+        let actions = [
+            setUpAsScheduledAction(),
+            setUpTomorrowAction(),
+            setUpMondayAction(),
+            setUpCustomAction()
+        ].compactMap { $0 }
         let items = PMActionSheetItemGroup(items: actions, style: .clickable)
 
         self.actionSheet = PMActionSheet(headerView: header, itemGroups: [items], showDragBar: false, enableBGTap: true)
@@ -70,60 +96,88 @@ extension ScheduledSendHelper {
             self?.actionSheet?.dismiss(animated: true)
         }
         let title = LocalString._general_schedule_send_action
-        let header = PMActionSheetHeaderView(title: title, subtitle: nil, leftItem: cancelItem, rightItem: nil)
+        let header = PMActionSheetHeaderView(
+            title: title,
+            subtitle: "",
+            leftItem: cancelItem,
+            rightItem: nil,
+            showDragBar: false
+        )
         return header
     }
 
     private func setUpTomorrowAction() -> PMActionSheetPlainItem? {
-        let roundDown = self.current.minute.roundDownForScheduledSend
-        guard let tomorrow = self.current.tomorrow(at: 8, minute: roundDown) else {
+        guard let tomorrow = self.current.tomorrow(at: 8, minute: 0) else {
             return nil
         }
-        let title = String(format: LocalString._schedule_tomorrow_send_action,
-                           roundDown)
-        return PMActionSheetPlainItem(title: title, icon: nil) { [weak self] _ in
+        return PMActionSheetPlainItem(
+            title: L11n.ScheduledSend.tomorrow,
+            detail: tomorrow.localizedString(withTemplate: nil),
+            icon: nil,
+            detailCompressionResistancePriority: .required
+        ) { [weak self] _ in
             self?.delegate?.scheduledTimeIsSet(date: tomorrow)
             self?.actionSheet?.dismiss(animated: true)
         }
     }
 
     private func setUpMondayAction() -> PMActionSheetPlainItem? {
-        let roundDown = self.current.minute.roundDownForScheduledSend
-        guard let next = self.current.next(.monday, hour: 8, minute: roundDown) else {
+        guard let next = self.current.next(.monday, hour: 8, minute: 0) else {
             return nil
         }
-
-        let weekDayName = next.formattedWith("EEEE").capitalized
-        let datePart = next.formattedWith("(MMM dd)")
-
-        let timeFormatter = DateFormatter()
-        timeFormatter.locale = Locale.current
-        timeFormatter.dateStyle = .none
-        timeFormatter.timeStyle = .short
-
-        let timePart = String(
-            format: LocalString._composer_forward_header_at,
-            timeFormatter.string(from: next)
-        ).lowercased()
-
-        let title = "\(weekDayName) \(datePart) \(timePart)"
-
-        return PMActionSheetPlainItem(title: title, icon: nil) { [weak self] _ in
+        return PMActionSheetPlainItem(
+            title: next.formattedWith("EEEE").capitalized,
+            detail: next.localizedString(withTemplate: nil),
+            icon: nil,
+            detailCompressionResistancePriority: .required
+        ) { [weak self] _ in
             self?.delegate?.scheduledTimeIsSet(date: next)
             self?.actionSheet?.dismiss(animated: true)
         }
     }
 
     private func setUpCustomAction() -> PMActionSheetPlainItem {
-        PMActionSheetPlainItem(title: LocalString._composer_expiration_custom, icon: nil) { [weak self] _ in
+        let icon = IconProvider.chevronRight
+        let isPaid = delegate?.isItAPaidUser() ?? false
+        return PMActionSheetPlainItem(
+            title: L11n.ScheduledSend.custom,
+            icon: nil,
+            rightIcon: icon,
+            titleRightIcon: isPaid ? nil : Asset.upgradeIcon.image
+        ) { [weak self] _ in
             guard let self = self,
                   let viewController = self.viewController,
                   let parentView = viewController.navigationController?.view ?? viewController.view else { return }
-            let picker = PMDatePicker(delegate: self,
-                                      cancelTitle: LocalString._general_cancel_action,
-                                      saveTitle: LocalString._general_schedule_send_action)
-            picker.present(on: parentView)
+            if self.delegate?.isItAPaidUser() == true {
+                let picker = PMDatePicker(delegate: self,
+                                          cancelTitle: LocalString._general_cancel_action,
+                                          saveTitle: LocalString._general_schedule_send_action)
+                picker.present(on: parentView)
+            } else {
+                self.delegate?.showScheduleSendPromotionView()
+            }
             self.actionSheet?.dismiss(animated: true)
+        }
+    }
+
+    private func setUpAsScheduledAction() -> PMActionSheetPlainItem? {
+        guard let originalTime = originalScheduledTime?.rawValue else {
+            return nil
+        }
+
+        return PMActionSheetPlainItem(
+            title: L11n.ScheduledSend.asSchedule,
+            detail: originalTime.localizedString(withTemplate: nil),
+            icon: nil,
+            detailCompressionResistancePriority: .required
+        ) { [weak self] _ in
+            guard Date(timeInterval: Constants.ScheduleSend.minNumberOfSeconds, since: Date()) < originalTime else {
+                self?.showSendInTheFutureAlert()
+                return
+            }
+
+            self?.delegate?.scheduledTimeIsSet(date: originalTime)
+            self?.actionSheet?.dismiss(animated: true)
         }
     }
 }

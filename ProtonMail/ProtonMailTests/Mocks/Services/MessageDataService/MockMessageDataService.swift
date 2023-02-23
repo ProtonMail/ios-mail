@@ -31,6 +31,7 @@ class MockMessageDataService: MessageDataServiceProtocol {
 
     var fetchMessagesReturnError: Bool = false
     var fetchMessagesCountReturnEmpty: Bool = false
+    var messageSendingDataResult: MessageSendingData!
 
     func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void) {
         if fetchMessagesReturnError {
@@ -69,6 +70,21 @@ class MockMessageDataService: MessageDataServiceProtocol {
 
     func idsOfMessagesBeingSent() -> [String] {
         []
+    }
+
+    func getMessageSendingData(for uri: String) -> ProtonMail.MessageSendingData? {
+        return messageSendingDataResult
+    }
+
+    @FuncStub(MockMessageDataService.updateMessageAfterSend(message:sendResponse:completionQueue:completion:)) var callUpdateMessageAfterSend
+    func updateMessageAfterSend(
+        message: MessageEntity,
+        sendResponse: JSONDictionary,
+        completionQueue: DispatchQueue,
+        completion: @escaping () -> Void
+    ) {
+        callUpdateMessageAfterSend(message, sendResponse, completionQueue, completion)
+        completion()
     }
 }
 

@@ -3,11 +3,13 @@
       "Share": {
          "build": {
             "targets": {
-               "Share": "all"
+               "Share": "all",
+               "ProtonMail": "all"
             }
          },
          "run": {
-            "config": "Debug"
+            "config": "Debug",
+            "askForAppToLaunch": true
          },
          "test": {
             "config": "Debug"

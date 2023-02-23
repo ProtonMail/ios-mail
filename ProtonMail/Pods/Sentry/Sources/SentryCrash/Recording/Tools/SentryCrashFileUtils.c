@@ -26,7 +26,7 @@
 
 #include "SentryCrashFileUtils.h"
 
-//#define SentryCrashLogger_LocalLevel TRACE
+// #define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
 
 #include <dirent.h>
@@ -73,7 +73,7 @@ dirContentsCount(const char *path)
     int count = 0;
     DIR *dir = opendir(path);
     if (dir == NULL) {
-        SentryCrashLOG_ERROR("Error reading directory %s: %s", strerror(errno));
+        SentryCrashLOG_ERROR("Error reading directory %s: %s", path, strerror(errno));
         return 0;
     }
 
@@ -96,7 +96,7 @@ dirContents(const char *path, char ***entries, int *count)
     }
     dir = opendir(path);
     if (dir == NULL) {
-        SentryCrashLOG_ERROR("Error reading directory %s: %s", strerror(errno));
+        SentryCrashLOG_ERROR("Error reading directory %s: %s", path, strerror(errno));
         goto done;
     }
 
@@ -144,7 +144,7 @@ deletePathContents(const char *path, bool deleteTopLevelPathAlso)
 {
     struct stat statStruct = { 0 };
     if (stat(path, &statStruct) != 0) {
-        SentryCrashLOG_ERROR("Could not stat %s: %s", strerror(errno));
+        SentryCrashLOG_ERROR("Could not stat %s: %s", path, strerror(errno));
         return false;
     }
     if (S_ISDIR(statStruct.st_mode)) {

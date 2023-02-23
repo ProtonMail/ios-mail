@@ -37,13 +37,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.dsn = self.endPoint
             options.debug = debug
             options.environment = environment
-
-            // Disabling some options to make the report work. Otherwise it does not show in Sentry,
-            // probably because the size limit in Proton's backend is 65kb for each event.
-            // See: https://jira.protontech.ch/browse/INFSUP-682
-            options.enableAutoSessionTracking = false
-            options.attachStacktrace = false
-            options.maxBreadcrumbs = 10
+            options.enableAutoPerformanceTracking = false
         }
         isEnabled = true
     }
@@ -148,13 +142,13 @@ public enum MailAnalyticsErrorEvent: Error {
     /// used to track when the app sends a conversation reqeust without a conversation ID.
     case abortedConversationRequest
 
-    // user attempted a swipe action that should not be allowed
-    case invalidSwipeAction(action: String)
-
     // called MenuViewModel.menuItem(indexPath:) method with a nonexistent index path
     case invalidMenuItemRequested(section: String, row: Int, itemCount: Int, caller: StaticString)
     case decryptMIMEFailed(error: String, messageID: String)
     case coreDataSavingError(error: Error, caller: StaticString, file: StaticString, line: UInt)
+
+    // If the send request returns the custom error code 2001
+    case sendMessageInvalidSignature
 
     var name: String {
         let message: String
@@ -163,14 +157,14 @@ public enum MailAnalyticsErrorEvent: Error {
             message = "Core Data initialisation error"
         case .abortedConversationRequest:
             message = "Aborted request without conversation ID"
-        case .invalidSwipeAction:
-            message = "Invalid swipe action"
         case .invalidMenuItemRequested:
             message = "Invalid menu item requested"
         case .decryptMIMEFailed:
             message = "Decrypt MIME failed"
         case .coreDataSavingError:
             return "Core Data saving error"
+        case .sendMessageInvalidSignature:
+            return "Send invalid signature"
         }
         return message
     }
@@ -180,10 +174,8 @@ public enum MailAnalyticsErrorEvent: Error {
         switch self {
         case .coreDataInitialisation(let error):
             info = ["Custom Error": error]
-        case .abortedConversationRequest:
+        case .abortedConversationRequest, .sendMessageInvalidSignature:
             info = nil
-        case .invalidSwipeAction(let action):
-            info = ["Action": action]
         case let .invalidMenuItemRequested(section, row, itemCount, caller):
             info = [
                 "Section": section,

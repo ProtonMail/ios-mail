@@ -26,6 +26,7 @@ import CoreData
 import Groot
 import ProtonCore_DataModel
 
+// sourcery: mock
 protocol CacheServiceProtocol: Service {
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
@@ -38,7 +39,7 @@ protocol CacheServiceProtocol: Service {
         idsOfMessagesBeingSent: [String],
         completion: @escaping (Error?) -> Void
     )
-    func updateCounterSync(markUnRead: Bool, on message: Message)
+    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
 }
 
 class CacheService: CacheServiceProtocol {
@@ -594,6 +595,7 @@ extension CacheService {
             } catch {
             }
             DispatchQueue.main.async {
+                self.coreDataService.mainContext.refreshAllObjects()
                 completion?()
             }
         }
@@ -617,40 +619,44 @@ extension CacheService {
 
 // MARK: - contact related functions
 extension CacheService {
-    func addNewContact(serverResponse: [[String: Any]], shouldFixName: Bool = false, objectID: String? = nil, completion: (([Contact]?, NSError?) -> Void)?) {
-        let context = coreDataService.makeNewBackgroundContext()
-        context.performAndWait { [weak self] in
+    func addNewContact(
+        serverResponse: [[String: Any]],
+        shouldFixName: Bool = false,
+        localContactObjectID: String? = nil,
+        completion: @escaping (Error?) -> Void
+    ) {
+        coreDataService.performAndWaitOnRootSavingContext { [weak self]  context in
             guard let self = self else { return }
             do {
-                if let id = objectID,
+                // Delete the temporary contact that is created locally.
+                if let id = localContactObjectID,
                    let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
-                   let managedObject = try? context.existingObject(with: objectID),
-                   let contact = managedObject as? Contact,
-                   let contactID = serverResponse[0]["ID"] as? String {
-                    contact.contactID = contactID
+                   let managedObject = try? context.existingObject(with: objectID) {
+                    context.delete(managedObject)
                 }
 
-                let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                fromJSONArray: serverResponse,
-                                                                in: context) as? [Contact]
-                contacts?.forEach { (c) in
-                    c.userID = self.userID.rawValue
+                let contacts = try GRTJSONSerialization.objects(
+                    withEntityName: Contact.Attributes.entityName,
+                    fromJSONArray: serverResponse,
+                    in: context
+                ) as? [Contact]
+
+                contacts?.forEach { contact in
+                    contact.userID = self.userID.rawValue
                     if shouldFixName {
-                        _ = c.fixName(force: true)
+                        _ = contact.fixName(force: true)
                     }
-                    if let emails = c.emails.allObjects as? [Email] {
-                        emails.forEach { (e) in
+                    if let emails = contact.emails.allObjects as? [Email] {
+                        emails.forEach { e in
                             e.userID = self.userID.rawValue
                         }
                     }
                 }
-                if let error = context.saveUpstreamIfNeeded() {
-                    completion?(nil, error)
-                } else {
-                    completion?(contacts, nil)
-                }
+
+                _ = context.saveUpstreamIfNeeded()
+                completion(nil)
             } catch {
-                completion?(nil, error as NSError)
+                completion(error)
             }
         }
     }

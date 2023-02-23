@@ -32,18 +32,20 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     let message: MessageEntity
     private let coreDataService: CoreDataService
     private let user: UserManager
-    private let navigationController: UINavigationController
+    private weak var navigationController: UINavigationController?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
-    var goToDraft: ((MessageID) -> Void)?
+    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
     init(
         navigationController: UINavigationController,
         labelId: LabelID,
         message: MessageEntity,
         user: UserManager,
+        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         coreDataService: CoreDataService =
-            sharedServices.get(by: CoreDataService.self),
+        sharedServices.get(by: CoreDataService.self),
         internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get()
     ) {
         self.navigationController = navigationController
@@ -52,9 +54,23 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.user = user
         self.coreDataService = coreDataService
         self.internetStatusProvider = internetStatusProvider
+        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
     }
 
     func start() {
+        let viewController = makeSingleMessageVC()
+        self.viewController = viewController
+        if navigationController?.viewControllers.last is MessagePlaceholderVC,
+           var viewControllers = navigationController?.viewControllers {
+            _ = viewControllers.popLast()
+            viewControllers.append(viewController)
+            navigationController?.setViewControllers(viewControllers, animated: false)
+        } else {
+            navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+
+    func makeSingleMessageVC() -> SingleMessageViewController {
         let singleMessageViewModelFactory = SingleMessageViewModelFactory()
         let viewModel = singleMessageViewModelFactory.createViewModel(
             labelId: labelId,
@@ -62,14 +78,14 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
-            goToDraft: { [weak self] msgID in
-                self?.navigationController.popViewController(animated: false)
-                self?.goToDraft?(msgID)
+            goToDraft: { [weak self] msgID, originalScheduleTime in
+                self?.navigationController?.popViewController(animated: false)
+                self?.goToDraft?(msgID, originalScheduleTime)
             }
         )
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
-        navigationController.pushViewController(viewController, animated: true)
+        return viewController
     }
 
     func follow(_ deeplink: DeepLink) {
@@ -106,9 +122,16 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             viewController?.moreButtonTapped()
         case .viewCypher(url: let url):
             presentQuickLookView(url: url, subType: .cypher)
+        case let .toolbarCustomization(currentActions: currentActions,
+                                       allActions: allActions):
+            presentToolbarCustomization(allActions: allActions,
+                                        currentActions: currentActions)
         }
     }
+}
 
+// MARK: - Private functions
+extension SingleMessageCoordinator {
     private func presentCompose(with contact: ContactVO) {
         let viewModel = ContainableComposeViewModel(
             msg: nil,
@@ -135,7 +158,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
         let viewer = PlainTextViewerViewController(text: text, subType: subType)
         try? FileManager.default.removeItem(at: fileUrl)
-        self.navigationController.pushViewController(viewer, animated: true)
+        self.navigationController?.pushViewController(viewer, animated: true)
     }
 
     private func presentCompose(action: SingleMessageNavigationAction) {
@@ -193,7 +216,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
         )
         let viewController = AttachmentListViewController(viewModel: viewModel)
-        self.navigationController.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func presentWebView(url: URL) {
@@ -259,5 +282,34 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             coordinatorDismissalObserver: self
         )
         viewController?.navigationController?.present(labelEditNavigationController, animated: true, completion: nil)
+    }
+
+    private func presentToolbarCustomization(
+        allActions: [MessageViewActionSheetAction],
+        currentActions: [MessageViewActionSheetAction]
+    ) {
+        let viewController = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
+            viewModel: .init(
+                currentActions: currentActions,
+                allActions: allActions,
+                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
+                defaultActions: MessageViewActionSheetAction.defaultActions,
+                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            )
+        )
+        viewController.customizationIsDone = { [weak self] result in
+            self?.viewController?.showProgressHud()
+            self?.viewController?.viewModel.updateToolbarActions(
+                actions: result,
+                completion: { error in
+                    if let error = error {
+                        error.alertErrorToast()
+                    }
+                    self?.viewController?.setUpToolBarIfNeeded()
+                    self?.viewController?.hideProgressHud()
+                })
+        }
+        let nav = UINavigationController(rootViewController: viewController)
+        self.viewController?.navigationController?.present(nav, animated: true)
     }
 }

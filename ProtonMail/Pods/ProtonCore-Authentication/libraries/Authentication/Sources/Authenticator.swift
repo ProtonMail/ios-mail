@@ -135,7 +135,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                 completion(.failure(.from(responseError)))
             case .success(let response):
                 var credential = context.credential
-                credential.updateScope(response.scope)
+                credential.scopes = response.scopes
                 completion(.success(.newCredential(credential, context.passwordMode)))
             }
         }

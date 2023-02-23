@@ -53,9 +53,9 @@ extension PMAPIService {
     }
 
     static func setupTrustIfNeeded() {
-        #if DEBUG
-        PMAPIService.noTrustKit = true
-        #endif
+//        #if DEBUG
+//        PMAPIService.noTrustKit = true
+//        #endif
 
         guard PMAPIService.trustKit == nil else { return }
         #if !APP_EXTENSION

@@ -28,6 +28,7 @@ private let nameTextFieldId = "SignupViewController.internalNameTextField.textFi
 private let externalEmailTextFieldId = "SignupViewController.externalEmailTextField.textField"
 private let nextButtonId = "SignupViewController.nextButton"
 private let signinButtonId = "SignupViewController.signinButton"
+private let domainsButtonId = "SignupViewController.domainsButton"
 private let errorBannerMessage = "Username already used"
 private let errorBannerButton = CoreString._hv_ok_button
 private let otherAccountButton = "SignupViewController.otherAccountButton"
@@ -77,10 +78,28 @@ public final class SignupRobot: CoreElements {
             button(otherAccountExtName).wait().checkExists()
             return SignupRobot()
         }
+        
+        @discardableResult
+        public func otherAccountExtButtonIsNotShown() -> SignupRobot {
+            button(otherAccountExtName).wait().checkDoesNotExist()
+            return SignupRobot()
+        }
 
         @discardableResult
         public func otherAccountButtonIsNotShown() -> SignupRobot {
             button(otherAccountButton).checkDoesNotExist()
+            return SignupRobot()
+        }
+        
+        @discardableResult
+        public func domainsButtonIsShown() -> SignupRobot {
+            button(domainsButtonId).checkExists()
+            return SignupRobot()
+        }
+        
+        @discardableResult
+        public func domainsButtonIsNotShown() -> SignupRobot {
+            button(domainsButtonId).checkDoesNotExist()
             return SignupRobot()
         }
     }

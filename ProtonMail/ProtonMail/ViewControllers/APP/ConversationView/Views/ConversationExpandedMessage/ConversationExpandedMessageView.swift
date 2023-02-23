@@ -10,7 +10,7 @@ class ConversationExpandedMessageView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = ColorProvider.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundDeep
         addSubviews()
         setUpLayout()
         setUpActions()

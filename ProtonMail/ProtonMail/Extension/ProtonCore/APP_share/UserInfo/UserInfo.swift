@@ -26,32 +26,11 @@ import ProtonCore_DataModel
 
 extension UserInfo {
 
-    var addressPrivateKeysArray: [Data] {
-        var out: [Data] = []
-        var error: NSError?
-        for addr in userAddresses {
-            for key in addr.keys {
-                if let privK = ArmorUnarmor(key.privateKey, &error) {
-                    out.append(privK)
-                }
-            }
-        }
-        return out
-    }
-
     var isAutoLoadRemoteContentEnabled: Bool {
-        if Self.isImageProxyAvailable {
-            return hideRemoteImages == 0
-        } else {
-            return showImages.contains(.remote)
-        }
+        hideRemoteImages == 0
     }
 
     var isAutoLoadEmbeddedImagesEnabled: Bool {
-        if Self.isImageProxyAvailable {
-            return hideEmbeddedImages == 0
-        } else {
-            return showImages.contains(.embedded)
-        }
+        hideEmbeddedImages == 0
     }
 }

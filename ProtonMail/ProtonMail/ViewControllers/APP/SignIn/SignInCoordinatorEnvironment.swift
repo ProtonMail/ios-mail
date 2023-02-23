@@ -43,8 +43,6 @@ struct SignInCoordinatorEnvironment {
     let finalizeSignIn: (LoginData,
                          @escaping (NSError) -> Void,
                          () -> Void,
-                         () -> Void,
-                         () -> Void,
                          @escaping () -> Void) -> Void
     let unlockIfRememberedCredentials: (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void
     let loginCreationClosure: LoginCreationClosure
@@ -54,12 +52,10 @@ struct SignInCoordinatorEnvironment {
     func finalizeSignIn(
         loginData: LoginData,
         onError: @escaping (NSError) -> Void,
-        reachLimit: () -> Void,
-        existError: () -> Void,
         showSkeleton: () -> Void,
         tryUnlock: @escaping () -> Void
     ) {
-        finalizeSignIn(loginData, onError, reachLimit, existError, showSkeleton, tryUnlock)
+        finalizeSignIn(loginData, onError, showSkeleton, tryUnlock)
     }
 
     func unlockIfRememberedCredentials(
@@ -89,17 +85,16 @@ extension SignInCoordinatorEnvironment {
                      currentAuth: { services.get(by: UsersManager.self).firstUser?.authCredential },
                      tryRestoringPersistedUser: services.get(by: UsersManager.self).tryRestore,
                      finalizeSignIn: services.get(by: SignInManager.self)
-                         .finalizeSignIn(loginData:onError:reachLimit:existError:showSkeleton:tryUnlock:),
+                         .finalizeSignIn(loginData:onError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                          .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
-                     loginCreationClosure: { appName, minimumAccountType, _, _, isCloseButtonAvailable in
+                     loginCreationClosure: { appName, minimumAccountType, signupMode, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
-                             // the ability to change signup mode is temporarily disabled
-//                mode: signupMode,
-                             passwordRestrictions: .atLeastEightCharactersLong,
+                             passwordRestrictions: passwordRestrictions,
                              summaryScreenVariant: SummaryScreenVariant.screenVariant(
                                  .mail(SummaryStartButtonText("Start using Proton Mail"))
-                             )
+                             ),
+                             signupMode: signupMode
                          ))
                          let payment: PaymentsAvailability
                          if UIApplication.arePaymentsEnabled {

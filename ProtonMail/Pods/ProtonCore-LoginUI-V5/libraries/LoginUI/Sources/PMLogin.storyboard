@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDH-n2-Ues">
-                                        <rect key="frame" x="8" y="52" width="398" height="409.5"/>
+                                        <rect key="frame" x="8" y="56" width="398" height="409.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="REA-Fj-eCa">
                                                 <rect key="frame" x="164.5" y="8" width="69.5" height="26.5"/>
@@ -169,7 +169,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTz-qM-qTz">
-                                        <rect key="frame" x="8" y="52" width="398" height="246.5"/>
+                                        <rect key="frame" x="8" y="56" width="398" height="246.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Two-factor authentication" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uF7-Od-Bc2" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
                                                 <rect key="frame" x="8" y="8" width="382" height="26.5"/>
@@ -256,7 +256,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="USW-3y-gS1">
-                                        <rect key="frame" x="8" y="52" width="398" height="246.5"/>
+                                        <rect key="frame" x="8" y="56" width="398" height="246.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlock your mailbox" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rzx-E7-dES" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
                                                 <rect key="frame" x="8" y="8" width="382" height="26.5"/>
@@ -386,10 +386,10 @@
             </objects>
             <point key="canvasLocation" x="692.75362318840587" y="119.86607142857142"/>
         </scene>
-        <!--Choose Username View Controller-->
+        <!--Create Address View Controller-->
         <scene sceneID="fAt-cz-wyj">
             <objects>
-                <viewController storyboardIdentifier="ChooseUsername" id="o6g-3e-Q3c" customClass="ChooseUsernameViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreateAddress" id="o6g-3e-Q3c" customClass="CreateAddressViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SSl-7I-yFn">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -398,31 +398,68 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-e3-F4p">
-                                        <rect key="frame" x="8" y="52" width="398" height="254.5"/>
+                                        <rect key="frame" x="8" y="56" width="398" height="415"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Proton Mail address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1m-dB-wgK" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Proton address required" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1m-dB-wgK" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
                                                 <rect key="frame" x="8" y="8" width="382" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Proton Account is associated with email@example.com. To use ProtonMail, please create an address." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dA-qi-cNL" customClass="SubtitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="42.5" width="382" height="54"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dA-qi-cNL" customClass="SubtitleLabel" customModule="ProtonCore_LoginUI">
+                                                <rect key="frame" x="8" y="42.5" width="382" height="72"/>
+                                                <string key="text">You need a Proton email address to use Proton Mail and Proton Calendar.
+You’ll still be able to use example@example.ch to sign in, and to recover your account.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" systemColor="systemGrayColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="XVX-7d-VjN" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="120.5" width="382" height="80"/>
+                                                <rect key="frame" x="8" y="138.5" width="382" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="@protonmail.com"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEJ-XM-wsk" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="212.5" width="382" height="34"/>
-                                                <state key="normal" title="Next"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BW4-AM-MJs" userLabel="domainView">
+                                                <rect key="frame" x="8" y="230.5" width="382" height="56.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gun-H4-xBy">
+                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="14.5"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="0.0"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Cb-iE-hJK" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                                                        <rect key="frame" x="0.0" y="22.5" width="382" height="34"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <connections>
+                                                            <action selector="onDomainsButtonTapped" destination="o6g-3e-Q3c" eventType="touchUpInside" id="BZB-go-4Ty"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="gun-H4-xBy" firstAttribute="leading" secondItem="BW4-AM-MJs" secondAttribute="leading" id="3IV-xt-VMB"/>
+                                                    <constraint firstAttribute="trailing" secondItem="gun-H4-xBy" secondAttribute="trailing" id="6Ys-g8-hK6"/>
+                                                    <constraint firstItem="0Cb-iE-hJK" firstAttribute="leading" secondItem="BW4-AM-MJs" secondAttribute="leading" id="9g9-9i-ih6"/>
+                                                    <constraint firstItem="0Cb-iE-hJK" firstAttribute="top" secondItem="gun-H4-xBy" secondAttribute="bottom" constant="8" id="DjJ-oA-Dau"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0Cb-iE-hJK" secondAttribute="trailing" id="Rd5-re-VYP"/>
+                                                    <constraint firstAttribute="bottom" secondItem="0Cb-iE-hJK" secondAttribute="bottom" id="XRi-Q7-KHL"/>
+                                                    <constraint firstItem="gun-H4-xBy" firstAttribute="top" secondItem="BW4-AM-MJs" secondAttribute="top" id="wDi-SS-e9n"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tDs-Ri-msy" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                                                <rect key="frame" x="8" y="331" width="382" height="34"/>
+                                                <state key="normal" title="Continue"/>
                                                 <connections>
-                                                    <action selector="nextPressed:" destination="o6g-3e-Q3c" eventType="touchUpInside" id="JuZ-ZB-Elj"/>
+                                                    <action selector="continuePressed:" destination="o6g-3e-Q3c" eventType="touchUpInside" id="Km6-LZ-0v8"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEJ-XM-wsk" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                                                <rect key="frame" x="8" y="373" width="382" height="34"/>
+                                                <state key="normal" title="Continue"/>
+                                                <connections>
+                                                    <action selector="cancelPressed:" destination="o6g-3e-Q3c" eventType="touchUpInside" id="fCg-de-Zv7"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -433,13 +470,19 @@
                                             <constraint firstItem="qEJ-XM-wsk" firstAttribute="leading" secondItem="kgW-e3-F4p" secondAttribute="leading" constant="8" id="AIA-Bc-5FW"/>
                                             <constraint firstItem="XVX-7d-VjN" firstAttribute="trailing" secondItem="kgW-e3-F4p" secondAttribute="trailing" constant="-8" id="CTs-sk-wiZ"/>
                                             <constraint firstItem="V1m-dB-wgK" firstAttribute="trailing" secondItem="kgW-e3-F4p" secondAttribute="trailing" constant="-8" id="KJY-91-HJB"/>
+                                            <constraint firstItem="tDs-Ri-msy" firstAttribute="top" secondItem="BW4-AM-MJs" secondAttribute="bottom" constant="44" id="KQc-DT-Sfu"/>
+                                            <constraint firstItem="qEJ-XM-wsk" firstAttribute="top" secondItem="tDs-Ri-msy" secondAttribute="bottom" constant="8" id="NPM-9Z-gTG"/>
                                             <constraint firstItem="XVX-7d-VjN" firstAttribute="top" secondItem="8dA-qi-cNL" secondAttribute="bottom" constant="24" id="Sos-l8-d5I"/>
-                                            <constraint firstItem="qEJ-XM-wsk" firstAttribute="top" secondItem="XVX-7d-VjN" secondAttribute="bottom" constant="12" id="T0D-LT-mUN"/>
+                                            <constraint firstAttribute="trailing" secondItem="BW4-AM-MJs" secondAttribute="trailing" constant="8" id="Tj6-km-TjS"/>
                                             <constraint firstItem="8dA-qi-cNL" firstAttribute="top" secondItem="V1m-dB-wgK" secondAttribute="bottom" constant="8" id="UG9-se-FxO"/>
                                             <constraint firstItem="qEJ-XM-wsk" firstAttribute="trailing" secondItem="kgW-e3-F4p" secondAttribute="trailing" constant="-8" id="bFJ-Qv-oS3"/>
                                             <constraint firstItem="XVX-7d-VjN" firstAttribute="leading" secondItem="kgW-e3-F4p" secondAttribute="leading" constant="8" id="ed3-wj-h6a"/>
+                                            <constraint firstItem="tDs-Ri-msy" firstAttribute="leading" secondItem="kgW-e3-F4p" secondAttribute="leading" constant="8" id="gKV-cE-dSI"/>
                                             <constraint firstItem="8dA-qi-cNL" firstAttribute="trailing" secondItem="kgW-e3-F4p" secondAttribute="trailing" constant="-8" id="ge4-jS-wNv"/>
                                             <constraint firstItem="V1m-dB-wgK" firstAttribute="top" secondItem="kgW-e3-F4p" secondAttribute="top" constant="8" id="hjH-n7-2jW"/>
+                                            <constraint firstItem="BW4-AM-MJs" firstAttribute="leading" secondItem="kgW-e3-F4p" secondAttribute="leading" constant="8" id="iwi-2v-kTu"/>
+                                            <constraint firstItem="BW4-AM-MJs" firstAttribute="top" secondItem="XVX-7d-VjN" secondAttribute="bottom" constant="12" id="jcD-lw-8NA"/>
+                                            <constraint firstAttribute="trailing" secondItem="tDs-Ri-msy" secondAttribute="trailing" constant="8" id="jlt-2A-ElL"/>
                                             <constraint firstItem="8dA-qi-cNL" firstAttribute="leading" secondItem="kgW-e3-F4p" secondAttribute="leading" constant="8" id="lhC-Hy-MvI"/>
                                         </constraints>
                                     </view>
@@ -465,7 +508,9 @@
                     </view>
                     <connections>
                         <outlet property="addressTextField" destination="XVX-7d-VjN" id="HPU-Dv-TMD"/>
-                        <outlet property="nextButton" destination="qEJ-XM-wsk" id="zjx-07-mwP"/>
+                        <outlet property="cancelButton" destination="qEJ-XM-wsk" id="9bH-eu-rhZ"/>
+                        <outlet property="continueButton" destination="tDs-Ri-msy" id="oFM-ja-j6L"/>
+                        <outlet property="domainsButton" destination="0Cb-iE-hJK" id="h5X-bd-vcS"/>
                         <outlet property="scrollView" destination="RCn-eF-abS" id="4iA-YW-rLQ"/>
                         <outlet property="subtitleLabel" destination="8dA-qi-cNL" id="Xoe-Q2-35t"/>
                         <outlet property="titleLabel" destination="V1m-dB-wgK" id="gNk-ly-NMM"/>
@@ -473,116 +518,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zdv-ZN-YCk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="32" y="804"/>
-        </scene>
-        <!--Create Address View Controller-->
-        <scene sceneID="878-jp-2Qn">
-            <objects>
-                <viewController storyboardIdentifier="CreateAddress" id="wcG-3y-iFk" customClass="CreateAddressViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8H0-4W-5Wm">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="cbI-QG-6Fl">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBg-LN-23C">
-                                        <rect key="frame" x="8" y="52" width="398" height="262.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will use this email address to log into all Proton services." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGP-JF-mbz" customClass="SubtitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="42.5" width="382" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <color key="textColor" systemColor="systemGrayColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="adam@protonmail.com is available" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WkI-iA-g1B" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="8" width="382" height="26.5"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your recovery email address:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fN-9Y-d0V">
-                                                <rect key="frame" x="8" y="102.5" width="382" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="adam@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQm-b9-Yod">
-                                                <rect key="frame" x="8" y="131" width="382" height="18"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GiH-yO-SEE" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="173" width="382" height="34"/>
-                                                <state key="normal" title="Create address"/>
-                                                <connections>
-                                                    <action selector="createPressed:" destination="wcG-3y-iFk" eventType="touchUpInside" id="M5h-ge-UGZ"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By clicking Create address, you agree with Proton's Terms and Conditions." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bff-Al-2ch">
-                                                <rect key="frame" x="8" y="223" width="382" height="31.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" systemColor="systemGrayColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstItem="bff-Al-2ch" firstAttribute="leading" secondItem="hBg-LN-23C" secondAttribute="leading" constant="8" id="0JX-Z8-eT0"/>
-                                            <constraint firstItem="WkI-iA-g1B" firstAttribute="trailing" secondItem="hBg-LN-23C" secondAttribute="trailing" constant="-8" id="2V7-9J-GlI"/>
-                                            <constraint firstItem="KGP-JF-mbz" firstAttribute="trailing" secondItem="hBg-LN-23C" secondAttribute="trailing" constant="-8" id="4Nc-zA-IxH"/>
-                                            <constraint firstItem="KGP-JF-mbz" firstAttribute="top" secondItem="WkI-iA-g1B" secondAttribute="bottom" constant="8" id="61A-Um-qD9"/>
-                                            <constraint firstItem="GiH-yO-SEE" firstAttribute="leading" secondItem="hBg-LN-23C" secondAttribute="leading" constant="8" id="Ana-yM-wUG"/>
-                                            <constraint firstItem="WkI-iA-g1B" firstAttribute="leading" secondItem="hBg-LN-23C" secondAttribute="leading" constant="8" id="CYl-IQ-K4l"/>
-                                            <constraint firstItem="FQm-b9-Yod" firstAttribute="leading" secondItem="hBg-LN-23C" secondAttribute="leading" constant="8" id="DnV-3I-8hX"/>
-                                            <constraint firstItem="GiH-yO-SEE" firstAttribute="trailing" secondItem="hBg-LN-23C" secondAttribute="trailing" constant="-8" id="GFc-Oi-W3I"/>
-                                            <constraint firstItem="KGP-JF-mbz" firstAttribute="leading" secondItem="hBg-LN-23C" secondAttribute="leading" constant="8" id="LMp-lm-vZ2"/>
-                                            <constraint firstItem="WkI-iA-g1B" firstAttribute="top" secondItem="hBg-LN-23C" secondAttribute="top" constant="8" id="O7V-mT-T99"/>
-                                            <constraint firstItem="7fN-9Y-d0V" firstAttribute="trailing" secondItem="hBg-LN-23C" secondAttribute="trailing" constant="-8" id="Q8E-LX-Ebw"/>
-                                            <constraint firstItem="bff-Al-2ch" firstAttribute="top" secondItem="GiH-yO-SEE" secondAttribute="bottom" constant="16" id="QcY-qw-bWt"/>
-                                            <constraint firstItem="FQm-b9-Yod" firstAttribute="trailing" secondItem="hBg-LN-23C" secondAttribute="trailing" constant="-8" id="Res-gl-0XL"/>
-                                            <constraint firstItem="7fN-9Y-d0V" firstAttribute="top" secondItem="KGP-JF-mbz" secondAttribute="bottom" constant="24" id="dos-FG-1DY"/>
-                                            <constraint firstItem="FQm-b9-Yod" firstAttribute="top" secondItem="7fN-9Y-d0V" secondAttribute="bottom" constant="8" id="mbM-AF-uRB"/>
-                                            <constraint firstItem="GiH-yO-SEE" firstAttribute="top" secondItem="FQm-b9-Yod" secondAttribute="bottom" constant="24" id="rBQ-v8-66A"/>
-                                            <constraint firstItem="bff-Al-2ch" firstAttribute="trailing" secondItem="hBg-LN-23C" secondAttribute="trailing" constant="-8" id="s2k-Av-jEc"/>
-                                            <constraint firstItem="7fN-9Y-d0V" firstAttribute="leading" secondItem="hBg-LN-23C" secondAttribute="leading" constant="8" id="sNV-GA-o5T"/>
-                                            <constraint firstItem="bff-Al-2ch" firstAttribute="bottom" secondItem="hBg-LN-23C" secondAttribute="bottom" constant="-8" id="ujy-J8-xEm"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="hBg-LN-23C" firstAttribute="bottom" secondItem="cbI-QG-6Fl" secondAttribute="bottomMargin" id="P3U-4F-ec5"/>
-                                    <constraint firstItem="hBg-LN-23C" firstAttribute="trailing" secondItem="cbI-QG-6Fl" secondAttribute="trailingMargin" id="g5H-k8-pEN"/>
-                                    <constraint firstItem="hBg-LN-23C" firstAttribute="centerX" secondItem="cbI-QG-6Fl" secondAttribute="centerXWithinMargins" priority="999" id="jlC-gp-Udd"/>
-                                    <constraint firstItem="hBg-LN-23C" firstAttribute="top" secondItem="cbI-QG-6Fl" secondAttribute="topMargin" id="kUl-6H-GK0"/>
-                                    <constraint firstItem="hBg-LN-23C" firstAttribute="leading" secondItem="cbI-QG-6Fl" secondAttribute="leadingMargin" id="utS-ik-YtR"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="c0m-1M-m6f"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="cbI-QG-6Fl" firstAttribute="trailing" secondItem="8H0-4W-5Wm" secondAttribute="trailing" id="Owg-Pa-B5B"/>
-                            <constraint firstItem="cbI-QG-6Fl" firstAttribute="top" secondItem="8H0-4W-5Wm" secondAttribute="top" id="axt-cf-FU7"/>
-                            <constraint firstItem="cbI-QG-6Fl" firstAttribute="bottom" secondItem="8H0-4W-5Wm" secondAttribute="bottom" id="zfS-aX-ubh"/>
-                            <constraint firstItem="cbI-QG-6Fl" firstAttribute="leading" secondItem="8H0-4W-5Wm" secondAttribute="leading" id="zuE-uN-dNl"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="createButton" destination="GiH-yO-SEE" id="mZ8-cg-gBj"/>
-                        <outlet property="recoveryInfoLabel" destination="FQm-b9-Yod" id="8Zb-Pf-a5q"/>
-                        <outlet property="recoveryTitleLabel" destination="7fN-9Y-d0V" id="SDA-6P-JYh"/>
-                        <outlet property="scrollView" destination="cbI-QG-6Fl" id="bPI-DZ-ODh"/>
-                        <outlet property="subtitleLabel" destination="KGP-JF-mbz" id="nor-DS-BKr"/>
-                        <outlet property="termsLabel" destination="bff-Al-2ch" id="urU-fJ-ihD"/>
-                        <outlet property="titleLabel" destination="WkI-iA-g1B" id="oDJ-Li-FDI"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PjX-M6-7GI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="693" y="804"/>
+            <point key="canvasLocation" x="693" y="803"/>
         </scene>
     </scenes>
     <resources>

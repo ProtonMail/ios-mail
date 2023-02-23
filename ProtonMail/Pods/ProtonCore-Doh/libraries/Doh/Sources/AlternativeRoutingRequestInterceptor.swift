@@ -33,14 +33,17 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
     }
     
     private let headersGetter: () -> [String: String]
-    private let cookiesSynchronization: (URLResponse?) -> Void
+    private let cookiesSynchronization: (URLResponse?, [String: String]) -> Void
+    private let cookiesStorage: HTTPCookieStorage?
     private let onAuthenticationChallengeContinuation: (URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void
     
     public init(headersGetter: @escaping () -> [String: String],
-                cookiesSynchronization: @escaping (URLResponse?) -> Void = { _ in },
+                cookiesSynchronization: @escaping (URLResponse?, [String: String]) -> Void = { _, _ in },
+                cookiesStorage: HTTPCookieStorage?,
                 onAuthenticationChallengeContinuation: @escaping (URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) {
         self.headersGetter = headersGetter
         self.cookiesSynchronization = cookiesSynchronization
+        self.cookiesStorage = cookiesStorage
         self.onAuthenticationChallengeContinuation = onAuthenticationChallengeContinuation
     }
     
@@ -100,11 +103,14 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
         
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-        configuration.httpCookieStorage = HTTPCookieStorage.shared
+        configuration.httpCookieStorage = cookiesStorage
         configuration.httpCookieAcceptPolicy = .always
+        let cookies = configuration.httpCookieStorage?.cookies(for: request.url!) ?? []
+        let headers = HTTPCookie.requestHeaderFields(with: cookies)
+        PMLog.debug("[COOKIES][REQUEST][INTERCEPTOR] \(headers)")
         let task = session.dataTask(with: request) { [weak self] data, response, error in
             if let response = response {
-                self?.transformAndProcessResponse(response, apiRange, urlSchemeTask)
+                self?.transformAndProcessResponse(response, request.allHTTPHeaderFields, apiRange, urlSchemeTask)
             }
             if let data = data {
                 urlSchemeTask.didReceive(data)
@@ -129,8 +135,8 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
     // 3. Adding back (if needed) the the "-api" suffix appended to the first part of url host by captcha JS code.
     //    NOTE: It's applicable only to human verification but it doesn't influence other usecases so we can leave single implemention.
     // 4. Changing the "http" scheme back to the custom one "coreios" in the response url
-    public func transformAndProcessResponse(_ response: URLResponse, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) {
-        cookiesSynchronization(response)
+    public func transformAndProcessResponse(_ response: URLResponse, _ requestHeaders: [String: String]?, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) {
+        cookiesSynchronization(response, requestHeaders ?? [:])
         guard let httpResponse = response as? HTTPURLResponse,
               var urlString = httpResponse.url?.absoluteString
         else {

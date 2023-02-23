@@ -27,8 +27,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
     private var mockFetchAttachment: MockFetchAttachment!
-    private var testContext: NSManagedObjectContext!
-    private var coreDataContextProvider: MockCoreDataContextProvider!
     private var context: NSManagedObjectContext!
 
     let testBody = "body".data(using: .utf8)!
@@ -39,13 +37,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let contextProviderMock = MockCoreDataContextProvider()
-        testContext = contextProviderMock.mainContext
         mockFetchAttachment = MockFetchAttachment()
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
@@ -59,23 +52,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         super.tearDown()
         sut = nil
         mockFetchAttachment = nil
-        testContext = nil
-        coreDataContextProvider = nil
         context = nil
-    }
-
-    func testInit() {
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: Int32(100),
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
-        XCTAssertEqual(sut.expirationOffset, Int32(100))
-
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
-        XCTAssertEqual(sut.expirationOffset, Int32(0))
     }
 
     func testUpdateBodyData_bodySessionAndBodyAlgorithm() {
@@ -124,7 +101,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testAddAttachment() {
         XCTAssertTrue(sut.preAttachments.isEmpty)
-        let testAttachment = AttachmentEntity(Attachment(context: testContext))
+        let testAttachment = AttachmentEntity.make()
         let testPreAttachment = PreAttachment(id: "id",
                                               session: "key".data(using: .utf8)!,
                                               algo: .AES256,
@@ -135,10 +112,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testContains() throws {
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         XCTAssertTrue(sut.addressSendPreferences.isEmpty)
         XCTAssertFalse(sut.contains(type: .pgpMIME))
         let testPreferences = SendPreferences(encrypt: true,
@@ -366,12 +340,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_EOAddress() throws {
-        let testEoOffset: Int32 = 100
         let testEOPassword = Passphrase(value: "EO PWD")
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: testEoOffset,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
         sut.set(password: testEOPassword, hint: nil)
 
         let eoPreference = SendPreferences(encrypt: false,
@@ -399,10 +369,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_ClearAddress() throws {
-        sut = MessageSendingRequestBuilder(
-            expirationOffset: nil,
-            dependencies: .init(fetchAttachment: mockFetchAttachment)
-        )
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
 
         let clearPreference = SendPreferences(encrypt: false,
                                               sign: false,

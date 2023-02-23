@@ -54,10 +54,12 @@ extension MessageDataService: MessageDataActionProtocol {
 
     @discardableResult
     func move(messages: [MessageEntity], to tLabel: LabelID, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
-        let custom_folders = labelDataService.getAllLabels(of: .folder, context: contextProvider.mainContext).map { LabelID($0.labelID) }
+        let customFolderIDs = contextProvider.read { context in
+            labelDataService.getAllLabels(of: .folder, context: context).map { LabelID($0.labelID) }
+        }
         let messagesWithSourceIds = MessageDataService
             .findMessagesWithSourceIds(messages: messages,
-                                       customFolderIds: custom_folders,
+                                       customFolderIds: customFolderIDs,
                                        to: tLabel)
         messagesWithSourceIds.forEach { (msg, sourceId) in
             _ = self.cacheService.move(message: msg, from: sourceId, to: tLabel)

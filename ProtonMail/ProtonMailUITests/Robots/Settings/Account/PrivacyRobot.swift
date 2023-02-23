@@ -9,8 +9,8 @@
 import pmtest
 
 fileprivate struct ui {
-    static let enableSignatureStaticTextLabel = LocalString._settings_enable_default_signature_title
-    static let enableMobileSignatureStaticTextLabel = LocalString._settings_enable_mobile_signature_title
+    static let enableSignatureStaticTextLabel = LocalString._settings_enable_signature_title
+    static let enableMobileSignatureStaticTextLabel = LocalString._settings_enable_signature_title
     static let saveNavBarButtonLabel = LocalString._general_save_action
 }
 

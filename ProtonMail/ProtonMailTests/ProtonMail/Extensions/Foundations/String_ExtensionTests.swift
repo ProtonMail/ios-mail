@@ -201,6 +201,8 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertTrue(testBackground1.hasRemoteImage())
         let testEmbeddedBase64Image = "<img src=\"data:image:base64"
         XCTAssertFalse(testEmbeddedBase64Image.hasRemoteImage())
+        let testCachedEmbeddedImage = "<img src=\"pm-cache:ielwfjlsfise"
+        XCTAssertFalse(testCachedEmbeddedImage.hasRemoteImage())
     }
 
     func testRandomString() {

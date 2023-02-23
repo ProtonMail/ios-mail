@@ -31,7 +31,6 @@
 #include "SentryCrashDebug.h"
 #include "SentryCrashMonitor_AppState.h"
 #include "SentryCrashMonitor_CPPException.h"
-#include "SentryCrashMonitor_Deadlock.h"
 #include "SentryCrashMonitor_MachException.h"
 #include "SentryCrashMonitor_NSException.h"
 #include "SentryCrashMonitor_Signal.h"
@@ -43,7 +42,7 @@
 
 #include <memory.h>
 
-//#define SentryCrashLogger_LocalLevel TRACE
+// #define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
 
 // ============================================================================
@@ -72,10 +71,6 @@ static Monitor g_monitors[] = {
     {
         .monitorType = SentryCrashMonitorTypeNSException,
         .getAPI = sentrycrashcm_nsexception_getAPI,
-    },
-    {
-        .monitorType = SentryCrashMonitorTypeMainThreadDeadlock,
-        .getAPI = sentrycrashcm_deadlock_getAPI,
     },
     {
         .monitorType = SentryCrashMonitorTypeZombie,

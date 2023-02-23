@@ -2,20 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -27,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d 分鐘</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -41,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d 已選定</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -55,7 +41,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d 個附件</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -67,7 +53,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>剩餘%d 次嘗試機會</string>
+			<string>%d 次的可用嘗試數</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -81,7 +67,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 次嘗試失敗後，就會進行資料安全抹除！</string>
+			<string>%d 次嘗試失敗後，就會進行資料安全清除！</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -95,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個會話已加標籤</string>
+			<string>%d 個對話已加標籤</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -109,7 +95,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個交談已移至 %@</string>
+			<string>%d 個對話已移至 %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -124,8 +110,6 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d 天</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -141,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個電郵追蹤器已封鎖</string>
+			<string>%d 個電郵追蹤器已攔截</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -170,11 +154,23 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d 小時</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d 位成員</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -185,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個郵件已標籤</string>
+			<string>%d 個郵件已上標籤</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -243,7 +239,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d 秒</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -359,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>這些 %d 郵件將移至草稿匣，並依排程順序移除。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

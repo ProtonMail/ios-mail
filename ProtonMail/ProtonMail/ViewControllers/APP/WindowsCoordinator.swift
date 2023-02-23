@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
+import MBProgressHUD
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
@@ -57,6 +58,7 @@ class WindowsCoordinator: LifetimeTrackable {
     }
 
     private lazy var snapshot = Snapshot()
+    private var launchedByNotification = false
 
     private var deeplink: DeepLink?
 
@@ -151,6 +153,13 @@ class WindowsCoordinator: LifetimeTrackable {
                 self?.showScheduledSendUnavailableAlert()
             }
 
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(messageSendFailAddressValidationIncorrect),
+                name: .messageSendFailAddressValidationIncorrect,
+                object: nil
+            )
+
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(
                     self,
@@ -173,7 +182,8 @@ class WindowsCoordinator: LifetimeTrackable {
         trackLifetime()
     }
 
-    func start() {
+    func start(launchedByNotification: Bool = false) {
+        self.launchedByNotification = launchedByNotification
         let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
         self.currentWindow = placeholder
 
@@ -382,8 +392,9 @@ class WindowsCoordinator: LifetimeTrackable {
                     let root = PMSideMenuController()
                     let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
                     self.menuCoordinator = coordinator
-                    coordinator.start()
+                    coordinator.start(launchedByNotification: self.launchedByNotification)
                     self.appWindow = UIWindow(root: root, scene: self.scene)
+                    self.launchedByNotification = false
                 }
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
@@ -569,6 +580,7 @@ class WindowsCoordinator: LifetimeTrackable {
 
 // MARK: Schedule message
 extension WindowsCoordinator {
+
     private func showScheduledSendSucceedBanner(
         messageID: MessageID,
         deliveryTime: Date,
@@ -601,7 +613,8 @@ extension WindowsCoordinator {
                 )
                 deepLink.append(
                     .init(name: MailboxCoordinator.Destination.composeScheduledMessage.rawValue,
-                          value: messageID.rawValue)
+                          value: messageID.rawValue,
+                          states: ["originalScheduledTime": deliveryTime])
                 )
                 NotificationCenter.default.post(name: .switchView, object: deepLink)
             }
@@ -618,6 +631,24 @@ extension WindowsCoordinator {
 
         let topVC = self.currentWindow?.topmostViewController() ?? UIViewController()
         topVC.present(alert, animated: true, completion: nil)
+    }
+
+    @objc private func messageSendFailAddressValidationIncorrect() {
+        let title = LocalString._address_invalid_error_to_draft_action_title
+        let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
+            NotificationCenter.default.post(
+                name: .switchView,
+                object: DeepLink(
+                    String(describing: MailboxViewController.self),
+                    sender: Message.Location.draft.rawValue
+                )
+            )
+        }
+        UIAlertController.showOnTopmostVC(
+            title: LocalString._address_invalid_error_sending_title,
+            message: LocalString._address_invalid_error_sending,
+            action: toDraftAction
+        )
     }
 
     private func handleEditScheduleMessage(

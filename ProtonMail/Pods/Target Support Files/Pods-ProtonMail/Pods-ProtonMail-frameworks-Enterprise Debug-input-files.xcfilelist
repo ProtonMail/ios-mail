@@ -5,7 +5,6 @@ ${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework
 ${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework
 ${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework
 ${BUILT_PRODUCTS_DIR}/Groot/Groot.framework
-${BUILT_PRODUCTS_DIR}/LifetimeTracker/LifetimeTracker.framework
 ${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework
 ${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework
 ${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework

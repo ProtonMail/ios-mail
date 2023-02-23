@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ 可適用";
-
 /* Plan details storage */
 "%@ storage" = "%@ 雲端儲存";
 
@@ -35,8 +32,14 @@
 /* Plan details adblocker */
 "Adblocker (NetShield)" = "廣告攔截程式 (NetShield)";
 
+/* network troubleshot cell title */
+"Allow alternative routing" = "允許替代路由";
+
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "發生錯誤";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "防毒軟體干擾";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple 通報表示無法處理訂購授權。";
@@ -53,9 +56,6 @@
 /* *
  * Login 2FA */
 "Authenticate" = "驗證";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "點擊創建電郵位址，即表示您同意 Proton 的合約條款。";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "點擊下一步，即表示您同意 Proton 的合約條款";
@@ -75,6 +75,9 @@
 /* *
  * Login upgrade username-only account */
 "Change your password" = "變更您的密碼";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "在「Proton 狀態」中查看我們的系統狀態。";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "關閉";
@@ -106,21 +109,17 @@
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "聯絡 support@protonvpn.com 以利完成您的訂購授權。";
 
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電郵 (support@protonmail.zendesk.com) 或 Twitter 聯絡我們。";
+
 /* Signup password email view title */
 "Create a Proton account with your current email" = "以既有電郵位址創建 Proton 帳號";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "另行創建安全防護的 Proton Mail 電郵位址";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "創建電郵位址";
-
 /* Create account button */
 "Create an account" = "創建新帳號";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "創建 Proton Mail 電郵位址";
 
 /* Create user failed error */
 "Create user failed" = "無法創建新使用者";
@@ -178,7 +177,7 @@
 "Email address already used." = "電郵位址已在使用。";
 
 /* Username field title */
-"Email or username" = "電郵位址址或使用者名稱";
+"Email or username" = "電郵位址或使用者名稱";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "擁有隱私權的世界。";
@@ -229,6 +228,9 @@
 /* Verification button */
 "Get verification code" = "取得驗證碼";
 
+/* network troubleshot cell title */
+"Government block" = "政府封鎖";
+
 /* Help button */
 "Help" = "說明";
 
@@ -267,6 +269,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "了解更多";
 
@@ -298,8 +301,7 @@
  * Networking */
 "Network connection error" = "網路連線發生錯誤";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "下一步";
 
 /* Warning message option when user want to relogin to another account */
@@ -490,7 +492,6 @@
 "switch to" = "切換為";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "條款與細則";
 
@@ -614,10 +615,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "您將會被系統登出，所有與此關聯的資料也將從此裝置上移除。";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "你日後可使用此電郵位址登錄至所有 Proton 服務。";
-
 /* Complete view title */
 "Your account is being created" = "您的帳號即時創建中...";
 
@@ -636,12 +633,6 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "您的方案自動續購日期為 %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "您的 Proton 帳號已設關聯至 %@。若需使用 %@，請先創建一組電郵位址。";
-
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
-
-/* Recovery address label title */
-"Your recovery email address:" = "您的復原電郵位址：";
 

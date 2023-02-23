@@ -99,6 +99,7 @@ public final class AccountSwitcher: UIView, AccessibleView {
         }
         super.init(frame: .zero)
         self.nibSetup()
+        observePreferredFontChanged()
     }
 
     public func present(on parent: UIViewController, delegate: AccountSwitchDelegate) {
@@ -200,6 +201,23 @@ public final class AccountSwitcher: UIView, AccessibleView {
         self.dismiss()
         return true
     }
+
+    private func observePreferredFontChanged() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        username.font = .adjustedFont(forTextStyle: .subheadline)
+        usermail.font = .adjustedFont(forTextStyle: .footnote)
+        shortUserName.font = .adjustedFont(forTextStyle: .footnote)
+        manageAccountLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        titleLabel.font = .adjustedFont(forTextStyle: .body)
+    }
 }
 
 // MARK: UI Initialization
@@ -246,6 +264,7 @@ extension AccountSwitcher {
         self.titleView.backgroundColor = ColorProvider.BackgroundNorm
         self.titleLabel.backgroundColor = ColorProvider.BackgroundNorm
         self.titleLabel.textColor = ColorProvider.TextNorm
+        self.titleLabel.font = .adjustedFont(forTextStyle: .body)
         self.primaryViewSeparator.backgroundColor = ColorProvider.InteractionWeak
         if UIDevice.current.userInterfaceIdiom == .pad {
             self.titleView.isHidden = false
@@ -291,6 +310,8 @@ extension AccountSwitcher {
             self.username.text = user.name
         }
         self.usermail.text = user.mail
+        self.usermail.font = .adjustedFont(forTextStyle: .footnote)
+        self.shortUserName.font = .adjustedFont(forTextStyle: .footnote)
         self.username.textColor = ColorProvider.TextNorm
         self.usermail.textColor = ColorProvider.TextWeak
         self.primaryView.backgroundColor = ColorProvider.BackgroundNorm

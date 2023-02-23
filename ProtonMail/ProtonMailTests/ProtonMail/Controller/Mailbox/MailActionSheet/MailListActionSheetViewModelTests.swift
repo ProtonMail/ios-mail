@@ -46,7 +46,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToArchive(),
             .moveToSpam(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -63,7 +64,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .labelAsActionViewModel(),
             .removeActionViewModel(),
             .moveToArchive(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -81,7 +83,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToArchive(),
             .deleteActionViewModel(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -99,7 +102,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToArchive(),
             .deleteActionViewModel(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -117,7 +121,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToArchive(),
             .moveToSpam(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -135,7 +140,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToInboxActionViewModel(),
             .moveToSpam(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -153,7 +159,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .notSpamActionViewModel(),
             .deleteActionViewModel(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -171,7 +178,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .moveToInboxActionViewModel(),
             .moveToArchive(),
             .deleteActionViewModel(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -189,7 +197,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToArchive(),
             .moveToSpam(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }
@@ -207,7 +216,8 @@ class MailListActionSheetViewModelTests: XCTestCase {
             .removeActionViewModel(),
             .moveToArchive(),
             .moveToSpam(),
-            .moveToActionViewModel()
+            .moveToActionViewModel(),
+            .customizeToolbarActionViewModel()
         ]
         XCTAssertEqual(sut.items, expected)
     }

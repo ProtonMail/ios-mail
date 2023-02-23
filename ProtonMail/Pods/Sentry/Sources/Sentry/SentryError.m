@@ -4,11 +4,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSString *const SentryErrorDomain = @"SentryErrorDomain";
 
+NSError *_Nullable _SentryError(SentryError error, NSDictionary *userInfo)
+{
+    return [NSError errorWithDomain:SentryErrorDomain code:error userInfo:userInfo];
+}
+
+NSError *_Nullable NSErrorFromSentryErrorWithUnderlyingError(
+    SentryError error, NSString *description, NSError *underlyingError)
+{
+    return _SentryError(error,
+        @ { NSLocalizedDescriptionKey : description, NSUnderlyingErrorKey : underlyingError });
+}
+
+NSError *_Nullable NSErrorFromSentryErrorWithException(
+    SentryError error, NSString *description, NSException *exception)
+{
+    return _SentryError(error, @ {
+        NSLocalizedDescriptionKey :
+            [NSString stringWithFormat:@"%@ (%@)", description, exception.reason],
+    });
+}
+
 NSError *_Nullable NSErrorFromSentryError(SentryError error, NSString *description)
 {
-    NSMutableDictionary *userInfo = [NSMutableDictionary new];
-    [userInfo setValue:description forKey:NSLocalizedDescriptionKey];
-    return [NSError errorWithDomain:SentryErrorDomain code:error userInfo:userInfo];
+    return _SentryError(error, @ { NSLocalizedDescriptionKey : description });
 }
 
 NS_ASSUME_NONNULL_END

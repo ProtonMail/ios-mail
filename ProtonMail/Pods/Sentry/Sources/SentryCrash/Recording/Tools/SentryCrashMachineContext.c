@@ -33,7 +33,7 @@
 
 #include <mach/mach.h>
 
-//#define SentryCrashLogger_LocalLevel TRACE
+// #define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
 
 #ifdef __arm64__
@@ -172,23 +172,22 @@ isThreadInList(thread_t thread, SentryCrashThread *list, int listCount)
 #endif
 
 void
-sentrycrashmc_suspendEnvironment()
+sentrycrashmc_suspendEnvironment(
+    thread_act_array_t *suspendedThreads, mach_msg_type_number_t *numSuspendedThreads)
 {
 #if SentryCrashCRASH_HAS_THREADS_API
     SentryCrashLOG_DEBUG("Suspending environment.");
     kern_return_t kr;
     const task_t thisTask = mach_task_self();
     const thread_t thisThread = (thread_t)sentrycrashthread_self();
-    thread_act_array_t threads;
-    mach_msg_type_number_t numThreads;
 
-    if ((kr = task_threads(thisTask, &threads, &numThreads)) != KERN_SUCCESS) {
+    if ((kr = task_threads(thisTask, suspendedThreads, numSuspendedThreads)) != KERN_SUCCESS) {
         SentryCrashLOG_ERROR("task_threads: %s", mach_error_string(kr));
         return;
     }
 
-    for (mach_msg_type_number_t i = 0; i < numThreads; i++) {
-        thread_t thread = threads[i];
+    for (mach_msg_type_number_t i = 0; i < *numSuspendedThreads; i++) {
+        thread_t thread = (*suspendedThreads)[i];
         if (thread != thisThread
             && !isThreadInList(thread, g_reservedThreads, g_reservedThreadsCount)) {
             if ((kr = thread_suspend(thread)) != KERN_SUCCESS) {
@@ -198,28 +197,22 @@ sentrycrashmc_suspendEnvironment()
         }
     }
 
-    for (mach_msg_type_number_t i = 0; i < numThreads; i++) {
-        mach_port_deallocate(thisTask, threads[i]);
-    }
-    vm_deallocate(thisTask, (vm_address_t)threads, sizeof(thread_t) * numThreads);
-
     SentryCrashLOG_DEBUG("Suspend complete.");
 #endif
 }
 
 void
-sentrycrashmc_resumeEnvironment()
+sentrycrashmc_resumeEnvironment(
+    __unused thread_act_array_t threads, __unused mach_msg_type_number_t numThreads)
 {
 #if SentryCrashCRASH_HAS_THREADS_API
     SentryCrashLOG_DEBUG("Resuming environment.");
     kern_return_t kr;
     const task_t thisTask = mach_task_self();
     const thread_t thisThread = (thread_t)sentrycrashthread_self();
-    thread_act_array_t threads;
-    mach_msg_type_number_t numThreads;
 
-    if ((kr = task_threads(thisTask, &threads, &numThreads)) != KERN_SUCCESS) {
-        SentryCrashLOG_ERROR("task_threads: %s", mach_error_string(kr));
+    if (threads == NULL || numThreads == 0) {
+        SentryCrashLOG_ERROR("we should call sentrycrashmc_suspendEnvironment() first");
         return;
     }
 

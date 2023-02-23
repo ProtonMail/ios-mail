@@ -12,7 +12,7 @@ fileprivate struct SwipyCellConstants {
     static let bounceAmplitude              = 20.0  // Maximum bounce amplitude whe using the switch mode
     static let damping: CGFloat             = 0.6   // Damping of the spring animation
     static let velocity: CGFloat            = 0.9   // Velocity of the spring animation
-    static let animationDuration            = 0.4   // Duration of the animation
+    static let animationDuration            = 0.2   // Duration of the animation
     static let bounceDuration1              = 0.2   // Duration of the first part of the bounce animation
     static let bounceDuration2              = 0.1   // Duration of the second part of the bounce animation
     static let durationLowLimit             = 0.25  // Lowest duration when swiping the cell because we try to simulate velocity
@@ -36,6 +36,7 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
     var damping: CGFloat!
     var velocity: CGFloat!
     var animationDuration: TimeInterval!
+    var shouldUseSpringAnimationWhileSwipingToOrigin: Bool!
     
     var contentScreenshotView: UIImageView?
     var colorIndicatorView: UIView?
@@ -88,6 +89,7 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
         damping = SwipyCellConstants.damping
         velocity = SwipyCellConstants.velocity
         animationDuration = SwipyCellConstants.animationDuration
+        shouldUseSpringAnimationWhileSwipingToOrigin = SwipyCellConfig.shared.shouldUseSpringAnimationWhileSwipingToOrigin
         
         activeView = nil
         
@@ -471,23 +473,39 @@ open class SwipyCell: UITableViewCell, SwipyCellTriggerPointEditable {
     }
     
     public func swipeToOrigin(_ block: @escaping () -> Void) {
-        UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: damping, initialSpringVelocity: velocity, options: [], animations: {
+        let animations: () -> Void = {
             var frame = self.contentScreenshotView?.frame ?? .zero
             frame.origin.x = 0
             self.contentScreenshotView?.frame = frame
-            
+
             self.colorIndicatorView?.backgroundColor = self.defaultColor
-            
+
             self.slidingView?.alpha = 0
             self.slideSwipeView(withPercentage: 0, view: self.activeView, isDragging: false)
-        }, completion: { finished in
+        }
+
+        let completion: (Bool) -> Void = { isFinished in
             self.isExited = false
             self.uninstallSwipeView()
-            
-            if finished {
+
+            if isFinished {
                 block()
             }
-        })
+        }
+
+        if shouldUseSpringAnimationWhileSwipingToOrigin {
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0,
+                           usingSpringWithDamping: damping,
+                           initialSpringVelocity: velocity,
+                           animations: animations,
+                           completion: completion)
+        } else {
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0,
+                           animations: animations,
+                           completion: completion)
+        }
     }
     
 // MARK: - View setup

@@ -29,7 +29,7 @@ import UIKit
 class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                                   LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
+        .init(maxCount: 3)
     }
 
     let viewModel: ConversationViewModel
@@ -89,15 +89,9 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                         }
                         model.markReadIfNeeded()
                     }
-                self?.displayConversationNoticeIfNeeded()
             }
         }
 
-        viewModel.observeConversationUpdate()
-
-        if !ProcessInfo.isRunningUnitTests {
-            viewModel.observeConversationMessages(tableView: customView.tableView)
-        }
         setUpToolBarIfNeeded()
 
         registerNotification()
@@ -106,6 +100,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpNavigationBar()
+
+        if !ProcessInfo.isRunningUnitTests {
+            viewModel.observeConversationMessages(tableView: customView.tableView)
+        }
+        viewModel.observeConversationUpdate()
         self.viewModel.user.undoActionManager.register(handler: self)
     }
 
@@ -120,11 +119,13 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
+        showToolbarCustomizeSpotlightIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationItem.backBarButtonItem = nil
+        viewModel.stopObserveConversationAndMessages()
         self.dismissActionSheet()
     }
 
@@ -661,21 +662,6 @@ private extension ConversationViewController {
             }
         }
     }
-
-    private func displayConversationNoticeIfNeeded() {
-//        guard viewModel.shouldDisplayConversationNoticeView else {
-//            return
-//        }
-//        viewModel.conversationNoticeViewIsOpened()
-//        let view = ConversationViewNoticeView()
-//        view.presentAt(self.navigationController ?? self,
-//                       animated: true) {
-//            let link = DeepLink(String(describing: SettingsDeviceViewController.self))
-//            link.append(.accountSetting)
-//            link.append(.conversationMode)
-//            NotificationCenter.default.post(name: .switchView, object: link)
-//        }
-    }
 }
 
 private extension Array where Element == ConversationViewItemType {
@@ -688,8 +674,8 @@ private extension Array where Element == ConversationViewItemType {
 }
 
 // MARK: - Tool Bar
-private extension ConversationViewController {
-    private func setUpToolBarIfNeeded() {
+extension ConversationViewController {
+    func setUpToolBarIfNeeded() {
         let actions = calculateToolBarActions()
         guard customView.toolBar.types != actions.map(\.type) else {
             return
@@ -697,34 +683,34 @@ private extension ConversationViewController {
         customView.toolBar.setUpActions(actions)
     }
 
+    func showToolbarCustomizeSpotlightIfNeeded() {
+        guard viewModel.shouldShowToolbarCustomizeSpotlight(),
+            let targetRect = customView.toolbarLastButtonCGRect(),
+              let navView = navigationController?.view,
+              !navView.subviews.contains(where: { $0 is ToolbarCustomizeSpotlightView })
+        else {
+            return
+        }
+        let convertedRect = customView.convert(targetRect, to: self.navigationController?.view)
+        let spotlight = ToolbarCustomizeSpotlightView()
+        spotlight.presentOn(
+            view: navView,
+            targetFrame: convertedRect
+        )
+        viewModel.setToolbarCustomizeSpotlightViewIsShown()
+    }
+
     private func calculateToolBarActions() -> [PMToolBarView.ActionItem] {
         let types = viewModel.toolbarActionTypes()
         let result: [PMToolBarView.ActionItem] = types.compactMap { type in
-            switch type {
-            case .markAsRead, .markAsUnread:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.unreadReadAction() })
-            case .labelAs:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.labelAsAction() })
-            case .trash:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.trashAction() })
-            case .delete:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.deleteAction() })
-            case .moveTo:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.moveToAction() })
-            case .more:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.moreButtonTapped() })
-            }
+            return PMToolBarView.ActionItem(type: type,
+                                            handler: { [weak self] in
+                self?.handleActionSheetAction(type)
+            })
         }
         return result
     }
 
-    @objc
     private func deleteAction() {
         showDeleteAlert(deleteHandler: { [weak self] _ in
             self?.viewModel.handleToolBarAction(.delete)
@@ -747,7 +733,7 @@ private extension ConversationViewController {
 
     @objc
     private func unreadReadAction() {
-        viewModel.handleToolBarAction(.markAsUnread)
+        viewModel.handleToolBarAction(.markUnread)
         navigationController?.popViewController(animated: true)
     }
 
@@ -813,11 +799,16 @@ private extension ConversationViewController {
             let actionSheet = navigationController?.view.subviews.compactMap { $0 as? PMActionSheet }.first
             actionSheet?.dismiss(animated: true)
         case .delete:
-            showDeleteAlert(deleteHandler: { [weak self] _ in
-                self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
-                })
-            })
+            deleteAction()
+        case .toolbarCustomization:
+            coordinator.handle(navigationAction: .toolbarCustomization(
+                currentActions: viewModel.actionsForToolbarCustomizeView(),
+                allActions: viewModel.toolbarCustomizationAllAvailableActions()
+            ))
+        case .markUnread, .markRead:
+            unreadReadAction()
+        case .more:
+            moreButtonTapped()
         case .trash:
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
@@ -827,7 +818,8 @@ private extension ConversationViewController {
             viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
                 self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
             }, continueAction: continueAction)
-        default:
+        case .archive, .spam, .print, .viewHeaders, .viewHTML, .reportPhishing, .inbox,
+                .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .replyOrReplyAll, .saveAsPDF:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             })

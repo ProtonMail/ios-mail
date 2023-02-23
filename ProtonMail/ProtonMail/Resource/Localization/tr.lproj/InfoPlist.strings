@@ -1,9 +1,6 @@
 /* Bundle display name */
 "CFBundleDisplayName" = "Proton Mail";
 
-/* Bundle name */
-"CFBundleName" = "Siri";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "E-postaya ortam eklemek için gereklidir.";
 
@@ -17,7 +14,7 @@
 "NSFaceIDUsageDescription" = "Uygulama kilidini hızlı ve güvenli bir şekilde açmanızı sağlar.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Fotoğraf eklerini fotoğraf kütüphanesine kaydetmek için gereklidir.";
+"NSPhotoLibraryAddUsageDescription" = "Fotoğraf eklerini fotoğraf kitaplığına kaydetmek için gereklidir.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "E-postaya fotoğraf eklemek için gereklidir.";

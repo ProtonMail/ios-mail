@@ -37,20 +37,6 @@ final class AttachmentListViewModel {
         }
     }
 
-    enum Errors: LocalizedError {
-        case cantFindAttachment
-        case cantDecryptAttachment
-
-        var errorDescription: String? {
-            switch self {
-            case .cantFindAttachment:
-                return LocalString._cant_find_this_attachment
-            case .cantDecryptAttachment:
-                return LocalString._cant_decrypt_this_attachment
-            }
-        }
-    }
-
     private let contextProvider: CoreDataContextProviderProtocol
     let attachmentSections: [AttachmentSection] = [.normal, .inline]
     private(set) var inlineAttachments: [AttachmentInfo] = []

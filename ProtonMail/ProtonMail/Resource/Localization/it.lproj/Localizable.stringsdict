@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d member</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -29,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d minuto</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d minuti</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -45,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d selezionato</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d selezionati</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -61,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d allegato</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d allegati</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -142,8 +126,6 @@
 			<string>%d giorno</string>
 			<key>other</key>
 			<string>%d giorni</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -194,11 +176,25 @@
 			<string>%d ora</string>
 			<key>other</key>
 			<string>%d ore</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d membro</string>
+			<key>other</key>
+			<string>%d membri</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -243,9 +239,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d messaggio spostato in bozze</string>
+			<string>%d messaggio spostato in Bozze</string>
 			<key>other</key>
-			<string>%d messaggi spostati in bozze</string>
+			<string>%d messaggi spostati in Bozze</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -275,9 +271,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d secondo</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d secondi</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -407,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Questo %d messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
+			<string>Questo messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Questi %d messaggi verranno spostati nelle Bozze e la loro programmazione verrà rimossa.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

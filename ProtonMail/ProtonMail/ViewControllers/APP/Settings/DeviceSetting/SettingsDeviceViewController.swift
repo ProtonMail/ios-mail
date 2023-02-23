@@ -34,12 +34,10 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         static let headerCell = "header_cell"
         static let footerCell = "footer_cell"
         static let headerCellHeight: CGFloat = 52.0
-        static let cellHeight: CGFloat = 48.0
-        static let accountCellHeight: CGFloat = 64.0
     }
 
     private let viewModel: SettingsDeviceViewModel
-    private let coordinator: SettingsDeviceCoordinator?
+    private weak var coordinator: SettingsDeviceCoordinator?
 
     var cleaning: Bool = false
 
@@ -176,7 +174,7 @@ extension SettingsDeviceViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.viewModel.sections.count > section {
-            switch  self.viewModel.sections[section] {
+            switch self.viewModel.sections[section] {
             case .account:
                 return 1
             case .app:
@@ -233,6 +231,8 @@ extension SettingsDeviceViewController {
                     settingsGeneralCell.configure(left: item.description)
                     let status = self.viewModel.isDohOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(right: status)
+                case .toolbar:
+                    settingsGeneralCell.configure(left: item.description)
                 }
             }
             return cell
@@ -358,6 +358,8 @@ extension SettingsDeviceViewController {
                 self.coordinator?.go(to: .alternativeRouting)
             case .swipeAction:
                 self.coordinator?.go(to: .swipeAction)
+            case .toolbar:
+                coordinator?.openToolbarCustomizationView()
             }
         case .general:
             let item = self.viewModel.generalSettings[row]

@@ -215,6 +215,9 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __ls_external_eccounts_not_supported_popup_title
     public var _ls_external_eccounts_not_supported_popup_title: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_title }
 
+    case __ls_external_eccounts_not_supported_popup_local_desc
+    public var _ls_external_eccounts_not_supported_popup_local_desc: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_local_desc }
+
     case __ls_external_eccounts_not_supported_popup_action_button
     public var _ls_external_eccounts_not_supported_popup_action_button: LocalizedStringAccessors { .__ls_external_eccounts_not_supported_popup_action_button }
 
@@ -224,38 +227,20 @@ public enum LocalizedStringAccessors: CaseIterable {
     case __ls_error_generic
     public var _ls_error_generic: LocalizedStringAccessors { .__ls_error_generic }
 
-    case __ls_username_screen_title
-    public var _ls_username_screen_title: LocalizedStringAccessors { .__ls_username_screen_title }
+    case __ls_create_address_screen_title
+    public var _ls_create_address_screen_title: LocalizedStringAccessors { .__ls_create_address_screen_title }
 
-    case __ls_username_screen_info
-    public var _ls_username_screen_info: LocalizedStringAccessors { .__ls_username_screen_info }
+    case __ls_create_address_screen_info
+    public var _ls_create_address_screen_info: LocalizedStringAccessors { .__ls_create_address_screen_info }
 
-    case __ls_username_username_title
-    public var _ls_username_username_title: LocalizedStringAccessors { .__ls_username_username_title }
-
-    case __ls_username_button_title
-    public var _ls_username_button_title: LocalizedStringAccessors { .__ls_username_button_title }
-
-    case __ls_username_username_error
-    public var _ls_username_username_error: LocalizedStringAccessors { .__ls_username_username_error }
+    case __ls_create_address_username_title
+    public var _ls_create_address_username_title: LocalizedStringAccessors { .__ls_create_address_username_title }
 
     case __ls_create_address_button_title
     public var _ls_create_address_button_title: LocalizedStringAccessors { .__ls_create_address_button_title }
 
-    case __ls_create_address_info
-    public var _ls_create_address_info: LocalizedStringAccessors { .__ls_create_address_info }
-
-    case __ls_create_address_recovery_title
-    public var _ls_create_address_recovery_title: LocalizedStringAccessors { .__ls_create_address_recovery_title }
-
-    case __ls_create_address_terms_full
-    public var _ls_create_address_terms_full: LocalizedStringAccessors { .__ls_create_address_terms_full }
-
-    case __ls_create_address_terms_link
-    public var _ls_create_address_terms_link: LocalizedStringAccessors { .__ls_create_address_terms_link }
-
-    case __ls_create_address_available
-    public var _ls_create_address_available: LocalizedStringAccessors { .__ls_create_address_available }
+    case __ls_username_username_error
+    public var _ls_username_username_error: LocalizedStringAccessors { .__ls_username_username_error }
 
     case __ls_login_mailbox_screen_title
     public var _ls_login_mailbox_screen_title: LocalizedStringAccessors { .__ls_login_mailbox_screen_title }
@@ -902,20 +887,15 @@ public enum LocalizedStringAccessors: CaseIterable {
         case .__ls_error_missing_keys_title: return localizedStringInstance._ls_error_missing_keys_title
         case .__ls_error_invalid_mailbox_password: return localizedStringInstance._ls_error_invalid_mailbox_password
         case .__ls_external_eccounts_not_supported_popup_title: return localizedStringInstance._ls_external_eccounts_not_supported_popup_title
+        case .__ls_external_eccounts_not_supported_popup_local_desc: return localizedStringInstance._ls_external_eccounts_not_supported_popup_local_desc
         case .__ls_external_eccounts_not_supported_popup_action_button: return localizedStringInstance._ls_external_eccounts_not_supported_popup_action_button
         case .__ls_info_session_expired: return localizedStringInstance._ls_info_session_expired
         case .__ls_error_generic: return localizedStringInstance._ls_error_generic
-        case .__ls_username_screen_title: return localizedStringInstance._ls_username_screen_title
-        case .__ls_username_screen_info: return localizedStringInstance._ls_username_screen_info
-        case .__ls_username_username_title: return localizedStringInstance._ls_username_username_title
-        case .__ls_username_button_title: return localizedStringInstance._ls_username_button_title
-        case .__ls_username_username_error: return localizedStringInstance._ls_username_username_error
+        case .__ls_create_address_screen_title: return localizedStringInstance._ls_create_address_screen_title
+        case .__ls_create_address_screen_info: return localizedStringInstance._ls_create_address_screen_info
+        case .__ls_create_address_username_title: return localizedStringInstance._ls_create_address_username_title
         case .__ls_create_address_button_title: return localizedStringInstance._ls_create_address_button_title
-        case .__ls_create_address_info: return localizedStringInstance._ls_create_address_info
-        case .__ls_create_address_recovery_title: return localizedStringInstance._ls_create_address_recovery_title
-        case .__ls_create_address_terms_full: return localizedStringInstance._ls_create_address_terms_full
-        case .__ls_create_address_terms_link: return localizedStringInstance._ls_create_address_terms_link
-        case .__ls_create_address_available: return localizedStringInstance._ls_create_address_available
+        case .__ls_username_username_error: return localizedStringInstance._ls_username_username_error
         case .__ls_login_mailbox_screen_title: return localizedStringInstance._ls_login_mailbox_screen_title
         case .__ls_login_mailbox_field_title: return localizedStringInstance._ls_login_mailbox_field_title
         case .__ls_login_mailbox_button_title: return localizedStringInstance._ls_login_mailbox_button_title
@@ -1312,6 +1292,9 @@ public class LocalizedString {
     /// External accounts not supported popup title
     public lazy var _ls_external_eccounts_not_supported_popup_title = NSLocalizedString("Proton address required", bundle: Common.bundle, comment: "External accounts not supported popup title")
     
+    /// External accounts not supported popup title
+    public lazy var _ls_external_eccounts_not_supported_popup_local_desc = NSLocalizedString("Get a Proton Mail address linked to this account in your Proton web settings.", bundle: Common.bundle, comment: "External accounts not supported popup local desc")
+    
     /// External accounts not supported popup learn more button
     public lazy var _ls_external_eccounts_not_supported_popup_action_button = NSLocalizedString("Learn more", bundle: Common.bundle, comment: "External accounts not supported popup learn more button")
     
@@ -1321,42 +1304,22 @@ public class LocalizedString {
     /// Generic error message when no better error can be displayed
     public lazy var _ls_error_generic = NSLocalizedString("An error has occured", bundle: Common.bundle, comment: "Generic error message when no better error can be displayed")
 
-    // Login choose username
+    // Login create address
 
     /// Screen title for picking Proton mail username
-    public lazy var _ls_username_screen_title = NSLocalizedString("Create Proton Mail address", bundle: Common.bundle, comment: "Screen title for creating Proton Mail address")
+    public lazy var _ls_create_address_screen_title = NSLocalizedString("Proton address required", bundle: Common.bundle, comment: "Screen title for creating Proton Mail address")
 
     /// Info about existing external Proton Mail address
-    public lazy var _ls_username_screen_info = NSLocalizedString("Your Proton Account is associated with %@. To use %@, please create an address.", bundle: Common.bundle, comment: "Info about existing external Proton Mail address")
+    public lazy var _ls_create_address_screen_info = NSLocalizedString("You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.", bundle: Common.bundle, comment: "Info about existing external Proton Mail address")
 
     /// Username field title
-    public lazy var _ls_username_username_title = NSLocalizedString("Username", bundle: Common.bundle, comment: "Username field title")
+    public lazy var _ls_create_address_username_title = NSLocalizedString("Username", bundle: Common.bundle, comment: "Username field title")
 
     /// Action button title for picking Proton Mail username
-    public lazy var _ls_username_button_title = NSLocalizedString("Next", bundle: Common.bundle, comment: "Action button title for picking Proton Mail username")
+    public lazy var _ls_create_address_button_title = NSLocalizedString("Continue", bundle: Common.bundle, comment: "Action button title for picking Proton Mail username")
 
     /// Username field error message
     public lazy var _ls_username_username_error = NSLocalizedString("Please enter a username.", bundle: Common.bundle, comment: "Username field error message")
-
-    // Login create address
-
-    /// Action button title for creating Proton Mail address
-    public lazy var _ls_create_address_button_title = NSLocalizedString("Create address", bundle: Common.bundle, comment: "Action button title for creating Proton Mail address")
-
-    /// Info about Proton Mail address usage
-    public lazy var _ls_create_address_info = NSLocalizedString("You will use this email address to log into all Proton services.", bundle: Common.bundle, comment: "Info about Proton Mail address usage")
-
-    /// Recovery address label title
-    public lazy var _ls_create_address_recovery_title = NSLocalizedString("Your recovery email address:", bundle: Common.bundle, comment: "Recovery address label title")
-
-    /// Terms and conditions note
-    public lazy var _ls_create_address_terms_full = NSLocalizedString("By clicking Create address, you agree with Proton's Terms and Conditions.", bundle: Common.bundle, comment: "Terms and conditions note")
-
-    /// Terms and conditions link in the note
-    public lazy var _ls_create_address_terms_link = NSLocalizedString("Terms and Conditions", bundle: Common.bundle, comment: "Terms and conditions link in the note")
-
-    /// Proton Mail address availability
-    public lazy var _ls_create_address_available = NSLocalizedString("%@ is available", bundle: Common.bundle, comment: "Proton Mail address availability")
 
     // Login unlock mailbox
 
@@ -1371,7 +1334,7 @@ public class LocalizedString {
 
     /// Forgot password button title
     public lazy var _ls_login_mailbox_forgot_password = NSLocalizedString("Forgot password", bundle: Common.bundle, comment: "Forgot password button title")
-
+    
     // Login 2FA
 
     /// 2FA screen title

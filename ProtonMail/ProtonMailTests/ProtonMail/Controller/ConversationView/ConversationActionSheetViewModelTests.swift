@@ -21,10 +21,10 @@ import XCTest
 class ConversationActionSheetViewModelTests: XCTestCase {
     private var dummyTitle: String { String.randomString(100) }
 
-    private let expectedForAllInTrashDraftOrSent: [MessageViewActionSheetAction] = [.inbox, .archive, .delete, .moveTo]
-    private let expectedForAllInArchive: [MessageViewActionSheetAction] = [.trash, .inbox, .spam, .moveTo]
-    private let expectedForAllInSpam: [MessageViewActionSheetAction] = [.trash, .spamMoveToInbox, .delete, .moveTo]
-    private let expectedForMessInDifferentFolders: [MessageViewActionSheetAction] = [.trash, .archive, .spam, .moveTo]
+    private let expectedForAllInTrashDraftOrSent: [MessageViewActionSheetAction] = [.inbox, .archive, .delete, .moveTo, .toolbarCustomization]
+    private let expectedForAllInArchive: [MessageViewActionSheetAction] = [.trash, .inbox, .spam, .moveTo, .toolbarCustomization]
+    private let expectedForAllInSpam: [MessageViewActionSheetAction] = [.trash, .spamMoveToInbox, .delete, .moveTo, .toolbarCustomization]
+    private let expectedForMessInDifferentFolders: [MessageViewActionSheetAction] = [.trash, .archive, .spam, .moveTo, .toolbarCustomization]
 
     func testInit_whenActionsAreUnreadAndStarred() {
         let title = dummyTitle
@@ -93,7 +93,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(4)) == expectedForMessInDifferentFolders)
+        XCTAssert(Array(sut.items.suffix(5)) == expectedForMessInDifferentFolders)
     }
 
     func testInit_whenAllMessagesAreLocatedInTrash() {
@@ -107,7 +107,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(4)) == expectedForAllInTrashDraftOrSent)
+        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInTrashDraftOrSent)
     }
 
     func testInit_whenAllMessagesAreLocatedInDraft() {
@@ -121,7 +121,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(4)) == expectedForAllInTrashDraftOrSent)
+        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInTrashDraftOrSent)
     }
 
     func testInit_whenAllMessagesAreLocatedInSent() {
@@ -135,7 +135,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(4)) == expectedForAllInTrashDraftOrSent)
+        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInTrashDraftOrSent)
     }
 
     func testInit_whenAllMessagesAreLocatedInArchive() {
@@ -149,7 +149,7 @@ class ConversationActionSheetViewModelTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(4)) == expectedForAllInArchive)
+        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInArchive)
     }
 
     func testInit_whenAllMessagesAreLocatedInSpam() {
@@ -163,6 +163,6 @@ class ConversationActionSheetViewModelTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(4)) == expectedForAllInSpam)
+        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInSpam)
     }
 }

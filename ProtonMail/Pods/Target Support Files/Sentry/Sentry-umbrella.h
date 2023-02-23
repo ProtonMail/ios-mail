@@ -10,7 +10,6 @@
 #endif
 #endif
 
-#import "PrivateSentrySDKOnly.h"
 #import "Sentry.h"
 #import "SentryAppStartMeasurement.h"
 #import "SentryAttachment.h"
@@ -27,14 +26,18 @@
 #import "SentryEvent.h"
 #import "SentryException.h"
 #import "SentryFrame.h"
+#import "SentryHttpStatusCodeRange.h"
 #import "SentryHub.h"
 #import "SentryId.h"
 #import "SentryIntegrationProtocol.h"
+#import "SentryMeasurementUnit.h"
 #import "SentryMechanism.h"
 #import "SentryMechanismMeta.h"
 #import "SentryMessage.h"
 #import "SentryNSError.h"
 #import "SentryOptions.h"
+#import "SentryProfilingConditionals.h"
+#import "SentryRequest.h"
 #import "SentrySampleDecision.h"
 #import "SentrySamplingContext.h"
 #import "SentryScope.h"

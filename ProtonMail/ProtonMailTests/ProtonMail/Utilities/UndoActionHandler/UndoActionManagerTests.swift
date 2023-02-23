@@ -168,7 +168,7 @@ class UndoActionManagerTests: XCTestCase {
         eventService.callFetchEvents.bodyIs { _, _, _, completion in
             completion?(.success([:]))
         }
-        let messageID = UUID().uuidString
+        let messageID = MessageID.generateLocalID().rawValue
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
                 completion(nil, .success(["Code": 1001]))

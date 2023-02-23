@@ -55,18 +55,10 @@ class TwoFACodeViewController: UIViewController, AccessibleView {
         self.twoFACodeView.showKeyboard()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
         NotificationCenter.default.removeKeyboardObserver(self)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 }
 

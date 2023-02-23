@@ -4,41 +4,23 @@
          "type": "application",
          "platform": "iOS",
          "sources": [
-            "ProtonMail/Extension/Mail/APP",
-            "ProtonMail/Extension/UIKit/APP_share",
-            "ProtonMail/Extension/UIKit/APP",
             "ProtonMail/Extension/Foundations/APP_share_push_siri",
             "ProtonMail/Extension/Foundations/APP_share_siri",
-            "ProtonMail/Extension/Foundations/APP_share_push",
-            "ProtonMail/Extension/Foundations/APP_share",
-            "ProtonMail/Extension/Foundations/APP",
-            "ProtonMail/Extension/ProtonCore/APP_share_push",
-            "ProtonMail/Extension/ProtonCore/APP_share",
-            "ProtonMail/Extension/ProtonCore/APP",
-            "ProtonMail/3rd/APP_share",
-            "ProtonMail/Models/APP_share_push",
-            "ProtonMail/Models/APIs/APP_share",
-            "ProtonMail/Models/APIs/APP",
-            "ProtonMail/Models/APP_share",
-            "ProtonMail/Utilities/APP_share_push",
-            "ProtonMail/Utilities/APP_share",
-            "ProtonMail/Utilities/APP",
-            "ProtonMail/Utilities/APP_share_push_uiTest",
-            "ProtonMail/Utilities/APP_share_push_siri",
-            "ProtonMail/Components/APP_share",
-            "ProtonMail/Components/APP",
-            "ProtonMail/ViewControllers/APP_share",
-            "ProtonMail/ViewControllers/APP",
-            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/APP_share",
-            "ProtonMail/ViewControllers/Pin_BioCode/ViewModels/APP",
-            "ProtonMail/ViewControllers/Pin_BioCode/APP_share",
-            "ProtonMail/ViewControllers/Pin_BioCode/APP",
-            "ProtonMail/Resource/APP_share",
-            "ProtonMail/Resource/Localization",
-            "ProtonMail/Services/APP_share",
-            "ProtonMail/Services/APP",
-            "Siri/IntentHandler.swift",
-            "Siri/Intents.intentdefinition",
+            "ProtonMail/Models/APP",
+            {
+               "path": "ProtonMail",
+               "includes": [
+                  "**/APP",
+                  "**/APP_share",
+                  "**/APP_share_push",
+                  "**/APP_share_push_siri",
+                  "**/APP_share_push_uiTest",
+                  "Generated",
+                  "Resource/Localization",
+                  "Siri/IntentHandler.swift",
+                  "Siri/Intents.intentdefinition"
+               ]
+            },
             {
                "path": "ProtonMail/Supporting Files/",
                "excludes": [
@@ -72,6 +54,9 @@
             },
             {
                "sdk": "StoreKit.framework"
+            },
+            {
+               "package": "LifetimeTracker"
             }
          ],
          "postBuildScripts": [
@@ -80,12 +65,8 @@
                "path": "xcodeGen/swiftlint.sh"
             },
             {
-               "name": "Sentry Upload",
-               "path": "xcodeGen/sentry_upload.sh",
-               "inputFiles": [
-                  "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}"
-               ],
-               "runOnlyWhenInstalling": true
+               "name": "LicensePlist",
+               "path": "xcodeGen/licensePlist.sh"
             }
          ],
          "configFiles": {

@@ -1,0 +1,21 @@
+import CoreData
+import ProtonCore_PaymentsUI
+import ProtonCore_TestingToolkit
+
+@testable import ProtonMail
+
+{% for type in types.protocols where type|annotated:"mock" %}
+class Mock{{ type.name }}: {{ type.name }} {
+    {% for method in type.methods|!definedInExtension %}
+    {% if method.returnTypeName.name == "Void" %}
+    @FuncStub(Mock{{ type.name }}.{{ method.callName }}) var {{ method.callName }}Stub
+    func {{ method.name }} {
+    {% else %}
+    @FuncStub(Mock{{ type.name }}.{{ method.callName }}, initialReturn: {% if method.returnTypeName.isOptional %}nil{% else %}{{ method.returnTypeName }}(){% endif %}) var {{ method.callName }}Stub
+    func {{ method.name }} -> {{ method.returnTypeName }} {
+    {% endif %}
+        {{ method.callName }}Stub({% for parameter in method.parameters %}{{ parameter.name }}{{ ', ' if not forloop.last }}{% endfor %})
+    }
+{% endfor %}
+}
+{% endfor %}

@@ -25,7 +25,7 @@ import UIKit
 struct TagUIModel {
     let title: String
     let titleColor: UIColor
-    let titleWeight: UIFont.Weight?
+    let titleWeight: UIFont.Weight
     let icon: UIImage?
     let tagColor: UIColor
 }

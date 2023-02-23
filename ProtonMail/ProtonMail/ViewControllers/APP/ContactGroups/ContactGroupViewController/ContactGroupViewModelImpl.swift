@@ -221,13 +221,13 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             }
 
             let label = filtered[indexPath.row]
-            return (label.labelID.rawValue, label.name, label.color, label.emailRelations?.count ?? 0, false, true)
+            return (label.labelID.rawValue, label.name, label.color, label.emailRelations.count, false, true)
         }
         guard let object = fetchedResultsController?.object(at: indexPath) as? Label else {
             return ("", "", "", 0, false, false)
         }
         let label = LabelEntity(label: object)
-        return (label.labelID.rawValue, label.name, label.color, label.emailRelations?.count ?? 0, false, true)
+        return (label.labelID.rawValue, label.name, label.color, label.emailRelations.count, false, true)
         
     }
     

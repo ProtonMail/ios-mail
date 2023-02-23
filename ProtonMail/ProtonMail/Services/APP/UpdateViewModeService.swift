@@ -18,6 +18,7 @@
 import Foundation
 import ProtonCore_Services
 
+// sourcery: mock
 protocol ViewModeUpdater {
     func update(viewMode: ViewMode, completion: ((Swift.Result<ViewMode?, Error>) -> Void)?)
 }

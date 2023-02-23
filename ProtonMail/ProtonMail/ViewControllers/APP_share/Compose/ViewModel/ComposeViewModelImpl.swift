@@ -48,7 +48,10 @@ class ComposeViewModelImpl: ComposeViewModel {
 
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
-        self.dependencies = dependencies ?? Dependencies(fetchAndVerifyContacts: FetchAndVerifyContacts(user: user))
+        self.dependencies = dependencies ?? Dependencies(
+            contactProvider: user.contactService,
+            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user)
+        )
 
         super.init(
             msgDataService: msgService,
@@ -93,13 +96,18 @@ class ComposeViewModelImpl: ComposeViewModel {
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
         isEditingScheduleMsg: Bool = false,
+        isOpenedFromShare: Bool = false,
+        originalScheduledTime: OriginalScheduleDate? = nil,
         dependencies: Dependencies? = nil
     ) {
         self.user = user
 
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
-        self.dependencies = dependencies ?? Dependencies(fetchAndVerifyContacts: FetchAndVerifyContacts(user: user))
+        self.dependencies = dependencies ?? Dependencies(
+            contactProvider: user.contactService,
+            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user)
+        )
 
 
         super.init(
@@ -107,6 +115,8 @@ class ComposeViewModelImpl: ComposeViewModel {
             contextProvider: coreDataContextProvider,
             user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
+            isOpenedFromShare: isOpenedFromShare,
+            originalScheduledTime: originalScheduledTime,
             dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
         )
 
@@ -752,37 +762,26 @@ extension ComposeViewModelImpl {
      Currently, the fields required in the message object are: Group, Address, and Name
     */
     func toJsonString(_ contacts: [ContactPickerModelProtocol]) -> String {
-        // TODO:: could be improved
-        var out: [[String: String]] = [[String: String]]()
-        for contact in contacts {
+        let out: [EncodableRecipient] = contacts.flatMap { contact in
             switch contact.modelType {
             case .contact:
                 let contact = contact as! ContactVO
-                let to: [String: String] = [
-                    "Group": "",
-                    "Name": contact.name,
-                    "Address": contact.email
-                ]
-                out.append(to)
+                let recipient = EncodableRecipient(address: contact.email, group: "")
+                return [recipient]
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
 
                 // load selected emails from the contact group
-                for member in contactGroup.getSelectedEmailsWithDetail() {
-                    let to: [String: String] = [
-                        "Group": member.Group,
-                        "Name": member.Name,
-                        "Address": member.Address
-                    ]
-                    out.append(to)
-                }
+                return contactGroup.getSelectedEmailsWithDetail()
             }
         }
 
-        let bytes: Data = try! JSONSerialization.data(withJSONObject: out, options: JSONSerialization.WritingOptions())
-        let strJson: String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
-
-        return strJson
+        do {
+            let bytes = try JSONEncoder().encode(out)
+            return String(bytes: bytes, encoding: .utf8)!
+        } catch {
+            fatalError("\(error)")
+        }
     }
 
     /**
@@ -790,22 +789,27 @@ extension ComposeViewModelImpl {
      into Contact and ContactGroupVO objects
      */
     func toContacts(_ json: String) -> [ContactPickerModelProtocol] {
+        guard !json.isEmpty else {
+            return []
+        }
+
         var out: [ContactPickerModelProtocol] = []
         var groups = [String: [DraftEmailData]]() // [groupName: [DraftEmailData]]
 
-        if let recipients: [[String: Any]] = json.parseJson() {
-            // parse the contacts, and prepare the data for contact groups
-            for dict in recipients {
-                let group = dict["Group"] as? String ?? ""
-                let name = dict["Name"] as? String ?? ""
-                let address = dict["Address"] as? String ?? ""
+        do {
+            let jsonData = Data(json.utf8)
+            let recipients = try JSONDecoder().decode([DecodableRecipient].self, from: jsonData)
 
-                if group.isEmpty {
+            for recipient in recipients {
+                let group = recipient.group
+                let name = displayNameForRecipient(recipient)
+
+                if recipient.group.isEmpty {
                     // contact
-                    out.append(ContactVO(id: "", name: name, email: address))
+                    out.append(ContactVO(name: name, email: recipient.address))
                 } else {
                     // contact group
-                    let toInsert = DraftEmailData.init(name: name, email: address)
+                    let toInsert = DraftEmailData(name: name, email: recipient.address)
                     if var data = groups[group] {
                         data.append(toInsert)
                         groups.updateValue(data, forKey: group)
@@ -821,8 +825,21 @@ extension ComposeViewModelImpl {
                 contactGroup.overwriteSelectedEmails(with: group.value)
                 out.append(contactGroup)
             }
+        } catch {
+            assertionFailure("\(error)")
         }
         return out
+    }
+
+    /// Provides the display name for the recipient according to https://jira.protontech.ch/browse/MAILIOS-3027
+    private func displayNameForRecipient(_ recipient: DecodableRecipient) -> String {
+        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address], for: user.userID).first {
+            return email.contactName
+        } else if let backendName = recipient.name, !backendName.replacingOccurrences(of: " ", with: "").isEmpty {
+            return backendName
+        } else {
+            return recipient.address
+        }
     }
 
     func toContact(_ json: String) -> ContactVO? {
@@ -833,7 +850,7 @@ extension ComposeViewModelImpl {
         let address = recipients["Address"] ?? ""
 
         if !address.isEmpty {
-            out = ContactVO(id: "", name: name, email: address)
+            out = ContactVO(name: name, email: address)
         }
         return out
     }
@@ -869,15 +886,40 @@ extension ComposeViewModelImpl {
 extension ComposeViewModelImpl {
 
     struct Dependencies {
+        let contactProvider: ContactProviderProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProvider
 
         init(
+            contactProvider: ContactProviderProtocol,
             fetchAndVerifyContacts: FetchAndVerifyContactsUseCase,
             internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
         ) {
+            self.contactProvider = contactProvider
             self.fetchAndVerifyContacts = fetchAndVerifyContacts
             self.internetStatusProvider = internetStatusProvider
         }
+    }
+
+    struct EncodableRecipient: Encodable {
+        enum CodingKeys: String, CodingKey {
+            case address = "Address"
+            case group = "Group"
+        }
+
+        let address: String
+        let group: String
+    }
+
+    struct DecodableRecipient: Decodable {
+        enum CodingKeys: String, CodingKey {
+            case address = "Address"
+            case group = "Group"
+            case name = "Name"
+        }
+
+        let address: String
+        let group: String
+        let name: String?
     }
 }

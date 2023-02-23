@@ -138,8 +138,50 @@ FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKEnforcePinning;
  */
 FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKIncludeSubdomains;
 
-FOUNDATION_EXPORT const TSKDomainConfigurationKey kForceSubdomains;
+/**
+ A boolean. If set to `YES`, force this policy entry for all hostnames that have this
+ entry's domain as a suffix.
+ */
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKForceSubdomainMatch;
 
+/**
+ * A boolean. If set to `YES`, disables all SSL validation and only checks that the pin
+ * matches. Be careful where you use this.
+ */
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKNoSSLValidation;
+
+/**
+ * A boolean. If set to `YES`, disables SSL hostname validation, but will still evaluate
+ * the rest of the default Apple SSL server policy.
+ */
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKNoHostnameValidation;
+
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kForceSubdomains __deprecated_msg("This key is deprecated. Please use kTSKNoSSLValidation and/or kTSKForceSubdomainsMatch to replicate its behavior.");
+
+/**
+ * A dictionary to be defined inside the `kTSKPinnedDomains` dictionary.
+ * If defined, the pins specified under the `kTSKPublicKeyHashes` key will
+ * be respected for all domains.
+ *
+ * Other keys that are valid in this dictionary include:
+ * - kTSKNoSSLValidation
+ * - kTSKNoHostnameValidation
+ * - kTSKAllowIPsOnly
+ * - kTSKEnforcePinning
+ *
+ * Keys that deal with subdomains will raise an exception during configuration
+ * if they are present under this key.
+ */
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKCatchallPolicy;
+
+/**
+ * A boolean. Should only be used as part of the `kTSKCatchallPolicy` dictionary.
+ *
+ * If set to `true`, this means that the hashes specified in the `kTSKCatchallPolicy`
+ * dictionary under the `kTSKPublicKeyHashes` key will only apply to hostnames that
+ * successfully parse as valid IP addresses.
+ */
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKAllowIPsOnly;
 
 /**
  A boolean. If set to `YES`, TrustKit will not pin this specific domain if `kTSKIncludeSubdomains`

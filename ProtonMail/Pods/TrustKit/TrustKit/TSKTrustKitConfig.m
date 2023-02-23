@@ -1,5 +1,5 @@
 /*
- 
+
  TSKTrustKitConfig.m
  TrustKit
  
@@ -11,7 +11,7 @@
 
 #import "TSKTrustKitConfig.h"
 
-NSString * const TrustKitVersion = @"1.7.0";
+NSString * const TrustKitVersion = @"2.1.0";
 
 // General keys
 const TSKGlobalConfigurationKey kTSKSwizzleNetworkDelegates = @"TSKSwizzleNetworkDelegates";
@@ -25,11 +25,18 @@ const TSKDomainConfigurationKey kTSKEnforcePinning = @"TSKEnforcePinning";
 const TSKDomainConfigurationKey kTSKExcludeSubdomainFromParentPolicy = @"kSKExcludeSubdomainFromParentPolicy";
 
 const TSKDomainConfigurationKey kTSKIncludeSubdomains = @"TSKIncludeSubdomains";
-const TSKDomainConfigurationKey kForceSubdomains = @"TSKForceSubdomains";
+const TSKDomainConfigurationKey kTSKForceSubdomainMatch = @"TSKForceSubdomainMatch";
+const TSKDomainConfigurationKey kTSKNoSSLValidation = @"TSKNoSSLValidation";
 const TSKDomainConfigurationKey kTSKPublicKeyAlgorithms = @"TSKPublicKeyAlgorithms";
 const TSKDomainConfigurationKey kTSKReportUris = @"TSKReportUris";
 const TSKDomainConfigurationKey kTSKDisableDefaultReportUri = @"TSKDisableDefaultReportUri";
 const TSKDomainConfigurationKey kTSKExpirationDate = @"TSKExpirationDate";
+const TSKDomainConfigurationKey kTSKCatchallPolicy = @"TSKCatchallPolicy";
+const TSKDomainConfigurationKey kTSKNoHostnameValidation = @"TSKNoHostnameValidation";
+const TSKDomainConfigurationKey kTSKAllowIPsOnly = @"TSKAllowIPsOnly";
+
+// Keep this around to prevent build errors
+const TSKDomainConfigurationKey kForceSubdomains = kTSKNoSSLValidation;
 
 #pragma mark Public key Algorithms Constants
 const TSKSupportedAlgorithm kTSKAlgorithmRsa2048 = @"TSKAlgorithmRsa2048";

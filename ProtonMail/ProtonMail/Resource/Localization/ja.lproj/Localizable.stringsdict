@@ -2,20 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -27,7 +13,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d 分</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -41,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d 件選択済み</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -55,7 +41,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d の添付ファイル</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -95,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d conversations labeled</string>
+			<string>%d 件の会話にラベルが付けられました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -109,7 +95,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d conversations moved to %@</string>
+			<string>%d 件の会話が %@ に移動されました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -124,8 +110,6 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d 日</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -155,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d email trackers found</string>
+			<string>%d 件のメールトラッカーが見つかりました</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -170,11 +154,23 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d 時間</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d 人のメンバー</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -185,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages labeled</string>
+			<string>%d 件のメッセージからラベルが外されました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -199,7 +195,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages moved to %@</string>
+			<string>%d 件のメッセージが %@ に移動されました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -215,7 +211,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages moved to Drafts</string>
+			<string>%d 件のメッセージが下書きに移動されました</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -243,7 +239,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d 秒</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -299,7 +295,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d conversations?</string>
+			<string>%d 件の会話を完全に削除してよろしいですか?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -313,7 +309,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Are you sure you want to permanently delete %d messages?</string>
+			<string>%d 件のメッセージを完全に削除してよろしいですか?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -327,7 +323,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>In %d minutes</string>
+			<string>%d分後</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -343,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton は、このメッセージから %d 件のトラッカーを見つけてブロックしました。</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -359,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>%d 件のメッセージが下書きに移動され、送信予約が削除されます。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

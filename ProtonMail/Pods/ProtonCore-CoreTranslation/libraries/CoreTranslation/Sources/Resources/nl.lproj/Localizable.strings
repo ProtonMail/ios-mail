@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ & %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ is beschikbaar";
-
 /* Plan details storage */
 "%@ storage" = "%@ opslagruimte";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Terug";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Door op Adres aanmaken te klikken, gaat u akkoord met de Algemene Voorwaarden van Proton.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Door op Volgende te klikken gaat u akkoord met de algemene voorwaarden van Proton";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Maak in plaats daarvan een veilig Proton Mail e-mailadres";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Adres toevoegen";
-
 /* Create account button */
 "Create an account" = "Een account aanmaken";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Maak een Proton Mail e-mailadres aan";
 
 /* Create user failed error */
 "Create user failed" = "Gebruiker aanmaken mislukt";
@@ -300,6 +287,7 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Het was niet mogelijk om het het aangekochte AppStore-product op onze server te vinden. Rapporteer deze fout en onze klantensupportteam zal contact met u opnemen.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Meer informatie";
 
@@ -331,8 +319,7 @@
  * Networking */
 "Network connection error" = "Netwerk verbindingsfout";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Volgende";
 
 /* network troubleshot cell title */
@@ -421,6 +408,10 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privacy als standaard";
+
+/* *
+ * Login create address */
+"Proton address required" = "Proton-adres vereist";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -553,7 +544,6 @@
 "Temporarily disable or remove your antivirus software." = "Uw antivirus software tijdelijk uitschakelen of verwijderen.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Algemene voorwaarden";
 
@@ -692,10 +682,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "U wordt afgemeld en alle gegevens die bij deze account horen worden van dit apparaat verwijderd.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "U zult dit e-mailadres gebruiken om in te loggen op alle Proton diensten.";
-
 /* Complete view title */
 "Your account is being created" = "Uw account wordt aangemaakt…";
 
@@ -717,17 +703,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Uw plan zal automatisch vernieuwen op %@";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Uw Proton Account is geassocieerd met %@. Om %@ te gebruiken, gelieve een adres aan te maken.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Uw Proton-account is aangemaakt.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Uw Proton Free account is succesvol aangemaakt.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Uw herstel e-mailadres:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "De sessie is verlopen. Log opnieuw in.";

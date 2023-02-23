@@ -20,10 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
+
 struct MessageViewActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
+    // swiftlint:disable:next function_body_length
     init(
         title: String,
         labelID: LabelID,
@@ -94,6 +97,11 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             .print,
             .viewHeaders
         ])
+
+        if UserInfo.isToolbarCustomizationEnable,
+           let indexOfViewHeader = items.firstIndex(of: .viewHeaders) {
+            items.insert(.toolbarCustomization, at: indexOfViewHeader)
+        }
 
         if isBodyDecryptable {
             items.append(.viewHTML)

@@ -37,11 +37,11 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
 
     var isScheduleSendIntroViewShown: Bool {
-        userIntroductionProgressProvider.hasUserSeenSpotlight(for: .scheduledSend)
+        !userIntroductionProgressProvider.shouldShowSpotlight(for: .scheduledSend, toUserWith: user.userID)
     }
 
     var isScheduleSendEnable: Bool {
-        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID)
+        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID) == .enabled
     }
 
     init(
@@ -90,7 +90,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     func userHasSeenScheduledSendSpotlight() {
-        userIntroductionProgressProvider.userHasSeenSpotlight(for: .scheduledSend)
+        userIntroductionProgressProvider.markSpotlight(for: .scheduledSend, asSeen: true, byUserWith: user.userID)
     }
 
     private func observeRecipients() -> NSKeyValueObservation {

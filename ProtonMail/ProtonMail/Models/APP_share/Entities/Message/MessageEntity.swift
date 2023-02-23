@@ -47,6 +47,7 @@ struct MessageEntity: Equatable, Hashable {
 
     // MARK: Message metadata
 
+    let action: NSNumber?
     let numAttachments: Int
     let size: Int
     let spamScore: SpamScore
@@ -124,7 +125,9 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
+}
 
+extension MessageEntity {
     var sender: ContactVO? {
         rawSender?.toContact()
     }
@@ -140,6 +143,7 @@ struct MessageEntity: Equatable, Hashable {
         self.conversationID = ConversationID(message.conversationID)
         self.userID = UserID(message.userID)
 
+        self.action = message.action
         self.numAttachments = message.numAttachments.intValue
         self.size = message.size.intValue
         self.spamScore = SpamScore(rawValue: message.spamScore.intValue)

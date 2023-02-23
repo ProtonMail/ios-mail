@@ -27,19 +27,6 @@ extension NSError {
 
     static var isAlertShown = false
 
-    class func alertMessageSentToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._message_sent_ok_desc
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 1)
-    }
-
     func alertSentErrorToast() {
         guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
@@ -59,7 +46,7 @@ extension NSError {
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._message_draft_cache_is_broken
+        hud.detailsLabel.text = LocalString._email_failed_to_send
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.offset.y = 250.0

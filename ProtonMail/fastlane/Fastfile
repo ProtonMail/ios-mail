@@ -180,7 +180,10 @@ end
 platform :ios do
   desc "Build the app and upload to testflight"
   lane :build do |options|
-    xcversion(version: "~> 14.1")
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
     set_up_keychain(false)
 
     api_key = set_up_app_store_api_key
@@ -196,6 +199,17 @@ platform :ios do
     bundle_version = sh("./setup_bundle_version.sh")
 
     build_release_app
+
+    begin
+      sentry_upload_dsym(
+        auth_token: ENV["SENTRY_AUTH_TOKEN"],
+        org_slug: ENV["SENTRY_ORG"],
+        project_slug: ENV["SENTRY_PROJECT"],
+        url: ENV["SENTRY_URL"]
+      )
+    rescue => ex
+      puts("Sentry upload error: #{ex}")
+    end
 
     upload_to_testflight(
       api_key: api_key,
@@ -213,7 +227,10 @@ platform :ios do
 
   desc "Build enterprise app"
   lane :enterprise do |options|
-    xcversion(version: "~> 14.1")
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
     set_up_keychain(true)
 
     # Set build version by git log numbers
@@ -225,6 +242,17 @@ platform :ios do
     end
 
     build_enterprise_app
+
+    # begin
+    #   sentry_upload_dsym(
+    #     auth_token: ENV["SENTRY_AUTH_TOKEN"],
+    #     org_slug: ENV["SENTRY_ORG"],
+    #     project_slug: ENV["SENTRY_PROJECT"],
+    #     url: ENV["SENTRY_URL"]
+    #   )
+    # rescue => ex
+    #   puts("Sentry upload error: #{ex}")
+    # end
 
     branchName = git_branch
     lastGitCommitHash = last_git_commit[:commit_hash]
@@ -249,11 +277,16 @@ platform :ios do
 
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
-    xcversion(version: "~> 14.1")
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
     scan(
       device: "iPhone 8",
       scheme: "ProtonMailTests",
-      app_identifier: APP_IDENTIFIER
+      app_identifier: APP_IDENTIFIER,
+      reset_simulator: true,
+      xcargs: "-quiet"
     )
 
     slather(sonarqube_xml: true, configuration: "Debug")
@@ -263,22 +296,69 @@ platform :ios do
 
   desc "Run ui test and get test coverage"
   lane :ui_test do |options|
-    xcversion(version: "~> 14.1")
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
 
     try_scan(
       device: "iPhone 12",
       reset_simulator: true,
       try_count: 2,
-      parallel_workers: 4,
+      parallel_workers: 3,
       try_parallel: true,
-      retry_parallel: true,
+      retry_parallel: false,
       scheme: "ProtonMailUITests",
       testplan: "SmokeTests",
-      app_identifier: APP_IDENTIFIER
-      #slack_url: ENV["SLACK_CI_BOT_URL"]
+      app_identifier: APP_IDENTIFIER,
+      output_types: "html",
+      reinstall_app: true,
+      output_directory: "../test_output/TestResults",
+      result_bundle: true,
+      xcargs: "-quiet",
+      fail_build: false # Otherwise following steps won't be executed
+   )
+    xchtmlreport(
+      result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
+      enable_junit: true,
+      binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
     )
 
     slather(cobertura_xml: true, configuration: "Debug")
+    slather(simple_output: true, configuration: "Debug")
+  end
+
+  desc "Run feature ui test and get test coverage"
+  lane :feature_tests do |options|
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
+
+    try_scan(
+      device: "iPhone 12",
+      reset_simulator: true,
+      parallel_workers: ENV["NUMBER_OF_DEVICES"],
+      try_parallel: false,
+      retry_parallel: false,
+      scheme: "ProtonMailUITests",
+      testplan: ENV["TEST_PLAN"],
+      app_identifier: APP_IDENTIFIER,
+      output_types: "junit",
+      reinstall_app: true,
+      output_directory: "../test_output/TestResults",
+      result_bundle: true,
+      xcargs: "-quiet",
+      fail_build: false # Otherwise following steps won't be executed
+    )
+    xchtmlreport(
+      result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
+      enable_junit: true,
+      binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
+    )
+
+    slather(cobertura_xml: true, configuration: "Debug")
+    slather(simple_output: true, configuration: "Debug")
   end
 
   error do |lane, exception|

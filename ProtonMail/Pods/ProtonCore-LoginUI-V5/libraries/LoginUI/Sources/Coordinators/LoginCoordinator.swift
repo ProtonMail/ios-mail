@@ -27,6 +27,7 @@ import ProtonCore_Authentication
 import ProtonCore_Networking
 import ProtonCore_CoreTranslation
 import ProtonCore_TroubleShooting
+import ProtonCore_FeatureSwitch
 
 protocol LoginCoordinatorDelegate: AnyObject {
     func userDidDismissLoginCoordinator(loginCoordinator: LoginCoordinator)
@@ -171,14 +172,14 @@ final class LoginCoordinator {
         navigationController?.pushViewController(mailboxPasswordViewController, animated: true)
     }
 
-    private func showCreateAddress(data: CreateAddressData) {
+    private func showCreateAddress(data: CreateAddressData, defaultUsername: String?) {
         guard let navigationController = navigationController else {
             fatalError("Invalid call")
         }
 
         let coordinator = CreateAddressCoordinator(
             container: container, navigationController: navigationController,
-            data: data, customErrorPresenter: customization.customErrorPresenter
+            data: data, customErrorPresenter: customization.customErrorPresenter, defaultUsername: defaultUsername
         )
         coordinator.delegate = self
         childCoordinators[.createAddress] = coordinator
@@ -246,8 +247,14 @@ extension LoginCoordinator: LoginStepsDelegate {
         showMailboxPassword()
     }
 
-    func createAddressNeeded(data: CreateAddressData) {
-        showCreateAddress(data: data)
+    func createAddressNeeded(data: CreateAddressData, defaultUsername: String?) {
+        if FeatureFactory.shared.isEnabled(.externalAccountConversion) {
+            showCreateAddress(data: data, defaultUsername: defaultUsername)
+        } else {
+            // account conversion not supported by feature flag
+            let externalAccountsNotSupportedError = LoginError.externalAccountsNotSupported(message: CoreString._ls_external_eccounts_not_supported_popup_local_desc, originalError: NSError())
+            popAndShowError(error: externalAccountsNotSupportedError)
+        }
     }
 
     func userAccountSetupNeeded() {
@@ -320,12 +327,12 @@ extension LoginCoordinator: CreateAddressCoordinatorDelegate {
 // MARK: - LoginCoordinator delegate
 
 extension LoginCoordinator: NavigationDelegate {
-    func userDidRequestGoBack() {
+    func userDidGoBack() {
 
         guard navigationController?.viewControllers.contains(where: { $0 is TwoFactorViewController }) == false else {
             // Special case for situation in which we've already sent a valid 2FA code to server.
             // Once we do it, the user auth session on the backend is past the 2FA step and doesn't allow sending another 2FA code again.
-            // The technical details are: the access token contains `twofactor` scope before `POST /auth/2fa` and doesn't contain it after.
+            // The technical details are: the access token contains `twofactor` scope before `POST /auth/v4/2fa` and doesn't contain it after.
             // It makes navigating back to two factor screen useless (user cannot send another code), so we navigate back to root screen instead.
             navigationController?.popToRootViewController(animated: true)
             return

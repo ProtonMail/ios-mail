@@ -135,8 +135,9 @@ public protocol DoHInterface {
     
     var status: DoHStatus { get set }
     
+    var currentlyUsedCookiesStorage: HTTPCookieStorage? { get }
     func setUpCookieSynchronization(storage: HTTPCookieStorage?)
-    func synchronizeCookies(with response: URLResponse?)
+    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String])
 
     // swiftlint:disable function_parameter_count
     func handleErrorResolvingProxyDomainIfNeeded(

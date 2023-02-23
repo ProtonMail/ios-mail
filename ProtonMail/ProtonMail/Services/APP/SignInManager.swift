@@ -78,11 +78,14 @@ class SignInManager: Service {
 
         if usersManager.count == 0 {
             userCachedStatus.initialUserLoggedInVersion = Bundle.main.majorVersion
-            // The spotlight views are only shown when user updates from old version.
-            for feature in SpotlightableFeatureKey.allCases where feature.isFeatureEnabledLocallyByDefault {
-                userCachedStatus.userHasSeenSpotlight(for: feature)
-            }
         }
+
+        // The spotlight views are only shown when user updates from old version.
+        // When a user logs into a version, they should not see the spotlight for any feature that is enabled in that version at that time.
+        for feature in SpotlightableFeatureKey.allCases where feature.isFeatureEnabledLocallyByDefault {
+            userCachedStatus.markSpotlight(for: feature, asSeen: true, byUserWith: UserID(userInfo.userId))
+        }
+
         self.usersManager.add(auth: auth, user: userInfo)
 
         self.usersManager.loggedIn()
@@ -94,8 +97,6 @@ class SignInManager: Service {
 
     func finalizeSignIn(loginData: LoginData,
                         onError: @escaping (NSError) -> Void,
-                        reachLimit: () -> Void,
-                        existError: () -> Void,
                         showSkeleton: () -> Void,
                         tryUnlock: @escaping () -> Void)
     {
@@ -172,9 +173,9 @@ private extension SpotlightableFeatureKey {
     var isFeatureEnabledLocallyByDefault: Bool {
         switch self {
         case .scheduledSend:
-            return false
-        case .trackerProtection:
-            return UserInfo.isImageProxyAvailable
+            return true
+        case .toolbarCustomization:
+            return UserInfo.isToolbarCustomizationEnable
         }
     }
 }

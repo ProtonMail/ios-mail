@@ -28,9 +28,12 @@ class NewMessageBodyViewModelTests: XCTestCase {
 
         let reachabilityStub = ReachabilityStub()
         let internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        sut = NewMessageBodyViewModel(spamType: nil,
-                                      internetStatusProvider: internetConnectionStatusProviderMock,
-                                      linkConfirmation: .openAtWill)
+        sut = NewMessageBodyViewModel(
+            spamType: nil,
+            internetStatusProvider: internetConnectionStatusProviderMock,
+            linkConfirmation: .openAtWill,
+            userKeys: .init(privateKeys: [], addressesPrivateKeys: [], mailboxPassphrase: .init(value: "passphrase"))
+        )
         newMessageBodyViewModelDelegateMock = NewMessageBodyViewModelDelegateMock()
         sut.delegate = newMessageBodyViewModelDelegateMock
     }
@@ -48,7 +51,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
         let expected = """
                             <html><head>\(meta)<style type='text/css'>
                             \(WebContents.css)</style>
-                            </head><body>\(LocalString._loading_)</body></html>
+                            </head></html>
                          """
         XCTAssertEqual(sut.placeholderContent, expected)
 
@@ -57,7 +60,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
         let expected1 = """
                             <html><head>\(meta)<style type='text/css'>
                             \(WebContents.cssLightModeOnly)</style>
-                            </head><body>\(LocalString._loading_)</body></html>
+                            </head></html>
                          """
         XCTAssertEqual(sut.placeholderContent, expected1)
     }

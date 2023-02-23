@@ -96,6 +96,9 @@ open class Keychain {
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+            query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
+        }
         
         if let auth = self.authenticationPolicy.flags,
             let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, self.accessibility.cfString, auth, nil)
@@ -117,13 +120,16 @@ open class Keychain {
     
     @discardableResult
     internal func remove(_ key: String) -> Bool {
-        let query: [String: AnyObject] = [
+        var query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
             kSecAttrAccount as String: key as AnyObject,
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+            query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
+        }
         
         let code = SecItemDelete(query as CFDictionary)
         
@@ -137,19 +143,19 @@ open class Keychain {
     @discardableResult
     internal func add(data value: Data, forKey key: String) -> Bool {
         // search for existing
-        let query: [String: AnyObject] = [
+        var query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
             kSecAttrAccount as String: key as AnyObject,
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+            query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
+        }
         
         var queryForSearch = query
         queryForSearch[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
-            queryForSearch[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
-        }
         let codeExisting = SecItemCopyMatching(queryForSearch as CFDictionary, nil)
         
         // update
@@ -158,9 +164,6 @@ open class Keychain {
                 kSecAttrSynchronizable as String: NSNumber(value: false),
                 kSecValueData as String: value as AnyObject
             ]
-            if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
-                updateAttributes[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
-            }
             self.injectAccessControlAttributes(into: &updateAttributes)
             
             let codeUpdate = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
@@ -172,9 +175,6 @@ open class Keychain {
         var newAttributes = query
         newAttributes[kSecAttrSynchronizable as String] = NSNumber(value: false)
         newAttributes[kSecValueData as String] = value as AnyObject
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
-            newAttributes[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
-        }
         self.injectAccessControlAttributes(into: &newAttributes)
 
         let code = SecItemAdd(newAttributes as CFDictionary, nil)

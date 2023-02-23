@@ -25,7 +25,7 @@ var mutationObserver = new MutationObserver(function(events) {
 
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
-
+        event.target.setAttribute("dir", "auto");
         // check if removed image was our inline embedded attachment
         for (var j = 0; j < event.removedNodes.length; j++) {
             var removedNode = event.removedNodes[j];
@@ -224,10 +224,12 @@ html_editor.absorbImage = function(event, items, target) {
 
 // Remove color information of pasted data
 html_editor.handlePastedData = function(event) {
-    const item = event.clipboardData
+    let item = event.clipboardData
         .getData('text/html')
         .replace(/<meta (.*?)>/g, '')
-        .replace(/(border-){0,}(background-){0,}(bg){0,}color:(.*?);/g, '');
+        .replace(/((\w|-)*?color\s*:.*?)("|;)/g, '')
+        .replace(new RegExp('font-.*?(?!&quot);', 'g'), '');
+
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
 

@@ -28,7 +28,7 @@ import UIKit
 final class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol,
                                    LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
+        .init(maxCount: 3)
     }
 
     private lazy var contentController: SingleMessageContentViewController = { [unowned self] in
@@ -102,6 +102,7 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         super.viewDidAppear(animated)
 
         viewModel.userActivity.becomeCurrent()
+        showToolbarCustomizeSpotlightIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -202,7 +203,7 @@ extension SingleMessageViewController {
         }
     }
 
-    private func setUpToolBarIfNeeded() {
+    func setUpToolBarIfNeeded() {
         let actions = calculateToolBarActions()
         guard customView.toolBar.types != actions.map(\.type) else {
             return
@@ -213,26 +214,10 @@ extension SingleMessageViewController {
     private func calculateToolBarActions() -> [PMToolBarView.ActionItem] {
         let types = viewModel.toolbarActionTypes()
         let result: [PMToolBarView.ActionItem] = types.compactMap { type in
-            switch type {
-            case .markAsRead, .markAsUnread:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.unreadReadAction() })
-            case .labelAs:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.labelAsAction() })
-            case .trash:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.trashAction() })
-            case .delete:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.deleteAction() })
-            case .moveTo:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.moveToAction() })
-            case .more:
-                return PMToolBarView.ActionItem(type: type,
-                                                handler: { [weak self] in self?.moreButtonTapped() })
-            }
+            return PMToolBarView.ActionItem(type: type,
+                                            handler: { [weak self] in
+                self?.handleActionSheetAction(type)
+            })
         }
         return result
     }
@@ -251,7 +236,7 @@ extension SingleMessageViewController {
 
     @objc
     private func unreadReadAction() {
-        viewModel.handleToolBarAction(.markAsUnread)
+        viewModel.handleToolBarAction(.markUnread)
         navigationController?.popViewController(animated: true)
     }
 
@@ -315,9 +300,26 @@ extension SingleMessageViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    private func showToolbarCustomizeSpotlightIfNeeded() {
+        guard viewModel.shouldShowToolbarCustomizeSpotlight(),
+              let targetRect = customView.toolbarLastButtonCGRect(),
+              let navView = navigationController?.view,
+              !navView.subviews.contains(where: { $0 is ToolbarCustomizeSpotlightView })
+        else {
+            return
+        }
+        let convertedRect = customView.convert(targetRect, to: self.navigationController?.view)
+        let spotlight = ToolbarCustomizeSpotlightView()
+        spotlight.presentOn(
+            view: navView,
+            targetFrame: convertedRect
+        )
+        viewModel.setToolbarCustomizeSpotlightViewIsShown()
+    }
 }
 
 private extension SingleMessageViewController {
+    // swiftlint:disable:next function_body_length
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .reply, .replyAll, .forward:
@@ -347,6 +349,18 @@ private extension SingleMessageViewController {
                     self?.navigationController?.popViewController(animated: true)
                 })
             }
+        case .toolbarCustomization:
+            showToolbarActionCustomizationView()
+        case .markUnread, .markRead:
+            unreadReadAction()
+        case .more:
+            moreButtonTapped()
+        case .viewInDarkMode, .viewInLightMode:
+            viewModel.handleActionSheetAction(action, completion: {})
+        case .archive, .spam, .inbox, .spamMoveToInbox, .star, .unstar:
+            viewModel.handleActionSheetAction(action) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
         case .trash:
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
@@ -356,10 +370,12 @@ private extension SingleMessageViewController {
             viewModel.searchForScheduled(displayAlert: { [weak self] in
                 self?.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
             }, continueAction: continueAction)
-        default:
-            viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
+        case .replyOrReplyAll:
+            if viewModel.message.allRecipients.count > 1 {
+                handleOpenComposerAction(.replyAll)
+            } else {
+                handleOpenComposerAction(.reply)
+            }
         }
     }
 
@@ -389,6 +405,13 @@ private extension SingleMessageViewController {
         default:
             return
         }
+    }
+
+    private func showToolbarActionCustomizationView() {
+        coordinator.navigate(to: .toolbarCustomization(
+            currentActions: viewModel.actionsForToolbarCustomizeView(),
+            allActions: viewModel.toolbarCustomizationAllAvailableActions()
+        ))
     }
 }
 

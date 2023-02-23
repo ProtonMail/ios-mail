@@ -31,8 +31,11 @@ class ConversationViewControllerTests: XCTestCase {
     var applicationStateMock: MockApplicationStateProvider!
     var internetStatusProviderMock: InternetConnectionStatusProvider!
     var reachabilityStub: ReachabilityStub!
-    var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var labelProviderMock: MockLabelProvider!
+    var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
+    var toolbarActionProviderMock: MockToolbarActionProvider!
+    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
+    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
 
     override func setUp() {
         super.setUp()
@@ -43,8 +46,11 @@ class ConversationViewControllerTests: XCTestCase {
         fakeUser = UserManager(api: apiMock, role: .none)
         reachabilityStub = ReachabilityStub()
         internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
+        toolbarActionProviderMock = MockToolbarActionProvider()
+        toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
+        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
 
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
@@ -55,12 +61,15 @@ class ConversationViewControllerTests: XCTestCase {
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
-                                                  conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                                   conversationStateProvider: MockConversationStateProvider(),
                                                   labelProvider: labelProviderMock,
-                                                  goToDraft: { _ in },
+                                                  userIntroductionProgressProvider: userIntroductionProgressProviderMock,
+                                                  targetID: nil,
+                                                  toolbarActionProvider: toolbarActionProviderMock,
+                                                  saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
+                                                  toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                                  goToDraft: { _, _  in },
                                                   dependencies: dependencies)
-
         applicationStateMock = MockApplicationStateProvider(state: .background)
         sut = ConversationViewController(coordinator: coordinatorMock,
                                          viewModel: viewModelMock,
@@ -78,6 +87,8 @@ class ConversationViewControllerTests: XCTestCase {
         apiMock = nil
         applicationStateMock = nil
         labelProviderMock = nil
+        toolbarActionProviderMock = nil
+        saveToolbarActionUseCaseMock = nil
     }
 
     @available(iOS 13.0, *)

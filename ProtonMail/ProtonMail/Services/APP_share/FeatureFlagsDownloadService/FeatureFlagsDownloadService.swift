@@ -21,7 +21,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case threading = "ThreadingIOS"
     case inAppFeedback = "InAppFeedbackIOS"
     case realNumAttachments = "RealNumAttachments"
-    case scheduleSend = "ScheduledSend"
+    case scheduleSend = "ScheduledSendFreemium"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
@@ -35,7 +35,6 @@ protocol FeatureFlagsDownloadServiceProtocol {
 
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.
 class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
-
     private let userID: UserID
     private let apiService: APIService
     private let sessionID: String
@@ -46,19 +45,22 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private(set) var lastFetchingTime: Date?
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let realAttachmentsFlagProvider: RealAttachmentsFlagProvider
+    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     init(
         userID: UserID,
         apiService: APIService,
         sessionID: String,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
-        realAttachmentsFlagProvider: RealAttachmentsFlagProvider
+        realAttachmentsFlagProvider: RealAttachmentsFlagProvider,
+        userIntroductionProgressProvider: UserIntroductionProgressProvider
     ) {
         self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.realAttachmentsFlagProvider = realAttachmentsFlagProvider
+        self.userIntroductionProgressProvider = userIntroductionProgressProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -93,20 +95,44 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
             if !response.result.isEmpty {
                 self.subscribers.forEach { $0.handleNewFeatureFlags(response.result) }
-                if let realAttachment = response.result[FeatureFlagKey.realNumAttachments.rawValue] as? Bool {
-                    self.realAttachmentsFlagProvider.set(
-                        realAttachments: realAttachment,
-                        sessionID: self.sessionID
-                    )
-
-                }
-                if let isScheduleSendEnabled = response.result[FeatureFlagKey.scheduleSend.rawValue] as? Bool {
-                    self.scheduleSendEnableStatusProvider.setScheduleSendStatus(
-                        enable: isScheduleSendEnabled,
-                        userID: self.userID
-                    )
-                }
             }
+
+            if let realAttachment = response.result[FeatureFlagKey.realNumAttachments.rawValue] as? Bool {
+                self.realAttachmentsFlagProvider.set(
+                    realAttachments: realAttachment,
+                    sessionID: self.sessionID
+                )
+            }
+
+            if let isScheduleSendEnabled = response.result[FeatureFlagKey.scheduleSend.rawValue] as? Bool {
+                let stateBeforeTheUpdate = self.scheduleSendEnableStatusProvider.isScheduleSendEnabled(
+                    userID: self.userID
+                )
+
+                self.scheduleSendEnableStatusProvider.setScheduleSendStatus(
+                    enable: isScheduleSendEnabled,
+                    userID: self.userID
+                )
+
+                switch stateBeforeTheUpdate {
+                case .disabled where isScheduleSendEnabled:
+                    // We need to reset spotlight when transitioning from expicitly disabled to enabled.
+                    // However, we should not do it if the feature state was not set at all,
+                    // which is the case right after sign in.
+                    self.userIntroductionProgressProvider.markSpotlight(
+                        for: .scheduledSend,
+                        asSeen: false,
+                        byUserWith: self.userID
+                    )
+                default:
+                    break
+                }
+            } else {
+                // If there is no SS feature flag, mark the feature as disabled, so that we'll be able to reset the
+                // spotlight once the feature is enabled (wouldn't be possible if we left it as not set).
+                self.scheduleSendEnableStatusProvider.setScheduleSendStatus(enable: false, userID: self.userID)
+            }
+
             completion?(.success(response))
         }
     }

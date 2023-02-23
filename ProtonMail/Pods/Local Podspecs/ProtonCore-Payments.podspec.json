@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Payments",
-  "version": "3.24.5",
+  "version": "3.25.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.24.5"
+    "tag": "3.25.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -30,16 +30,16 @@
       "~> 5.0.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "3.24.5"
+      "3.25.2"
     ],
     "ProtonCore-Foundations": [
-      "3.24.5"
+      "3.25.2"
     ],
     "ProtonCore-Hash": [
-      "3.24.5"
+      "3.25.2"
     ],
     "ProtonCore-Log": [
-      "3.24.5"
+      "3.25.2"
     ]
   },
   "default_subspecs": [
@@ -50,13 +50,13 @@
       "name": "Crypto-Go1.15.15",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-Go1.15.15": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -69,7 +69,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-Go1.15.15": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -80,13 +80,13 @@
       "name": "Crypto-Go1.17.9",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-Go1.17.9": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -99,7 +99,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-Go1.17.9": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -110,13 +110,13 @@
       "name": "Crypto-Go1.18.3",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-Go1.18.3": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -129,7 +129,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-Go1.18.3": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -140,13 +140,13 @@
       "name": "Crypto-Go1.19.2",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-Go1.19.2": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -159,7 +159,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-Go1.19.2": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -170,13 +170,13 @@
       "name": "Crypto-patched-Go1.19.2",
       "dependencies": {
         "ProtonCore-Authentication/Crypto-patched-Go1.19.2": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -189,7 +189,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-patched-Go1.19.2": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -200,13 +200,13 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+VPN-Go1.15.15": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -219,7 +219,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-Go1.15.15": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -230,13 +230,13 @@
       "name": "Crypto+VPN-Go1.17.9",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+VPN-Go1.17.9": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -249,7 +249,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-Go1.17.9": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -260,13 +260,13 @@
       "name": "Crypto+VPN-Go1.18.3",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+VPN-Go1.18.3": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -279,7 +279,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-Go1.18.3": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -290,13 +290,13 @@
       "name": "Crypto+VPN-Go1.19.2",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+VPN-Go1.19.2": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -309,7 +309,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-Go1.19.2": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -320,13 +320,13 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+Search-Go1.15.15": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -339,7 +339,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go1.15.15": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -350,13 +350,13 @@
       "name": "Crypto+Search-Go1.17.9",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+Search-Go1.17.9": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -369,7 +369,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go1.17.9": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -380,13 +380,13 @@
       "name": "Crypto+Search-Go1.18.3",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+Search-Go1.18.3": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -399,7 +399,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go1.18.3": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"
@@ -410,13 +410,13 @@
       "name": "Crypto+Search-Go1.19.2",
       "dependencies": {
         "ProtonCore-Authentication/Crypto+Search-Go1.19.2": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Networking": [
-          "3.24.5"
+          "3.25.2"
         ],
         "ProtonCore-Services": [
-          "3.24.5"
+          "3.25.2"
         ]
       },
       "source_files": [
@@ -429,7 +429,7 @@
           "test_type": "unit",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go1.19.2": [
-              "3.24.5"
+              "3.25.2"
             ]
           },
           "source_files": "libraries/Payments/Tests/**/*.swift"

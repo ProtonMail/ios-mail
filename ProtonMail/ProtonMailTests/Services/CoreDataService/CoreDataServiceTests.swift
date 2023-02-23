@@ -139,6 +139,43 @@ class CoreDataServiceTests: XCTestCase {
 
         XCTAssertEqual(fetchedMessage.body, "updated body")
     }
+
+    // delete this test once we remove rootSavingContext completely
+    func testRead_changesSavedToRootSavingContextAreDetected() throws {
+        try sut.createNewMessage()
+
+        let (createdMessage, retainedContext): (Message, NSManagedObjectContext) = try sut.read { context in
+            let message = try XCTUnwrap(
+                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
+            )
+            return (message, context)
+        }
+
+        sut.performAndWaitOnRootSavingContext { context in
+            do {
+                let editableMessage = try XCTUnwrap(
+                    context.managedObjectWithEntityName(
+                        Message.Attributes.entityName,
+                        matching: [:]
+                    ) as? Message
+                )
+
+                editableMessage.body = "updated body"
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+            } catch {
+                XCTFail("\(error)")
+            }
+        }
+
+        let updatedBody = retainedContext.performAndWait {
+            createdMessage.body
+        }
+
+        XCTAssertEqual(updatedBody, "updated body")
+    }
 }
 
 private extension CoreDataService {

@@ -146,3 +146,10 @@ private extension SettingsGeneralCell.ImageType {
         }
     }
 }
+
+// MARK: - UI test
+extension SettingsGeneralCell {
+    func leftTextValue() -> String? {
+        leftText.attributedText?.string
+    }
+}

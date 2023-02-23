@@ -90,6 +90,7 @@ excluded:
   - ${PWD}/ProtonMail/Extension/ProtonCore/APP_share/APIService/APIService+AttachmentExtension.swift
   - ${PWD}/ProtonMail/Extension/ProtonCore/APP/APIService+DeviceExtension.swift
   - ${PWD}/ProtonMail/Extension/ProtonCore/APP_share/APIService/APIResponse.swift
+  - ${PWD}/ProtonMail/Generated
   - ${PWD}/ProtonMail/Models/APP_share_push/PushNotificationPayload.swift
   - ${PWD}/ProtonMail/Models/APP_share/ContactsDefined.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/AttachmentAPI.swift
@@ -103,7 +104,7 @@ excluded:
   - ${PWD}/ProtonMail/Models/APIs/APP_share/AuthAPI.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/SettingsAPI/SettingsAPI.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/ReportsAPI.swift
-  - ${PWD}/ProtonMail/Models/APIs/APP_share/ContactsAPI.swift
+  - ${PWD}/ProtonMail/Models/APIs/APP_share/ContactAPIs/ContactsAPI.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/EventAPI.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/APIServiceDefined.swift
   - ${PWD}/ProtonMail/Models/APIs/APP_share/MessageAPIs/MessageAPI.swift

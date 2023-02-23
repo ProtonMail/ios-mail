@@ -109,8 +109,8 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
             switch result {
             case let .done(data):
                 self?.delegate?.mailboxPasswordViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
-            case let .createAddressNeeded(data):
-                self?.delegate?.createAddressNeeded(data: data)
+            case let .createAddressNeeded(data, defaultUsername):
+                self?.delegate?.createAddressNeeded(data: data, defaultUsername: defaultUsername)
             }
         }
         viewModel.error.bind { [weak self] error in
@@ -170,7 +170,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     // MARK: - Actions
 
     @objc private func goBack(_ sender: Any) {
-        delegate?.userDidRequestGoBack()
+        delegate?.userDidGoBack()
     }
 
     @IBAction private func unlockPressed(_ sender: Any) {

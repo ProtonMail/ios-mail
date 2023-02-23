@@ -30,7 +30,8 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
-        goToDraft: @escaping (MessageID) -> Void
+        dependencies: SingleMessageContentViewModel.Dependencies,
+        goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
@@ -46,7 +47,7 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
-                     userIntroductionProgressProvider: userCachedStatus,
+                     dependencies: dependencies,
                      goToDraft: goToDraft)
     }
 
@@ -60,7 +61,7 @@ class SingleMessageViewModelFactory {
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
-                         goToDraft: @escaping (MessageID) -> Void) -> SingleMessageViewModel {
+                         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: message.spam,
@@ -70,26 +71,45 @@ class SingleMessageViewModelFactory {
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: sharedServices.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                realAttachmentsFlagProvider: userCachedStatus,
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
+        let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
         return .init(
             labelId: labelId,
             message: message,
             user: user,
             childViewModels: childViewModels,
             internetStatusProvider: internetStatusProvider,
+            userIntroductionProgressProvider: userCachedStatus,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(
+                dependencies: .init(user: user)
+            ),
+            toolbarActionProvider: user,
+            toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             systemUpTime: systemUpTime,
-			goToDraft: goToDraft
+            dependencies: dependencies,
+            goToDraft: goToDraft
         )
     }
 
 }
 
-private class SingleMessageComponentsFactory {
+class SingleMessageComponentsFactory {
 
     func messageBody(spamType: SpamType?, user: UserManager) -> NewMessageBodyViewModel {
         return .init(
             spamType: spamType,
             internetStatusProvider: InternetConnectionStatusProvider(),
-            linkConfirmation: user.userInfo.linkConfirmation
+            linkConfirmation: user.userInfo.linkConfirmation,
+            userKeys: user.toUserKeys()
         )
     }
 
@@ -113,7 +133,6 @@ private class SingleMessageComponentsFactory {
                      unsubscribeActionHandler: unsubscribeService,
                      markLegitimateActionHandler: markLegitimateService,
                      receiptActionHandler: receiptService,
-                     weekStart: user.userInfo.weekStartValue,
                      urlOpener: UIApplication.shared)
     }
 }

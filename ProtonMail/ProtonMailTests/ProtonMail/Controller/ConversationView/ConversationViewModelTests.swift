@@ -17,15 +17,20 @@
 
 import XCTest
 @testable import ProtonMail
+import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
 
 class ConversationViewModelTests: XCTestCase {
 
     private var sut: ConversationViewModel!
-    var conversationNoticeViewStatusMock: MockConversationNoticeViewStatusProvider!
     var contextProviderMock: MockCoreDataContextProvider!
     var labelProviderMock: MockLabelProvider!
     var messageMock: MessageEntity!
+    var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
+    var toolbarActionProviderMock: MockToolbarActionProvider!
+    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
+    var userManagerStub: UserManager!
+    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -36,11 +41,14 @@ class ConversationViewModelTests: XCTestCase {
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        conversationNoticeViewStatusMock = MockConversationNoticeViewStatusProvider()
         labelProviderMock = MockLabelProvider()
+        toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
+        toolbarActionProviderMock = MockToolbarActionProvider()
+        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
 
         let dependencies = ConversationViewModel.Dependencies(
-             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
         )
 
         sut = ConversationViewModel(labelId: "",
@@ -48,10 +56,14 @@ class ConversationViewModelTests: XCTestCase {
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
-                                    goToDraft: { _ in },
+                                    userIntroductionProgressProvider: userIntroductionProgressProviderMock,
+                                    targetID: nil,
+                                    toolbarActionProvider: toolbarActionProviderMock,
+                                    saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
+                                    toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
 
@@ -59,6 +71,9 @@ class ConversationViewModelTests: XCTestCase {
         sut = nil
         labelProviderMock = nil
         messageMock = nil
+        toolbarCustomizeSpotlightStatusProviderMock = nil
+        toolbarActionProviderMock = nil
+        userManagerStub = nil
 
         try super.tearDownWithError()
     }
@@ -83,63 +98,6 @@ class ConversationViewModelTests: XCTestCase {
         sut.scrollViewDidScroll()
 
         XCTAssertEqual(callbackCount, 1)
-    }
-
-    func testConversationNoticeViewIsOpened() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        sut.conversationNoticeViewIsOpened()
-        XCTAssertTrue(conversationNoticeViewStatusMock.conversationNoticeIsOpened)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andMoreThanOneMessage_returnTrue() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
-                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
-
-        XCTAssertTrue(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andMoreThanOneMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
-                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionIsNil_andEmptyMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = []
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andEmptyMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = []
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsOpened_withAppVersionIsNil_andOneMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = true
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = nil
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: false))]
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
-    }
-
-    func testShouldDisplayConversationNoticeView_withNoticeIsNotOpened_withAppVersionNotNil_andMoreThanOneMessage_returnFalse() {
-        conversationNoticeViewStatusMock.conversationNoticeIsOpened = false
-        conversationNoticeViewStatusMock.initialUserLoggedInVersion = "3.1.6"
-        sut.messagesDataSource = [.message(viewModel: makeFakeViewModel(isExpanded: true)),
-                                  .message(viewModel: makeFakeViewModel(isExpanded: true))]
-
-        XCTAssertFalse(sut.shouldDisplayConversationNoticeView)
     }
 
     func testAreAllMessagesInThreadInTheTrash_whenAllAreInTrash_ReturnsTrue() {
@@ -192,7 +150,7 @@ class ConversationViewModelTests: XCTestCase {
         makeSUT(labelID: Message.Location.spam.labelID)
 
         let result = sut.toolbarActionTypes()
-        XCTAssertEqual(result, [.markAsUnread,
+        XCTAssertEqual(result, [.markUnread,
                                 .delete,
                                 .moveTo,
                                 .labelAs,
@@ -203,7 +161,7 @@ class ConversationViewModelTests: XCTestCase {
         makeSUT(labelID: Message.Location.trash.labelID)
 
         let result = sut.toolbarActionTypes()
-        XCTAssertEqual(result, [.markAsUnread,
+        XCTAssertEqual(result, [.markUnread,
                                 .delete,
                                 .moveTo,
                                 .labelAs,
@@ -218,7 +176,7 @@ class ConversationViewModelTests: XCTestCase {
         ]
 
         let result = sut.toolbarActionTypes()
-        XCTAssertEqual(result, [.markAsUnread,
+        XCTAssertEqual(result, [.markUnread,
                                 .delete,
                                 .moveTo,
                                 .labelAs,
@@ -233,7 +191,7 @@ class ConversationViewModelTests: XCTestCase {
         ]
 
         let result = sut.toolbarActionTypes()
-        XCTAssertEqual(result, [.markAsUnread,
+        XCTAssertEqual(result, [.markUnread,
                                 .delete,
                                 .moveTo,
                                 .labelAs,
@@ -246,12 +204,91 @@ class ConversationViewModelTests: XCTestCase {
         for location in locations {
             makeSUT(labelID: location.labelID)
             let result = sut.toolbarActionTypes()
-            XCTAssertEqual(result, [.markAsUnread,
+            XCTAssertEqual(result, [.markUnread,
                                     .trash,
                                     .moveTo,
                                     .labelAs,
                                     .more])
         }
+    }
+
+    func testToolbarCustomizationCurrentTypes_notContainsMoreAction() {
+        toolbarActionProviderMock.conversationToolbarActions = []
+
+        XCTAssertFalse(sut.actionsForToolbarCustomizeView().contains(.more))
+    }
+
+    func testToolbarCustomizationCurrentTypes_setReadAction_withReadConversation_hasUnreadAction() {
+        let fakeConversation = makeConversationWithUnread(of: "1", unreadCount: 0)
+        makeSUT(labelID: "1", conversation: fakeConversation)
+        toolbarActionProviderMock.conversationToolbarActions = [.markUnread]
+
+        XCTAssertTrue(sut.actionsForToolbarCustomizeView().contains(.markUnread))
+        XCTAssertFalse(sut.actionsForToolbarCustomizeView().contains(.markRead))
+    }
+
+    func testToolbarCustomizationCurrentTypes_setUnreadAction_withUnreadConversation_hasReadAction() {
+        let fakeConversation = makeConversationWithUnread(of: "1", unreadCount: 1)
+        makeSUT(labelID: "1", conversation: fakeConversation)
+        userManagerStub.conversationToolbarActions = [.markUnread]
+
+        XCTAssertTrue(sut.actionsForToolbarCustomizeView().contains(.markRead))
+        XCTAssertFalse(sut.actionsForToolbarCustomizeView().contains(.markUnread))
+    }
+
+    func testToolbarCustomizationCurrentTypes_setStarAction_withStarredConversation_hasUnStarAction() {
+        let fakeConversation = makeConversationWithUnread(of: Message.Location.starred.labelID, unreadCount: 1)
+        makeSUT(labelID: "1", conversation: fakeConversation)
+        toolbarActionProviderMock.conversationToolbarActions = [.star]
+
+        XCTAssertTrue(sut.actionsForToolbarCustomizeView().contains(.unstar))
+        XCTAssertFalse(sut.actionsForToolbarCustomizeView().contains(.star))
+    }
+
+    func testToolbarCustomizationCurrentTypes_setUnstarAction_withUnstarredConversation_hasStarAction() {
+        let fakeConversation = makeConversationWithUnread(of: "1", unreadCount: 1)
+        makeSUT(labelID: "1", conversation: fakeConversation)
+        toolbarActionProviderMock.conversationToolbarActions = [.star]
+
+        XCTAssertTrue(sut.actionsForToolbarCustomizeView().contains(.star))
+        XCTAssertFalse(sut.actionsForToolbarCustomizeView().contains(.unstar))
+    }
+
+    func testUpdateToolbarActions_updateActionWithoutMoreAction() {
+        saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
+            completion(.success(Void()))
+        }
+        let e = expectation(description: "Closure is called")
+        sut.updateToolbarActions(actions: [.unstar, .markRead]) { _ in
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalledExactlyOnce)
+        XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.conversationActions, [.unstar, .markRead])
+    }
+
+    func testUpdateToolbarActions_updateActionWithMoreAction() {
+        saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
+            completion(.success(Void()))
+        }
+        let e = expectation(description: "Closure is called")
+        sut.updateToolbarActions(actions: [.unstar, .markRead, .more]) { _ in
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalledExactlyOnce)
+        XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.conversationActions, [.unstar, .markRead])
+
+        let e2 = expectation(description: "Closure is called")
+        sut.updateToolbarActions(actions: [.more, .unstar, .markRead]) { _ in
+            e2.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(saveToolbarActionUseCaseMock.callExecute.wasCalled)
+        XCTAssertEqual(saveToolbarActionUseCaseMock.callExecute.lastArguments?.first.preference.conversationActions, [.unstar, .markRead])
     }
 
     func testHandleActionSheetAction_starAction_completionNotCalled() {
@@ -370,10 +407,41 @@ class ConversationViewModelTests: XCTestCase {
         waitForExpectations(timeout: 0.5, handler: nil)
     }
 
-    private func makeSUT(labelID: LabelID) {
-        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.viewContext))
+    func testShouldShowToolbarCustomizeSpotlight_userHasNotSeenSpotlight_returnTrue() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userIntroductionProgressProviderMock.shouldShowSpotlightStub.bodyIs { _, key, _ in
+            XCTAssertEqual(key, .toolbarCustomization)
+            return true
+        }
+
+        XCTAssertTrue(sut.shouldShowToolbarCustomizeSpotlight())
+    }
+
+    func testShouldShowToolbarCustomizeSpotlight_userHasSeenSpotlight_returnFalse() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userIntroductionProgressProviderMock.shouldShowSpotlightStub.bodyIs { _, key, _ in
+            XCTAssertEqual(key, .toolbarCustomization)
+            return false
+        }
+
+        XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
+    }
+
+    private func makeConversationWithUnread(of labelID: LabelID, unreadCount: Int) -> Conversation {
+        let fakeConversation = Conversation(context: contextProviderMock.mainContext)
+        let fakeContextLabel = ContextLabel(context: contextProviderMock.mainContext)
+        fakeContextLabel.labelID = labelID.rawValue
+        fakeContextLabel.unreadCount = NSNumber(value: unreadCount)
+        fakeContextLabel.conversation = fakeConversation
+        return fakeConversation
+    }
+
+    private func makeSUT(labelID: LabelID, conversation: Conversation? = nil) {
+        let conversation = conversation ?? Conversation(context: contextProviderMock.mainContext)
+        let fakeConversation = ConversationEntity(conversation)
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
+        userManagerStub = fakeUser
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
 
@@ -386,10 +454,14 @@ class ConversationViewModelTests: XCTestCase {
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
-                                    conversationNoticeViewStatusProvider: conversationNoticeViewStatusMock,
                                     conversationStateProvider: MockConversationStateProvider(),
                                     labelProvider: labelProviderMock,
-                                    goToDraft: { _ in },
+                                    userIntroductionProgressProvider: userIntroductionProgressProviderMock,
+                                    targetID: nil,
+                                    toolbarActionProvider: toolbarActionProviderMock,
+                                    saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
+                                    toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
 
@@ -401,6 +473,7 @@ class ConversationViewModelTests: XCTestCase {
                                                                     reachability: ReachabilityStub(),
                                                                     connectionMonitor: nil)
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
+        userManagerStub = fakeUserManager
 
         let fakeMessageEntity = makeMessageMock(location: location)
         messageMock = fakeMessageEntity
@@ -411,7 +484,7 @@ class ConversationViewModelTests: XCTestCase {
             replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
-            goToDraft: { _ in })
+            goToDraft: { _, _ in })
         if isExpanded {
             viewModel.toggleState()
         }
@@ -422,7 +495,7 @@ class ConversationViewModelTests: XCTestCase {
         let mockMessage = Message(context: contextProviderMock.viewContext)
         let label = Label(context: contextProviderMock.viewContext)
         mockMessage.labels = NSSet(array: [label])
-        mockMessage.messageID = UUID().uuidString
+        mockMessage.messageID = MessageID.generateLocalID().rawValue
         label.labelID = location.rawValue
         return MessageEntity(mockMessage)
     }

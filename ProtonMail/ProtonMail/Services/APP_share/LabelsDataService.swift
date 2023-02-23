@@ -38,12 +38,11 @@ enum LabelFetchType: Int {
 
 protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
-    func getCustomFolders() -> [Label]
-    func getLabel(by labelID: LabelID) -> Label?
+    func getCustomFolders() -> [LabelEntity]
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
 }
 
-class LabelsDataService: Service, HasLocalStorage {
+class LabelsDataService: Service {
     let apiService: APIService
     private let userID: UserID
     private let contextProvider: CoreDataContextProviderProtocol
@@ -64,14 +63,17 @@ class LabelsDataService: Service, HasLocalStorage {
         self.cacheService = cacheService
     }
 
-    func cleanLabelAndFolder(completion: @escaping () -> Void) {
+    func cleanLabelsAndFolders(except labelIDToPreserve: [String], completion: @escaping () -> Void) {
         let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(
-            format: "%K == %@ AND (%K == 1 OR %K == 3)",
+            format: "%K == %@ AND (%K == 1 OR %K == 3) AND (NOT (%K IN %@))",
             Label.Attributes.userID,
             userID.rawValue,
             Label.Attributes.type,
-            Label.Attributes.type)
+            Label.Attributes.type,
+            Label.Attributes.labelID,
+            labelIDToPreserve
+        )
         self.contextProvider.performOnRootSavingContext { context in
             guard let labels = try? context.fetch(request) else {
                 completion()
@@ -168,7 +170,9 @@ class LabelsDataService: Service, HasLocalStorage {
             folders.append(["ID": "12"]) // case scheduled = "12"
 
             let allFolders = labels + folders
-            self.cleanLabelAndFolder { [weak self] in
+            // to prevent deleted label won't be delete due to pull down to refresh
+            let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
+            self.cleanLabelsAndFolders(except: labelIDToPreserve) { [weak self] in
                 guard let self = self else {
                     return
                 }
@@ -226,7 +230,7 @@ class LabelsDataService: Service, HasLocalStorage {
     }
 
     func getMenuFolderLabels() -> [MenuLabel] {
-        let labels = self.getAllLabels(of: .all, context: self.contextProvider.mainContext).compactMap { LabelEntity(label: $0) }
+        let labels = self.getAllLabels(of: .all)
         let datas: [MenuLabel] = Array(labels: labels, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return folderItems
@@ -245,9 +249,17 @@ class LabelsDataService: Service, HasLocalStorage {
         let context = context
         do {
             return try context.fetch(fetchRequest)
-        } catch {}
+        } catch {
+            assertionFailure("\(error)")
+            return []
+        }
+    }
 
-        return []
+    func getAllLabels(of type: LabelFetchType) -> [LabelEntity] {
+        contextProvider.read { context in
+            let labels = getAllLabels(of: type, context: context)
+            return labels.map(LabelEntity.init(label:))
+        }
     }
 
     func makePublisher() -> LabelPublisherProtocol {
@@ -433,11 +445,7 @@ class LabelsDataService: Service, HasLocalStorage {
 }
 
 extension LabelsDataService: LabelProviderProtocol {
-    func getCustomFolders() -> [Label] {
-        return getAllLabels(of: .folder, context: contextProvider.mainContext)
-    }
-
-    func getLabel(by labelID: LabelID) -> Label? {
-        return label(by: labelID)
+    func getCustomFolders() -> [LabelEntity] {
+        getAllLabels(of: .folder)
     }
 }

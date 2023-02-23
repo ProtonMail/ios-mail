@@ -557,10 +557,6 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Ẓreg avaṭar";
 
-/* *
- *  Edit Contact view controller */
-"Edit Contact" = "Ẓreg anermis";
-
 /* The title of edit folder page */
 "Edit folder" = "Ẓreg akaram";
 
@@ -881,9 +877,6 @@
 /* menu title */
 "Lock The App" = "Sekkeṛ asnas";
 
-/* comment */
-"Log out" = "Ffeɣ";
-
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Ffeɣ seg %@";
 
@@ -962,9 +955,6 @@
 
 /* default vcard types */
 "Mobile" = "Aziraz";
-
-/* Mobile Signature title in settings */
-"Mobile Signature" = "Azmul n uziraz";
 
 /* More actions button */
 "More" = "Ugar";

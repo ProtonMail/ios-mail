@@ -416,7 +416,7 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailBcc.attributedText = bccShortAttr
 
         self.emailFavoriteButton.isSelected = self.starred
-        self.emailFavoriteButton.accessibilityLabel = self.starred ? LocalString._starred : LocalString._locations_add_star_action
+        self.emailFavoriteButton.accessibilityLabel = self.starred ? LocalString._menu_starred_title : LocalString._locations_add_star_action
 
         let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let isToday = Calendar.current.isDateInToday(self.date)

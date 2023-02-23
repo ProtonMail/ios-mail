@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>%d Member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@μέλος@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d member</string>
-			<key>other</key>
-			<string>%d members</string>
-		</dict>
-	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -29,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d minute</string>
+			<string>%d λεπτό</string>
 			<key>other</key>
-			<string>%d minutes</string>
+			<string>%d λεπτά</string>
 		</dict>
 	</dict>
 	<key>%d Selected</key>
@@ -61,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attachment</string>
+			<string>%d συνημμένο</string>
 			<key>other</key>
-			<string>%d attachments</string>
+			<string>%d συνημμένα</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -142,8 +126,6 @@
 			<string>%d ημέρα</string>
 			<key>other</key>
 			<string>%d ημέρες</string>
-			<key>zero</key>
-			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@DAY@</string>
@@ -194,11 +176,25 @@
 			<string>%d ώρα</string>
 			<key>other</key>
 			<string>%d ώρες</string>
-			<key>zero</key>
-			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@HOUR@</string>
+	</dict>
+	<key>%d member</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@member@</string>
+		<key>member</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d μέλος</string>
+			<key>other</key>
+			<string>%d μέλη</string>
+		</dict>
 	</dict>
 	<key>%d message labeled</key>
 	<dict>
@@ -262,7 +258,7 @@
 			<string>%d λεπτά</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ΛΕΠΤΟ@</string>
+		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>
@@ -294,12 +290,12 @@
 			<string>%u συνομιλίες</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ΣΥΖΗΤΗΣΗ@</string>
+		<string>%#@CONVERSATION@</string>
 	</dict>
 	<key>%u message</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@μήνυμα@</string>
+		<string>%#@message@</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -407,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
+			<string>This %d message will move to Drafts and have its schedule removed.</string>
 			<key>other</key>
 			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>

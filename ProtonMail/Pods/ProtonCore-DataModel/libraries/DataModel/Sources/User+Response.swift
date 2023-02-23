@@ -101,7 +101,6 @@ extension UserInfo {
             self.hideRemoteImages = settings["HideRemoteImages"] as? Int ?? DefaultValue.hideRemoteImages
             self.imageProxy = ImageProxy(rawValue: settings["ImageProxy"] as? Int ?? DefaultValue.imageProxy.rawValue)
             self.autoSaveContact  = settings["AutoSaveContacts"] as? Int ?? 0
-            self.showImages = ShowImages(rawValue: settings["ShowImages"] as? Int ?? 0)
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3
             self.swipeRight = settings["SwipeRight"] as? Int ?? 0
             self.linkConfirmation = settings["ConfirmLink"] as? Int == 0 ? .openAtWill : .confirmationAlert

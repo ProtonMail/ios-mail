@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-minus-circle-filled.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

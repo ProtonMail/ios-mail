@@ -40,7 +40,7 @@ class NewMessageBodyViewController: UIViewController {
     private lazy var customView = NewMessageBodyView()
 
     private lazy var loader: WebContentsSecureLoader = {
-        HTTPRequestSecureLoader()
+        HTTPRequestSecureLoader(userKeys: viewModel.userKeys)
     }()
     weak var delegate: NewMessageBodyViewControllerDelegate?
     private(set) var webView: WKWebView?
@@ -64,6 +64,7 @@ class NewMessageBodyViewController: UIViewController {
     private var lastContentOffset: CGPoint = .zero
     private var defaultScale: CGFloat?
     private let viewMode: ViewMode
+    private var expectedSwipeAction = PagesSwipeAction.noAction
 
     init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
         self.viewModel = viewModel
@@ -156,11 +157,9 @@ class NewMessageBodyViewController: UIViewController {
 			webView.translatesAutoresizingMaskIntoConstraints = false
             webView.navigationDelegate = self
             webView.uiDelegate = self
-            if viewMode == .singleMessage {
-                webView.scrollView.delegate = self
-                // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
-                webView.scrollView.isScrollEnabled = false
-            }
+            webView.scrollView.delegate = self
+            // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
+            webView.scrollView.isScrollEnabled = false
             webView.scrollView.contentInsetAdjustmentBehavior = .never
             webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
             webView.scrollView.bouncesZoom = false
@@ -503,16 +502,19 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
 
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         let united = CGPoint(x: 0, y: self.lastContentOffset.y + self.scrollViewContainer.scroller.contentOffset.y)
-        self.scrollViewContainer.propagate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
-            /* Sometimes offset after zoom can exceed tableView's heigth
-                (usually when pinch center is close to the bottom of the cell
-                and cell after zoom should be much bigger than before).
-             Here we're saying the tableView which contentOffset we'd like to have
-                after it will increase cell and animate changes.
-                That will cause a little glitch tho :( */
-            self.scrollViewContainer.scroller.contentOffset = united
-            self.scrollViewContainer.saveOffset()
-        })
+
+        if verticalRecognizer != nil {
+            self.scrollViewContainer.propagate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
+                /* Sometimes offset after zoom can exceed tableView's heigth
+                 (usually when pinch center is close to the bottom of the cell
+                 and cell after zoom should be much bigger than before).
+                 Here we're saying the tableView which contentOffset we'd like to have
+                 after it will increase cell and animate changes.
+                 That will cause a little glitch tho :( */
+                self.scrollViewContainer.scroller.contentOffset = united
+                self.scrollViewContainer.saveOffset()
+            })
+        }
 
         self.updateViewHeight(to: scrollView.contentSize.height)
 
@@ -536,10 +538,50 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if let defaultScale = self.defaultScale {
-            if round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale {
-                scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        if let defaultScale = self.defaultScale,
+           round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale,
+           // Some messages could have issue while rendering inside the WebView. The content size of it will keep increasing by 1px.
+           // And this behavior causes the height of the contentSize is bigger than the height of the frame even the zoomScale is zero.
+           // Here we double check if this message has this kind of issue.
+           scrollView.contentSize.height < scrollView.frame.height {
+            scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        }
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // ContentOffset needs sometime to update to final status
+        delay(0.3) {
+            let translation = scrollView.panGestureRecognizer.translation(in: self.webView)
+            let current = scrollView.contentOffset
+            let width = scrollView.frame.width
+            let contentWidth = scrollView.contentSize.width
+
+            let absX = abs(translation.x)
+            let absY = abs(translation.y)
+            // tan(25) = 0.466_307_658_15, why 25? by feeling
+            // a horizontal swipe drag angle is less than 25 degree
+            guard absX > absY && absY / absX <= 0.466_307_658_15 else {
+                self.expectedSwipeAction = .noAction
+                return
             }
+            let action: PagesSwipeAction
+            if current.x <= 0 && translation.x > 0 {
+                action = .backward
+            } else if current.x + width >= contentWidth && translation.x < 0 {
+                action = .forward
+            } else {
+                action = .noAction
+            }
+            guard self.expectedSwipeAction == action && action != .noAction else {
+                self.expectedSwipeAction = action
+                return
+            }
+            self.expectedSwipeAction = .noAction
+            NotificationCenter.default.post(
+                name: .pagesSwipeExpectation,
+                object: nil,
+                userInfo: ["expectation": action]
+            )
         }
     }
 }

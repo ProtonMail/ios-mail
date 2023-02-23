@@ -81,11 +81,15 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     /// We only want to send a haptic signal one a state change.
     private var swipingTriggerActivated = false {
         didSet {
-            if swipingTriggerActivated != oldValue, swipingTriggerActivated {
+            if swipingTriggerActivated != oldValue {
                 sendHapticFeedback?()
             }
         }
     }
+
+    let toolbarActionProvider: ToolbarActionProvider
+    let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
+
     init(labelID: LabelID,
          label: LabelInfo?,
          labelType: PMLabelType,
@@ -102,6 +106,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
          eventsService: EventsFetching,
          dependencies: Dependencies,
          welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
+         toolbarActionProvider: ToolbarActionProvider,
+         saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          totalUserCountClosure: @escaping () -> Int
     ) {
         self.labelID = labelID
@@ -122,6 +128,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         self.conversationProvider = conversationProvider
         self.dependencies = dependencies
         self.welcomeCarrouselCache = welcomeCarrouselCache
+        self.toolbarActionProvider = toolbarActionProvider
+        self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.conversationStateProvider.add(delegate: self)
         self.dependencies.updateMailbox.setup(source: self)
     }
@@ -201,8 +209,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
-    lazy var customFolders: [LabelEntity] = {
-        return labelProvider.getCustomFolders().map(LabelEntity.init)
+    lazy private(set) var customFolders: [LabelEntity] = {
+        labelProvider.getCustomFolders()
     }()
 
     var allEmails: [Email] {
@@ -345,44 +353,33 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         return ConversationEntity(conversation)
     }
 
+    func mailboxItem(at indexPath: IndexPath) -> MailboxItem? {
+        if let message = item(index: indexPath) {
+            return .message(message)
+        } else if let conversation = itemOfConversation(index: indexPath) {
+            return .conversation(conversation)
+        } else {
+            return nil
+        }
+    }
+
     private func itemOfRawConversation(indexPath: IndexPath, collectBreadcrumbs: Bool) -> Conversation? {
-        let log: (String) -> Void = { message in
-            if collectBreadcrumbs {
-                Breadcrumbs.shared.add(message: message, to: .invalidSwipeAction)
-            }
-        }
+        guard !indexPath.isEmpty else { return nil }
 
-        guard !indexPath.isEmpty else {
-            log("indexPath is empty")
-            return nil
-        }
-
-        guard let frc = fetchedResultsController else {
-            log("fetchedResultsController is nil")
-            return nil
-        }
+        guard let frc = fetchedResultsController else { return nil }
 
 
         let sections = frc.numberOfSections()
 
-        guard sections > indexPath.section else {
-            log("requested section \(indexPath.section) but only have \(sections) sections")
-            return nil
-        }
+        guard sections > indexPath.section else { return nil }
 
         let rows = frc.numberOfRows(in: indexPath.section)
 
-        guard rows > indexPath.row else {
-            log("requested row \(indexPath.row) but only have \(rows) rows")
-            return nil
-        }
+        guard rows > indexPath.row else { return nil }
 
         let managedObject = frc.object(at: indexPath)
 
-        guard let contextLabel = managedObject as? ContextLabel else {
-            log("fetched object is not a ContextLabel")
-            return nil
-        }
+        guard let contextLabel = managedObject as? ContextLabel else { return nil }
 
         return contextLabel.conversation
     }
@@ -509,45 +506,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
-    func markConversationAsUnread(conversationIDs: [ConversationID], currentLabelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.markAsUnread(conversationIDs: conversationIDs,
-                                         labelID: currentLabelID,
-                                         completion: completion)
-    }
-    
-    func markConversationAsRead(conversationIDs: [ConversationID], currentLabelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.markAsRead(conversationIDs: conversationIDs,
-                                       labelID: currentLabelID,
-                                       completion: completion)
-    }
-
-    func fetchConversationCount(completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.fetchConversationCounts(addressID: nil, completion: completion)
-    }
-    
-    func labelConversations(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.label(conversationIDs: conversationIDs,
-                                  as: labelID,
-                                  isSwipeAction: false,
-                                  completion: completion)
-    }
-    
-    func unlabelConversations(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationProvider.unlabel(conversationIDs: conversationIDs,
-                                    as: labelID,
-                                    isSwipeAction: false,
-                                    completion: completion)
-    }
-
-    func isEventIDValid() -> Bool {
-        return messageService.isEventIDValid()
-    }
-
-    /// get the cached notification message id
-    var notificationMessageID: String? {
-        messageService.pushNotificationMessageID
-    }
-
     final func resetNotificationMessage() {
         messageService.pushNotificationMessageID = nil
     }
@@ -596,7 +554,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
                    userID: user.userInfo.userId)
     }
 
-    func handleActionSheetAction(_ action: MailListSheetAction) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .unstar:
             handleUnstarAction()
@@ -606,22 +564,18 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
             handleMarkReadAction()
         case .markUnread:
             handleMarkUnreadAction()
-        case .remove:
+        case .trash:
             handleRemoveAction()
-        case .moveToArchive:
+        case .archive:
             handleMoveToArchiveAction()
-        case .moveToSpam:
+        case .spam:
             handleMoveToSpamAction()
-        case .dismiss, .delete:
-            break
-        case .labelAs:
+        case .labelAs, .moveTo:
             // TODO: add action
             break
-        case .moveTo:
-            // TODO: add action
-            break
-        case .moveToInbox:
+        case .inbox:
             handleMoveToInboxAction()
+        case .delete, .dismiss, .toolbarCustomization, .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
             break
         }
     }
@@ -743,16 +697,6 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         )
     }
 
-    func makeFakeRawMessage() -> Message {
-        let context = coreDataContextProvider.mainContext
-        return Message(context: context)
-    }
-
-    func makeFakeRawConversation() -> Conversation {
-        let context = coreDataContextProvider.mainContext
-        return Conversation(context: context)
-    }
-
     func searchForScheduled(swipeSelectedID: [String],
                             displayAlert: @escaping (Int) -> Void,
                             continueAction: @escaping () -> Void) {
@@ -806,10 +750,14 @@ extension MailboxViewModel {
         completion: @escaping () -> Void
     ) {
         isFirstFetch = false
+
+        let isCurrentLocationEmpty = fetchedResultsController?.fetchedObjects?.isEmpty ?? true
+
         dependencies.updateMailbox.exec(
             showUnreadOnly: showUnreadOnly,
             isCleanFetch: isCleanFetch,
             time: time,
+            fetchMessagesAtTheEnd: isCurrentLocationEmpty,
             errorHandler: errorHandler,
             completion: completion
         )
@@ -828,6 +776,30 @@ extension MailboxViewModel {
 
 // MARK: Message Actions
 extension MailboxViewModel {
+    func containsStarMessages(messageIDs: Set<String>) -> Bool {
+        var starCount = 0
+        switch self.locationViewMode {
+        case .conversation:
+            let conversations = self.conversationProvider.fetchLocalConversations(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
+            starCount = conversations.reduce(0) { (result, next) -> Int in
+                if next.contains(of: Message.Location.starred.labelID.rawValue) {
+                    return result + 1
+                } else {
+                    return result
+                }
+            }
+        case .singleMessage:
+            let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
+            starCount = messages.reduce(0) { (result, next) -> Int in
+                if next.contains(label: .starred) {
+                    return result + 1
+                } else {
+                    return result
+                }
+            }
+        }
+        return starCount > 0
+    }
 
     func selectionContainsReadItems() -> Bool {
         switch self.locationViewMode {
@@ -963,16 +935,6 @@ extension MailboxViewModel {
 
 // MARK: - Swipe actions
 extension MailboxViewModel {
-    func isScheduledSend(in indexPath: IndexPath) -> Bool {
-        if locationViewMode == .singleMessage {
-            guard let message = item(index: indexPath) else { return false }
-            return message.contains(location: .scheduled)
-        } else {
-            guard let conversation = itemOfConversation(index: indexPath) else { return false }
-            return conversation.contains(of: .scheduled)
-        }
-    }
-
     func isSwipeActionValid(_ action: MessageSwipeAction, item: MailboxItem) -> Bool {
         guard let location = messageLocation else {
             return true
@@ -1030,6 +992,27 @@ extension MailboxViewModel {
             return .labelAs
         case .moveTo:
             return .moveTo
+        }
+    }
+
+    func handleSwipeAction(_ action: MessageSwipeAction) {
+        switch action {
+        case .unstar:
+            handleUnstarAction()
+        case .star:
+            handleStarAction()
+        case .read:
+            handleMarkReadAction()
+        case .unread:
+            handleMarkUnreadAction()
+        case .trash:
+            handleRemoveAction()
+        case .archive:
+            handleMoveToArchiveAction()
+        case .spam:
+            handleMoveToSpamAction()
+        case .labelAs, .moveTo, .none:
+            break
         }
     }
 

@@ -99,6 +99,7 @@ final class SignInCoordinator {
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void
     private var loginData: LoginData?
+    private var savingResult: SignInManager.LoginDataSavingResult?
 
     static func loginFlowForFirstAccount(startingPoint: WindowsCoordinator.Destination.SignInDestination,
                                          environment: SignInCoordinatorEnvironment,
@@ -142,8 +143,8 @@ final class SignInCoordinator {
 
     private func initLogin() {
         login = environment.loginCreationClosure(LocalString._protonmail,
-                                                 .internal,
-                                                 .internal,
+                                                 .internal, // account type required for signin
+                                                 .internal, // account type possible for signup
                                                  [.notEmpty, .atLeastEightCharactersLong],
                                                  !isFirstAccountFlow)
     }
@@ -241,6 +242,8 @@ final class SignInCoordinator {
         case .signupFinished:
             if let loginData = loginData {
                 finalizeLoginSignInProcess(loginData)
+            } else if let savingResult = savingResult {
+                handle(savingResult: savingResult)
             }
             login = nil
         }
@@ -248,6 +251,11 @@ final class SignInCoordinator {
 
     private func saveLoginData(loginData: LoginData) {
         let savingResult = environment.saveLoginData(loginData)
+        self.savingResult = savingResult
+        handle(savingResult: savingResult)
+    }
+
+    private func handle(savingResult: SignInManager.LoginDataSavingResult) {
         switch savingResult {
         case .success:
             break
@@ -264,12 +272,6 @@ final class SignInCoordinator {
         environment.finalizeSignIn(loginData: loginData,
                                    onError: { [weak self] error in
                                        self?.handleRequestError(error, wrapIn: FlowError.finalizingSignInFailed)
-                                   },
-                                   reachLimit: { [weak self] in
-                                       self?.processReachLimitError()
-                                   },
-                                   existError: { [weak self] in
-                                       self?.processExistError()
                                    },
                                    showSkeleton: { [weak self] in
                                        self?.showSkeletonTemplate()

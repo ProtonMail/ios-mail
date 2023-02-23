@@ -175,9 +175,12 @@ extension FetchAndVerifyContactsTests {
         return mockApiService
     }
 
-    private func makeMockCacheService() -> MockCacheService {
-        let mockCacheService = MockCacheService()
-        mockCacheService.contactToReturn = Contact(context: mockContext)
+    private func makeMockCacheService() -> MockCacheServiceProtocol {
+        let mockCacheService = MockCacheServiceProtocol()
+        mockCacheService.updateContactDetailStub.bodyIs { _, _, completion in
+            let contactToReturn = Contact(context: self.mockContext)
+            completion?(contactToReturn, nil)
+        }
         return mockCacheService
     }
 
@@ -188,14 +191,19 @@ extension FetchAndVerifyContactsTests {
         hasSendPreferences: Bool = true,
         isContactDownloaded: Bool = false
     ) {
-        mockContactProvider.allEmailsToReturn = makeMockEmails(
+        let emails = makeMockEmails(
             emails,
             hasSendPreferences: existsInContacts && hasSendPreferences,
             isContactDownloaded: existsInContacts && isContactDownloaded
         )
+        mockContactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
+            self.mockContext.performAndWait {
+                emails.map(EmailEntity.init)
+            }
+        }
         if existsInContacts {
             mockContactProvider.allContactsToReturn = makeMockContacts(
-                with: mockContactProvider.allEmailsToReturn,
+                with: emails,
                 mockCardData: mockCardData
             )
         }

@@ -40,7 +40,7 @@ enum FeatureFlagTestData {
             "Writable": true
         },
         {
-            "Code": "ScheduledSend",
+            "Code": "ScheduledSendFreemium",
             "Type": "boolean",
             "Global": true,
             "DefaultValue": true,

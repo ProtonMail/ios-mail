@@ -26,7 +26,6 @@ final class FetchMessageDetailTests: XCTestCase {
     private var apiService: APIServiceMock!
     private var contextProvider: MockCoreDataContextProvider!
     private var realAttachmentsFlagProvider: MockRealAttachmentsFlagProvider!
-    private var cacheService: MockCacheService!
     private var messageDataAction: MockMessageDataAction!
     private var sut: FetchMessageDetail!
 
@@ -37,7 +36,7 @@ final class FetchMessageDetailTests: XCTestCase {
         apiService = APIServiceMock()
         contextProvider = MockCoreDataContextProvider()
         realAttachmentsFlagProvider = MockRealAttachmentsFlagProvider()
-        cacheService = MockCacheService()
+        let cacheService = MockCacheServiceProtocol()
         messageDataAction = MockMessageDataAction()
         sut = FetchMessageDetail(
             dependencies: .init(queueManager: queueManager,
@@ -56,7 +55,6 @@ final class FetchMessageDetailTests: XCTestCase {
         apiService = nil
         contextProvider = nil
         realAttachmentsFlagProvider = nil
-        cacheService = nil
         messageDataAction = nil
         sut = nil
     }

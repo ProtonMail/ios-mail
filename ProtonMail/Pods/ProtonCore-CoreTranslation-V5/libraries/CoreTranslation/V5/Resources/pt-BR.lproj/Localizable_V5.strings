@@ -52,6 +52,9 @@
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "A solução de e-mail e calendário com foco em privacidade para toda a sua comunicação.";
 
+/* New_Plans Plan details drive plus description */
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "O plano focado em armazenamento com 200 GB de armazenamento em nuvem para manter seus arquivos privados.";
+
 /* New_Plans Plan details bundle description */
 "New_Plans The ultimate privacy pack with access to all premium Proton services." = "O pacote de privacidade absoluto com acesso a todos os serviços premium da Proton.";
 

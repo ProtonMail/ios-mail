@@ -35,7 +35,7 @@ class ImageProxy: LifetimeTrackable {
 
     // used for reading and deleting downloaded files
     // concurrent for optimum performance
-    private let downloadCompletionQueue = DispatchQueue.global()
+    private let parallelQueue = DispatchQueue.global()
 
     // used for modifying the HTML document as well as combining fetched tracker info into a dictionary
     // serial for thread safety
@@ -77,6 +77,51 @@ class ImageProxy: LifetimeTrackable {
         self.dependencies = dependencies
 
         trackLifetime()
+    }
+
+    func dryRun(body: String, delegate: ImageProxyDelegate) throws {
+        let fullHTMLDocument = try SwiftSoup.parse(body)
+        let unsafeRemoteURLs = try replaceRemoteURLsWithUUIDs(in: fullHTMLDocument).keys
+
+        var trackers: [String: Set<UnsafeRemoteURL>] = [:]
+
+        let dispatchGroup = DispatchGroup()
+
+        for unsafeURL in unsafeRemoteURLs {
+            dispatchGroup.enter()
+
+            fetchTrackerInformation(from: unsafeURL) { [weak self] result in
+                guard let self = self else {
+                    dispatchGroup.leave()
+                    return
+                }
+
+                self.processingQueue.async {
+                    defer {
+                        dispatchGroup.leave()
+                    }
+
+                    do {
+                        if let trackerProvider = try result.get() {
+                            var urlsFromProvider = trackers[trackerProvider] ?? []
+                            urlsFromProvider.insert(unsafeURL)
+                            trackers[trackerProvider] = urlsFromProvider
+                        }
+                    } catch {
+                    }
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: processingQueue) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let summary = TrackerProtectionSummary(trackers: trackers)
+            let output = ImageProxyDryRunOutput(summary: summary)
+            delegate.imageProxy(self, didFinishDryRunWithOutput: output)
+        }
     }
 
     /*
@@ -272,70 +317,91 @@ class ImageProxy: LifetimeTrackable {
         completion: @escaping (Result<RemoteImage, Error>) -> Void
     ) {
         let safeURL = proxyURL(for: unsafeURL)
-
-        do {
-            if let cachedRemoteImage = try imageCache.remoteImage(forURL: safeURL) {
-                completion(.success(cachedRemoteImage))
+        parallelQueue.async { [weak self] in
+            guard let strongSelf = self else {
+                completion(.failure(ImageProxyError.selfReleased))
                 return
             }
-        } catch {
-            imageCache.removeRemoteImage(forURL: safeURL)
-            assertionFailure("\(error)")
-        }
-
-        let destinationURL = temporaryLocalURL()
-
-        dependencies.apiService.download(
-            byUrl: safeURL.value,
-            destinationDirectoryURL: destinationURL,
-            headers: nil,
-            authenticated: true,
-            customAuthCredential: nil,
-            nonDefaultTimeout: nil,
-            retryPolicy: .userInitiated,
-            downloadTask: nil
-        ) { [weak self] response, _, error in
-            self?.downloadCompletionQueue.async { [weak self] in
-                defer {
-                    try? FileManager.default.removeItem(at: destinationURL)
-                }
-
-                guard let self = self else {
+            do {
+                if let cachedRemoteImage = try strongSelf.imageCache.remoteImage(forURL: safeURL) {
+                    completion(.success(cachedRemoteImage))
                     return
                 }
-
-                guard let httpURLResponse = response as? HTTPURLResponse else {
-                    completion(.failure(error ?? ImageProxyError.invalidState))
-                    return
-                }
-
-                let result: Result<RemoteImage, Error>
-                do {
-                    let data = try Data(contentsOf: destinationURL)
-
-                    // this is a more direct way of checking the result than parsing errors from the response
-                    guard UIImage(data: data) != nil else {
-                        throw ImageProxyError.responseIsNotAnImage
+            } catch {
+                strongSelf.imageCache.removeRemoteImage(forURL: safeURL)
+                assertionFailure("\(error)")
+            }
+            let destinationURL = strongSelf.temporaryLocalURL()
+            strongSelf.dependencies.apiService.download(
+                byUrl: safeURL.value,
+                destinationDirectoryURL: destinationURL,
+                headers: nil,
+                authenticated: true,
+                customAuthCredential: nil,
+                nonDefaultTimeout: nil,
+                retryPolicy: .userInitiated,
+                downloadTask: nil
+            ) { [weak self] response, _, error in
+                self?.parallelQueue.async { [weak self] in
+                    defer {
+                        try? FileManager.default.removeItem(at: destinationURL)
                     }
 
-                    let remoteImage = RemoteImage(data: data, httpURLResponse: httpURLResponse)
-                    self.cacheRemoteImage(remoteImage, for: safeURL)
-                    result = .success(remoteImage)
-                } catch {
-                    result = .failure(error)
-                }
+                    guard let self = self else {
+                        return
+                    }
 
-                completion(result)
+                    guard let httpURLResponse = response as? HTTPURLResponse else {
+                        completion(.failure(error ?? ImageProxyError.invalidState))
+                        return
+                    }
+
+                    let result: Result<RemoteImage, Error>
+                    do {
+                        let data = try Data(contentsOf: destinationURL)
+
+                        // this is a more direct way of checking the result than parsing errors from the response
+                        guard UIImage(data: data) != nil else {
+                            throw ImageProxyError.responseIsNotAnImage
+                        }
+
+                        let remoteImage = RemoteImage(data: data, httpURLResponse: httpURLResponse)
+                        self.cacheRemoteImage(remoteImage, for: safeURL)
+                        result = .success(remoteImage)
+                    } catch {
+                        result = .failure(error)
+                    }
+
+                    completion(result)
+                }
             }
+        }
+    }
+
+    private func fetchTrackerInformation(
+        from unsafeURL: UnsafeRemoteURL,
+        completion: @escaping (Result<String?, Error>) -> Void
+    ) {
+        let request = ImageProxyRequest(unsafeURL: unsafeURL, dryRun: true)
+
+        dependencies.apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .immediateExecutor
+        ) { task, result in
+            guard let httpURLResponse = task?.response as? HTTPURLResponse else {
+                completion(.failure(result.error ?? task?.error ?? ImageProxyError.invalidState))
+                return
+            }
+
+            let trackerProvider = httpURLResponse.headers["x-pm-tracker-provider"]
+            completion(.success(trackerProvider))
         }
     }
 
     private func proxyURL(for unsafeURL: UnsafeRemoteURL) -> SafeRemoteURL {
         let baseURL = dependencies.apiService.doh.getCurrentlyUsedHostUrl()
-        let encodedImageURL: String = unsafeURL
-            .value
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? unsafeURL.value
-        return SafeRemoteURL(value: "\(baseURL)/core/v4/images?Url=\(encodedImageURL)")
+        let request = ImageProxyRequest(unsafeURL: unsafeURL, dryRun: false)
+        return SafeRemoteURL(value: "\(baseURL)\(request.path)")
     }
 
     private func temporaryLocalURL() -> URL {

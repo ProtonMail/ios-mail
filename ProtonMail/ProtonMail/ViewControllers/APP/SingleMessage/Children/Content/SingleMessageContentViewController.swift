@@ -108,12 +108,6 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        spotlightFeatures()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
@@ -357,9 +351,6 @@ class SingleMessageContentViewController: UIViewController {
             header.observeShowDetails {
                 self?.expandButton()
             }
-            header.contactTapped = {
-                self?.presentActionSheet(context: $0)
-            }
             self?.headerViewController = header
         }
 
@@ -404,12 +395,6 @@ class SingleMessageContentViewController: UIViewController {
         if shouldReloadWhenAppIsActive {
             viewModel.downloadDetails()
             shouldReloadWhenAppIsActive = false
-        }
-    }
-
-    private func spotlightFeatures() {
-        if viewModel.shouldSpotlightTrackerProtection {
-            spotlightTrackerProtection()
         }
     }
 }
@@ -585,31 +570,5 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
 
     func trackerProtectionSummaryChanged() {
         headerViewController?.trackerProtectionSummaryChanged()
-    }
-
-    private func spotlightTrackerProtection() {
-        guard let spotlightContainerView = navigationController?.view else {
-            assertionFailure("View outside of view hierarchy")
-            return
-        }
-
-        let spotlightView = makeSpotlightView()
-
-        guard let spotlightableView = headerViewController?.spotlightableView else {
-            return
-        }
-
-        viewModel.userHasSeenSpotlightForTrackerProtection()
-
-        let frameInContainer = spotlightableView.convert(spotlightableView.bounds, to: spotlightContainerView)
-        spotlightView.presentOn(view: spotlightContainerView, targetFrame: frameInContainer)
-    }
-
-    private func makeSpotlightView() -> SpotlightView {
-        SpotlightView(
-            title: L11n.EmailTrackerProtection.spotlight_title,
-            message: viewModel.spotlightMessage,
-            icon: Asset.trackingProtectionSpotlightIcon
-        )
     }
 }

@@ -28,7 +28,7 @@ final class LoginViewModel {
         case done(LoginData)
         case twoFactorCodeNeeded
         case mailboxPasswordNeeded
-        case createAddressNeeded(CreateAddressData)
+        case createAddressNeeded(CreateAddressData, String?)
     }
 
     // MARK: - Properties
@@ -53,7 +53,7 @@ final class LoginViewModel {
 
         let userFrame = ["name": "username"]
         let challengeData = self.challenge.export()
-            .toDictArray()
+            .allFingerprintDict()
             .first(where: { $0["frame"] as? [String: String] == userFrame })
 
         login.login(username: username, password: password, challenge: challengeData) { [weak self] result in
@@ -72,8 +72,15 @@ final class LoginViewModel {
                     self?.finished.publish(.mailboxPasswordNeeded)
                     self?.isLoading.value = false
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
-                    self?.finished.publish(.createAddressNeeded(data))
-                    self?.isLoading.value = false
+                    self?.login.checkUsernameFromEmail(email: data.email) { [weak self] result in
+                        switch result {
+                        case .failure(let error):
+                            self?.error.publish(.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                        case .success(let defaultUsername):
+                            self?.finished.publish(.createAddressNeeded(data, defaultUsername))
+                        }
+                        self?.isLoading.value = false
+                    }
                 }
             }
         }
@@ -82,11 +89,11 @@ final class LoginViewModel {
     // MARK: - Validation
 
     func validate(username: String) -> Result<(), LoginValidationError> {
-        return !username.isEmpty ? Result.success : Result.failure(LoginValidationError.emptyUsername)
+        return !username.isEmpty ? .success : .failure(.emptyUsername)
     }
 
     func validate(password: String) -> Result<(), LoginValidationError> {
-        return !password.isEmpty ? Result.success : Result.failure(LoginValidationError.emptyPassword)
+        return !password.isEmpty ? .success : .failure(.emptyPassword)
     }
 
     func updateAvailableDomain(result: (([String]?) -> Void)? = nil) {

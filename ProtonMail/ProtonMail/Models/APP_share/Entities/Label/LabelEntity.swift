@@ -40,11 +40,13 @@ struct LabelEntity: Hashable, Equatable {
     private(set) var notify: Bool
 
     // MARK: Relations
-    private(set) var emailRelations: [EmailEntity]?
+    private(set) var emailRelations: [EmailEntity]
 
     // MARK: Local properties
     private(set) var isSoftDeleted: Bool
+}
 
+extension LabelEntity {
     init(label: Label) {
         self.userID = UserID(label.userID)
         self.labelID = LabelID(label.labelID)

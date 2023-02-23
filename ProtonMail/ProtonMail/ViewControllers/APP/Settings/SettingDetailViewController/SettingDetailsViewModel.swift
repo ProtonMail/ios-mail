@@ -53,7 +53,7 @@ class ChangeDisplayNameViewModel: SettingDetailsViewModel {
     }
 
     func getNavigationTitle() -> String {
-        return LocalString._settings_displayname_title
+        return LocalString._settings_display_name_title
     }
 
     func isDisplaySwitch() -> Bool {
@@ -146,7 +146,7 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
     }
 
     func getSwitchText() -> String {
-        return LocalString._settings_enable_default_signature_title
+        return LocalString._settings_enable_signature_title
     }
 
     func getSwitchStatus() -> Bool {
@@ -240,7 +240,7 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     }
 
     func getSwitchText() -> String {
-        return LocalString._settings_enable_mobile_signature_title
+        return LocalString._settings_enable_signature_title
     }
 
     func getSwitchStatus() -> Bool {

@@ -50,6 +50,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case combinContacts
     case alternativeRouting
     case browser
+    case toolbar
 
     var description: String {
         switch self {
@@ -65,6 +66,8 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._swipe_actions
         case .alternativeRouting:
             return LocalString._alternative_routing
+        case .toolbar:
+            return LocalString._toolbar_customize_general_title
         }
     }
 }
@@ -83,36 +86,10 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
     }
 }
 
-protocol SettingsDeviceViewModel: AnyObject {
-    var sections: [SettingDeviceSection] { get set }
-
-    var appSettigns: [DeviceSectionItem] { get set }
-
-    var generalSettings: [GeneralSectionItem] { get set }
-
-    func appVersion() -> String
-
-    var email: String { get }
-    var name: String { get }
-
-    var languages: [ELanguage] { get }
-
-    var lockOn: Bool { get }
-    var combineContactOn: Bool { get }
-    var isDohOn: Bool { get }
-
-    var appPINTitle: String { get }
-
-    func cleanCache(completion: ((Result<Void, NSError>) -> Void)?)
-}
-
-class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
-
-    var sections: [SettingDeviceSection] = [ .account, .app, .general, .clearCache]
-
-    var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
-
-    var generalSettings: [GeneralSectionItem] = [.notification, .language]
+final class SettingsDeviceViewModel {
+    let sections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
+    private(set) var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
+    let generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private(set) var userManager: UserManager
     private let users: UsersManager
@@ -136,7 +113,7 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
         return name.isEmpty ? self.email : name
     }
 
-    var languages: [ELanguage] = ELanguage.allItems()
+    let languages: [ELanguage] = ELanguage.allItems()
 
     var isDohOn: Bool {
         return self.dohSetting.status == .on
@@ -161,10 +138,14 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
         if #available(iOS 13, *), UserInfo.isDarkModeEnable {
             appSettigns.insert(.darkMode, at: 0)
         }
+
+        if UserInfo.isToolbarCustomizationEnable {
+            appSettigns.append(.toolbar)
+        }
     }
 
     func appVersion() -> String {
-        var appVersion = "Unkonw Version"
+        var appVersion = "Unknown Version"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             appVersion = "\(version)"
         }
@@ -175,25 +156,33 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
     }
 
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?) {
+        var lastError: NSError?
+        let group = DispatchGroup()
         for user in users.users {
+            group.enter()
             user.messageService.cleanLocalMessageCache { error in
                 user.conversationService.cleanAll()
                 user.conversationService.fetchConversations(for: Message.Location.inbox.labelID,
                                                             before: 0,
                                                             unreadOnly: false,
                                                             shouldReset: false) { result in
-                    if user.userInfo.userId == self.userManager.userInfo.userId {
-                        switch result {
-                        case .failure(let error):
-                            completion?(.failure(error as NSError))
-                        case .success:
-                            completion?(.success(()))
-                        }
+                    switch result {
+                    case .failure(let error):
+                        lastError = error as NSError
+                    case .success:
+                        break
                     }
+                    group.leave()
                 }
             }
         }
-
-        ImageProxyCache.shared.purge()
+        group.notify(queue: .main) {
+            ImageProxyCache.shared.purge()
+            if let error = lastError {
+                completion?(.failure(error))
+            } else {
+                completion?(.success(()))
+            }
+        }
     }
 }

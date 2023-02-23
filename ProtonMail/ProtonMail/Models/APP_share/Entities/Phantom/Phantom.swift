@@ -19,6 +19,18 @@ import Foundation
 
 struct Phantom<Tag, RawValue> {
     let rawValue: RawValue
+
+    init(rawValue: RawValue) {
+        self.rawValue = rawValue
+    }
+
+    init?(_ value: RawValue?) {
+        if let value = value {
+            self.rawValue = value
+        } else {
+            return nil
+        }
+    }
 }
 
 extension Phantom: CustomStringConvertible where RawValue: CustomStringConvertible {
@@ -27,10 +39,15 @@ extension Phantom: CustomStringConvertible where RawValue: CustomStringConvertib
     }
 }
 
-extension Phantom: Decodable  where RawValue: Decodable {
+extension Phantom: Codable  where RawValue: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         self.init(rawValue: try container.decode(RawValue.self))
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
     }
 }
 

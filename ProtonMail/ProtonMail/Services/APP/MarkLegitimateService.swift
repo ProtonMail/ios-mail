@@ -23,6 +23,7 @@
 import PromiseKit
 import ProtonCore_Services
 
+// sourcery: mock
 protocol MarkLegitimateActionHandler: AnyObject {
     func markAsLegitimate(messageId: MessageID)
 }

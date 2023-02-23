@@ -1,9 +1,6 @@
 /* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
 "%@ & %@" = "%@ und %@";
 
-/* Proton Mail address availability */
-"%@ is available" = "%@ ist verfügbar";
-
 /* Plan details storage */
 "%@ storage" = "%@ Speicherplatz";
 
@@ -62,9 +59,6 @@
 
 /* top left back button */
 "Back" = "Zurück";
-
-/* Terms and conditions note */
-"By clicking Create address, you agree with Proton's Terms and Conditions." = "Indem du auf „E-Mail-Adresse erstellen” klickst, erklärst du dich mit den Allgemeinen Geschäftsbedingungen von Proton einverstanden.";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Indem du auf „Weiter” klickst, erklärst du dich mit den Allgemeinen Geschäftsbedingungen von Proton einverstanden.";
@@ -127,15 +121,8 @@
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Erstelle stattdessen eine sichere Proton Mail-E-Mail-Adresse";
 
-/* Action button title for creating Proton Mail address */
-"Create address" = "Neue E-Mail-Adresse";
-
 /* Create account button */
 "Create an account" = "Konto erstellen";
-
-/* *
- * Login choose username */
-"Create Proton Mail address" = "Proton Mail-E-Mail-Adresse erstellen";
 
 /* Create user failed error */
 "Create user failed" = "Benutzer konnte nicht erstellt werden";
@@ -300,11 +287,12 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Es war nicht möglich, das von dir im App Store erworbene Produkt mit einem Produkt auf unserem Server abzugleichen. Bitte fülle den Fehlerbericht aus und unser Kunden-Support-Team wird sich mit dir in Verbindung setzen.";
 
 /* alternative routing link name in description
+   External accounts not supported popup learn more button
    learn more button */
 "Learn more" = "Mehr erfahren";
 
 /* visit item message */
-"Learn more about human verification and why we ask for it." = "Erfahre mehr über die menschliche Prüfung und warum wir danach fragen.";
+"Learn more about human verification and why we ask for it." = "Erfahre mehr über die menschliche Verifizierung und warum wir danach fragen.";
 
 /* *
  * Splash */
@@ -326,7 +314,7 @@
 "Multi-user support" = "Unterstützung für mehrere Benutzer";
 
 /* Verification help */
-"Need help with human verification?" = "Benötigst du Hilfe bei der menschlichen Bestätigung?";
+"Need help with human verification?" = "Benötigst du Hilfe bei der menschlichen Verifizierung?";
 
 /* Help button */
 "Need help?" = "Benötigst du Hilfe?";
@@ -335,8 +323,7 @@
  * Networking */
 "Network connection error" = "Netzwerkverbindungsfehler";
 
-/* Action button title for picking Proton Mail username
-   Next button */
+/* Next button */
 "Next" = "Weiter";
 
 /* network troubleshot cell title */
@@ -425,6 +412,10 @@
 
 /* Welcome screen footer label */
 "Privacy by default" = "Privatsphäre als Standard";
+
+/* *
+ * Login create address */
+"Proton address required" = "Proton-Adresse erforderlich";
 
 /* Signup summary free plan description replacement */
 "Proton Free" = "Proton Free";
@@ -557,7 +548,6 @@
 "Temporarily disable or remove your antivirus software." = "Deaktiviere oder entferne vorübergehend deine Antiviren-Software.";
 
 /* Recovery terms and conditions link
-   Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Allgemeine Geschäftsbedingungen";
 
@@ -696,10 +686,6 @@
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Du wirst abgemeldet und alle mit diesem Konto verbundenen Daten werden von diesem Gerät entfernt.";
 
-/* *
- * Login create address */
-"You will use this email address to log into all Proton services." = "Diese E-Mail-Adresse kann verwendet werden, um sich bei allen Proton-Diensten anzumelden.";
-
 /* Complete view title */
 "Your account is being created" = "Dein Konto wird erstellt…";
 
@@ -721,17 +707,11 @@
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Dein Abo wird automatisch am %@ verlängert";
 
-/* Info about existing external Proton Mail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Dein Proton-Konto ist mit „%@“ verbunden. Um „%@“ verwenden zu können, erstelle bitte eine E-Mail-Adresse.";
-
 /* Signup summary no plan description */
 "Your Proton account was successfully created." = "Dein Proton-Konto wurde erfolgreich erstellt.";
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Dein kostenloses Proton-Konto wurde erfolgreich erstellt.";
-
-/* Recovery address label title */
-"Your recovery email address:" = "Deine Wiederherstellungs-E-Mail-Adresse:";
 
 /* Session expired info */
 "Your session has expired. Please log in again." = "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.";

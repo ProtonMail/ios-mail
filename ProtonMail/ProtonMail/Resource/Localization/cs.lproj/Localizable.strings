@@ -37,6 +37,9 @@
 /* Placeholder */
 "8 to 21 characters long" = "8 až 21 znaků dlouhé";
 
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Z důvodů neplacení je přístup k tomuto účtu zakázán. Prosím přihlaste se prostřednictvím proton.me a uhraďte nezaplacenou fakturu.";
+
 /* Account manager title */
 "Account" = "Účet";
 
@@ -194,6 +197,9 @@
    The title of the archive action in action sheet */
 "Archive" = "Archiv";
 
+/* Push notification action archive */
+"Archive (verb)" = "Archivovat";
+
 /* Message of message permanent deletion alert, singular */
 "Are you sure you want to delete permanently this message?" = "Opravdu chcete tuto zprávu trvale odstranit?";
 
@@ -243,11 +249,17 @@
 /* Title */
 "Authentication" = "Ověřování";
 
+/* Title */
+"Auto Lock Time" = "Čas do automatického uzamčení";
+
 /* settings general section title */
 "Auto-load embedded images" = "Automaticky načíst vložené obrázky";
 
 /* settings general section title */
 "Auto-load remote content" = "Automaticky načíst vzdálený obsah";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Dostupné akce";
 
 /* Example feedback */
 "Awful" = "Strašné";
@@ -263,6 +275,9 @@
 
 /* Error Description */
 "Bad response" = "Chybná odpověď";
+
+/* Title */
+"Bcc" = "Skrytá kopie";
 
 /* message Bcc: feild */
 "Bcc:" = "Skrytá kopie:";
@@ -281,6 +296,9 @@
 
 /* Title */
 "Bug Description" = "Popis chyby";
+
+/* Title */
+"Bug Report Received" = "Chybová zpráva obdržena";
 
 /* The title of cached data in local storage settings */
 "Cached data" = "Data v mezipaměti";
@@ -343,8 +361,15 @@
 /* Warning message */
 "Cannot empty folder right now." = "Nyní nelze složku vyprázdnit.";
 
+/* message Cc: feild
+   Title */
+"Cc" = "Kopie";
+
 /* settings general section title */
 "Change account password" = "Změnit heslo účtu";
+
+/* Title */
+"Change default address to…" = "Změnit výchozí adresu na…";
 
 /* settings general section title */
 "Change mailbox password" = "Změnit heslo poštovní schránky";
@@ -353,8 +378,14 @@
    title */
 "Change password" = "Změnit heslo";
 
+/* update password error title */
+"Change Password" = "Změnit heslo";
+
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Změnit PIN kód";
+
+/* Title */
+"Change sender address to…" = "Změnit adresu odesílatele na…";
 
 /* Text for status label when low battery */
 "Charge your device or resume manually." = "Nabijte zařízení nebo obnovte ručně.";
@@ -471,6 +502,9 @@
 /* Title */
 "Copy name" = "Kopírovat jméno";
 
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Zprávu se nepodařilo otevřít, zkuste to znovu.";
+
 /* contact placeholder */
 "Country" = "Země";
 
@@ -502,6 +536,9 @@
    Custom option for time config picker */
 "Custom" = "Vlastní";
 
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Přizpůsobit panel nástrojů";
+
 /* Title */
 "Cut" = "Vyjmout";
 
@@ -513,6 +550,9 @@
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Datum: %@";
+
+/* days */
+"days" = "dny";
 
 /* error title */
 "Decryption error" = "Chyba dešifrování";
@@ -528,6 +568,9 @@
 
 /* Settings row */
 "Default browser" = "Výchozí prohlížeč";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Nápověda k heslu (volitelné)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -577,8 +620,14 @@
 /* Action */
 "Discard changes" = "Zahodit změny";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Zrušeno";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Schovat klávesnici";
+
+/* Title in settings */
+"Display Name" = "Zobrazované jméno";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Opravdu chcete tento soubor odebrat z příloh?";
@@ -667,8 +716,7 @@
 /* The title for the view where user can select the color for the group */
 "Edit avatar" = "Upravit obrázek";
 
-/* *
- *  Edit Contact view controller */
+/* Contacts Edit contact */
 "Edit Contact" = "Upravit kontakt";
 
 /* The title of edit folder page */
@@ -700,6 +748,9 @@
 
 /* Send an email to the current contact (button title text) */
 "Email contact" = "E-mailový kontakt";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "Odeslání e-mailu selhalo. Zpráva byla uložena jako koncept.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Sledovací prvky v e-mailech můžou narušit vaše soukromí.";
@@ -885,6 +936,9 @@
 /* Title */
 "Hide details" = "Skrýt detaily";
 
+/* hours */
+"hours" = "hodiny";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým Proton Mailem?";
 
@@ -896,6 +950,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Upozornění kontroly CAPTCHA";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Používám Proton Mail a myslím, že by se vám mohl líbit. Je to bezpečná e-mailová služba, která chrání vaše soukromí. Zaregistrujte se pomocí tohoto odkazu a získejte 1 měsíc prémiových funkcí zdarma:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Pokud dojde ke ztrátě připojení Wi-Fi, stahování bude pokračovat přes mobilní data.";
@@ -970,8 +1027,14 @@
 /* Error message */
 "Invalid username!" = "Neplatné uživatelské jméno!";
 
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Pozvěte své přátele, aby se připojili k Proton\na získejte až $90 v kreditech!";
+
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Pozvěte své kontakty do služby Proton Mail, abyste mohli využívat bezproblémové koncové šifrování, nebo přidejte ochranu heslem do zpráv, které jim posíláte.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Pozvěte své přátele, aby se připojili k Proton: zdarma si mohou vyzkoušet tarif Mail Plus. Pokud si předplatí placený tarif, získáte kredity.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Týká se toto hlášení chyby problému s nákupem v aplikaci?";
@@ -1011,6 +1074,9 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit dosažen";
 
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Odkaz zkopírován.";
+
 /* Button inside the banner */
 "Load anyway" = "Přesto načíst";
 
@@ -1038,9 +1104,6 @@
 
 /* The body of notification that will show when the token of one account is revoked */
 "Log in again to keep receiving updates" = "Chcete-li nadále dostávat aktualizace, znovu se přihlaste";
-
-/* comment */
-"Log out" = "Odhlásit se";
 
 /* The title of notification that will show when the token of one account is revoked */
 "Logged out of %@" = "Odhlášeno z %@";
@@ -1078,6 +1141,9 @@
 
 /* menu title */
 "Menu" = "Menu";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Zpráva";
 
 /* No comment provided by engineer. */
 "Message actions" = "Akce se zprávou";
@@ -1218,6 +1284,9 @@
 
 /* Title */
 "No connectivity detected…" = "Nerozpoznáno žádné síťové připojení…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Bez sledovacích prvků";
 
 /* network troubleshot cell title */
 "No internet connection" = "Bez připojení k Internetu";
@@ -1490,6 +1559,9 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Obnovení účtu povoleno";
 
+/* menu title */
+"Refer a friend" = "Doporučit přátelům";
+
 /* Title */
 "Remind Me Later" = "Připomenout později";
 
@@ -1530,6 +1602,12 @@
 /* link opeining confirmation */
 "Request link confirmation" = "Požadovat potvrzení při otevírání odkazů";
 
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Obnovit výchozí nastavení";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Obnovit výchozí nastavení?";
+
 /* Title */
 "Resetting message cache…" = "Reset mezipaměti zpráv…";
 
@@ -1561,8 +1639,8 @@
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
 "Schedule will be removed" = "Naplánovaná zpráva bude odstraněna";
 
-/* The title of the introducation view of the schedule send */
-"Schedule send" = "Naplánované odeslání";
+/* mail location title */
+"Scheduled" = "Naplánováno";
 
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Plánování zprávy...";
@@ -1586,6 +1664,9 @@
 
 /* section title */
 "Select colour" = "Vyberte barvu";
+
+/* Option for set up scheduled send */
+"Select date and time" = "Vyberte datum a čas";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Vybráno";
@@ -1619,6 +1700,9 @@
 
 /* Alert title */
 "Sending in progress" = "Probíhá odesílání";
+
+/* Description */
+"Sending Message" = "Odesílání zprávy";
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Odesílání zprávy…";
@@ -1671,6 +1755,9 @@
 /* menu title */
 "Settings" = "Nastavení";
 
+/* The title of the share button in referral share view. */
+"Share" = "Sdílet";
+
 /* action */
 "Share contact" = "Sdílet kontakt";
 
@@ -1683,6 +1770,9 @@
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Odhlásit se";
+
+/* Action */
+"Sign Out" = "Odhlásit se";
 
 /* Title in signature settings */
 "Signature" = "Podpis";
@@ -1793,6 +1883,9 @@
 /* Antivirus interference description. */
 "Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte Váš antivirový program.";
 
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Pravidla a podmínky užití";
+
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Děkujeme vám za odeslání hlášení o chybě.  Vaši zprávu jsme přidali do našeho systému sledování chyb.";
 
@@ -1801,6 +1894,9 @@
 
 /* Error message */
 "The 2 passwords are not matching" = "Tyto 2 hesla nesouhlasí";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Akce na panelu nástrojů budou obnoveny na výchozí hodnoty";
 
 /* Info banner to inform the user that indexing might be stopped when the app is closed. */
 "The download will stop if the Proton Mail app is closed." = "Stahování se zastaví, pokud je aplikace Proton Mail zavřena.";
@@ -1822,6 +1918,9 @@
 
 /* update password error */
 "The new password needs to be at least 8 characters long" = "Nové heslo musí mít délku alespoň 8 znaků";
+
+/* update password error */
+"The password is wrong." = "Heslo je nesprávné.";
 
 /* Error message */
 "The password must be between 8 and 21 characters long" = "Heslo musí mít délku 8 až 21 znaků";
@@ -1901,11 +2000,23 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Tato priorita nastavení prohlížeče se vrátí zpět na Safari, pokud bude tento prohlížeč odinstalován.";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Tento panel nástrojů se zobrazí při výběru více zpráv v doručené poště.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Tento panel nástrojů je viditelný při čtení zprávy.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Čas na odpočinek";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Načasování";
+
 /* contacts talbe cell Title title */
 "Title" = "Titul";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Ověření certifikátu TLS selhalo. Vaše připojení může být monitorováno a aplikace je kvůli vaší bezpečnosti dočasně zablokována.\n\nOkamžitě se připojte k jiné síti.";
@@ -1917,6 +2028,9 @@
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Dnes, %@";
 
+/* One of schedule time options */
+"Tomorrow" = "Zítra";
+
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Zítra v 08:%02d";
 
@@ -1926,8 +2040,14 @@
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Příliš mnoho zpráv čeká na odeslání.\nProsím počkejte až bude další zpráva odeslána k naplánování této zprávy.";
 
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Akce panelu nástrojů (vyberte až 5)";
+
 /* The protection title of Touch ID protection */
 "Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Sledujte své odměny";
 
 /* mail location desc
    menu title */
@@ -1959,6 +2079,9 @@
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Nelze zpracovat objekt odpovědi:\n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "Nelze odeslat e-mail";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Nezveřejnění příjemci";
@@ -2095,8 +2218,14 @@
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Jste v režimu offline";
 
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Můžete vybrat a změnit uspořádání akcí na vašem panelu nástrojů";
+
 /* The message of the conversation notice view shown in the conversation view. */
 "You can disable conversations from settings any time." = "Konverzace můžete kdykoli vypnout v nastavení.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Nyní můžete vybrat a změnit uspořádání akcí na tomto panelu nástrojů";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Nyní můžete naplánovat odesílání zpráv na později";
@@ -2163,6 +2292,9 @@
 
 /* The section title of folder manager table */
 "Your folders" = "Vaše složky";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Odkaz pro pozvání";
 
 /* The section title of label manager table */
 "Your labels" = "Vaše štítky";

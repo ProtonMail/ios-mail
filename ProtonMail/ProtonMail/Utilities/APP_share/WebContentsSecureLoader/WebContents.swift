@@ -25,10 +25,12 @@ import WebKit
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
 struct WebContents: Equatable {
+
     let body: String
     let remoteContentMode: RemoteContentPolicy
     var renderStyle: MessageRenderStyle
     let supplementCSS: String?
+    let webImages: WebImageContents?
 
     var bodyForJS: String {
         return self.body.escaped
@@ -37,12 +39,14 @@ struct WebContents: Equatable {
     init(body: String,
          remoteContentMode: RemoteContentPolicy,
          renderStyle: MessageRenderStyle = .dark,
-         supplementCSS: String? = nil) {
+         supplementCSS: String? = nil,
+         webImages: WebImageContents? = nil) {
         // \u00A0 is white space that will break dompurify
         self.body = body.preg_replace("\u{00A0}", replaceto: " ")
         self.remoteContentMode = remoteContentMode
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
+        self.webImages = webImages
     }
 
     var contentSecurityPolicy: String {
@@ -53,17 +57,18 @@ struct WebContents: Equatable {
         case allowed, disallowed, lockdown
 
         var cspRaw: String {
+            let scheme = HTTPRequestSecureLoader.imageCacheScheme
             switch self {
             case .lockdown:
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
 
             case .disallowed: // this cuts off all remote content
                 // swiftlint:disable line_length
-                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';"
+                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(scheme):; script-src 'none';"
 
             case .allowed: // this cuts off only scripts and connections
                 // swiftlint:disable line_length
-                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
+                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid: \(scheme):; script-src 'none';"
             }
         }
     }
@@ -74,56 +79,11 @@ struct WebContents: Equatable {
     }
 
     static var css: String = {
-        guard let bundle = Bundle.main.path(forResource: "content", ofType: "css"),
-              var content = try? String(contentsOfFile: bundle, encoding: .utf8) else {
-            return .empty
-        }
-
-        var backgroundColor = ColorProvider.BackgroundNorm.toHex()
-        var textColor = ColorProvider.TextNorm.toHex()
-        var brandColor = ColorProvider.BrandNorm.toHex()
-
-        var darkBackgroundColor = ColorProvider.BackgroundNorm.toHex()
-        var darkTextColor = ColorProvider.TextNorm.toHex()
-        var darkBrandColor = ColorProvider.BrandNorm.toHex()
-
-        if #available(iOS 13.0, *) {
-            let trait = UITraitCollection(userInterfaceStyle: .dark)
-            darkBackgroundColor = ColorProvider.BackgroundNorm.resolvedColor(with: trait).toHex()
-            darkTextColor = ColorProvider.TextNorm.resolvedColor(with: trait).toHex()
-            darkBrandColor = ColorProvider.BrandNorm.resolvedColor(with: trait).toHex()
-
-            let lightTrait = UITraitCollection(userInterfaceStyle: .light)
-            backgroundColor = ColorProvider.BackgroundNorm.resolvedColor(with: lightTrait).toHex()
-            textColor = ColorProvider.TextNorm.resolvedColor(with: lightTrait).toHex()
-            brandColor = ColorProvider.BrandNorm.resolvedColor(with: lightTrait).toHex()
-        }
-
-        content = content.replacingOccurrences(of: "\n", with: "")
-            .replacingOccurrences(of: "{{proton-background-color}}", with: backgroundColor)
-            .replacingOccurrences(of: "{{proton-text-color}}", with: textColor)
-            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
-            .replacingOccurrences(of: "{{proton-background-color-dark}}", with: darkBackgroundColor)
-            .replacingOccurrences(of: "{{proton-text-color-dark}}", with: darkTextColor)
-            .replacingOccurrences(of: "{{proton-brand-color-dark}}", with: darkBrandColor)
-        return content
+        (try? ProtonCSS.viewer.content()) ?? .empty
     }()
 
     static var cssLightModeOnly: String = {
-        guard let bundle = Bundle.main.path(forResource: "content_light", ofType: "css"),
-              var content = try? String(contentsOfFile: bundle, encoding: .utf8) else {
-                  return .empty
-              }
-
-        let brandColor: String
-        if #available(iOS 13.0, *) {
-            brandColor = ColorProvider.BrandNorm.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)).toHex()
-        } else {
-            brandColor = ColorProvider.BrandNorm.toHex()
-        }
-        content = content.replacingOccurrences(of: "\n", with: "")
-            .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)
-        return content
+        (try? ProtonCSS.viewerLightOnly.content()) ?? .empty
     }()
 
     // swiftlint:disable force_try force_unwrapping

@@ -137,8 +137,11 @@ extension String {
         self.replacingOccurrences(of: pattern, with: replaceto, options: .caseInsensitive, range: nil)
     }
 
-    func preg_replace (_ pattern: String, replaceto: String) -> String {
-        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    func preg_replace(
+        _ pattern: String,
+        replaceto: String,
+        options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    ) -> String {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: options)
             let replacedString = regex.stringByReplacingMatches(in: self,
@@ -166,7 +169,8 @@ extension String {
     }
 
     func hasRemoteImage() -> Bool {
-        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!(cid:|data:image))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
+        let scheme = HTTPRequestSecureLoader.imageCacheScheme
+        if self.preg_match("\\ssrc=[',\"](?!(cid:|data:image|\(scheme):))|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false
@@ -174,23 +178,6 @@ extension String {
 
     static func randomString(_ len: Int) -> String {
         let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let randomString: NSMutableString = NSMutableString(capacity: len)
-        let length = UInt32(letters.length)
-        for _ in 0 ..< len {
-            let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.character(at: Int(rand)))
-        }
-        return randomString as String
-    }
-
-    static func randomEmailAddress() -> String {
-        let name = String.randomString(Int.random(in: 1...7))
-        let domain = String.randomString(Int.random(in: 1...7))
-        return "\(name)@\(domain).com"
-    }
-
-    static func randomPhone(_ len: Int) -> String {
-        let letters: NSString = "0123456789"
         let randomString: NSMutableString = NSMutableString(capacity: len)
         let length = UInt32(letters.length)
         for _ in 0 ..< len {
@@ -314,7 +301,7 @@ extension String {
         let address = recipients["Address"] ?? ""
 
         if !address.isEmpty {
-            out = ContactVO(id: "", name: name, email: address)
+            out = ContactVO(name: name, email: address)
         }
         return out
     }

@@ -57,7 +57,7 @@ protocol LastUpdatedStoreProtocol {
                                type: ViewMode)
 }
 
-final class LastUpdatedStore: SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
+final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service {
 
     let contextProvider: CoreDataContextProviderProtocol
 
@@ -135,14 +135,26 @@ extension LastUpdatedStore {
 
 extension LastUpdatedStore {
     func lastUpdate(by labelID: LabelID, userID: UserID, type: ViewMode) -> LabelCountEntity? {
-        var result: LabelCountEntity?
+        contextProvider.read { context in
+            let labelCount: LabelCount?
 
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let labelCount: LabelCount? = self.lastUpdate(by: labelID, userID: userID, type: type, in: context)
-            result = labelCount.map { LabelCountEntity(labelCount: $0, viewMode: type) }
+            switch type {
+            case .singleMessage:
+                labelCount = LabelUpdate.lastUpdate(
+                    by: labelID.rawValue,
+                    userID: userID.rawValue,
+                    inManagedObjectContext: context
+                )
+            case .conversation:
+                labelCount = ConversationCount.lastContextUpdate(
+                    by: labelID.rawValue,
+                    userID: userID.rawValue,
+                    inManagedObjectContext: context
+                )
+            }
+
+            return labelCount.map { LabelCountEntity(labelCount: $0, viewMode: type) }
         }
-
-        return result
     }
 
     func getUnreadCounts(
@@ -300,23 +312,6 @@ extension LastUpdatedStore {
 
 // CoreData operations
 extension LastUpdatedStore {
-    private func lastUpdate(by labelID: LabelID, userID: UserID, type: ViewMode, in context: NSManagedObjectContext) -> LabelCount? {
-        switch type {
-        case .singleMessage:
-            return LabelUpdate.lastUpdate(
-                by: labelID.rawValue,
-                userID: userID.rawValue,
-                inManagedObjectContext: context
-            )
-        case .conversation:
-            return ConversationCount.lastContextUpdate(
-                by: labelID.rawValue,
-                userID: userID.rawValue,
-                inManagedObjectContext: context
-            )
-        }
-    }
-
     private func lastUpdates(by labelIDs: [LabelID], userID: UserID, type: ViewMode, in context: NSManagedObjectContext) -> [LabelCount] {
         switch type {
         case .singleMessage:

@@ -3,8 +3,11 @@
 #import "SentryCrashDynamicLinker.h"
 #import "SentryCrashUUIDConversion.h"
 #import "SentryDebugMeta.h"
+#import "SentryFrame.h"
 #import "SentryHexAddressFormatter.h"
 #import "SentryLog.h"
+#import "SentryStacktrace.h"
+#import "SentryThread.h"
 #import <Foundation/Foundation.h>
 
 @interface
@@ -34,6 +37,31 @@ SentryDebugImageProvider ()
         self.binaryImageProvider = binaryImageProvider;
     }
     return self;
+}
+
+- (NSArray<SentryDebugMeta *> *)getDebugImagesForThreads:(NSArray<SentryThread *> *)threads
+{
+    NSMutableSet<NSString *> *imageAdresses = [[NSMutableSet alloc] init];
+
+    for (SentryThread *thread in threads) {
+        for (SentryFrame *frame in thread.stacktrace.frames) {
+            if (frame.imageAddress && ![imageAdresses containsObject:frame.imageAddress]) {
+                [imageAdresses addObject:frame.imageAddress];
+            }
+        }
+    }
+
+    NSMutableArray<SentryDebugMeta *> *result = [NSMutableArray new];
+
+    NSArray<SentryDebugMeta *> *binaryImages = [self getDebugImages];
+
+    for (SentryDebugMeta *sourceImage in binaryImages) {
+        if ([imageAdresses containsObject:sourceImage.imageAddress]) {
+            [result addObject:sourceImage];
+        }
+    }
+
+    return result;
 }
 
 - (NSArray<SentryDebugMeta *> *)getDebugImages

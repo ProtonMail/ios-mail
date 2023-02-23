@@ -29,9 +29,4 @@ extension Int {
         let byteCountFormatter = ByteCountFormatter()
         return byteCountFormatter.string(fromByteCount: Int64(self))
     }
-
-    var roundDownForScheduledSend: Int {
-        let options = [0, 15, 30, 45]
-        return options.last(where: { $0 <= self }) ?? self
-    }
 }

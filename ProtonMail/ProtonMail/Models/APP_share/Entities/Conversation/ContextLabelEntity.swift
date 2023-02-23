@@ -29,7 +29,9 @@ struct ContextLabelEntity: Equatable, Hashable {
     let order: Int
 
     let isSoftDeleted: Bool
+}
 
+extension ContextLabelEntity {
     init(_ contextLabel: ContextLabel) {
         self.messageCount = contextLabel.messageCount.intValue
         self.unreadCount = contextLabel.unreadCount.intValue

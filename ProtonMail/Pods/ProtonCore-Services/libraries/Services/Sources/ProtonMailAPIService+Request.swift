@@ -184,6 +184,9 @@ extension PMAPIService {
             switch completion {
             case .left:
                 sessionRequestCall = { continuation in
+                    let cookies = self.session.sessionConfiguration.httpCookieStorage?.cookies(for: URL(string: url)!) ?? []
+                    let headers = HTTPCookie.requestHeaderFields(with: cookies)
+                    PMLog.debug("[COOKIES][REQUEST][SERVICE] \(headers)")
                     self.session.request(with: request) { (task, result: Result<JSONDictionary, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .left(result))
@@ -192,6 +195,9 @@ extension PMAPIService {
             case .right:
                 let decoder = jsonDecoder
                 sessionRequestCall = { continuation in
+                    let cookies = self.session.sessionConfiguration.httpCookieStorage?.cookies(for: URL(string: url)!) ?? []
+                    let headers = HTTPCookie.requestHeaderFields(with: cookies)
+                    PMLog.debug("[COOKIES][REQUEST][SERVICE] \(headers)")
                     self.session.request(with: request, jsonDecoder: decoder) { (task, result: Result<T, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .right(result))
@@ -533,4 +539,29 @@ extension PMAPIService {
         #endif
     }
     
+}
+
+extension PMAPIService {
+    
+    func sessionRequest<T: Decodable>(request: Request, result: @escaping (URLSessionDataTask?, Result<T, APIError>) -> Void) {
+        let decoder: JSONDecoder = .decapitalisingFirstLetter
+        let session = getSession()
+        let url = doh.getCurrentlyUsedHostUrl() + request.path
+        do {
+            let request = try createRequest(
+                url: url, method: request.method, parameters: request.parameters, nonDefaultTimeout: nil,
+                headers: request.header, UID: nil, accessToken: nil)
+            session?.request(with: request, jsonDecoder: decoder) { (task, res: Result<T, SessionResponseError>) in
+                switch res {
+                case .success(let decodable):
+                    result(task, .success(decodable))
+                case .failure(let sessionResponseError):
+                    let error = sessionResponseError.underlyingError
+                    result(nil, .failure(error))
+                }
+            }
+        } catch let error {
+            result(nil, .failure(error as NSError))
+        }
+    }
 }

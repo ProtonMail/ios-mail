@@ -28,11 +28,12 @@ class CacheServiceTest: XCTestCase {
     var testMessage: Message!
     var lastUpdatedStore: MockLastUpdatedStore!
     var sut: CacheService!
+    var contextProviderMock: MockCoreDataContextProvider!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        let coreDataService = MockCoreDataContextProvider()
-        testContext = coreDataService.viewContext
+        contextProviderMock = .init()
+        testContext = contextProviderMock.viewContext
         
         let parsedObject = testMessageMetaData.parseObjectAny()!
         testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
@@ -49,7 +50,7 @@ class CacheServiceTest: XCTestCase {
         lastUpdatedStore = mock
 
         let dependencies = CacheService.Dependencies(
-            coreDataService: coreDataService,
+            coreDataService: contextProviderMock,
             lastUpdatedStore: lastUpdatedStore
         )
         sut = CacheService(userID: "userID", dependencies: dependencies)
@@ -61,6 +62,7 @@ class CacheServiceTest: XCTestCase {
         testContext = nil
         lastUpdatedStore.resetUnreadCounts()
         lastUpdatedStore = nil
+        contextProviderMock = nil
     }
 
     func testMoveMessageToArchive() {

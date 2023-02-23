@@ -68,6 +68,7 @@ class BaseTestCase: XCTestCase {
         app.launchArguments = launchArguments
         app.launchArguments.append("-disableAnimations")
         app.launchArguments.append("-skipTour")
+        app.launchArguments.append("-toolbarSpotlightOff")
         
         if apiDomain!.contains("black") {
             /// Use "credentials_black.plist" in this case.

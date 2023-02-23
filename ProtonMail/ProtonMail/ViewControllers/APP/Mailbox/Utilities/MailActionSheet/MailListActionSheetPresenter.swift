@@ -28,7 +28,7 @@ class MailListActionSheetPresenter {
     func present(
         on viewController: UIViewController,
         viewModel: MailListActionSheetViewModel,
-        action: @escaping (MailListSheetAction) -> Void
+        action: @escaping (MessageViewActionSheetAction) -> Void
     ) {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
             action(.dismiss)

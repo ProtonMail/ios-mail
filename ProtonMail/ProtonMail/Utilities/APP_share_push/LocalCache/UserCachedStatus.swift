@@ -100,12 +100,12 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let paymentMethods = "paymentMethods"
 
-        static let conversationNotice = "conversationNotice"
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
-        static let scheduleSendIntroView = "scheduleSendIntroView"
         static let isContactsCached = "isContactsCached"
 
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
+        static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
+        static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }
 
     var keymakerRandomkey: String? {
@@ -419,6 +419,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
 
         getShared().removeObject(forKey: Key.initialUserLoggedInVersion)
+        getShared().removeObject(forKey: Key.darkModeFlag)
+        getShared().removeObject(forKey: Key.toolbarCustomizeSpotlightShownUserIds)
 
         getShared().synchronize()
     }
@@ -511,27 +513,6 @@ extension UserCachedStatus: MessageInfoCacheProtocol {
         }
         set {
             setValue(newValue, forKey: Key.newMessageFromNotification)
-        }
-    }
-}
-
-extension UserCachedStatus: UserIntroductionProgressProvider {
-    func hasUserSeenSpotlight(for feature: SpotlightableFeatureKey) -> Bool {
-        featuresSeenByUser.contains(feature)
-    }
-
-    func userHasSeenSpotlight(for feature: SpotlightableFeatureKey) {
-        var featuresSeenByUserSoFar = featuresSeenByUser
-        featuresSeenByUserSoFar.insert(feature)
-        featuresSeenByUser = featuresSeenByUserSoFar
-    }
-
-    private var featuresSeenByUser: Set<SpotlightableFeatureKey> {
-        get {
-            getShared().decodableValue(forKey: Key.scheduleSendIntroView) ?? []
-        }
-        set {
-            getShared().setEncodableValue(newValue, forKey: Key.scheduleSendIntroView)
         }
     }
 }
@@ -697,17 +678,7 @@ extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
     }
 }
 
-extension UserCachedStatus: ConversationNoticeViewStatusProvider {
-    var conversationNoticeIsOpened: Bool {
-        get {
-            return SharedCacheBase.getDefault().bool(forKey: Key.conversationNotice)
-        }
-        set {
-            SharedCacheBase.getDefault().set(newValue, forKey: Key.conversationNotice)
-            SharedCacheBase.getDefault()?.synchronize()
-        }
-    }
-
+extension UserCachedStatus {
     var initialUserLoggedInVersion: String? {
         get {
             return SharedCacheBase.getDefault().string(forKey: Key.initialUserLoggedInVersion)
@@ -718,4 +689,29 @@ extension UserCachedStatus: ConversationNoticeViewStatusProvider {
         }
     }
 }
+
+extension UserCachedStatus: ToolbarCustomizationInfoBubbleViewStatusProvider {
+    var shouldHideToolbarCustomizeInfoBubbleView: Bool {
+        get {
+            return SharedCacheBase.getDefault().bool(forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
+            SharedCacheBase.getDefault().synchronize()
+        }
+    }
+}
+
+extension UserCachedStatus: ToolbarCustomizeSpotlightStatusProvider {
+    var toolbarCustomizeSpotlightShownUserIds: [String] {
+        get {
+            return (SharedCacheBase.getDefault().array(forKey: Key.toolbarCustomizeSpotlightShownUserIds) as? [String]) ?? []
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: Key.toolbarCustomizeSpotlightShownUserIds)
+            SharedCacheBase.getDefault().synchronize()
+        }
+    }
+}
+
 #endif

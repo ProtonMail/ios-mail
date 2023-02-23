@@ -19,22 +19,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_Foundations
+import UIKit
 
 public final class PMActionSheetHeaderView: UIView, AccessibleView {
-
     // MARK: Constant
+
     private let TITLE_PADDING: CGFloat = 63
     private let MAX_TEXT_BUTTON_SIZE: CGFloat = 120
     private let MIN_TEXT_BUTTON_SIZE: CGFloat = 44
     private let MIN_ICON_BUTTON_SIZE: CGFloat = 24
 
     // MARK: Customize variable
+
     private var leftItem: PMActionSheetPlainItem?
     private var rightItem: PMActionSheetPlainItem?
     private var title: String?
     private var subtitle: String?
+    private var showDragBar: Bool?
 
     private var titleLabel: UILabel?
     private var subTitleLabel: UILabel?
@@ -49,12 +51,14 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     public convenience init(title: String, subtitle: String?,
                             leftItem: PMActionSheetPlainItem?,
                             rightItem: PMActionSheetPlainItem?,
-                            hasSeparator: Bool = false) {
+                            hasSeparator: Bool = false,
+                            showDragBar: Bool = true) {
         self.init(frame: .zero)
         self.leftItem = leftItem
         self.rightItem = rightItem
         self.title = title
         self.subtitle = subtitle
+        self.showDragBar = showDragBar
         self.setup(hasSeparator: hasSeparator)
         NotificationCenter.default
             .addObserver(self,
@@ -75,6 +79,7 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
 }
 
 // MARK: UI Relative
+
 extension PMActionSheetHeaderView {
     private func setup(hasSeparator: Bool = false) {
         guard self.title != nil else { return }
@@ -82,7 +87,7 @@ extension PMActionSheetHeaderView {
         let titleView = self.createTitleView()
         self.setupTitleViewConstraint(titleView)
         // swiftlint:disable:next sorted_first_last
-        let refTitle = titleView.arrangedSubviews.sorted(by: { $0.frame.size.width >=  $1.frame.size.width }).first
+        let refTitle = titleView.arrangedSubviews.sorted(by: { $0.frame.size.width >= $1.frame.size.width }).first
         self.setupItem(item: self.leftItem,
                        isRightBtn: false,
                        refTitle: refTitle)
@@ -128,7 +133,8 @@ extension PMActionSheetHeaderView {
 
     private func setupTitleViewConstraint(_ container: UIStackView) {
         self.addSubview(container)
-        container.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: 4).isActive = true
+        let constant: CGFloat = (showDragBar ?? false) ? 4 : 24
+        container.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: constant).isActive = true
         container.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: TITLE_PADDING).isActive = true
         container.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * TITLE_PADDING).isActive = true
         container.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -4).isActive = true
@@ -193,15 +199,14 @@ extension PMActionSheetHeaderView {
             line.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             line.heightAnchor.constraint(equalToConstant: 1)
         ])
-
     }
 }
 
 extension PMActionSheetHeaderView {
     @objc private func clickButton(sender: UIButton) {
-        let item = sender.tag == 10 ? self.rightItem: self.leftItem
+        let item = sender.tag == 10 ? self.rightItem : self.leftItem
         guard let _item = item,
-            let handler = _item.handler else { return }
+              let handler = _item.handler else { return }
         handler(_item)
     }
 

@@ -124,7 +124,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         NotificationCenter.default.addKeyboardObserver(self)
 
         self.scheduledSendHelper = ScheduledSendHelper(viewController: self,
-                                                       delegate: self)
+                                                       delegate: self,
+                                                       originalScheduledTime: viewModel.childViewModel.originalScheduledTime)
         self.setupBottomPadding()
         self.configureNavigationBar()
         self.setupChildViewModel()
@@ -262,23 +263,25 @@ extension ComposeContainerViewController {
                 self?.tableView.endUpdates()
             },
             attachmentView.observe(\.tableHeight) { [weak self] _, _ in
-                let path = IndexPath(row: 0, section: 0)
-                self?.tableView.beginUpdates()
-                if self?.tableView.cellForRow(at: path) == nil {
-                    self?.tableView.reloadRows(at: [path], with: .none)
-                }
-                self?.tableView.endUpdates()
-                guard self?.isAddingAttachment ?? false else { return }
-                self?.isAddingAttachment = false
-                // A bit of delay can get real contentSize
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    var yOffset: CGFloat = 0
-                    let contentHeight = self?.tableView.contentSize.height ?? 0
-                    let sizeHeight = self?.tableView.bounds.size.height ?? 0
-                    if contentHeight > sizeHeight {
-                        yOffset = contentHeight - sizeHeight
+                DispatchQueue.main.async {
+                    let path = IndexPath(row: 0, section: 0)
+                    self?.tableView.beginUpdates()
+                    if self?.tableView.cellForRow(at: path) == nil {
+                        self?.tableView.reloadRows(at: [path], with: .none)
                     }
-                    self?.tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: false)
+                    self?.tableView.endUpdates()
+                    guard self?.isAddingAttachment ?? false else { return }
+                    self?.isAddingAttachment = false
+                    // A bit of delay can get real contentSize
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        var yOffset: CGFloat = 0
+                        let contentHeight = self?.tableView.contentSize.height ?? 0
+                        let sizeHeight = self?.tableView.bounds.size.height ?? 0
+                        if contentHeight > sizeHeight {
+                            yOffset = contentHeight - sizeHeight
+                        }
+                        self?.tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: false)
+                    }
                 }
             }
         ]
@@ -352,6 +355,7 @@ extension ComposeContainerViewController {
 
     private func setupCancelButton() {
         self.cancelButton = UIBarButtonItem(image: IconProvider.cross, style: .plain, target: self, action: #selector(cancelAction))
+        self.cancelButton.accessibilityIdentifier = "ComposeContainerViewController.cancelButton"
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
 
@@ -676,6 +680,14 @@ extension ComposeContainerViewController: AttachmentController {
 
 // MARK: Scheduled send related
 extension ComposeContainerViewController: ScheduledSendHelperDelegate {
+    func showScheduleSendPromotionView() {
+        coordinator.presentScheduleSendPromotionView()
+    }
+
+    func isItAPaidUser() -> Bool {
+        return viewModel.user.isPaid
+    }
+
     func showSendInTheFutureAlert() {
         let alert = LocalString._schedule_send_future_warning.alertController()
         alert.addOKAction()

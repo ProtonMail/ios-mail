@@ -156,10 +156,13 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     public func getSignUpString() -> String { getSignUpStringStub() }
     
     @FuncStub(DohInterfaceMock.synchronizeCookies) public var synchronizeCookiesStub
-    public func synchronizeCookies(with response: URLResponse?) { synchronizeCookiesStub(response) }
+    public func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) { synchronizeCookiesStub(response, requestHeaders) }
     
     @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
     public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }
+    
+    @PropertyStub(\DohInterfaceMock.currentlyUsedCookiesStorage, initialGet: nil) public var currentlyUsedCookiesStorageStub
+    public var currentlyUsedCookiesStorage: HTTPCookieStorage? { currentlyUsedCookiesStorageStub() }
     
 }
 
@@ -291,7 +294,7 @@ public final class DohMock: DoH, ServerConfig {
     override public func getSignUpString() -> String { getSignUpStringStub() }
     
     @FuncStub(DohInterfaceMock.synchronizeCookies) public var synchronizeCookiesStub
-    override public func synchronizeCookies(with response: URLResponse?) { synchronizeCookiesStub(response) }
+    override public func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) { synchronizeCookiesStub(response, requestHeaders) }
     
     @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
     override public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }

@@ -3,6 +3,7 @@
 #import "SentryLog.h"
 #import "SentryObjCRuntimeWrapper.h"
 #import <objc/runtime.h>
+#import <string.h>
 
 @interface
 SentrySubClassFinder ()
@@ -24,80 +25,71 @@ SentrySubClassFinder ()
     return self;
 }
 
-- (void)actOnSubclassesOf:(Class)parentClass block:(void (^)(Class))block
+- (void)actOnSubclassesOfViewControllerInImage:(NSString *)imageName block:(void (^)(Class))block;
 {
     [self.dispatchQueue dispatchAsyncWithBlock:^{
-        int numClasses = [self.objcRuntimeWrapper getClassList:NULL bufferCount:0];
-
-        if (numClasses <= 0) {
-            NSString *msg =
-                [NSString stringWithFormat:@"No classes found when retrieving class list for %@.",
-                          parentClass];
-            [SentryLog logWithMessage:msg andLevel:kSentryLevelError];
+        Class viewControllerClass = NSClassFromString(@"UIViewController");
+        if (viewControllerClass == nil) {
+            SENTRY_LOG_DEBUG(@"UIViewController class not found.");
             return;
         }
 
-        int memSize = sizeof(Class) * numClasses;
-        Class *classes = (__unsafe_unretained Class *)malloc(memSize);
+        unsigned int count = 0;
+        const char **classes = [self.objcRuntimeWrapper
+            copyClassNamesForImage:[imageName cStringUsingEncoding:NSUTF8StringEncoding]
+                            amount:&count];
 
-        if (classes == NULL && memSize) {
-            NSString *msg = [NSString
-                stringWithFormat:@"Couldn't allocate memory for retrieving class list for %@",
-                parentClass];
-            [SentryLog logWithMessage:msg andLevel:kSentryLevelError];
-            return;
-        }
-
-        // Don't assign the result getClassList again to numClasses because if a class is registered
-        // in the meantime our buffer would not be big enough and we would crash when iterating over
-        // the classes below.
-        int secondNumClasses = [self.objcRuntimeWrapper getClassList:classes
-                                                         bufferCount:numClasses];
-
-        // Only set the numClasses to secondNumClasses in the very unlikely case the number of
-        // classes decreased. If the number of classes increased, which can happen, we only iterate
-        // over the inital number of classes. We don't want to retry the whole process and are fine
-        // with possibly skipping a few newly added classes as they could anyway be added later in
-        // the lifetime of the app.
-        if (secondNumClasses < numClasses) {
-            numClasses = secondNumClasses;
-        }
-
-        // Storing the actual classes in an NSArray would call initialize of the class, which we
+        // Storing the actual classes in an NSArray would call initializer of the class, which we
         // must avoid as we are on a background thread here and dealing with UIViewControllers,
-        // which assume they are running on the main thread. Therefore, we store the indexes instead
-        // so we can search for the subclasses on a background thread.
-        NSMutableArray<NSNumber *> *indexesToSwizzle = [NSMutableArray new];
-        for (NSInteger i = 0; i < numClasses; i++) {
-            Class superClass = classes[i];
-
-            // Don't add the parent class to list of sublcasses
-            if (superClass == parentClass) {
-                continue;
-            }
-
-            // Using a do while loop, like pointed out in Cocoa with Love
-            // (https://www.cocoawithlove.com/2010/01/getting-subclasses-of-objective-c-class.html)
-            // can lead to EXC_I386_GPFLT which, stands for General Protection Fault and means we
-            // are doing something we shouldn't do. It's safer to use a regular while loop to check
-            // if superClass is valid.
-            while (superClass && superClass != parentClass) {
-                superClass = class_getSuperclass(superClass);
-            }
-
-            if (superClass != nil) {
-                [indexesToSwizzle addObject:@(i)];
+        // which assume they are running on the main thread. Therefore, we store the class name
+        // instead so we can search for the subclasses on a background thread. We can't use
+        // NSObject:isSubclassOfClass as not all classes in the runtime in classes inherit from
+        // NSObject and a call to isSubclassOfClass would call the initializer of the class, which
+        // we can't allow because of the problem with UIViewControllers mentioned above.
+        //
+        // Turn out the approach to search all the view controllers inside the app binary image is
+        // fast and we don't need to include this restriction that will cause confusion.
+        // In a project with 1000 classes (a big project), it took only ~3ms to check all classes.
+        NSMutableArray<NSString *> *classesToSwizzle = [NSMutableArray new];
+        for (int i = 0; i < count; i++) {
+            NSString *className = [NSString stringWithUTF8String:classes[i]];
+            Class class = NSClassFromString(className);
+            if ([self isClass:class subClassOf:viewControllerClass]) {
+                [classesToSwizzle addObject:className];
             }
         }
 
-        [self.dispatchQueue dispatchOnMainQueue:^{
-            for (NSNumber *i in indexesToSwizzle) {
-                NSInteger index = [i integerValue];
-                block(classes[index]);
+        free(classes);
+        [self.dispatchQueue dispatchAsyncOnMainQueue:^{
+            for (NSString *className in classesToSwizzle) {
+                block(NSClassFromString(className));
             }
-            free(classes);
+
+            [SentryLog
+                logWithMessage:[NSString stringWithFormat:@"The following UIViewControllers will "
+                                                          @"generate automatic transactions: %@",
+                                         [classesToSwizzle componentsJoinedByString:@", "]]
+                      andLevel:kSentryLevelDebug];
         }];
     }];
+}
+
+- (BOOL)isClass:(Class)childClass subClassOf:(Class)parentClass
+{
+    if (!childClass || childClass == parentClass) {
+        return false;
+    }
+
+    // Using a do while loop, like pointed out in Cocoa with Love
+    // (https://www.cocoawithlove.com/2010/01/getting-subclasses-of-objective-c-class.html)
+    // can lead to EXC_I386_GPFLT which, stands for General Protection Fault and means we
+    // are doing something we shouldn't do. It's safer to use a regular while loop to check
+    // if superClass is valid.
+    while (childClass && childClass != parentClass) {
+        childClass = class_getSuperclass(childClass);
+    }
+
+    return childClass != nil;
 }
 
 @end

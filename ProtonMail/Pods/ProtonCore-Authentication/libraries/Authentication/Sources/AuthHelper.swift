@@ -61,7 +61,6 @@ public final class AuthHelper: AuthDelegate {
         guard authCredential.sessionID == credential.UID,
               authCredential.accessToken == credential.accessToken,
               authCredential.refreshToken == credential.refreshToken,
-              authCredential.expiration == credential.expiration,
               authCredential.userID == credential.userID,
               authCredential.userName == credential.userName else {
             return nil
@@ -141,8 +140,8 @@ public final class AuthHelper: AuthDelegate {
             var updatedCredentials = credential
             
             // if there's no update in scopes, assume the same scope as previously
-            if updatedCredentials.scope.isEmpty {
-                updatedCredentials.scope = existingCredentials.1.scope
+            if updatedCredentials.scopes.isEmpty {
+                updatedCredentials.scopes = existingCredentials.1.scopes
             }
 
             credentialsToBeUpdated = (updatedAuth, updatedCredentials)
@@ -150,6 +149,22 @@ public final class AuthHelper: AuthDelegate {
             guard let delegate = delegate else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: updatedAuth, credential: updatedCredentials, for: sessionUID)
+            }
+        }
+    }
+    
+    public func onAuthentication(credential: Credential, service: APIService?) {
+        authCredentials.mutate { authCredentials in
+            
+            let sessionUID = credential.UID
+            let newCredentials = (AuthCredential(credential), credential)
+            
+            service?.setSessionUID(uid: sessionUID)
+            authCredentials = newCredentials
+            
+            guard let delegate = delegate else { return }
+            delegateExecutor.execute {
+                delegate.credentialsWereUpdated(authCredential: newCredentials.0, credential: newCredentials.1, for: sessionUID)
             }
         }
     }
