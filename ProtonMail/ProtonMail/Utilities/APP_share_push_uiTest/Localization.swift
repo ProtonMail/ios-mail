@@ -1554,6 +1554,10 @@ enum L11n {
         static let download_paused_low_storage_advice = NSLocalizedString("Free up at least 100 MB of storage to continue.", comment: "Text for status label when storage is full")
     }
 
+    struct Settings {
+        static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
+    }
+
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
     }
