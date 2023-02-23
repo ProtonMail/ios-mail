@@ -160,7 +160,7 @@ final class ComposerMessageHelper: NSObject {
             return
         }
 
-        let filename = "publicKey - " + email + " - " + fingerprint + ".asc"
+        let filename = "publickey - \(email) - \(fingerprint).asc"
         var attached: Bool = false
         // check if key already attahced
         let atts = attachments.filter({ !$0.isSoftDeleted })
