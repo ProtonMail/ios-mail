@@ -1557,4 +1557,14 @@ enum L11n {
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
     }
+
+    struct ActionSheetActionTitle {
+        static let reply_in_conversation = NSLocalizedString("Reply (to last message)", comment: "The action title in the action sheet of the reply action in conversation view.")
+        static let forward_in_conversation = NSLocalizedString("Forward (last message)", comment: "The action title in the action sheet of the forward action in conversation view.")
+        static let replyAll_in_conversation = NSLocalizedString("Reply all (to last message)", comment: "The action title in the action sheet of the reply action in conversation view.")
+	}
+
+    struct Toolbar {
+        static let customizeSpotlight = NSLocalizedString("Customize (verb)", comment: "The action title of the button on the toolbar customization spotlight view. (verb)")
+    }
 }

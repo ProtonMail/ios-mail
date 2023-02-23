@@ -47,7 +47,7 @@ extension UserInfo {
         ) {
             return false
         }
-        return false
+        return true
     }
 
     static var isImageProxyAvailable: Bool {

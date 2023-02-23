@@ -85,11 +85,14 @@ class SingleMessageContentViewModel {
 
     private var hasAlreadyFetchedMessageData = false
 
+    var webContentIsUpdated: (() -> Void)?
+
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
+         shouldOpenHistory: Bool = false,
          dependencies: Dependencies,
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
@@ -101,8 +104,10 @@ class SingleMessageContentViewModel {
         self.messageInfoProvider = .init(
             message: context.message,
             user: user,
+            imageProxy: .init(dependencies: .init(apiService: user.apiService)),
             systemUpTime: systemUpTime,
             labelID: context.labelId,
+            shouldOpenHistory: shouldOpenHistory,
             dependencies: messageInfoProviderDependencies
         )
         messageInfoProvider.initialize()
@@ -288,6 +293,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func update(content: WebContents?) {
         DispatchQueue.main.async {
             self.messageBodyViewModel.update(content: content)
+            self.webContentIsUpdated?()
         }
     }
 

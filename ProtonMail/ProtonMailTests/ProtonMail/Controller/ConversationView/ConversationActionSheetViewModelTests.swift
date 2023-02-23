@@ -15,16 +15,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 class ConversationActionSheetViewModelTests: XCTestCase {
     private var dummyTitle: String { String.randomString(100) }
 
-    private let expectedForAllInTrashDraftOrSent: [MessageViewActionSheetAction] = [.inbox, .archive, .delete, .moveTo, .toolbarCustomization]
-    private let expectedForAllInArchive: [MessageViewActionSheetAction] = [.trash, .inbox, .spam, .moveTo, .toolbarCustomization]
-    private let expectedForAllInSpam: [MessageViewActionSheetAction] = [.trash, .spamMoveToInbox, .delete, .moveTo, .toolbarCustomization]
-    private let expectedForMessInDifferentFolders: [MessageViewActionSheetAction] = [.trash, .archive, .spam, .moveTo, .toolbarCustomization]
+    private let expectedForAllInTrashDraftOrSent: [MessageViewActionSheetAction] = [.inbox, .archive, .delete, .moveTo, .saveAsPDF, .print, .toolbarCustomization, .viewHeaders, .viewHTML, .reportPhishing]
+    private let expectedForAllInArchive: [MessageViewActionSheetAction] = [.trash, .inbox, .spam, .moveTo, .saveAsPDF, .print, .toolbarCustomization, .viewHeaders, .viewHTML, .reportPhishing]
+    private let expectedForAllInSpam: [MessageViewActionSheetAction] = [.trash, .spamMoveToInbox, .delete, .moveTo, .saveAsPDF, .print, .toolbarCustomization, .viewHeaders, .viewHTML, .reportPhishing]
+    private let expectedForMessInDifferentFolders: [MessageViewActionSheetAction] = [.trash, .archive, .spam, .moveTo, .saveAsPDF, .print, .toolbarCustomization, .viewHeaders, .viewHTML, .reportPhishing]
+
+    func testInit_isScheduleSend_hasNotReplyAndForwardActions() {
+        let title = dummyTitle
+        let irrelevantForTheTest = Bool.random()
+
+        let sut = ConversationActionSheetViewModel(
+            title: title,
+            isUnread: irrelevantForTheTest,
+            isStarred: irrelevantForTheTest,
+            isScheduleSend: true,
+            areAllMessagesIn: { _ in irrelevantForTheTest }
+        )
+
+        XCTAssertEqual(sut.title, title)
+        XCTAssertFalse(sut.items.contains(.replyInConversation))
+        XCTAssertFalse(sut.items.contains(.reply))
+        XCTAssertFalse(sut.items.contains(.forwardInConversation))
+        XCTAssertFalse(sut.items.contains(.forward))
+    }
 
     func testInit_whenActionsAreUnreadAndStarred() {
         let title = dummyTitle
@@ -33,11 +52,22 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: true,
             isStarred: true,
+            isScheduleSend: false,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.prefix(3)) == [.markRead, .unstar, .labelAs])
+        XCTAssertEqual(
+            Array(sut.items.prefix(6)),
+            [
+                .reply,
+                .replyAll,
+                .forward,
+                .markRead,
+                .unstar,
+                .labelAs
+            ]
+        )
     }
 
     func testInit_whenActionsAreReadAndStarred() {
@@ -47,11 +77,22 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: false,
             isStarred: true,
+            isScheduleSend: false,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.prefix(3)) == [.markUnread, .unstar, .labelAs])
+        XCTAssertEqual(
+            Array(sut.items.prefix(6)),
+            [
+                .reply,
+                .replyAll,
+                .forward,
+                .markUnread,
+                .unstar,
+                .labelAs
+            ]
+        )
     }
 
     func testInit_whenActionsAreUnreadAndNotStarred() {
@@ -61,11 +102,22 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: true,
             isStarred: false,
+            isScheduleSend: false,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.prefix(3)) == [.markRead, .star, .labelAs])
+        XCTAssertEqual(
+            Array(sut.items.prefix(6)),
+            [
+                .reply,
+                .replyAll,
+                .forward,
+                .markRead,
+                .star,
+                .labelAs
+            ]
+        )
     }
 
     func testInit_whenActionsAreReadAndNotStarred() {
@@ -75,11 +127,22 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: false,
             isStarred: false,
+            isScheduleSend: false,
             areAllMessagesIn: { _ in irrelevantForTheTest }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.prefix(3)) == [.markUnread, .star, .labelAs])
+        XCTAssertEqual(
+            Array(sut.items.prefix(6)),
+            [
+                .reply,
+                .replyAll,
+                .forward,
+                .markUnread,
+                .star,
+                .labelAs
+            ]
+        )
     }
 
     func testInit_whenAllMessagesAreLocatedInInbox() {
@@ -89,11 +152,12 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
+            isScheduleSend: false,
             areAllMessagesIn: { location in location == .inbox }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(5)) == expectedForMessInDifferentFolders)
+        XCTAssert(Array(sut.items.suffix(10)) == expectedForMessInDifferentFolders)
     }
 
     func testInit_whenAllMessagesAreLocatedInTrash() {
@@ -103,11 +167,12 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
+            isScheduleSend: false,
             areAllMessagesIn: { location in location == .trash }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInTrashDraftOrSent)
+        XCTAssert(Array(sut.items.suffix(10)) == expectedForAllInTrashDraftOrSent)
     }
 
     func testInit_whenAllMessagesAreLocatedInDraft() {
@@ -117,11 +182,12 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
+            isScheduleSend: false,
             areAllMessagesIn: { location in location == .draft }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInTrashDraftOrSent)
+        XCTAssert(Array(sut.items.suffix(10)) == expectedForAllInTrashDraftOrSent)
     }
 
     func testInit_whenAllMessagesAreLocatedInSent() {
@@ -131,11 +197,12 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
+            isScheduleSend: false,
             areAllMessagesIn: { location in location == .sent }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInTrashDraftOrSent)
+        XCTAssert(Array(sut.items.suffix(10)) == expectedForAllInTrashDraftOrSent)
     }
 
     func testInit_whenAllMessagesAreLocatedInArchive() {
@@ -145,11 +212,12 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
+            isScheduleSend: false,
             areAllMessagesIn: { location in location == .archive }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInArchive)
+        XCTAssert(Array(sut.items.suffix(10)) == expectedForAllInArchive)
     }
 
     func testInit_whenAllMessagesAreLocatedInSpam() {
@@ -159,10 +227,11 @@ class ConversationActionSheetViewModelTests: XCTestCase {
             title: title,
             isUnread: irrelevantForTheTest,
             isStarred: irrelevantForTheTest,
+            isScheduleSend: false,
             areAllMessagesIn: { location in location == .spam }
         )
 
         XCTAssertEqual(sut.title, title)
-        XCTAssert(Array(sut.items.suffix(5)) == expectedForAllInSpam)
+        XCTAssert(Array(sut.items.suffix(10)) == expectedForAllInSpam)
     }
 }

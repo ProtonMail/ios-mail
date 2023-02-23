@@ -853,5 +853,11 @@ struct LocalizationList {
         "L11n.EncryptedSearch.download_paused_low_storage_advice": L11n.EncryptedSearch.download_paused_low_storage_advice,
         // L11n.Error
         "L11n.Error.cant_open_message": L11n.Error.cant_open_message,
+        // L11n.ActionSheetActionTitle
+        "L11n.ActionSheetActionTitle.reply_in_conversation": L11n.ActionSheetActionTitle.reply_in_conversation,
+        "L11n.ActionSheetActionTitle.forward_in_conversation": L11n.ActionSheetActionTitle.forward_in_conversation,
+        "L11n.ActionSheetActionTitle.replyAll_in_conversation": L11n.ActionSheetActionTitle.replyAll_in_conversation,
+        // L11n.Toolbar
+        "L11n.Toolbar.customizeSpotlight": L11n.Toolbar.customizeSpotlight,
     ]
 }

@@ -64,6 +64,7 @@ extension Message {
         static let sign = Flag(rawValue: 1 << 18) // const SIGN = 262144
 
         static let unsubscribed = Flag(rawValue: 1 << 19) // 524288
+        static let scheduledSend = Flag(rawValue: 1 << 20)
 
         static let dmarcPass = Flag(rawValue: 1 << 23)
         // Incoming mail failed dmarc authentication.

@@ -124,11 +124,15 @@ final class ToolbarCustomizeViewController<T: ToolbarAction>: UIViewController, 
         }
         if let action = viewModel.toolbarAction(at: indexPath) {
             let cellIsEnable = viewModel.cellIsEnable(at: indexPath)
+            let actionEnable = viewModel.cellActionEnable(at: indexPath)
             let actionOfCell: ToolbarCustomizeCell.Action = viewModel.isAnSelectedAction(of: action) ? .remove : .insert
-            cell.configure(toolbarAction: action,
-                           action: actionOfCell,
-                           indexPath: indexPath,
-                           enable: cellIsEnable)
+            cell.configure(
+                toolbarAction: action,
+                action: actionOfCell,
+                indexPath: indexPath,
+                enable: cellIsEnable,
+                actionEnable: actionEnable
+            )
             cell.delegate = self
         }
         return cell

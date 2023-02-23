@@ -108,6 +108,7 @@ final class MessageInfoProvider {
         imageProxy: ImageProxy,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
+        shouldOpenHistory: Bool = false,
         dependencies: Dependencies
     ) {
         self.message = message
@@ -126,6 +127,10 @@ final class MessageInfoProvider {
         self.systemUpTime = systemUpTime
         self.labelID = labelID
         self.dependencies = dependencies
+
+        if shouldOpenHistory {
+            displayMode = .expanded
+        }
 
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark

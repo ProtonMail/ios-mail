@@ -78,6 +78,17 @@ final class ToolbarCustomizeViewModel<T: ToolbarAction> {
         return true
     }
 
+    func cellActionEnable(at indexPath: IndexPath) -> Bool {
+        switch indexPath.section {
+        case 0:
+            return currentActions.count > 1
+        case 1:
+            return true
+        default:
+            return false
+        }
+    }
+
     func isAnSelectedAction(of action: T) -> Bool {
         return currentActions.contains(action)
     }

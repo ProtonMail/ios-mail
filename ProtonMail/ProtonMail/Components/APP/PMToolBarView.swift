@@ -47,6 +47,7 @@ class PMToolBarView: UIView {
         addSubviews()
         setUpLayout()
         setUpViews()
+        setUpGesture()
     }
 
     func setUpActions(_ actions: [ActionItem]) {
@@ -73,6 +74,10 @@ class PMToolBarView: UIView {
             button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
             buttons.append(button)
             btnStackView.addArrangedSubview(button)
+            [
+                button.widthAnchor.constraint(equalToConstant: 48.0),
+                button.heightAnchor.constraint(equalToConstant: 40.0)
+            ].activate()
         }
         btnStackView.addArrangedSubview(SubviewFactory.makeEdgeSpacer())
         accessibilityElements = buttons
@@ -115,10 +120,19 @@ class PMToolBarView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
     }
 
+    private func setUpGesture() {
+        // Add gesture to avoid the swipe gesture being triggered while tapping the action on the toolbar.
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(self.doNothing))
+        addGestureRecognizer(gesture)
+    }
+
     @objc
     private func actionButtonTapped(sender: UIButton) {
         self.actionHandlers[sender.tag]()
     }
+
+    @objc
+    private func doNothing() {}
 
     private enum SubviewFactory {
         static var separatorView: UIView {

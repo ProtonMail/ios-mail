@@ -125,6 +125,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                                        allActions: allActions):
             presentToolbarCustomization(allActions: allActions,
                                         currentActions: currentActions)
+        case .toolbarSettingView:
+            presentToolbarCustomizationSettingView()
         }
     }
 
@@ -260,5 +262,15 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         }
         let nav = UINavigationController(rootViewController: view)
         viewController?.navigationController?.present(nav, animated: true)
+    }
+
+    private func presentToolbarCustomizationSettingView() {
+        let viewModel = ToolbarSettingViewModel(
+            infoBubbleViewStatusProvider: userCachedStatus,
+            toolbarActionProvider: user,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
+        )
+        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,9 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
 
-protocol ToolbarActionProvider: AnyObject {
-    var messageToolbarActions: [MessageViewActionSheetAction] { get set }
-    var listViewToolbarActions: [MessageViewActionSheetAction] { get set }
+protocol CustomViewPrintable {
+    func printPageRenderer() -> CustomViewPrintRenderer
+    func printingWillStart(renderer: CustomViewPrintRenderer)
 }

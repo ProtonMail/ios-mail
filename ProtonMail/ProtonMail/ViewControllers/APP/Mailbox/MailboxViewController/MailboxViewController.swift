@@ -1903,12 +1903,12 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             folderButtonTapped()
         case .toolbarCustomization:
             let allActions = viewModel.toolbarCustomizationAllAvailableActions()
-            let currentActions = viewModel.actionsForToolbarCustomizeView()
+            let currentActions = viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllAction()
             coordinator?.presentToolbarCustomizationView(
                 allActions: allActions,
                 currentActions: currentActions
             )
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
     }
