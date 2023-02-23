@@ -111,7 +111,7 @@ extension EncryptedSearchDownloadedMessagesCell {
         var string: String {
             switch self {
             case .downlodedMessages:
-                return LocalString._encrypted_search_downloaded_messages
+                return L11n.EncryptedSearch.downloaded_messages
             case .messageHistory:
                 return LocalString._settings_title_of_message_history
             }
@@ -124,7 +124,7 @@ extension EncryptedSearchDownloadedMessagesCell {
 
         var attributedString: NSAttributedString? {
             guard let date = date else { return nil }
-            let prefix = LocalString._encrypted_search_downloaded_messages_oldest_message
+            let prefix = L11n.EncryptedSearch.downloaded_messages_oldest_message
             let message = prefix + date
             let messageAttrString = NSMutableAttributedString(string: message)
             let rangeOfPrefix = NSRange(location: 0, length: message.count)
@@ -187,7 +187,7 @@ extension EncryptedSearchDownloadedMessagesCell {
         }
 
         private func storageUsed(valueInMB: String) -> NSAttributedString {
-            let prefix = LocalString._encrypted_search_downloaded_messages_storage_used
+            let prefix = L11n.EncryptedSearch.downloaded_messages_storage_used
             let message = prefix + valueInMB
             let messageAttrString = NSMutableAttributedString(string: message)
             let rangeOfPrefix = NSRange(location: 0, length: prefix.count)

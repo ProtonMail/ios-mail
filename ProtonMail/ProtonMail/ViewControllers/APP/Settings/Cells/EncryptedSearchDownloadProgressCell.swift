@@ -47,8 +47,8 @@ final class EncryptedSearchDownloadProgressCell: UITableViewCell {
 
     private func setUpView() {
         selectionStyle = .none
-        pauseButton.setTitle(LocalString._encrypted_search_pause_button, for: .normal)
-        resumeButton.setTitle(LocalString._encrypted_search_resume_button, for: .normal)
+        pauseButton.setTitle(L11n.EncryptedSearch.pause_button, for: .normal)
+        resumeButton.setTitle(L11n.EncryptedSearch.resume_button, for: .normal)
         pauseButton.addTarget(self, action: #selector(onPauseTap), for: .touchUpInside)
         resumeButton.addTarget(self, action: #selector(onResumeTap), for: .touchUpInside)
         [title, downloadingNewMessages, downloadProgress, instructionsLabel, pauseButton, resumeButton].forEach {
@@ -188,7 +188,7 @@ extension EncryptedSearchDownloadProgressCell {
             label.adjustsFontForContentSizeCategory = true
             label.textColor = ColorProvider.TextWeak
             label.numberOfLines = 0
-            label.text = LocalString._settings_encrypted_search_refresh_index
+            label.text = L11n.EncryptedSearch.settings_refresh_index
             view.addSubview(spinner)
             view.addSubview(label)
             [
