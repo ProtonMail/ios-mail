@@ -260,7 +260,7 @@ extension SearchViewController {
                         assertionFailure("handled above")
                     case .reply, .replyAll, .forward, .archive, .spam, .print, .viewHeaders, .viewHTML,
                             .reportPhishing, .dismiss, .inbox, .spamMoveToInbox, .star,. unstar,
-                            .viewInDarkMode, .viewInLightMode, .toolbarCustomization, .replyOrReplyAll, .saveAsPDF:
+                            .viewInDarkMode, .viewInLightMode, .toolbarCustomization, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
                         assertionFailure("should not reach here")
                     }
                 }
@@ -356,7 +356,7 @@ extension SearchViewController {
         case .toolbarCustomization:
             // TODO: Add implementation
             break
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
     }

@@ -31,7 +31,7 @@ enum ServerToolbarAction: String, CaseIterable {
     case moveToSpam = "spam"
     case viewMessageInLight = "toggle_light"
     case print = "print"
-    case viewHeader = "view_header"
+    case viewHeader = "view_headers"
     case viewHTML = "view_html"
     case reportPhishing = "report_phishing"
     case remindMe = "remind"
@@ -44,13 +44,13 @@ enum ServerToolbarAction: String, CaseIterable {
             switch action {
             case .viewHTML:
                 return .viewHTML
-            case .archive:
+            case .archive, .inbox:
                 return .moveToArchive
             case .delete, .trash:
                 return .moveToTrash
-            case .forward:
+            case .forward, .forwardInConversation:
                 return forward
-            case .inbox, .spam, .spamMoveToInbox:
+            case .spam, .spamMoveToInbox:
                 return .moveToSpam
             case .labelAs:
                 return .labelAs
@@ -60,7 +60,9 @@ enum ServerToolbarAction: String, CaseIterable {
                 return .moveTo
             case .print:
                 return .print
-            case .reply, .replyAll, .replyOrReplyAll:
+            case .reply, .replyAll, .replyOrReplyAll,
+                 .replyInConversation, .replyOrReplyAllInConversation,
+                 .replyAllInConversation:
                 return .replyOrReplyAll
             case .reportPhishing:
                 return .reportPhishing

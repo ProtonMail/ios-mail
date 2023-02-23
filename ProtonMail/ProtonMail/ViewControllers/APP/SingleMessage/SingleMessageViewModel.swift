@@ -246,6 +246,9 @@ class SingleMessageViewModel {
             asSeen: true,
             byUserWith: user.userID
         )
+        var ids = toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds
+        ids.append(user.userID.rawValue)
+        toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
@@ -279,8 +282,21 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let isInSpam = message.isSpam
         let isRead = !message.unRead
         let isStarred = message.isStarred
+        let isScheduledSend = message.isScheduledSend
 
-        let actions = toolbarActionProvider.messageToolbarActions.addMoreActionToTheLastLocation()
+        var actions = toolbarActionProvider.messageToolbarActions.addMoreActionToTheLastLocation()
+
+        if isScheduledSend {
+            let forbidActions: [MessageViewActionSheetAction] = [
+                .replyInConversation,
+                .reply,
+                .forward,
+                .forwardInConversation,
+                .replyOrReplyAll
+            ]
+            actions = actions.filter { !forbidActions.contains($0) }
+        }
+
         return replaceActionsLocally(actions: actions,
                                      isInSpam: isInSpam || originMessageListIsSpamOrTrash,
                                      isInTrash: isInTrash || originMessageListIsSpamOrTrash,
@@ -296,7 +312,7 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let actionSheetViewModel = MessageViewActionSheetViewModel(
             title: message.title,
             labelID: labelId,
-            includeStarring: false,
+            includeStarring: true,
             isStarred: message.isStarred,
             isBodyDecryptable: messageInfoProvider.isBodyDecryptable,
             messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
@@ -308,21 +324,22 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let isInArchive = message.contains(location: .archive)
         let isRead = !message.unRead
         let isStarred = message.isStarred
+        let hasMultipleRecipients = message.allRecipients.count > 1
 
-        return replaceActionsLocally(actions: actionSheetViewModel.items,
-                                     isInSpam: isInSpam,
-                                     isInTrash: isInTrash,
-                                     isInArchive: isInArchive,
-                                     isRead: isRead,
-                                     isStarred: isStarred,
-                                     hasMultipleRecipients: false)
-        .replaceReplyAndReplyAllAction()
+        return replaceActionsLocally(
+            actions: actionSheetViewModel.items.replaceReplyAndReplyAllWithSingleAction(),
+            isInSpam: isInSpam,
+            isInTrash: isInTrash,
+            isInArchive: isInArchive,
+            isRead: isRead,
+            isStarred: isStarred,
+            hasMultipleRecipients: hasMultipleRecipients
+        )
     }
 
     func saveToolbarAction(actions: [MessageViewActionSheetAction],
                            completion: ((NSError?) -> Void)?) {
         let preference: ToolbarActionPreference = .init(
-            conversationActions: nil,
             messageActions: actions,
             listViewActions: nil
         )

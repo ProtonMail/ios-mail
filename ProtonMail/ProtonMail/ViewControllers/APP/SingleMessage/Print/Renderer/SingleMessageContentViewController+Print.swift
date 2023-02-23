@@ -21,15 +21,14 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import WebKit
 
 extension SingleMessageContentViewController {
-    private func messagePrintRenderer() -> MessagePrintRenderer {
+    func createPrintingSources() -> (webView: WKWebView, renderers: [CustomViewPrintRenderer])? {
         let headerController: CustomViewPrintable = self
-
         guard let webView = messageBodyViewController?.webView else {
-            fatalError("Invalid view state")
+            return nil
         }
-
         let headerPrinter = headerController.printPageRenderer()
 
         var customViewRenderers: [CustomViewPrintRenderer] = [
@@ -42,50 +41,11 @@ extension SingleMessageContentViewController {
         }
 
         headerController.printingWillStart(renderer: headerPrinter)
-
-        return MessagePrintRenderer(
-            webView: webView,
-            customViewRenderers: customViewRenderers
-        )
-	}
-
-    func presentPrintController() {
-        let printController = UIPrintInteractionController.shared
-        printController.printPageRenderer = messagePrintRenderer()
-
-        let printInfo = UIPrintInfo.printInfo()
-        printInfo.jobName = viewModel.message.title
-        printController.printInfo = printInfo
-
-        printController.present(animated: true)
-    }
-
-    func exportPDF() {
-        let renderer = messagePrintRenderer()
-
-        /*
-         `paperRect` and `printableRect` must be set via KVO, because there is no official API for it.
-         They could be overridden in `MessagePrintRenderer`, but it would interfere with printing.
-         `UIPrintInteractionController` adjusts these properties depending on the paper size requested by the user.
-         */
-        let a4Size = CGSize(width: 595, height: 842)
-        let paperRect = CGRect(origin: .zero, size: a4Size)
-        let printableRect = paperRect.insetBy(dx: 18, dy: 40)
-        renderer.setValue(paperRect, forKey: "paperRect")
-        renderer.setValue(printableRect, forKey: "printableRect")
-
-        let pdfData = renderer.createPDF()
-        let filename = "\(viewModel.message.title).pdf"
-        let tempFile = SecureTemporaryFile(data: pdfData, name: filename)
-
-        let activity = UIActivityViewController(activityItems: [tempFile.url], applicationActivities: nil)
-        activity.completionWithItemsHandler = { _, _, _, _ in
-            // hold onto the file until it is no longer necessary
-            _ = tempFile
-        }
-        present(activity, animated: true)
+        return (webView, customViewRenderers)
     }
 }
+
+extension SingleMessageContentViewController: ContentPrintable {}
 
 extension SingleMessageContentViewController: CustomViewPrintable {
     func printPageRenderer() -> CustomViewPrintRenderer {

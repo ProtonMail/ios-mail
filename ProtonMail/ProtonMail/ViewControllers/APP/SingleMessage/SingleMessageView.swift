@@ -30,7 +30,7 @@ class SingleMessageView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
-        accessibilityElements = [scrollView, toolBar]
+        accessibilityElements = [scrollView, toolbar]
     }
 
     let scrollView = SubviewsFactory.scrollView
@@ -40,7 +40,7 @@ class SingleMessageView: UIView {
     let smallTitleHeaderSeparatorView = SubviewsFactory.smallSeparatorView
     let bigSeparatorView = SubviewsFactory.bigSeparatorView
     let contentContainer = UIView()
-    let toolBar = SubviewsFactory.toolBar
+    let toolbar = SubviewsFactory.toolBar
 
     private func addSubviews() {
         addSubview(scrollView)
@@ -52,23 +52,23 @@ class SingleMessageView: UIView {
         stackView.addArrangedSubview(smallTitleHeaderSeparatorView)
         stackView.addArrangedSubview(bigSeparatorView)
         stackView.addArrangedSubview(contentContainer)
-        addSubview(toolBar)
+        addSubview(toolbar)
     }
 
     private func setUpLayout() {
         let bottomPadding = UIDevice.safeGuide.bottom
 
         [
-            toolBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            toolBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomPadding)
+            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomPadding)
         ].activate()
 
         [
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: toolBar.topAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: toolbar.topAnchor)
         ].activate()
 
         [
@@ -94,11 +94,15 @@ class SingleMessageView: UIView {
         nil
     }
 
-    func toolbarLastButtonCGRect() -> CGRect? {
-        guard let rect = toolBar.lastButtonCGRect() else {
-            return nil
-        }
-        return toolBar.convert(rect, to: self)
+    func toolbarCGRect() -> CGRect? {
+        let height = frame.height - toolbar.frame.maxY + toolbar.frame.height
+        let newFrame: CGRect = .init(
+            x: toolbar.frame.minX,
+            y: toolbar.frame.minY,
+            width: toolbar.frame.width,
+            height: height
+        )
+        return newFrame
     }
 }
 

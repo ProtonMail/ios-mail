@@ -21,6 +21,7 @@
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import SafariServices
 import UIKit
@@ -85,7 +86,6 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         embedChildren()
         emptyBackButtonTitleForNextView()
 
-        setUpToolBarIfNeeded()
         setupTimerForScheduleSendIfNeeded()
     }
 
@@ -96,13 +96,16 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewModel.user.undoActionManager.register(handler: self)
+        setUpToolBarIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         viewModel.userActivity.becomeCurrent()
-        showToolbarCustomizeSpotlightIfNeeded()
+        if !UserInfo.isConversationSwipeEnabled {
+            showToolbarCustomizeSpotlightIfNeeded()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -205,10 +208,10 @@ extension SingleMessageViewController {
 
     func setUpToolBarIfNeeded() {
         let actions = calculateToolBarActions()
-        guard customView.toolBar.types != actions.map(\.type) else {
+        guard customView.toolbar.types != actions.map(\.type) else {
             return
         }
-        customView.toolBar.setUpActions(actions)
+        customView.toolbar.setUpActions(actions)
     }
 
     private func calculateToolBarActions() -> [PMToolBarView.ActionItem] {
@@ -300,9 +303,9 @@ extension SingleMessageViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    private func showToolbarCustomizeSpotlightIfNeeded() {
+    func showToolbarCustomizeSpotlightIfNeeded() {
         guard viewModel.shouldShowToolbarCustomizeSpotlight(),
-              let targetRect = customView.toolbarLastButtonCGRect(),
+              let targetRect = customView.toolbarCGRect(),
               let navView = navigationController?.view,
               !navView.subviews.contains(where: { $0 is ToolbarCustomizeSpotlightView })
         else {
@@ -314,6 +317,9 @@ extension SingleMessageViewController {
             view: navView,
             targetFrame: convertedRect
         )
+        spotlight.navigateToToolbarCustomizeView = { [weak self] in
+            self?.coordinator.navigate(to: .toolbarSettingView)
+        }
         viewModel.setToolbarCustomizeSpotlightViewIsShown()
     }
 }
@@ -322,16 +328,18 @@ private extension SingleMessageViewController {
     // swiftlint:disable:next function_body_length
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .reply, .replyAll, .forward:
+        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             handleOpenComposerAction(action)
         case .labelAs:
             showLabelAsActionSheet()
         case .moveTo:
             showMoveToActionSheet()
         case .print:
-            contentController.presentPrintController()
+            let renderer = ConversationPrintRenderer([contentController])
+            contentController.presentPrintController(renderer: renderer, jobName: viewModel.message.title)
         case .saveAsPDF:
-            contentController.exportPDF()
+            let renderer = ConversationPrintRenderer([contentController])
+            contentController.exportPDF(renderer: renderer, fileName: "\(viewModel.message.title).pdf")
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action)
         case .dismiss:
@@ -381,11 +389,11 @@ private extension SingleMessageViewController {
 
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .reply:
+        case .reply, .replyInConversation:
             coordinator.navigate(to: .reply(messageId: viewModel.message.messageID))
-        case .replyAll:
+        case .replyAll, .replyAllInConversation:
             coordinator.navigate(to: .replyAll(messageId: viewModel.message.messageID))
-        case .forward:
+        case .forward, .forwardInConversation:
             coordinator.navigate(to: .forward(messageId: viewModel.message.messageID))
         default:
             return

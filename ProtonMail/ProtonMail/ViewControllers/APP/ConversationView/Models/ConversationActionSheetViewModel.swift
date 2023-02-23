@@ -26,8 +26,20 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String, isUnread: Bool, isStarred: Bool, areAllMessagesIn: (LabelLocation) -> Bool) {
+    init(
+        title: String,
+        isUnread: Bool,
+        isStarred: Bool,
+        isScheduleSend: Bool,
+        areAllMessagesIn: (LabelLocation) -> Bool
+    ) {
         self.title = title
+
+        if !isScheduleSend {
+            items.append(.reply)
+            items.append(.replyAll)
+            items.append(.forward)
+        }
 
         items.append(isUnread ? .markRead : .markUnread)
         items.append(isStarred ? .unstar : .star)
@@ -42,8 +54,14 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
         } else {
             items.append(contentsOf: [.trash, .archive, .spam, .moveTo])
         }
+
+        items.append(.saveAsPDF)
+        items.append(.print)
         if UserInfo.isToolbarCustomizationEnable {
             items.append(.toolbarCustomization)
         }
+        items.append(.viewHeaders)
+        items.append(.viewHTML)
+        items.append(.reportPhishing)
     }
 }

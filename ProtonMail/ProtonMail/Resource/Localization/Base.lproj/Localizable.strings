@@ -2281,3 +2281,5 @@
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Show full message]";
+
+"Customize (verb)" = "Customize";

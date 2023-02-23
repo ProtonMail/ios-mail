@@ -32,52 +32,29 @@ final class ToolbarSettingViewModel {
     let currentViewModeToolbarCustomizeViewModel: ToolbarCustomizeViewModel<MessageViewActionSheetAction>
 
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    private let viewMode: ViewMode
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
 
     init(
-        viewMode: ViewMode,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         toolbarActionProvider: ToolbarActionProvider,
         saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     ) {
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
-        self.viewMode = viewMode
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
-        switch viewMode {
-        case .conversation:
-            currentViewModeToolbarCustomizeViewModel = .init(
-                currentActions: toolbarActionProvider.conversationToolbarActions,
-                allActions: MessageViewActionSheetAction.allActionsOfConversationView(),
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
-        case .singleMessage:
-            currentViewModeToolbarCustomizeViewModel = .init(
-                currentActions: toolbarActionProvider.messageToolbarActions,
-                allActions: MessageViewActionSheetAction.allActionsOfMessageView(),
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
-        }
+        currentViewModeToolbarCustomizeViewModel = .init(
+            currentActions: toolbarActionProvider.messageToolbarActions,
+            allActions: MessageViewActionSheetAction.allActionsOfMessageView(),
+            actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
+            defaultActions: MessageViewActionSheetAction.defaultActions,
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+        )
     }
 
     func save(completion: @escaping () -> Void) {
-        var conversationActions: [MessageViewActionSheetAction]?
-        var messageActions: [MessageViewActionSheetAction]?
-        switch viewMode {
-        case .conversation:
-            conversationActions = currentViewModeToolbarCustomizeViewModel.currentActions
-        case .singleMessage:
-            messageActions = currentViewModeToolbarCustomizeViewModel.currentActions
-        }
-
+        let messageActions = currentViewModeToolbarCustomizeViewModel.currentActions
         let preference: ToolbarActionPreference = .init(
-            conversationActions: conversationActions,
             messageActions: messageActions,
             listViewActions: listViewToolbarCustomizeViewModel.currentActions
         )

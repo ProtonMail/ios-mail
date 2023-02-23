@@ -25,26 +25,12 @@ extension UserManager: ToolbarActionProvider {
                 return Constants.defaultToolbarActions
             }
             let serverActions = userInfo.messageToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
-            return MessageViewActionSheetAction.convert(from: serverActions)
+            let convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
+            return convertedActions.isEmpty ? MessageViewActionSheetAction.defaultActions : convertedActions
         }
         set {
             let rawActions = ServerToolbarAction.convert(action: newValue)
             userInfo.messageToolbarActions.actions = rawActions.map { $0.rawValue }
-        }
-    }
-
-    var conversationToolbarActions: [MessageViewActionSheetAction] {
-        get {
-            guard UserInfo.isToolbarCustomizationEnable else {
-                return Constants.defaultToolbarActions
-            }
-            let serverActions = userInfo.conversationToolbarActions.actions
-                .compactMap({ ServerToolbarAction(rawValue: $0) })
-            return MessageViewActionSheetAction.convert(from: serverActions)
-        }
-        set {
-            let rawActions = ServerToolbarAction.convert(action: newValue)
-            userInfo.conversationToolbarActions.actions = rawActions.map { $0.rawValue }
         }
     }
 
@@ -54,7 +40,8 @@ extension UserManager: ToolbarActionProvider {
                 return Constants.defaultToolbarActions
             }
             let serverActions = userInfo.listToolbarActions.actions.compactMap({ ServerToolbarAction(rawValue: $0) })
-            return MessageViewActionSheetAction.convert(from: serverActions)
+            let convertedActions = MessageViewActionSheetAction.convert(from: serverActions)
+            return convertedActions.isEmpty ? MessageViewActionSheetAction.defaultActions : convertedActions
         }
         set {
             let rawActions = ServerToolbarAction.convert(action: newValue)

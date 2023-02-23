@@ -66,6 +66,12 @@ class NewMessageBodyViewController: UIViewController {
     private let viewMode: ViewMode
     private var expectedSwipeAction = PagesSwipeAction.noAction
 
+    var webViewIsLoaded: (() -> Void)?
+
+    var isLoading: Bool {
+        return webView?.isLoading ?? false
+    }
+
     init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
         self.viewModel = viewModel
         self.scrollViewContainer = parentScrollView
@@ -212,6 +218,7 @@ class NewMessageBodyViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
                 self?.viewModel.recalculateCellHeight?(true)
+                self?.webViewIsLoaded?()
             }
         }
     }

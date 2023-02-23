@@ -121,6 +121,23 @@ final class SingleMessageViewModelTests: XCTestCase {
         ])
     }
 
+    func testToolbarActionTypes_withScheduleSendMsg_notContainsReplyForwardActions() {
+        var flags = MessageFlag()
+        flags.insert(.scheduledSend)
+        let msg = MessageEntity.make(rawFlag: flags.rawValue)
+        toolbarProviderMock.messageToolbarActions = [.reply, .forward]
+        makeSUT(labelID: Message.Location.inbox.labelID, message: msg)
+
+
+        let result = sut.toolbarActionTypes()
+
+        XCTAssertFalse(result.contains(.reply))
+        XCTAssertFalse(result.contains(.forward))
+        XCTAssertFalse(result.contains(.replyInConversation))
+        XCTAssertFalse(result.contains(.forwardInConversation))
+        XCTAssertFalse(result.contains(.replyOrReplyAll))
+    }
+
     func testToolbarCustomizationAllAvailableActions_sameAsActionInActionSheet() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         let bodyViewModel = sut.contentViewModel.messageBodyViewModel
@@ -134,9 +151,11 @@ final class SingleMessageViewModelTests: XCTestCase {
                                                        shouldShowRenderModeOption: bodyInfo.shouldDisplayRenderModeOptions,
                                                        isScheduledSend: bodyInfo.message.isScheduledSend).items
         expected = expected.filter({ $0 != .reply && $0 != .replyAll })
-        expected.insert(.replyOrReplyAll, at: 0)
+        expected.insert(.reply, at: 0)
 
-        XCTAssertEqual(sut.toolbarCustomizationAllAvailableActions(), expected)
+        // Action sheet has no star action
+        let filteredAction = sut.toolbarCustomizationAllAvailableActions().filter { $0 != .star }
+        XCTAssertEqual(filteredAction, expected)
     }
 
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {

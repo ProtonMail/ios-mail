@@ -22,6 +22,7 @@
 
 import LifetimeTracker
 import MBProgressHUD
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
@@ -96,8 +97,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             }
         }
 
-        setUpToolBarIfNeeded()
-
         registerNotification()
 
         hideConversationUntilItIsReady()
@@ -106,6 +105,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpNavigationBar()
+        setUpToolBarIfNeeded()
 
         if !ProcessInfo.isRunningUnitTests {
             viewModel.observeConversationMessages(tableView: customView.tableView)
@@ -122,7 +122,9 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
-        showToolbarCustomizeSpotlightIfNeeded()
+        if !UserInfo.isConversationSwipeEnabled {
+            showToolbarCustomizeSpotlightIfNeeded()
+        }
 
         conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
             self?.displayConversation()
@@ -172,7 +174,12 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         }
     }
 
-    func cellTapped(messageId: MessageID, caller: StaticString = #function) {
+    func cellTapped(
+        messageId: MessageID,
+        shouldOpenHistory: Bool = false,
+		caller: StaticString = #function,
+        reloadCompletion: (() -> Void)? = nil
+    ) {
         // this method sometimes appears in the stack trace for this crash
         Breadcrumbs.shared.add(message: "\(caller)", to: .conversationViewEndUpdatesCrash)
         Breadcrumbs.shared.add(message: "cellTapped(messageId: \(messageId)", to: .conversationViewEndUpdatesCrash)
@@ -189,9 +196,16 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             self.update(draft: messageViewModel.message)
         } else {
             let indexPath = IndexPath(row: index, section: 1)
+            if let cachedVC = cachedViewControllers[indexPath] {
+                unembed(cachedVC)
+            }
             cachedViewControllers[indexPath] = nil
-            messageViewModel.toggleState()
-            customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
+            messageViewModel.toggleState(shouldOpenHistory: shouldOpenHistory)
+            customView.tableView.reloadRows(
+                at: [.init(row: index, section: 1)],
+                with: .automatic,
+                completion: { reloadCompletion?() }
+            )
             checkNavigationTitle()
             messageViewModel.state.expandedViewModel?.messageContent.markReadIfNeeded()
         }
@@ -710,15 +724,15 @@ private extension Array where Element == ConversationViewItemType {
 extension ConversationViewController {
     func setUpToolBarIfNeeded() {
         let actions = calculateToolBarActions()
-        guard customView.toolBar.types != actions.map(\.type) else {
+        guard customView.toolbar.types != actions.map(\.type) else {
             return
         }
-        customView.toolBar.setUpActions(actions)
+        customView.toolbar.setUpActions(actions)
     }
 
     func showToolbarCustomizeSpotlightIfNeeded() {
         guard viewModel.shouldShowToolbarCustomizeSpotlight(),
-            let targetRect = customView.toolbarLastButtonCGRect(),
+            let targetRect = customView.toolbarCGRect(),
               let navView = navigationController?.view,
               !navView.subviews.contains(where: { $0 is ToolbarCustomizeSpotlightView })
         else {
@@ -730,6 +744,9 @@ extension ConversationViewController {
             view: navView,
             targetFrame: convertedRect
         )
+        spotlight.navigateToToolbarCustomizeView = { [weak self] in
+            self?.coordinator.handle(navigationAction: .toolbarSettingView)
+        }
         viewModel.setToolbarCustomizeSpotlightViewIsShown()
     }
 
@@ -782,14 +799,18 @@ extension ConversationViewController {
 
     @objc
     private func moreButtonTapped() {
-        guard let navigationVC = self.navigationController else { return }
+        guard let navigationVC = self.navigationController,
+              let messageToApplyAction = viewModel.findLatestMessageForAction()
+        else { return }
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
+        let isScheduleSend = messageToApplyAction.isScheduledSend
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
             isUnread: isUnread,
             isStarred: isStarred,
+            isScheduleSend: isScheduleSend,
             areAllMessagesIn: { [weak self] location in
                 self?.viewModel.areAllMessagesIn(location: location) ?? false
             }
@@ -818,9 +839,10 @@ extension ConversationViewController {
 
 // MARK: - Action Sheet Actions
 private extension ConversationViewController {
+    // swiftlint:disable function_body_length
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .reply, .replyAll, .forward:
+        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             handleOpenComposerAction(action)
         case .labelAs:
             showLabelAsActionSheet(dataSource: .conversation)
@@ -851,22 +873,29 @@ private extension ConversationViewController {
             viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
                 self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
             }, continueAction: continueAction)
-        case .archive, .spam, .print, .viewHeaders, .viewHTML, .reportPhishing, .inbox,
-                .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .replyOrReplyAll, .saveAsPDF:
+        case .archive, .spam, .inbox, .spamMoveToInbox:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             })
+        case .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
+                .viewInLightMode, .replyOrReplyAll:
+            // Actions here are applied to single message, not conversation.
+            handleActionForLastMessageInConversation(action: action)
+        case .print:
+            handlePrintActionOnToolbar()
+        case .saveAsPDF:
+            handleExportPDFOnToolbar()
         }
     }
 
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
-        guard let message = viewModel.messagesDataSource.newestMessage else { return }
+        guard let message = viewModel.findLatestMessageForAction() else { return }
         switch action {
-        case .reply:
+        case .reply, .replyInConversation:
             coordinator.handle(navigationAction: .reply(message: message))
-        case .replyAll:
+        case .replyAll, .replyAllInConversation:
             coordinator.handle(navigationAction: .replyAll(message: message))
-        case .forward:
+        case .forward, .forwardInConversation:
             coordinator.handle(navigationAction: .forward(message: message))
         default:
             return
@@ -927,12 +956,96 @@ private extension ConversationViewController {
                            shouldShowRenderModeOption: shouldDisplayRenderModeOptions,
                            body: infoProvider?.bodyParts?.originalBody)
     }
+
+    private func handlePrintActionOnToolbar() {
+        prepareForPrinting(completion: { [weak self] renderer, subject in
+            guard let renderer = renderer, let subject = subject else {
+                return
+            }
+            self?.presentPrintController(renderer: renderer,
+                                         jobName: subject)
+        })
+    }
+
+    private func handleExportPDFOnToolbar() {
+        prepareForPrinting(completion: { [weak self] renderer, subject in
+            guard let renderer = renderer, let subject = subject else {
+                return
+            }
+            self?.exportPDF(renderer: renderer,
+                            fileName: "\(subject).pdf")
+        })
+    }
+
+    private func prepareForPrinting(completion: @escaping (ConversationPrintRenderer?, String?) -> Void) {
+        guard let message = viewModel.findLatestMessageForAction() else {
+            completion(nil, nil)
+            return
+        }
+
+        if !viewModel.isCellExpanded(messageID: message.messageID) {
+            cellTapped(
+                messageId: message.messageID,
+                shouldOpenHistory: true,
+                reloadCompletion: { [weak self] in
+                    self?.expandedMessageAndShowPrintProgress(message: message, completion: completion)
+                }
+            )
+        } else {
+            expandedMessageAndShowPrintProgress(message: message, completion: completion)
+        }
+    }
+
+    private func expandedMessageAndShowPrintProgress(
+        message: MessageEntity,
+        completion: @escaping (ConversationPrintRenderer?, String?) -> Void
+    ) {
+        viewModel.expandHistoryIfNeeded(
+            messageID: message.messageID,
+            completion: { [weak self] in
+                guard let contentsController = self?.contentController(for: message),
+                      let subject = self?.viewModel.conversation.subject else {
+                    completion(nil, nil)
+                    return
+                }
+                self?.showProgressHud()
+                if contentsController.messageBodyViewController.isLoading {
+                    contentsController.messageBodyViewController.webViewIsLoaded = { [weak contentsController] in
+                        defer {
+                            self?.hideProgressHud()
+                            contentsController?.messageBodyViewController.webViewIsLoaded = nil
+                        }
+                        guard let contentsController = contentsController else {
+                            completion(nil, nil)
+                            return
+                        }
+                        let renderer = ConversationPrintRenderer([contentsController])
+                        completion(renderer, subject)
+                    }
+                } else {
+                    self?.hideProgressHud()
+                    let renderer = ConversationPrintRenderer([contentsController])
+                    completion(renderer, subject)
+                }
+            }
+        )
+    }
+
+    private func handleActionForLastMessageInConversation(action: MessageViewActionSheetAction) {
+        guard let message = viewModel.findLatestMessageForAction() else {
+            return
+        }
+        let body = viewModel.getMessageBodyBy(messageID: message.messageID)
+        handleActionSheetAction(action, message: message, body: body)
+    }
 }
 
 enum ActionSheetDataSource {
     case message(_ message: MessageEntity)
     case conversation
 }
+
+extension ConversationViewController: ContentPrintable {}
 
 extension ConversationViewController: LabelAsActionSheetPresentProtocol {
     var labelAsActionHandler: LabelAsActionSheetProtocol {
@@ -1259,4 +1372,20 @@ extension ConversationViewController: UndoActionHandlerBase {
     }
 
     func showUndoAction(undoTokens: [String], title: String) { }
+}
+
+private extension UITableView {
+    func reloadRows(at indexPaths: [IndexPath],
+                    with animation: UITableView.RowAnimation,
+                    completion: @escaping () -> Void) {
+        UIView.animate(
+            withDuration: 0,
+            animations: {
+                self.reloadRows(at: indexPaths, with: animation)
+            },
+            completion: { _ in
+                completion()
+            }
+        )
+    }
 }

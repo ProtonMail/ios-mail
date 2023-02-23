@@ -807,10 +807,7 @@ extension ComposeViewModelImpl {
                 let group = recipient.group ?? ""
                 let name = displayNameForRecipient(recipient)
 
-                if group.isEmpty {
-                    // contact
-                    out.append(ContactVO(name: name, email: recipient.address))
-                } else {
+                if let group = recipient.group, !group.isEmpty {
                     // contact group
                     let toInsert = DraftEmailData(name: name, email: recipient.address)
                     if var data = groups[group] {
@@ -819,6 +816,9 @@ extension ComposeViewModelImpl {
                     } else {
                         groups.updateValue([toInsert], forKey: group)
                     }
+                } else {
+                    // contact
+                    out.append(ContactVO(name: name, email: recipient.address))
                 }
             }
 

@@ -49,6 +49,10 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
     case toolbarCustomization
     case more
     case replyOrReplyAll
+    case replyInConversation
+    case forwardInConversation
+    case replyAllInConversation
+    case replyOrReplyAllInConversation
 
     var title: String? {
         switch self {
@@ -104,16 +108,24 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
             return nil
         case .replyOrReplyAll:
             return LocalString._action_sheet_action_title_reply
+        case .replyInConversation:
+            return L11n.ActionSheetActionTitle.reply_in_conversation
+        case .forwardInConversation:
+            return L11n.ActionSheetActionTitle.forward_in_conversation
+        case .replyAllInConversation:
+            return L11n.ActionSheetActionTitle.replyAll_in_conversation
+        case .replyOrReplyAllInConversation:
+            return L11n.ActionSheetActionTitle.reply_in_conversation
         }
     }
 
     var icon: UIImage? {
         switch self {
-        case .reply:
+        case .reply, .replyInConversation:
             return IconProvider.reply
-        case .replyAll:
+        case .replyAll, .replyAllInConversation:
             return IconProvider.replyAll
-        case .forward:
+        case .forward, .forwardInConversation:
             return IconProvider.forward
         case .markUnread:
             return IconProvider.envelopeDot
@@ -157,8 +169,8 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
             return Asset.icMagicWand.image
         case .more:
             return IconProvider.threeDotsHorizontal
-        case .replyOrReplyAll:
-            return IconProvider.arrowUpAndLeft
+        case .replyOrReplyAll, .replyOrReplyAllInConversation:
+            return IconProvider.reply
         }
     }
 
@@ -166,7 +178,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         switch self {
         case .archive, .trash, .spam, .delete, .moveTo, .inbox, .spamMoveToInbox:
             return .moveMessage
-        case .reply, .replyAll, .forward, .replyOrReplyAll:
+        case .reply, .replyAll, .forward, .replyOrReplyAll, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             return .messageActions
         case .markUnread, .markRead, .labelAs, .star, .unstar, .viewInLightMode, .viewInDarkMode:
             return .manage
@@ -202,8 +214,6 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
 // MARK: - Static
 extension MessageViewActionSheetAction {
     static let actionsNotAddableToToolbar: [MessageViewActionSheetAction] = [
-        .reply,
-        .replyAll,
         .dismiss,
         .more,
         .toolbarCustomization,
@@ -244,7 +254,7 @@ extension MessageViewActionSheetAction {
 
     static func allActionsOfMessageView() -> [Self] {
         return [
-            .reply,
+            .replyOrReplyAll,
             .forward,
             .markUnread,
             .labelAs,
@@ -406,13 +416,27 @@ extension Array where Element == MessageViewActionSheetAction {
         return newActions
     }
 
-    func replaceReplyAndReplyAllAction() -> Self {
-        guard !self.contains(.replyOrReplyAll) else {
+    func addReplyAndReplyAllActionIfNotExist() -> Self {
+        guard !self.contains(.replyOrReplyAllInConversation) else {
             return self
         }
         var newActions = self
-        newActions.insert(.replyOrReplyAll, at: 0)
-        newActions.removeAll(where: { $0 == .reply || $0 == .replyAll })
+        newActions.insert(.replyOrReplyAllInConversation, at: 0)
+        let removeTargets: Self = [.reply, .replyAll, .replyInConversation, .replyOrReplyAll]
+        newActions.removeAll(where: { removeTargets.contains($0) })
+        return newActions
+    }
+
+    func replaceReplyAndReplyAllAction() -> Self {
+        var newActions = self
+        if let index = newActions.firstIndex(where: { $0 == .replyAll }) {
+            newActions.remove(at: index)
+            newActions.insert(.replyOrReplyAll, at: index)
+        }
+        if let index = newActions.firstIndex(where: { $0 == .reply }) {
+            newActions.remove(at: index)
+            newActions.insert(.replyOrReplyAll, at: index)
+        }
         return newActions
     }
 
@@ -441,13 +465,50 @@ extension Array where Element == MessageViewActionSheetAction {
         if hasMultipleRecipients {
             if let index = newActions.firstIndex(where: { $0 == .replyOrReplyAll }) {
                 newActions[index] = .replyAll
+                newActions.removeAll(where: { $0 == .reply || $0 == .replyOrReplyAll })
             }
-            newActions.removeAll(where: { $0 == .reply || $0 == .replyOrReplyAll })
+            if let index = newActions.firstIndex(of: .replyOrReplyAllInConversation) {
+                newActions[index] = .replyAllInConversation
+                newActions.removeAll(where: { $0 == .replyInConversation || $0 == .replyOrReplyAllInConversation })
+            }
         } else {
             if let index = newActions.firstIndex(where: { $0 == .replyOrReplyAll }) {
                 newActions[index] = .reply
+                newActions.removeAll(where: { $0 == .replyAll || $0 == .replyOrReplyAll })
             }
-            newActions.removeAll(where: { $0 == .replyAll || $0 == .replyOrReplyAll })
+            if let index = newActions.firstIndex(of: .replyOrReplyAllInConversation) {
+                newActions[index] = .replyInConversation
+                newActions.removeAll(where: { $0 == .replyAll || $0 == .replyOrReplyAllInConversation })
+            }
+        }
+        return newActions
+    }
+
+    func replaceReplyAndReplyAllWithSingleAction() -> Self {
+        var newActions = self
+        let actionToReplace: Self = [.reply, .replyAll, .replyInConversation, .replyOrReplyAllInConversation]
+        if let index = newActions.firstIndex(where: { actionToReplace.contains($0) }) {
+            newActions[index] = .replyOrReplyAll
+            newActions.removeAll(where: { actionToReplace.contains($0) })
+        }
+        return newActions
+    }
+
+    func replaceReplyAndReplyAllWithConversationVersion() -> Self {
+        var newActions = self
+        let actionToReplace: Self = [.reply, .replyAll, .replyInConversation, .replyOrReplyAll]
+        if let index = newActions.firstIndex(where: { actionToReplace.contains($0) }) {
+            newActions[index] = .replyOrReplyAllInConversation
+            newActions.removeAll(where: { actionToReplace.contains($0) })
+        }
+        return newActions
+    }
+
+    func replaceForwardWithConversationVersion() -> Self {
+        var newActions = self
+        if let index = newActions.firstIndex(of: .forward) {
+            newActions[index] = .forwardInConversation
+            newActions.removeAll(where: { $0 == .forward })
         }
         return newActions
     }

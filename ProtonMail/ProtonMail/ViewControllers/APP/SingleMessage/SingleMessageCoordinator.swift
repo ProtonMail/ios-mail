@@ -126,6 +126,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                                        allActions: allActions):
             presentToolbarCustomization(allActions: allActions,
                                         currentActions: currentActions)
+        case .toolbarSettingView:
+            presentToolbarCustomizationSettingView()
         }
     }
 }
@@ -311,5 +313,15 @@ extension SingleMessageCoordinator {
         }
         let nav = UINavigationController(rootViewController: viewController)
         self.viewController?.navigationController?.present(nav, animated: true)
+    }
+
+    private func presentToolbarCustomizationSettingView() {
+        let viewModel = ToolbarSettingViewModel(
+            infoBubbleViewStatusProvider: userCachedStatus,
+            toolbarActionProvider: user,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
+        )
+        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

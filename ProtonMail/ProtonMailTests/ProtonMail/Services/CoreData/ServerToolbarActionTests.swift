@@ -25,7 +25,7 @@ class ServerToolbarActionTests: XCTestCase {
             .moveToArchive,
             .moveToTrash,
             .forward,
-            .moveToSpam,
+            .moveToArchive,
             .labelAs,
             .markAsReadOrUnread,
             .markAsReadOrUnread,
@@ -44,6 +44,10 @@ class ServerToolbarActionTests: XCTestCase {
             .viewHTML,
             .viewMessageInLight,
             .viewMessageInLight,
+            .replyOrReplyAll,
+            .replyOrReplyAll,
+            .forward,
+            .replyOrReplyAll,
             .replyOrReplyAll
         ])
     }

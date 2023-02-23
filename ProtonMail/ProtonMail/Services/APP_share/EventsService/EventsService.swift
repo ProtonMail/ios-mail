@@ -478,6 +478,7 @@ extension EventsService {
                                         for label in labels {
                                             label.order = conversationObject.order
                                             label.userID = self.userManager.userID.rawValue
+                                            label.conversationID = conversationObject.conversationID
                                         }
                                     }
                                 }
