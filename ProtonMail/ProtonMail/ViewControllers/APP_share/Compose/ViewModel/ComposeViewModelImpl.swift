@@ -547,7 +547,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
         self.composerMessageHelper.addPublicKeyIfNeeded(
             email: addr.email,
-            fingerprint: key.shortFingerpritn,
+            fingerprint: key.shortFingerprint,
             data: data,
             shouldStripMetaDate: stripMetadata
         ) { attachmentToAdd in

@@ -49,11 +49,12 @@ extension Key {
         return self.privateKey.fingerprint
     }
 
-    var shortFingerpritn: String {
-        let fignerprint = self.fingerprint
-        if fignerprint.count > 8 {
-            return String(fignerprint.prefix(8))
+    var shortFingerprint: String {
+        var capitalized = fingerprint.uppercased()
+        
+        if capitalized.count > 8 {
+            capitalized = String(capitalized.prefix(8))
         }
-        return fignerprint
+        return "0x\(capitalized)"
     }
 }
