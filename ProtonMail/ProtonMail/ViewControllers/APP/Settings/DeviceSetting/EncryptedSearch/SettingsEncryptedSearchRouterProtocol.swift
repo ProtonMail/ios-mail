@@ -17,11 +17,11 @@
 
 import UIKit
 
-protocol SettingsLocalStorageRouterProtocol {
+protocol SettingsEncryptedSearchRouterProtocol {
     func navigateToDownloadedMessages()
 }
 
-final class SettingsLocalStorageRouter: SettingsLocalStorageRouterProtocol {
+final class SettingsEncryptedSearchRouter: SettingsEncryptedSearchRouterProtocol {
     private weak var navigationController: UINavigationController?
 
     init(navigationController: UINavigationController) {

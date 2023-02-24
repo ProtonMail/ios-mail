@@ -64,10 +64,11 @@ extension UserInfo {
     }
 
     static var isEncryptedSearchEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-        return true
-        #else
-        return false
-        #endif
+//        #if DEBUG_ENTERPRISE
+//        return true
+//        #else
+//        return false
+//        #endif
+        return false // uncomment code above when the feature is functional
     }
 }
