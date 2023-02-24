@@ -109,9 +109,11 @@ extension SettingsEncryptedSearchViewController {
             let view = tableView.dequeue(viewType: SettingsTextFooterView.self)
             view.set(text: LocalString._settings_footer_of_download_via_mobile_data)
             footer = view
-        case .downloadProgress, .downloadedMessages:
+        case .downloadProgress:
             let view = tableView.dequeue(viewType: EncryptedSearchBannerFooterView.self)
             footer = view
+        case .downloadedMessages:
+            footer = nil
         }
         return footer
     }
