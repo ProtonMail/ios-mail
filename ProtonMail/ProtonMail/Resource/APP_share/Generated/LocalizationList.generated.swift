@@ -852,6 +852,8 @@ struct LocalizationList {
         "L11n.EncryptedSearch.download_paused_low_battery_advice": L11n.EncryptedSearch.download_paused_low_battery_advice,
         "L11n.EncryptedSearch.download_paused_low_storage": L11n.EncryptedSearch.download_paused_low_storage,
         "L11n.EncryptedSearch.download_paused_low_storage_advice": L11n.EncryptedSearch.download_paused_low_storage_advice,
+        // L11n.Settings
+        "L11n.Settings.passwordUpdated": L11n.Settings.passwordUpdated,
         // L11n.Error
         "L11n.Error.cant_open_message": L11n.Error.cant_open_message,
         // L11n.ActionSheetActionTitle
