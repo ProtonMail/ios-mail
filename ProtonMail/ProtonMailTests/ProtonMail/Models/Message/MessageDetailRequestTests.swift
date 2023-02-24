@@ -21,14 +21,22 @@ import XCTest
 final class MessageDetailRequestTests: XCTestCase {
     var sut: MessageDetailRequest!
     var messageID: MessageID = .init(String.randomString(20))
-    var priority: String = .randomString(10)
+    var priority: APIPriority!
+
+    override func setUp() {
+        priority = APIPriority.allCases[Int.random(in: 0...7)]
+    }
+
+    override func tearDown() {
+        priority = nil
+    }
 
     func testInit() throws {
         sut = .init(messageID: messageID, priority: priority)
 
         XCTAssertEqual(sut.path, "/\(Constants.App.API_PREFIXED)/messages/\(messageID.rawValue)")
         let value = try XCTUnwrap(sut.header["priority"] as? String)
-        XCTAssertEqual(value, priority)
+        XCTAssertEqual(value, priority.rawValue)
     }
 
     func testInitWithoutPriority() {

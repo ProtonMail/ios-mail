@@ -16,26 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
 
-final class MessageDetailRequest: Request {
-    let messageID: MessageID
-    let priority: APIPriority?
-
-    var path: String {
-        "/\(Constants.App.API_PREFIXED)/messages/\(messageID.rawValue)"
-    }
-
-    var header: [String: Any] {
-        var header: [String: Any] = [:]
-        if let priority = priority {
-            header["priority"] = priority.rawValue
-        }
-        return header
-    }
-
-    init(messageID: MessageID, priority: APIPriority? = nil) {
-        self.messageID = messageID
-        self.priority = priority
-    }
+/// https://datatracker.ietf.org/doc/html/rfc9218#name-urgency
+/// The bigger the number, the lower the priority.
+enum APIPriority: String, CaseIterable {
+    case highestPriority = "u=0"
+    case priority1 = "u=1"
+    case priority2 = "u=2"
+    case `default` = "u=3"
+    case priority4 = "u=4"
+    case priority5 = "u=5"
+    case priority6 = "u=6"
+    case lowestPriority = "u=7"
 }

@@ -16,26 +16,25 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
 
-final class MessageDetailRequest: Request {
-    let messageID: MessageID
-    let priority: APIPriority?
+final class IndexMetaDataOnlyOperation: AsyncOperation {
+    let message: MessageEntity
+    private let userID: UserID
+    private(set) var result: EncryptedSearchEncryptedMessageContent?
 
-    var path: String {
-        "/\(Constants.App.API_PREFIXED)/messages/\(messageID.rawValue)"
+    init(message: MessageEntity, userID: UserID) {
+        self.message = message
+        self.userID = userID
     }
 
-    var header: [String: Any] {
-        var header: [String: Any] = [:]
-        if let priority = priority {
-            header["priority"] = priority.rawValue
-        }
-        return header
-    }
+    override func main() {
+        super.main()
 
-    init(messageID: MessageID, priority: APIPriority? = nil) {
-        self.messageID = messageID
-        self.priority = priority
+        result = EncryptedSearchHelper.createEncryptedMessageContent(
+            from: message,
+            cleanedBody: "",
+            userID: userID
+        )
+        finish()
     }
 }
