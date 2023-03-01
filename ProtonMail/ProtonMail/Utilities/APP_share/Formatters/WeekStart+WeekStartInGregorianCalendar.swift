@@ -31,7 +31,7 @@ extension WeekStart {
         case .saturday:
             return 7
         case .automatic:
-            return Environment.calendar.firstWeekday
+            return LocaleEnvironment.calendar.firstWeekday
         }
     }
 

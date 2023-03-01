@@ -223,8 +223,8 @@ final class MessageInfoProvider {
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .medium
         dateFormatter.dateStyle = .long
-        dateFormatter.timeZone = Environment.timeZone
-        dateFormatter.locale = Environment.locale()
+        dateFormatter.timeZone = LocaleEnvironment.timeZone
+        dateFormatter.locale = LocaleEnvironment.locale()
         return dateFormatter.string(from: date)
     }()
 
