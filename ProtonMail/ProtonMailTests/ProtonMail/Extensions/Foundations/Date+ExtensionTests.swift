@@ -26,15 +26,15 @@ final class Date_ExtensionTests: XCTestCase {
         super.setUp()
 
         self.reachabilityStub = ReachabilityStub()
-        Environment.locale = { .enUS }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
     }
 
     override func tearDown() {
         super.tearDown()
 
         self.reachabilityStub = nil
-        Environment.restore()
+        LocaleEnvironment.restore()
     }
 
     func testTomorrow() throws {
@@ -241,7 +241,7 @@ final class Date_ExtensionTests: XCTestCase {
     }
 
     func testFormat_24H_with_template() {
-        Environment.locale = { .frGP }
+        LocaleEnvironment.locale = { .frGP }
         XCTAssertFalse(Date.is12H())
         let date = Date(timeIntervalSince1970: 1671187872)
         XCTAssertEqual(date.localizedString(withTemplate: nil), "16 déc. à 10:51")
