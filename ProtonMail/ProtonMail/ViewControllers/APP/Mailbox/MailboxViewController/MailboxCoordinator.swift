@@ -298,7 +298,7 @@ extension MailboxCoordinator {
             // Prevent the app tries to push a new view when the app enters
             // the background due to long network fetching time.
             // It could cause the app crashed in the background.
-            guard self?.getApplicationState() == .active else {
+            if self?.getApplicationState() == .background {
                 return
             }
             goToDetailPage()
