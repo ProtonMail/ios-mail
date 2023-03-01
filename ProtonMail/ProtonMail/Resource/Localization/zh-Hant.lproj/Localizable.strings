@@ -1077,9 +1077,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "已複製連結。";
 
-/* Button inside the banner */
-"Load anyway" = "仍要載入";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "載入內崁圖像";
 
@@ -1791,9 +1788,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延後";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "追蹤防護會導致某些圖像無法載入。";
 
 /* menu title */
 "Spam" = "垃圾郵件";

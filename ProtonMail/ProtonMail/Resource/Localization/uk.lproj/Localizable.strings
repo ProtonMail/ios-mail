@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Посилання скопійовано.";
 
-/* Button inside the banner */
-"Load anyway" = "Все одно завантажити";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Завантажити вбудовані зображення";
 
@@ -1794,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Відкласти";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "У зв'язку із захистом від стеження, не вдалося завантажити деякі зображення.";
 
 /* menu title */
 "Spam" = "Спам";

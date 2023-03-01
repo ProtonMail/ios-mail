@@ -1442,8 +1442,8 @@ enum L11n {
         static let n_email_trackers_blocked = NSLocalizedString("%d email trackers blocked", comment: "Title of the tracker list. Only used if there is at least one tracker.")
         static let email_trackers_can_violate_your_privacy = NSLocalizedString("Email trackers can violate your privacy.", comment: "Tracker protection feature explanation")
         static let proton_found_n_trackers_on_this_message = NSLocalizedString("Proton found %d trackers on this message.", comment: "Tracker protection results")
-        static let some_images_failed_to_load = NSLocalizedString("Some images failed to load with tracking protection.", comment: "The banner shown in case of proxy failure")
-        static let load_anyway = NSLocalizedString("Load anyway", comment: "Button inside the banner")
+        static let some_images_failed_to_load = NSLocalizedString("Some images could not be loaded with tracking protection.", comment: "The banner shown in case of proxy failure")
+        static let load = NSLocalizedString("Load", comment: "Button inside the banner")
         // Product has asked us to keep this string ready, even though it's not in use.
         static let feature_description = NSLocalizedString("Blocks senders from seeing if and when you opened the message", comment: "Spotlight explanation of the feature")
     }

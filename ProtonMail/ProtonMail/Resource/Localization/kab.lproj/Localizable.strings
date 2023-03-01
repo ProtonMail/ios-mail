@@ -904,9 +904,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Aseɣwen yettwanɣel.";
 
-/* Button inside the banner */
-"Load anyway" = "Sali-d akken ibɣu yili";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Sali tugniwin tusliɣin";
 

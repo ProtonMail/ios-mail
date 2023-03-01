@@ -758,7 +758,7 @@ struct LocalizationList {
         "L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy": L11n.EmailTrackerProtection.email_trackers_can_violate_your_privacy,
         "L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message": L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message,
         "L11n.EmailTrackerProtection.some_images_failed_to_load": L11n.EmailTrackerProtection.some_images_failed_to_load,
-        "L11n.EmailTrackerProtection.load_anyway": L11n.EmailTrackerProtection.load_anyway,
+        "L11n.EmailTrackerProtection.load": L11n.EmailTrackerProtection.load,
         "L11n.EmailTrackerProtection.feature_description": L11n.EmailTrackerProtection.feature_description,
         // L11n.OfficialBadge
         "L11n.OfficialBadge.title": L11n.OfficialBadge.title,

@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Legătura a fost copiată.";
 
-/* Button inside the banner */
-"Load anyway" = "Continuare încărcare";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Încărcare imagini integrate";
 
@@ -1794,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Amânare";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Încărcarea unor imagini a eșuat cu protecția de urmărire activată.";
 
 /* menu title */
 "Spam" = "Nedorite";

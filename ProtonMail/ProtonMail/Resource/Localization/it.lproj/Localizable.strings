@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Link copiato.";
 
-/* Button inside the banner */
-"Load anyway" = "Carica comunque";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carica le immagini incorporate";
 
@@ -1794,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posticipa";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Impossibile caricare alcune immagini con la protezione di tracciamento.";
 
 /* menu title */
 "Spam" = "Spam";

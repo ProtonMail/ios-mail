@@ -1096,9 +1096,6 @@
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit reached";
 
-/* Button inside the banner */
-"Load anyway" = "Load anyway";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Load embedded images";
 
@@ -1783,9 +1780,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Snooze";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Some images failed to load with tracking protection.";
 
 /* menu title */
 "Spam" = "Spam";

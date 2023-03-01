@@ -1128,9 +1128,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Länk kopierad.";
 
-/* Button inside the banner */
-"Load anyway" = "Ladda ändå";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ladda inbäddade bilder";
 
@@ -1845,9 +1842,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Skjut upp";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Några bilder kunde inte laddas med spårningsskydd.";
 
 /* menu title */
 "Spam" = "Skräppost";
