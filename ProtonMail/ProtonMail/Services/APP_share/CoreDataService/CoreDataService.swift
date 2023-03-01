@@ -328,6 +328,14 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             block(context)
         }
     }
+
+    /// Discards pending changes in the global read and write contexts
+    func rollbackAllContexts() throws {
+        try write { context in
+            context.rollback()
+        }
+        mainContext.rollback()
+    }
 }
 
 #if !APP_EXTENSION

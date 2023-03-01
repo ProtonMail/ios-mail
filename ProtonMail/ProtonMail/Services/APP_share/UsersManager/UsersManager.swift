@@ -446,6 +446,8 @@ extension UsersManager {
 
     func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
+            try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
+
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.authKeychainStore)
             KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
