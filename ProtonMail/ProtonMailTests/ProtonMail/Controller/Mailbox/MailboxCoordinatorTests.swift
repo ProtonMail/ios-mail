@@ -165,7 +165,6 @@ class MailboxCoordinatorTests: XCTestCase {
         reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
         let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
-        expectation1.isInverted = true
 
         sut.fetchConversationFromBEIfNeeded(conversationID: conversationID) {
             expectation1.fulfill()
