@@ -115,6 +115,7 @@ final class ComposerMessageHelper: NSObject {
     }
 
     func setNewMessage(_ message: Message) {
+        removeNotExistingAttachment(message: message)
         self.message = message
         // Cleanup password when user opens the draft
         self.message?.password = .empty
@@ -227,6 +228,18 @@ final class ComposerMessageHelper: NSObject {
 
 // MARK: - attachment related functions
 extension ComposerMessageHelper {
+    func removeNotExistingAttachment(message: Message) {
+        let notExistingAttachments: [Attachment] = message.attachments
+            .compactMap { $0 as? Attachment }
+            .filter { $0.localURL?.absoluteString.contains(check: "Shared/AppGroup") ?? false }
+        guard !notExistingAttachments.isEmpty,
+              let context = notExistingAttachments.first?.managedObjectContext else { return }
+        context.performAndWait {
+            notExistingAttachments.forEach { $0.isSoftDeleted = true }
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
     func addAttachment(_ file: FileData, shouldStripMetaData: Bool, order: Int? = nil, completion: ((Attachment?) -> Void)?) {
         guard let msg = message else {
             return

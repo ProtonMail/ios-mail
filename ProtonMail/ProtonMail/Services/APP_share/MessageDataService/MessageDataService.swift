@@ -780,6 +780,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func saveDraft(_ message: Message?) {
         if let message = message, let context = message.managedObjectContext {
             context.performAndWait {
+                if message.title.isEmpty {
+                    message.title = "(No Subject)"
+                }
                 _ = context.saveUpstreamIfNeeded()
 
                 self.queue(

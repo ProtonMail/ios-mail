@@ -192,12 +192,6 @@ class UnlockManager: Service {
         usersManager.run()
         usersManager.tryRestore()
 
-        let queueManager = sharedServices.get(by: QueueManager.self)
-        usersManager.users.forEach { (user) in
-            let queueHandler = user.makeQueueHandler()
-            queueManager.registerHandler(queueHandler)
-        }
-
         #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()

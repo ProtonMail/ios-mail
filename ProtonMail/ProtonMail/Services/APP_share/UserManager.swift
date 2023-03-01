@@ -312,6 +312,9 @@ class UserManager: Service {
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
         self.parentManager = parent
+        let handler = self.makeQueueHandler()
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        queueManager.registerHandler(handler)
         self.messageService.signin()
     }
 
