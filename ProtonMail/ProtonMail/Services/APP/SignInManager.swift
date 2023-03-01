@@ -118,9 +118,6 @@ class SignInManager: Service {
             return
         }
 
-        let queueHandler = user.makeQueueHandler()
-        queueHandlerRegister.registerHandler(queueHandler)
-
         showSkeleton()
 
         let userDataService = user.userService
