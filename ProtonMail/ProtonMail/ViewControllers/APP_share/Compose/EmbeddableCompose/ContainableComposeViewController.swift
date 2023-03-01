@@ -120,7 +120,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.htmlEditor.webView(webView, didFinish: navigation)
+        self.htmlEditor.loadContentIfNeeded()
         super.webView(webView, didFinish: navigation)
     }
 

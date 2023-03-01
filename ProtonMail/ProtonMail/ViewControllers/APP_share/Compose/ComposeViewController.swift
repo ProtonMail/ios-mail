@@ -30,6 +30,7 @@ import SideMenuSwift
 import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Foundations
+import WebKit
 
 class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
     let viewModel: ComposeViewModel
@@ -51,6 +52,9 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
     var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
+    private lazy var schemeHandler: ComposerSchemeHandler = .init(imageProxy: .init(dependencies: .init(
+        apiService: viewModel.getUser().apiService
+    )))
 
     init(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
@@ -75,7 +79,10 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, AccessibleV
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.prepareWebView()
+        self.prepareWebView(
+            urlHandler: schemeHandler,
+            urlSchemesToBeHandled: viewModel.urlSchemesToBeHandle
+        )
         self.htmlEditor.delegate = self
         self.webView.isOpaque = false
         self.htmlEditor.setup(webView: self.webView)

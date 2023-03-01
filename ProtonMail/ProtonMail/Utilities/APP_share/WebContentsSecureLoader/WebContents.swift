@@ -31,6 +31,7 @@ struct WebContents: Equatable {
     var renderStyle: MessageRenderStyle
     let supplementCSS: String?
     let webImages: WebImageContents?
+    let isImageProxyEnable: Bool
 
     var bodyForJS: String {
         return self.body.escaped
@@ -38,6 +39,7 @@ struct WebContents: Equatable {
 
     init(body: String,
          remoteContentMode: RemoteContentPolicy,
+         isImageProxyEnable: Bool,
          renderStyle: MessageRenderStyle = .dark,
          supplementCSS: String? = nil,
          webImages: WebImageContents? = nil) {
@@ -47,6 +49,7 @@ struct WebContents: Equatable {
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
         self.webImages = webImages
+        self.isImageProxyEnable = isImageProxyEnable
     }
 
     var contentSecurityPolicy: String {
@@ -54,21 +57,27 @@ struct WebContents: Equatable {
     }
 
     enum RemoteContentPolicy: Int {
-        case allowed, disallowed, lockdown
+        case allowed, disallowed, lockdown, allowedAll
 
         var cspRaw: String {
-            let scheme = HTTPRequestSecureLoader.imageCacheScheme
+            let httpScheme = HTTPRequestSecureLoader.ProtonScheme.http.rawValue
+            let httpsScheme = HTTPRequestSecureLoader.ProtonScheme.https.rawValue
+            let noScheme = HTTPRequestSecureLoader.ProtonScheme.noProtocol.rawValue
+            let embeddedScheme = HTTPRequestSecureLoader.imageCacheScheme
+
             switch self {
             case .lockdown:
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
 
             case .disallowed: // this cuts off all remote content
-                // swiftlint:disable line_length
-                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(scheme):; script-src 'none';"
+                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(embeddedScheme):; script-src 'none';"
 
             case .allowed: // this cuts off only scripts and connections
-                // swiftlint:disable line_length
-                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid: \(scheme):; script-src 'none';"
+                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme):"
+                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src data: blob: cid: \(valueToAdd); script-src 'none';"
+            case .allowedAll: // allow all remote contents
+                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme):"
+                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src data: blob: cid: http: https: \(valueToAdd); script-src 'none';"
             }
         }
     }
