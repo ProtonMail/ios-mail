@@ -447,7 +447,7 @@ extension MessageInfoProvider {
                     body.replaceSubrange(rangeToReplace, with: replacement.value)
                 }
             }
-
+            self.checkBannerStatus(updatedBody)
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
         }

@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Link kopieret.";
 
-/* Button inside the banner */
-"Load anyway" = "Indlæs alligevel";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Indlæs indlejrede billeder";
 
@@ -1794,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Udsæt";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Nogle billeder kunne ikke indlæses med sporingsbeskyttelse.";
 
 /* menu title */
 "Spam" = "Spam";

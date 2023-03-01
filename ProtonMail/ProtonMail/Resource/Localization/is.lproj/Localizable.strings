@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Krækja afrituð.";
 
-/* Button inside the banner */
-"Load anyway" = "Hlaða samt inn";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
 
@@ -1794,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Ekki tókst að hlaða sumum myndum með rakningarvörn.";
 
 /* menu title */
 "Spam" = "Ruslpóstur";

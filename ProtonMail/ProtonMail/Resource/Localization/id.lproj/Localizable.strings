@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Tautan disalin.";
 
-/* Button inside the banner */
-"Load anyway" = "Tetap muat";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Muat gambar yang tersemat";
 
@@ -1794,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Tunda";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Gambar tertentu tidak dapat dimuat dengan perlindungan pelacak yang aktif.";
 
 /* menu title */
 "Spam" = "Spam";

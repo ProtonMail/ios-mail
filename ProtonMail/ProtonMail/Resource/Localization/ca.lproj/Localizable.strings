@@ -1080,9 +1080,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Enllaç copiat.";
 
-/* Button inside the banner */
-"Load anyway" = "Carrega de totes maneres";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carrega imatges incrustades";
 
@@ -1788,9 +1785,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posposa";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "La càrrega d'algunes imatges ha fallat amb la protecció de seguiment.";
 
 /* menu title */
 "Spam" = "Correu brossa";

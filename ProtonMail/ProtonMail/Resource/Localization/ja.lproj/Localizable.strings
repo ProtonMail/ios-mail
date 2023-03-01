@@ -1071,9 +1071,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "リンクをコピーしました。";
 
-/* Button inside the banner */
-"Load anyway" = "読み込む";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "埋め込み画像を読み込む";
 
@@ -1767,9 +1764,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "通知の休止";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
 
 /* menu title */
 "Spam" = "迷惑メール";
