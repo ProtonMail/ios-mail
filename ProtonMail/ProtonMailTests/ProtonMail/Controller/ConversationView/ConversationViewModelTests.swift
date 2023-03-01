@@ -472,7 +472,7 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
     }
 
-    func testFocusedMode_lastNonExpandedMessage_isPartiallyVisibile() {
+    func testFocusedMode_lastNonExpandedMessage_isPartiallyVisible() {
         makeSUT(labelID: Message.Location.inbox.labelID)
 
         sut.headerSectionDataSource = [
@@ -615,6 +615,46 @@ class ConversationViewModelTests: XCTestCase {
         ]
 
         XCTAssertNil(sut.findLatestMessageForAction())
+    }
+
+    func testFocusedMode_inTrashFolder_lastNonExpandedMessage_isPartiallyVisible() {
+        makeSUT(labelID: Message.Location.trash.labelID)
+
+        sut.headerSectionDataSource = [
+            .trashedHint
+        ]
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: true, location: .trash))
+        ]
+
+        XCTAssertEqual(sut.headerCellVisibility(at: 0), .hidden)
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .hidden)
+        XCTAssertEqual(sut.messageCellVisibility(at: 2), .partial)
+        XCTAssertEqual(sut.messageCellVisibility(at: 3), .full)
+    }
+
+    func testFocusedMode_inTrashFolder_partiallyShowsTrashedHint() {
+        makeSUT(labelID: Message.Location.trash.labelID)
+
+        sut.headerSectionDataSource = [
+            .trashedHint
+        ]
+
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(isExpanded: true, location: .trash)),
+            .message(viewModel: makeFakeViewModel(isExpanded: false))
+        ]
+
+        XCTAssertEqual(sut.headerCellVisibility(at: 0), .partial)
+
+        XCTAssertEqual(sut.messageCellVisibility(at: 0), .full)
+        XCTAssertEqual(sut.messageCellVisibility(at: 1), .full)
     }
 
     private func makeConversationWithUnread(of labelID: LabelID, unreadCount: Int) -> Conversation {

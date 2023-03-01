@@ -370,20 +370,23 @@ class ConversationViewModel {
         } else {
             let messagesBeforeAndIncludingExpandedOne = messagesDataSource[0...firstExpandedMessageIndex]
 
-            let indexesOfNonTrashedMessages: [Int] = messagesBeforeAndIncludingExpandedOne
+            let indexesOfDisplayMessages: [Int] = messagesBeforeAndIncludingExpandedOne
                 .enumerated()
                 .compactMap { index, item in
-                    if item.messageViewModel?.isTrashed == false {
+                    if displayRule == .showAll {
                         return index
-                    } else {
-                        return nil
+                    } else if item.messageViewModel?.isTrashed == true && displayRule == .showTrashedOnly {
+                        return index
+                    } else if item.messageViewModel?.isTrashed == false && displayRule == .showNonTrashedOnly {
+                        return index
                     }
+                    return nil
                 }
 
             switch index {
-            case indexesOfNonTrashedMessages.last:
+            case indexesOfDisplayMessages.last:
                 return .full
-            case indexesOfNonTrashedMessages.dropLast().last:
+            case indexesOfDisplayMessages.dropLast().last:
                 return .partial
             default:
                 return .hidden
