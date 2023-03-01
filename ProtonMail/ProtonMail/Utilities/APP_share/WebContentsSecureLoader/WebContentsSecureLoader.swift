@@ -45,17 +45,33 @@ extension WebContentsSecureLoader {
 }
 
 enum DomPurifyConfig {
-    case `default`, protonizer, imageCache
+    case `default`, protonizer, imageCache, composer
 
     var value: String {
         switch self {
+        case .composer:
+            let httpScheme = HTTPRequestSecureLoader.ProtonScheme.http.rawValue
+            let httpsScheme = HTTPRequestSecureLoader.ProtonScheme.https.rawValue
+            let noScheme = HTTPRequestSecureLoader.ProtonScheme.noProtocol.rawValue
+            let valueToAdd = "\(httpScheme)|\(httpsScheme)|\(noScheme)|proton-cid"
+            return """
+            {
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(valueToAdd)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+            ADD_TAGS: ['base'],
+            ADD_ATTR: ['target'],
+            FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
+            FORBID_ATTR: ['srcset'],
+            WHOLE_DOCUMENT: true,
+            RETURN_DOM: true
+            }
+            """.replacingOccurrences(of: "\n", with: "")
         case .default:
             let scheme = HTTPRequestSecureLoader.imageCacheScheme
             return """
             {
             ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(scheme)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
-            ADD_TAGS: ['proton-src', 'base'],
-            ADD_ATTR: ['target', 'proton-src'],
+            ADD_TAGS: ['base'],
+            ADD_ATTR: ['target'],
             FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
             FORBID_ATTR: ['srcset']
             }

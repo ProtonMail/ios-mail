@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,8 +17,14 @@
 
 import Foundation
 
-enum ImageProxyError: Error {
-    case invalidState
-    case responseIsNotAnImage
-    case selfReleased
+extension CharacterSet {
+    static let urlQueryValueAllowed: CharacterSet = {
+        let generalDelimitersToEncode = ":#[]@"
+        let subDelimitersToEncode = "!$&'()*+,;="
+
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: generalDelimitersToEncode + subDelimitersToEncode)
+
+        return allowed
+    }()
 }

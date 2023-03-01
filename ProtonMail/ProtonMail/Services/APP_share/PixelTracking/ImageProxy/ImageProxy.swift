@@ -15,21 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+#if !APP_EXTENSION
 import LifetimeTracker
+#endif
 import ProtonCore_Services
 import SwiftSoup
 
-class ImageProxy: LifetimeTrackable {
-    static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
-    }
-
-#if DEBUG
+// swiftlint:disable:next type_body_length
+class ImageProxy {
+    #if DEBUG
     // needed for tests to be deterministic
     var predefinedUUIDForURL: ((UnsafeRemoteURL) -> UUID)?
-#endif
+    #endif
 
+    #if !APP_EXTENSION
     private let imageCache = ImageProxyCache.shared
+    #endif
 
     private let dependencies: Dependencies
 
@@ -76,7 +77,9 @@ class ImageProxy: LifetimeTrackable {
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
 
+        #if !APP_EXTENSION
         trackLifetime()
+        #endif
     }
 
     func dryRun(body: String, delegate: ImageProxyDelegate) throws {
@@ -146,6 +149,40 @@ class ImageProxy: LifetimeTrackable {
         fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
         let bodyWithoutRemoteURLs = try fullHTMLDocument.outerHtml()
         return bodyWithoutRemoteURLs
+    }
+
+    ///  Fetch the content of the url with the proxy.
+    ///
+    ///  If the resource is fetched before,  cached data we be returned.
+    ///
+    /// - Parameters:
+    ///   - url: resource url
+    ///   - completion: resource fetch result
+    func fetchRemoteImageIfNeeded(url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+        let prefixToBeRemoved = "proton-"
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              let scheme = components.scheme else {
+            completion(.failure(ImageProxyError.schemeNotFound))
+            return
+        }
+        guard scheme.hasPrefix(prefixToBeRemoved) else {
+            completion(.failure(ImageProxyError.schemeHasNoPrefix))
+            return
+        }
+        let newScheme = String(scheme.dropFirst(prefixToBeRemoved.count))
+        components.scheme = newScheme
+        guard let originalURL = components.url else {
+            completion(.failure(ImageProxyError.originalUrlIsNil))
+            return
+        }
+        fetchRemoteImage(from: .init(value: originalURL.absoluteString)) { result in
+            switch result {
+            case .success(let remoteImage):
+                completion(.success(remoteImage.data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     /// Replaces remote URLs in the given document with UUIDs.
@@ -226,11 +263,11 @@ class ImageProxy: LifetimeTrackable {
 
             let unsafeURL = UnsafeRemoteURL(value: strippedString[urlRange])
 
-#if DEBUG
+            #if DEBUG
             let uuid = predefinedUUIDForURL?(unsafeURL) ?? UUID()
-#else
+            #else
             let uuid = UUID()
-#endif
+            #endif
 
             strippedString.replaceSubrange(urlRange, with: uuid.uuidString)
 
@@ -322,6 +359,7 @@ class ImageProxy: LifetimeTrackable {
                 completion(.failure(ImageProxyError.selfReleased))
                 return
             }
+            #if !APP_EXTENSION
             do {
                 if let cachedRemoteImage = try strongSelf.imageCache.remoteImage(forURL: safeURL) {
                     completion(.success(cachedRemoteImage))
@@ -331,6 +369,7 @@ class ImageProxy: LifetimeTrackable {
                 strongSelf.imageCache.removeRemoteImage(forURL: safeURL)
                 assertionFailure("\(error)")
             }
+            #endif
             let destinationURL = strongSelf.temporaryLocalURL()
             strongSelf.dependencies.apiService.download(
                 byUrl: safeURL.value,
@@ -414,11 +453,13 @@ class ImageProxy: LifetimeTrackable {
     }
 
     private func cacheRemoteImage(_ remoteImage: RemoteImage, for safeURL: SafeRemoteURL) {
+        #if !APP_EXTENSION
         do {
-            try self.imageCache.setRemoteImage(remoteImage, forURL: safeURL)
+            try imageCache.setRemoteImage(remoteImage, forURL: safeURL)
         } catch {
             assertionFailure("\(error)")
         }
+        #endif
     }
 }
 
@@ -427,3 +468,11 @@ extension ImageProxy {
         let apiService: APIService
     }
 }
+
+#if !APP_EXTENSION
+extension ImageProxy: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
+    }
+}
+#endif

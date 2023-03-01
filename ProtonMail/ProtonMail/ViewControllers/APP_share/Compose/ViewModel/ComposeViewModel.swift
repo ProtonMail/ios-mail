@@ -53,6 +53,10 @@ class ComposeViewModel: NSObject {
     let originalScheduledTime: OriginalScheduleDate?
     // we can't use `dependencies` as name bc it clashes with the subclass attribute of the same name
     let deps: Dependencies
+    var urlSchemesToBeHandle: Set<String> {
+        let schemes: [HTTPRequestSecureLoader.ProtonScheme] = [.http, .https, .noProtocol]
+        return Set(schemes.map(\.rawValue))
+    }
 
     private(set) var contacts: [ContactPickerModelProtocol] = []
     private var emailsController: NSFetchedResultsController<Email>?
@@ -164,7 +168,7 @@ class ComposeViewModel: NSObject {
 
     func getHtmlBody() -> WebContents {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
-        return WebContents(body: "", remoteContentMode: .lockdown)
+        return WebContents(body: "", remoteContentMode: .lockdown, isImageProxyEnable: true)
     }
 
     func collectDraft(_ title: String, body: String, expir: TimeInterval, pwd: String, pwdHit: String) {
@@ -226,30 +230,7 @@ class ComposeViewModel: NSObject {
     }
 
     func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
-        guard let attachments = getAttachments() else { return }
-        let inlineAttachments = attachments
-            .filter({ attachment in
-                guard let contentId = attachment.contentID() else { return false }
-                return !contentId.isEmpty && attachment.inline()
-            })
-        let userKeys = getUser().toUserKeys()
-
-        for att in inlineAttachments {
-            guard let contentId = att.contentID() else { continue }
-            deps.fetchAttachment.callbackOn(.main).execute(
-                params: .init(
-                    attachmentID: AttachmentID(att.attachmentID),
-                    attachmentKeyPacket: att.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
-                    userKeys: userKeys
-                )
-            ) { result in
-                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
-                    return
-                }
-                htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.mimeType);base64,\(base64Att)")
-            }
-        }
+        fatalError("This method must be overridden")
     }
 
 	func isDraftHavingEmptyRecipient() -> Bool {

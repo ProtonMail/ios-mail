@@ -601,8 +601,13 @@ class ComposeViewModelImpl: ComposeViewModel {
         composerMessageHelper.markAsRead()
     }
 
+    var imageProxyEnabled: Bool {
+        return UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy)
+    }
+
     override func getHtmlBody() -> WebContents {
-        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.userInfo.isAutoLoadRemoteContentEnabled ? .allowed : .disallowed
+        let allowPolicy: WebContents.RemoteContentPolicy = imageProxyEnabled ? .allowed : .allowedAll
+        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.userInfo.isAutoLoadRemoteContentEnabled ? allowPolicy : .disallowed
 
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
@@ -622,7 +627,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             } catch {
                 body = msg.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
         case .reply, .replyAll:
             let msg = composerMessageHelper.message!
             var body = ""
@@ -651,7 +656,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
         case .forward:
             let msg = composerMessageHelper.message!
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -685,12 +690,12 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
@@ -698,20 +703,20 @@ class ComposeViewModelImpl: ComposeViewModel {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
                 \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
                 """
 
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
             } else if signatureHtml.trim().isEmpty {
                 // add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
+                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: true)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
         }
 
     }
@@ -754,6 +759,35 @@ class ComposeViewModelImpl: ComposeViewModel {
             return (body?.isEmpty ?? false) || body == signature
         }
         return false
+    }
+
+    override func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
+        guard let attachments = getAttachments() else { return }
+        let inlineAttachments = attachments
+            .filter({ attachment in
+                guard let contentId = attachment.contentID() else { return false }
+                return !contentId.isEmpty && attachment.inline()
+            })
+        let userKeys = getUser().toUserKeys()
+
+        for att in inlineAttachments {
+            guard let contentId = att.contentID() else { continue }
+            deps.fetchAttachment.callbackOn(.main).execute(
+                params: .init(
+                    attachmentID: AttachmentID(att.attachmentID),
+                    attachmentKeyPacket: att.keyPacket,
+                    purpose: .decryptAndEncodeAttachment,
+                    userKeys: userKeys
+                )
+            ) { result in
+                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
+                    return
+                }
+                // If the image proxy is enable, the cid will have `proton-` prefix.
+                let cid = self.imageProxyEnabled ? "proton-cid:\(contentId)" : "cid:\(contentId)"
+                htmlEditor.update(embedImage: cid, encoded:"data:\(att.mimeType);base64,\(base64Att)")
+            }
+        }
     }
 }
 
@@ -804,7 +838,6 @@ extension ComposeViewModelImpl {
             let recipients = try JSONDecoder().decode([DecodableRecipient].self, from: jsonData)
 
             for recipient in recipients {
-                let group = recipient.group ?? ""
                 let name = displayNameForRecipient(recipient)
 
                 if let group = recipient.group, !group.isEmpty {

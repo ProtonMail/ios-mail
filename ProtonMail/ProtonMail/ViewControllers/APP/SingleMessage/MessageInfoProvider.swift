@@ -120,7 +120,14 @@ final class MessageInfoProvider {
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
         self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
-        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? .allowed : .disallowed
+
+        // If the message is sent by us, we do not use the image proxy to load the content.
+        let imageProxyEnabled = UserInfo.isImageProxyAvailable &&
+            user.userInfo.imageProxy.contains(.imageProxy) &&
+            !message.isSent
+        let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedAll : .allowed
+        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? allowedPolicy : .disallowed
+
         self.embeddedContentPolicy = user.userInfo.isAutoLoadEmbeddedImagesEnabled ? .allowed : .disallowed
         self.userAddressUpdater = user
         self.imageProxy = imageProxy
@@ -320,6 +327,12 @@ final class MessageInfoProvider {
     var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
             guard remoteContentPolicy != oldValue else { return }
+            if message.isSent && remoteContentPolicy == .allowed {
+                remoteContentPolicy = .allowedAll
+            }
+            if !imageProxyEnabled && remoteContentPolicy == .allowed {
+                remoteContentPolicy = .allowedAll
+            }
             prepareDisplayBody()
         }
     }
@@ -644,6 +657,7 @@ extension MessageInfoProvider {
         contents = WebContents(
             body: body,
             remoteContentMode: remoteContentPolicy,
+            isImageProxyEnable: imageProxyEnabled,
             renderStyle: currentMessageRenderStyle,
             supplementCSS: css,
             webImages: webImages

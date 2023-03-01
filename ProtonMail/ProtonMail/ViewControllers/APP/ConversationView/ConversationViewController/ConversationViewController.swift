@@ -839,10 +839,10 @@ extension ConversationViewController {
 
 // MARK: - Action Sheet Actions
 private extension ConversationViewController {
-    // swiftlint:disable function_body_length
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
+        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation,
+                .replyOrReplyAllInConversation, .replyAllInConversation:
             handleOpenComposerAction(action)
         case .labelAs:
             showLabelAsActionSheet(dataSource: .conversation)

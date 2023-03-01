@@ -45,8 +45,14 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     private var blockRules: WKContentRuleList?
     private var contents: WebContents?
 
+    enum ProtonScheme: String {
+        case http = "proton-http"
+        case https = "proton-https"
+        case noProtocol = "proton-"
+    }
     private static var loopbackScheme: String = "pm-incoming-mail"
     static let imageCacheScheme = "pm-cache"
+
     private var loopbacks: [URL: Data] = [:]
     private var latestRequest: String?
     private let userKeys: UserKeys
@@ -238,7 +244,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         config.userContentController.add(self, name: "loaded")
         config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.imageCacheScheme)
         config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.loopbackScheme)
-
     }
 
     private func addSpinnerIfNeeded(to webView: WKWebView) {

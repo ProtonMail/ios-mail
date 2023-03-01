@@ -195,7 +195,7 @@ struct BannerHelper {
     }
 
     func calculateRemoteBannerStatus(bodyToCheck: String, result: @escaping ((Bool) -> Void)) {
-        if remoteContentPolicy != .allowed {
+        if remoteContentPolicy != .allowed && remoteContentPolicy != .allowedAll {
             DispatchQueue.global().async {
                 // this method is slow
                 let shouldShowRemoteBanner = bodyToCheck.hasRemoteImage()
