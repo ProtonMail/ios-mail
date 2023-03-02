@@ -72,6 +72,8 @@ unit_tests:
     - *set_up_brew_dependecies
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - pip3 install -r Scripts/requirements.txt
+    - python3 Scripts/linkAvailabilityCheck.py
     - cd ProtonMail
     - *run_xcodegen_if_needed
     - bundle install
