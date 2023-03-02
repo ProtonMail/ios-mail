@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-CoreTranslation",
-  "version": "3.27.0",
+  "version": "3.28.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "tag": "3.28.1"
   },
   "platforms": {
     "ios": "11.0",

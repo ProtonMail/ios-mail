@@ -24,6 +24,7 @@
 import Foundation
 import ProtonCore_Doh
 import ProtonCore_Log
+import ProtonCore_Foundations
 import ProtonCore_Utilities
 import ProtonCore_Networking
 
@@ -305,36 +306,90 @@ public protocol HumanVerifyPaymentDelegate: AnyObject {
 
 public typealias AuthRefreshResultCompletion = (Result<Credential, AuthErrors>) -> Void
 
+public protocol AuthSessionInvalidatedDelegate: AnyObject {
+    /// This method is called whenever session is invalidated.
+    /// * If the unauthenticated session is invalidate, we can fetch new one without any user input,
+    ///   so this method should have no user-visible effects, just clear the credentials from persistance.
+    /// * If the authenticated session is invalidated, we cannot recreate the auth session
+    ///   without user providing the credentials. So this method should cause the logout:
+    ///     * clear credentials from persistance
+    ///     * remove all user cache and data from memory
+    ///     * present the login/signup flow
+    func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool)
+}
+
 public protocol AuthDelegate: AnyObject {
-    
+
+    /// Accessors for the credentials. They are used by APIService to fill in
+    /// the authentication header in the requests
     func authCredential(sessionUID: String) -> AuthCredential?
     func credential(sessionUID: String) -> Credential?
-    
-    func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion)
-    func onUpdate(credential: Credential, sessionUID: String)
-    func onLogout(sessionUID: String)
 
-    func eraseUnauthSessionCredentials(sessionUID: String)
+    /// This method is called when the credentials are updated — after the credentials refresh call made:
+    /// * due to 401 from the server
+    /// * invoked manually during login to fetch latest scopes
+    ///
+    /// Conceptually, it's used when there are already credentials for this particular session available, we just update them.
+    func onUpdate(credential: Credential, sessionUID: String)
+
+    /// This method is called when the session is obtained or upgraded:
+    /// * after the unauth session acquisition call succeeds
+    /// * after the auth call succeeds (unauth session upgraded OR auth session established if unauth session feature disabled)
+    ///
+    /// Conceptually, it's used when it's the first time that we get the credentials for particular session.
+    func onSessionObtaining(credential: Credential)
+
+    /// This method is for adding the additional user information into the credentials
+    /// during the login/signup.
+    /// It's called only during the login/signup.
+    func onAdditionalCredentialsInfoObtained(sessionUID: String, password: String?, salt: String?, privateKey: String?)
+
+    /// This delegate is used, as name states, only for login/signup flow
+    /// It should inform the login flow about the authenticated session being invalidated,
+    /// so that the logic can return to the initial screen
+    var authSessionInvalidatedDelegateForLoginAndSignup: AuthSessionInvalidatedDelegate? { get set }
+
+    /// This method ic called when the authenticated session is invalidated.
+    /// We cannot recreate the auth session without user providing the credentials,
+    /// so this method should cause the logout (hence the name):
+    ///   * clear credentials from persistance
+    ///   * remove all user cache and data from memory
+    ///   * present the login/signup flow
+    func onAuthenticatedSessionInvalidated(sessionUID: String)
+
+    /// This method is called when the unauthenticated session is invalidated.
+    /// We can fetch new unauth session without any user input, transparently,
+    /// so this method should have no user-visible effects, just clear the credentials from persistance
+    func onUnauthenticatedSessionInvalidated(sessionUID: String)
 }
 
 public typealias AuthRefreshComplete = (_ auth: Credential?, _ hasError: AuthErrors?) -> Void
-
-public protocol APIService: API {
-    func setSessionUID(uid: String)
-    
-    var sessionUID: String { get }
-    var serviceDelegate: APIServiceDelegate? { get set }
-    var authDelegate: AuthDelegate? { get set }
-    var humanDelegate: HumanVerifyDelegate? { get set }
-    @available(*, deprecated, message: "This will be changed to DoHInterface type")
-    var doh: DoH & ServerConfig { get set }
-    var signUpDomain: String { get }
-}
 
 public enum SessionAcquiringResult {
     case sessionFetchedAndAvailable
     case sessionAlreadyPresent
     case sessionUnavailableAndNotFetched
+}
+
+public protocol APIService: API {
+
+    // session and credentials management
+    var sessionUID: String { get }
+    func setSessionUID(uid: String)
+    func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void)
+
+    // delegates
+    var authDelegate: AuthDelegate? { get set }
+    var serviceDelegate: APIServiceDelegate? { get set }
+    var humanDelegate: HumanVerifyDelegate? { get set }
+    var forceUpgradeDelegate: ForceUpgradeDelegate? { get set }
+    var challengeParametersProvider: ChallengeParametersProvider { get set }
+
+    // doh
+    var dohInterface: DoHInterface { get }
+
+    // signup up
+    var signUpDomain: String { get }
 }
 
 typealias RequestComplete = (_ task: URLSessionDataTask?, _ response: Response) -> Void

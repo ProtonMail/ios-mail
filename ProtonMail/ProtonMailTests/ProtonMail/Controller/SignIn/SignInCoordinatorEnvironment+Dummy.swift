@@ -40,18 +40,20 @@ extension SignInCoordinatorEnvironment {
         unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials,
         saveLoginData: @escaping (LoginData) -> SignInManager.LoginDataSavingResult = dummySaveLoginData
     ) -> SignInCoordinatorEnvironment {
-        .init(services: ServiceFactory(),
-              doh: DohMock(),
-              forceUpgradeDelegate: ForceUpgradeDelegateMock(),
-              apiServiceDelegate: APIServiceDelegateMock(),
-              mailboxPassword: mailboxPassword,
-              currentAuth: currentAuth,
-              tryRestoringPersistedUser: tryRestoringPersistedUser,
-              finalizeSignIn: finalizeSignIn,
-              unlockIfRememberedCredentials: unlockIfRememberedCredentials,
-              loginCreationClosure: login,
-              shouldShowAlertOnError: false,
-              saveLoginData: saveLoginData
+        let apiMock = APIServiceMock()
+        let dohMock = DohMock()
+        apiMock.dohStub.fixture = dohMock
+        apiMock.dohInterfaceStub.fixture = dohMock
+        return .init(services: ServiceFactory(),
+                     apiService: apiMock,
+                     mailboxPassword: mailboxPassword,
+                     currentAuth: currentAuth,
+                     tryRestoringPersistedUser: tryRestoringPersistedUser,
+                     finalizeSignIn: finalizeSignIn,
+                     unlockIfRememberedCredentials: unlockIfRememberedCredentials,
+                     loginCreationClosure: login,
+                     shouldShowAlertOnError: false,
+                     saveLoginData: saveLoginData
         )
     }
 }

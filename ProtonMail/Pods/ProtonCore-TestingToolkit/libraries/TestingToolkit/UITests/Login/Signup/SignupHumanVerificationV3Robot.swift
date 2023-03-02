@@ -89,29 +89,28 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
         button(emailSelectedControlLabel).tap()
         return self
     }
-    
-    public func insertEmailV3(_ email: String) -> SignupHumanVerificationV3Robot {
-        let element = XCUIApplication().webViews["HumanVerifyViewController.webView"].webViews.textFields.element(boundBy: 0)
-        Wait().forElement(element)
-        element.tap()
-        element.typeText(email)
-        return self
-    }
-    
-    public func sendCodeButton() -> SignupHumanVerificationV3Robot {
+
+    public func tapOnGetVerificationCodeButton() -> Self {
         button(sendCodeButtonLabel).tap()
         return self
     }
-    
-    public func fillInCodeV3(_ code: String) -> SignupHumanVerificationV3Robot {
-        let element = XCUIApplication().webViews["HumanVerifyViewController.webView"].webViews.textFields.element(boundBy: 0)
-        Wait().forElement(element)
-        element.tap()
-        element.typeText(code)
+
+    public func waitForVerifyCodeStep() -> Self {
+        let timeout: TimeInterval = 30
+        staticText(CoreString._hv_verification_code).wait(time: timeout)
+        button(verifyCodeButtonLabel).wait(time: timeout)
         return self
     }
-    
-    public func verifyCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
+
+    public func fillInTextField(_ value: String) -> Self {
+        let textField = webView("HumanVerifyViewController.webView").onDescendant(textField())
+        textField.wait(time: 30).checkExists()
+        textField.tap()
+        textField.typeText(value)
+        return self
+    }
+
+    public func tapOnVerifyCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(verifyCodeButtonLabel).wait(time: 30).tap()
         return Robot()
     }
@@ -141,16 +140,17 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     ) -> Robot {
         self
             .switchToEmailHVMethod()
-            .insertEmailV3(email)
-            .sendCodeButton()
-            .fillInCodeV3(code)
-            .verifyCodeButton(to: Robot.self)
+            .fillInTextField(email)
+            .tapOnGetVerificationCodeButton()
+            .waitForVerifyCodeStep()
+            .fillInTextField(code)
+            .tapOnVerifyCodeButton(to: Robot.self)
     }
     
     public func performOwnershipEmailVerificationV3<Robot: CoreElements>(code: String, to: Robot.Type
     ) -> Robot {
         self
-            .fillInCodeV3(code)
+            .fillInTextField(code)
             .verifyEmailButton(to: Robot.self)
     }
 
