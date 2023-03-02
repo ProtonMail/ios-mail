@@ -30,72 +30,78 @@ import ProtonCore_Networking
 extension LoginService {
 
     public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        self.username = username
-        self.mailboxPassword = password
-        var data: ChallengeProperties?
-        if let challenge = challenge {
-            data = ChallengeProperties(challenge: challenge, productPrefix: self.clientApp.name)
-        }
-        PMLog.debug("Logging in with username and password")
+        withAuthDelegateAvailable(completion) { authManager in
+            self.username = username
+            self.mailboxPassword = password
+            var data: ChallengeProperties?
+            if let challenge = challenge {
+                data = ChallengeProperties(challenge: challenge, productPrefix: self.clientApp.name)
+            }
+            PMLog.debug("Logging in with username and password")
 
-        manager.authenticate(username: username, password: password, challenge: data, srpAuth: nil) { result in
-            switch result {
-            case let .success(status):
-                switch status {
-                case let .ask2FA(context):
-                    self.context = context
-                    PMLog.debug("Login successful but needs 2FA code")
-                    completion(.success(.ask2FA))
-                case let .newCredential(credential, passwordMode):
-                    self.context = (credential: credential, passwordMode: passwordMode)
-                    self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: password, completion: completion)
-                case .updatedCredential(let credential):
-                    self.authManager.onAuthentication(credential: credential, service: self.apiService)
-                    PMLog.debug("No idea how to handle updatedCredential")
-                    completion(.failure(.invalidState))
+            manager.authenticate(username: username, password: password, challenge: data, srpAuth: nil) { result in
+                switch result {
+                case let .success(status):
+                    switch status {
+                    case let .ask2FA(context):
+                        self.context = context
+                        PMLog.debug("Login successful but needs 2FA code")
+                        completion(.success(.ask2FA))
+                    case let .newCredential(credential, passwordMode):
+                        self.context = (credential: credential, passwordMode: passwordMode)
+                        self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: password, completion: completion)
+                    case .updatedCredential(let credential):
+                        authManager.onSessionObtaining(credential: credential)
+                        self.apiService.setSessionUID(uid: credential.UID)
+                        PMLog.debug("No idea how to handle updatedCredential")
+                        completion(.failure(.invalidState))
+                    }
+
+                case let .failure(error):
+                    PMLog.debug("Login failed with \(error)")
+                    completion(.failure(error.asLoginError()))
                 }
-
-            case let .failure(error):
-                PMLog.debug("Login failed with \(error)")
-                completion(.failure(error.asLoginError()))
             }
         }
     }
 
     public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        PMLog.debug("Confirming 2FA code")
-        guard let context = self.context else {
-            completion(.failure(.invalidState))
-            return
-        }
+        withAuthDelegateAvailable(completion) { authManager in
+            PMLog.debug("Confirming 2FA code")
+            guard let context = self.context else {
+                completion(.failure(.invalidState))
+                return
+            }
 
-        guard let mailboxPassword = mailboxPassword else {
-            completion(.failure(.invalidState))
-            return
-        }
+            guard let mailboxPassword = mailboxPassword else {
+                completion(.failure(.invalidState))
+                return
+            }
 
-        manager.confirm2FA(code, context: context) { result in
-            switch result {
-            case let .success(status):
-                switch status {
-                case let .newCredential(credential, passwordMode):
-                    PMLog.debug("2FA code accepted, updating the credentials context and moving further")
-                    self.context = (credential: credential, passwordMode: passwordMode)
-                    self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
+            manager.confirm2FA(code, context: context) { result in
+                switch result {
+                case let .success(status):
+                    switch status {
+                    case let .newCredential(credential, passwordMode):
+                        PMLog.debug("2FA code accepted, updating the credentials context and moving further")
+                        self.context = (credential: credential, passwordMode: passwordMode)
+                        self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: mailboxPassword, completion: completion)
 
-                case .ask2FA:
-                    PMLog.debug("Asking afaing for 2FA code should never happen")
-                    completion(.failure(.invalidState))
+                    case .ask2FA:
+                        PMLog.debug("Asking afaing for 2FA code should never happen")
+                        completion(.failure(.invalidState))
 
-                case .updatedCredential(let credential):
-                    self.authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
-                    PMLog.debug("No idea how to handle updatedCredential")
-                    completion(.failure(.invalidState))
+                    case .updatedCredential(let credential):
+                        authManager.onSessionObtaining(credential: credential)
+                        self.apiService.setSessionUID(uid: credential.UID)
+                        PMLog.debug("No idea how to handle updatedCredential")
+                        completion(.failure(.invalidState))
+                    }
+                case let .failure(error):
+                    PMLog.debug("Confirming 2FA code failed with \(error)")
+                    let loginError = error.asLoginError(in2FAContext: true)
+                    completion(.failure(loginError))
                 }
-            case let .failure(error):
-                PMLog.debug("Confirming 2FA code failed with \(error)")
-                let loginError = error.asLoginError(in2FAContext: true)
-                completion(.failure(loginError))
             }
         }
     }

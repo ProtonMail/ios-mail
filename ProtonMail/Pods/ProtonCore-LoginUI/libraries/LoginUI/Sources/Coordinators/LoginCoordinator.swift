@@ -28,6 +28,8 @@ import ProtonCore_Networking
 import ProtonCore_CoreTranslation
 import ProtonCore_TroubleShooting
 import ProtonCore_FeatureSwitch
+import ProtonCore_Services
+import ProtonCore_Utilities
 
 protocol LoginCoordinatorDelegate: AnyObject {
     func userDidDismissLoginCoordinator(loginCoordinator: LoginCoordinator)
@@ -63,7 +65,7 @@ final class LoginCoordinator {
         if let initialErrorString = customization.initialError {
             self.initialError = LoginError.initialError(message: initialErrorString)
         }
-        self.container.authManager.setUpDelegate(self, callingItOn: .asyncMainExecutor)
+        self.container.api.authDelegate?.authSessionInvalidatedDelegateForLoginAndSignup = self
     }
 
     @discardableResult
@@ -120,7 +122,6 @@ final class LoginCoordinator {
             return navigationController
         case .inside(let navigationViewController):
             self.navigationController = navigationViewController
-            container.setupHumanVerification(viewController: navigationViewController)
             navigationController?.setViewControllers([initialViewController], animated: true)
             return navigationViewController
         }
@@ -131,7 +132,6 @@ final class LoginCoordinator {
         let navigationController = LoginNavigationViewController(rootViewController: initialViewController,
                                                                  navigationBarHidden: navigationBarHidden)
         self.navigationController = navigationController
-        container.setupHumanVerification(viewController: navigationController)
         return navigationController
     }
 
@@ -396,11 +396,11 @@ extension LoginCoordinator: WelcomeViewControllerDelegate {
     }
 }
 
-extension LoginCoordinator: AuthHelperDelegate {
-    func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
-    }
-    
-    func sessionWasInvalidated(for sessionUID: String) {
-        popAndShowInfo(message: CoreString._ls_info_session_expired)
+extension LoginCoordinator: AuthSessionInvalidatedDelegate {
+    func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        guard isAuthenticatedSession else { return }
+        CompletionBlockExecutor.asyncMainExecutor.execute { [weak self] in
+            self?.popAndShowInfo(message: CoreString._ls_info_session_expired)
+        }
     }
 }

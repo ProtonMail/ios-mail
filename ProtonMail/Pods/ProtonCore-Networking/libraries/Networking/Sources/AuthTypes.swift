@@ -135,11 +135,23 @@ public final class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = salt
     }
 
+    @available(*, deprecated, message: "Use update(password:)")
     public func udpate(password: String) {
+        update(password: password)
+    }
+
+    @available(*, deprecated, message: "Use update(sessionID:,accessToken:,                refreshToken:)")
+    public func udpate(sessionID: String,
+                       accessToken: String,
+                       refreshToken: String) {
+        update(sessionID: sessionID, accessToken: accessToken, refreshToken: refreshToken)
+    }
+
+    public func update(password: String) {
         self.mailboxpassword = password
     }
 
-    public func udpate(sessionID: String,
+    public func update(sessionID: String,
                        accessToken: String,
                        refreshToken: String) {
         self.sessionID = sessionID
@@ -152,9 +164,15 @@ public final class AuthCredential: NSObject, NSCoding {
                        accessToken: String,
                        refreshToken: String,
                        expiration: Date) {
-        self.sessionID = sessionID
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
+        update(sessionID: sessionID, accessToken: accessToken, refreshToken: refreshToken)
+    }
+
+    @available(*, deprecated, message: "Please use the update method without expiration")
+    public func update(sessionID: String,
+                       accessToken: String,
+                       refreshToken: String,
+                       expiration: Date) {
+        update(sessionID: sessionID, accessToken: accessToken, refreshToken: refreshToken)
     }
 
     required init(res: AuthResponse, userName: String) {

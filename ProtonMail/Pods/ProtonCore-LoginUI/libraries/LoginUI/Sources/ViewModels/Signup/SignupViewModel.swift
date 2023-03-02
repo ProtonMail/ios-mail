@@ -27,7 +27,6 @@ import ProtonCore_Services
 
 class SignupViewModel {
 
-    var apiService: PMAPIService
     var signupService: Signup
     var loginService: Login
     let challenge: PMChallenge
@@ -37,11 +36,9 @@ class SignupViewModel {
     }
     var allSignUpDomains: [String] { loginService.allSignUpDomains }
 
-    init(apiService: PMAPIService,
-         signupService: Signup,
+    init(signupService: Signup,
          loginService: Login,
          challenge: PMChallenge) {
-        self.apiService = apiService
         self.signupService = signupService
         self.loginService = loginService
         self.challenge = challenge

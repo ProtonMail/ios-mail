@@ -158,7 +158,7 @@ extension PMAPIService {
             return
         }
         
-        authDelegate.onRefresh(sessionUID: sessionUID, service: self) { result in
+        onRefreshCredential(credential: currentCredentials) { result in
             self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
                 if withoutSupportForUnauthenticatedSessions {
                     self.handleRefreshingResultsWithUnsupportedUnauthenticatedSessions(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
@@ -169,6 +169,19 @@ extension PMAPIService {
         }
     }
 
+    private func onRefreshCredential(credential: AuthCredential,
+                                     complete: @escaping AuthRefreshResultCompletion) {
+        refreshCredential(Credential(credential) ) { result in
+            switch result {
+            case .failure(let responseError):
+                complete(.failure(.from(responseError)))
+            case .success(let credential):
+                complete(.success(credential))
+            }
+        }
+        
+    }
+    
     private func handleRefreshingResults(_ result: Result<Credential, AuthErrors>,
                                          _ credentialsCausing401: AuthCredential,
                                          _ refreshCounter: Int,
@@ -187,7 +200,7 @@ extension PMAPIService {
         case .failure(.networkingError(let responseError))
             where credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
 
-            authDelegate?.eraseUnauthSessionCredentials(sessionUID: sessionUID)
+            authDelegate?.onUnauthenticatedSessionInvalidated(sessionUID: sessionUID)
 
             self.acquireSessionWithoutSynchronization(deviceFingerprints: deviceFingerprints, continuation: continuation) { (result: SessionAcquisitionResult) in
                 switch result {
@@ -202,7 +215,7 @@ extension PMAPIService {
 
         case .failure(.networkingError(let responseError))
             where !credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
-            authDelegate?.onLogout(sessionUID: sessionUID)
+            authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
 
             continuation()
             completion(.logout(underlyingError: responseError))
@@ -242,7 +255,7 @@ extension PMAPIService {
             // according to documentation 422 indicates expired refresh token and 400 indicates invalid refresh token
             // both situations should result in user logout
         case .failure(.networkingError(let responseError)) where responseError.httpCode == 422 || responseError.httpCode == 400:
-            authDelegate?.onLogout(sessionUID: sessionUID)
+            authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
             continuation()
             completion(.logout(underlyingError: responseError))
 
@@ -304,8 +317,8 @@ extension PMAPIService {
                                         userName: "",
                                         userID: "",
                                         scopes: sessionsResponse.scopes)
-            authDelegate.onUpdate(credential: credential, sessionUID: self.sessionUID)
-            self.setSessionUID(uid: sessionsResponse.UID)
+            authDelegate.onSessionObtaining(credential: credential)
+            self.setSessionUID(uid: credential.UID)
             continuation()
             completion(.acquired(AuthCredential(credential)))
         case .failure(let error):

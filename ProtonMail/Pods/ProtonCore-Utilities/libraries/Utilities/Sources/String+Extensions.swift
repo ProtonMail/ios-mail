@@ -56,7 +56,7 @@ extension String {
         let result = initials
             .compactMap { $0 }
             .joined()
-        return result.isEmpty ? "?": result
+        return result.isEmpty ? "?" : result
     }
 
 }

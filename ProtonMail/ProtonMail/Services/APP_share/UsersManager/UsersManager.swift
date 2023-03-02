@@ -131,8 +131,9 @@ class UsersManager: Service {
     func add(auth: AuthCredential, user: UserInfo) {
         self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
-        let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
-                                                       challengeParametersProvider: .forAPIService(clientApp: .mail))
+        let apiService = PMAPIService.createAPIService(
+            doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+        )
         apiService.serviceDelegate = self
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -253,8 +254,9 @@ class UsersManager: Service {
         if let oldAuth = oldAuthFetch(), let user = oldUserInfo() {
             let session = oldAuth.sessionID
 
-            let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
-                                                           challengeParametersProvider: .forAPIService(clientApp: .mail))
+            let apiService = PMAPIService.createAPIService(
+                doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            )
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -316,8 +318,9 @@ class UsersManager: Service {
 
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
-                                                               challengeParametersProvider: .forAPIService(clientApp: .mail))
+                let apiService = PMAPIService.createAPIService(
+                    doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                )
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -575,8 +578,9 @@ extension UsersManager {
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLagcy(), let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
-            let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
-                                                           challengeParametersProvider: .forAPIService(clientApp: .mail))
+            let apiService = PMAPIService.createAPIService(
+                doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            )
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -624,8 +628,11 @@ extension UsersManager {
 
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
-                                                               challengeParametersProvider: .forAPIService(clientApp: .mail))
+                let apiService = PMAPIService.createAPIService(
+                    doh: self.doh,
+                    sessionUID: session,
+                    challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                )
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)

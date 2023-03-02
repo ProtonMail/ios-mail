@@ -112,6 +112,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut = ImageProxy(dependencies: dependencies)
 
         apiServiceMock.dohStub.fixture = DohMock()
+        apiServiceMock.dohInterfaceStub.fixture = DohMock()
 
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!

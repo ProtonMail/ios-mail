@@ -34,56 +34,59 @@ extension LoginService {
 
     func getAccountDataPerformingAccountMigrationIfNeeded(user: User?, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
 
-        switch self.minimumAccountType {
-        case .username:
-            guard let credential = authManager.credential(sessionUID: sessionId) else {
-                completion(.failure(.invalidState))
-                return
-            }
-            completion(.success(.finished(LoginData.credential(credential))))
-            return
-        case .external, .internal:
-            guard let user = user else {
-                manager.getUserInfo { result in
-                    switch result {
-                    case .success(let user):
-                        self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
-                    case .failure(let error):
-                        PMLog.debug("Fetching user info with \(error)")
-                        completion(.failure(error.asLoginError()))
-                    }
-                }
-                return
-            }
+        withAuthDelegateAvailable(completion) { authManager in
 
-            // first login of a private user who has not changed the default password yet
-            if user.keys.isEmpty && user.role == 1 && user.private == 1 {
-                completion(.failure(.needsFirstTimePasswordChange))
-                return
-            }
-            
-            // if there is no key and user is not private return an error
-            if user.keys.isEmpty && user.private == 0 {
-                completion(.failure(.missingSubUserConfiguration))
-                return
-            }
-
-            // external account used but internal needed
-            // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
-            if user.isExternal && self.minimumAccountType == .internal {
-                
-                // Cap C blocked
-                guard isCapCEnabled(completion: completion) else {
+            switch self.minimumAccountType {
+            case .username:
+                guard let credential = authManager.credential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
                     return
                 }
-                
-                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+                completion(.success(.finished(LoginData.credential(credential))))
                 return
+            case .external, .internal:
+                guard let user = user else {
+                    manager.getUserInfo { result in
+                        switch result {
+                        case .success(let user):
+                            self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
+                        case .failure(let error):
+                            PMLog.debug("Fetching user info with \(error)")
+                            completion(.failure(error.asLoginError()))
+                        }
+                    }
+                    return
+                }
+
+                // first login of a private user who has not changed the default password yet
+                if user.keys.isEmpty && user.role == 1 && user.private == 1 {
+                    completion(.failure(.needsFirstTimePasswordChange))
+                    return
+                }
+
+                // if there is no key and user is not private return an error
+                if user.keys.isEmpty && user.private == 0 {
+                    completion(.failure(.missingSubUserConfiguration))
+                    return
+                }
+
+                // external account used but internal needed
+                // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
+                if user.isExternal && self.minimumAccountType == .internal {
+
+                    // Cap C blocked
+                    guard isCapCEnabled(completion: completion) else {
+                        return
+                    }
+
+                    completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+                    return
+                }
+
+                self.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
+                    user: user, mailboxPassword: mailboxPassword, completion: completion
+                )
             }
-            
-            self.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                user: user, mailboxPassword: mailboxPassword, completion: completion
-            )
         }
     }
 
@@ -169,21 +172,23 @@ extension LoginService {
             completion(.failure(.invalidState))
 
         case .external:
-            if addresses.filter({ $0.status != .disabled }).isEmpty {
-                guard let authCredential = self.authManager.authCredential(sessionUID: sessionId),
-                      let credential = self.authManager.credential(sessionUID: sessionId) else {
-                    completion(.failure(.invalidState))
+            withAuthDelegateAvailable(completion) { authManager in
+                if addresses.filter({ $0.status != .disabled }).isEmpty {
+                    guard let authCredential = authManager.authCredential(sessionUID: sessionId),
+                          let credential = authManager.credential(sessionUID: sessionId) else {
+                        completion(.failure(.invalidState))
+                        return
+                    }
+                    completion(.success(.finished(LoginData.userData(UserData(credential: authCredential,
+                                                                              user: user,
+                                                                              salts: [],
+                                                                              passphrases: [:],
+                                                                              addresses: addresses,
+                                                                              scopes: credential.scopes)))))
                     return
+                } else {
+                    fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
                 }
-                completion(.success(.finished(LoginData.userData(UserData(credential: authCredential,
-                                                                          user: user,
-                                                                          salts: [],
-                                                                          passphrases: [:],
-                                                                          addresses: addresses,
-                                                                          scopes: credential.scopes)))))
-                return
-            } else {
-                fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
             }
 
         case .internal:
@@ -412,43 +417,47 @@ extension LoginService {
     }
 
     private func makesPassphrasesAndValidateMailboxPassword(addresses: [Address], user: User, mailboxPassword: String, salts: [KeySalt], completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        PMLog.debug("Making passphrases")
+        withAuthDelegateAvailable(completion) { authManager in
+            PMLog.debug("Making passphrases")
 
-        switch makePassphrases(salts: salts, mailboxPassword: mailboxPassword) {
-        case let .success(passphrases):
-            PMLog.debug("Validating mailbox password")
+            switch makePassphrases(salts: salts, mailboxPassword: mailboxPassword) {
+            case let .success(passphrases):
+                PMLog.debug("Validating mailbox password")
 
-            guard validateMailboxPassword(passphrases: passphrases, userKeys: user.keys) else {
-                PMLog.debug("Validating mailbox password failed")
-                completion(.failure(.invalidSecondPassword))
-                return
+                guard validateMailboxPassword(passphrases: passphrases, userKeys: user.keys) else {
+                    PMLog.debug("Validating mailbox password failed")
+                    completion(.failure(.invalidSecondPassword))
+                    return
+                }
+
+                if let key = user.keys.first(where: { $0.primary == 1 }) ?? user.keys.first {
+                    authManager.onAdditionalCredentialsInfoObtained(
+                        sessionUID: sessionId,
+                        password: passphrases[key.keyID],
+                        salt: salts.first { $0.ID == key.keyID }.flatMap { $0.keySalt },
+                        privateKey: key.privateKey
+                    )
+                }
+
+                guard let authCredentials = authManager.authCredential(sessionUID: sessionId),
+                      let credentials = authManager.credential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
+                    return
+                }
+
+                completion(.success(.finished(LoginData.userData(UserData(credential: authCredentials,
+                                                                          user: user,
+                                                                          salts: salts,
+                                                                          passphrases: passphrases,
+                                                                          addresses: addresses,
+                                                                          scopes: credentials.scopes)))))
+
+            case let .failure(error):
+                PMLog.debug("Making passphrases failed with \(error)")
+                completion(.failure(.generic(message: error.messageForTheUser,
+                                             code: error.bestShotAtReasonableErrorCode,
+                                             originalError: error)))
             }
-
-            if let key = user.keys.first(where: { $0.primary == 1 }) ?? user.keys.first {
-                self.authManager.updateAuth(for: sessionId,
-                                            password: passphrases[key.keyID],
-                                            salt: salts.first { $0.ID == key.keyID }.flatMap { $0.keySalt },
-                                            privateKey: key.privateKey)
-            }
-            
-            guard let authCredentials = self.authManager.authCredential(sessionUID: sessionId),
-                  let credentials = self.authManager.credential(sessionUID: sessionId) else {
-                completion(.failure(.invalidState))
-                return
-            }
-
-            completion(.success(.finished(LoginData.userData(UserData(credential: authCredentials,
-                                                                      user: user,
-                                                                      salts: salts,
-                                                                      passphrases: passphrases,
-                                                                      addresses: addresses,
-                                                                      scopes: credentials.scopes)))))
-
-        case let .failure(error):
-            PMLog.debug("Making passphrases failed with \(error)")
-            completion(.failure(.generic(message: error.messageForTheUser,
-                                         code: error.bestShotAtReasonableErrorCode,
-                                         originalError: error)))
         }
     }
     

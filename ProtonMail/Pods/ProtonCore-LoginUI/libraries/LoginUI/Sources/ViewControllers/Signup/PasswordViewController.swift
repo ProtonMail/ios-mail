@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_Observability
 
 protocol PasswordViewControllerDelegate: AnyObject {
     func passwordIsShown()
@@ -94,6 +95,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
         setupNotifications()
         generateAccessibilityIdentifiers()
         delegate?.passwordIsShown()
+        ObservabilityEnv.report(.screenLoadCountTotal(screenName: .passwordCreation))
     }
     
     override func viewDidAppear(_ animated: Bool) {
