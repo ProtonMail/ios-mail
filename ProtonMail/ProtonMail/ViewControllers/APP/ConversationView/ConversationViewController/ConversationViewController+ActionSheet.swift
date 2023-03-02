@@ -18,7 +18,11 @@ extension ConversationViewController {
         case .saveAsPDF:
             if let controller = contentController(for: message) {
                 let renderer = ConversationPrintRenderer([controller])
-                controller.exportPDF(renderer: renderer, fileName: "\(message.title).pdf")
+                controller.exportPDF(
+                    renderer: renderer,
+                    fileName: "\(message.title).pdf",
+                    sourceView: customView.toolbar
+                )
             }
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action, message: message)

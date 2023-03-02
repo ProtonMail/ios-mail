@@ -338,8 +338,13 @@ private extension SingleMessageViewController {
             let renderer = ConversationPrintRenderer([contentController])
             contentController.presentPrintController(renderer: renderer, jobName: viewModel.message.title)
         case .saveAsPDF:
+
             let renderer = ConversationPrintRenderer([contentController])
-            contentController.exportPDF(renderer: renderer, fileName: "\(viewModel.message.title).pdf")
+            contentController.exportPDF(
+                renderer: renderer,
+                fileName: "\(viewModel.message.title).pdf",
+                sourceView: customView.toolbar
+            )
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action)
         case .dismiss:
