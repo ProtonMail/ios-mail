@@ -20,22 +20,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol ExpirationWarningHeaderCellDelegate: AnyObject {
     func clicked(at section: Int, expend: Bool)
 }
 
 class ExpirationWarningHeaderCell: UITableViewHeaderFooterView {
+    @IBOutlet private var headerLabel: UILabel!
+    @IBOutlet private var actionButton: UIButton!
+    @IBOutlet private var arrowImage: UIImageView!
+
     weak var delegate: ExpirationWarningHeaderCellDelegate?
-    @IBOutlet weak var headerLabel: UILabel!
+
     var section: Int = 0
     var expend: Bool = false
 
-    @IBOutlet weak var actionButton: UIButton!
-
-    @IBOutlet weak var arrowImage: UIImageView!
     @IBAction func backgroundAction(_ sender: Any) {
         if self.expend {
             self.expend = false
@@ -48,7 +49,7 @@ class ExpirationWarningHeaderCell: UITableViewHeaderFooterView {
         }
     }
 
-    func ConfigHeader(title: String, section: Int, expend: Bool) {
+    func configHeader(title: String, section: Int, expend: Bool) {
         headerLabel.text = title
         self.section = section
         self.expend = expend

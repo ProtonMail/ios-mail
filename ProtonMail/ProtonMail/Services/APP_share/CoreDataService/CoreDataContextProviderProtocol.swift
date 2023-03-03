@@ -21,7 +21,6 @@ import Foundation
 protocol CoreDataContextProviderProtocol {
     var mainContext: NSManagedObjectContext { get }
 
-    func makeComposerMainContext() -> NSManagedObjectContext
     func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
     func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)

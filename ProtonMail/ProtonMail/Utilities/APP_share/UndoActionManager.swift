@@ -60,6 +60,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
     }
 
     private let apiService: APIService
+    private let internetStatusProvider: InternetConnectionStatusProvider
     private let contextProvider: CoreDataContextProviderProtocol
     private var getEventFetching: () -> EventsFetching?
     private var getUserManager: () -> UserManager?
@@ -73,11 +74,13 @@ final class UndoActionManager: UndoActionManagerProtocol {
 
     init(
         apiService: APIService,
+        internetStatusProvider: InternetConnectionStatusProvider,
         contextProvider: CoreDataContextProviderProtocol,
         getEventFetching: @escaping () -> EventsFetching?,
         getUserManager: @escaping () -> UserManager?
     ) {
         self.apiService = apiService
+        self.internetStatusProvider = internetStatusProvider
         self.contextProvider = contextProvider
         self.getEventFetching = getEventFetching
         self.getUserManager = getUserManager
@@ -217,20 +220,19 @@ extension UndoActionManager {
             guard let message = message(id: messageID),
                   let user = getUserManager() else { return }
 
-            let viewModel = ContainableComposeViewModel(
+            let composer = ComposerViewFactory.makeComposer(
                 msg: message,
                 action: .openDraft,
-                msgService: user.messageService,
                 user: user,
-                coreDataContextProvider: contextProvider
+                contextProvider: contextProvider,
+                isEditingScheduleMsg: false,
+                userIntroductionProgressProvider: userCachedStatus,
+                scheduleSendEnableStatusProvider: userCachedStatus,
+                internetStatusProvider: internetStatusProvider
             )
 
             guard let presentingVC = self.handler?.composerPresentingVC else { return }
-            let composer = ComposeContainerViewCoordinator(
-                presentingViewController: presentingVC,
-                editorViewModel: viewModel
-            )
-            composer.start()
+            presentingVC.present(composer, animated: true)
         #endif
     }
 

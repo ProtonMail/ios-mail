@@ -17,7 +17,11 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 struct Constants {
+    static let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000
+    static let k12HourMinuteFormat = "h:mm a"
+    static let k24HourMinuteFormat = "HH:mm"
     static var AppGroup: String {
 #if Enterprise
         return "group.com.protonmail.protonmail"
@@ -30,7 +34,7 @@ struct Constants {
         static let SpaceWarningThresholdDouble: Double = 90
         // 3 is v4 carousel
         // 4 is rebranding carousel
-        static let TourVersion : Int                   = 4
+        static let TourVersion: Int = 4
 
         static var appDomain: String { BackendConfiguration.shared.environment.appDomain }
         static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
@@ -38,8 +42,12 @@ struct Constants {
         static let DOH_ENABLE: Bool = true
 
         static let API_PREFIXED = "mail/v4"
+
         static func apiHost() -> String {
-            if let apiURLOverrideString = UserDefaults.standard.string(forKey: "ch.protonmail.protonmail.APIURLOverride"), let apiURLOverride = URL(string: apiURLOverrideString) {
+            if let apiURLOverrideString = UserDefaults.standard.string(
+                forKey: "ch.protonmail.protonmail.APIURLOverride"
+            ),
+                let apiURLOverride = URL(string: apiURLOverrideString) {
                 return apiURLOverride.absoluteString
             }
             return "https://\(URL_HOST)"
@@ -72,7 +80,7 @@ struct Constants {
     enum ScheduleSend {
         static let minNumberOfMinutes = 5
         static var minNumberOfSeconds: TimeInterval { TimeInterval(self.minNumberOfMinutes * 60) }
-        static let maxNumberOfSeconds: TimeInterval = 30 * 86400 // 86400 = 1 day
+        static let maxNumberOfSeconds: TimeInterval = 30 * 86_400 // 86400 = 1 day
     }
 
     enum ImageProxy {

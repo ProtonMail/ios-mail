@@ -24,6 +24,7 @@ import Foundation
 import Groot
 import PromiseKit
 import ProtonCore_Crypto
+import ProtonCore_DataModel
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -391,12 +392,13 @@ extension MainQueueHandler {
                     }
                 }
 
-                let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
+                let addressID: AddressID = .init(message.addressID ?? .empty)
+                let address = self.messageDataService.userAddress(of: addressID) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(of: addressID)
                 let request: Request
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    request = UpdateDraftRequest(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
+                    request = UpdateDraftRequest(message: message, fromAddr: address, authCredential: message.cachedAuthCredential)
                 } else {
-                    request = CreateDraftRequest(message: message, fromAddr: addr)
+                    request = CreateDraftRequest(message: message, fromAddr: address)
                 }
 
                 self.apiService.perform(request: request, response: UpdateDraftResponse()) { task, response in
@@ -481,8 +483,11 @@ extension MainQueueHandler {
                 .first(where: { $0.contentID() == attachment.contentID() &&
                         $0.attachmentID != "0" }) {
                 // This upload is duplicated
-                context.delete(attachment)
-                _ = context.saveUpstreamIfNeeded()
+                if !attachments.contains(where: { $0.objectID == attachment.objectID }) {
+                    // Delete the attachment if the attachment object is not linked to the message
+                    context.delete(attachment)
+                    _ = context.saveUpstreamIfNeeded()
+                }
                 completion(nil)
                 return
             }

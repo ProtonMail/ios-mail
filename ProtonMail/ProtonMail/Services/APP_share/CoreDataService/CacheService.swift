@@ -40,6 +40,11 @@ protocol CacheServiceProtocol: Service {
         completion: @escaping (Error?) -> Void
     )
     func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
+    func updateExpirationOffset(of message: Message,
+                                expirationTime: TimeInterval,
+                                pwd: String,
+                                pwdHint: String,
+                                completion: (() -> Void)?)
 }
 
 class CacheService: CacheServiceProtocol {
