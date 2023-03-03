@@ -487,17 +487,21 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
         }
 
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
         let contactGroupVO = ContactGroupVO.init(ID: ID, name: name)
         contactGroupVO.selectAllEmailFromGroup()
-        viewModel.addToContacts(contactGroupVO)
+        let composer = ComposerViewFactory.makeComposer(
+            msg: nil,
+            action: .newDraft,
+            user: user,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            isEditingScheduleMsg: false,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus,
+            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            toContact: contactGroupVO
+        )
 
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
-        coordinator.start()
+        self.present(composer, animated: true)
     }
 }
 

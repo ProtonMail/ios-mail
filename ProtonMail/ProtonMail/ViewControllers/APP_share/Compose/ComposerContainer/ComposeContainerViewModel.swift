@@ -23,16 +23,23 @@
 import Foundation
 import PromiseKit
 
+protocol ComposeContainerUIProtocol: AnyObject {
+    func updateSendButton()
+}
+
 class ComposeContainerViewModel: TableContainerViewModel {
-    internal var childViewModel: ContainableComposeViewModel
+    var childViewModel: ComposeViewModel
 
     // for FileImporter
-    internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
-    internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
-    internal let kDefaultAttachmentFileSize: Int = 25 * 1000 * 1000 // 25 mb
-    private var contactChanged: NSKeyValueObservation!
+    lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
+    lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
+    private var contactChanged: NSKeyValueObservation?
     weak var uiDelegate: ComposeContainerUIProtocol?
-    var user: UserManager { self.childViewModel.getUser() }
+    var user: UserManager { self.childViewModel.user }
+    var coreDataContextProvider: CoreDataContextProviderProtocol {
+        self.childViewModel.coreDataContextProvider
+    }
+
     private var userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
 
@@ -40,18 +47,21 @@ class ComposeContainerViewModel: TableContainerViewModel {
         !userIntroductionProgressProvider.shouldShowSpotlight(for: .scheduledSend, toUserWith: user.userID)
     }
 
+    private let router: ComposerRouter
+    var isSendButtonTapped: Bool = false
+    var currentAttachmentSize = 0
     var isScheduleSendEnable: Bool {
         scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID) == .enabled
     }
 
     init(
-        editorViewModel: ContainableComposeViewModel,
-        uiDelegate: ComposeContainerUIProtocol?,
+        router: ComposerRouter,
+        editorViewModel: ComposeViewModel,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
     ) {
+        self.router = router
         self.childViewModel = editorViewModel
-        self.uiDelegate = uiDelegate
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.scheduleSendStatusProvider = scheduleSendStatusProvider
         super.init()
@@ -61,23 +71,26 @@ class ComposeContainerViewModel: TableContainerViewModel {
     override var numberOfSections: Int {
         return 1
     }
+
     override func numberOfRows(in section: Int) -> Int {
         return 3
     }
 
     func syncMailSetting() {
         let usersManager = sharedServices.get(by: UsersManager.self)
-        guard let currentUser = usersManager.firstUser else {return}
+        guard let currentUser = usersManager.firstUser else { return }
         currentUser.messageService.syncMailSetting()
     }
 
-    internal func filesAreSupported(from itemProviders: [NSItemProvider]) -> Bool {
+    func filesAreSupported(from itemProviders: [NSItemProvider]) -> Bool {
         return itemProviders.reduce(true) { $0 && $1.hasItem(types: self.filetypes) != nil }
     }
 
-    internal func importFiles(from itemProviders: [NSItemProvider],
-                              errorHandler: @escaping (String) -> Void,
-                              successHandler: @escaping () -> Void) {
+    func importFiles(
+        from itemProviders: [NSItemProvider],
+        errorHandler: @escaping (String) -> Void,
+        successHandler: @escaping () -> Void
+    ) {
         for itemProvider in itemProviders {
             guard let type = itemProvider.hasItem(types: self.filetypes) else { return }
             self.importFile(itemProvider, type: type, errorHandler: errorHandler, handler: successHandler)
@@ -94,7 +107,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     private func observeRecipients() -> NSKeyValueObservation {
-        return self.childViewModel.observe(\.contactsChange, options: [.new, .old]) { [weak self](_, _) in
+        return self.childViewModel.observe(\.contactsChange, options: [.new, .old]) { [weak self] _, _ in
             self?.uiDelegate?.updateSendButton()
         }
     }
@@ -145,16 +158,45 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
     }
 
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
-        guard self.childViewModel.currentAttachmentsSize + fileData.contents.dataSize < self.kDefaultAttachmentFileSize else {
+        guard self.childViewModel.currentAttachmentsSize + fileData.contents.dataSize < Constants.kDefaultAttachmentFileSize else {
             self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return Promise()
         }
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         return Promise { seal in
-            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: stripMetadata) { attachment in
-                self.childViewModel.uploadAtt(attachment)
+            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: stripMetadata) { _ in
+                self.childViewModel.updateDraft()
                 seal.fulfill_()
             }
         }
+    }
+
+    func addAttachment(_ attachment: AttachmentEntity) {
+        childViewModel.composerMessageHelper.addAttachment(attachment)
+    }
+
+    func updateAttachmentOrders(completion: @escaping ([AttachmentEntity]) -> Void) {
+        childViewModel.composerMessageHelper.updateAttachmentOrders(completion: completion)
+    }
+
+    func navigateToPassword(password: String, confirmPassword: String, passwordHint: String, delegate: ComposePasswordDelegate) {
+        router.navigateToPasswordSetupView(
+            password: password,
+            confirmPassword: confirmPassword,
+            passwordHint: passwordHint,
+            delegate: delegate
+        )
+    }
+
+    func navigateToExpiration(expiration: TimeInterval, delegate: ComposeExpirationDelegate) {
+        router.navigateToExpirationSetupView(
+            expirationTimeInterval: expiration,
+            delegate: delegate
+        )
+    }
+
+    func sendAction(deliveryTime: Date?) {
+        childViewModel.deliveryTime = deliveryTime
+        // TODO: handle sending message here.
     }
 }

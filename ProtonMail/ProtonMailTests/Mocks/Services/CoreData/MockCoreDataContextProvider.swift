@@ -53,10 +53,6 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         mainContext
     }
 
-    func makeComposerMainContext() -> NSManagedObjectContext {
-        return coreDataService.makeComposerMainContext()
-    }
-
     func enqueue<T>(block: @escaping (NSManagedObjectContext) -> T) -> T {
         var output: T!
 

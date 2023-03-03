@@ -41,6 +41,7 @@ final class ShareAppCoordinator {
         let usersManager = UsersManager(doh: DoHMail.default)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
     }
 
     init(navigation: UINavigationController?) {

@@ -241,6 +241,7 @@ class UserManager: Service {
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
         let manager = UndoActionManager(
             apiService: self.apiService,
+            internetStatusProvider: sharedServices.get(),
             contextProvider: coreDataService,
             getEventFetching: { [weak self] in
                 self?.eventsService

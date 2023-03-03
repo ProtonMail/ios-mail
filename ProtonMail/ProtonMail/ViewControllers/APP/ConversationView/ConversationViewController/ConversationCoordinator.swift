@@ -19,6 +19,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private let contextProvider: CoreDataContextProviderProtocol
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
@@ -28,6 +29,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+         contextProvider: CoreDataContextProviderProtocol,
          targetID: MessageID? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
@@ -36,6 +38,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.targetID = targetID
         self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.contextProvider = contextProvider
     }
 
     func start(openFromNotification: Bool = false) {
@@ -152,12 +155,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(with contact: ContactVO) {
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: nil,
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
         viewModel.addToContacts(contact)
 
@@ -165,12 +169,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(with mailToURL: URL) {
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: nil,
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
         viewModel.parse(mailToURL: mailToURL)
 
@@ -182,21 +187,25 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         guard let rawMessage = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else {
             return
         }
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: rawMessage,
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: contextProvider
+            coreDataContextProvider: contextProvider,
+            internetStatusProvider: internetStatusProvider
         )
 
         presentCompose(viewModel: viewModel)
     }
 
-    private func presentCompose(viewModel: ContainableComposeViewModel) {
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
-                                                          editorViewModel: viewModel)
-        coordinator.start()
+    private func presentCompose(viewModel: ComposeViewModel) {
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: contextProvider,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentAddContacts(with contact: ContactVO) {

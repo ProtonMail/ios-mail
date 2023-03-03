@@ -225,6 +225,7 @@ extension PagesViewController {
             user: viewModel.user,
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
             infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
+            contextProvider: services.get(by: CoreDataService.self),
             targetID: targetMessageID
         )
         coordinator.goToDraft = viewModel.goToDraft

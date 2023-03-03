@@ -17,6 +17,7 @@
 
 import CoreData
 import ProtonCore_Crypto
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 final class MessageDecrypterMock: MessageDecrypter {
@@ -25,5 +26,15 @@ final class MessageDecrypterMock: MessageDecrypter {
     override func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> MessageDecrypter.Output {
         decryptCallCount += 1
         return try super.decrypt(message: message, verificationKeys: verificationKeys)
+    }
+
+    @FuncStub(MessageDecrypterMock.copy, initialReturn: Message()) var callCopy
+    override func copy(message: Message, copyAttachments: Bool, context: NSManagedObjectContext) -> Message {
+        return callCopy(message, copyAttachments, context)
+    }
+
+    @ThrowingFuncStub(MessageDecrypterMock.decrypt, initialReturn: "") var callDecrypt
+    override func decrypt(message: Message) throws -> String {
+        return try callDecrypt(message)
     }
 }

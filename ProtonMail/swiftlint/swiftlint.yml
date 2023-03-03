@@ -229,7 +229,7 @@ excluded:
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/utils/TableContainerViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposerContainer/ComposeContainerViewModel.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/HtmlEditor/String+Html+Ext.swift
-  - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposeViewController.swift
+  - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposeContentViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/Helper/AttachReminderHelper.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposerHeader/ComposeHeaderViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/EmbeddableCompose/ContainableComposeViewModel.swift

@@ -33,8 +33,8 @@ protocol SearchVMProtocol: AnyObject {
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
-    func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel?
-    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel?
+    func getComposeViewModel(message: MessageEntity) -> ComposeViewModel?
+    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ComposeViewModel?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
@@ -92,12 +92,15 @@ final class SearchViewModel: NSObject {
     var selectedMessages: [MessageEntity] {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
+    private let internetStatusProvider: InternetConnectionStatusProvider
 
     init(user: UserManager,
          coreDataContextProvider: CoreDataContextProviderProtocol,
+         internetStatusProvider: InternetConnectionStatusProvider,
          queueManager: QueueManagerProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
+        self.internetStatusProvider = internetStatusProvider
         let fetchMessageDetailUseCase = FetchMessageDetail(
             dependencies: .init(queueManager: queueManager,
                                 apiService: user.apiService,
@@ -191,29 +194,35 @@ extension SearchViewModel: SearchVMProtocol {
             .execute(params: params, callback: callback)
     }
 
-    func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel? {
+    func getComposeViewModel(message: MessageEntity) -> ComposeViewModel? {
         guard let msgObject = coreDataContextProvider.mainContext
                 .object(with: message.objectID.rawValue) as? Message else {
             return nil
         }
-        return ContainableComposeViewModel(msg: msgObject,
-                                           action: .openDraft,
-                                           msgService: user.messageService,
-                                           user: user,
-                                           coreDataContextProvider: coreDataContextProvider)
+        return ComposeViewModel(
+            msg: msgObject,
+            action: .openDraft,
+            msgService: user.messageService,
+            user: user,
+            coreDataContextProvider: coreDataContextProvider,
+            internetStatusProvider: internetStatusProvider
+        )
     }
 
-    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ContainableComposeViewModel? {
+    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ComposeViewModel? {
         guard let msg = Message.messageForMessageID(msgID.rawValue,
                                                     inManagedObjectContext: coreDataContextProvider.mainContext) else {
             return nil
         }
-        return ContainableComposeViewModel(msg: msg,
-                                           action: .openDraft,
-                                           msgService: user.messageService,
-                                           user: user,
-                                           coreDataContextProvider: coreDataContextProvider,
-                                           isEditingScheduleMsg: isEditingScheduleMsg)
+        return ComposeViewModel(
+            msg: msg,
+            action: .openDraft,
+            msgService: user.messageService,
+            user: user,
+            coreDataContextProvider: coreDataContextProvider,
+            internetStatusProvider: internetStatusProvider,
+            isEditingScheduleMsg: isEditingScheduleMsg
+        )
     }
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {

@@ -38,6 +38,11 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         updateCounterSyncStub(markUnRead, labelIDs)
     }
 
+    @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
+    func updateExpirationOffset(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
+        updateExpirationOffsetStub(message, expirationTime, pwd, pwdHint, completion)
+    }
+
 }
 
 class MockCachedUserDataProvider: CachedUserDataProvider {
