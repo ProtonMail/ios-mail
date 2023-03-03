@@ -61,6 +61,10 @@
          ],
          "postBuildScripts": [
             {
+               "name": "Overwrite Settings.bundle for Debug",
+               "path": "xcodeGen/copySettingsEnvironmentBundle.sh"
+            },
+            {
                "name": "SwiftLint",
                "path": "xcodeGen/swiftlint.sh"
             },
