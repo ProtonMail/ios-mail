@@ -52,7 +52,8 @@ class DeviceCapacityTests: XCTestCase {
 
         let freeSpaceAfterWrite = SUT.Disk().availableCapacity
 
-        let expectedDecreaseInReportedSpace = 4096 // note: actually not test data size!
-        XCTAssertEqual(freeSpaceBeforeWrite - freeSpaceAfterWrite, expectedDecreaseInReportedSpace)
+        let reductionInFreeSpace = freeSpaceBeforeWrite - freeSpaceAfterWrite
+        // Either of this assertions fails on some systems
+        XCTAssert(reductionInFreeSpace == testData.count || reductionInFreeSpace == 4096)
     }
 }

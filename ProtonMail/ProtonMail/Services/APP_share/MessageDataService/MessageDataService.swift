@@ -173,24 +173,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let queue = queued ? queueManager?.queue : noQueue
         queue? {
             let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        completion(task, nil, error as NSError?)
-                    }
-                case .success(let response):
+                do {
+                    let response = try result.get()
                     onDownload?()
-                    self.cacheService.parseMessagesResponse(
+                    try self.cacheService.parseMessagesResponse(
                         labelID: labelID,
                         isUnread: isUnread,
                         response: response,
                         idsOfMessagesBeingSent: self.idsOfMessagesBeingSent()
-                    ) { errorFromParsing in
-                        if let err = errorFromParsing {
-                            DispatchQueue.main.async {
-                                completion(task, response, err as NSError)
-                            }
-                        } else {
+                    )
+
                             let counterRoute = MessageCountRequest()
                             self.apiService.perform(request: counterRoute, response: MessageCountResponse()) { _, response in
                                 if response.error == nil {
@@ -200,7 +192,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             DispatchQueue.main.async {
                                 completion(task, response, nil)
                             }
-                        }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(task, nil, error as NSError?)
                     }
                 }
             }

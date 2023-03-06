@@ -31,10 +31,6 @@ class FetchMessagesTests: XCTestCase {
         mockCacheService = MockCacheServiceProtocol()
         mockEventsService = MockEventsService()
 
-        mockCacheService.parseMessagesResponseStub.bodyIs { _, _, _, _, _, completion in
-            completion(nil)
-        }
-
         sut = FetchMessages(
             params: makeParams(),
             dependencies: makeDependencies(
@@ -87,8 +83,8 @@ class FetchMessagesTests: XCTestCase {
     }
 
     func testExecute_whenPersistMessagesFails() {
-        mockCacheService.parseMessagesResponseStub.bodyIs { _, _, _, _, _, completion in
-            completion(NSError.badParameter(nil))
+        mockCacheService.parseMessagesResponseStub.bodyIs { _, _, _, _, _ in
+            throw NSError.badParameter(nil)
         }
 
         sut = FetchMessages(
