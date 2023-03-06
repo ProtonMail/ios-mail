@@ -28,9 +28,9 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         updateContactDetailStub(serverResponse, completion)
     }
 
-    @FuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
-    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String], completion: @escaping (Error?) -> Void) {
-        parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent, completion)
+    @ThrowingFuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
+    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String]) throws {
+        try parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent)
     }
 
     @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub

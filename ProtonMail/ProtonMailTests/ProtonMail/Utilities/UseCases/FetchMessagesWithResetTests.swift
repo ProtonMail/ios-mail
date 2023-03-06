@@ -155,8 +155,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         XCTAssertFalse(mockLabelProvider.wasFetchV4LabelsCalled)
 
-        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
-        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)
+        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
     }
 
     func testExecute_whenFetchMessagesFails() {
@@ -185,8 +184,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         XCTAssertTrue(mockLabelProvider.wasFetchV4LabelsCalled)
 
-        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
-        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)
+        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
     }
 }
 
@@ -201,8 +199,7 @@ extension FetchMessagesWithResetTests {
         XCTAssert(mockContactProvider.wasCleanUpCalled == value)
         XCTAssert(mockContactProvider.isFetchContactsCalled == value)
 
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)
+        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
     }
 
     private func checkMocksForRemoveAllDraft(whenRemoveAllDraftIs value: Bool) {
@@ -213,8 +210,7 @@ extension FetchMessagesWithResetTests {
         XCTAssert(mockLocalMessagesService.removeAllDraftValue == value)
         XCTAssertFalse(mockLocalMessagesService.cleanBadgeAndNotificationsValue)
 
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForMessagesWasCalled)
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadForConversationsWasCalled)
+        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
     }
 
     private func makeDependencies(
