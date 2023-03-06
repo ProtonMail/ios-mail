@@ -80,7 +80,11 @@ final class PagesViewController<
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showSpotlightIfNeeded()
+        showSpotlightIfNeeded { [weak self] in
+            delay(0.5) {
+                self?.showToolbarCustomizationSpotlightIfNeeded()
+            }
+        }
     }
 
     @objc
@@ -221,6 +225,7 @@ extension PagesViewController {
             user: viewModel.user,
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
             infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
+            contextProvider: services.get(by: CoreDataService.self),
             targetID: targetMessageID
         )
         coordinator.goToDraft = viewModel.goToDraft
@@ -273,18 +278,33 @@ extension PagesViewController {
 
 // MARK: - Spotlight
 extension PagesViewController {
-    private func showSpotlightIfNeeded() {
-        if viewModel.hasUserSeenSpotlight() { return }
+    private func showSpotlightIfNeeded(animationCompletion: @escaping () -> Void) {
+        if viewModel.hasUserSeenSpotlight() {
+            animationCompletion()
+            return
+        }
 
         guard
             let position = viewModel.spotlightPosition(),
             let scrollView = view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView,
             let spotlight = setUpSpotlight(in: scrollView, position: position)
-        else { return }
+        else {
+            animationCompletion()
+            return
+        }
         self.spotlight = spotlight
         updateSpotlightTitleHeight(spotlight: spotlight)
         viewModel.userHasSeenSpotlight()
-        setUpSpotlightAnimation(in: scrollView, position: position)
+        setUpSpotlightAnimation(in: scrollView, position: position, completion: animationCompletion)
+    }
+
+    private func showToolbarCustomizationSpotlightIfNeeded() {
+        let currentViewController = viewControllers?.first
+        if let conversationViewController = currentViewController as? ConversationViewController {
+            conversationViewController.showToolbarCustomizeSpotlightIfNeeded()
+        } else if let messageViewController = currentViewController as? SingleMessageViewController {
+            messageViewController.showToolbarCustomizeSpotlightIfNeeded()
+        }
     }
 
     private func setUpSpotlight(
@@ -332,7 +352,8 @@ extension PagesViewController {
 
     private func setUpSpotlightAnimation(
         in scrollView: UIScrollView,
-        position: PagesViewModel<IDType, EntityType, FetchResultType>.SpotlightPosition
+        position: PagesViewModel<IDType, EntityType, FetchResultType>.SpotlightPosition,
+        completion: (() -> Void)?
     ) {
         let originalOffset = scrollView.contentOffset
         var offset = scrollView.contentOffset
@@ -355,9 +376,14 @@ extension PagesViewController {
                 },
                 completion: { _ in
                     Timer.scheduledTimer(withTimeInterval: delayBeforeAnimationOut, repeats: false) { _ in
-                        UIView.animate(withDuration: animationDurationOut) {
-                            scrollView?.contentOffset = originalOffset
-                        }
+                        UIView.animate(
+                            withDuration: animationDurationOut,
+                            animations: {
+                                scrollView?.contentOffset = originalOffset
+                            }, completion: { _ in
+                                completion?()
+                            }
+                        )
                     }
                 })
         }

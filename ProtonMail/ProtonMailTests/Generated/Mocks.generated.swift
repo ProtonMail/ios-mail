@@ -3,6 +3,7 @@
 import CoreData
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
+import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
@@ -35,6 +36,11 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
     func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
         updateCounterSyncStub(markUnRead, labelIDs)
+    }
+
+    @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
+    func updateExpirationOffset(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
+        updateExpirationOffsetStub(message, expirationTime, pwd, pwdHint, completion)
     }
 
 }
@@ -337,6 +343,47 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
 
 }
 
+class MockKeymakerProtocol: KeymakerProtocol {
+    @FuncStub(MockKeymakerProtocol.activate) var activateStub
+    func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
+        activateStub(protector, completion)
+    }
+
+    @FuncStub(MockKeymakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
+    func deactivate(_ protector: ProtectionStrategy) -> Bool {
+        deactivateStub(protector)
+    }
+
+}
+
+class MockLockPreferences: LockPreferences {
+    @PropertyStub(\MockLockPreferences.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
+    var isPinCodeEnabled: Bool {
+        isPinCodeEnabledStub()
+    }
+
+    @PropertyStub(\MockLockPreferences.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
+    var isTouchIDEnabled: Bool {
+        isTouchIDEnabledStub()
+    }
+
+    @PropertyStub(\MockLockPreferences.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
+    var isAppKeyEnabled: Bool {
+        isAppKeyEnabledStub()
+    }
+
+    @FuncStub(MockLockPreferences.setKeymakerRandomkey) var setKeymakerRandomkeyStub
+    func setKeymakerRandomkey(key: String?) {
+        setKeymakerRandomkeyStub(key)
+    }
+
+    @FuncStub(MockLockPreferences.setLockTime) var setLockTimeStub
+    func setLockTime(value: AutolockTimeout) {
+        setLockTimeStub(value)
+    }
+
+}
+
 class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {
@@ -365,6 +412,55 @@ class MockReceiptActionHandler: ReceiptActionHandler {
     @FuncStub(MockReceiptActionHandler.sendReceipt) var sendReceiptStub
     func sendReceipt(messageID: MessageID) {
         sendReceiptStub(messageID)
+    }
+
+}
+
+class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
+    @FuncStub(MockScheduledSendHelperDelegate.actionSheetWillAppear) var actionSheetWillAppearStub
+    func actionSheetWillAppear() {
+        actionSheetWillAppearStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.actionSheetWillDisappear) var actionSheetWillDisappearStub
+    func actionSheetWillDisappear() {
+        actionSheetWillDisappearStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.scheduledTimeIsSet) var scheduledTimeIsSetStub
+    func scheduledTimeIsSet(date: Date?) {
+        scheduledTimeIsSetStub(date)
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.showSendInTheFutureAlert) var showSendInTheFutureAlertStub
+    func showSendInTheFutureAlert() {
+        showSendInTheFutureAlertStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.isItAPaidUser, initialReturn: Bool()) var isItAPaidUserStub
+    func isItAPaidUser() -> Bool {
+        isItAPaidUserStub()
+    }
+
+    @FuncStub(MockScheduledSendHelperDelegate.showScheduleSendPromotionView) var showScheduleSendPromotionViewStub
+    func showScheduleSendPromotionView() {
+        showScheduleSendPromotionViewStub()
+    }
+
+}
+
+class MockSettingsLockRouterProtocol: SettingsLockRouterProtocol {
+    @FuncStub(MockSettingsLockRouterProtocol.go) var goStub
+    func go(to dest: SettingsLockRouterDestination) {
+        goStub(dest)
+    }
+
+}
+
+class MockSettingsLockUIProtocol: SettingsLockUIProtocol {
+    @FuncStub(MockSettingsLockUIProtocol.reloadData) var reloadDataStub
+    func reloadData() {
+        reloadDataStub()
     }
 
 }

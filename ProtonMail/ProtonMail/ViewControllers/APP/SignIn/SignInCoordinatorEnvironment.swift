@@ -34,9 +34,7 @@ struct SignInCoordinatorEnvironment {
         (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let services: ServiceFactory
-    let doh: DoHInterface
-    let forceUpgradeDelegate: ForceUpgradeDelegate
-    let apiServiceDelegate: APIServiceDelegate
+    let apiService: APIService
     let mailboxPassword: (Passphrase, AuthCredential) -> Passphrase
     let currentAuth: () -> AuthCredential?
     let tryRestoringPersistedUser: () -> Void
@@ -74,12 +72,9 @@ extension SignInCoordinatorEnvironment {
         services: ServiceFactory,
         forceUpgradeDelegate: ForceUpgradeDelegate
     ) -> SignInCoordinatorEnvironment {
-        let doh = BackendConfiguration.shared.doh
-        let apiServiceDelegate = services.get(by: UsersManager.self)
+        let apiService = PMAPIService.unauthorized
         return .init(services: services,
-                     doh: doh,
-                     forceUpgradeDelegate: forceUpgradeDelegate,
-                     apiServiceDelegate: apiServiceDelegate,
+                     apiService: apiService,
                      mailboxPassword: services.get(by: SignInManager.self)
                          .mailboxPassword(from:auth:),
                      currentAuth: { services.get(by: UsersManager.self).firstUser?.authCredential },
@@ -112,16 +107,18 @@ extension SignInCoordinatorEnvironment {
                          }
                          return LoginAndSignup(appName: appName,
                                                clientApp: .mail,
-                                               environment: BackendConfiguration.shared.environment,
-                                               apiServiceDelegate: apiServiceDelegate,
-                                               forceUpgradeDelegate: forceUpgradeDelegate,
+                                               apiService: apiService,
                                                minimumAccountType: minimumAccountType,
                                                isCloseButtonAvailable: isCloseButtonAvailable,
                                                paymentsAvailability: payment,
                                                signupAvailability: signup)
                      },
                      shouldShowAlertOnError: true,
-                     saveLoginData: services.get(by: SignInManager.self)
-                         .saveLoginData(loginData:))
+                     saveLoginData: {
+            // clean up the credentials and session to have it pristine before the next login
+            apiService.authDelegate?.onUnauthenticatedSessionInvalidated(sessionUID: apiService.sessionUID)
+            apiService.setSessionUID(uid: "")
+            return services.get(by: SignInManager.self).saveLoginData(loginData: $0)
+        })
     }
 }

@@ -50,7 +50,8 @@ final class SettingsEncryptedSearchViewController: UITableViewController, Access
     }
 
     private func setupUI() {
-        title = LocalString._encrypted_search
+        emptyBackButtonTitleForNextView()
+        title = L11n.EncryptedSearch.cell_title
         view.backgroundColor = ColorProvider.BackgroundSecondary
         view.frame = CGRect(origin: .zero, size: UIScreen.main.bounds.size)
 
@@ -99,8 +100,8 @@ extension SettingsEncryptedSearchViewController {
         case .encryptedSearchFeature:
             let view = tableView.dequeue(viewType: SettingsTextFooterView.self)
             view.set(
-                text: LocalString._settings_footer_of_encrypted_search,
-                textLink: LocalString._settings_footer_of_encrypted_search_learn,
+                text: L11n.EncryptedSearch.settings_footer_of_encrypted_search,
+                textLink: L11n.EncryptedSearch.settings_footer_of_encrypted_search_learn,
                 linkUrl: Link.encryptedSearchInfo
             )
             footer = view
@@ -108,16 +109,18 @@ extension SettingsEncryptedSearchViewController {
             let view = tableView.dequeue(viewType: SettingsTextFooterView.self)
             view.set(text: LocalString._settings_footer_of_download_via_mobile_data)
             footer = view
-        case .downloadProgress, .downloadedMessages:
+        case .downloadProgress:
             let view = tableView.dequeue(viewType: EncryptedSearchBannerFooterView.self)
             footer = view
+        case .downloadedMessages:
+            footer = nil
         }
         return footer
     }
 
     private func cellForEncryptedSearchFeature(at indexPath: IndexPath) -> SwitchTableViewCell {
         let cell = tableView.dequeue(cellType: SwitchTableViewCell.self)
-        let cellTitle = LocalString._settings_title_of_encrypted_search
+        let cellTitle = L11n.EncryptedSearch.settings_title_of_encrypted_search
         cell.configCell(cellTitle, isOn: viewModel.output.isEncryptedSearchEnabled) { [weak self] newValue, feedback in
             if newValue {
                 self?.showEnableEncryptedSearchAlert(for: cell.switchView)
@@ -173,11 +176,11 @@ extension SettingsEncryptedSearchViewController {
 
     private func showEnableEncryptedSearchAlert(for cellSwitch: UISwitch) {
         let alert = UIAlertController(
-            title: LocalString._encrypted_search_alert_title,
-            message: LocalString._encrypted_search_alert_text,
+            title: L11n.EncryptedSearch.alert_title,
+            message: L11n.EncryptedSearch.alert_text,
             preferredStyle: .alert
         )
-        let enableTitle = LocalString._encrypted_search_alert_enable_button
+        let enableTitle = L11n.EncryptedSearch.alert_enable_button
         let cancelTitle = LocalString._general_cancel_button
         let enable = UIAlertAction(title: enableTitle, style: .default) { [weak self] _ in
             self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: true)
@@ -192,12 +195,12 @@ extension SettingsEncryptedSearchViewController {
     private func showDisableEncryptedSearchAlertIfNeeded(for cellSwitch: UISwitch) {
         if viewModel.output.isDownloadInProgress {
             let alert = UIAlertController(
-                title: LocalString._encrypted_search_disable_feature_alert_title,
-                message: LocalString._encrypted_search_disable_feature_alert_message,
+                title: L11n.EncryptedSearch.disable_feature_alert_title,
+                message: L11n.EncryptedSearch.disable_feature_alert_message,
                 preferredStyle: .alert
             )
-            let disable = LocalString._encrypted_search_disable_alert_button_delete
-            let cancelTitle = LocalString._encrypted_search_disable_feature_alert_button_cancel
+            let disable = L11n.EncryptedSearch.disable_alert_button_delete
+            let cancelTitle = L11n.EncryptedSearch.disable_feature_alert_button_cancel
             let enable = UIAlertAction(title: disable, style: .destructive) { [weak self] _ in
                 self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
             }
@@ -243,7 +246,7 @@ private extension EncryptedSearchDownloadProgress {
 
     func toDownloadingProgress() -> EncryptedSearchDownloadProgressCell.DownloadingProgress {
         let messageCountText = String(
-            format: LocalString._encrypted_search_message_count,
+            format: L11n.EncryptedSearch.message_count,
             numMessagesDownloaded,
             totalMessages
         )

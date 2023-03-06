@@ -820,9 +820,6 @@
 /* Title */
 "Hide details" = "Részletek elrejtése";
 
-/* hours */
-"hours" = "óra";
-
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hogyan értékelné a tapasztalatait az új Proton Maillel kapcsolatban?";
 
@@ -957,9 +954,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Hivatkozás másolva.";
-
-/* Button inside the banner */
-"Load anyway" = "Betöltés mindenképp";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Beágyazott képek betöltése";
@@ -1535,9 +1529,6 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Szüneteltetés";
 
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Néhány kép betöltése nem sikerült a követési védelemmel.";
-
 /* menu title */
 "Spam" = "Levélszemét";
 
@@ -1994,3 +1985,4 @@
 /* contact placeholder */
 "ZIP" = "Irányítószám";
 
+"Customize (verb)" = "Customize";

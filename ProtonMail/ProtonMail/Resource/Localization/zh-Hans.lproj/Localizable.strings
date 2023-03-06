@@ -933,9 +933,6 @@
 /* Title */
 "Hide details" = "隐藏详情";
 
-/* hours */
-"hours" = "时";
-
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "您认为新版 Proton Mail的使用体验如何？";
 
@@ -1073,9 +1070,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "链接已复制。";
-
-/* Button inside the banner */
-"Load anyway" = "仍然加载";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "加载嵌入图像";
@@ -1662,9 +1656,6 @@
 /* section title */
 "Select colour" = "选择颜色";
 
-/* Option for set up scheduled send */
-"Select date and time" = "选择日期与时间";
-
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "已选中";
 
@@ -1785,9 +1776,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延后";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "跟踪防护已阻止加载部分图像。";
 
 /* menu title */
 "Spam" = "垃圾邮件";
@@ -2305,3 +2293,4 @@
 /* contact placeholder */
 "ZIP" = "邮编";
 
+"Customize (verb)" = "Customize";

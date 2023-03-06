@@ -38,6 +38,7 @@ enum SingleMessageNavigationAction: Equatable {
     case more(messageId: MessageID)
     case toolbarCustomization(currentActions: [MessageViewActionSheetAction],
                               allActions: [MessageViewActionSheetAction])
+    case toolbarSettingView
 }
 
 extension SingleMessageNavigationAction {

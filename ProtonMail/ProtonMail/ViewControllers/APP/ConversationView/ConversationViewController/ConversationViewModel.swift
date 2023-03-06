@@ -370,20 +370,23 @@ class ConversationViewModel {
         } else {
             let messagesBeforeAndIncludingExpandedOne = messagesDataSource[0...firstExpandedMessageIndex]
 
-            let indexesOfNonTrashedMessages: [Int] = messagesBeforeAndIncludingExpandedOne
+            let indexesOfDisplayMessages: [Int] = messagesBeforeAndIncludingExpandedOne
                 .enumerated()
                 .compactMap { index, item in
-                    if item.messageViewModel?.isTrashed == false {
+                    if displayRule == .showAll {
                         return index
-                    } else {
-                        return nil
+                    } else if item.messageViewModel?.isTrashed == true && displayRule == .showTrashedOnly {
+                        return index
+                    } else if item.messageViewModel?.isTrashed == false && displayRule == .showNonTrashedOnly {
+                        return index
                     }
+                    return nil
                 }
 
             switch index {
-            case indexesOfNonTrashedMessages.last:
+            case indexesOfDisplayMessages.last:
                 return .full
-            case indexesOfNonTrashedMessages.dropLast().last:
+            case indexesOfDisplayMessages.dropLast().last:
                 return .partial
             default:
                 return .hidden
@@ -700,10 +703,54 @@ extension ConversationViewModel {
         case .print, .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
              .viewInLightMode, .replyOrReplyAll, .saveAsPDF, .dismiss, .forward,
              .labelAs, .moveTo, .reply, .replyAll, .star, .unstar, .toolbarCustomization,
-             .more:
+             .more, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
         completion()
+    }
+
+    func findLatestMessageForAction() -> MessageEntity? {
+        let messageNotDraftAndTrash = messagesDataSource
+            .compactMap(\.message)
+            .last { msg in
+                !msg.isDraft && !msg.isTrash
+            }
+        guard messageNotDraftAndTrash == nil else {
+            return messageNotDraftAndTrash
+        }
+        // If message are all in trash or draft, return the latest message that is not draft.
+        return messagesDataSource
+            .last(where: { $0.message?.isDraft == false })?
+            .message
+    }
+
+    func isCellExpanded(messageID: MessageID) -> Bool {
+        let targetSource = messagesDataSource.first(where: { $0.message?.messageID == messageID })
+        return targetSource?.messageViewModel?.state.isExpanded ?? false
+    }
+
+    func expandHistoryIfNeeded(messageID: MessageID, completion: @escaping () -> Void) {
+        let targetSource = messagesDataSource.first(where: { $0.message?.messageID == messageID })
+        let singleMessageContentViewModel = targetSource?.messageViewModel?.state.expandedViewModel?
+            .messageContent
+        let targetMessageInfoProvider = singleMessageContentViewModel?.messageInfoProvider
+        guard targetMessageInfoProvider?.displayMode == .collapsed else {
+            completion()
+            return
+        }
+        singleMessageContentViewModel?.webContentIsUpdated = { [weak singleMessageContentViewModel] in
+            completion()
+            singleMessageContentViewModel?.webContentIsUpdated = nil
+        }
+        targetMessageInfoProvider?.displayMode = .expanded
+    }
+
+    func getMessageBodyBy(messageID: MessageID) -> String? {
+        let viewModel = messagesDataSource
+            .first(where: { $0.message?.messageID == messageID })
+        let singleMessageVM = viewModel?.messageViewModel?.state.expandedViewModel?.messageContent
+        let infoProvider = singleMessageVM?.messageInfoProvider
+        return infoProvider?.bodyParts?.originalBody
     }
 }
 
@@ -711,56 +758,82 @@ extension ConversationViewModel {
 extension ConversationViewModel: ToolbarCustomizationActionHandler {
 
     func toolbarActionTypes() -> [MessageViewActionSheetAction] {
-        let originMessageListIsSpamOrTrash = [
-            Message.Location.spam.labelID,
-            Message.Location.trash.labelID
-        ].contains(labelId)
-        let isInTrashOrSpam = originMessageListIsSpamOrTrash || areAllMessagesInThreadInTheTrash || areAllMessagesInThreadInSpam
+        let locationIsInSpam = labelId == Message.Location.spam.labelID || areAllMessagesInThreadInSpam
+        let locationIsInTrash = labelId == Message.Location.trash.labelID
+        let locationIsInArchive = labelId == Message.Location.archive.labelID
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
         let isInArchive = conversation.contains(of: .archive)
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = conversation.contains(of: .spam)
 
-        let actions = toolbarActionProvider.conversationToolbarActions
+        var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
+            .replaceReplyAndReplyAllWithConversationVersion()
+            .replaceForwardWithConversationVersion()
+
+        let messageForAction = findLatestMessageForAction()
+        let hasMultipleRecipients = (messageForAction?.allRecipients.count ?? 0) > 1
+        if messageForAction?.isScheduledSend == true {
+            let forbidActions: [MessageViewActionSheetAction] = [
+                .replyInConversation,
+                .replyOrReplyAllInConversation,
+                .replyAllInConversation,
+                .reply,
+                .forward,
+                .forwardInConversation,
+                .replyAll,
+                .replyOrReplyAll
+            ]
+            actions = actions.filter { !forbidActions.contains($0) }
+        }
 
         return replaceActionsLocally(actions: actions,
-                                     isInSpam: isInSpam || isInTrashOrSpam,
-                                     isInTrash: isInTrash || isInTrashOrSpam,
-                                     isInArchive: isInArchive,
+                                     isInSpam: isInSpam || locationIsInSpam,
+                                     isInTrash: isInTrash || locationIsInTrash,
+                                     isInArchive: isInArchive || locationIsInArchive,
                                      isRead: isConversationRead,
                                      isStarred: isConversationStarred,
-                                     hasMultipleRecipients: false)
+                                     hasMultipleRecipients: hasMultipleRecipients)
     }
 
     func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
-        let actionSheetViewModel = ConversationActionSheetViewModel(
-            title: conversation.subject,
-            isUnread: conversation.isUnread(labelID: labelId),
-            isStarred: conversation.starred) { location in
-                areAllMessagesIn(location: location)
-            }
+        let actionSheetViewModel = MessageViewActionSheetViewModel(
+            title: "",
+            labelID: labelId,
+            includeStarring: true,
+            isStarred: true,
+            isBodyDecryptable: true,
+            messageRenderStyle: .lightOnly,
+            shouldShowRenderModeOption: false,
+            isScheduledSend: false
+        )
         let isInSpam = conversation.contains(of: .spam)
         let isInArchive = conversation.contains(of: .archive)
-        let isInTrash = areAllMessagesInThreadInTheTrash
+        let isInTrash = areAllMessagesInThreadInTheTrash || conversation.contains(of: .trash)
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
+        let messageForAction = findLatestMessageForAction()
+        let hasMultipleRecipients = (messageForAction?.allRecipients.count ?? 0) > 1
 
-        return replaceActionsLocally(actions: actionSheetViewModel.items,
-                                     isInSpam: isInSpam,
-                                     isInTrash: isInTrash,
-                                     isInArchive: isInArchive,
-                                     isRead: isConversationRead,
-                                     isStarred: isConversationStarred,
-                                     hasMultipleRecipients: false)
+        let actions = actionSheetViewModel.items
+            .replaceReplyAndReplyAllWithConversationVersion()
+            .replaceForwardWithConversationVersion()
+        return replaceActionsLocally(
+            actions: actions,
+            isInSpam: isInSpam,
+            isInTrash: isInTrash,
+            isInArchive: isInArchive,
+            isRead: isConversationRead,
+            isStarred: isConversationStarred,
+            hasMultipleRecipients: hasMultipleRecipients
+        )
     }
 
     func saveToolbarAction(actions: [MessageViewActionSheetAction],
                            completion: ((NSError?) -> Void)?) {
         let preference: ToolbarActionPreference = .init(
-            conversationActions: actions,
-            messageActions: nil,
+            messageActions: actions,
             listViewActions: nil
         )
         saveToolbarActionUseCase

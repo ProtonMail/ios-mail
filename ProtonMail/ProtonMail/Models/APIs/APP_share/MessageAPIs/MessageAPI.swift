@@ -94,11 +94,17 @@ final class FetchMessagesByIDResponse: Response {
 /// Response
 final class FetchMessagesByLabelRequest: Request {
     let labelID: String!
+    /// UNIX timestamp to filter messages at or earlier than timestamp
     let endTime: Int
     let isUnread: Bool?
     let pageSize: Int?
+    /// return only messages older, in creation time (NOT timestamp), than EndID
     let endID: String?
     let page: Int?
+    let priority: APIPriority?
+
+    // For endTime and endID, they are used to filter response messages
+    // The filter function considers endTime firstly, if time is equal compare endID
 
     init(
         labelID: String,
@@ -106,7 +112,8 @@ final class FetchMessagesByLabelRequest: Request {
         isUnread: Bool? = nil,
         pageSize: Int? = 50,
         endID: String? = nil,
-        page: Int? = nil
+        page: Int? = nil,
+        priority: APIPriority? = nil
     ) {
         self.labelID = labelID
         self.endTime = endTime
@@ -114,6 +121,7 @@ final class FetchMessagesByLabelRequest: Request {
         self.pageSize = pageSize
         self.endID = endID
         self.page = page
+        self.priority = priority
     }
 
     var parameters: [String: Any]? {
@@ -138,6 +146,14 @@ final class FetchMessagesByLabelRequest: Request {
             out["Page"] = page
         }
         return out
+    }
+
+    var header: [String : Any] {
+        var header: [String: Any] = [:]
+        if let priority = priority {
+            header["priority"] = priority.rawValue
+        }
+        return header
     }
 
     var path: String {

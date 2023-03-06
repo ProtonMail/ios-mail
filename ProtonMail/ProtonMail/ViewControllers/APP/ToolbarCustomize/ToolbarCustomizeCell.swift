@@ -64,18 +64,24 @@ final class ToolbarCustomizeCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure<T>(toolbarAction: T,
-                      action: Action,
-                      indexPath: IndexPath,
-                      enable: Bool) where T: ToolbarAction {
+    func configure<T>(
+        toolbarAction: T,
+        action: Action,
+        indexPath: IndexPath,
+        enable: Bool,
+        actionEnable: Bool
+    ) where T: ToolbarAction {
         switch action {
         case .insert:
             actionButton.setImage(IconProvider.plusCircleFilled, for: .normal)
             actionButton.imageView?.tintColor = action.color
+            actionButton.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
         case .remove:
             actionButton.setImage(Asset.icMinusCircleFilled.image, for: .normal)
             actionButton.imageView?.tintColor = action.color
+            actionButton.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
         }
+        actionButton.isEnabled = actionEnable
         self.action = action
         self.indexPath = indexPath
         iconView.image = toolbarAction.icon?.withRenderingMode(.alwaysTemplate)
@@ -102,14 +108,14 @@ final class ToolbarCustomizeCell: UITableViewCell {
 
     private func setupLayout() {
         [
-            actionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            actionButton.heightAnchor.constraint(equalToConstant: 24),
-            actionButton.widthAnchor.constraint(equalToConstant: 24),
+            actionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            actionButton.heightAnchor.constraint(equalToConstant: 32),
+            actionButton.widthAnchor.constraint(equalToConstant: 32),
             actionButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ].activate()
 
         [
-            iconView.leadingAnchor.constraint(equalTo: actionButton.trailingAnchor, constant: 12),
+            iconView.leadingAnchor.constraint(equalTo: actionButton.trailingAnchor, constant: 8),
             iconView.heightAnchor.constraint(equalToConstant: 24),
             iconView.widthAnchor.constraint(equalToConstant: 24),
             iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)

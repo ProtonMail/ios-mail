@@ -183,7 +183,7 @@ extension MessageEntity {
     }
 
     var allRecipients: [String] {
-        return recipientsTo + recipientsTo + recipientsBcc
+        return recipientsTo + recipientsCc + recipientsBcc
     }
 }
 

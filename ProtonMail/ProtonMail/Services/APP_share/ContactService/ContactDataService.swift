@@ -363,10 +363,6 @@ class ContactDataService: Service {
                 self.isFetching = false
                 self.retries = 0
 
-                self.coreDataService.mainContext.performAndWait {
-                    self.coreDataService.mainContext.refreshAllObjects()
-                }
-
                 completion?(nil)
 
             } catch let ex as NSError {

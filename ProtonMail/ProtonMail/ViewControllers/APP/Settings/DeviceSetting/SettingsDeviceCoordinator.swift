@@ -95,7 +95,7 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockCoordinator(navigationController: self.navigationController)
+        let lockSetting = SettingsLockRouter(navigationController: self.navigationController)
         lockSetting.start()
     }
 
@@ -140,7 +140,6 @@ class SettingsDeviceCoordinator {
 
     func openToolbarCustomizationView() {
         let viewModel = ToolbarSettingViewModel(
-            viewMode: userManager.getCurrentViewMode(),
             infoBubbleViewStatusProvider: userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(

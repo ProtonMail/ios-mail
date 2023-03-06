@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Ertu viss um að þú viljir skrá þig út?";
 
+/* One of the schedule time options */
+"As scheduled" = "Eins og áætlað var";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Klukkan %@";
 
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Fela nánari upplýsingar";
 
-/* hours */
-"hours" = "klukkustundir";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Fela mín netfanga samnefni";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvernig myndir þú lýsa upplifun þinni af nýju Proton tölvupóstforriti?";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Krækja afrituð.";
-
-/* Button inside the banner */
-"Load anyway" = "Hlaða samt inn";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Vista breytingar";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Tímasettu skilaboð hvenær sem er";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Áætla sendingu";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Veldu lit";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Veldu dagsetningu og tíma";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valið";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Setja upp strokubendingar til að nota við mest notaðar aðgerðir.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Settu upp þína eigin áætlun";
+
 /* menu title */
 "Settings" = "Stillingar";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Ekki tókst að hlaða sumum myndum með rakningarvörn.";
 
 /* menu title */
 "Spam" = "Ruslpóstur";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Ótakmarkað";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Ótakmarkaðar möppur og  merkingar";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Opnaðu sérsniðna skilaboðaáætlun og aðra kosti þegar þú uppfærir áskriftina þína.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Krafist er aflæsingar";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Óstudd gerð skráar";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Allt að 3 sérsniðin tölvupóstlén";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Allt að 15 netföng";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Allt að 500 GB geymslurými";
+
 /* update notification email error title */
 "Update Notification Email" = "Uppfæra tilkynningapóst";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Uppfært Proton, sameinuð vörn";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Uppfæra núna";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppfærðu í greidda áskrift til að senda úr %@ tölvupóstfanginu þínu";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "Póstnúmer";
 
+"Customize (verb)" = "Customize";

@@ -37,4 +37,7 @@ class CacheStatusStub: CacheStatusInject {
     var isTouchIDEnabledStub: Bool = false
 
     var isAppKeyEnabled: Bool = true
+
+    var isAppLockedAndAppKeyDisabled: Bool = false
+    var isAppLockedAndAppKeyEnabled: Bool = false
 }

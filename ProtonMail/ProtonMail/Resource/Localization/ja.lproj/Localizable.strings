@@ -933,8 +933,8 @@
 /* Title */
 "Hide details" = "詳細を非表示";
 
-/* hours */
-"hours" = "時間";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email エイリアス";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
@@ -1070,9 +1070,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "リンクをコピーしました。";
-
-/* Button inside the banner */
-"Load anyway" = "読み込む";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "埋め込み画像を読み込む";
@@ -1647,9 +1644,6 @@
 /* section title */
 "Select colour" = "色を選択";
 
-/* Option for set up scheduled send */
-"Select date and time" = "日時を選択";
-
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "選択済み";
 
@@ -1770,9 +1764,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "通知の休止";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
 
 /* menu title */
 "Spam" = "迷惑メール";
@@ -2095,6 +2086,15 @@
 /* Error message */
 "Unsupported file type" = "対応していないファイル種別です";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "3 件の独自メールドメイン";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "15 件のメールアドレス";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500 GB のストレージ";
+
 /* update notification email error title */
 "Update Notification Email" = "通知用メールアドレスを更新してください";
 
@@ -2106,6 +2106,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "統合された保護を新しくなった Proton で";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "今すぐアップグレード";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
@@ -2284,3 +2287,4 @@
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
+"Customize (verb)" = "Customize";

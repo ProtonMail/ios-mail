@@ -42,11 +42,40 @@ extension Attachment {
 
     override func prepareForDeletion() {
         super.prepareForDeletion()
-        if let localURL = localURL {
+        if let localURL = filePathByLocalURL() {
             do {
                 try FileManager.default.removeItem(at: localURL as URL)
             } catch {
             }
+        }
+    }
+
+    /// Application folder could be changed by system.
+    /// When this happens, original localURL can no longer be used.
+    /// Assemble new path with original localURL.
+    func filePathByLocalURL() -> URL? {
+        if ProcessInfo.isRunningUnitTests {
+            // PrepareSendMetadataTests
+            return localURL
+        }
+        #if APP_EXTENSION
+        // Share extension doesn't have recovery situation
+        // Also its path is different from main app 
+        return localURL
+        #endif
+        guard let localURL = self.localURL else { return nil }
+
+        let nameUUID = localURL.deletingPathExtension().lastPathComponent
+        do {
+            let writeURL = try FileManager.default.url(
+                for: .cachesDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            ).appendingPathComponent(String(nameUUID))
+            return writeURL
+        } catch {
+            return nil
         }
     }
 
@@ -56,11 +85,12 @@ extension Attachment {
 
     // Mark : functions
     func encrypt(byKey key: Key) throws -> (Data, URL)? {
-        if let clearData = self.fileData, localURL == nil {
+        let path = filePathByLocalURL()
+        if let clearData = self.fileData, path == nil {
             try writeToLocalURL(data: clearData)
             self.fileData = nil
         }
-        guard let localURL = self.localURL else {
+        guard let localURL = path else {
             return nil
         }
 
@@ -92,7 +122,7 @@ extension Attachment {
             let dataToSign: Data
             if let fileData = fileData {
                 dataToSign = fileData
-            } else if let localURL = localURL {
+            } else if let localURL = filePathByLocalURL() {
                 dataToSign = try Data(contentsOf: localURL)
             } else {
                 return nil
@@ -178,20 +208,19 @@ extension Attachment {
     }
 
     func cleanLocalURLs() {
-        if let localURL = localURL {
-            try? FileManager.default.removeItem(at: localURL)
-            self.localURL = nil
-        }
-        let cipherURL = localURL?.appendingPathExtension("cipher")
-        if let cipherURL = cipherURL {
-            try? FileManager.default.removeItem(at: cipherURL)
-        }
+        guard let localURL = filePathByLocalURL() else { return }
+        try? FileManager.default.removeItem(at: localURL)
+
+        let cipherURL = localURL.appendingPathExtension("cipher")
+        try? FileManager.default.removeItem(at: cipherURL)
+
+        self.localURL = nil
     }
 }
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<Attachment?>
+    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<AttachmentEntity?>
 }
 
 // THIS IS CALLED FOR CAMERA
@@ -202,13 +231,8 @@ extension UIImage: AttachmentConvertible {
     private func toData() -> Data! {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<Attachment?> {
+    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<AttachmentEntity?> {
         return Guarantee { fulfill in
-            guard let context = message.managedObjectContext else {
-                assert(false, "Context improperly destroyed")
-                fulfill(nil)
-                return
-            }
             if let fileData = self.toData() {
                 context.perform {
                     let attachment = Attachment(context: context)
@@ -230,15 +254,8 @@ extension UIImage: AttachmentConvertible {
                         attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                     }
 
-                    attachment.message = message
-
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                    attachment.order = message.numAttachments.int32Value
                     _ = context.saveUpstreamIfNeeded()
-                    fulfill(attachment)
+                    fulfill(.init(attachment))
                 }
             }
         }
@@ -251,13 +268,8 @@ extension Data: AttachmentConvertible {
         return self.count
     }
 
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<Attachment?> {
+    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<AttachmentEntity?> {
         return Guarantee { fulfill in
-            guard let context = message.managedObjectContext else {
-                assert(false, "Context improperly destroyed")
-                fulfill(nil)
-                return
-            }
             context.perform {
                 let attachment = Attachment(context: context)
                 attachment.attachmentID = "0"
@@ -274,19 +286,11 @@ extension Data: AttachmentConvertible {
                     dataToWrite = self
                 }
                 try? attachment.writeToLocalURL(data: dataToWrite)
-                attachment.message = message
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
-                attachment.message = message
-
-                let attachments = message.attachments
-                    .compactMap({ $0 as? Attachment })
-                    .filter { !$0.inline() }
-                message.numAttachments = NSNumber(value: attachments.count)
-                attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
-                fulfill(attachment)
+                fulfill(.init(attachment))
             }
         }
     }
@@ -294,13 +298,8 @@ extension Data: AttachmentConvertible {
 
 // THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
-    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<Attachment?> {
+    func toAttachment(_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<AttachmentEntity?> {
         return Guarantee { fulfill in
-            guard let context = message.managedObjectContext else {
-                assert(false, "Context improperly destroyed")
-                fulfill(nil)
-                return
-            }
             context.perform {
                 let attachment = Attachment(context: context)
                 attachment.attachmentID = "0"
@@ -315,19 +314,12 @@ extension URL: AttachmentConvertible {
                 } else {
                     attachment.localURL = self
                 }
-                attachment.message = message
+
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
-                attachment.message = message
-
-                let attachments = message.attachments
-                    .compactMap({ $0 as? Attachment })
-                    .filter { !$0.inline() }
-                message.numAttachments = NSNumber(value: attachments.count)
-                attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
-                fulfill(attachment)
+                fulfill(.init(attachment))
             }
         }
     }

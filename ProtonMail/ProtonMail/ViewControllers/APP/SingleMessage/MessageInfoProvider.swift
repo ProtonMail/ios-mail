@@ -108,6 +108,7 @@ final class MessageInfoProvider {
         imageProxy: ImageProxy,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
+        shouldOpenHistory: Bool = false,
         dependencies: Dependencies
     ) {
         self.message = message
@@ -119,13 +120,24 @@ final class MessageInfoProvider {
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
         self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
-        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? .allowed : .disallowed
+
+        // If the message is sent by us, we do not use the image proxy to load the content.
+        let imageProxyEnabled = UserInfo.isImageProxyAvailable &&
+            user.userInfo.imageProxy.contains(.imageProxy) &&
+            !message.isSent
+        let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedAll : .allowed
+        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? allowedPolicy : .disallowed
+
         self.embeddedContentPolicy = user.userInfo.isAutoLoadEmbeddedImagesEnabled ? .allowed : .disallowed
         self.userAddressUpdater = user
         self.imageProxy = imageProxy
         self.systemUpTime = systemUpTime
         self.labelID = labelID
         self.dependencies = dependencies
+
+        if shouldOpenHistory {
+            displayMode = .expanded
+        }
 
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
@@ -211,8 +223,8 @@ final class MessageInfoProvider {
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .medium
         dateFormatter.dateStyle = .long
-        dateFormatter.timeZone = Environment.timeZone
-        dateFormatter.locale = Environment.locale()
+        dateFormatter.timeZone = LocaleEnvironment.timeZone
+        dateFormatter.locale = LocaleEnvironment.locale()
         return dateFormatter.string(from: date)
     }()
 
@@ -315,6 +327,12 @@ final class MessageInfoProvider {
     var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
             guard remoteContentPolicy != oldValue else { return }
+            if message.isSent && remoteContentPolicy == .allowed {
+                remoteContentPolicy = .allowedAll
+            }
+            if !imageProxyEnabled && remoteContentPolicy == .allowed {
+                remoteContentPolicy = .allowedAll
+            }
             prepareDisplayBody()
         }
     }
@@ -442,7 +460,7 @@ extension MessageInfoProvider {
                     body.replaceSubrange(rangeToReplace, with: replacement.value)
                 }
             }
-
+            self.checkBannerStatus(updatedBody)
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
         }
@@ -639,6 +657,7 @@ extension MessageInfoProvider {
         contents = WebContents(
             body: body,
             remoteContentMode: remoteContentPolicy,
+            isImageProxyEnable: imageProxyEnabled,
             renderStyle: currentMessageRenderStyle,
             supplementCSS: css,
             webImages: webImages

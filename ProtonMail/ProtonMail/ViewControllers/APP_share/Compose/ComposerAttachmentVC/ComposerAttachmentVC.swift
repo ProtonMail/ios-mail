@@ -25,7 +25,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 protocol ComposerAttachmentVCDelegate: AnyObject {
-    func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: Attachment)
+    func composerAttachmentViewController(_ composerVC: ComposerAttachmentVC, didDelete attachment: AttachmentEntity)
 }
 
 private struct AttachInfo {
@@ -38,12 +38,12 @@ private struct AttachInfo {
         attachmentID != "0" && attachmentID != .empty
     }
 
-    init(attachment: Attachment) {
-        self.objectID = attachment.objectID.uriRepresentation().absoluteString
-        self.name = attachment.fileName
+    init(_ attachment: AttachmentEntity) {
+        self.objectID = attachment.objectID.rawValue.uriRepresentation().absoluteString
+        self.name = attachment.name
         self.size = attachment.fileSize.intValue
-        self.mimeType = attachment.mimeType
-        self.attachmentID = attachment.attachmentID
+        self.mimeType = attachment.rawMimeType
+        self.attachmentID = attachment.id.rawValue
     }
 }
 
@@ -56,7 +56,7 @@ private extension Collection where Element == AttachInfo {
 final class ComposerAttachmentVC: UIViewController {
 
     private var tableView: UITableView?
-    private let coreDataService: CoreDataService
+    private let contextProvider: CoreDataContextProviderProtocol
     @objc dynamic private(set) var tableHeight: CGFloat = 0
     private let attachInfoUpdateQueue = DispatchQueue(label: "AttachInfo update queue")
     var isUploading: ((Bool) -> Void)?
@@ -88,21 +88,14 @@ final class ComposerAttachmentVC: UIViewController {
     private let cellHeight: CGFloat = 52
     var attachmentCount: Int { self.datas.count }
 
-    init(attachments: [Attachment],
-         coreDataService: CoreDataService,
+    init(attachments: [AttachmentEntity],
+         contextProvider: CoreDataContextProviderProtocol,
          delegate: ComposerAttachmentVCDelegate?) {
-        self.coreDataService = coreDataService
+        self.contextProvider = contextProvider
         super.init(nibName: nil, bundle: nil)
-        attachments.forEach { att in
-            if att.objectID.isTemporaryID {
-                att.managedObjectContext?.performAndWait {
-                    try? att.managedObjectContext?.obtainPermanentIDs(for: [att])
-                }
-            }
-        }
         self.datas = attachments
-            .filter({ $0.inline() == false })
-            .map { AttachInfo(attachment: $0) }
+            .filter({ $0.isInline == false })
+            .map { AttachInfo($0) }
         self.delegate = delegate
     }
 
@@ -163,17 +156,19 @@ final class ComposerAttachmentVC: UIViewController {
         }
     }
 
-    func add(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
-        self.queue.addOperation { [weak self] in
-            guard let self = self else { return }
-            let existedID = self.datas.map { $0.objectID }
-            let attachments = attachments
-                .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) &&
-                    !$0.isSoftDeleted &&
-                    $0.inline() == false
-                }
+    func add(attachments: [AttachmentEntity],
+             completeHandler: (() -> Void)? = nil) {
+        let attachments = attachments
+            .filter {
+                !$0.isSoftDeleted &&
+                $0.isInline == false
+            }
+        let attachInfos = attachments.map(AttachInfo.init)
 
-            self.datas.append(contentsOf: attachments.map { AttachInfo(attachment: $0) })
+        self.queue.addOperation {
+            let existedID = self.datas.map { $0.objectID }
+            let dataToAdd = attachInfos.filter({ !existedID.contains($0.objectID) })
+            self.datas.append(contentsOf: dataToAdd)
             completeHandler?()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()
@@ -183,22 +178,19 @@ final class ComposerAttachmentVC: UIViewController {
         }
     }
 
-    func set(attachments: [Attachment], context: NSManagedObjectContext, completeHandler: @escaping () -> Void) {
-        var attachmentInfos: [AttachInfo] = []
-
-        context.performAndWait {
-            let relevantAttachments = attachments
-                .filter { !$0.isSoftDeleted && $0.inline() == false }
-            attachmentInfos = relevantAttachments.map(AttachInfo.init(attachment:))
-        }
+    func set(attachments: [AttachmentEntity], completeHandler: @escaping () -> Void) {
+        let relevantAttachments = attachments
+            .filter { !$0.isSoftDeleted &&
+                $0.isInline == false
+            }
+        let attachmentInfos = relevantAttachments.map(AttachInfo.init)
 
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
 
             self.datas = attachmentInfos
-
-            completeHandler()
             DispatchQueue.main.async {
+                completeHandler()
                 self.tableView?.reloadData()
                 self.updateTableViewHeight()
                 self.isUploading?(!self.datas.areUploaded)
@@ -298,11 +290,11 @@ extension ComposerAttachmentVC {
         // One of the tasks failed, the rest one will be deleted too
         // So if one attachment upload failed, the rest of the attachments won't be uploaded
         let objectIDs = uploadingData.map { $0.objectID }
-        let context = self.coreDataService.mainContext
-        self.coreDataService.enqueue(context: context, block: { [weak self] context in
+        let context = contextProvider.mainContext
+        contextProvider.mainContext.perform { [weak self] in
             for objectID in objectIDs {
                 guard let self = self,
-                      let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
+                      let managedObjectID = self.contextProvider.managedObjectIDForURIRepresentation(objectID),
                       let managedObject = try? context.existingObject(with: managedObjectID),
                       let attachment = managedObject as? Attachment else {
                     self?.delete(objectID: objectID)
@@ -310,10 +302,10 @@ extension ComposerAttachmentVC {
                 }
                 self.delete(objectID: objectID)
                 DispatchQueue.main.async {
-                    self.delegate?.composerAttachmentViewController(self, didDelete: attachment)
+                    self.delegate?.composerAttachmentViewController(self, didDelete: .init(attachment))
                 }
             }
-        })
+        }
     }
 }
 
@@ -352,21 +344,20 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
         let message = LocalString._remove_attachment_warning
         let alert = UIAlertController(title: data.name, message: message, preferredStyle: .alert)
         let remove = UIAlertAction(title: LocalString._general_remove_button, style: .destructive) { [weak self] _ in
-            guard let self = self else { return }
-            let context = self.coreDataService.mainContext
-            self.coreDataService.enqueue(context: context, block: { [weak self] context in
-                guard let self = self,
-                      let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(objectID),
-                      let managedObject = try? context.existingObject(with: managedObjectID),
+            let context = self?.contextProvider.mainContext
+            context?.perform {
+                guard let strongSelf = self,
+                      let managedObjectID = self?.contextProvider.managedObjectIDForURIRepresentation(objectID),
+                      let managedObject = try? context?.existingObject(with: managedObjectID),
                       let attachment = managedObject as? Attachment else {
                     self?.delete(objectID: objectID)
                     return
                 }
-                self.delete(objectID: objectID)
+                self?.delete(objectID: objectID)
                 DispatchQueue.main.async {
-                    self.delegate?.composerAttachmentViewController(self, didDelete: attachment)
+                    self?.delegate?.composerAttachmentViewController(strongSelf, didDelete: .init(attachment))
                 }
-            })
+            }
         }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: nil)
         [cancel, remove].forEach(alert.addAction)

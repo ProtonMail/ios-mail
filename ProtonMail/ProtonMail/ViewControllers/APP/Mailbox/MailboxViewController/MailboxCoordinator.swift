@@ -165,22 +165,28 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
                case let user = self.viewModel.user,
                case let msgService = user.messageService,
                let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
-                let viewModel = ContainableComposeViewModel(msg: message,
-                                                            action: .openDraft,
-                                                            msgService: msgService,
-                                                            user: user,
-                                                            coreDataContextProvider: contextProvider)
+                let viewModel = ComposeViewModel(
+                    msg: message,
+                    action: .openDraft,
+                    msgService: msgService,
+                    user: user,
+                    coreDataContextProvider: contextProvider,
+                    internetStatusProvider: internetStatusProvider
+                )
 
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
         case .composeShow where path.value == nil:
             if let nav = self.navigation {
                 let user = self.viewModel.user
-                let viewModel = ContainableComposeViewModel(msg: nil,
-                                                            action: .newDraft,
-                                                            msgService: user.messageService,
-                                                            user: user,
-                                                            coreDataContextProvider: contextProvider)
+                let viewModel = ComposeViewModel(
+                    msg: nil,
+                    action: .newDraft,
+                    msgService: user.messageService,
+                    user: user,
+                    coreDataContextProvider: contextProvider,
+                    internetStatusProvider: internetStatusProvider
+                )
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
         case .composeMailto where path.value != nil:
@@ -206,14 +212,15 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
 }
 
 extension MailboxCoordinator {
-    private func showComposer(viewModel: ContainableComposeViewModel,
+    private func showComposer(viewModel: ComposeViewModel,
                               navigationVC: UINavigationController,
                               deepLink: DeepLink) {
-        let composer = ComposeContainerViewCoordinator(presentingViewController: navigationVC,
-                                                       editorViewModel: viewModel,
-                                                       services: services)
-        composer.start()
-        composer.follow(deepLink)
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: contextProvider,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus)
+        navigationVC.present(composer, animated: true)
     }
 
     private func presentCreateFolder(type: PMLabelType) {
@@ -248,24 +255,27 @@ extension MailboxCoordinator {
         isOpenedFromShare: Bool = false,
         originalScheduledTime: OriginalScheduleDate? = nil
     ) {
-        let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: existingMessage,
-                                                    action: existingMessage == nil ? .newDraft : .openDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: contextProvider,
-                                                    isEditingScheduleMsg: isEditingScheduleMsg,
-                                                    isOpenedFromShare: isOpenedFromShare,
-                                                    originalScheduledTime: originalScheduledTime)
-        let composer = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
-                                                       editorViewModel: viewModel)
-        composer.start()
+        guard let navigationVC = navigation else {
+            return
+        }
+        let composer = ComposerViewFactory.makeComposer(
+            msg: existingMessage,
+            action: existingMessage == nil ? .newDraft : .openDraft,
+            user: viewModel.user,
+            contextProvider: contextProvider,
+            isEditingScheduleMsg: isEditingScheduleMsg,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus,
+            internetStatusProvider: internetStatusProvider
+        )
+        navigationVC.present(composer, animated: true)
     }
 
     private func presentSearch() {
         let viewModel = SearchViewModel(
             user: viewModel.user,
             coreDataContextProvider: services.get(by: CoreDataService.self),
+            internetStatusProvider: services.get(),
             queueManager: services.get(by: QueueManager.self)
         )
         let viewController = SearchViewController(viewModel: viewModel)
@@ -298,7 +308,7 @@ extension MailboxCoordinator {
             // Prevent the app tries to push a new view when the app enters
             // the background due to long network fetching time.
             // It could cause the app crashed in the background.
-            guard self?.getApplicationState() == .active else {
+            if self?.getApplicationState() == .background {
                 return
             }
             goToDetailPage()
@@ -316,17 +326,18 @@ extension MailboxCoordinator {
            let value = path,
            let mailToURL = URL(string: value) {
             let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: nil,
-                                                        action: .newDraft,
-                                                        msgService: user.messageService,
-                                                        user: user,
-                                                        coreDataContextProvider: contextProvider)
-            viewModel.parse(mailToURL: mailToURL)
-            let composer = ComposeContainerViewCoordinator(presentingViewController: nav,
-                                                           editorViewModel: viewModel,
-                                                           services: services)
-            composer.start()
-            composer.follow(deeplink)
+            let composer = ComposerViewFactory.makeComposer(
+                msg: nil,
+                action: .newDraft,
+                user: user,
+                contextProvider: contextProvider,
+                isEditingScheduleMsg: false,
+                userIntroductionProgressProvider: userCachedStatus,
+                scheduleSendEnableStatusProvider: userCachedStatus,
+                internetStatusProvider: internetStatusProvider,
+                mailToUrl: mailToURL
+            )
+            nav.present(composer, animated: true)
         }
     }
 
@@ -535,6 +546,7 @@ extension MailboxCoordinator {
             user: viewModel.user,
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
+            contextProvider: contextProvider,
             targetID: targetID
         )
         conversationCoordinator = coordinator
@@ -557,8 +569,7 @@ extension MailboxCoordinator {
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
-        let page = PagesViewController(viewModel: pageVM, services: services)
-        navigationController.show(page, sender: nil)
+        presentPageViews(pageVM: pageVM)
     }
 
     private func presentPageViewsFor(conversation: ConversationEntity, targetID: MessageID?) {
@@ -575,8 +586,18 @@ extension MailboxCoordinator {
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
+        presentPageViews(pageVM: pageVM)
+    }
+
+    private func presentPageViews<T, U, V>(pageVM: PagesViewModel<T, U, V>) {
+        guard let navigationController = viewController?.navigationController else { return }
+        var viewControllers = navigationController.viewControllers
+        if viewControllers.last is MessagePlaceholderVC {
+            _ = viewControllers.removeLast()
+        }
         let page = PagesViewController(viewModel: pageVM, services: services)
-        navigationController.show(page, sender: nil)
+        viewControllers.append(page)
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 
     private func presentMessagePlaceholder() {

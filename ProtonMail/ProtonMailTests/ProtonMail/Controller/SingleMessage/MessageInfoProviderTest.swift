@@ -36,9 +36,9 @@ final class MessageInfoProviderTest: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        Environment.locale = { .enUS }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        Environment.locale = { .enUS }
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        LocaleEnvironment.locale = { .enUS }
 
         let systemUpTime = SystemUpTimeMock(
             localServerTime: TimeInterval(1635745851),

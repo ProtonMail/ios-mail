@@ -241,6 +241,7 @@ class UserManager: Service {
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
         let manager = UndoActionManager(
             apiService: self.apiService,
+            internetStatusProvider: sharedServices.get(),
             contextProvider: coreDataService,
             getEventFetching: { [weak self] in
                 self?.eventsService
@@ -311,7 +312,11 @@ class UserManager: Service {
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
+        acquireSessionIfNeeded()
         self.parentManager = parent
+        let handler = self.makeQueueHandler()
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        queueManager.registerHandler(handler)
         self.messageService.signin()
     }
 
@@ -333,6 +338,16 @@ class UserManager: Service {
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
+        acquireSessionIfNeeded()
+    }
+
+    private func acquireSessionIfNeeded() {
+        self.apiService.acquireSessionIfNeeded { result in
+            guard case .success(.sessionAlreadyPresent) = result else {
+                assertionFailure("Lack of session just after the auth delegate being configured indicates the programmers error")
+                return
+            }
+        }
     }
 
     func isMatch(sessionID uid: String) -> Bool {
@@ -671,12 +686,18 @@ extension UserManager: UserAddressUpdaterProtocol {
 
 extension UserManager: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+        if authCredential.isForUnauthenticatedSession {
+            assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
+        }
         self.authCredential = authCredential
         isLoggedOut = false
         self.save()
     }
 
-    func sessionWasInvalidated(for sessionUID: String) {
+    func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        if !isAuthenticatedSession {
+            assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
+        }
         isLoggedOut = true
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])

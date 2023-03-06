@@ -20,7 +20,7 @@ import ProtonCore_Networking
 
 final class MessageDetailRequest: Request {
     let messageID: MessageID
-    let priority: String?
+    let priority: APIPriority?
 
     var path: String {
         "/\(Constants.App.API_PREFIXED)/messages/\(messageID.rawValue)"
@@ -29,12 +29,12 @@ final class MessageDetailRequest: Request {
     var header: [String: Any] {
         var header: [String: Any] = [:]
         if let priority = priority {
-            header["priority"] = priority
+            header["priority"] = priority.rawValue
         }
         return header
     }
 
-    init(messageID: MessageID, priority: String? = nil) {
+    init(messageID: MessageID, priority: APIPriority? = nil) {
         self.messageID = messageID
         self.priority = priority
     }

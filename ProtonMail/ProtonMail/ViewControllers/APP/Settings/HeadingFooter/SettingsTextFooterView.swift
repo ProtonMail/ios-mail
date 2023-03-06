@@ -26,6 +26,7 @@ final class SettingsTextFooterView: UITableViewHeaderFooterView {
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.backgroundColor = .clear
+        textView.font = .adjustedFont(forTextStyle: .footnote)
         textView.adjustsFontForContentSizeCategory = true
         return textView
     }()
@@ -62,14 +63,6 @@ final class SettingsTextFooterView: UITableViewHeaderFooterView {
     }
 
     func set(text: String, textLink: String, linkUrl: String) {
-        let fullText = String.localizedStringWithFormat(text, textLink)
-        let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
-        let attributedString = NSMutableAttributedString(string: fullText, attributes: attr)
-        if let subrange = fullText.range(of: textLink) {
-            let nsRange = NSRange(subrange, in: fullText)
-            attributedString.addAttribute(.link, value: linkUrl, range: nsRange)
-            textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
-        }
-        textView.attributedText = attributedString
+        textView.setStyledTextWithLink(text: text, textLink: textLink, linkUrl: linkUrl)
     }
 }

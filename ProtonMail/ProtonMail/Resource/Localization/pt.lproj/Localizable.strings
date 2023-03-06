@@ -169,6 +169,8 @@
    Push notification action to archive
    The title of the archive action in action sheet */
 "Archive" = "Arquivo";
+
+/* Push notification action archive */
 "Archive (verb)" = "Arquivo";
 
 /* Message of message permanent deletion alert, singular */
@@ -839,9 +841,6 @@
 /* Title */
 "Hide details" = "Ocultar detalhes";
 
-/* hours */
-"hours" = "horas";
-
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Como você descreveria a sua experiência com o novo Proton Mail?";
 
@@ -970,9 +969,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Ligação copiada.";
-
-/* Button inside the banner */
-"Load anyway" = "Carregar mesmo assim";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carregar imagens incorporadas";
@@ -2067,3 +2063,4 @@
 /* contact placeholder */
 "ZIP" = "CP";
 
+"Customize (verb)" = "Customize";

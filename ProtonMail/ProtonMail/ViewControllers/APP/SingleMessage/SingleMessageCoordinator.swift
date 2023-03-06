@@ -126,6 +126,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                                        allActions: allActions):
             presentToolbarCustomization(allActions: allActions,
                                         currentActions: currentActions)
+        case .toolbarSettingView:
+            presentToolbarCustomizationSettingView()
         }
     }
 }
@@ -133,12 +135,13 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 // MARK: - Private functions
 extension SingleMessageCoordinator {
     private func presentCompose(with contact: ContactVO) {
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: nil,
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
         viewModel.addToContacts(contact)
 
@@ -177,12 +180,13 @@ extension SingleMessageCoordinator {
         }
         let contextProvider = sharedServices.get(by: CoreDataService.self)
         guard let msg = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else { return }
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: msg,
             action: composeAction,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
 
         presentCompose(viewModel: viewModel)
@@ -194,12 +198,13 @@ extension SingleMessageCoordinator {
             return
         }
 
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: message,
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
 
         delay(1) {
@@ -236,11 +241,14 @@ extension SingleMessageCoordinator {
         guard let mailToData = mailToURL.parseMailtoLink() else { return }
 
         let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: coreDataService)
+        let viewModel = ComposeViewModel(
+            msg: nil,
+            action: .newDraft,
+            msgService: user.messageService,
+            user: user,
+            coreDataContextProvider: coreDataService,
+            internetStatusProvider: internetStatusProvider
+        )
 
         mailToData.to.forEach { recipient in
             viewModel.addToContacts(ContactVO(name: recipient, email: recipient))
@@ -265,10 +273,14 @@ extension SingleMessageCoordinator {
         presentCompose(viewModel: viewModel)
     }
 
-    private func presentCompose(viewModel: ContainableComposeViewModel) {
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
-                                                          editorViewModel: viewModel)
-        coordinator.start()
+    private func presentCompose(viewModel: ComposeViewModel) {
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: coreDataService,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus
+        )
+        viewController?.present(composer, animated: true)
     }
 
     private func presentCreateFolder(type: PMLabelType) {
@@ -311,5 +323,15 @@ extension SingleMessageCoordinator {
         }
         let nav = UINavigationController(rootViewController: viewController)
         self.viewController?.navigationController?.present(nav, animated: true)
+    }
+
+    private func presentToolbarCustomizationSettingView() {
+        let viewModel = ToolbarSettingViewModel(
+            infoBubbleViewStatusProvider: userCachedStatus,
+            toolbarActionProvider: user,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
+        )
+        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

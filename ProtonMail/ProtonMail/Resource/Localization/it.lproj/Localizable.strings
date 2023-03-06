@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Sei sicuro di voler uscire?";
 
+/* One of the schedule time options */
+"As scheduled" = "Come programmato";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Alle %@";
 
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Nascondi i dettagli";
 
-/* hours */
-"hours" = "ore";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Come vorresti descrivere la tua esperienza con il nuovo Proton Mail?";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Link copiato.";
-
-/* Button inside the banner */
-"Load anyway" = "Carica comunque";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Carica le immagini incorporate";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Salva le modifiche";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Programma l'invio dei messaggi in qualunque momento";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Pianifica invio";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Seleziona colore";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Seleziona data e ora dell'evento";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selezionato";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Configura i gesti di scorrimento per accedere alle azioni più usate.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Imposta la tua programmazione";
+
 /* menu title */
 "Settings" = "Impostazioni";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Posticipa";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Impossibile caricare alcune immagini con la protezione di tracciamento.";
 
 /* menu title */
 "Spam" = "Spam";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Senza limiti";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Cartelle ed etichette illimitate";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Sblocca la pianificazione dei messaggi personalizzata e altri vantaggi quando effettui l'upgrade del tuo piano.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Sblocco richiesto";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Tipo di file non supportato";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Fino a 3 domini email personalizzati";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Fino a 15 indirizzi email";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Fino a 500 GB di spazio di archiviazione";
+
 /* update notification email error title */
 "Update Notification Email" = "Email di notifica di aggiornamento";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Nuovo Proton, protezione unificata";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Effettua l'upgrade adesso";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Effettui l'upgrade ad un piano a pagamento per inviare dal suo indirizzo %@";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "CAP";
 
+"Customize (verb)" = "Customize";

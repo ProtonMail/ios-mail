@@ -20,7 +20,7 @@ import ProtonCore_TestingToolkit
 
 class MockESIndexingStateProvider: ESIndexingStateProvider {
 
-    @FuncStub(MockESIndexingStateProvider.getESState, initialReturn: .paused) var callGetESSate
+    @FuncStub(MockESIndexingStateProvider.getESState, initialReturn: .paused(nil)) var callGetESSate
     func getESState(userID: ProtonMail.UserID) -> ProtonMail.EncryptedSearchIndexState {
         return callGetESSate(userID)
     }

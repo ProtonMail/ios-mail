@@ -1,3 +1,0 @@
-# PushService
-
-Notification Service Extension.

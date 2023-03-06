@@ -258,6 +258,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Är du säker på att du vill logga ut?";
 
+/* One of the schedule time options */
+"As scheduled" = "Enligt schema";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Kl. %@";
 
@@ -402,6 +405,7 @@
 
 /* Title */
 "Canceling" = "Avbryter";
+
 /* Warning message */
 "Cannot empty folder right now." = "Kan inte tömma mapp just nu.";
 
@@ -506,7 +510,7 @@
 "Confirmation" = "Bekräftelse";
 
 /* Text for status label when no wifi is available */
-"Connect to WiFi or enable \"Download via mobile data\"." = "Anslut till WiFi eller aktivera \"Ladda ner via mobildata\".";
+"Connect to WiFi or enable \"Download via mobile data\"." = "Anslut till WiFi eller aktivera “Ladda ner via mobildata“.";
 
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt borttagen, kommer att synkroniseras när anslutning är tillgänglig";
@@ -980,8 +984,8 @@
 /* Title */
 "Hide details" = "Dölj detaljer";
 
-/* hours */
-"hours" = "timmar";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email-alias";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hur skulle du beskriva din upplevelse med nya Proton Mail?";
@@ -1123,9 +1127,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Länk kopierad.";
-
-/* Button inside the banner */
-"Load anyway" = "Ladda ändå";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ladda inbäddade bilder";
@@ -1682,6 +1683,9 @@
 /* title */
 "Save Changes" = "Spara ändringar";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schemalägg meddelanden när som helst";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Schemalägg sändning";
@@ -1714,9 +1718,6 @@
 
 /* section title */
 "Select colour" = "Välj färg";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Välj datum och tid";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valda";
@@ -1802,6 +1803,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Ställ in svepgester för att komma åt de mest använda åtgärderna.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Ställ in ditt eget schema";
+
 /* menu title */
 "Settings" = "Inställningar";
 
@@ -1838,9 +1842,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Skjut upp";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Några bilder kunde inte laddas med spårningsskydd.";
 
 /* menu title */
 "Spam" = "Skräppost";
@@ -2151,6 +2152,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Obegränsat";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Obegränsat antal mappar och etiketter";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås upp anpassat meddelandeschemaläggning och andra fördelar när du uppgraderar ditt paket.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Upplåsning krävs";
 
@@ -2169,6 +2176,15 @@
 /* Error message */
 "Unsupported file type" = "Filtyp stöds inte";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Upp till 3 anpassade e-postdomäner";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Upp till 15 e-postadresser";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Upp till 500 GB lagringsutrymme";
+
 /* update notification email error title */
 "Update Notification Email" = "Uppdatera e-postavisering";
 
@@ -2183,6 +2199,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Uppdaterat Proton, enhetligt skydd";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Uppgradera nu";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till ett betalt paket för att skicka från din %@-adress";
@@ -2361,3 +2380,4 @@
 /* contact placeholder */
 "ZIP" = "ZIP";
 
+"Customize (verb)" = "Customize";

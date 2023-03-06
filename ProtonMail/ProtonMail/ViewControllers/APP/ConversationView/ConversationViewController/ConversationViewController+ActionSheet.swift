@@ -3,7 +3,7 @@ import ProtonCore_UIFoundations
 extension ConversationViewController {
     func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: MessageEntity, body: String?) {
         switch action {
-        case .reply, .replyAll, .forward:
+        case .reply, .replyAll, .forward, .replyAllInConversation, .replyInConversation:
             handleOpenComposerAction(action, message: message)
         case .labelAs:
             showLabelAsActionSheet(dataSource: .message(message))
@@ -11,11 +11,14 @@ extension ConversationViewController {
             showMoveToActionSheet(dataSource: .message(message))
         case .print:
             if let controller = contentController(for: message) {
-                controller.presentPrintController()
+                let renderer = ConversationPrintRenderer([controller])
+                controller.presentPrintController(renderer: renderer,
+                                                  jobName: message.title)
             }
         case .saveAsPDF:
             if let controller = contentController(for: message) {
-                controller.exportPDF()
+                let renderer = ConversationPrintRenderer([controller])
+                controller.exportPDF(renderer: renderer, fileName: "\(message.title).pdf")
             }
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action, message: message)
@@ -50,11 +53,11 @@ extension ConversationViewController {
 
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
-        case .reply:
+        case .reply, .replyInConversation:
             coordinator.handle(navigationAction: .reply(message: message))
-        case .replyAll:
+        case .replyAll, .replyAllInConversation:
             coordinator.handle(navigationAction: .replyAll(message: message))
-        case .forward:
+        case .forward, .forwardInConversation:
             coordinator.handle(navigationAction: .forward(message: message))
         default:
             return
@@ -78,7 +81,7 @@ extension ConversationViewController {
 
     private func showToolbarActionCustomizationView() {
         coordinator.handle(navigationAction: .toolbarCustomization(
-            currentActions: viewModel.actionsForToolbarCustomizeView(),
+            currentActions: viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllWithConversationVersion(),
             allActions: viewModel.toolbarCustomizationAllAvailableActions()
         ))
     }
@@ -108,7 +111,7 @@ extension ConversationViewController {
 
 }
 
-private extension UIViewController {
+extension UIViewController {
 
     func contentController(for message: MessageEntity) -> SingleMessageContentViewController? {
         recursiveChildren

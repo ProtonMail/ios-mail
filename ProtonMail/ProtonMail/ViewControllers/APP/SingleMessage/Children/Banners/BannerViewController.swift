@@ -208,9 +208,10 @@ final class BannerViewController: UIViewController {
 
     private func showImageProxyFailedBanner() {
         let banner = BannerWithButton(
-            icon: IconProvider.exclamationCircleFilled,
+            icon: IconProvider.infoCircle,
             content: L11n.EmailTrackerProtection.some_images_failed_to_load,
-            buttonTitle: L11n.EmailTrackerProtection.load_anyway
+            buttonTitle: L11n.EmailTrackerProtection.load,
+            iconColor: ColorProvider.IconNorm
         ) { [weak self] in
             self?.reloadImagesWithoutProtection()
         }

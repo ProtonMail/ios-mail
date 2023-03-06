@@ -140,7 +140,13 @@ extension MessageEntity {
         self.userID = UserID(message.userID)
 
         self.action = message.action
-        self.numAttachments = message.numAttachments.intValue
+        let attachmentEntities = AttachmentEntity
+            .convert(from: message.attachments)
+            .filter { !($0.localURL?.absoluteString.contains(check: "Shared/AppGroup") ?? false) }
+            .sorted { $0.order < $1.order }
+        let removedAttachmentCount = message.attachments.count - attachmentEntities.count
+        self.attachments = attachmentEntities
+        self.numAttachments = message.numAttachments.intValue - removedAttachmentCount
         self.size = message.size.intValue
         self.spamScore = SpamScore(rawValue: message.spamScore.intValue)
 
@@ -173,7 +179,6 @@ extension MessageEntity {
         self.mimeType = message.mimeType
         self.body = message.body
 
-        self.attachments = AttachmentEntity.convert(from: message.attachments)
         self.labels = LabelEntity.convert(from: message.labels)
 
         if let id = message.nextAddressID {

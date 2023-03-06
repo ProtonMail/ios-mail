@@ -260,7 +260,7 @@ extension SearchViewController {
                         assertionFailure("handled above")
                     case .reply, .replyAll, .forward, .archive, .spam, .print, .viewHeaders, .viewHTML,
                             .reportPhishing, .dismiss, .inbox, .spamMoveToInbox, .star,. unstar,
-                            .viewInDarkMode, .viewInLightMode, .toolbarCustomization, .replyOrReplyAll, .saveAsPDF:
+                            .viewInDarkMode, .viewInLightMode, .toolbarCustomization, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
                         assertionFailure("should not reach here")
                     }
                 }
@@ -356,7 +356,7 @@ extension SearchViewController {
         case .toolbarCustomization:
             // TODO: Add implementation
             break
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
     }
@@ -558,10 +558,13 @@ extension SearchViewController {
     private func showComposer(message: MessageEntity) {
         guard let viewModel = self.viewModel.getComposeViewModel(message: message),
               let navigationController = self.navigationController else { return }
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
-                                                          editorViewModel: viewModel,
-                                                          services: ServiceFactory.default)
-        coordinator.start()
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus
+        )
+        navigationController.present(composer, animated: true)
     }
 
     private func showComposer(msgID: MessageID) {
@@ -569,10 +572,13 @@ extension SearchViewController {
               let navigationController = self.navigationController else {
             return
         }
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
-                                                          editorViewModel: viewModel,
-                                                          services: ServiceFactory.default)
-        coordinator.start()
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus
+        )
+        navigationController.present(composer, animated: true)
     }
 
     private func prepareFor(message: MessageEntity) {
@@ -625,6 +631,7 @@ extension SearchViewController {
                     user: self.viewModel.user,
                     internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
                     infoBubbleViewStatusProvider: userCachedStatus,
+                    contextProvider: sharedServices.get(by: CoreDataService.self),
                     targetID: messageID
                 )
                 coordinator.goToDraft = { [weak self] msgID, _ in

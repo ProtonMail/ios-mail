@@ -31,6 +31,7 @@ class SingleMessageContentViewModelFactory {
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
         dependencies: SingleMessageContentViewModel.Dependencies,
+        shouldOpenHistory: Bool,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
@@ -46,6 +47,7 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
+                     shouldOpenHistory: shouldOpenHistory,
                      dependencies: dependencies,
                      goToDraft: goToDraft)
     }

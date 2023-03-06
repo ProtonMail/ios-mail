@@ -33,9 +33,9 @@ final class EncryptedSearchCacheService {
     private var cache: EncryptedSearchGolangCacheProtocol
     private let userID: UserID
 
-    init?(userID: UserID) {
+    init?(userID: UserID, memoryUsage: MemoryUsageProtocol = DeviceCapacity.Memory()) {
         self.userID = userID
-        let maxMemory = DeviceCapacity.Memory.total() - DeviceCapacity.Memory.used()
+        let maxMemory = memoryUsage.physicalMemory - memoryUsage.used
         let maxCacheSizeDouble = Double(maxMemory) * Constant.searchCacheHeapPercent
         self.maxCacheSize = Int(maxCacheSizeDouble)
         self.batchSize = Int(maxCacheSizeDouble / Constant.searchMsgSize)

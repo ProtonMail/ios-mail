@@ -47,7 +47,8 @@
         "MultiuserManagementTests\/testSwitchAccount()",
         "PinTests\/testTurnOnAndOffPin()",
         "SettingsTests\/testEditAutoLockTime()",
-        "SpamTests\/testSwipeToSpamMessage()"
+        "SpamTests\/testSwipeToSpamMessage()",
+        "UnauthSessionTests\/testRefreshingAndOpeningMailWorks()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

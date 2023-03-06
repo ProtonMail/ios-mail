@@ -43,7 +43,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     var inputSubject: String! = ""
     var inputContent: String! = ""
     var files = [FileData]()
-    fileprivate let kDefaultAttachmentFileSize: Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize: Int = 0
 
     //
@@ -245,7 +244,7 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
 
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { seal in
-            guard fileData.contents.dataSize < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+            guard fileData.contents.dataSize < (Constants.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
                 self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
                 seal.fulfill_()
                 return

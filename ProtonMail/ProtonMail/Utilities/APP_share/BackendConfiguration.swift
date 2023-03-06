@@ -50,3 +50,9 @@ struct BackendConfiguration {
 #endif
     }
 }
+
+extension BackendConfiguration {
+    enum Arguments {
+        static let disableToolbarSpotlight = "-toolbarSpotlightOff"
+    }
+}

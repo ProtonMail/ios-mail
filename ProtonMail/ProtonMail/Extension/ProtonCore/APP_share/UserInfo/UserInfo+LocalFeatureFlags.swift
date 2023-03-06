@@ -39,7 +39,15 @@ extension UserInfo {
     }
 
     static var isToolbarCustomizationEnable: Bool {
-        ProcessInfo.isRunningUnitTests
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        }
+        if ProcessInfo.processInfo.arguments.contains(
+            BackendConfiguration.Arguments.disableToolbarSpotlight
+        ) {
+            return false
+        }
+        return true
     }
 
     static var isImageProxyAvailable: Bool {
@@ -53,5 +61,14 @@ extension UserInfo {
         #else
         return false
         #endif
+    }
+
+    static var isEncryptedSearchEnabled: Bool {
+//        #if DEBUG_ENTERPRISE
+//        return true
+//        #else
+//        return false
+//        #endif
+        return false // uncomment code above when the feature is functional
     }
 }

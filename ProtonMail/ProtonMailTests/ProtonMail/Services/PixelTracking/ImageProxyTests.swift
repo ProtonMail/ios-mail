@@ -112,6 +112,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut = ImageProxy(dependencies: dependencies)
 
         apiServiceMock.dohStub.fixture = DohMock()
+        apiServiceMock.dohInterfaceStub.fixture = DohMock()
 
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!
@@ -162,7 +163,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut = nil
         apiServiceMock = nil
         delegate = nil
-        Environment.restore()
+        LocaleEnvironment.restore()
 
         try super.tearDownWithError()
     }
@@ -255,6 +256,102 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         XCTAssertEqual(apiServiceMock.downloadStub.callCounter, numberOfCalls)
     }
 
+    func testFetchRemoteImageIfNeeded() {
+        let url = URL(string: "proton-http://test.com")!
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(_):
+                XCTFail("Should not reach here")
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testFetchRemoteImageIfNeeded_withUrlWithoutScheme_errorIsReturned() {
+        let url = URL(string: "test.com")!
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                XCTFail("Should not reach here")
+            case .failure(let error):
+                if let err = error as? ImageProxyError {
+                    XCTAssertEqual(err, .schemeNotFound)
+                } else {
+                    XCTFail("Should not reach here")
+                }
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testFetchRemoteImageIfNeeded_withSchemeHasNoProtonPrefix_errorIsReturned() {
+        let url = URL(string: "https://test.com")!
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                XCTFail("Should not reach here")
+            case .failure(let error):
+                if let err = error as? ImageProxyError {
+                    XCTAssertEqual(err, .schemeHasNoPrefix)
+                } else {
+                    XCTFail("Should not reach here")
+                }
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testFetchRemoteImageIfNeeded_withAPIError_errorIsReturned() {
+        apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
+            let url = URL(string: urlString)!
+
+            try! FileManager.default.createDirectory(
+                at: destinationDirectoryURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+
+            let headers: [String: String] = [
+                "Content-Type": "application/json"
+            ]
+            let errorResponse: [String: String] = [
+                "Error": "something went wrong"
+            ]
+
+            try! JSONSerialization.data(withJSONObject: errorResponse).write(to: destinationDirectoryURL)
+
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: headers)
+            completion(response, destinationDirectoryURL, nil)
+        }
+        let url = URL(string: "proton-http://test.com")!
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                XCTFail("Should not reach here")
+            case .failure(_):
+                break
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+	}
+	
     func testDryRun() throws {
         try sut.dryRun(body: incomingMessage, delegate: delegate)
         waitForProxyToFinishProcessing()

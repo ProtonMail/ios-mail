@@ -49,9 +49,13 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        guard isEnabledTimeout else { return }
-        self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
+        if sharedServices.get(by: UsersManager.self).hasUsers() {
             NotificationCenter.default.post(name: .switchView, object: nil)
+        } else {
+            guard isEnabledTimeout else { return }
+            self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
+                NotificationCenter.default.post(name: .switchView, object: nil)
+            }
         }
     }
 

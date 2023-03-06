@@ -135,29 +135,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return context
     }
 
-    func makeComposerMainContext() -> NSManagedObjectContext {
-        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = self.rootSavingContext
-
-        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: self.rootSavingContext, queue: nil) { [weak context] (noti) in
-            guard let _ = noti.object as? NSManagedObjectContext,
-                  let context = context else {
-                return
-            }
-            let mergeChanges = { () -> Void in
-                if let updatedObjects = (noti.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) {
-                    for object in updatedObjects {
-                        context.object(with: object.objectID).willAccessValue(forKey: nil)
-                    }
-                }
-                context.mergeChanges(fromContextDidSave: noti)
-            }
-            context.perform(mergeChanges)
-        }
-
-        return context
-    }
-
     func makeNewBackgroundContext() -> NSManagedObjectContext {
         return container.newBackgroundContext()
     }
@@ -327,6 +304,14 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         context.performAndWait {
             block(context)
         }
+    }
+
+    /// Discards pending changes in the global read and write contexts
+    func rollbackAllContexts() throws {
+        try write { context in
+            context.rollback()
+        }
+        mainContext.rollback()
     }
 }
 

@@ -27,6 +27,7 @@ import ProtonCore_Crypto
 import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Log
+import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
 import ProtonCore_Payments
 import ProtonCore_Services
@@ -164,6 +165,7 @@ extension AppDelegate: UIApplicationDelegate {
         }
         #endif
         configureCrypto()
+        configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
         configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
@@ -480,6 +482,16 @@ extension AppDelegate {
 
     private func configureCrypto() {
         Crypto().initializeGoCryptoWithDefaultConfiguration()
+    }
+
+    private func configureCoreFeatureFlags(launchArguments: [String]) {
+        guard !launchArguments.contains("-testNoUnauthSessions") else { return }
+
+        FeatureFactory.shared.enable(&.unauthSession)
+
+        guard launchArguments.contains("-testUnauthSessionsWithHeader") else { return }
+        // this is only a test flag used before backend whitelists the app version
+        FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
     }
 
     private func configureLanguage() {

@@ -117,7 +117,7 @@ private enum PushContentTestsData {
             },
             "badge": 4,
             "messageId": "ee_HZqOT23NjYQ-AKNZ5kv8s866qLYG0JFBFm4OMiFUxEiy1z9nEATUHPnJZrZBj2N6HK54_GM83U3qobcd1Ug==",
-            "url": "https://proton.me/support/knowledge-base/display-name-and-signature/"
+            "url": "https://proton.me/support/display-name-and-signature/"
           },
           "type": "open_url"
         }

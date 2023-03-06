@@ -25,13 +25,19 @@ final class BannerWithButton: BaseBannerView {
     private let action: () -> Void
     private var row: UIStackView!
 
-    init(icon: UIImage, content: String, buttonTitle: String, action: @escaping () -> Void) {
+    init(
+        icon: UIImage,
+        content: String,
+        buttonTitle: String,
+        iconColor: UIColor = ColorProvider.NotificationError,
+        action: @escaping () -> Void
+    ) {
         self.action = action
 
         super.init()
 
         iconView.image = icon
-        iconView.tintColor = ColorProvider.NotificationError
+        iconView.tintColor = iconColor
 
         contentTextView.set(text: content, preferredFont: .footnote)
 

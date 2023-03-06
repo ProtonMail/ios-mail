@@ -357,6 +357,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         checkHuman()
 
         showFeedbackViewIfNeeded()
+        showDropVersionsAlertIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -515,6 +516,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                       newElement,
                                       bannerContainer as Any,
                                       tableView as Any]
+    }
+
+    private func showDropVersionsAlertIfNeeded() {
+        let deviceVersion = (UIDevice.current.systemVersion as NSString).floatValue
+        let alertTitle = "Last update compatible with your iOS version"
+        let alertMessage = "\nThis update will be the last one compatible with iOS 13 and below.\nYou can continue using your Proton Mail app but you will no longer receive updates with new features and security patches.\n\nPlease update your device to iOS 14 or above to receive the latest updates.\n\nStay secure,\nThe Proton Team"
+        if !userCachedStatus.didShowDropVersionAlert && deviceVersion < 14 {
+            let alertController = alertMessage.alertController(alertTitle)
+            alertController.addOKAction()
+            self.present(alertController, animated: true) {
+                userCachedStatus.didShowDropVersionAlert = true
+            }
+        }
     }
 
     // MARK: - Public methods
@@ -899,7 +913,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func showRefreshController() {
         let height = tableView.tableFooterView?.frame.height ?? 0
-        let count = tableView.numberOfRows(inSection: 0)
+        let count = tableView.visibleCells.count
         guard height == 0 && count == 0 else {return}
 
         // Show refreshControl if there is no bottom loading view
@@ -1903,12 +1917,12 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             folderButtonTapped()
         case .toolbarCustomization:
             let allActions = viewModel.toolbarCustomizationAllAvailableActions()
-            let currentActions = viewModel.actionsForToolbarCustomizeView()
+            let currentActions = viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllAction()
             coordinator?.presentToolbarCustomizationView(
                 allActions: allActions,
                 currentActions: currentActions
             )
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
     }
