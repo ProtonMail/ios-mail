@@ -93,7 +93,7 @@ class NewMailboxMessageContentView: BaseMessageView {
 
         [
             starImageView.widthAnchor.constraint(equalToConstant: 16.0),
-            starImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            starImageView.heightAnchor.constraint(equalToConstant: 16.0).setPriority(as: .defaultHigh),
             attachmentImageView.widthAnchor.constraint(equalToConstant: 16.0),
             attachmentImageView.heightAnchor.constraint(equalToConstant: 16.0),
             forwardImageView.widthAnchor.constraint(equalToConstant: 16.0),
