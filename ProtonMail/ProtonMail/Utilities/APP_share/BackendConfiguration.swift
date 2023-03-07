@@ -33,21 +33,33 @@ struct BackendConfiguration {
         environment == .mailProd
     }
 
-    init(environmentVariables: [String: String] = ProcessInfo.processInfo.environment) {
-#if DEBUG
-        if let domain = environmentVariables["MAIL_APP_API_DOMAIN"] {
-            self.environment = .custom(domain)
+    init(
+        launchArguments: [String] = ProcessInfo.processInfo.arguments,
+        environmentVariables: [String: String] = ProcessInfo.processInfo.environment,
+        isDebugOrEnterprise: () -> Bool = { Constants.Build.isDebugOrEnterprise },
+        configurationCache: BackendConfigurationCacheProtocol = BackendConfigurationCache()
+    ) {
+        if launchArguments.contains(Arguments.UITests) {
+            guard let uiTestApiDomain = environmentVariables[EnvVarKeys.backendApiDomain] else {
+                fatalError("\(EnvVarKeys.backendApiDomain) environment variable not found")
+            }
+            self.environment = .custom(uiTestApiDomain)
+        } else if isDebugOrEnterprise(), let cachedEnv = configurationCache.readEnvironment() {
+            self.environment = cachedEnv
         } else {
             self.environment = .mailProd
         }
-#else
-        self.environment = .mailProd
-#endif
+       SystemLogger.log(message: "Environment: \(environment.doh.defaultHost)", category: .appLifeCycle)
     }
 }
 
 extension BackendConfiguration {
     enum Arguments {
+        static let UITests = "-uiTests"
         static let disableToolbarSpotlight = "-toolbarSpotlightOff"
+    }
+
+    enum EnvVarKeys {
+        static let backendApiDomain = "MAIL_APP_API_DOMAIN"
     }
 }

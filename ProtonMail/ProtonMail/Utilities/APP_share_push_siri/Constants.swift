@@ -30,6 +30,16 @@ struct Constants {
 #endif
     }
 
+    enum Build {
+        static var isDebugOrEnterprise: Bool {
+            #if DEBUG_ENTERPRISE
+            return true
+            #else
+            return false
+            #endif
+        }
+    }
+
     enum App {
         static let SpaceWarningThresholdDouble: Double = 90
         // 3 is v4 carousel
