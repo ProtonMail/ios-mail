@@ -30,12 +30,7 @@ struct BackendConfiguration {
     }
 
     var isProduction: Bool {
-        switch environment {
-        case .mailProd:
-            return true
-        default:
-            return false
-        }
+        environment == .mailProd
     }
 
     init(environmentVariables: [String: String] = ProcessInfo.processInfo.environment) {

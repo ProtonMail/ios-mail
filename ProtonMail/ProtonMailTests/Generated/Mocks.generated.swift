@@ -7,6 +7,19 @@ import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
+class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
+    @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
+    func readEnvironment() -> Environment? {
+        readEnvironmentStub()
+    }
+
+    @FuncStub(MockBackendConfigurationCacheProtocol.write) var writeStub
+    func write(environment: Environment) {
+        writeStub(environment)
+    }
+
+}
+
 class MockCacheServiceProtocol: CacheServiceProtocol {
     @FuncStub(MockCacheServiceProtocol.addNewLabel) var addNewLabelStub
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?) {
