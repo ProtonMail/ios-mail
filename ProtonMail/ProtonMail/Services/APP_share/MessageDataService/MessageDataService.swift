@@ -407,15 +407,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
                                 // Use local attachment count since the not-uploaded attachment is not counted
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
-
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
-                                if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
-                                }
+
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
+                                    if let labelID = newMessage.firstValidFolder() {
+                                        self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
+                                    }
                                 }
+
                                 newMessage.unRead = false
                                 PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
                                 error = context.saveUpstreamIfNeeded()
