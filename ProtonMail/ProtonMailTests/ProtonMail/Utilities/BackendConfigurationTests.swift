@@ -16,47 +16,90 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import ProtonCore_Environment
 import XCTest
 
 class BackendConfigurationTests: XCTestCase {
-    private var apiCustomAPIEnvVars: [String: String]!
+    private static let customApiDomain = "example.com"
 
-    private let customApiDomain = "example.com"
+    private var sut: BackendConfiguration!
+    private var mockBackendConfigurationCache: MockBackendConfigurationCacheProtocol!
+    private let emptyLaunchArgs = [String]()
+    private let uiTestsLaunchArgs = ["-uiTests"]
+
+    private let emptyEnvVars = [String: String]()
+    private var apiCustomAPIEnvVars = ["MAIL_APP_API_DOMAIN": BackendConfigurationTests.customApiDomain]
 
     override func setUp() {
         super.setUp()
-        apiCustomAPIEnvVars = [
-            "MAIL_APP_API_DOMAIN": customApiDomain
-        ]
+        mockBackendConfigurationCache = MockBackendConfigurationCacheProtocol()
     }
 
-    func testInit_whenNoCustomDomain_returnsProdEnv() {
-        let result = BackendConfiguration(environmentVariables: [:])
-        assertIsProduction(configuration: result)
+    override func tearDown() {
+        super.tearDown()
+        mockBackendConfigurationCache = nil
+        sut = nil
     }
 
-    func testInit_whenNecessaryEnvVarExist_returnsCustomEnv() {
-        let result = BackendConfiguration(environmentVariables: apiCustomAPIEnvVars)
-        switch result.environment {
-        case .custom(customApiDomain):
-            break
-        default:
-            XCTFail("Unexpected environment: \(result.environment)")
-        }
+    func testInit_whenThereIsUITestsArg_andEnvVarsExist_returnsCustomEnv() {
+        sut = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
+        XCTAssert(sut.environment == .custom(BackendConfigurationTests.customApiDomain))
     }
+
+    func testInit_whenIsDebugOrEnterprise_returnsCachedEnv() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            Environment.black
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
+        XCTAssert(sut.environment == .black)
+    }
+
+    func testInit_whenIsDebugOrEnterprise_andCacheReturnsNil_returnsProdEnv() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            nil
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
+        XCTAssert(sut.environment == .mailProd)
+    }
+
+    func testInit_whenIsNotDebugOrEnterprise_returnsProdEnv() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            Environment.black
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { false }, configurationCache: mockBackendConfigurationCache)
+        XCTAssert(sut.environment == .mailProd)
+    }
+
+    func testIsProduction_whenItIsProduction_returnsTrue() {
+        sut = BackendConfiguration(
+            isDebugOrEnterprise: { false }
+        )
+        XCTAssertTrue(sut.isProduction)
+    }
+
+    func testIsProduction_whenItIsNotProduction_returnsFalse() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            Environment.black
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
+        XCTAssertFalse(sut.isProduction)
+    }
+
+    func testEnvironment_whenItIsProduction_returnsTheExpectedDomains() {
+        sut = BackendConfiguration(isDebugOrEnterprise: { false })
+        assertIsProduction(configuration: sut)
+    }
+}
+
+extension BackendConfigurationTests {
 
     private func assertIsProduction(
         configuration: BackendConfiguration,
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        switch configuration.environment {
-        case .mailProd:
-            break
-        default:
-            XCTFail("Unexpected environment: \(configuration.environment)", file: file, line: line)
-        }
-
-        XCTAssert(configuration.isProduction, file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.signupDomain, "proton.me", file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.defaultHost, "https://api.protonmail.ch", file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.defaultPath, "", file: file, line: line)
     }
 }
