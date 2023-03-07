@@ -119,9 +119,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
         guard !viewModel.messagesDataSource.isEmpty else { return }
 
-        if let targetID = self.viewModel.targetID {
-            self.cellTapped(messageId: targetID)
-        }
         if !UserInfo.isConversationSwipeEnabled {
             showToolbarCustomizeSpotlightIfNeeded()
         }
