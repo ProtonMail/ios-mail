@@ -58,7 +58,7 @@ final class BannerWithButton: BaseBannerView {
     private func addSubviews() {
         row = UIStackView(arrangedSubviews: [iconView, contentTextView, button])
         row.alignment = .center
-        row.distribution = .equalSpacing
+        row.distribution = .fillProportionally
         row.spacing = 10
         addSubview(row)
 
