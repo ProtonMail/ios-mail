@@ -123,7 +123,7 @@ final class ContactsViewModelImpl: ContactsViewModel {
         if isSearching {
             return -1
         }
-        return fetchedResultsController?.section(forSectionIndexTitle: title.lowercased(), at: index) ?? -1
+        return fetchedResultsController?.section(forSectionIndexTitle: title, at: index) ?? -1
     }
     
     override func item(index: IndexPath) -> ContactEntity? {
