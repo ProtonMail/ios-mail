@@ -52,7 +52,22 @@ class ImageProxy {
         "xlink:href"
     ]
 
-    private let remoteURLRegex: NSRegularExpression = {
+    private let extensionsOfURLsToNeverDownload: [String] = [
+        "afm",
+        "css",
+        "eot",
+        "inf",
+        "ofm",
+        "otf",
+        "pfa",
+        "pfb",
+        "pfm",
+        "ttf",
+        "woff",
+        "woff2"
+    ]
+
+    private let remoteURLRegexes: (html: NSRegularExpression, css: NSRegularExpression) = {
         // For a URL to point to a remote image, it has to begin with one of these.
         // It's safe to ignore URLs such as `<img src="local.png"/>.
         // Also we want to skip URLs with `cid` and `data` schemes.
@@ -65,10 +80,19 @@ class ImageProxy {
         let remoteURLsDisjunction = remoteURLPrefixes.joined(separator: "|")
 
         do {
-            return try NSRegularExpression(
+            let htmlRegex = try NSRegularExpression(
                 pattern: "[=\\s'\"(]?((\(remoteURLsDisjunction))[^\\s'\")]+)",
                 options: .caseInsensitive
             )
+
+            // In CSS, every relevant remote URL will be wrapped in `url()`.
+            // Other URLs, such as comments linking to Github issues, must be ignored.
+            let cssRegex = try NSRegularExpression(
+                pattern: "url[=\\s'\"(]+((\(remoteURLsDisjunction))[^\\s'\")]+)",
+                options: .caseInsensitive
+            )
+
+            return (htmlRegex, cssRegex)
         } catch {
             fatalError("\(error)")
         }
@@ -203,7 +227,10 @@ class ImageProxy {
 
             for element in elements {
                 let attributeValue = try element.attr(attribute)
-                let (strippedAttributeValue, replacements) = replaceRemoteURLsWithUUIDs(in: attributeValue)
+                let (strippedAttributeValue, replacements) = replaceRemoteURLsWithUUIDs(
+                    in: attributeValue,
+                    treatAsCSS: attribute == "style"
+                )
 
                 if !replacements.isEmpty {
                     try element.attr(attribute, strippedAttributeValue)
@@ -219,7 +246,7 @@ class ImageProxy {
 
         for element in styleElements {
             let style = try element.html()
-            let (strippedStyle, replacements) = replaceRemoteURLsWithUUIDs(in: style)
+            let (strippedStyle, replacements) = replaceRemoteURLsWithUUIDs(in: style, treatAsCSS: true)
 
             if !replacements.isEmpty {
                 try element.html(strippedStyle)
@@ -244,11 +271,16 @@ class ImageProxy {
     /// In the returned dictionary:
     /// - key - a remote URL that has been replaced
     /// - value - a set of UUIDs that have replaced the occurrences of that URL
-    private func replaceRemoteURLsWithUUIDs(in string: String) -> (String, [UnsafeRemoteURL: Set<UUID>]) {
+    private func replaceRemoteURLsWithUUIDs(
+        in string: String,
+        treatAsCSS: Bool
+    ) -> (String, [UnsafeRemoteURL: Set<UUID>]) {
         var strippedString = string
         var uuidReplacementsForURLs: [UnsafeRemoteURL: Set<UUID>] = [:]
 
-        while let match = remoteURLRegex.firstMatch(in: strippedString, range: strippedString.fullNSRange) {
+        let regex: NSRegularExpression = treatAsCSS ? remoteURLRegexes.css : remoteURLRegexes.html
+
+        while let match = regex.firstMatch(in: strippedString, range: strippedString.fullNSRange) {
             guard match.numberOfRanges > 1 else {
                 assertionFailure()
                 break
@@ -271,9 +303,22 @@ class ImageProxy {
 
             strippedString.replaceSubrange(urlRange, with: uuid.uuidString)
 
-            var uuidsReplacingTheUnsafeURL = uuidReplacementsForURLs[unsafeURL] ?? []
-            uuidsReplacingTheUnsafeURL.insert(uuid)
-            uuidReplacementsForURLs[unsafeURL] = uuidsReplacingTheUnsafeURL
+            /*
+             Not every remote URL should be fetched: for example font URLs do not provide images, but can leak info to font providers like Google Fonts.
+
+             It's almost impossible to properly tell URLs for font elements from URLs for images in the CSS, so this is a best effort attempt based on URL path extension.
+
+             Nevertheless, every remote URL should still be replaced with an UUID (as is being done above) to prevent the regex from picking it up again in an infinite loop.
+             */
+            let shouldFetchFromRemoteURL = !extensionsOfURLsToNeverDownload.contains {
+                URL(string: unsafeURL.value)?.pathExtension == $0
+            }
+
+            if shouldFetchFromRemoteURL {
+                var uuidsReplacingTheUnsafeURL = uuidReplacementsForURLs[unsafeURL] ?? []
+                uuidsReplacingTheUnsafeURL.insert(uuid)
+                uuidReplacementsForURLs[unsafeURL] = uuidsReplacingTheUnsafeURL
+            }
         }
 
         return (strippedString, uuidReplacementsForURLs)

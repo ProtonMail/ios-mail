@@ -30,9 +30,19 @@ class ImageProxyTests: XCTestCase {
 <html>
     <head>
         <style>
+            /* Sometimes message CSS contains URLs like https://example.com that should not be fetched. */
+
+            @import url("https://tracking.example.com/font.ttf");
+
+            @font-face {
+                font-family: myFont;
+                src: url("https://tracking.example.com/font.woff");
+            }
+
             body {
                 background-image : url ( " https://tracking.example.com/images/1.png ");
             }
+
             div {
                 background: url(http://tracking.example.com/images/2.png);
             }
@@ -58,9 +68,19 @@ class ImageProxyTests: XCTestCase {
     private let expectedStrippedMessage = """
 <html>
     <head>
-        <style>body {
+        <style>/* Sometimes message CSS contains URLs like https://example.com that should not be fetched. */
+
+            @import url("160C6ADB-F096-4AF8-A400-6EEB816FB4DD");
+
+            @font-face {
+                font-family: myFont;
+                src: url("CF9E127D-B000-417A-8731-50F7D7895BDA");
+            }
+
+            body {
                 background-image : url ( " E621E1F8-C36C-495A-93FC-0C247A3E6E5F ");
             }
+
             div {
                 background: url(AA2A26E9-B322-4BB3-ACFC-CBA6C24E6E07);
             }</style>
@@ -96,7 +116,9 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         "https://tracking.example.com/images/6.png": "8CE737FF-EEB2-4D5F-8A7C-B093C785864D",
         "http://tracking.example.com/images/7.png": "CC96C0C5-4B5B-432E-8A95-B32AC55BB343",
         "http://tracking.example.com/images/8.png": "D7FCCD3B-B0E9-4BA2-ACC9-A76AEC705E96",
-        "https://example.com/images/safe.png": "9954E711-8EAA-4B88-83E2-84FB42AED355"
+        "https://example.com/images/safe.png": "9954E711-8EAA-4B88-83E2-84FB42AED355",
+        "https://tracking.example.com/font.ttf": "160C6ADB-F096-4AF8-A400-6EEB816FB4DD",
+        "https://tracking.example.com/font.woff": "CF9E127D-B000-417A-8731-50F7D7895BDA"
     ].reduce(into: [:]) { acc, element in
         acc[UnsafeRemoteURL(value: element.key)] = UUID(uuidString: element.value)!
     }
@@ -177,9 +199,11 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         waitForProxyToFinishProcessing()
         let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
 
-        let expectedOutput: [Set<UUID>: Base64Image] = predefinedUUIDs.reduce(into: [:]) { acc, element in
-            acc[[element.value]] = Base64Image(url: "data:\(testImageContentType);base64,\(base64Image)")
-        }
+        let expectedOutput: [Set<UUID>: Base64Image] = predefinedUUIDs
+            .filter { $0.key.value.hasSuffix(".png") }
+            .reduce(into: [:]) { acc, element in
+                acc[[element.value]] = Base64Image(url: "data:\(testImageContentType);base64,\(base64Image)")
+            }
         XCTAssertEqual(output.safeBase64Contents, expectedOutput)
     }
 
@@ -364,9 +388,11 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        let expectedFailedRequests: [Set<UUID>: UnsafeRemoteURL] = predefinedUUIDs.reduce(into: [:]) { acc, element in
-            acc[[element.value]] = element.key
-        }
+        let expectedFailedRequests: [Set<UUID>: UnsafeRemoteURL] = predefinedUUIDs
+            .filter { $0.key.value.hasSuffix(".png") }
+            .reduce(into: [:]) { acc, element in
+                acc[[element.value]] = element.key
+            }
         XCTAssertEqual(failedRequests, expectedFailedRequests, file: file, line: line)
     }
 
