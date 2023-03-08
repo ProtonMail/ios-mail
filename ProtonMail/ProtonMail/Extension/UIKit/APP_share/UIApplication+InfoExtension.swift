@@ -24,6 +24,14 @@ import UIKit
 
 extension UIApplication {
 
+    static var isDebugOrEnterprise: Bool {
+        #if DEBUG_ENTERPRISE
+        return true
+        #else
+        return false
+        #endif
+    }
+
     static var isTestflightBeta: Bool {
         // If we're running on simulator, we're definitely not Testflight version
         #if targetEnvironment(simulator)
