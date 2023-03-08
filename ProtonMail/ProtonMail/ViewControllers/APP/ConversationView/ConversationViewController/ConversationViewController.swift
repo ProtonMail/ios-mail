@@ -126,6 +126,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
             self?.displayConversation()
         }
+
+        if let draftID = viewModel.draftID {
+            cellTapped(messageId: draftID)
+            viewModel.draftID = nil
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
