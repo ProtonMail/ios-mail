@@ -98,6 +98,7 @@ private enum SubviewFactory {
         let label = UILabel()
         label.numberOfLines = 1
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         return label
     }
 
@@ -105,6 +106,7 @@ private enum SubviewFactory {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         return label
     }
 
