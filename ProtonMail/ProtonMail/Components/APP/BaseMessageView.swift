@@ -49,7 +49,7 @@ class BaseMessageView: UIView {
 
         for (index, view) in views.enumerated() {
             // subsequent views have lower resistance to emulate truncation
-            let priority = UILayoutPriority(rawValue: UILayoutPriority.defaultLow.rawValue - Float(index))
+            let priority = UILayoutPriority(rawValue: UILayoutPriority.required.rawValue - Float(index))
             view.setContentCompressionResistancePriority(priority, for: .horizontal)
 
             sendersStackView.addArrangedSubview(view)
