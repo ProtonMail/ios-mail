@@ -195,7 +195,7 @@ class ExpandedHeaderViewController: UIViewController {
             let control = TextControl()
             control.label.set(text: recipient.name,
                               preferredFont: .footnote)
-            control.label.setContentCompressionResistancePriority(.required, for: .horizontal)
+            control.label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             let addressController = TextControl()
             addressController.label.set(text: recipient.address,
                                         preferredFont: .footnote,

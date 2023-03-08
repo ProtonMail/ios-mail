@@ -132,6 +132,10 @@ class ConversationMessageView: BaseMessageView {
         ].activate()
 
         timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        [
+            tagsView.widthAnchor.constraint(greaterThanOrEqualTo: tagsView.heightAnchor)
+        ].activate()
+        tagsView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         [
             originImageView.widthAnchor.constraint(equalToConstant: 16),
