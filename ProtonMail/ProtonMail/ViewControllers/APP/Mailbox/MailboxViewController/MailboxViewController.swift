@@ -955,9 +955,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func tappedMessage(_ message: MessageEntity) {
         if getTapped() == false {
             guard viewModel.isInDraftFolder || message.isDraft else {
-                if message.isScheduledSend && !message.contains(location: .sent),
+                if message.contains(location: .scheduled),
                    let scheduledSendTime = message.time,
                    scheduledSendTime.timeIntervalSince(Date()) <= 0 {
+                    // Prevent user trying to edit before receiving sent event
                     let alert = LocalString._scheduled_send_message_timeup.alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
