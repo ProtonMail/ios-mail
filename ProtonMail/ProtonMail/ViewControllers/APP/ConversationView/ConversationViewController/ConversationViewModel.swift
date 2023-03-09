@@ -51,7 +51,9 @@ class ConversationViewModel {
     let user: UserManager
     let messageService: MessageDataService
     /// MessageID that want to expand at the beginning
-    let targetID: MessageID?
+    private(set) var targetID: MessageID?
+    /// The messageID of a draft that should be opened at the beginning
+    var draftID: MessageID?
     private let conversationMessagesProvider: ConversationMessagesProvider
     private let conversationUpdateProvider: ConversationUpdateProvider
     private let conversationService: ConversationProvider
@@ -952,7 +954,11 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
         if let targetID = self.targetID,
            let index = dataModels.lastIndex(where: { $0.message?.messageID == targetID }) {
+            defer {
+                self.targetID = nil
+            }
             if dataModels[index].messageViewModel?.isDraft ?? false {
+                draftID = targetID
                 // The draft can't expand
                 return nil
             }
