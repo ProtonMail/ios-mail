@@ -140,8 +140,6 @@ class SignInManager: Service {
                 }
 
                 tryUnlock()
-
-                NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             }
         }.catch(on: .main) { [weak self] error in
             self?.queueHandlerRegister.unregisterHandler(for: user.userID)
