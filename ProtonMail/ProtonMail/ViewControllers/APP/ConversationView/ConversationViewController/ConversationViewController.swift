@@ -969,11 +969,16 @@ private extension ConversationViewController {
 
     private func handleExportPDFOnToolbar() {
         prepareForPrinting(completion: { [weak self] renderer, subject in
-            guard let renderer = renderer, let subject = subject else {
+            guard let renderer = renderer,
+                  let subject = subject,
+                  let toolbar = self?.customView.toolbar else {
                 return
             }
-            self?.exportPDF(renderer: renderer,
-                            fileName: "\(subject).pdf")
+            self?.exportPDF(
+                renderer: renderer,
+                fileName: "\(subject).pdf",
+                sourceView: toolbar
+            )
         })
     }
 
