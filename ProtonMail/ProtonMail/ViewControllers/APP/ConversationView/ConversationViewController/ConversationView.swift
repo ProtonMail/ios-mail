@@ -79,6 +79,7 @@ class ConversationView: UIView {
     }
 
     func toolbarCGRect() -> CGRect? {
+        layoutIfNeeded()
         let height = frame.height - toolbar.frame.maxY + toolbar.frame.height
         let newFrame: CGRect = .init(
             x: toolbar.frame.minX,

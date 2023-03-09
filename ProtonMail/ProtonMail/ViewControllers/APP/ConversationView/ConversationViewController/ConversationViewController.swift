@@ -729,7 +729,7 @@ extension ConversationViewController {
 
     func showToolbarCustomizeSpotlightIfNeeded() {
         guard viewModel.shouldShowToolbarCustomizeSpotlight(),
-            let targetRect = customView.toolbarCGRect(),
+              let targetRect = customView.toolbarCGRect(),
               let navView = navigationController?.view,
               !navView.subviews.contains(where: { $0 is ToolbarCustomizeSpotlightView })
         else {
