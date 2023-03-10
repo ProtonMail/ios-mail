@@ -338,6 +338,14 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
 
 }
 
+class MockImageProxyDelegate: ImageProxyDelegate {
+    @FuncStub(MockImageProxyDelegate.imageProxy) var imageProxyStub
+    func imageProxy(_ imageProxy: ImageProxy, output: ImageProxyOutput) {
+        imageProxyStub(imageProxy, output)
+    }
+
+}
+
 class MockKeymakerProtocol: KeymakerProtocol {
     @FuncStub(MockKeymakerProtocol.activate) var activateStub
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {

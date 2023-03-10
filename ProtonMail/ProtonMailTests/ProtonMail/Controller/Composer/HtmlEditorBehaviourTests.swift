@@ -104,7 +104,7 @@ final class HtmlEditorBehaviourTests: XCTestCase {
         let webContent = WebContents(
             body: Self.testContentWithRemoteImage,
             remoteContentMode: .allowed,
-            isImageProxyEnable: true
+            messageDisplayMode: .collapsed
         )
 
         // Load the html

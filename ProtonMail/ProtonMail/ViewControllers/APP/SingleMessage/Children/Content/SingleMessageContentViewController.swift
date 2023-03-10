@@ -325,6 +325,7 @@ class SingleMessageContentViewController: UIViewController {
         }
         embedAttachmentViewIfNeeded()
         embedHeaderController()
+        showBanner()
     }
 
     private func embedAttachmentViewIfNeeded() {
@@ -491,7 +492,7 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
         let messageID = viewModel.message.messageID
         // Attachment list needs to check if the body contains content IDs
         // So needs to use full message body or it could miss inline image in the quote
-        let body = viewModel.messageInfoProvider.bodyParts?.body(for: .expanded)
+        let body = viewModel.messageInfoProvider.bodyParts?.originalBody
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
     }
 }
@@ -515,7 +516,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageInfoProvider.remoteContentPolicy = .allowed
+        viewModel.messageInfoProvider.set(policy: .allowed)
     }
 
     func reloadImagesWithoutProtection() {

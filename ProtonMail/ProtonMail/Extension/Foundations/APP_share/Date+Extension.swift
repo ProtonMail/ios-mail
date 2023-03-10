@@ -28,7 +28,7 @@ extension Date {
         case monday, tuesday, wednesday, thursday, friday, saturday
       }
 
-    static func is12H(locale: Locale = Environment.locale()) -> Bool {
+    static func is12H(locale: Locale = LocaleEnvironment.locale()) -> Bool {
         let format = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale)
         // 12H: format = "h a"
         // 24H: format = "HH \'h\'"
@@ -45,8 +45,8 @@ extension Date {
 
     func localizedString(
         withTemplate formatTemplate: String?,
-        locale: Locale = Environment.locale(),
-        timeZone: TimeZone = Environment.timeZone
+        locale: Locale = LocaleEnvironment.locale(),
+        timeZone: TimeZone = LocaleEnvironment.timeZone
     ) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
