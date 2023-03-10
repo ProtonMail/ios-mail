@@ -29,6 +29,7 @@ import ProtonCore_Keymaker
 import ProtonCore_Log
 import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
+import ProtonCore_Observability
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -166,6 +167,7 @@ extension AppDelegate: UIApplicationDelegate {
         #endif
         configureCrypto()
         configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
+        configureCoreObservability()
         configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
@@ -485,13 +487,21 @@ extension AppDelegate {
     }
 
     private func configureCoreFeatureFlags(launchArguments: [String]) {
+        FeatureFactory.shared.enable(&.observability)
+
         guard !launchArguments.contains("-testNoUnauthSessions") else { return }
 
         FeatureFactory.shared.enable(&.unauthSession)
 
+        #if DEBUG
         guard launchArguments.contains("-testUnauthSessionsWithHeader") else { return }
         // this is only a test flag used before backend whitelists the app version
         FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
+        #endif
+    }
+
+    private func configureCoreObservability() {
+        ObservabilityEnv.current.setupWorld(apiService: PMAPIService.unauthorized)
     }
 
     private func configureLanguage() {

@@ -144,30 +144,23 @@ public final class LoginService: Login {
         withAuthDelegateAvailable(completion) { authManager in
             authManager.onSessionObtaining(credential: credential)
             self.apiService.setSessionUID(uid: credential.UID)
-            
-            switch passwordMode {
-            case .one:
-                PMLog.debug("No mailbox password required, finishing up")
-                getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
-            case .two:
-                if minimumAccountType == .username {
-                    completion(.success(.finished(LoginData.credential(credential))))
-                    return
-                }
-                
-                manager.getUserInfo(credential) { result in
-                    switch result {
-                    case let .success(user):
-                        // This is because of a bug on the API, where accounts with no keys return PasswordMode = 2. (according to Android code)
-                        guard user.keys.isEmpty else {
-                            completion(.success(.askSecondPassword))
-                            return
-                        }
-                        self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
-                    case let .failure(error):
-                        PMLog.debug("Getting user info failed with \(error)")
-                        completion(.failure(error.asLoginError()))
+
+            manager.getUserInfo { result in
+                switch result {
+                case .success(let user):
+                    // This is because of a bug on the API, where accounts with no keys return PasswordMode = 2.
+                    // (according to Android code)
+                    if passwordMode == .two && !user.keys.isEmpty {
+                        completion(.success(.askSecondPassword))
+                        return
                     }
+                    PMLog.debug("No mailbox password required, finishing up")
+                    self.getAccountDataPerformingAccountMigrationIfNeeded(
+                        user: user, mailboxPassword: mailboxPassword, completion: completion
+                    )
+                case let .failure(error):
+                    PMLog.debug("Getting user info failed with \(error)")
+                    completion(.failure(error.asLoginError()))
                 }
             }
         }
