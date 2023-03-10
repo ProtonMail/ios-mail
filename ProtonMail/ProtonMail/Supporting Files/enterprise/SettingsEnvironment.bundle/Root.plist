@@ -5,7 +5,7 @@
 	<key>StringsTable</key>
 	<string>Root</string>
 	<key>ApplicationGroupContainerIdentifier</key>
-	<string>group.ch.protonmail.protonmail</string>
+	<string>group.com.protonmail.protonmail</string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
