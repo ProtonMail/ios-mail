@@ -27,7 +27,6 @@ class SettingsDeviceViewControllerTests: XCTestCase {
     var mockApiService: APIServiceMock!
     var mockUsers: UsersManager!
     var mockDoh: DohMock!
-    var stubDohStatus: DohStatusStub!
     var stubBioStatus: BioMetricStatusStub!
     var fakeSettingsDeviceCoordinator: SettingsDeviceCoordinator!
 
@@ -38,11 +37,9 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockUser = UserManager(api: mockApiService, role: .none)
         mockUsers = UsersManager(doh: mockDoh)
         mockUsers.add(newUser: mockUser)
-        stubDohStatus = DohStatusStub()
         stubBioStatus = BioMetricStatusStub()
         viewModel = SettingsDeviceViewModel(user: mockUser,
                                             users: mockUsers,
-                                            dohSetting: stubDohStatus,
                                             biometricStatus: stubBioStatus)
         fakeSettingsDeviceCoordinator = SettingsDeviceCoordinator(
             navigationController: nil,
@@ -65,7 +62,6 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockApiService = nil
         mockDoh = nil
         stubBioStatus = nil
-        stubDohStatus = nil
         fakeSettingsDeviceCoordinator = nil
     }
 

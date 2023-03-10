@@ -76,7 +76,7 @@ class UsersManager: Service {
     }
 
     /// Server's config like url port path etc..
-    var doh: DoH & ServerConfig
+    var doh: DoHInterface
 
     private(set) var users: [UserManager] = [] {
         didSet {
@@ -105,7 +105,7 @@ class UsersManager: Service {
     #endif
 
     init(
-        doh: DoH & ServerConfig,
+        doh: DoHInterface,
         userDataCache: CachedUserDataProvider = UserDataCache(),
         internetConnectionStatusProvider: InternetConnectionStatusProvider = .init()
     ) {

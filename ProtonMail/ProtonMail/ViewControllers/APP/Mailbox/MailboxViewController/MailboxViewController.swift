@@ -716,7 +716,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
-        guard DoHMail.default.errorIndicatesDoHSolvableProblem(error: error) else {
+        guard BackendConfiguration.shared.doh.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
         self.showError()

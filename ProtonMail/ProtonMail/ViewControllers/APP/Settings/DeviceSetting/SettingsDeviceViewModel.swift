@@ -96,7 +96,6 @@ final class SettingsDeviceViewModel {
 
     private(set) var userManager: UserManager
     private let users: UsersManager
-    private let dohSetting: DohStatusProtocol
     private let biometricStatus: BiometricStatusProvider
 
     var lockOn: Bool {
@@ -119,7 +118,7 @@ final class SettingsDeviceViewModel {
     let languages: [ELanguage] = ELanguage.allItems()
 
     var isDohOn: Bool {
-        return self.dohSetting.status == .on
+        BackendConfiguration.shared.doh.status == .on
     }
 
     var appPINTitle: String {
@@ -133,10 +132,9 @@ final class SettingsDeviceViewModel {
         }
     }
 
-    init(user: UserManager, users: UsersManager, dohSetting: DohStatusProtocol, biometricStatus: BiometricStatusProvider) {
+    init(user: UserManager, users: UsersManager, biometricStatus: BiometricStatusProvider) {
         self.userManager = user
         self.users = users
-        self.dohSetting = dohSetting
         self.biometricStatus = biometricStatus
         if #available(iOS 13, *) {
             appSettigns.insert(.darkMode, at: 0)
