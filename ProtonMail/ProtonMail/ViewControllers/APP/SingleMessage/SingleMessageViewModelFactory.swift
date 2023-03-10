@@ -34,15 +34,18 @@ class SingleMessageContentViewModelFactory {
         shouldOpenHistory: Bool,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
+        let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: context.message.spam,
-                user: user
+                user: user,
+                imageProxy: imageProxy
             ),
             bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
             attachments: .init()
         )
         return .init(context: context,
+                     imageProxy: imageProxy,
                      childViewModels: childViewModels,
                      user: user,
                      internetStatusProvider: internetStatusProvider,
@@ -62,11 +65,14 @@ class SingleMessageViewModelFactory {
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
+                         imageProxy: ImageProxy,
                          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
+        let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: message.spam,
-                user: user
+                user: user,
+                imageProxy: imageProxy
             ),
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
@@ -85,6 +91,7 @@ class SingleMessageViewModelFactory {
             labelId: labelId,
             message: message,
             user: user,
+            imageProxy: imageProxy,
             childViewModels: childViewModels,
             internetStatusProvider: internetStatusProvider,
             userIntroductionProgressProvider: userCachedStatus,
@@ -103,12 +110,17 @@ class SingleMessageViewModelFactory {
 
 class SingleMessageComponentsFactory {
 
-    func messageBody(spamType: SpamType?, user: UserManager) -> NewMessageBodyViewModel {
+    func messageBody(
+        spamType: SpamType?,
+        user: UserManager,
+        imageProxy: ImageProxy
+    ) -> NewMessageBodyViewModel {
         return .init(
             spamType: spamType,
             internetStatusProvider: InternetConnectionStatusProvider(),
             linkConfirmation: user.userInfo.linkConfirmation,
-            userKeys: user.toUserKeys()
+            userKeys: user.toUserKeys(),
+            imageProxy: imageProxy
         )
     }
 

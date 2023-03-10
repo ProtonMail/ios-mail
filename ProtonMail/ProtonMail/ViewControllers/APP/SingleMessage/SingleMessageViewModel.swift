@@ -60,6 +60,7 @@ class SingleMessageViewModel {
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
+         imageProxy: ImageProxy,
          childViewModels: SingleMessageChildViewModels,
          internetStatusProvider: InternetConnectionStatusProvider,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
@@ -82,6 +83,7 @@ class SingleMessageViewModel {
         )
         self.contentViewModel = SingleMessageContentViewModel(
             context: contentContext,
+            imageProxy: imageProxy,
             childViewModels: childViewModels,
             user: user,
             internetStatusProvider: internetStatusProvider,
@@ -182,8 +184,7 @@ class SingleMessageViewModel {
     }
 
     private func reportPhishing(_ completion: @escaping () -> Void) {
-        let displayMode = contentViewModel.messageInfoProvider.displayMode
-        let messageBody = contentViewModel.messageInfoProvider.bodyParts?.body(for: displayMode)
+        let messageBody = contentViewModel.messageInfoProvider.bodyParts?.originalBody
         self.user.reportService.reportPhishing(messageID: message.messageID,
                                                messageBody: messageBody ?? LocalString._error_no_object) { _ in
             self.messageService.move(messages: [self.message],

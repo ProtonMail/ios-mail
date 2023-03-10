@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,10 +17,16 @@
 
 import Foundation
 
-// sourcery: mock
-protocol ImageProxyDelegate: AnyObject {
-    func imageProxy(
-        _ imageProxy: ImageProxy,
-        output: ImageProxyOutput
-    )
+enum MessageDisplayMode {
+    case collapsed // Only latest message, without previous response
+    case expanded // Full body
+
+    mutating func toggle() {
+        switch self {
+        case .collapsed:
+            self = .expanded
+        case .expanded:
+            self = .collapsed
+        }
+    }
 }
