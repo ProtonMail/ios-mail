@@ -1,7 +1,7 @@
 //
-//  UnauthSessionFeatureFlag.swift
-//  Pods - Created on 08.12.22.
-//  
+//  ExternalAccountFeatureFlag.swift
+//  ProtonCore-LoginUI - Created on 29.11.22.
+//
 //  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
@@ -17,11 +17,8 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonCore. If not, see https://www.gnu.org/licenses/.
-//
+//  along with ProtonCore. If not, see <https://www.gnu.org/licenses/>.
 
 extension Feature {
-    public static var unauthSession = Feature(name: "core.unauthSession", isEnable: false)
-
-    public static var enforceUnauthSessionStrictVerificationOnBackend = Feature(name: "core.enforceUnauthSessionStrictVerificationOnBackend", isEnable: false)
+    public static var observability = Feature(name: "observability", isEnable: false)
 }

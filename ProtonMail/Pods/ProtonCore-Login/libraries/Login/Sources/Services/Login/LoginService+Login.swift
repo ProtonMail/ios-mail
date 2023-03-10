@@ -107,7 +107,15 @@ extension LoginService {
     }
 
     public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
+        manager.getUserInfo { result in
+            switch result {
+            case .success(let user):
+                self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
+            case .failure(let error):
+                PMLog.debug("Fetching user info with \(error)")
+                completion(.failure(error.asLoginError()))
+            }
+        }
     }
 
     public func logout(credential: AuthCredential? = nil, completion: @escaping (Result<Void, Error>) -> Void) {

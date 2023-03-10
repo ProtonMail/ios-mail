@@ -55,18 +55,9 @@ class SignInManager: Service {
         return mailboxPassword
     }
 
-    func saveLoginData(loginData: LoginData) -> LoginDataSavingResult {
-        let userInfo: UserInfo
-        let auth: AuthCredential
-        switch loginData {
-        case .userData(let userData):
-            auth = userData.credential
-            userInfo = userData.toUserInfo
-        case .credential(let credential):
-            assertionFailure("Signin was misconfigured — you should always get full user data. Check minimumAccountType parameter value in LoginAndSignup initializer")
-            auth = AuthCredential(credential)
-            userInfo = .init(response: [:])
-        }
+    func saveLoginData(loginData userData: LoginData) -> LoginDataSavingResult {
+        let userInfo = userData.toUserInfo
+        let auth = userData.credential
 
         if self.usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
             return .errorOccurred
@@ -95,22 +86,13 @@ class SignInManager: Service {
         return .success
     }
 
-    func finalizeSignIn(loginData: LoginData,
+    func finalizeSignIn(loginData userData: LoginData,
                         onError: @escaping (NSError) -> Void,
                         showSkeleton: () -> Void,
                         tryUnlock: @escaping () -> Void)
     {
-        let userInfo: UserInfo
-        let auth: AuthCredential
-        switch loginData {
-        case .userData(let userData):
-            auth = userData.credential
-            userInfo = userData.toUserInfo
-        case .credential(let credential):
-            assertionFailure("Signin was misconfigured — you should always get full user data. Check minimumAccountType parameter value in LoginAndSignup initializer")
-            auth = AuthCredential(credential)
-            userInfo = .init(response: [:])
-        }
+        let auth = userData.credential
+        let userInfo = userData.toUserInfo
 
         guard let user = usersManager.getUser(by: auth.sessionID),
               let activeUser = usersManager.firstUser else {

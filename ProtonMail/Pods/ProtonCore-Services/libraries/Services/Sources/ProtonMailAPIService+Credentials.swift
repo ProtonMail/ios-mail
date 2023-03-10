@@ -31,16 +31,20 @@ import ProtonCore_Utilities
 
 extension PMAPIService {
     
+    static var noAuthDelegateError: NSError { .protonMailError(0, localizedDescription: "AuthDelegate is required") }
+
+    static var emptyTokenError: NSError { .protonMailError(0, localizedDescription: "Empty token") }
+
     enum AuthCredentialFetchingResult: Equatable {
         case found(credentials: AuthCredential)
         case notFound
         case wrongConfigurationNoDelegate
-        
+
         var toNSError: NSError? {
             switch self {
             case .found: return nil
-            case .notFound: return NSError.protonMailError(0, localizedDescription: "Empty token")  // TODO: translations
-            case .wrongConfigurationNoDelegate: return NSError.protonMailError(0, localizedDescription: "AuthDelegate is required") // TODO: translations
+            case .notFound: return emptyTokenError
+            case .wrongConfigurationNoDelegate: return noAuthDelegateError
             }
         }
     }
@@ -77,17 +81,32 @@ extension PMAPIService {
         }
     }
 
-    enum SessionAcquisitionResult {
-        case acquired(AuthCredential)
-        case acquiringError(ResponseError)
-        case wrongConfigurationNoDelegate(NSError)
+    enum FetchingExistingOrAcquiringNewUnauthCredentialsResult {
+        case foundExisting(AuthCredential)
+        case triedAcquiringNew(SessionAcquisitionResult)
     }
 
-    func acquireSession(deviceFingerprints: ChallengeProperties, completion: @escaping (SessionAcquisitionResult) -> Void) {
+    func fetchExistingCredentialsOrAcquireNewUnauthCredentials(deviceFingerprints: ChallengeProperties,
+                                                               completion: @escaping (FetchingExistingOrAcquiringNewUnauthCredentialsResult) -> Void) {
         performSeriallyInAuthCredentialQueue { continuation in
-            self.acquireSessionWithoutSynchronization(deviceFingerprints: deviceFingerprints,
-                                                      continuation: continuation,
-                                                      completion: completion)
+            self.fetchAuthCredentialsWithoutSynchronization(
+                continuation: { /* we explicitely keep the queue locked because the continuation will be called in completion block  */ },
+                completion: { (fetchingResult: AuthCredentialFetchingResult) in
+                    switch fetchingResult {
+                    case .found(let credentials):
+                        self.finalize(result: .foundExisting(credentials),
+                                      continuation: continuation, completion: completion)
+                    case .wrongConfigurationNoDelegate:
+                        self.finalize(result: .triedAcquiringNew(.wrongConfigurationNoDelegate(PMAPIService.noAuthDelegateError)),
+                                      continuation: continuation, completion: completion)
+                    case .notFound:
+                        self.acquireSessionWithoutSynchronization(
+                            deviceFingerprints: deviceFingerprints,
+                            continuation: continuation,
+                            completion: { completion(.triedAcquiringNew($0)) })
+                    }
+                }
+            )
         }
     }
     
@@ -271,6 +290,12 @@ extension PMAPIService {
             continuation()
             completion(.refreshingError(underlyingError: error))
         }
+    }
+
+    enum SessionAcquisitionResult {
+        case acquired(AuthCredential)
+        case acquiringError(ResponseError)
+        case wrongConfigurationNoDelegate(NSError)
     }
 
     private func acquireSessionWithoutSynchronization(deviceFingerprints: ChallengeProperties,

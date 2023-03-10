@@ -24,18 +24,22 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class DefaultPlanRequest: BaseApiRequest<DefaultPlanResponse> {
+public final class DefaultPlanRequest: BaseApiRequest<DefaultPlanResponse> {
 
-    override var path: String { super.path + "/v4/plans/default" }
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+    
+    override public var path: String { super.path + "/v4/plans/default" }
 
-    override var isAuth: Bool { false }
+    override public var isAuth: Bool { false }
 }
 
-final class DefaultPlanResponse: Response {
+public final class DefaultPlanResponse: Response {
 
     private(set) var defaultServicePlanDetails: Plan?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         guard let plansResponse = response["Plans"] else { return false }
         let (result, details) = decodeResponse(plansResponse, to: Plan.self, errorToReturn: .defaultPlanDecode)

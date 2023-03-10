@@ -43,7 +43,7 @@ public struct CreateAddressData {
 }
 
 public enum LoginStatus {
-    case finished(LoginData)
+    case finished(UserData)
     case ask2FA
     case askSecondPassword
     case chooseInternalUsernameAndCreateInternalAddress(CreateAddressData)
