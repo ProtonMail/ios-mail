@@ -24,7 +24,7 @@ import XCTest
 class BackendConfigurationCacheTests: XCTestCase {
     private var sut: BackendConfigurationCache!
     private var mockUserDefaults: UserDefaults!
-    private let customUrl = "example.com"
+    private let customDomain = "example.com"
 
     override func setUp() {
         super.setUp()
@@ -50,11 +50,11 @@ class BackendConfigurationCacheTests: XCTestCase {
 
     func testReadEnvironment_whenCustomEnvInUserDefults_returnsThCustomEnv() {
         mockUserDefaults.set("custom", forKey: "environment")
-        mockUserDefaults.set(customUrl, forKey: "environmentCustomDomain")
-        XCTAssert(sut.readEnvironment() == .custom(customUrl))
+        mockUserDefaults.set(customDomain, forKey: "environmentCustomDomain")
+        XCTAssert(sut.readEnvironment() == .custom(customDomain))
     }
 
-    func testReadEnvironment_whenCustomEnvInUserDefults_butNoCustomUrl_returnsNil() {
+    func testReadEnvironment_whenCustomEnvInUserDefults_butNoCustomDomain_returnsNil() {
         mockUserDefaults.set("custom", forKey: "environment")
         XCTAssert(sut.readEnvironment() == nil)
     }
@@ -65,8 +65,8 @@ class BackendConfigurationCacheTests: XCTestCase {
     }
 
     func testWriteEnvironment_whenCustomEnvIsUsed_writesInUserDefaults() {
-        sut.write(environment: .custom(customUrl))
+        sut.write(environment: .custom(customDomain))
         XCTAssert(mockUserDefaults.string(forKey: "environment") == "custom")
-        XCTAssert(mockUserDefaults.string(forKey: "environmentCustomDomain") == customUrl)
+        XCTAssert(mockUserDefaults.string(forKey: "environmentCustomDomain") == customDomain)
     }
 }
