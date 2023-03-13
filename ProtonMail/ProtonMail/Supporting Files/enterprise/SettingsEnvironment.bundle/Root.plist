@@ -14,7 +14,7 @@
 			<key>Title</key>
 			<string>Environment</string>
 			<key>FooterText</key>
-			<string>You need to set the predefined environment to custom besides providing a custom url</string>
+			<string>You need to set the predefined environment to custom besides providing a custom domain</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -42,9 +42,9 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Custom URL</string>
+			<string>Custom Domain</string>
 			<key>Key</key>
-			<string>environmentCustomUrl</string>
+			<string>environmentCustomDomain</string>
 			<key>DefaultValue</key>
 			<string></string>
 			<key>IsSecure</key>
