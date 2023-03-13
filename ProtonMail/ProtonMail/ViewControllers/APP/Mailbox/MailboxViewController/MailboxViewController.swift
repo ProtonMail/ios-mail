@@ -787,7 +787,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        if let type = undoActionType {
+        if var type = undoActionType {
+            switch type {
+            case .custom(Message.Location.archive.labelID):
+                type = .archive
+            case .custom(Message.Location.trash.labelID):
+                type = .trash
+            case .custom(Message.Location.spam.labelID):
+                type = .spam
+            default:
+                break
+            }
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         } else {
             let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
@@ -2551,43 +2561,15 @@ extension MailboxViewController {
 }
 
 extension MailboxViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        viewModel.user.undoActionManager
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }
 
     var composerPresentingVC: UIViewController? {
         self
-    }
-
-    func showUndoAction(undoTokens: [String], title: String) {
-        DispatchQueue.main.async {
-            let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-            banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
-                self?.viewModel.user.undoActionManager.requestUndoAction(undoTokens: undoTokens) { [weak self] isSuccess in
-                    DispatchQueue.main.async {
-                        if isSuccess {
-                            self?.showActionRevertedBanner()
-                        }
-                    }
-                }
-                banner.dismiss(animated: false)
-            }
-            banner.show(at: .bottom, on: self)
-            // Dismiss other banner after the undo banner is shown
-            delay(0.25) { [weak self] in
-                self?.view.subviews
-                    .compactMap { $0 as? PMBanner }
-                    .filter { $0 != banner }
-                    .forEach({ $0.dismiss(animated: false) })
-            }
-        }
-    }
-
-    func showActionRevertedBanner() {
-        let banner = PMBanner(message: LocalString._inbox_action_reverted_title,
-                              style: PMBannerNewStyle.info,
-                              dismissDuration: 1,
-                              bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
     }
 }

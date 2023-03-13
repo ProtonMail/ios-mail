@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import UIKit
+import Foundation
 
-class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
-    var undoActionManager: ProtonMail.UndoActionManagerProtocol?
-
-    var isShowUndoActionCalled = false
-    var undoTokens = [String]()
-    var bannerMessage: String?
-    var delaySendSeconds: Int = 0
-
-    var composerPresentingVC: UIViewController? { self }
-
-    func showUndoAction(undoTokens: [String], title: String) {
-        isShowUndoActionCalled = true
-        self.undoTokens = undoTokens
-        self.bannerMessage = title
+extension KeyedDecodingContainer {
+    func decodeIfPresentBoolOrIntToBool(forKey key: KeyedDecodingContainer<K>.Key, defaultValue: Bool) -> Bool {
+        do {
+            if let value = try? decodeIfPresent(Bool.self, forKey: key) {
+                return value
+            }
+            guard let value = try decodeIfPresent(Int.self, forKey: key) else {
+                return defaultValue
+            }
+            return value > 0
+        } catch {
+            return defaultValue
+        }
     }
 }

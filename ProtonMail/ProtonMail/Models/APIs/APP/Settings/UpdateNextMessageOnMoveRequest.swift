@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import UIKit
+import ProtonCore_Networking
 
-class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
-    var undoActionManager: ProtonMail.UndoActionManagerProtocol?
+final class UpdateNextMessageOnMoveRequest: Request {
+    let isEnable: Bool
 
-    var isShowUndoActionCalled = false
-    var undoTokens = [String]()
-    var bannerMessage: String?
-    var delaySendSeconds: Int = 0
+    init(isEnable: Bool) {
+        self.isEnable = isEnable
+    }
 
-    var composerPresentingVC: UIViewController? { self }
+    var method: HTTPMethod {
+        return .put
+    }
 
-    func showUndoAction(undoTokens: [String], title: String) {
-        isShowUndoActionCalled = true
-        self.undoTokens = undoTokens
-        self.bannerMessage = title
+    var path: String {
+        return SettingsAPI.path + "/next-message-on-move"
+    }
+
+    var parameters: [String: Any]? {
+        let rawValue = isEnable == true ? 1 : 0
+        return ["NextMessageOnMove": rawValue]
     }
 }

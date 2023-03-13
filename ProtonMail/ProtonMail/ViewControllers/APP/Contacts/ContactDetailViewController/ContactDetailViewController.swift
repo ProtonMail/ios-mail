@@ -694,6 +694,10 @@ extension ContactDetailViewController: UITableViewDelegate {
 }
 
 extension ContactDetailViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

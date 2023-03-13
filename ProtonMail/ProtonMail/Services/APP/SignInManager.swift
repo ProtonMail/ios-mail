@@ -77,7 +77,7 @@ class SignInManager: Service {
             userCachedStatus.markSpotlight(for: feature, asSeen: true, byUserWith: UserID(userInfo.userId))
         }
 
-        self.usersManager.add(auth: auth, user: userInfo)
+        self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
 
         self.usersManager.loggedIn()
         self.usersManager.active(by: auth.sessionID)
@@ -103,14 +103,20 @@ class SignInManager: Service {
         showSkeleton()
 
         let userDataService = user.userService
-        userDataService.fetchSettings(userInfo: userInfo, auth: auth).done(on: .main) { [weak self] userInfo in
+        userDataService.fetchSettings(
+            userInfo: userInfo,
+            auth: auth
+        ).done(on: .main) { [weak self] result in
             guard let self = self else { return }
+            let userInfo = result.0
+            let mailSettings = result.1
             self.updateSwipeAction.execute(
                 activeUserInfo: activeUser.userInfo,
                 newUserInfo: user.userInfo,
                 newUserApiService: user.apiService
             ) { [weak self] in
                 guard let self = self else { return }
+                user.mailSettings = mailSettings
                 self.usersManager.update(userInfo: userInfo, for: auth.sessionID)
 
                 guard userInfo.delinquentParsed.isAvailable else {

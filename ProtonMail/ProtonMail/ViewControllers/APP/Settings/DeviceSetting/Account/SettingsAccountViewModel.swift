@@ -99,6 +99,7 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case labels
     case folders
     case storage
+    case nextMsgAfterMove
 
     var description: String {
         switch self {
@@ -118,6 +119,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._folders
         case .storage:
             return LocalString._local_storage_limit
+        case .nextMsgAfterMove:
+            return L11n.NextMsgAfterMove.settingTitle
         }
     }
 }
@@ -169,7 +172,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     init(user: UserManager) {
         self.userManager = user
 
-        var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
+        var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders, .nextMsgAfterMove]
         if UserInfo.isEncryptedSearchEnabled {
             mailboxItems.insert(contentsOf: [.searchContent, .localStorage], at: 2)
         }

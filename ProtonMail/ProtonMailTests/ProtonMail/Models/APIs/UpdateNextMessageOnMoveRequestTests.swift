@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,21 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import UIKit
+import XCTest
 
-class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
-    var undoActionManager: ProtonMail.UndoActionManagerProtocol?
+final class UpdateNextMessageOnMoveRequestTests: XCTestCase {
+    func testInit() throws {
+        let value = Bool.random()
+        let sut = UpdateNextMessageOnMoveRequest(isEnable: value)
 
-    var isShowUndoActionCalled = false
-    var undoTokens = [String]()
-    var bannerMessage: String?
-    var delaySendSeconds: Int = 0
+        XCTAssertEqual(sut.method, .put)
+        XCTAssertEqual(sut.path, "/mail/v4/settings/next-message-on-move")
 
-    var composerPresentingVC: UIViewController? { self }
-
-    func showUndoAction(undoTokens: [String], title: String) {
-        isShowUndoActionCalled = true
-        self.undoTokens = undoTokens
-        self.bannerMessage = title
+        let parameter = try XCTUnwrap(sut.parameters?["NextMessageOnMove"] as? Int)
+        XCTAssertEqual(parameter, value == true ? 1 : 0)
     }
 }

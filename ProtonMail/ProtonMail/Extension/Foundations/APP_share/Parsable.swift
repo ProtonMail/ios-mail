@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import UIKit
+import Foundation
 
-class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
-    var undoActionManager: ProtonMail.UndoActionManagerProtocol?
+protocol Parsable: Codable {
+    init(dict: [String: Any]) throws
+}
 
-    var isShowUndoActionCalled = false
-    var undoTokens = [String]()
-    var bannerMessage: String?
-    var delaySendSeconds: Int = 0
-
-    var composerPresentingVC: UIViewController? { self }
-
-    func showUndoAction(undoTokens: [String], title: String) {
-        isShowUndoActionCalled = true
-        self.undoTokens = undoTokens
-        self.bannerMessage = title
+extension Parsable {
+    init(dict: [String: Any]) throws {
+        let jsonData = try JSONSerialization.data(withJSONObject: dict, options: [])
+        let decoder = JSONDecoder()
+        self = try decoder.decode(Self.self, from: jsonData)
     }
 }

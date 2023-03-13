@@ -854,6 +854,10 @@ struct LocalizationList {
         "L11n.EncryptedSearch.download_paused_low_storage_advice": L11n.EncryptedSearch.download_paused_low_storage_advice,
         // L11n.Settings
         "L11n.Settings.passwordUpdated": L11n.Settings.passwordUpdated,
+        // L11n.NextMsgAfterMove
+        "L11n.NextMsgAfterMove.settingTitle": L11n.NextMsgAfterMove.settingTitle,
+        "L11n.NextMsgAfterMove.rowTitle": L11n.NextMsgAfterMove.rowTitle,
+        "L11n.NextMsgAfterMove.rowFooterTitle": L11n.NextMsgAfterMove.rowFooterTitle,
         // L11n.Error
         "L11n.Error.cant_open_message": L11n.Error.cant_open_message,
         // L11n.ActionSheetActionTitle

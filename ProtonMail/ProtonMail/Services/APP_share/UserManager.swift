@@ -298,16 +298,20 @@ class UserManager: Service {
         return userInfo.telemetry == 1
     }
 
+    var mailSettings: MailSettings
+
     init(
         api: APIService,
         userInfo: UserInfo,
         authCredential: AuthCredential,
+        mailSettings: MailSettings?,
         parent: UsersManager?,
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         self.userInfo = userInfo
         self.apiService = api
         self.authCredential = authCredential
+        self.mailSettings = mailSettings ?? .init()
         self.appTelemetry = appTelemetry
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
@@ -325,6 +329,7 @@ class UserManager: Service {
         api: APIService,
         role: UserInfo.OrganizationRole,
         userInfo: UserInfo = UserInfo.getDefault(),
+        mailSettings: MailSettings = .init(),
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
@@ -335,6 +340,7 @@ class UserManager: Service {
         self.apiService = api
         self.appTelemetry = appTelemetry
         self.authCredential = AuthCredential.none
+        self.mailSettings = mailSettings
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
@@ -356,9 +362,10 @@ class UserManager: Service {
 
     func fetchUserInfo() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
-        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] info in
-            guard let info = info else { return }
+        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] tuple in
+            guard let info = tuple.0 else { return }
             self?.userInfo = info
+            self?.mailSettings = tuple.1
             self?.save()
             #if !APP_EXTENSION
             guard let self = self,
@@ -506,9 +513,13 @@ extension UserManager: UserDataSource {
             self.save()
         }
     }
+
     func updateFromEvents(mailSettingsRes: [String: Any]?) {
         if let settings = mailSettingsRes {
             userInfo.parse(mailSettings: settings)
+            if let mailSettings = try? MailSettings(dict: settings) {
+                self.mailSettings = mailSettings
+            }
             self.save()
         }
     }

@@ -188,7 +188,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    func migrateLagcy() {
+    func migrateLegacy() {
         guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
             case let locked = Locked<String>(encryptedValue: cypherData),
