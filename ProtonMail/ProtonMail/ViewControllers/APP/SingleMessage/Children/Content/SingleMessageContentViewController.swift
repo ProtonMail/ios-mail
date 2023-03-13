@@ -393,6 +393,8 @@ class SingleMessageContentViewController: UIViewController {
         switch action {
         case .addToContacts:
             navigationAction(.contacts(contact: context.contact))
+        case .blockSender:
+            blockSenderTapped()
         case .composeTo:
             guard !self.viewModel.user.isStorageExceeded else {
                 LocalString._storage_exceeded.alertToastBottom(view: self.view)
@@ -406,6 +408,11 @@ class SingleMessageContentViewController: UIViewController {
         case .close:
             break
         }
+    }
+
+    private func blockSenderTapped() {
+        // TODO: Add a confirmation alert: https://jira.protontech.ch/browse/MAILIOS-3191
+        viewModel.blockSender()
     }
 
     @objc

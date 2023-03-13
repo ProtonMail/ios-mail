@@ -1436,6 +1436,11 @@ class LocalizedString {
 }
 
 enum L11n {
+    struct BlockSender {
+        static let blockActionItem = NSLocalizedString("Block sender", comment: "Action sheet item to block a sender")
+        static let blockListTitle = NSLocalizedString("Block list", comment: "Title of the blocked sender list screen")
+    }
+
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
         static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")

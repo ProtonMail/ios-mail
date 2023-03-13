@@ -71,4 +71,12 @@ extension UserInfo {
 //        #endif
         return false // uncomment code above when the feature is functional
     }
+
+    static var isBlockSenderEnabled: Bool {
+#if DEBUG_ENTERPRISE
+        true
+#else
+        false
+#endif
+    }
 }

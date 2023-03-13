@@ -86,22 +86,12 @@ class ConversationMessageViewModel {
             message: message,
             viewMode: .conversation
         )
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: sharedServices.get(by: QueueManager.self),
-                apiService: user.apiService,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                messageDataAction: user.messageService,
-                cacheService: user.cacheService
-            )
-        )
-        let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
+
         return messageContentViewModelFactory.createViewModel(
             context: context,
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: userCachedStatus,
-            dependencies: dependencies,
             shouldOpenHistory: shouldOpenHistory,
             goToDraft: goToDraft
         )

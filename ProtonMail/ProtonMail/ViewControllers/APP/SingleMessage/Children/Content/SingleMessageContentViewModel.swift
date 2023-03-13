@@ -197,6 +197,13 @@ class SingleMessageContentViewModel {
         }
     }
 
+    func blockSender() {
+        dependencies.blockSenderService.block(emailAddress: messageInfoProvider.senderEmail) { error in
+            // TODO: handle API call result: https://jira.protontech.ch/browse/MAILIOS-3191
+            print(error.map { "\($0)" } ?? "Blocked")
+        }
+    }
+
     func deleteExpiredMessages() {
         messageService.deleteExpiredMessage(completion: nil)
     }
@@ -342,6 +349,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 
 extension SingleMessageContentViewModel {
     struct Dependencies {
+        let blockSenderService: BlockSenderService
         let fetchMessageDetail: FetchMessageDetailUseCase
     }
 }
