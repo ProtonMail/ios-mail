@@ -30,7 +30,6 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
-        dependencies: SingleMessageContentViewModel.Dependencies,
         shouldOpenHistory: Bool,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
@@ -48,7 +47,7 @@ class SingleMessageContentViewModelFactory {
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
                      shouldOpenHistory: shouldOpenHistory,
-                     dependencies: dependencies,
+                     dependencies: components.contentViewModelDependencies(user: user),
                      goToDraft: goToDraft)
     }
 
@@ -72,16 +71,7 @@ class SingleMessageViewModelFactory {
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: sharedServices.get(by: QueueManager.self),
-                apiService: user.apiService,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                messageDataAction: user.messageService,
-                cacheService: user.cacheService
-            )
-        )
-        let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
+
         return .init(
             labelId: labelId,
             message: message,
@@ -97,7 +87,7 @@ class SingleMessageViewModelFactory {
             systemUpTime: systemUpTime,
             coordinator: coordinator,
             nextMessageAfterMoveStatusProvider: user,
-            dependencies: dependencies,
+            dependencies: components.contentViewModelDependencies(user: user),
             goToDraft: goToDraft
         )
     }
@@ -105,6 +95,24 @@ class SingleMessageViewModelFactory {
 }
 
 class SingleMessageComponentsFactory {
+    func contentViewModelDependencies(user: UserManager) -> SingleMessageContentViewModel.Dependencies {
+        let blockSenderService = BlockSenderService(apiService: user.apiService)
+
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: sharedServices.get(by: QueueManager.self),
+                apiService: user.apiService,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
+
+        return .init(
+            blockSenderService: blockSenderService,
+            fetchMessageDetail: fetchMessageDetail
+        )
+    }
 
     func messageBody(spamType: SpamType?, user: UserManager) -> NewMessageBodyViewModel {
         return .init(

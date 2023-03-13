@@ -54,6 +54,9 @@ class DeviceCapacityTests: XCTestCase {
 
         let reductionInFreeSpace = freeSpaceBeforeWrite - freeSpaceAfterWrite
         // Either of this assertions fails on some systems
-        XCTAssert(reductionInFreeSpace == testData.count || reductionInFreeSpace == 4096)
+        guard [testData.count, 4096].contains(reductionInFreeSpace) else {
+            XCTFail("Unexpected value: \(reductionInFreeSpace)")
+            return
+        }
     }
 }
