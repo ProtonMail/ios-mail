@@ -24,6 +24,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
+    var senderImageStatusProviderMock: MockSenderImageStatusProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
 
@@ -32,12 +33,14 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         scheduleSendEnableStatusMock = .init()
         userIntroductionProgressProviderMock = .init()
+        senderImageStatusProviderMock = .init()
         sut = FeatureFlagsDownloadService(
             userID: userID,
             apiService: apiServiceMock,
             sessionID: "",
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
-            userIntroductionProgressProvider: userIntroductionProgressProviderMock
+            userIntroductionProgressProvider: userIntroductionProgressProviderMock,
+            senderImageEnableStatusProvider: senderImageStatusProviderMock
         )
     }
 
@@ -46,6 +49,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = nil
         scheduleSendEnableStatusMock = nil
         userIntroductionProgressProviderMock = nil
+        senderImageStatusProviderMock = nil
         sut = nil
     }
 
@@ -89,6 +93,13 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         let argument = try XCTUnwrap(scheduleSendEnableStatusMock.callSetScheduleSendStatus.lastArguments)
         XCTAssertTrue(argument.a1)
         XCTAssertEqual(argument.a2, userID)
+
+        XCTAssertTrue(senderImageStatusProviderMock.setIsSenderImageEnableStub.wasCalledExactlyOnce)
+        let argument2 = try XCTUnwrap(
+            senderImageStatusProviderMock.setIsSenderImageEnableStub.lastArguments
+        )
+        XCTAssertTrue(argument2.a1)
+        XCTAssertEqual(argument2.a2, userID)
     }
 
     func testFetchingFlagsIn5mins_receiveFetchingTooOften() {

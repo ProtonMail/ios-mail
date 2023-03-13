@@ -42,11 +42,6 @@ extension UserCachedStatus: ScheduleSendEnableStatusProvider {
     }
 
     func setScheduleSendStatus(enable: Bool, userID: UserID) {
-        var dictionaryToUpdate: [String: Bool] = [:]
-        if let dict = getShared().object(forKey: Key.isScheduleSendEnabled) as? [String: Bool] {
-            dictionaryToUpdate = dict
-        }
-        dictionaryToUpdate[userID.rawValue] = enable
-        getShared().setValue(dictionaryToUpdate, forKey: Key.isScheduleSendEnabled)
+        setValueOf(userID: userID, value: enable, key: Key.isScheduleSendEnabled)
     }
 }
