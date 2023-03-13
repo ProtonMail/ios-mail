@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-UIFoundations",
-  "version": "3.28.1",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.28.1"
+    "git": null,
+    "tag": "3.28.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,16 +34,16 @@
   ],
   "dependencies": {
     "ProtonCore-Log": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-CoreTranslation": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-Foundations": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-Utilities": [
-      "3.28.1"
+      "3.28.2"
     ]
   },
   "ios": {
@@ -83,7 +83,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/UIFoundations/Tests/**/*"

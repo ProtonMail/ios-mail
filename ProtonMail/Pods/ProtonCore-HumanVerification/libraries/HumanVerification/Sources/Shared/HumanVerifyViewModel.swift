@@ -27,6 +27,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import ProtonCore_CoreTranslation
+import ProtonCore_Observability
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
     private weak var otherHandler: OtherHandler?
@@ -148,6 +149,7 @@ class HumanVerifyViewModel {
             finalToken(method: method, token: messageSuccess.payload.token) { res, responseError, verificationCodeBlockFinish in
                 // if for some reason verification code is not accepted by the BE, send errorHandler to relaunch HV UI once again
                 if res {
+                    ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .successful))
                     verificationCodeBlockFinish?()
                 } else if let responseError = responseError {
                     errorHandler?(responseError, true)

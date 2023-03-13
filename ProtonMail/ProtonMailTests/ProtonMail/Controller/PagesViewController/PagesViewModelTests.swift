@@ -51,6 +51,7 @@ final class PagesViewModelTests: XCTestCase {
             api: apiServiceMock,
             userInfo: userInfo,
             authCredential: auth,
+            mailSettings: nil,
             parent: nil,
             appTelemetry: MailAppTelemetry()
         )

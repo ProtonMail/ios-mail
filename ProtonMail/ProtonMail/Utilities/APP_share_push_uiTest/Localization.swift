@@ -1436,6 +1436,11 @@ class LocalizedString {
 }
 
 enum L11n {
+    struct BlockSender {
+        static let blockActionItem = NSLocalizedString("Block sender", comment: "Action sheet item to block a sender")
+        static let blockListTitle = NSLocalizedString("Block list", comment: "Title of the blocked sender list screen")
+    }
+
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
         static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")
@@ -1558,6 +1563,12 @@ enum L11n {
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
     }
+
+    struct NextMsgAfterMove {
+        static let settingTitle = NSLocalizedString("Next message after move", comment: "The title of the setting of the next msg after move")
+        static let rowTitle = NSLocalizedString("Navigate to next message after move", comment: "The title of the row inside the setting page of next msg after move function.")
+        static let rowFooterTitle = NSLocalizedString("Performing a move action on a message (e.g. archive) will navigate to the next message.", comment: "The footer title of the setting row of the next msg after move functions.")
+	}
 
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")

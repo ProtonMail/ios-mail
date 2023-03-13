@@ -36,9 +36,8 @@ protocol CacheServiceProtocol: Service {
         labelID: LabelID,
         isUnread: Bool,
         response: [String: Any],
-        idsOfMessagesBeingSent: [String],
-        completion: @escaping (Error?) -> Void
-    )
+        idsOfMessagesBeingSent: [String]
+    ) throws
     func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
     func updateExpirationOffset(of message: Message,
                                 expirationTime: TimeInterval,
@@ -433,11 +432,9 @@ extension CacheService {
         labelID: LabelID,
         isUnread: Bool,
         response: [String: Any],
-        idsOfMessagesBeingSent: [String],
-        completion: @escaping (Error?) -> Void) {
+        idsOfMessagesBeingSent: [String]) throws {
         guard var messagesArray = response["Messages"] as? [[String: Any]] else {
-            completion(NSError.unableToParseResponse(response))
-            return
+            throw NSError.unableToParseResponse(response)
         }
 
         for (index, _) in messagesArray.enumerated() {
@@ -456,7 +453,9 @@ extension CacheService {
             }
         }
 
-        coreDataService.performOnRootSavingContext { context in
+        var result: Result<(Date, Date)?, Error>!
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                     for msg in messages {
@@ -466,22 +465,36 @@ extension CacheService {
                     _ = context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
-                        self.lastUpdatedStore.updateLastUpdatedTime(
-                            labelID: labelID,
-                            isUnread: isUnread,
-                            startTime: firstMsg.time ?? Date(),
-                            endTime: lastMsg.time ?? Date(),
-                            msgCount: messagesCount,
-                            userID: self.userID,
-                            type: .singleMessage
-                        )
+                        result = .success((firstMsg.time ?? Date(), lastMsg.time ?? Date()))
+                    } else {
+                        result = .success(nil)
                     }
+                } else {
+                    result = .success(nil)
                 }
-                completion(nil)
             } catch {
-                completion(error)
+                result = .failure(error)
             }
         }
+
+            switch result {
+            case let .success(.some((startTime, endTime))):
+                self.lastUpdatedStore.updateLastUpdatedTime(
+                    labelID: labelID,
+                    isUnread: isUnread,
+                    startTime: startTime,
+                    endTime: endTime,
+                    msgCount: messagesCount,
+                    userID: self.userID,
+                    type: .singleMessage
+                )
+            case .success(.none):
+                break
+            case .failure(let error):
+                throw error
+            case .none:
+                fatalError("result should have been set by now!")
+            }
     }
 }
 

@@ -29,45 +29,28 @@ public enum AccountType {
     case username
 }
 
-public enum LoginData {
-    case credential(Credential)
-    case userData(UserData)
-}
+public typealias LoginData = UserData
 
-public extension LoginData {
+public extension UserData {
 
-    var credential: Credential {
-        switch self {
-        case .userData(let userData): return Credential(userData.credential, scopes: userData.scopes)
-        case .credential(let credential): return credential
-        }
+    var getCredential: Credential { Credential(credential, scopes: scopes) }
+
+    func updated(credential: Credential) -> UserData {
+        UserData(credential: self.credential.updatedKeepingKeyAndPasswordDataIntact(credential: credential),
+                 user: user,
+                 salts: salts,
+                 passphrases: passphrases,
+                 addresses: addresses,
+                 scopes: credential.scopes)
     }
 
-    func updated(credential: Credential) -> LoginData {
-        switch self {
-        case .credential:
-            return .credential(credential)
-        case .userData(let userData):
-            return .userData(UserData(credential: userData.credential.updatedKeepingKeyAndPasswordDataIntact(credential: credential),
-                                      user: userData.user,
-                                      salts: userData.salts,
-                                      passphrases: userData.passphrases,
-                                      addresses: userData.addresses,
-                                      scopes: credential.scopes))
-        }
-    }
-
-    func updated(user: User) -> LoginData {
-        switch self {
-        case .credential: return self
-        case .userData(let userData):
-            return .userData(UserData(credential: userData.credential,
-                                      user: user,
-                                      salts: userData.salts,
-                                      passphrases: userData.passphrases,
-                                      addresses: userData.addresses,
-                                      scopes: userData.scopes))
-        }
+    func updated(user: User) -> UserData {
+        UserData(credential: credential,
+                 user: user,
+                 salts: salts,
+                 passphrases: passphrases,
+                 addresses: addresses,
+                 scopes: scopes)
     }
 }
 

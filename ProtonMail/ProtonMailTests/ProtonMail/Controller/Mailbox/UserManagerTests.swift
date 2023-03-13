@@ -46,6 +46,7 @@ class UserManagerTests: XCTestCase {
             api: apiServiceMock,
             userInfo: userInfo,
             authCredential: fakeAuth,
+            mailSettings: nil,
             parent: nil
         )
         XCTAssertEqual(sut.userID, userID)
@@ -71,6 +72,7 @@ class UserManagerTests: XCTestCase {
             api: apiServiceMock,
             userInfo: userInfo,
             authCredential: fakeAuth,
+            mailSettings: nil,
             parent: nil,
             appTelemetry: mockAppTelemetry
         )
@@ -92,6 +94,7 @@ class UserManagerTests: XCTestCase {
             api: apiServiceMock,
             userInfo: userInfo,
             authCredential: fakeAuth,
+            mailSettings: nil,
             parent: nil,
             appTelemetry: mockAppTelemetry
         )
@@ -134,6 +137,7 @@ private extension UserManagerTests {
             api: apiServiceMock,
             userInfo: userInfo,
             authCredential: fakeAuth,
+            mailSettings: nil,
             parent: nil
         )
     }

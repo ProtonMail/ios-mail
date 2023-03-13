@@ -28,7 +28,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
     var mockUsers: UsersManager!
     var mockDoh: DohMock!
     var stubBioStatus: BioMetricStatusStub!
-    var fakeSettingsDeviceCoordinator: SettingsDeviceCoordinator!
+    var settingsDeviceCoordinatorMock: MockSettingsDeviceCoordinator!
 
     override func setUp() {
         super.setUp()
@@ -41,7 +41,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         viewModel = SettingsDeviceViewModel(user: mockUser,
                                             users: mockUsers,
                                             biometricStatus: stubBioStatus)
-        fakeSettingsDeviceCoordinator = SettingsDeviceCoordinator(
+        settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
             user: mockUser,
             usersManager: mockUsers,
@@ -49,7 +49,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         )
         sut = SettingsDeviceViewController(
             viewModel: viewModel,
-            coordinator: fakeSettingsDeviceCoordinator
+            coordinator: settingsDeviceCoordinatorMock
         )
     }
 
@@ -62,7 +62,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockApiService = nil
         mockDoh = nil
         stubBioStatus = nil
-        fakeSettingsDeviceCoordinator = nil
+        settingsDeviceCoordinatorMock = nil
     }
 
     func testAppSettings_hasCustomizeToolbarAction() throws {
@@ -74,4 +74,54 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         let cell = try XCTUnwrap(sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 6, section: 1)) as? SettingsGeneralCell)
         XCTAssertEqual(cell.leftTextValue(), LocalString._toolbar_customize_general_title)
     }
+
+    func testAppSettings_tapDarkMode_openCorrectPage() throws {
+        sut.loadViewIfNeeded()
+
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 1))
+
+        XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)
+        XCTAssertEqual(argument, .darkMode)
+    }
+
+    func testAppSettings_appPin_openCorrectPage() throws {
+        sut.loadViewIfNeeded()
+
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 1, section: 1))
+
+        XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)
+        XCTAssertEqual(argument, .autoLock)
+    }
+
+    func testAppSettings_combineContacts_openCorrectPage() throws {
+        sut.loadViewIfNeeded()
+
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 2, section: 1))
+
+        XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)
+        XCTAssertEqual(argument, .combineContact)
+    }
+
+    func testAppSettings_alternativeRouting_openCorrectPage() throws {
+        sut.loadViewIfNeeded()
+
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 4, section: 1))
+
+        XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)
+        XCTAssertEqual(argument, .alternativeRouting)
+    }
+
+    func testAppSettings_swipeAction_openCorrectPage() throws {
+        sut.loadViewIfNeeded()
+
+        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 5, section: 1))
+
+        XCTAssertTrue(settingsDeviceCoordinatorMock.callGo.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(settingsDeviceCoordinatorMock.callGo.lastArguments?.first)
+        XCTAssertEqual(argument, .swipeAction)
+    }    
 }

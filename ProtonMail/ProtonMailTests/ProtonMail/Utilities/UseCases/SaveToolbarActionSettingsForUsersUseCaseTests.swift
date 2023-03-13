@@ -25,14 +25,23 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
     var firstUserAPI: APIServiceMock!
     var firstUserID: UserID = "1"
     var firstUserInfo: UserInfo!
+    var firstUserMailSettings: MailSettings!
 
     override func setUp() {
         super.setUp()
         firstUserAPI = APIServiceMock()
         firstUserInfo = makeUserInfo(userID: firstUserID)
+        firstUserMailSettings = .init(nextMessageOnMove: false)
         sut = SaveToolbarActionSettings(
             dependencies: .init(apiService: firstUserAPI,
-                                userInfo: firstUserInfo)
+                                userInfo: firstUserInfo,
+                                mailSettingsHandler: UserManager(
+                                    api: firstUserAPI,
+                                    userInfo: firstUserInfo,
+                                    authCredential: .none,
+                                    mailSettings: nil,
+                                    parent: nil
+                                ))
         )
     }
 

@@ -54,6 +54,14 @@ enum FeatureFlagTestData {
             "DefaultValue": true,
             "Value": true,
             "Writable": true
+        },
+        {
+            "Code": "ShowSenderImages",
+            "Type": "boolean",
+            "Global": true,
+            "DefaultValue": true,
+            "Value": true,
+            "Writable": false
         }
     ],
     "Total": 14

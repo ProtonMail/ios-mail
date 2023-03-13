@@ -67,6 +67,7 @@ class BaseTestCase: XCTestCase {
             if usesBlackCredentialsFile {
                 credentialsFileName = credentialsBlackFileName
             }
+            app.launchArguments.append("-uiTests")
             app.launchEnvironment[apiDomainKey] = apiDomain!
         }
 

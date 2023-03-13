@@ -62,48 +62,43 @@ extension ConversationDataService {
 
         let request = ConversationsRequest(para)
         self.apiService.perform(request: request) { _, result in
-            switch result {
-            case .failure(let err):
-                DispatchQueue.main.async {
-                    completion?(.failure(err))
-                }
-            case .success(let responseDict):
+            do {
+                let responseDict = try result.get()
                 let response = ConversationsResponse()
                 guard response.ParseResponse(responseDict) else {
-                    let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    DispatchQueue.main.async {
-                        completion?(.failure(err))
-                    }
-                    return
+                    throw NSError.protonMailError(1000, localizedDescription: "Parsing error")
                 }
                 if shouldReset {
                     self.cleanAll()
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID)
                     self.contactCacheStatus.contactsCached = 0
                 }
                 let totalMessageCount = responseDict["Total"] as? Int ?? 0
-                self.contextProvider.performOnRootSavingContext { [weak self] context in
-                    do {
-                        guard let self = self else { return }
-                        var conversationsDict = response.conversationsDict
+                var conversationsDict = response.conversationsDict
 
-                        for index in conversationsDict.indices {
-                            conversationsDict[index]["UserID"] = self.userID.rawValue
-                            let conversationID = conversationsDict[index]["ID"]
-                            if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
-                                for index in labels.indices {
-                                    labels[index]["UserID"] = self.userID.rawValue
-                                    labels[index]["ConversationID"] = conversationID
-                                }
-                                conversationsDict[index]["Labels"] = labels
-                            }
+                for index in conversationsDict.indices {
+                    conversationsDict[index]["UserID"] = self.userID.rawValue
+                    let conversationID = conversationsDict[index]["ID"]
+                    if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
+                        for index in labels.indices {
+                            labels[index]["UserID"] = self.userID.rawValue
+                            labels[index]["ConversationID"] = conversationID
                         }
+                        conversationsDict[index]["Labels"] = labels
+                    }
+                }
 
-                        if let conversations =
-                            try GRTJSONSerialization.objects(withEntityName: Conversation.Attributes.entityName,
-                                                             fromJSONArray: conversationsDict,
-                                                             in: context) as? [Conversation] {
+                var conversationSavingResult: Result<(Date, Date?)?, Error>!
+
+                self.contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+                    guard let self = self else { return }
+
+                    do {
+                        if let conversations = try GRTJSONSerialization.objects(
+                            withEntityName: Conversation.Attributes.entityName,
+                            fromJSONArray: conversationsDict,
+                            in: context
+                        ) as? [Conversation] {
                             for conversation in conversations {
                                 if let labels = conversation.labels as? Set<ContextLabel> {
                                     for label in labels {
@@ -112,27 +107,40 @@ extension ConversationDataService {
                                 }
                                 self.modifyNumMessageIfNeeded(conversation: conversation)
                             }
-                            _ = context.saveUpstreamIfNeeded()
 
-                            if let lastConversation = conversations.last, let firstConversation = conversations.first {
-                                self.lastUpdatedStore.updateLastUpdatedTime(
-                                    labelID: labelID,
-                                    isUnread: unreadOnly,
-                                    startTime: firstConversation.getTime(labelID: labelID.rawValue) ?? Date(),
-                                    endTime: lastConversation.getTime(labelID: labelID.rawValue),
-                                    msgCount: totalMessageCount,
-                                    userID: self.userID,
-                                    type: .conversation)
+                            if let error = context.saveUpstreamIfNeeded() {
+                                throw error
+                            } else if let lastConversation = conversations.last, let firstConversation = conversations.first {
+                                let startTime = firstConversation.getTime(labelID: labelID.rawValue) ?? Date()
+                                let endTime = lastConversation.getTime(labelID: labelID.rawValue)
+                                conversationSavingResult = .success((startTime, endTime))
+                            } else {
+                                conversationSavingResult = .success(nil)
                             }
                         }
-                        DispatchQueue.main.async {
-                            completion?(.success(()))
-                        }
                     } catch {
-                        DispatchQueue.main.async {
-                            completion?(.failure(error))
-                        }
+                        conversationSavingResult = .failure(error)
                     }
+                }
+
+                if let (startTime, endTime) = try conversationSavingResult.get() {
+                    self.lastUpdatedStore.updateLastUpdatedTime(
+                        labelID: labelID,
+                        isUnread: unreadOnly,
+                        startTime: startTime,
+                        endTime: endTime,
+                        msgCount: totalMessageCount,
+                        userID: self.userID,
+                        type: .conversation
+                    )
+                }
+
+                DispatchQueue.main.async {
+                    completion?(.success(()))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion?(.failure(error))
                 }
             }
         }

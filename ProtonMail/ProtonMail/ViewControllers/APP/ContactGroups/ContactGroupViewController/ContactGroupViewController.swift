@@ -648,6 +648,10 @@ extension ContactGroupsViewController: ContactGroupsUIProtocol {
 }
 
 extension ContactGroupsViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

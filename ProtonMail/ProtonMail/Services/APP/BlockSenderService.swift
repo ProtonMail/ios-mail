@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,13 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
-@testable import ProtonMail
+import ProtonCore_Networking
+import ProtonCore_Services
 
-class MockESIndexingStateProvider: ESIndexingStateProvider {
+final class BlockSenderService {
+    let apiService: APIService
 
-    @FuncStub(MockESIndexingStateProvider.getESState, initialReturn: .paused(nil)) var callGetESSate
-    func getESState(userID: ProtonMail.UserID) -> ProtonMail.EncryptedSearchIndexState {
-        return callGetESSate(userID)
+    init(apiService: APIService) {
+        self.apiService = apiService
+    }
+
+    func block(emailAddress: String, completion: @escaping (Error?) -> Void) {
+        let request = AddIncomingDefaultsRequest(location: .blocked, overwrite: true, target: .email(emailAddress))
+
+        apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .immediateExecutor
+        ) { (_, result: Result<AddIncomingDefaultsResponse, ResponseError>) in
+            completion(result.error)
+        }
     }
 }

@@ -226,6 +226,10 @@ extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDele
 }
 
 extension ContactGroupDetailViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

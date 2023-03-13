@@ -32,73 +32,43 @@ import ProtonCore_CoreTranslation
 
 extension LoginService {
 
-    func getAccountDataPerformingAccountMigrationIfNeeded(user: User?, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-
-        withAuthDelegateAvailable(completion) { authManager in
-
-            switch self.minimumAccountType {
-            case .username:
-                guard let credential = authManager.credential(sessionUID: sessionId) else {
-                    completion(.failure(.invalidState))
-                    return
-                }
-                completion(.success(.finished(LoginData.credential(credential))))
-                return
-            case .external, .internal:
-                guard let user = user else {
-                    manager.getUserInfo { result in
-                        switch result {
-                        case .success(let user):
-                            self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
-                        case .failure(let error):
-                            PMLog.debug("Fetching user info with \(error)")
-                            completion(.failure(error.asLoginError()))
-                        }
-                    }
-                    return
-                }
-
-                // first login of a private user who has not changed the default password yet
-                if user.keys.isEmpty && user.role == 1 && user.private == 1 {
-                    completion(.failure(.needsFirstTimePasswordChange))
-                    return
-                }
-
-                // if there is no key and user is not private return an error
-                if user.keys.isEmpty && user.private == 0 {
-                    completion(.failure(.missingSubUserConfiguration))
-                    return
-                }
-
-                // external account used but internal needed
-                // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
-                if user.isExternal && self.minimumAccountType == .internal {
-
-                    // Cap C blocked
-                    guard isCapCEnabled(completion: completion) else {
-                        return
-                    }
-
-                    completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
-                    return
-                }
-
-                self.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                    user: user, mailboxPassword: mailboxPassword, completion: completion
-                )
-            }
+    func getAccountDataPerformingAccountMigrationIfNeeded(
+        user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+    ) {
+        // first login of a private user who has not changed the default password yet
+        if user.keys.isEmpty, user.role == 1, user.private == 1 {
+            completion(.failure(.needsFirstTimePasswordChange))
+            return
         }
+
+        // if there is no key and user is not private return an error
+        if user.keys.isEmpty, user.private == 0 {
+            completion(.failure(.missingSubUserConfiguration))
+            return
+        }
+
+        // external account used but internal needed
+        // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
+        if user.isExternal, self.minimumAccountType == .internal {
+
+            // Cap C blocked
+            guard isCapCEnabled(completion: completion) else { return }
+
+            // external to internal conversion flow kick-off
+            withAuthDelegateAvailable(completion) { authManager in
+                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+            }
+            return
+        }
+
+        self.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
+            user: user, mailboxPassword: mailboxPassword, completion: completion
+        )
     }
 
     private func fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
         user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
-        guard minimumAccountType != .username else {
-            assertionFailure("Fetching addresses should never be called for username accounts")
-            completion(.failure(.invalidState))
-            return
-        }
-
         manager.getAddresses { [weak self] result in
             switch result {
             case .failure(let error):
@@ -116,10 +86,29 @@ extension LoginService {
     private func fetchEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
         addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
-        let intAddresses = addresses.first(where: { $0.type != .externalAddress }) != nil
+        let hasAnyInternalAddress = addresses.first(where: { $0.type != .externalAddress }) != nil
+        let hasNoAddressesAtAll = addresses.isEmpty
+        let hasAtLeastOneAddress = !hasNoAddressesAtAll
+        let hasExternalAddressAndNoInternalOnes = !hasAnyInternalAddress && hasAtLeastOneAddress
+        let hasNoKeys = user.keys.isEmpty
+
+        // user has no addresses but username — username account. If the app supports the username account, we can finish right now
+        if user.isInternal, hasNoAddressesAtAll, minimumAccountType == .username {
+            withAuthDelegateAvailable(completion) { authManager in
+                guard let credentials = authManager.credential(sessionUID: sessionId),
+                      let authCredentials = authManager.authCredential(sessionUID: sessionId) else {
+                    completion(.failure(.invalidState))
+                    return
+                }
+                completion(.success(.finished(
+                    UserData(credential: authCredentials, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: credentials.scopes)
+                )))
+            }
+            return
+        }
         
-        // when external user has no key. external address is not empty. try to create user key only. other logic stays the same
-        if user.keys.isEmpty, user.isExternal, !intAddresses, !addresses.isEmpty {
+        // when external user has no key. external address is not empty. try to create keys only. other logic stays the same
+        if user.isExternal, hasNoKeys, hasExternalAddressAndNoInternalOnes {
             
             self.createAccountKeysIfNeeded(user: user,
                                            addresses: addresses,
@@ -128,26 +117,7 @@ extension LoginService {
                 case .failure(let error):
                     completion(.failure(error))
                 case .success(let updatedUser):
-                    // after the keys generation — retry fetching the data
-                    self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                        user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
-                    )
-                }
-            }
-            return
-        }
-        
-        if user.keys.isEmpty == true, (intAddresses || addresses.isEmpty) {
-            
-            // automatic account migration needed: keys must be generated
-            setupAccountKeysAndCreateInternalAddressIfNeeded(
-                user: user, addresses: addresses, mailboxPassword: mailboxPassword
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    completion(.failure(error))
-                case .success(let updatedUser):
-                    // after the keys generation — retry fetching the data
+                    // after the keys generation — re-fetch the addresses and continue the flow
                     self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
                         user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
                     )
@@ -156,7 +126,27 @@ extension LoginService {
             return
         }
 
-        guard addresses.isEmpty == false else {
+        // when the user has no keys and either
+        if hasNoKeys, hasAnyInternalAddress || hasNoAddressesAtAll || (user.isInternal && hasExternalAddressAndNoInternalOnes) {
+
+            // automatic account migration needed: keys must be generated
+            setupAccountKeysAndCreateInternalAddressIfNeeded(
+                user: user, addresses: addresses, mailboxPassword: mailboxPassword
+            ) { [weak self] result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let updatedUser):
+                    // after the keys generation — fetch the fresh data and retry the process
+                    self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
+                        user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
+                    )
+                }
+            }
+            return
+        }
+
+        guard !hasNoKeys, hasAtLeastOneAddress else {
             // user has keys, but doesn't have any address. I won't try to create the internal address automatically.
             // I believe it'd be dead code that handles the path that, if appears, indicated the invalid state
             completion(.failure(.invalidState))
@@ -166,30 +156,27 @@ extension LoginService {
         // user has keys and there are addresses. however, we do not know if:
         // 1. they have the right address for the minimumAccountType requirement
         // 2. if the address has the keys generated (the user keys might be for address other than minimumAccountType require)
-        switch minimumAccountType {
-        case .username:
-            assertionFailure("Fetching addresses should never be called for username accounts")
-            completion(.failure(.invalidState))
+        // 3. there are any active addresses that we should generate the keys for
 
-        case .external:
-            withAuthDelegateAvailable(completion) { authManager in
-                if addresses.filter({ $0.status != .disabled }).isEmpty {
+        switch minimumAccountType {
+        case .username, .external:
+            let activeAddresses = addresses.filter { $0.status != .disabled }
+            // I there are no active addresses that we can generate the keys for, just return
+            if activeAddresses.isEmpty {
+                withAuthDelegateAvailable(completion) { authManager in
                     guard let authCredential = authManager.authCredential(sessionUID: sessionId),
                           let credential = authManager.credential(sessionUID: sessionId) else {
                         completion(.failure(.invalidState))
                         return
                     }
-                    completion(.success(.finished(LoginData.userData(UserData(credential: authCredential,
-                                                                              user: user,
-                                                                              salts: [],
-                                                                              passphrases: [:],
-                                                                              addresses: addresses,
-                                                                              scopes: credential.scopes)))))
-                    return
-                } else {
-                    fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
+                    completion(.success(.finished(
+                        UserData(credential: authCredential, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: credential.scopes)
+                    )))
                 }
+                return
             }
+
+            fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
 
         case .internal:
             fetchEncryptionDataForInternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
@@ -200,10 +187,10 @@ extension LoginService {
 
     // this method is responsible for creating account keys in case the account has no keys and for creating the internal address if it's needed
     // this method is NOT responsible for checking if the addresses have keys generated nor for generating them
-    func setupAccountKeysAndCreateInternalAddressIfNeeded(user: User,
-                                                          addresses: [Address],
-                                                          mailboxPassword: String,
-                                                          completion: @escaping (Result<User, LoginError>) -> Void) {
+    private func setupAccountKeysAndCreateInternalAddressIfNeeded(user: User,
+                                                                  addresses: [Address],
+                                                                  mailboxPassword: String,
+                                                                  completion: @escaping (Result<User, LoginError>) -> Void) {
         PMLog.debug("Upgrading account without keys and possibly without internal address to account with keys and internal address if needed")
 
         guard user.keys.isEmpty else {
@@ -366,8 +353,9 @@ extension LoginService {
             return
         }
 
+        // we can only generate the key for the address of the private user (otherwise it should be the user's admin who does that)
+        // we can only generate the key for the address that is active (not disabled) and that doesn't have keys
         if user.private == 1, let address = addresses.first(where: { $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
-            
             createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
             return
         }
@@ -380,11 +368,7 @@ extension LoginService {
         let address: Address?
 
         switch minimumAccountType {
-        case .username:
-            assertionFailure("Checking missing keys and salts should never be called for username accounts")
-            completion(.failure(.invalidState))
-            return
-        case .external:
+        case .username, .external:
             // Only if no internal address exists, identify an external address
             address = addresses.firstInternal ?? addresses.firstExternal
         case .internal: // for apps that require internal address
@@ -445,12 +429,12 @@ extension LoginService {
                     return
                 }
 
-                completion(.success(.finished(LoginData.userData(UserData(credential: authCredentials,
-                                                                          user: user,
-                                                                          salts: salts,
-                                                                          passphrases: passphrases,
-                                                                          addresses: addresses,
-                                                                          scopes: credentials.scopes)))))
+                completion(.success(.finished(UserData(credential: authCredentials,
+                                                       user: user,
+                                                       salts: salts,
+                                                       passphrases: passphrases,
+                                                       addresses: addresses,
+                                                       scopes: credentials.scopes))))
 
             case let .failure(error):
                 PMLog.debug("Making passphrases failed with \(error)")

@@ -33,9 +33,12 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
     }
 
     private let viewModel: SettingsAccountViewModel
-    private let coordinator: SettingsAccountCoordinator
+    private let coordinator: SettingsAccountCoordinatorProtocol
 
-    init(viewModel: SettingsAccountViewModel, coordinator: SettingsAccountCoordinator) {
+    init(
+        viewModel: SettingsAccountViewModel,
+        coordinator: SettingsAccountCoordinatorProtocol
+    ) {
         self.viewModel = viewModel
         self.coordinator = coordinator
 
@@ -287,7 +290,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.mailboxItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .privacy, .conversation, .undoSend, .searchContent, .labels, .folders, .localStorage:
+            case .privacy, .conversation, .undoSend, .searchContent, .labels, .folders, .localStorage, .nextMsgAfterMove:
                 cellToUpdate.configure(right: "")
             case .storage:
                 cellToUpdate.configure(right: "100 MB (disabled)")
@@ -391,6 +394,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .searchContent)
         case .localStorage:
             self.coordinator.go(to: .localStorage)
+        case .nextMsgAfterMove:
+            coordinator.go(to: .nextMsgAfterMove)
         }
     }
 

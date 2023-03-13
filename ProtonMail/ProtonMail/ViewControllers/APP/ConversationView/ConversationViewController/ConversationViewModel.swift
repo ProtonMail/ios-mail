@@ -60,6 +60,7 @@ class ConversationViewModel {
     private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmailsMap: [String: EmailEntity]
     private let sharedContactGroups: [ContactGroupVO]
+    let coordinator: ConversationCoordinatorProtocol
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -124,6 +125,7 @@ class ConversationViewModel {
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
+         coordinator: ConversationCoordinatorProtocol,
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
@@ -166,6 +168,7 @@ class ConversationViewModel {
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
+        self.coordinator = coordinator
         self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
     }
@@ -522,10 +525,9 @@ class ConversationViewModel {
             .count
         displayAlert(scheduledNum)
     }
-}
 
-// MARK: - Actions
-extension ConversationViewModel {
+    // MARK: - Actions
+
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
         switch update {
         case .willUpdate:
@@ -846,6 +848,24 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
                     completion?(error as NSError)
                 }
             }
+    }
+
+    func handleNavigationAction(_ action: ConversationNavigationAction) {
+        coordinator.handle(navigationAction: action)
+    }
+
+    func navigateToNextConversation(popCurrentView: (() -> Void)? = nil) {
+        guard UserInfo.isConversationSwipeEnabled else {
+            popCurrentView?()
+            return
+        }
+        guard dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
+        }
     }
 }
 
@@ -1174,6 +1194,8 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 extension ConversationViewModel {
     struct Dependencies {
         let fetchMessageDetail: FetchMessageDetailUseCase
+        let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
+        let notificationCenter: NotificationCenter
     }
 
     enum CellVisibility {
