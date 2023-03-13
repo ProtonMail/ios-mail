@@ -1559,6 +1559,12 @@ enum L11n {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
     }
 
+    struct NextMsgAfterMove {
+        static let settingTitle = NSLocalizedString("Next message after move", comment: "The title of the setting of the next msg after move")
+        static let rowTitle = NSLocalizedString("Navigate to next message after move", comment: "The title of the row inside the setting page of next msg after move function.")
+        static let rowFooterTitle = NSLocalizedString("Performing a move action on a message (e.g. archive) will navigate to the next message.", comment: "The footer title of the setting row of the next msg after move functions.")
+	}
+
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
     }

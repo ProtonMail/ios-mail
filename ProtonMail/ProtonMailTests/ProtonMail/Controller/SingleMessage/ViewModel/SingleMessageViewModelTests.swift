@@ -26,6 +26,10 @@ final class SingleMessageViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
+    var toolbarCustomizationInfoBubbleViewStatusProvider: MockToolbarCustomizationInfoBubbleViewStatusProvider!
+    var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
+    var coordinatorMock: SingleMessageCoordinator!
+    var notificationCenterMock: NotificationCenter!
 
     override func setUp() {
         super.setUp()
@@ -34,6 +38,9 @@ final class SingleMessageViewModelTests: XCTestCase {
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
+        toolbarCustomizationInfoBubbleViewStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
+        nextMessageAfterMoveStatusProviderMock = .init()
+        notificationCenterMock = .init()
     }
 
     override func tearDown() {
@@ -43,6 +50,8 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         toolbarCustomizeSpotlightStatusProvider = nil
+        toolbarCustomizationInfoBubbleViewStatusProvider = nil
+        notificationCenterMock = nil
     }
 
     func testToolbarActionTypes_inSpam_containsDelete() {
@@ -217,6 +226,27 @@ final class SingleMessageViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
     }
 
+    func testNavigateToNextMessage_withFlagIsFalse_coordinatorShouldNotBeCalled() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        e.isInverted = true
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = false
+
+        sut.navigateToNextMessage()
+
+        wait(for: [e], timeout: 2)
+    }
+
+    func testNavigateToNextMessage_withFlagIsTrue_coordinatorIsCalled() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+
+        sut.navigateToNextMessage()
+
+        wait(for: [e], timeout: 2)
+    }
+
     private func makeSUT(labelID: LabelID, message: MessageEntity? = nil) {
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
@@ -249,6 +279,12 @@ final class SingleMessageViewModelTests: XCTestCase {
         )
         let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
 
+        coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
+                                                   labelId: labelID,
+                                                   message: message,
+                                                   user: fakeUser,
+                                                   infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider)
+
         sut = .init(
             labelId: labelID,
             message: message,
@@ -260,8 +296,11 @@ final class SingleMessageViewModelTests: XCTestCase {
             toolbarActionProvider: toolbarProviderMock,
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
             systemUpTime: systemTime,
+            coordinator: coordinatorMock,
+            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
             dependencies: dependencies,
-            goToDraft: { _, _ in }
+            goToDraft: { _, _ in },
+            notificationCenter: notificationCenterMock
         )
     }
 }

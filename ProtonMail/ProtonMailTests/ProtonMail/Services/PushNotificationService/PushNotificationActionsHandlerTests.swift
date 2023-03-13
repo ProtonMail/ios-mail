@@ -234,6 +234,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             api: apiMock,
             userInfo: userInfo,
             authCredential: auth,
+            mailSettings: nil,
             parent: nil
         )
     }

@@ -61,6 +61,7 @@ final class ChangePasswordViewModelTests: XCTestCase {
             api: apiService,
             userInfo: userInfo,
             authCredential: auth,
+            mailSettings: nil,
             parent: nil,
             appTelemetry: MailAppTelemetry()
         )

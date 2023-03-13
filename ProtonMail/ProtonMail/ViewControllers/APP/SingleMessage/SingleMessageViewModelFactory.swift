@@ -62,6 +62,7 @@ class SingleMessageViewModelFactory {
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
+                         coordinator: SingleMessageCoordinator,
                          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
@@ -94,6 +95,8 @@ class SingleMessageViewModelFactory {
             toolbarActionProvider: user,
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             systemUpTime: systemUpTime,
+            coordinator: coordinator,
+            nextMessageAfterMoveStatusProvider: user,
             dependencies: dependencies,
             goToDraft: goToDraft
         )
