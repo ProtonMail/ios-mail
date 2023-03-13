@@ -24,17 +24,21 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class CountriesCountRequest: BaseApiRequest<CountriesCountResponse> {
+public final class CountriesCountRequest: BaseApiRequest<CountriesCountResponse> {
 
-    override var path: String { "/vpn/countries/count" }
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+    
+    override public var path: String { "/vpn/countries/count" }
 
-    override var isAuth: Bool { false }
+    override public var isAuth: Bool { false }
 }
 
-final class  CountriesCountResponse: Response {
+public final class  CountriesCountResponse: Response {
     var countriesCount: [Countries]?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         guard let paymentMethods = response["Counts"] as? [[String: Any]] else { return false }
         let (result, countriesCount) = decodeResponse(paymentMethods, to: [Countries].self, errorToReturn: .methodsDecode)

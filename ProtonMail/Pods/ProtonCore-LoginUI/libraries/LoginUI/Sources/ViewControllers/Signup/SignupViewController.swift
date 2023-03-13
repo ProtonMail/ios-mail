@@ -29,17 +29,17 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 import ProtonCore_Observability
 
+enum SignupAccountType {
+    case `internal`
+    case external
+}
+
 protocol SignupViewControllerDelegate: AnyObject {
     func validatedName(name: String, signupAccountType: SignupAccountType)
     func validatedEmail(email: String, signupAccountType: SignupAccountType)
     func signupCloseButtonPressed()
     func signinButtonPressed()
     func hvEmailAlreadyExists(email: String)
-}
-
-enum SignupAccountType {
-    case `internal`
-    case external
 }
 
 class SignupViewController: UIViewController, AccessibleView, Focusable {
@@ -53,9 +53,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var showSeparateDomainsButton = true
     var minimumAccountType: AccountType?
     var tapGesture: UITapGestureRecognizer?
-
-    private let isExternalAccountFeatureEnabled = FeatureFactory.shared.isEnabled(.externalSignup)
-
+    
     // MARK: Outlets
 
     @IBOutlet weak var contentView: UIView!
@@ -160,7 +158,6 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     // MARK: View controller life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        showOtherAccountButton = isExternalAccountFeatureEnabled && minimumAccountType == .external
         view.backgroundColor = ColorProvider.BackgroundNorm
         
         brandLogo.image = IconProvider.masterBrandGlyph
@@ -213,14 +210,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         nextButton.isSelected = true
         currentlyUsedTextField.isError = false
         if signupAccountType == .internal {
-            switch minimumAccountType {
-            case .username:
-                checkUsernameWithoutSpecifyingDomain(userName: currentlyUsedTextField.value)
-            case .internal, .external:
-                checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
-            case .none:
-                assertionFailure("signupAccountType should be configured during the segue")
-            }
+            checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
         } else {
             checkEmail(email: currentlyUsedTextField.value)
         }
@@ -293,12 +283,6 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configureDomainSuffix() {
-        guard minimumAccountType != .username else {
-            domainsView.isHidden = true
-            domainsBottomSeparatorView.isHidden = true
-            return
-        }
-        
         guard showSeparateDomainsButton else {
             domainsView.isHidden = true
             domainsBottomSeparatorView.isHidden = true

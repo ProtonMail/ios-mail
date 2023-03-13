@@ -21,6 +21,7 @@
 //
 
 import ProtonCore_Services
+import ProtonCore_FeatureSwitch
 
 public struct ObservabilityEnv {
     
@@ -36,7 +37,9 @@ public struct ObservabilityEnv {
     ///     - apiService: Should be the instance of the APIService used
     ///     before the user is logged in.
     public mutating func setupWorld(apiService: APIService) {
-        self.observabilityService = ObservabilityServiceImpl(apiService: apiService)
+        if FeatureFactory.shared.isEnabled(.observability) {
+            self.observabilityService = ObservabilityServiceImpl(apiService: apiService)
+        }
     }
     
     var observabilityService: ObservabilityService?

@@ -34,7 +34,7 @@ final class LabelManagerViewModel: LabelManagerViewModelProtocol {
 
     private(set) var data: [MenuLabel] = []
     let labelType: PMLabelType
-    private let dependencies: Dependencies
+    private var dependencies: Dependencies
     private var isFetching = false
 
     private var rawData: [MenuLabel] = []
@@ -360,6 +360,10 @@ extension LabelManagerViewModel {
             return
         }
         dependencies.userInfo.parse(mailSettings: mailSettingsResponse.mailSettings)
+        if let mailSettingsResponse = mailSettingsResponse.mailSettings,
+           let mailSettings = try? MailSettings(dict: mailSettingsResponse) {
+            dependencies.mailSettingsHandler.mailSettings = mailSettings
+        }
         dependencies.userManagerSaveAction.save()
         uiDelegate?.reloadData()
     }
@@ -434,19 +438,22 @@ extension LabelManagerViewModel {
         let labelService: LabelsDataService
         let labelPublisher: LabelPublisherProtocol
         let userManagerSaveAction: UserManagerSaveAction
+        var mailSettingsHandler: MailSettingsHandler
 
         init(
             userInfo: UserInfo,
             apiService: APIService,
             labelService: LabelsDataService,
             labelPublisher: LabelPublisherProtocol,
-            userManagerSaveAction: UserManagerSaveAction
+            userManagerSaveAction: UserManagerSaveAction,
+            mailSettingsHandler: MailSettingsHandler
         ) {
             self.userInfo = userInfo
             self.apiService = apiService
             self.labelService = labelService
             self.labelPublisher = labelPublisher
             self.userManagerSaveAction = userManagerSaveAction
+            self.mailSettingsHandler = mailSettingsHandler
         }
 
         init(userManager: UserManager) {
@@ -455,6 +462,7 @@ extension LabelManagerViewModel {
             self.labelService = userManager.labelService
             self.labelPublisher = labelService.makePublisher()
             self.userManagerSaveAction = userManager
+            self.mailSettingsHandler = userManager
         }
     }
 }

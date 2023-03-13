@@ -78,12 +78,13 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
+            coordinator: self,
             goToDraft: { [weak self] msgID, originalScheduleTime in
                 self?.navigationController?.popViewController(animated: false)
                 self?.goToDraft?(msgID, originalScheduleTime)
             }
         )
-        let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
+        let viewController = SingleMessageViewController(viewModel: viewModel)
         self.viewController = viewController
         return viewController
     }

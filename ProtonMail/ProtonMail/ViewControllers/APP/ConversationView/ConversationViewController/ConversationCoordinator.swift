@@ -65,11 +65,14 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             )
         )
         let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: fetchMessageDetail
+            fetchMessageDetail: fetchMessageDetail,
+            nextMessageAfterMoveStatusProvider: user,
+            notificationCenter: .default
         )
         let viewModel = ConversationViewModel(
             labelId: labelId,
             conversation: conversation,
+            coordinator: self,
             user: user,
             contextProvider: CoreDataService.shared,
             internetStatusProvider: internetStatusProvider,
@@ -87,7 +90,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 self?.goToDraft?(msgID, originalScheduledTime)
             },
             dependencies: dependencies)
-        let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
+        let viewController = ConversationViewController(viewModel: viewModel)
         self.viewController = viewController
         return viewController
     }

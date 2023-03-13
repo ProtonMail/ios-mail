@@ -31,6 +31,9 @@ class ConversationViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var userManagerStub: UserManager!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
+    var coordinatorMock: MockConversationCoordinator!
+    var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
+    var notificationCenterMock: NotificationCenter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -46,13 +49,19 @@ class ConversationViewModelTests: XCTestCase {
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
+        coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
+        nextMessageAfterMoveStatusProviderMock = .init()
+        notificationCenterMock = .init()
 
         let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
+            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
+            notificationCenter: notificationCenterMock
         )
 
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
+                                    coordinator: coordinatorMock,
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
@@ -472,7 +481,26 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
     }
 
-    func testFocusedMode_lastNonExpandedMessage_isPartiallyVisible() {
+    func testNavigateToNextConversation_withFlagIsFalse_coordinatorShouldNotBeCalled() {
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        e.isInverted = true
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = false
+
+        sut.navigateToNextConversation()
+
+        wait(for: [e], timeout: 2)
+    }
+
+    func testNavigateToNextConversation_withFlagIsTrue_coordinatorIsCalled() {
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+
+        sut.navigateToNextConversation()
+
+        wait(for: [e], timeout: 1)
+	}
+
+    func testFocusedMode_lastNonExpandedMessage_isPartiallyVisibile() {
         makeSUT(labelID: Message.Location.inbox.labelID)
 
         sut.headerSectionDataSource = [
@@ -676,11 +704,14 @@ class ConversationViewModelTests: XCTestCase {
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
 
         let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
+            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
+            notificationCenter: .default
         )
 
         sut = ConversationViewModel(labelId: labelID,
                                     conversation: fakeConversation,
+                                    coordinator: coordinatorMock,
                                     user: fakeUser,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,

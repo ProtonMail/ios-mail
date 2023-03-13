@@ -42,9 +42,9 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         updateContactDetailStub(serverResponse, completion)
     }
 
-    @FuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
-    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String], completion: @escaping (Error?) -> Void) {
-        parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent, completion)
+    @ThrowingFuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
+    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String]) throws {
+        try parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent)
     }
 
     @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
@@ -398,6 +398,19 @@ class MockLockPreferences: LockPreferences {
 
 }
 
+class MockMailSettingsHandler: MailSettingsHandler {
+    @PropertyStub(\MockMailSettingsHandler.mailSettings, initialGet: MailSettings()) var mailSettingsStub
+    var mailSettings: MailSettings {
+        get {
+            mailSettingsStub()
+        }
+        set {
+            mailSettingsStub(newValue)
+        }
+    }
+
+}
+
 class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {
@@ -410,6 +423,19 @@ class MockMessageDataActionProtocol: MessageDataActionProtocol {
     @FuncStub(MockMessageDataActionProtocol.mark, initialReturn: Bool()) var markStub
     func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
         markStub(messageObjectIDs, labelID, unRead)
+    }
+
+}
+
+class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider {
+    @PropertyStub(\MockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove, initialGet: Bool()) var shouldMoveToNextMessageAfterMoveStub
+    var shouldMoveToNextMessageAfterMove: Bool {
+        get {
+            shouldMoveToNextMessageAfterMoveStub()
+        }
+        set {
+            shouldMoveToNextMessageAfterMoveStub(newValue)
+        }
     }
 
 }
@@ -459,6 +485,27 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
     @FuncStub(MockScheduledSendHelperDelegate.showScheduleSendPromotionView) var showScheduleSendPromotionViewStub
     func showScheduleSendPromotionView() {
         showScheduleSendPromotionViewStub()
+    }
+
+}
+
+class MockSenderImageStatusProvider: SenderImageStatusProvider {
+    @FuncStub(MockSenderImageStatusProvider.isSenderImageEnabled, initialReturn: Bool()) var isSenderImageEnabledStub
+    func isSenderImageEnabled(userID: UserID) -> Bool {
+        isSenderImageEnabledStub(userID)
+    }
+
+    @FuncStub(MockSenderImageStatusProvider.setIsSenderImageEnable) var setIsSenderImageEnableStub
+    func setIsSenderImageEnable(enable: Bool, userID: UserID) {
+        setIsSenderImageEnableStub(enable, userID)
+    }
+
+}
+
+class MockSettingsAccountCoordinatorProtocol: SettingsAccountCoordinatorProtocol {
+    @FuncStub(MockSettingsAccountCoordinatorProtocol.go) var goStub
+    func go(to dest: SettingsAccountCoordinator.Destination) {
+        goStub(dest)
     }
 
 }

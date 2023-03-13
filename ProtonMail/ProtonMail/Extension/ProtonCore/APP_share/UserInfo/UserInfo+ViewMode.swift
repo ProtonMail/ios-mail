@@ -1,7 +1,7 @@
 import ProtonCore_Common
 import ProtonCore_DataModel
 
-enum ViewMode: Int {
+enum ViewMode: Int, CaseIterable {
     case conversation = 0
     case singleMessage = 1
 }

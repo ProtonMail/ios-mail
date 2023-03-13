@@ -36,8 +36,9 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         SingleMessageContentViewController(
             viewModel: self.viewModel.contentViewModel,
             parentScrollView: self.customView.scrollView,
-            viewMode: .singleMessage) { action in
-            self.coordinator.navigate(to: action)
+            viewMode: .singleMessage
+        ) { action in
+            self.viewModel.navigate(to: action)
         }
     }()
 
@@ -45,7 +46,6 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
 
     private lazy var navigationTitleLabel = SingleMessageNavigationHeaderView()
 
-    private let coordinator: SingleMessageCoordinator
     private lazy var starBarButton = UIBarButtonItem(
         image: nil,
         style: .plain,
@@ -60,8 +60,7 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var scheduledSendTimer: Timer?
 
-    init(coordinator: SingleMessageCoordinator, viewModel: SingleMessageViewModel) {
-        self.coordinator = coordinator
+    init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         trackLifetime()
@@ -172,7 +171,9 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         }
         scheduledSendTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { [weak self] _ in
             if scheduledTime.timeIntervalSince(Date()) <= 0 {
-                self?.navigationController?.popViewController(animated: true)
+                self?.viewModel.navigateToNextMessage() {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             }
         })
     }
@@ -229,18 +230,25 @@ extension SingleMessageViewController {
     private func trashAction() {
         let continueAction: () -> Void = { [weak self] in
             self?.viewModel.handleToolBarAction(.trash)
-            self?.navigationController?.popViewController(animated: true)
+            self?.viewModel.navigateToNextMessage() {
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
 
         viewModel.searchForScheduled(displayAlert: {
-            self.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
-        }, continueAction: continueAction)
+            self.displayScheduledAlert(scheduledNum: 1) {
+                self.showMessageMoved(title: LocalString._message_moved_to_drafts)
+                continueAction()
+            }
+        }, continueAction: {
+            self.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .trash)
+            continueAction()
+        })
     }
 
     @objc
     private func unreadReadAction() {
         viewModel.handleToolBarAction(.markUnread)
-        navigationController?.popViewController(animated: true)
     }
 
     @objc
@@ -257,7 +265,9 @@ extension SingleMessageViewController {
     private func deleteAction() {
         showDeleteAlert(deleteHandler: { [weak self] _ in
             self?.viewModel.handleToolBarAction(.delete)
-            self?.navigationController?.popViewController(animated: true)
+            self?.viewModel.navigateToNextMessage() {
+                self?.navigationController?.popViewController(animated: true)
+            }
         })
     }
 
@@ -318,7 +328,7 @@ extension SingleMessageViewController {
             targetFrame: convertedRect
         )
         spotlight.navigateToToolbarCustomizeView = { [weak self] in
-            self?.coordinator.navigate(to: .toolbarSettingView)
+            self?.viewModel.navigate(to: .toolbarSettingView)
         }
         viewModel.setToolbarCustomizeSpotlightViewIsShown()
     }
@@ -338,8 +348,13 @@ private extension SingleMessageViewController {
             let renderer = ConversationPrintRenderer([contentController])
             contentController.presentPrintController(renderer: renderer, jobName: viewModel.message.title)
         case .saveAsPDF:
+
             let renderer = ConversationPrintRenderer([contentController])
-            contentController.exportPDF(renderer: renderer, fileName: "\(viewModel.message.title).pdf")
+            contentController.exportPDF(
+                renderer: renderer,
+                fileName: "\(viewModel.message.title).pdf",
+                sourceView: customView.toolbar
+            )
         case .viewHeaders, .viewHTML:
             handleOpenViewAction(action)
         case .dismiss:
@@ -348,13 +363,17 @@ private extension SingleMessageViewController {
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
+                    self?.viewModel.navigateToNextMessage() {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 })
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
+                    self?.viewModel.navigateToNextMessage() {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 })
             }
         case .toolbarCustomization:
@@ -367,12 +386,16 @@ private extension SingleMessageViewController {
             viewModel.handleActionSheetAction(action, completion: {})
         case .archive, .spam, .inbox, .spamMoveToInbox, .star, .unstar:
             viewModel.handleActionSheetAction(action) { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
+                self?.viewModel.navigateToNextMessage() {
+                    self?.navigationController?.popViewController(animated: true)
+                }
             }
         case .trash:
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
+                    self?.viewModel.navigateToNextMessage() {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 })
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] in
@@ -390,11 +413,11 @@ private extension SingleMessageViewController {
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
         switch action {
         case .reply, .replyInConversation:
-            coordinator.navigate(to: .reply(messageId: viewModel.message.messageID))
+            viewModel.navigate(to: .reply(messageId: viewModel.message.messageID))
         case .replyAll, .replyAllInConversation:
-            coordinator.navigate(to: .replyAll(messageId: viewModel.message.messageID))
+            viewModel.navigate(to: .replyAll(messageId: viewModel.message.messageID))
         case .forward, .forwardInConversation:
-            coordinator.navigate(to: .forward(messageId: viewModel.message.messageID))
+            viewModel.navigate(to: .forward(messageId: viewModel.message.messageID))
         default:
             return
         }
@@ -404,11 +427,11 @@ private extension SingleMessageViewController {
         switch action {
         case .viewHeaders:
             if let url = viewModel.getMessageHeaderUrl() {
-                coordinator.navigate(to: .viewHeaders(url: url))
+                viewModel.navigate(to: .viewHeaders(url: url))
             }
         case .viewHTML:
             if let url = viewModel.getMessageBodyUrl() {
-                coordinator.navigate(to: .viewHTML(url: url))
+                viewModel.navigate(to: .viewHTML(url: url))
             }
         default:
             return
@@ -416,7 +439,7 @@ private extension SingleMessageViewController {
     }
 
     private func showToolbarActionCustomizationView() {
-        coordinator.navigate(to: .toolbarCustomization(
+        viewModel.navigate(to: .toolbarCustomization(
             currentActions: viewModel.actionsForToolbarCustomizeView(),
             allActions: viewModel.toolbarCustomizationAllAvailableActions()
         ))
@@ -431,45 +454,52 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
     func showLabelAsActionSheet() {
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(
             menuLabels: labelAsActionHandler.getLabelMenuItems(),
-            messages: [viewModel.message])
+            messages: [viewModel.message]
+        )
 
         labelAsActionSheetPresenter
-            .present(on: self.navigationController ?? self,
-                     listener: self,
-                     viewModel: labelAsViewModel,
-                     addNewLabel: { [weak self] in
-                        guard let self = self else { return }
-                        if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
-                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
-                                self?.showLabelAsActionSheet()
-                            }
-                            self.coordinator.navigate(to: .addNewLabel)
-                        } else {
-                            self.showAlertLabelCreationNotAllowed()
+            .present(
+                on: self.navigationController ?? self,
+                listener: self,
+                viewModel: labelAsViewModel,
+                addNewLabel: { [weak self] in
+                    guard let self = self else { return }
+                    if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                        self.viewModel.coordinator.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet()
                         }
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
+                        self.viewModel.navigate(to: .addNewLabel)
+                    } else {
+                        self.showAlertLabelCreationNotAllowed()
+                    }
+                },
+                selected: { [weak self] menuLabel, isOn in
+                    self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+                },
+                cancel: { [weak self] isHavingUnsavedChanges in
+                    if isHavingUnsavedChanges {
+                        self?.showDiscardAlert(handleDiscard: {
+                            self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
                             self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isArchive, currentOptionsStatus  in
-                        if let message = self?.viewModel.message {
-                            self?.labelAsActionHandler
-                                .handleLabelAsAction(messages: [message],
-                                                     shouldArchive: isArchive,
-                                                     currentOptionsStatus: currentOptionsStatus)
-                        }
+                        })
+                    } else {
                         self?.dismissActionSheet()
-                     })
+                    }
+                },
+                done: { [weak self] isArchive, currentOptionsStatus in
+                    if let message = self?.viewModel.message {
+                        self?.labelAsActionHandler
+                            .handleLabelAsAction(messages: [message],
+                                                 shouldArchive: isArchive,
+                                                 currentOptionsStatus: currentOptionsStatus)
+                    }
+                    self?.dismissActionSheet()
+                    if isArchive {
+                        self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .archive)
+                        self?.viewModel.navigateToNextMessage(popCurrentView: nil)
+                    }
+                }
+            )
     }
 
     private func allowToCreateLabels(existingLabels: Int) -> Bool {
@@ -490,6 +520,24 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addOKAction()
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
+        if var type = undoActionType {
+            switch type {
+            case .custom(let labelID) where labelID == Message.Location.archive.labelID:
+                type = .archive
+            case .custom(let labelID) where labelID == Message.Location.trash.labelID:
+                type = .trash
+            case .custom(let labelID) where labelID == Message.Location.spam.labelID:
+                type = .spam
+            default:
+                break
+            }
+            viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
+        }
+        let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+        banner.show(at: .bottom, on: self)
     }
 }
 
@@ -514,10 +562,10 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
             addNewFolder: { [weak self] in
                 guard let self = self else { return }
                 if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
-                    self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                    self.viewModel.coordinator.pendingActionAfterDismissal = { [weak self] in
                         self?.showMoveToActionSheet()
                     }
-                    self.coordinator.navigate(to: .addNewFolder)
+                    self.viewModel.navigate(to: .addNewFolder)
                 } else {
                     self.showAlertFolderCreationNotAllowed()
                 }
@@ -538,9 +586,13 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
-                    self?.navigationController?.popViewController(animated: true)
+                    self?.viewModel.navigateToNextMessage() {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }
-                guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
+                guard isHavingUnsavedChanges,
+                      let msg = self?.viewModel.message,
+                      let destinationId = self?.moveToActionHandler.selectedMoveToFolder?.location.labelID else {
                     return
                 }
 
@@ -552,9 +604,19 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
 
                 if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
                     self?.viewModel.searchForScheduled(displayAlert: {
-                        self?.displayScheduledAlert(scheduledNum: 1, continueAction: continueAction)
-                    }, continueAction: continueAction)
+                        self?.displayScheduledAlert(scheduledNum: 1) {
+                            self?.showMessageMoved(title: LocalString._message_moved_to_drafts)
+                            continueAction()
+                        }
+                    }, continueAction: {
+                        self?.showMessageMoved(title: LocalString._messages_has_been_moved,
+                                               undoActionType: .custom(destinationId))
+                        continueAction()
+
+                    })
                 } else {
+                    self?.showMessageMoved(title: LocalString._messages_has_been_moved,
+                                           undoActionType: .custom(destinationId))
                     continueAction()
                 }
             })
@@ -588,12 +650,16 @@ extension SingleMessageViewController: PMActionSheetEventsListener {
 }
 
 extension SingleMessageViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        viewModel.user.undoActionManager
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }
 
     var composerPresentingVC: UIViewController? {
-        nil
+        self
     }
 
     func showUndoAction(undoTokens: [String], title: String) { }

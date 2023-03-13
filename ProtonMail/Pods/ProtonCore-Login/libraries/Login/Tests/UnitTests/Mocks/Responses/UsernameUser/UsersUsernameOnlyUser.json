@@ -9,15 +9,7 @@
     "MaxUpload" : 26214400,
     "Credit" : 0,
     "Delinquent" : 0,
-    "Keys" : [
-      {
-        "ID" : "ID",
-        "Version" : 3,
-        "PrivateKey" : "PrivateKey",
-        "Fingerprint" : "Fingerprint",
-        "Primary" : 1
-      }
-    ],
+    "Keys" : [],
     "Email" : "Email",
     "DisplayName" : "",
     "MaxSpace" : 524288000,

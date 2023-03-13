@@ -56,6 +56,10 @@ class SingleMessageViewModel {
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
+    private let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
+
+    let coordinator: SingleMessageCoordinator
+    private let notificationCenter: NotificationCenter
 
     init(labelId: LabelID,
          message: MessageEntity,
@@ -67,8 +71,11 @@ class SingleMessageViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
+         coordinator: SingleMessageCoordinator,
+         nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
          dependencies: SingleMessageContentViewModel.Dependencies,
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
+         notificationCenter: NotificationCenter = .default
     ) {
         self.labelId = labelId
         self.message = message
@@ -89,10 +96,13 @@ class SingleMessageViewModel {
             dependencies: dependencies,
             goToDraft: goToDraft
         )
+        self.coordinator = coordinator
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.toolbarActionProvider = toolbarActionProvider
         self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
+        self.nextMessageAfterMoveStatusProvider = nextMessageAfterMoveStatusProvider
+        self.notificationCenter = notificationCenter
     }
 
     var messageTitle: NSAttributedString {
@@ -266,6 +276,24 @@ class SingleMessageViewModel {
             return
         }
         displayAlert()
+    }
+
+    func navigate(to navigationAction: SingleMessageNavigationAction) {
+        coordinator.navigate(to: navigationAction)
+    }
+
+    func navigateToNextMessage(popCurrentView: (() -> Void)? = nil) {
+        guard UserInfo.isConversationSwipeEnabled else {
+            popCurrentView?()
+            return
+        }
+        guard nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            self?.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
+        }
     }
 }
 

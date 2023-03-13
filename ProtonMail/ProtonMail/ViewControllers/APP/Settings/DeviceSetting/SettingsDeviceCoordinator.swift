@@ -20,13 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_Common
+import UIKit
 
 class SettingsDeviceCoordinator {
     enum Destination: String {
         case accountSetting = "settings_account_settings"
-        case autoLock       = "settings_auto_lock"
+        case autoLock = "settings_auto_lock"
         case combineContact = "settings_combine_contact"
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
@@ -152,5 +152,5 @@ class SettingsDeviceCoordinator {
 }
 
 extension DeepLink.Node {
-    static let accountSetting = DeepLink.Node.init(name: "settings_account_settings")
+    static let accountSetting = DeepLink.Node(name: "settings_account_settings")
 }

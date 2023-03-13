@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 
 extension PMActionSheet {
@@ -42,16 +43,23 @@ extension PMActionSheet {
             rightItem: nil,
             rightTitleViews: showOfficialBadge ? [OfficialBadge()] : []
         )
-        let items = [
+
+        var items = [
             copyAddress(action: action),
             copyName(action: action),
             composeTo(action: action),
             addToContacts(action: action)
         ]
+
+        // TODO: check if already blocked: https://jira.protontech.ch/browse/MAILIOS-3191
+        if UserInfo.isBlockSenderEnabled {
+            items.append(blockSender(action: action))
+        }
+
         return PMActionSheet(headerView: header, itemGroups: [.init(items: items, style: .clickable)])
     }
 
-    static func copyAddress(
+    private static func copyAddress(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetPlainItem {
         .init(
@@ -60,7 +68,7 @@ extension PMActionSheet {
         ) { _ in action(.copyAddress) }
     }
 
-    static func copyName(
+    private static func copyName(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetPlainItem {
         .init(
@@ -69,7 +77,7 @@ extension PMActionSheet {
         ) { _ in action(.copyName) }
     }
 
-    static func composeTo(
+    private static func composeTo(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetPlainItem {
         .init(
@@ -78,7 +86,7 @@ extension PMActionSheet {
         ) { _ in action(.composeTo) }
     }
 
-    static func addToContacts(
+    private static func addToContacts(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetPlainItem {
         .init(
@@ -87,4 +95,12 @@ extension PMActionSheet {
         ) { _ in action(.addToContacts) }
     }
 
+    private static func blockSender(
+        action: @escaping (MessageDetailsContactActionSheetAction) -> Void
+    ) -> PMActionSheetPlainItem {
+        .init(
+            title: L11n.BlockSender.blockActionItem,
+            icon: IconProvider.circleSlash
+        ) { _ in action(.blockSender) }
+    }
 }

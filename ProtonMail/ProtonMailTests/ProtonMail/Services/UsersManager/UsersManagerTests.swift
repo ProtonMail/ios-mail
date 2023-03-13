@@ -15,25 +15,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_DataModel
+import ProtonCore_Keymaker
+import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
-import ProtonCore_Networking
+@testable import ProtonMail
+import XCTest
 
 class UsersManagerTests: XCTestCase {
     var apiMock: APIService!
     var sut: UsersManager!
     var doh: DohMock!
     var cachedUserDataProviderMock: MockCachedUserDataProvider!
-    
+    let suiteName = String.randomString(10)
+    var customCache: SharedCacheBase!
+    var customKeyChain: Keychain!
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
         self.doh = DohMock()
-        sut = UsersManager(doh: doh, userDataCache: cachedUserDataProviderMock)
+        self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
+        self.customKeyChain = .init(service: String.randomString(10),
+                                    accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
+        sut = UsersManager(
+            doh: doh,
+            userDataCache: cachedUserDataProviderMock,
+            userDefaultCache: customCache,
+            keychain: customKeyChain
+        )
     }
 
     override func tearDown() {
@@ -42,6 +54,14 @@ class UsersManagerTests: XCTestCase {
         doh = nil
         apiMock = nil
         cachedUserDataProviderMock = nil
+
+        customCache.getShared().remove(forKey: UsersManager.CoderKey.authKeychainStore)
+        customCache.getShared().remove(forKey: UsersManager.CoderKey.userInfo)
+        customCache.getShared().remove(forKey: UsersManager.CoderKey.authKeychainStore)
+        customCache.getShared().remove(forKey: UsersManager.CoderKey.usersInfo)
+        self.customCache = nil
+        self.customKeyChain.removeEverything()
+        self.customKeyChain = nil
     }
 
     func testNumberOfFreeAccounts() {
@@ -59,31 +79,31 @@ class UsersManagerTests: XCTestCase {
 
     func testIsAllowedNewUser_noFreeUser() {
         let paidUserInfo = UserInfo(maxSpace: nil,
-                                usedSpace: nil,
-                                language: nil,
-                                maxUpload: nil,
-                                role: 1,
-                                delinquent: nil,
-                                keys: [],
-                                userId: "1",
-                                linkConfirmation: nil,
-                                credit: nil,
-                                currency: nil,
-                                subscribed: nil)
+                                    usedSpace: nil,
+                                    language: nil,
+                                    maxUpload: nil,
+                                    role: 1,
+                                    delinquent: nil,
+                                    keys: [],
+                                    userId: "1",
+                                    linkConfirmation: nil,
+                                    credit: nil,
+                                    currency: nil,
+                                    subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
-                                usedSpace: nil,
-                                language: nil,
-                                maxUpload: nil,
-                                role: 0,
-                                delinquent: nil,
-                                keys: [],
-                                userId: "1",
-                                linkConfirmation: nil,
-                                credit: nil,
-                                currency: nil,
-                                subscribed: nil)
+                                    usedSpace: nil,
+                                    language: nil,
+                                    maxUpload: nil,
+                                    role: 0,
+                                    delinquent: nil,
+                                    keys: [],
+                                    userId: "1",
+                                    linkConfirmation: nil,
+                                    credit: nil,
+                                    currency: nil,
+                                    subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
 
@@ -92,31 +112,31 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
 
         let paidUserInfo = UserInfo(maxSpace: nil,
-                                usedSpace: nil,
-                                language: nil,
-                                maxUpload: nil,
-                                role: 1,
-                                delinquent: nil,
-                                keys: [],
-                                userId: "1",
-                                linkConfirmation: nil,
-                                credit: nil,
-                                currency: nil,
-                                subscribed: nil)
+                                    usedSpace: nil,
+                                    language: nil,
+                                    maxUpload: nil,
+                                    role: 1,
+                                    delinquent: nil,
+                                    keys: [],
+                                    userId: "1",
+                                    linkConfirmation: nil,
+                                    credit: nil,
+                                    currency: nil,
+                                    subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
-                                usedSpace: nil,
-                                language: nil,
-                                maxUpload: nil,
-                                role: 0,
-                                delinquent: nil,
-                                keys: [],
-                                userId: "1",
-                                linkConfirmation: nil,
-                                credit: nil,
-                                currency: nil,
-                                subscribed: nil)
+                                    usedSpace: nil,
+                                    language: nil,
+                                    maxUpload: nil,
+                                    role: 0,
+                                    delinquent: nil,
+                                    keys: [],
+                                    userId: "1",
+                                    linkConfirmation: nil,
+                                    credit: nil,
+                                    currency: nil,
+                                    subscribed: nil)
         XCTAssertFalse(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
 
@@ -125,25 +145,24 @@ class UsersManagerTests: XCTestCase {
         let auth = AuthCredential(sessionID: userID,
                                   accessToken: "",
                                   refreshToken: "",
-                                  expiration: Date(),
                                   userName: userID,
                                   userID: userID,
                                   privateKey: nil,
                                   passwordKeySalt: nil)
         let userInfo = UserInfo(maxSpace: nil,
-                                 usedSpace: nil,
-                                 language: nil,
-                                 maxUpload: nil,
-                                 role: 1,
-                                 delinquent: nil,
-                                 keys: [],
-                                 userId: userID,
-                                 linkConfirmation: nil,
-                                 credit: nil,
-                                 currency: nil,
-                                 subscribed: nil)
+                                usedSpace: nil,
+                                language: nil,
+                                maxUpload: nil,
+                                role: 1,
+                                delinquent: nil,
+                                keys: [],
+                                userId: userID,
+                                linkConfirmation: nil,
+                                credit: nil,
+                                currency: nil,
+                                subscribed: nil)
         XCTAssertTrue(sut.users.isEmpty)
-        sut.add(auth: auth, user: userInfo)
+        sut.add(auth: auth, user: userInfo, mailSettings: .init())
         XCTAssertFalse(sut.users.isEmpty)
         XCTAssertEqual(sut.users[0].authCredential, auth)
         XCTAssertEqual(sut.users[0].userInfo, userInfo)
@@ -158,7 +177,6 @@ class UsersManagerTests: XCTestCase {
         let newAuth = AuthCredential(sessionID: "SessionID_\(userID)",
                                      accessToken: "new",
                                      refreshToken: "",
-                                     expiration: Date(),
                                      userName: userID,
                                      userID: userID,
                                      privateKey: nil,
@@ -203,19 +221,19 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         sut.add(newUser: user2)
 
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["1", "2"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["1", "2"])
         sut.active(by: user2.authCredential.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["2", "1"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["2", "1"])
         sut.active(by: user2.authCredential.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["2", "1"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["2", "1"])
         sut.active(by: user1.authCredential.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["1", "2"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["1", "2"])
         sut.add(newUser: user3)
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["1", "2", "3"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["1", "2", "3"])
         sut.active(by: user2.authCredential.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["2", "1", "3"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["2", "1", "3"])
         sut.active(by: user3.authCredential.sessionID)
-        XCTAssertEqual(sut.users.map{ $0.userInfo.userId }, ["3", "2", "1"])
+        XCTAssertEqual(sut.users.map { $0.userInfo.userId }, ["3", "2", "1"])
     }
 
     func testGetUserBySessionID() {
@@ -297,30 +315,151 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(argument.count, 1)
     }
 
+    func testTryRestore_dataInLegacyFormat_dataIsSavedToNewLocation() throws {
+        let userID = String.randomString(20)
+        try prepareLegacyUserData(userID: userID)
+
+        sut.tryRestore()
+
+        XCTAssertTrue(sut.hasUsers())
+        XCTAssertEqual(sut.users.count, 1)
+        XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
+
+        XCTAssertNil(customKeyChain.data(forKey: UsersManager.CoderKey.keychainStore))
+        let userInfoData = customCache.getShared().object(forKey: UsersManager.CoderKey.userInfo) as? Data
+        XCTAssertNil(userInfoData)
+
+        XCTAssertNotNil(customCache.getShared().object(forKey: UsersManager.CoderKey.authKeychainStore))
+        XCTAssertNotNil(customCache.getShared().object(forKey: UsersManager.CoderKey.usersInfo))
+    }
+
+    func testTryRestore_withNoMailSettingInCache_userHasDefaultMailSetting() throws {
+        let userID = String.randomString(20)
+        try prepareUserDataInCache(userID: userID, hasMailSetting: false)
+
+        sut.tryRestore()
+
+        XCTAssertTrue(sut.hasUsers())
+        XCTAssertEqual(sut.users.count, 1)
+        XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
+        XCTAssertEqual(sut.firstUser?.mailSettings, .init())
+    }
+
+    func testTryRestore_withMailSettingInCache_correctMailSettingIsRestore() throws {
+        let userID = String.randomString(20)
+        try prepareUserDataInCache(userID: userID, hasMailSetting: true)
+
+        sut.tryRestore()
+
+        XCTAssertTrue(sut.hasUsers())
+        XCTAssertEqual(sut.users.count, 1)
+        XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
+        XCTAssertEqual(sut.firstUser?.mailSettings.nextMessageOnMove, true)
+    }
+
+    func testTryRestore_withDifferentOrderOfUserData_shouldFollowTheOrderOfAuthCredentials() throws {
+        var userIDs: [String] = []
+        for _ in 0 ... 9 {
+            userIDs.append(String.randomString(20))
+        }
+        try prepareUserDataInCacheWithDifferentOrder(userIDs: userIDs)
+
+        sut.tryRestore()
+
+        XCTAssertTrue(sut.hasUsers())
+        XCTAssertEqual(sut.users.count, 10)
+        XCTAssertEqual(sut.users.map { $0.userID.rawValue }, userIDs)
+    }
+
+    private func prepareUserDataInCacheWithDifferentOrder(userIDs: [String]) throws {
+        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        var userInfos: [UserInfo] = []
+        var auths: [AuthCredential] = []
+        for userID in userIDs {
+            auths.append(createAuth(userID: userID))
+        }
+        for userID in userIDs.reversed() {
+            userInfos.append(createUserInfo(userID: userID))
+        }
+
+        let lockedAuth = try Locked<[AuthCredential]>(clearValue: auths, with: mainKey)
+        customCache.getShared().set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
+        let lockedUserInfo = try Locked<[UserInfo]>(clearValue: userInfos, with: mainKey)
+        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
+    }
+
+    private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
+        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let auth = createAuth(userID: userID)
+        let userInfo = createUserInfo(userID: userID)
+
+        let lockedAuth = try Locked<[AuthCredential]>(clearValue: [auth], with: mainKey)
+        customCache.getShared().set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
+        let lockedUserInfo = try Locked<[UserInfo]>(clearValue: [userInfo], with: mainKey)
+        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
+        if hasMailSetting {
+            let mailSetting = MailSettings(nextMessageOnMove: true)
+            let value: [String: MailSettings] = [userID: mailSetting]
+            let lockedMailSetting = try Locked<[String: MailSettings]>(clearValue: value, with: mainKey)
+            customCache.getShared().set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
+        }
+    }
+
+    private func prepareLegacyUserData(userID: String) throws {
+        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let auth = createAuth(userID: userID)
+        let userInfo = createUserInfo(userID: userID)
+        let archived = auth.archive()
+        let lockedAuth = try Locked<Data>(clearValue: archived, with: mainKey)
+        customKeyChain.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.keychainStore)
+
+        let lockedUserInfo = try Locked<UserInfo>(clearValue: userInfo, with: mainKey)
+        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.userInfo)
+    }
+
+    private func createAuth(userID: String) -> AuthCredential {
+        return AuthCredential(sessionID: "SessionID_\(userID)",
+                              accessToken: "",
+                              refreshToken: "",
+                              userName: userID,
+                              userID: userID,
+                              privateKey: nil,
+                              passwordKeySalt: nil)
+    }
+
+    private func createUserInfo(userID: String) -> UserInfo {
+        return UserInfo(maxSpace: nil,
+                        usedSpace: nil,
+                        language: nil,
+                        maxUpload: nil,
+                        role: 0,
+                        delinquent: nil,
+                        keys: [],
+                        userId: userID,
+                        linkConfirmation: nil,
+                        credit: nil,
+                        currency: nil,
+                        subscribed: nil)
+    }
+
     private func createUserManagerMock(userID: String, isPaid: Bool) -> UserManager {
         let userInfo = UserInfo(maxSpace: nil,
-                                 usedSpace: nil,
-                                 language: nil,
-                                 maxUpload: nil,
-                                 role: isPaid ? 1 : 0,
-                                 delinquent: nil,
-                                 keys: [],
-                                 userId: userID,
-                                 linkConfirmation: nil,
-                                 credit: nil,
-                                 currency: nil,
-                                 subscribed: nil)
-        let auth = AuthCredential(sessionID: "SessionID_\(userID)",
-                                   accessToken: "",
-                                   refreshToken: "",
-                                   expiration: Date(),
-                                   userName: userID,
-                                   userID: userID,
-                                   privateKey: nil,
-                                   passwordKeySalt: nil)
+                                usedSpace: nil,
+                                language: nil,
+                                maxUpload: nil,
+                                role: isPaid ? 1 : 0,
+                                delinquent: nil,
+                                keys: [],
+                                userId: userID,
+                                linkConfirmation: nil,
+                                credit: nil,
+                                currency: nil,
+                                subscribed: nil)
+        let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,
                            userInfo: userInfo,
                            authCredential: auth,
+                           mailSettings: .init(),
                            parent: sut)
     }
 }

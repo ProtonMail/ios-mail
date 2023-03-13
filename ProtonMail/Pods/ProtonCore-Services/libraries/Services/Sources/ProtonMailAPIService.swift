@@ -167,8 +167,6 @@ public class PMAPIService: APIService {
         label: "ch.proton.api.refresh_completion", qos: .userInitiated, attributes: [.concurrent]
     )
 
-    let acquireSessionQueue = DispatchQueue(label: "ch.proton.api.acquire_session", qos: .userInitiated)
-
     public var challengeParametersProvider: ChallengeParametersProvider
     var deviceFingerprints: ChallengeProperties {
         ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
@@ -271,49 +269,25 @@ public class PMAPIService: APIService {
               challengeParametersProvider: challengeParametersProvider)
     }
 
-    public func acquireSessionIfNeeded(completion outsideCompletion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void) {
-        acquireSessionQueue.async { [weak self] in
-            guard let self else {
-                outsideCompletion(.success(.sessionUnavailableAndNotFetched))
-                return
-            }
-            let group = DispatchGroup()
-            group.enter()
-            let completion = {
-                group.leave()
-                outsideCompletion($0)
-            }
-            self.fetchAuthCredentials { [weak self] (result: AuthCredentialFetchingResult) in
-                switch result {
-                case .found:
-                    completion(.success(.sessionAlreadyPresent))
-                case .wrongConfigurationNoDelegate:
-                    completion(.success(.sessionUnavailableAndNotFetched))
-                case .notFound:
-                    guard let self else {
-                        completion(.success(.sessionUnavailableAndNotFetched))
-                        return
-                    }
-                    self.acquireSession(deviceFingerprints: self.deviceFingerprints) { (result: SessionAcquisitionResult) in
-                        switch result {
-                        case .acquired:
-                            completion(.success(.sessionFetchedAndAvailable))
-                        case .wrongConfigurationNoDelegate:
-                            completion(.success(.sessionUnavailableAndNotFetched))
-                        case .acquiringError(let error):
-                            // no http code means the request failed because the servers are not reachable — we need to return the error
-                            if error.httpCode == nil {
-                                completion(.failure(error.underlyingError ?? error as NSError))
+    public func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void) {
+        fetchExistingCredentialsOrAcquireNewUnauthCredentials(deviceFingerprints: deviceFingerprints) { result in
+            switch result {
+            case .foundExisting:
+                completion(.success(.sessionAlreadyPresent))
+            case .triedAcquiringNew(.wrongConfigurationNoDelegate):
+                completion(.success(.sessionUnavailableAndNotFetched))
+            case .triedAcquiringNew(.acquired):
+                completion(.success(.sessionFetchedAndAvailable))
+            case .triedAcquiringNew(.acquiringError(let error)):
+                // no http code means the request failed because the servers are not reachable — we need to return the error
+                if error.httpCode == nil {
+                    completion(.failure(error.underlyingError ?? error as NSError))
 
-                            // http code means the request failed because of the server error — we just fail silently then
-                            } else {
-                                completion(.success(.sessionUnavailableAndNotFetched))
-                            }
-                        }
-                    }
+                // http code means the request failed because of the server error — we just fail silently then
+                } else {
+                    completion(.success(.sessionUnavailableAndNotFetched))
                 }
             }
-            group.wait()
         }
     }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,12 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
-@testable import ProtonMail
+import ProtonCore_Networking
 
-class MockESFeatureStatusProvider: ESFeatureStatusProvider {
-    @PropertyStub(\MockESFeatureStatusProvider.isEncryptedSearchOn, initialGet: false) var isESOnStub
-    var isEncryptedSearchOn: Bool {
-        isESOnStub()
+final class UpdateNextMessageOnMoveRequest: Request {
+    let isEnable: Bool
+
+    init(isEnable: Bool) {
+        self.isEnable = isEnable
+    }
+
+    var method: HTTPMethod {
+        return .put
+    }
+
+    var path: String {
+        return SettingsAPI.path + "/next-message-on-move"
+    }
+
+    var parameters: [String: Any]? {
+        let rawValue = isEnable == true ? 1 : 0
+        return ["NextMessageOnMove": rawValue]
     }
 }

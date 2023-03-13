@@ -21,8 +21,22 @@ import ProtonCore_TestingToolkit
 
 class MockConversationViewModel: ConversationViewModel {
 
+    override init(labelId: LabelID, conversation: ConversationEntity, coordinator: ConversationCoordinatorProtocol, user: UserManager, contextProvider: CoreDataContextProviderProtocol, internetStatusProvider: InternetConnectionStatusProvider, conversationStateProvider: ConversationStateProviderProtocol, labelProvider: LabelProviderProtocol, userIntroductionProgressProvider: UserIntroductionProgressProvider, targetID: MessageID?, toolbarActionProvider: ToolbarActionProvider, saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase, toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider, goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void, dependencies: ConversationViewModel.Dependencies) {
+        super.init(labelId: labelId, conversation: conversation, coordinator: coordinator, user: user, contextProvider: contextProvider, internetStatusProvider: internetStatusProvider, conversationStateProvider: conversationStateProvider, labelProvider: labelProvider, userIntroductionProgressProvider: userIntroductionProgressProvider, targetID: targetID, toolbarActionProvider: toolbarActionProvider, saveToolbarActionUseCase: saveToolbarActionUseCase, toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider, goToDraft: goToDraft, dependencies: dependencies)
+    }
+
     @FuncStub(MockConversationViewModel.fetchConversationDetails) var callFetchConversationDetail
     override func fetchConversationDetails(completion: (() -> Void)?) {
         callFetchConversationDetail(completion)
+    }
+
+    @FuncStub(MockConversationViewModel.searchForScheduled) var callSearchForScheduled
+    override func searchForScheduled(conversation: ConversationEntity? = nil, displayAlert: @escaping (Int) -> Void, continueAction: @escaping () -> Void) {
+        callSearchForScheduled(conversation, displayAlert, continueAction)
+    }
+
+    @FuncStub(MockConversationViewModel.handleActionSheetAction(_:completion:)) var callHandleActionSheetAction
+    override func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
+        callHandleActionSheetAction(action, completion)
     }
 }
