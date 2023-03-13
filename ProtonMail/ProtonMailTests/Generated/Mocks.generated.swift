@@ -475,6 +475,19 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
 
 }
 
+class MockSenderImageStatusProvider: SenderImageStatusProvider {
+    @FuncStub(MockSenderImageStatusProvider.isSenderImageEnabled, initialReturn: Bool()) var isSenderImageEnabledStub
+    func isSenderImageEnabled(userID: UserID) -> Bool {
+        isSenderImageEnabledStub(userID)
+    }
+
+    @FuncStub(MockSenderImageStatusProvider.setIsSenderImageEnable) var setIsSenderImageEnableStub
+    func setIsSenderImageEnable(enable: Bool, userID: UserID) {
+        setIsSenderImageEnableStub(enable, userID)
+    }
+
+}
+
 class MockSettingsAccountCoordinatorProtocol: SettingsAccountCoordinatorProtocol {
     @FuncStub(MockSettingsAccountCoordinatorProtocol.go) var goStub
     func go(to dest: SettingsAccountCoordinator.Destination) {

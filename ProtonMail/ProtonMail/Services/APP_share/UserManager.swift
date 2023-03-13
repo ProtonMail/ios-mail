@@ -259,7 +259,8 @@ class UserManager: Service {
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             scheduleSendEnableStatusProvider: userCachedStatus,
-            userIntroductionProgressProvider: userCachedStatus
+            userIntroductionProgressProvider: userCachedStatus,
+            senderImageEnableStatusProvider: userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)
         return service
