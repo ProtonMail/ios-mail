@@ -39,13 +39,13 @@ struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
 
     func readEnvironment() -> Environment? {
         guard let environment = userDefaults.string(forKey: Key.environment.rawValue) else { return nil }
-        let customUrl = userDefaults.string(forKey: Key.environmentCustomDomain.rawValue)
-        return Environment(caseValue: environment, customUrl: customUrl)
+        let customDomain = userDefaults.string(forKey: Key.environmentCustomDomain.rawValue)
+        return Environment(caseValue: environment, customDomain: customDomain)
     }
 
     func write(environment: Environment) {
         userDefaults.setValue(environment.caseValue, forKey: Key.environment.rawValue)
-        userDefaults.setValue(environment.customUrl, forKey: Key.environmentCustomDomain.rawValue)
+        userDefaults.setValue(environment.customDomain, forKey: Key.environmentCustomDomain.rawValue)
     }
 }
 
@@ -72,18 +72,18 @@ private extension Environment {
         }
     }
 
-    var customUrl: String? {
+    var customDomain: String? {
         switch self {
         case .mailProd, .vpnProd, .driveProd, .calendarProd, .black, .blackPayment:
             return nil
-        case .custom(let customUrl):
-            return customUrl
+        case .custom(let customDomain):
+            return customDomain
         }
     }
 
-    init?(caseValue: String, customUrl: String?) {
-        if caseValue == "custom", let customUrl = customUrl {
-            self = .custom(customUrl)
+    init?(caseValue: String, customDomain: String?) {
+        if caseValue == "custom", let customDomain = customDomain {
+            self = .custom(customDomain)
         } else {
             // we only take into account meaningful environments for Mail
             switch caseValue {
