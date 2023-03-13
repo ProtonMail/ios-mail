@@ -29,7 +29,7 @@ struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
 
     private enum Key: String {
         case environment
-        case environmentCustomUrl
+        case environmentCustomDomain
     }
 
     // swiftlint:disable:next force_unwrapping
@@ -39,13 +39,13 @@ struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
 
     func readEnvironment() -> Environment? {
         guard let environment = userDefaults.string(forKey: Key.environment.rawValue) else { return nil }
-        let customUrl = userDefaults.string(forKey: Key.environmentCustomUrl.rawValue)
+        let customUrl = userDefaults.string(forKey: Key.environmentCustomDomain.rawValue)
         return Environment(caseValue: environment, customUrl: customUrl)
     }
 
     func write(environment: Environment) {
         userDefaults.setValue(environment.caseValue, forKey: Key.environment.rawValue)
-        userDefaults.setValue(environment.customUrl, forKey: Key.environmentCustomUrl.rawValue)
+        userDefaults.setValue(environment.customUrl, forKey: Key.environmentCustomDomain.rawValue)
     }
 }
 
