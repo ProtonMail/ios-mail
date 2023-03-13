@@ -29,7 +29,7 @@ final class RefetchAllBlockedSenders: RefetchAllBlockedSendersUseCase {
 
     func execute(completion: @escaping (Error?) -> Void) {
         do {
-            try dependencies.incomingDefaultService.deleteAll(location: .blocked)
+            try dependencies.incomingDefaultService.delete(query: .location(.blocked))
 
             dependencies.incomingDefaultService.fetchAll(location: .blocked, completion: completion)
         } catch {
@@ -40,6 +40,6 @@ final class RefetchAllBlockedSenders: RefetchAllBlockedSendersUseCase {
 
 extension RefetchAllBlockedSenders {
     struct Dependencies {
-        let incomingDefaultService: IncomingDefaultService
+        let incomingDefaultService: IncomingDefaultServiceProtocol
     }
 }

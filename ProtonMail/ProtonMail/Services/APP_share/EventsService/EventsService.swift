@@ -797,7 +797,7 @@ extension EventsService {
             return
         }
         do {
-            try dependencies.incomingDefaultService.delete(incomingDefaultID: incomingDefaultId)
+            try dependencies.incomingDefaultService.delete(query: .id(incomingDefaultId))
         } catch {
             assertionFailure()
         }

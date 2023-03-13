@@ -323,6 +323,7 @@
     <entity name="IncomingDefault" representedClassName=".IncomingDefault" syncable="YES">
         <attribute name="email" attributeType="Transformable" valueTransformerName="StringCryptoTransformer"/>
         <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isSoftDeleted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="location" attributeType="String"/>
         <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="userID" attributeType="String"/>
