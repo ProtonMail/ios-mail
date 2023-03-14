@@ -45,8 +45,6 @@ protocol EventsFetching: EventsServiceProtocol, Service {
 
     func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?)
     func fetchEvents(labelID: LabelID)
-    func processEvents(counts: [[String: Any]]?)
-    func processEvents(conversationCounts: [[String: Any]]?)
     func processEvents(mailSettings: [String: Any]?)
     func processEvents(space usedSpace: Int64?)
 }
@@ -62,7 +60,7 @@ enum EventError: Error {
 /// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
 protocol EventsServiceProtocol: AnyObject {
     func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?)
-    func processEvents(counts: [[String: Any]]?)
+    func processEvents(messageCounts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
 }
 
@@ -236,7 +234,7 @@ extension EventsService {
                                 self.processEvents(user: eventsRes.user)
                                 self.processEvents(userSettings: eventsRes.userSettings)
                                 self.processEvents(mailSettings: eventsRes.mailSettings)
-                                self.processEvents(counts: eventsRes.messageCounts)
+                                self.processEvents(messageCounts: eventsRes.messageCounts)
                                 self.processEvents(conversationCounts: eventsRes.conversationCounts)
                                 self.processEvents(space: eventsRes.usedSpace)
 
@@ -278,7 +276,7 @@ extension EventsService {
                             self.processEvents(user: eventsRes.user)
                             self.processEvents(userSettings: eventsRes.userSettings)
                             self.processEvents(mailSettings: eventsRes.mailSettings)
-                            self.processEvents(counts: eventsRes.messageCounts)
+                            self.processEvents(messageCounts: eventsRes.messageCounts)
                             self.processEvents(conversationCounts: eventsRes.conversationCounts)
                             self.processEvents(space: eventsRes.usedSpace)
 
@@ -758,53 +756,36 @@ extension EventsService {
     /// Process Message count from event logs
     ///
     /// - Parameter counts: message count dict
-    func processEvents(counts: [[String: Any]]?) {
-        guard let messageCounts = counts, messageCounts.count > 0 else {
-            return
-        }
-
-        for count in messageCounts {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
-                }
-                let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .singleMessage, shouldSave: false)
-                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .singleMessage)
-            }
-        }
-
-        guard let users = self.userManager.parentManager,
-              let primaryUser = users.firstUser,
-              primaryUser.userInfo.userId == self.userManager.userInfo.userId,
-              primaryUser.getCurrentViewMode() == .singleMessage else { return }
-
-        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .singleMessage)
-        UIApplication.setBadge(badge: max(0, unreadCount))
+    func processEvents(messageCounts: [[String: Any]]?) {
+        processEvents(counts: messageCounts, viewMode: .singleMessage)
     }
 
     func processEvents(conversationCounts: [[String: Any]]?) {
-        guard let conversationCounts = conversationCounts, conversationCounts.count > 0 else {
+        processEvents(counts: conversationCounts, viewMode: .conversation)
+    }
+
+    private func processEvents(counts: [[String: Any]]?, viewMode: ViewMode) {
+        guard let counts = counts, !counts.isEmpty else {
             return
         }
 
-        for count in conversationCounts {
+        for count in counts {
             if let labelID = count["LabelID"] as? String {
                 guard let unread = count["Unread"] as? Int else {
                     continue
                 }
                 let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .conversation, shouldSave: false)
-                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .conversation)
+                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: viewMode, shouldSave: false)
+                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: viewMode)
             }
         }
 
         guard let users = self.userManager.parentManager,
               let primaryUser = users.firstUser,
               primaryUser.userInfo.userId == self.userManager.userInfo.userId,
-              primaryUser.getCurrentViewMode() == .conversation else { return }
+              primaryUser.getCurrentViewMode() == viewMode else { return }
 
-        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .conversation)
+        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: viewMode)
         UIApplication.setBadge(badge: max(0, unreadCount))
     }
 
