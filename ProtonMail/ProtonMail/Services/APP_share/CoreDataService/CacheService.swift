@@ -163,15 +163,22 @@ class CacheService: CacheServiceProtocol {
     }
 
     func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool) -> Bool {
-        var hasError = false
+        var isSuccess: Bool!
+
         coreDataService.performAndWaitOnRootSavingContext { context in
+            isSuccess = self.mark(messageObjectID: messageObjectID, labelID: labelID, unRead: unRead, context: context)
+        }
+
+        return isSuccess
+    }
+
+    func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool, context: NSManagedObjectContext) -> Bool {
             guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
-                hasError = true
-                return
+                return false
             }
 
             guard msgToUpdate.unRead != unRead else {
-                return
+                return true
             }
 
             msgToUpdate.unRead = unRead
@@ -184,16 +191,12 @@ class CacheService: CacheServiceProtocol {
             }
             self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
 
-            let error = context.saveUpstreamIfNeeded()
-            if error != nil {
-                hasError = true
-            }
-        }
-
-        if hasError {
+        if let error = context.saveUpstreamIfNeeded(){
+            assertionFailure("\(error)")
             return false
+        } else {
+            return true
         }
-        return true
     }
 
     func label(messages: [MessageEntity], label: LabelID, apply: Bool) -> Bool {
