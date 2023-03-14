@@ -419,13 +419,18 @@ extension MainQueueHandler {
     }
 
     private func handleAttachmentResponse(result: Swift.Result<JSONDictionary, NSError>,
-                                          attachment: Attachment,
+                                          attachmentObjectID: NSManagedObjectID,
                                           keyPacket: Data,
                                           completion: @escaping Completion) {
         switch result {
         case .success(let response):
         if let attDict = response["Attachment"] as? [String: Any], let id = attDict["ID"] as? String {
             self.coreDataService.enqueueOnRootSavingContext { context in
+                guard let attachment = try? context.existingObject(with: attachmentObjectID) as? Attachment else {
+                    assertionFailure("An attachment should exist!")
+                    completion(nil)
+                    return
+                }
                 attachment.attachmentID = id
                 attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
@@ -454,7 +459,7 @@ extension MainQueueHandler {
                 .default
                 .post(name: .attachmentUploadFailed,
                       object: nil,
-                      userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                      userInfo: ["objectID": attachmentObjectID.uriRepresentation().absoluteString,
                                  "reason": reason,
                                  "code": err.code])
             completion(err)
@@ -523,7 +528,7 @@ extension MainQueueHandler {
                                                  passphrase: passphrase)
                     let completionWrapper: API.JSONCompletion = { _, result in
                         self.handleAttachmentResponse(result: result,
-                                                      attachment: attachment,
+                                                      attachmentObjectID: managedObjectID,
                                                       keyPacket: keyPacket,
                                                       completion: completion)
                     }
