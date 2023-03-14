@@ -186,7 +186,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             let counterRoute = MessageCountRequest()
                             self.apiService.perform(request: counterRoute, response: MessageCountResponse()) { _, response in
                                 if response.error == nil {
-                                    self.parent?.eventsService.processEvents(counts: response.counts)
+                                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
                                 }
                             }
                             DispatchQueue.main.async {
@@ -293,7 +293,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         completion?()
                         return
                     }
-                    self.parent?.eventsService.processEvents(counts: response.counts)
+                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
                     completion?()
                 }
             case .conversation:
