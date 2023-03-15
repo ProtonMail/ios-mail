@@ -202,9 +202,19 @@ extension AppDelegate: UIApplicationDelegate {
         self.onLogout()
     }
 
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return .portrait
-    }
+    func application(
+          _ application: UIApplication,
+          supportedInterfaceOrientationsFor window: UIWindow?
+      ) -> UIInterfaceOrientationMask {
+          let viewController = window?.rootViewController
+          if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
+              return UIInterfaceOrientationMask.all
+          }
+          if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
+              return .portrait
+          }
+          return .all
+      }
 
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
