@@ -25,7 +25,12 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import UIKit
 
-class SettingsAccountCoordinator {
+// sourcery: mock
+protocol SettingsAccountCoordinatorProtocol: AnyObject {
+    func go(to dest: SettingsAccountCoordinator.Destination)
+}
+
+class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
 
@@ -51,6 +56,7 @@ class SettingsAccountCoordinator {
         case searchContent
         case localStorage
         case deleteAccount
+        case nextMsgAfterMove
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -96,6 +102,8 @@ class SettingsAccountCoordinator {
             openLocalStorage()
         case .deleteAccount:
             openAccountDeletion()
+        case .nextMsgAfterMove:
+            openNextMessageAfterMove()
         }
     }
 
@@ -215,5 +223,11 @@ class SettingsAccountCoordinator {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addCloseAction()
         navigationController?.topViewController?.present(alert, animated: true, completion: nil)
+    }
+
+    private func openNextMessageAfterMove() {
+        let viewModel = NextMessageAfterMoveViewModel(user, apiService: user.apiService)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 }

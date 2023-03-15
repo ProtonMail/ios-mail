@@ -39,7 +39,7 @@ public class SignupUITestCases {
             .verify.closeButtonIsNotShown()
     }
     
-    public func testBothAccountInteralFirst(signupRobot: SignupRobot) {
+    public func testBothAccountInternalFirst(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountExtButtonIsShown()

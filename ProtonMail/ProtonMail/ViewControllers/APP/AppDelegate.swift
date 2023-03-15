@@ -29,6 +29,7 @@ import ProtonCore_Keymaker
 import ProtonCore_Log
 import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
+import ProtonCore_Observability
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -124,7 +125,7 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        let usersManager = UsersManager(doh: DoHMail.default)
+        let usersManager = UsersManager(doh: BackendConfiguration.shared.doh)
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
@@ -166,6 +167,7 @@ extension AppDelegate: UIApplicationDelegate {
         #endif
         configureCrypto()
         configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
+        configureCoreObservability()
         configureAnalytics()
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
@@ -495,13 +497,21 @@ extension AppDelegate {
     }
 
     private func configureCoreFeatureFlags(launchArguments: [String]) {
+        FeatureFactory.shared.enable(&.observability)
+
         guard !launchArguments.contains("-testNoUnauthSessions") else { return }
 
         FeatureFactory.shared.enable(&.unauthSession)
 
+        #if DEBUG
         guard launchArguments.contains("-testUnauthSessionsWithHeader") else { return }
         // this is only a test flag used before backend whitelists the app version
         FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
+        #endif
+    }
+
+    private func configureCoreObservability() {
+        ObservabilityEnv.current.setupWorld(apiService: PMAPIService.unauthorized)
     }
 
     private func configureLanguage() {

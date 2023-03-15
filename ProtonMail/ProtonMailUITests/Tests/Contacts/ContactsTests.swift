@@ -21,7 +21,7 @@ class ContactsTests : BaseTestCase {
             .contacts()
     }
 
-    func testCreateContact() {
+    func testCreateAndDeleteContact() {
         let name = testData.alphaNumericString
         let email = testData.newEmailAddress
         contactsRobot
@@ -50,18 +50,7 @@ class ContactsTests : BaseTestCase {
             .verify.contactDoesNotExists(editedName)
     }
 
-    func testDeleteContact() {
-        let name = testData.alphaNumericString
-        let email = testData.newEmailAddress
-        contactsRobot
-            .addContact()
-            .setNameEmailAndSave(name, email)
-            .contactsView()
-            .deleteContact(name)
-            .verify.contactDoesNotExists(name)
-    }
-
-    func testCreateGroup() {
+    func testCreateAndDeleteGroup() {
         let contactEmail = testData.internalEmailTrustedKeys
         let groupName = testData.alphaNumericString
         contactsRobot
@@ -93,20 +82,6 @@ class ContactsTests : BaseTestCase {
             .groupsView()
             .deleteGroup(newGroupName)
             .verify.groupDoesNotExists(newGroupName)
-    }
-
-    func testDeleteGroup() {
-        let contactEmail = testData.internalEmailTrustedKeys.email
-        let groupName = testData.alphaNumericString
-        contactsRobot
-            .addGroup()
-            .typeGroupName(groupName)
-            .tapManageAddresses()
-            .addContactToGroup(contactEmail)
-            .saveContactSelection()
-            .groupsView()
-            .deleteGroup(groupName)
-            .verify.groupDoesNotExists(groupName)
     }
 
     func testContactDetailSendMessage() {

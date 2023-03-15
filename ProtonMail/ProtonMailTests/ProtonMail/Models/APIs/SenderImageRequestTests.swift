@@ -30,7 +30,7 @@ final class SenderImageRequestTests: XCTestCase {
         let value = isDarkMode ? "dark" : "light"
         XCTAssertEqual(
             sut.path,
-            "/core/v4/images/logo?Address=\(email)&UID=\(uid)&Mode=\(value)"
+            "/core/v4/images/logo?Address=\(email)&Mode=\(value)&UID=\(uid)"
         )
     }
 
@@ -46,7 +46,7 @@ final class SenderImageRequestTests: XCTestCase {
         let value = isDarkMode ? "dark" : "light"
         XCTAssertEqual(
             sut.path,
-            "/core/v4/images/logo?Address=\(email)&UID=\(uid)&Mode=\(value)&Size=\(32)&BimiSelector=\(bimiSelector)"
+            "/core/v4/images/logo?Address=\(email)&Mode=\(value)&Size=\(32)&BimiSelector=\(bimiSelector)&UID=\(uid)"
         )
     }
 }

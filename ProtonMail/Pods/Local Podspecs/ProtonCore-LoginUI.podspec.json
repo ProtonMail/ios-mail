@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-LoginUI",
-  "version": "3.28.1",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.28.1"
+    "git": null,
+    "tag": "3.28.2"
   },
   "platforms": {
     "ios": "11.0"
@@ -31,34 +31,34 @@
   "frameworks": "UIKit",
   "dependencies": {
     "ProtonCore-Log": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-OpenPGP": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-Foundations": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-UIFoundations": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-CoreTranslation": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-Challenge": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-DataModel": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-TroubleShooting": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-Environment": [
-      "3.28.1"
+      "3.28.2"
     ],
     "ProtonCore-Observability": [
-      "3.28.1"
+      "3.28.2"
     ],
     "lottie-ios": [
       "3.4.3"
@@ -76,40 +76,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -126,40 +126,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -176,40 +176,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -226,40 +226,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -276,40 +276,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -326,40 +326,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -376,40 +376,40 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "3.28.1"
+          "3.28.2"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -426,37 +426,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -470,37 +470,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -514,37 +514,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -558,37 +558,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -602,37 +602,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -646,37 +646,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -690,37 +690,37 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-TestingToolkit/UnitTests/LoginUI/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "TrustKit": [
 
@@ -735,25 +735,25 @@
       "name": "Crypto-Go1.18.8",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-Go1.18.8": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -769,25 +769,25 @@
       "name": "Crypto-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -803,25 +803,25 @@
       "name": "Crypto-patched-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto-patched-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -837,25 +837,25 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+VPN-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -871,25 +871,25 @@
       "name": "Crypto+VPN-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+VPN-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -905,25 +905,25 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+Search-Go1.15.15": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",
@@ -939,25 +939,25 @@
       "name": "Crypto+Search-Go1.19.4",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Login/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-Payments/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-PaymentsUI/Crypto+Search-Go1.19.4": [
-          "3.28.1"
+          "3.28.2"
         ],
         "ProtonCore-HumanVerification": [
-          "3.28.1"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/LoginUI/Sources/**/*.swift",

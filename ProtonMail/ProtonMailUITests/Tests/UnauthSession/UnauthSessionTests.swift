@@ -25,11 +25,10 @@ private enum CommonUnauthSessionTests {
 
     static let environment: Environment = .black
 
-    static var endpoints: (String?, String?, String?) {
+    static var endpoints: (String?, String?) {
         return (
             URL(string: environment.doh.defaultHost)?.host,
-            environment.doh.defaultPath,
-            URL(string: environment.doh.defaultHost)?.host
+            environment.doh.defaultPath
         )
     }
 
@@ -75,7 +74,7 @@ final class NoUnauthSessionTests: BaseTestCase {
 
     override class func setUp() {
         super.setUp()
-        (apiDomain, apiPath, appDomain) = CommonUnauthSessionTests.endpoints
+        (apiDomain, _) = CommonUnauthSessionTests.endpoints
     }
 
     override func setUp() {
@@ -93,7 +92,7 @@ final class UnauthSessionTests: BaseTestCase {
 
     override class func setUp() {
         super.setUp()
-        (apiDomain, apiPath, appDomain) = CommonUnauthSessionTests.endpoints
+        (apiDomain, _) = CommonUnauthSessionTests.endpoints
     }
 
     override func setUp() {

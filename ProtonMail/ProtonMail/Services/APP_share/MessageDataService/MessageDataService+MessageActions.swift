@@ -123,13 +123,22 @@ extension MessageDataService: MessageDataActionProtocol {
     /// - Returns: true if change to unread and push to the queue
     @discardableResult
     func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
+        mark(messageObjectIDs: messageObjectIDs, labelID: labelID, unRead: unRead, context: nil)
+    }
+
+    @discardableResult
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool, context: NSManagedObjectContext?) -> Bool {
         guard !messageObjectIDs.isEmpty else {
             return false
         }
         let ids = messageObjectIDs.map { $0.uriRepresentation().absoluteString }
         self.queue(unRead ? .unread(currentLabelID: labelID.rawValue, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids))
         for messageObjectID in messageObjectIDs {
-            _ = self.cacheService.mark(messageObjectID: messageObjectID, labelID: labelID, unRead: unRead)
+            if let context = context {
+                _ = self.cacheService.mark(messageObjectID: messageObjectID, labelID: labelID, unRead: unRead, context: context)
+            } else {
+                _ = self.cacheService.mark(messageObjectID: messageObjectID, labelID: labelID, unRead: unRead)
+            }
         }
         return true
     }

@@ -47,7 +47,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case darkMode = 0
     case appPIN
     case swipeAction
-    case combinContacts
+    case combineContacts
     case alternativeRouting
     case browser
     case toolbar
@@ -58,7 +58,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._dark_mode
         case .appPIN:
             return LocalString._app_pin
-        case .combinContacts:
+        case .combineContacts:
             return LocalString._combined_contacts
         case .browser:
             return LocalString._default_browser
@@ -91,12 +91,11 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
 
 final class SettingsDeviceViewModel {
     let sections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
-    private(set) var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
+    private(set) var appSettings: [DeviceSectionItem] = [.appPIN, .combineContacts, .browser, .alternativeRouting, .swipeAction]
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private(set) var userManager: UserManager
     private let users: UsersManager
-    private let dohSetting: DohStatusProtocol
     private let biometricStatus: BiometricStatusProvider
 
     var lockOn: Bool {
@@ -119,7 +118,7 @@ final class SettingsDeviceViewModel {
     let languages: [ELanguage] = ELanguage.allItems()
 
     var isDohOn: Bool {
-        return self.dohSetting.status == .on
+        BackendConfiguration.shared.doh.status == .on
     }
 
     var appPINTitle: String {
@@ -133,13 +132,12 @@ final class SettingsDeviceViewModel {
         }
     }
 
-    init(user: UserManager, users: UsersManager, dohSetting: DohStatusProtocol, biometricStatus: BiometricStatusProvider) {
+    init(user: UserManager, users: UsersManager, biometricStatus: BiometricStatusProvider) {
         self.userManager = user
         self.users = users
-        self.dohSetting = dohSetting
         self.biometricStatus = biometricStatus
         if #available(iOS 13, *) {
-            appSettigns.insert(.darkMode, at: 0)
+            appSettings.insert(.darkMode, at: 0)
         }
 
         #if DEBUG_ENTERPRISE
@@ -147,7 +145,7 @@ final class SettingsDeviceViewModel {
         #endif
 
         if UserInfo.isToolbarCustomizationEnable {
-            appSettigns.append(.toolbar)
+            appSettings.append(.toolbar)
         }
     }
 

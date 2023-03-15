@@ -186,7 +186,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                             let counterRoute = MessageCountRequest()
                             self.apiService.perform(request: counterRoute, response: MessageCountResponse()) { _, response in
                                 if response.error == nil {
-                                    self.parent?.eventsService.processEvents(counts: response.counts)
+                                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
                                 }
                             }
                             DispatchQueue.main.async {
@@ -293,7 +293,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         completion?()
                         return
                     }
-                    self.parent?.eventsService.processEvents(counts: response.counts)
+                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
                     completion?()
                 }
             case .conversation:
@@ -427,7 +427,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
                                 if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
+                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false, context: context)
                                 }
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
@@ -489,7 +489,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         self.mark(
                                             messageObjectIDs: [messageOut.objectID],
                                             labelID: LabelID(labelID),
-                                            unRead: false
+                                            unRead: false,
+                                            context: context
                                         )
                                     }
 
@@ -526,7 +527,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     return
                 }
                 if let labelID = message.firstValidFolder() {
-                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
+                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false, context: context)
                 }
                 DispatchQueue.main.async {
                     completion(nil)

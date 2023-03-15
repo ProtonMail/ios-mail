@@ -36,33 +36,9 @@ struct Constants {
         // 4 is rebranding carousel
         static let TourVersion: Int = 4
 
-        static var appDomain: String { BackendConfiguration.shared.environment.appDomain }
-        static var URL_HOST: String { BackendConfiguration.shared.environment.apiDomain }
-        static var API_PATH: String { BackendConfiguration.shared.environment.apiPath }
-        static let DOH_ENABLE: Bool = true
-
         static let API_PREFIXED = "mail/v4"
 
-        static func apiHost() -> String {
-            if let apiURLOverrideString = UserDefaults.standard.string(
-                forKey: "ch.protonmail.protonmail.APIURLOverride"
-            ),
-                let apiURLOverride = URL(string: apiURLOverrideString) {
-                return apiURLOverride.absoluteString
-            }
-            return "https://\(URL_HOST)"
-        }
 
-        static func captchaHost() -> String {
-            if URL_HOST.starts(with: "api.") {
-                return "https://\(URL_HOST)"
-            } else {
-                return "https://api.\(URL_HOST)"
-            }
-        }
-
-        static var humanVerifyHost = "https://verify.\(Constants.App.appDomain)"
-        static var accountHost = "https://account.\(Constants.App.appDomain)"
         static var appVersion: String {
             if let buildVersion = Int(Bundle.main.buildVersion) {
                 return "ios-mail@\(Bundle.main.bundleShortVersion).\(buildVersion)"
@@ -85,6 +61,10 @@ struct Constants {
 
     enum ImageProxy {
         static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 1024   // 1 GiB
+    }
+
+    enum SenderImage {
+        static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 100 // 100 MB
     }
 
     enum EncryptedSearch {

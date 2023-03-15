@@ -48,6 +48,9 @@ public final class PMActionSheetHeaderView: UIView, AccessibleView {
     ///   - subtitle: Subtitle of action sheet
     ///   - leftItem: Left item of header view, if `title` set, `icon` will be ignored
     ///   - rightItem: Right item of header view, if `title` set, `icon` will be ignored
+    ///   - leftTitleViews: Views added to the left of the title label. Adding them will shift the title label.
+    ///   - rightTitleViews: Views added to the right of the title label. Adding them will shift the title label.
+    ///   - hasSeparator: Whether to add a separator line between the header and the cells.
     public init(
         title: String,
         subtitle: String?,

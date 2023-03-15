@@ -77,7 +77,7 @@ public class ObservabilityServiceImpl: ObservabilityService {
     
     public func report<Labels: Encodable & Equatable>(_ event: ObservabilityEvent<PayloadWithLabels<Labels>>) {
         
-        guard FeatureFactory.shared.isEnabled(.unauthSession) else {
+        guard FeatureFactory.shared.isEnabled(.unauthSession), FeatureFactory.shared.isEnabled(.observability) else {
             return
         }
         

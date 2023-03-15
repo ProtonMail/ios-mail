@@ -108,7 +108,7 @@ extension FetchMessages {
     }
 
     private func persistOnLocalStorageMessageCounts(counts: [[String: Any]]) {
-        dependencies.eventsService?.processEvents(counts: counts)
+        dependencies.eventsService?.processEvents(messageCounts: counts)
     }
 }
 

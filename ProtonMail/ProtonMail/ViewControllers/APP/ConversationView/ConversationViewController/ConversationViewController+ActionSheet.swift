@@ -58,11 +58,11 @@ extension ConversationViewController {
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .reply, .replyInConversation:
-            coordinator.handle(navigationAction: .reply(message: message))
+            viewModel.handleNavigationAction(.reply(message: message))
         case .replyAll, .replyAllInConversation:
-            coordinator.handle(navigationAction: .replyAll(message: message))
+            viewModel.handleNavigationAction(.replyAll(message: message))
         case .forward, .forwardInConversation:
-            coordinator.handle(navigationAction: .forward(message: message))
+            viewModel.handleNavigationAction(.forward(message: message))
         default:
             return
         }
@@ -72,11 +72,11 @@ extension ConversationViewController {
         switch action {
         case .viewHeaders:
             if let url = viewModel.getMessageHeaderUrl(message: message) {
-                coordinator.handle(navigationAction: .viewHeaders(url: url))
+                viewModel.handleNavigationAction(.viewHeaders(url: url))
             }
         case .viewHTML:
             if let url = viewModel.getMessageBodyUrl(message: message) {
-                coordinator.handle(navigationAction: .viewHTML(url: url))
+                viewModel.handleNavigationAction(.viewHTML(url: url))
             }
         default:
             return
@@ -84,10 +84,13 @@ extension ConversationViewController {
     }
 
     private func showToolbarActionCustomizationView() {
-        coordinator.handle(navigationAction: .toolbarCustomization(
-            currentActions: viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllWithConversationVersion(),
-            allActions: viewModel.toolbarCustomizationAllAvailableActions()
-        ))
+        viewModel.handleNavigationAction(
+            .toolbarCustomization(
+                currentActions: viewModel.actionsForToolbarCustomizeView()
+                    .replaceReplyAndReplyAllWithConversationVersion(),
+                allActions: viewModel.toolbarCustomizationAllAvailableActions()
+            )
+        )
     }
 }
 

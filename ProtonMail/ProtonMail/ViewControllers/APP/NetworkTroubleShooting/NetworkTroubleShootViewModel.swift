@@ -29,7 +29,7 @@ struct NetworkTroubleShootViewModel {
     private(set) var doh: DohStatusProtocol
     private(set) var dohSetting: DohCacheProtocol
 
-    init(doh: DohStatusProtocol = DoHMail.default, dohSetting: DohCacheProtocol = userCachedStatus) {
+    init(doh: DohStatusProtocol = BackendConfiguration.shared.doh, dohSetting: DohCacheProtocol = userCachedStatus) {
         self.doh = doh
         self.dohSetting = dohSetting
     }

@@ -234,21 +234,25 @@ class ContactDataService: Service {
         }
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
-            self.coreDataService.performOnRootSavingContext { context in
-                if let error = response.error {
-                    if error.responseCode == 13043 { // not exsit
-                        self.cacheService.deleteContact(by: contactID) { _ in
+            if let error = response.error {
+                if error.responseCode == 13043 { // doesn't exist
+                    self.cacheService.deleteContact(by: contactID) { _ in
+                        DispatchQueue.main.async {
+                            completion(error.toNSError)
                         }
-                    } else {
+                    }
+                } else {
+                    self.coreDataService.performOnRootSavingContext { context in
                         let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context)
                         contact?.isSoftDeleted = false
                         _ = context.saveUpstreamIfNeeded()
+                        
+                        DispatchQueue.main.async {
+                            completion(error.toNSError)
+                        }
                     }
-                    DispatchQueue.main.async {
-                        completion(error.toNSError)
-                    }
-                    return
                 }
+            } else {
                 self.cacheService.deleteContact(by: contactID) { (error) in
                     DispatchQueue.main.async {
                         completion(error)

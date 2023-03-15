@@ -20,13 +20,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 
-protocol UndoActionHandlerBase: UIViewController {
-    var delaySendSeconds: Int { get }
-    var composerPresentingVC: UIViewController? { get }
-
-    func showUndoAction(undoTokens: [String], title: String)
-}
-
 protocol UndoActionManagerProtocol {
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?)
     func addUndoTokens(_ tokens: [String], undoActionType: UndoAction?)
@@ -46,7 +39,6 @@ enum UndoAction: Equatable {
 }
 
 final class UndoActionManager: UndoActionManagerProtocol {
-
     enum Const {
         // The time we wait for the undo action token arrived.
         // Once the time passed the threshold, we do not show the undo action banner.
@@ -95,8 +87,8 @@ final class UndoActionManager: UndoActionManagerProtocol {
         guard let type = undoActionType,
               let index = undoTitles.firstIndex(where: { $0.action == type }),
               let item = undoTitles[safe: index] else {
-                  return
-              }
+            return
+        }
         if Date().timeIntervalSince1970 - item.bannerDisplayTime.timeIntervalSince1970 < Const.delayThreshold {
             handler?.showUndoAction(undoTokens: tokens, title: item.title)
         }
@@ -184,8 +176,8 @@ final class UndoActionManager: UndoActionManagerProtocol {
         case Message.Location.spam.labelID:
             type = .spam
         default:
-            if !labelID.rawValue.isEmpty &&
-                Message.Location(labelID) == nil {
+            if !labelID.rawValue.isEmpty,
+               Message.Location(labelID) == nil {
                 type = .custom(labelID)
             }
         }
@@ -194,6 +186,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
 }
 
 // MARK: Undo send
+
 extension UndoActionManager {
     // Call undo send api to cancel sent message
     // The undo send action is time sensitive, put in queue doesn't make sense
@@ -207,8 +200,8 @@ extension UndoActionManager {
                     .fetchEvents(byLabel: labelID,
                                  notificationMessageID: nil,
                                  completion: { _ in
-                        completion?(true)
-                    })
+                                     completion?(true)
+                                 })
             case .failure:
                 completion?(false)
             }
@@ -239,5 +232,50 @@ extension UndoActionManager {
     private func message(id messageID: MessageID) -> Message? {
         let context = contextProvider.mainContext
         return Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+    }
+}
+
+protocol UndoActionHandlerBase: UIViewController {
+    var delaySendSeconds: Int { get }
+    var composerPresentingVC: UIViewController? { get }
+    var undoActionManager: UndoActionManagerProtocol? { get }
+
+    func showUndoAction(undoTokens: [String], title: String)
+    func showActionRevertedBanner()
+}
+
+extension UndoActionHandlerBase {
+    func showActionRevertedBanner() {
+        let banner = PMBanner(message: LocalString._inbox_action_reverted_title,
+                              style: PMBannerNewStyle.info,
+                              dismissDuration: 1,
+                              bannerHandler: PMBanner.dismiss)
+        banner.show(at: .bottom, on: self)
+    }
+
+    func showUndoAction(undoTokens: [String], title: String) {
+        DispatchQueue.main.async {
+            let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+            banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
+                self?.undoActionManager?.requestUndoAction(
+                    undoTokens: undoTokens
+                ) { [weak self] isSuccess in
+                    DispatchQueue.main.async {
+                        if isSuccess {
+                            self?.showActionRevertedBanner()
+                        }
+                    }
+                }
+                banner.dismiss(animated: false)
+            }
+            banner.show(at: .bottom, on: self)
+            // Dismiss other banner after the undo banner is shown
+            delay(0.25) { [weak self] in
+                self?.view.subviews
+                    .compactMap { $0 as? PMBanner }
+                    .filter { $0 != banner }
+                    .forEach { $0.dismiss(animated: false) }
+            }
+        }
     }
 }

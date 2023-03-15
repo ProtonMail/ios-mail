@@ -24,21 +24,25 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-class MethodRequest: BaseApiRequest<MethodResponse> {
+public class MethodRequest: BaseApiRequest<MethodResponse> {
 
-    override var method: HTTPMethod { .get }
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+    
+    override public var method: HTTPMethod { .get }
 
-    override var path: String { super.path + "/v4/methods" }
+    override public var path: String { super.path + "/v4/methods" }
     
-    override var parameters: [String: Any]? { nil }
+    override public var parameters: [String: Any]? { nil }
     
-    override var isAuth: Bool { true }
+    override public var isAuth: Bool { true }
 }
 
-final class MethodResponse: Response {
+public final class MethodResponse: Response {
     var methods: [PaymentMethod]?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         guard let paymentMethods = response["PaymentMethods"] as? [[String: Any]] else { return false }
         let (result, methods) = decodeResponse(paymentMethods, to: [PaymentMethod].self, errorToReturn: .methodsDecode)
         self.methods = methods

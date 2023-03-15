@@ -24,16 +24,20 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class OrganizationsRequest: BaseApiRequest<OrganizationsResponse> {
-
-    override var path: String { "/core/v4/organizations" }
+public final class OrganizationsRequest: BaseApiRequest<OrganizationsResponse> {
+    
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+    
+    override public var path: String { "/core/v4/organizations" }
 }
 
-final class OrganizationsResponse: Response {
+public final class OrganizationsResponse: Response {
 
     private(set) var organization: Organization?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         guard let organizationResponse = response["Organization"] else { return false }
         let (result, details) = decodeResponse(organizationResponse, to: Organization.self, errorToReturn: .organizationDecode)
         organization = details

@@ -74,6 +74,7 @@ class MailboxViewModelTests: XCTestCase {
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,
+                                      mailSettings: nil,
                                       parent: nil)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()

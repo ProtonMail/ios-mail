@@ -19,38 +19,30 @@
 import XCTest
 
 class BackendConfigurationTests: XCTestCase {
-    private let emptyLaunchArgs = [String]()
-    private let uiTestsLaunchArgs = ["-uiTests"]
-
-    private let emptyEnvVars = [String: String]()
     private var apiCustomAPIEnvVars: [String: String]!
 
-    private let customAppDomain = "app.com"
-    private let customApiDomain = "api.com"
-    private let customApiPath = "/custom_api"
+    private let customApiDomain = "example.com"
 
     override func setUp() {
         super.setUp()
         apiCustomAPIEnvVars = [
-            "MAIL_APP_APP_DOMAIN": customAppDomain,
-            "MAIL_APP_API_DOMAIN": customApiDomain,
-            "MAIL_APP_API_PATH": customApiPath
+            "MAIL_APP_API_DOMAIN": customApiDomain
         ]
     }
 
-    func testInit_whenThereIsUITestsArg_andEnvVarsExist_returnsCustomEnv() {
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
-        XCTAssert(result.environment.appDomain == customAppDomain)
-        XCTAssert(result.environment.apiDomain == customApiDomain)
-        XCTAssert(result.environment.apiPath == customApiPath)
+    func testInit_whenNoCustomDomain_returnsProdEnv() {
+        let result = BackendConfiguration(environmentVariables: [:])
+        assertIsProduction(configuration: result)
     }
 
-    func testInit_whenThereIsUITestsArg_andOneEnvVarIsMissing_returnsProdEnv() {
-        var missingEnvVar: [String: String] = apiCustomAPIEnvVars
-        missingEnvVar[missingEnvVar.keys.randomElement()!] = nil
-
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: missingEnvVar)
-        assertIsProduction(configuration: result)
+    func testInit_whenNecessaryEnvVarExist_returnsCustomEnv() {
+        let result = BackendConfiguration(environmentVariables: apiCustomAPIEnvVars)
+        switch result.environment {
+        case .custom(customApiDomain):
+            break
+        default:
+            XCTFail("Unexpected environment: \(result.environment)")
+        }
     }
 
     private func assertIsProduction(
@@ -58,8 +50,13 @@ class BackendConfigurationTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        XCTAssertEqual(configuration.environment.appDomain, "proton.me", file: file, line: line)
-        XCTAssertEqual(configuration.environment.apiDomain, "api.protonmail.ch", file: file, line: line)
-        XCTAssertEqual(configuration.environment.apiPath, "", file: file, line: line)
+        switch configuration.environment {
+        case .mailProd:
+            break
+        default:
+            XCTFail("Unexpected environment: \(configuration.environment)", file: file, line: line)
+        }
+
+        XCTAssert(configuration.isProduction, file: file, line: line)
     }
 }

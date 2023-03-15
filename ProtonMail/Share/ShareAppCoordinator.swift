@@ -38,7 +38,7 @@ final class ShareAppCoordinator {
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
 
-        let usersManager = UsersManager(doh: DoHMail.default)
+        let usersManager = UsersManager(doh: BackendConfiguration.shared.doh)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
