@@ -66,6 +66,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     private var searchController: UISearchController?
 
     private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
 
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var searchView: UIView!
@@ -346,7 +347,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     @objc func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
+        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
             guard status.isConnected else {
                 DispatchQueue.main.async {
                     self?.refreshControl?.endRefreshing()

@@ -145,6 +145,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     let connectionStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
@@ -286,7 +287,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
 
-        connectionStatusProvider.registerConnectionStatus { [weak self] newStatus in
+        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] newStatus in
             self?.updateInterface(connectionStatus: newStatus)
         }
 

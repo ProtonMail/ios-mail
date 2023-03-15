@@ -50,6 +50,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     private var height: NSLayoutConstraint!
     private(set) var pickerHeight: CGFloat = 0.0
 
+    private let observerID = UUID()
+
     @objc
     dynamic var size: CGSize = .zero {
         didSet {
@@ -375,7 +377,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
 
     private func observeInternetConnectionStatus() {
-        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
+        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
             guard status.isConnected else {
                 self?.isConnected = false
                 return

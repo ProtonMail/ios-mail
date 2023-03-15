@@ -108,6 +108,7 @@ class ConversationViewModel {
     }
 
     let connectionStatusProvider: InternetConnectionStatusProvider
+    private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
@@ -276,7 +277,7 @@ class ConversationViewModel {
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        connectionStatusProvider.registerConnectionStatus { [weak self] networkStatus in
+        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
             guard self?.isInitialDataFetchCalled == true else {
                 return
             }
