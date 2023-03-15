@@ -25,8 +25,8 @@ final class SenderImageRequest: Request {
     }
 
     let method: HTTPMethod = .get
-    /// the value of sessionUID
-    let uid: String
+    /// the value of sessionUID. This value should be only used by un-auth api call.
+    let uid: String?
     let emailAddress: String
     let size: Size?
     let isDarkMode: Bool
@@ -37,7 +37,6 @@ final class SenderImageRequest: Request {
         var urlComponents = URLComponents(string: "/core/v4/images/logo")
         urlComponents?.queryItems = [
             URLQueryItem(name: "Address", value: emailAddress),
-            URLQueryItem(name: "UID", value: uid),
             URLQueryItem(name: "Mode", value: isDarkMode ? "dark" : "light")
         ]
         if let size = self.size {
@@ -46,12 +45,15 @@ final class SenderImageRequest: Request {
         if let bimiSelector = self.bimiSelector {
             urlComponents?.queryItems?.append(URLQueryItem(name: "BimiSelector", value: bimiSelector))
         }
+        if let uid = self.uid {
+            urlComponents?.queryItems?.append(URLQueryItem(name: "UID", value: uid))
+        }
         return urlComponents?.url?.absoluteString ?? ""
     }
 
     init(
         email: String,
-        uid: String,
+        uid: String? = nil,
         isDarkMode: Bool,
         size: Size? = nil,
         bimiSelector: String? = nil

@@ -63,6 +63,10 @@ struct Constants {
         static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 1024   // 1 GiB
     }
 
+    enum SenderImage {
+        static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 100 // 100 MB
+    }
+
     enum EncryptedSearch {
         static let defaultStorageLimit: Int = 1_000_000_000 // 1000 MB
     }
