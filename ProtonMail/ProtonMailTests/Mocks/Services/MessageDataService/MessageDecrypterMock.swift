@@ -23,9 +23,12 @@ import ProtonCore_TestingToolkit
 final class MessageDecrypterMock: MessageDecrypter {
     private(set) var decryptCallCount = 0
 
-    override func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> MessageDecrypter.Output {
+    override func decryptAndVerify(
+        message: MessageEntity,
+        verificationKeys: [ArmoredKey]
+    ) throws -> MessageDecrypter.DecryptionAndVerificationOutput {
         decryptCallCount += 1
-        return try super.decrypt(message: message, verificationKeys: verificationKeys)
+        return try super.decryptAndVerify(message: message, verificationKeys: verificationKeys)
     }
 
     @FuncStub(MessageDecrypterMock.copy, initialReturn: Message()) var callCopy

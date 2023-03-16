@@ -591,7 +591,7 @@ extension MessageInfoProvider {
         }
     }
 
-    private func decryptBody() -> MessageDecrypterProtocol.Output? {
+    private func decryptBody() -> MessageDecrypter.DecryptionOutput? {
         do {
             let decryptionOutput = try messageDecrypter.decrypt(message: message)
             isBodyDecryptable = true
