@@ -52,9 +52,13 @@ class HtmlEditorBehaviour: NSObject {
         case addImage, removeImage, moveCaret, heightUpdated
     }
 
-    //
     private(set) var isEditorLoaded: Bool = false
-    private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown, isImageProxyEnable: true)
+    private var contentHTML: WebContents = WebContents(
+        body: "",
+        remoteContentMode: .lockdown,
+        isImageProxyEnable: true,
+        messageDisplayMode: .collapsed
+    )
     @objc private(set) dynamic var contentHeight: CGFloat = 0
 
     //
@@ -222,7 +226,9 @@ class HtmlEditorBehaviour: NSObject {
                 return Promise()
             }
         }.then { () -> Promise<Void> in
-            self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.composer.value), \(self.contentHTML.isImageProxyEnable));")
+            let isImageProxyEnable = self.contentHTML.contentLoadingType == .proxy ||
+                self.contentHTML.contentLoadingType == .proxyDryRun
+            return self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.composer.value), \(isImageProxyEnable));")
         }.then { _ -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { width -> Promise<Void> in

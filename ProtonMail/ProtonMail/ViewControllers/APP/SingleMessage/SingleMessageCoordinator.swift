@@ -78,6 +78,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
+            imageProxy: .init(dependencies: .init(apiService: user.apiService)),
             coordinator: self,
             goToDraft: { [weak self] msgID, originalScheduleTime in
                 self?.navigationController?.popViewController(animated: false)

@@ -52,6 +52,7 @@ unit_tests:
   coverage: '/Test Coverage: \d*.\d*%/'
   only:
     - master
+    - main
     - develop
     - /^release\/.*$/
     - merge_requests
@@ -93,6 +94,7 @@ ui_tests_smoke:
   only:
     refs:
       - master
+      - main
       - develop
       - /^release\/.*$/
       - merge_requests

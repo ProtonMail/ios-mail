@@ -26,11 +26,20 @@ import WebKit
 /// Contains HTML to be loaded into WebView and appropriate CSP
 struct WebContents: Equatable {
 
+    enum LoadingType {
+        case direct
+        case proxy
+        case proxyDryRun
+        case none
+    }
+
     let body: String
     let remoteContentMode: RemoteContentPolicy
     var renderStyle: MessageRenderStyle
     let supplementCSS: String?
     let webImages: WebImageContents?
+    let contentLoadingType: LoadingType
+    let messageDisplayMode: MessageDisplayMode
     let isImageProxyEnable: Bool
 
     var bodyForJS: String {
@@ -40,12 +49,16 @@ struct WebContents: Equatable {
     init(body: String,
          remoteContentMode: RemoteContentPolicy,
          isImageProxyEnable: Bool,
+         messageDisplayMode: MessageDisplayMode,
+         contentLoadingType: LoadingType = .proxy,
          renderStyle: MessageRenderStyle = .dark,
          supplementCSS: String? = nil,
          webImages: WebImageContents? = nil) {
         // \u00A0 is white space that will break dompurify
         self.body = body.preg_replace("\u{00A0}", replaceto: " ")
         self.remoteContentMode = remoteContentMode
+        self.messageDisplayMode = messageDisplayMode
+        self.contentLoadingType = contentLoadingType
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
         self.webImages = webImages
@@ -57,26 +70,31 @@ struct WebContents: Equatable {
     }
 
     enum RemoteContentPolicy: Int {
-        case allowed, disallowed, lockdown, allowedAll
+        case allowed
+        case disallowed
+        case lockdown
+        /// Allow content to be loaded by webview directly
+        case allowedAll
 
         var cspRaw: String {
             let httpScheme = HTTPRequestSecureLoader.ProtonScheme.http.rawValue
             let httpsScheme = HTTPRequestSecureLoader.ProtonScheme.https.rawValue
             let noScheme = HTTPRequestSecureLoader.ProtonScheme.noProtocol.rawValue
+            let pmCacheScheme = HTTPRequestSecureLoader.ProtonScheme.pmCache.rawValue
+
             let embeddedScheme = HTTPRequestSecureLoader.imageCacheScheme
 
             switch self {
             case .lockdown:
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
-
             case .disallowed: // this cuts off all remote content
-                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(embeddedScheme):; script-src 'none';"
-
+                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme): \(pmCacheScheme):"
+                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob: \(valueToAdd); script-src 'none';"
             case .allowed: // this cuts off only scripts and connections
-                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme):"
+                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme): \(pmCacheScheme):"
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src data: blob: cid: \(valueToAdd); script-src 'none';"
             case .allowedAll: // allow all remote contents
-                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme):"
+                let valueToAdd = "\(httpScheme): \(httpsScheme): \(noScheme): \(embeddedScheme): \(pmCacheScheme):"
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src data: blob: cid: http: https: \(valueToAdd); script-src 'none';"
             }
         }
@@ -98,6 +116,31 @@ struct WebContents: Equatable {
     // swiftlint:disable force_try force_unwrapping
     static var domPurifyConstructor: WKUserScript = {
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
+        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+
+    // swiftlint:disable force_try force_unwrapping
+    static var escapeJS: WKUserScript = {
+        let raw = try! String(contentsOf: Bundle.main.url(forResource: "Escape", withExtension: "js")!)
+        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+
+    // swiftlint:disable force_try force_unwrapping
+    static var loaderJS: WKUserScript = {
+        let raw = try! String(contentsOf: Bundle.main.url(forResource: "Loader", withExtension: "js")!)
+        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+
+    // swiftlint:disable force_try force_unwrapping
+    static var blockQuoteJS: WKUserScript = {
+        var raw = try! String(contentsOf: Bundle.main.url(forResource: "Blockquote", withExtension: "js")!)
+        let blockQuoteSelectors = String.quoteElements
+            .map { "\($0):not(:empty)" }
+            .joined(separator: ",")
+        raw = raw.replacingOccurrences(
+            of: "{{BLOCKQUOTE_SELECTOR_VALUE}}",
+            with: "'\(blockQuoteSelectors)'"
+        )
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
 }
