@@ -163,7 +163,7 @@ private extension SpotlightableFeatureKey {
         case .toolbarCustomization:
             return UserInfo.isToolbarCustomizationEnable
         case .messageSwipeNavigation:
-            return UserInfo.isConversationSwipeEnabled
+            return true
         case .encryptedSearchAvailable:
             return false
         }

@@ -855,10 +855,6 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
     }
 
     func navigateToNextConversation(popCurrentView: (() -> Void)? = nil) {
-        guard UserInfo.isConversationSwipeEnabled else {
-            popCurrentView?()
-            return
-        }
         guard dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
             return
         }
