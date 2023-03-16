@@ -189,8 +189,8 @@ final class MainQueueHandler: QueueHandler {
                 self.addContact(objectID: objectID, cardDatas: cardDatas, importFromDevice: importFromDevice, completion: completeHandler)
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
-            case .updateContactGroup(let objectID, let name, let color, let addedEmailList, let removedEmailList):
-                self.updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: addedEmailList, removedEmailList: removedEmailList, completion: completeHandler)
+            case .updateContactGroup(let objectID, let name, let color, let addedEmailIDs, let removedEmailIDs):
+                self.updateContactGroup(objectID: objectID, name: name, color: color, addedEmailIDs: addedEmailIDs, removedEmailIDs: removedEmailIDs, completion: completeHandler)
             case .deleteContactGroup(let objectID):
                 self.deleteContactGroup(objectID: objectID, completion: completeHandler)
             case let .notificationAction(messageID, action):
@@ -903,10 +903,10 @@ extension MainQueueHandler {
     ///   - objectID: Core data object of the group label
     ///   - name: Group label name
     ///   - color: Group label color
-    ///   - addedEmailList: The emailID list that will add to this group label
-    ///   - removedEmailList: The emailID list that will remove from this group label
+    ///   - addedEmailIDs: The emailID list that will add to this group label
+    ///   - removedEmailIDs: The emailID list that will remove from this group label
     ///   - completion: Completion
-    private func updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String], completion: @escaping Completion) {
+    private func updateContactGroup(objectID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String], completion: @escaping Completion) {
         let dataService = self.coreDataService
         let service = self.contactGroupService
         coreDataService.performOnRootSavingContext { context in
@@ -922,11 +922,11 @@ extension MainQueueHandler {
             }.then {
                 return service.addEmailsToContactGroup(groupID: LabelID(groupID),
                                                        emailList: [],
-                                                       emailIDs: addedEmailList)
+                                                       emailIDs: addedEmailIDs)
             }.then {
                 return service.removeEmailsFromContactGroup(groupID: LabelID(groupID),
                                                             emailList: [],
-                                                            emailIDs: removedEmailList)
+                                                            emailIDs: removedEmailIDs)
             }.done {
                 completion(nil)
             }.catch { error in
