@@ -102,9 +102,6 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         super.viewDidAppear(animated)
 
         viewModel.userActivity.becomeCurrent()
-        if !UserInfo.isConversationSwipeEnabled {
-            showToolbarCustomizeSpotlightIfNeeded()
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
