@@ -50,6 +50,7 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
+    private let observerID = UUID()
 
     var isExpanded = false {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
@@ -251,7 +252,7 @@ class SingleMessageContentViewModel {
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        internetStatusProvider.registerConnectionStatus { [weak self] networkStatus in
+        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
             guard self?.message.body.isEmpty == true else {
                 return
             }

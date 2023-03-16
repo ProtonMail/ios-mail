@@ -25,7 +25,7 @@ class InternetConnectionStatusProvider: Service {
 
     private let notificationCenter: NotificationCenter
     private var reachability: Reachability
-    private(set) var callbacksToNotify: [(ConnectionStatus) -> Void] = []
+    private var callbacksToNotify: [UUID: (ConnectionStatus) -> Void] = [:]
     // Stores the reference of NWPathMonitor
     var pathMonitor: ConnectionMonitor?
     private var isPathMonitorUpdated = false
@@ -47,9 +47,18 @@ class InternetConnectionStatusProvider: Service {
         stopInternetConnectionStatusObservation()
     }
 
-    func registerConnectionStatus(_ callBack: @escaping ((ConnectionStatus) -> Void)) {
-        callbacksToNotify.append(callBack)
-        callBack(currentStatus)
+    /**
+     Observe connectivity status changes.
+
+    - parameter observerID: Each observing object should store its own UUID to avoid accidentally registering multiple times and to allow unregistering.
+     */
+    func registerConnectionStatus(observerID: UUID, callback: @escaping ((ConnectionStatus) -> Void)) {
+        callbacksToNotify[observerID] = callback
+        callback(currentStatus)
+    }
+
+    func unregisterObserver(observerID: UUID) {
+        callbacksToNotify.removeValue(forKey: observerID)
     }
 
     func startObservation() {
@@ -58,7 +67,7 @@ class InternetConnectionStatusProvider: Service {
                 guard let self = self else { return }
                 self.isPathMonitorUpdated = true
                 let status = self.status(from: path)
-                self.callbacksToNotify.forEach { callback in
+                self.callbacksToNotify.values.forEach { callback in
                     callback(status)
                 }
             }
@@ -108,7 +117,7 @@ class InternetConnectionStatusProvider: Service {
         self.reachability = reachability
         let currentStatus = reachability.currentReachabilityStatus()
         let result = self.status(from: currentStatus)
-        self.callbacksToNotify.forEach { callback in
+        self.callbacksToNotify.values.forEach { callback in
             callback(result)
         }
     }
@@ -147,7 +156,7 @@ extension InternetConnectionStatusProvider {
 
     #if DEBUG
     func updateNewStatusToAll(_ status: ConnectionStatus) {
-        self.callbacksToNotify.forEach { callback in
+        self.callbacksToNotify.values.forEach { callback in
             callback(status)
         }
     }

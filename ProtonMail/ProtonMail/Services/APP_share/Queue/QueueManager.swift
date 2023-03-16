@@ -53,6 +53,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
     private let internetStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
     private var connectionStatus: ConnectionStatus? {
         willSet {
             guard let previousStatus = connectionStatus,
@@ -83,7 +84,8 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
 
-        internetStatusProvider.registerConnectionStatus { [weak self] status in
+        
+        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
             self?.connectionStatus = status
         }
         #if !APP_EXTENSION

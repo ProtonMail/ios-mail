@@ -46,6 +46,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private var refreshControl: UIRefreshControl?
     private var searchController: UISearchController?
     private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
 
     deinit {
         self.viewModel.resetFetchedController()
@@ -230,7 +231,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     @objc internal func fireFetch() {
-        self.internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
+        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
             guard status.isConnected else {
                 DispatchQueue.main.async {
                     self?.refreshControl?.endRefreshing()
