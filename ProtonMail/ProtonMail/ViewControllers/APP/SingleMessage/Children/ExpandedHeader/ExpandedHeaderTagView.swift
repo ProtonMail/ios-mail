@@ -26,9 +26,7 @@ final class ExpandedHeaderTagView: UIView {
     private var isReloadData = false
     private var tags: [TagUIModel] = [] {
         didSet {
-            print("esie before")
             tagCollectionView.reloadData()
-            print("esie after")
             updateCollectionHeight()
         }
     }

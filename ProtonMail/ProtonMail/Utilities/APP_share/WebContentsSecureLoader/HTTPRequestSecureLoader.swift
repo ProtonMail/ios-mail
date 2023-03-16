@@ -27,7 +27,7 @@ import WebKit
 /// Loads web content into WKWebView by means of load(_:) and inner URLRequest method. In order to prevent resources prefetching, loading happens in a number of stages:
 /// 1. webView gets a WKContentRuleList restricting any loads other than current url and a custom scheme handler
 /// 2. construct URLRequest for that url and ask webView to start loading
-/// 3. webView asks custom scheme handler to handle the request, we create response with required data and reqired CSP in HTTP headers, return it to webView
+/// 3. webView asks custom scheme handler to handle the request, we create response with required data and required CSP in HTTP headers, return it to webView
 /// 4. DOMPurifier sanitizes contents, once sanitization is complete, css is injected into required contents
 /// 5. webView switches off content rule list and reloads sanitized contents body
 ///
@@ -43,22 +43,21 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
-    private var contents: WebContents?
 
     enum ProtonScheme: String {
         case http = "proton-http"
         case https = "proton-https"
         case noProtocol = "proton-"
+        case pmCache = "proton-pm-cache"
     }
-    private static var loopbackScheme: String = "pm-incoming-mail"
+
+    static let loopbackScheme = "pm-incoming-mail"
     static let imageCacheScheme = "pm-cache"
 
-    private var loopbacks: [URL: Data] = [:]
-    private var latestRequest: String?
-    private let userKeys: UserKeys
+    private let schemeHandler: SecureLoaderSchemeHandler
 
-    init(userKeys: UserKeys) {
-        self.userKeys = userKeys
+    init(schemeHandler: SecureLoaderSchemeHandler) {
+        self.schemeHandler = schemeHandler
     }
 
     func load(contents: WebContents, in webView: WKWebView) {
@@ -82,8 +81,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
         let request = URLRequest(url: url)
         let data = contents.body.data(using: .unicode)
-        latestRequest = urlString
-        self.loopbacks[url] = data
+        schemeHandler.latestRequest = urlString
+        schemeHandler.loopbacks[url] = data
+        schemeHandler.contents = contents
 
         let builder = ContentBlockRuleBuilder()
             .add(
@@ -117,27 +117,44 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         var screenWidth = webView?.window?.screen.bounds.width ?? smallestSupportedWidth
         let paddingOfCell: CGFloat = 8
         screenWidth = screenWidth - 2 * paddingOfCell
-        self.contents = contents
+        schemeHandler.contents = contents
         var css: String
         switch contents.renderStyle {
         case .lightOnly:
             css = WebContents.cssLightModeOnly
         case .dark:
             css = WebContents.css
-			if let supplementCSS = contents.supplementCSS {
-				css = supplementCSS + css
+            if let supplementCSS = contents.supplementCSS,
+               !supplementCSS.isEmpty {
+                css += supplementCSS
             } else {
                 // means this message doesn't support dark mode style
                 css = WebContents.cssLightModeOnly
             }
         }
+
+        let loadingType = contents.contentLoadingType
+        var imageProxyCodeBlock: String = .empty
+        switch loadingType {
+        case .direct:
+            imageProxyCodeBlock = """
+            var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
+            """
+        case .proxy, .proxyDryRun, .none:
+            imageProxyCodeBlock = """
+            DOMPurify.addHook('beforeSanitizeElements', beforeSanitizeElements);
+            var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
+            DOMPurify.removeHook('beforeSanitizeElements');
+            """
+        }
+
         css = css.replacingOccurrences(of: "{{screen-width}}", with: "\(Int(screenWidth))px")
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
         let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
         let messageHead = protonizer.querySelector('head').innerHTML.trim()
         var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
-        var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
+        \(imageProxyCodeBlock)
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
 
@@ -172,6 +189,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let sanitize = WKUserScript(source: sanitizeRaw + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         config.userContentController.removeAllUserScripts()
         config.userContentController.addUserScript(WebContents.domPurifyConstructor)
+        config.userContentController.addUserScript(WebContents.escapeJS)
+        config.userContentController.addUserScript(WebContents.loaderJS)
         config.userContentController.addUserScript(sanitize)
 
         config.userContentController.add(self.blockRules!)
@@ -179,12 +198,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let dict = message.body as? [String: Any] else {
-            assert(false, "Unexpected message sent from JS")
+            assertionFailure("Unexpected message sent from JS")
             return
         }
 
-        guard latestRequest == nil else {
-            // There is a newer request, anything related to old request should be stoped 
+        guard schemeHandler.latestRequest == nil else {
+            // There is a newer request, anything related to old request should be stoped
             return
         }
 
@@ -192,30 +211,47 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
 
-            let message = """
-        var metaWidth = document.querySelector('meta[name="viewport"]');
-        metaWidth.content = "width=device-width";
-        var ratio = document.body.offsetWidth/document.body.scrollWidth;
-        if (ratio < 1) {
-            metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
-        } else {
-            ratio = 1;
-        };
-        let body = document.body;
-        let height = ratio * document.body.scrollHeight;
-        var refHeight = height;
-        let lowest = 32;
-        Array.from(body.children).forEach(element => {
-            let bottom = element.getBoundingClientRect().bottom + 32;
-            if (bottom > lowest) {
-                lowest = bottom;
-                refHeight = bottom * ratio;
+            var displayHistoryCodeBlock: String = .empty
+            if schemeHandler.contents?.messageDisplayMode == .collapsed {
+                displayHistoryCodeBlock = """
+                    // `searchBlockQuote` function returns an array that contains two strings.
+                    // You can find the function in `Blockquote.js` file.
+                    // The first string is the body that has the history removed.
+                    // The second string is the body of the removed history.
+                    let result = searchBlockQuote(document);
+
+                    // Hide the history of the message.
+                    document.body.innerHTML = result[0];
+                """
             }
-        });
 
-        window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
-"""
+            let message = """
+                    \(displayHistoryCodeBlock)
 
+                    var metaWidth = document.querySelector('meta[name="viewport"]');
+                    metaWidth.content = "width=device-width";
+                    var ratio = document.body.offsetWidth/document.body.scrollWidth;
+                    if (ratio < 1) {
+                        metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+                    } else {
+                        ratio = 1;
+                    };
+                    let body = document.body;
+                    let height = ratio * document.body.scrollHeight;
+                    var refHeight = height;
+                    let lowest = 32;
+                    Array.from(body.children).forEach(element => {
+                        let bottom = element.getBoundingClientRect().bottom + 32;
+                        if (bottom > lowest) {
+                            lowest = bottom;
+                            refHeight = bottom * ratio;
+                        }
+                    });
+
+                    window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
+            """
+
+            userContentController.addUserScript(WebContents.blockQuoteJS)
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             userContentController.addUserScript(sanitize)
 
@@ -223,7 +259,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
             let request = URLRequest(url: url)
             let data = sanitized.data(using: .unicode)
-            self.loopbacks[url] = data
+            schemeHandler.loopbacks[url] = data
 
             self.webView?.load(request)
 
@@ -235,15 +271,37 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         if let height = dict["height"] as? Double {
             self.renderedContents.height = CGFloat(height)
             let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
-            let res = refHeight > 32 ? refHeight: CGFloat(height)
+            let res = refHeight > 32 ? refHeight : CGFloat(height)
             self.heightChanged?(res)
         }
     }
 
     func inject(into config: WKWebViewConfiguration) {
         config.userContentController.add(self, name: "loaded")
-        config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.imageCacheScheme)
-        config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.loopbackScheme)
+        config.setURLSchemeHandler(
+            schemeHandler,
+            forURLScheme: HTTPRequestSecureLoader.imageCacheScheme
+        )
+        config.setURLSchemeHandler(
+            schemeHandler,
+            forURLScheme: HTTPRequestSecureLoader.loopbackScheme
+        )
+        config.setURLSchemeHandler(
+            schemeHandler,
+            forURLScheme: ProtonScheme.http.rawValue
+        )
+        config.setURLSchemeHandler(
+            schemeHandler,
+            forURLScheme: ProtonScheme.https.rawValue
+        )
+        config.setURLSchemeHandler(
+            schemeHandler,
+            forURLScheme: ProtonScheme.noProtocol.rawValue
+        )
+        config.setURLSchemeHandler(
+            schemeHandler,
+            forURLScheme: ProtonScheme.pmCache.rawValue
+        )
     }
 
     private func addSpinnerIfNeeded(to webView: WKWebView) {
@@ -261,93 +319,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
 
     private func removeAllSpinners() {
-        self.webView?.subviews.compactMap({ $0 as? UIActivityIndicatorView }).forEach({ view in
+        self.webView?.subviews.compactMap { $0 as? UIActivityIndicatorView }.forEach { view in
             view.stopAnimating()
             view.removeFromSuperview()
-        })
-    }
-}
-
-@available(iOS 11.0, *) extension HTTPRequestSecureLoader: WKURLSchemeHandler {
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        if isImageRequest(urlSchemeTask: urlSchemeTask) {
-            handleImageRequest(urlSchemeTask: urlSchemeTask)
-            return
-        }
-        guard let contents = self.contents else {
-            urlSchemeTask.didFinish()
-            return
-        }
-
-        let headers: [String: String] = [
-            "Content-Type": "text/html",
-            "Cross-Origin-Resource-Policy": "Same",
-            "Content-Security-Policy": contents.contentSecurityPolicy
-        ]
-
-        let response = HTTPURLResponse(url: urlSchemeTask.request.url!, statusCode: 200, httpVersion: "HTTP/2", headerFields: headers)!
-        urlSchemeTask.didReceive(response)
-        if let url = urlSchemeTask.request.url,
-            let found = self.loopbacks[url] {
-            urlSchemeTask.didReceive(found)
-            if let target = latestRequest,
-               url.absoluteString.contains(check: target) {
-                latestRequest = nil
-            }
-        }
-        urlSchemeTask.didFinish()
-    }
-
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        assert(false, "webView should not stop urlSchemeTask cuz we're providing response locally")
-    }
-
-    private func isImageRequest(urlSchemeTask: WKURLSchemeTask) -> Bool {
-        guard let url = urlSchemeTask.request.url?.absoluteString else { return false }
-        return url.starts(with: HTTPRequestSecureLoader.imageCacheScheme)
-    }
-
-    private func handleImageRequest(urlSchemeTask: WKURLSchemeTask) {
-        let error = NSError(domain: "cache.proton.ch", code: -999)
-        guard let url = urlSchemeTask.request.url,
-              let id = url.host else {
-            urlSchemeTask.didFailWithError(error)
-            return
-        }
-        guard
-            let keyPacket = contents?.webImages?.embeddedImages.first(where: { $0.id == AttachmentID(id) })?.keyPacket
-        else {
-            urlSchemeTask.didFailWithError(error)
-            return
-        }
-        guard let image = loadImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
-              let data = image.jpegData(compressionQuality: 1),
-              let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/2", headerFields: nil) else {
-            urlSchemeTask.didFailWithError(error)
-            return
-        }
-
-        urlSchemeTask.didReceive(response)
-        urlSchemeTask.didReceive(data)
-        urlSchemeTask.didFinish()
-    }
-
-    private func loadImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> UIImage? {
-        let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
-
-        do {
-            let encoded = try AttachmentDecrypter.decryptAndEncode(
-                fileUrl: path,
-                attachmentKeyPacket: keyPacket,
-                userKeys: userKeys
-            )
-            if let data = Data(base64Encoded: encoded, options: .ignoreUnknownCharacters),
-               let image = UIImage(data: data) {
-                return image
-            }
-            return nil
-        } catch {
-            return nil
         }
     }
 }

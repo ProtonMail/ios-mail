@@ -40,7 +40,10 @@ class NewMessageBodyViewController: UIViewController {
     private lazy var customView = NewMessageBodyView()
 
     private lazy var loader: WebContentsSecureLoader = {
-        HTTPRequestSecureLoader(userKeys: viewModel.userKeys)
+        HTTPRequestSecureLoader(schemeHandler: .init(
+            userKeys: viewModel.userKeys,
+            imageProxy: viewModel.imageProxy
+        ))
     }()
     weak var delegate: NewMessageBodyViewControllerDelegate?
     private(set) var webView: WKWebView?

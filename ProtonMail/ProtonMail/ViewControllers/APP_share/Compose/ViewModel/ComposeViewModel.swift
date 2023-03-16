@@ -307,7 +307,7 @@ class ComposeViewModel: NSObject {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded, supplementCSS: css)
         case .reply, .replyAll:
             let msg = composerMessageHelper.draft!
             let body = composerMessageHelper.decryptBody()
@@ -331,7 +331,7 @@ class ComposeViewModel: NSObject {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded, supplementCSS: css)
         case .forward:
             let msg = composerMessageHelper.draft!
             let clockFormat = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
@@ -362,12 +362,12 @@ class ComposeViewModel: NSObject {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
         case .newDraft:
             if !self.body.isEmpty {
                 let newHTMLString = "\(head) \(self.body) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
+                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
             }
             let body: String = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
@@ -375,20 +375,20 @@ class ComposeViewModel: NSObject {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newHTMLString = """
                 \(head) \(self.body.ln2br()) \(signatureHtml) \(foot)
                 """
 
-                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
+                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
             } else if signatureHtml.trim().isEmpty {
                 // add some space
                 let defaultBody = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: defaultBody, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
+                return .init(body: defaultBody, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
         }
     }
 
@@ -554,14 +554,13 @@ extension ComposeViewModel {
         signature = signature.ln2br()
 
         var mobileSignature = self.user.showMobileSignature ?
-            "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
+        "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
 
         let defaultSignature = self.user.defaultSignatureStatus ?
-            "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
         let mobileBr = defaultSignature.isEmpty ?
-            "<div><br></div><div><br></div>" : "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
-
+        "<div><br></div><div><br></div>" : "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
         let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
         return signatureHtml
     }

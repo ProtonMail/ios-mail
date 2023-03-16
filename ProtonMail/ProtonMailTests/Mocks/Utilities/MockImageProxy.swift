@@ -15,12 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
 
-// sourcery: mock
-protocol ImageProxyDelegate: AnyObject {
-    func imageProxy(
-        _ imageProxy: ImageProxy,
-        output: ImageProxyOutput
-    )
+class ImageProxyMock: ProtonMail.ImageProxy {
+    init(apiService: APIServiceMock) {
+        let dependencies = Dependencies(apiService: apiService)
+        super.init(dependencies: dependencies)
+    }
 }
