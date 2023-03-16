@@ -1,0 +1,65 @@
+{% for type in types.enums where type.name == "MessageAction" %}
+extension {{ type.name }}: Codable {
+    enum CodingKeys: CodingKey {
+        {% for case in type.cases %}
+        case {{ case.name }}
+        {% endfor %}
+    }
+
+    var rawValue: String {
+        switch self {
+        {% for case in type.cases %}
+        case .{{ case.name }}:
+            return "{{ case.name }}"
+        {% endfor %}
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        guard container.allKeys.count == 1 else {
+            let context = DecodingError.Context(
+                codingPath: container.codingPath,
+                debugDescription: "Invalid number of keys found, expected one."
+            )
+
+            throw DecodingError.typeMismatch(Self.self, context)
+        }
+
+        switch container.allKeys.first.unsafelyUnwrapped {
+        {% for case in type.cases %}
+        case .{{ case.name }}:
+            {% if case.associatedValues.count == 0 %}
+            self = .{{ case.name }}
+            {% else %}
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .{{ case.name }})
+            self = .{{ case.name }}(
+                {% for associatedValue in case.associatedValues %}
+                {{ associatedValue.localName}}: try nestedContainer.decode{% if associatedValue.typeName.isOptional %}IfPresent{% endif %}({{ associatedValue.typeName.unwrappedTypeName }}.self, forKey: .{{ associatedValue.localName }}){{ ',' if not forloop.last }}
+                {% endfor %}
+            )
+            {% endif %}
+        {% endfor %}
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        {% for case in type.cases %}
+        {% if case.associatedValues.count == 0 %}
+        case .{{ case.name }}:
+            try container.encode(rawValue, forKey: .{{ case.name }})
+        {% else %}
+        case let .{{ case.name }}({% for associatedValue in case.associatedValues %}{{ associatedValue.localName}}{{ ', ' if not forloop.last }}{% endfor %}):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .{{ case.name }})
+            {% for associatedValue in case.associatedValues %}
+            try nestedContainer.encode({{ associatedValue.localName }}, forKey: .{{ associatedValue.localName }})
+            {% endfor %}
+        {% endif %}
+        {% endfor %}
+        }
+    }
+}
+
+{% endfor %}
