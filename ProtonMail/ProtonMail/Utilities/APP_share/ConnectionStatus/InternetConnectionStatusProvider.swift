@@ -21,7 +21,15 @@ enum ConnectionStatus: Int {
     }
 }
 
-class InternetConnectionStatusProvider: Service {
+// sourcery: mock
+protocol InternetConnectionStatusProviderProtocol {
+    var currentStatus: ConnectionStatus { get }
+
+    func registerConnectionStatus(observerID: UUID, callback: @escaping (ConnectionStatus) -> Void)
+    func unregisterObserver(observerID: UUID)
+}
+
+class InternetConnectionStatusProvider: InternetConnectionStatusProviderProtocol, Service {
 
     private let notificationCenter: NotificationCenter
     private var reachability: Reachability

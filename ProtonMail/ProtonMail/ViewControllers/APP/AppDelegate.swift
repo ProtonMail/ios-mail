@@ -24,6 +24,7 @@ import Intents
 import SideMenuSwift
 import LifetimeTracker
 import ProtonCore_Crypto
+import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Keymaker
 import ProtonCore_Log
@@ -315,6 +316,10 @@ extension AppDelegate: UIApplicationDelegate {
         if let user = users.firstUser {
             queueManager.enterForeground()
             user.refreshFeatureFlags()
+
+            if UserInfo.isBlockSenderEnabled {
+                user.blockedSenderCacheUpdater.requestUpdate()
+            }
         }
     }
 

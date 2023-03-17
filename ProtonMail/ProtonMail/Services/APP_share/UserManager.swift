@@ -233,6 +233,16 @@ class UserManager: Service {
         return service
     }()
 
+    lazy var incomingDefaultService: IncomingDefaultService = { [unowned self] in
+        return IncomingDefaultService(
+            dependencies: .init(
+                apiService: apiService,
+                contextProvider: coreDataService,
+                userInfo: userInfo
+            )
+        )
+    }()
+
     lazy var eventsService: EventsFetching = { [unowned self] in
         let service = EventsService(userManager: self, contactCacheStatus: userCachedStatus)
         return service
@@ -276,6 +286,21 @@ class UserManager: Service {
     }()
 
     #if !APP_EXTENSION
+    lazy var blockedSenderCacheUpdater: BlockedSenderCacheUpdater = { [unowned self] in
+        let refetchAllBlockedSenders = RefetchAllBlockedSenders(
+            dependencies: .init(incomingDefaultService: incomingDefaultService)
+        )
+
+        return BlockedSenderCacheUpdater(
+            dependencies: .init(
+                fetchStatusProvider: userCachedStatus,
+                internetConnectionStatusProvider: InternetConnectionStatusProvider(),
+                refetchAllBlockedSenders: refetchAllBlockedSenders,
+                userInfo: userInfo
+            )
+        )
+    }()
+
     lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
                                  apiService: self.apiService,
                                  localStorage: userCachedStatus,

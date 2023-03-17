@@ -102,6 +102,10 @@ class SignInManager: Service {
 
         showSkeleton()
 
+        if UserInfo.isBlockSenderEnabled {
+            user.blockedSenderCacheUpdater.requestUpdate()
+        }
+
         let userDataService = user.userService
         userDataService.fetchSettings(
             userInfo: userInfo,
