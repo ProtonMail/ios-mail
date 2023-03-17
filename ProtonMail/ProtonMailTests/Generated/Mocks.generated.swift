@@ -7,6 +7,27 @@ import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
+class MockBlockedSenderCacheUpdaterDelegate: BlockedSenderCacheUpdaterDelegate {
+    @FuncStub(MockBlockedSenderCacheUpdaterDelegate.blockedSenderCacheUpdater) var blockedSenderCacheUpdaterStub
+    func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
+        blockedSenderCacheUpdaterStub(blockedSenderCacheUpdater, newState)
+    }
+
+}
+
+class MockBlockedSenderFetchStatusProviderProtocol: BlockedSenderFetchStatusProviderProtocol {
+    @FuncStub(MockBlockedSenderFetchStatusProviderProtocol.checkIfBlockedSendersAreFetched, initialReturn: Bool()) var checkIfBlockedSendersAreFetchedStub
+    func checkIfBlockedSendersAreFetched(userID: UserID) -> Bool {
+        checkIfBlockedSendersAreFetchedStub(userID)
+    }
+
+    @FuncStub(MockBlockedSenderFetchStatusProviderProtocol.markBlockedSendersAsFetched) var markBlockedSendersAsFetchedStub
+    func markBlockedSendersAsFetched(userID: UserID) {
+        markBlockedSendersAsFetchedStub(userID)
+    }
+
+}
+
 class MockCacheServiceProtocol: CacheServiceProtocol {
     @FuncStub(MockCacheServiceProtocol.addNewLabel) var addNewLabelStub
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?) {
@@ -351,6 +372,24 @@ class MockImageProxyDelegate: ImageProxyDelegate {
 
 }
 
+class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProviderProtocol {
+    @PropertyStub(\MockInternetConnectionStatusProviderProtocol.currentStatus, initialGet: .connected) var currentStatusStub
+    var currentStatus: ConnectionStatus {
+        currentStatusStub()
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.registerConnectionStatus) var registerConnectionStatusStub
+    func registerConnectionStatus(observerID: UUID, callback: @escaping (ConnectionStatus) -> Void) {
+        registerConnectionStatusStub(observerID, callback)
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.unregisterObserver) var unregisterObserverStub
+    func unregisterObserver(observerID: UUID) {
+        unregisterObserverStub(observerID)
+    }
+
+}
+
 class MockKeymakerProtocol: KeymakerProtocol {
     @FuncStub(MockKeymakerProtocol.activate) var activateStub
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
@@ -446,6 +485,14 @@ class MockReceiptActionHandler: ReceiptActionHandler {
     @FuncStub(MockReceiptActionHandler.sendReceipt) var sendReceiptStub
     func sendReceipt(messageID: MessageID) {
         sendReceiptStub(messageID)
+    }
+
+}
+
+class MockRefetchAllBlockedSendersUseCase: RefetchAllBlockedSendersUseCase {
+    @FuncStub(MockRefetchAllBlockedSendersUseCase.execute) var executeStub
+    func execute(completion: @escaping (Error?) -> Void) {
+        executeStub(completion)
     }
 
 }
