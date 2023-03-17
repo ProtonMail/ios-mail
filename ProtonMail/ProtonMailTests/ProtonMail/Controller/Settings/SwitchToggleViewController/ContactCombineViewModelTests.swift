@@ -47,7 +47,14 @@ final class ContactCombineViewModelTests: XCTestCase {
         }
 
         XCTAssertNil(sut.output.sectionHeader(of: 0))
-        XCTAssertEqual(sut.output.sectionFooter(of: 0), LocalString._settings_footer_of_combined_contact)
+        let footer = try XCTUnwrap(sut.output.sectionFooter(of: 0))
+        switch footer {
+        case .left(let text):
+            XCTAssertEqual(text, LocalString._settings_footer_of_combined_contact)
+        case .right(_):
+            XCTFail("Should be a string")
+        }
+
     }
 
     func testToggle() throws {

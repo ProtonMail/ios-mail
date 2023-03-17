@@ -60,7 +60,14 @@ final class ConversationSettingViewModelTests: XCTestCase {
         XCTAssertEqual(item.status, false)
 
         XCTAssertNil(sut.output.sectionHeader(of: 0))
-        XCTAssertEqual(sut.output.sectionFooter(of: 0), LocalString._conversation_settings_footer_title)
+        let footer = try XCTUnwrap(sut.output.sectionFooter(of: 0))
+        switch footer {
+        case .left(let text):
+            XCTAssertEqual(text, LocalString._conversation_settings_footer_title)
+        case .right(_):
+            XCTFail("Should be a text type")
+        }
+
     }
 
     func testToggle_disable() throws {

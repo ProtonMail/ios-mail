@@ -106,13 +106,9 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAlternativeRouting() {
-        let controller = SettingsNetworkTableViewController(nibName: "SettingsNetworkTableViewController", bundle: nil)
-        controller.viewModel = SettingsNetworkViewModel(
-            userCache: userCachedStatus,
-            dohSetting: BackendConfiguration.shared.doh
-        )
-        controller.coordinator = self
-        self.navigationController?.pushViewController(controller, animated: true)
+        let viewModel = NetworkSettingViewModel(userCache: userCachedStatus, dohSetting: BackendConfiguration.shared.doh)
+        let controller = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(controller, sender: nil)
     }
 
     private func openGesture() {

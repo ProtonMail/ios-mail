@@ -46,10 +46,16 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
         XCTAssertEqual(result?.status, mockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove)
     }
 
-    func testGetSectionFooterAndHeader() {
-        let result = sut.sectionFooter(of: 0)
+    func testGetSectionFooterAndHeader() throws {
+        let result = try XCTUnwrap(sut.sectionFooter(of: 0))
+        switch result {
+        case .left(let text):
+            XCTAssertEqual(text, L11n.NextMsgAfterMove.rowFooterTitle)
+        case .right:
+            XCTFail("Shouldn't be an attributedString")
+        }
 
-        XCTAssertEqual(result, L11n.NextMsgAfterMove.rowFooterTitle)
+
 
         XCTAssertNil(sut.sectionHeader(of: 0))
     }
