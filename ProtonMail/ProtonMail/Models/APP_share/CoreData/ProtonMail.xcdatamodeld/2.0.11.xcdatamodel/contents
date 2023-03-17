@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" valueTransformerName="StringCryptoTransformer">
             <userInfo>
@@ -232,6 +232,9 @@
                 <entry key="JSONKeyPath" value="Labels"/>
             </userInfo>
         </relationship>
+        <uniquenessConstraints>
+            <uniquenessConstraint/>
+        </uniquenessConstraints>
         <userInfo>
             <entry key="identityAttribute" value="conversationID"/>
         </userInfo>
@@ -316,6 +319,13 @@
         <userInfo>
             <entry key="identityAttribute" value="emailID"/>
         </userInfo>
+    </entity>
+    <entity name="IncomingDefault" representedClassName=".IncomingDefault" syncable="YES">
+        <attribute name="email" attributeType="Transformable" valueTransformerName="StringCryptoTransformer"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="location" attributeType="String"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="userID" attributeType="String"/>
     </entity>
     <entity name="Label" representedClassName=".Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String">
