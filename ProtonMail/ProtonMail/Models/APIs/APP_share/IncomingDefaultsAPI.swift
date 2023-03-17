@@ -23,13 +23,55 @@ import ProtonCore_Networking
  See https://protonmail.gitlab-pages.protontech.ch/Slim-API/mail/#tag/IncomingDefaults
  */
 enum IncomingDefaultsAPI {
+    // This enum replicates `Message.Location` but is necessary, because the API does not accept Strings for the "Location" parameter.
+    enum Location: Int, Decodable {
+        case inbox = 0
+        case spam = 4
+        case blocked = 14
+    }
+
     static let path = "/\(Constants.App.API_PREFIXED)/incomingdefaults"
 }
 
 struct IncomingDefaultDTO: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case email
+        case id = "ID"
+        case location
+        case time
+    }
+
     let email: String
-    let location: Message.Location
+    let id: String
+    let location: IncomingDefaultsAPI.Location
     let time: Date
+}
+
+struct GetIncomingDefaultsRequest: Request {
+    private let location: IncomingDefaultsAPI.Location
+    private let page: Int
+
+    var parameters: [String: Any]? {
+        [
+            "Location": location.rawValue,
+            "Page": page
+        ]
+    }
+
+    var path: String {
+        IncomingDefaultsAPI.path
+    }
+
+    init(location: IncomingDefaultsAPI.Location, page: Int) {
+        self.location = location
+        self.page = page
+    }
+}
+
+struct GetIncomingDefaultsResponse: APIDecodableResponse {
+    let code: Int
+    let incomingDefaults: [IncomingDefaultDTO]
+    let total: Int
 }
 
 struct AddIncomingDefaultsRequest: Request {
@@ -38,7 +80,7 @@ struct AddIncomingDefaultsRequest: Request {
         case email(String)
     }
 
-    private let location: Message.Location
+    private let location: IncomingDefaultsAPI.Location
     private let overwrite: Bool
     private let target: Target
 
@@ -65,7 +107,7 @@ struct AddIncomingDefaultsRequest: Request {
         "\(IncomingDefaultsAPI.path)?Overwrite=\(overwrite ? 1 : 0)"
     }
 
-    init(location: Message.Location, overwrite: Bool = false, target: Target) {
+    init(location: IncomingDefaultsAPI.Location, overwrite: Bool = false, target: Target) {
         self.location = location
         self.overwrite = overwrite
         self.target = target
