@@ -17,8 +17,11 @@
 
 import Foundation
 import ProtonCore_Services
+import enum ProtonCore_Utilities.Either
 
 final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleVMOutput {
+
+
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
     let title = L11n.NextMsgAfterMove.settingTitle
@@ -46,8 +49,8 @@ final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleV
         nil
     }
 
-    func sectionFooter(of section: Int) -> String? {
-        L11n.NextMsgAfterMove.rowFooterTitle
+    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+        .left(L11n.NextMsgAfterMove.rowFooterTitle)
     }
 }
 
