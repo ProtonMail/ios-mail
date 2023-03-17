@@ -21,6 +21,7 @@ final class IncomingDefault: NSManagedObject {
     enum Attribute: String {
         static let entityName = "IncomingDefault"
 
+        case id
         case email
         case location
         case time

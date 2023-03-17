@@ -125,6 +125,104 @@ final class IncomingDefaultServiceTests: XCTestCase {
 
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["Old ID"])
     }
+
+    func testSave_overwritesExistingOlderIncomingDefaultsForTheSameEmail() throws {
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            let incomingDefault = IncomingDefault(context: context)
+            incomingDefault.email = self.emailAddress
+            incomingDefault.id = "Old ID"
+            incomingDefault.location = "\(self.location.rawValue)"
+            incomingDefault.time = .distantPast
+            incomingDefault.userID = self.userInfo.userId
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        let newIncomingDefault = IncomingDefaultDTO(
+            email: emailAddress,
+            id: "New ID",
+            location: location,
+            time: .distantFuture
+        )
+        try sut.save(dto: newIncomingDefault)
+
+        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
+            try context.fetch(fetchRequest).map(\.id)
+        }
+        XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
+    }
+
+    func testSave_doesNotOverwriteExistingNewerIncomingDefaultsForTheSameEmail() throws {
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            let incomingDefault = IncomingDefault(context: context)
+            incomingDefault.email = self.emailAddress
+            incomingDefault.id = "Old ID"
+            incomingDefault.location = "\(self.location.rawValue)"
+            incomingDefault.time = .distantFuture
+            incomingDefault.userID = self.userInfo.userId
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        let newIncomingDefault = IncomingDefaultDTO(
+            email: emailAddress,
+            id: "New ID",
+            location: location,
+            time: .distantPast
+        )
+        try sut.save(dto: newIncomingDefault)
+
+        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
+            try context.fetch(fetchRequest).map(\.id)
+        }
+        XCTAssertEqual(idsOfStoredIncomingDefaults, ["Old ID"])
+    }
+
+    func testSave_overwritesExistingIncomingDefaultsWithNilIDForTheSameEmail() throws {
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            let incomingDefault = IncomingDefault(context: context)
+            incomingDefault.email = self.emailAddress
+            incomingDefault.id = nil
+            incomingDefault.location = "\(self.location.rawValue)"
+            incomingDefault.time = .distantFuture
+            incomingDefault.userID = self.userInfo.userId
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        let newIncomingDefault = IncomingDefaultDTO(
+            email: emailAddress,
+            id: "New ID",
+            location: location,
+            time: .distantFuture
+        )
+        try sut.save(dto: newIncomingDefault)
+
+        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
+            try context.fetch(fetchRequest).map(\.id)
+        }
+        XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
+    }
+
+    func testDelete_removesExistingIncomingDefaults() throws {
+        let incomingDefaultID = "the ID"
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            let incomingDefault = IncomingDefault(context: context)
+            incomingDefault.email = self.emailAddress
+            incomingDefault.id = incomingDefaultID
+            incomingDefault.location = "\(self.location.rawValue)"
+            incomingDefault.time = .distantFuture
+            incomingDefault.userID = self.userInfo.userId
+            _ = context.saveUpstreamIfNeeded()
+        }
+        try sut.delete(incomingDefaultID: incomingDefaultID)
+
+        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+        let numStoredIncomingDefaults = try contextProvider.read { context in
+            try context.fetch(fetchRequest).count
+        }
+        XCTAssertEqual(numStoredIncomingDefaults, 0)
+    }
 }
 
 private extension IncomingDefaultService {

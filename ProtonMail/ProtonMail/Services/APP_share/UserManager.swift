@@ -244,7 +244,14 @@ class UserManager: Service {
     }()
 
     lazy var eventsService: EventsFetching = { [unowned self] in
-        let service = EventsService(userManager: self, contactCacheStatus: userCachedStatus)
+        let useCase = FetchMessageMetaData(
+            params: .init(userID: userInfo.userId),
+            dependencies: .init(messageDataService: messageService, contextProvider: coreDataService)
+        )
+        let service = EventsService(
+            userManager: self,
+            dependencies: .init(fetchMessageMetaData: useCase, contactCacheStatus: userCachedStatus, incomingDefaultService: incomingDefaultService)
+        )
         return service
     }()
 
