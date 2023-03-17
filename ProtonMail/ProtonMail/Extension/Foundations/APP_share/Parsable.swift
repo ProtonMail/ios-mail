@@ -18,13 +18,23 @@
 import Foundation
 
 protocol Parsable: Codable {
-    init(dict: [String: Any]) throws
+    init(
+        dict: [String: Any],
+        keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy,
+        dateDecodingStrategy: JSONDecoder.DateDecodingStrategy
+    ) throws
 }
 
 extension Parsable {
-    init(dict: [String: Any]) throws {
+    init(
+        dict: [String: Any],
+        keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
+        dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate
+    ) throws {
         let jsonData = try JSONSerialization.data(withJSONObject: dict, options: [])
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = keyDecodingStrategy
+        decoder.dateDecodingStrategy = dateDecodingStrategy
         self = try decoder.decode(Self.self, from: jsonData)
     }
 }

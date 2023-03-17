@@ -23,6 +23,7 @@
 import Foundation
 import Groot
 import PromiseKit
+import ProtonCore_DataModel
 import ProtonCore_Services
 import EllipticCurveKeyPair
 import ProtonMailAnalytics
@@ -71,21 +72,14 @@ final class EventsService: Service, EventsFetching {
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
-    private let coreDataService: CoreDataService
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
     private let dependencies: Dependencies
 
-    init(userManager: UserManager, contactCacheStatus: ContactCacheStatusProtocol) {
+    init(userManager: UserManager, dependencies: Dependencies) {
         self.userManager = userManager
-        let coreDataService = ServiceFactory.default.get(by: CoreDataService.self)
-        self.coreDataService = coreDataService
-        let useCase = FetchMessageMetaData(
-            params: .init(userID: userManager.userInfo.userId),
-            dependencies: .init(messageDataService: userManager.messageService,
-                                contextProvider: coreDataService))
-        self.dependencies = .init(fetchMessageMetaData: useCase, contactCacheStatus: contactCacheStatus)
+        self.dependencies = dependencies
     }
 
     func start() {
@@ -227,7 +221,7 @@ extension EventsService {
                                     }
                             }.then { (_) -> Promise<Void> in
                                 self.processEvents(labels: eventsRes.labels)
-                            }.then({ (_) -> Promise<Void> in
+                            }.then ({ (_) -> Promise<Void> in
                                 self.processEvents(addresses: eventsRes.addresses)
                             })
                             .ensure {
@@ -269,8 +263,10 @@ extension EventsService {
                             }
                         }.then { (_) -> Promise<Void> in
                             self.processEvents(labels: eventsRes.labels)
-                        }.then({ (_) -> Promise<Void> in
+                        }.then { (_) -> Promise<Void> in
                             self.processEvents(addresses: eventsRes.addresses)
+                        }.then({ (_) -> Promise<Void> in
+                            self.processEvents(incomingDefaults: eventsRes.incomingDefaults)
                         })
                         .ensure {
                             self.processEvents(user: eventsRes.user)
@@ -327,7 +323,7 @@ extension EventsService {
 
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
-            self.coreDataService.enqueueOnRootSavingContext { context in
+            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                 var error: NSError?
                 var messagesNoCache : [MessageID] = []
                 for message in messages {
@@ -442,7 +438,7 @@ extension EventsService {
         }
         return Promise { seal in
             self.incrementalUpdateQueue.sync {
-                self.coreDataService.enqueueOnRootSavingContext { context in
+                dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                     defer {
                         seal.fulfill_()
                     }
@@ -544,7 +540,7 @@ extension EventsService {
         }
 
         return Promise { seal in
-            self.coreDataService.enqueueOnRootSavingContext { context in
+            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                 defer {
                     seal.fulfill_()
                 }
@@ -602,7 +598,7 @@ extension EventsService {
         }
 
         return Promise { seal in
-            self.coreDataService.enqueueOnRootSavingContext { context in
+            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                 defer {
                     seal.fulfill_()
                 }
@@ -657,7 +653,7 @@ extension EventsService {
             return Promise { seal in
                 // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
                 self.incrementalUpdateQueue.sync {
-                    self.coreDataService.enqueueOnRootSavingContext { context in
+                    dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                         defer {
                             seal.fulfill_()
                         }
@@ -750,6 +746,60 @@ extension EventsService {
                 }
                 seal.fulfill_()
             }
+        }
+    }
+
+    private func processEvents(incomingDefaults: [[String: Any]]?) -> Promise<Void> {
+        guard UserInfo.isBlockSenderEnabled, let incomingDefaults = incomingDefaults else {
+            return Promise()
+        }
+        return Promise { seal in
+            incrementalUpdateQueue.async {
+                for item in incomingDefaults {
+                    let incomingDefaultEvent = IncomingDefaultEvent(event: item)
+                    switch incomingDefaultEvent.action {
+                    case .insert, .update1:
+                        guard let incomingDefault = incomingDefaultEvent.incomingDefault else {
+                            assertionFailure()
+                            continue
+                        }
+                        self.saveIncomingDefault(incomingDefault)
+                    case .delete:
+                        self.deleteIncomingDefaultByID(item)
+                    default:
+                        break
+                    }
+                }
+                seal.fulfill_()
+            }
+        }
+    }
+
+    private func saveIncomingDefault(_ incomingDefault: [String: Any]) {
+        guard let incomingDefaultDTO = try? IncomingDefaultDTO(
+            dict: incomingDefault,
+            keyDecodingStrategy: .decapitaliseFirstLetter,
+            dateDecodingStrategy: .secondsSince1970
+        ) else {
+            assertionFailure()
+            return
+        }
+        do {
+            try dependencies.incomingDefaultService.save(dto: incomingDefaultDTO)
+        } catch {
+            assertionFailure()
+        }
+    }
+
+    private func deleteIncomingDefaultByID(_ incomingDefault: [String: Any]) {
+        guard let incomingDefaultId = incomingDefault["ID"] as? String else {
+            assertionFailure()
+            return
+        }
+        do {
+            try dependencies.incomingDefaultService.delete(incomingDefaultID: incomingDefaultId)
+        } catch {
+            assertionFailure()
         }
     }
 

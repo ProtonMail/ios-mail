@@ -127,6 +127,54 @@ final class IncomingDefaultService {
         incomingDefault.userID = dependencies.userInfo.userId
     }
 
+    func save(dto: IncomingDefaultDTO) throws {
+        var result: Result<Void, Error>!
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            if let existingIncomingDefault = try? self.find(by: dto.email, in: context) {
+                let existingObjectIsOlder = existingIncomingDefault.time <= dto.time
+                if existingIncomingDefault.id == nil || existingObjectIsOlder {
+                    context.delete(existingIncomingDefault)
+                    self.store(dto: dto, in: context)
+                }
+            } else {
+                self.store(dto: dto, in: context)
+            }
+            do {
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+        }
+        try result.get()
+    }
+
+    func delete(incomingDefaultID: String) throws {
+        var result: Result<Void, Error>!
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+            fetchRequest.predicate = NSPredicate(
+                format: "%K == %@ AND %K == %@",
+                IncomingDefault.Attribute.id.rawValue,
+                incomingDefaultID,
+                IncomingDefault.Attribute.userID.rawValue,
+                self.dependencies.userInfo.userId
+            )
+            do {
+                try fetchRequest.execute().forEach(context.delete)
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+        }
+        try result.get()
+    }
+
     func deleteAll(location: IncomingDefaultsAPI.Location) throws {
         var result: Result<Void, Error>!
 

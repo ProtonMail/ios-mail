@@ -24,7 +24,7 @@ import ProtonCore_Networking
  */
 enum IncomingDefaultsAPI {
     // This enum replicates `Message.Location` but is necessary, because the API does not accept Strings for the "Location" parameter.
-    enum Location: Int, Decodable {
+    enum Location: Int, Codable {
         case inbox = 0
         case spam = 4
         case blocked = 14
@@ -33,7 +33,7 @@ enum IncomingDefaultsAPI {
     static let path = "/\(Constants.App.API_PREFIXED)/incomingdefaults"
 }
 
-struct IncomingDefaultDTO: Decodable {
+struct IncomingDefaultDTO: Parsable {
     enum CodingKeys: String, CodingKey {
         case email
         case id = "ID"
