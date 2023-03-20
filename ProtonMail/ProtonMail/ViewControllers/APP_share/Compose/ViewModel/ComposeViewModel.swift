@@ -406,7 +406,7 @@ class ComposeViewModel: NSObject {
         if getNormalAttachmentNum() > 0 { return false }
 
         let content = "\(subject) \(body.body(strippedFromQuotes: true))"
-        let language = LanguageManager.currentLanguageEnum()
+        let language = LanguageManager().currentLanguage()
         return AttachReminderHelper.hasAttachKeyword(content: content,
                                                      language: language)
     }

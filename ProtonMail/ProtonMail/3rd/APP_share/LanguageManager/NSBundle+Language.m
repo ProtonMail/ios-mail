@@ -22,7 +22,6 @@
 
 
 #import "NSBundle+Language.h"
-#import "LanguageManager.h"
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
@@ -51,13 +50,13 @@ static const char kBundleKey = 0;
 
 @implementation NSBundle (Language)
 
-+ (void)setLanguage:(NSString *)language
++ (void)setLanguage:(NSString *)language isLanguageRTL:(BOOL)isLanguageRTL
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         object_setClass([NSBundle mainBundle], [BundleEx class]);
     });
-    if ([LanguageManager isCurrentLanguageRTL]) {
+    if (isLanguageRTL) {
         if ([[[UIView alloc] init] respondsToSelector:@selector(setSemanticContentAttribute:)]) {
             [[UIView appearance] setSemanticContentAttribute:
              UISemanticContentAttributeForceRightToLeft];
@@ -67,8 +66,8 @@ static const char kBundleKey = 0;
             [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
         }
     }
-    [[NSUserDefaults standardUserDefaults] setBool:[LanguageManager isCurrentLanguageRTL] forKey:@"AppleTextDirection"];
-    [[NSUserDefaults standardUserDefaults] setBool:[LanguageManager isCurrentLanguageRTL] forKey:@"NSForceRightToLeftWritingDirection"];
+    [[NSUserDefaults standardUserDefaults] setBool:isLanguageRTL forKey:@"AppleTextDirection"];
+    [[NSUserDefaults standardUserDefaults] setBool:isLanguageRTL forKey:@"NSForceRightToLeftWritingDirection"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     id value = language ? [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:language ofType:@"lproj"]] : nil;

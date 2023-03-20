@@ -112,7 +112,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
     }
 
     private func inAppLanguage(_ indexPath: IndexPath) {
-        let current_language = LanguageManager.currentLanguageEnum()
+        let current_language = LanguageManager().currentLanguage()
         let title = LocalString._settings_current_language_is + current_language.nativeDescription
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
@@ -120,7 +120,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
             if l != current_language {
                 alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default) { _ in
                     _ = self.navigationController?.popViewController(animated: true)
-                    LanguageManager.saveLanguage(byCode: l.code)
+                    LanguageManager().saveLanguage(by: l.languageCode)
                     LocalizedString.reset()
                     self.updateTitle()
                     self.tableView.reloadData()
@@ -265,7 +265,7 @@ extension SettingsDeviceViewController {
                         }
                     })
                 case .language:
-                    let language: ELanguage = LanguageManager.currentLanguageEnum()
+                    let language: ELanguage = LanguageManager().currentLanguage()
                     cellToConfig.configure(right: language.nativeDescription, imageType: .system)
                 case .LocalizationPreview:
                     cellToConfig.configure(right: "Test only", imageType: .system)

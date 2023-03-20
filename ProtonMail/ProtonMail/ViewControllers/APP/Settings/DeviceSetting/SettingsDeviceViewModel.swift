@@ -115,7 +115,7 @@ final class SettingsDeviceViewModel {
         return name.isEmpty ? self.email : name
     }
 
-    let languages: [ELanguage] = ELanguage.allItems()
+    let languages: [ELanguage] = ELanguage.allCases
 
     var isDohOn: Bool {
         BackendConfiguration.shared.doh.status == .on

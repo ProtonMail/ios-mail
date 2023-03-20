@@ -844,7 +844,7 @@ extension UsersManager: APIServiceDelegate {
     var additionalHeaders: [String: String]? { nil }
 
     var locale: String {
-        if let local = LanguageManager.currentLanguageCode() {
+        if let local = LanguageManager().currentLanguageCode() {
             return local
         } else {
             return Constants.defaultLocale
