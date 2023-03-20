@@ -27,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d Terpilih</string>
+			<string>%d Dipilih</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -67,7 +67,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d percobaan tersisa hingga penghapusan data!</string>
+			<string>%d percobaan tersisa sampai penghapusan data aman!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -81,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d percakapan ditandai</string>
+			<string>%d percakapan dilabel</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -125,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak email diblokir</string>
+			<string>%d pelacak surel diblokir</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -139,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak email ditemukan</string>
+			<string>%d pelacak surel ditemukan</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pesan ditandai</string>
+			<string>%d pesan dilabel</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -223,7 +223,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d mnt</string>
+			<string>%d menit</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -295,7 +295,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Apakah Anda yakin untuk menghapus %d percakapan secara permanen?</string>
+			<string>Apakah Anda yakin ingin menghapus %d percakapan secara permanen?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -309,7 +309,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Apakah Anda yakin untuk menghapus %d pesan secara permanen?</string>
+			<string>Apakah Anda yakin ingin menghapus %d pesan secara permanen?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -339,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Proton telah menemukan dan memblokir %d pelacak pada pesan ini.</string>
+			<string>Proton menemukan dan memblokir %d pelacak di pesan ini.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pesan berikut akan dipindahkan ke Draf dan jadwal pengiriman yang terhubung dengannya akan dihapus.</string>
+			<string>%d pesan ini akan dipindahkan ke Draf dan akan dihilangkan jadwalnya.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

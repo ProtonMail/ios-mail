@@ -167,7 +167,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
             self.navigateToCreateFolder(type: .label)
         case .addFolder:
             self.navigateToCreateFolder(type: .folder)
-        case .provideFeedback:
+        case .sendFeedback:
             let inboxLabel = MenuLabel(location: .inbox)
             labelToHighlight = inboxLabel
             if checkIsCurrentViewInInboxView() {

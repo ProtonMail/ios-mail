@@ -173,13 +173,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Заблакіраваны %d праграмы сачэння</string>
+			<string>Заблакіраваны %d праграмы сачэння электроннай пошты</string>
 			<key>many</key>
-			<string>Заблакіраваны %d праграм сачэння</string>
+			<string>Заблакіраваны %d праграм сачэння электроннай пошты</string>
 			<key>one</key>
-			<string>Заблакіравана %d праграма сачэння</string>
+			<string>Заблакіравана %d праграма сачэння электроннай пошты</string>
 			<key>other</key>
-			<string>Заблакіраваны %d праграмы сачэння</string>
+			<string>Заблакіраваны %d праграмы сачэння электроннай пошты</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>

@@ -13,56 +13,8 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ / %2$@";
 
-/* e.g. 3 attachments */
-"%d attachment" = "%d ek dosya";
-
-/* Description */
-"%d attempt remaining" = "%d deneme hakkı kaldı";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d deneme sonra güvenli veriler silinecek!";
-
-/* The title of swipe banner after swiping to label conversations */
-"%d conversation labeled" = "%d yazışma etiketlendi";
-
-/* The title of swipe banner after swiping to move conversations */
-"%d conversation moved to %@" = "%1$d yazışma %2$@ içine taşındı";
-
-/* Title of the tracker list. Only used if there is at least one tracker. */
-"%d email trackers blocked" = "%d e-posta izleyici engellendi";
-
-/* The title of swipe banner after swiping to label messages */
-"%d message labeled" = "%d ileti etiketlendi";
-
-/* The title of swipe banner after swiping to move messages */
-"%d message moved to %@" = "%1$d ileti %2$@ içine taşındı";
-
-/* Banner message */
-"%d message moved to Drafts" = "%d ileti Taslaklar kutusuna taşındı";
-
-/* minute */
-"%d min" = "%d dk";
-
-/* auto lock time format */
-"%d Minutes" = "%d dakika";
-
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d saniye";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d seçilmiş";
-
-/* conversation number */
-"%u conversation" = "%u yazışma";
-
-/* message number */
-"%u message" = "%u ileti";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Dosyayı eklemek için sürükleyip buraya bırakın";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d diğer";
 
 /* Text for the estimated time label if less than one minute is remaining */
 "<1 minute remaining" = "<1 dakika kaldı";
@@ -158,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Adresler";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Gelişmiş ayarlar";
+
 /* Title */
 "Alert" = "Uyarı";
 
@@ -169,7 +124,7 @@
 "All Mail" = "Tüm e-postalar";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Uygulama oturumu kapatıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecek.";
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Tüm iletileriniz indirildi";
@@ -225,6 +180,12 @@
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Görünüm";
 
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey, bir saldırganın aygıtınızın içeriğini kopyalaması gibi özenli saldırılara uğramanız durumunda Proton bilgilerinizi daha iyi korur. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey koruması";
+
 /* Apply action */
 "Apply" = "Uygula";
 
@@ -247,12 +208,6 @@
 
 /* Message of message permanent deletion alert, plural */
 "Are you sure you want to delete these %d messages permanently?" = "%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
-
-/* Warning message when users try to empty conversations in the folder */
-"Are you sure you want to permanently delete %d conversation?" = "%d yazışma kalıcı olarak silinecek. Emin misiniz?";
-
-/* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete %d message?" = "%d ileti kalıcı olarak silinecek. Emin misiniz?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
@@ -569,7 +524,7 @@
 "Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
 
 /* Change language title */
-"Current Language is: " = "Geçerli dil: ";
+"Current Language: " = "Current Language: ";
 
 /* Placeholder */
 "Current password" = "Geçerli parola";
@@ -586,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Özel";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Özelleştir";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Araç çubuğunu özelleştir";
@@ -674,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Yok sayıldı";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Sorumluluk reddi";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Klavyeyi yok say";
 
@@ -740,7 +701,7 @@
 "Downloading metadata ..." = "Üst veriler indiriliyor...";
 
 /* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Yeni iletiler indiriliyor...";
+"Downloading new messages..." = "Downloading new messages...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "E-postaları indirirerek arama yapılabilmesini sağlar. İletiler şifrelenmiş biçimde yerel olarak kaydedilir. %1$@";
@@ -792,7 +753,7 @@
 "Email address disabled" = "E-posta adresi devre dışı";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "E-posta adresi geçersiz";
+"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-posta adresleri";
@@ -894,9 +855,6 @@
 /* alert title */
 "Expiration not supported" = "Geçerlilik süresi desteklenmiyor";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Dosya türü belirlenemedi";
 
@@ -924,6 +882,9 @@
 /* forward action */
 "Forward" = "İlet";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "İlet (son ileti)";
+
 /* forwarded message title */
 "Forwarded message" = "Yönlendirilen ileti";
 
@@ -941,9 +902,6 @@
 
 /* abbreviation of forward: */
 "Fw:" = "İlt:";
-
-/* abbreviation of forward: */
-"Fwd:" = "İlt:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Cinsiyet";
@@ -964,7 +922,7 @@
 "Go to settings" = "Ayarlara git";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Oturum açmaya git";
+"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "Anladım";
@@ -992,9 +950,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "İnsan doğrulaması başarısız oldu";
@@ -1026,12 +981,12 @@
 /* import contact title */
 "Importing Contacts" = "Kişiler içe aktarılıyor";
 
-/* The title of the time label of the scheduled message that is about to be sent in 30 minutes. */
-"In %d minutes" = "%d dakika içinde";
-
 /* alternative routing description
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir. %1$@";
+
+/* One of schedule time options */
+"In the morning" = "Sabahları";
 
 /* menu title */
 "Inbox" = "Gelen kutusu";
@@ -1055,7 +1010,7 @@
 "Input Display Name…" = "Görüntülenecek adı yazın…";
 
 /* place holder */
-"Input Notification Email …" = "Bildirim e-posta adresini yazın…";
+"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Güvenli olmayan bağlantı";
@@ -1131,6 +1086,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Bağlantı kopyalandı.";
 
+/* Button inside the banner */
+"Load" = "Yükle";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Gömülü görselleri yükle";
 
@@ -1154,10 +1112,10 @@
 "Lock The App" = "Uygulamayı kilitle";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Güncellemeleri almayı sürdürmek için yeniden oturum açın";
+"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "%@ oturumu kapatıldı";
+"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Günlük kayıtları";
@@ -1186,9 +1144,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Okunmamış olarak işaretle";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menü";
@@ -1393,12 +1348,18 @@
 /* Alert title */
 "Notice" = "Dikkat";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Bildirim işlemleri ve diğer arka plan işlemleri kullanılamaz olacak";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Bildirimler";
 
 /* The title of Off setting options */
 "Off" = "Kapalı";
+
+/* Official badge next to sender's name */
+"Official" = "Resmi";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Çevrimdışı";
@@ -1408,9 +1369,6 @@
 
 /* Action */
 "OK" = "Tamam";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Tamam";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "En eski ileti: ";
@@ -1453,6 +1411,9 @@
 
 /* update password error */
 "Password update failed" = "Parola güncellenemedi";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Parola güncellendi";
 
 /* Placeholder */
 "Passwords must match" = "Parola ile onayı aynı değil";
@@ -1562,14 +1523,11 @@
 /* Local notification title */
 "Problem sending message" = "İleti gönderme sorunu";
 
-/* Tracker protection results */
-"Proton found %d trackers on this message." = "Proton bu iletide %d izleyici buldu.";
+/* Settings lock protection section */
+"Protection" = "Koruma";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton çalışmıyor";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail şu anda çevrimdışı…";
@@ -1581,7 +1539,7 @@
 "Proton Status" = "Proton durumu";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Geri bildirimde bulunun";
+"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Vekil sunucu/güvenlik duvarı etkileşimi";
@@ -1641,8 +1599,14 @@
 /* reply action */
 "Reply" = "Yanıtla";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Yanıtla (son iletiyi)";
+
 /* reply all action */
 "Reply all" = "Tümünü yanıtla";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Tümünü yanıtla (son iletiyi)";
 
 /* menu title */
 "Report a problem" = "Bir sorun bildireceğim";
@@ -1846,6 +1810,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Ertele";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "İzleyici koruması nedeniyle bazı görseller yüklenemedi.";
+
 /* menu title */
 "Spam" = "İstenmeyen";
 
@@ -1909,9 +1876,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Kaydırma işlemleri";
-
-/* Swiping gestures */
-"Swiping gestures" = "Kaydırma hareketleri";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Seçim kipine geç";
@@ -2001,13 +1965,10 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Erişmeye çalıştığınız adres standart olmadığından düzgün yüklenmeyebilir. Adresi aygıtınızın varsayılan tarayıcısı ile açmak ister misiniz?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "Kullanıcı zaten oturum açmış";
+"The user is already signed in" = "The user is already signed in";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Gönderilmemiş iletiler var. Oturumu kapatırsanız bunlar silinecek";
-
-/* The content of the alert that will be shown when user tries to delete a scheduled message. */
-"These %d messages will move to Drafts and have their schedule removed." = "Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlamaları kaldırılacak.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Bu işlem geri alınamaz.";
@@ -2022,10 +1983,10 @@
 "This conversation contains trashed messages" = "Bu yazışmada, çöpe atılmış iletiler var";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, bir Proton Mail adresinden gelmiş gibi görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerini karşılayamadı. Sahte ya da doğru olmayan şekilde iletilmiş olabilir!";
@@ -2100,9 +2061,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Araç çubuğu işlemleri (en fazla 5 tane seçin)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Ödüllerinizi izleyin";
 
@@ -2120,10 +2078,10 @@
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Farklı bir ağ kullanarak Proton bağlantısı kurmayı deneyin (ayrıca %1$@ ya da %2$@ kullanabilirsiniz).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği etkinleştirin.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
-"Two Factor Code" = "İki aşamalı doğrulama kodu";
+"Two Factor Code" = "İki adımlı doğrulama kodu";
 
 /* Internal type casting error */
 "Type casting error" = "Tür döküm hatası";
@@ -2193,9 +2151,6 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Bildirim e-posta adresini güncelle";
-
-/* The title of last update status of updated time */
-"Updated %d min ago" = "%d dakika önce güncellendi";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = ">1 saat önce güncellendi";
@@ -2384,6 +2339,5 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da kapatıldığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
 
 /* contact placeholder */
-"ZIP" = "ZIP";
+"ZIP" = "Posta kodu";
 
-"Customize (verb)" = "Customize";
