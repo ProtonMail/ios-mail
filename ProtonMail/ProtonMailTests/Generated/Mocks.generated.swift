@@ -7,6 +7,19 @@ import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
+class MockAppRatingManagerProtocol: AppRatingManagerProtocol {
+    @FuncStub(MockAppRatingManagerProtocol.requestAppRating) var requestAppRatingStub
+    func requestAppRating() {
+        requestAppRatingStub()
+    }
+
+    @FuncStub(MockAppRatingManagerProtocol.openAppStoreToReviewApp) var openAppStoreToReviewAppStub
+    func openAppStoreToReviewApp() {
+        openAppStoreToReviewAppStub()
+    }
+
+}
+
 class MockBlockedSenderCacheUpdaterDelegate: BlockedSenderCacheUpdaterDelegate {
     @FuncStub(MockBlockedSenderCacheUpdaterDelegate.blockedSenderCacheUpdater) var blockedSenderCacheUpdaterStub
     func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
