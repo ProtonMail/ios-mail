@@ -199,7 +199,7 @@ final class ComposerMessageHelper {
                 self.rawMessage?.action = action.rawValue as NSNumber?
                 if let title = self.draft?.title {
                     if !(title.hasFwd() || title.hasFw()) {
-                        let fwd = LocalString._composer_short_forward
+                        let fwd = LocalString._composer_short_forward_shorter
                         self.rawMessage?.title = "\(fwd) \(title)"
                     }
                 }

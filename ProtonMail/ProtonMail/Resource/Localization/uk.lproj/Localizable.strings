@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ з %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d секунд";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d вибрано";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Перетягніть сюди, щоб додати вкладення";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Адреси";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Додаткові налаштування";
+
 /* Title */
 "Alert" = "Попередження";
 
@@ -127,7 +124,7 @@
 "All Mail" = "Уся пошта";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Усі параметри захисту будуть скинуті та стерті одразу після виходу з програми.";
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Усі повідомлення завантажено";
@@ -182,6 +179,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Зовнішній вигляд";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey додатково захищає вашу інформацію в Proton у випадку складних атак, як-от клонування вмісту вашого пристрою. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "Захист AppKey";
 
 /* Apply action */
 "Apply" = "Застосувати";
@@ -521,7 +524,7 @@
 "Creating label not allowed" = "Створення мітки не дозволено";
 
 /* Change language title */
-"Current Language is: " = "Поточна мова: ";
+"Current Language: " = "Current Language: ";
 
 /* Placeholder */
 "Current password" = "Поточний пароль";
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Власний";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Налаштувати";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Налаштувати панель інструментів";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Відхилено";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Попередження";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Сховати клавіатуру";
 
@@ -692,7 +701,7 @@
 "Downloading metadata ..." = "Завантаження метаданих ...";
 
 /* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Завантаження нових повідомлень ...";
+"Downloading new messages..." = "Downloading new messages...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Завантажує повідомлення, щоб ви могли шукати у їх вмісті. Повідомлення шифруються і зберігаються локально. %1$@";
@@ -744,7 +753,7 @@
 "Email address disabled" = "Адреса е-пошти вимкнена";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "Недійсна адреса е-пошти";
+"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адреси е-пошти";
@@ -846,9 +855,6 @@
 /* alert title */
 "Expiration not supported" = "Термін дії не підтримується";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Не вдалося визначити тип файлу";
 
@@ -876,6 +882,9 @@
 /* forward action */
 "Forward" = "Переслати";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Переслане (останнє повідомлення)";
+
 /* forwarded message title */
 "Forwarded message" = "Переслане повідомлення";
 
@@ -893,9 +902,6 @@
 
 /* abbreviation of forward: */
 "Fw:" = "Fw:";
-
-/* abbreviation of forward: */
-"Fwd:" = "Переслати:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Стать";
@@ -916,7 +922,7 @@
 "Go to settings" = "Перейти до параметрів";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Перейти до входу";
+"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "Зрозуміло";
@@ -944,9 +950,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Як би ви описали свої враження від нового Proton Mail?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Невдала перевірка \"Я не робот\"";
@@ -982,6 +985,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для підвищення надійності. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Зранку";
+
 /* menu title */
 "Inbox" = "Вхідні";
 
@@ -1004,7 +1010,7 @@
 "Input Display Name…" = "Введіть ім'я…";
 
 /* place holder */
-"Input Notification Email …" = "Введіть е-пошту для сповіщень …";
+"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Незахищене з'єднання";
@@ -1080,6 +1086,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Посилання скопійовано.";
 
+/* Button inside the banner */
+"Load" = "Завантажити";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Завантажити вбудовані зображення";
 
@@ -1103,10 +1112,10 @@
 "Lock The App" = "Замкнути програму";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Повторно увійдіть, щоб продовжувати отримувати оновлення";
+"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Ви вийшли з %@";
+"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Журнали";
@@ -1135,9 +1144,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Позначити непрочитаним";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Меню";
@@ -1342,12 +1348,18 @@
 /* Alert title */
 "Notice" = "Примітка";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Дії сповіщень та інші фонові процеси стануть недоступними";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Сповіщення";
 
 /* The title of Off setting options */
 "Off" = "Вимкнено";
+
+/* Official badge next to sender's name */
+"Official" = "Офіційне";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Не в мережі";
@@ -1357,9 +1369,6 @@
 
 /* Action */
 "OK" = "Застосувати";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Гаразд";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Найдавніше повідомлення: ";
@@ -1402,6 +1411,9 @@
 
 /* update password error */
 "Password update failed" = "Не вдалося оновити пароль";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Пароль оновлено";
 
 /* Placeholder */
 "Passwords must match" = "Паролі повинні збігатися";
@@ -1511,11 +1523,11 @@
 /* Local notification title */
 "Problem sending message" = "Проблема надсилання повідомлення";
 
+/* Settings lock protection section */
+"Protection" = "Захист";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton не працює";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail зараз не в мережі…";
@@ -1527,7 +1539,7 @@
 "Proton Status" = "Стан Proton";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Написати відгук";
+"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Взаємодія з проксі та мережевим екраном";
@@ -1587,8 +1599,14 @@
 /* reply action */
 "Reply" = "Відповісти";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Відповісти (на останнє повідомлення)";
+
 /* reply all action */
 "Reply all" = "Відповісти всім";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Відповісти всім (на останнє повідомлення)";
 
 /* menu title */
 "Report a problem" = "Повідомити про проблему";
@@ -1792,6 +1810,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Відкласти";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Деякі зображення неможливо завантажити, якщо увімкнено захист від стеження.";
+
 /* menu title */
 "Spam" = "Спам";
 
@@ -1855,9 +1876,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Дії жестів посування";
-
-/* Swiping gestures */
-"Swiping gestures" = "Жести посування";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Перемкнути режим вибору";
@@ -1947,7 +1965,7 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адреса, яку ви намагаєтесь відвідати, нестандартна і може завантажитися неналежним чином. Ви хочете відкрити її у своєму типовому браузері?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "Користувач вже увійшов";
+"The user is already signed in" = "The user is already signed in";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "У вас є не надіслані повідомлення, які будуть втрачені після виходу";
@@ -1965,10 +1983,10 @@
 "This conversation contains trashed messages" = "Ця розмова містить видалені повідомлення";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він міг бути підроблений або неправильно пересланий!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Схоже, цей лист надіслано з адреси Proton Mail, але він надійшов з-за меж нашої системи та не відповідає нашим вимогам перевірки. Він може бути підроблений або неправильно пересланий!";
@@ -2043,9 +2061,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Дії панелі інструментів (виберіть до 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Відстежуйте свої винагороди";
 
@@ -2063,7 +2078,7 @@
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся %1$@ або %2$@).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Увімкніть цю функцію для автозаповнення адрес електронної пошти, використовуючи контакти з усіх облікових записів, у які ви ввійшли.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Код двоетапної перевірки";
@@ -2159,7 +2174,7 @@
 "Upload iOS contacts to Proton Mail?" = "Вивантажити контакти iOS до Proton Mail?";
 
 /* default vcard types */
-"URL" = "URL";
+"URL" = "URL-адреса";
 
 /* Option title */
 "Use folder colors" = "Використати кольори тек";
@@ -2326,4 +2341,3 @@
 /* contact placeholder */
 "ZIP" = "Поштовий індекс";
 
-"Customize (verb)" = "Customize";

@@ -276,7 +276,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         sut.updateMessageByMessageAction(.forward)
 
-        XCTAssertEqual(sut.draft?.title, "\(LocalString._composer_short_forward) \(title)")
+        XCTAssertEqual(sut.draft?.title, "\(LocalString._composer_short_forward_shorter) \(title)")
         XCTAssertEqual(testMessage.action?.intValue,
                        ComposeMessageAction.forward.rawValue)
     }

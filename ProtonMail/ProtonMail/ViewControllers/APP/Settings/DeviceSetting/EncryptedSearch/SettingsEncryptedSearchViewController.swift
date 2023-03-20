@@ -199,7 +199,7 @@ extension SettingsEncryptedSearchViewController {
                 message: L11n.EncryptedSearch.disable_feature_alert_message,
                 preferredStyle: .alert
             )
-            let disable = L11n.EncryptedSearch.disable_alert_button_delete
+            let disable = LocalString._general_ok_action
             let cancelTitle = L11n.EncryptedSearch.disable_feature_alert_button_cancel
             let enable = UIAlertAction(title: disable, style: .destructive) { [weak self] _ in
                 self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)

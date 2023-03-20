@@ -1,5 +1,5 @@
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
-", will not be searched. To search within them, increase the %1$@" = "не будут искаться. Для поиска внутри них увеличьте %1$@";
+", will not be searched. To search within them, increase the %1$@" = ", не будут включены в поиск. Для поиска в них увеличьте %1$@";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Показать полное сообщение]";
@@ -8,19 +8,13 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'В EE, MMM d, yyyy в %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "\"Поиск по содержимому сообщений\" будет отключен. Его можно включить снова через настройки, а все сообщения придется скачать снова.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Поиск по содержанию сообщения' будет отключен. Для его повторного включения необходимо перейти в настройки, а также скачать все сообщения заново.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ из %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d секунд";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Выбрано";
-
 /* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ Перетащите сюда, чтобы добавить как вложение";
+"+ Drop here to add as attachment" = "+ Перетащите сюда, чтобы добавить вложение";
 
 /* Text for the estimated time label if less than one minute is remaining */
 "<1 minute remaining" = "<1 минута осталась";
@@ -29,16 +23,16 @@
 "<1m" = "<1 мин";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 message moved to archive" = "1 сообщение перемещено в Архив";
+"1 message moved to archive" = "1 сообщение помещено в Архив";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 сообщение перемещено в спам";
+"1 Message moved to spam" = "1 сообщение помещено в Спам";
 
 /* Placeholder */
-"8 to 21 characters long" = "длинной от 9 до 21 символа";
+"8 to 21 characters long" = "длинной от 8 до 21 символа";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ к этому счету отключен в связи с неоплатой. Пожалуйста, войдите через сайт proton.me, чтобы оплатить неоплаченный счет.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ к аккаунту был отключен в связи с неоплатой. Пожалуйста, авторизуйтесь на сайте proton.me для оплаты счета.";
 
 /* Account manager title */
 "Account" = "Учётная запись";
@@ -72,7 +66,7 @@
 "Add gender" = "Добавить пол";
 
 /* add label action */
-"Add Label" = "Добвить ярлык";
+"Add Label" = "Добавить ярлык";
 
 /* add new address action */
 "Add new address" = "Добавить новый адрес";
@@ -90,7 +84,7 @@
 "Add new phone number" = "Добавить новый номер телефона";
 
 /* action */
-"Add new URL" = "Добавить новый URL";
+"Add new URL" = "Добавить новую ссылку";
 
 /* new contacts add Nickname */
 "Add nickname" = "Добавить псевдоним";
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Адреса";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Дополнительные настройки";
+
 /* Title */
 "Alert" = "Предупреждение";
 
@@ -127,7 +124,7 @@
 "All Mail" = "Все письма";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Все настройки защиты будут сброшены и удалены после выхода из приложения.";
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Все ваши сообщения скачаны";
@@ -182,6 +179,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Внешний вид";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey дополнительно защищает вашу информацию в Proton в случае изощренных атак, например, если злоумышленник клонирует содержимое вашего устройства. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "Защита AppKey";
 
 /* Apply action */
 "Apply" = "Применить";
@@ -521,7 +524,7 @@
 "Creating label not allowed" = "Создание ярлыка невозможно";
 
 /* Change language title */
-"Current Language is: " = "Текущий язык: ";
+"Current Language: " = "Current Language: ";
 
 /* Placeholder */
 "Current password" = "Текущий пароль";
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Пользовательский";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Настроить";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Настроить панель инструментов";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Сброшено";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Отказ от ответственности";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Отключите клавиатуру";
 
@@ -692,7 +701,7 @@
 "Downloading metadata ..." = "Скачивание метаданных ...";
 
 /* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Скачивание новых сообщений ...";
+"Downloading new messages..." = "Downloading new messages...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Скачивание сообщений, чтобы вы могли искать по ним. Сообщения будут зашифрованы и сохранены локально. %1$@";
@@ -744,7 +753,7 @@
 "Email address disabled" = "Адрес электронной почты отключен";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "Недопустимый адрес электронной почты";
+"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адреса электронной почты";
@@ -846,9 +855,6 @@
 /* alert title */
 "Expiration not supported" = "Истечение срока действия не поддерживается";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Не удалось определить тип файла";
 
@@ -876,6 +882,9 @@
 /* forward action */
 "Forward" = "Переслать";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Переслать (последнее сообщение)";
+
 /* forwarded message title */
 "Forwarded message" = "Пересланное сообщение";
 
@@ -894,8 +903,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Переслано:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Переслать:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Пол";
@@ -916,7 +923,7 @@
 "Go to settings" = "Открыть настройки";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Перейти к входу в систему";
+"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "Понятно";
@@ -982,6 +989,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае блокировки сайтов Proton эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию, чтобы достигнуть Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Для большей надёжности мы рекомендуем оставить эту настройку включённой. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Утром";
+
 /* menu title */
 "Inbox" = "Входящие";
 
@@ -1004,7 +1014,7 @@
 "Input Display Name…" = "Введите отображаемое имя…";
 
 /* place holder */
-"Input Notification Email …" = "Введите электронную почту для уведомлений …";
+"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Небезопасное соединение";
@@ -1080,6 +1090,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Ссылка скопирована.";
 
+/* Button inside the banner */
+"Load" = "Загрузить";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Показывать встроенные изображения";
 
@@ -1103,10 +1116,10 @@
 "Lock The App" = "Заблокировать приложение";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Войдите снова, чтобы продолжать получать обновления";
+"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Вышел из %@";
+"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Логи";
@@ -1135,9 +1148,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Отметить как непрочитанное";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Меню";
@@ -1342,12 +1352,18 @@
 /* Alert title */
 "Notice" = "Замечание";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Функции уведомлений и другие фоновые процессы станут недоступны";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Уведомления";
 
 /* The title of Off setting options */
 "Off" = "Выкл";
+
+/* Official badge next to sender's name */
+"Official" = "Официальный";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Офлайн";
@@ -1357,9 +1373,6 @@
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Хорошо";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Старейшее сообщение: ";
@@ -1402,6 +1415,9 @@
 
 /* update password error */
 "Password update failed" = "Не удалось обновить пароль";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Пароль обновлен";
 
 /* Placeholder */
 "Passwords must match" = "Пароли должны совпадать";
@@ -1511,6 +1527,9 @@
 /* Local notification title */
 "Problem sending message" = "Проблема при отправке сообщения";
 
+/* Settings lock protection section */
+"Protection" = "Защита";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton не работает";
 
@@ -1527,7 +1546,7 @@
 "Proton Status" = "Состояние Proton";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Оставить отзыв";
+"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Конфликт с прокси-сервером/брандмауэром";
@@ -1587,8 +1606,14 @@
 /* reply action */
 "Reply" = "Ответить";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Ответить (на последнее сообщение)";
+
 /* reply all action */
 "Reply all" = "Ответить всем";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Ответить всем (на последнее сообщение)";
 
 /* menu title */
 "Report a problem" = "Сообщить о проблеме";
@@ -1792,6 +1817,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Отложить";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Некоторые изображения не могут быть загружены с защитой от отслеживания.";
+
 /* menu title */
 "Spam" = "Спам";
 
@@ -1855,9 +1883,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Жесты";
-
-/* Swiping gestures */
-"Swiping gestures" = "Жесты смахиванием";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Переключить режим выбора";
@@ -1947,7 +1972,7 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL, к которому вы пытаетесь получить доступ, не стандартный и может быть загружен некорректно. Открыть его браузером по умолчанию вашего устройства?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "Пользователь уже вошел";
+"The user is already signed in" = "The user is already signed in";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Есть неотправленные сообщения, которые будут потеряны при выходе из системы";
@@ -1965,10 +1990,10 @@
 "This conversation contains trashed messages" = "В этой цепочке писем есть удаленные сообщения";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям подтверждения подлинности домена. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не прошло проверку подлинности домена. Это может быть подделка или неправильная пересылка!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо, по-видимому, пришло с адреса Proton Mail, но было получено не из нашей системы и не прошло проверку подлинности. Это может быть поддельное или неправильно пересланное письмо!";
@@ -2063,7 +2088,7 @@
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Попробуйте подключиться к Proton из другой сети (или используйте %1$@ или %2$@).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Включите эту функцию для автозаполнения адресов электронной почты с использованием контактов из всех аккаунтов, в которые вы вошли.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Код двухфакторной аутентификации";
@@ -2326,4 +2351,3 @@
 /* contact placeholder */
 "ZIP" = "Почтовый индекс";
 
-"Customize (verb)" = "Customize";

@@ -4,17 +4,14 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d segundos";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d seleccionado";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ largue aqui para adicionar como anexo";
 
 /* Text for the estimated time label if less than one minute is remaining */
 "<1 minute remaining" = "<1 minuto restante";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1m";
 
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 mensagem movida para Arquivo";
@@ -46,6 +43,9 @@
 
 /* new contacts add Birthday */
 "Add birthday" = "Adicionar data de nascimento";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Adicionar CC e BCC";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adicionar contactos";
@@ -112,7 +112,7 @@
 "All Mail" = "Todo o correio";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Todas as definições de protecção serão limpas e repostas ao sair da aplicação.";
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir redireccionamento alternativo";
@@ -250,10 +250,10 @@
 "Bad response" = "Resposta errada";
 
 /* Title */
-"Bcc" = "Bcc";
+"Bcc" = "BCC";
 
 /* message Bcc: feild */
-"Bcc:" = "Bcc:";
+"Bcc:" = "BCC:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data de nascimento";
@@ -330,7 +330,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "Cc";
+"Cc" = "CC";
 
 /* settings general section title */
 "Change account password" = "Alterar senha da conta";
@@ -379,6 +379,9 @@
 
 /* general close action */
 "Close" = "Fechar";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Fechar CC e BCC";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "A fechar";
@@ -473,7 +476,7 @@
 "Creating label not allowed" = "Não é permitido criar a etiqueta";
 
 /* Change language title */
-"Current Language is: " = "Idioma actual: ";
+"Current Language: " = "Current Language: ";
 
 /* Placeholder */
 "Current password" = "Senha actual";
@@ -661,7 +664,7 @@
 "Email address disabled" = "Endereço de email desactivado";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "Endereço electrónico inválido";
+"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Endereços de email";
@@ -754,9 +757,6 @@
 /* alert title */
 "Expiration not supported" = "Expiração não suportada";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Falha ao determinar o tipo de ficheiro";
 
@@ -799,9 +799,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Enc:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Enc:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Sexo";
 
@@ -821,7 +818,7 @@
 "Go to settings" = "Ir para as definições";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Ir para o início de sessão";
+"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "Percebi";
@@ -843,9 +840,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Como você descreveria a sua experiência com o novo Proton Mail?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Falha na verificação humana";
@@ -894,7 +888,7 @@
 "Input Display Name…" = "Insira o nome a mostrar…";
 
 /* place holder */
-"Input Notification Email …" = "Inserir email de notificação…";
+"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Ligação insegura";
@@ -1019,12 +1013,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marcar como não lido";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
-
-/* menu title */
-"Menu" = "Menu";
 
 /* The title of the first item in the segment control of the Customize toolbar setting view. */
 "Message" = "Mensagem";
@@ -1209,23 +1197,14 @@
    cell title in device settings */
 "Notifications" = "Notificações";
 
-/* The title of Off setting options */
-"Off" = "Off";
-
 /* Title of the alert when the device is offline */
 "Offline" = "Desligado";
 
 /* Action */
 "OK" = "Aceitar";
 
-/* Title for the alert button to disable content search. */
-"Okay" = "Aceitar";
-
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Mensagem mais antiga: ";
-
-/* The title of On setting options */
-"On" = "On";
 
 /* On {date}, e.g.: On Aug 14 */
 "On %@" = "Em %@";
@@ -1369,16 +1348,13 @@
 "Proton Status" = "Estado do Proton";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Fornecer comentários";
+"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferência de Proxy/Firewall";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Re-autenticar";
-
-/* abbreviation of reply: */
-"Re:" = "Re:";
 
 /* No comment provided by engineer. */
 "Read" = "Lido";
@@ -1674,9 +1650,6 @@
 /* cell title in app settings */
 "Swipe actions" = "Acções ao deslizar";
 
-/* Swiping gestures */
-"Swiping gestures" = "Gestos de deslize";
-
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Mudar modo de selecção";
 
@@ -1753,7 +1726,7 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "O URL a que está a tentar aceder não está normalizado e pode não carregar adequadamente. Deseja abrir no seu navegador predefinido?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "O utilizador já tem sessão iniciada";
+"The user is already signed in" = "The user is already signed in";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Há mensagens não enviadas que serão perdidas se terminar a sessão";
@@ -1771,10 +1744,10 @@
 "This conversation contains trashed messages" = "Esta conversa contém mensagens postas no lixo";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail falhou os requisitos de autenticação do domínio. Pode ser falsificado ou ter sido reencaminhado incorretamente!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Esta mensagem falhou nos requisitos de autenticação do domínio. Pode ser uma fraude ou ter sido indevidamente encaminhado.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este correio eletrónico aparenta ser oriundo dum endereço Proton Mail, mas foi enviado por um sistema externo e falhou os nossos requisitos de autenticação. Pode estar falsificado ou ter sido encaminhado incorretamente.";
@@ -1816,6 +1789,9 @@
 /* The title of the time label of the scheduled message that is about to be sent today. */
 "Today, %@" = "Hoje, ás %@";
 
+/* One of schedule time options */
+"Tomorrow" = "Amanhã";
+
 /* scheduled send message at tomorrow morning Action */
 "Tomorrow at 08:%02d AM" = "Amanhã, ás 08:%02d AM";
 
@@ -1824,9 +1800,6 @@
 
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Ações da Barra de Tarefas (selecione até 5)";
-
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
 
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Controle as suas recompensas";
@@ -1845,7 +1818,7 @@
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente ligar ao Proton de uma rede diferente (ou utilize o %1$@ ou %2$@).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Active esta funcionalidade para preencher automaticamente endereços electrónicos utilizando contactos de todas as suas contas ligadas.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Código de dois passos";
@@ -1912,6 +1885,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton atualizado, proteção unificada";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Atualizar agora";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualize para um plano pago para enviar a partir do seu endereço %@";

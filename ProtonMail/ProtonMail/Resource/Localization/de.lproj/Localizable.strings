@@ -13,50 +13,8 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ von %2$@";
 
-/* Description */
-"%d attempt remaining" = "%d Versuch verbleibend";
-
-/* Error */
-"%d attempt remaining until secure data wipe!" = "%d verbleibender Versuch bis zum sicheren Vernichten der Daten!";
-
-/* The title of swipe banner after swiping to label conversations */
-"%d conversation labeled" = "%d Unterhaltung kategorisiert";
-
-/* The title of swipe banner after swiping to move conversations */
-"%d conversation moved to %@" = "%1$d Unterhaltung nach %2$@ verschoben";
-
-/* Title of the tracker list. Only used if there is at least one tracker. */
-"%d email trackers blocked" = "%d E-Mail-Tracker gesperrt";
-
-/* The title of swipe banner after swiping to label messages */
-"%d message labeled" = "%d Nachricht kategorisiert";
-
-/* The title of swipe banner after swiping to move messages */
-"%d message moved to %@" = "%1$d Nachricht nach %2$@ verschoben";
-
-/* Banner message */
-"%d message moved to Drafts" = "%d Nachricht in Entwürfe verschoben";
-
-/* minute */
-"%d min" = "%d Minute";
-
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d Sekunden";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d ausgewählt";
-
-/* conversation number */
-"%u conversation" = "%u Unterhaltung";
-
-/* message number */
-"%u message" = "%u Nachricht";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "➕ Hier ablegen, um als Anhang hinzuzufügen";
-
-/* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d weitere";
 
 /* Text for the estimated time label if less than one minute is remaining */
 "<1 minute remaining" = "<1 Minute verbleibend";
@@ -152,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Adressen";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Erweiterte Einstellungen";
+
 /* Title */
 "Alert" = "Benachrichtigung";
 
@@ -163,7 +124,7 @@
 "All Mail" = "Alle Nachrichten";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Alle Schutzeinstellungen werden beim Abmelden von der App zurückgesetzt und gelöscht.";
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen.";
@@ -218,6 +179,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Erscheinungsbild";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey schützt deine Proton-Informationen auch im Fall von ausgeklügelten Angriffen, z. B. wenn ein Angreifer den Inhalt deines Geräts klont. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey-Schutz";
 
 /* Apply action */
 "Apply" = "Übernehmen";
@@ -316,7 +283,7 @@
 "Bad response" = "Ungültige Antwort";
 
 /* Title */
-"Bcc" = "Bcc";
+"Bcc" = "BCC";
 
 /* message Bcc: feild */
 "Bcc:" = "BCC:";
@@ -402,7 +369,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "Cc";
+"Cc" = "CC";
 
 /* settings general section title */
 "Change account password" = "Kontenpasswort ändern";
@@ -557,7 +524,7 @@
 "Creating label not allowed" = "Das Erstellen von Kategorien ist nicht erlaubt";
 
 /* Change language title */
-"Current Language is: " = "Aktuelle Sprache: ";
+"Current Language: " = "Current Language: ";
 
 /* Placeholder */
 "Current password" = "Aktuelles Passwort";
@@ -574,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Benutzerdefiniert";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Anpassen";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Symbolleiste anpassen";
@@ -662,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Verworfen";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Haftungsausschluss";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Tastatur schließen";
 
@@ -728,7 +701,7 @@
 "Downloading metadata ..." = "Lade Metadaten herunter...";
 
 /* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Lade neue Nachrichten herunter...";
+"Downloading new messages..." = "Downloading new messages...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Lädt E-Mails herunter, sodass du sie durchsuchen kannst. Nachrichten werden verschlüsselt und lokal gespeichert. %1$@";
@@ -780,7 +753,7 @@
 "Email address disabled" = "E‐Mail‐Adresse deaktiviert";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "E-mail Adresse ist Ungültig";
+"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E‐Mail‐Adressen";
@@ -882,9 +855,6 @@
 /* alert title */
 "Expiration not supported" = "Ablaufdatum nicht unterstützt";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Dateityp konnte nicht bestimmt werden";
 
@@ -912,6 +882,9 @@
 /* forward action */
 "Forward" = "Weiterleiten";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Weiterleiten (letzte Nachricht)";
+
 /* forwarded message title */
 "Forwarded message" = "Weitergeleitete Nachricht";
 
@@ -929,9 +902,6 @@
 
 /* abbreviation of forward: */
 "Fw:" = "WG:";
-
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Geschlecht";
@@ -952,7 +922,7 @@
 "Go to settings" = "Zu den Einstellungen";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Zur Anmeldung";
+"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "Verstanden";
@@ -1018,6 +988,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Für den Fall, dass Proton-Websites gesperrt sind, ermöglicht diese Einstellung der App, eine alternative Netzwerkweiterleitung auszuprobieren, um Proton zu erreichen, was zur Umgehung von Firewalls oder Netzwerkproblemen nützlich sein kann. Wir empfehlen, diese Einstellung für eine größere Zuverlässigkeit beizubehalten. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Morgens";
+
 /* menu title */
 "Inbox" = "Posteingang";
 
@@ -1040,7 +1013,7 @@
 "Input Display Name…" = "Anzeigename eingeben …";
 
 /* place holder */
-"Input Notification Email …" = "E-Mail Benachrichtigung eingeben …";
+"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Unverschlüsselte Verbindung";
@@ -1116,6 +1089,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Link kopiert.";
 
+/* Button inside the banner */
+"Load" = "Laden";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Eingebettete Grafiken laden";
 
@@ -1139,10 +1115,10 @@
 "Lock The App" = "App sperren";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Melde dich erneut an, um weiterhin Aktualisierungen zu erhalten";
+"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Abgemeldet von %@";
+"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Protokolle";
@@ -1171,9 +1147,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Als ungelesen kennzeichnen";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menü";
@@ -1378,12 +1351,18 @@
 /* Alert title */
 "Notice" = "Hinweis";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Benachrichtigungsaktionen und andere Hintergrundprozesse werden nicht mehr verfügbar sein";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Benachrichtigungen";
 
 /* The title of Off setting options */
 "Off" = "Aus";
+
+/* Official badge next to sender's name */
+"Official" = "Offiziell";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
@@ -1393,9 +1372,6 @@
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Okay";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Älteste Nachricht: ";
@@ -1438,6 +1414,9 @@
 
 /* update password error */
 "Password update failed" = "Aktualisierung des Passworts fehlgeschlagen";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Passwort aktualisiert";
 
 /* Placeholder */
 "Passwords must match" = "Passwörter müssen übereinstimmen";
@@ -1547,11 +1526,11 @@
 /* Local notification title */
 "Problem sending message" = "Senden der Nachricht fehlgeschlagen";
 
+/* Settings lock protection section */
+"Protection" = "Schutz";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton ist ausgefallen";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail ist zurzeit offline…";
@@ -1563,7 +1542,7 @@
 "Proton Status" = "Proton-Status";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Feedback geben";
+"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall-Störung";
@@ -1623,8 +1602,14 @@
 /* reply action */
 "Reply" = "Antworten";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Antworten (auf die letzte Nachricht)";
+
 /* reply all action */
 "Reply all" = "Allen antworten";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Allen antworten (auf die letzte Nachricht)";
 
 /* menu title */
 "Report a problem" = "Ein Problem melden";
@@ -1828,6 +1813,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Zurückstellen";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Einige Bilder konnten aufgrund des Tracking-Schutzes nicht geladen werden.";
+
 /* menu title */
 "Spam" = "Spam";
 
@@ -1891,9 +1879,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Wischgesten";
-
-/* Swiping gestures */
-"Swiping gestures" = "Wischgesten";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Auswahlmodus wechseln";
@@ -1983,7 +1968,7 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Die URL, auf die du versuchst zuzugreifen, entspricht nicht dem Standard und wird möglicherweise nicht richtig geladen. Möchtest du diese Adresse jetzt mit dem Standardbrowser deines Geräts öffnen?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "Der Benutzer ist bereits angemeldet";
+"The user is already signed in" = "The user is already signed in";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Es gibt noch nicht gesendete Nachrichten, die verloren gehen, sobald du dich abmeldest";
@@ -2001,10 +1986,10 @@
 "This conversation contains trashed messages" = "Dieses Thema enthält gelöschte Nachrichten";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail scheint von einer Proton Mail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
@@ -2079,9 +2064,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Symbolleistenaktionen (bis zu 5 auswählen)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Verfolge deine Belohnungen";
 
@@ -2099,7 +2081,7 @@
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Versuche dich von einem anderen Netzwerk aus mit Proton zu verbinden (oder verwende %1$@ oder %2$@).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Zwei-Faktor-Code";
@@ -2362,4 +2344,3 @@
 /* contact placeholder */
 "ZIP" = "PLZ";
 
-"Customize (verb)" = "Customize";

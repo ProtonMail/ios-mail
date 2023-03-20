@@ -43,7 +43,7 @@ extension String {
     }
 
     func hasFwd () -> Bool {
-        let fwd = LocalString._composer_short_forward
+        let fwd = LocalString._composer_short_forward_shorter
         let checkCount = fwd.count
         if self.count < checkCount {
             return false
