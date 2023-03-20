@@ -150,6 +150,7 @@ final class ComposerMessageHelper {
         dependencies.contextProvider.performOnRootSavingContext { context in
             defer {
                 self.updateDraft()
+                self.uploadDraft()
                 completion()
             }
             guard let msg = self.rawMessage else { return }
