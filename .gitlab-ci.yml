@@ -1,8 +1,10 @@
 stages:
   - i18n
+  - deploy
   - test
   - report
-  - test_flight
+  - cleanup
+  - testflight
   - enterprise
   - bot # comes from translations/generator job
 
@@ -41,12 +43,25 @@ include:
     ref: master
     file: "/jobs/commit-locales.gitlab-ci.yml"
 
+  - project: 'proton/devops/atlas-deploy'
+    file: '/scenarios/pipeline-env.yml'
+
 variables:
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
   GEM_HOME: "$CI_PROJECT_DIR/gem"
+  ATLAS_DEPLOY_LIST:
+    slim-api:develop
+  ATLAS_LINK_APP: mail
+  ATLAS_DEPLOY_SCOPE: "mail-ios-$CI_PIPELINE_ID"
+  ATLAS_DEPLOY_ENV: 'true'
 
-unit_tests:
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+test:unit:
   dependencies: []
   stage: test
   coverage: '/Test Coverage: \d*.\d*%/'
@@ -86,7 +101,7 @@ unit_tests:
   tags:
     - iOS_ARM_TAIPEI
 
-ui_tests_smoke:
+test:ui:smoke:
   dependencies: []
   stage: test
   except:
@@ -129,11 +144,11 @@ ui_tests_smoke:
     - iOS_UITEST
   allow_failure: false
   
-report:ui-tests-smoke:
+report:testmo:smoke:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   dependencies:
-    - ui_tests_smoke
+    - test:ui:smoke
   rules:
     - if: '$CI_COMMIT_BRANCH'
       when: never
@@ -149,7 +164,7 @@ report:ui-tests-smoke:
       --slack-channel mail-ios-uitests
   allow_failure: true
 
-ui_feature_tests:
+test:ui:feature:
   dependencies: []
   stage: test
   rules:
@@ -184,11 +199,11 @@ ui_feature_tests:
   tags:
     - iOS_UITEST
 
-report:ui_feature_tests:
+report:testmo:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   dependencies:
-    - ui_feature_tests
+    - test:ui:feature
   variables:
     GIT_DEPTH: 1
   rules:
@@ -211,9 +226,9 @@ report:ui_feature_tests:
 
 
 # --- Build app and send to testflight
-build-app-and-upload:
+testflight:build:upload:
   dependencies: []
-  stage: test_flight
+  stage: testflight
   variables:
     GIT_STRATEGY: clone
   rules:
@@ -247,7 +262,7 @@ build-app-and-upload:
 
 nightly-build-and-upload:
   dependencies: []
-  stage: test_flight
+  stage: testflight
   only:
     refs:
       - schedules
@@ -278,7 +293,7 @@ nightly-build-and-upload:
     - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for test and upload
-enterprise-test:
+enterprise:test:
   dependencies: []
   stage: enterprise
   variables:
@@ -333,6 +348,7 @@ commit-locales-release:
       - branches
     variables:
       - $CI_COMMIT_REF_NAME == 'develop'
+
 
 # sonarqube-check:
 #   stage: code_quality
