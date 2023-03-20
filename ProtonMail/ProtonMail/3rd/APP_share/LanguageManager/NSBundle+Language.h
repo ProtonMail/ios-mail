@@ -30,7 +30,7 @@
 
 @interface NSBundle (Language)
 
-+ (void)setLanguage:(NSString *)language;
++ (void)setLanguage:(NSString *)language isLanguageRTL:(BOOL)isLanguageRTL;
 
 @end
 

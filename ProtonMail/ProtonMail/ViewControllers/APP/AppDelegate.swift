@@ -72,7 +72,7 @@ extension AppDelegate: APIServiceDelegate {
     var additionalHeaders: [String: String]? { nil }
 
     var locale: String {
-        return LanguageManager.currentLanguageCode()
+        return LanguageManager().currentLanguageCode() ?? "en"
     }
 
     func isReachable() -> Bool {
@@ -514,10 +514,10 @@ extension AppDelegate {
         // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
         if #available(iOS 13.0, *),
             let code = Bundle.main.preferredLocalizations.first {
-            LanguageManager.saveLanguage(byCode: code)
+            LanguageManager().saveLanguage(by: code)
         }
         //setup language
-        LanguageManager.setupCurrentLanguage()
+        LanguageManager().setupCurrentLanguage()
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
