@@ -102,11 +102,6 @@ final class ComposerMessageHelper {
         updateDraft()
     }
 
-    func setNewMessage(_ message: Message) {
-        removeNotExistingAttachment(message: message)
-        setNewMessage(objectID: message.objectID)
-    }
-
     func setNewMessage(objectID: NSManagedObjectID) {
         var message: Message?
         dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
@@ -224,10 +219,6 @@ final class ComposerMessageHelper {
         return result
     }
 
-    func bodyForHTML() -> String {
-        return rawMessage?.bodyToHtml() ?? .empty
-    }
-
     func getRawMessageObject() -> Message? {
         return rawMessage
     }
@@ -273,18 +264,6 @@ extension ComposerMessageHelper {
             }
         } else {
             completion(nil)
-        }
-    }
-
-    func removeNotExistingAttachment(message: Message) {
-        let notExistingAttachments: [Attachment] = message.attachments
-            .compactMap { $0 as? Attachment }
-            .filter { $0.localURL?.absoluteString.contains(check: "Shared/AppGroup") ?? false }
-        guard !notExistingAttachments.isEmpty,
-              let context = notExistingAttachments.first?.managedObjectContext else { return }
-        context.performAndWait {
-            notExistingAttachments.forEach { $0.isSoftDeleted = true }
-            _ = context.saveUpstreamIfNeeded()
         }
     }
 

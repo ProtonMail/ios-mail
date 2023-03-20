@@ -178,7 +178,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
     func cellTapped(
         messageId: MessageID,
-        shouldOpenHistory: Bool = false,
 		caller: StaticString = #function,
         reloadCompletion: (() -> Void)? = nil
     ) {
@@ -202,7 +201,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                 unembed(cachedVC)
             }
             cachedViewControllers[indexPath] = nil
-            messageViewModel.toggleState(shouldOpenHistory: shouldOpenHistory)
+            messageViewModel.toggleState()
             customView.tableView.reloadRows(
                 at: [.init(row: index, section: 1)],
                 with: .automatic,
@@ -1045,7 +1044,6 @@ extension ConversationViewController {
         if !viewModel.isCellExpanded(messageID: message.messageID) {
             cellTapped(
                 messageId: message.messageID,
-                shouldOpenHistory: true,
                 reloadCompletion: { [weak self] in
                     self?.expandedMessageAndShowPrintProgress(message: message, completion: completion)
                 }

@@ -140,7 +140,6 @@ class UserManager: Service {
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
-            userDefaults: SharedCacheBase.getDefault(),
             viewMode: self.userInfo.viewMode
         )
     }()

@@ -635,10 +635,6 @@ extension ContactDataService {
             .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
 
-    func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
-        self.processContacts(lastError: nil, completion: completion)
-    }
-
     func getContactVOsFromPhone(_ completion: @escaping ContactVOCompletionBlock) {
         guard addressBookService.hasAccessToAddressBook() else {
             addressBookService.requestAuthorizationWithCompletion { granted, error in
@@ -681,71 +677,6 @@ extension ContactDataService {
             cacheName: nil
         )
         return fetchedResultController
-    }
-
-    private func processContacts(lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
-        struct ContactWrapper: Swift.Hashable {
-            let contact: ContactVO
-            let lastUsedTime: Date?
-        }
-
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
-            var contacts: [ContactWrapper] = []
-
-            // merge address book and core data contacts
-            self.coreDataService.performAndWaitOnRootSavingContext { context in
-                let emailsCache = self.allEmailsInManagedObjectContext(context,
-                                                                       isContactCombine: userCachedStatus.isCombineContactOn)
-                var pm_contacts: [ContactWrapper] = []
-                for email in emailsCache {
-                    if email.managedObjectContext != nil {
-                        let contact = ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
-                        pm_contacts.append(ContactWrapper(contact: contact, lastUsedTime: email.lastUsedTime))
-                    }
-                }
-                contacts.append(contentsOf: pm_contacts)
-            }
-
-            // sort rule: 1. lastUsedTime 2. name 3. email
-            contacts.sort(by: { (first: ContactWrapper, second: ContactWrapper) -> Bool in
-                if let t1 = first.lastUsedTime, let t2 = second.lastUsedTime {
-                    let result = t1.compare(t2)
-                    if result == .orderedAscending {
-                        return false
-                    } else if result == .orderedDescending {
-                        return true
-                    }
-                }
-
-                if first.lastUsedTime != nil && second.lastUsedTime == nil {
-                    return true
-                }
-
-                if second.lastUsedTime != nil && first.lastUsedTime == nil {
-                    return false
-                }
-
-                if first.contact.name.lowercased() != second.contact.name.lowercased() {
-                    return first.contact.name.lowercased() < second.contact.name.lowercased()
-                } else {
-                    return first.contact.email.lowercased() < second.contact.email.lowercased()
-                }
-            })
-
-            // Remove the duplicated items
-            var set = Set<ContactVO>()
-            var filteredResult = [ContactVO]()
-            for wrapper in contacts {
-                if !set.contains(wrapper.contact) {
-                    set.insert(wrapper.contact)
-                    filteredResult.append(wrapper.contact)
-                }
-            }
-
-            DispatchQueue.main.async {
-                completion(filteredResult, lastError)
-            }
-        }
     }
 }
 

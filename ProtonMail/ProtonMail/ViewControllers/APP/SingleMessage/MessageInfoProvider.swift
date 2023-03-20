@@ -93,14 +93,6 @@ final class MessageInfoProvider {
         return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled
     }
 
-    private var shouldPerformImageProxyRealRun: Bool {
-        imageProxyEnabled && remoteContentPolicy == .allowed
-    }
-
-    private var shouldPerformImageProxyDryRun: Bool {
-        imageProxyEnabled && remoteContentPolicy != .allowed
-    }
-
     init(
         message: MessageEntity,
         messageDecrypter: MessageDecrypterProtocol? = nil,
@@ -389,11 +381,6 @@ final class MessageInfoProvider {
         }
         return PMDateFormatter.shared.titleForScheduledBanner(from: time)
     }
-
-    // If the remote content policy is allow all, do not use the image proxy.
-    var shouldUseImageProxy: Bool {
-        remoteContentPolicy == .allowedAll ? false : shouldApplyImageProxy
-    }
 }
 
 // MARK: Public functions
@@ -430,31 +417,6 @@ extension MessageInfoProvider {
         remoteContentPolicy = .allowedAll
         prepareDisplayBody()
 	}
-
-    func replaceMarkersWithURLs(_ replacements: [Set<UUID>: String]) {
-        dispatchQueue.async { [weak self] in
-            guard
-                let self = self,
-                let currentlyDisplayedBody = self.bodyParts?.originalBody
-            else {
-                return
-            }
-
-            let updatedBody = replacements.reduce(into: currentlyDisplayedBody) { body, replacement in
-                for marker in replacement.key {
-                    guard let rangeToReplace = body.range(of: marker.uuidString) else {
-                        assertionFailure("Current body should contain \(marker)")
-                        continue
-                    }
-
-                    body.replaceSubrange(rangeToReplace, with: replacement.value)
-                }
-            }
-            self.checkBannerStatus(updatedBody)
-            self.updateBodyParts(with: updatedBody)
-            self.updateWebContents()
-        }
-    }
 }
 
 // MARK: Contact related
@@ -641,7 +603,6 @@ extension MessageInfoProvider {
         contents = WebContents(
             body: body,
             remoteContentMode: remoteContentPolicy,
-            isImageProxyEnable: imageProxyEnabled,
             messageDisplayMode: displayMode,
             contentLoadingType: contentLoadingType,
             renderStyle: currentMessageRenderStyle,

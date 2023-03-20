@@ -38,18 +38,6 @@ class CardDataParser {
 #endif
     }
 
-    func verifyAndParseContact(with email: String, from cards: [CardData]) -> Promise<PreContact> {
-        return Promise { seal in
-            async {
-                if let contact = self.verifyAndParseContact(with: email, from: cards) {
-                    return seal.fulfill(contact)
-                }
-                // TODO::need to improve the error part
-                seal.reject(NSError.badResponse())
-            }
-        }
-    }
-
     // swiftlint:disable:next function_body_length
     func verifyAndParseContact(with email: String, from cards: [CardData]) -> PreContact? {
         for card in cards {
