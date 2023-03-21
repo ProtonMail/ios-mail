@@ -91,19 +91,6 @@ final class EncryptedSearchUserDefaultCacheTests: XCTestCase {
         XCTAssertEqual(sut.totalMessages(of: userID2), 10)
     }
 
-    func testLastMessageIndexedTime() {
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID), 0)
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID2), 0)
-
-        sut.setLastMessageIndexedTime(of: userID, value: 1)
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID), 1)
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID2), 0)
-
-        sut.setLastMessageIndexedTime(of: userID2, value: 10)
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID), 1)
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID2), 10)
-    }
-
     func testLastIndexedMessageID() {
         XCTAssertNil(sut.lastIndexedMessageID(of: userID))
         XCTAssertNil(sut.lastIndexedMessageID(of: userID2))
@@ -320,7 +307,6 @@ final class EncryptedSearchUserDefaultCacheTests: XCTestCase {
         sut.setCanDownloadViaMobileData(of: userID, value: true)
         sut.setIsAppFreshInstalled(of: userID, value: true)
         sut.setTotalMessages(of: userID, value: 100)
-        sut.setLastMessageIndexedTime(of: userID, value: 10)
         sut.setLastIndexedMessageID(of: userID, value: .init(String.randomString(10)))
         sut.setProcessedMessagesCount(of: userID, value: 5)
         sut.setPreviousProcessedMessagesCount(of: userID, value: 3)
@@ -339,7 +325,6 @@ final class EncryptedSearchUserDefaultCacheTests: XCTestCase {
         XCTAssertFalse(sut.canDownloadViaMobileData(of: userID))
         XCTAssertFalse(sut.isAppFreshInstalled(of: userID))
         XCTAssertEqual(sut.totalMessages(of: userID), 0)
-        XCTAssertEqual(sut.lastMessageIndexedTime(of: userID), 0)
         XCTAssertNil(sut.lastIndexedMessageID(of: userID))
         XCTAssertEqual(sut.processedMessagesCount(of: userID), 0)
         XCTAssertEqual(sut.previousProcessedMessagesCount(of: userID), 0)

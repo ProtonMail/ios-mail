@@ -31,8 +31,8 @@ protocol EncryptedSearchUserCache {
     func totalMessages(of userID: UserID) -> Int
     func setTotalMessages(of userID: UserID, value: Int)
 
-    func lastMessageIndexedTime(of userID: UserID) -> Int
-    func setLastMessageIndexedTime(of userID: UserID, value: Int)
+    func oldestIndexedMessageTime(of userID: UserID) -> Int
+    func setOldestIndexedMessageTime(of userID: UserID, value: Int)
 
     func lastIndexedMessageID(of userID: UserID) -> MessageID?
     func setLastIndexedMessageID(of userID: UserID, value: MessageID)
@@ -85,7 +85,7 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
         static let encryptedSearchAppFreshInstalledFlag = "encrypted_search_app_fresh_installed_flag"
         static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
-        static let encryptedSearchLastMessageTimeIndexed = "encrypted_search_last_message_time_indexed"
+        static let encryptedSearchOldestIndexedMessageTime = "encrypted_search_oldest_indexed_message_time"
         static let encryptedSearchLastMessageIDIndexed = "encrypted_search_last_message_id_indexed"
         static let encryptedSearchProcessedMessages = "encrypted_search_processed_messages"
         static let encryptedSearchPreviousProcessedMessages = "encrypted_search_previous_processed_messages"
@@ -139,12 +139,12 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         updateDictionary(key: Key.encryptedSearchTotalMessages, userID: userID, value: value)
     }
 
-    func lastMessageIndexedTime(of userID: UserID) -> Int {
-        getValueFromDictionary(key: Key.encryptedSearchLastMessageTimeIndexed, userID: userID, defaultValue: 0)
+    func oldestIndexedMessageTime(of userID: UserID) -> Int {
+        getValueFromDictionary(key: Key.encryptedSearchOldestIndexedMessageTime, userID: userID, defaultValue: 0)
     }
 
-    func setLastMessageIndexedTime(of userID: UserID, value: Int) {
-        updateDictionary(key: Key.encryptedSearchLastMessageTimeIndexed, userID: userID, value: value)
+    func setOldestIndexedMessageTime(of userID: UserID, value: Int) {
+        updateDictionary(key: Key.encryptedSearchOldestIndexedMessageTime, userID: userID, value: value)
     }
 
     func lastIndexedMessageID(of userID: UserID) -> MessageID? {
@@ -253,7 +253,7 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         deleteValueFromDictionary(key: Key.encryptedSearchDownloadViaMobileData, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchAppFreshInstalledFlag, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchTotalMessages, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchLastMessageTimeIndexed, userID: userID)
+        deleteValueFromDictionary(key: Key.encryptedSearchOldestIndexedMessageTime, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchLastMessageIDIndexed, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchProcessedMessages, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchPreviousProcessedMessages, userID: userID)

@@ -181,21 +181,26 @@ extension ESBannerStyle {
         case .downloading, .refresh:
             text = L11n.EncryptedSearch.searchInfo_downloading
             link = L11n.EncryptedSearch.searchInfo_downloading_link
-        case .paused:
+        case .paused(let reason):
             text = L11n.EncryptedSearch.searchInfo_paused
             link = L11n.EncryptedSearch.searchInfo_paused_link
+            if let reason {
+                switch reason {
+                case .lowStorage:
+                    text = String(format: L11n.EncryptedSearch.searchInfo_lowStorage, oldestMessageInSearchIndex)
+                    link = ""
+                default:
+                    break
+                }
+            }
         case .partial:  // storage limit reached
             text = "\(L11n.EncryptedSearch.searchInfo_partial_prefix)\(oldestMessageInSearchIndex)\(L11n.EncryptedSearch.searchInfo_partial_suffix)"
             link = L11n.EncryptedSearch.searchInfo_partial_link
-        case .lowstorage:  // storage low
-            text = String(format: L11n.EncryptedSearch.searchInfo_lowStorage, oldestMessageInSearchIndex)
         case .complete,
                 .undetermined,
                 .background,
                 .backgroundStopped,
-                .disabled,
-                .metadataIndexing,
-                .metadataIndexingComplete:
+                .disabled:
             return
         }
         let message = String(format: text, link)

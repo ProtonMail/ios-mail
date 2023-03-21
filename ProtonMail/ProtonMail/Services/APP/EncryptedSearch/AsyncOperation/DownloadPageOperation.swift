@@ -52,9 +52,10 @@ final class DownloadPageOperation: AsyncOperation {
             pageSize: pageSize,
             priority: .lowestPriority
         )
+        if isCancelled { return }
 
         apiService.perform(request: request) { [weak self] _, result in
-            guard let self = self else { return }
+            guard let self = self, !self.isCancelled else { return }
             switch result {
             case .failure(let error):
                 self.log(message: "Download page operation failed \(error)", isError: true)

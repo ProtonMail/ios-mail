@@ -45,20 +45,9 @@ final class SearchIndexDBTests: XCTestCase {
 
     func testAddEntryToSearchIndex_with_unexpected_states() throws {
         createDB()
-        let expectedStates: [EncryptedSearchIndexState] = [
-            .partial,
-            .lowstorage,
-            .downloading,
-            .paused(nil),
-            .refresh,
-            .complete,
-            .background,
-            .metadataIndexing
-        ]
-        var expectedCount: Int = 1
-        for state in EncryptedSearchIndexState.allCases {
+
+        for num in 0...3 {
             let rowID = try sut.addNewEntryToSearchIndex(
-                currentState: state,
                 messageID: MessageID(String.randomString(7)),
                 time: Int.random(in: 4...99),
                 order: Int.random(in: 4...99),
@@ -68,13 +57,8 @@ final class SearchIndexDBTests: XCTestCase {
                 encryptedContentFile: String.randomString(7),
                 encryptedContentSize: 3
             )
-            if expectedStates.containsCase(state) {
-                let count = try XCTUnwrap(rowID)
-                XCTAssertEqual(count, expectedCount)
-                expectedCount += 1
-            } else {
-                XCTAssertNil(rowID)
-            }
+            let count = try XCTUnwrap(rowID)
+            XCTAssertEqual(count, num + 1)
         }
     }
 
@@ -83,7 +67,6 @@ final class SearchIndexDBTests: XCTestCase {
         let existingID = MessageID("existing")
         let unknownID = MessageID("unknown")
         let rowID = try sut.addNewEntryToSearchIndex(
-            currentState: .downloading,
             messageID: existingID,
             time: 2000,
             order: 2,
@@ -129,7 +112,6 @@ final class SearchIndexDBTests: XCTestCase {
         let messages = (0...5).map { MessageID("message\($0)") }
         for (index, id) in messages.enumerated() {
             let rowID = try sut.addNewEntryToSearchIndex(
-                currentState: .downloading,
                 messageID: id,
                 time: index * 1000,
                 order: index,
@@ -167,7 +149,6 @@ final class SearchIndexDBTests: XCTestCase {
                 time = 2
             }
             let rowID = try sut.addNewEntryToSearchIndex(
-                currentState: .downloading,
                 messageID: id,
                 time: time,
                 order: index,
@@ -194,7 +175,6 @@ final class SearchIndexDBTests: XCTestCase {
                 time = 2
             }
             let rowID = try sut.addNewEntryToSearchIndex(
-                currentState: .downloading,
                 messageID: id,
                 time: time,
                 order: index,
@@ -220,7 +200,6 @@ final class SearchIndexDBTests: XCTestCase {
         for (index, id) in messages.enumerated() {
             var time = (index + 1) * 2000
             let rowID = try sut.addNewEntryToSearchIndex(
-                currentState: .downloading,
                 messageID: id,
                 time: time,
                 order: index,
@@ -243,7 +222,6 @@ final class SearchIndexDBTests: XCTestCase {
             XCTAssertTrue(isDeleted)
         }
         let rowID = try sut.addNewEntryToSearchIndex(
-            currentState: .downloading,
             messageID: MessageID("hi"),
             time: 500,
             order: 2,

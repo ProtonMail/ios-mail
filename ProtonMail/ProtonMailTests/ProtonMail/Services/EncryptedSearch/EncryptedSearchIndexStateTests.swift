@@ -23,7 +23,7 @@ final class EncryptedSearchIndexStateTests: XCTestCase {
 
     func testEqual() {
         XCTAssertEqual(SUT.disabled, SUT.disabled)
-        XCTAssertNotEqual(SUT.disabled, SUT.metadataIndexingComplete)
+        XCTAssertNotEqual(SUT.disabled, SUT.background)
         XCTAssertEqual(SUT.undetermined, SUT.undetermined)
         XCTAssertNotEqual(SUT.undetermined, SUT.background)
         XCTAssertEqual(SUT.paused(nil), SUT.paused(nil))
@@ -34,9 +34,9 @@ final class EncryptedSearchIndexStateTests: XCTestCase {
     }
 
     func testContainCase() {
-        var states: [SUT] = [.background, .paused(nil), .disabled]
+        let states: [SUT] = [.background, .paused(nil), .disabled]
         XCTAssertTrue(states.containsCase(.paused(.lowStorage)))
         XCTAssertTrue(states.containsCase(.background))
-        XCTAssertFalse(states.containsCase(.lowstorage))
+        XCTAssertFalse(states.containsCase(.backgroundStopped))
     }
 }

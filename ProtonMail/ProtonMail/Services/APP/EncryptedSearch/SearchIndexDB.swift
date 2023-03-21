@@ -116,7 +116,6 @@ final class SearchIndexDB {
 
     // swiftlint:disable:next function_parameter_count
     func addNewEntryToSearchIndex(
-        currentState: EncryptedSearchIndexState,
         messageID: MessageID,
         time: Int,
         order: Int,
@@ -126,19 +125,6 @@ final class SearchIndexDB {
         encryptedContentFile: String,
         encryptedContentSize: Int
     ) throws -> Int? {
-        // TODO is `complete` expected?
-        // TODO this logic shouldn't belong this class, better to move to BuildSearchIndex
-        let expectedESStates: [EncryptedSearchIndexState] = [
-            .partial,
-            .lowstorage,
-            .downloading,
-            .paused(nil),
-            .refresh,
-            .complete,
-            .background,
-            .metadataIndexing
-        ]
-        guard expectedESStates.containsCase(currentState) else { return nil }
         let labels = labelIDs.map { $0.rawValue }.uniqued
 
         do {
