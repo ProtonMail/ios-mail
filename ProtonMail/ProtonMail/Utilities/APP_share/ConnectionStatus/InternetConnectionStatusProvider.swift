@@ -19,6 +19,27 @@ enum ConnectionStatus: Int {
             return false
         }
     }
+    
+    var desc: String {
+        switch self {
+        case .connected:
+            return "connected"
+        case .connectedViaCellular:
+            return "connectedViaCellular"
+        case .connectedViaCellularWithoutInternet:
+            return "connectedViaCellularWithoutInternet"
+        case .connectedViaEthernet:
+            return "connectedViaEthernet"
+        case .connectedViaEthernetWithoutInternet:
+            return "connectedViaEthernetWithoutInternet"
+        case .connectedViaWiFi:
+            return "connectedViaWiFi"
+        case .connectedViaWiFiWithoutInternet:
+            return "connectedViaWiFiWithoutInternet"
+        case .notConnected:
+            return "notConnected"
+        }
+    }
 }
 
 // sourcery: mock

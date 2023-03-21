@@ -1543,6 +1543,7 @@ enum L11n {
         static let searchInfo_partial_link = NSLocalizedString("local storage limit.", comment: "Text for the link to show when indexing is stopped because of storage limit reached.")
         static let searchInfo_lowStorage = NSLocalizedString("Messages from before %@, will not be searched. To search within them, free up storage space on this device.", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
         static let download_will_stop_desc = NSLocalizedString("The download will stop if the Proton Mail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
+        static let less_than_a_minute = NSLocalizedString("<1 minute remaining", comment: "Text for the estimated time label if less than one minute is remaining")
 
         // MARK: - Interrupt reason
         static let download_paused_no_connectivity = NSLocalizedString("Download paused: No connectivity", comment: "Text for estimate time label when no internet connection is available")
@@ -1553,6 +1554,8 @@ enum L11n {
         static let download_paused_low_battery_advice = NSLocalizedString("Charge your device or resume manually.", comment: "Text for status label when low battery")
         static let download_paused_low_storage = NSLocalizedString("Download paused: Storage full", comment: "Text for estimate time label when storage is full")
         static let download_paused_low_storage_advice = NSLocalizedString("Free up at least 100 MB of storage to continue.", comment: "Text for status label when storage is full")
+
+        static let estimating_time_remaining = NSLocalizedString("Estimating time remaining ...", comment: "The default text while estimating the time remaining")
     }
 
     struct Settings {

@@ -844,6 +844,7 @@ struct LocalizationList {
         "L11n.EncryptedSearch.searchInfo_partial_link": L11n.EncryptedSearch.searchInfo_partial_link,
         "L11n.EncryptedSearch.searchInfo_lowStorage": L11n.EncryptedSearch.searchInfo_lowStorage,
         "L11n.EncryptedSearch.download_will_stop_desc": L11n.EncryptedSearch.download_will_stop_desc,
+        "L11n.EncryptedSearch.less_than_a_minute": L11n.EncryptedSearch.less_than_a_minute,
         "L11n.EncryptedSearch.download_paused_no_connectivity": L11n.EncryptedSearch.download_paused_no_connectivity,
         "L11n.EncryptedSearch.download_paused_no_connectivity_advice": L11n.EncryptedSearch.download_paused_no_connectivity_advice,
         "L11n.EncryptedSearch.download_paused_no_wifi": L11n.EncryptedSearch.download_paused_no_wifi,
@@ -852,6 +853,7 @@ struct LocalizationList {
         "L11n.EncryptedSearch.download_paused_low_battery_advice": L11n.EncryptedSearch.download_paused_low_battery_advice,
         "L11n.EncryptedSearch.download_paused_low_storage": L11n.EncryptedSearch.download_paused_low_storage,
         "L11n.EncryptedSearch.download_paused_low_storage_advice": L11n.EncryptedSearch.download_paused_low_storage_advice,
+        "L11n.EncryptedSearch.estimating_time_remaining": L11n.EncryptedSearch.estimating_time_remaining,
         // L11n.Settings
         "L11n.Settings.passwordUpdated": L11n.Settings.passwordUpdated,
         // L11n.NextMsgAfterMove

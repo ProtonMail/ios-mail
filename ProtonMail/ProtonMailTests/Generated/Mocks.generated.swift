@@ -255,14 +255,14 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
         setTotalMessagesStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.lastMessageIndexedTime, initialReturn: Int()) var lastMessageIndexedTimeStub
-    func lastMessageIndexedTime(of userID: UserID) -> Int {
-        lastMessageIndexedTimeStub(userID)
+    @FuncStub(MockEncryptedSearchUserCache.oldestIndexedMessageTime, initialReturn: Int()) var oldestIndexedMessageTimeStub
+    func oldestIndexedMessageTime(of userID: UserID) -> Int {
+        oldestIndexedMessageTimeStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setLastMessageIndexedTime) var setLastMessageIndexedTimeStub
-    func setLastMessageIndexedTime(of userID: UserID, value: Int) {
-        setLastMessageIndexedTimeStub(userID, value)
+    @FuncStub(MockEncryptedSearchUserCache.setOldestIndexedMessageTime) var setOldestIndexedMessageTimeStub
+    func setOldestIndexedMessageTime(of userID: UserID, value: Int) {
+        setOldestIndexedMessageTimeStub(userID, value)
     }
 
     @FuncStub(MockEncryptedSearchUserCache.lastIndexedMessageID, initialReturn: nil) var lastIndexedMessageIDStub
