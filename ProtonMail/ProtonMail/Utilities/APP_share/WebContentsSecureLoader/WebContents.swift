@@ -40,7 +40,6 @@ struct WebContents: Equatable {
     let webImages: WebImageContents?
     let contentLoadingType: LoadingType
     let messageDisplayMode: MessageDisplayMode
-    let isImageProxyEnable: Bool
 
     var bodyForJS: String {
         return self.body.escaped
@@ -48,7 +47,6 @@ struct WebContents: Equatable {
 
     init(body: String,
          remoteContentMode: RemoteContentPolicy,
-         isImageProxyEnable: Bool,
          messageDisplayMode: MessageDisplayMode,
          contentLoadingType: LoadingType = .proxy,
          renderStyle: MessageRenderStyle = .dark,
@@ -62,7 +60,6 @@ struct WebContents: Equatable {
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
         self.webImages = webImages
-        self.isImageProxyEnable = isImageProxyEnable
     }
 
     var contentSecurityPolicy: String {

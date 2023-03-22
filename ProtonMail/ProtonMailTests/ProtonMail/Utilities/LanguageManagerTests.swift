@@ -50,16 +50,6 @@ class LanguageManagerTests: XCTestCase {
         XCTAssertEqual(value, "en")
     }
 
-    func testLanguageStrings() {
-        XCTAssertEqual(sut.languageStrings(), ELanguage.languageStrings)
-    }
-
-    func testCurrentLanguageCode() {
-        userDefaultMock.set(language.languageCode, forKey: LanguageManager.Constant.languageSaveKey)
-
-        XCTAssertEqual(sut.currentLanguageString(), language.languageString)
-    }
-
     func testCurrentLanguageIndex() {
         userDefaultMock.set(language.languageCode, forKey: LanguageManager.Constant.languageSaveKey)
 
@@ -72,15 +62,6 @@ class LanguageManagerTests: XCTestCase {
         userDefaultMock.set(language.languageCode, forKey: LanguageManager.Constant.languageSaveKey)
 
         XCTAssertEqual(sut.currentLanguage(), language)
-    }
-
-    func testSaveLanguageByIndex() throws {
-        let index = try XCTUnwrap(ELanguage.languageCodes.firstIndex(of: language.languageCode))
-
-        sut.saveLanguage(by: index)
-
-        let value = try XCTUnwrap(userDefaultMock.string(forKey: LanguageManager.Constant.languageSaveKey))
-        XCTAssertEqual(value, language.languageCode)
     }
 
     func testSaveLanguageByCode() throws {

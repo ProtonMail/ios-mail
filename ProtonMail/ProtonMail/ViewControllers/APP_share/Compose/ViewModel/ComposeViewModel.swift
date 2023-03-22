@@ -40,7 +40,6 @@ class ComposeViewModel: NSObject {
     let messageService: MessageDataService
     let coreDataContextProvider: CoreDataContextProviderProtocol
     let isEditingScheduleMsg: Bool
-    let isOpenedFromShare: Bool
     let originalScheduledTime: OriginalScheduleDate?
     private let dependencies: Dependencies
     var urlSchemesToBeHandle: Set<String> {
@@ -88,7 +87,6 @@ class ComposeViewModel: NSObject {
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
         internetStatusProvider: InternetConnectionStatusProvider,
-        isOpenedFromShare: Bool = false,
         originalScheduledTime: OriginalScheduleDate? = nil,
         dependencies: Dependencies? = nil
     ) {
@@ -116,7 +114,6 @@ class ComposeViewModel: NSObject {
         self.subject = subject
         self.body = body
         self.messageAction = action
-        self.isOpenedFromShare = isOpenedFromShare
         self.originalScheduledTime = originalScheduledTime
 
         super.init()
@@ -153,14 +150,12 @@ class ComposeViewModel: NSObject {
         coreDataContextProvider: CoreDataContextProviderProtocol,
         internetStatusProvider: InternetConnectionStatusProvider,
         isEditingScheduleMsg: Bool = false,
-        isOpenedFromShare: Bool = false,
         originalScheduledTime: OriginalScheduleDate? = nil,
         dependencies: Dependencies? = nil
     ) {
         self.user = user
         self.messageService = msgService
         self.coreDataContextProvider = coreDataContextProvider
-        self.isOpenedFromShare = isOpenedFromShare
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
         self.composerMessageHelper = ComposerMessageHelper(
@@ -307,7 +302,7 @@ class ComposeViewModel: NSObject {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
         case .reply, .replyAll:
             let msg = composerMessageHelper.draft!
             let body = composerMessageHelper.decryptBody()
@@ -331,7 +326,7 @@ class ComposeViewModel: NSObject {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded, supplementCSS: css)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
         case .forward:
             let msg = composerMessageHelper.draft!
             let clockFormat = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
@@ -362,12 +357,12 @@ class ComposeViewModel: NSObject {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
         case .newDraft:
             if !self.body.isEmpty {
                 let newHTMLString = "\(head) \(self.body) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
+                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             }
             let body: String = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
@@ -375,20 +370,20 @@ class ComposeViewModel: NSObject {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newHTMLString = """
                 \(head) \(self.body.ln2br()) \(signatureHtml) \(foot)
                 """
 
-                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
+                return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             } else if signatureHtml.trim().isEmpty {
                 // add some space
                 let defaultBody = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: defaultBody, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
+                return .init(body: defaultBody, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, messageDisplayMode: .expanded)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
         }
     }
 

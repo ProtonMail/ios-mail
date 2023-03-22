@@ -51,14 +51,6 @@ final class LanguageManager {
         #endif
     }
 
-    func languageStrings() -> [String] {
-        return ELanguage.languageStrings
-    }
-
-    func currentLanguageString() -> String? {
-        return currentLanguage().languageString
-    }
-
     func currentLanguageCode() -> String? {
         return userDefault?.string(forKey: Constant.languageSaveKey)
     }
@@ -73,17 +65,6 @@ final class LanguageManager {
     func currentLanguage() -> ELanguage {
         let index = currentLanguageIndex()
         return ELanguage.allCases[index]
-    }
-
-    func saveLanguage(by index: Int) {
-        guard let code = ELanguage.languageCodes[safe: index] else {
-            return
-        }
-        userDefault?.setValue(code, forKey: Constant.languageSaveKey)
-
-        #if USE_ON_FLY_LOCALIZATION
-        Bundle.setLanguage(code, isLanguageRTL: isCurrentLanguageRTL())
-        #endif
     }
 
     func saveLanguage(by code: String) {

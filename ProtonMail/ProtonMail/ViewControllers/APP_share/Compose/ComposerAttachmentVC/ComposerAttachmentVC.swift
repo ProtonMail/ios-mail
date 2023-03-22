@@ -156,28 +156,6 @@ final class ComposerAttachmentVC: UIViewController {
         }
     }
 
-    func add(attachments: [AttachmentEntity],
-             completeHandler: (() -> Void)? = nil) {
-        let attachments = attachments
-            .filter {
-                !$0.isSoftDeleted &&
-                $0.isInline == false
-            }
-        let attachInfos = attachments.map(AttachInfo.init)
-
-        self.queue.addOperation {
-            let existedID = self.datas.map { $0.objectID }
-            let dataToAdd = attachInfos.filter({ !existedID.contains($0.objectID) })
-            self.datas.append(contentsOf: dataToAdd)
-            completeHandler?()
-            DispatchQueue.main.async {
-                self.tableView?.reloadData()
-                self.updateTableViewHeight()
-                self.isUploading?(!self.datas.areUploaded)
-            }
-        }
-    }
-
     func set(attachments: [AttachmentEntity], completeHandler: @escaping () -> Void) {
         let relevantAttachments = attachments
             .filter { !$0.isSoftDeleted &&

@@ -63,7 +63,7 @@ class ConversationMessageViewModel {
         self.message = message
     }
 
-    func toggleState(shouldOpenHistory: Bool = false) {
+    func toggleState() {
         state = state.isExpanded ?
             .collapsed(viewModel: .init(
                 message: message,

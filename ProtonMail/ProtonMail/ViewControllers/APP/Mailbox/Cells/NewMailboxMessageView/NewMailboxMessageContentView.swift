@@ -142,12 +142,6 @@ private extension NewMailboxMessageContentView {
             .stackView(axis: .vertical)
         }
 
-        static var senderLabel: UILabel {
-            let label = UILabel(frame: .zero)
-            label.textColor = ColorProvider.TextNorm
-            return label
-        }
-
         static var messageCountLabel: PaddingLabel {
             let label = PaddingLabel(withInsets: 0, 0, 6, 6)
             label.layer.cornerRadius = 3

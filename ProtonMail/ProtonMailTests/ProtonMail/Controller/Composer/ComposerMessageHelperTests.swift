@@ -58,14 +58,6 @@ final class ComposerMessageHelperTests: XCTestCase {
         try FileManager.default.removeItem(at: FileManager.default.temporaryDirectory)
     }
 
-    func testSetNewMessage() throws {
-        XCTAssertNil(sut.draft)
-        sut.setNewMessage(testMessage)
-
-        let draft = try XCTUnwrap(sut.draft)
-        XCTAssertEqual(draft.messageID.rawValue, testMessage.messageID)
-    }
-
     func testSetNewMessageByObjectID() throws {
         let objectID = testMessage.objectID
         XCTAssertNil(sut.draft)
@@ -125,7 +117,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         let expiration: TimeInterval = 0
         let password = String.randomString(30)
         let passwordHint = String.randomString(30)
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.collectDraft(recipientList: recipientList,
                          bccList: bccList,
@@ -155,7 +147,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testUploadDraft() throws {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         sut.uploadDraft()
 
         XCTAssertTrue(messageDataServiceMock.callSaveDraft.wasCalledExactlyOnce)
@@ -165,7 +157,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
     func testMarkAsRead_withReadMsg_markIsNotCalled() {
         testMessage.unRead = false
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.markAsRead()
 
@@ -174,7 +166,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
     func testMarkAsRead_withUnReadMsg_markIsCalled() throws {
         testMessage.unRead = true
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.markAsRead()
 
@@ -208,7 +200,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateAddressID() throws {
         let e = expectation(description: "Closure is called")
         let newAddressID = String.randomString(40)
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.updateAddressID(addressID: newAddressID) {
             e.fulfill()
@@ -223,7 +215,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testUpdateExpirationOffset() throws {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let e = expectation(description: "Closure is called")
         let expirationTime: TimeInterval = 100.0
         let password = String.randomString(10)
@@ -248,7 +240,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateMessageByMessageAction_reply_titleWillHasRe() {
         let title = String.randomString(30)
         testMessage.title = title
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.updateMessageByMessageAction(.reply)
 
@@ -260,7 +252,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateMessageByMessageAction_replyAll_titleWillHasRe() {
         let title = String.randomString(30)
         testMessage.title = title
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.updateMessageByMessageAction(.replyAll)
 
@@ -272,7 +264,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateMessageByMessageAction_forward_titleWillHasFwd() {
         let title = String.randomString(30)
         testMessage.title = title
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.updateMessageByMessageAction(.forward)
 
@@ -284,7 +276,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateMessageByMessageAction_other_titleNoChanged() {
         let title = String.randomString(30)
         testMessage.title = title
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         sut.updateMessageByMessageAction(.newDraft)
         XCTAssertEqual(sut.draft?.title, title)
@@ -297,7 +289,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testDecryptBody() {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         messageDataServiceMock.mockDecrypter = .init(userDataSource: fakeUser)
         let decryptedBody = String.randomString(40)
         messageDataServiceMock.mockDecrypter.callDecrypt.bodyIs { _, _ in
@@ -311,7 +303,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testGetRawMessageObject() {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
 
         let result = sut.getRawMessageObject()
 
@@ -319,7 +311,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testAddPublicKeyIfNeeded_andSameKeyWillNotBeAttachedTwice() throws {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let e = expectation(description: "Closure is called")
         let testData = String.randomString(40).data(using: .utf8)!
         let email = "test@proton.me"
@@ -352,7 +344,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testDeleteAttachment() throws {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let attachment = createTestAttachment()
         let e = expectation(description: "Closure is called")
 
@@ -372,7 +364,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         let testAttachment = createTestAttachment(filename: fineName)
         testAttachment.message = testMessage
         testMessage.numAttachments = .init(value: 1)
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let e = expectation(description: "Closure is called")
         messageDataServiceMock.callDelete.bodyIs { _, _, _ in
             testAttachment.message = Message(context: self.contextProviderMock.mainContext)
@@ -393,7 +385,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testAddAttachment() throws {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let data = String.randomString(50).data(using: .utf8)
         let name = String.randomString(10)
         let file = ConcreteFileData(name: name, ext: "", contents: data!)
@@ -410,7 +402,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     }
 
     func testAddMIMEAttachment() throws {
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let data = String.randomString(50)
         let fileName = "test"
         let attachment = try createMimeAttachment(fileName: fileName, text: data)
@@ -432,7 +424,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateAttachmentCount_attachmentNumIsUpdated() {
         let attachment = createTestAttachment()
         attachment.message = testMessage
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         XCTAssertEqual(sut.draft?.numAttachments, 0)
         XCTAssertEqual(testMessage.numAttachments.intValue, 0)
 
@@ -452,7 +444,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         let attachment3 = createTestAttachment()
         attachment3.message = testMessage
         attachment3.order = Int32(-1)
-        sut.setNewMessage(testMessage)
+        sut.setNewMessage(objectID: testMessage.objectID)
         let e = expectation(description: "Closure is called")
 
         var attachments: [AttachmentEntity] = []

@@ -739,6 +739,11 @@ extension ComposeContainerViewController: AttachmentController {
     }
 }
 
+#if !APP_EXTENSION
+extension ComposeContainerViewController: LifetimeTrackable {
+}
+#endif
+
 // MARK: - Scheduled send related
 
 extension ComposeContainerViewController: ScheduledSendHelperDelegate {
