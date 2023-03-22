@@ -194,6 +194,6 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
 
     /// This method is needed because side effects happen on a background queue
     private func waitForSideEffectsToOccur() {
-        Thread.sleep(forTimeInterval: 0.01)
+        Thread.sleep(forTimeInterval: 0.05)
     }
 }

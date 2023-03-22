@@ -102,8 +102,17 @@ extension NSManagedObjectContext {
                     try obtainPermanentIDs(for: Array(insertedObjects))
                 }
 
-                try save()
+                try ObjC.catchException {
+                    do {
+                        try self.save()
+                    } catch let savingError as NSError {
+                        error = savingError
+                    }
+                }
                 if let parentContext = parent {
+                    assertionFailure(
+                        "This should never be needed, rootSavingContext has no parent and mainContext is never saved."
+                    )
                     parentContext.performAndWait { () -> Void in
                         error = parentContext.saveUpstreamIfNeeded()
                     }
