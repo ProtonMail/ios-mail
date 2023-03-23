@@ -57,6 +57,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case localStorage
         case deleteAccount
         case nextMsgAfterMove
+        case blockList
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -72,6 +73,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
     func go(to dest: Destination) {
         switch dest {
+        case .blockList:
+            openBlockList()
         case .singlePwd:
             openChangePassword(ofType: ChangeSinglePasswordViewModel.self)
         case .loginPwd:
@@ -115,6 +118,17 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             return
         }
         go(to: destination)
+    }
+
+    private func openBlockList() {
+        let viewModel = BlockedSendersViewModel(
+            dependencies: .init(
+                cacheUpdater: user.blockedSenderCacheUpdater,
+                incomingDefaultService: user.incomingDefaultService
+            )
+        )
+        let viewController = BlockedSendersViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {

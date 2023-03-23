@@ -751,7 +751,9 @@ struct LocalizationList {
         "LocalizedString._title_notification_action_move_to_trash": LocalString._title_notification_action_move_to_trash,
         // L11n.BlockSender
         "L11n.BlockSender.blockActionItem": L11n.BlockSender.blockActionItem,
-        "L11n.BlockSender.blockListTitle": L11n.BlockSender.blockListTitle,
+        "L11n.BlockSender.blockListSettingsItem": L11n.BlockSender.blockListSettingsItem,
+        "L11n.BlockSender.blockListScreenTitle": L11n.BlockSender.blockListScreenTitle,
+        "L11n.BlockSender.emptyList": L11n.BlockSender.emptyList,
         // L11n.EmailTrackerProtection
         "L11n.EmailTrackerProtection.title": L11n.EmailTrackerProtection.title,
         "L11n.EmailTrackerProtection.no_email_trackers_found": L11n.EmailTrackerProtection.no_email_trackers_found,

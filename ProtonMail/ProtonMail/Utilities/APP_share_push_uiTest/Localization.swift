@@ -1434,7 +1434,9 @@ class LocalizedString {
 enum L11n {
     struct BlockSender {
         static let blockActionItem = NSLocalizedString("Block sender", comment: "Action sheet item to block a sender")
-        static let blockListTitle = NSLocalizedString("Block list", comment: "Title of the blocked sender list screen")
+        static let blockListSettingsItem = NSLocalizedString("Block list", comment: "Settings item to open blocked sender list")
+        static let blockListScreenTitle = NSLocalizedString("Blocked Senders", comment: "Title of the blocked sender list screen")
+        static let emptyList = NSLocalizedString("No blocked senders", comment: "Placeholder for empty sender list")
     }
 
     struct EmailTrackerProtection {

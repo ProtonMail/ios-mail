@@ -47,7 +47,7 @@ class SettingsAccountViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         XCTAssertEqual(sut.tableView.numberOfSections, 4)
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 6)
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 7)
         let cell = try XCTUnwrap(
             sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 5, section: 2)) as? SettingsGeneralCell
         )
@@ -70,7 +70,7 @@ class SettingsAccountViewControllerTests: XCTestCase {
         // addresses section
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 4)
         // mailbox section
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 6)
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 7)
         // account deletion
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 3), 1)
     }
