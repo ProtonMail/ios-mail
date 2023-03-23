@@ -31,6 +31,18 @@ final class IncomingDefaultService {
         fetchAndStoreRecursively(location: location, currentPage: 0, fetchedCount: 0, completion: completion)
     }
 
+    func list(location: IncomingDefaultsAPI.Location) throws -> [IncomingDefaultEntity] {
+        let fetchRequest = makeFetchRequest(location: location)
+
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(keyPath: \IncomingDefault.time, ascending: true)
+        ]
+
+        return try dependencies.contextProvider.read { context in
+            try context.fetch(fetchRequest).map(IncomingDefaultEntity.init)
+        }
+    }
+
     private func fetchAndStoreRecursively(
         location: IncomingDefaultsAPI.Location,
         currentPage: Int,
@@ -179,14 +191,7 @@ final class IncomingDefaultService {
         var result: Result<Void, Error>!
 
         dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-            fetchRequest.predicate = NSPredicate(
-                format: "%K == %@ AND %K == %@",
-                IncomingDefault.Attribute.location.rawValue,
-                "\(location.rawValue)",
-                IncomingDefault.Attribute.userID.rawValue,
-                self.dependencies.userInfo.userId
-            )
+            let fetchRequest = self.makeFetchRequest(location: location)
 
             do {
                 try fetchRequest
@@ -204,6 +209,20 @@ final class IncomingDefaultService {
         }
 
         try result.get()
+    }
+
+    private func makeFetchRequest(location: IncomingDefaultsAPI.Location) -> NSFetchRequest<IncomingDefault> {
+        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+
+        fetchRequest.predicate = NSPredicate(
+            format: "%K == %@ AND %K == %@",
+            IncomingDefault.Attribute.location.rawValue,
+            "\(location.rawValue)",
+            IncomingDefault.Attribute.userID.rawValue,
+            dependencies.userInfo.userId
+        )
+
+        return fetchRequest
     }
 }
 

@@ -64,7 +64,7 @@ extension Message {
             case .scheduled:
                 return LocalString._locations_scheduled_title
             case .blocked:
-                return L11n.BlockSender.blockListTitle
+                return L11n.BlockSender.blockListScreenTitle
             }
         }
 

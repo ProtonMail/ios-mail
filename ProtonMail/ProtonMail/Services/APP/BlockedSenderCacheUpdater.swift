@@ -90,12 +90,13 @@ final class BlockedSenderCacheUpdater {
         trackLifetime()
     }
 
-    func requestUpdate() {
+    /// parameter force: ignore the local flag that the fetch has been completed previously
+    func requestUpdate(force: Bool = false) {
         guard state == .idle else {
             return
         }
 
-        guard !dependencies.fetchStatusProvider.checkIfBlockedSendersAreFetched(userID: userID) else {
+        guard force || !dependencies.fetchStatusProvider.checkIfBlockedSendersAreFetched(userID: userID) else {
             return
         }
 

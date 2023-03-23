@@ -38,6 +38,11 @@ extension UITableView {
             })
         })
     }
+
+    func noSeparatorsAboveFirstCell() {
+        tableHeaderView = UIView()
+    }
+
     func noSeparatorsBelowFooter() {
         tableFooterView = UIView(frame: CGRect.zero)
     }
