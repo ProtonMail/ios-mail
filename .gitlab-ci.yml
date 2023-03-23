@@ -47,6 +47,9 @@ include:
   - project: 'proton/devops/atlas-deploy'
     file: '/scenarios/pipeline-env.yml'
 
+  - project: "tpe/testmo-reporter"
+    file: '/scenarios/testmo-script.yml'
+
 variables:
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
@@ -54,7 +57,7 @@ variables:
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
   ATLAS_DEPLOY_SCOPE: "mail-ios-$CI_PIPELINE_ID"
-  ATLAS_DEPLOY_ENV: 'true'
+  ATLAS_DEPLOY_ENV: "true"
 
 workflow:
   rules:
@@ -142,13 +145,13 @@ test:ui:smoke:
     - iOS_UITEST
   allow_failure: false
 
-report:testmo:smoke:
+report:slack:smoke:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   dependencies:
     - test:ui:smoke
   rules:
-    - if: '$CI_COMMIT_BRANCH'
+    - if: "$CI_COMMIT_BRANCH"
       when: never
     - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
       when: never
@@ -165,7 +168,7 @@ report:testmo:smoke:
 test:ui:feature:
   dependencies: []
   stage: test
-  rules:
+  rules: &rules_feature
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   variables:
     GIT_DEPTH: 1
@@ -176,10 +179,7 @@ test:ui:feature:
       - test_output/TestResults
     expire_in: 10 days
     reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: test_output/slatherOutput/cobertura.xml
-      junit: test_output/TestResults/ProtonMailUITests.xcresult/report.junit
+      junit: test_output/TestResults/report.xml
   before_script:
     - git submodule init
     - git submodule update --init --recursive
@@ -196,31 +196,35 @@ test:ui:feature:
   tags:
     - iOS_UITEST
 
-report:testmo:feature:
+report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   dependencies:
     - test:ui:feature
   variables:
     GIT_DEPTH: 1
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: always
-    - if: '$CI_COMMIT_BRANCH'
-      when: never
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: never
-    - when: manual
+  rules: *rules_feature
   script:
     - test_reporter.py
-      --path test_output/TestResults/ProtonMailUITests.xcresult/
+      --path test_output/TestResults/
       --platform ios
       --job-name $TEST_PLAN
       --slack-channel mail-ios-uitests
   allow_failure: true
 
+report:testmo:feature:
+  stage: report
+  extends: .testmo-upload
+  dependencies:
+    - test:ui:feature
+  rules: *rules_feature
+  variables:
+    PROJECT_ID: "7"
+    NAME: "$TEST_PLAN"
+    MILESTONE: "nightly-automation"
+    TAGS: "$CI_COMMIT_REF_SLUG"
+    SOURCE: "ios"
+    RESULT_FOLDER: "./test_output/TestResults/*.xml"
 
 # --- Build app and send to testflight
 testflight:build:upload:
