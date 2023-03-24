@@ -20,10 +20,17 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
+// sourcery: mock
 protocol IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void)
-    func listLocal(location: IncomingDefaultsAPI.Location) throws -> [IncomingDefaultEntity]
+    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity]
     func save(dto: IncomingDefaultDTO) throws
+    func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws
+    func performRemoteUpdate(
+        emailAddress: String,
+        newLocation: IncomingDefaultsAPI.Location,
+        completion: @escaping (Error?) -> Void
+    )
     func delete(query: IncomingDefaultService.Query) throws
 }
 
@@ -40,11 +47,9 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
         fetchAndStoreRecursively(location: location, currentPage: 0, fetchedCount: 0, completion: completion)
     }
 
-    func listLocal(location: IncomingDefaultsAPI.Location) throws -> [IncomingDefaultEntity] {
+    func listLocal(query: Query) throws -> [IncomingDefaultEntity] {
         try dependencies.contextProvider.read { context in
-            try self
-                .find(query: .location(location), in: context, includeSoftDeleted: false)
-                .map(IncomingDefaultEntity.init)
+            try self.find(query: query, in: context, includeSoftDeleted: false).map(IncomingDefaultEntity.init)
         }
     }
 
@@ -66,6 +71,80 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
         }
 
         try result.get()
+    }
+
+    func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws {
+        var result: Result<Void, Error>!
+
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            do {
+                try self
+                    .find(query: .email(emailAddress), in: context, includeSoftDeleted: false)
+                    .forEach(context.delete)
+
+                let incomingDefault = IncomingDefault(context: context)
+                incomingDefault.email = emailAddress
+                incomingDefault.location = "\(newLocation.rawValue)"
+                incomingDefault.time = LocaleEnvironment.currentDate()
+                incomingDefault.userID = self.dependencies.userInfo.userId
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+        }
+
+        try result.get()
+    }
+
+    func performRemoteUpdate(
+        emailAddress: String,
+        newLocation: IncomingDefaultsAPI.Location,
+        completion: @escaping (Error?) -> Void
+    ) {
+        let request = AddIncomingDefaultsRequest(location: newLocation, overwrite: true, target: .email(emailAddress))
+
+        dependencies.apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .immediateExecutor
+        ) { (_, result: Result<AddIncomingDefaultsResponse, ResponseError>) in
+            do {
+                let response = try result.get()
+
+                var savingResult: Result<Void, Error>!
+
+                self.dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+                    do {
+                        /*
+                         If the local object doesn't exist when this request finished processing, it can mean either of two things:
+                         - incoming defaults are being refetched
+                         - the user has unblocked the sender in the mean time
+                         In both cases, we shouldn't attempt to recreate it here.
+                         */
+
+                        if try !self.find(query: .email(emailAddress), in: context, includeSoftDeleted: false).isEmpty {
+                            try self.save(dto: response.incomingDefault, in: context)
+                        }
+
+                        if let error = context.saveUpstreamIfNeeded() {
+                            throw error
+                        }
+
+                        savingResult = .success(())
+                    } catch {
+                        savingResult = .failure(error)
+                    }
+                }
+
+                completion(savingResult.error)
+            } catch {
+                completion(error)
+            }
+        }
     }
 
     func delete(query: Query) throws {

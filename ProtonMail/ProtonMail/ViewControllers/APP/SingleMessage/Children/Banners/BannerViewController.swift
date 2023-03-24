@@ -218,6 +218,16 @@ final class BannerViewController: UIViewController {
         addBannerView(type: .imageProxyFailure, shouldAddContainer: true, bannerView: banner)
     }
 
+    private func showSenderIsBlockedBanner() {
+        let banner = CompactBannerView(
+            appearance: .normal,
+            title: L11n.BlockSender.senderIsBlockedBanner,
+            icon: IconProvider.exclamationCircleFilled,
+            action: nil
+        )
+        addBannerView(type: .senderIsBlocked, shouldAddContainer: true, bannerView: banner)
+    }
+
     private func showExpirationBanner() {
         let title = BannerViewModel.calculateExpirationTitle(of: viewModel.getExpirationOffset())
         let banner = CompactBannerView(appearance: .expiration,
@@ -334,7 +344,7 @@ final class BannerViewController: UIViewController {
 
 // MARK: - Exposed Method
 extension BannerViewController {
-    func showContentBanner(remoteContent: Bool, embeddedImage: Bool, imageProxyFailure: Bool) {
+    func showContentBanner(remoteContent: Bool, embeddedImage: Bool, imageProxyFailure: Bool, senderIsBlocked: Bool) {
         let bannersBeforeUpdate = displayedBanners
 
         if remoteContent {
@@ -347,6 +357,12 @@ extension BannerViewController {
 
         if imageProxyFailure {
             showImageProxyFailedBanner()
+        }
+
+        if senderIsBlocked {
+            showSenderIsBlockedBanner()
+        } else {
+            hideBanner(type: .senderIsBlocked)
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }

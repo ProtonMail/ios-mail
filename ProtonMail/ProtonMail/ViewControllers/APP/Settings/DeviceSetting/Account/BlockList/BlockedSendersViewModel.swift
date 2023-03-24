@@ -55,7 +55,7 @@ final class BlockedSendersViewModel: NSObject {
             let incomingDefaults: [IncomingDefaultEntity]
 
             do {
-                incomingDefaults = try dependencies.incomingDefaultService.listLocal(location: .blocked)
+                incomingDefaults = try dependencies.incomingDefaultService.listLocal(query: .location(.blocked))
             } catch {
                 assertionFailure("\(error)")
                 incomingDefaults = []

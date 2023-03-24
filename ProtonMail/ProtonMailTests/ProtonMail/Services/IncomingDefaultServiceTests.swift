@@ -51,14 +51,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
     }
 
     func testFetchAll_overwritesOlderIncomingDefaultsForTheSameEmail() async throws {
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let incomingDefault = IncomingDefault(context: context)
-            incomingDefault.email = self.emailAddress
-            incomingDefault.id = "Old ID"
-            incomingDefault.location = "\(self.location.rawValue)"
-            incomingDefault.time = .distantPast
-            incomingDefault.userID = self.userInfo.userId
-        }
+        storeStubbedObject(id: "Old ID", time: .distantPast)
 
         let stubbedResponse = GetIncomingDefaultsResponse(
             code: 0,
@@ -79,24 +72,12 @@ final class IncomingDefaultServiceTests: XCTestCase {
 
         try await sut.fetchAll(location: location)
 
-        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-
-        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
-            try context.fetch(fetchRequest).map(\.id)
-        }
-
+        let idsOfStoredIncomingDefaults = try listStoredObjects().map(\.id)
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
     }
 
     func testFetchAll_doesntOverwriteNewerIncomingDefaultsForTheSameEmail() async throws {
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let incomingDefault = IncomingDefault(context: context)
-            incomingDefault.email = self.emailAddress
-            incomingDefault.id = "Old ID"
-            incomingDefault.location = "\(self.location.rawValue)"
-            incomingDefault.time = .distantFuture
-            incomingDefault.userID = self.userInfo.userId
-        }
+        storeStubbedObject(id: "Old ID", time: .distantFuture)
 
         let stubbedResponse = GetIncomingDefaultsResponse(
             code: 0,
@@ -117,25 +98,12 @@ final class IncomingDefaultServiceTests: XCTestCase {
 
         try await sut.fetchAll(location: location)
 
-        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-
-        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
-            try context.fetch(fetchRequest).map(\.id)
-        }
-
+        let idsOfStoredIncomingDefaults = try listStoredObjects().map(\.id)
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["Old ID"])
     }
 
     func testSave_overwritesExistingOlderIncomingDefaultsForTheSameEmail() throws {
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let incomingDefault = IncomingDefault(context: context)
-            incomingDefault.email = self.emailAddress
-            incomingDefault.id = "Old ID"
-            incomingDefault.location = "\(self.location.rawValue)"
-            incomingDefault.time = .distantPast
-            incomingDefault.userID = self.userInfo.userId
-            _ = context.saveUpstreamIfNeeded()
-        }
+        storeStubbedObject(id: "Old ID", time: .distantPast)
 
         let newIncomingDefault = IncomingDefaultDTO(
             email: emailAddress,
@@ -145,23 +113,13 @@ final class IncomingDefaultServiceTests: XCTestCase {
         )
         try sut.save(dto: newIncomingDefault)
 
-        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
-            try context.fetch(fetchRequest).map(\.id)
-        }
+        let idsOfStoredIncomingDefaults = try listStoredObjects().map(\.id)
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
     }
 
+
     func testSave_doesNotOverwriteExistingNewerIncomingDefaultsForTheSameEmail() throws {
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let incomingDefault = IncomingDefault(context: context)
-            incomingDefault.email = self.emailAddress
-            incomingDefault.id = "Old ID"
-            incomingDefault.location = "\(self.location.rawValue)"
-            incomingDefault.time = .distantFuture
-            incomingDefault.userID = self.userInfo.userId
-            _ = context.saveUpstreamIfNeeded()
-        }
+        storeStubbedObject(id: "Old ID", time: .distantFuture)
 
         let newIncomingDefault = IncomingDefaultDTO(
             email: emailAddress,
@@ -171,23 +129,12 @@ final class IncomingDefaultServiceTests: XCTestCase {
         )
         try sut.save(dto: newIncomingDefault)
 
-        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
-            try context.fetch(fetchRequest).map(\.id)
-        }
+        let idsOfStoredIncomingDefaults = try listStoredObjects().map(\.id)
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["Old ID"])
     }
 
     func testSave_overwritesExistingIncomingDefaultsWithNilIDForTheSameEmail() throws {
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            let incomingDefault = IncomingDefault(context: context)
-            incomingDefault.email = self.emailAddress
-            incomingDefault.id = nil
-            incomingDefault.location = "\(self.location.rawValue)"
-            incomingDefault.time = .distantFuture
-            incomingDefault.userID = self.userInfo.userId
-            _ = context.saveUpstreamIfNeeded()
-        }
+        storeStubbedObject(id: nil, time: .distantFuture)
 
         let newIncomingDefault = IncomingDefaultDTO(
             email: emailAddress,
@@ -197,31 +144,107 @@ final class IncomingDefaultServiceTests: XCTestCase {
         )
         try sut.save(dto: newIncomingDefault)
 
-        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-        let idsOfStoredIncomingDefaults = try contextProvider.read { context in
-            try context.fetch(fetchRequest).map(\.id)
-        }
+        let idsOfStoredIncomingDefaults = try listStoredObjects().map(\.id)
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
     }
 
+
     func testDelete_removesExistingIncomingDefaults() throws {
         let incomingDefaultID = "the ID"
+        storeStubbedObject(id: incomingDefaultID, time: .distantFuture)
+        try sut.delete(query: .id(incomingDefaultID))
+
+        XCTAssertEqual(try listStoredObjects().count, 0)
+    }
+
+    func testPerformLocalUpdate_replacesExistingObject_thusClearingID() throws {
+        let id = String.randomString(16)
+
+        storeStubbedObject(id: id, time: .distantPast)
+
+        try sut.performLocalUpdate(emailAddress: emailAddress, newLocation: .blocked)
+
+        XCTAssertEqual(apiService.requestDecodableStub.callCounter, 0)
+
+        let updated = try XCTUnwrap(listStoredObjects().first)
+        XCTAssertEqual(updated.email, emailAddress)
+        XCTAssertEqual(updated.location, .blocked)
+        XCTAssertNil(updated.id)
+    }
+
+    func testPerformLocalUpdate_createsNewObjectIfNeeded() throws {
+        try sut.performLocalUpdate(emailAddress: emailAddress, newLocation: .blocked)
+
+        XCTAssertEqual(apiService.requestDecodableStub.callCounter, 0)
+
+        let updated = try XCTUnwrap(listStoredObjects().first)
+        XCTAssertEqual(updated.email, emailAddress)
+        XCTAssertEqual(updated.location, .blocked)
+        XCTAssertNil(updated.id)
+    }
+
+
+    func testPerformRemoteUpdate_performsAPIRequestAndUpdatesLocalDataIfItExists() async throws {
+        let id = String.randomString(16)
+
+        storeStubbedObject(id: id, time: .distantPast)
+
+        let stubbedResponse = AddIncomingDefaultsResponse(
+            code: 0,
+            incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture),
+            undoToken: UndoTokenData(token: "", tokenValidTime: 0)
+        )
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(stubbedResponse))
+        }
+
+        try await sut.performRemoteUpdate(emailAddress: emailAddress, newLocation: .blocked)
+
+        XCTAssertEqual(apiService.requestDecodableStub.callCounter, 1)
+
+        let updated = try XCTUnwrap(listStoredObjects().first)
+        XCTAssertEqual(updated.id, id)
+        XCTAssertEqual(updated.email, emailAddress)
+        XCTAssertEqual(updated.location, .blocked)
+        XCTAssertEqual(updated.time.timeIntervalSince1970, Date.distantFuture.timeIntervalSince1970, accuracy: 1.0)
+    }
+
+    func testPerformRemoteUpdate_performsAPIRequestAndDoesntCreateNewLocalData() async throws {
+        let id = String.randomString(16)
+
+        let stubbedResponse = AddIncomingDefaultsResponse(
+            code: 0,
+            incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture),
+            undoToken: UndoTokenData(token: "", tokenValidTime: 0)
+        )
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(stubbedResponse))
+        }
+
+        try await sut.performRemoteUpdate(emailAddress: emailAddress, newLocation: .blocked)
+
+        XCTAssertEqual(apiService.requestDecodableStub.callCounter, 1)
+        XCTAssertEqual(try listStoredObjects().count, 0)
+    }
+
+    private func storeStubbedObject(id: String?, time: Date) {
         contextProvider.performAndWaitOnRootSavingContext { context in
             let incomingDefault = IncomingDefault(context: context)
             incomingDefault.email = self.emailAddress
-            incomingDefault.id = incomingDefaultID
+            incomingDefault.id = id
             incomingDefault.location = "\(self.location.rawValue)"
-            incomingDefault.time = .distantFuture
+            incomingDefault.time = time
             incomingDefault.userID = self.userInfo.userId
             _ = context.saveUpstreamIfNeeded()
         }
-        try sut.delete(query: .id(incomingDefaultID))
+    }
 
+    private func listStoredObjects() throws -> [IncomingDefaultEntity] {
         let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-        let numStoredIncomingDefaults = try contextProvider.read { context in
-            try context.fetch(fetchRequest).count
+
+        return try contextProvider.read { context in
+            try context.fetch(fetchRequest).map(IncomingDefaultEntity.init)
         }
-        XCTAssertEqual(numStoredIncomingDefaults, 0)
     }
 }
 
@@ -229,6 +252,18 @@ private extension IncomingDefaultService {
     func fetchAll(location: IncomingDefaultsAPI.Location) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             self.fetchAll(location: location) { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+
+    func performRemoteUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            self.performRemoteUpdate(emailAddress: emailAddress, newLocation: newLocation) { error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {

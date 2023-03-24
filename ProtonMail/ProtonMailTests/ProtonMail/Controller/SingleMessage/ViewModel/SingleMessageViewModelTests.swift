@@ -272,19 +272,6 @@ final class SingleMessageViewModelTests: XCTestCase {
             attachments: .init()
         )
 
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: nil,
-                apiService: fakeUser.apiService,
-                contextProvider: contextProviderMock,
-                messageDataAction: fakeUser.messageService,
-                cacheService: fakeUser.cacheService
-            )
-        )
-        let dependencies: SingleMessageContentViewModel.Dependencies = .init(blockSenderService: .init(apiService: fakeUser.apiService),
-                                                                             fetchMessageDetail: fetchMessageDetail,
-                                                                             senderImageStatusProvider: mockSenderImageStatusProvider)
-
         coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,

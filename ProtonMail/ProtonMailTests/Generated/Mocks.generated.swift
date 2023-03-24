@@ -385,6 +385,39 @@ class MockImageProxyDelegate: ImageProxyDelegate {
 
 }
 
+class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
+    @FuncStub(MockIncomingDefaultServiceProtocol.fetchAll) var fetchAllStub
+    func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
+        fetchAllStub(location, completion)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.listLocal, initialReturn: [IncomingDefaultEntity]()) var listLocalStub
+    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity] {
+        try listLocalStub(query)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.save) var saveStub
+    func save(dto: IncomingDefaultDTO) throws {
+        try saveStub(dto)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.performLocalUpdate) var performLocalUpdateStub
+    func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws {
+        try performLocalUpdateStub(emailAddress, newLocation)
+    }
+
+    @FuncStub(MockIncomingDefaultServiceProtocol.performRemoteUpdate) var performRemoteUpdateStub
+    func performRemoteUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
+        performRemoteUpdateStub(emailAddress, newLocation, completion)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.delete) var deleteStub
+    func delete(query: IncomingDefaultService.Query) throws {
+        try deleteStub(query)
+    }
+
+}
+
 class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProviderProtocol {
     @PropertyStub(\MockInternetConnectionStatusProviderProtocol.currentStatus, initialGet: .connected) var currentStatusStub
     var currentStatus: ConnectionStatus {
@@ -490,6 +523,19 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
     @FuncStub(MockPaymentsUIProtocol.showCurrentPlan) var showCurrentPlanStub
     func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping (PaymentsUIResultReason) -> Void) {
         showCurrentPlanStub(presentationType, backendFetch, completionHandler)
+    }
+
+}
+
+class MockQueueManagerProtocol: QueueManagerProtocol {
+    @FuncStub(MockQueueManagerProtocol.addTask, initialReturn: Bool()) var addTaskStub
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool {
+        addTaskStub(task, autoExecute)
+    }
+
+    @FuncStub(MockQueueManagerProtocol.addBlock) var addBlockStub
+    func addBlock(_ block: @escaping () -> Void) {
+        addBlockStub(block)
     }
 
 }

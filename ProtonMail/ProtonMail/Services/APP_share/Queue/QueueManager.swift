@@ -115,7 +115,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
                  .updateLabel, .createLabel, .deleteLabel,
                  .updateContact, .deleteContact, .addContact,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
-                 .notificationAction:
+                 .notificationAction, .blockSender:
                 _ = self.miscQueue.add(task.uuid, object: task)
             case .signout:
                 self.handleSignout(signoutTask: task)
@@ -671,6 +671,7 @@ private extension Collection where Element == Any {
 
 }
 
+// sourcery: mock
 protocol QueueManagerProtocol {
     func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool
     func addBlock(_ block: @escaping () -> Void)

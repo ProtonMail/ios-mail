@@ -109,11 +109,20 @@ class SingleMessageComponentsFactory {
         user: UserManager,
         senderImageStatusProvider: SenderImageStatusProvider
     ) -> SingleMessageContentViewModel.Dependencies {
-        let blockSenderService = BlockSenderService(apiService: user.apiService)
+        let incomingDefaultService = user.incomingDefaultService
+        let queueManager = sharedServices.get(by: QueueManager.self)
+
+        let blockSender = BlockSender(
+            dependencies: .init(
+                incomingDefaultService: incomingDefaultService,
+                queueManager: queueManager,
+                userInfo: user.userInfo
+            )
+        )
 
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
-                queueManager: sharedServices.get(by: QueueManager.self),
+                queueManager: queueManager,
                 apiService: user.apiService,
                 contextProvider: sharedServices.get(by: CoreDataService.self),
                 messageDataAction: user.messageService,
@@ -122,8 +131,10 @@ class SingleMessageComponentsFactory {
         )
 
         return .init(
-            blockSenderService: blockSenderService,
+            blockSender: blockSender,
+            blockedSenderCacheUpdater: user.blockedSenderCacheUpdater,
             fetchMessageDetail: fetchMessageDetail,
+            incomingDefaultService: incomingDefaultService,
             senderImageStatusProvider: senderImageStatusProvider
         )
     }
