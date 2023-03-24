@@ -45,8 +45,6 @@ public struct ResponseError: Error, Equatable {
     
     public let userFacingMessage: String?
     public let underlyingError: NSError?
-
-    public var localizedDescription: String { userFacingMessage ?? underlyingError?.localizedDescription ?? "" }
     
     public var bestShotAtReasonableErrorCode: Int {
         responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
@@ -68,6 +66,20 @@ public struct ResponseError: Error, Equatable {
                       responseCode: responseCode,
                       userFacingMessage: underlyingError.localizedDescription,
                       underlyingError: underlyingError as NSError)
+    }
+}
+
+extension ResponseError: LocalizedError {
+    public var errorDescription: String? {
+        if let userFacingMessage = userFacingMessage {
+            return userFacingMessage
+        } else if let underlyingError = underlyingError {
+            return underlyingError.localizedDescription
+        } else if isNetworkIssueError {
+            return CoreString._net_connection_error
+        } else {
+            return nil
+        }
     }
 }
 
@@ -200,11 +212,9 @@ open class Response: ResponseType {
 }
 
 public extension ResponseError {
+    @available(*, deprecated, message: "Call localizedDescription directly")
     var networkResponseMessageForTheUser: String {
-        if isNetworkIssueError {
-            return CoreString._net_connection_error
-        }
-        return localizedDescription
+        localizedDescription
     }
 }
 
@@ -224,10 +234,12 @@ public extension Error {
         (self as? ResponseError)?.bestShotAtReasonableErrorCode ?? (self as NSError).code
     }
 
+    @available(*, deprecated, message: "Call localizedDescription directly")
     var messageForTheUser: String {
-        (self as? ResponseError)?.networkResponseMessageForTheUser ?? self.localizedDescription
+        localizedDescription
     }
-    
+
+    @available(*, deprecated, message: "Do not use, this will become non-public soon.")
     var isNetworkIssueError: Bool {
         guard let responseError = self as? ResponseError else { return false }
         if responseError.responseCode == 3500 { // tls
