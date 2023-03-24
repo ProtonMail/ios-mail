@@ -31,6 +31,7 @@ class ConversationMessageViewModel {
     private let contactGroups: [ContactGroupVO]
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
+    private let senderImageStatusProvider: SenderImageStatusProvider
 
     init(labelId: LabelID,
          message: MessageEntity,
@@ -38,6 +39,7 @@ class ConversationMessageViewModel {
          replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
          internetStatusProvider: InternetConnectionStatusProvider,
+         senderImageStatusProvider: SenderImageStatusProvider,
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) {
         self.labelId = labelId
@@ -46,6 +48,7 @@ class ConversationMessageViewModel {
         self.replacingEmailsMap = replacingEmailsMap
         self.contactGroups = contactGroups
         self.internetStatusProvider = internetStatusProvider
+        self.senderImageStatusProvider = senderImageStatusProvider
         self.goToDraft = goToDraft
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
@@ -86,13 +89,13 @@ class ConversationMessageViewModel {
             message: message,
             viewMode: .conversation
         )
-
         return messageContentViewModelFactory.createViewModel(
             context: context,
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: userCachedStatus,
             shouldOpenHistory: shouldOpenHistory,
+            senderImageStatusProvider: senderImageStatusProvider,
             goToDraft: goToDraft
         )
     }

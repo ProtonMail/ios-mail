@@ -355,6 +355,7 @@ extension UsersManager {
             }
             #if !APP_EXTENSION
             ImageProxyCache.shared.purge()
+            SenderImageCache.shared.purge()
             #endif
             completion?()
         }.cauterize()

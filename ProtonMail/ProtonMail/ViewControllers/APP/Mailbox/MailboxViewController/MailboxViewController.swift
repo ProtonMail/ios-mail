@@ -760,6 +760,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             }
 
+            showSenderImageIfNeeded(in: mailboxCell, item: mailboxItem)
+
             configureSwipeAction(mailboxCell, item: mailboxItem)
 
 #if DEBUG
@@ -777,6 +779,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                         selector: #selector(self.handleAccessibilityAction))
         inputCell.accessibilityCustomActions = [accessibilityAction]
         inputCell.isAccessibilityElement = true
+    }
+
+    private func showSenderImageIfNeeded(
+        in cell: NewMailboxMessageCell,
+        item: MailboxItem
+    ) {
+        viewModel.fetchSenderImageIfNeeded(
+            item: item,
+            isDarkMode: isDarkMode,
+            scale: currentScreenScale
+        ) { [weak self, weak cell] image in
+            if let image = image, let cell = cell, cell.mailboxItem == item {
+                self?.messageCellPresenter.presentSenderImage(image, in: cell.customView)
+            }
+        }
     }
 
     // Temp: needs to refactor the code of generating TagUIModel

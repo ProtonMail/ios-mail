@@ -488,4 +488,43 @@ extension MessageEntityTests {
 
         XCTAssertTrue(sut.isScheduledSend)
     }
+
+    func testGetSenderImageRequestInfo_displaySenderImageIsTrue_returnInfo() throws {
+        let address = "\(String.randomString(10))@pm.me"
+        let bimiSelector = String.randomString(20)
+        let isDarkMode = Bool.random()
+        let rawSender = """
+        {
+        "Name": "",
+        "Address": "\(address)",
+        "IsProton": 0,
+        "IsSimpleLogin": 0,
+        "DisplaySenderImage": 1,
+        "BimiSelector": "\(bimiSelector)"
+        }
+        """
+        let sut = MessageEntity.make(rawSender: rawSender)
+
+        let result = try XCTUnwrap(sut.getSenderImageRequestInfo(isDarkMode: isDarkMode))
+
+        XCTAssertEqual(result.isDarkMode, isDarkMode)
+        XCTAssertEqual(result.bimiSelector, bimiSelector)
+        XCTAssertEqual(result.senderAddress, address)
+    }
+
+    func testGetSenderImageRequestInfo_displaySenderImageIsFalse_returnNil() throws {
+        let rawSender = """
+        {
+        "Name": "",
+        "Address": "\(String.randomString(20))",
+        "IsProton": 0,
+        "IsSimpleLogin": 0,
+        "DisplaySenderImage": 0,
+        "BimiSelector": "\(String.randomString(20))"
+        }
+        """
+        let sut = MessageEntity.make(rawSender: rawSender)
+
+        XCTAssertNil(sut.getSenderImageRequestInfo(isDarkMode: Bool.random()))
+    }
 }

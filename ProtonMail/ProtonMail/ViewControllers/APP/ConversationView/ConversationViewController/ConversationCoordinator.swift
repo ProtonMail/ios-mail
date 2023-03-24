@@ -1,3 +1,4 @@
+import ProtonCore_DataModel
 import SafariServices
 
 // sourcery: mock
@@ -67,7 +68,20 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: fetchMessageDetail,
             nextMessageAfterMoveStatusProvider: user,
-            notificationCenter: .default
+            notificationCenter: .default,
+            senderImageStatusProvider: userCachedStatus,
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: user.apiService,
+                            internetStatusProvider: internetStatusProvider
+                        )
+                    ),
+                    senderImageStatusProvider: userCachedStatus,
+                    mailSettings: user.mailSettings
+                )
+            )
         )
         let viewModel = ConversationViewModel(
             labelId: labelId,

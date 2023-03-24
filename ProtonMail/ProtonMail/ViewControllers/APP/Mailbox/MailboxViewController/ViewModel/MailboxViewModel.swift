@@ -28,7 +28,7 @@ import ProtonMailAnalytics
 
 struct LabelInfo {
     let name: String
-    
+
     init(name: String) {
         self.name = name
     }
@@ -89,6 +89,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
 
     let toolbarActionProvider: ToolbarActionProvider
     let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
+    private let senderImageService: SenderImageService
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -108,6 +109,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
          welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
+         senderImageService: SenderImageService,
          totalUserCountClosure: @escaping () -> Int
     ) {
         self.labelID = labelID
@@ -130,6 +132,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         self.welcomeCarrouselCache = welcomeCarrouselCache
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
+        self.senderImageService = senderImageService
         self.conversationStateProvider.add(delegate: self)
         self.dependencies.updateMailbox.setup(source: self)
     }
@@ -199,7 +202,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
             .filter { selectedIDs.contains($0.messageID) }
             .map(MessageEntity.init) ?? []
     }
-    
+
     var selectedConversations: [ConversationEntity] {
         fetchedResultsController?.fetchedObjects?
             .compactMap { $0 as? ContextLabel }
@@ -315,7 +318,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
 
     /// get section cound
     ///
-    /// - Returns: 
+    /// - Returns:
     func sectionCount() -> Int {
         return fetchedResultsController?.numberOfSections() ?? 0
     }
@@ -351,10 +354,10 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         guard let msg = fetchedResultsController?.object(at: index) as? Message else {
             return nil
         }
-        
+
         return MessageEntity(msg)
     }
-    
+
     func itemOfConversation(index: IndexPath, collectBreadcrumbs: Bool = false) -> ConversationEntity? {
         guard let conversation = itemOfRawConversation(indexPath: index, collectBreadcrumbs: collectBreadcrumbs) else {
             return nil
@@ -525,15 +528,15 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     func reloadTable() -> Bool {
         return labelID.rawValue == Message.Location.draft.rawValue
     }
-    
+
     func mark(messages: [MessageEntity], unread: Bool = true) {
         messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
     }
-    
+
     func label(msg message: MessageEntity, with labelID: LabelID, apply: Bool = true) {
         messageService.label(messages: [message], label: labelID, apply: apply, shouldFetchEvent: false)
     }
-    
+
     func deleteSelectedIDs() {
         switch locationViewMode {
         case .conversation:
@@ -636,7 +639,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         let unreadItemsIDs = items
             .filter { $0.isUnread(labelID: labelID) }
             .map(\.itemID)
-        
+
         mark(IDs: Set(unreadItemsIDs), unread: false)
     }
 
@@ -668,6 +671,42 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         } else {
             displayAlert(selectedNum)
         }
+    }
+
+    func fetchSenderImageIfNeeded(
+        item: MailboxItem,
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        let senderImageRequestInfo: SenderImageRequestInfo?
+        switch item {
+        case .message(let messageEntity):
+            senderImageRequestInfo = messageEntity.getSenderImageRequestInfo(isDarkMode: isDarkMode)
+        case .conversation(let conversationEntity):
+            senderImageRequestInfo = conversationEntity.getSenderImageRequestInfo(isDarkMode: isDarkMode)
+        }
+
+        guard let info = senderImageRequestInfo else {
+            completion(nil)
+            return
+        }
+
+        dependencies.fetchSenderImage
+            .callbackOn(.main)
+            .execute(
+                params: .init(
+                    senderImageRequestInfo: info,
+                    scale: scale,
+                    userID: user.userID
+                )) { result in
+                    switch result {
+                    case .success(let image):
+                        completion(image)
+                    case .failure:
+                        completion(nil)
+                    }
+            }
     }
 }
 
@@ -990,16 +1029,7 @@ extension MailboxViewModel {
         let fetchMessages: FetchMessagesUseCase
         let updateMailbox: UpdateMailboxUseCase
         let fetchMessageDetail: FetchMessageDetailUseCase
-
-        init(
-            fetchMessages: FetchMessagesUseCase,
-            updateMailbox: UpdateMailboxUseCase,
-            fetchMessageDetail: FetchMessageDetailUseCase
-        ) {
-            self.fetchMessages = fetchMessages
-            self.updateMailbox = updateMailbox
-            self.fetchMessageDetail = fetchMessageDetail
-        }
+        let fetchSenderImage: FetchSenderImageUseCase
     }
 }
 

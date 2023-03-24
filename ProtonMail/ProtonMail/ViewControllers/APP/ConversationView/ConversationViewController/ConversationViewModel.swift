@@ -236,13 +236,16 @@ class ConversationViewModel {
     }
 
     func messageType(with message: MessageEntity) -> ConversationViewItemType {
-        let viewModel = ConversationMessageViewModel(labelId: labelId,
-                                                     message: message,
-                                                     user: user,
-                                                     replacingEmailsMap: sharedReplacingEmailsMap,
-                                                     contactGroups: sharedContactGroups,
-                                                     internetStatusProvider: connectionStatusProvider,
-                                                     goToDraft: goToDraft)
+        let viewModel = ConversationMessageViewModel(
+            labelId: labelId,
+            message: message,
+            user: user,
+            replacingEmailsMap: sharedReplacingEmailsMap,
+            contactGroups: sharedContactGroups,
+            internetStatusProvider: connectionStatusProvider,
+            senderImageStatusProvider: dependencies.senderImageStatusProvider,
+            goToDraft: goToDraft
+        )
         return .message(viewModel: viewModel)
     }
 
@@ -402,6 +405,34 @@ class ConversationViewModel {
 
     func cellTapped() {
         focusedMode = false
+    }
+
+    func fetchSenderImageIfNeeded(
+        message: MessageEntity,
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        guard let senderImageRequestInfo = message.getSenderImageRequestInfo(isDarkMode: isDarkMode) else {
+            completion(nil)
+            return
+        }
+
+        dependencies.fetchSenderImage
+            .callbackOn(.main)
+            .execute(
+                params: .init(
+                    senderImageRequestInfo: senderImageRequestInfo,
+                    scale: scale,
+                    userID: user.userID
+                )) { result in
+                    switch result {
+                    case let .success(image):
+                        completion(image)
+                    case .failure:
+                        completion(nil)
+                    }
+            }
     }
 
     /// Add trashed hint banner if the messages contain trashed message
@@ -1199,6 +1230,8 @@ extension ConversationViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
         let notificationCenter: NotificationCenter
+        let senderImageStatusProvider: SenderImageStatusProvider
+        let fetchSenderImage: FetchSenderImageUseCase
     }
 
     enum CellVisibility {

@@ -49,6 +49,11 @@ final class SenderImageCache {
         try encryptedCache.encryptAndSaveData(data, forKey: key.rawValue)
     }
 
+    func removeSenderImage(forURL url: String) {
+        let key = cacheKey(forURL: url)
+        encryptedCache.removeData(forKey: key.rawValue)
+    }
+
     func purge() {
         encryptedCache.purge()
     }

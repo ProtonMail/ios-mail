@@ -59,6 +59,11 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
 
         customView.initialsLabel.attributedText = nil
         customView.initialsLabel.isHidden = false
+        customView.senderImageView.isHidden = true
+        customView.senderImageView.image = nil
+        customView.initialsContainer.isHidden = false
+        customView.scheduledIconView.isHidden = true
+        customView.scheduledContainer.isHidden = true
         customView.checkBoxView.isHidden = true
         customView.messageContentView.tagsView.tagViews = []
         customView.messageContentView.removeTagsView()

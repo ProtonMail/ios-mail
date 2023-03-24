@@ -31,6 +31,7 @@ class SingleMessageContentViewModelFactory {
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
         shouldOpenHistory: Bool,
+        senderImageStatusProvider: SenderImageStatusProvider,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
@@ -50,7 +51,8 @@ class SingleMessageContentViewModelFactory {
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
                      shouldOpenHistory: shouldOpenHistory,
-                     dependencies: components.contentViewModelDependencies(user: user),
+                     dependencies: components.contentViewModelDependencies(user: user,
+                                                                           senderImageStatusProvider: senderImageStatusProvider),
                      goToDraft: goToDraft)
     }
 
@@ -66,6 +68,7 @@ class SingleMessageViewModelFactory {
                          internetStatusProvider: InternetConnectionStatusProvider,
                          imageProxy: ImageProxy,
                          coordinator: SingleMessageCoordinator,
+                         senderImageStatusProvider: SenderImageStatusProvider,
                          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
@@ -77,7 +80,6 @@ class SingleMessageViewModelFactory {
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )
-
         return .init(
             labelId: labelId,
             message: message,
@@ -94,7 +96,8 @@ class SingleMessageViewModelFactory {
             systemUpTime: systemUpTime,
             coordinator: coordinator,
             nextMessageAfterMoveStatusProvider: user,
-            dependencies: components.contentViewModelDependencies(user: user),
+            dependencies: components.contentViewModelDependencies(user: user,
+                                                                  senderImageStatusProvider: senderImageStatusProvider),
             goToDraft: goToDraft
         )
     }
@@ -102,7 +105,10 @@ class SingleMessageViewModelFactory {
 }
 
 class SingleMessageComponentsFactory {
-    func contentViewModelDependencies(user: UserManager) -> SingleMessageContentViewModel.Dependencies {
+    func contentViewModelDependencies(
+        user: UserManager,
+        senderImageStatusProvider: SenderImageStatusProvider
+    ) -> SingleMessageContentViewModel.Dependencies {
         let blockSenderService = BlockSenderService(apiService: user.apiService)
 
         let fetchMessageDetail = FetchMessageDetail(
@@ -117,7 +123,8 @@ class SingleMessageComponentsFactory {
 
         return .init(
             blockSenderService: blockSenderService,
-            fetchMessageDetail: fetchMessageDetail
+            fetchMessageDetail: fetchMessageDetail,
+            senderImageStatusProvider: senderImageStatusProvider
         )
     }
 

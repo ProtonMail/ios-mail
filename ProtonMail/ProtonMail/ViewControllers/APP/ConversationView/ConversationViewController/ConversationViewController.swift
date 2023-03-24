@@ -559,6 +559,9 @@ private extension ConversationViewController {
             }
             let model = collapsedViewModel.model(customFolderLabels: self.viewModel.customFolders)
             conversationMessageCellPresenter.present(model: model, in: cell.customView)
+
+            showSenderImageIfNeeded(in: cell, message: viewModel.message)
+
             return cell
         case .expanded(let expandedViewModel):
             let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)
@@ -737,6 +740,18 @@ private extension ConversationViewController {
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
         banner.show(at: .bottom, on: self)
+    }
+
+    private func showSenderImageIfNeeded(in cell: ConversationMessageCell, message: MessageEntity) {
+        viewModel.fetchSenderImageIfNeeded(
+            message: message,
+            isDarkMode: isDarkMode,
+            scale: currentScreenScale
+        ) { [weak self, weak cell] image in
+            if let image = image, let cell = cell {
+                self?.conversationMessageCellPresenter.present(senderImage: image, in: cell.customView)
+            }
+        }
     }
 }
 

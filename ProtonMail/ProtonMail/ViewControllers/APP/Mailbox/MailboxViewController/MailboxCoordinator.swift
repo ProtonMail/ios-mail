@@ -272,11 +272,34 @@ extension MailboxCoordinator {
     }
 
     private func presentSearch() {
+        let coreDataService = services.get(by: CoreDataService.self)
         let viewModel = SearchViewModel(
             user: viewModel.user,
-            coreDataContextProvider: services.get(by: CoreDataService.self),
+            coreDataContextProvider: coreDataService,
             internetStatusProvider: services.get(),
-            queueManager: services.get(by: QueueManager.self)
+            dependencies: .init(
+                fetchMessageDetail: FetchMessageDetail(
+                    dependencies: .init(
+                        queueManager: services.get(by: QueueManager.self),
+                        apiService: viewModel.user.apiService,
+                        contextProvider: coreDataService,
+                        messageDataAction: viewModel.user.messageService,
+                        cacheService: viewModel.user.cacheService
+                    )
+                ),
+                fetchSenderImage: FetchSenderImage(
+                    dependencies: .init(
+                        senderImageService: .init(
+                            dependencies: .init(
+                                apiService: viewModel.user.apiService,
+                                internetStatusProvider: internetStatusProvider
+                            )
+                        ),
+                        senderImageStatusProvider: userCachedStatus,
+                        mailSettings: viewModel.user.mailSettings
+                    )
+                )
+            )
         )
         let viewController = SearchViewController(viewModel: viewModel)
         viewModel.uiDelegate = viewController
@@ -556,7 +579,7 @@ extension MailboxCoordinator {
     }
 
     private func switchFolderIfNeeded(folderID: String?) {
-        // Wait 1 second for navigation.viewControllers update 
+        // Wait 1 second for navigation.viewControllers update
         delay(1) {
             let link = DeepLink(MenuCoordinator.Setup.switchInboxFolder.rawValue, sender: folderID)
             NotificationCenter.default.post(name: .switchView, object: link)

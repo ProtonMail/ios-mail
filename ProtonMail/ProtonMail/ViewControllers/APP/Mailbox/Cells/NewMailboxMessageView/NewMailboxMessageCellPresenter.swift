@@ -40,17 +40,17 @@ class NewMailboxMessageCellPresenter {
     func presentSelectionStyle(style: NewMailboxMessageViewStyle, in view: NewMailboxMessageCellContentView) {
         switch style {
         case .normal:
-            view.initialsLabel.isHidden = false
             view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = true
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
+
         case .selection(let isSelected):
-            view.initialsLabel.isHidden = true
             view.initialsContainer.isHidden = false
             view.checkBoxView.isHidden = false
             view.scheduledIconView.isHidden = true
             view.scheduledContainer.isHidden = true
+
             let backgroundColor: UIColor
             if isSelected {
                 backgroundColor = ColorProvider.InteractionNorm
@@ -73,6 +73,15 @@ class NewMailboxMessageCellPresenter {
             view.initialsLabel.isHidden = true
             view.checkBoxView.isHidden = true
         }
+    }
+
+    func presentSenderImage(_ image: UIImage, in view: NewMailboxMessageCellContentView) {
+        guard view.checkBoxView.isHidden else {
+            return
+        }
+        view.senderImageView.image = image
+        view.senderImageView.isHidden = false
+        view.initialsLabel.isHidden = true
     }
 
     private func presentTags(tags: [TagUIModel], in view: NewMailboxMessageContentView) {

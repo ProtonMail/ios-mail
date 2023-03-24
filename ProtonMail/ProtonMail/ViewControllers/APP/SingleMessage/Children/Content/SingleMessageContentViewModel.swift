@@ -102,8 +102,21 @@ class SingleMessageContentViewModel {
         self.message = context.message
         let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
             imageProxy: imageProxy,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService))
+            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: user.apiService,
+                            internetStatusProvider: internetStatusProvider
+                        )
+                    ),
+                    senderImageStatusProvider: dependencies.senderImageStatusProvider,
+                    mailSettings: user.mailSettings
+                )
+            )
         )
+
         self.messageInfoProvider = .init(
             message: context.message,
             user: user,
@@ -354,5 +367,6 @@ extension SingleMessageContentViewModel {
     struct Dependencies {
         let blockSenderService: BlockSenderService
         let fetchMessageDetail: FetchMessageDetailUseCase
+        let senderImageStatusProvider: SenderImageStatusProvider
     }
 }

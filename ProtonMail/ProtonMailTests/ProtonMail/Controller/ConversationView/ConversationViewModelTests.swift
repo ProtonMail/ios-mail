@@ -34,14 +34,19 @@ class ConversationViewModelTests: XCTestCase {
     var coordinatorMock: MockConversationCoordinator!
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var notificationCenterMock: NotificationCenter!
+    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
+    var apiServiceMock: APIServiceMock!
+    var imageTempUrl: URL!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
         self.contextProviderMock = MockCoreDataContextProvider()
         let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.viewContext))
-        let apiMock = APIServiceMock()
-        let fakeUser = UserManager(api: apiMock, role: .none)
+        apiServiceMock = APIServiceMock()
+        apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
+        apiServiceMock.dohInterfaceStub.fixture = DohMock()
+        userManagerStub = UserManager(api: apiServiceMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
         labelProviderMock = MockLabelProvider()
@@ -52,17 +57,27 @@ class ConversationViewModelTests: XCTestCase {
         coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
+        mockSenderImageStatusProvider = .init()
 
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            notificationCenter: notificationCenterMock
+            notificationCenter: notificationCenterMock,
+            senderImageStatusProvider: mockSenderImageStatusProvider,
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(dependencies: .init(apiService: apiServiceMock,
+                                                                  internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
+                    senderImageStatusProvider: mockSenderImageStatusProvider,
+                    mailSettings: userManagerStub.mailSettings
+                )
+            )
         )
 
         sut = ConversationViewModel(labelId: "",
                                     conversation: fakeConversation,
                                     coordinator: coordinatorMock,
-                                    user: fakeUser,
+                                    user: userManagerStub,
                                     contextProvider: contextProviderMock,
                                     internetStatusProvider: internetStatusProviderMock,
                                     conversationStateProvider: MockConversationStateProviderProtocol(),
@@ -74,6 +89,11 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
                                     goToDraft: { _, _ in },
                                     dependencies: dependencies)
+
+        // Prepare for api mock to write image data to disk
+        imageTempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("senderImage", isDirectory: true)
+        try FileManager.default.createDirectory(at: imageTempUrl, withIntermediateDirectories: true)
     }
 
     override func tearDownWithError() throws {
@@ -83,7 +103,9 @@ class ConversationViewModelTests: XCTestCase {
         toolbarCustomizeSpotlightStatusProviderMock = nil
         toolbarActionProviderMock = nil
         userManagerStub = nil
+        apiServiceMock = nil
 
+        try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
     }
 
@@ -685,6 +707,95 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertEqual(sut.messageCellVisibility(at: 1), .full)
     }
 
+    func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userManagerStub.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return false
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(message: MessageEntity.make(),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userManagerStub.mailSettings = .init(hideSenderImages: true)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(message: MessageEntity.make(),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userManagerStub.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(message: MessageEntity.make(),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        userManagerStub.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+        let msg = MessageEntity.createSenderImageEligibleMessage()
+        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        apiServiceMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                try? imageData?.write(to: fileUrl)
+                let response = HTTPURLResponse(statusCode: 200)
+                completion(response, nil, nil)
+            }
+        }
+
+        sut.fetchSenderImageIfNeeded(message: msg,
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNotNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertTrue(apiServiceMock.downloadStub.wasCalledExactlyOnce)
+    }
+
     private func makeConversationWithUnread(of labelID: LabelID, unreadCount: Int) -> Conversation {
         let fakeConversation = Conversation(context: contextProviderMock.mainContext)
         let fakeContextLabel = ContextLabel(context: contextProviderMock.mainContext)
@@ -697,8 +808,7 @@ class ConversationViewModelTests: XCTestCase {
     private func makeSUT(labelID: LabelID, conversation: Conversation? = nil) {
         let conversation = conversation ?? Conversation(context: contextProviderMock.mainContext)
         let fakeConversation = ConversationEntity(conversation)
-        let apiMock = APIServiceMock()
-        let fakeUser = UserManager(api: apiMock, role: .none)
+        let fakeUser = UserManager(api: apiServiceMock, role: .none)
         userManagerStub = fakeUser
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
@@ -706,7 +816,15 @@ class ConversationViewModelTests: XCTestCase {
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            notificationCenter: .default
+            notificationCenter: .default,
+            senderImageStatusProvider: mockSenderImageStatusProvider,
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
+                    senderImageStatusProvider: mockSenderImageStatusProvider,
+                    mailSettings: fakeUser.mailSettings
+                )
+            )
         )
 
         sut = ConversationViewModel(labelId: labelID,
@@ -746,6 +864,7 @@ class ConversationViewModelTests: XCTestCase {
             replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
+            senderImageStatusProvider: mockSenderImageStatusProvider,
             goToDraft: { _, _ in })
         if isExpanded {
             viewModel.toggleState()
