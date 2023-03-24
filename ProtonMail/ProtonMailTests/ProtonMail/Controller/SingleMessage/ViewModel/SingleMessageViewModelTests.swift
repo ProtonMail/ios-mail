@@ -30,6 +30,7 @@ final class SingleMessageViewModelTests: XCTestCase {
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var coordinatorMock: SingleMessageCoordinator!
     var notificationCenterMock: NotificationCenter!
+    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -41,6 +42,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarCustomizationInfoBubbleViewStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
+        mockSenderImageStatusProvider = .init()
     }
 
     override func tearDown() {
@@ -52,6 +54,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarCustomizeSpotlightStatusProvider = nil
         toolbarCustomizationInfoBubbleViewStatusProvider = nil
         notificationCenterMock = nil
+        mockSenderImageStatusProvider = nil
     }
 
     func testToolbarActionTypes_inSpam_containsDelete() {
@@ -269,6 +272,19 @@ final class SingleMessageViewModelTests: XCTestCase {
             attachments: .init()
         )
 
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: nil,
+                apiService: fakeUser.apiService,
+                contextProvider: contextProviderMock,
+                messageDataAction: fakeUser.messageService,
+                cacheService: fakeUser.cacheService
+            )
+        )
+        let dependencies: SingleMessageContentViewModel.Dependencies = .init(blockSenderService: .init(apiService: fakeUser.apiService),
+                                                                             fetchMessageDetail: fetchMessageDetail,
+                                                                             senderImageStatusProvider: mockSenderImageStatusProvider)
+
         coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
@@ -289,7 +305,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             systemUpTime: systemTime,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            dependencies: components.contentViewModelDependencies(user: fakeUser),
+            dependencies: components.contentViewModelDependencies(user: fakeUser, senderImageStatusProvider: mockSenderImageStatusProvider),
             goToDraft: { _, _ in },
             notificationCenter: notificationCenterMock
         )

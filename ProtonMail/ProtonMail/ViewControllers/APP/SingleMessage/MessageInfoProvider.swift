@@ -417,6 +417,33 @@ extension MessageInfoProvider {
         remoteContentPolicy = .allowedAll
         prepareDisplayBody()
 	}
+
+    func fetchSenderImageIfNeeded(
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        guard let senderImageRequestInfo = message.getSenderImageRequestInfo(isDarkMode: isDarkMode) else {
+            completion(nil)
+            return
+        }
+
+        dependencies.fetchSenderImage
+            .callbackOn(.main)
+            .execute(
+                params: .init(
+                    senderImageRequestInfo: senderImageRequestInfo,
+                    scale: scale,
+                    userID: user.userID
+                )) { result in
+                    switch result {
+                    case .success(let image):
+                        completion(image)
+                    case .failure:
+                        completion(nil)
+                    }
+            }
+    }
 }
 
 // MARK: Contact related
@@ -722,5 +749,6 @@ extension MessageInfoProvider {
     struct Dependencies {
         let imageProxy: ImageProxy
         let fetchAttachment: FetchAttachmentUseCase
+        let fetchSenderImage: FetchSenderImageUseCase
     }
 }

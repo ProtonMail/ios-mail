@@ -22,6 +22,16 @@ final class SenderImageRequest: Request {
         case small = 32
         case medium = 64
         case large = 128
+
+        init(scale: CGFloat) {
+            if scale <= 1.0 {
+                self = .small
+            } else if scale >= 3.0 {
+                self = .large
+            } else {
+                self = .medium
+            }
+        }
     }
 
     let method: HTTPMethod = .get

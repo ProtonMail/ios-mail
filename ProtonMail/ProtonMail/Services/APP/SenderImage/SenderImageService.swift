@@ -21,6 +21,12 @@ import SDWebImage
 
 final class SenderImageService {
     private let dependencies: Dependencies
+    /// used to store the callbacks of the same url.
+    private var senderImageCallbackMap: [String: [SenderImageCompletion]] = [:]
+    /// used to access the map of the callbacks
+    private let callBacksAccessQueue = DispatchQueue(label: "me.proton.senderImageService")
+
+    typealias SenderImageCompletion = (Result<Data, Error>) -> Void
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -31,7 +37,7 @@ final class SenderImageService {
         isDarkMode: Bool,
         size: SenderImageRequest.Size? = .small,
         bimiSelector: String? = nil,
-        completion: @escaping (Result<Data, Error>) -> Void
+        completion: @escaping SenderImageCompletion
     ) {
         let request = SenderImageRequest(
             email: email,
@@ -39,16 +45,68 @@ final class SenderImageService {
             size: size,
             bimiSelector: bimiSelector
         )
+        let key = request.path
+
+        var shouldReturn = false
+        callBacksAccessQueue.sync {
+            if var callbacks = self.senderImageCallbackMap[key] {
+                callbacks.append(completion)
+                self.senderImageCallbackMap[key] = callbacks
+                shouldReturn = true
+            } else {
+                self.senderImageCallbackMap[key] = [completion]
+            }
+        }
+
+        guard !shouldReturn else {
+            return
+        }
 
         do {
-            if let cacheImage = try dependencies.imageCache.senderImage(forURL: request.path) {
-                completion(.success(cacheImage))
+            if let cachedImage = try self.dependencies.imageCache.senderImage(forURL: key) {
+                self.propagateResultToAllCallbacks(key: key, result: .success(cachedImage))
             } else {
-                fetchImageFromBE(request: request, completion: completion)
+                if self.dependencies.internetStatusProvider.currentStatus != .notConnected {
+                    self.fetchImageFromBE(request: request) { result in
+                        self.propagateResultToAllCallbacks(key: key, result: result)
+                    }
+                } else {
+                    // In offline, try to fetch the cached image with different view mode.
+                    try self.tryToLoadImageWithDifferentModeFromCache(originalKey: key, originalRequest: request)
+                }
             }
         } catch {
-            completion(.failure(error))
+            self.dependencies.imageCache.removeSenderImage(forURL: key)
+            self.propagateResultToAllCallbacks(key: key, result: .failure(error))
         }
+    }
+
+    private func tryToLoadImageWithDifferentModeFromCache(
+        originalKey: String,
+        originalRequest: SenderImageRequest
+    ) throws {
+        let request = SenderImageRequest(
+            email: originalRequest.emailAddress,
+            isDarkMode: !originalRequest.isDarkMode,
+            size: originalRequest.size,
+            bimiSelector: originalRequest.bimiSelector
+        )
+        if let cachedImage = try dependencies.imageCache.senderImage(forURL: request.path) {
+            self.propagateResultToAllCallbacks(key: originalKey, result: .success(cachedImage))
+        } else {
+            throw SenderImageServiceError.noCachedImageFound
+        }
+    }
+
+    private func propagateResultToAllCallbacks(key: String, result: Result<Data, Error>) {
+        var callbacks: [SenderImageService.SenderImageCompletion] = []
+        callBacksAccessQueue.sync {
+            if let value = self.senderImageCallbackMap[key] {
+                callbacks = value
+                self.senderImageCallbackMap.removeValue(forKey: key)
+            }
+        }
+        callbacks.forEach { $0(result) }
     }
 
     private func requestUrl(request: SenderImageRequest) -> String {
@@ -84,6 +142,7 @@ final class SenderImageService {
 
                 do {
                     let data = try Data(contentsOf: tempUrl)
+                    // TODO: Render SVG file. iOS does not have native support to render it.
                     guard UIImage(data: data) != nil else {
                         throw SenderImageServiceError.responseIsNotAnImage
                     }
@@ -102,10 +161,16 @@ final class SenderImageService {
 
     struct Dependencies {
         let apiService: APIService
+        let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let imageCache: SenderImageCache
 
-        init(apiService: APIService, imageCache: SenderImageCache = .shared) {
+        init(
+            apiService: APIService,
+            internetStatusProvider: InternetConnectionStatusProviderProtocol,
+            imageCache: SenderImageCache = .shared
+        ) {
             self.apiService = apiService
+            self.internetStatusProvider = internetStatusProvider
             self.imageCache = imageCache
         }
     }
@@ -114,5 +179,6 @@ final class SenderImageService {
         case invalidState
         case responseIsNotAnImage
         case requestError(NSError)
+        case noCachedImageFound
     }
 }

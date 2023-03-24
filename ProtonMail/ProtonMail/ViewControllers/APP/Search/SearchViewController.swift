@@ -25,8 +25,8 @@ import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
-import UIKit
 import ProtonMailAnalytics
+import UIKit
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
@@ -703,6 +703,20 @@ extension SearchViewController {
         self.hideActionBar()
         self.hideActionSheet()
     }
+
+    private func showSenderImageIfNeeded(
+        in cell: NewMailboxMessageCell,
+        item: MailboxItem
+    ) {
+        viewModel.fetchSenderImageIfNeeded(
+            item: item,
+            isDarkMode: isDarkMode,
+            scale: currentScreenScale) { [weak self, weak cell] image in
+                if let image = image, let cell = cell, cell.mailboxItem == item {
+                    self?.cellPresenter.presentSenderImage(image, in: cell.customView)
+                }
+            }
+    }
 }
 
 extension SearchViewController: SearchViewUIProtocol {
@@ -757,6 +771,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         let message = self.viewModel.messages[indexPath.row]
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+
+        showSenderImageIfNeeded(in: mailboxCell, item: .message(message))
 
         mailboxCell.mailboxItem = .message(message)
         mailboxCell.cellDelegate = self

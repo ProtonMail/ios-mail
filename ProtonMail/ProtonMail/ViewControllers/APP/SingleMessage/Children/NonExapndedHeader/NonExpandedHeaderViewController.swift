@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -55,6 +56,17 @@ class NonExpandedHeaderViewController: UIViewController {
     private func setUpView() {
         customView.initialsLabel.set(text: viewModel.infoProvider.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
+
+        viewModel.fetchSenderImageIfNeeded(
+            isDarkMode: isDarkMode,
+            scale: currentScreenScale
+        ) { [weak self] image in
+            if let image = image {
+                self?.customView.senderImageView.image = image
+                self?.customView.initialsLabel.isHidden = true
+            }
+        }
+
         customView.originImageView.image = viewModel.infoProvider.originImage(isExpanded: false)
         customView.originImageContainer.isHidden = viewModel.infoProvider.originImage(isExpanded: false) == nil
         customView.sentImageView.superview?.isHidden = !viewModel.shouldShowSentImage

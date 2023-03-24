@@ -17,6 +17,7 @@
 
 import CoreData
 import Foundation
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 
 protocol SearchVMProtocol: AnyObject {
@@ -51,6 +52,12 @@ protocol SearchVMProtocol: AnyObject {
                          messageID: MessageID,
                          completion: @escaping (Result<ConversationEntity, Error>) -> Void)
     func scheduledMessagesFromSelected() -> [MessageEntity]
+    func fetchSenderImageIfNeeded(
+        item: MailboxItem,
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    )
 }
 
 final class SearchViewModel: NSObject {
@@ -94,21 +101,16 @@ final class SearchViewModel: NSObject {
     }
     private let internetStatusProvider: InternetConnectionStatusProvider
 
-    init(user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol,
-         internetStatusProvider: InternetConnectionStatusProvider,
-         queueManager: QueueManagerProtocol) {
+    init(
+        user: UserManager,
+        coreDataContextProvider: CoreDataContextProviderProtocol,
+        internetStatusProvider: InternetConnectionStatusProvider,
+        dependencies: Dependencies
+    ) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.internetStatusProvider = internetStatusProvider
-        let fetchMessageDetailUseCase = FetchMessageDetail(
-            dependencies: .init(queueManager: queueManager,
-                                apiService: user.apiService,
-                                contextProvider: coreDataContextProvider,
-                                messageDataAction: user.messageService,
-                                cacheService: user.cacheService)
-        )
-        self.dependencies = .init(fetchMessageDetail: fetchMessageDetailUseCase)
+        self.dependencies = dependencies
         self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
                 partialResult[email.email] = EmailEntity(email: email)
@@ -369,6 +371,42 @@ extension SearchViewModel: SearchVMProtocol {
                             from: [self.labelID],
                             to: Message.Location.trash.labelID)
     }
+
+    func fetchSenderImageIfNeeded(
+        item: MailboxItem,
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        let senderImageRequestInfo: SenderImageRequestInfo?
+        switch item {
+        case .message(let messageEntity):
+            senderImageRequestInfo = messageEntity.getSenderImageRequestInfo(isDarkMode: isDarkMode)
+        case .conversation(let conversationEntity):
+            senderImageRequestInfo = conversationEntity.getSenderImageRequestInfo(isDarkMode: isDarkMode)
+        }
+
+        guard let info = senderImageRequestInfo else {
+            completion(nil)
+            return
+        }
+
+        dependencies.fetchSenderImage
+            .callbackOn(.main)
+            .execute(
+                params: .init(
+                    senderImageRequestInfo: info,
+                    scale: scale,
+                    userID: user.userID
+                )) { result in
+                    switch result {
+                    case .success(let image):
+                        completion(image)
+                    case .failure:
+                        completion(nil)
+                    }
+            }
+    }
 }
 
 // MARK: Action bar / sheet related
@@ -616,5 +654,6 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 extension SearchViewModel {
     struct Dependencies {
         let fetchMessageDetail: FetchMessageDetailUseCase
+        let fetchSenderImage: FetchSenderImageUseCase
     }
 }

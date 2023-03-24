@@ -63,11 +63,19 @@ extension UserInfo {
         return false // uncomment code above when the feature is functional
     }
 
+    static var isSenderImageEnabled: Bool {
+        #if DEBUG_ENTERPRISE
+        return true
+        #else
+        return false
+        #endif
+    }
+
     static var isBlockSenderEnabled: Bool {
-#if DEBUG_ENTERPRISE
-        true
-#else
-        false
-#endif
+        #if DEBUG_ENTERPRISE
+        return true
+        #else
+        return false
+        #endif
     }
 }
