@@ -29,6 +29,7 @@ extension PMActionSheet {
         title: String,
         subtitle: String,
         showOfficialBadge: Bool,
+        showOptionToBlockSender: Bool,
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheet {
         let closeItem = PMActionSheetPlainItem(
@@ -51,8 +52,7 @@ extension PMActionSheet {
             addToContacts(action: action)
         ]
 
-        // TODO: check if already blocked: https://jira.protontech.ch/browse/MAILIOS-3191
-        if UserInfo.isBlockSenderEnabled {
+        if UserInfo.isBlockSenderEnabled && showOptionToBlockSender {
             items.append(blockSender(action: action))
         }
 
@@ -99,7 +99,7 @@ extension PMActionSheet {
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetPlainItem {
         .init(
-            title: L11n.BlockSender.blockActionItem,
+            title: L11n.BlockSender.blockActionTitleLong,
             icon: IconProvider.circleSlash
         ) { _ in action(.blockSender) }
     }

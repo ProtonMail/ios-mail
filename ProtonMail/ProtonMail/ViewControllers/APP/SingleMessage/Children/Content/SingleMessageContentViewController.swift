@@ -108,6 +108,12 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewModel.viewWillAppear()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
@@ -368,20 +374,24 @@ class SingleMessageContentViewController: UIViewController {
     private func presentActionSheet(context: MessageHeaderContactContext) {
         let title: String
         let showOfficialBadge: Bool
+        let showOptionToBlockSender: Bool
 
         switch context {
         case .recipient(let contactVO):
             title = contactVO.title
             showOfficialBadge = false
+            showOptionToBlockSender = false
         case .sender(let sender):
             title = viewModel.messageInfoProvider.senderName
             showOfficialBadge = sender.isFromProton
+            showOptionToBlockSender = !viewModel.isSenderCurrentlyBlocked
         }
 
         let actionSheet = PMActionSheet.messageDetailsContact(
             title: title,
             subtitle: context.contact.subtitle,
-            showOfficialBadge: showOfficialBadge
+            showOfficialBadge: showOfficialBadge,
+            showOptionToBlockSender: showOptionToBlockSender
         ) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
@@ -412,8 +422,34 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func blockSenderTapped() {
-        // TODO: Add a confirmation alert: https://jira.protontech.ch/browse/MAILIOS-3191
-        viewModel.blockSender()
+        let senderEmail = viewModel.messageInfoProvider.senderEmail
+
+        let alert = UIAlertController(
+            title: L11n.BlockSender.blockActionTitleLong,
+            message: String(format: L11n.BlockSender.explanation, senderEmail),
+            preferredStyle: .alert
+        )
+
+        alert.addCancelAction()
+
+        let confirmAction = UIAlertAction(
+            title: L11n.BlockSender.blockActionTitleShort,
+            style: .destructive
+        ) { [weak self] _ in
+            guard let self = self else { return }
+
+            if self.viewModel.blockSender() {
+                let banner = PMBanner(
+                    message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail),
+                    style: PMBannerNewStyle.info,
+                    bannerHandler: PMBanner.dismiss
+                )
+                banner.show(at: .bottom, on: self)
+            }
+        }
+        alert.addAction(confirmAction)
+
+        present(alert, animated: true)
     }
 
     @objc
@@ -572,7 +608,8 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
     func updateContentBanner(
         shouldShowRemoteContentBanner: Bool,
         shouldShowEmbeddedContentBanner: Bool,
-        shouldShowImageProxyFailedBanner: Bool
+        shouldShowImageProxyFailedBanner: Bool,
+        shouldShowSenderIsBlockedBanner: Bool
     ) {
         let shouldShowRemoteContentBanner =
             shouldShowRemoteContentBanner && !viewModel.bannerViewModel.shouldAutoLoadRemoteContent
@@ -580,9 +617,12 @@ extension SingleMessageContentViewController: SingleMessageContentUIProtocol {
             shouldShowEmbeddedContentBanner && !viewModel.bannerViewModel.shouldAutoLoadEmbeddedImage
 
         showBanner()
-        bannerViewController?.showContentBanner(remoteContent: shouldShowRemoteContentBanner,
-                                                embeddedImage: shouldShowEmbeddedImageBanner,
-                                                imageProxyFailure: shouldShowImageProxyFailedBanner)
+        bannerViewController?.showContentBanner(
+            remoteContent: shouldShowRemoteContentBanner,
+            embeddedImage: shouldShowEmbeddedImageBanner,
+            imageProxyFailure: shouldShowImageProxyFailedBanner,
+            senderIsBlocked: shouldShowSenderIsBlockedBanner
+        )
     }
 
     func setDecryptionErrorBanner(shouldShow: Bool) {

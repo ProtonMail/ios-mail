@@ -1433,10 +1433,14 @@ class LocalizedString {
 
 enum L11n {
     struct BlockSender {
-        static let blockActionItem = NSLocalizedString("Block sender", comment: "Action sheet item to block a sender")
+        static let blockActionTitleLong = NSLocalizedString("Block sender", comment: "Button to block a sender")
+        static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
         static let blockListSettingsItem = NSLocalizedString("Block list", comment: "Settings item to open blocked sender list")
         static let blockListScreenTitle = NSLocalizedString("Blocked Senders", comment: "Title of the blocked sender list screen")
         static let emptyList = NSLocalizedString("No blocked senders", comment: "Placeholder for empty sender list")
+        static let explanation = NSLocalizedString("New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings.", comment: "")
+        static let senderIsBlockedBanner = NSLocalizedString("Sender has been blocked", comment: "Banner in the message view")
+        static let successfulBlockConfirmation = NSLocalizedString("Sender %@ blocked", comment: "Toast confirming the block")
     }
 
     struct EmailTrackerProtection {
@@ -1465,7 +1469,7 @@ enum L11n {
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 	}
-    
+
     struct SettingsLockScreen {
         static let protectionTitle = NSLocalizedString("Protection", comment: "Settings lock protection section")
         static let advancedSettings = NSLocalizedString("Advanced settings", comment: "Settings lock advanced settings section")

@@ -53,8 +53,7 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager,
-         dependencies: Dependencies = Dependencies()
+         user: UserManager
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -67,7 +66,7 @@ final class MainQueueHandler: QueueHandler {
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
         self.user = user
-        self.dependencies = dependencies
+        self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
     }
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -84,7 +83,8 @@ final class MainQueueHandler: QueueHandler {
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
                  .fetchMessageDetail, .updateAttKeyPacket,
                  .updateContact, .deleteContact, .addContact,
-                 .addContactGroup, .updateContactGroup, .deleteContactGroup:
+                 .addContactGroup, .updateContactGroup, .deleteContactGroup,
+                 .blockSender:
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
@@ -195,6 +195,8 @@ final class MainQueueHandler: QueueHandler {
                 self.deleteContactGroup(objectID: objectID, completion: completeHandler)
             case let .notificationAction(messageID, action):
                 notificationAction(messageId: messageID, action: action, completion: completeHandler)
+            case .blockSender(let emailAddress):
+                blockSender(emailAddress: emailAddress, completion: completeHandler)
             }
         }
     }
@@ -1030,12 +1032,28 @@ extension MainQueueHandler {
     }
 }
 
+// MARK: block sender
+extension MainQueueHandler {
+    private func blockSender(emailAddress: String, completion: @escaping Completion) {
+        dependencies.incomingDefaultService.performRemoteUpdate(
+            emailAddress: emailAddress,
+            newLocation: .blocked,
+            completion: completion
+        )
+    }
+}
+
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
+        let incomingDefaultService: IncomingDefaultServiceProtocol
 
-        init(actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction()) {
+        init(
+            actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
+            incomingDefaultService: IncomingDefaultServiceProtocol
+        ) {
             self.actionRequest = actionRequest
+            self.incomingDefaultService = incomingDefaultService
         }
     }
 }

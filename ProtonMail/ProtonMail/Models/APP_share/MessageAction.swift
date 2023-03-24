@@ -49,6 +49,7 @@ enum MessageAction: Equatable {
         case deliveryTime
         case notificationAction
         case messageID
+        case emailAddress
     }
 
     // Draft
@@ -108,4 +109,6 @@ enum MessageAction: Equatable {
 
     // Push notification action
     case notificationAction(messageID: String, action: PushNotificationAction)
+
+    case blockSender(emailAddress: String)
 }
