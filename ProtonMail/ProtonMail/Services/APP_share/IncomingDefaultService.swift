@@ -20,29 +20,78 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
+protocol IncomingDefaultServiceProtocol {
+    func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void)
+    func listLocal(location: IncomingDefaultsAPI.Location) throws -> [IncomingDefaultEntity]
+    func save(dto: IncomingDefaultDTO) throws
+    func delete(query: IncomingDefaultService.Query) throws
+}
+
 final class IncomingDefaultService {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
+}
 
+extension IncomingDefaultService: IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
         fetchAndStoreRecursively(location: location, currentPage: 0, fetchedCount: 0, completion: completion)
     }
 
-    func list(location: IncomingDefaultsAPI.Location) throws -> [IncomingDefaultEntity] {
-        let fetchRequest = makeFetchRequest(location: location)
-
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \IncomingDefault.time, ascending: true)
-        ]
-
-        return try dependencies.contextProvider.read { context in
-            try context.fetch(fetchRequest).map(IncomingDefaultEntity.init)
+    func listLocal(location: IncomingDefaultsAPI.Location) throws -> [IncomingDefaultEntity] {
+        try dependencies.contextProvider.read { context in
+            try self
+                .find(query: .location(location), in: context, includeSoftDeleted: false)
+                .map(IncomingDefaultEntity.init)
         }
     }
 
+    func save(dto: IncomingDefaultDTO) throws {
+        var result: Result<Void, Error>!
+
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            do {
+                try self.save(dto: dto, in: context)
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+        }
+
+        try result.get()
+    }
+
+    func delete(query: Query) throws {
+        var result: Result<Void, Error>!
+
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            do {
+                try self.find(query: query, in: context, includeSoftDeleted: true).forEach(context.delete)
+
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
+
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+        }
+
+        try result.get()
+    }
+}
+
+// MARK: internals
+
+extension IncomingDefaultService {
     private func fetchAndStoreRecursively(
         location: IncomingDefaultsAPI.Location,
         currentPage: Int,
@@ -71,23 +120,16 @@ final class IncomingDefaultService {
 
                 self.dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
                     for dto in response.incomingDefaults {
-                        // check if an IncomingDefault for that email is already stored, perhaps it was inserted by the event loop
-                        if let existingIncomingDefault = try? self.find(by: dto.email, in: context) {
-                            // if it's newer, we should discard the fetched DTO and not overwrite the existing object
-                            if existingIncomingDefault.time > dto.time {
-                                continue
-                            } else {
-                                // we need to delete the old resource before storing the new one
-                                // the reason is that because `IncomingDefault.email` is Transformable, it doesn't work as a uniqueness constraint
-                                context.delete(existingIncomingDefault)
-                                self.store(dto: dto, in: context)
+                        do {
+                            try self.save(dto: dto, in: context)
+
+                            if let error = context.saveUpstreamIfNeeded() {
+                                throw error
                             }
-                        } else {
-                            self.store(dto: dto, in: context)
+                        } catch {
+                            savingError = error
                         }
                     }
-
-                    savingError = context.saveUpstreamIfNeeded()
                 }
 
                 if let error = savingError {
@@ -112,22 +154,63 @@ final class IncomingDefaultService {
         }
     }
 
-    private func find(by emailAddress: String, in context: NSManagedObjectContext) throws -> IncomingDefault? {
+    private func find(
+        query: Query,
+        in context: NSManagedObjectContext,
+        includeSoftDeleted: Bool
+    ) throws -> [IncomingDefault] {
         let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
 
-        fetchRequest.predicate = NSPredicate(
+        let userIDPredicate = NSPredicate(
             format: "%K == %@",
             IncomingDefault.Attribute.userID.rawValue,
             dependencies.userInfo.userId
         )
 
-        let incomingDefaultsForThisUser = try context.fetch(fetchRequest)
+        var subpredicates: [NSPredicate] = [
+            query.predicate,
+            userIDPredicate
+        ]
 
-        // `IncomingDefault.email` is stored as ciphertext (see Transformable + StringCryptoTransformer in the datamodel)
-        // that makes it impossible for it to be a part of NSPredicate, we need to check for it separately
-        let incomingDefaultsMatchingEmail = incomingDefaultsForThisUser.filter { $0.email == emailAddress }
-        assert(incomingDefaultsMatchingEmail.count < 2)
-        return incomingDefaultsMatchingEmail.first
+        if !includeSoftDeleted {
+            let noSoftDeletedPredicate = NSPredicate(
+                format: "%K != %@",
+                IncomingDefault.Attribute.isSoftDeleted.rawValue,
+                NSNumber(true)
+            )
+            subpredicates.append(noSoftDeletedPredicate)
+        }
+
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(keyPath: \IncomingDefault.time, ascending: true)
+        ]
+
+        let incomingDefaults = try context.fetch(fetchRequest)
+
+        switch query {
+        case .email(let email):
+            return incomingDefaults.filter { $0.email == email }
+        default:
+            return incomingDefaults
+        }
+    }
+
+    private func save(dto: IncomingDefaultDTO, in context: NSManagedObjectContext) throws {
+        if let existingIncomingDefault = try find(
+            query: .email(dto.email),
+            in: context,
+            includeSoftDeleted: false
+        ).first {
+            let existingObjectIsOlder = existingIncomingDefault.time <= dto.time
+            if existingIncomingDefault.id == nil || existingObjectIsOlder {
+                context.delete(existingIncomingDefault)
+                store(dto: dto, in: context)
+            }
+        } else {
+            store(dto: dto, in: context)
+        }
     }
 
     private func store(dto: IncomingDefaultDTO, in context: NSManagedObjectContext) {
@@ -138,98 +221,39 @@ final class IncomingDefaultService {
         incomingDefault.time = dto.time
         incomingDefault.userID = dependencies.userInfo.userId
     }
-
-    func save(dto: IncomingDefaultDTO) throws {
-        var result: Result<Void, Error>!
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            if let existingIncomingDefault = try? self.find(by: dto.email, in: context) {
-                let existingObjectIsOlder = existingIncomingDefault.time <= dto.time
-                if existingIncomingDefault.id == nil || existingObjectIsOlder {
-                    context.delete(existingIncomingDefault)
-                    self.store(dto: dto, in: context)
-                }
-            } else {
-                self.store(dto: dto, in: context)
-            }
-            do {
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-                result = .success(())
-            } catch {
-                result = .failure(error)
-            }
-        }
-        try result.get()
-    }
-
-    func delete(incomingDefaultID: String) throws {
-        var result: Result<Void, Error>!
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-            fetchRequest.predicate = NSPredicate(
-                format: "%K == %@ AND %K == %@",
-                IncomingDefault.Attribute.id.rawValue,
-                incomingDefaultID,
-                IncomingDefault.Attribute.userID.rawValue,
-                self.dependencies.userInfo.userId
-            )
-            do {
-                try fetchRequest.execute().forEach(context.delete)
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-                result = .success(())
-            } catch {
-                result = .failure(error)
-            }
-        }
-        try result.get()
-    }
-
-    func deleteAll(location: IncomingDefaultsAPI.Location) throws {
-        var result: Result<Void, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            let fetchRequest = self.makeFetchRequest(location: location)
-
-            do {
-                try fetchRequest
-                    .execute()
-                    .forEach(context.delete)
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-
-                result = .success(())
-            } catch {
-                result = .failure(error)
-            }
-        }
-
-        try result.get()
-    }
-
-    private func makeFetchRequest(location: IncomingDefaultsAPI.Location) -> NSFetchRequest<IncomingDefault> {
-        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
-
-        fetchRequest.predicate = NSPredicate(
-            format: "%K == %@ AND %K == %@",
-            IncomingDefault.Attribute.location.rawValue,
-            "\(location.rawValue)",
-            IncomingDefault.Attribute.userID.rawValue,
-            dependencies.userInfo.userId
-        )
-
-        return fetchRequest
-    }
 }
+
+// MARK: related types
 
 extension IncomingDefaultService {
     struct Dependencies {
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
         let userInfo: UserInfo
+    }
+
+    enum Query {
+        case email(String)
+        case id(String)
+        case location(IncomingDefaultsAPI.Location)
+
+        var predicate: NSPredicate {
+            switch self {
+            case .email:
+                return NSPredicate(value: true)
+            case .id(let id):
+                return NSPredicate(
+                    format: "%K == %@",
+                    IncomingDefault.Attribute.id.rawValue,
+                    id
+                )
+            case .location(let location):
+                return NSPredicate(
+                    format: "%K == %@",
+                    IncomingDefault.Attribute.location.rawValue,
+                    "\(location.rawValue)"
+                )
+            }
+        }
     }
 }

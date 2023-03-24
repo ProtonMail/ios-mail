@@ -215,7 +215,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
             incomingDefault.userID = self.userInfo.userId
             _ = context.saveUpstreamIfNeeded()
         }
-        try sut.delete(incomingDefaultID: incomingDefaultID)
+        try sut.delete(query: .id(incomingDefaultID))
 
         let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
         let numStoredIncomingDefaults = try contextProvider.read { context in

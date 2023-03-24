@@ -22,7 +22,9 @@ final class IncomingDefault: NSManagedObject {
         static let entityName = "IncomingDefault"
 
         case id
+        @available(*, unavailable, message: "Do not use in NSPredicates. It won't work because email is encrypted.")
         case email
+        case isSoftDeleted
         case location
         case time
         case userID
@@ -32,6 +34,7 @@ final class IncomingDefault: NSManagedObject {
     /// This property is the unique identifier used by the BE.
     /// However, when we create `IncomingDefault`s locally before sending the POST request, we don't have it yet, hence it's optional.
     @NSManaged var id: String?
+    @NSManaged var isSoftDeleted: Bool
     /// The raw value of `Message.Location`
     @NSManaged var location: String
     @NSManaged var time: Date
