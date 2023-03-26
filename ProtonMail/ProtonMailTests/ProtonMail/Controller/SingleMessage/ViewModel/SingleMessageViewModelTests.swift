@@ -232,8 +232,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: .none,
-                user: fakeUser,
-                imageProxy: .init(dependencies: .init(apiService: apiMock))
+                user: fakeUser
             ),
             bannerViewModel: components.banner(labelId: labelID, message: message, user: fakeUser),
             attachments: .init()
@@ -254,7 +253,6 @@ final class SingleMessageViewModelTests: XCTestCase {
             labelId: labelID,
             message: message,
             user: fakeUser,
-            imageProxy: .init(dependencies: .init(apiService: apiMock)),
             childViewModels: childViewModels,
             internetStatusProvider: InternetConnectionStatusProvider(),
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,

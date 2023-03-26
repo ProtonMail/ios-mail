@@ -26,9 +26,9 @@ class PMDateFormatter {
 
     private(set) static var shared = PMDateFormatter()
 
-    var isDateInToday = LocaleEnvironment.calendar.isDateInToday
-    var isDateInYesterday = LocaleEnvironment.calendar.isDateInYesterday
-    var isDateInTomorrow = LocaleEnvironment.calendar.isDateInTomorrow
+    var isDateInToday = Environment.calendar.isDateInToday
+    var isDateInYesterday = Environment.calendar.isDateInYesterday
+    var isDateInTomorrow = Environment.calendar.isDateInTomorrow
 
     private let notificationCenter: NotificationCenter
 
@@ -45,9 +45,9 @@ class PMDateFormatter {
     private lazy var timeFormatter = formatterFactory(localizedDateFormatFromTemplate: "jj mm")
 
     private var calendar: Calendar {
-        var calendar = LocaleEnvironment.calendar
-        calendar.timeZone = LocaleEnvironment.timeZone
-        calendar.locale = LocaleEnvironment.locale()
+        var calendar = Environment.calendar
+        calendar.timeZone = Environment.timeZone
+        calendar.locale = Environment.locale()
         return calendar
     }
 
@@ -57,7 +57,7 @@ class PMDateFormatter {
     }
 
     func string(from date: Date, weekStart: WeekStart) -> String {
-        let currentDate = LocaleEnvironment.currentDate()
+        let currentDate = Environment.currentDate()
 
         if isDateInToday(date) {
             return todayFormatter.string(from: date)
@@ -71,13 +71,13 @@ class PMDateFormatter {
     }
 
     func checkIsDateWillHappenInTheNext10Mins(_ date: Date) -> Bool {
-        let currentDate = LocaleEnvironment.currentDate()
+        let currentDate = Environment.currentDate()
         let timeDifference = date.timeIntervalSince1970 - currentDate.timeIntervalSince1970
         return timeDifference <= 600
     }
 
     func stringForScheduledMsg(from date: Date, inListView: Bool = false) -> String {
-        let currentDate = LocaleEnvironment.currentDate()
+        let currentDate = Environment.currentDate()
         let timeDifference = date.timeIntervalSince1970 - currentDate.timeIntervalSince1970
         if isDateInToday(date) || timeDifference <= 0 {
             if timeDifference < 60 { // 1 min
@@ -113,7 +113,7 @@ class PMDateFormatter {
     private func isWeekStartDate(currentDate: Date, date: Date, weekStart: WeekStart) -> Bool {
         var dateComponenets = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: currentDate)
         dateComponenets.weekday = weekStart.weekStartInGregorianCalendar
-        dateComponenets.timeZone = LocaleEnvironment.timeZone
+        dateComponenets.timeZone = Environment.timeZone
         guard let weekStartDate = calendar.date(from: dateComponenets) else { return false }
         return calendar.isDate(weekStartDate, inSameDayAs: date)
     }
@@ -121,7 +121,7 @@ class PMDateFormatter {
     private func beginningOfTheWeekDate(currentDate: Date, date: Date, weekStart: WeekStart) -> Date {
         guard !isWeekStartDate(currentDate: currentDate, date: date, weekStart: weekStart) else { return date }
         var dateComponents = DateComponents()
-        dateComponents.timeZone = LocaleEnvironment.timeZone
+        dateComponents.timeZone = Environment.timeZone
         dateComponents.weekday = weekStart.weekStartInGregorianCalendar
         return calendar.nextDate(
             after: currentDate,
@@ -134,8 +134,8 @@ class PMDateFormatter {
 
     private func formatterFactory(localizedDateFormatFromTemplate: String) -> DateFormatter {
         let formatter = DateFormatter()
-        formatter.locale = LocaleEnvironment.locale()
-        formatter.timeZone = LocaleEnvironment.timeZone
+        formatter.locale = Environment.locale()
+        formatter.timeZone = Environment.timeZone
         formatter.setLocalizedDateFormatFromTemplate(localizedDateFormatFromTemplate)
         return formatter
     }

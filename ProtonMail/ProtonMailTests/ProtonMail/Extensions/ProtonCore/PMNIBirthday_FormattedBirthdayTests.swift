@@ -7,13 +7,13 @@ class PMNIBirthday_FormattedBirthdayTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        LocaleEnvironment.locale = { .enUS }
+        Environment.locale = { .enUS }
     }
 
     override func tearDown() {
         super.tearDown()
 
-        LocaleEnvironment.restore()
+        Environment.restore()
     }
 
     func testFormattedBirthday() {

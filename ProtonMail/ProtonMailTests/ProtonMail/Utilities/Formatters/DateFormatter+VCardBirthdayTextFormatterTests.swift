@@ -9,14 +9,14 @@ class DateFormatter_VCardBirthdayTextFormatterTests: XCTestCase {
         super.setUp()
 
         sut = .vCardBirthdayTextFormatter
-        LocaleEnvironment.locale = { .enUS }
+        Environment.locale = { .enUS }
     }
 
     override func tearDown() {
         super.tearDown()
 
         sut = nil
-        LocaleEnvironment.restore()
+        Environment.restore()
     }
 
     func testVCardBirthdayTextFormatter() {

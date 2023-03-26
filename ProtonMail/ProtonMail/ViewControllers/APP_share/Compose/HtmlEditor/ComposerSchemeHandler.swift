@@ -30,7 +30,7 @@ class ComposerSchemeHandler: NSObject, WKURLSchemeHandler {
         let error = NSError(domain: "cache.proton.ch", code: -999)
         imageProxy.fetchRemoteImageIfNeeded(url: url) { result in
             switch result {
-            case .success(let remoteImage):
+            case .success(let data):
                 guard let url = urlSchemeTask.request.url,
                       let response = HTTPURLResponse(
                           url: url,
@@ -42,7 +42,7 @@ class ComposerSchemeHandler: NSObject, WKURLSchemeHandler {
                     return
                 }
                 urlSchemeTask.didReceive(response)
-                urlSchemeTask.didReceive(remoteImage.data)
+                urlSchemeTask.didReceive(data)
                 urlSchemeTask.didFinish()
             case .failure:
                 urlSchemeTask.didFailWithError(error)

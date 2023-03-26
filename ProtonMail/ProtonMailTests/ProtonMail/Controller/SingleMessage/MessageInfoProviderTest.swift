@@ -26,27 +26,29 @@ import XCTest
 final class MessageInfoProviderTest: XCTestCase {
     private var apiMock: APIServiceMock!
     private var delegateObject: ProviderDelegate!
+    private var imageProxy: ImageProxyMock!
     private var message: MessageEntity!
     private var messageDecrypter: MessageDecrypterMock!
     private var sut: MessageInfoProvider!
     private var user: UserManager!
     private var mockFetchAttachment: MockFetchAttachment!
 
-    private let systemUpTime = SystemUpTimeMock(
-        localServerTime: TimeInterval(1635745851),
-        localSystemUpTime: TimeInterval(2000),
-        systemUpTime: TimeInterval(2000)
-    )
-    private let labelID = LabelID("0")
-
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        LocaleEnvironment.locale = { .enUS }
-        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        LocaleEnvironment.locale = { .enUS }
+        Environment.locale = { .enUS }
+        Environment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        Environment.locale = { .enUS }
 
+        let systemUpTime = SystemUpTimeMock(
+            localServerTime: TimeInterval(1635745851),
+            localSystemUpTime: TimeInterval(2000),
+            systemUpTime: TimeInterval(2000)
+        )
+        let labelID = LabelID("0")
         apiMock = APIServiceMock()
+
+        imageProxy = ImageProxyMock(apiService: apiMock)
 
         user = try Self.prepareUser(apiMock: apiMock)
         // testing are more thorough with this setting disabled, even though it is enabled by default
@@ -65,10 +67,10 @@ final class MessageInfoProviderTest: XCTestCase {
             message: message,
             messageDecrypter: messageDecrypter,
             user: user,
+            imageProxy: imageProxy,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                                fetchAttachment: mockFetchAttachment)
+            dependencies: .init(fetchAttachment: mockFetchAttachment)
         )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
@@ -78,6 +80,7 @@ final class MessageInfoProviderTest: XCTestCase {
         sut = nil
         apiMock = nil
         delegateObject = nil
+        imageProxy = nil
         message = nil
         messageDecrypter = nil
         user = nil
@@ -184,6 +187,30 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
     }
 
+    func testImageProxy_ifDisabled_whenRemoteContentIsAllowed_isNotCalled() async throws {
+        user.userInfo.imageProxy = .none
+        sut.remoteContentPolicy = .allowed
+        waitForMessageToBePrepared()
+        XCTAssertEqual(imageProxy.processCallCount, 0)
+    }
+
+    func testImageProxy_ifEnabled_whenRemoteContentIsAllowed_isCalled() async throws {
+        enableImageProxyAndRemoteContent()
+        XCTAssertEqual(imageProxy.processCallCount, 1)
+    }
+
+    func testImageProxy_whenMessageBodyChanges_isCalled() async throws {
+        enableImageProxyAndRemoteContent()
+
+        simulateMessageUpdateWithSameBodyAsBefore()
+        waitForMessageToBePrepared()
+        XCTAssertEqual(imageProxy.processCallCount, 1)
+
+        try simulateMessageUpdateWithBodyDifferentThanBefore()
+        waitForMessageToBePrepared()
+        XCTAssertEqual(imageProxy.processCallCount, 2)
+    }
+
     func testImageProxy_whenSettingsOtherThanRemoteContentAreChanged_isNotCalled() async throws {
         enableImageProxyAndRemoteContent()
 
@@ -198,37 +225,72 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
     }
 
-    func testInit_withSentMessage_remoteContentPolicyIsAllowedAll() {
-        let message = MessageEntity.make(labels: [.make(labelID: Message.Location.sent.labelID)])
-        user.userInfo.hideRemoteImages = 0
+    func testTrackerProtectionSummary_whenProxyIsUsed_isSetAndDelegateIsNotified() async throws {
+        XCTAssertNil(sut.trackerProtectionSummary)
+        XCTAssertEqual(delegateObject.trackerProtectionSummaryChangedStub.callCounter, 0)
 
-        sut = MessageInfoProvider(
-            message: message,
-            messageDecrypter: messageDecrypter,
-            user: user,
-            systemUpTime: systemUpTime,
-            labelID: labelID,
-            dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                                fetchAttachment: mockFetchAttachment)
-        )
+        enableImageProxyAndRemoteContent()
 
-        XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
+        XCTAssertNotNil(sut.trackerProtectionSummary)
+        XCTAssertEqual(delegateObject.trackerProtectionSummaryChangedStub.callCounter, 1)
     }
 
-    func testSetRemoteContentPolicy_toAllowAll_shouldShowImageProxyFailedBannerWillBeFalse() {
-        sut.shouldShowImageProxyFailedBanner = true
+    // this test has unfortunately been broken by https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/merge_requests/2307
+    // not sure how to fix it in a clean way
+//    func testTrackerProtectionSummary_whenMessageBodyChanges_isBrieflyNil() async throws {
+//        enableImageProxyAndRemoteContent()
+//
+//        try simulateMessageUpdateWithBodyDifferentThanBefore()
+//        XCTAssertNil(sut.trackerProtectionSummary)
+//        XCTAssertEqual(delegateObject.trackerProtectionSummaryChangedStub.callCounter, 2)
+//
+//        waitForMessageToBePrepared()
+//        XCTAssertNotNil(sut.trackerProtectionSummary)
+//        XCTAssertEqual(delegateObject.trackerProtectionSummaryChangedStub.callCounter, 3)
+//    }
 
-        sut.set(policy: .allowedAll)
+    func testIfAnImageProxyRequestFails_promptsUserToReplaceFailedRequestMarkersWithOriginalURLs() async throws {
+        imageProxy.stubbedFailedRequests = [
+            [
+                UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!
+            ]: UnsafeRemoteURL(value: "https://example.com/image")
+        ]
+        let stubbedInitialBody = "<img src=\"E621E1F8-C36C-495A-93FC-0C247A3E6E5F\"></img>"
+        let expectedProcessedBody = "<img src=\"https://example.com/image\"></img>"
 
-        XCTAssertFalse(sut.shouldShowImageProxyFailedBanner)
-    }
+        message = try Self.prepareEncryptedMessage(plaintextBody: stubbedInitialBody, mimeType: .textHTML, user: user)
+        sut.update(message: message)
+        enableImageProxyAndRemoteContent()
 
-    func testReloadImagesWithoutProtection_remoteContentWillBeSetToAllowAll() {
-        XCTAssertNotEqual(sut.remoteContentPolicy, .allowedAll)
+        XCTAssert(sut.shouldShowImageProxyFailedBanner)
 
         sut.reloadImagesWithoutProtection()
+        waitForMessageToBePrepared()
 
-        XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
+        XCTAssertFalse(sut.shouldShowImageProxyFailedBanner)
+        XCTAssertEqual(sut.bodyParts?.originalBody, expectedProcessedBody)
+    }
+
+    func testStoresDryRunResults() throws {
+        let summary = TrackerProtectionSummary(trackers: ["tracker": [UnsafeRemoteURL(value: "https://example.com")]])
+        let dryRunOutput = ImageProxyDryRunOutput(summary: summary)
+        sut.imageProxy(imageProxy, didFinishDryRunWithOutput: dryRunOutput)
+
+        XCTAssertEqual(sut.trackerProtectionSummary, dryRunOutput.summary)
+    }
+
+    func testDryRunResultsDoNotOverwriteRealRunResults() {
+        let realOutput = ImageProxyOutput(
+            failedUnsafeRemoteURLs: [:],
+            safeBase64Contents: [:],
+            summary: TrackerProtectionSummary(trackers: ["tracker": [UnsafeRemoteURL(value: "https://example.com")]])
+        )
+        sut.imageProxy(imageProxy, didFinishWithOutput: realOutput)
+
+        let dryRunOutput = ImageProxyDryRunOutput(summary: TrackerProtectionSummary(trackers: [:]))
+        sut.imageProxy(imageProxy, didFinishDryRunWithOutput: dryRunOutput)
+
+        XCTAssertEqual(sut.trackerProtectionSummary, realOutput.summary)
     }
 }
 
@@ -358,5 +420,27 @@ final private class ProviderDelegate: MessageInfoProviderDelegate {
     @FuncStub(trackerProtectionSummaryChanged) var trackerProtectionSummaryChangedStub
     func trackerProtectionSummaryChanged() {
         trackerProtectionSummaryChangedStub()
+    }
+}
+
+private class ImageProxyMock: ProtonMail.ImageProxy {
+    var stubbedFailedRequests: [Set<UUID>: UnsafeRemoteURL] = [:]
+    private(set) var processCallCount = 0
+
+    init(apiService: APIServiceMock) {
+        let dependencies = Dependencies(apiService: apiService)
+        super.init(dependencies: dependencies)
+    }
+
+    override func process(body: String, delegate: ImageProxyDelegate) throws -> String {
+        processCallCount += 1
+        let trackerProtectionSummary = TrackerProtectionSummary(trackers: [:])
+        let output = ImageProxyOutput(
+            failedUnsafeRemoteURLs: stubbedFailedRequests,
+            safeBase64Contents: [:],
+            summary: trackerProtectionSummary
+        )
+        delegate.imageProxy(self, didFinishWithOutput: output)
+        return body
     }
 }

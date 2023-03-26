@@ -607,7 +607,6 @@ class ComposeViewModelImpl: ComposeViewModel {
 
     override func getHtmlBody() -> WebContents {
         let allowPolicy: WebContents.RemoteContentPolicy = imageProxyEnabled ? .allowed : .allowedAll
-        let contentLoadingType: WebContents.LoadingType = !imageProxyEnabled ? .direct : .proxy
         let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.userInfo.isAutoLoadRemoteContentEnabled ? allowPolicy : .disallowed
 
         let head = "<html><head></head><body>"
@@ -628,7 +627,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             } catch {
                 body = msg.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, contentLoadingType: contentLoadingType, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
         case .reply, .replyAll:
             let msg = composerMessageHelper.message!
             var body = ""
@@ -657,7 +656,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, contentLoadingType: contentLoadingType, supplementCSS: css)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
         case .forward:
             let msg = composerMessageHelper.message!
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -691,12 +690,12 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, contentLoadingType: contentLoadingType)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
@@ -704,20 +703,20 @@ class ComposeViewModelImpl: ComposeViewModel {
             if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
                 css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
                 \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
                 """
 
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
             } else if signatureHtml.trim().isEmpty {
                 // add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: true)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isImageProxyEnable: imageProxyEnabled)
         }
 
     }

@@ -88,7 +88,6 @@ class SingleMessageContentViewModel {
     var webContentIsUpdated: (() -> Void)?
 
     init(context: SingleMessageContentViewContext,
-         imageProxy: ImageProxy,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
@@ -100,18 +99,17 @@ class SingleMessageContentViewModel {
         self.user = user
         self.message = context.message
         let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
-            imageProxy: imageProxy,
             fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService))
         )
         self.messageInfoProvider = .init(
             message: context.message,
             user: user,
+            imageProxy: .init(dependencies: .init(apiService: user.apiService)),
             systemUpTime: systemUpTime,
             labelID: context.labelId,
             shouldOpenHistory: shouldOpenHistory,
             dependencies: messageInfoProviderDependencies
         )
-        imageProxy.set(delegate: messageInfoProvider)
         messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.bannerViewModel = childViewModels.bannerViewModel

@@ -30,8 +30,23 @@ protocol NewMessageBodyViewModelDelegate: AnyObject {
     func showReloadError()
 }
 
+enum MessageDisplayMode {
+    case collapsed // Only latest message, without previous response
+    case expanded // Full body
+
+    mutating func toggle() {
+        switch self {
+        case .collapsed:
+            self = .expanded
+        case .expanded:
+            self = .collapsed
+        }
+    }
+}
+
 struct BodyParts {
     let originalBody: String
+    let strippedBody: String
 
     let bodyHasHistory: Bool
 
@@ -52,14 +67,25 @@ struct BodyParts {
                 let elements = try fullHTMLDocument.select(quoteElement)
                 if !elements.isEmpty() {
                     bodyHasHistory = true
-                    break
                 }
+                try elements.remove()
             }
+            strippedBody = try fullHTMLDocument.html()
         } catch {
             assertionFailure("\(error)")
+            strippedBody = originalBody
         }
 
         self.bodyHasHistory = bodyHasHistory
+    }
+
+    func body(for displayMode: MessageDisplayMode) -> String {
+        switch displayMode {
+        case .collapsed:
+            return strippedBody
+        case .expanded:
+            return originalBody
+        }
     }
 
     func darkModeCSS(body: String) -> String? {
@@ -84,7 +110,6 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     let internetStatusProvider: InternetConnectionStatusProvider
     let linkConfirmation: LinkOpeningMode
     let userKeys: UserKeys
-    let imageProxy: ImageProxy
 
     weak var delegate: NewMessageBodyViewModelDelegate?
     private(set) var spam: SpamType?
@@ -132,14 +157,12 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     init(spamType: SpamType?,
          internetStatusProvider: InternetConnectionStatusProvider,
          linkConfirmation: LinkOpeningMode,
-         userKeys: UserKeys,
-         imageProxy: ImageProxy
+         userKeys: UserKeys
         ) {
         self.spam = spamType
         self.internetStatusProvider = internetStatusProvider
         self.linkConfirmation = linkConfirmation
         self.userKeys = userKeys
-        self.imageProxy = imageProxy
     }
 
     func errorHappens() {

@@ -202,8 +202,7 @@ class BannerViewModelTests: XCTestCase {
                 user: userManagerMock,
                 systemUpTime: systemUpTimeMock,
                 labelID: "",
-                dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiServiceMock)),
-                                    fetchAttachment: mockFetchAttachment)
+                dependencies: .init(fetchAttachment: mockFetchAttachment)
             )
         )
     }

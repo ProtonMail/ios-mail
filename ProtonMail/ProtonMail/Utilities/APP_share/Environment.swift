@@ -22,15 +22,15 @@
 
 import Foundation
 
-enum LocaleEnvironment {
+enum Environment {
     static var locale: () -> Locale = { Locale.current }
     static var currentDate: () -> Date = Date.init
     static var timeZone = TimeZone.current
 
     static var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = LocaleEnvironment.timeZone
-        calendar.locale = LocaleEnvironment.locale()
+        calendar.timeZone = Environment.timeZone
+        calendar.locale = Environment.locale()
         return calendar
     }
 

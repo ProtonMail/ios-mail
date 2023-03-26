@@ -67,14 +67,9 @@ enum DomPurifyConfig {
             """.replacingOccurrences(of: "\n", with: "")
         case .default:
             let scheme = HTTPRequestSecureLoader.imageCacheScheme
-            let httpScheme = HTTPRequestSecureLoader.ProtonScheme.http.rawValue
-            let httpsScheme = HTTPRequestSecureLoader.ProtonScheme.https.rawValue
-            let noScheme = HTTPRequestSecureLoader.ProtonScheme.noProtocol.rawValue
-            let imageScheme = HTTPRequestSecureLoader.ProtonScheme.pmCache.rawValue
-            let valueToAdd = "\(httpScheme)|\(httpsScheme)|\(noScheme)|\(scheme)|\(imageScheme)"
             return """
             {
-            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(valueToAdd)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(scheme)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
             ADD_TAGS: ['base'],
             ADD_ATTR: ['target'],
             FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],

@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
 import XCTest
 
 @testable import ProtonMail
@@ -23,22 +22,17 @@ import XCTest
 class NewMessageBodyViewModelTests: XCTestCase {
     private var sut: NewMessageBodyViewModel!
     private var newMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegateMock!
-    private var imageProxyMock: ImageProxyMock!
-    private var apiServiceMock: APIServiceMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
         let reachabilityStub = ReachabilityStub()
         let internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        apiServiceMock = .init()
-        imageProxyMock = .init(apiService: apiServiceMock)
         sut = NewMessageBodyViewModel(
             spamType: nil,
             internetStatusProvider: internetConnectionStatusProviderMock,
             linkConfirmation: .openAtWill,
-            userKeys: .init(privateKeys: [], addressesPrivateKeys: [], mailboxPassphrase: .init(value: "passphrase")),
-            imageProxy: imageProxyMock
+            userKeys: .init(privateKeys: [], addressesPrivateKeys: [], mailboxPassphrase: .init(value: "passphrase"))
         )
         newMessageBodyViewModelDelegateMock = NewMessageBodyViewModelDelegateMock()
         sut.delegate = newMessageBodyViewModelDelegateMock
