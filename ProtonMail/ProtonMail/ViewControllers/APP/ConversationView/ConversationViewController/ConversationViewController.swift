@@ -822,6 +822,7 @@ extension ConversationViewController {
     @objc
     private func unreadReadAction() {
         viewModel.handleToolBarAction(.markUnread)
+        navigationController?.popViewController(animated: true)
     }
 
     @objc
