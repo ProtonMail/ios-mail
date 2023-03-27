@@ -114,8 +114,8 @@ var escapeURLinStyle = function (style) {
 
 var escapeForbiddenStyle = function (style) {
     var parsedStyle = style
-        .replaceAll(REGEXP_POSITION_ABSOLUTE, 'position: relative')
-        .replaceAll(REGEXP_HEIGHT_PERCENTAGE, function (rule, prop) {
+        .replace(REGEXP_POSITION_ABSOLUTE, 'position: relative')
+        .replace(REGEXP_HEIGHT_PERCENTAGE, function (rule, prop) {
             // Replace nothing in this case.
             if (['line-height', 'max-height'].includes(prop)) {
                 return rule;
@@ -123,7 +123,7 @@ var escapeForbiddenStyle = function (style) {
             return "".concat(prop, ": unset");
         })
         // "never" is not a valid value, it's meant to be invalid and break the media query
-        .replaceAll(REGEXP_MEDIA_DARK_STYLE, '(prefers-color-scheme: never)');
+        .replace(REGEXP_MEDIA_DARK_STYLE, '(prefers-color-scheme: never)');
     return parsedStyle;
 };
 

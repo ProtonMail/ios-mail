@@ -113,10 +113,10 @@ html_editor.getHtmlForDraft = function () {
             return;
         }
 
-        if (!url && match.hasAttribute('style') && match.getAttribute('style')?.includes('proton-url')) {
+        if (!url && match.hasAttribute('style') && match.getAttribute('style').includes('proton-url')) {
             const styleContent = match.getAttribute('style');
             if (styleContent !== null) {
-                const originalUrl = styleContent.match(/proton-url\((.*?)\)/)?.[1].replace(/('|")/g, '');
+                const originalUrl = styleContent.match(/proton-url\((.*?)\)/)[1].replace(/('|")/g, '');
                 if (originalUrl) {
                     match.removeAttribute('style');
                     match.setAttribute('style', originalUrl);
