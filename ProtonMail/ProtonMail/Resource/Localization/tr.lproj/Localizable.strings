@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Tüm e-postalar";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Tüm iletileriniz indirildi";
 
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "E-postanın izlenmesi engellensin";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Engellenenler listesi";
+
+/* Button to block a sender */
+"Block sender" = "Göndericiyi engelle";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Göndericilerin iletiyi açıp açmadığınızı ve ne zaman açtığınızı görmesini engeller";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Geçerli parola";
 
@@ -700,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Üst veriler indiriliyor...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "E-postaları indirirerek arama yapılabilmesini sağlar. İletiler şifrelenmiş biçimde yerel olarak kaydedilir. %1$@";
 
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "E-posta adresi devre dışı";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-posta adresleri";
@@ -921,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ayarlara git";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Anladım";
 
@@ -1008,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Görüntülenecek adı yazın…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Güvenli olmayan bağlantı";
@@ -1110,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Uygulamayı kilitle";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Günlük kayıtları";
@@ -1243,6 +1225,9 @@
 /* Title */
 "Move to…" = "Şuraya taşı…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Taşımadan sonra bir sonraki iletiye geç";
+
 /* Onboarding title */
 "Neat and tidy" = "Temiz ve düzenli";
 
@@ -1281,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "İleri";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Taşımadan sonra bir sonraki ileti";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Takma ad";
@@ -1421,6 +1409,9 @@
 /* Text for pause button */
 "Pause" = "Duraklat";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Bir ileti taşındığında (arşivleme gibi) bir sonraki iletiye geçilir.";
+
 /* default vcard types */
 "Personal" = "Kişisel";
 
@@ -1537,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton durumu";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Vekil sunucu/güvenlik duvarı etkileşimi";
@@ -1695,7 +1683,7 @@
 /* Action */
 "Send anyway" = "Yine de gönder";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Geri bildirimi gönder";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1964,9 +1952,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Erişmeye çalıştığınız adres standart olmadığından düzgün yüklenmeyebilir. Adresi aygıtınızın varsayılan tarayıcısı ile açmak ister misiniz?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Gönderilmemiş iletiler var. Oturumu kapatırsanız bunlar silinecek";
 
@@ -1981,12 +1966,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Bu yazışmada, çöpe atılmış iletiler var";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, bir Proton Mail adresinden gelmiş gibi görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerini karşılayamadı. Sahte ya da doğru olmayan şekilde iletilmiş olabilir!";
@@ -2077,11 +2056,8 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Farklı bir ağ kullanarak Proton bağlantısı kurmayı deneyin (ayrıca %1$@ ya da %2$@ kullanabilirsiniz).";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
-
 /* Placeholder */
-"Two Factor Code" = "İki adımlı doğrulama kodu";
+"Two Factor Code" = "İki aşamalı doğrulama kodu";
 
 /* Internal type casting error */
 "Type casting error" = "Tür döküm hatası";

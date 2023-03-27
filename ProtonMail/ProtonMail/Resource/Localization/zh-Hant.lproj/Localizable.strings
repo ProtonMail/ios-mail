@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "所有郵件";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "所有您的郵件已下載";
 
@@ -517,9 +514,6 @@
 /* Alert title */
 "Creating label not allowed" = "不允許建立標籤";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "目前密碼";
 
@@ -694,9 +688,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "下載中繼資料…";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下載電子郵件以便您可以在其中進行搜尋。郵件加密過並儲存在本地端。%1$@";
 
@@ -745,9 +736,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "電郵位址已停用";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "電郵位址";
@@ -912,9 +900,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "前往設定";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "了解";
 
@@ -999,9 +984,6 @@
 
 /* place holder */
 "Input Display Name…" = "輸入顯示名稱…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "不安全的連線";
@@ -1101,12 +1083,6 @@
 
 /* menu title */
 "Lock The App" = "鎖定應用程式";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "日誌";
@@ -1529,9 +1505,6 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 狀態";
 
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
 
@@ -1680,7 +1653,7 @@
 /* Action */
 "Send anyway" = "仍然傳送";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "傳送意見反饋";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1949,9 +1922,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您所要開啟的網址可能未符合標準規範，因此無法正常加載。是否仍然要使用預設瀏覽器開啟？";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "如果您現在登出，將會遺失仍未傳送的郵件";
 
@@ -1966,12 +1936,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此交談群組包含已移至「垃圾桶」的郵件";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此信件看似由 Proton Mail 寄出的 ，但卻並非由我們的系統寄出，而且未能通過我們的認證需求。這可能是偽造或不當轉寄的郵件！";
@@ -2061,9 +2025,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "兩步驟驗證碼";

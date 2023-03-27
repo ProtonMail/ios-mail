@@ -75,7 +75,7 @@
 "Add new custom field" = "Ajouter un nouveau champ personnalisé";
 
 /* new email action */
-"Add new email" = "Ajouter une nouvelle adresse e-mail";
+"Add new email" = "Ajouter un nouvel e-mail";
 
 /* new field action */
 "Add new field" = "Ajouter un nouveau champ";
@@ -122,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Tous les messages";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Tous vos messages sont téléchargés.";
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Bloquer le suivi des e-mails";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Liste d'adresses bloquées";
+
+/* Button to block a sender */
+"Block sender" = "Bloquer l'expéditeur";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Empêche les expéditeurs de voir si et quand vous avez ouvert un message.";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Création d'un label non autorisée";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Mot de passe actuel";
 
@@ -621,7 +621,7 @@
 "Disabled" = "Désactivé";
 
 /* Message for the alert to disable content search. */
-"Disabling the feature now will delete the messages that have already been downloaded." = "Désactiver la fonction maintenant supprimera les messages qui ont déjà été téléchargés.";
+"Disabling the feature now will delete the messages that have already been downloaded." = "Désactiver la fonctionnalité maintenant supprimera les messages qui ont déjà été téléchargés.";
 
 /* Action */
 "Discard" = "Abandonner";
@@ -703,9 +703,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Téléchargement des métadonnées en cours...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Télécharge les messages pour que vous puissiez y effectuer des recherches. Les messages sont chiffrés et stockés localement. %1$@";
 
@@ -747,16 +744,13 @@
 "Edit photo" = "Modifier la photo";
 
 /* default vcard types */
-"Email" = "Adresse e-mail";
+"Email" = "E-mail";
 
 /* contact placeholder */
 "Email address" = "Adresse e-mail";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "L'adresse e-mail est désactivée.";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adresses e-mail";
@@ -856,7 +850,7 @@
 "Expand folder" = "Agrandir le dossier";
 
 /* alert title */
-"Expiration not supported" = "La fonction de message avec délai d'expiration n'est pas prise en charge.";
+"Expiration not supported" = "La fonctionnalité de message avec délai d'expiration n'est pas prise en charge.";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -926,9 +920,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Accéder aux paramètres";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "J'ai compris";
@@ -1017,9 +1008,6 @@
 
 /* place holder */
 "Input Display Name…" = "Saisissez le nom d'affichage…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexion non sécurisée";
@@ -1119,12 +1107,6 @@
 
 /* menu title */
 "Lock The App" = "Verrouiller l'application";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Journaux";
@@ -1252,6 +1234,9 @@
 /* Title */
 "Move to…" = "Déplacer…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Passer au message suivant après avoir déplacé un message";
+
 /* Onboarding title */
 "Neat and tidy" = "Soignée et ordonnée";
 
@@ -1290,6 +1275,9 @@
 
 /* title of the next button */
 "Next" = "Suivant";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Message suivant après déplacement d'un message";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Surnom";
@@ -1430,6 +1418,9 @@
 /* Text for pause button */
 "Pause" = "Suspendre";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Quand vous déplacez un message, en l'archivant par exemple, vous passez au message suivant.";
+
 /* default vcard types */
 "Personal" = "Personnel";
 
@@ -1549,9 +1540,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Statut de Proton";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interférence avec le proxy/pare-feu";
@@ -1707,7 +1695,7 @@
 /* Action */
 "Send anyway" = "Envoyer quand même";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Envoyer un avis";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1976,9 +1964,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL à laquelle vous essayez d'accéder n'est pas standard et peut ne pas se charger correctement. Voulez-vous l'ouvrir en utilisant le navigateur par défaut de votre appareil ?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Il reste des messages non envoyés qui seront perdus si vous vous déconnectez.";
 
@@ -1995,16 +1980,10 @@
 "This conversation contains trashed messages" = "Cette conversation a des messages qui sont dans le dossier Corbeille.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message semble provenir d'une adresse Proton Mail, mais il vient de l'extérieur de notre système et a échoué à nos exigences d'authentification. Il a peut-être été falsifié ou transféré de manière incorrecte.";
 
 /* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Cette fonction retarde l'envoi de vos messages, vous donnant la possibilité d'annuler l'envoi pendant le délai choisi.";
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Cette fonctionnalité retarde l'envoi de vos messages, vous donnant la possibilité d'annuler l'envoi pendant un délai choisi.";
 
 /* The subtitle will be shown when folder doesnt have emails */
 "This folder is empty" = "Ce dossier est vide.";
@@ -2092,9 +2071,6 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Essayez de vous connecter à Proton depuis un autre réseau (ou utilisez %1$@ ou %2$@).";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
-
 /* Placeholder */
 "Two Factor Code" = "Code à deux facteurs";
 
@@ -2135,7 +2111,7 @@
 "Unlimited folders and labels" = "Nombre illimité de dossiers et labels";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Débloquez l'envoi programmé de messages personnalisé et d'autres fonctionnalités en passant à un abonnement supérieur.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Activez la fonctionnalité d'envoi programmé des messages personnalisé et bien d'autres encore en passant à un abonnement supérieur.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Déverrouillage nécessaire";
@@ -2279,13 +2255,13 @@
 "You can now schedule your messages to be sent later" = "Vous pouvez désormais programmer vos messages pour les envoyer plus tard.";
 
 /* The description of encrypted search at the pop up. */
-"You can now search within your messages. This feature can be enabled from settings at any time." = "Vous pouvez désormais effectuer des recherches dans vos messages. Cette fonctionnalité peut être activée à tout moment dans les paramètres.";
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Vous pouvez désormais faire des recherches dans vos messages. Cette fonctionnalité peut être activée à tout moment dans les paramètres.";
 
 /* Explanation of downloaded messages for encrypted search */
 "You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Vous pouvez effectuer une recherche dans les messages téléchargés. Pour tous les autres messages, la recherche ne porte que sur la liste des destinataires et l'objet du message.";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Vous ne pouvez pas définir l’adresse %@ comme valeur par défaut parce qu'il s'agit d'une fonctionnalité payante.";
+"You can't set %@ address as default because it is a paid feature." = "Vous ne pouvez pas définir l’adresse %@ comme valeur par défaut, il s'agit d'une fonctionnalité payante.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Vous avez désactivé Face ID dans vos paramètres système. Face ID est utilisé pour protéger les informations importantes de votre compte. Pour accéder à votre compte, allez dans les paramètres et réactivez Face ID ou connectez-vous à nouveau.";

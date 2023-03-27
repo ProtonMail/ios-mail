@@ -119,11 +119,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%1$d conversații au fost mutate în «%2$@».</string>
+			<string>%d conversații au fost mutate în «%@».</string>
 			<key>one</key>
-			<string>Conversația a fost mutată în «%2$@».</string>
+			<string>Conversația a fost mutată în «%@».</string>
 			<key>other</key>
-			<string>%1$d de conversații au fost mutate în «%2$@».</string>
+			<string>%d de conversații au fost mutate în «%@».</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -247,11 +247,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>S-au mutat %1$d mesaje în «%2$@».</string>
+			<string>S-au mutat %d mesaje în «%@».</string>
 			<key>one</key>
-			<string>Mesajul a fost mutat în «%2$@».</string>
+			<string>Mesajul a fost mutat în «%@».</string>
 			<key>other</key>
-			<string>S-au mutat %1$d de mesaje în «%2$@».</string>
+			<string>S-au mutat %d de mesaje în «%@».</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>

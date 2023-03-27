@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Všechna pošta";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Všechny vaše zprávy jsou staženy";
 
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Blokovat sledování emailů";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Seznam blokovaných";
+
+/* Button to block a sender */
+"Block sender" = "Blokovat odesílatele";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Zamezuje odesílatelům zjistit, zda a kdy jste zprávu otevřeli";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Vytvoření štítku není povoleno";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Aktuální heslo";
 
@@ -700,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Stahování metadat ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Stáhne e-maily, abyste v nich mohli vyhledávat. Zprávy jsou šifrovány a ukládány lokálně. %1$@";
 
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "E-mailová adresa je deaktivovaná";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailové adresy";
@@ -921,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Přejít do nastavení";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Rozumím";
 
@@ -1008,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Vložte zobrazované jméno…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nezabezpečené připojení";
@@ -1110,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Zamknout aplikaci";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Logy";
@@ -1243,6 +1225,9 @@
 /* Title */
 "Move to…" = "Přesunout do…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Po přesunu přejít na další zprávu";
+
 /* Onboarding title */
 "Neat and tidy" = "Elegantní a úhledný";
 
@@ -1281,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Další";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Další zpráva po přesunu";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Přezdívka";
@@ -1421,6 +1409,9 @@
 /* Text for pause button */
 "Pause" = "Pozastavit";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Přesunutím zprávy (např. do archivu) přejdete na další zprávu.";
+
 /* default vcard types */
 "Personal" = "Osobní";
 
@@ -1537,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Stav Protonu";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Rušení proxy/firewallem";
@@ -1695,7 +1683,7 @@
 /* Action */
 "Send anyway" = "Přesto odeslat";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Odeslat zpětnou vazbu";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1964,9 +1952,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL adresa, kterou otevíráte, je nestandardní a nemusí se v pořádku načíst. Chcete ji otevřít výchozím prohlížečem vašeho zařízení?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Jsou evidovány neodeslané zprávy. V případě, že se odhlásíte, budou ztraceny";
 
@@ -1981,12 +1966,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Tato konverzace obsahuje zprávy vyhozené do koše";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail zřejmě pochází z adresy Proton Mail, ale přišel z cizího systému a neprošel našimi požadavky na ověření. Může se jednat o podvržený nebo nesprávně přeposlaný e-mail!";
@@ -2076,9 +2055,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Dvoufázový kód";

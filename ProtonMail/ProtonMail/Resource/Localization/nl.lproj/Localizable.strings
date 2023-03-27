@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Alle berichten";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Al uw berichten zijn gedownload";
 
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Blokkeer e-mailtracking";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Blokkeringslijst";
+
+/* Button to block a sender */
+"Block sender" = "Blokkeer afzender";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokkeert dat afzenders kunnen zien of en wanneer u het bericht hebt geopend";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Label aanmaken is niet toegestaan";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Huidig wachtwoord";
 
@@ -700,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Metagegevens downloaden...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloadt e-mails zodat ze kunnen worden doorzocht. De berichten worden versleuteld en lokaal opgeslagen. %1$@";
 
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "E-mailadres uitgeschakeld";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailadressen";
@@ -921,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ga naar instellingen";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Begrepen";
 
@@ -1008,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Weergavenaam invoeren…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Onveilige verbinding";
@@ -1110,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "App vergrendelen";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Logboeken";
@@ -1243,6 +1225,9 @@
 /* Title */
 "Move to…" = "Verplaatsen naar…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Navigeer naar het volgende bericht na verplaatsen";
+
 /* Onboarding title */
 "Neat and tidy" = "Netjes en opgeruimd";
 
@@ -1281,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Volgende";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Volgend bericht na verplaatsen";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Bijnaam";
@@ -1421,6 +1409,9 @@
 /* Text for pause button */
 "Pause" = "Pauzeer";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Een verplaatsactie uitvoeren op een bericht (bv. archiveren) zal navigeren naar het volgende bericht.";
+
 /* default vcard types */
 "Personal" = "Persoonlijk";
 
@@ -1537,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall interferentie";
@@ -1695,7 +1683,7 @@
 /* Action */
 "Send anyway" = "Toch verzenden";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Feedback versturen";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1964,9 +1952,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "De URL die u probeert te openen is niet standaard en kan mogelijk niet correct geladen worden. Wilt u deze openen met de standaard browser van uw apparaat?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Er zijn niet-verzonden berichten die verloren gaan als u u uitlogt";
 
@@ -1981,12 +1966,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig van een Proton Mail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
@@ -2076,9 +2055,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Tweestapsverificatie code";

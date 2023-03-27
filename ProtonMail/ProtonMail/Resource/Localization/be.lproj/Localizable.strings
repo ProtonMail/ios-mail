@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Уся пошта";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Усе вашы паведамленні спампаваны";
 
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Блакіраваць адсочванне электроннай пошты";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Спіс заблакіраваных";
+
+/* Button to block a sender */
+"Block sender" = "Заблакіраваць адпраўніка";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Не дазваляе адпраўнікам бачыць ці адкрывалі вы паведамленне";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Стварэнне меткі не дазволена";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Бягучы пароль";
 
@@ -540,13 +540,13 @@
 
 /* contacts default label type
    Custom option for time config picker */
-"Custom" = "Карыстальніцкае";
+"Custom" = "Карыстальніцкі";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Наладзіць";
 
 /* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Наладжванне панэлі інструментаў";
+"Customize toolbar" = "Наладзіць панэль інструментаў";
 
 /* Title */
 "Cut" = "Выразаць";
@@ -700,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Спампоўванне метаданых...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Спампоўвае лісты, каб вы маглі шукаць у іх. Паведамленні зашыфраваны і захоўваюцца на вашай прыладзе. %1$@";
 
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Адрас электроннай пошты адключаны";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адрасы электроннай пошты";
@@ -924,9 +918,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Перайсці ў налады";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Зразумела";
 
@@ -1011,9 +1002,6 @@
 
 /* place holder */
 "Input Display Name…" = "Увядзіце бачнае імя…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Небяспечнае злучэнне";
@@ -1113,12 +1101,6 @@
 
 /* menu title */
 "Lock The App" = "Заблакіраваць праграму";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Журнал";
@@ -1246,6 +1228,9 @@
 /* Title */
 "Move to…" = "Перамясціць у…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Перайсці да наступнага паведамлення пасля перамяшчэння";
+
 /* Onboarding title */
 "Neat and tidy" = "Просты і лаканічны";
 
@@ -1284,6 +1269,9 @@
 
 /* title of the next button */
 "Next" = "Далей";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Наступнае паведамленне пасля перамяшчэння";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Псеўданім";
@@ -1424,6 +1412,9 @@
 /* Text for pause button */
 "Pause" = "Прыпыніць";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Дзеянне па перамяшчэнні паведамлення (напрыклад, у архіў) прывядзе да пераходу да наступнага паведамлення.";
+
 /* default vcard types */
 "Personal" = "Асабісты";
 
@@ -1540,9 +1531,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Статус Proton";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Канфлікт з проксі-серверам або міжсеткавым экранам";
@@ -1698,7 +1686,7 @@
 /* Action */
 "Send anyway" = "Усё роўна адправіць";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Адправіць водгук";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1967,9 +1955,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адрас, які вы спрабуеце адкрыць з'яўляецца нестандартным і можа быць загружаны некарэктна. Вы сапраўды хочаце адкрыць яго прадвызначаным браўзерам на вашай прыладзе?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Ёсць неадпраўленыя паведамленні, якія будуць страчаны пры выхадзе з сістэмы";
 
@@ -1984,12 +1969,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Гэта размова змяшчае выдаленыя паведамленні";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Верагодна, што крыніцай гэтага ліста з'яўляецца адрас, які адносіцца да Proton Mail, але сам ліст прыйшоў не з нашай сістэмы і не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі. Ён можа быць падроблены або перасланы неналежным чынам!";
@@ -2079,9 +2058,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падлучыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Двухфактарны код";

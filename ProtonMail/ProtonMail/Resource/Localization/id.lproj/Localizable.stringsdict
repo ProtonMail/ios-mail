@@ -125,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak surel diblokir</string>
+			<string>%d pelacak email diblokir</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -139,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d pelacak surel ditemukan</string>
+			<string>%d pelacak email ditemukan</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>

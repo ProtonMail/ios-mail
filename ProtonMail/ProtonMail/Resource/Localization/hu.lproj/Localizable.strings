@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'Ekkor': E, MMM d, yyyy %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "Az 'Üzenet tartalmának keresése' le lesz tiltva. A beállítások között újra engedélyezhető, és az összes üzenetet újra le kell tölteni.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "A 'Keresés az üzenetek tartalmában' letiltásra kerül. A beállítások között újra engedélyezhető, ekkor az összes üzenetet újbóli letöltése lesz szükséges.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ / %2$@";
@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Összes levél";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Az összes üzenete letöltésre került";
 
@@ -169,10 +166,10 @@
 "App PIN" = "Alkalmazás PIN-kód";
 
 /* security title in settings */
-"App PIN & Face ID" = "Alkalmazás PIN-kód & Face ID";
+"App PIN & Face ID" = "Alkalmazás PIN-kód & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "Alkalmazás PIN-kód & Touch ID";
+"App PIN & Touch ID" = "Alkalmazás PIN-kód & Touch ID";
 
 /* section title in settings */
 "App settings" = "Alkalmazás beállítások";
@@ -294,11 +291,17 @@
 /* Settings row */
 "Block email tracking" = "E-mail követés megakadályozása";
 
+/* Settings item to open blocked sender list */
+"Block list" = "Tiltólista";
+
+/* Button to block a sender */
+"Block sender" = "Feladó tiltása";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Megakadályozza, hogy a feladó értesüljön arról amikor megnyitja az üzenetet";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Beszélgetés üzemmódban könnyedén átfuthatsz a szálankénti üzeneteken.";
+"Breeze through threaded messages in conversation mode." = "Beszélgetés üzemmódban könnyedén átfuthat a szálankénti üzeneteken.";
 
 /* Title */
 "Bug Description" = "Hiba leírása";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Címke létrehozása nincs engedélyezve";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Jelenlegi jelszó";
 
@@ -642,16 +642,16 @@
 "Display Name" = "Megjelenített név";
 
 /* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Tényleg el akarja távolítani ezt a fájlt a mellékletekből?";
+"Do you really want to remove this file from attachments?" = "Biztosan el szeretné távolítani ezt a fájlt a mellékletekből?";
 
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
 
 /* Warning message */
-"Do you want to discard the changes?" = "Szeretnéd elvetni a változtatásokat?";
+"Do you want to discard the changes?" = "Elveti a változtatásokat?";
 
 /* No comment provided by engineer. */
-"Do you want to discard your changes?" = "El akarja vetni a változtatásokat?";
+"Do you want to discard your changes?" = "Elveti a változtatásokat?";
 
 /* Alert body for no attachment found */
 "Do you want to send your message anyway?" = "Mindenképp elküldi?";
@@ -699,9 +699,6 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Metaadatok letöltése ...";
-
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Letölti az e-maileket, így kereshet bennük. Az üzenetek titkosítva vannak és helyben tárolódnak. %1$@";
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Az e-mail cím le van tiltva";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mail cím";
@@ -921,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Beállítások megnyitása";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Rendben!";
 
@@ -958,7 +949,7 @@
 "Human Check Warning" = "Robot ellenőrzés figyelmeztetés";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "A Proton Mail-t használom és gondoltam, hogy neked is tetszeni fog. Ez egy biztonságos e-mail szolgáltatás, amely védi a magánéleted. Regisztrálj ezen a linken, hogy 1 hónap prémium funkciókat is kapj ingyen:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "A Proton Mailt használom és gondoltam, hogy neked is tetszeni fog. Ez egy biztonságos e-mail szolgáltatás, amely védi a magánéleted. Regisztrálj ezen a linken, hogy 1 hónapig ingyen használhasd a prémium funkciókat is:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Amennyiben a WiFi kapcsolata megszakad, a letöltés mobil hálózaton fog folytatódni.";
@@ -1008,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Írja be a megjelenítendő nevet…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nem biztonságos kapcsolat";
@@ -1108,12 +1096,6 @@
 /* menu title */
 "Lock The App" = "Alkalmazás zárolása";
 
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
-
 /* error title */
 "Logs" = "Naplók";
 
@@ -1194,13 +1176,13 @@
 "Message sent" = "Üzenet elküldve";
 
 /* Text for the search info banner when indexing is ongoing. */
-"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Az üzenetek letöltése folyamatban van a tartalomkereséshez. Előfordulhat, hogy néhány eredmény nem jelenik meg. %1$@";
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Az üzenetek letöltése folyamatban van a tartalomban való kereséshez. Előfordulhat, hogy néhány eredmény nem jelenik meg. %1$@";
 
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
 "Messages from before " = "Korábbi üzenetek ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
-"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "A %@ előtti üzenetek nem kerülnek keresésre. Ha keresni szeretne bennük, szabadítson fel tárhelyet ezen az eszközön.";
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "A %@ előtti üzenetek nem lesznek kereshetőek. Ha szeretne keresni bennük, szabadítson fel tárhelyet ezen az eszközön.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Az üzenetek letöltése WiFi-n keresztül történik. Ez eltarthat egy ideig, és a készülék kissé felmelegedhet. A műveletet bármikor szüneteltetheti.";
@@ -1322,7 +1304,7 @@
 "normal attachments" = "csatolt mellékletek";
 
 /* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Nem spam (áthelyezés a bejövő üzenetek közé)";
+"Not a spam (move to inbox)" = "Nem levélszemét (áthelyezés a bejövő üzenetek közé)";
 
 /* The status text of message history in downloaded messages if the device is out of memory. */
 "Not all messages were downloaded. To download them, free up storage on the device." = "Nem minden üzenet került letöltésre. Letöltésükhöz szabadítson fel tárhelyet a készüléken.";
@@ -1392,7 +1374,7 @@
 "Other" = "Egyéb";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Ügyfélszolgálatunk megpróbálja manuálisan aktiválni az Ön szolgáltatási csomagját, amennyiben beleegyezik, hogy a vásárlás folyamán keletkező technikai adatok csatolva legyenek. Ezek az adatok nem tartalmazzák sem az iTunes, sem az Apple-azonosítót, sem pedig a bankkártyával vagy a felhasználóval kapcsolatos egyéb információkat. Mindössze azt segít ellenőrizni, hogy az ügylet teljesült-e az AppStore szerverein.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Ügyfélszolgálatunk megpróbálja manuálisan aktiválni az Ön szolgáltatási csomagját, amennyiben beleegyezik, hogy a vásárlás folyamán az App Store által megadott technikai adatok csatolva legyenek. Ezek az adatok nem tartalmaznak semmilyen részletet sem az iTunes, sem az Apple-azonosítójáról, sem pedig a bankkártyával vagy a felhasználóval kapcsolatos egyéb információkat. Mindössze azt segít ellenőrizni, hogy a tranzakció teljesült-e az App Store szerverein.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "A rendszerünk úgy érzékelte, hogy ez egy adathalász kísérlet. Kérjük ellenőrizze, hogy esetleg mégsem az.";
@@ -1500,7 +1482,7 @@
 "Please upgrade your plan" = "Kérjük, váltson nagyobb csomagra";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Váltson nagyobb csomagra, hogy továbbra is küldhessen és kaphasson emaileket.";
+"Please upgrade your plan to continue to send and receive emails." = "Váltson nagyobb csomagra, hogy továbbra is küldhessen és fogadhasson e-maileket.";
 
 /* Description */
 "Please use Proton Mail App sign-in first." = "Kérjük, előbb használja a Proton Mail alkalmazás bejelentkezését.";
@@ -1532,17 +1514,14 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Állapot";
 
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/tűzfal interferencia";
 
 /* The title of re auth alert */
-"Re-authenticate" = "Újra hitelesít";
+"Re-authenticate" = "Ismételt hitelesítés";
 
 /* abbreviation of reply: */
-"Re:" = "Válasz:";
+"Re:" = "Re:";
 
 /* No comment provided by engineer. */
 "Read" = "Olvasott";
@@ -1562,6 +1541,9 @@
 /* Title */
 "Recovery email" = "Helyreállító e-mail";
 
+/* No comment provided by engineer. */
+"Recovery enabled" = "Helyreállítás engedélyezve";
+
 /* menu title */
 "Refer a friend" = "Ajánlja egy barátnak";
 
@@ -1574,6 +1556,9 @@
 /* action title */
 "Remove password" = "Jelszó eltávolítása";
 
+/* The button to enable label list reorder */
+"Reorder" = "Újrarendezés";
+
 /* textview title */
 "Repeat password" = "Jelszó ismét";
 
@@ -1584,8 +1569,14 @@
 /* reply action */
 "Reply" = "Válasz";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Válasz (a legutóbbi üzenetre)";
+
 /* reply all action */
 "Reply all" = "Válasz mindenkinek";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Válasz mindenkinek (a legutóbbi üzenetre)";
 
 /* menu title */
 "Report a problem" = "Probléma jelentése";
@@ -1659,7 +1650,7 @@
 /* Action */
 "Send anyway" = "Küldés mindenképpen";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Visszajelzés küldése";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1910,9 +1901,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "A megnyitni kívánt URL nem szabványos és nem biztos, hogy helyesen megjeleníthető. Megnyitja az eszköz alapértelmezett böngészőjével?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Még vannak elküldetlen üzenetek, amelyek elvesznek ha kilép";
 
@@ -1927,12 +1915,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ez a beszélgetés törölt üzeneteket is tartalmaz";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ez az e-mail a Proton Mailról feladottnak tűnik, de külső rendszerből érkezett és nem felelt meg az ellenőrzési követelményeknek. Lehet becsapós üzenet vagy hibásan továbbított!";
@@ -2022,9 +2004,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Kétlépcsős kód";

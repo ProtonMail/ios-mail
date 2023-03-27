@@ -102,9 +102,6 @@
    menu title */
 "All Mail" = "Akk iznan";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* network troubleshot cell title */
 "Allow alternative routing" = "Rnu aseglu amlellay";
 
@@ -451,9 +448,6 @@
 /* Alert title */
 "Creating label not allowed" = "Asnulfu n tebzimt ur yurig ara";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Awal uffir amiran";
 
@@ -612,9 +606,6 @@
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Tansa imayl tensa";
 
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
-
 /* contact detail view, email addresses section title */
 "Email addresses" = "Tansiwin imayl";
 
@@ -754,9 +745,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ddu s iɣewwaren";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Gziɣ";
 
@@ -823,9 +811,6 @@
 
 /* place holder */
 "Input Display Name…" = "Sekcem isem n uskan…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Tuqqna tɣrelsant";
@@ -910,9 +895,6 @@
 
 /* menu title */
 "Lock The App" = "Sekkeṛ asnas";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Inekcam";
@@ -1278,9 +1260,6 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Addad n Proton";
 
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Uguren akked Apriksi/Aɣrab n tmes";
 
@@ -1411,7 +1390,7 @@
 /* Action */
 "Send anyway" = "Azen akken ibɣu yili";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Azen-d iwinniten inek•inem";
 
 /* Description */
@@ -1656,9 +1635,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL i tettaɛraḍeḍ ad tkecmeḍ ɣer-s mačči d alugen rnu ur yezmir ara ad d-yali akken ilaq. Tabeɣiḍ ad t-teldiḍ s useqedc n yiming amezwer n yibenk-inek·inem?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Llan yiznan ur nettwazen ara iṛuḥen ma yella teffɣeḍ seg tuqqna";
 
@@ -1673,12 +1649,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Adiwenni-a yegber iznan yellan deg yiḍumman";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yettban d akken yekka-d seg tansa n Proton Mail, acu kan yussa-d si beṛṛa n unagraw ihi ur iɛedda ara asekyed n usesteb. Ahat beddlen-t neɣ win-t s tuccḍa aniɣer nniḍen!";
@@ -1747,9 +1717,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec %1$@ neɣ %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Asesteb s snat n tarayin";

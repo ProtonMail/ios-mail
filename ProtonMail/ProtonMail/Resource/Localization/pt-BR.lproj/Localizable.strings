@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Todos os e-mails";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Todas as suas mensagens foram baixadas.";
 
@@ -181,7 +178,7 @@
 "Appearance" = "Aparência";
 
 /* Settings lock AppKey description */
-"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "O AppKey protege ainda mais suas informações do Proton em caso de ataques elaborados, como um invasor que clona o conteúdo do seu dispositivo. %1$@";
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "O AppKey protege ainda mais suas informações da Proton em caso de ataques elaborados, como um invasor que clona o conteúdo do seu dispositivo. %1$@";
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "Proteção AppKey";
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Bloquear rastreamento de e-mail";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Lista de bloqueio";
+
+/* Button to block a sender */
+"Block sender" = "Bloquear remetente";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Impede que os remetentes vejam se e quando você abriu a mensagem";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Criação de marcador não permitida";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Senha atual";
 
@@ -700,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Baixando mensagem...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Baixe e-mails para que você possa pesquisar dentro deles. As mensagens são criptografadas e armazenadas localmente. %1$@";
 
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Endereço de e-mail desativado";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Endereços de e-mail";
@@ -921,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ir para configurações";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Entendi";
 
@@ -986,7 +977,7 @@
 
 /* alternative routing description
    The footer of alternative routing setting */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites da Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites do Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
 
 /* One of schedule time options */
 "In the morning" = "Pela manhã";
@@ -1011,9 +1002,6 @@
 
 /* place holder */
 "Input Display Name…" = "Digitar nome de exibição…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Conexão não segura";
@@ -1113,12 +1101,6 @@
 
 /* menu title */
 "Lock The App" = "Bloquear o aplicativo";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Registros";
@@ -1246,6 +1228,9 @@
 /* Title */
 "Move to…" = "Mover para…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Navegar para a próxima mensagem após mover";
+
 /* Onboarding title */
 "Neat and tidy" = "Limpo e arrumado";
 
@@ -1284,6 +1269,9 @@
 
 /* title of the next button */
 "Next" = "Próximo";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Próxima mensagem após mover";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Apelido";
@@ -1424,6 +1412,9 @@
 /* Text for pause button */
 "Pause" = "Pausar";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Executar uma ação de mover em uma mensagem (por exemplo, arquivar) navegará para a próxima mensagem.";
+
 /* default vcard types */
 "Personal" = "Pessoal";
 
@@ -1540,9 +1531,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Status do Proton";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferência de proxy/firewall";
@@ -1698,7 +1686,7 @@
 /* Action */
 "Send anyway" = "Enviar mesmo assim";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Enviar comentários";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1967,9 +1955,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "A URL que você está tentando acessar não é padrão e pode não carregar corretamente. Você deseja abrir a mesma usando o navegador padrão do seu dispositivo?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Existem mensagens não enviadas que serão perdidas se você encerrar sessão";
 
@@ -1986,13 +1971,7 @@
 "This conversation contains trashed messages" = "Esta conversa contém mensagens da lixeira.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail parece ser de um endereço Proton Mail, mas veio de fora do nosso sistema e não atendeu a nossos requisitos de autenticação. Ele pode ser falsificado ou encaminhado indevidamente!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail parece ser de um endereço do Proton Mail, mas veio de fora do nosso sistema e não atendeu a nossos requisitos de autenticação. Ele pode ser falsificado ou encaminhado indevidamente!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Este recurso atrasa o envio dos seus e-mails, dando-lhe a oportunidade de desfazer o envio durante o período de tempo selecionado.";
@@ -2079,9 +2058,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente conectar ao Proton a partir de uma rede diferente (ou use o %1$@ ou %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Código de dois fatores";
