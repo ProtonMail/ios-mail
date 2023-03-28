@@ -278,7 +278,6 @@ extension SingleMessageViewController {
         let isScheduledSend = viewModel.contentViewModel.messageInfoProvider.message.isScheduledSend
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.title,
                                                                    labelID: viewModel.labelId,
-                                                                   includeStarring: false,
                                                                    isStarred: viewModel.message.isStarred,
                                                                    isBodyDecryptable: isBodyDecryptable,
                                                                    messageRenderStyle: renderStyle,

@@ -30,7 +30,6 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
     init(
         title: String,
         labelID: LabelID,
-        includeStarring: Bool,
         isStarred: Bool,
         isBodyDecryptable: Bool,
         messageRenderStyle: MessageRenderStyle,
@@ -47,12 +46,9 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
 
         items.append(contentsOf: [
             .markUnread,
-            .labelAs
+            .labelAs,
+            isStarred ? .unstar : .star
         ])
-
-        if includeStarring {
-            items.append(isStarred ? .unstar : .star)
-        }
 
         if shouldShowRenderModeOption {
             switch messageRenderStyle {
