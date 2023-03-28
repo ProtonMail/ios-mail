@@ -15,9 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-#if !APP_EXTENSION
-import LifetimeTracker
-#endif
 import ProtonCore_Services
 
 class ImageProxy {
@@ -43,10 +40,6 @@ class ImageProxy {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-
-        #if !APP_EXTENSION
-        trackLifetime()
-        #endif
     }
 
     func set(delegate: ImageProxyDelegate) {
@@ -252,11 +245,3 @@ extension ImageProxy {
         let apiService: APIService
     }
 }
-
-#if !APP_EXTENSION
-extension ImageProxy: LifetimeTrackable {
-    static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
-    }
-}
-#endif

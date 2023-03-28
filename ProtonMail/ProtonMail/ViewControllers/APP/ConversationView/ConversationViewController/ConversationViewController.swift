@@ -473,7 +473,6 @@ private extension ConversationViewController {
         self.selectedMessageID = message.messageID
         let viewModel = MessageViewActionSheetViewModel(title: message.title,
                                                         labelID: location.labelID,
-                                                        includeStarring: true,
                                                         isStarred: message.isStarred,
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
