@@ -63,14 +63,19 @@ final class PagesViewController<
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         switch viewModel.viewMode {
         case .singleMessage:
             initializeForSingleMessage()
         case .conversation:
             initializeForConversation()
         }
+
         view.backgroundColor = ColorProvider.BackgroundSecondary
+
         setUpTitleView()
+        emptyBackButtonTitleForNextView()
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(receiveSwipeExpectation(notification:)),
