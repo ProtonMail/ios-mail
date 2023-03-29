@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import protocol CoreData.NSFetchRequestResult
+import class CoreData.NSManagedObjectID
 import LifetimeTracker
 import ProtonCore_UIFoundations
 import UIKit
@@ -36,6 +37,8 @@ final class PagesViewController<
     private var services: ServiceFactory
     private var titleViewObserver: NSKeyValueObservation?
     private var spotlight: PagesSpotlightView?
+    // Message objectID or ContextLabel objectID
+    private var currentObjectID: ObjectID?
 
     typealias PageCacheType = (refIndex: Int, controller: UIViewController)
     /// Strong reference to VCs to prevent UIPagesViewController release sibling page too early
@@ -63,7 +66,7 @@ final class PagesViewController<
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        viewModel.uiDelegate = self
         switch viewModel.viewMode {
         case .singleMessage:
             initializeForSingleMessage()
@@ -74,6 +77,7 @@ final class PagesViewController<
         view.backgroundColor = ColorProvider.BackgroundSecondary
 
         setUpTitleView()
+        updateCurrentID()
         emptyBackButtonTitleForNextView()
 
         NotificationCenter.default.addObserver(
@@ -151,6 +155,7 @@ final class PagesViewController<
         transitionCompleted completed: Bool
     ) {
         setUpTitleView()
+        updateCurrentID()
     }
 
     // MARK: UIPageViewControllerDataSource
@@ -280,6 +285,18 @@ extension PagesViewController {
     }
 }
 
+extension PagesViewController: PagesViewUIProtocol {
+    func dissmiss() {
+        DispatchQueue.main.async {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    func getCurrentObjectID() -> ObjectID? {
+        currentObjectID
+    }
+}
+
 extension PagesViewController {
     private func setUpTitleView() {
         guard let currentVC = self.viewControllers?.first else {
@@ -294,6 +311,19 @@ extension PagesViewController {
         guard viewModel.viewMode == .conversation else { return }
         titleViewObserver = currentVC.observe(\.navigationItem.titleView, options: [.new]) { [weak self] currentVC, _ in
             self?.navigationItem.titleView = currentVC.navigationItem.titleView
+        }
+    }
+
+    private func updateCurrentID() {
+        guard let currentVC = self.viewControllers?.first else { return }
+        if let singleMessageVC = currentVC as? SingleMessageViewController {
+            currentObjectID = singleMessageVC.viewModel.message.objectID
+        } else if let conversationVC = currentVC as? ConversationViewController,
+                  let contextLabel = conversationVC.viewModel
+                      .conversation
+                      .contextLabelRelations
+                      .first(where: { $0.labelID == viewModel.labelID }) {
+            currentObjectID = contextLabel.objectID
         }
     }
 
