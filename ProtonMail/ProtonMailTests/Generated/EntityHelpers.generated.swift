@@ -84,6 +84,7 @@ extension ContextLabelEntity {
         labelID: LabelID = .init(rawValue: .init()),
         userID: UserID = .init(rawValue: .init()),
         order: Int = .init(),
+        objectID: ObjectID = .init(rawValue: .init()),
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ContextLabelEntity(
@@ -96,6 +97,7 @@ extension ContextLabelEntity {
             labelID: labelID,
             userID: userID,
             order: order,
+            objectID: objectID,
             isSoftDeleted: isSoftDeleted
         )
     }

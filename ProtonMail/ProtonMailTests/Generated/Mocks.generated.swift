@@ -434,6 +434,19 @@ class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
 
 }
 
+class MockPagesViewUIProtocol: PagesViewUIProtocol {
+    @FuncStub(MockPagesViewUIProtocol.dissmiss) var dissmissStub
+    func dissmiss() {
+        dissmissStub()
+    }
+
+    @FuncStub(MockPagesViewUIProtocol.getCurrentObjectID, initialReturn: nil) var getCurrentObjectIDStub
+    func getCurrentObjectID() -> ObjectID? {
+        getCurrentObjectIDStub()
+    }
+
+}
+
 class MockPaymentsUIProtocol: PaymentsUIProtocol {
     @FuncStub(MockPaymentsUIProtocol.showCurrentPlan) var showCurrentPlanStub
     func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping (PaymentsUIResultReason) -> Void) {
