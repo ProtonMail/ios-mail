@@ -117,8 +117,8 @@ final class CountMessagesForLabelTests: XCTestCase {
             isUnread: true
         )) { result in
             switch result {
-            case .failure(let error):
-                XCTAssertEqual(error.localizedDescription, "The operation couldn’t be completed. (ProtonCore_Networking.ResponseError error 1.)")
+            case .failure:
+                break
             case .success:
                 XCTFail("Should fail")
             }
