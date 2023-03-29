@@ -470,7 +470,7 @@ extension ComposeContainerViewController {
 
     @objc
     private func presentScheduleSendActionSheetIfDraftIsReady() {
-        editor.displayDraftNotValidAlertIfNeeded { [weak self] in
+        editor.displayDraftNotValidAlertIfNeeded(isTriggeredFromScheduleButton: true) { [weak self] in
             self?.showScheduleSendActionSheet()
         }
     }
