@@ -26,6 +26,10 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
+protocol ContactGroupEditDelegate: AnyObject {
+    func didDeleteGroup()
+}
+
 final class ContactGroupEditViewController: UIViewController, AccessibleView {
     enum ID {
         static var contactGroupEditCell = "ContactGroupEditCell"
@@ -45,6 +49,7 @@ final class ContactGroupEditViewController: UIViewController, AccessibleView {
     @IBOutlet var changeColorButton: UIButton!
     @IBOutlet var tableView: UITableView!
 
+    weak var delegate: ContactGroupEditDelegate?
     var viewModel: ContactGroupEditViewModel!
     var activeText: UIResponder?
 
@@ -278,6 +283,7 @@ extension ContactGroupEditViewController: UITableViewDelegate {
                             return self.viewModel.deleteContactGroup()
                     }.done {
                         self.dismiss(message: LocalString._contacts_deleted_offline_hint)
+                        self.delegate?.didDeleteGroup()
                     }.ensure {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         MBProgressHUD.hide(for: self.view, animated: true)
