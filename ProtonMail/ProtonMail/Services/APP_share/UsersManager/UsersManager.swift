@@ -398,12 +398,18 @@ extension UsersManager {
         return UserManager.cleanUpAll().ensure {
             try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
 
-            SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
-            SharedCacheBase.getDefault()?.remove(forKey: CoderKey.authKeychainStore)
-            KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
-            KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
-            KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
-            KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)
+            self.users.forEach { user in
+                user.userService.signOut()
+            }
+            self.users = []
+            self.save()
+
+            self.userDefaultCache.getShared().remove(forKey: CoderKey.usersInfo)
+            self.userDefaultCache.getShared().remove(forKey: CoderKey.authKeychainStore)
+            self.keychain.remove(forKey: CoderKey.keychainStore)
+            self.keychain.remove(forKey: CoderKey.authKeychainStore)
+            self.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
+            self.keychain.remove(forKey: CoderKey.disconnectedUsers)
 
             self.currentVersion = self.latestVersion
 
@@ -411,11 +417,6 @@ extension UsersManager {
 
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
-            self.users.forEach { user in
-                user.userService.signOut()
-            }
-            self.users = []
-            self.save()
 
             #if !APP_EXTENSION
             self.encryptedSearchCache.cleanGlobal()
