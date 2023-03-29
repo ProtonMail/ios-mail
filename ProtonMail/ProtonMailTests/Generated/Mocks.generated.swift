@@ -1,6 +1,7 @@
 // Generated using Sourcery 1.9.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import CoreData
+import ProtonCore_Environment
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
 import ProtonCore_Keymaker
@@ -16,6 +17,19 @@ class MockAppRatingManagerProtocol: AppRatingManagerProtocol {
     @FuncStub(MockAppRatingManagerProtocol.openAppStoreToReviewApp) var openAppStoreToReviewAppStub
     func openAppStoreToReviewApp() {
         openAppStoreToReviewAppStub()
+    }
+
+}
+
+class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
+    @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
+    func readEnvironment() -> Environment? {
+        readEnvironmentStub()
+    }
+
+    @FuncStub(MockBackendConfigurationCacheProtocol.write) var writeStub
+    func write(environment: Environment) {
+        writeStub(environment)
     }
 
 }

@@ -62,7 +62,6 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockApiService = nil
         mockDoh = nil
         stubBioStatus = nil
-        mockDoh = nil
         settingsDeviceCoordinatorMock = nil
     }
 
