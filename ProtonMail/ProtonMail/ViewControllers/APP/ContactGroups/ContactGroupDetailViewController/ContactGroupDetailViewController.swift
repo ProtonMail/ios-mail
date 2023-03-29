@@ -130,6 +130,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
                                                       color: viewModel.color,
                                                       emailIDs: Set(viewModel.emails))
         let newView = ContactGroupEditViewController(viewModel: viewModel)
+        newView.delegate = self
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true, completion: nil)
     }
@@ -239,4 +240,10 @@ extension ContactGroupDetailViewController: UndoActionHandlerBase {
     }
 
     func showUndoAction(undoTokens: [String], title: String) { }
+}
+
+extension ContactGroupDetailViewController: ContactGroupEditDelegate {
+    func didDeleteGroup() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }
