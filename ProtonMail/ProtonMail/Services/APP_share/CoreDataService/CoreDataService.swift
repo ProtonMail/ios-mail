@@ -144,15 +144,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return nil
     }
 
-    func enqueue(context: NSManagedObjectContext,
-                 block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        self.serialQueue.addOperation {
-            context.performAndWait {
-                block(context)
-            }
-        }
-    }
-
     /// Executes the block synchronously and immediately - without a serial queue.
     func read<T>(block: (NSManagedObjectContext) -> T) -> T {
         let hasBeenCalledFromTheWriteMethod = OperationQueue.current == serialQueue

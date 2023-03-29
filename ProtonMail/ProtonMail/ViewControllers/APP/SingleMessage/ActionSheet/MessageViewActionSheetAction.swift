@@ -240,18 +240,6 @@ extension MessageViewActionSheetAction {
         ]
     }
 
-    static func allActionsOfConversationView() -> [Self] {
-        return [
-            .markUnread,
-            .star,
-            .labelAs,
-            .trash,
-            .archive,
-            .spam,
-            .moveTo
-        ]
-    }
-
     static func allActionsOfMessageView() -> [Self] {
         return [
             .replyOrReplyAll,
@@ -413,17 +401,6 @@ extension Array where Element == MessageViewActionSheetAction {
         } else {
             newActions = newActions.replaceDeleteActionWithTrashAction()
         }
-        return newActions
-    }
-
-    func addReplyAndReplyAllActionIfNotExist() -> Self {
-        guard !self.contains(.replyOrReplyAllInConversation) else {
-            return self
-        }
-        var newActions = self
-        newActions.insert(.replyOrReplyAllInConversation, at: 0)
-        let removeTargets: Self = [.reply, .replyAll, .replyInConversation, .replyOrReplyAll]
-        newActions.removeAll(where: { removeTargets.contains($0) })
         return newActions
     }
 
