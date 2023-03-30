@@ -76,13 +76,28 @@ final class BlockedSendersViewController: ProtonMailTableViewController {
         commit editingStyle: UITableViewCell.EditingStyle,
         forRowAt indexPath: IndexPath
     ) {
-        let alert = UIAlertController(
-            title: "Delete support will be added in another task",
-            message: "https://jira.protontech.ch/browse/MAILIOS-3195",
-            preferredStyle: .alert
-        )
-        alert.addOKAction()
-        present(alert, animated: true)
+        switch editingStyle {
+        case .delete:
+            let model = viewModel.output.modelForCell(at: indexPath)
+
+            do {
+                try viewModel.input.deleteRow(at: indexPath)
+
+                showBanner(
+                    message: String(format: L11n.BlockSender.successfulUnblockConfirmation, model.title),
+                    style: .info
+                )
+            } catch {
+                showBanner(message: "\(error)", style: .error)
+            }
+        default:
+            assertionFailure("Unsupported editing style: \(editingStyle)")
+        }
+    }
+
+    private func showBanner(message: String, style: PMBannerNewStyle) {
+        let banner = PMBanner(message: message, style: style, bannerHandler: PMBanner.dismiss)
+        banner.show(at: .bottom, on: self)
     }
 
     @objc

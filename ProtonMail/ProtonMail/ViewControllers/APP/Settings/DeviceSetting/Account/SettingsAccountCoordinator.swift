@@ -121,10 +121,21 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openBlockList() {
+        let incomingDefaultService = user.incomingDefaultService
+
+        let unblockSender = UnblockSender(
+            dependencies: .init(
+                incomingDefaultService: incomingDefaultService,
+                queueManager: sharedServices.get(by: QueueManager.self),
+                userInfo: user.userInfo
+            )
+        )
+
         let viewModel = BlockedSendersViewModel(
             dependencies: .init(
                 cacheUpdater: user.blockedSenderCacheUpdater,
-                incomingDefaultService: user.incomingDefaultService
+                incomingDefaultService: incomingDefaultService,
+                unblockSender: unblockSender
             )
         )
         let viewController = BlockedSendersViewController(viewModel: viewModel)
