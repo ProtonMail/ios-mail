@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct IncomingDefaultEntity {
+struct IncomingDefaultEntity: Equatable {
     let email: String
     let id: String?
     let location: Message.Location

@@ -425,9 +425,19 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
         performRemoteUpdateStub(emailAddress, newLocation, completion)
     }
 
-    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.delete) var deleteStub
-    func delete(query: IncomingDefaultService.Query) throws {
-        try deleteStub(query)
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.softDelete) var softDeleteStub
+    func softDelete(query: IncomingDefaultService.Query) throws {
+        try softDeleteStub(query)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.hardDelete) var hardDeleteStub
+    func hardDelete(query: IncomingDefaultService.Query) throws {
+        try hardDeleteStub(query)
+    }
+
+    @FuncStub(MockIncomingDefaultServiceProtocol.performRemoteDeletion) var performRemoteDeletionStub
+    func performRemoteDeletion(emailAddress: String, completion: @escaping (Error?) -> Void) {
+        performRemoteDeletionStub(emailAddress, completion)
     }
 
 }

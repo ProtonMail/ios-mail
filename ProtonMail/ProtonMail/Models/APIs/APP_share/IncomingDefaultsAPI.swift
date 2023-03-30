@@ -119,3 +119,24 @@ struct AddIncomingDefaultsResponse: APIDecodableResponse {
     let incomingDefault: IncomingDefaultDTO
     let undoToken: UndoTokenData
 }
+
+struct DeleteIncomingDefaultsRequest: Request {
+    let parameters: [String: Any]?
+
+    var method: HTTPMethod {
+        .put
+    }
+
+    var path: String {
+        "\(IncomingDefaultsAPI.path)/delete"
+    }
+
+    init(ids: [String]) {
+        parameters = [
+            "IDs": ids
+        ]
+    }
+}
+
+struct DeleteIncomingDefaultsResponse: APIDecodableResponse {
+}

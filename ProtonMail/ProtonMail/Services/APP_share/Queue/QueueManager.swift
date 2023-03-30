@@ -115,7 +115,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
                  .updateLabel, .createLabel, .deleteLabel,
                  .updateContact, .deleteContact, .addContact,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
-                 .notificationAction, .blockSender:
+                 .notificationAction, .blockSender, .unblockSender:
                 _ = self.miscQueue.add(task.uuid, object: task)
             case .signout:
                 self.handleSignout(signoutTask: task)

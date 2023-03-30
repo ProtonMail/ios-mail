@@ -117,7 +117,6 @@ final class IncomingDefaultServiceTests: XCTestCase {
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
     }
 
-
     func testSave_doesNotOverwriteExistingNewerIncomingDefaultsForTheSameEmail() throws {
         storeStubbedObject(id: "Old ID", time: .distantFuture)
 
@@ -148,11 +147,10 @@ final class IncomingDefaultServiceTests: XCTestCase {
         XCTAssertEqual(idsOfStoredIncomingDefaults, ["New ID"])
     }
 
-
-    func testDelete_removesExistingIncomingDefaults() throws {
+    func testHardDelete_removesExistingIncomingDefaults() throws {
         let incomingDefaultID = "the ID"
         storeStubbedObject(id: incomingDefaultID, time: .distantFuture)
-        try sut.delete(query: .id(incomingDefaultID))
+        try sut.hardDelete(query: .id(incomingDefaultID))
 
         XCTAssertEqual(try listStoredObjects().count, 0)
     }
@@ -183,15 +181,12 @@ final class IncomingDefaultServiceTests: XCTestCase {
         XCTAssertNil(updated.id)
     }
 
-
     func testPerformRemoteUpdate_performsAPIRequestAndUpdatesLocalDataIfItExists() async throws {
-        let id = String.randomString(16)
-
-        storeStubbedObject(id: id, time: .distantPast)
+        storeStubbedObject(id: nil, time: .distantPast)
 
         let stubbedResponse = AddIncomingDefaultsResponse(
             code: 0,
-            incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture),
+            incomingDefault: .init(email: emailAddress, id: "New ID", location: .blocked, time: .distantFuture),
             undoToken: UndoTokenData(token: "", tokenValidTime: 0)
         )
         apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
@@ -203,7 +198,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
         XCTAssertEqual(apiService.requestDecodableStub.callCounter, 1)
 
         let updated = try XCTUnwrap(listStoredObjects().first)
-        XCTAssertEqual(updated.id, id)
+        XCTAssertEqual(updated.id, "New ID")
         XCTAssertEqual(updated.email, emailAddress)
         XCTAssertEqual(updated.location, .blocked)
         XCTAssertEqual(updated.time.timeIntervalSince1970, Date.distantFuture.timeIntervalSince1970, accuracy: 1.0)
@@ -225,6 +220,70 @@ final class IncomingDefaultServiceTests: XCTestCase {
 
         XCTAssertEqual(apiService.requestDecodableStub.callCounter, 1)
         XCTAssertEqual(try listStoredObjects().count, 0)
+    }
+
+    // MARK: deletion
+
+    func testSoftDelete_doesntActuallyRemoveObjects() throws {
+        let id = String.randomString(16)
+
+        storeStubbedObject(id: id, time: .distantPast)
+
+        try sut.softDelete(query: .id(id))
+
+        let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.Attribute.entityName)
+
+        let existsAndIsSoftDeleted = try contextProvider.read { context in
+            guard let incomingDefault = try context.fetch(fetchRequest).first else {
+                return false
+            }
+
+            return incomingDefault.isSoftDeleted
+        }
+
+        XCTAssert(existsAndIsSoftDeleted)
+    }
+
+    func testSoftDelete_preventsListLocalFromReturningObjects() throws {
+        let id = String.randomString(16)
+
+        storeStubbedObject(id: id, time: .distantPast)
+
+        XCTAssertNotEqual(try sut.listLocal(query: .location(location)), [])
+
+        try sut.softDelete(query: .id(id))
+
+        XCTAssertEqual(try sut.listLocal(query: .location(location)), [])
+    }
+
+    func testPerformRemoteDeletion_sendsIdsOfMatchingObjectsIncludingSoftDeleted() async throws {
+        let id = String.randomString(16)
+
+        storeStubbedObject(id: id, time: .distantPast)
+
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(DeleteIncomingDefaultsResponse()))
+        }
+
+        try await sut.performRemoteDeletion(emailAddress: emailAddress)
+
+        XCTAssertEqual(apiService.requestDecodableStub.callCounter, 1)
+        let deletionCall = try XCTUnwrap(apiService.requestDecodableStub.lastArguments)
+        let parameters = try XCTUnwrap(deletionCall.a3 as? [String: Any])
+        let deletedIDs = try XCTUnwrap(parameters["IDs"] as? [String])
+        XCTAssertEqual(deletedIDs, [id])
+    }
+
+    func testPerformRemoteDeletion_doesntHardDeleteObjects() async throws {
+        storeStubbedObject(id: nil, time: .distantPast)
+
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(DeleteIncomingDefaultsResponse()))
+        }
+
+        try await sut.performRemoteDeletion(emailAddress: emailAddress)
+
+        XCTAssertNotEqual(try listStoredObjects(), [])
     }
 
     private func storeStubbedObject(id: String?, time: Date) {
@@ -264,6 +323,18 @@ private extension IncomingDefaultService {
     func performRemoteUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             self.performRemoteUpdate(emailAddress: emailAddress, newLocation: newLocation) { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+
+    func performRemoteDeletion(emailAddress: String) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            self.performRemoteDeletion(emailAddress: emailAddress) { error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {

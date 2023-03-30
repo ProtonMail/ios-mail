@@ -32,6 +32,7 @@ extension MessageAction: Codable {
         case deleteContactGroup
         case notificationAction
         case blockSender
+        case unblockSender
     }
 
     var rawValue: String {
@@ -94,6 +95,8 @@ extension MessageAction: Codable {
             return "notificationAction"
         case .blockSender:
             return "blockSender"
+        case .unblockSender:
+            return "unblockSender"
         }
     }
 
@@ -273,6 +276,11 @@ extension MessageAction: Codable {
             self = .blockSender(
                 emailAddress: try nestedContainer.decode(String.self, forKey: .emailAddress)
             )
+        case .unblockSender:
+            let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unblockSender)
+            self = .unblockSender(
+                emailAddress: try nestedContainer.decode(String.self, forKey: .emailAddress)
+            )
         }
     }
 
@@ -394,6 +402,9 @@ extension MessageAction: Codable {
             try nestedContainer.encode(action, forKey: .action)
         case let .blockSender(emailAddress):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .blockSender)
+            try nestedContainer.encode(emailAddress, forKey: .emailAddress)
+        case let .unblockSender(emailAddress):
+            var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unblockSender)
             try nestedContainer.encode(emailAddress, forKey: .emailAddress)
         }
     }

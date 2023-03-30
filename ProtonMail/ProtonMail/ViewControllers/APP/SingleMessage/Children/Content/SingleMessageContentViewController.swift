@@ -438,7 +438,7 @@ class SingleMessageContentViewController: UIViewController {
         ) { [weak self] _ in
             guard let self = self else { return }
 
-            if self.viewModel.blockSender() {
+            if self.viewModel.updateSenderBlockedStatus(blocked: true) {
                 let banner = PMBanner(
                     message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail),
                     style: PMBannerNewStyle.info,
@@ -564,6 +564,22 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
 
     func reloadImagesWithoutProtection() {
         viewModel.messageInfoProvider.reloadImagesWithoutProtection()
+    }
+
+    func unblockSender() {
+        guard viewModel.updateSenderBlockedStatus(blocked: false) else {
+            return
+        }
+
+        let banner = PMBanner(
+            message: String(
+                format: L11n.BlockSender.successfulUnblockConfirmation,
+                viewModel.messageInfoProvider.senderEmail
+            ),
+            style: PMBannerNewStyle.info,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: .bottom, on: self)
     }
 }
 

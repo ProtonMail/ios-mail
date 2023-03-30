@@ -111,4 +111,5 @@ enum MessageAction: Equatable {
     case notificationAction(messageID: String, action: PushNotificationAction)
 
     case blockSender(emailAddress: String)
+    case unblockSender(emailAddress: String)
 }

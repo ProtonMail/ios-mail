@@ -130,12 +130,21 @@ class SingleMessageComponentsFactory {
             )
         )
 
+        let unblockSender = UnblockSender(
+            dependencies: .init(
+                incomingDefaultService: incomingDefaultService,
+                queueManager: queueManager,
+                userInfo: user.userInfo
+            )
+        )
+
         return .init(
             blockSender: blockSender,
             blockedSenderCacheUpdater: user.blockedSenderCacheUpdater,
             fetchMessageDetail: fetchMessageDetail,
             incomingDefaultService: incomingDefaultService,
-            senderImageStatusProvider: senderImageStatusProvider
+            senderImageStatusProvider: senderImageStatusProvider,
+            unblockSender: unblockSender
         )
     }
 
