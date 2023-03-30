@@ -31,7 +31,9 @@ protocol IncomingDefaultServiceProtocol {
         newLocation: IncomingDefaultsAPI.Location,
         completion: @escaping (Error?) -> Void
     )
-    func delete(query: IncomingDefaultService.Query) throws
+    func softDelete(query: IncomingDefaultService.Query) throws
+    func hardDelete(query: IncomingDefaultService.Query) throws
+    func performRemoteDeletion(emailAddress: String, completion: @escaping (Error?) -> Void)
 }
 
 final class IncomingDefaultService {
@@ -91,9 +93,15 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
                      - incoming defaults are being refetched
                      - the user has unblocked the sender in the mean time
                      In both cases, we shouldn't attempt to recreate it here.
+
+                     If it exists, though, we need to ensure that it has an ID.
+                     Otherwise, if there's a deletion call in the queue, it will fail (that's why we're including soft deleted objects).
+                     This can happen if the user blocks, then unblocks the same address while offline.
+
+                     And since we're updating the ID, it's only proper to update everything else, to maintain consistency.
                      */
 
-                    if try !self.find(query: .email(emailAddress), in: context, includeSoftDeleted: false).isEmpty {
+                    if try !self.find(query: .email(emailAddress), in: context, includeSoftDeleted: true).isEmpty {
                         try self.save(dto: response.incomingDefault, in: context)
                     }
                 }
@@ -105,9 +113,46 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
         }
     }
 
-    func delete(query: Query) throws {
+    func softDelete(query: Query) throws {
+        try writeToDatabase { context in
+            let incomingDefaults = try self.find(query: query, in: context, includeSoftDeleted: false)
+
+            for incomingDefault in incomingDefaults {
+                incomingDefault.isSoftDeleted = true
+            }
+        }
+    }
+
+    func hardDelete(query: Query) throws {
         try writeToDatabase { context in
             try self.find(query: query, in: context, includeSoftDeleted: true).forEach(context.delete)
+        }
+    }
+
+    func performRemoteDeletion(emailAddress: String, completion: @escaping (Error?) -> Void) {
+        let idsOfAllResourcesMatchingEmailAddress: [String]
+
+        do {
+            idsOfAllResourcesMatchingEmailAddress = try dependencies.contextProvider.read { context in
+                try find(query: .email(emailAddress), in: context, includeSoftDeleted: true).compactMap(\.id)
+            }
+        } catch {
+            completion(error)
+            return
+        }
+
+        guard !idsOfAllResourcesMatchingEmailAddress.isEmpty else {
+            completion(nil)
+            return
+        }
+
+        let request = DeleteIncomingDefaultsRequest(ids: idsOfAllResourcesMatchingEmailAddress)
+
+        dependencies.apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .immediateExecutor
+        ) { (_, result: Result<DeleteIncomingDefaultsResponse, ResponseError>) in
+            completion(result.error)
         }
     }
 }
@@ -264,7 +309,7 @@ extension IncomingDefaultService {
         let userInfo: UserInfo
     }
 
-    enum Query {
+    enum Query: Equatable {
         case email(String)
         case id(String)
         case location(IncomingDefaultsAPI.Location)

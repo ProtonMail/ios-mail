@@ -233,17 +233,24 @@ class SingleMessageContentViewModel {
         }
     }
 
-    /// - returns: true if action was successful
-    func blockSender() -> Bool {
+    /// - param blocked: whether to block or unblock the sender
+    /// - returns: true if action was successful (errors are handled by the view model)
+    func updateSenderBlockedStatus(blocked: Bool) -> Bool {
         let senderEmail = messageInfoProvider.senderEmail
-        let parameters = BlockSender.Parameters(emailAddress: senderEmail)
 
         defer {
             updateBannerStatus()
         }
 
         do {
-            try dependencies.blockSender.execute(parameters: parameters)
+            if blocked {
+                let parameters = BlockSender.Parameters(emailAddress: senderEmail)
+                try dependencies.blockSender.execute(parameters: parameters)
+            } else {
+                let parameters = UnblockSender.Parameters(emailAddress: senderEmail)
+                try dependencies.unblockSender.execute(parameters: parameters)
+            }
+
             updateErrorBanner?(nil)
             return true
         } catch {
@@ -411,5 +418,6 @@ extension SingleMessageContentViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let incomingDefaultService: IncomingDefaultService
         let senderImageStatusProvider: SenderImageStatusProvider
+        let unblockSender: UnblockSender
     }
 }

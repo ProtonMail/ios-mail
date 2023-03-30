@@ -84,7 +84,7 @@ final class MainQueueHandler: QueueHandler {
                  .fetchMessageDetail, .updateAttKeyPacket,
                  .updateContact, .deleteContact, .addContact,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
-                 .blockSender:
+                 .blockSender, .unblockSender:
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
@@ -197,6 +197,8 @@ final class MainQueueHandler: QueueHandler {
                 notificationAction(messageId: messageID, action: action, completion: completeHandler)
             case .blockSender(let emailAddress):
                 blockSender(emailAddress: emailAddress, completion: completeHandler)
+            case .unblockSender(let emailAddress):
+                unblockSender(emailAddress: emailAddress, completion: completeHandler)
             }
         }
     }
@@ -1033,6 +1035,7 @@ extension MainQueueHandler {
 }
 
 // MARK: block sender
+
 extension MainQueueHandler {
     private func blockSender(emailAddress: String, completion: @escaping Completion) {
         dependencies.incomingDefaultService.performRemoteUpdate(
@@ -1040,6 +1043,10 @@ extension MainQueueHandler {
             newLocation: .blocked,
             completion: completion
         )
+    }
+
+    private func unblockSender(emailAddress: String, completion: @escaping Completion) {
+        dependencies.incomingDefaultService.performRemoteDeletion(emailAddress: emailAddress, completion: completion)
     }
 }
 

@@ -27,6 +27,7 @@ protocol BannerViewControllerDelegate: AnyObject {
     func loadRemoteContent()
     func loadEmbeddedImage()
     func reloadImagesWithoutProtection()
+    func unblockSender()
     func handleMessageExpired()
     func hideBannerController()
     func showBannerController()
@@ -219,12 +220,14 @@ final class BannerViewController: UIViewController {
     }
 
     private func showSenderIsBlockedBanner() {
-        let banner = CompactBannerView(
-            appearance: .normal,
-            title: L11n.BlockSender.senderIsBlockedBanner,
+        let banner = BannerWithButton(
             icon: IconProvider.exclamationCircleFilled,
-            action: nil
-        )
+            content: L11n.BlockSender.senderIsBlockedBanner,
+            buttonTitle: L11n.BlockSender.unblockActionTitleShort,
+            iconColor: ColorProvider.IconNorm
+        ) { [weak self] in
+            self?.unblockSender()
+        }
         addBannerView(type: .senderIsBlocked, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -436,6 +439,11 @@ extension BannerViewController {
     private func reloadImagesWithoutProtection() {
         delegate?.reloadImagesWithoutProtection()
         self.hideBanner(type: .imageProxyFailure)
+    }
+
+    private func unblockSender() {
+        delegate?.unblockSender()
+        hideBanner(type: .senderIsBlocked)
     }
 }
 

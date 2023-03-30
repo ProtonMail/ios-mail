@@ -15,31 +15,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-// sourcery: mock
-protocol RefetchAllBlockedSendersUseCase {
-    func execute(completion: @escaping (Error?) -> Void)
-}
+import ProtonCore_DataModel
 
-final class RefetchAllBlockedSenders: RefetchAllBlockedSendersUseCase {
+final class UnblockSender {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func execute(completion: @escaping (Error?) -> Void) {
-        do {
-            try dependencies.incomingDefaultService.hardDelete(query: .location(.blocked))
+    func execute(parameters: Parameters) throws {
+        let emailAddress = parameters.emailAddress
 
-            dependencies.incomingDefaultService.fetchAll(location: .blocked, completion: completion)
-        } catch {
-            completion(error)
-        }
+        try dependencies.incomingDefaultService.softDelete(query: .email(parameters.emailAddress))
+
+        let task = QueueManager.Task(
+            messageID: "",
+            action: .unblockSender(emailAddress: emailAddress),
+            userID: UserID(dependencies.userInfo.userId),
+            dependencyIDs: [],
+            isConversation: false
+        )
+        _ = dependencies.queueManager.addTask(task, autoExecute: true)
     }
 }
 
-extension RefetchAllBlockedSenders {
+extension UnblockSender {
     struct Dependencies {
         let incomingDefaultService: IncomingDefaultServiceProtocol
+        let queueManager: QueueManagerProtocol
+        let userInfo: UserInfo
+    }
+
+    struct Parameters {
+        let emailAddress: String
     }
 }
