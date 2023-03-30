@@ -21,7 +21,7 @@ import LifetimeTracker
 
 // sourcery: mock
 protocol PagesViewUIProtocol: AnyObject {
-    func dissmiss()
+    func dismiss()
     func getCurrentObjectID() -> ObjectID?
     func handlePageViewNavigationDirection(action: PagesSwipeAction, shouldReload: Bool)
 }
@@ -200,7 +200,7 @@ extension MessagePagesViewModel: NSFetchedResultsControllerDelegate {
             if deletedMessage.objectID == idHasBeenMoved?.rawValue {
                 idHasBeenMoved = nil
             } else {
-                uiDelegate?.dissmiss()
+                uiDelegate?.dismiss()
             }
         default:
             break
@@ -261,7 +261,7 @@ extension ConversationPagesViewModel: NSFetchedResultsControllerDelegate {
             if contextLabel.objectID == idHasBeenMoved?.rawValue {
                 idHasBeenMoved = nil
             } else {
-                uiDelegate?.dissmiss()
+                uiDelegate?.dismiss()
             }
         default:
             break

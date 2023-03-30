@@ -154,7 +154,7 @@ final class PagesViewModelTests: XCTestCase {
 
         let expectation1 = expectation(description: "Pop up function is called")
         expectation1.isInverted = true
-        mockPagesVMUIDelegate.dissmissStub.bodyIs { _ in
+        mockPagesVMUIDelegate.dismissStub.bodyIs { _ in
             expectation1.fulfill()
         }
 
@@ -216,7 +216,7 @@ final class PagesViewModelTests: XCTestCase {
 
         let expectation1 = expectation(description: "Pop up function is called")
         expectation1.isInverted = true
-        mockPagesVMUIDelegate.dissmissStub.bodyIs { _ in
+        mockPagesVMUIDelegate.dismissStub.bodyIs { _ in
             expectation1.fulfill()
         }
 

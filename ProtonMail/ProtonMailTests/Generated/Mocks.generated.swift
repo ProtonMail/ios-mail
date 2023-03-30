@@ -435,9 +435,9 @@ class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
 }
 
 class MockPagesViewUIProtocol: PagesViewUIProtocol {
-    @FuncStub(MockPagesViewUIProtocol.dissmiss) var dissmissStub
-    func dissmiss() {
-        dissmissStub()
+    @FuncStub(MockPagesViewUIProtocol.dismiss) var dismissStub
+    func dismiss() {
+        dismissStub()
     }
 
     @FuncStub(MockPagesViewUIProtocol.getCurrentObjectID, initialReturn: nil) var getCurrentObjectIDStub
