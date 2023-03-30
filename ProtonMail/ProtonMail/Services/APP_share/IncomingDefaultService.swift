@@ -54,51 +54,21 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
     }
 
     func save(dto: IncomingDefaultDTO) throws {
-        var result: Result<Void, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
-                try self.save(dto: dto, in: context)
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-
-                result = .success(())
-            } catch {
-                result = .failure(error)
-            }
+        try writeToDatabase { context in
+            try self.save(dto: dto, in: context)
         }
-
-        try result.get()
     }
 
     func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws {
-        var result: Result<Void, Error>!
+        try writeToDatabase { context in
+            try self.find(query: .email(emailAddress), in: context, includeSoftDeleted: false).forEach(context.delete)
 
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
-                try self
-                    .find(query: .email(emailAddress), in: context, includeSoftDeleted: false)
-                    .forEach(context.delete)
-
-                let incomingDefault = IncomingDefault(context: context)
-                incomingDefault.email = emailAddress
-                incomingDefault.location = "\(newLocation.rawValue)"
-                incomingDefault.time = LocaleEnvironment.currentDate()
-                incomingDefault.userID = self.dependencies.userInfo.userId
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-
-                result = .success(())
-            } catch {
-                result = .failure(error)
-            }
+            let incomingDefault = IncomingDefault(context: context)
+            incomingDefault.email = emailAddress
+            incomingDefault.location = "\(newLocation.rawValue)"
+            incomingDefault.time = LocaleEnvironment.currentDate()
+            incomingDefault.userID = self.dependencies.userInfo.userId
         }
-
-        try result.get()
     }
 
     func performRemoteUpdate(
@@ -115,32 +85,20 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
             do {
                 let response = try result.get()
 
-                var savingResult: Result<Void, Error>!
+                try self.writeToDatabase { context in
+                    /*
+                     If the local object doesn't exist when this request finished processing, it can mean either of two things:
+                     - incoming defaults are being refetched
+                     - the user has unblocked the sender in the mean time
+                     In both cases, we shouldn't attempt to recreate it here.
+                     */
 
-                self.dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-                    do {
-                        /*
-                         If the local object doesn't exist when this request finished processing, it can mean either of two things:
-                         - incoming defaults are being refetched
-                         - the user has unblocked the sender in the mean time
-                         In both cases, we shouldn't attempt to recreate it here.
-                         */
-
-                        if try !self.find(query: .email(emailAddress), in: context, includeSoftDeleted: false).isEmpty {
-                            try self.save(dto: response.incomingDefault, in: context)
-                        }
-
-                        if let error = context.saveUpstreamIfNeeded() {
-                            throw error
-                        }
-
-                        savingResult = .success(())
-                    } catch {
-                        savingResult = .failure(error)
+                    if try !self.find(query: .email(emailAddress), in: context, includeSoftDeleted: false).isEmpty {
+                        try self.save(dto: response.incomingDefault, in: context)
                     }
                 }
 
-                completion(savingResult.error)
+                completion(nil)
             } catch {
                 completion(error)
             }
@@ -148,11 +106,21 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
     }
 
     func delete(query: Query) throws {
+        try writeToDatabase { context in
+            try self.find(query: query, in: context, includeSoftDeleted: true).forEach(context.delete)
+        }
+    }
+}
+
+// MARK: internals
+
+extension IncomingDefaultService {
+    private func writeToDatabase(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
         var result: Result<Void, Error>!
 
         dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             do {
-                try self.find(query: query, in: context, includeSoftDeleted: true).forEach(context.delete)
+                try block(context)
 
                 if let error = context.saveUpstreamIfNeeded() {
                     throw error
@@ -166,11 +134,7 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
 
         try result.get()
     }
-}
 
-// MARK: internals
-
-extension IncomingDefaultService {
     private func fetchAndStoreRecursively(
         location: IncomingDefaultsAPI.Location,
         currentPage: Int,
@@ -195,24 +159,10 @@ extension IncomingDefaultService {
                     return
                 }
 
-                var savingError: Error!
-
-                self.dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+                try self.writeToDatabase { context in
                     for dto in response.incomingDefaults {
-                        do {
-                            try self.save(dto: dto, in: context)
-
-                            if let error = context.saveUpstreamIfNeeded() {
-                                throw error
-                            }
-                        } catch {
-                            savingError = error
-                        }
+                        try self.save(dto: dto, in: context)
                     }
-                }
-
-                if let error = savingError {
-                    throw error
                 }
 
                 let updatedFetchedCount = fetchedCount + response.incomingDefaults.count
@@ -247,9 +197,12 @@ extension IncomingDefaultService {
         )
 
         var subpredicates: [NSPredicate] = [
-            query.predicate,
             userIDPredicate
         ]
+
+        if let queryPredicate = query.predicate {
+            subpredicates.append(queryPredicate)
+        }
 
         if !includeSoftDeleted {
             let noSoftDeletedPredicate = NSPredicate(
@@ -316,10 +269,10 @@ extension IncomingDefaultService {
         case id(String)
         case location(IncomingDefaultsAPI.Location)
 
-        var predicate: NSPredicate {
+        var predicate: NSPredicate? {
             switch self {
             case .email:
-                return NSPredicate(value: true)
+                return nil
             case .id(let id):
                 return NSPredicate(
                     format: "%K == %@",
