@@ -23,6 +23,7 @@ import LifetimeTracker
 protocol PagesViewUIProtocol: AnyObject {
     func dissmiss()
     func getCurrentObjectID() -> ObjectID?
+    func handlePageViewNavigationDirection(action: PagesSwipeAction, shouldReload: Bool)
 }
 
 class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>: NSObject, LifetimeTrackable {
@@ -47,6 +48,8 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
     private let userIntroduction: UserIntroductionProgressProvider
     weak var uiDelegate: PagesViewUIProtocol?
+    /// ID is moved to other locations by action `Move to`, `Archive` ... etc
+    fileprivate var idHasBeenMoved: ObjectID?
 
     init(
         viewMode: ViewMode,
@@ -57,6 +60,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+        notificationCenter: NotificationCenter = NotificationCenter.default,
         goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         self.goToDraft = goToDraft
@@ -74,6 +78,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         do {
             try fetchedResultsController?.performFetch()
         } catch { }
+        observeSwipeExpectation()
         trackLifetime()
     }
 
@@ -86,6 +91,15 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
             isAscending: isAscending
         ) as? NSFetchedResultsController<FetchResultType>
         return fetchedResultsController
+    }
+
+    func observeSwipeExpectation() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receiveSwipeExpectation(notification:)),
+            name: .pagesSwipeExpectation,
+            object: nil
+        )
     }
 
     /// - Parameters:
@@ -122,6 +136,16 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
 
     func refetchData() {
         try? fetchedResultsController?.performFetch()
+    }
+
+    // MARK: - page swipe notification
+    @objc
+    func receiveSwipeExpectation(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let expectation = userInfo["expectation"] as? PagesSwipeAction else { return }
+        let shouldReload = userInfo["reload"] as? Bool
+        idHasBeenMoved = uiDelegate?.getCurrentObjectID()
+        uiDelegate?.handlePageViewNavigationDirection(action: expectation, shouldReload: shouldReload ?? false)
     }
 }
 
@@ -173,7 +197,11 @@ extension MessagePagesViewModel: NSFetchedResultsControllerDelegate {
                 let currentID = uiDelegate?.getCurrentObjectID(),
                 deletedMessage.objectID == currentID.rawValue
             else { return }
-            uiDelegate?.dissmiss()
+            if deletedMessage.objectID == idHasBeenMoved?.rawValue {
+                idHasBeenMoved = nil
+            } else {
+                uiDelegate?.dissmiss()
+            }
         default:
             break
         }
@@ -230,7 +258,11 @@ extension ConversationPagesViewModel: NSFetchedResultsControllerDelegate {
                 let currentID = uiDelegate?.getCurrentObjectID(),
                 contextLabel.objectID == currentID.rawValue
             else { return }
-            uiDelegate?.dissmiss()
+            if contextLabel.objectID == idHasBeenMoved?.rawValue {
+                idHasBeenMoved = nil
+            } else {
+                uiDelegate?.dissmiss()
+            }
         default:
             break
         }

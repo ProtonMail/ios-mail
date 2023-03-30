@@ -445,6 +445,11 @@ class MockPagesViewUIProtocol: PagesViewUIProtocol {
         getCurrentObjectIDStub()
     }
 
+    @FuncStub(MockPagesViewUIProtocol.handlePageViewNavigationDirection) var handlePageViewNavigationDirectionStub
+    func handlePageViewNavigationDirection(action: PagesSwipeAction, shouldReload: Bool) {
+        handlePageViewNavigationDirectionStub(action, shouldReload)
+    }
+
 }
 
 class MockPaymentsUIProtocol: PaymentsUIProtocol {
