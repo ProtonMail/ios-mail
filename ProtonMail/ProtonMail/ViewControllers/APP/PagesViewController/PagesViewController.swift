@@ -152,6 +152,8 @@ extension PagesViewController {
     private func initializeForSingleMessage() {
         guard let (message, refIndex) = viewModel.item(for: viewModel.initialID, offset: 0) as? (MessageEntity, Int),
               let singleMessageVC = singleMessageVC(for: message, refIndex: refIndex) else {
+            assertionFailure("Shouldn't fail")
+            dismiss()
             return
         }
         setViewControllers([singleMessageVC], direction: .forward, animated: false)
@@ -198,6 +200,8 @@ extension PagesViewController {
                 .item(for: viewModel.initialID, offset: 0) as? (ConversationEntity, Int),
             let conversationVC = conversationVC(for: conversation, refIndex: refIndex, targetMessageID: targetID)
         else {
+            assertionFailure("Shouldn't fail")
+            dismiss()
             return
         }
         setViewControllers([conversationVC], direction: .forward, animated: false)
@@ -239,7 +243,7 @@ extension PagesViewController {
 }
 
 extension PagesViewController: PagesViewUIProtocol {
-    func dissmiss() {
+    func dismiss() {
         DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
         }
