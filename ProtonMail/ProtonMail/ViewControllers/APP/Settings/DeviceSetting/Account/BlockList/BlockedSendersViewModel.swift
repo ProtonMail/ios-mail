@@ -31,10 +31,6 @@ final class BlockedSendersViewModel: NSObject {
 
     private(set) var state: State = .fetchInProgress {
         didSet {
-            guard state != oldValue else {
-                return
-            }
-
             uiDelegate?.refreshView(state: state)
         }
     }
@@ -52,27 +48,43 @@ final class BlockedSendersViewModel: NSObject {
     private func respondToCacheUpdater(state cacheUpdaterState: BlockedSenderCacheUpdater.State) {
         switch cacheUpdaterState {
         case .idle:
-            let incomingDefaults: [IncomingDefaultEntity]
-
-            do {
-                incomingDefaults = try dependencies.incomingDefaultService.listLocal(query: .location(.blocked))
-            } catch {
-                assertionFailure("\(error)")
-                incomingDefaults = []
-            }
-
-            let cellModels = incomingDefaults.map { incomingDefault in
-                BlockedSenderCellModel(title: incomingDefault.email)
-            }
-
-            state = .blockedSendersFetched(cellModels)
+            fetchBlockedSendersFromCoreData()
         default:
             state = .fetchInProgress
         }
     }
+
+    private func fetchBlockedSendersFromCoreData() {
+        let incomingDefaults: [IncomingDefaultEntity]
+
+        do {
+            incomingDefaults = try dependencies.incomingDefaultService.listLocal(query: .location(.blocked))
+        } catch {
+            assertionFailure("\(error)")
+            incomingDefaults = []
+        }
+
+        let cellModels = incomingDefaults.map { incomingDefault in
+            BlockedSenderCellModel(title: incomingDefault.email)
+        }
+
+        state = .blockedSendersFetched(cellModels)
+    }
 }
 
 extension BlockedSendersViewModel: BlockedSendersViewModelInput {
+    func deleteRow(at indexPath: IndexPath) throws {
+        guard let cellModel = cellModels[safe: indexPath.row] else {
+            return
+        }
+
+        let senderEmail = cellModel.title
+        let parameters = UnblockSender.Parameters(emailAddress: senderEmail)
+        try dependencies.unblockSender.execute(parameters: parameters)
+
+        fetchBlockedSendersFromCoreData()
+    }
+
     func viewWillAppear() {
         dependencies.cacheUpdater.delegate = self
         respondToCacheUpdater(state: dependencies.cacheUpdater.state)
@@ -127,6 +139,7 @@ extension BlockedSendersViewModel {
     struct Dependencies {
         let cacheUpdater: BlockedSenderCacheUpdater
         let incomingDefaultService: IncomingDefaultService
+        let unblockSender: UnblockSender
     }
 
     enum State: Equatable {
