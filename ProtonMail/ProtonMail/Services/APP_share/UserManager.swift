@@ -73,7 +73,8 @@ class UserManager: Service {
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userID)
+                lastUpdatedStore.cleanUp(userId: self.userID),
+                self.incomingDefaultService.cleanUp()
             ]
             self.deactivatePayments()
             #if !APP_EXTENSION
@@ -101,6 +102,7 @@ class UserManager: Service {
     }
 
     static func cleanUpAll() -> Promise<Void> {
+        IncomingDefaultService.cleanUpAll()
         LocalNotificationService.cleanUpAll()
 
         var wait = Promise<Void>()
