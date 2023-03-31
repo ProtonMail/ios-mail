@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "すべてのメール";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "すべてのメッセージがダウンロードされました";
 
@@ -216,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "サインアウトしてよろしいですか?";
 
+/* One of the schedule time options */
+"As scheduled" = "スケジュール通り";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "%@";
 
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "メールのトラッキングをブロック";
+
+/* Settings item to open blocked sender list */
+"Block list" = "ブロックリスト";
+
+/* Button to block a sender */
+"Block sender" = "差出人をブロック";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "あなたがメッセージを閲覧したかどうか、いつ閲覧したかを送信者が確認できないようにします";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "ラベルを作成できません。";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "現在のパスワード";
 
@@ -697,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "メタデータをダウンロードしています...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "メールをダウンロードすると、メールの内容を検索できます。暗号化されたメッセージがローカルに保存されます。%1$@";
 
@@ -748,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "メールアドレスが無効です";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "メールアドレス";
@@ -918,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "設定を開く";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "はい";
 
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。%1$@";
 
+/* One of schedule time options */
+"In the morning" = "午前中";
+
 /* menu title */
 "Inbox" = "受信トレイ";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "表示名を入力…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "安全ではない接続";
@@ -1104,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "アプリをロック";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "ログ";
@@ -1237,6 +1225,9 @@
 /* Title */
 "Move to…" = "移動…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "移動後に次のメッセージを表示";
+
 /* Onboarding title */
 "Neat and tidy" = "自分だけの外観";
 
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "次へ";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "移動後に次のメッセージへ";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "ニックネーム";
@@ -1415,6 +1409,9 @@
 /* Text for pause button */
 "Pause" = "一時停止";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "メッセージを (アーカイブなどに) 移動した際に、次のメッセージを表示します。";
+
 /* default vcard types */
 "Personal" = "個人";
 
@@ -1532,9 +1529,6 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton ステータス";
 
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "プロキシまたはファイアウォールの干渉";
 
@@ -1644,6 +1638,9 @@
 /* title */
 "Save Changes" = "変更を保存";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "いつでもメッセージを送信予約できます";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "送信予約";
@@ -1683,7 +1680,7 @@
 /* Action */
 "Send anyway" = "このまま送信";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "フィードバックを送信";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1949,9 +1946,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "アクセスしようとしているURLは標準ではないため、正しく読み込まれない可能性があります。 端末の既定のブラウザで開きますか？";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "サインアウトした場合に失われる未送信のメッセージがあります。";
 
@@ -1966,12 +1960,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "この会話には、ごみ箱に入れたメッセージが含まれています";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは Proton Mail のアドレスが送信元になっていますが、外部から送信されたもので認証に失敗しています。不適切に転送されたものか、なりすましの恐れがあります。";
@@ -2004,10 +1992,10 @@
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "選択したブラウザーがアンインストールされた場合、設定は Safari に戻されます。";
 
 /* The title of the info label in the second segment of the Customize toolbar setting view. */
-"This toolbar appears when selecting multiple messages in your inbox." = "このツールバーは受信トレイで複数のメッセージを選択した際に表示されます。";
+"This toolbar appears when selecting multiple messages in your inbox." = "このツールバーは、受信トレイでメッセージ選択時に表示されます。";
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
-"This toolbar is visible when reading a message." = "メッセージを読んでいるとき、ツールバーが表示されます。";
+"This toolbar is visible when reading a message." = "このツールバーは、メッセージ閲覧時に表示されます。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";
@@ -2061,9 +2049,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "二段階認証コード";

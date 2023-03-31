@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "Todo el correo";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Todos tus mensajes están descargados.";
 
@@ -293,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Bloquear el rastreo de correo electrónico";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Lista de direcciones bloqueadas";
+
+/* Button to block a sender */
+"Block sender" = "Bloquear el remitente";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Impide que los remitentes vean si has abierto el mensaje o cuando lo has hecho.";
@@ -523,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "No se permite crear la etiqueta.";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Contraseña actual";
 
@@ -700,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Descargando metadatos...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Se descargan los correos para que puedas buscar en ellos. Los mensajes se cifran y almacenan localmente. %1$@";
 
@@ -751,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Dirección de correo electrónico deshabilitada";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Direcciones de correo electrónico";
@@ -921,9 +915,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ir a la configuración";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Entendido";
 
@@ -1011,9 +1002,6 @@
 
 /* place holder */
 "Input Display Name…" = "Introduce el nombre para mostrar…";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Conexión no segura";
@@ -1113,12 +1101,6 @@
 
 /* menu title */
 "Lock The App" = "Bloquear la aplicación";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Registros";
@@ -1246,6 +1228,9 @@
 /* Title */
 "Move to…" = "Mover a…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Pasar al siguiente mensaje después de moverlo";
+
 /* Onboarding title */
 "Neat and tidy" = "Limpio y ordenado";
 
@@ -1284,6 +1269,9 @@
 
 /* title of the next button */
 "Next" = "Siguiente";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Siguiente mensaje después de moverlo";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Apodo";
@@ -1424,6 +1412,9 @@
 /* Text for pause button */
 "Pause" = "Pausar";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Al mover un mensaje (por ejemplo, archivar), pasarás al siguiente mensaje.";
+
 /* default vcard types */
 "Personal" = "Personal";
 
@@ -1543,9 +1534,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Estado de Proton";
-
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferencia de proxy/cortafuego";
@@ -1701,7 +1689,7 @@
 /* Action */
 "Send anyway" = "Enviar de todos modos";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Enviar comentarios";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1970,9 +1958,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intentas acceder no es estándar y es posible que no se cargue correctamente. ¿Quieres abrirla utilizando el navegador por defecto de tu dispositivo?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Hay mensajes sin enviar que se perderán si cierras la sesión.";
 
@@ -1987,12 +1972,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Esta conversación contiene mensajes que están en la papelera.";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo parece ser de una dirección de Proton Mail, pero viene de fuera de nuestro sistema y no ha superado los requisitos de autenticación. Puede ser falsificado o reenviado incorrectamente.";
@@ -2082,9 +2061,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intenta conectarte a Proton desde una red distinta ( o usando %1$@ o %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Código de dos factores";

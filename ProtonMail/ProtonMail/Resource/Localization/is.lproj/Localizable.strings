@@ -120,9 +120,6 @@
    menu title */
 "All Mail" = "Allur póstur";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Öllum skilaboðum þínum er hlaðið niður";
 
@@ -514,9 +511,6 @@
 /* Alert title */
 "Creating label not allowed" = "Ekki leyft að búa til merki";
 
-/* Change language title */
-"Current Language: " = "Current Language: ";
-
 /* Placeholder */
 "Current password" = "Núverandi lykilorð";
 
@@ -688,9 +682,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Sæki lýsigögn ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Downloading new messages...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Hleður niður tölvupósti svo þú getir leitað í þeim. Skilaboð eru dulkóðuð og geymd staðbundið. %1$@";
 
@@ -739,9 +730,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Netfang er óvirkt";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Tölvupóstföng";
@@ -909,9 +897,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Fara í stillingar";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Go to sign in";
-
 /* Got it action */
 "Got it" = "Náði því";
 
@@ -993,9 +978,6 @@
 
 /* place holder */
 "Input Display Name…" = "Settu inn birtingarnafn...";
-
-/* place holder */
-"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Óörugg tenging";
@@ -1092,12 +1074,6 @@
 
 /* menu title */
 "Lock The App" = "Læsa forritinu";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Aðgerðaskrár";
@@ -1517,9 +1493,6 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Staða Proton";
 
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Truflanir vegna milliþjóna/eldveggja";
 
@@ -1668,7 +1641,7 @@
 /* Action */
 "Send anyway" = "Senda samt";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Senda endurgjöf";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1931,9 +1904,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Slóðin sem þú ert að reyna að opna er ekki stöðluð og gæti hlaðist rangt inn. Viltu opna hana með sjálfgefna varfranum á tækinu þínu?";
 
-/* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Enn eru ósend skilaboð sem munu tapast ef þú skráir þig út";
 
@@ -1948,12 +1918,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Þetta samtal inniheldur skilaboð sem eru í ruslinu";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá Proton tölvupóst netfangi en kom í rauninni utan kerfisins og stóðst ekki auðkenningarkröfur okkar. Hann gæti verið falsaður eða áframsendur á rangan hátt!";
@@ -2046,9 +2010,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Tveggja-þátta lykilkóði";

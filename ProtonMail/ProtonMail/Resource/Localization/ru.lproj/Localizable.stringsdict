@@ -91,13 +91,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d попытки осталась до тех пор, пока защищенные данные не будут стерты!</string>
+			<string>%d попытки осталось до тех пор, пока защищенные данные не будут стерты!</string>
 			<key>many</key>
-			<string>%d попыток осталась до тех пор, пока защищенные данные не будут стерты!</string>
+			<string>%d попыток осталось до тех пор, пока защищенные данные не будут стерты!</string>
 			<key>one</key>
 			<string>%d попытка осталась до тех пор, пока защищенные данные не будут стерты!</string>
 			<key>other</key>
-			<string>%d попыток осталась до тех пор, пока защищенные данные не будут стерты!</string>
+			<string>%d попыток осталось до тех пор, пока защищенные данные не будут стерты!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -117,7 +117,7 @@
 			<key>one</key>
 			<string>%d цепочка помечена</string>
 			<key>other</key>
-			<string>%d цепочки помечены</string>
+			<string>%d цепочек помечены</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -301,7 +301,7 @@
 			<key>one</key>
 			<string>%d сообщение перемещено в Черновики</string>
 			<key>other</key>
-			<string>%d сообщения перемещены в Черновики</string>
+			<string>%d сообщений перемещены в Черновики</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -359,7 +359,7 @@
 			<key>one</key>
 			<string>%u цепочка писем</string>
 			<key>other</key>
-			<string>%u цепочки писем</string>
+			<string>%u цепочек писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -381,7 +381,7 @@
 			<key>one</key>
 			<string>%u сообщение</string>
 			<key>other</key>
-			<string>%u сообщения</string>
+			<string>%u сообщений</string>
 		</dict>
 	</dict>
 	<key>+%d others</key>
@@ -461,7 +461,7 @@
 			<key>one</key>
 			<string>Через %d минуту</string>
 			<key>other</key>
-			<string>Через %d минуты</string>
+			<string>Через %d минут</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
