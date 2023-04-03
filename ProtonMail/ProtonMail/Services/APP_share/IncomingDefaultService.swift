@@ -20,6 +20,8 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
+import class PromiseKit.Promise
+
 // sourcery: mock
 protocol IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void)
@@ -32,7 +34,7 @@ protocol IncomingDefaultServiceProtocol {
         completion: @escaping (Error?) -> Void
     )
     func softDelete(query: IncomingDefaultService.Query) throws
-    func hardDelete(query: IncomingDefaultService.Query) throws
+    func hardDelete(query: IncomingDefaultService.Query?) throws
     func performRemoteDeletion(emailAddress: String, completion: @escaping (Error?) -> Void)
 }
 
@@ -123,7 +125,7 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
         }
     }
 
-    func hardDelete(query: Query) throws {
+    func hardDelete(query: Query?) throws {
         try writeToDatabase { context in
             try self.find(query: query, in: context, includeSoftDeleted: true).forEach(context.delete)
         }
@@ -153,6 +155,28 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
             callCompletionBlockUsing: .immediateExecutor
         ) { (_, result: Result<DeleteIncomingDefaultsResponse, ResponseError>) in
             completion(result.error)
+        }
+    }
+}
+
+// MARK: cleanup
+
+extension IncomingDefaultService {
+    func cleanUp() -> Promise<Void> {
+        Promise { seal in
+            do {
+                try hardDelete(query: nil)
+                seal.fulfill_()
+            } catch {
+                seal.reject(error)
+            }
+        }
+    }
+
+    static func cleanUpAll() {
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            context.deleteAll(IncomingDefault.Attribute.entityName)
         }
     }
 }
@@ -229,7 +253,7 @@ extension IncomingDefaultService {
     }
 
     private func find(
-        query: Query,
+        query: Query?,
         in context: NSManagedObjectContext,
         includeSoftDeleted: Bool
     ) throws -> [IncomingDefault] {
@@ -245,7 +269,7 @@ extension IncomingDefaultService {
             userIDPredicate
         ]
 
-        if let queryPredicate = query.predicate {
+        if let queryPredicate = query?.predicate {
             subpredicates.append(queryPredicate)
         }
 

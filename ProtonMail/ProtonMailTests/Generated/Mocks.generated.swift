@@ -431,7 +431,7 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
     }
 
     @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.hardDelete) var hardDeleteStub
-    func hardDelete(query: IncomingDefaultService.Query) throws {
+    func hardDelete(query: IncomingDefaultService.Query?) throws {
         try hardDeleteStub(query)
     }
 
