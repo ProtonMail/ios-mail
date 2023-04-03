@@ -87,12 +87,12 @@ html_editor.setHtml = function (htmlBody, sanitizeConfig, isImageProxyEnable) {
 
 /// get the html. first removes embedded blobs, remove the proton prefix and return html, then puts embedded stuff back
 html_editor.getHtmlForDraft = function () {
+    let duplicatedDocument = document.cloneNode(true)
     for (var cid in html_editor.cachedCIDs) {
-        html_editor.hideEmbedImage(cid);
+        html_editor.hideEmbedImageIn(duplicatedDocument, cid)
     }
 
-    const htmlWithoutEmbeddedImages = html_editor.editor.innerHTML;
-    const { matchedElements, hasRemoteImages } = html_editor.getRemoteImageMatches(document);
+    const { matchedElements, hasRemoteImages } = html_editor.getRemoteImageMatches(duplicatedDocument);
 
     matchedElements.forEach((match) => {
         let url = '';
@@ -125,19 +125,14 @@ html_editor.getHtmlForDraft = function () {
         }
     });
 
-    const htmlWithoutEmbeddedImagesAfterProcess = html_editor.editor.innerHTML;
-    html_editor.editor.innerHTML = htmlWithoutEmbeddedImages;
-    
-    // Add embedded images back
-    for (var cid in html_editor.cachedCIDs) {
-        html_editor.updateEmbedImage(cid, html_editor.cachedCIDs[cid]);
-    }
+    const duplicatedEditor = duplicatedDocument.getElementById('editor');
+    const htmlWithoutEmbeddedImagesAfterProcess = duplicatedEditor.innerHTML;
     return htmlWithoutEmbeddedImagesAfterProcess;
 };
 
 html_editor.getRawHtml = function () {
     for (var cid in html_editor.cachedCIDs) {
-        html_editor.hideEmbedImage(cid);
+        html_editor.hideEmbedImage(document, cid);
     }
 
     var emptyHtml = html_editor.editor.innerHTML;
@@ -344,8 +339,8 @@ html_editor.updateEmbedImage = function (cid, blobdata) {
     }
 }
 
-html_editor.hideEmbedImage = function (cid) {
-    var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
+html_editor.hideEmbedImageIn = function(element, cid) {
+    var found = element.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
     for (var i = 0; i < found.length; i++) {
         found[i].setAttribute('src', cid);
     }
@@ -535,12 +530,12 @@ html_editor.getRemoteImageMatches = function(message) {
         if (name === 'src') {
             return '[src]:not([src^="cid"]):not([src^="data"])';
         }
-    
+
         // https://stackoverflow.com/questions/23034283/is-it-possible-to-use-htmls-queryselector-to-select-by-xlink-attribute-in-an
         if (name === 'xlink:href') {
             return '[*|href]:not([href])';
         }
-    
+
         return `[proton-${name}]`;
     }).join(',');
 
