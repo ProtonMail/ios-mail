@@ -118,7 +118,7 @@ class NewMailboxMessageContentView: BaseMessageView {
             attachmentImageView,
             starImageView
         ].forEach { view in
-            view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            view.setContentCompressionResistancePriority(.required, for: .horizontal)
             view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
 

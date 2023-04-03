@@ -743,15 +743,15 @@ extension MailboxViewModel {
         errorHandler: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) {
-        isFirstFetch = false
-
         let isCurrentLocationEmpty = fetchedResultsController?.fetchedObjects?.isEmpty ?? true
+        let fetchMessagesAtTheEnd = isCurrentLocationEmpty || isFirstFetch
+        isFirstFetch = false
 
         dependencies.updateMailbox.exec(
             showUnreadOnly: showUnreadOnly,
             isCleanFetch: isCleanFetch,
             time: time,
-            fetchMessagesAtTheEnd: isCurrentLocationEmpty,
+            fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
             errorHandler: errorHandler,
             completion: completion
         )

@@ -472,7 +472,6 @@ private extension ConversationViewController {
         self.selectedMessageID = message.messageID
         let viewModel = MessageViewActionSheetViewModel(title: message.title,
                                                         labelID: location.labelID,
-                                                        includeStarring: true,
                                                         isStarred: message.isStarred,
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         messageRenderStyle: messageRenderStyle,
@@ -836,6 +835,7 @@ extension ConversationViewController {
     @objc
     private func unreadReadAction() {
         viewModel.handleToolBarAction(.markUnread)
+        navigationController?.popViewController(animated: true)
     }
 
     @objc

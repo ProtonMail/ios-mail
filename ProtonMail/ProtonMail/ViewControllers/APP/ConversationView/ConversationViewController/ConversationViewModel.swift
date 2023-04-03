@@ -837,7 +837,6 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let actionSheetViewModel = MessageViewActionSheetViewModel(
             title: "",
             labelID: labelId,
-            includeStarring: true,
             isStarred: true,
             isBodyDecryptable: true,
             messageRenderStyle: .lightOnly,

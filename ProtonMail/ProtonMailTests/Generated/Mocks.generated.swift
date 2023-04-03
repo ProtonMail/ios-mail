@@ -543,6 +543,24 @@ class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
 
 }
 
+class MockPagesViewUIProtocol: PagesViewUIProtocol {
+    @FuncStub(MockPagesViewUIProtocol.dismiss) var dismissStub
+    func dismiss() {
+        dismissStub()
+    }
+
+    @FuncStub(MockPagesViewUIProtocol.getCurrentObjectID, initialReturn: nil) var getCurrentObjectIDStub
+    func getCurrentObjectID() -> ObjectID? {
+        getCurrentObjectIDStub()
+    }
+
+    @FuncStub(MockPagesViewUIProtocol.handlePageViewNavigationDirection) var handlePageViewNavigationDirectionStub
+    func handlePageViewNavigationDirection(action: PagesSwipeAction, shouldReload: Bool) {
+        handlePageViewNavigationDirectionStub(action, shouldReload)
+    }
+
+}
+
 class MockPaymentsUIProtocol: PaymentsUIProtocol {
     @FuncStub(MockPaymentsUIProtocol.showCurrentPlan) var showCurrentPlanStub
     func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping (PaymentsUIResultReason) -> Void) {
