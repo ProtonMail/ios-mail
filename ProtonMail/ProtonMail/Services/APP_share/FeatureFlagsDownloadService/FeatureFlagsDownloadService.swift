@@ -20,6 +20,7 @@ import ProtonCore_Services
 enum FeatureFlagKey: String, CaseIterable {
     case inAppFeedback = "InAppFeedbackIOS"
     case scheduleSend = "ScheduledSendFreemium"
+    case senderImage = "ShowSenderImages"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
@@ -43,19 +44,22 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private(set) var lastFetchingTime: Date?
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
+    private let senderImageEnableStatusProvider: SenderImageStatusProvider
 
     init(
         userID: UserID,
         apiService: APIService,
         sessionID: String,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider
+        userIntroductionProgressProvider: UserIntroductionProgressProvider,
+        senderImageEnableStatusProvider: SenderImageStatusProvider
     ) {
         self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.senderImageEnableStatusProvider = senderImageEnableStatusProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -119,6 +123,13 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 // If there is no SS feature flag, mark the feature as disabled, so that we'll be able to reset the
                 // spotlight once the feature is enabled (wouldn't be possible if we left it as not set).
                 self.scheduleSendEnableStatusProvider.setScheduleSendStatus(enable: false, userID: self.userID)
+            }
+
+            if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {
+                self.senderImageEnableStatusProvider.setIsSenderImageEnable(
+                    enable: isSenderImageEnable,
+                    userID: self.userID
+                )
             }
 
             completion?(.success(response))

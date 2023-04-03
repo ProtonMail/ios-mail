@@ -27,6 +27,7 @@ import ProtonCore_UIFoundations
 class MailboxViewModelTests: XCTestCase {
 
     var sut: MailboxViewModel!
+    var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
     var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
@@ -40,6 +41,8 @@ class MailboxViewModelTests: XCTestCase {
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
+    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
+    var imageTempUrl: URL!
 
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
@@ -51,7 +54,9 @@ class MailboxViewModelTests: XCTestCase {
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         sharedServices.add(CoreDataService.self, for: coreDataService)
 
-        let apiServiceMock = APIServiceMock()
+        apiServiceMock = APIServiceMock()
+        apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
+        apiServiceMock.dohInterfaceStub.fixture = DohMock()
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -74,6 +79,7 @@ class MailboxViewModelTests: XCTestCase {
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,
+                                      mailSettings: nil,
                                       parent: nil)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
@@ -87,6 +93,7 @@ class MailboxViewModelTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        mockSenderImageStatusProvider = .init()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -124,10 +131,15 @@ class MailboxViewModelTests: XCTestCase {
         conversationProviderMock.unlabelStub.bodyIs { _, _, _, _, completion in
             completion?(.success(()))
         }
+
+        // Prepare for api mock to write image data to disk
+        imageTempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("senderImage", isDirectory: true)
+        try FileManager.default.createDirectory(at: imageTempUrl, withIntermediateDirectories: true)
     }
 
-    override func tearDown() {
-        super.tearDown()
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
         sut = nil
         contactGroupProviderMock = nil
         contactProviderMock = nil
@@ -138,6 +150,10 @@ class MailboxViewModelTests: XCTestCase {
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
+        mockSenderImageStatusProvider = nil
+        apiServiceMock = nil
+
+        try FileManager.default.removeItem(at: imageTempUrl)
     }
     
     func testMessageItemOfIndexPath() {
@@ -986,6 +1002,99 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(lastMoveArguments.a3, Message.Location.trash.labelID)
 
     }
+
+    func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
+        userManagerMock.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return false
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(item: .message(MessageEntity.make()),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
+        userManagerMock.mailSettings = .init(hideSenderImages: true)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(item: .message(MessageEntity.make()),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
+        userManagerMock.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+        let e2 = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(item: .message(MessageEntity.make()),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        sut.fetchSenderImageIfNeeded(item: .conversation(ConversationEntity.make()),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e2.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
+        userManagerMock.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+        let msg = MessageEntity.createSenderImageEligibleMessage()
+        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        apiServiceMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                try? imageData?.write(to: fileUrl)
+                let response = HTTPURLResponse(statusCode: 200)
+                completion(response, nil, nil)
+            }
+        }
+
+        sut.fetchSenderImageIfNeeded(item: .message(msg),
+                                     isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNotNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiServiceMock.downloadStub.wasCalledExactlyOnce)
+    }
 }
 
 extension MailboxViewModelTests {
@@ -1019,7 +1128,19 @@ extension MailboxViewModelTests {
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
             updateMailbox: updateMailbox,
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: userManagerMock.apiService,
+                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                        )
+                    ),
+                    senderImageStatusProvider: mockSenderImageStatusProvider,
+                    mailSettings: userManagerMock.mailSettings
+                )
+            )
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
@@ -1040,6 +1161,7 @@ extension MailboxViewModelTests {
                                welcomeCarrouselCache: welcomeCarrouselCache,
                                toolbarActionProvider: toolbarActionProviderMock,
                                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
+                               senderImageService: .init(dependencies: .init(apiService: userManagerMock.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
                                totalUserCountClosure: {
             return totalUserCount
         })

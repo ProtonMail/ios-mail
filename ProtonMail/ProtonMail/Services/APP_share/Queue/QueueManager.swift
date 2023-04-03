@@ -53,6 +53,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
     private let internetStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
     private var connectionStatus: ConnectionStatus? {
         willSet {
             guard let previousStatus = connectionStatus,
@@ -83,7 +84,8 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
 
-        internetStatusProvider.registerConnectionStatus { [weak self] status in
+        
+        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
             self?.connectionStatus = status
         }
         #if !APP_EXTENSION
@@ -113,7 +115,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
                  .updateLabel, .createLabel, .deleteLabel,
                  .updateContact, .deleteContact, .addContact,
                  .addContactGroup, .updateContactGroup, .deleteContactGroup,
-                 .notificationAction:
+                 .notificationAction, .blockSender, .unblockSender:
                 _ = self.miscQueue.add(task.uuid, object: task)
             case .signout:
                 self.handleSignout(signoutTask: task)
@@ -669,6 +671,7 @@ private extension Collection where Element == Any {
 
 }
 
+// sourcery: mock
 protocol QueueManagerProtocol {
     func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool
     func addBlock(_ block: @escaping () -> Void)

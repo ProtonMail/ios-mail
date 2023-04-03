@@ -239,9 +239,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d meddelande flyttat till Utkast</string>
+			<string>%d meddelande flyttat till “Utkast“</string>
 			<key>other</key>
-			<string>%d meddelanden flyttade till Utkast</string>
+			<string>%d meddelanden flyttade till “Utkast“</string>
 		</dict>
 	</dict>
 	<key>%d min</key>

@@ -24,23 +24,23 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscriptionResponse> {
+public final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscriptionResponse> {
     private let protonPlanName: String
     private let isAuthenticated: Bool
 
-    init(api: APIService, protonPlanName: String, isAuthenticated: Bool) {
+    public init(api: APIService, protonPlanName: String, isAuthenticated: Bool) {
         self.protonPlanName = protonPlanName
         self.isAuthenticated = isAuthenticated
         super.init(api: api)
     }
 
-    override var isAuth: Bool { isAuthenticated }
+    override public var isAuth: Bool { isAuthenticated }
 
-    override var method: HTTPMethod { .put }
+    override public var method: HTTPMethod { .put }
 
-    override var path: String { super.path + "/v4/subscription/check" }
+    override public var path: String { super.path + "/v4/subscription/check" }
 
-    override var parameters: [String: Any]? {
+    override public var parameters: [String: Any]? {
         [
             "Currency": "USD",
             "Plans": [protonPlanName: 1],
@@ -49,10 +49,10 @@ final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscriptionResp
     }
 }
 
-final class ValidateSubscriptionResponse: Response {
+public final class ValidateSubscriptionResponse: Response {
     var validateSubscription: ValidateSubscription?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         let (result, validation) = decodeResponse(response as Any, to: ValidateSubscription.self, errorToReturn: .validateSubscriptionDecode)
         self.validateSubscription = validation

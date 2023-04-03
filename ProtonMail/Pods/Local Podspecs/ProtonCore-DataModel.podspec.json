@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-DataModel",
-  "version": "3.27.0",
+  "version": "3.28.2",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "git": null,
+    "tag": "3.28.2"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-Utilities": [
-      "3.27.0"
+      "3.28.2"
     ]
   },
   "default_subspecs": [
@@ -47,7 +47,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/DataModel": [
-          "3.27.0"
+          "3.28.2"
         ]
       },
       "source_files": "libraries/DataModel/Tests/**/*",

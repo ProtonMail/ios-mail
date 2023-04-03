@@ -73,6 +73,10 @@ final class SaveToolbarActionSettings: SaveToolbarActionSettingsForUsersUseCase 
 
     private func updateToolbarActions(response: MailSettingsResponse) {
         dependencies.userInfo.parse(mailSettings: response.mailSettings)
+        if let mailSettingResponse = response.mailSettings,
+           let settings = try? MailSettings(dict: mailSettingResponse) {
+            dependencies.mailSettingsHandler.mailSettings = settings
+        }
     }
 }
 
@@ -96,15 +100,18 @@ extension SaveToolbarActionSettings {
     struct Dependencies {
         let apiService: APIService
         let userInfo: UserInfo
+        var mailSettingsHandler: MailSettingsHandler
 
         init(user: UserManager) {
             apiService = user.apiService
             userInfo = user.userInfo
+            mailSettingsHandler = user
         }
 
-        init(apiService: APIService, userInfo: UserInfo) {
+        init(apiService: APIService, userInfo: UserInfo, mailSettingsHandler: MailSettingsHandler) {
             self.apiService = apiService
             self.userInfo = userInfo
+            self.mailSettingsHandler = mailSettingsHandler
         }
     }
 }

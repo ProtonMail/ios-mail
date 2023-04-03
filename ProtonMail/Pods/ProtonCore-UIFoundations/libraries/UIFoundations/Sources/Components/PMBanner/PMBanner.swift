@@ -465,15 +465,24 @@ extension PMBanner {
         self.layoutIfNeeded()
 
         let initValue = self.frame.height
-        switch position {
-        case .top, .topCustom:
-            self.topConstraint = self.topAnchor.constraint(equalTo: parent.topAnchor, constant: -1 * initValue)
-            self.topConstraint?.isActive = true
-        case .bottom, .bottomCustom:
-            self.bottomConstraint = self.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: initValue)
-            self.bottomConstraint?.isActive = true
+
+        let parentTopAnchor, parentBottomAnchor: NSLayoutYAxisAnchor
+        if let tableView = parent as? UIScrollView {
+            parentTopAnchor = tableView.frameLayoutGuide.topAnchor
+            parentBottomAnchor = tableView.frameLayoutGuide.bottomAnchor
+        } else {
+            parentTopAnchor = parent.topAnchor
+            parentBottomAnchor = parent.bottomAnchor
         }
 
+        switch position {
+        case .top, .topCustom:
+            self.topConstraint = self.topAnchor.constraint(equalTo: parentTopAnchor, constant: -1 * initValue)
+            self.topConstraint?.isActive = true
+        case .bottom, .bottomCustom:
+            self.bottomConstraint = self.bottomAnchor.constraint(equalTo: parentBottomAnchor, constant: initValue)
+            self.bottomConstraint?.isActive = true
+        }
     }
 
     private func calcBannerHeight() -> CGFloat {

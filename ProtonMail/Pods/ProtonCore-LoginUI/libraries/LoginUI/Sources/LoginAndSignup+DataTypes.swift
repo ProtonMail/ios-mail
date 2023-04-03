@@ -25,7 +25,14 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Payments
 
-public enum SignupInitalMode {
+@available(*, deprecated, message: "SignupMode is deprecated")
+public enum SignupMode: Equatable {
+    case `internal`
+    case external
+    case both(initial: SignupInitialMode)
+}
+
+public enum SignupInitialMode {
     case `internal`
     case external
 }
@@ -44,7 +51,7 @@ public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
 
 public struct SignupParameters {
     
-    let signupMode: SignupMode
+    let signupInitialMode: SignupInitialMode
     let separateDomainsButton: Bool
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
@@ -54,26 +61,36 @@ public struct SignupParameters {
     init(_ separateDomainsButton: Bool,
          _ passwordRestrictions: SignupPasswordRestrictions,
          _ summaryScreenVariant: SummaryScreenVariant,
-         _ signupMode: SignupMode = .internal) {
+         _ signupInitialMode: SignupInitialMode = .internal) {
 
         self.separateDomainsButton = separateDomainsButton
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
-        self.signupMode = signupMode
+        self.signupInitialMode = signupInitialMode
+    }
+    
+    @available(*, deprecated, renamed: "init(separateDomainsButton:passwordRestrictions:summaryScreenVariant:signupInitialMode:)")
+    public init(separateDomainsButton: Bool,
+                passwordRestrictions: SignupPasswordRestrictions,
+                summaryScreenVariant: SummaryScreenVariant,
+                signupMode: SignupMode = .internal) {
+        var initialMode: SignupInitialMode = .internal
+        switch signupMode {
+        case .internal, .both(.internal):
+            initialMode = .internal
+        case .external, .both(.external):
+            initialMode = .external
+        }
+        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, initialMode)
     }
     
     public init(separateDomainsButton: Bool,
                 passwordRestrictions: SignupPasswordRestrictions,
                 summaryScreenVariant: SummaryScreenVariant,
-                signupMode: SignupMode = .internal) {
-        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, signupMode)
+                signupInitialMode: SignupInitialMode = .internal) {
+        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, signupInitialMode)
     }
-}
-
-public enum SignupMode: Equatable {
-    case `internal`
-    case external
-    case both(initial: SignupInitalMode)
+    
 }
 
 public struct SignupPasswordRestrictions: OptionSet {

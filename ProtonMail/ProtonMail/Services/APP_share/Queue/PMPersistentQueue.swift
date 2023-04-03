@@ -114,11 +114,22 @@ class BackupExcluder: BackupExcluderProtocol {
             try? FileManager.default.removeItem(at: queueURL)
             UserDefaults.standard.setValue(Self.currentVersionValue, forKey: Self.currentVersionKey)
         }
+
         if let data = try? Data(contentsOf: queueURL) {
-            self.queue = (NSKeyedUnarchiver.unarchiveObject(with: data) ?? []) as! [Any]
+            if let queue = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Any] {
+                self.queue = queue
+            } else {
+                let errorMessage = "Failed to unarchive the queue, deleting the file at \(queueURL)"
+                SystemLogger.log(message: errorMessage, category: .queue, isError: true)
+                assertionFailure(errorMessage)
+
+                try? FileManager.default.removeItem(at: queueURL)
+                self.queue = []
+            }
         } else {
             self.queue = []
         }
+
         super.init()
     }
 

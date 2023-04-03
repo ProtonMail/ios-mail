@@ -16,6 +16,7 @@ class ConversationMessageView: BaseMessageView {
     let contentStackView = UIStackView.stackView(axis: .horizontal, alignment: .center, spacing: 4)
     let initialsContainer = SubviewsFactory.initialsContainer
     let initialsLabel = UILabel.initialsLabel
+    let senderImageView = SubviewsFactory.senderImageView
     let initialsIcon = SubviewsFactory.draftImageView
     let initialsView = UIView()
     let scheduledIcon = SubviewsFactory.scheduledIconImageView
@@ -44,6 +45,7 @@ class ConversationMessageView: BaseMessageView {
         initialsView.addSubview(initialsIcon)
         initialsView.addSubview(scheduledIcon)
         initialsContainer.addSubview(initialsLabel)
+        initialsContainer.addSubview(senderImageView)
 
         contentStackView.addArrangedSubview(initialsView)
         contentStackView.addArrangedSubview(replyImageView)
@@ -111,6 +113,7 @@ class ConversationMessageView: BaseMessageView {
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2)
         ].activate()
+        senderImageView.fillSuperview()
 
         [
             initialsIcon.centerXAnchor.constraint(equalTo: initialsView.centerXAnchor),
@@ -195,6 +198,14 @@ private extension ConversationMessageView {
 
         static var scheduledIconImageView: UIImageView {
             .make(icon: \.clock, tintColor: \.IconNorm)
+        }
+
+        static var senderImageView: UIImageView {
+            let view = UIImageView(image: nil)
+            view.contentMode = .scaleAspectFit
+            view.layer.cornerRadius = 8
+            view.layer.masksToBounds = true
+            return view
         }
     }
 }

@@ -39,7 +39,7 @@ class ForceUpgradeManager: LifetimeTrackable {
     }
 
     var forceUpgradeHelper: ForceUpgradeDelegate = {
-        return ForceUpgradeHelper(config: .mobile(URL.appleStore))
+        return ForceUpgradeHelper(config: .mobile(URL.protonMailAppStoreUrlScheme))
     }()
 }
 

@@ -65,20 +65,19 @@ class ShareUnlockCoordinator {
         }
 
         let coreDataService = self.services.get(by: CoreDataService.self)
-        let editorViewModel = ContainableComposeViewModel(subject: controller.inputSubject,
-                                                          body: controller.inputContent,
-                                                          files: controller.files,
-                                                          action: .newDraftFromShare,
-                                                          msgService: user.messageService,
-                                                          user: user,
-                                                          coreDataContextProvider: coreDataService)
-
-        let coordinator = ComposeContainerViewCoordinator(
-            embeddingController: navigationController,
-            editorViewModel: editorViewModel,
-            services: self.services
+        let internetStatusProvider = self.services.get(by: InternetConnectionStatusProvider.self)
+        let composer = ComposerViewFactory.makeComposer(
+            subject: controller.inputSubject,
+            body: controller.inputContent,
+            files: controller.files,
+            user: user,
+            contextProvider: coreDataService,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendStatusProvider: userCachedStatus,
+            internetStatusProvider: internetStatusProvider,
+            navigationViewController: navigationController
         )
-        coordinator.start()
+        navigationController.setViewControllers([composer], animated: true)
     }
 
     func go(dest: Destination) {

@@ -24,7 +24,7 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-enum PaymentAction {
+public enum PaymentAction {
     @available(*, deprecated) case apple(reciept: String)
     case token(token: String)
 
@@ -50,21 +50,21 @@ enum PaymentAction {
     }
 }
 
-class CreditRequest<T: Response>: BaseApiRequest<T> {
+public class CreditRequest<T: Response>: BaseApiRequest<T> {
     private let paymentAction: PaymentAction
     private let amount: Int
 
-    init(api: APIService, amount: Int, paymentAction: PaymentAction) {
+    public init(api: APIService, amount: Int, paymentAction: PaymentAction) {
         self.paymentAction = paymentAction
         self.amount = amount
         super.init(api: api)
     }
 
-    override var method: HTTPMethod { .post }
+    override public var method: HTTPMethod { .post }
 
-    override var path: String { super.path + "/v4/credit" }
+    override public var path: String { super.path + "/v4/credit" }
 
-    override var parameters: [String: Any]? {
+    override public var parameters: [String: Any]? {
         [
             "Amount": amount,
             "Currency": "USD",
@@ -75,8 +75,8 @@ class CreditRequest<T: Response>: BaseApiRequest<T> {
     }
 }
 
-final class CreditResponse: Response {
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+public final class CreditResponse: Response {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         guard let code = response["Code"] as? Int, code == 1000 else {
             error = RequestErrors.creditDecode.toResponseError(updating: error)

@@ -22,22 +22,28 @@ import ProtonCore_DataModel
 import ProtonCore_Log
 
 protocol MessageDecrypterProtocol {
-    typealias Output = (
-        body: String,
-        attachments: [MimeAttachment]?,
+    typealias DecryptionOutput = (body: String, attachments: [MimeAttachment]?)
+
+    typealias DecryptionAndVerificationOutput = (
+        decryptionOutput: DecryptionOutput,
         signatureVerificationResult: SignatureVerificationResult
     )
 
     func decrypt(message: Message) throws -> String
-    func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> Output
+
+    func decryptAndVerify(
+        message: MessageEntity,
+        verificationKeys: [ArmoredKey]
+    ) throws -> DecryptionAndVerificationOutput
+
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
 }
 
 extension MessageDecrypterProtocol {
-    func decrypt(message: MessageEntity) throws -> Output {
-        try decrypt(message: message, verificationKeys: [])
+    func decrypt(message: MessageEntity) throws -> DecryptionOutput {
+        try decryptAndVerify(message: message, verificationKeys: []).decryptionOutput
     }
 }
 
@@ -50,17 +56,25 @@ class MessageDecrypter: MessageDecrypterProtocol {
 
     func decrypt(message: Message) throws -> String {
         let messageEntity = MessageEntity(message)
-        let output = try decrypt(message: messageEntity, verificationKeys: [])
+        let output = try decrypt(message: messageEntity)
         if let tempAtts = output.attachments {
             message.tempAtts = tempAtts
         }
         return output.body
     }
 
-    func decrypt(message: MessageEntity, verificationKeys: [ArmoredKey]) throws -> Output {
+    func decrypt(message: MessageEntity) throws -> DecryptionOutput {
+        let output = try decryptAndVerify(message: message, verificationKeys: [])
+        return output.decryptionOutput
+    }
+
+    func decryptAndVerify(
+        message: MessageEntity,
+        verificationKeys: [ArmoredKey]
+    ) throws -> DecryptionAndVerificationOutput {
         let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
         if addressKeys.isEmpty {
-            return (message.body, nil, .failure)
+            return ((message.body, nil), .failure)
         }
 
         guard let dataSource = self.userDataSource else {
@@ -81,7 +95,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
                     decryptionKeys: decryptionKeys
                 )
                 let (body, attachments) = postProcessMIME(messageData: messageData)
-                return (body, attachments, messageData.signatureVerificationResult)
+                return ((body, attachments), messageData.signatureVerificationResult)
             } catch {
                 // NOTE, decryption function will be called multiple times
                 // Reports on the Sentry could be triple than real situation
@@ -95,18 +109,27 @@ class MessageDecrypter: MessageDecrypterProtocol {
             }
         }
 
-        let decrypted = try Crypto().decryptVerify(
-            encrypted: message.body,
-            publicKeys: verificationKeys.compactMap { try? $0.unArmor().value },
-            privateKeys: decryptionKeys.map { ($0.privateKey.value, $0.passphrase.value) },
-            verifyTime: CryptoGetUnixTime()
-        )
-        let (processedBody, verificationResult) = try postProcessNonMIME(
-            decrypted: decrypted,
-            isPlainText: message.isPlainText,
-            hasVerificationKeys: !verificationKeys.isEmpty
-        )
-        return (processedBody, nil, verificationResult)
+        let armoredMessage = ArmoredMessage(value: message.body)
+
+        let decryptedBody: String
+        let signatureVerificationResult: SignatureVerificationResult
+
+        if verificationKeys.isEmpty {
+            decryptedBody = try Decryptor.decrypt(decryptionKeys: decryptionKeys, encrypted: armoredMessage)
+            signatureVerificationResult = .signatureVerificationSkipped
+        } else {
+            let decrypted: VerifiedString = try Decryptor.decryptAndVerify(
+                decryptionKeys: decryptionKeys,
+                value: armoredMessage,
+                verificationKeys: verificationKeys,
+                verifyTime: CryptoGetUnixTime()
+            )
+            decryptedBody = decrypted.content
+            signatureVerificationResult = SignatureVerificationResult(message: decrypted)
+        }
+
+        let processedBody = postProcessNonMIME(decryptedBody: decryptedBody, isPlainText: message.isPlainText)
+        return ((processedBody, nil), signatureVerificationResult)
     }
 
     func copy(message: Message,
@@ -159,35 +182,12 @@ extension MessageDecrypter {
         return (mimeBody, mimeAttachments)
     }
 
-    private func postProcessNonMIME(
-        decrypted: ExplicitVerifyMessage,
-        isPlainText: Bool,
-        hasVerificationKeys: Bool
-    ) throws -> (String, SignatureVerificationResult) {
-        guard let decryptedBody = decrypted.message?.getString() else {
-            throw MailCrypto.CryptoError.decryptionFailed
-        }
-
-        let processedBody: String
+    private func postProcessNonMIME(decryptedBody: String, isPlainText: Bool) -> String {
         if isPlainText {
-            processedBody = decryptedBody.encodeHtml().ln2br()
+            return decryptedBody.encodeHtml().ln2br()
         } else {
-            processedBody = decryptedBody
+            return decryptedBody
         }
-
-        let signatureVerificationResult: SignatureVerificationResult
-
-        if hasVerificationKeys {
-            if let gopenpgpError = decrypted.signatureVerificationError {
-                signatureVerificationResult = SignatureVerificationResult(gopenpgpOutput: gopenpgpError.status)
-            } else {
-                signatureVerificationResult = .success
-            }
-        } else {
-            signatureVerificationResult = .signatureVerificationSkipped
-        }
-
-        return (processedBody, signatureVerificationResult)
     }
 
     private func parse(attachments: [MIMEAttachmentData], body: String) -> ([MimeAttachment], String) {

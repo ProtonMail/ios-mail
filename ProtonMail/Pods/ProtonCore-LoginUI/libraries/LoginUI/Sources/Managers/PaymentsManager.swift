@@ -147,27 +147,9 @@ extension PaymentsManager: StoreKitManagerDelegate {
         return true
     }
 
-    var activeUsername: String? {
-        switch loginData {
-        case .userData(let data):
-            return data.user.name
-        case .credential(let credential):
-            return credential.userName
-        case .none:
-            return nil
-        }
-    }
+    var activeUsername: String? { loginData?.user.name ?? loginData?.credential.userName }
 
-    var userId: String? {
-        switch loginData {
-        case .userData(let data):
-            return data.user.ID
-        case .credential(let credential):
-            return credential.userID
-        case .none:
-            return nil
-        }
-    }
+    var userId: String? { loginData?.user.ID ?? loginData?.credential.userID }
 
     var servicePlanDataService: ServicePlanDataServiceProtocol? {
         return payments.planService

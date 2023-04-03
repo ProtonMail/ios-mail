@@ -166,6 +166,23 @@ extension EmailEntity {
         )
     }
 }
+extension IncomingDefaultEntity {
+    static func make(
+        email: String = .init(),
+        id: String? = nil,
+        location: Message.Location = .inbox,
+        time: Date = .init(),
+        userID: UserID = .init(rawValue: .init())
+    ) -> Self {
+        IncomingDefaultEntity(
+            email: email,
+            id: id,
+            location: location,
+            time: time,
+            userID: userID
+        )
+    }
+}
 extension LabelCountEntity {
     static func make(
         start: Date? = nil,

@@ -21,7 +21,7 @@ import XCTest
 class LabelLocationTests: XCTestCase {
 
     func testInitWithIDString() {
-        XCTAssertEqual(LabelLocation(id: "Provide feedback", name: nil), .provideFeedback)
+        XCTAssertEqual(LabelLocation(id: "Send feedback", name: nil), .sendFeedback)
         XCTAssertEqual(LabelLocation(id: "0", name: nil), .inbox)
         XCTAssertEqual(LabelLocation(id: "1", name: nil), .hiddenDraft)
         XCTAssertEqual(LabelLocation(id: "8", name: nil), .draft)
@@ -59,7 +59,7 @@ class LabelLocationTests: XCTestCase {
     }
 
     func testGetLocalizedTitle() {
-        XCTAssertEqual(LabelLocation.provideFeedback.localizedTitle, LocalString._provide_feedback)
+        XCTAssertEqual(LabelLocation.sendFeedback.localizedTitle, LocalString._send_feedback)
         XCTAssertEqual(LabelLocation.inbox.localizedTitle, LocalString._menu_inbox_title)
         XCTAssertEqual(LabelLocation.hiddenDraft.localizedTitle, "")
         XCTAssertEqual(LabelLocation.draft.localizedTitle, LocalString._menu_drafts_title)
