@@ -123,12 +123,14 @@ final class SignupCoordinator {
             delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
         case .available(let parameters):
             signupParameters = parameters
-            switch parameters.signupMode {
-            case .internal, .both(.internal):
+            switch parameters.signupInitialMode {
+            case .internal:
                 signupAccountTypeManager.setSignupAccountType(type: .internal)
-            case .external, .both(.external):
-                if isExternalSignupFeatureEnabled  {
+            case .external:
+                if isExternalSignupFeatureEnabled && container.login.minimumAccountType != .internal {
                     signupAccountTypeManager.setSignupAccountType(type: .external)
+                } else {
+                    signupAccountTypeManager.setSignupAccountType(type: .internal)
                 }
             }
             showSignupViewController(kind: kind)
@@ -145,13 +147,14 @@ final class SignupCoordinator {
         signupViewController.delegate = self
         self.signupViewController = signupViewController
         signupViewController.showOtherAccountButton = false
-        if case .both = signupParameters.signupMode, FeatureFactory.shared.isEnabled(.externalSignup) {
+        if isExternalSignupFeatureEnabled && container.login.minimumAccountType != .internal {
             signupViewController.showOtherAccountButton = true
         }
         signupViewController.showSeparateDomainsButton = signupParameters.separateDomainsButton
         signupViewController.showCloseButton = isCloseButton
-        signupViewController.signupAccountType = signupAccountTypeManager.accountType
         signupViewController.minimumAccountType = container.login.minimumAccountType
+        signupViewController.signupAccountType = signupAccountTypeManager.accountType
+        
         signupViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
@@ -166,12 +169,10 @@ final class SignupCoordinator {
         case let .over(viewController, modalTransitionStyle):
             let navigationController = LoginNavigationViewController(rootViewController: signupViewController)
             self.navigationController = navigationController
-            container.setupHumanVerification(viewController: navigationController)
             navigationController.modalTransitionStyle = modalTransitionStyle
             viewController.present(navigationController, animated: true, completion: nil)
         case .inside(let navigationViewController):
             self.navigationController = navigationViewController
-            container.setupHumanVerification(viewController: navigationViewController)
             navigationViewController.setViewControllers([signupViewController], animated: true)
         }
     }
@@ -346,7 +347,7 @@ final class SignupCoordinator {
                 break
             }
             
-            guard possiblyRefreshedLoginData.credential.hasFullScope else {
+            guard possiblyRefreshedLoginData.getCredential.hasFullScope else {
                 self?.finishAccountCreation(loginData: possiblyRefreshedLoginData, purchasedPlan: purchasedPlan)
                 return
             }

@@ -49,7 +49,7 @@ private enum ComposerCell: String {
     }
 }
 
-class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, BannerPresenting, AccessibleView {
+class TableContainerViewController<ViewModel: TableContainerViewModel>: UIViewController, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, BannerPresenting, AccessibleView {
 
     let tableView = UITableView()
 
@@ -60,12 +60,10 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     // new code
 
     let viewModel: ViewModel
-    let coordinator: Coordinator
     private var contentOffsetToPerserve: CGPoint = .zero
 
-    init(viewModel: ViewModel, coordinator: Coordinator) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
-        self.coordinator = coordinator
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -138,7 +136,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         let id = ComposerCell.reuseID(for: indexPath)
         let cell = self.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath)
         cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
-        self.coordinator.embedChild(indexPath: indexPath, onto: cell)
+        embedChild(indexPath: indexPath, onto: cell)
         cell.clipsToBounds = true
         return cell
     }
@@ -218,5 +216,52 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
 
     @objc internal func restoreOffset() {
         self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
+    }
+
+    func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
+        fatalError("Missing implementation")
+    }
+
+    func embed(_ child: UIViewController,
+               onto view: UIView,
+               layoutGuide: UILayoutGuide? = nil,
+               ownedBy controller: UIViewController) {
+        assert(controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
+
+        // remove child from old parent
+        if let parent = child.parent, parent != controller {
+            child.willMove(toParent: nil)
+            if child.isViewLoaded {
+                child.view.removeFromSuperview()
+            }
+            child.removeFromParent()
+        }
+
+        // add child to new parent
+        controller.addChild(child)
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        if view.subviews.isEmpty {
+            view.addSubview(child.view)
+        } else if let existedView = view.subviews.first {
+            if existedView != child.view {
+                existedView.removeFromSuperview()
+                view.addSubview(child.view)
+            }
+        }
+
+        child.didMove(toParent: controller)
+
+        // autolayout guides priority: parameter, safeArea, no guide
+        if let specialLayoutGuide = layoutGuide {
+            specialLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+            specialLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+            specialLayoutGuide.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+            specialLayoutGuide.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        } else {
+            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+            view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        }
     }
 }

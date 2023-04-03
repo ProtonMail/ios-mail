@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ / %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d 秒";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d 件選択済み";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 添付ファイルとして追加するにはここにドロップ";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "住所";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "詳細設定";
+
 /* Title */
 "Alert" = "警告";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "すべてのメール";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "アプリからログアウトすると、すべての保護設定がリセットされます。";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "すべてのメッセージがダウンロードされました";
@@ -169,19 +163,25 @@
 "API Server not reachable…" = "API サーバーに接続できません…";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "アプリ PIN";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN と Face ID";
+"App PIN & Face ID" = "アプリ PIN と Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN と Touch ID";
+"App PIN & Touch ID" = "アプリ PIN と Touch ID";
 
 /* section title in settings */
 "App settings" = "App 設定";
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "外観";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKeyは、例えばデバイスのコンテンツクローンのような高度な攻撃からも、Protonの情報を守ってくれます。%1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey保護";
 
 /* Apply action */
 "Apply" = "適用";
@@ -212,6 +212,9 @@
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "サインアウトしてよろしいですか?";
+
+/* One of the schedule time options */
+"As scheduled" = "スケジュール通り";
 
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "%@";
@@ -288,6 +291,12 @@
 /* Settings row */
 "Block email tracking" = "メールのトラッキングをブロック";
 
+/* Settings item to open blocked sender list */
+"Block list" = "ブロックリスト";
+
+/* Button to block a sender */
+"Block sender" = "差出人をブロック";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "あなたがメッセージを閲覧したかどうか、いつ閲覧したかを送信者が確認できないようにします";
 
@@ -354,6 +363,9 @@
 
 /* Action */
 "Cancel Check" = "チェックをキャンセル";
+
+/* Title */
+"Canceling" = "キャンセル中";
 
 /* Warning message */
 "Cannot empty folder right now." = "現在、フォルダーを空にできません。";
@@ -514,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "ラベルを作成できません。";
 
-/* Change language title */
-"Current Language is: " = "現在の言語: ";
-
 /* Placeholder */
 "Current password" = "現在のパスワード";
 
@@ -532,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "カスタム設定";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "カスタマイズ";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "ツールバーのカスタマイズ";
@@ -620,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "破棄しました";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "免責事項";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "キーボードを隠す";
 
@@ -685,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "メタデータをダウンロードしています...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "新規メッセージをダウンロードしています...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "メールをダウンロードすると、メールの内容を検索できます。暗号化されたメッセージがローカルに保存されます。%1$@";
 
@@ -736,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "メールアドレスが無効です";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "メールアドレスが正しくありません。";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "メールアドレス";
@@ -840,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "有効期限はサポートされていません";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "ファイル種別の判定に失敗しました。";
 
@@ -870,6 +876,9 @@
 /* forward action */
 "Forward" = "転送";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "転送(最新メッセージ)";
+
 /* forwarded message title */
 "Forwarded message" = "転送されたメッセージ";
 
@@ -888,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Fw:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
-
 /* contacts talbe cell gender title */
 "Gender" = "性別";
 
@@ -908,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "設定を開く";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "サインインに移動";
 
 /* Got it action */
 "Got it" = "はい";
@@ -938,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "人間による操作であることの確認に失敗しました。";
@@ -976,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。%1$@";
 
+/* One of schedule time options */
+"In the morning" = "午前中";
+
 /* menu title */
 "Inbox" = "受信トレイ";
 
@@ -996,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "表示名を入力…";
-
-/* place holder */
-"Input Notification Email …" = "通知メールを入力…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "安全ではない接続";
@@ -1025,10 +1025,13 @@
 "Invalid username!" = "無効なユーザー名です!";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "友人を Proton に招待し、\n 最大 $90 のクレジットを受けとりましょう！";
+"Invite friends to Proton,\n get up to $90 in credits!" = "友達を Proton に招待し、\n 最大 $90 のクレジットを受けとりましょう！";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "連絡先を Proton Mail に招待することで、エンドツーエンド暗号化をシームレスに利用でき、メッセージを送信する際にパスワード保護を追加できます。";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "友達を Proton に招待: 友達は Mail Plus を無料で体験できます。友達が有料プランを契約した場合、あなたはクレジットを受け取れます。";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "アプリ内課金についてのバグ報告ですか？";
@@ -1071,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "リンクをコピーしました。";
 
+/* Button inside the banner */
+"Load" = "読み込む";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "埋め込み画像を読み込む";
 
@@ -1092,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "アプリをロック";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "更新を受け取り続けるために再度ログインしてください";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "%@ からログアウトしました";
 
 /* error title */
 "Logs" = "ログ";
@@ -1127,9 +1127,6 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "未読にする";
 
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
-
 /* menu title */
 "Menu" = "メニュー";
 
@@ -1144,6 +1141,9 @@
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "メッセージを送信できませんでした。メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。";
+
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "メッセージのダウンロードは一時停止されています。%1$@ の方法をご覧ください。";
 
 /* Composer expiration page title */
 "Message expiration" = "メッセージの有効期限";
@@ -1187,6 +1187,9 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ 以前のメッセージは検索されません。その内容を検索するには、このデバイスのストレージ容量を空けてください。";
 
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "メッセージは Wi-Fi 経由でダウンロードされます。これには時間がかかる場合があり、デバイスがわずかに発熱するかもしれません。この操作はいつでも一時停止できます。";
+
 /* default vcard types */
 "Mobile" = "携帯電話";
 
@@ -1221,6 +1224,9 @@
 
 /* Title */
 "Move to…" = "移動…";
+
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "移動後に次のメッセージを表示";
 
 /* Onboarding title */
 "Neat and tidy" = "自分だけの外観";
@@ -1260,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "次へ";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "移動後に次のメッセージへ";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "ニックネーム";
@@ -1327,12 +1336,18 @@
 /* Alert title */
 "Notice" = "お知らせ";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "通知アクションやその他バックグラウンド処理は利用できなくなります";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "通知";
 
 /* The title of Off setting options */
 "Off" = "無効";
+
+/* Official badge next to sender's name */
+"Official" = "公式";
 
 /* Title of the alert when the device is offline */
 "Offline" = "オフライン";
@@ -1342,9 +1357,6 @@
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "OK";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "最古のメッセージ: ";
@@ -1376,6 +1388,9 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store が購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、iTunes アカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 App Store のサーバー上での決済の検証と確認のためのデータのみ含まれます。";
 
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "このメッセージはフィッシングの可能性があります。ご注意ください。";
+
 /* Setting option title of folder setting page */
 "Parent folder" = "親フォルダー";
 
@@ -1385,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "パスワードの更新に失敗しました。";
 
+/* Message to show to user after updating password. */
+"Password updated" = "パスワードが更新されました";
+
 /* Placeholder */
 "Passwords must match" = "確認のためパスワードを再度入力してください";
 
 /* Text for pause button */
 "Pause" = "一時停止";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "メッセージを (アーカイブなどに) 移動した際に、次のメッセージを表示します。";
 
 /* default vcard types */
 "Personal" = "個人";
@@ -1493,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "メッセージが送信できませんでした。";
 
+/* Settings lock protection section */
+"Protection" = "保護";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton は現在利用できません";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail は現在障害発生中です…";
@@ -1507,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton ステータス";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "ご意見箱";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "プロキシまたはファイアウォールの干渉";
@@ -1569,8 +1587,14 @@
 /* reply action */
 "Reply" = "返信";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "返信 (最後のメッセージに)";
+
 /* reply all action */
 "Reply all" = "全員に返信";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "全員に返信 (最後のメッセージに)";
 
 /* menu title */
 "Report a problem" = "問題を報告";
@@ -1614,6 +1638,9 @@
 /* title */
 "Save Changes" = "変更を保存";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "いつでもメッセージを送信予約できます";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "送信予約";
@@ -1653,7 +1680,7 @@
 /* Action */
 "Send anyway" = "このまま送信";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "フィードバックを送信";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1765,6 +1792,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "通知の休止";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
+
 /* menu title */
 "Spam" = "迷惑メール";
 
@@ -1828,9 +1858,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "スワイプ操作";
-
-/* Swiping gestures */
-"Swiping gestures" = "スワイプ操作";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "選択モードを切り替え";
@@ -1919,9 +1946,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "アクセスしようとしているURLは標準ではないため、正しく読み込まれない可能性があります。 端末の既定のブラウザで開きますか？";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "ユーザーが既にログインしています";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "サインアウトした場合に失われる未送信のメッセージがあります。";
 
@@ -1936,12 +1960,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "この会話には、ごみ箱に入れたメッセージが含まれています";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは Proton Mail のアドレスが送信元になっていますが、外部から送信されたもので認証に失敗しています。不適切に転送されたものか、なりすましの恐れがあります。";
@@ -1973,8 +1991,11 @@
 /* Title */
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "選択したブラウザーがアンインストールされた場合、設定は Safari に戻されます。";
 
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "このツールバーは、受信トレイでメッセージ選択時に表示されます。";
+
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
-"This toolbar is visible when reading a message." = "メッセージを読んでいるとき、ツールバーが表示されます。";
+"This toolbar is visible when reading a message." = "このツールバーは、メッセージ閲覧時に表示されます。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";
@@ -2013,8 +2034,8 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "ツールバーアクション (5 件まで選択可能)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "報酬を確認";
 
 /* mail location desc
    menu title */
@@ -2028,9 +2049,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先をメールアドレスの自動補完に利用することができます。";
 
 /* Placeholder */
 "Two Factor Code" = "二段階認証コード";
@@ -2067,6 +2085,12 @@
 
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "無制限";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "無制限のフォルダーとラベル";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "プランをアップグレードすると、カスタムメッセージの送信予約などを使用できます。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "ロック解除が必要です";
@@ -2287,4 +2311,3 @@
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
-"Customize (verb)" = "Customize";

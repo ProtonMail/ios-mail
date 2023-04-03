@@ -23,7 +23,7 @@
 import Foundation
 
 /// A type that allows instances to be merged, preserving order and removing duplicate elements.
-protocol UniquelyMergeable {
+public protocol UniquelyMergeable {
     associatedtype Element
 
     /// Merges two instances, preserving order and removing duplicate elements.

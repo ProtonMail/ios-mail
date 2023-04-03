@@ -35,8 +35,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
     var testContext: NSManagedObjectContext!
 
     private(set) var updateEventIDWasCalled: Bool = false
-    private(set) var removeUpdateTimeExceptUnreadForMessagesWasCalled: Bool = false
-    private(set) var removeUpdateTimeExceptUnreadForConversationsWasCalled: Bool = false
+    private(set) var removeUpdateTimeExceptUnreadWasCalled: Bool = false
 
     init(context: NSManagedObjectContext? = nil) {
         self.testContext = context
@@ -139,13 +138,8 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
 
     func resetCounter(labelID: LabelID, userID: UserID, type: ViewMode?) {}
 
-    func removeUpdateTimeExceptUnread(by userID: UserID, type: ViewMode) {
-        switch type {
-        case .singleMessage:
-            removeUpdateTimeExceptUnreadForMessagesWasCalled = true
-        case .conversation:
-            removeUpdateTimeExceptUnreadForConversationsWasCalled = true
-        }
+    func removeUpdateTimeExceptUnread(by userID: UserID) {
+        removeUpdateTimeExceptUnreadWasCalled = true
     }
 
     func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {

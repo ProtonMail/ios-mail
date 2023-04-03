@@ -74,44 +74,31 @@ extension FetchMessages {
                 endTime: endTime,
                 fetchUnread: isUnread
             ) { [weak self] _, result in
-                switch result {
-                case .success(let response):
+                do {
+                    let response = try result.get()
                     onFetchSuccess?()
-                    self?.persistOnLocalStorageMessages(isUnread: isUnread, messagesData: response, callback: callback)
-                case .failure(let error):
+                    try self?.persistOnLocalStorageMessages(isUnread: isUnread, messagesData: response)
+                    self?.runOnMainThread { callback(.success(())) }
+                } catch {
                     self?.runOnMainThread { callback(.failure(error)) }
-                    return
                 }
             }
     }
 
-    private func persistOnLocalStorageMessages(
-        isUnread: Bool,
-        messagesData: [String: Any],
-        callback: @escaping UseCaseResult<Void>
-    ) {
-        dependencies
+    private func persistOnLocalStorageMessages(isUnread: Bool, messagesData: [String: Any]) throws {
+        try dependencies
             .cacheService
             .parseMessagesResponse(
                 labelID: params.labelID,
                 isUnread: isUnread,
                 response: messagesData,
                 idsOfMessagesBeingSent: dependencies.messageDataService.idsOfMessagesBeingSent()
-            ) { [weak self] error in
-                if let err = error {
-                    self?.runOnMainThread {
-                        callback(.failure(err))
-                    }
-                } else {
-                    self?.requestMessagesCount(callback: callback)
-                    self?.runOnMainThread {
-                        callback(.success(()))
-                    }
-                }
-            }
+            )
+
+        requestMessagesCount()
     }
 
-    private func requestMessagesCount(callback: @escaping UseCaseResult<Void>) {
+    private func requestMessagesCount() {
         dependencies.messageDataService.fetchMessagesCount { [weak self] (response: MessageCountResponse) in
             guard response.error == nil, let counts = response.counts else {
                 return
@@ -121,7 +108,7 @@ extension FetchMessages {
     }
 
     private func persistOnLocalStorageMessageCounts(counts: [[String: Any]]) {
-        dependencies.eventsService?.processEvents(counts: counts)
+        dependencies.eventsService?.processEvents(messageCounts: counts)
     }
 }
 

@@ -66,6 +66,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     private var searchController: UISearchController?
 
     private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
 
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var searchView: UIView!
@@ -346,7 +347,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     @objc func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
+        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
             guard status.isConnected else {
                 DispatchQueue.main.async {
                     self?.refreshControl?.endRefreshing()
@@ -487,17 +488,21 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
         }
 
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
         let contactGroupVO = ContactGroupVO.init(ID: ID, name: name)
         contactGroupVO.selectAllEmailFromGroup()
-        viewModel.addToContacts(contactGroupVO)
+        let composer = ComposerViewFactory.makeComposer(
+            msg: nil,
+            action: .newDraft,
+            user: user,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            isEditingScheduleMsg: false,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus,
+            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            toContact: contactGroupVO
+        )
 
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
-        coordinator.start()
+        self.present(composer, animated: true)
     }
 }
 
@@ -644,6 +649,10 @@ extension ContactGroupsViewController: ContactGroupsUIProtocol {
 }
 
 extension ContactGroupsViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

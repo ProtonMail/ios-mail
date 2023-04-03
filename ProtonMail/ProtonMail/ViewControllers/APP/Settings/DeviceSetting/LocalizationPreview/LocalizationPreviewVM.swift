@@ -23,7 +23,7 @@ protocol LocalizationPreviewUIProtocol: AnyObject {
 
 final class LocalizationPreviewVM {
     private weak var uiDelegate: LocalizationPreviewUIProtocol?
-    private let languages: [ELanguage] = ELanguage.allItems()
+    private let languages: [ELanguage] = ELanguage.allCases
     private(set) var keys: [String] = []
     private(set) var source: [String: [String]] = [:]
 
@@ -32,7 +32,7 @@ final class LocalizationPreviewVM {
     }
 
     func prepareData() {
-        let currentCode = LanguageManager.currentLanguageCode() ?? "en"
+        let currentCode = LanguageManager().currentLanguageCode() ?? "en"
         for lang in languages {
             setUpL11n(for: lang)
         }
@@ -54,15 +54,15 @@ final class LocalizationPreviewVM {
     }
 
     private func switchLanguage(to langCode: String) {
-        LanguageManager.saveLanguage(byCode: langCode)
+        LanguageManager().saveLanguage(by: langCode)
         LocalizedString.reset()
     }
 
     private func setUpL11n(for lang: ELanguage) {
-        switchLanguage(to: lang.code)
+        switchLanguage(to: lang.languageCode)
         let allLocalizations = LocalizationList().all
         for (key, value) in allLocalizations {
-            let newValues = processPluralIfNeeded(key: key, value: value, code: lang.code).map { "\(lang.code) - \($0)" }
+            let newValues = processPluralIfNeeded(key: key, value: value, code: lang.languageCode).map { "\(lang.languageCode) - \($0)" }
             if source[key] == nil {
                 source[key] = newValues
             } else {

@@ -39,7 +39,7 @@ public class SignupUITestCases {
             .verify.closeButtonIsNotShown()
     }
     
-    public func testBothAccountInteralFirst(signupRobot: SignupRobot) {
+    public func testBothAccountInternalFirst(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountExtButtonIsShown()
@@ -159,8 +159,8 @@ public class SignupUITestCases {
             .verify.signupScreenIsShown()
             .insertExternalEmail(name: randomEmail)
             .nextButtonTapToOwnershipHV()
-            .fillInCodeV3(emailVerificationCode)
-            .verifyCodeButton(to: PasswordRobot.self)
+            .fillInTextField(emailVerificationCode)
+            .tapOnVerifyCodeButton(to: PasswordRobot.self)
             .verify.passwordScreenIsShown()
             .insertPassword(password: password)
             .insertRepeatPassword(password: password)
@@ -449,8 +449,8 @@ public class SignupUITestCases {
             .verify.signupScreenIsShown()
             .insertExternalEmail(name: randomEmail)
             .nextButtonTapToOwnershipHV()
-            .fillInCodeV3(emailVerificationCode)
-            .verifyCodeButton(to: PasswordRobot.self)
+            .fillInTextField(emailVerificationCode)
+            .tapOnVerifyCodeButton(to: PasswordRobot.self)
             .verify.passwordScreenIsShown()
             .insertPassword(password: password)
             .insertRepeatPassword(password: password)

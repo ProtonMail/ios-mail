@@ -100,18 +100,22 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         }
 
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
-
         let contactGroupVO = ContactGroupVO(ID: self.viewModel.groupID.rawValue, name: self.viewModel.name)
         contactGroupVO.selectAllEmailFromGroup()
-        viewModel.addToContacts(contactGroupVO)
 
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
-        coordinator.start()
+        let composer = ComposerViewFactory.makeComposer(
+            msg: nil,
+            action: .newDraft,
+            user: user,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            isEditingScheduleMsg: false,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus,
+            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            toContact: contactGroupVO
+        )
+
+        self.present(composer, animated: true)
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
@@ -222,6 +226,10 @@ extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDele
 }
 
 extension ContactGroupDetailViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

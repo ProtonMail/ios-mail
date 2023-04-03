@@ -21,41 +21,31 @@ import Foundation
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
-final class ComposerMessageHelper: NSObject {
-    init(
-        msgDataService: MessageDataService,
-        contextProvider: CoreDataContextProviderProtocol,
-        user: UserManager,
-        cacheService: CacheService
-    ) {
-        self.messageDataService = msgDataService
-        self.mailboxPassword = user.mailboxPassword
-        self.cacheService = cacheService
-        context = contextProvider.makeComposerMainContext()
-    }
+final class ComposerMessageHelper {
+    private(set) var draft: Draft?
+    private var rawMessage: Message?
 
-    @objc dynamic private(set) var message: Message?
-    let context: NSManagedObjectContext
-    let messageDataService: MessageDataService
-    let mailboxPassword: Passphrase
-    let cacheService: CacheService
+    private let mailboxPassword: Passphrase
+    private let dependencies: Dependencies
 
-    var messageID: MessageID? {
-        if let msg = self.message {
-            return MessageID(msg.messageID)
-        } else {
-            return nil
-        }
-    }
-
-    var attachments: [Attachment] {
-        return (self.message?.attachments.allObjects as? [Attachment]) ?? []
+    var attachments: [AttachmentEntity] {
+        return draft?.attachments ?? []
     }
 
     var attachmentSize: Int {
         return attachments.reduce(into: 0) {
             $0 += $1.fileSize.intValue
         }
+    }
+
+    var updateAttachmentView: (() -> Void)?
+
+    init(
+        dependencies: Dependencies,
+        user: UserManager
+    ) {
+        self.mailboxPassword = user.mailboxPassword
+        self.dependencies = dependencies
     }
 
     func collectDraft(
@@ -69,9 +59,9 @@ final class ComposerMessageHelper: NSObject {
         password: String,
         passwordHint: String
     ) {
-        context.performAndWait {
-            if message == nil {
-                self.message = messageDataService.messageWithLocation(
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            if self.draft == nil {
+                self.rawMessage = self.dependencies.messageDataService.messageWithLocation(
                     recipientList: recipientList,
                     bccList: bccList,
                     ccList: ccList,
@@ -81,105 +71,195 @@ final class ComposerMessageHelper: NSObject {
                     expirationTimeInterval: expiration,
                     body: body,
                     attachments: nil,
-                    mailbox_pwd: mailboxPassword,
+                    mailbox_pwd: self.mailboxPassword,
                     sendAddress: sendAddress,
-                    inManagedObjectContext: context)
-                self.message?.password = password
-                self.message?.passwordHint = passwordHint
-                self.message?.unRead = false
-                self.message?.expirationOffset = Int32(expiration)
+                    inManagedObjectContext: context
+                )
+                self.rawMessage?.password = password
+                self.rawMessage?.passwordHint = passwordHint
+                self.rawMessage?.unRead = false
+                self.rawMessage?.expirationOffset = Int32(expiration)
             } else {
-                self.message?.toList = recipientList
-                self.message?.ccList = ccList
-                self.message?.bccList = bccList
-                self.message?.title = title
-                self.message?.time = Date()
-                self.message?.password = password
-                self.message?.unRead = false
-                self.message?.passwordHint = passwordHint
-                self.message?.expirationOffset = Int32(expiration)
-                if let msg = self.message {
-                    messageDataService
+                self.rawMessage?.toList = recipientList
+                self.rawMessage?.ccList = ccList
+                self.rawMessage?.bccList = bccList
+                self.rawMessage?.title = title
+                self.rawMessage?.time = Date()
+                self.rawMessage?.password = password
+                self.rawMessage?.unRead = false
+                self.rawMessage?.passwordHint = passwordHint
+                self.rawMessage?.expirationOffset = Int32(expiration)
+                if let msg = self.rawMessage {
+                    self.dependencies.messageDataService
                         .updateMessage(msg,
                                        expirationTimeInterval: expiration,
                                        body: body,
-                                       mailbox_pwd: mailboxPassword)
+                                       mailbox_pwd: self.mailboxPassword)
                 }
             }
             _ = context.saveUpstreamIfNeeded()
-
-            if let msg = self.message, msg.objectID.isTemporaryID {
-                try? context.obtainPermanentIDs(for: [msg])
-            }
         }
+        updateDraft()
     }
 
-    func setNewMessage(_ message: Message) {
-        removeNotExistingAttachment(message: message)
-        self.message = message
-        // Cleanup password when user opens the draft
-        self.message?.password = .empty
+    func setNewMessage(objectID: NSManagedObjectID) {
+        var message: Message?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            message = try? context.existingObject(with: objectID) as? Message
+            message?.password = .empty
+        }
+        self.rawMessage = message
+        updateDraft()
     }
 
-    func updateDraft() {
-        messageDataService.saveDraft(self.message)
+    func uploadDraft() {
+        dependencies.messageDataService.saveDraft(self.rawMessage)
     }
 
     func markAsRead() {
-        if let msg = message, msg.unRead {
-            messageDataService.mark(
-                messageObjectIDs: [msg.objectID],
+        if let draft = draft, draft.unRead, let rawMsg = rawMessage {
+            _ = dependencies.messageDataService.mark(
+                messageObjectIDs: [rawMsg.objectID],
                 labelID: Message.Location.draft.labelID,
                 unRead: false
             )
+            updateDraft()
         }
     }
 
     func copyAndCreateDraft(from message: Message, shouldCopyAttachment: Bool) {
-        self.message = messageDataService.messageDecrypter.copy(message: message, copyAttachments: shouldCopyAttachment, context: context)
+        var messageToAssign: Message?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            messageToAssign = self.dependencies.messageDataService
+                .messageDecrypter.copy(
+                    message: message,
+                    copyAttachments: shouldCopyAttachment,
+                    context: context
+                )
+        }
+        self.rawMessage = messageToAssign
+        updateDraft()
     }
 
     func updateAddressID(addressID: String, completion: @escaping () -> Void) {
-        context.perform {
+        dependencies.contextProvider.performOnRootSavingContext { context in
             defer {
+                self.updateDraft()
                 completion()
             }
-            guard let msg = self.message else { return }
+            guard let msg = self.rawMessage else { return }
             msg.nextAddressID = addressID
-            _ = self.context.saveUpstreamIfNeeded()
-            self.messageDataService.updateAttKeyPacket(message: MessageEntity(msg), addressID: addressID)
+            _ = context.saveUpstreamIfNeeded()
+            self.dependencies.messageDataService.updateAttKeyPacket(message: MessageEntity(msg), addressID: addressID)
         }
     }
 
+    func updateExpirationOffset(
+        expirationTime: TimeInterval,
+        password: String,
+        passwordHint: String,
+        completion: @escaping () -> Void
+    ) {
+        guard let msg = self.rawMessage else {
+            completion()
+            return
+        }
+        dependencies.cacheService.updateExpirationOffset(
+            of: msg,
+            expirationTime: expirationTime,
+            pwd: password,
+            pwdHint: passwordHint,
+            completion: {
+                self.updateDraft()
+                completion()
+            }
+        )
+    }
+
+    func updateMessageByMessageAction(_ action: ComposeMessageAction) {
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { _ in
+            defer {
+                self.updateDraft()
+            }
+            switch action {
+            case .reply, .replyAll:
+                self.rawMessage?.action = action.rawValue as NSNumber?
+                if let title = self.draft?.title {
+                    if !title.hasRe() {
+                        let re = LocalString._composer_short_reply
+                        self.rawMessage?.title = "\(re) \(title)"
+                    }
+                }
+            case .forward:
+                self.rawMessage?.action = action.rawValue as NSNumber?
+                if let title = self.draft?.title {
+                    if !(title.hasFwd() || title.hasFw()) {
+                        let fwd = LocalString._composer_short_forward_shorter
+                        self.rawMessage?.title = "\(fwd) \(title)"
+                    }
+                }
+            default:
+                break
+            }
+        }
+    }
+
+    func decryptBody() -> String {
+        guard let msg = rawMessage else {
+            fatalError("Message should never be nil")
+        }
+        var result = ""
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { _ in
+            do {
+                result = try self.dependencies.messageDataService.messageDecrypter.decrypt(message: msg)
+            } catch {
+                result = msg.bodyToHtml()
+            }
+        }
+        return result
+    }
+
+    func getRawMessageObject() -> Message? {
+        return rawMessage
+    }
+
+    func getMessageEntity() -> MessageEntity? {
+        guard let rawMessage = self.rawMessage else {
+            return nil
+        }
+        var message: MessageEntity?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            message = MessageEntity(rawMessage)
+        }
+        return message
+    }
+}
+
+// MARK: - Attachment related methods
+
+extension ComposerMessageHelper {
     func addPublicKeyIfNeeded(email: String,
                               fingerprint: String,
                               data: Data,
                               shouldStripMetaDate: Bool,
-                              completion: @escaping (Attachment?) -> Void) {
-        guard let msg = self.message else {
-            completion(nil)
-            return
-        }
-
-        let filename = "publickey - \(email) - \(fingerprint).asc"
-        var attached: Bool = false
-        // check if key already attahced
-        let atts = attachments.filter({ !$0.isSoftDeleted })
-        for att in atts {
-            if att.fileName == filename {
+                              completion: @escaping (AttachmentEntity?) -> Void) {
+        let fileName = "publicKey - \(email) - \(fingerprint).asc"
+        var attached = false
+        // check if key already attached
+        let attachments = attachments.filter { !$0.isSoftDeleted }
+        for attachment in attachments {
+            if attachment.name == fileName {
                 attached = true
                 break
             }
         }
 
         if !attached {
-            data.toAttachment(
-                msg,
-                fileName: filename,
-                type: "application/pgp-keys",
-                stripMetadata: shouldStripMetaDate
-            ).done { attachmentToAdd in
-                attachmentToAdd?.setupHeaderInfo(isInline: false, contentID: nil)
+            self.addAttachment(data: data,
+                               fileName: fileName,
+                               shouldStripMetaData: shouldStripMetaDate,
+                               type: "application/pgp-keys",
+                               isInline: false) { attachmentToAdd in
                 completion(attachmentToAdd)
             }
         } else {
@@ -187,168 +267,195 @@ final class ComposerMessageHelper: NSObject {
         }
     }
 
-    func updateExpirationOffset(expirationTime: TimeInterval,
-                                password: String,
-                                passwordHint: String,
-                                completion: @escaping () -> Void) {
-        guard let msg = self.message else {
-            completion()
-            return
-        }
-        cacheService.updateExpirationOffset(of: msg,
-                                            expirationTime: expirationTime,
-                                            pwd: password,
-                                            pwdHint: passwordHint,
-                                            completion: completion)
-    }
-
-    func updateMessageByMessageAction(_ action: ComposeMessageAction) {
-        switch action {
-        case .reply, .replyAll:
-            self.message?.action = action.rawValue as NSNumber?
-            if let title = self.message?.title {
-                if !title.hasRe() {
-                    let re = LocalString._composer_short_reply
-                    self.message?.title = "\(re) \(title)"
-                }
-            }
-        case .forward:
-            self.message?.action = action.rawValue as NSNumber?
-            if let title = self.message?.title {
-                if !( title.hasFwd() || title.hasFw() ) {
-                    let fwd = LocalString._composer_short_forward
-                    self.message?.title = "\(fwd) \(title)"
-                }
-            }
-        default:
-            break
-        }
-    }
-}
-
-// MARK: - attachment related functions
-extension ComposerMessageHelper {
-    func removeNotExistingAttachment(message: Message) {
-        let notExistingAttachments: [Attachment] = message.attachments
-            .compactMap { $0 as? Attachment }
-            .filter { $0.localURL?.absoluteString.contains(check: "Shared/AppGroup") ?? false }
-        guard !notExistingAttachments.isEmpty,
-              let context = notExistingAttachments.first?.managedObjectContext else { return }
-        context.performAndWait {
-            notExistingAttachments.forEach { $0.isSoftDeleted = true }
-            _ = context.saveUpstreamIfNeeded()
-        }
-    }
-
-    func addAttachment(_ file: FileData, shouldStripMetaData: Bool, order: Int? = nil, completion: ((Attachment?) -> Void)?) {
-        guard let msg = message else {
-            return
-        }
-        file.contents.toAttachment(msg,
-                                   fileName: file.name,
-                                   type: file.ext,
-                                   stripMetadata: shouldStripMetaData,
-                                   isInline: false).done { attachment in
-            defer {
-                completion?(attachment)
-            }
-            guard let att = attachment, let msg = self.message else { return }
-            self.context.performAndWait {
-                att.message = msg
-                if let order = order {
-                    att.order = Int32(order)
-                }
-                _ = self.context.saveUpstreamIfNeeded()
-            }
-            if att.objectID.isTemporaryID {
-                self.context.performAndWait {
-                    try? self.context.obtainPermanentIDs(for: [att])
-                }
-            }
-        }.cauterize()
-    }
-
-    func addMimeAttachments(attachment: MimeAttachment, shouldStripMetaData: Bool, completion: @escaping (Attachment?) -> Void) {
-        attachment.toAttachment(message: self.message, stripMetadata: shouldStripMetaData).done { attachment in
-            completion(attachment)
-        }.cauterize()
-    }
-
-    func deleteAttachment(_ attachment: Attachment, completion: @escaping () -> Void) {
-        guard let msgID = self.messageID else { return }
-        messageDataService.delete(att: AttachmentEntity(attachment),
-                                  messageID: msgID).done { _ in
-            completion()
-        }.cauterize()
-    }
-
     func addAttachment(data: Data,
                        fileName: String,
                        shouldStripMetaData: Bool,
+                       type: String,
                        isInline: Bool,
-                       completion: @escaping (Attachment?) -> Void) {
-        guard let msg = self.message else {
-            completion(nil)
-            return
+                       completion: @escaping (AttachmentEntity?) -> Void) {
+        dependencies.contextProvider.performOnRootSavingContext { context in
+            data.toAttachment(context,
+                              fileName: fileName,
+                              type: type,
+                              stripMetadata: shouldStripMetaData,
+                              isInline: isInline).done { attachment in
+                if let attachment = attachment {
+                    self.addAttachment(attachment)
+                }
+                self.updateDraft()
+                completion(attachment)
+            }.cauterize()
         }
-        data.toAttachment(msg, fileName: fileName,
-                          type: "image/png",
-                          stripMetadata: shouldStripMetaData,
-                          isInline: isInline).done { attachment in
-            completion(attachment)
+    }
+
+    func addAttachment(_ attachment: AttachmentEntity) {
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            if let attachmentObject = context.object(with: attachment.objectID.rawValue) as? Attachment {
+                self.addAttachmentObject(attachmentObject, context: context)
+                self.uploadAttachment(attachment: attachmentObject)
+            }
+        }
+    }
+
+    func deleteAttachment(
+        _ attachment: AttachmentEntity,
+        completion: @escaping () -> Void
+    ) {
+        guard let msgID = draft?.messageID else { return }
+        dependencies.messageDataService.delete(
+            att: attachment,
+            messageID: msgID
+        ).done { _ in
+            self.updateDraft()
+            completion()
         }.cauterize()
     }
 
-    func addAttachment(_ attachment: Attachment) {
-        guard let msg = self.message else { return }
-        context.performAndWait {
-            attachment.message = msg
-            _ = context.saveUpstreamIfNeeded()
-        }
-    }
-
-    func removeInlineAttachment(fileName: String,
-                                isRealAttachment: Bool,
-                                completion: (() -> Void)?) {
+    func removeAttachment(fileName: String,
+                          isRealAttachment: Bool,
+                          completion: (() -> Void)?) {
         // find attachment to remove
-        guard let attachment = self.attachments.first(where: { $0.fileName.hasPrefix(fileName)
+        guard let attachment = self.attachments.first(where: { $0.name.hasPrefix(fileName)
         }) else { return }
 
         // decrement number of attachments in message manually
-        let number = self.attachments.filter({ attach in
+        let number = self.attachments.filter { attach in
             if attach.isSoftDeleted {
                 return false
             } else if isRealAttachment {
-                return !attach.inline()
+                return !attach.isInline
             }
             return true
-        }).count
+        }.count
 
         let newNum = number > 0 ? number - 1 : 0
-        context.performAndWait {
-            self.message?.numAttachments = NSNumber(value: newNum)
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            self.rawMessage?.numAttachments = NSNumber(value: newNum)
             _ = context.saveUpstreamIfNeeded()
         }
 
         deleteAttachment(attachment) {
+            self.updateDraft()
             completion?()
+        }
+    }
+
+    func addAttachment(
+        _ file: FileData,
+        shouldStripMetaData: Bool,
+        completion: ((AttachmentEntity?) -> Void)?
+    ) {
+        dependencies.contextProvider.performOnRootSavingContext { context in
+            file.contents.toAttachment(context,
+                                       fileName: file.name,
+                                       type: file.ext,
+                                       stripMetadata: shouldStripMetaData,
+                                       isInline: false).done { attachment in
+                defer {
+                    self.updateDraft()
+                    completion?(attachment)
+                }
+                guard let att = attachment else { return }
+                self.addAttachment(att)
+            }.cauterize()
+        }
+    }
+
+    func addMimeAttachments(attachment: MimeAttachment, shouldStripMetaData: Bool, completion: @escaping (AttachmentEntity?) -> Void) {
+        dependencies.contextProvider.performOnRootSavingContext { context in
+            attachment.toAttachment(context: context, stripMetadata: shouldStripMetaData).done { attachment in
+                if let attachment = attachment {
+                    self.addAttachment(attachment)
+                }
+                self.updateDraft()
+                completion(attachment)
+            }.cauterize()
         }
     }
 
     func updateAttachmentCount(isRealAttachment: Bool) {
         // decrement number of attachments in message manually
-        let number = self.attachments.filter({ attach in
+        let number = self.attachments.filter { attach in
             if attach.isSoftDeleted {
                 return false
             } else if isRealAttachment {
-                return !attach.inline()
+                return !attach.isInline
             }
             return true
-        }).count
+        }.count
 
-        context.performAndWait {
-            self.message?.numAttachments = NSNumber(value: number)
-             _ = context.saveUpstreamIfNeeded()
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            self.rawMessage?.numAttachments = NSNumber(value: number)
+            _ = context.saveUpstreamIfNeeded()
         }
+        updateDraft()
+    }
+
+    func updateAttachmentOrders(completion: @escaping ([AttachmentEntity]) -> Void) {
+        guard let msg = rawMessage else {
+            completion([])
+            return
+        }
+        dependencies.contextProvider.performOnRootSavingContext { context in
+            let attachments = msg.attachments.allObjects.compactMap { $0 as? Attachment }
+            // Make the newly added attachment to the bottom of the attachment list.
+            attachments.forEach {
+                if $0.order == -1 {
+                    let numberOfOrderedAttachments = attachments.filter { $0.order != -1 }.count
+                    $0.order = Int32(numberOfOrderedAttachments)
+                }
+                $0.message = msg
+            }
+            _ = context.saveUpstreamIfNeeded()
+            let sortedAttachments = attachments
+                .sorted(by: { $0.order < $1.order })
+                .map(AttachmentEntity.init)
+            completion(sortedAttachments)
+        }
+    }
+}
+
+extension ComposerMessageHelper {
+    private func updateDraft() {
+        guard let msg = rawMessage else {
+            return
+        }
+        var newDraft: Draft?
+        msg.managedObjectContext?.performAndWait {
+            newDraft = .init(rawMessage: msg)
+        }
+        self.draft = newDraft
+    }
+
+    private func uploadAttachment(attachment: Attachment) {
+        dependencies.messageDataService.upload(att: attachment)
+    }
+
+    private func addAttachmentObject(
+        _ attachment: Attachment,
+        context: NSManagedObjectContext
+    ) {
+        guard let msg = self.rawMessage else { return }
+        attachment.message = msg
+        if attachment.headerInfo == nil {
+            attachment.setupHeaderInfo(isInline: false, contentID: nil)
+        }
+
+        let attachments = msg.attachments
+            .compactMap { $0 as? Attachment }
+            .filter { !$0.inline() }
+        msg.numAttachments = NSNumber(value: attachments.count)
+
+        attachment.order = msg.numAttachments.int32Value
+        _ = context.saveUpstreamIfNeeded()
+        updateDraft()
+    }
+}
+
+extension ComposerMessageHelper {
+    struct Dependencies {
+        let messageDataService: MessageDataServiceProtocol
+        let cacheService: CacheServiceProtocol
+        let contextProvider: CoreDataContextProviderProtocol
     }
 }

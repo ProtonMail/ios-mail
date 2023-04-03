@@ -31,16 +31,20 @@ import ProtonCore_Utilities
 
 extension PMAPIService {
     
+    static var noAuthDelegateError: NSError { .protonMailError(0, localizedDescription: "AuthDelegate is required") }
+
+    static var emptyTokenError: NSError { .protonMailError(0, localizedDescription: "Empty token") }
+
     enum AuthCredentialFetchingResult: Equatable {
         case found(credentials: AuthCredential)
         case notFound
         case wrongConfigurationNoDelegate
-        
+
         var toNSError: NSError? {
             switch self {
             case .found: return nil
-            case .notFound: return NSError.protonMailError(0, localizedDescription: "Empty token")  // TODO: translations
-            case .wrongConfigurationNoDelegate: return NSError.protonMailError(0, localizedDescription: "AuthDelegate is required") // TODO: translations
+            case .notFound: return emptyTokenError
+            case .wrongConfigurationNoDelegate: return noAuthDelegateError
             }
         }
     }
@@ -77,17 +81,32 @@ extension PMAPIService {
         }
     }
 
-    enum SessionAcquisitionResult {
-        case acquired(AuthCredential)
-        case acquiringError(ResponseError)
-        case wrongConfigurationNoDelegate(NSError)
+    enum FetchingExistingOrAcquiringNewUnauthCredentialsResult {
+        case foundExisting(AuthCredential)
+        case triedAcquiringNew(SessionAcquisitionResult)
     }
 
-    func acquireSession(deviceFingerprints: ChallengeProperties, completion: @escaping (SessionAcquisitionResult) -> Void) {
+    func fetchExistingCredentialsOrAcquireNewUnauthCredentials(deviceFingerprints: ChallengeProperties,
+                                                               completion: @escaping (FetchingExistingOrAcquiringNewUnauthCredentialsResult) -> Void) {
         performSeriallyInAuthCredentialQueue { continuation in
-            self.acquireSessionWithoutSynchronization(deviceFingerprints: deviceFingerprints,
-                                                      continuation: continuation,
-                                                      completion: completion)
+            self.fetchAuthCredentialsWithoutSynchronization(
+                continuation: { /* we explicitely keep the queue locked because the continuation will be called in completion block  */ },
+                completion: { (fetchingResult: AuthCredentialFetchingResult) in
+                    switch fetchingResult {
+                    case .found(let credentials):
+                        self.finalize(result: .foundExisting(credentials),
+                                      continuation: continuation, completion: completion)
+                    case .wrongConfigurationNoDelegate:
+                        self.finalize(result: .triedAcquiringNew(.wrongConfigurationNoDelegate(PMAPIService.noAuthDelegateError)),
+                                      continuation: continuation, completion: completion)
+                    case .notFound:
+                        self.acquireSessionWithoutSynchronization(
+                            deviceFingerprints: deviceFingerprints,
+                            continuation: continuation,
+                            completion: { completion(.triedAcquiringNew($0)) })
+                    }
+                }
+            )
         }
     }
     
@@ -158,7 +177,7 @@ extension PMAPIService {
             return
         }
         
-        authDelegate.onRefresh(sessionUID: sessionUID, service: self) { result in
+        onRefreshCredential(credential: currentCredentials) { result in
             self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
                 if withoutSupportForUnauthenticatedSessions {
                     self.handleRefreshingResultsWithUnsupportedUnauthenticatedSessions(result, credentialsCausing401, refreshCounter, deviceFingerprints, continuation, completion)
@@ -169,6 +188,19 @@ extension PMAPIService {
         }
     }
 
+    private func onRefreshCredential(credential: AuthCredential,
+                                     complete: @escaping AuthRefreshResultCompletion) {
+        refreshCredential(Credential(credential) ) { result in
+            switch result {
+            case .failure(let responseError):
+                complete(.failure(.from(responseError)))
+            case .success(let credential):
+                complete(.success(credential))
+            }
+        }
+        
+    }
+    
     private func handleRefreshingResults(_ result: Result<Credential, AuthErrors>,
                                          _ credentialsCausing401: AuthCredential,
                                          _ refreshCounter: Int,
@@ -187,7 +219,7 @@ extension PMAPIService {
         case .failure(.networkingError(let responseError))
             where credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
 
-            authDelegate?.eraseUnauthSessionCredentials(sessionUID: sessionUID)
+            authDelegate?.onUnauthenticatedSessionInvalidated(sessionUID: sessionUID)
 
             self.acquireSessionWithoutSynchronization(deviceFingerprints: deviceFingerprints, continuation: continuation) { (result: SessionAcquisitionResult) in
                 switch result {
@@ -202,7 +234,7 @@ extension PMAPIService {
 
         case .failure(.networkingError(let responseError))
             where !credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
-            authDelegate?.onLogout(sessionUID: sessionUID)
+            authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
 
             continuation()
             completion(.logout(underlyingError: responseError))
@@ -242,7 +274,7 @@ extension PMAPIService {
             // according to documentation 422 indicates expired refresh token and 400 indicates invalid refresh token
             // both situations should result in user logout
         case .failure(.networkingError(let responseError)) where responseError.httpCode == 422 || responseError.httpCode == 400:
-            authDelegate?.onLogout(sessionUID: sessionUID)
+            authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
             continuation()
             completion(.logout(underlyingError: responseError))
 
@@ -258,6 +290,12 @@ extension PMAPIService {
             continuation()
             completion(.refreshingError(underlyingError: error))
         }
+    }
+
+    enum SessionAcquisitionResult {
+        case acquired(AuthCredential)
+        case acquiringError(ResponseError)
+        case wrongConfigurationNoDelegate(NSError)
     }
 
     private func acquireSessionWithoutSynchronization(deviceFingerprints: ChallengeProperties,
@@ -304,8 +342,8 @@ extension PMAPIService {
                                         userName: "",
                                         userID: "",
                                         scopes: sessionsResponse.scopes)
-            authDelegate.onUpdate(credential: credential, sessionUID: self.sessionUID)
-            self.setSessionUID(uid: sessionsResponse.UID)
+            authDelegate.onSessionObtaining(credential: credential)
+            self.setSessionUID(uid: credential.UID)
             continuation()
             completion(.acquired(AuthCredential(credential)))
         case .failure(let error):

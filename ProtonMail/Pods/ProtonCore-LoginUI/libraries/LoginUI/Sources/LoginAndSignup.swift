@@ -21,6 +21,7 @@
 
 import Foundation
 import enum ProtonCore_DataModel.ClientApp
+import ProtonCore_Authentication
 import ProtonCore_Doh
 import ProtonCore_Login
 import ProtonCore_Networking
@@ -31,6 +32,7 @@ import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
+import ProtonCore_Utilities
 import UIKit
 import TrustKit
 
@@ -180,20 +182,14 @@ public final class LoginAndSignup {
     
     public init(appName: String,
                 clientApp: ClientApp,
-                environment: Environment,
-                trustKit: TrustKit? = nil,
-                apiServiceDelegate: APIServiceDelegate,
-                forceUpgradeDelegate: ForceUpgradeDelegate,
+                apiService: APIService,
                 minimumAccountType: AccountType,
                 isCloseButtonAvailable: Bool = true,
                 paymentsAvailability: PaymentsAvailability,
                 signupAvailability: SignupAvailability = .notAvailable) {
         container = Container(appName: appName,
                               clientApp: clientApp,
-                              environment: environment,
-                              trustKit: trustKit,
-                              apiServiceDelegate: apiServiceDelegate,
-                              forceUpgradeDelegate: forceUpgradeDelegate,
+                              apiService: apiService,
                               minimumAccountType: minimumAccountType)
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.paymentsAvailability = paymentsAvailability
@@ -204,30 +200,6 @@ public final class LoginAndSignup {
         if ProcessInfo.processInfo.environment["FeatureSwitch"] != nil {
             FeatureFactory.shared.loadEnv()
         }
-    }
-    
-    @available(*, deprecated, message: "DoHInterface is deprecated try to use Environment")
-    public init(appName: String,
-                clientApp: ClientApp,
-                doh: DoHInterface,
-                trustKit: TrustKit? = nil,
-                apiServiceDelegate: APIServiceDelegate,
-                forceUpgradeDelegate: ForceUpgradeDelegate,
-                minimumAccountType: AccountType,
-                isCloseButtonAvailable: Bool = true,
-                paymentsAvailability: PaymentsAvailability,
-                signupAvailability: SignupAvailability = .notAvailable) {
-        container = Container(appName: appName,
-                              clientApp: clientApp,
-                              doh: doh,
-                              trustKit: trustKit,
-                              apiServiceDelegate: apiServiceDelegate,
-                              forceUpgradeDelegate: forceUpgradeDelegate,
-                              minimumAccountType: minimumAccountType)
-        self.isCloseButtonAvailable = isCloseButtonAvailable
-        self.paymentsAvailability = paymentsAvailability
-        self.signupAvailability = signupAvailability
-        self.minimumAccountType = minimumAccountType
     }
 
     @discardableResult

@@ -166,7 +166,7 @@
 "All Mail" = "All Mail";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "All your messages are downloaded";
@@ -555,7 +555,7 @@
 "Creating label not allowed" = "Creating label not allowed";
 
 /* Change language title */
-"Current Language is: " = "Current Language is: ";
+"Current Language: " = "Current Language: ";
 
 /* Placeholder */
 "Current password" = "Current password";
@@ -723,7 +723,7 @@
 "Downloading metadata ..." = "Downloading metadata ...";
 
 /* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Downloading new messages ...";
+"Downloading new messages..." = "Downloading new messages...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@";
@@ -775,7 +775,7 @@
 "Email address disabled" = "Email address disabled";
 
 /* The error message is shown in composer */
-"Email address is invalid" = "Email address is invalid";
+"Invalid email address" = "Invalid email address";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Email addresses";
@@ -922,9 +922,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Fw:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Gender";
 
@@ -944,7 +941,7 @@
 "Go to settings" = "Go to settings";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Go to sign-in";
+"Go to sign in" = "Go to sign in";
 
 /* Got it action */
 "Got it" = "Got it";
@@ -1029,7 +1026,7 @@
 "Input Display Name…" = "Input Display Name…";
 
 /* place holder */
-"Input Notification Email …" = "Input Notification Email …";
+"Input Notification Email…" = "Input Notification Email…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Insecure connection";
@@ -1119,10 +1116,10 @@
 "Lock The App" = "Lock The App";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
+"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Logged out of %@";
+"Signed out of %@" = "Signed out of %@";
 
 /* error title */
 "Logs" = "Logs";
@@ -1365,9 +1362,6 @@
 /* Action */
 "OK" = "OK";
 
-/* Title for the alert button to disable content search. */
-"Okay" = "Okay";
-
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Oldest message: ";
 
@@ -1537,7 +1531,7 @@
 "Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Send feedback" = "Send feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall interference";
@@ -1845,9 +1839,6 @@
 /* cell title in app settings */
 "Swipe actions" = "Swipe actions";
 
-/* Swiping gestures */
-"Swiping gestures" = "Swiping gestures";
-
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Switch selection mode";
 
@@ -1930,7 +1921,7 @@
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "The user is already logged in";
+"The user is already signed in" = "The user is already signed in";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "There are unsent messages that will be lost if you sign out";
@@ -1951,10 +1942,10 @@
 "This conversation contains trashed messages" = "This conversation contains trashed messages";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
@@ -2034,7 +2025,7 @@
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Two Factor Code";

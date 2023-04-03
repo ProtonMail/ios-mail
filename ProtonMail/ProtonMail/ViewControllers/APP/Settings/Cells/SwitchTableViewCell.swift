@@ -22,8 +22,9 @@
 
 import ProtonCore_UIFoundations
 import UIKit
+import protocol ProtonCore_Foundations.AccessibleCell
 
-final class SwitchTableViewCell: UITableViewCell {
+final class SwitchTableViewCell: UITableViewCell, AccessibleCell {
     static var CellID: String {
         return "\(self)"
     }
@@ -78,5 +79,6 @@ final class SwitchTableViewCell: UITableViewCell {
         centerConstraint.priority = UILayoutPriority(rawValue: 750.0)
         self.switchView.accessibilityLabel = topline
         self.layoutIfNeeded()
+        generateCellAccessibilityIdentifiers(topline)
     }
 }

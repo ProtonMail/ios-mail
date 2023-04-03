@@ -23,7 +23,6 @@ final class ToolbarCustomizeSpotlightView: UIView {
     private let shadowView = SubviewsFactory.shadowView
     private let arrowView = SubviewsFactory.arrowView
     private let infoView = SubviewsFactory.infoView
-    private let circleRadius: CGFloat = 25.0
 
     private let titleLabel = SubviewsFactory.titleLabel
     private let contentLabel = SubviewsFactory.contentLabel
@@ -158,16 +157,6 @@ final class ToolbarCustomizeSpotlightView: UIView {
         return titleLabelHeight + contentLabelHeight + verticalPadding * 3 + buttonHeight
     }
 
-    private func makeCirclePath(targetFrame: CGRect) -> UIBezierPath {
-        let center = CGPoint(x: targetFrame.midX,
-                             y: targetFrame.midY)
-        return UIBezierPath(arcCenter: center,
-                            radius: circleRadius,
-                            startAngle: 0,
-                            endAngle: CGFloat.pi * 2.0,
-                            clockwise: true)
-    }
-
     private func makeRectanglePath(targetFrame: CGRect) -> UIBezierPath {
         return UIBezierPath(roundedRect: targetFrame, cornerRadius: 0)
     }
@@ -222,17 +211,6 @@ final class ToolbarCustomizeSpotlightView: UIView {
         infoViewPath.addLine(to: arrowTopPoint)
         infoViewPath.addLine(to: arrowRightPoint)
         return infoViewPath
-    }
-
-    private func makeCircleShadowLayer(circlePath: CGPath) -> CALayer {
-        let shadowLayer = CALayer()
-        shadowLayer.shadowPath = circlePath
-        shadowLayer.shadowColor = UIColor.white.cgColor
-        shadowLayer.shadowOpacity = 1
-        shadowLayer.shadowRadius = 34
-        shadowLayer.shadowOffset = CGSize(width: 0, height: 4)
-        shadowLayer.masksToBounds = false
-        return shadowLayer
     }
 }
 

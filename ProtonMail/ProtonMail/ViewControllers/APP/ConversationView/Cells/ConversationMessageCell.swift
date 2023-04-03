@@ -19,6 +19,7 @@ class ConversationMessageCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        customView.initialsLabel.isHidden = false
 
         cellReuse?()
     }

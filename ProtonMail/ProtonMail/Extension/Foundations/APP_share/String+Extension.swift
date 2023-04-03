@@ -23,10 +23,6 @@
 import Foundation
 
 extension String {
-    var fullNSRange: NSRange {
-        NSRange(startIndex..<endIndex, in: self)
-    }
-
     func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }
@@ -43,7 +39,7 @@ extension String {
     }
 
     func hasFwd () -> Bool {
-        let fwd = LocalString._composer_short_forward
+        let fwd = LocalString._composer_short_forward_shorter
         let checkCount = fwd.count
         if self.count < checkCount {
             return false

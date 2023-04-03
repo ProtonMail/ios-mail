@@ -209,6 +209,7 @@ extension ComposePasswordVC {
         self.removeView.isHidden = false
         self.removeView.backgroundColor = ColorProvider.BackgroundSecondary
         self.removeIcon.tintColor = ColorProvider.IconNorm
+        self.removeIcon.image = IconProvider.trash
         self.removeLabel.attributedText = LocalString._composer_eo_remove_pwd.apply(style: FontManager.Caption)
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickRemove))

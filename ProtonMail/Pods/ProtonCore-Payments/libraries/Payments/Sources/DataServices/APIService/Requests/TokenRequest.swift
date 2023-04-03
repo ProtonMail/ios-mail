@@ -24,23 +24,23 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class TokenRequest: BaseApiRequest<TokenResponse> {
+public final class TokenRequest: BaseApiRequest<TokenResponse> {
     private let amount: Int
     private let receipt: String
 
-    init (api: APIService, amount: Int, receipt: String) {
+    public init (api: APIService, amount: Int, receipt: String) {
         self.amount = amount
         self.receipt = receipt
         super.init(api: api)
     }
 
-    override var method: HTTPMethod { .post }
+    override public var method: HTTPMethod { .post }
 
-    override var isAuth: Bool { false }
+    override public var isAuth: Bool { false }
 
-    override var path: String { super.path + "/v4/tokens" }
+    override public var path: String { super.path + "/v4/tokens" }
 
-    override var parameters: [String: Any]? {
+    override public var parameters: [String: Any]? {
         let paymentDict: [String: Any]
         if let card = ProtonCore_Payments.TemporaryHacks.testCardForPayments {
             paymentDict = [
@@ -57,10 +57,10 @@ final class TokenRequest: BaseApiRequest<TokenResponse> {
     }
 }
 
-final class TokenResponse: Response {
+public final class TokenResponse: Response {
     var paymentToken: PaymentToken?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         let (result, token) = decodeResponse(response as Any, to: PaymentToken.self, errorToReturn: .tokenDecode)
         self.paymentToken = token

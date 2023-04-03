@@ -17,7 +17,6 @@ class ConversationStateService: ConversationStateProviderProtocol {
         }
     }
 
-    private let userDefaults: KeyValueStoreProvider
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
 
     private var delegates: [ConversationStateServiceDelegate] {
@@ -30,8 +29,7 @@ class ConversationStateService: ConversationStateProviderProtocol {
         }
     }
 
-    init(userDefaults: KeyValueStoreProvider, viewMode: ViewMode) {
-        self.userDefaults = userDefaults
+    init(viewMode: ViewMode) {
         self.viewModeState = viewMode
     }
 

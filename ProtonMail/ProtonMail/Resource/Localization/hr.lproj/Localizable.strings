@@ -4,12 +4,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ od %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d sekundi";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d odabrano";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Ispustite ovdje da biste dodali kao privitak";
 
@@ -98,9 +92,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Sva pošta";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Sve postavke zaštite poništiti će se i izbrisati nakon odjave iz aplikacije.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Omogući alternativno usmjeravanje";
@@ -215,9 +206,6 @@
 
 /* Error Description */
 "Bad response" = "Loš odgovor";
-
-/* message Bcc: feild */
-"Bcc:" = "Bcc:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Rođendan";
@@ -405,9 +393,6 @@
 /* Alert title */
 "Creating label not allowed" = "Stvaranje oznake nije dopušteno";
 
-/* Change language title */
-"Current Language is: " = "Trenutni jezik je: ";
-
 /* Placeholder */
 "Current password" = "Trenutna lozinka";
 
@@ -554,9 +539,6 @@
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Adresa e-pošte je onemogućena";
 
-/* The error message is shown in composer */
-"Email address is invalid" = "Nevažeća adresa e-pošte";
-
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adrese e-pošte";
 
@@ -630,9 +612,6 @@
 /* alert title */
 "Expiration not supported" = "Vremenski istek nije podržan";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Neuspješno utvrđivanje vrste datoteke";
 
@@ -663,12 +642,6 @@
 /* message From: field text */
 "From:" = "Od:";
 
-/* abbreviation of forward: */
-"Fw:" = "Fw:";
-
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Spol";
 
@@ -687,9 +660,6 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Idi na postavke";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Idi na prijavu";
-
 /* Got it action */
 "Got it" = "Shvaćam";
 
@@ -707,9 +677,6 @@
 
 /* Title */
 "Hide details" = "Sakrij detalje";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Ljudska provjera nije uspjela";
@@ -757,17 +724,11 @@
 /* place holder */
 "Input Display Name…" = "Unesite zaslonsko ime…";
 
-/* place holder */
-"Input Notification Email …" = "Unesi adresu e-pošte za obavijesti…";
-
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nesigurna veza";
 
 /* The preconditions are not met */
 "Internal Error" = "Unutarnja pogreška";
-
-/* default vcard types */
-"Internet" = "Internet";
 
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
@@ -859,9 +820,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Označi kao nepročitano";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Izbornik";
@@ -991,9 +949,6 @@
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Nije pronađen nijedan ključ za unutarnjeg korisnika";
 
-/* no object error, local only , this could be not translated! */
-"no object" = "no object";
-
 /* Placeholder if message sender is empty */
 "No Recipient" = "Nema primatelja";
 
@@ -1069,6 +1024,9 @@
 
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
+
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Naš je sustav ovu e-poruku označio kao pokušaj krađe identiteta. Molimo provjerite je li legitimna poruka.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Roditeljska mapa";
@@ -1173,25 +1131,16 @@
 "Proton is down" = "Proton je van mreže";
 
 /* Title */
-"Proton Mail" = "Proton Mail";
-
-/* Title */
 "Proton Mail is currently offline…" = "Proton Mail je trenutno van mreže…";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Ostavi povratnu informaciju";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Poteškoće s proxy/vatrozidom";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Ponovno autenticiraj";
-
-/* abbreviation of reply: */
-"Re:" = "Re:";
 
 /* No comment provided by engineer. */
 "Read" = "Pročitano";
@@ -1308,7 +1257,7 @@
 /* Action */
 "Send anyway" = "Svejedno pošalji";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Pošalji povratne informacije";
 
 /* Description */
@@ -1451,9 +1400,6 @@
 /* cell title in app settings */
 "Swipe actions" = "Akcija potezanjem prsta";
 
-/* Swiping gestures */
-"Swiping gestures" = "Povlačenje prstom";
-
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Prebaci na način odabira";
 
@@ -1520,9 +1466,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL kojem pokušavate pristupiti nije standardan i možda se neće pravilno učitati. Želite li ga otvoriti pomoću zadanog preglednika vašeg uređaja?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Korisnik je već prijavljen";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Poruke koje nisu poslane biti će izgubljene ako se odjavite";
 
@@ -1537,12 +1480,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ovaj razgovor sadrži poruke koje su u otpadu";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte nije prošla autentikaciju vlastite domene. Može biti lažna ili nepropisno proslijeđena!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte nije prošla autentikaciju vlastite domene. Može biti lažna ili nepropisno proslijeđena!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od Proton Mail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
@@ -1578,9 +1515,6 @@
 /* One of schedule time options */
 "Tomorrow" = "Sutra";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* mail location desc
    menu title */
 "Trash" = "Otpad";
@@ -1594,14 +1528,8 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Pokušajte se povezati na Proton s druge mreže (ili upotrijebite %1$@ ili %2$@).";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Uključite ovu značajku za automatsko dovršavanje adresa e-pošte pomoću kontakata sa svih vaših prijavljenih računa.";
-
 /* Placeholder */
 "Two Factor Code" = "Kôd dvofaktorske autentikacije";
-
-/* Internal type casting error */
-"Type casting error" = "Type casting error";
 
 /* Description */
 "Unable to edit this message offline" = "Nije moguće urediti ovu poruku izvan mreže";

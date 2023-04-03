@@ -25,6 +25,7 @@ import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_Login
+import ProtonCore_Observability
 
 protocol CreateAddressViewControllerDelegate: AnyObject {
     func userDidGoBack()
@@ -69,6 +70,7 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         generateAccessibilityIdentifiers()
         
         configureDomainSuffix()
+        ObservabilityEnv.report(.screenLoadCountTotal(screenName: .createProtonAccountWithCurrentEmail))
     }
 
     private func setupUI() {

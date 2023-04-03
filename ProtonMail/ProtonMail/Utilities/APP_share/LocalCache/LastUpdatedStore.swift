@@ -43,7 +43,7 @@ protocol LastUpdatedStoreProtocol {
                            shouldSave: Bool)
     func removeUpdateTime(by userID: UserID, type: ViewMode)
     func resetCounter(labelID: LabelID, userID: UserID, type: ViewMode?)
-    func removeUpdateTimeExceptUnread(by userID: UserID, type: ViewMode)
+    func removeUpdateTimeExceptUnread(by userID: UserID)
     func getUnreadCounts(by labelIDs: [LabelID],
                          userID: UserID,
                          type: ViewMode,
@@ -250,19 +250,16 @@ extension LastUpdatedStore {
         }
     }
 
-    func removeUpdateTimeExceptUnread(by userID: UserID, type: ViewMode) {
+    func removeUpdateTimeExceptUnread(by userID: UserID) {
         contextProvider.performAndWaitOnRootSavingContext { context in
-            switch type {
-            case .singleMessage:
-                let data = LabelUpdate.lastUpdates(userID: userID.rawValue, inManagedObjectContext: context)
-                data.forEach { $0.resetDataExceptUnread() }
-            case .conversation:
-                let data = ConversationCount.getConversationCounts(
-                    userID: userID.rawValue,
-                    inManagedObjectContext: context
-                )
-                data.forEach { $0.resetDataExceptUnread() }
-            }
+            let labelUpdates = LabelUpdate.lastUpdates(userID: userID.rawValue, inManagedObjectContext: context)
+            let conversationCounts = ConversationCount.getConversationCounts(
+                userID: userID.rawValue,
+                inManagedObjectContext: context
+            )
+            let labelCounts: [LabelCount] = labelUpdates + conversationCounts
+            labelCounts.forEach { $0.resetDataExceptUnread() }
+
             _ = context.saveUpstreamIfNeeded()
         }
     }

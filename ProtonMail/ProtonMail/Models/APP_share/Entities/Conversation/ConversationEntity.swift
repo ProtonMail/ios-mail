@@ -195,5 +195,17 @@ extension ConversationEntity {
             }
         }.prefix(3))
     }
+
+    func getSenderImageRequestInfo(isDarkMode: Bool) -> SenderImageRequestInfo? {
+        guard let sender = try? parseSenders().last, sender.shouldDisplaySenderImage else {
+            return nil
+        }
+
+        return .init(
+            bimiSelector: sender.bimiSelector,
+            senderAddress: sender.address,
+            isDarkMode: isDarkMode
+        )
+    }
     #endif
 }

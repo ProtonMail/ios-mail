@@ -90,12 +90,6 @@ class MailboxRobotInterface: CoreElements {
     }
     
     @discardableResult
-    func refreshGentlyMailbox() -> MailboxRobotInterface {
-        table(id.mailboxTableViewIdentifier).swipeDown().wait(time: 3)
-        return self
-    }
-    
-    @discardableResult
     func trash() -> MailboxRobotInterface {
         button(id.trashButtonIdentifier).tap()
         return MailboxRobotInterface()

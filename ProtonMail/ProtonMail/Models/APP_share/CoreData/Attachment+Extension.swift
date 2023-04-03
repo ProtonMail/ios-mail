@@ -220,7 +220,7 @@ extension Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<Attachment?>
+    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<AttachmentEntity?>
 }
 
 // THIS IS CALLED FOR CAMERA
@@ -231,13 +231,8 @@ extension UIImage: AttachmentConvertible {
     private func toData() -> Data! {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<Attachment?> {
+    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Guarantee<AttachmentEntity?> {
         return Guarantee { fulfill in
-            guard let context = message.managedObjectContext else {
-                assert(false, "Context improperly destroyed")
-                fulfill(nil)
-                return
-            }
             if let fileData = self.toData() {
                 context.perform {
                     let attachment = Attachment(context: context)
@@ -259,15 +254,8 @@ extension UIImage: AttachmentConvertible {
                         attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                     }
 
-                    attachment.message = message
-
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                    attachment.order = message.numAttachments.int32Value
                     _ = context.saveUpstreamIfNeeded()
-                    fulfill(attachment)
+                    fulfill(.init(attachment))
                 }
             }
         }
@@ -280,13 +268,8 @@ extension Data: AttachmentConvertible {
         return self.count
     }
 
-    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<Attachment?> {
+    func toAttachment (_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<AttachmentEntity?> {
         return Guarantee { fulfill in
-            guard let context = message.managedObjectContext else {
-                assert(false, "Context improperly destroyed")
-                fulfill(nil)
-                return
-            }
             context.perform {
                 let attachment = Attachment(context: context)
                 attachment.attachmentID = "0"
@@ -303,19 +286,11 @@ extension Data: AttachmentConvertible {
                     dataToWrite = self
                 }
                 try? attachment.writeToLocalURL(data: dataToWrite)
-                attachment.message = message
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
-                attachment.message = message
-
-                let attachments = message.attachments
-                    .compactMap({ $0 as? Attachment })
-                    .filter { !$0.inline() }
-                message.numAttachments = NSNumber(value: attachments.count)
-                attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
-                fulfill(attachment)
+                fulfill(.init(attachment))
             }
         }
     }
@@ -323,13 +298,8 @@ extension Data: AttachmentConvertible {
 
 // THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
-    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<Attachment?> {
+    func toAttachment(_ context: NSManagedObjectContext, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Guarantee<AttachmentEntity?> {
         return Guarantee { fulfill in
-            guard let context = message.managedObjectContext else {
-                assert(false, "Context improperly destroyed")
-                fulfill(nil)
-                return
-            }
             context.perform {
                 let attachment = Attachment(context: context)
                 attachment.attachmentID = "0"
@@ -344,19 +314,12 @@ extension URL: AttachmentConvertible {
                 } else {
                     attachment.localURL = self
                 }
-                attachment.message = message
+
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
-                attachment.message = message
-
-                let attachments = message.attachments
-                    .compactMap({ $0 as? Attachment })
-                    .filter { !$0.inline() }
-                message.numAttachments = NSNumber(value: attachments.count)
-                attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
-                fulfill(attachment)
+                fulfill(.init(attachment))
             }
         }
     }

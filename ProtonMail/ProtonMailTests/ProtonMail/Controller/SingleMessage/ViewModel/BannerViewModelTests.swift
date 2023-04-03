@@ -31,6 +31,7 @@ class BannerViewModelTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
     var systemUpTimeMock: SystemUpTimeMock!
     var mockFetchAttachment: MockFetchAttachment!
+    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -45,6 +46,7 @@ class BannerViewModelTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         userManagerMock = UserManager(api: apiServiceMock, role: .none)
         systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
+        mockSenderImageStatusProvider = .init()
 
         let scheduledLabel = Label(context: testContext)
         scheduledLabel.labelID = "12"
@@ -64,6 +66,7 @@ class BannerViewModelTests: XCTestCase {
         apiServiceMock = nil
         userManagerMock = nil
         systemUpTimeMock = nil
+        mockSenderImageStatusProvider = nil
     }
 
     func testDurationsBySecond() {
@@ -202,8 +205,16 @@ class BannerViewModelTests: XCTestCase {
                 user: userManagerMock,
                 systemUpTime: systemUpTimeMock,
                 labelID: "",
-                dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiServiceMock)),
-                                    fetchAttachment: mockFetchAttachment)
+                dependencies: .init(
+                    imageProxy: .init(dependencies: .init(apiService: apiServiceMock)),
+                    fetchAttachment: mockFetchAttachment,
+                    fetchSenderImage: FetchSenderImage(
+                        dependencies: .init(
+                            senderImageService: .init(dependencies: .init(apiService: userManagerMock.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
+                            senderImageStatusProvider: mockSenderImageStatusProvider,
+                            mailSettings: userManagerMock.mailSettings)
+                    )
+                )
             )
         )
     }

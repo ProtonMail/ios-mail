@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>ApplicationGroupContainerIdentifier</key>
+	<string>group.com.protonmail.protonmail</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Environment</string>
+			<key>FooterText</key>
+			<string>You need to set the predefined environment to custom besides providing a custom domain</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Predefined Environment</string>
+			<key>Key</key>
+			<string>environment</string>
+			<key>DefaultValue</key>
+			<string>mailProd</string>
+			<key>Titles</key>
+			<array>
+				<string>Production</string>
+				<string>Black</string>
+				<string>Custom</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>mailProd</string>
+				<string>black</string>
+				<string>custom</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Custom Domain</string>
+			<key>Key</key>
+			<string>environmentCustomDomain</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>IsSecure</key>
+			<false/>
+			<key>KeyboardType</key>
+			<string>Alphabet</string>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+		</dict>
+	</array>
+</dict>
+</plist>
