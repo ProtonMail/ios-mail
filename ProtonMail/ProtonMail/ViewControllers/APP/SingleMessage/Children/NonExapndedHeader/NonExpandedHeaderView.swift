@@ -74,6 +74,7 @@ class NonExpandedHeaderView: HeaderView {
         addSubview(contentStackView)
 
         initialsContainer.addSubview(initialsLabel)
+        initialsContainer.addSubview(senderImageView)
         lockImageControl.addSubview(lockImageView)
 
         contentStackView.addArrangedSubview(firstLineStackView)
@@ -137,6 +138,7 @@ class NonExpandedHeaderView: HeaderView {
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2)
         ].activate()
+        senderImageView.fillSuperview()
 
         [
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),

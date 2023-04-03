@@ -30,7 +30,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         .init(maxCount: 1)
     }
 
-    struct Key {
+    enum Key {
         static let headerCell = "header_cell"
         static let footerCell = "footer_cell"
         static let headerCellHeight: CGFloat = 52.0
@@ -49,6 +49,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         trackLifetime()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -111,7 +112,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
     }
 
     private func inAppLanguage(_ indexPath: IndexPath) {
-        let current_language = LanguageManager.currentLanguageEnum()
+        let current_language = LanguageManager().currentLanguage()
         let title = LocalString._settings_current_language_is + current_language.nativeDescription
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
@@ -119,7 +120,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
             if l != current_language {
                 alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default) { _ in
                     _ = self.navigationController?.popViewController(animated: true)
-                    LanguageManager.saveLanguage(byCode: l.code)
+                    LanguageManager().saveLanguage(by: l.languageCode)
                     LocalizedString.reset()
                     self.updateTitle()
                     self.tableView.reloadData()
@@ -148,7 +149,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
             hud.label.text = LocalString._settings_resetting_cache
             hud.removeFromSuperViewOnHide = true
 
-            self.viewModel.cleanCache { (result) in
+            self.viewModel.cleanCache { result in
                 self.cleaning = false
 
                 switch result {
@@ -166,8 +167,8 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
 }
 
 // MARK: - table view delegate
-extension SettingsDeviceViewController {
 
+extension SettingsDeviceViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
     }
@@ -178,7 +179,7 @@ extension SettingsDeviceViewController {
             case .account:
                 return 1
             case .app:
-                return self.viewModel.appSettigns.count
+                return self.viewModel.appSettings.count
             case .general:
                 return self.viewModel.generalSettings.count
             case .clearCache:
@@ -201,7 +202,7 @@ extension SettingsDeviceViewController {
             }
             return cell
         case .app:
-            let item = self.viewModel.appSettigns[row]
+            let item = self.viewModel.appSettings[row]
 
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
             if let settingsGeneralCell = cell as? SettingsGeneralCell {
@@ -218,7 +219,7 @@ extension SettingsDeviceViewController {
                     let status = self.viewModel.lockOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(left: viewModel.appPINTitle)
                     settingsGeneralCell.configure(right: status)
-                case .combinContacts:
+                case .combineContacts:
                     let status = self.viewModel.combineContactOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(right: status)
                 case .browser:
@@ -245,9 +246,9 @@ extension SettingsDeviceViewController {
                 switch item {
                 case .notification:
                     let current = UNUserNotificationCenter.current()
-                    current.getNotificationSettings(completionHandler: { (settings) in
+                    current.getNotificationSettings(completionHandler: { settings in
                         switch settings.authorizationStatus {
-                        case .notDetermined:// Notification permission has not been asked yet, go for it!
+                        case .notDetermined: // Notification permission has not been asked yet, go for it!
                             { cellToConfig.configure(right: LocalString._settings_Off_title) } ~> .main
                             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
                                 guard granted else { return }
@@ -256,7 +257,7 @@ extension SettingsDeviceViewController {
                                     self?.tableView.reloadRows(at: [indexPath], with: .none)
                                 }
                             }
-                        case .denied:// Notification permission was previously denied, go to settings & privacy to re-enable
+                        case .denied: // Notification permission was previously denied, go to settings & privacy to re-enable
                             { cellToConfig.configure(right: LocalString._settings_Off_title, imageType: .system) } ~> .main
                         case .authorized: { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
                         default:
@@ -264,7 +265,7 @@ extension SettingsDeviceViewController {
                         }
                     })
                 case .language:
-                    let language: ELanguage = LanguageManager.currentLanguageEnum()
+                    let language: ELanguage = LanguageManager().currentLanguage()
                     cellToConfig.configure(right: language.nativeDescription, imageType: .system)
                 case .LocalizationPreview:
                     cellToConfig.configure(right: "Test only", imageType: .system)
@@ -324,26 +325,24 @@ extension SettingsDeviceViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
-        let eSection = self.viewModel.sections[section]
+        let eSection = viewModel.sections[section]
         switch eSection {
         case .account:
-            self.coordinator?.go(to: .accountSetting)
+            coordinator?.go(to: .accountSetting)
         case .app:
-            let item = self.viewModel.appSettigns[row]
+            let item = viewModel.appSettings[row]
             switch item {
             case .darkMode:
-                self.coordinator?.go(to: .darkMode)
+                coordinator?.go(to: .darkMode)
             case .appPIN:
-                self.coordinator?.go(to: .autoLock)
-                break
-            case .combinContacts:
-                self.coordinator?.go(to: .combineContact)
-                break
+                coordinator?.go(to: .autoLock)
+            case .combineContacts:
+                coordinator?.go(to: .combineContact)
             case .browser:
                 let browsers = LinkOpener.allCases.filter {
                     $0.isInstalled
                 }.compactMap { app in
-                    return UIAlertAction(title: app.title, style: .default) { [weak self] _ in
+                    UIAlertAction(title: app.title, style: .default) { [weak self] _ in
                         userCachedStatus.browser = app
                         self?.tableView?.reloadRows(at: [indexPath], with: .fade)
                     }
@@ -355,16 +354,16 @@ extension SettingsDeviceViewController {
                 }
                 browsers.forEach(alert.addAction)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                present(alert, animated: true, completion: nil)
             case .alternativeRouting:
-                self.coordinator?.go(to: .alternativeRouting)
+                coordinator?.go(to: .alternativeRouting)
             case .swipeAction:
-                self.coordinator?.go(to: .swipeAction)
+                coordinator?.go(to: .swipeAction)
             case .toolbar:
                 coordinator?.openToolbarCustomizationView()
             }
         case .general:
-            let item = self.viewModel.generalSettings[row]
+            let item = viewModel.generalSettings[row]
             switch item {
             case .notification:
                 guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
@@ -388,7 +387,7 @@ extension SettingsDeviceViewController {
                 coordinator?.go(to: .LocalizationPreview)
             }
         case .clearCache:
-            self.cleanCache()
+            cleanCache()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

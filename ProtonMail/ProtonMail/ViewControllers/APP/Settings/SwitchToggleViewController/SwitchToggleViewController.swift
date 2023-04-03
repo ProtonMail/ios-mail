@@ -18,8 +18,10 @@
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
+import enum ProtonCore_Utilities.Either
+import protocol ProtonCore_Foundations.AccessibleView
 
-final class SwitchToggleViewController: UITableViewController {
+final class SwitchToggleViewController: UITableViewController, AccessibleView {
 
     private let viewModel: SwitchToggleVMProtocol
 
@@ -35,6 +37,7 @@ final class SwitchToggleViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        generateAccessibilityIdentifiers()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -76,7 +79,7 @@ final class SwitchToggleViewController: UITableViewController {
             return nil
         }
         let padding = viewModel.output.headerTopPadding
-        return getHeaderFooterView(text: text, titleTopPadding: padding)
+        return headerFooterView(text: text, titleTopPadding: padding)
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -85,11 +88,16 @@ final class SwitchToggleViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let text = viewModel.output.sectionFooter(of: section) else {
+        guard let footer = viewModel.output.sectionFooter(of: section) else {
             return nil
         }
         let padding = viewModel.output.footerTopPadding
-        return getHeaderFooterView(text: text, titleTopPadding: padding)
+        switch footer {
+        case .left(let text):
+            return headerFooterView(text: text, titleTopPadding: padding)
+        case .right(let attributedString):
+            return attributedView(attributedString: attributedString, titleTopPadding: padding)
+        }
     }
 }
 
@@ -113,7 +121,7 @@ extension SwitchToggleViewController {
         tableView.separatorInset = .zero
     }
 
-    private func getHeaderFooterView(text: String, titleTopPadding: CGFloat) -> UIView? {
+    private func headerFooterView(text: String, titleTopPadding: CGFloat) -> UIView? {
         let id = UITableViewHeaderFooterView.reuseIdentifier
         guard let hfView = tableView
             .dequeueReusableHeaderFooterView(withIdentifier: id) else {
@@ -124,7 +132,7 @@ extension SwitchToggleViewController {
 
         let textLabel = UILabel()
         textLabel.set(text: text,
-                      preferredFont: .footnote,
+                      preferredFont: .subheadline,
                       textColor: ColorProvider.TextWeak)
         textLabel.numberOfLines = 0
         hfView.contentView.addSubview(textLabel)
@@ -138,11 +146,56 @@ extension SwitchToggleViewController {
         return hfView
     }
 
+    private func attributedView(
+        attributedString: NSAttributedString,
+        titleTopPadding: CGFloat
+    ) -> UIView? {
+        let id = UITableViewHeaderFooterView.reuseIdentifier
+        guard let footerView = tableView
+            .dequeueReusableHeaderFooterView(withIdentifier: id) else {
+            return nil
+        }
+        footerView.contentView.backgroundColor = ColorProvider.BackgroundSecondary
+        footerView.contentView.subviews.forEach { $0.removeFromSuperview() }
+
+        let textView = UITextView()
+        textView.isScrollEnabled = false
+        textView.isEditable = false
+        textView.backgroundColor = .clear
+
+        textView.attributedText = attributedString
+        textView.font = .preferredFont(forTextStyle: .footnote)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm as UIColor]
+        textView.delegate = self
+
+        footerView.contentView.addSubview(textView)
+
+        NSLayoutConstraint.activate([
+            textView.topAnchor.constraint(equalTo: footerView.contentView.topAnchor, constant: 8),
+            textView.bottomAnchor.constraint(equalTo: footerView.contentView.bottomAnchor, constant: -8),
+            textView.leftAnchor.constraint(equalTo: footerView.contentView.leftAnchor, constant: 16),
+            textView.rightAnchor.constraint(equalTo: footerView.contentView.rightAnchor, constant: -16)
+        ])
+        return footerView
+    }
+
     private func showLoading(shouldShow: Bool) {
         let view = UIApplication.shared.keyWindow ?? UIView()
         if shouldShow {
             MBProgressHUD.showAdded(to: view, animated: true)
         }
         MBProgressHUD.hide(for: view, animated: true)
+    }
+}
+
+extension SwitchToggleViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+        guard UIApplication.shared.canOpenURL(URL) else { return false }
+        UIApplication.shared.open(URL, options: [:], completionHandler: nil)
+        return true
     }
 }

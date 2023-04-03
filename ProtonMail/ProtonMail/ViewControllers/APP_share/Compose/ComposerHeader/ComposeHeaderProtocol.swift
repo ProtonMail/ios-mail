@@ -26,7 +26,7 @@ protocol ComposeViewDelegate: AnyObject {
     func composeViewWillPresentSubview()
     func composeViewWillDismissSubview()
 
-    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
+    func composeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))

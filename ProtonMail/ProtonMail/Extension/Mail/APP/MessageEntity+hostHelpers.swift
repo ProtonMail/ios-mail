@@ -148,4 +148,16 @@ extension MessageEntity {
     func createTags() -> [TagUIModel] {
         [createTagFromExpirationDate()].compactMap { $0 } + tagUIModels()
     }
+
+    func getSenderImageRequestInfo(isDarkMode: Bool) -> SenderImageRequestInfo? {
+        guard let sender = try? parseSender(), sender.shouldDisplaySenderImage else {
+            return nil
+        }
+
+        return .init(
+            bimiSelector: sender.bimiSelector,
+            senderAddress: sender.address,
+            isDarkMode: isDarkMode
+        )
+    }
 }

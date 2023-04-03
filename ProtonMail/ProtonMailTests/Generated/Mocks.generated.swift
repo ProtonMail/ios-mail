@@ -1,11 +1,59 @@
 // Generated using Sourcery 1.9.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import CoreData
+import ProtonCore_Environment
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
 import ProtonCore_Keymaker
 
 @testable import ProtonMail
+
+class MockAppRatingManagerProtocol: AppRatingManagerProtocol {
+    @FuncStub(MockAppRatingManagerProtocol.requestAppRating) var requestAppRatingStub
+    func requestAppRating() {
+        requestAppRatingStub()
+    }
+
+    @FuncStub(MockAppRatingManagerProtocol.openAppStoreToReviewApp) var openAppStoreToReviewAppStub
+    func openAppStoreToReviewApp() {
+        openAppStoreToReviewAppStub()
+    }
+
+}
+
+class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
+    @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
+    func readEnvironment() -> Environment? {
+        readEnvironmentStub()
+    }
+
+    @FuncStub(MockBackendConfigurationCacheProtocol.write) var writeStub
+    func write(environment: Environment) {
+        writeStub(environment)
+    }
+
+}
+
+class MockBlockedSenderCacheUpdaterDelegate: BlockedSenderCacheUpdaterDelegate {
+    @FuncStub(MockBlockedSenderCacheUpdaterDelegate.blockedSenderCacheUpdater) var blockedSenderCacheUpdaterStub
+    func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
+        blockedSenderCacheUpdaterStub(blockedSenderCacheUpdater, newState)
+    }
+
+}
+
+class MockBlockedSenderFetchStatusProviderProtocol: BlockedSenderFetchStatusProviderProtocol {
+    @FuncStub(MockBlockedSenderFetchStatusProviderProtocol.checkIfBlockedSendersAreFetched, initialReturn: Bool()) var checkIfBlockedSendersAreFetchedStub
+    func checkIfBlockedSendersAreFetched(userID: UserID) -> Bool {
+        checkIfBlockedSendersAreFetchedStub(userID)
+    }
+
+    @FuncStub(MockBlockedSenderFetchStatusProviderProtocol.markBlockedSendersAsFetched) var markBlockedSendersAsFetchedStub
+    func markBlockedSendersAsFetched(userID: UserID) {
+        markBlockedSendersAsFetchedStub(userID)
+    }
+
+}
 
 class MockCacheServiceProtocol: CacheServiceProtocol {
     @FuncStub(MockCacheServiceProtocol.addNewLabel) var addNewLabelStub
@@ -28,14 +76,19 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         updateContactDetailStub(serverResponse, completion)
     }
 
-    @FuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
-    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String], completion: @escaping (Error?) -> Void) {
-        parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent, completion)
+    @ThrowingFuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
+    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String]) throws {
+        try parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent)
     }
 
     @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
     func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
         updateCounterSyncStub(markUnRead, labelIDs)
+    }
+
+    @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
+    func updateExpirationOffset(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
+        updateExpirationOffsetStub(message, expirationTime, pwd, pwdHint, completion)
     }
 
 }
@@ -216,14 +269,14 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
         setTotalMessagesStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.lastMessageIndexedTime, initialReturn: Int()) var lastMessageIndexedTimeStub
-    func lastMessageIndexedTime(of userID: UserID) -> Int {
-        lastMessageIndexedTimeStub(userID)
+    @FuncStub(MockEncryptedSearchUserCache.oldestIndexedMessageTime, initialReturn: Int()) var oldestIndexedMessageTimeStub
+    func oldestIndexedMessageTime(of userID: UserID) -> Int {
+        oldestIndexedMessageTimeStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setLastMessageIndexedTime) var setLastMessageIndexedTimeStub
-    func setLastMessageIndexedTime(of userID: UserID, value: Int) {
-        setLastMessageIndexedTimeStub(userID, value)
+    @FuncStub(MockEncryptedSearchUserCache.setOldestIndexedMessageTime) var setOldestIndexedMessageTimeStub
+    func setOldestIndexedMessageTime(of userID: UserID, value: Int) {
+        setOldestIndexedMessageTimeStub(userID, value)
     }
 
     @FuncStub(MockEncryptedSearchUserCache.lastIndexedMessageID, initialReturn: nil) var lastIndexedMessageIDStub
@@ -346,6 +399,67 @@ class MockImageProxyDelegate: ImageProxyDelegate {
 
 }
 
+class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
+    @FuncStub(MockIncomingDefaultServiceProtocol.fetchAll) var fetchAllStub
+    func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
+        fetchAllStub(location, completion)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.listLocal, initialReturn: [IncomingDefaultEntity]()) var listLocalStub
+    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity] {
+        try listLocalStub(query)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.save) var saveStub
+    func save(dto: IncomingDefaultDTO) throws {
+        try saveStub(dto)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.performLocalUpdate) var performLocalUpdateStub
+    func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws {
+        try performLocalUpdateStub(emailAddress, newLocation)
+    }
+
+    @FuncStub(MockIncomingDefaultServiceProtocol.performRemoteUpdate) var performRemoteUpdateStub
+    func performRemoteUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
+        performRemoteUpdateStub(emailAddress, newLocation, completion)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.softDelete) var softDeleteStub
+    func softDelete(query: IncomingDefaultService.Query) throws {
+        try softDeleteStub(query)
+    }
+
+    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.hardDelete) var hardDeleteStub
+    func hardDelete(query: IncomingDefaultService.Query?) throws {
+        try hardDeleteStub(query)
+    }
+
+    @FuncStub(MockIncomingDefaultServiceProtocol.performRemoteDeletion) var performRemoteDeletionStub
+    func performRemoteDeletion(emailAddress: String, completion: @escaping (Error?) -> Void) {
+        performRemoteDeletionStub(emailAddress, completion)
+    }
+
+}
+
+class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProviderProtocol {
+    @PropertyStub(\MockInternetConnectionStatusProviderProtocol.currentStatus, initialGet: .connected) var currentStatusStub
+    var currentStatus: ConnectionStatus {
+        currentStatusStub()
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.registerConnectionStatus) var registerConnectionStatusStub
+    func registerConnectionStatus(observerID: UUID, callback: @escaping (ConnectionStatus) -> Void) {
+        registerConnectionStatusStub(observerID, callback)
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.unregisterObserver) var unregisterObserverStub
+    func unregisterObserver(observerID: UUID) {
+        unregisterObserverStub(observerID)
+    }
+
+}
+
 class MockKeymakerProtocol: KeymakerProtocol {
     @FuncStub(MockKeymakerProtocol.activate) var activateStub
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
@@ -387,6 +501,19 @@ class MockLockPreferences: LockPreferences {
 
 }
 
+class MockMailSettingsHandler: MailSettingsHandler {
+    @PropertyStub(\MockMailSettingsHandler.mailSettings, initialGet: MailSettings()) var mailSettingsStub
+    var mailSettings: MailSettings {
+        get {
+            mailSettingsStub()
+        }
+        set {
+            mailSettingsStub(newValue)
+        }
+    }
+
+}
+
 class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {
@@ -403,6 +530,19 @@ class MockMessageDataActionProtocol: MessageDataActionProtocol {
 
 }
 
+class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider {
+    @PropertyStub(\MockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove, initialGet: Bool()) var shouldMoveToNextMessageAfterMoveStub
+    var shouldMoveToNextMessageAfterMove: Bool {
+        get {
+            shouldMoveToNextMessageAfterMoveStub()
+        }
+        set {
+            shouldMoveToNextMessageAfterMoveStub(newValue)
+        }
+    }
+
+}
+
 class MockPaymentsUIProtocol: PaymentsUIProtocol {
     @FuncStub(MockPaymentsUIProtocol.showCurrentPlan) var showCurrentPlanStub
     func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping (PaymentsUIResultReason) -> Void) {
@@ -411,10 +551,31 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
 
 }
 
+class MockQueueManagerProtocol: QueueManagerProtocol {
+    @FuncStub(MockQueueManagerProtocol.addTask, initialReturn: Bool()) var addTaskStub
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool {
+        addTaskStub(task, autoExecute)
+    }
+
+    @FuncStub(MockQueueManagerProtocol.addBlock) var addBlockStub
+    func addBlock(_ block: @escaping () -> Void) {
+        addBlockStub(block)
+    }
+
+}
+
 class MockReceiptActionHandler: ReceiptActionHandler {
     @FuncStub(MockReceiptActionHandler.sendReceipt) var sendReceiptStub
     func sendReceipt(messageID: MessageID) {
         sendReceiptStub(messageID)
+    }
+
+}
+
+class MockRefetchAllBlockedSendersUseCase: RefetchAllBlockedSendersUseCase {
+    @FuncStub(MockRefetchAllBlockedSendersUseCase.execute) var executeStub
+    func execute(completion: @escaping (Error?) -> Void) {
+        executeStub(completion)
     }
 
 }
@@ -448,6 +609,27 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
     @FuncStub(MockScheduledSendHelperDelegate.showScheduleSendPromotionView) var showScheduleSendPromotionViewStub
     func showScheduleSendPromotionView() {
         showScheduleSendPromotionViewStub()
+    }
+
+}
+
+class MockSenderImageStatusProvider: SenderImageStatusProvider {
+    @FuncStub(MockSenderImageStatusProvider.isSenderImageEnabled, initialReturn: Bool()) var isSenderImageEnabledStub
+    func isSenderImageEnabled(userID: UserID) -> Bool {
+        isSenderImageEnabledStub(userID)
+    }
+
+    @FuncStub(MockSenderImageStatusProvider.setIsSenderImageEnable) var setIsSenderImageEnableStub
+    func setIsSenderImageEnable(enable: Bool, userID: UserID) {
+        setIsSenderImageEnableStub(enable, userID)
+    }
+
+}
+
+class MockSettingsAccountCoordinatorProtocol: SettingsAccountCoordinatorProtocol {
+    @FuncStub(MockSettingsAccountCoordinatorProtocol.go) var goStub
+    func go(to dest: SettingsAccountCoordinator.Destination) {
+        goStub(dest)
     }
 
 }

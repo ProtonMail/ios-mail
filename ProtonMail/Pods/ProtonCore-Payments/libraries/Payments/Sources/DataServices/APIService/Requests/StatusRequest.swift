@@ -24,17 +24,21 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class StatusRequest: BaseApiRequest<StatusResponse> {
+public final class StatusRequest: BaseApiRequest<StatusResponse> {
+    
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
 
-    override var path: String { super.path + "/v4/status" }
+    override public var path: String { super.path + "/v4/status" }
 
-    override var isAuth: Bool { false }
+    override public var isAuth: Bool { false }
 }
 
-final class StatusResponse: Response {
+public final class StatusResponse: Response {
     var isAvailable: Bool?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         self.isAvailable = response["Apple"] as? Bool
         return true

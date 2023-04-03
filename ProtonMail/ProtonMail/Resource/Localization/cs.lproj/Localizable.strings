@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ z %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d sekund";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "Vybráno: %d";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Přetažením sem přidáte přílohu";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Adresy";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Pokročilá nastavení";
+
 /* Title */
 "Alert" = "Upozornění";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Všechna pošta";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Po odhlášení z aplikace se všechna nastavení ochrany resetují a vymažou.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Všechny vaše zprávy jsou staženy";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Vzhled";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey dále chrání Proton údaje v případě komplikovaných útoků, například když útočník klonuje obsah vašeho zařízení. \n%1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "Ochrana AppKey";
 
 /* Apply action */
 "Apply" = "Použít";
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Blokovat sledování emailů";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Seznam blokovaných";
+
+/* Button to block a sender */
+"Block sender" = "Blokovat odesílatele";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Zamezuje odesílatelům zjistit, zda a kdy jste zprávu otevřeli";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Vytvoření štítku není povoleno";
 
-/* Change language title */
-"Current Language is: " = "Aktuální jazyk je: ";
-
 /* Placeholder */
 "Current password" = "Aktuální heslo";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Vlastní";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Přizpůsobit";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Přizpůsobit panel nástrojů";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Zrušeno";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Zřeknutí se odpovědnosti";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Schovat klávesnici";
 
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Stahování metadat ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Stahování nových zpráv ...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Stáhne e-maily, abyste v nich mohli vyhledávat. Zprávy jsou šifrovány a ukládány lokálně. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "E-mailová adresa je deaktivovaná";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "E-mailová adresa je neplatná";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailové adresy";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Vypršení platnosti není podporováno";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Selhalo určení typu souboru";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Přeposlat";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Přeposlat (poslední zprávu)";
+
 /* forwarded message title */
 "Forwarded message" = "Přeposlaná zpráva";
 
@@ -894,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Fw:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Pohlaví";
 
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Přejít do nastavení";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Přejít na přihlášení";
 
 /* Got it action */
 "Got it" = "Rozumím";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým Proton Mailem?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Kontrola CAPTCHA se nezdařila";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejití bran firewall nebo problémům se sítí. Pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Ráno";
+
 /* menu title */
 "Inbox" = "Doručená pošta";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Vložte zobrazované jméno…";
-
-/* place holder */
-"Input Notification Email …" = "Vložte e-mail pro zasílání upozornění …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nezabezpečené připojení";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Odkaz zkopírován.";
 
+/* Button inside the banner */
+"Load" = "Načíst";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Načíst vložené obrázky";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Zamknout aplikaci";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Chcete-li nadále dostávat aktualizace, znovu se přihlaste";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Odhlášeno z %@";
 
 /* error title */
 "Logs" = "Logy";
@@ -1136,11 +1127,8 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Označit jako nepřečtené";
 
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
-
 /* menu title */
-"Menu" = "Menu";
+"Menu" = "Nabídka";
 
 /* The title of the first item in the segment control of the Customize toolbar setting view. */
 "Message" = "Zpráva";
@@ -1237,6 +1225,9 @@
 /* Title */
 "Move to…" = "Přesunout do…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Po přesunu přejít na další zprávu";
+
 /* Onboarding title */
 "Neat and tidy" = "Elegantní a úhledný";
 
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Další";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Další zpráva po přesunu";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Přezdívka";
@@ -1342,12 +1336,18 @@
 /* Alert title */
 "Notice" = "Oznámení";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Akce upozornění a další procesy na pozadí již nebudou k dispozici";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Upozornění";
 
 /* The title of Off setting options */
 "Off" = "Vypnuto";
+
+/* Official badge next to sender's name */
+"Official" = "Oficiální";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
@@ -1357,9 +1357,6 @@
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Potvrdit";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Nejstarší zpráva: ";
@@ -1403,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Aktualizace hesla se nezdařila";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Heslo bylo změněno";
+
 /* Placeholder */
 "Passwords must match" = "Hesla se musí shodovat";
 
 /* Text for pause button */
 "Pause" = "Pozastavit";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Přesunutím zprávy (např. do archivu) přejdete na další zprávu.";
 
 /* default vcard types */
 "Personal" = "Osobní";
@@ -1511,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Problém při odesílání zprávy";
 
+/* Settings lock protection section */
+"Protection" = "Ochrana";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton je nedostupný";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail je momentálně nedostupný…";
@@ -1525,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Stav Protonu";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Poskytnout zpětnou vazbu";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Rušení proxy/firewallem";
@@ -1587,8 +1587,14 @@
 /* reply action */
 "Reply" = "Odpovědět";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Odpovědět (na poslední zprávu)";
+
 /* reply all action */
 "Reply all" = "Odpovědět všem";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Odpovědět všem (na poslední zprávu)";
 
 /* menu title */
 "Report a problem" = "Nahlásit problém";
@@ -1677,7 +1683,7 @@
 /* Action */
 "Send anyway" = "Přesto odeslat";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Odeslat zpětnou vazbu";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1792,6 +1798,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Odložit";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Některé obrázky nemohly být načteny kvůli ochraně před sledovacími prvky.";
+
 /* menu title */
 "Spam" = "Spam";
 
@@ -1855,9 +1864,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Akce po přejetí prstem";
-
-/* Swiping gestures */
-"Swiping gestures" = "Gesta přejetí prstem";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Přepněte režim výběru";
@@ -1946,9 +1952,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL adresa, kterou otevíráte, je nestandardní a nemusí se v pořádku načíst. Chcete ji otevřít výchozím prohlížečem vašeho zařízení?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Uživatel je již přihlášen";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Jsou evidovány neodeslané zprávy. V případě, že se odhlásíte, budou ztraceny";
 
@@ -1963,12 +1966,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Tato konverzace obsahuje zprávy vyhozené do koše";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Zpráva nesplňuje požadavky na ověření domény odesílatele. Může být falešná, nebo špatně přeposlaná!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail selhal při ověření požadavků domény, ke které patří. Může být podvržen a nebo nesprávně přeposlán!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail zřejmě pochází z adresy Proton Mail, ale přišel z cizího systému a neprošel našimi požadavky na ověření. Může se jednat o podvržený nebo nesprávně přeposlaný e-mail!";
@@ -2043,9 +2040,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Akce panelu nástrojů (vyberte až 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Sledujte své odměny";
 
@@ -2061,9 +2055,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.";
 
 /* Placeholder */
 "Two Factor Code" = "Dvoufázový kód";
@@ -2326,4 +2317,3 @@
 /* contact placeholder */
 "ZIP" = "PSČ";
 
-"Customize (verb)" = "Customize";

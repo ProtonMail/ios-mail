@@ -102,7 +102,7 @@ final class SignInCoordinatorTests: XCTestCase {
         guard case .dismissed = flowResult else { XCTFail(#function); return }
     }
 
-    func testCoordinatorSaveLoginDataAfterSuccessfulLoginDataFetched() {
+    func testCoordinatorSaveLoginDataAfterSuccessfulLoginDataFetched() throws {
         let loginStubFactory = PMLoginStubFactory()
         let testUserInfo = UserInfo.dummy
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",
@@ -121,20 +121,19 @@ final class SignInCoordinatorTests: XCTestCase {
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
         loginStubFactory.instance?.presentLoginFlowWithUpdateBlockStub.bodyIs { _, _, _, completion in
             let user = User.dummy.updated(ID: nil, name: testUserInfo.displayName, usedSpace: Double(testUserInfo.usedSpace), currency: testUserInfo.currency, credit: testUserInfo.credit, maxSpace: Double(testUserInfo.maxSpace), maxUpload: Double(testUserInfo.maxUpload), role: testUserInfo.role, private: nil, subscribed: testUserInfo.subscribed, services: nil, delinquent: testUserInfo.delinquent, orgPrivateKey: nil, email: testUserInfo.notificationEmail, displayName: testUserInfo.displayName, keys: nil)
-            completion(.loginStateChanged(.dataIsAvailable(.userData(UserData(credential: testAuth, user: user, salts: [], passphrases: [:], addresses: [], scopes: [])))))
+            completion(.loginStateChanged(.dataIsAvailable(UserData(credential: testAuth, user: user, salts: [], passphrases: [:], addresses: [], scopes: []))))
             // Do not call .loginFinished here to simulate the case where the user doesn't finish the whole login process.
         }
         out.start()
-        guard case .userData(let loginData) = loginData
-        else { return XCTFail("Wrong type returned from login flow") }
-        XCTAssertEqual(loginData.toUserInfo.displayName, testUserInfo.displayName)
-        XCTAssertEqual(loginData.toUserInfo.maxSpace, testUserInfo.maxSpace)
-        XCTAssertEqual(loginData.toUserInfo.usedSpace, testUserInfo.usedSpace)
-        XCTAssertEqual(loginData.toUserInfo.delinquent, testUserInfo.delinquent)
+        let userData = try XCTUnwrap(loginData)
+        XCTAssertEqual(userData.toUserInfo.displayName, testUserInfo.displayName)
+        XCTAssertEqual(userData.toUserInfo.maxSpace, testUserInfo.maxSpace)
+        XCTAssertEqual(userData.toUserInfo.usedSpace, testUserInfo.usedSpace)
+        XCTAssertEqual(userData.toUserInfo.delinquent, testUserInfo.delinquent)
 
-        XCTAssertEqual(loginData.credential.sessionID, testAuth.sessionID)
-        XCTAssertEqual(loginData.credential.accessToken, testAuth.accessToken)
-        XCTAssertEqual(loginData.credential.refreshToken, testAuth.refreshToken)
+        XCTAssertEqual(userData.credential.sessionID, testAuth.sessionID)
+        XCTAssertEqual(userData.credential.accessToken, testAuth.accessToken)
+        XCTAssertEqual(userData.credential.refreshToken, testAuth.refreshToken)
     }
 
     func testCoordinatorUnlocksWhenShouldTryUnlock() {

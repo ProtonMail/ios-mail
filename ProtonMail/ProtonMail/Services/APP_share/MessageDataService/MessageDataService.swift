@@ -20,19 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
+import Foundation
 import Groot
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
-import ProtonCore_Crypto
 
 protocol MessageDataServiceProtocol: Service {
-
     var pushNotificationMessageID: String? { get set }
+    var messageDecrypter: MessageDecrypterProtocol { get }
 
     /// Request to get the messages for a user
     /// - Parameters:
@@ -57,10 +57,30 @@ protocol MessageDataServiceProtocol: Service {
         completionQueue: DispatchQueue,
         completion: @escaping () -> Void
     )
+    func messageWithLocation(recipientList: String,
+                             bccList: String,
+                             ccList: String,
+                             title: String,
+                             encryptionPassword: String,
+                             passwordHint: String,
+                             expirationTimeInterval: TimeInterval,
+                             body: String,
+                             attachments: [Any]?,
+                             mailbox_pwd: Passphrase,
+                             sendAddress: Address,
+                             inManagedObjectContext context: NSManagedObjectContext) -> Message
+    func saveDraft(_ message: Message?)
+    func updateMessage(_ message: Message,
+                       expirationTimeInterval: TimeInterval,
+                       body: String,
+                       mailbox_pwd: Passphrase)
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool
+    func updateAttKeyPacket(message: MessageEntity, addressID: String)
+    func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void>
+    func upload(att: Attachment)
 }
 
 protocol LocalMessageDataServiceProtocol: Service {
-
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
 }
 
@@ -69,7 +89,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     typealias ReadBlock = (() -> Void)
 
-    // TODO:: those 3 var need to double check to clean up
+    // TODO: those 3 var need to double check to clean up
     var pushNotificationMessageID: String?
 
     let apiService: APIService
@@ -153,34 +173,28 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let queue = queued ? queueManager?.queue : noQueue
         queue? {
             let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        completion(task, nil, error as NSError?)
-                    }
-                case .success(let response):
+                do {
+                    let response = try result.get()
                     onDownload?()
-                    self.cacheService.parseMessagesResponse(
+                    try self.cacheService.parseMessagesResponse(
                         labelID: labelID,
                         isUnread: isUnread,
                         response: response,
                         idsOfMessagesBeingSent: self.idsOfMessagesBeingSent()
-                    ) { (errorFromParsing) in
-                        if let err = errorFromParsing {
-                            DispatchQueue.main.async {
-                                completion(task, response, err as NSError)
-                            }
-                        } else {
+                    )
+
                             let counterRoute = MessageCountRequest()
                             self.apiService.perform(request: counterRoute, response: MessageCountResponse()) { _, response in
                                 if response.error == nil {
-                                    self.parent?.eventsService.processEvents(counts: response.counts)
+                                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
                                 }
                             }
                             DispatchQueue.main.async {
                                 completion(task, response, nil)
                             }
-                        }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(task, nil, error as NSError?)
                     }
                 }
             }
@@ -250,6 +264,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     // MARK : Send message
+
     func send(inQueue message: Message, deliveryTime: Date?) {
         message.managedObjectContext!.perform {
             self.localNotificationService.scheduleMessageSendingFailedNotification(
@@ -278,7 +293,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         completion?()
                         return
                     }
-                    self.parent?.eventsService.processEvents(counts: response.counts)
+                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
                     completion?()
                 }
             case .conversation:
@@ -293,19 +308,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     completion?()
                 }
             }
-
         }
     }
 
-    /// TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
+    // TODO: fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = queueManager?.queuedMessageIds() ?? []
         contextProvider.performOnRootSavingContext { context in
             ids.forEach { messageID in
                 guard let objectID = self.contextProvider.managedObjectIDForURIRepresentation(messageID),
                       let managedObject = try? context.existingObject(with: objectID) else {
-                          return
-                      }
+                    return
+                }
                 if let message = managedObject as? Message {
                     self.cachePropertiesForBackground(in: message)
                 }
@@ -323,7 +337,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         message.cachedPassphrase = userDataSource!.mailboxPassword
         message.cachedAuthCredential = userDataSource!.authCredential
         message.cachedUser = userDataSource!.userInfo
-        message.cachedAddress = defaultUserAddress(for: message) // computed property depending on current user settings
+        if let addressID = message.addressID {
+            message.cachedAddress = defaultUserAddress(of: AddressID(addressID)) // computed property depending on current user settings
+        }
     }
 
     func empty(location: Message.Location) {
@@ -348,7 +364,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         completion: @escaping (NSError?) -> Void
     ) {
         let msgID = message.messageID
-        let closure = runInQueue ? self.queueManager?.queue: noQueue
+        let closure = runInQueue ? self.queueManager?.queue : noQueue
         closure? {
             let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { _, result in
                 let objectId = message.objectID.rawValue
@@ -356,7 +372,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     let response = try? result.get()
                     var error = result.error as NSError?
                     if let newMessage = context.object(with: objectId) as? Message, response != nil {
-                        // TODO need check the response code
+                        // TODO: need check the response code
                         if var msg: [String: Any] = response?["Message"] as? [String: Any] {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
@@ -409,11 +425,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
-
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
                                     if let labelID = newMessage.firstValidFolder() {
-                                        self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
+                                        self.mark(
+                                            messageObjectIDs: [objectId],
+                                            labelID: LabelID(labelID),
+                                            unRead: false,
+                                            context: context
+                                        )
                                     }
                                 }
 
@@ -452,7 +472,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 self.contextProvider.performOnRootSavingContext { context in
                     switch result {
                     case .success(let response):
-                        // TODO need check the respons code
+                        // TODO: need check the respons code
                         if var msg: [String: Any] = response["Message"] as? [String: Any] {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
@@ -474,7 +494,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         self.mark(
                                             messageObjectIDs: [messageOut.objectID],
                                             labelID: LabelID(labelID),
-                                            unRead: false
+                                            unRead: false,
+                                            context: context
                                         )
                                     }
 
@@ -511,14 +532,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     return
                 }
                 if let labelID = message.firstValidFolder() {
-                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
+                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false, context: context)
                 }
                 DispatchQueue.main.async {
                     completion(nil)
                 }
             }
         }
-
     }
 
     // MARK: fuctions for only fetch the local cache
@@ -617,7 +637,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      4. use wraped manully.
      */
     func cleanUp() -> Promise<Void> {
-        return self.cleanMessage(cleanBadgeAndNotifications: true).done { (_) in
+        return self.cleanMessage(cleanBadgeAndNotifications: true).done { _ in
             self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
             self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
             self.signout()
@@ -718,7 +738,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         for message in results {
             if let labels = message.labels.allObjects as? [Label],
                labels.contains(where: { $0.labelID == draftID }) {
-
                 if let attachments = message.attachments.allObjects as? [Attachment],
                    attachments.contains(where: { $0.attachmentID == "0" }) {
                     // If the draft is uploading attachments, don't delete it
@@ -799,8 +818,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let request = FetchMessagesByID(msgIDs: messages)
         self.apiService
             .perform(request: request, response: FetchMessagesByIDResponse()) { _, response in
-            completion(response)
-        }
+                completion(response)
+            }
     }
 
     // MARK: old functions
@@ -815,25 +834,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     struct SendStatus: OptionSet {
         let rawValue: Int
 
-        static let justStart             = SendStatus([])
-        static let fetchEmailOK          = SendStatus(rawValue: 1 << 0)
-        static let getBody               = SendStatus(rawValue: 1 << 1)
-        static let updateBuilder         = SendStatus(rawValue: 1 << 2)
-        static let processKeyResponse    = SendStatus(rawValue: 1 << 3)
+        static let justStart = SendStatus([])
+        static let fetchEmailOK = SendStatus(rawValue: 1 << 0)
+        static let getBody = SendStatus(rawValue: 1 << 1)
+        static let updateBuilder = SendStatus(rawValue: 1 << 2)
+        static let processKeyResponse = SendStatus(rawValue: 1 << 3)
         static let checkMimeAndPlainText = SendStatus(rawValue: 1 << 4)
-        static let setAtts               = SendStatus(rawValue: 1 << 5)
-        static let goNext                = SendStatus(rawValue: 1 << 6)
-        static let checkMime             = SendStatus(rawValue: 1 << 7)
-        static let buildMime             = SendStatus(rawValue: 1 << 8)
-        static let checkPlainText        = SendStatus(rawValue: 1 << 9)
-        static let buildPlainText        = SendStatus(rawValue: 1 << 10)
-        static let initBuilders          = SendStatus(rawValue: 1 << 11)
-        static let encodeBody            = SendStatus(rawValue: 1 << 12)
-        static let buildSend             = SendStatus(rawValue: 1 << 13)
-        static let sending               = SendStatus(rawValue: 1 << 14)
-        static let done                  = SendStatus(rawValue: 1 << 15)
-        static let doneWithError         = SendStatus(rawValue: 1 << 16)
-        static let exceptionCatched      = SendStatus(rawValue: 1 << 17)
+        static let setAtts = SendStatus(rawValue: 1 << 5)
+        static let goNext = SendStatus(rawValue: 1 << 6)
+        static let checkMime = SendStatus(rawValue: 1 << 7)
+        static let buildMime = SendStatus(rawValue: 1 << 8)
+        static let checkPlainText = SendStatus(rawValue: 1 << 9)
+        static let buildPlainText = SendStatus(rawValue: 1 << 10)
+        static let initBuilders = SendStatus(rawValue: 1 << 11)
+        static let encodeBody = SendStatus(rawValue: 1 << 12)
+        static let buildSend = SendStatus(rawValue: 1 << 13)
+        static let sending = SendStatus(rawValue: 1 << 14)
+        static let done = SendStatus(rawValue: 1 << 15)
+        static let doneWithError = SendStatus(rawValue: 1 << 16)
+        static let exceptionCatched = SendStatus(rawValue: 1 << 17)
     }
 
     enum SendingError: Error {
@@ -850,12 +869,13 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             guard let message = context.find(with: objectID) as? Message else {
                 return
             }
+            let msg = MessageEntity(message)
             messageSendingData = MessageSendingData(
-                message: MessageEntity(message),
+                message: msg,
                 cachedUserInfo: message.cachedUser,
                 cachedAuthCredential: message.cachedAuthCredential,
                 cachedSenderAddress: message.cachedAddress,
-                defaultSenderAddress: self?.defaultUserAddress(for: message)
+                defaultSenderAddress: self?.defaultUserAddress(of: msg.addressID)
             )
         }
         return messageSendingData
@@ -962,14 +982,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             let authCredential = message.cachedAuthCredential ?? userManager.authCredential
             let passphrase = message.cachedPassphrase ?? userManager.mailboxPassword
-            guard let addressKey = (message.cachedAddress ?? userManager.messageService.defaultUserAddress(for: message))?.keys.first else {
+            guard let addressID = message.addressID,
+                  let addressKey = (message.cachedAddress ?? userManager.messageService.defaultUserAddress(of: AddressID(addressID)))?.keys.first else {
                 completion(NSError.lockError())
                 return
             }
             self.addBreadcrumbIfNeeded(
                 addressIdFromMessage: message.addressID,
                 cachedAddress: message.cachedAddress,
-                defaultAddress: userManager.messageService.defaultUserAddress(for: message)
+                defaultAddress: userManager.messageService.defaultUserAddress(of: AddressID(addressID))
             )
 
             var requests = [UserEmailPubKeys]()
@@ -1369,7 +1390,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     
     private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {
         guard let originMessageID = oriMsgID,
-            let act = action,
+              let act = action,
               !originMessageID.rawValue.isEmpty else {
             return Promise()
         }
@@ -1444,7 +1465,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
             _ = self.queueManager?.addTask(task)
         default:
-            if message.managedObjectContext != nil && !messageID.isEmpty {
+            if message.managedObjectContext != nil, !messageID.isEmpty {
                 let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
                 _ = self.queueManager?.addTask(task)
             }
@@ -1485,7 +1506,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func cleanLocalMessageCache(completion: @escaping (Error?) -> Void) {
         let getLatestEventID = EventLatestIDRequest()
         self.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, response in
-            guard response.error == nil && !response.eventID.isEmpty else {
+            guard response.error == nil, !response.eventID.isEmpty else {
                 completion(response.error)
                 return
             }
@@ -1522,9 +1543,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 },
                 onDownload: {
                     self.cleanMessage(cleanBadgeAndNotifications: true).then { _ -> Promise<Void> in
-                        return self.contactDataService.cleanUp()
+                        self.contactDataService.cleanUp()
                     }.cauterize()
-                })
+                }
+            )
         }
     }
 
@@ -1539,25 +1561,28 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
         if let key = self.userDataSource?.getAddressKey(address_id: addressId) {
             return try clearBody.encrypt(withKey: key,
-                                                 userKeys: self.userDataSource!.userPrivateKeys,
-                                                 mailbox_pwd: mailbox_pwd)
-        } else {//fallback
+                                         userKeys: self.userDataSource!.userPrivateKeys,
+                                         mailbox_pwd: mailbox_pwd)
+        } else { // fallback
             let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
             return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)
         }
     }
 
     func getUserAddressID(for message: Message) -> String {
-        if let addr = defaultUserAddress(for: message) {
+        if let addressID = message.addressID,
+           let addr = defaultUserAddress(of: AddressID(addressID)) {
             return addr.addressID
         }
         return ""
     }
 
-    func defaultUserAddress(for message: Message) -> Address? {
-        let userInfo = self.userDataSource!.userInfo
-        if let addressID = message.addressID, !addressID.isEmpty {
-            if let addr = userInfo.userAddresses.address(byID: addressID),
+    func defaultUserAddress(of addressID: AddressID) -> Address? {
+        guard let userInfo = userDataSource?.userInfo else {
+            return nil
+        }
+        if !addressID.rawValue.isEmpty {
+            if let addr = userInfo.userAddresses.address(byID: addressID.rawValue),
                addr.send == .active {
                 return addr
             } else {
@@ -1573,29 +1598,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         return nil
     }
 
-    /// this function need to factor
-    func fromAddress(_ message: Message) -> Address? {
-        let userInfo = self.userDataSource!.userInfo
-        if let addressID = message.addressID, !addressID.isEmpty {
-            if let addr = userInfo.userAddresses.address(byID: addressID) {
-                return addr
-            }
+    func userAddress(of addressID: AddressID) -> Address? {
+        guard let userInfo = userDataSource?.userInfo else {
+            return nil
         }
-        return nil
+        return userInfo.userAddresses.address(byID: addressID.rawValue)
     }
 
-    func messageWithLocation (recipientList: String,
-                              bccList: String,
-                              ccList: String,
-                              title: String,
-                              encryptionPassword: String,
-                              passwordHint: String,
-                              expirationTimeInterval: TimeInterval,
-                              body: String,
-                              attachments: [Any]?,
-                              mailbox_pwd: Passphrase,
-                              sendAddress: Address,
-                              inManagedObjectContext context: NSManagedObjectContext) -> Message {
+    func messageWithLocation(recipientList: String,
+                             bccList: String,
+                             ccList: String,
+                             title: String,
+                             encryptionPassword: String,
+                             passwordHint: String,
+                             expirationTimeInterval: TimeInterval,
+                             body: String,
+                             attachments: [Any]?,
+                             mailbox_pwd: Passphrase,
+                             sendAddress: Address,
+                             inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
         message.messageID = MessageID.generateLocalID().rawValue
         message.toList = recipientList
@@ -1635,15 +1656,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 }
             }
-        } catch {
-        }
+        } catch {}
         return message
     }
 
-    func updateMessage (_ message: Message ,
-                        expirationTimeInterval: TimeInterval,
-                        body: String,
-                        mailbox_pwd: Passphrase) {
+    func updateMessage(_ message: Message,
+                       expirationTimeInterval: TimeInterval,
+                       body: String,
+                       mailbox_pwd: Passphrase) {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }

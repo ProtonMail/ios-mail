@@ -65,4 +65,14 @@ extension LabelCount {
     var unreadEndTime: Date {
         return unreadEnd ?? Date.distantPast
     }
+
+    func resetDataExceptUnread() {
+        start = .distantPast
+        end = .distantPast
+        update = .distantPast
+
+        unreadStart = .distantPast
+        unreadEnd = .distantPast
+        unreadUpdate = .distantPast
+    }
 }

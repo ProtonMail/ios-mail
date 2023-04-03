@@ -105,10 +105,6 @@ final class KeysResponse: Response {
         return true
     }
 
-    func firstKey() -> String? {
-        keys.first(where: { $0.flags.contains(.encryptionEnabled) })?.publicKey
-    }
-
     var allPublicKeys: [ArmoredKey] {
         keys
             .filter { $0.flags.contains(.encryptionEnabled) }

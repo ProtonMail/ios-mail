@@ -100,4 +100,18 @@ class SettingsTests : BaseTestCase {
             .navigateBackToSettings()
             .verify.darkModeIsOff()
     }
+
+    func testBlockList() {
+        let user = testData.onePassUser
+
+        inboxRobot
+            .menuDrawer()
+            .settings()
+            .selectAccount(user.email)
+            .blockList()
+            .pullDownToRefresh()
+            .verify
+            .expectedTitleIsShown()
+            .emptyListPlaceholderIsShown()
+    }
 }

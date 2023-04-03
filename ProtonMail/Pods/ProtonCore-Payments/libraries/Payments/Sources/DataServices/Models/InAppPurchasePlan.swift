@@ -36,11 +36,21 @@ public struct InAppPurchasePlan: Equatable, Hashable {
     public let period: String?
 
     public var isFreePlan: Bool { InAppPurchasePlan.isThisAFreePlan(protonName: protonName) }
+    public var isPlusPlan: Bool { InAppPurchasePlan.isThisAPlusPlan(protonName: protonName) }
+    public var isUnlimitedPlan: Bool { InAppPurchasePlan.isThisAUnlimitedPlan(protonName: protonName) }
 
     public static let freePlanName = "free"
 
     public static func isThisAFreePlan(protonName: String) -> Bool {
         protonName == freePlanName || protonName == "vpnfree" || protonName == "drivefree"
+    }
+    
+    public static func isThisAPlusPlan(protonName: String) -> Bool {
+        protonName.range(of: "plus", options: .caseInsensitive) != nil
+    }
+    
+    public static func isThisAUnlimitedPlan(protonName: String) -> Bool {
+        protonName.range(of: "unlimited", options: .caseInsensitive) != nil
     }
 
     public static func isThisATrialPlan(protonName: String) -> Bool {

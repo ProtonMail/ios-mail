@@ -31,7 +31,7 @@ extension Message {
     }
     
     /// Predefined location. matches with exclusive label id
-    enum Location: String, CaseIterable {
+    enum Location: String, CaseIterable, Decodable {
         case inbox   = "0"
         case draft   = "8"
         case sent    = "7"
@@ -41,6 +41,7 @@ extension Message {
         case trash   = "3"
         case allmail = "5"
         case scheduled = "12"
+        case blocked = "14"
 
         var localizedTitle: String {
             switch self {
@@ -62,6 +63,8 @@ extension Message {
                 return LocalString._menu_allmail_title
             case .scheduled:
                 return LocalString._locations_scheduled_title
+            case .blocked:
+                return L11n.BlockSender.blockListScreenTitle
             }
         }
 

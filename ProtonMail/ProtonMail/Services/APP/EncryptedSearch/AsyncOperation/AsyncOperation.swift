@@ -63,6 +63,7 @@ class AsyncOperation: Operation {
     override func main() {
         if isCancelled {
             state = .finished
+            return
         } else {
             state = .executing
         }

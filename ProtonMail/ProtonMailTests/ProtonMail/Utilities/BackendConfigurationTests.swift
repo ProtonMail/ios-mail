@@ -16,50 +16,90 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import ProtonCore_Environment
 import XCTest
 
 class BackendConfigurationTests: XCTestCase {
+    private static let customApiDomain = "example.com"
+
+    private var sut: BackendConfiguration!
+    private var mockBackendConfigurationCache: MockBackendConfigurationCacheProtocol!
     private let emptyLaunchArgs = [String]()
     private let uiTestsLaunchArgs = ["-uiTests"]
 
     private let emptyEnvVars = [String: String]()
-    private var apiCustomAPIEnvVars: [String: String]!
-
-    private let customAppDomain = "app.com"
-    private let customApiDomain = "api.com"
-    private let customApiPath = "/custom_api"
+    private var apiCustomAPIEnvVars = ["MAIL_APP_API_DOMAIN": BackendConfigurationTests.customApiDomain]
 
     override func setUp() {
         super.setUp()
-        apiCustomAPIEnvVars = [
-            "MAIL_APP_APP_DOMAIN": customAppDomain,
-            "MAIL_APP_API_DOMAIN": customApiDomain,
-            "MAIL_APP_API_PATH": customApiPath
-        ]
+        mockBackendConfigurationCache = MockBackendConfigurationCacheProtocol()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        mockBackendConfigurationCache = nil
+        sut = nil
     }
 
     func testInit_whenThereIsUITestsArg_andEnvVarsExist_returnsCustomEnv() {
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
-        XCTAssert(result.environment.appDomain == customAppDomain)
-        XCTAssert(result.environment.apiDomain == customApiDomain)
-        XCTAssert(result.environment.apiPath == customApiPath)
+        sut = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: apiCustomAPIEnvVars)
+        XCTAssert(sut.environment == .custom(BackendConfigurationTests.customApiDomain))
     }
 
-    func testInit_whenThereIsUITestsArg_andOneEnvVarIsMissing_returnsProdEnv() {
-        var missingEnvVar: [String: String] = apiCustomAPIEnvVars
-        missingEnvVar[missingEnvVar.keys.randomElement()!] = nil
-
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: missingEnvVar)
-        assertIsProduction(configuration: result)
+    func testInit_whenIsDebugOrEnterprise_returnsCachedEnv() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            Environment.black
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
+        XCTAssert(sut.environment == .black)
     }
+
+    func testInit_whenIsDebugOrEnterprise_andCacheReturnsNil_returnsProdEnv() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            nil
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
+        XCTAssert(sut.environment == .mailProd)
+    }
+
+    func testInit_whenIsNotDebugOrEnterprise_returnsProdEnv() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            Environment.black
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { false }, configurationCache: mockBackendConfigurationCache)
+        XCTAssert(sut.environment == .mailProd)
+    }
+
+    func testIsProduction_whenItIsProduction_returnsTrue() {
+        sut = BackendConfiguration(
+            isDebugOrEnterprise: { false }
+        )
+        XCTAssertTrue(sut.isProduction)
+    }
+
+    func testIsProduction_whenItIsNotProduction_returnsFalse() {
+        mockBackendConfigurationCache.readEnvironmentStub.bodyIs({ _ in
+            Environment.black
+        })
+        sut = BackendConfiguration(isDebugOrEnterprise: { true }, configurationCache: mockBackendConfigurationCache)
+        XCTAssertFalse(sut.isProduction)
+    }
+
+    func testEnvironment_whenItIsProduction_returnsTheExpectedDomains() {
+        sut = BackendConfiguration(isDebugOrEnterprise: { false })
+        assertIsProduction(configuration: sut)
+    }
+}
+
+extension BackendConfigurationTests {
 
     private func assertIsProduction(
         configuration: BackendConfiguration,
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        XCTAssertEqual(configuration.environment.appDomain, "proton.me", file: file, line: line)
-        XCTAssertEqual(configuration.environment.apiDomain, "api.protonmail.ch", file: file, line: line)
-        XCTAssertEqual(configuration.environment.apiPath, "", file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.signupDomain, "proton.me", file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.defaultHost, "https://api.protonmail.ch", file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.defaultPath, "", file: file, line: line)
     }
 }

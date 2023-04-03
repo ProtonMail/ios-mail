@@ -87,14 +87,4 @@ extension ConversationCount {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
-
-    func resetDataExceptUnread() {
-        start = Date.distantPast
-        end = Date.distantPast
-        update = Date.distantPast
-
-        unreadStart = Date.distantPast
-        unreadEnd = Date.distantPast
-        unreadUpdate = Date.distantPast
-    }
 }

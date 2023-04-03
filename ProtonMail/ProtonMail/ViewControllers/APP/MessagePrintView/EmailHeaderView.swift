@@ -1223,7 +1223,7 @@ extension EmailHeaderView: UITableViewDataSource {
         cell?.contentView.isUserInteractionEnabled = true
 
         let count = attachments.count
-        cell?.ConfigHeader(title: "\(count) Attachments", section: section, expend: self.expend)
+        cell?.configHeader(title: "\(count) Attachments", section: section, expend: self.expend)
         cell?.delegate = self
         return cell
     }

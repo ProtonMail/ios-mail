@@ -62,6 +62,7 @@ class ConversationViewModel {
     private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmailsMap: [String: EmailEntity]
     private let sharedContactGroups: [ContactGroupVO]
+    let coordinator: ConversationCoordinatorProtocol
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -107,6 +108,7 @@ class ConversationViewModel {
     }
 
     let connectionStatusProvider: InternetConnectionStatusProvider
+    private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
@@ -126,6 +128,7 @@ class ConversationViewModel {
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
+         coordinator: ConversationCoordinatorProtocol,
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
@@ -168,6 +171,7 @@ class ConversationViewModel {
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
+        self.coordinator = coordinator
         self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
     }
@@ -232,13 +236,16 @@ class ConversationViewModel {
     }
 
     func messageType(with message: MessageEntity) -> ConversationViewItemType {
-        let viewModel = ConversationMessageViewModel(labelId: labelId,
-                                                     message: message,
-                                                     user: user,
-                                                     replacingEmailsMap: sharedReplacingEmailsMap,
-                                                     contactGroups: sharedContactGroups,
-                                                     internetStatusProvider: connectionStatusProvider,
-                                                     goToDraft: goToDraft)
+        let viewModel = ConversationMessageViewModel(
+            labelId: labelId,
+            message: message,
+            user: user,
+            replacingEmailsMap: sharedReplacingEmailsMap,
+            contactGroups: sharedContactGroups,
+            internetStatusProvider: connectionStatusProvider,
+            senderImageStatusProvider: dependencies.senderImageStatusProvider,
+            goToDraft: goToDraft
+        )
         return .message(viewModel: viewModel)
     }
 
@@ -273,7 +280,7 @@ class ConversationViewModel {
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        connectionStatusProvider.registerConnectionStatus { [weak self] networkStatus in
+        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
             guard self?.isInitialDataFetchCalled == true else {
                 return
             }
@@ -400,6 +407,34 @@ class ConversationViewModel {
         focusedMode = false
     }
 
+    func fetchSenderImageIfNeeded(
+        message: MessageEntity,
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        guard let senderImageRequestInfo = message.getSenderImageRequestInfo(isDarkMode: isDarkMode) else {
+            completion(nil)
+            return
+        }
+
+        dependencies.fetchSenderImage
+            .callbackOn(.main)
+            .execute(
+                params: .init(
+                    senderImageRequestInfo: senderImageRequestInfo,
+                    scale: scale,
+                    userID: user.userID
+                )) { result in
+                    switch result {
+                    case let .success(image):
+                        completion(image)
+                    case .failure:
+                        completion(nil)
+                    }
+            }
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
         let hasMessages = !self.messagesDataSource.isEmpty
@@ -524,10 +559,9 @@ class ConversationViewModel {
             .count
         displayAlert(scheduledNum)
     }
-}
 
-// MARK: - Actions
-extension ConversationViewModel {
+    // MARK: - Actions
+
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
         switch update {
         case .willUpdate:
@@ -848,6 +882,20 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
                     completion?(error as NSError)
                 }
             }
+    }
+
+    func handleNavigationAction(_ action: ConversationNavigationAction) {
+        coordinator.handle(navigationAction: action)
+    }
+
+    func navigateToNextConversation(popCurrentView: (() -> Void)? = nil) {
+        guard dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
+        }
     }
 }
 
@@ -1180,6 +1228,10 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 extension ConversationViewModel {
     struct Dependencies {
         let fetchMessageDetail: FetchMessageDetailUseCase
+        let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
+        let notificationCenter: NotificationCenter
+        let senderImageStatusProvider: SenderImageStatusProvider
+        let fetchSenderImage: FetchSenderImageUseCase
     }
 
     enum CellVisibility {

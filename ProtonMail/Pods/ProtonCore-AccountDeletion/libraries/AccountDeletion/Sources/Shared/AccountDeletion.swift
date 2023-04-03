@@ -112,7 +112,7 @@ public final class AccountDeletionService {
 
     #if canImport(ProtonCore_Services)
     public convenience init(api: APIService, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
-        self.init(api: api, doh: api.doh, preferredLanguage: preferredLanguage)
+        self.init(api: api, doh: api.dohInterface, preferredLanguage: preferredLanguage)
     }
     #endif
     

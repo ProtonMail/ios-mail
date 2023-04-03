@@ -134,6 +134,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut = ImageProxy(dependencies: dependencies)
 
         apiServiceMock.dohStub.fixture = DohMock()
+        apiServiceMock.dohInterfaceStub.fixture = DohMock()
 
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {

@@ -26,12 +26,10 @@ import ProtonCore_Services
 
 class EmailVerificationViewModel {
 
-    var apiService: PMAPIService
     var signupService: Signup
     var email: String?
 
-    init(apiService: PMAPIService, signupService: Signup) {
-        self.apiService = apiService
+    init(signupService: Signup) {
         self.signupService = signupService
     }
 

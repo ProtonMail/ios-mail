@@ -28,9 +28,9 @@ fileprivate struct id {
 /*
  MessageRobot class contains actions and verifications for Message detail view funcctionality.
  */
-class MessageRobot: CoreElements {
+class MessageRobot: MailboxRobotInterface {
     
-    func addMessageToFolder(_ folderName: String) -> InboxRobot {
+    func addMessageToFolder(_ folderName: String) -> MessageRobot {
         openFoldersModal()
             .selectFolder(folderName)
             .tapDoneSelectingFolderButton()

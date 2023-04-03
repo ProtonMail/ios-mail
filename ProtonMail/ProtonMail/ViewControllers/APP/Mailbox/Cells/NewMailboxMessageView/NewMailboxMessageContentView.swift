@@ -40,11 +40,11 @@ class NewMailboxMessageContentView: BaseMessageView {
     }
 
     func addTagsView() {
-        contentStackView.addArrangedSubview(tagsView)
+        tagsView.isHidden = false
     }
 
     func removeTagsView() {
-        contentStackView.removeArrangedSubview(tagsView)
+        tagsView.isHidden = true
     }
 
     func removeOriginImages() {
@@ -70,6 +70,8 @@ class NewMailboxMessageContentView: BaseMessageView {
         secondLineStackView.addArrangedSubview(UIView())
         secondLineStackView.addArrangedSubview(attachmentImageView)
         secondLineStackView.addArrangedSubview(starImageView)
+
+        contentStackView.addArrangedSubview(tagsView)
     }
 
     private func setUpLayout() {
@@ -93,7 +95,7 @@ class NewMailboxMessageContentView: BaseMessageView {
 
         [
             starImageView.widthAnchor.constraint(equalToConstant: 16.0),
-            starImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            starImageView.heightAnchor.constraint(equalToConstant: 16.0).setPriority(as: .defaultHigh),
             attachmentImageView.widthAnchor.constraint(equalToConstant: 16.0),
             attachmentImageView.heightAnchor.constraint(equalToConstant: 16.0),
             forwardImageView.widthAnchor.constraint(equalToConstant: 16.0),
@@ -103,7 +105,8 @@ class NewMailboxMessageContentView: BaseMessageView {
             replyAllImageView.widthAnchor.constraint(equalToConstant: 16.0),
             replyAllImageView.heightAnchor.constraint(equalToConstant: 16.0),
             draftImageView.widthAnchor.constraint(equalToConstant: 16.0),
-            draftImageView.heightAnchor.constraint(equalToConstant: 16.0)
+            draftImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            firstLineStackView.heightAnchor.constraint(equalTo: timeLabel.heightAnchor, constant: 2)
         ].activate()
 
         [
@@ -137,12 +140,6 @@ private extension NewMailboxMessageContentView {
 
         static var verticalStackView: UIStackView {
             .stackView(axis: .vertical)
-        }
-
-        static var senderLabel: UILabel {
-            let label = UILabel(frame: .zero)
-            label.textColor = ColorProvider.TextNorm
-            return label
         }
 
         static var messageCountLabel: PaddingLabel {

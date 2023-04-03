@@ -117,7 +117,7 @@ extension FetchAttachment {
 
         init(
             apiService: APIService,
-            doh: DoHInterface = DoHMail.default,
+            doh: DoHInterface = BackendConfiguration.shared.doh,
             downloadService: DownloadService = DownloadService.shared,
             attachmentCacheFolder: URL = FileManager.default.attachmentDirectory
         ) {

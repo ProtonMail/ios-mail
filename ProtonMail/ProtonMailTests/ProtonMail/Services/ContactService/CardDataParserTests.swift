@@ -44,7 +44,7 @@ class CardDataParserTests: XCTestCase {
             signature: ContactParserTestData.signedOnlySignature
         )
 
-        let parsed = try sut.verifyAndParseContact(with: email, from: [cardData]).wait()
+        let parsed = try XCTUnwrap(sut.verifyAndParseContact(with: email, from: [cardData]))
         XCTAssertEqual(parsed.email, email)
     }
 
@@ -55,7 +55,7 @@ class CardDataParserTests: XCTestCase {
             signature: "invalid signature"
         )
 
-        XCTAssertThrowsError(try sut.verifyAndParseContact(with: email, from: [cardData]).wait())
+        XCTAssertNil(sut.verifyAndParseContact(with: email, from: [cardData]))
     }
 
     func testIgnoresCardDataTypesOtherThanSignedOnly() {
@@ -68,6 +68,6 @@ class CardDataParserTests: XCTestCase {
             )
         }
 
-        XCTAssertThrowsError(try sut.verifyAndParseContact(with: email, from: unhandledCards).wait())
+        XCTAssertNil(sut.verifyAndParseContact(with: email, from: unhandledCards))
     }
 }

@@ -222,7 +222,7 @@ class ImageProxy {
     }
 
     private func proxyURL(for unsafeURL: UnsafeRemoteURL) -> SafeRemoteURL {
-        let baseURL = dependencies.apiService.doh.getCurrentlyUsedHostUrl()
+        let baseURL = dependencies.apiService.dohInterface.getCurrentlyUsedHostUrl()
         let request = ImageProxyRequest(unsafeURL: unsafeURL, dryRun: false)
         return SafeRemoteURL(value: "\(baseURL)\(request.path)")
     }
