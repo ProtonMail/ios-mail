@@ -371,6 +371,20 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(sut.users.map { $0.userID.rawValue }, userIDs)
     }
 
+    func testClean_hasUsersReturnFalse() throws {
+        let userID = String.randomString(20)
+        try prepareUserDataInCache(userID: userID, hasMailSetting: true)
+        let e = expectation(description: "Closure is called")
+
+        sut.clean().ensure {
+            e.fulfill()
+        }.cauterize()
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertFalse(sut.hasUsers())
+    }
+
     private func prepareUserDataInCacheWithDifferentOrder(userIDs: [String]) throws {
         let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
         var userInfos: [UserInfo] = []

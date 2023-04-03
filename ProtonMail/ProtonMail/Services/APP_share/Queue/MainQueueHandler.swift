@@ -294,11 +294,7 @@ extension MainQueueHandler {
                         mess = response
                     case .failure(let err):
                         DispatchQueue.main.async {
-                            if let responseError = err as? ResponseError, responseError.underlyingError?.code == APIErrorCode.deviceHavingLowConnectivity {
-                                NSError.alertSavingDraftError(details: responseError.localizedDescription)
-                            } else {
-                                NSError.alertSavingDraftError(details: err.localizedDescription)
-                            }
+                            NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
 
                         if err.isStorageExceeded {

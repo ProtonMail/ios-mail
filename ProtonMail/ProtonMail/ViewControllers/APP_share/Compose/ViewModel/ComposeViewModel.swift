@@ -763,7 +763,7 @@ extension ComposeViewModel {
             switch contact.modelType {
             case .contact:
                 let contact = contact as! ContactVO
-                let recipient = EncodableRecipient(address: contact.email, group: "")
+                let recipient = EncodableRecipient(address: contact.email, group: nil)
                 return [recipient]
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
@@ -793,18 +793,15 @@ extension ComposeViewModel {
         var out: [ContactPickerModelProtocol] = []
         var groups = [String: [DraftEmailData]]() // [groupName: [DraftEmailData]]
 
+        let jsonData = Data(json.utf8)
+
         do {
-            let jsonData = Data(json.utf8)
             let recipients = try JSONDecoder().decode([DecodableRecipient].self, from: jsonData)
 
             for recipient in recipients {
-                let group = recipient.group
                 let name = displayNameForRecipient(recipient)
 
-                if recipient.group.isEmpty {
-                    // contact
-                    out.append(ContactVO(name: name, email: recipient.address))
-                } else {
+                if let group = recipient.group, !group.isEmpty {
                     // contact group
                     let toInsert = DraftEmailData(name: name, email: recipient.address)
                     if var data = groups[group] {
@@ -813,6 +810,9 @@ extension ComposeViewModel {
                     } else {
                         groups.updateValue([toInsert], forKey: group)
                     }
+                } else {
+                    // contact
+                    out.append(ContactVO(name: name, email: recipient.address))
                 }
             }
 
@@ -1084,7 +1084,7 @@ extension ComposeViewModel {
         }
 
         let address: String
-        let group: String
+        let group: String?
     }
 
     struct DecodableRecipient: Decodable {
@@ -1095,7 +1095,7 @@ extension ComposeViewModel {
         }
 
         let address: String
-        let group: String
+        let group: String?
         let name: String?
     }
 }

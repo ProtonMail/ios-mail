@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import protocol CoreData.NSFetchRequestResult
+import class CoreData.NSManagedObjectID
 import LifetimeTracker
 import ProtonCore_UIFoundations
 import UIKit
@@ -36,6 +37,8 @@ final class PagesViewController<
     private var services: ServiceFactory
     private var titleViewObserver: NSKeyValueObservation?
     private var spotlight: PagesSpotlightView?
+    // Message objectID or ContextLabel objectID
+    private var currentObjectID: ObjectID?
 
     typealias PageCacheType = (refIndex: Int, controller: UIViewController)
     /// Strong reference to VCs to prevent UIPagesViewController release sibling page too early
@@ -63,20 +66,19 @@ final class PagesViewController<
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.uiDelegate = self
         switch viewModel.viewMode {
         case .singleMessage:
             initializeForSingleMessage()
         case .conversation:
             initializeForConversation()
         }
+
         view.backgroundColor = ColorProvider.BackgroundSecondary
+
         setUpTitleView()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(receiveSwipeExpectation(notification:)),
-            name: .pagesSwipeExpectation,
-            object: nil
-        )
+        updateCurrentID()
+        emptyBackButtonTitleForNextView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -84,46 +86,6 @@ final class PagesViewController<
         showSpotlightIfNeeded { [weak self] in
             delay(0.5) {
                 self?.showToolbarCustomizationSpotlightIfNeeded()
-            }
-        }
-    }
-
-    @objc
-    func receiveSwipeExpectation(notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let expectation = userInfo["expectation"] as? PagesSwipeAction else { return }
-        let shouldReload = userInfo["reload"] as? Bool
-        handlePageViewNavigationDirection(action: expectation, shouldReload: shouldReload ?? false)
-    }
-
-    private func handlePageViewNavigationDirection(
-        action: PagesSwipeAction,
-        shouldReload: Bool = false
-    ) {
-        guard let current = self.viewControllers?.first else { return }
-        let direction: UIPageViewController.NavigationDirection = action == .forward ? .forward : .reverse
-        switch viewModel.viewMode {
-        case .singleMessage:
-            if let nextVC = self.singleMessageVC(baseOn: current, offset: action.rawValue).0 {
-                setViewControllers([nextVC], direction: direction, animated: true) { _ in
-                    self.setUpTitleView()
-                    if shouldReload {
-                        self.viewModel.refetchData()
-                    }
-                }
-            } else {
-                navigationController?.popViewController(animated: true)
-            }
-        case .conversation:
-            if let nextVC = conversationVC(baseOn: current, offset: action.rawValue).0 {
-                setViewControllers([nextVC], direction: direction, animated: true) { _ in
-                    self.setUpTitleView()
-                    if shouldReload {
-                        self.viewModel.refetchData()
-                    }
-                }
-            } else {
-                navigationController?.popViewController(animated: true)
             }
         }
     }
@@ -146,6 +108,7 @@ final class PagesViewController<
         transitionCompleted completed: Bool
     ) {
         setUpTitleView()
+        updateCurrentID()
     }
 
     // MARK: UIPageViewControllerDataSource
@@ -189,6 +152,8 @@ extension PagesViewController {
     private func initializeForSingleMessage() {
         guard let (message, refIndex) = viewModel.item(for: viewModel.initialID, offset: 0) as? (MessageEntity, Int),
               let singleMessageVC = singleMessageVC(for: message, refIndex: refIndex) else {
+            assertionFailure("Shouldn't fail")
+            dismiss()
             return
         }
         setViewControllers([singleMessageVC], direction: .forward, animated: false)
@@ -235,6 +200,8 @@ extension PagesViewController {
                 .item(for: viewModel.initialID, offset: 0) as? (ConversationEntity, Int),
             let conversationVC = conversationVC(for: conversation, refIndex: refIndex, targetMessageID: targetID)
         else {
+            assertionFailure("Shouldn't fail")
+            dismiss()
             return
         }
         setViewControllers([conversationVC], direction: .forward, animated: false)
@@ -275,6 +242,52 @@ extension PagesViewController {
     }
 }
 
+extension PagesViewController: PagesViewUIProtocol {
+    func dismiss() {
+        DispatchQueue.main.async {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    func getCurrentObjectID() -> ObjectID? {
+        currentObjectID
+    }
+
+    func handlePageViewNavigationDirection(
+        action: PagesSwipeAction,
+        shouldReload: Bool = false
+    ) {
+        guard let current = self.viewControllers?.first else { return }
+        let direction: UIPageViewController.NavigationDirection = action == .forward ? .forward : .reverse
+        switch viewModel.viewMode {
+        case .singleMessage:
+            if let nextVC = self.singleMessageVC(baseOn: current, offset: action.rawValue).0 {
+                setViewControllers([nextVC], direction: direction, animated: true) { _ in
+                    self.setUpTitleView()
+                    self.updateCurrentID()
+                    if shouldReload {
+                        self.viewModel.refetchData()
+                    }
+                }
+            } else {
+                navigationController?.popViewController(animated: true)
+            }
+        case .conversation:
+            if let nextVC = conversationVC(baseOn: current, offset: action.rawValue).0 {
+                setViewControllers([nextVC], direction: direction, animated: true) { _ in
+                    self.setUpTitleView()
+                    self.updateCurrentID()
+                    if shouldReload {
+                        self.viewModel.refetchData()
+                    }
+                }
+            } else {
+                navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+}
+
 extension PagesViewController {
     private func setUpTitleView() {
         guard let currentVC = self.viewControllers?.first else {
@@ -289,6 +302,19 @@ extension PagesViewController {
         guard viewModel.viewMode == .conversation else { return }
         titleViewObserver = currentVC.observe(\.navigationItem.titleView, options: [.new]) { [weak self] currentVC, _ in
             self?.navigationItem.titleView = currentVC.navigationItem.titleView
+        }
+    }
+
+    private func updateCurrentID() {
+        guard let currentVC = self.viewControllers?.first else { return }
+        if let singleMessageVC = currentVC as? SingleMessageViewController {
+            currentObjectID = singleMessageVC.viewModel.message.objectID
+        } else if let conversationVC = currentVC as? ConversationViewController,
+                  let contextLabel = conversationVC.viewModel
+                      .conversation
+                      .contextLabelRelations
+                      .first(where: { $0.labelID == viewModel.labelID }) {
+            currentObjectID = contextLabel.objectID
         }
     }
 

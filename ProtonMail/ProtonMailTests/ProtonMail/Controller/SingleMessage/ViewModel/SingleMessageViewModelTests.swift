@@ -156,7 +156,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         let bodyInfo = sut.contentViewModel.messageInfoProvider
         var expected = MessageViewActionSheetViewModel(title: sut.message.title,
                                                        labelID: sut.labelId,
-                                                       includeStarring: false,
                                                        isStarred: sut.message.isStarred,
                                                        isBodyDecryptable: bodyInfo.isBodyDecryptable,
                                                        messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
@@ -165,9 +164,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         expected = expected.filter({ $0 != .reply && $0 != .replyAll })
         expected.insert(.reply, at: 0)
 
-        // Action sheet has no star action
-        let filteredAction = sut.toolbarCustomizationAllAvailableActions().filter { $0 != .star }
-        XCTAssertEqual(filteredAction, expected)
+        XCTAssertEqual(sut.toolbarCustomizationAllAvailableActions(), expected)
     }
 
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {

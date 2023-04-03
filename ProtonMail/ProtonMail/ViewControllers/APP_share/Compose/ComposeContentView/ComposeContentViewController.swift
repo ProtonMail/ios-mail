@@ -668,6 +668,13 @@ extension ComposeContentViewController {
                               continueAction()
                           })
         )
+        alertController.addAction(
+            UIAlertAction(title: LocalString._general_schedule_send_action,
+                          style: .default,
+                          handler: { [weak self] _ in
+                              self?.openScheduleSendActionSheet?()
+                          })
+        )
         self.present(alertController, animated: true, completion: nil)
     }
 

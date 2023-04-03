@@ -187,6 +187,9 @@ class SingleMessageViewModel {
         case .viewInLightMode:
             contentViewModel.messageInfoProvider.currentMessageRenderStyle = .lightOnly
             return
+        case .star, .unstar:
+            starTapped()
+            return
         default:
             break
         }
@@ -337,7 +340,6 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let actionSheetViewModel = MessageViewActionSheetViewModel(
             title: message.title,
             labelID: labelId,
-            includeStarring: true,
             isStarred: message.isStarred,
             isBodyDecryptable: messageInfoProvider.isBodyDecryptable,
             messageRenderStyle: bodyViewModel.currentMessageRenderStyle,

@@ -27,6 +27,7 @@ struct ContextLabelEntity: Equatable, Hashable {
     let labelID: LabelID
     let userID: UserID
     let order: Int
+    let objectID: ObjectID
 
     let isSoftDeleted: Bool
 }
@@ -43,6 +44,7 @@ extension ContextLabelEntity {
         self.userID = UserID(contextLabel.userID)
         self.order = contextLabel.order.intValue
         self.isSoftDeleted = contextLabel.isSoftDeleted
+        self.objectID = ObjectID(rawValue: contextLabel.objectID)
     }
 
     static func convert(from conversation: Conversation) -> [ContextLabelEntity] {
