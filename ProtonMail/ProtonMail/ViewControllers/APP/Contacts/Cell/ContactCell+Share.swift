@@ -49,7 +49,7 @@ extension ContactCellShare {
             for (i, contactGroupColor) in contactGroupColors.enumerated() {
                 if i < limit {
                     // setup image
-                    var image = IconProvider.users
+                    var image: UIImage = IconProvider.users
                     if let imageUnwrapped = UIImage.resize(
                         image: image,
                         targetSize: CGSize(width: width,

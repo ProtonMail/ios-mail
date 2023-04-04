@@ -366,11 +366,10 @@ extension ComposeContainerViewController {
 
     private func setupScheduledSendButton() {
         guard viewModel.isScheduleSendEnable else { return }
-        let icon = IconProvider.clockPaperPlane
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
         self.scheduledSendButton = Self.makeBarButtonItem(
             isEnabled: isEnabled,
-            icon: icon,
+            icon: IconProvider.clockPaperPlane,
             target: self,
             action: #selector(self.presentScheduleSendActionSheetIfDraftIsReady)
         )

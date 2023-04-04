@@ -216,11 +216,6 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
 
         decisionHandler(.allow)
     }
-
-    @available(iOS, introduced: 10.0, obsoleted: 13.0)
-    func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return false // those who need 3D touch or menu will override
-    }
 }
 
 extension HorizontallyScrollableWebViewContainer: UIScrollViewDelegate {

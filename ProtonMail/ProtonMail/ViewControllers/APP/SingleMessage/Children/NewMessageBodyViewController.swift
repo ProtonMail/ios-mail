@@ -418,13 +418,6 @@ extension NewMessageBodyViewController {
         }
     }
 
-    // Won't be called on iOS 13 if webView(:contextMenuConfigurationForElement:completionHandler) is declared
-    @available(iOS, introduced: 10.0, obsoleted: 13.0, message: "")
-    func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return viewModel.linkConfirmation == .openAtWill
-    }
-
-    @available(iOS 13.0, *)
     func webView(_ webView: WKWebView,
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
                  completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
