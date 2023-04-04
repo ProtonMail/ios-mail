@@ -717,7 +717,7 @@ extension CSSMagic {
     /// - Returns: Normalize float value or nil
     static func normalize(value: String, maximum: CGFloat) -> CGFloat? {
         if let doubleValue = Double(value) {
-            return doubleValue / maximum
+            return min(doubleValue, maximum) / maximum
         }
         return CSSMagic.getNormalizeFloat(from: value)
     }
