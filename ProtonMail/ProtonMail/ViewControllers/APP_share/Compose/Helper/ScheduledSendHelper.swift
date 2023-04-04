@@ -147,12 +147,11 @@ extension ScheduledSendHelper {
     }
 
     private func setUpCustomAction() -> PMActionSheetPlainItem {
-        let icon = IconProvider.chevronRight
         let isPaid = delegate?.isItAPaidUser() ?? false
         return PMActionSheetPlainItem(
             title: L11n.ScheduledSend.custom,
             icon: nil,
-            rightIcon: icon,
+            rightIcon: IconProvider.chevronRight,
             titleRightIcon: isPaid ? nil : Asset.upgradeIcon.image
         ) { [weak self] _ in
             guard let self = self,
