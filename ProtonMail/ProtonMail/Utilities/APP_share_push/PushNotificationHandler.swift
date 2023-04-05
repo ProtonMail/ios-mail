@@ -20,6 +20,7 @@ import UserNotifications
 
 protocol EncryptionKitProvider {
     func encryptionKit(forSession uid: String) -> EncryptionKit?
+    func markEncryptionKitForUnsubscribing(forSession uid: String)
 }
 
 extension PushNotificationDecryptor: EncryptionKitProvider {}
@@ -99,8 +100,7 @@ private extension PushNotificationHandler {
 
     private func encryptionKit(for uid: String) throws -> EncryptionKit {
         guard let encryptionKit = dependencies.encryptionKitProvider.encryptionKit(forSession: uid) else {
-            // encryptionKitProvider.markForUnsubscribing(uid: UID) // Uncomment when decryption bug fixed MAILIOS-2230
-            SharedUserDefaults().setNeedsToRegisterAgain(for: uid)
+            dependencies.encryptionKitProvider.markEncryptionKitForUnsubscribing(forSession: uid)
             throw PushManagementUnexpected.error(description: "no encryption kit for uid", sensitiveInfo: "uid \(uid)")
         }
         return encryptionKit

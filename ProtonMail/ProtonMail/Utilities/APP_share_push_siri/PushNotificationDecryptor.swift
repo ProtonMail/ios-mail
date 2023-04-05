@@ -47,6 +47,15 @@ class PushNotificationDecryptor {
         return settings.encryptionKit
     }
 
+    func markEncryptionKitForUnsubscribing(forSession uid: String) {
+        guard let deviceToken = Self.deviceTokenSaver.get() else { return }
+        let settings = PushSubscriptionSettings(token: deviceToken, UID: uid)
+
+        var outdated = Self.outdater.get() ?? []
+        outdated.insert(settings)
+        Self.outdater.set(newValue: outdated)
+    }
+
     func wipeEncryptionKit() {
         SystemLogger.log(message: #function, category: .pushNotification)
         Self.saver.set(newValue: nil)
