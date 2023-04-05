@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCore_Authentication
+import ProtonCore_APIClient
 import ProtonCore_DataModel
 import ProtonCore_Log
 import ProtonCore_Networking
@@ -33,7 +34,7 @@ import ProtonCore_CoreTranslation
 extension LoginService {
 
     func getAccountDataPerformingAccountMigrationIfNeeded(
-        user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+        user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
         // first login of a private user who has not changed the default password yet
         if user.keys.isEmpty, user.role == 1, user.private == 1 {
@@ -56,18 +57,18 @@ extension LoginService {
 
             // external to internal conversion flow kick-off
             withAuthDelegateAvailable(completion) { authManager in
-                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: authManager.authCredential(sessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode))))
             }
             return
         }
 
         self.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-            user: user, mailboxPassword: mailboxPassword, completion: completion
+            user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
         )
     }
 
     private func fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-        user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+        user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
         manager.getAddresses { [weak self] result in
             switch result {
@@ -77,14 +78,14 @@ extension LoginService {
 
             case .success(let addresses):
                 self?.fetchEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                    addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
+                    addresses: addresses, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                 )
             }
         }
     }
     
     private func fetchEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-        addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+        addresses: [Address], user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
         let hasAnyInternalAddress = addresses.first(where: { $0.type != .externalAddress }) != nil
         let hasNoAddressesAtAll = addresses.isEmpty
@@ -92,8 +93,12 @@ extension LoginService {
         let hasExternalAddressAndNoInternalOnes = !hasAnyInternalAddress && hasAtLeastOneAddress
         let hasNoKeys = user.keys.isEmpty
 
-        // user has no addresses but username — username account. If the app supports the username account, we can finish right now
-        if user.isInternal, hasNoAddressesAtAll, minimumAccountType == .username {
+        // user has no addresses but username — username account. If the app supports the username account, we finish right away
+        let isUsernameAccountAndAppSupportsIt = user.isInternal && hasNoAddressesAtAll && minimumAccountType == .username
+        // user has second password mode (we need to check for keys as well) but the app doesn't need keys, we finish right away
+        let hasSecondPasswordButAppDoesNotNeedKeys = passwordMode == .two && !user.keys.isEmpty && minimumAccountType == .username
+
+        if isUsernameAccountAndAppSupportsIt || hasSecondPasswordButAppDoesNotNeedKeys {
             withAuthDelegateAvailable(completion) { authManager in
                 guard let credentials = authManager.credential(sessionUID: sessionId),
                       let authCredentials = authManager.authCredential(sessionUID: sessionId) else {
@@ -119,7 +124,7 @@ extension LoginService {
                 case .success(let updatedUser):
                     // after the keys generation — re-fetch the addresses and continue the flow
                     self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                        user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
+                        user: updatedUser, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                     )
                 }
             }
@@ -139,7 +144,7 @@ extension LoginService {
                 case .success(let updatedUser):
                     // after the keys generation — fetch the fresh data and retry the process
                     self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                        user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
+                        user: updatedUser, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                     )
                 }
             }
@@ -176,11 +181,11 @@ extension LoginService {
                 return
             }
 
-            fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
+            fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion)
 
         case .internal:
             fetchEncryptionDataForInternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
-                addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
+                addresses: addresses, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
             )
         }
     }
@@ -272,7 +277,7 @@ extension LoginService {
     }
 
     private func fetchEncryptionDataForInternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
-        addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+        addresses: [Address], user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
         // the account has no internal address while it's required by minimumAccountType == .internal. let's create it!
         guard addresses.hasInternalOrCustomDomain else {
@@ -287,7 +292,7 @@ extension LoginService {
             createAddress { [weak self] result in
                 switch result {
                 case let .success(address):
-                    self?.createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
+                    self?.createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion)
                 case let .failure(.apiMightBeBlocked(message, originalError)):
                     completion(.failure(.apiMightBeBlocked(message: message, originalError: originalError)))
                 case let .failure(error):
@@ -299,13 +304,14 @@ extension LoginService {
         }
 
         fetchEncryptionDataEnsuringAllAddressesHaveKeys(
-            addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
+            addresses: addresses, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
         )
     }
 
     private func createAddressKeyAndRefreshUserData(user: User,
                                                     address: Address,
                                                     mailboxPassword: String,
+                                                    passwordMode: PasswordMode,
                                                     completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
 
         createAddressKeys(user: user, address: address, mailboxPassword: mailboxPassword) { [weak self] result in
@@ -316,7 +322,7 @@ extension LoginService {
                     case .success(let updatedUser):
                         // after the address keys generation — retry fetching the data
                         self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                            user: updatedUser, mailboxPassword: mailboxPassword, completion: completion
+                            user: updatedUser, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                         )
                     case .failure(let error):
                         completion(.failure(error.asLoginError()))
@@ -344,7 +350,7 @@ extension LoginService {
     }
 
     private func fetchEncryptionDataEnsuringAllAddressesHaveKeys(
-        addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
+        addresses: [Address], user: User, mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
 
         guard addresses.isEmpty == false else {
@@ -356,7 +362,7 @@ extension LoginService {
         // we can only generate the key for the address of the private user (otherwise it should be the user's admin who does that)
         // we can only generate the key for the address that is active (not disabled) and that doesn't have keys
         if user.private == 1, let address = addresses.first(where: { $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
-            createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
+            createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion)
             return
         }
 

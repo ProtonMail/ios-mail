@@ -138,3 +138,11 @@ extension Request {
         
     }
 }
+
+public protocol RequestPerforming {
+    func performRequest(request: Request,
+                        parameters: Any?,
+                        headers: [String: Any]?,
+                        jsonCompletion: JSONCompletion?
+    )
+}

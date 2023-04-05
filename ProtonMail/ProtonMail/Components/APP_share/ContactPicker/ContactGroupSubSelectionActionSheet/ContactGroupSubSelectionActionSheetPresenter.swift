@@ -36,11 +36,12 @@ final class ContactGroupSubSelectionActionSheetPresenter {
     }
 
     func present() {
-        var actionSheetItems: [PMActionSheetPlainItem] = []
+        var actionSheetItems: [PMActionSheetItem] = []
         for index in 0..<viewModel.getTotalRows() {
             let info = viewModel.cellForRow(at: IndexPath(row: index, section: 0))
-            let item = PMActionSheetPlainItem(title: info.email, icon: nil, isOn: info.isSelected) { [weak self] item in
-                if item.isOn {
+            let markType: PMActionSheetItem.MarkType = info.isSelected ? .checkMark : .none
+            let item = PMActionSheetItem(style: .text(info.email), markType: markType) { [weak self] item in
+                if item.markType == .checkMark {
                     self?.viewModel.select(indexPath: IndexPath(row: index, section: 0))
                 } else {
                     self?.viewModel.deselect(indexPath: IndexPath(row: index, section: 0))
@@ -48,26 +49,25 @@ final class ContactGroupSubSelectionActionSheetPresenter {
             }
             actionSheetItems.append(item)
         }
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
-            self?.actionSheet?.dismiss(animated: true)
-        }
-
-        let applyItem = PMActionSheetPlainItem(title: LocalString._general_apply_button,
-                                               icon: nil,
-                                               textColor: ColorProvider.BrandNorm) { [weak self] _ in
-            guard let self = self else { return }
-            self.callback?(self.viewModel.getCurrentlySelectedEmails())
-            self.actionSheet?.dismiss(animated: true)
-        }
 
         let headerView = PMActionSheetHeaderView(
             title: viewModel.getGroupName(),
-            subtitle: nil,
-            leftItem: cancelItem,
-            rightItem: applyItem
+            leftItem: .right(IconProvider.cross),
+            rightItem: .left(LocalString._general_apply_button),
+            leftItemHandler: { [weak self] in
+                self?.actionSheet?.dismiss(animated: true)
+            },
+            rightItemHandler: { [weak self] in
+                guard let self = self else { return }
+                self.callback?(self.viewModel.getCurrentlySelectedEmails())
+                self.actionSheet?.dismiss(animated: true)
+            }
         )
 
-        self.actionSheet = PMActionSheet(headerView: headerView, itemGroups: [PMActionSheetItemGroup(items: actionSheetItems, style: .multiSelection)])
-        self.actionSheet?.presentAt(sourceViewController, animated: true)
+        actionSheet = PMActionSheet(
+            headerView: headerView,
+            itemGroups: [PMActionSheetItemGroup(items: actionSheetItems, style: .multiSelection)]
+        )
+        actionSheet?.presentAt(sourceViewController, animated: true)
     }
 }

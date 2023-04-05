@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import pmtest
+import fusion
 import ProtonCore_CoreTranslation
 
 private let titleId = CoreString._su_terms_conditions_view_title

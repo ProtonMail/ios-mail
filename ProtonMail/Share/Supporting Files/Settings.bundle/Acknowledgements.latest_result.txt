@@ -72,60 +72,60 @@ body: MIT License
 Copyrig…
 version: 2.0
 
-name: Groot, nameSpecified: 
-body: **Groot**
-
-**Copyrig…
-version: 3.0.1
-
-name: Groot, nameSpecified: 
-body: **Groot**
-
-**Copyrig…
-version: 3.0.1
-
-name: Groot, nameSpecified: 
-body: **Groot**
-
-**Copyrig…
-version: 3.0.1
-
-name: lottie-ios, nameSpecified: 
-body:                     …
-version: 3.4.3
-
-name: lottie-ios, nameSpecified: 
-body:                     …
-version: 3.4.3
-
-name: MBProgressHUD, nameSpecified: 
-body: Copyright © 2009-201…
-version: 1.1.0
-
-name: MBProgressHUD, nameSpecified: 
-body: Copyright © 2009-201…
-version: 1.1.0
-
-name: MBProgressHUD, nameSpecified: 
-body: Copyright © 2009-201…
-version: 1.1.0
-
-name: OHHTTPStubs, nameSpecified: 
-body: - MIT LICENSE -
-
-Cop…
-version: 9.0.0
-
-name: OHHTTPStubs, nameSpecified: 
-body: - MIT LICENSE -
-
-Cop…
-version: 9.0.0
-
-name: pmtest, nameSpecified: 
+name: fusion, nameSpecified: 
 body: The MIT License (MIT…
+version: 1.2.0
+
+name: Groot, nameSpecified: 
+body: **Groot**
+
+**Copyrig…
+version: 3.0.1
+
+name: Groot, nameSpecified: 
+body: **Groot**
+
+**Copyrig…
+version: 3.0.1
+
+name: Groot, nameSpecified: 
+body: **Groot**
+
+**Copyrig…
+version: 3.0.1
+
+name: lottie-ios, nameSpecified: 
+body:                     …
+version: 3.4.3
+
+name: lottie-ios, nameSpecified: 
+body:                     …
+version: 3.4.3
+
+name: MBProgressHUD, nameSpecified: 
+body: Copyright © 2009-201…
 version: 1.1.0
 
+name: MBProgressHUD, nameSpecified: 
+body: Copyright © 2009-201…
+version: 1.1.0
+
+name: MBProgressHUD, nameSpecified: 
+body: Copyright © 2009-201…
+version: 1.1.0
+
+name: OHHTTPStubs, nameSpecified: 
+body: - MIT LICENSE -
+
+Cop…
+version: 9.0.0
+
+name: OHHTTPStubs, nameSpecified: 
+body: - MIT LICENSE -
+
+Cop…
+version: 9.0.0
+
 name: PromiseKit, nameSpecified: 
 body: Copyright 2016-prese…
 version: 6.13.1
@@ -148,23 +148,23 @@ version:
 
 name: ProtonCore-AccountSwitcher, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-AccountSwitcher, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Authentication, nameSpecified: 
 body:                     …
@@ -192,155 +192,151 @@ version:
 
 name: ProtonCore-Challenge, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Challenge, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Challenge, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Common, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Common, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Common, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 3.28.2
-
-name: ProtonCore-DataModel, nameSpecified: 
-body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-ForceUpgrade, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-ForceUpgrade, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-GoLibs, nameSpecified: 
 body:                     …
@@ -364,23 +360,23 @@ version:
 
 name: ProtonCore-Hash, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Hash, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Hash, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-HumanVerification, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-HumanVerification, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Keymaker, nameSpecified: 
 body:                     …
@@ -404,27 +400,27 @@ version:
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Login, nameSpecified: 
 body:                     …
@@ -444,39 +440,47 @@ version:
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Observability, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Observability, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
+
+name: ProtonCore-Observability, nameSpecified: 
+body:                     …
+version: 4.0.1
+
+name: ProtonCore-Observability, nameSpecified: 
+body:                     …
+version: 4.0.1
 
 name: ProtonCore-OpenPGP, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-OpenPGP, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-OpenPGP, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Payments, nameSpecified: 
 body:                     …
@@ -496,75 +500,75 @@ version:
 
 name: ProtonCore-QuarkCommands, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-TestingToolkit, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-TestingToolkit, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-TroubleShooting, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-TroubleShooting, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-UIFoundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-UIFoundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-UIFoundations, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 3.28.2
+version: 4.0.1
 
 name: ReachabilitySwift, nameSpecified: 
 body: Copyright (c) 2016 A…

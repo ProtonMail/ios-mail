@@ -36,7 +36,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     weak var delegate: EmailVerificationViewControllerDelegate?
     var viewModel: EmailVerificationViewModel!
     var customErrorPresenter: LoginErrorPresenter?
-    var onDohTroubleshooting: () -> Void =  { }
+    var onDohTroubleshooting: () -> Void = { }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 

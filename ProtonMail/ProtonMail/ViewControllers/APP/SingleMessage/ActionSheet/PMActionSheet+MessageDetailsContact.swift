@@ -32,17 +32,29 @@ extension PMActionSheet {
         showOptionToBlockSender: Bool,
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheet {
-        let closeItem = PMActionSheetPlainItem(
-            title: nil,
-            icon: IconProvider.cross,
-            handler: { _ in action(.close) }
+        let showOfficialBadge = true
+        var components: [any PMActionSheetComponent] = [
+            PMActionSheetTextComponent(text: .left(title), edge: [nil, nil, nil, 0])
+        ]
+        if showOfficialBadge {
+            components.append(OfficialBadgeComponent(edge: [nil, 0, nil, 8]))
+        }
+        let titleItem = PMActionSheetItem(
+            components: components,
+            handler: nil
         )
         let header = PMActionSheetHeaderView(
-            title: title,
-            subtitle: subtitle,
-            leftItem: closeItem,
+            titleItem: titleItem,
+            subtitleItem: .init(style: .text(subtitle), handler: nil),
+            leftItem: PMActionSheetButtonComponent(
+                content: .right(IconProvider.cross),
+                color: PMActionSheetConfig.shared.headerViewItemIconColor,
+                edge: [nil, nil, nil, 8],
+                compressionResistancePriority: .required
+            ),
             rightItem: nil,
-            rightTitleViews: showOfficialBadge ? [OfficialBadge()] : []
+            leftItemHandler: { action(.close) },
+            rightItemHandler: nil
         )
 
         var items = [
@@ -61,46 +73,41 @@ extension PMActionSheet {
 
     private static func copyAddress(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
-    ) -> PMActionSheetPlainItem {
-        .init(
-            title: LocalString._copy_address,
-            icon: IconProvider.squares
-        ) { _ in action(.copyAddress) }
+    ) -> PMActionSheetItem {
+        PMActionSheetItem(style: .default(IconProvider.squares, LocalString._copy_address)) { _ in
+            action(.copyAddress)
+        }
     }
 
     private static func copyName(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
-    ) -> PMActionSheetPlainItem {
-        .init(
-            title: LocalString._copy_name,
-            icon: IconProvider.squares
-        ) { _ in action(.copyName) }
+    ) -> PMActionSheetItem {
+        PMActionSheetItem(style: .default(IconProvider.squares, LocalString._copy_name)) { _ in
+            action(.copyName)
+        }
     }
 
     private static func composeTo(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
-    ) -> PMActionSheetPlainItem {
-        .init(
-            title: LocalString._compose_to,
-            icon: IconProvider.envelope
-        ) { _ in action(.composeTo) }
+    ) -> PMActionSheetItem {
+        PMActionSheetItem(style: .default(IconProvider.envelope, LocalString._compose_to)) { _ in
+            action(.composeTo)
+        }
     }
 
     private static func addToContacts(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
-    ) -> PMActionSheetPlainItem {
-        .init(
-            title: LocalString._add_to_contacts,
-            icon: IconProvider.userPlus
-        ) { _ in action(.addToContacts) }
+    ) -> PMActionSheetItem {
+        PMActionSheetItem(style: .default(IconProvider.userPlus, LocalString._add_to_contacts)) { _ in
+            action(.addToContacts)
+        }
     }
 
     private static func blockSender(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
-    ) -> PMActionSheetPlainItem {
-        .init(
-            title: L11n.BlockSender.blockActionTitleLong,
-            icon: IconProvider.circleSlash
-        ) { _ in action(.blockSender) }
+    ) -> PMActionSheetItem {
+        PMActionSheetItem(style: .default(IconProvider.circleSlash, L11n.BlockSender.blockActionTitleLong)) { _ in
+            action(.blockSender)
+        }
     }
 }

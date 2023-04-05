@@ -494,6 +494,9 @@ extension AppDelegate {
     private func configureCoreFeatureFlags(launchArguments: [String]) {
         FeatureFactory.shared.enable(&.observability)
 
+        FeatureFactory.shared.enable(&.externalSignup)
+        FeatureFactory.shared.enable(&.externalAccountConversion)
+
         guard !launchArguments.contains("-testNoUnauthSessions") else { return }
 
         FeatureFactory.shared.enable(&.unauthSession)
@@ -506,7 +509,7 @@ extension AppDelegate {
     }
 
     private func configureCoreObservability() {
-        ObservabilityEnv.current.setupWorld(apiService: PMAPIService.unauthorized)
+        ObservabilityEnv.current.setupWorld(requestPerformer: PMAPIService.unauthorized)
     }
 
     private func configureLanguage() {

@@ -23,6 +23,7 @@ import Foundation
 import ProtonCore_Doh
 import ProtonCore_Log
 import ProtonCore_Networking
+import ProtonCore_Observability
 import ProtonCore_Utilities
 
 // swiftlint:disable function_parameter_count
@@ -155,6 +156,7 @@ extension PMAPIService {
                                                              completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
 
         guard let authDelegate = authDelegate else {
+            reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
             finalize(result: .wrongConfigurationNoDelegate, continuation: continuation, completion: completion)
             return
         }
@@ -224,8 +226,10 @@ extension PMAPIService {
             self.acquireSessionWithoutSynchronization(deviceFingerprints: deviceFingerprints, continuation: continuation) { (result: SessionAcquisitionResult) in
                 switch result {
                 case .wrongConfigurationNoDelegate:
+                    self.reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
                     completion(.wrongConfigurationNoDelegate)
                 case .acquiringError(let error):
+                    self.reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
                     completion(.refreshingError(underlyingError: .networkingError(error)))
                 case .acquired(let credentials):
                     completion(.refreshed(credentials: credentials))
@@ -234,6 +238,8 @@ extension PMAPIService {
 
         case .failure(.networkingError(let responseError))
             where !credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
+            reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
+
             authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
 
             continuation()
@@ -241,6 +247,7 @@ extension PMAPIService {
 
             // should we bring this logic over? I'm really unsure
         case .failure(.networkingError(let responseError)) where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
+            reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
             continuation()
             refreshAuthCredential(credentialsCausing401: credentialsCausing401,
                                   refreshCounter: refreshCounter - 1,
@@ -250,6 +257,7 @@ extension PMAPIService {
 
             // if the credentials refresh fails with error OTHER THAN 400 or 422, return error
         case .failure(let error):
+            reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
             continuation()
             completion(.refreshingError(underlyingError: error))
         }
@@ -355,5 +363,11 @@ extension PMAPIService {
                 userFacingMessage: error.localizedDescription, underlyingError: error
             )))
         }
+    }
+}
+
+extension PMAPIService {
+    private func reportRefreshFailure(authenticated: Bool) {
+        ObservabilityEnv.report(.tokenRefreshFailureTotal(authState: authenticated ? .authenticated : .unauthenticated))
     }
 }

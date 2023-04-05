@@ -1345,7 +1345,11 @@ public class LocalizedString {
     public lazy var _ls_screen_subtitle = NSLocalizedString("Enter your Proton Account details.", bundle: Common.bundle, comment: "Login screen subtitle")
 
     /// Username field title
-    public lazy var _ls_username_title = NSLocalizedString("Proton email or username", bundle: Common.bundle, comment: "Username field title")
+    @available(*, deprecated, message: "Deprecated when moved to the external accounts")
+    public lazy var _ls_username_title_old = NSLocalizedString("Proton email or username", bundle: Common.bundle, comment: "Username field title")
+
+    /// Username field title
+    public lazy var _ls_username_title = NSLocalizedString("Email or username", bundle: Common.bundle, value: _ls_username_title_old, comment: "Username field title")
 
     /// Password field title
     public lazy var _ls_password_title = NSLocalizedString("Password", bundle: Common.bundle, comment: "Password field title")

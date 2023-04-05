@@ -32,6 +32,7 @@ public enum SignupMode: Equatable {
     case both(initial: SignupInitialMode)
 }
 
+@available(*, deprecated, message: "SignupInitialMode is deprecated")
 public enum SignupInitialMode {
     case `internal`
     case external
@@ -50,47 +51,18 @@ public enum LoginFeatureAvailability<Parameters> {
 public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
 
 public struct SignupParameters {
-    
-    let signupInitialMode: SignupInitialMode
+
     let separateDomainsButton: Bool
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
     
-    // No way to set signupMode because external email signup flow is temporarily turned off
-    // until the updated flow is ready on the BE side
-    init(_ separateDomainsButton: Bool,
-         _ passwordRestrictions: SignupPasswordRestrictions,
-         _ summaryScreenVariant: SummaryScreenVariant,
-         _ signupInitialMode: SignupInitialMode = .internal) {
-
+    public init(separateDomainsButton: Bool,
+                passwordRestrictions: SignupPasswordRestrictions,
+                summaryScreenVariant: SummaryScreenVariant) {
         self.separateDomainsButton = separateDomainsButton
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
-        self.signupInitialMode = signupInitialMode
     }
-    
-    @available(*, deprecated, renamed: "init(separateDomainsButton:passwordRestrictions:summaryScreenVariant:signupInitialMode:)")
-    public init(separateDomainsButton: Bool,
-                passwordRestrictions: SignupPasswordRestrictions,
-                summaryScreenVariant: SummaryScreenVariant,
-                signupMode: SignupMode = .internal) {
-        var initialMode: SignupInitialMode = .internal
-        switch signupMode {
-        case .internal, .both(.internal):
-            initialMode = .internal
-        case .external, .both(.external):
-            initialMode = .external
-        }
-        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, initialMode)
-    }
-    
-    public init(separateDomainsButton: Bool,
-                passwordRestrictions: SignupPasswordRestrictions,
-                summaryScreenVariant: SummaryScreenVariant,
-                signupInitialMode: SignupInitialMode = .internal) {
-        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, signupInitialMode)
-    }
-    
 }
 
 public struct SignupPasswordRestrictions: OptionSet {

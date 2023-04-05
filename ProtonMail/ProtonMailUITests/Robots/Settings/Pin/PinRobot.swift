@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let pinCellIdentifier = "SettingsLockView.pinCodeCell"

@@ -109,7 +109,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
                 delegate: AccountmanagerUserCellDelegate) {
         self.delegate = delegate
         self.userID = userID
-        let name: String = name.isEmpty ? mail: name
+        let name: String = name.isEmpty ? mail : name
         self.name.text = name
         self.shortNameLabel.text = self.name.text?.initials()
         if isLogin {
@@ -150,7 +150,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             self.delegate?.removeAccount(of: self.userID)
         }
 
-        let arr = isSignin ? [signOut, remove]: [signIn, remove]
+        let arr = isSignin ? [signOut, remove] : [signIn, remove]
         let menu = UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: arr)
         self.moreBtn.menu = menu
         self.moreBtn.showsMenuAsPrimaryAction = true

@@ -31,7 +31,7 @@ class LabelAsActionSheetPresenter {
         addNewLabel: @escaping () -> Void,
         selected: @escaping (MenuLabel, Bool) -> Void,
         cancel: @escaping (_ isHavingUnsavedChanges: Bool) -> Void,
-        done: @escaping (_ isArchive: Bool, _ currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) -> Void
+        done: @escaping (_ isArchive: Bool, _ currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType]) -> Void
     ) {
         var labelSelectionActionSheet: PMActionSheet?
         let labelItems = viewModel.menuLabels
@@ -39,7 +39,7 @@ class LabelAsActionSheetPresenter {
 
         viewModel.initialLabelSelectionStatus.filter({ $0.value == .checkMark }).forEach({ selected($0.key, true) })
 
-        var labelActions: [PMActionSheetPlainItem] = []
+        var labelActions: [PMActionSheetItem] = []
         for i in 0..<rows {
             guard let menuLabel = labelItems.getFolderItem(at: i) else {
                 continue
@@ -49,63 +49,66 @@ class LabelAsActionSheetPresenter {
                 iconColor = UIColor(hexColorCode: menuColor)
             }
             let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
-            let isOn = markType != .none
-            let item = PMActionSheetPlainItem(title: menuLabel.name,
-                                              icon: IconProvider.circleFilled,
-                                              iconColor: iconColor,
-                                              isOn: isOn,
-                                              markType: markType,
-                                              indentationLevel: menuLabel.indentationLevel) { item in
-                selected(menuLabel, item.isOn)
-            }
+            let item = PMActionSheetItem(
+                components: [
+                    PMActionSheetIconComponent(
+                        icon: IconProvider.circleFilled,
+                        iconColor: iconColor,
+                        edge: [nil, nil, nil, 16]
+                    ),
+                    PMActionSheetTextComponent(text: .left(menuLabel.name), edge: [nil, 16, nil, 12])
+                ],
+                indentationLevel: menuLabel.indentationLevel,
+                markType: markType) { item in
+                    let isSelected = item.markType != .none
+                    selected(menuLabel, isSelected)
+                }
             labelActions.append(item)
         }
-        let archiveButton = PMActionSheetToggleItem(title: LocalString._label_as_also_archive,
-                                                    icon: nil,
-                                                    toggleColor: ColorProvider.BrandNorm)
-        let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
-                                                icon: nil,
-                                                textColor: ColorProvider.BrandNorm) { _ in
-            // Collect current label markType status of all options in the action sheet
-            var currentMarkTypes = viewModel.initialLabelSelectionStatus
-            let currentLabelOptions = labelSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
-            currentLabelOptions?.forEach({ item in
-                if let option = currentMarkTypes.first(where: { key, _ in
-                    key.name == item.title
-                }) {
-                    currentMarkTypes[option.key] = item.markType
-                }
-            })
+        let archiveButton = PMActionSheetItem(style: .toggle(LocalString._label_as_also_archive, false), handler: nil)
 
-            guard let toggleItem = labelSelectionActionSheet?.itemGroups?.first?.items.first else {
-                done(false, currentMarkTypes)
-                return
-            }
-            done(toggleItem.isOn, currentMarkTypes)
-        }
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
-            // Collect current label markType status of all options in the action sheet
-            var currentMarkTypes = viewModel.initialLabelSelectionStatus
-            let currentLabelOptions = labelSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
-            currentLabelOptions?.forEach({ item in
-                if let option = currentMarkTypes.first(where: { key, _ in
-                    key.name == item.title
-                }) {
-                    currentMarkTypes[option.key] = item.markType
+        let headerView = PMActionSheetHeaderView(
+            title: LocalString._label_as_title,
+            leftItem: .right(IconProvider.cross),
+            rightItem: .left(LocalString._move_to_done_button_title),
+            leftItemHandler: { [weak self] in
+                guard let self = self else { return }
+                let currentMarkTypes = self.currentMarkTypes(
+                    viewModel: viewModel,
+                    labelSelectionActionSheet: labelSelectionActionSheet
+                )
+                cancel(viewModel.initialLabelSelectionStatus != currentMarkTypes)
+            },
+            rightItemHandler: { [weak self] in
+                guard let self = self else { return }
+                let currentMarkTypes = self.currentMarkTypes(
+                    viewModel: viewModel,
+                    labelSelectionActionSheet: labelSelectionActionSheet
+                )
+
+                guard let toggleItem = labelSelectionActionSheet?.itemGroups.first?.items.first else {
+                    done(false, currentMarkTypes)
+                    return
                 }
-            })
-            cancel(viewModel.initialLabelSelectionStatus != currentMarkTypes)
-        }
-        let headerView = PMActionSheetHeaderView(title: LocalString._label_as_title,
-                                                 subtitle: nil,
-                                                 leftItem: cancelItem,
-                                                 rightItem: doneButton)
-        let add = PMActionSheetPlainItem(title: LocalString._label_as_new_label,
-                                         icon: IconProvider.plus,
-                                         textColor: ColorProvider.TextWeak,
-                                         iconColor: ColorProvider.TextWeak) { _ in
-            addNewLabel()
-        }
+                done(toggleItem.toggleState, currentMarkTypes)
+            }
+        )
+
+        let add = PMActionSheetItem(
+            components: [
+                PMActionSheetIconComponent(
+                    icon: IconProvider.plus,
+                    iconColor: ColorProvider.TextWeak,
+                    edge: [nil, nil, nil, 16]
+                ),
+                PMActionSheetTextComponent(
+                    text: .left(LocalString._label_as_new_label),
+                    textColor: ColorProvider.TextWeak,
+                    edge: [nil, 16, nil, 12]
+                )
+            ]) { _ in
+                addNewLabel()
+            }
         let archiveGroup = PMActionSheetItemGroup(items: [archiveButton], style: .toggle)
         // TODO: observe item here
         let addFolderGroup = PMActionSheetItemGroup(items: [add], style: .clickable)
@@ -115,7 +118,7 @@ class LabelAsActionSheetPresenter {
         if hasNewLabelButton {
             itemGroups.insert(addFolderGroup, at: 1)
         }
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups, maximumOccupy: 0.7)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups) /*, maximumOccupy: 0.7) */
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         actionSheet.eventsListener = listener
         labelSelectionActionSheet = actionSheet
@@ -124,5 +127,31 @@ class LabelAsActionSheetPresenter {
                 UIAccessibility.post(notification: .screenChanged, argument: actionSheet)
             }
         }
+    }
+
+    private func currentMarkTypes(
+        viewModel: LabelAsActionSheetViewModel,
+        labelSelectionActionSheet: PMActionSheet?
+    ) -> [MenuLabel : PMActionSheetItem.MarkType] {
+        // Collect current label markType status of all options in the action sheet
+        var currentMarkTypes = viewModel.initialLabelSelectionStatus
+
+        labelSelectionActionSheet?.itemGroups.last?.items
+            .forEach { item in
+                for component in item.components {
+                    guard let textComponent = component as? PMActionSheetTextComponent else { continue }
+                    var title = ""
+                    switch textComponent.text {
+                    case .left(let text):
+                        title = text
+                    case .right(let attributed):
+                        title = attributed.string
+                    }
+                    if let option = currentMarkTypes.first(where: { $0.key.name == title }) {
+                        currentMarkTypes[option.key] = item.markType
+                    }
+                }
+            }
+        return currentMarkTypes
     }
 }

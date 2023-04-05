@@ -346,8 +346,8 @@ extension PMAPIService {
             
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
             
-            handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
-
+            protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, forceUpgradeHandler)
+            
         } else {
             completion.call(task: task, error: error)
         }
@@ -434,7 +434,7 @@ extension PMAPIService {
             }
             
         } else {
-            handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
+            protonMailResponseCodeHandler.handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, forceUpgradeHandler)
         }
         self.debugError(error)
     }
@@ -501,7 +501,7 @@ extension PMAPIService {
                         completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
                         return
                     }
-                    self.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion)
+                    self.protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion, self.humanVerificationHandler, self.forceUpgradeHandler)
                 case .triedAcquiringNew(.wrongConfigurationNoDelegate(let error)):
                     self.debugError(error)
                     completion.call(task: nil, error: error)
@@ -509,42 +509,6 @@ extension PMAPIService {
             }
         )
     }
-    
-    private func handleProtonResponseCode<T>(
-        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, ResponseError>, _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
-        _ headers: [String: Any]?, _ authenticated: Bool, _ authRetry: Bool, _ authRetryRemains: Int,
-        _ authCredential: AuthCredential?, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
-        _ completion: APIResponseCompletion<T>
-    ) where T: APIDecodableResponse {
-
-        if responseCode == APIErrorCode.humanVerificationRequired {
-            // human verification required
-            self.humanVerificationHandler(method: method,
-                                          path: path,
-                                          parameters: parameters,
-                                          headers: headers,
-                                          authenticated: authenticated,
-                                          authRetry: authRetry,
-                                          authRetryRemains: authRetryRemains,
-                                          customAuthCredential: authCredential,
-                                          nonDefaultTimeout: nonDefaultTimeout,
-                                          retryPolicy: retryPolicy,
-                                          task: task,
-                                          response: response.responseDictionary,
-                                          completion: completion)
-        } else if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
-            self.forceUpgradeHandler(errorMessage: response.errorMessage)
-            completion.call(task: task, response: .left(response.responseDictionary))
-        } else if responseCode == APIErrorCode.API_offline {
-            completion.call(task: task, response: .left(response.responseDictionary))
-        } else {
-            switch response {
-            case .left(let jsonDictionary): completion.call(task: task, response: .left(jsonDictionary))
-            case .right(let responseError): completion.call(task: task, error: responseError as NSError)
-            }
-        }
-    }
-    
 }
 
 // MARK: - Helper methods for creating the request, debugging etc.

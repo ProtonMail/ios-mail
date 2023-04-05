@@ -22,7 +22,6 @@
 
 import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
-import ProtonCore_Services
 import ProtonCore_Utilities
 
 public protocol ObservabilityService {
@@ -34,33 +33,33 @@ public protocol ObservabilityService {
 
 public class ObservabilityServiceImpl: ObservabilityService {
     
-    private let apiService: APIService
+    private let requestPerformer: ProtonCore_Networking.RequestPerforming?
     
     private let timer: ObservabilityTimer
     private let aggregator: ObservabilityAggregator
     private let reportingQueue: CompletionBlockExecutor
-    private let completion: ((URLSessionDataTask?, Result<JSONDictionary, PMAPIService.APIError>) -> Void)?
+    private let completion: ((URLSessionDataTask?, Result<JSONDictionary, NSError>) -> Void)?
     
     private let encoder = JSONEncoder()
     private let endpoint = ObservabilityEndpoint()
     
     private var isTimerRunning: Atomic<Bool> = .init(false)
     
-    public convenience init(apiService: APIService) {
+    public convenience init(requestPerformer: RequestPerforming) {
         self.init(
-            apiService: apiService,
+            requestPerformer: requestPerformer,
             timer: ObservabilityTimerImpl(),
             aggregator: ObservabilityAggregatorImpl(),
             reportingQueue: .asyncExecutor(dispatchQueue: .global())
         )
     }
     
-    init(apiService: APIService,
+    init(requestPerformer: RequestPerforming,
          timer: ObservabilityTimer = ObservabilityTimerImpl(),
          aggregator: ObservabilityAggregator = ObservabilityAggregatorImpl(),
          reportingQueue: CompletionBlockExecutor = .asyncExecutor(dispatchQueue: .global()),
-         completion: ((URLSessionDataTask?, Result<JSONDictionary, PMAPIService.APIError>) -> Void)? = nil) {
-        self.apiService = apiService
+         completion: ((URLSessionDataTask?, Result<JSONDictionary, NSError>) -> Void)? = nil) {
+        self.requestPerformer = requestPerformer
         self.timer = timer
         self.aggregator = aggregator
         self.reportingQueue = reportingQueue
@@ -92,7 +91,7 @@ public class ObservabilityServiceImpl: ObservabilityService {
         aggregator.aggregate(event: event)
     }
     
-    private func sendMetrics(completion: ((URLSessionDataTask?, Result<JSONDictionary, PMAPIService.APIError>) -> Void)?) {
+    private func sendMetrics(completion: ((URLSessionDataTask?, Result<JSONDictionary, NSError>) -> Void)?) {
         
         if aggregator.aggregatedEvents.value.isEmpty { return }
         
@@ -106,20 +105,10 @@ public class ObservabilityServiceImpl: ObservabilityService {
                 let metricsData = try self.encoder.encode(metrics)
                 let parameters = try JSONSerialization.jsonObject(with: metricsData, options: [])
             
-                self.apiService.request(
-                    method: self.endpoint.method,
-                    path: self.endpoint.path,
-                    parameters: parameters,
-                    headers: self.endpoint.headers,
-                    authenticated: self.endpoint.isAuth,
-                    autoRetry: self.endpoint.autoRetry,
-                    customAuthCredential: self.endpoint.authCredential,
-                    nonDefaultTimeout: self.endpoint.nonDefaultTimeout,
-                    retryPolicy: self.endpoint.retryPolicy,
-                    jsonCompletion: { task, result in
-                        completion?(task, result)
-                    }
-                )
+                self.requestPerformer?.performRequest(request: self.endpoint,
+                                                      parameters: parameters,
+                                                      headers: self.endpoint.headers,
+                                                      jsonCompletion: completion)
             } catch {
                 completion?(nil, .failure(.init(domain: "", code: 0, localizedDescription: error.localizedDescription)))
             }

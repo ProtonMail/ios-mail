@@ -21,7 +21,7 @@
 
 import XCTest
 import ProtonCore_CoreTranslation
-import pmtest
+import fusion
 
 private let humanVerificationScreenIdentifier = "Human Verification view"
 private let closeButtonAccessibilityId = "closeButton"

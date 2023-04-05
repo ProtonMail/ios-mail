@@ -463,7 +463,7 @@ extension PushNotificationServiceTests {
 
 extension PushNotificationServiceTests {
     typealias SubscriptionSettings = PushSubscriptionSettings
-    typealias Completion = API.JSONCompletion
+    typealias Completion = JSONCompletion
     
     class InMemorySaver<T: Codable>: Saver<T> {
         

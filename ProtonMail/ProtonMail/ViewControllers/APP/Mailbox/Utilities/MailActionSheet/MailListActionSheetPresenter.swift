@@ -30,32 +30,28 @@ class MailListActionSheetPresenter {
         viewModel: MailListActionSheetViewModel,
         action: @escaping (MessageViewActionSheetAction) -> Void
     ) {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
-            action(.dismiss)
-        }
-
         let headerView = PMActionSheetHeaderView(
             title: viewModel.title,
             subtitle: nil,
-            leftItem: cancelItem,
-            rightItem: nil
+            leftItem: .right(IconProvider.cross),
+            rightItem: nil,
+            leftItemHandler: {
+                action(.dismiss)
+            }
         )
 
         let actionGroups: [PMActionSheetItemGroup] = Dictionary(grouping: viewModel.items, by: \.type.group)
             .sorted(by: { $0.key.order < $1.key.order })
             .map { (key: MessageViewActionSheetGroup, value: [MailListActionSheetItemViewModel]) in
                 let actions = value.map { item in
-                    PMActionSheetPlainItem(
-                        title: item.title,
-                        icon: item.icon.withRenderingMode(.alwaysTemplate),
-                        iconColor: ColorProvider.IconNorm) { _ in
-                            action(item.type)
+                    PMActionSheetItem(style: .default(item.icon, item.title)) { _ in
+                        action(item.type)
                     }
                 }
                 return PMActionSheetItemGroup(title: key.title, items: actions, style: .clickable)
             }
 
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups, maximumOccupy: 0.7)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups) /*, maximumOccupy: 0.7) */
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
     }
 

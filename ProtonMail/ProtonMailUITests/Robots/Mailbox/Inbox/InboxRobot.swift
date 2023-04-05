@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let mailboxTableView = "mailboxTableView"
@@ -55,8 +55,8 @@ class InboxRobot : MailboxRobotInterface {
     class Verify: MailboxRobotVerifyInterface {
         
         @discardableResult
-        func inboxShown() -> InboxRobot {
-            button(id.composeButtonLabel).wait().checkExists()
+        func inboxShown(time: TimeInterval = 10.0) -> InboxRobot {
+            button(id.composeButtonLabel).wait(time: time).checkExists()
             return InboxRobot()
         }
     }

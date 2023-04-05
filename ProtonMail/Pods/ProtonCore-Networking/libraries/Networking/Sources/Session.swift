@@ -23,7 +23,7 @@ import Foundation
 import TrustKit
 
 public typealias JSONDictionary = [String: Any]
-
+public typealias JSONCompletion = (_ task: URLSessionDataTask?, _ result: Result<JSONDictionary, NSError>) -> Void
 public typealias SessionDecodableResponse = Decodable
 
 public struct HumanVerificationDetails: Codable, Equatable {

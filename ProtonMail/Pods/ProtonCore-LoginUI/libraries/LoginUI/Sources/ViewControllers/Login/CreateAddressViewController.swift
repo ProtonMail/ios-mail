@@ -189,12 +189,10 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
     }
     
     @IBAction private func cancelPressed(_ sender: Any) {
-        viewModel.logout()
         delegate?.userDidGoBack()
     }
     
     @objc private func goBack(_ sender: Any) {
-        viewModel.logout()
         delegate?.userDidGoBack()
     }
 
@@ -233,19 +231,27 @@ final class CreateAddressViewController: UIViewController, AccessibleView, Error
         var sheet: PMActionSheet?
         let currentDomain = viewModel.currentlyChosenSignUpDomain
         let items = viewModel.allSignUpDomains.map { [weak self] domain in
-            PMActionSheetPlainItem(title: "@\(domain)", icon: nil, isOn: domain == currentDomain) { [weak self] _ in
+            let isOn = domain == currentDomain
+            return PMActionSheetItem(style: .text("@\(domain)"), markType: isOn ? .checkMark : .none) { [weak self] _ in
                 sheet?.dismiss(animated: true)
                 self?.viewModel.currentlyChosenSignUpDomain = domain
                 self?.configureDomainSuffix()
             }
         }
-        let header = PMActionSheetHeaderView(title: CoreString._su_domains_sheet_title,
-                                             subtitle: nil,
-                                             leftItem: PMActionSheetPlainItem(title: nil, icon: IconProvider.crossSmall) { _ in sheet?.dismiss(animated: true) },
-                                             rightItem: nil,
-                                             hasSeparator: false)
-        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
-        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        let header = PMActionSheetHeaderView(
+            title: CoreString._su_domains_sheet_title,
+            subtitle: nil,
+            leftItem: .right(IconProvider.crossSmall),
+            rightItem: nil,
+            showDragBar: false,
+            hasSeparator: false,
+            leftItemHandler: {
+                sheet?.dismiss(animated: true)
+            },
+            rightItemHandler: nil
+        )
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .singleSelection)
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup])
         sheet?.eventsListener = self
         sheet?.presentAt(self, animated: true)
     }

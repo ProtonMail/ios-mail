@@ -83,7 +83,7 @@ final class ScheduledSendHelper {
         ].compactMap { $0 }
         let items = PMActionSheetItemGroup(items: actions, style: .clickable)
 
-        self.actionSheet = PMActionSheet(headerView: header, itemGroups: [items], showDragBar: false, enableBGTap: true)
+        self.actionSheet = PMActionSheet(headerView: header, itemGroups: [items], enableBGTap: true)
         self.actionSheet?.eventsListener = self
         self.actionSheet?.presentAt(viewController.navigationController ?? viewController,
                                     animated: true)
@@ -93,20 +93,21 @@ final class ScheduledSendHelper {
 // MARK: Scheduled send action sheet related
 extension ScheduledSendHelper {
     private func setUpActionHeader() -> PMActionSheetHeaderView {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
-            self?.actionSheet?.dismiss(animated: true)
-        }
         let title = LocalString._general_schedule_send_action
         let header = PMActionSheetHeaderView(
             title: title,
             subtitle: "",
-            leftItem: cancelItem,
-            rightItem: nil
+            leftItem: .right(IconProvider.cross),
+            rightItem: nil,
+            showDragBar: false,
+            leftItemHandler: { [weak self] in
+                self?.actionSheet?.dismiss(animated: true)
+            }
         )
         return header
     }
 
-    private func setUpTomorrowAction() -> PMActionSheetPlainItem? {
+    private func setUpTomorrowAction() -> PMActionSheetItem? {
         let date: Date?
         let title: String
         if (0..<6).contains(current.hour) {
@@ -120,40 +121,45 @@ extension ScheduledSendHelper {
         guard let date = date else {
             return nil
         }
-        return PMActionSheetPlainItem(
-            title: title,
-            detail: date.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required,
-            handler: { [weak self] _ in
-                self?.delegate?.scheduledTimeIsSet(date: date)
-                self?.actionSheet?.dismiss(animated: true)
-            })
+
+        return PMActionSheetItem(components: [
+            PMActionSheetTextComponent(text: .left(title), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(date.localizedString(withTemplate: nil)),
+                                       edge: [nil, nil, nil, 16],
+                                       compressionResistancePriority: .required)
+        ]) { [weak self] _ in
+            self?.delegate?.scheduledTimeIsSet(date: date)
+            self?.actionSheet?.dismiss(animated: true)
+        }
     }
 
-    private func setUpMondayAction() -> PMActionSheetPlainItem? {
+    private func setUpMondayAction() -> PMActionSheetItem? {
         guard let next = self.current.next(.monday, hour: 8, minute: 0) else {
             return nil
         }
-        return PMActionSheetPlainItem(
-            title: next.formattedWith("EEEE").capitalized,
-            detail: next.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required,
-            handler: { [weak self] _ in
-                self?.delegate?.scheduledTimeIsSet(date: next)
-                self?.actionSheet?.dismiss(animated: true)
-            })
+        return PMActionSheetItem(components: [
+            PMActionSheetTextComponent(text: .left(next.formattedWith("EEEE").capitalized), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(next.localizedString(withTemplate: nil)),
+                                       edge: [nil, nil, nil, 16],
+                                       compressionResistancePriority: .required)
+        ]) { [weak self] _ in
+            self?.delegate?.scheduledTimeIsSet(date: next)
+            self?.actionSheet?.dismiss(animated: true)
+        }
     }
 
-    private func setUpCustomAction() -> PMActionSheetPlainItem {
+    private func setUpCustomAction() -> PMActionSheetItem {
         let isPaid = delegate?.isItAPaidUser() ?? false
-        return PMActionSheetPlainItem(
-            title: L11n.ScheduledSend.custom,
-            icon: nil,
-            rightIcon: IconProvider.chevronRight,
-            titleRightIcon: isPaid ? nil : Asset.upgradeIcon.image
-        ) { [weak self] _ in
+        return PMActionSheetItem(components: isPaid ? [
+            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
+            PMActionSheetIconComponent(icon: IconProvider.chevronRight, edge: [nil, nil, nil, 16])
+        ] : [
+            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.custom), edge: [nil, nil, nil, 16]),
+            PMActionSheetIconComponent(icon: Asset.upgradeIcon.image,
+                                       size: Asset.upgradeIcon.image.size,
+                                       edge: [nil, nil, nil, 16]),
+            PMActionSheetIconComponent(icon: IconProvider.chevronRight, edge: [nil, nil, nil, 16])
+        ]) { [weak self] _ in
             guard let self = self,
                   let viewController = self.viewController,
                   let parentView = viewController.navigationController?.view ?? viewController.view else { return }
@@ -169,17 +175,16 @@ extension ScheduledSendHelper {
         }
     }
 
-    private func setUpAsScheduledAction() -> PMActionSheetPlainItem? {
+    private func setUpAsScheduledAction() -> PMActionSheetItem? {
         guard let originalTime = originalScheduledTime?.rawValue else {
             return nil
         }
-
-        return PMActionSheetPlainItem(
-            title: L11n.ScheduledSend.asSchedule,
-            detail: originalTime.localizedString(withTemplate: nil),
-            icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
+        return PMActionSheetItem(components: [
+            PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.asSchedule), edge: [nil, nil, nil, 16]),
+            PMActionSheetTextComponent(text: .left(originalTime.localizedString(withTemplate: nil)),
+                                       edge: [nil, nil, nil, 16],
+                                       compressionResistancePriority: .required)
+        ]) { [weak self] _ in
             guard Date(timeInterval: Constants.ScheduleSend.minNumberOfSeconds, since: Date()) < originalTime else {
                 self?.showSendInTheFutureAlert()
                 return

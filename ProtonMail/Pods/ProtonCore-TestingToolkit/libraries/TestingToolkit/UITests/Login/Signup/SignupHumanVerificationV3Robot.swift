@@ -21,7 +21,7 @@
 
 import Foundation
 import XCTest
-import pmtest
+import fusion
 import ProtonCore_CoreTranslation
 
 private let humanVerificationScreenIdentifier = "Human Verification view"
@@ -86,6 +86,7 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     }
     
     public func switchToEmailHVMethod() -> SignupHumanVerificationV3Robot {
+        button(emailSelectedControlLabel).waitForHittable()
         button(emailSelectedControlLabel).tap()
         return self
     }

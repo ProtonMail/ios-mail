@@ -53,6 +53,8 @@ final class LoginCoordinator {
     private let externalLinks: ExternalLinks
     private var customization: LoginCustomizationOptions
 
+    private var sessionInvalidatedDueToUserGoingBackToRootController = false
+
     init(container: Container,
          isCloseButtonAvailable: Bool,
          isSignupAvailable: Bool,
@@ -179,7 +181,8 @@ final class LoginCoordinator {
 
         let coordinator = CreateAddressCoordinator(
             container: container, navigationController: navigationController,
-            data: data, customErrorPresenter: customization.customErrorPresenter, defaultUsername: defaultUsername
+            data: data, customErrorPresenter: customization.customErrorPresenter,
+            defaultUsername: defaultUsername
         )
         coordinator.delegate = self
         childCoordinators[.createAddress] = coordinator
@@ -199,7 +202,9 @@ final class LoginCoordinator {
                     case .success:
                         self?.completeLoginFlow(data: data)
                     case .failure(let error):
-                        self?.popAndShowError(error: .generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                        self?.popAndShowError(error: .generic(message: error.messageForTheUser,
+                                                              code: error.bestShotAtReasonableErrorCode,
+                                                              originalError: error))
                     }
                 }
             }
@@ -212,8 +217,8 @@ final class LoginCoordinator {
     }
 
     private func popAndShowError(error: LoginError) {
-        navigationController?.popToRootViewController(animated: true) {
-            guard let viewController = self.navigationController?.topViewController else { return }
+        clearSessionAndPopToRootViewController(animated: true) { navigationController in
+            guard let viewController = navigationController.topViewController else { return }
             if self.customization.customErrorPresenter?.willPresentError(error: error, from: viewController) == true {
                 return
             }
@@ -224,8 +229,8 @@ final class LoginCoordinator {
     }
     
     private func popAndShowInfo(message: String) {
-        navigationController?.popToRootViewController(animated: true) {
-            guard let viewController = self.navigationController?.topViewController else { return }
+        clearSessionAndPopToRootViewController(animated: true) { navigationController in
+            guard let viewController = navigationController.topViewController else { return }
             guard let errorCapable = viewController as? LoginErrorCapable else { return }
             errorCapable.showInfo(message: message)
         }
@@ -252,7 +257,11 @@ extension LoginCoordinator: LoginStepsDelegate {
             showCreateAddress(data: data, defaultUsername: defaultUsername)
         } else {
             // account conversion not supported by feature flag
-            let externalAccountsNotSupportedError = LoginError.externalAccountsNotSupported(message: CoreString._ls_external_accounts_not_supported_popup_local_desc, title: CoreString._ls_external_accounts_address_required_popup_title, originalError: NSError())
+            let externalAccountsNotSupportedError = LoginError.externalAccountsNotSupported(
+                message: CoreString._ls_external_accounts_not_supported_popup_local_desc,
+                title: CoreString._ls_external_accounts_address_required_popup_title,
+                originalError: NSError()
+            )
             popAndShowError(error: externalAccountsNotSupportedError)
         }
     }
@@ -318,7 +327,9 @@ extension LoginCoordinator: HelpViewControllerDelegate {
 // MARK: - Create address delegate
 
 extension LoginCoordinator: CreateAddressCoordinatorDelegate {
-    func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void, createAddressCoordinator: CreateAddressCoordinator, data: LoginData) {
+    func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void,
+                                           createAddressCoordinator: CreateAddressCoordinator,
+                                           data: LoginData) {
         childCoordinators[.createAddress] = nil
         finish(endLoading: endLoading, data: data)
     }
@@ -327,18 +338,61 @@ extension LoginCoordinator: CreateAddressCoordinatorDelegate {
 // MARK: - LoginCoordinator delegate
 
 extension LoginCoordinator: NavigationDelegate {
+
     func userDidGoBack() {
 
-        guard navigationController?.viewControllers.contains(where: { $0 is TwoFactorViewController }) == false else {
+        guard let navigationController = navigationController else { return }
+
+        if
+            // if there are 2 or less VCs on the navigation stack, popping one means just popping to the root
+            navigationController.viewControllers.count <= 2 ||
+
             // Special case for situation in which we've already sent a valid 2FA code to server.
             // Once we do it, the user auth session on the backend is past the 2FA step and doesn't allow sending another 2FA code again.
             // The technical details are: the access token contains `twofactor` scope before `POST /auth/v4/2fa` and doesn't contain it after.
             // It makes navigating back to two factor screen useless (user cannot send another code), so we navigate back to root screen instead.
-            navigationController?.popToRootViewController(animated: true)
-            return
+                navigationController.viewControllers.contains(where: { $0 is TwoFactorViewController }) {
+
+            // this flag prevents the unnecessary showing of the "session invalidated" message to the user
+            // the message is unnecessary if the user came back to the root screen intentionally
+            sessionInvalidatedDueToUserGoingBackToRootController = true
+            clearSessionAndPopToRootViewController(animated: true)
+
+        } else {
+            // more than 2 VC on the stack and none of them is TwoFactorViewController
+            navigationController.popViewController(animated: true)
+        }
+    }
+
+    private func clearSessionAndPopToRootViewController(animated: Bool,
+                                                        completion: @escaping (LoginNavigationViewController) -> Void = { _ in }) {
+
+        guard let navigationController = navigationController else { return }
+
+        defer {
+            navigationController.popToRootViewController(animated: animated) {
+                completion(navigationController)
+            }
         }
 
-        navigationController?.popViewController(animated: true)
+        // This code clears out the locally stored user session and clears the session on the BE.
+        // It's a UX optimization. The app would work without it, but the user would have to tap login twice:
+        // first attempt would fail and cause the session clearing, the second one would succeed.
+        // By invalidating the session here we remove the need for first attempt, improving UX.
+        let sessionUID = container.api.sessionUID
+        guard let authDelegate = container.api.authDelegate else { return }
+        guard let authCredential = authDelegate.authCredential(sessionUID: sessionUID) else { return }
+
+        container.login.logout(credential: authCredential, completion: { _ in })
+
+        if authCredential.isForUnauthenticatedSession {
+            authDelegate.onUnauthenticatedSessionInvalidated(sessionUID: sessionUID)
+        } else {
+            authDelegate.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
+        }
+
+        container.api.setSessionUID(uid: "")
+        container.api.acquireSessionIfNeeded(completion: { _ in })
     }
 }
 
@@ -398,6 +452,12 @@ extension LoginCoordinator: WelcomeViewControllerDelegate {
 
 extension LoginCoordinator: AuthSessionInvalidatedDelegate {
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        // if this invalidation is caused due to user coming back to the root view controller of the flow,
+        // see method clearSessionAndPopToRootViewController, than we don't show the info message
+        guard sessionInvalidatedDueToUserGoingBackToRootController == false else {
+            sessionInvalidatedDueToUserGoingBackToRootController = false
+            return
+        }
         guard isAuthenticatedSession else { return }
         CompletionBlockExecutor.asyncMainExecutor.execute { [weak self] in
             self?.popAndShowInfo(message: CoreString._ls_info_session_expired)

@@ -89,8 +89,7 @@ extension SignInCoordinatorEnvironment {
                              passwordRestrictions: passwordRestrictions,
                              summaryScreenVariant: SummaryScreenVariant.screenVariant(
                                  .mail(SummaryStartButtonText("Start using Proton Mail"))
-                             ),
-                             signupMode: signupMode
+                             )
                          ))
                          let payment: PaymentsAvailability
                          if UIApplication.arePaymentsEnabled {

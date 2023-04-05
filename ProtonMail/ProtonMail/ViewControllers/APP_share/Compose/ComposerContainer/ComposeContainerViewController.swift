@@ -593,13 +593,14 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
 
         var sheet: PMActionSheet!
 
-        let left = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
-            sheet.dismiss(animated: true)
-        }
-
-        let header = PMActionSheetHeaderView(title: LocalString._menu_add_attachment, subtitle: nil, leftItem: left, rightItem: nil, hasSeparator: false)
+        let header = PMActionSheetHeaderView(
+            title: LocalString._menu_add_attachment,
+            leftItem: .right(IconProvider.cross),
+            showDragBar: false,
+            leftItemHandler: { sheet.dismiss(animated: true) }
+        )
         let itemGroup = self.getActionSheetItemGroup()
-        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup])
         let viewController = self.navigationController ?? self
         sheet.presentAt(viewController, animated: true)
     }
