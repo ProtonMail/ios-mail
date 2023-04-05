@@ -286,8 +286,8 @@ class SingleMessageViewModel {
         coordinator.navigate(to: navigationAction)
     }
 
-    func navigateToNextMessage(popCurrentView: (() -> Void)? = nil) {
-        guard UserInfo.isConversationSwipeEnabled else {
+    func navigateToNextMessage(isInPageView: Bool, popCurrentView: (() -> Void)? = nil) {
+        guard isInPageView else {
             popCurrentView?()
             return
         }

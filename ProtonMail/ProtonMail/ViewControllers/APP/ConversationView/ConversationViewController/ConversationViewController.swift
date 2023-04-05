@@ -51,6 +51,13 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
     // this is to avoid making the view unusable
     private var conversationIsReadyToBeDisplayedTimer: Timer?
+    var isInPageView: Bool {
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        } else {
+            return (self.parent as? PagesViewController<ConversationID, ConversationEntity, ContextLabel>) != nil
+        }
+    }
 
     init(
         viewModel: ConversationViewModel,
@@ -810,9 +817,12 @@ extension ConversationViewController {
         showDeleteAlert(
             deleteHandler: { [weak self] _ in
                 self?.viewModel.handleToolBarAction(.delete)
-                self?.viewModel.navigateToNextConversation {
-                    self?.navigationController?.popViewController(animated: true)
-                }
+                self?.viewModel.navigateToNextConversation(
+                    isInPageView: self?.isInPageView ?? false,
+                    popCurrentView: {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                )
                 self?.showMessageMoved(title: LocalString._messages_has_been_deleted)
             },
             completion: completion
@@ -823,9 +833,12 @@ extension ConversationViewController {
     private func trashAction() {
         let continueAction = { [weak self] in
             self?.viewModel.handleToolBarAction(.trash)
-            self?.viewModel.navigateToNextConversation {
-                self?.navigationController?.popViewController(animated: true)
-            }
+            self?.viewModel.navigateToNextConversation(
+                isInPageView: self?.isInPageView ?? false,
+                popCurrentView: {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            )
             self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .trash)
         }
         viewModel.searchForScheduled { [weak self] scheduledNum in
@@ -928,9 +941,12 @@ extension ConversationViewController {
         case .trash:
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextConversation {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+                    self?.viewModel.navigateToNextConversation(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 })
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
@@ -944,9 +960,12 @@ extension ConversationViewController {
             })
         case .archive, .spam, .inbox, .spamMoveToInbox:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                self?.viewModel.navigateToNextConversation {
-                    self?.navigationController?.popViewController(animated: true)
-                }
+                self?.viewModel.navigateToNextConversation(
+                    isInPageView: self?.isInPageView ?? false,
+                    popCurrentView: {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                )
             })
         case .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
                 .viewInLightMode, .replyOrReplyAll:
@@ -985,7 +1004,7 @@ extension ConversationViewController {
             viewModel.handleNavigationAction(.composeTo(contact: contact))
         case .contacts(let contact):
             viewModel.handleNavigationAction(.addContact(contact: contact))
-        case .attachmentList(let messageId, let body, let attachments):
+        case let .attachmentList(messageId, body, attachments):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
             let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
             viewModel.handleNavigationAction(.attachmentList(message: message,
@@ -1172,7 +1191,10 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                     }
                     self?.dismissActionSheet()
                     if isArchive {
-                        self?.viewModel.navigateToNextConversation(popCurrentView: nil)
+                        self?.viewModel.navigateToNextConversation(
+                            isInPageView: self?.isInPageView ?? false,
+                            popCurrentView: nil
+                        )
                         self?.showMessageMoved(
                             title: LocalString._messages_has_been_moved,
                             undoActionType: .archive
@@ -1207,7 +1229,10 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                      cancel: { [weak self] isHavingUnsavedChanges in
                          if isHavingUnsavedChanges {
                              self?.showDiscardAlert(handleDiscard: {
-                                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(
+                                    menuLabel: nil,
+                                    isOn: false
+                                 )
                                  self?.dismissActionSheet()
                              })
                          } else {
@@ -1376,9 +1401,12 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextConversation {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+                    self?.viewModel.navigateToNextConversation(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 }
                 guard isHavingUnsavedChanges,
                       let conversation = self?.viewModel.conversation,

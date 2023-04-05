@@ -887,8 +887,8 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         coordinator.handle(navigationAction: action)
     }
 
-    func navigateToNextConversation(popCurrentView: (() -> Void)? = nil) {
-        guard UserInfo.isConversationSwipeEnabled else {
+    func navigateToNextConversation(isInPageView: Bool, popCurrentView: (() -> Void)? = nil) {
+        guard isInPageView else {
             popCurrentView?()
             return
         }

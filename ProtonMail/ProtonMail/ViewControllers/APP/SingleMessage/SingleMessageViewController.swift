@@ -59,6 +59,9 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var scheduledSendTimer: Timer?
+    var isInPageView: Bool {
+        (self.parent as? PagesViewController<MessageID, MessageEntity, Message>) != nil
+    }
 
     init(viewModel: SingleMessageViewModel) {
         self.viewModel = viewModel
@@ -171,9 +174,12 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         }
         scheduledSendTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { [weak self] _ in
             if scheduledTime.timeIntervalSince(Date()) <= 0 {
-                self?.viewModel.navigateToNextMessage() {
-                    self?.navigationController?.popViewController(animated: true)
-                }
+                self?.viewModel.navigateToNextMessage(
+                    isInPageView: self?.isInPageView ?? false,
+                    popCurrentView: {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                )
             }
         })
     }
@@ -230,9 +236,12 @@ extension SingleMessageViewController {
     private func trashAction() {
         let continueAction: () -> Void = { [weak self] in
             self?.viewModel.handleToolBarAction(.trash)
-            self?.viewModel.navigateToNextMessage() {
-                self?.navigationController?.popViewController(animated: true)
-            }
+            self?.viewModel.navigateToNextMessage(
+                isInPageView: self?.isInPageView ?? false,
+                popCurrentView: {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            )
         }
 
         viewModel.searchForScheduled(displayAlert: {
@@ -266,9 +275,12 @@ extension SingleMessageViewController {
     private func deleteAction() {
         showDeleteAlert(deleteHandler: { [weak self] _ in
             self?.viewModel.handleToolBarAction(.delete)
-            self?.viewModel.navigateToNextMessage() {
-                self?.navigationController?.popViewController(animated: true)
-            }
+            self?.viewModel.navigateToNextMessage(
+                isInPageView: self?.isInPageView ?? false,
+                popCurrentView: {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            )
         })
     }
 
@@ -363,17 +375,23 @@ private extension SingleMessageViewController {
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage() {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+                    self?.viewModel.navigateToNextMessage(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 })
             })
         case .reportPhishing:
             showPhishingAlert { [weak self] _ in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage() {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+                    self?.viewModel.navigateToNextMessage(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 })
             }
         case .toolbarCustomization:
@@ -386,16 +404,22 @@ private extension SingleMessageViewController {
             viewModel.handleActionSheetAction(action, completion: {})
         case .archive, .spam, .inbox, .spamMoveToInbox, .star, .unstar:
             viewModel.handleActionSheetAction(action) { [weak self] in
-                self?.viewModel.navigateToNextMessage() {
-                    self?.navigationController?.popViewController(animated: true)
-                }
+                self?.viewModel.navigateToNextMessage(
+                    isInPageView: self?.isInPageView ?? false,
+                    popCurrentView: {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                )
             }
         case .trash:
             let continueAction: () -> Void = { [weak self] in
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextMessage() {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+                    self?.viewModel.navigateToNextMessage(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 })
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] in
@@ -496,7 +520,10 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                     self?.dismissActionSheet()
                     if isArchive {
                         self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .archive)
-                        self?.viewModel.navigateToNextMessage(popCurrentView: nil)
+                        self?.viewModel.navigateToNextMessage(
+                            isInPageView: self?.isInPageView ?? false,
+                            popCurrentView: nil
+                        )
                     }
                 }
             )
@@ -586,9 +613,12 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextMessage() {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+                    self?.viewModel.navigateToNextMessage(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 }
                 guard isHavingUnsavedChanges,
                       let msg = self?.viewModel.message,

@@ -96,7 +96,7 @@ extension MessageDataService: MessageDataActionProtocol {
 
         if queue {
             let ids = messages.map{ $0.messageID.rawValue }
-            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []))
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []))
         }
         return true
     }

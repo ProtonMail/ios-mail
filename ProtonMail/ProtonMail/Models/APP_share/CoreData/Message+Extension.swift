@@ -245,22 +245,18 @@ extension Message {
     }
 
     func selfSent(labelID: String) -> String? {
-        if self.managedObjectContext != nil {
-            let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
-            for lableObject in labelObjects {
-                if let label = lableObject as? Label {
-                    if labelID == Location.inbox.rawValue {
-                        if label.labelID == "2" || label.labelID == "7" {
-                            return Location.sent.rawValue
-                        }
-                    }
+        guard managedObjectContext != nil else { return nil }
+        let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
+        for labelObject in labelObjects {
+            guard let label = labelObject as? Label else { continue }
+            if labelID == Location.inbox.rawValue,
+               [HiddenLocation.sent.rawValue, Location.sent.rawValue].contains(label.labelID) {
+                return Location.sent.rawValue
+            }
 
-                    if labelID == Location.sent.rawValue {
-                        if label.labelID == Location.inbox.rawValue {
-                            return Location.inbox.rawValue
-                        }
-                    }
-                }
+            if labelID == Location.sent.rawValue,
+               label.labelID == Location.inbox.rawValue {
+                return Location.inbox.rawValue
             }
         }
         return nil
