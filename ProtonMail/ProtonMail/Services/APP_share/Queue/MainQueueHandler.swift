@@ -286,7 +286,7 @@ extension MainQueueHandler {
                     return
                 }
 
-                let completionWrapper: API.JSONCompletion = { task, result in
+                let completionWrapper: JSONCompletion = { task, result in
                     var mess: [String: Any]
 
                     switch result {
@@ -526,7 +526,7 @@ extension MainQueueHandler {
                     let signed = attachment.sign(byKey: key,
                                                  userKeys: userKeys,
                                                  passphrase: passphrase)
-                    let completionWrapper: API.JSONCompletion = { _, result in
+                    let completionWrapper: JSONCompletion = { _, result in
                         self.handleAttachmentResponse(result: result,
                                                       attachmentObjectID: managedObjectID,
                                                       keyPacket: keyPacket,

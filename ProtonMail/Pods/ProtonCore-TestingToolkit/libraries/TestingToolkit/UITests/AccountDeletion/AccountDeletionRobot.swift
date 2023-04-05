@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
-import pmtest
+import fusion
 import ProtonCore_CoreTranslation
 
 private let accountDeletionButtonText = CoreString._ad_delete_account_button

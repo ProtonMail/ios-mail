@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-import ProtonCore_Utilities
+import Foundation
 
 public class FeatureFactory {
     internal init() { }

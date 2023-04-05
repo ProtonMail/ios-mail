@@ -23,14 +23,17 @@ import UIKit
 
 extension UIFont {
     public static func preferredFont(for style: TextStyle, weight: Weight) -> UIFont {
-        let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+        let trait = UITraitCollection(preferredContentSizeCategory: .large)
+        let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style, compatibleWith: trait)
         let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
         let limit = UIFont.fontLimit(for: style)
-        if DFSSetting.limitToXXXLarge && font.pointSize > limit {
-            let metrics = UIFontMetrics(forTextStyle: style)
-            return metrics.scaledFont(for: font, maximumPointSize: limit)
+
+        let metrics = UIFontMetrics(forTextStyle: style)
+        if DFSSetting.limitToXXXLarge {
+            return metrics.scaledFont(for: font, maximumPointSize: limit, compatibleWith: trait)
         } else {
-            return font
+            let result = metrics.scaledFont(for: font, compatibleWith: trait)
+            return result
         }
     }
 

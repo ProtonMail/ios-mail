@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_APIClient
 import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_CoreTranslation
@@ -106,11 +107,13 @@ extension LoginService {
         }
     }
 
-    public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+    public func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         manager.getUserInfo { result in
             switch result {
             case .success(let user):
-                self.getAccountDataPerformingAccountMigrationIfNeeded(user: user, mailboxPassword: mailboxPassword, completion: completion)
+                self.getAccountDataPerformingAccountMigrationIfNeeded(
+                    user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
+                )
             case .failure(let error):
                 PMLog.debug("Fetching user info with \(error)")
                 completion(.failure(error.asLoginError()))

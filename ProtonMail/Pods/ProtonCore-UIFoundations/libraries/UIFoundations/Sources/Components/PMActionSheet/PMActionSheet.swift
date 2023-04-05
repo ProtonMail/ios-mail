@@ -1,6 +1,6 @@
 //
 //  PMActionSheet.swift
-//  ProtonCore-UIFoundations - Created on 20.07.20.
+//  ProtonCore-UIFoundations-iOS - Created on 2023/1/18.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -22,64 +22,56 @@
 import UIKit
 import ProtonCore_Foundations
 
+private struct Constants {
+    static let PLAIN_CELL_NAME = "PMActionSheetPlainCell"
+    static let GRID_CELL_NAME = "PMActionSheetGridCell"
+    static let ANIMATION_DURATION: CGFloat = 0.25
+}
+
 public protocol PMActionSheetEventsListener: AnyObject {
     func willPresent()
     func willDismiss()
     func didDismiss()
 }
 
-protocol PMActionSheetProtocol: AnyObject {
-    var itemGroups: [PMActionSheetItemGroup]? { get }
-
+protocol PMActionSheetProtocolV2: AnyObject {
     func reloadRows(at indexPaths: [IndexPath])
     func reloadSection(_ section: Int)
     func dismiss(animated: Bool)
 }
 
-public final class PMActionSheet: UIView, AccessibleView {
-
-    // MARK: Variables
-    private var tableView: UITableView!
-    private var containerView: UIView?
-    private var containerViewBottom: NSLayoutConstraint?
-    private var headerView: PMActionSheetHeaderView?
-    private var dragView: PMActionSheetDragBarView?
-    private var viewModel: PMActionSheetVMProtocol!
-    private var showDragBar: Bool = true
-    private var enableBGTap: Bool = true
-    // Is dissmiss function called before?
-    private var hasDismissed: Bool = false
-    /// Initialized center of contaienr
-    private var initCenter: CGPoint = .zero
-    /// Initialized center of drag view
-    private var dragViewCenter: CGPoint = .zero
-    private var maximumOccupy: CGFloat = 0.9
-    private let MAXIMUM_SHEET_WIDTH: CGFloat = 414
-    private let DRAG_VIEW_HEIGHT: CGFloat = 22
+public final class PMActionSheet: UIView, PMActionSheetProtocolV2, AccessibleView {
     public weak var eventsListener: PMActionSheetEventsListener?
-    public var itemGroups: [PMActionSheetItemGroup]? {
-        return self.viewModel?.itemGroups
-    }
+    private var headerView: PMActionSheetHeaderView?
+    private var tableView = UITableView(frame: .zero)
+    private var container = UIView(frame: .zero)
+    private var bottomCover = UIView(frame: .zero)
+    private var enableBGTap: Bool = true
+    private var hasDismissed: Bool = false
+    private var viewModel: PMActionSheetVM!
+    private var displayState: SheetDisplayState = .initialized
+    private var initDisplayState: SheetDisplayState = .initialized
 
-    /// Initializer of action sheet
-    /// - Parameters:
-    ///   - headerView: Header view of action sheet
-    ///   - itemGroups: Action item groups of action sheet
-    ///   - showDragBar: Set `true` to enable drag down to dismiss action sheet and show drag bar
-    ///   - enableBGTap: Set `true` to enable tap background to dismiss action sheet
-    ///   - maximumOccupy: The maximum occupy percentage of the action sheet, range [0, 1]
-    public convenience init(headerView: PMActionSheetHeaderView?,
-                            itemGroups: [PMActionSheetItemGroup],
-                            showDragBar: Bool = true,
-                            enableBGTap: Bool = true,
-                            maximumOccupy: CGFloat = 0.9) {
+    private var containerViewBottom: NSLayoutConstraint?
+    private var bottomCoverHeight: NSLayoutConstraint?
+    private var tableViewHeight: NSLayoutConstraint?
+    private var initContainerViewBottomConstant: CGFloat?
+    private var handleTablePanGesture = false
+
+    public var itemGroups: [PMActionSheetItemGroup] { viewModel.itemGroups }
+
+    public convenience init(
+        headerView: PMActionSheetHeaderView?,
+        itemGroups: [PMActionSheetItemGroup],
+        enableBGTap: Bool = true,
+        delegate: PMActionSheetEventsListener? = nil
+    ) {
         self.init(frame: .zero)
+        self.viewModel = PMActionSheetVM(actionSheet: self, itemGroups: itemGroups)
         self.headerView = headerView
-        self.showDragBar = showDragBar
         self.enableBGTap = enableBGTap
-        self.viewModel = PMActionSheetVM(actionsheet: self, itemGroups: itemGroups)
-        self.maximumOccupy = min(max(0, maximumOccupy), 1)
-        self.setup()
+        self.eventsListener = delegate
+        setUp()
         generateAccessibilityIdentifiers()
     }
 
@@ -87,31 +79,17 @@ public final class PMActionSheet: UIView, AccessibleView {
         super.init(frame: frame)
     }
 
+    @available(iOS, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
-        showDragBar ? setDragBarRoundedCorners() : setHeaderRoundedCorners()
+        setRoundedCorners()
     }
 }
 
-extension PMActionSheet: PMActionSheetProtocol {
-    func reloadRows(at indexPaths: [IndexPath]) {
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: indexPaths, with: .none)
-        self.tableView.endUpdates()
-    }
-
-    func reloadSection(_ section: Int) {
-        self.tableView.beginUpdates()
-        self.tableView.reloadSections(.init(integer: section), with: .none)
-        self.tableView.endUpdates()
-    }
-}
-
-// MARK: Public function
 extension PMActionSheet {
     public func presentAt(_ parentVC: UIViewController, hasTopConstant: Bool = true, animated: Bool) {
         eventsListener?.willPresent()
@@ -119,39 +97,26 @@ extension PMActionSheet {
         parent.addSubview(self)
         let topConstant = hasTopConstant ? parent.safeGuide.top : 0
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: parent.topAnchor, constant: topConstant),
-            self.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
-            self.bottomAnchor.constraint(equalTo: parent.bottomAnchor),
-            self.trailingAnchor.constraint(equalTo: parent.trailingAnchor)
+            topAnchor.constraint(equalTo: parent.topAnchor, constant: topConstant),
+            leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+            bottomAnchor.constraint(equalTo: parent.bottomAnchor),
+            trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+            container.widthAnchor.constraint(equalTo: parent.widthAnchor).prioritised(as: .defaultLow)
         ])
         parent.layoutIfNeeded()
-        self.setupTableBottomConstraint()
-        guard let bottom = self.containerViewBottom else {
-            return
-        }
-
-        guard animated else {
-            bottom.constant = 0
-            return
-        }
-
-        let duration = self.viewModel.value.DURATION
-        UIView.animate(withDuration: duration, animations: {
-            bottom.constant = 0
-            self.layoutIfNeeded()
-        })
+        setUpBottomConstraintTo(displayState: .initialized, animated: animated)
     }
 
     public func dismiss(animated: Bool) {
         guard self.hasDismissed == false else { return }
-        self.hasDismissed = true
+        hasDismissed = true
         eventsListener?.willDismiss()
-        guard let bottom = self.containerViewBottom else {
+        guard let bottom = containerViewBottom else {
             self.removeFromSuperview()
             return
         }
-        let height = self.containerView?.frame.size.height ?? 200
-        let duration = self.viewModel.value.DURATION
+        let height = container.frame.size.height
+        let duration = Constants.ANIMATION_DURATION
         UIView.animate(withDuration: duration, animations: {
             self.alpha = 0
             bottom.constant = height
@@ -161,283 +126,314 @@ extension PMActionSheet {
             self.eventsListener?.didDismiss()
         })
     }
-}
 
-// MARK: Private functions
-extension PMActionSheet {
-    @objc private func tapBackground(ges: UIGestureRecognizer) {
-        self.dismiss(animated: true)
+    func reloadRows(at indexPaths: [IndexPath]) {
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: indexPaths, with: .none)
+        self.tableView.endUpdates()
     }
 
-    @objc private func panSheet(ges: UIPanGestureRecognizer) {
-        let state = ges.state
-        switch state {
-        case .began:
-            guard let containerView = self.containerView,
-                  let dragView = self.dragView else { return }
-            self.initCenter = containerView.center
-            self.dragViewCenter = dragView.center
-        case .changed:
-            guard let containerView = self.containerView,
-                  let dragView = self.dragView else { return }
-            let translation = ges.translation(in: containerView)
-            let center = containerView.center
-            var newY = center.y + translation.y
-            var dragY = dragView.center.y + translation.y
-            if newY <= self.initCenter.y {
-                newY = self.initCenter.y
-                dragY = self.dragViewCenter.y
-            }
-
-            containerView.center = CGPoint(x: center.x, y: newY)
-            dragView.center = CGPoint(x: dragView.center.x, y: dragY)
-            ges.setTranslation(.zero, in: containerView)
-        case .ended:
-            let velocity = ges.velocity(in: self.containerView)
-            if velocity.y > 100 {
-                // positive number means drag down
-                self.dismiss(animated: true)
-            } else {
-                self.resetCenter()
-            }
-        default: break
-        }
+    public func reloadSection(_ section: Int) {
+        self.tableView.beginUpdates()
+        self.tableView.reloadSections(.init(integer: section), with: .none)
+        self.tableView.endUpdates()
     }
 }
 
-// MARK: UI Relative
+// MARK: - Action sheet initialize
 extension PMActionSheet {
-
-    private func setup() {
-        guard self.viewModel.itemGroups != nil else { return }
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = ColorProvider.BlenderNorm
-        self.setupDismissGesture()
-
-        let container = self.createContainer()
-        let table = self.createTable()
-        if let _headerView = self.headerView {
-            self.addTableView(table, in: container, hasHeader: true)
-            self.addHeaderView(_headerView, in: container)
-        } else {
-            self.addTableView(table, in: container, hasHeader: false)
-        }
-        self.addDragView(onTopOf: container)
-        self.setupPanGesture()
+    private func setUp() {
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = ColorProvider.BlenderNorm
+        setUpContainerConstraint()
+        setUpHeaderViewConstraint()
+        setUpBottomCover()
+        initializeTableView()
+        setUpTableViewConstraint()
+        setUpGestures()
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
-    private func setupDismissGesture() {
-        guard self.enableBGTap else { return }
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapBackground(ges:)))
+    private func setUpGestures() {
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.pan(gesture:)))
+        container.addGestureRecognizer(pan)
+
+        tableView.panGestureRecognizer.addTarget(self, action: #selector(self.tablePan(gesture:)))
+
+        guard enableBGTap else { return }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapBackground(gesture:)))
         tap.delegate = self
         tap.delaysTouchesBegan = false
         tap.delaysTouchesEnded = false
         tap.cancelsTouchesInView = false
-        self.addGestureRecognizer(tap)
+        tap.require(toFail: pan)
+        addGestureRecognizer(tap)
     }
 
-    private func setupPanGesture() {
-        // No drag bar, no pan gesture
-        guard self.showDragBar else { return }
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panSheet(ges:)))
-        pan.delegate = self
-        pan.delaysTouchesBegan = false
-        pan.delaysTouchesEnded = false
-        pan.cancelsTouchesInView = false
-        self.addGestureRecognizer(pan)
-
-        // Only fired when content offset is 0 or the normal scroll event works
-        let pan2 = UIPanGestureRecognizer(target: self, action: #selector(self.panSheet(ges:)))
-        pan2.delegate = self
-        pan2.delaysTouchesBegan = false
-        pan2.delaysTouchesEnded = false
-        pan2.cancelsTouchesInView = false
-        self.tableView.addGestureRecognizer(pan2)
-    }
-
-    private func createContainer() -> UIView {
-        self.containerView = nil
-        let container = UIView()
-        container.backgroundColor = ColorProvider.BackgroundNorm
+    private func setUpContainerConstraint() {
+        container.backgroundColor = PMActionSheetConfig.shared.actionSheetBackgroundColor
         container.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(container)
+        addSubview(container)
 
-        let leftConstraint = container.leadingAnchor.constraint(equalTo: self.leadingAnchor)
-        leftConstraint.priority = UILayoutPriority(rawValue: 999)
-        leftConstraint.isActive = true
-        let rightConstraint = container.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        rightConstraint.priority = UILayoutPriority(rawValue: 999)
-        rightConstraint.isActive = true
-        container.widthAnchor.constraint(lessThanOrEqualToConstant: self.MAXIMUM_SHEET_WIDTH).isActive = true
-        container.centerXInSuperview()
+        let config = PMActionSheetConfig.shared
+        let maximumWidth = config.actionSheetMaximumWidth
+        NSLayoutConstraint.activate([
+            container.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            container.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            container.widthAnchor.constraint(lessThanOrEqualToConstant: maximumWidth),
+            container.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ])
 
-        let height = self.viewModel.calcTableViewHeight()
-        self.containerViewBottom = container.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: height)
-        self.containerViewBottom!.isActive = true
-        self.containerView = container
-        return container
+        let tableHeight = viewModel.calcTableViewHeight()
+        let headerHeight: CGFloat
+        if headerView == nil {
+            headerHeight = 0
+        } else {
+            headerHeight = headerView?.frame.height ?? config.headerViewHeight
+        }
+        containerViewBottom = container.bottomAnchor.constraint(
+            equalTo: safeAreaLayoutGuide.bottomAnchor,
+            constant: headerHeight + tableHeight
+        ).prioritised(as: .defaultLow)
+        containerViewBottom?.isActive = true
     }
 
-    private func createTable() -> UITableView {
-        let table = UITableView()
-        table.delegate = self
-        table.dataSource = self
-        table.separatorStyle = .none
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.backgroundColor = ColorProvider.BackgroundNorm
+    private func setUpHeaderViewConstraint() {
+        guard let headerView = headerView else { return }
+        container.addSubview(headerView)
+        let height = PMActionSheetConfig.shared.headerViewHeight
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: container.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            headerView.heightAnchor.constraint(greaterThanOrEqualToConstant: height)
+        ])
+        headerView.layoutIfNeeded()
+    }
+
+    private func setUpBottomCover() {
+        bottomCover.translatesAutoresizingMaskIntoConstraints = false
+        bottomCover.backgroundColor = PMActionSheetConfig.shared.actionSheetBackgroundColor
+        addSubview(bottomCover)
+
+        NSLayoutConstraint.activate([
+            bottomCover.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bottomCover.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bottomCover.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        bottomCoverHeight = bottomCover.heightAnchor.constraint(equalToConstant: 0)
+        bottomCoverHeight?.isActive = true
+    }
+
+    private func initializeTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = PMActionSheetConfig.shared.actionSheetBackgroundColor
+        tableView.bounces = false
         if #available(iOS 13.0, *) {
-            table.automaticallyAdjustsScrollIndicatorInsets = false
+            tableView.automaticallyAdjustsScrollIndicatorInsets = false
         }
         if #available(iOS 15.0, *) {
-            table.sectionHeaderTopPadding = 0
+            tableView.sectionHeaderTopPadding = 0
         }
-        table.tableFooterView = UIView(frame: .zero)
-        table.register(PMActionSheetPlainCell.nib(), forCellReuseIdentifier: self.viewModel.value.PLAIN_CELL_NAME)
-        table.register(PMActionSheetToggleCell.self, forCellReuseIdentifier: self.viewModel.value.TOGGLE_CELL_NAME)
-        table.register(PMActionSheetGridCell.self, forCellReuseIdentifier: self.viewModel.value.GRID_CELL_NAME)
-        table.register(cellType: PMActionSheetPlainCellHeader.self)
-        self.tableView = table
-        return table
+        tableView.register(PMActionSheetPlainCell.self, forCellReuseIdentifier: Constants.PLAIN_CELL_NAME)
+        tableView.register(PMActionSheetCollectionCell.self, forCellReuseIdentifier: Constants.GRID_CELL_NAME)
+        tableView.register(cellType: PMActionSheetCellHeader.self)
+        tableView.tableFooterView = UIView(frame: .zero)
     }
 
-    private func addHeaderView(_ header: PMActionSheetHeaderView, in container: UIView) {
-        container.addSubview(header)
-        header.translatesAutoresizingMaskIntoConstraints = false
-        header.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        header.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
-        header.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
-        header.bottomAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
-        header.heightAnchor.constraint(greaterThanOrEqualToConstant: self.viewModel.value.HEADER_HEIGHT).isActive = true
-    }
+    private func setUpTableViewConstraint() {
+        container.addSubview(tableView)
+        let topRef = headerView?.bottomAnchor ?? container.topAnchor
 
-    private func addTableView(_ table: UITableView, in container: UIView, hasHeader: Bool) {
-
-        container.addSubview(table)
-        table.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
-        table.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
-
-        // Maximum height of tableview
-        let constant = self.headerView == nil ? 0: -1 * self.viewModel.value.HEADER_HEIGHT
-        table.heightAnchor.constraint(lessThanOrEqualTo: self.heightAnchor, multiplier: maximumOccupy, constant: constant).isActive = true
-
-        // Real height of tableview
-        let height = self.viewModel.calcTableViewHeight()
-        let heightAnchor = table.heightAnchor.constraint(equalToConstant: height)
-        heightAnchor.priority = UILayoutPriority(rawValue: 999)
-        heightAnchor.isActive = true
-    }
-
-    private func addDragView(onTopOf container: UIView) {
-        guard self.showDragBar else { return }
-        let dragView = PMActionSheetDragBarView(frame: .zero)
-        self.dragView = dragView
-        dragView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(dragView)
         NSLayoutConstraint.activate([
-            dragView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            dragView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            dragView.bottomAnchor.constraint(equalTo: container.topAnchor),
-            dragView.heightAnchor.constraint(equalToConstant: self.DRAG_VIEW_HEIGHT)
+            tableView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: topRef),
+            tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
         ])
-    }
-
-    private func setupTableBottomConstraint() {
-        guard let container = self.containerView else { return }
-
-        guard self.headerView != nil else {
-            // Tableview bottom constraint when headerview missing
-            self.tableView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-            let padding = UIDevice.hasPhysicalHome ? 0: self.viewModel.value.BOTTOM_PADDING
-            self.tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -1 * padding).isActive = true
-            // Actionsheet without header shouldn't have bounces
-            self.tableView.bounces = false
-            return
+        let config = PMActionSheetConfig.shared
+        let height = viewModel.value.tableViewHeight
+        switch config.panStyle {
+        case .v1:
+            let constant = headerView?.frame.height ?? 0
+            tableView.heightAnchor.constraint(
+                lessThanOrEqualTo: heightAnchor,
+                multiplier: config.actionSheetMaximumInitializeOccupy,
+                constant: -1 * constant
+            ).isActive = true
+            tableViewHeight = tableView.heightAnchor.constraint(equalToConstant: height).prioritised(as: .init(999))
+        case .v2:
+            tableViewHeight = tableView.heightAnchor.constraint(equalToConstant: height)
         }
-
-        // Tableview bottom constraint when headerview exist.
-        let maxHeight = self.frame.size.height * self.maximumOccupy - self.viewModel.value.HEADER_HEIGHT
-        let tableHeight = self.viewModel.calcTableViewHeight()
-        let padding = UIDevice.hasPhysicalHome ? 0 : self.viewModel.value.PLAIN_CELL_HEIGHT
-        if maxHeight > tableHeight {
-            self.tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -1 * padding).isActive = true
-            self.tableView.bounces = false
-        } else {
-            self.tableView.contentInset.bottom = padding
-            self.tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        }
+        tableViewHeight?.isActive = true
     }
 
-    /// Set top right and top left corner round
-    private func setHeaderRoundedCorners() {
-        guard let containerView = self.containerView else { return }
-        setTopRoundedCorners(for: containerView)
-    }
-
-    private func setDragBarRoundedCorners() {
-        guard let dragView = dragView else { return }
-        setTopRoundedCorners(for: dragView)
-    }
-
-    private func setTopRoundedCorners(for view: UIView) {
-        let radius = self.viewModel.value.RADIUS
+    private func setRoundedCorners() {
+        let radius = PMActionSheetConfig.shared.actionSheetRadius
         let size = CGSize(width: radius, height: radius)
-        let path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size)
+        let path = UIBezierPath(roundedRect: container.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: size)
         let maskLayer = CAShapeLayer()
         maskLayer.path = path.cgPath
-        view.layer.mask = maskLayer
+        container.layer.mask = maskLayer
     }
 
-    /// Reset position of container view and drag bar after pan gesture finish
-    private func resetCenter() {
-        UIView.animate(withDuration: 0.25) {
-            guard let containerView = self.containerView,
-                  let dragView = self.dragView else { return }
-            containerView.center = self.initCenter
-            dragView.center = self.dragViewCenter
-        } completion: { (_) in
-            self.initCenter = .zero
-            self.dragViewCenter = .zero
-        }
-
+    @objc
+    private func preferredContentSizeChanged() {
+        let height = viewModel.calcTableViewHeight(forceUpdate: true)
+        tableViewHeight?.constant = height
     }
 }
 
-// MARK: TableView
-extension PMActionSheet: UITableViewDelegate, UITableViewDataSource {
+// MARK: - Actions
+extension PMActionSheet {
+    @objc
+    private func tapBackground(gesture: UITapGestureRecognizer) {
+        dismiss(animated: true)
+    }
 
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        guard let groups = self.viewModel.itemGroups else {
-            return 0
+    @objc
+    private func pan(gesture: UIPanGestureRecognizer) {
+        guard let bottomConstant = containerViewBottom?.constant else { return }
+        switch gesture.state {
+        case .began:
+            initContainerViewBottomConstant = bottomConstant
+            initDisplayState = displayState
+        case .changed:
+            // translation.y < 0 means drag to top
+            let translation = gesture.translation(in: container)
+            setUpBottomConstraintTo(displayState: .pan(translation.y), animated: false)
+        case .ended:
+            let velocity = gesture.velocity(in: container)
+            if velocity.y > 100 {
+                // velocity.y > 0, drag to bottom.
+                dismiss(animated: true)
+            } else if velocity.y < -100 {
+                setUpBottomConstraintTo(displayState: .expanded, animated: false)
+            } else {
+                guard let oldValue = initContainerViewBottomConstant,
+                      let currentValue = containerViewBottom?.constant else { return }
+                let diff = currentValue - oldValue
+                if diff <= -20 {
+                    // Drag to top
+                    setUpBottomConstraintTo(displayState: .expanded, animated: true)
+                } else if diff >= 100 {
+                    dismiss(animated: true)
+                } else {
+                    setUpBottomConstraintTo(displayState: initDisplayState, animated: true)
+                }
+            }
+        default:
+            break
         }
-        return groups.count
+    }
+
+    @objc
+    private func tablePan(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            handleTablePanGesture = false
+            // velocity.y > 0, drag to bottom
+            let velocity = gesture.velocity(in: container)
+            guard
+                tableView.contentOffset.y <= 0,
+                velocity.y >= 0
+            else { return }
+            handleTablePanGesture = true
+            pan(gesture: gesture)
+        default:
+            guard handleTablePanGesture else { return }
+            pan(gesture: gesture)
+        }
+    }
+}
+
+// MARK: - Private functions
+extension PMActionSheet {
+    private func setUpBottomConstraint(to constraint: CGFloat, animated: Bool) {
+        guard animated else {
+            containerViewBottom?.constant = constraint
+            bottomCoverHeight?.constant = superview?.safeGuide.bottom ?? 0
+            return
+        }
+        let duration = Constants.ANIMATION_DURATION
+        UIView.animate(withDuration: duration, animations: {
+            self.containerViewBottom?.constant = constraint
+            self.bottomCoverHeight?.constant = self.superview?.safeGuide.bottom ?? 0
+            self.layoutIfNeeded()
+        })
+    }
+
+    private func setUpBottomConstraintTo(displayState: SheetDisplayState, animated: Bool) {
+        self.displayState = displayState
+        let viewHeight = frame.height - safeGuide.bottom
+        let sheetHeight = container.frame.height
+        if PMActionSheetConfig.shared.panStyle == .v2 {
+            tableView.isScrollEnabled = false
+        }
+        switch displayState {
+        case .expanded:
+            guard PMActionSheetConfig.shared.panStyle == .v2 else { return }
+            let constraint = max(sheetHeight - viewHeight, 0)
+            setUpBottomConstraint(to: constraint, animated: animated)
+            tableView.isScrollEnabled = true
+            tableView.contentInset = .init(top: 0, left: 0, bottom: constraint - safeGuide.bottom, right: 0)
+        case .initialized:
+            let maximumOccupy = PMActionSheetConfig.shared.actionSheetMaximumInitializeOccupy
+            let initializedMaximum = viewHeight * maximumOccupy
+            let diff = initializedMaximum - sheetHeight
+            let constraint = diff >= 0 ? 0 : abs(diff)
+            setUpBottomConstraint(to: constraint, animated: animated)
+        case .pan(let translationY):
+            if PMActionSheetConfig.shared.panStyle == .v1 && translationY < 0 {
+                // V1 can't drag to top
+                return
+            }
+            guard let oldValue = initContainerViewBottomConstant else { return }
+            let newConstraint = max(oldValue + translationY, 0)
+            let maximumConstraint = max(sheetHeight - viewHeight, 0)
+            let newValue = max(maximumConstraint, newConstraint)
+            setUpBottomConstraint(to: newValue, animated: animated)
+        }
+    }
+
+    enum SheetDisplayState {
+        case expanded, initialized, pan(CGFloat)
+    }
+}
+
+extension PMActionSheet: UITableViewDelegate, UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        viewModel.itemGroups.count
     }
 
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let groups = self.viewModel.itemGroups,
-              groups[section].title != nil else { return 0 }
+        guard viewModel.itemGroups[section].title != nil else { return 0 }
         if DFSSetting.enableDFS {
             return UITableView.automaticDimension
         } else {
-            return viewModel.value.SECTION_HEADER_HEIGHT
+            return PMActionSheetConfig.shared.sectionHeaderHeight
         }
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let groups = self.viewModel.itemGroups,
-              let title = groups[section].title else { return nil }
-        let sectionHeader: PMActionSheetPlainCellHeader = tableView.dequeueReusableCell()
-        sectionHeader.config(title: title)
+        let group = viewModel.itemGroups[section]
+        guard let title = group.title else { return nil }
+        let sectionHeader: PMActionSheetCellHeader = tableView.dequeueReusableCell()
+        sectionHeader.config(title: title, hasSeparator: group.hasSeparator)
         return sectionHeader
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let groups = self.viewModel.itemGroups else {
-            return 0
-        }
-
-        let group = groups[section]
+        let group = viewModel.itemGroups[section]
         switch group.style {
-        case .clickable, .singleSelection, .multiSelection, .toggle:
+        case .clickable, .singleSelection, .multiSelection, .toggle, .singleSelectionNewStyle, .multiSelectionNewStyle:
             return group.items.count
         case .grid:
             return 1
@@ -445,109 +441,80 @@ extension PMActionSheet: UITableViewDelegate, UITableViewDataSource {
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let groups = self.viewModel.itemGroups else {
-            return 0
-        }
-
-        let group = groups[indexPath.section]
+        let group = viewModel.itemGroups[indexPath.section]
         switch group.style {
-        case .clickable, .singleSelection, .multiSelection:
-            return self.viewModel.value.PLAIN_CELL_HEIGHT
+        case .clickable, .singleSelection, .multiSelection, .singleSelectionNewStyle, .multiSelectionNewStyle:
+            return PMActionSheetConfig.shared.plainCellHeight
         case .toggle:
-            return self.viewModel.value.TOGGLE_CELL_HEIGHT
+            return PMActionSheetConfig.shared.toggleCellHeight
         case .grid:
+            return UITableView.automaticDimension
+        }
+    }
+
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let group = viewModel.itemGroups[indexPath.section]
+        switch group.style {
+        case .clickable, .singleSelection, .multiSelection, .singleSelectionNewStyle, .multiSelectionNewStyle:
+            return PMActionSheetConfig.shared.plainCellHeight
+        case .toggle:
+            return PMActionSheetConfig.shared.toggleCellHeight
+        case .grid(let colInRows):
             let section = indexPath.section
-            return self.viewModel.calcGridCellHeightAt(section)
+            return viewModel.calcGridCellHeightAt(section, colInRow: colInRows)
         }
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let groups = self.viewModel.itemGroups else {
-            fatalError(PMActionSheetError.itemGroupMissing.localizedDescription)
-        }
-        let group = groups[indexPath.section]
+        let group = viewModel.itemGroups[indexPath.section]
         switch group.style {
-        case .clickable, .singleSelection, .multiSelection:
-            return self.configPlainCellBy(group, at: indexPath)
-        case .toggle:
-            return self.configToggleCellBy(group, at: indexPath)
-        case .grid:
-            return self.configGridCellBy(group, at: indexPath)
+        case .clickable, .singleSelection, .multiSelection, .singleSelectionNewStyle, .multiSelectionNewStyle, .toggle:
+            let cell: PMActionSheetPlainCell = tableView.dequeueReusableCell(
+                withIdentifier: Constants.PLAIN_CELL_NAME,
+                for: indexPath
+            ) as! PMActionSheetPlainCell
+            let item = group.items[indexPath.row]
+            cell.config(
+                item: item,
+                at: indexPath,
+                style: group.style,
+                totalItemsCount: group.items.count,
+                delegate: self
+            )
+            return cell
+        case .grid(let colInRows):
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: Constants.GRID_CELL_NAME,
+                for: indexPath
+            ) as! PMActionSheetCollectionCell
+            cell.config(items: group.items, colInRows: colInRows)
+            return cell
         }
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.viewModel.selectRowAt(indexPath)
-    }
-
-    // MARK: Cell configuration
-    private func configPlainCellBy(_ group: PMActionSheetItemGroup, at indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.viewModel.value.PLAIN_CELL_NAME) as! PMActionSheetPlainCell
-        let item = group.items[indexPath.row] as! PMActionSheetPlainItem
-        cell.config(item: item, indexPath: indexPath)
-        return cell
-    }
-
-    private func configToggleCellBy(_ group: PMActionSheetItemGroup, at indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.viewModel.value.TOGGLE_CELL_NAME) as! PMActionSheetToggleCell
-        let item = group.items[indexPath.row] as! PMActionSheetToggleItem
-        cell.config(item: item, at: indexPath, delegate: self.viewModel as! PMActionSheetToggleDelegate)
-        return cell
-    }
-
-    private func configGridCellBy(_ group: PMActionSheetItemGroup, at indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.viewModel.value.GRID_CELL_NAME) as! PMActionSheetGridCell
-        try! cell.config(group: group, at: indexPath, delegate: self.viewModel as! PMActionSheetGridDelegate)
-        return cell
+        viewModel.selectRowAt(indexPath)
     }
 }
 
-extension PMActionSheet: UIGestureRecognizerDelegate {
-    
-    override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard let containerView = self.containerView else {
-            return true
-        }
+extension PMActionSheet: PMActionSheetPlainCellDelegate {
+    func toggleTriggeredAt(indexPath: IndexPath) {
+        viewModel.triggerToggle(at: indexPath)
+    }
+}
 
+// MARK: - UITapGesture
+extension PMActionSheet: UIGestureRecognizerDelegate {
+    override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer is UITapGestureRecognizer {
             // Check user tap position is gray overlay or container view
-            let point = gestureRecognizer.location(in: containerView)
+            let point = gestureRecognizer.location(in: container)
             // tap gray overlay
             if point.y < 0 {
                 return true
             }
-        } else if let pan = gestureRecognizer as? UIPanGestureRecognizer {
-            return self.shouldFirePanGes(ges: pan)
         }
-
         return false
-    }
-    
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        true
-    }
-
-    private func shouldFirePanGes(ges: UIPanGestureRecognizer) -> Bool {
-        let point = ges.location(in: self.dragView)
-        // pan on gray overlay
-        if point.y < 0 {
-            return false
-        }
-
-        let tablePoint = ges.location(in: self.tableView)
-        if self.tableView.bounds.contains(tablePoint) {
-            if self.tableView.contentOffset.y <= 0 {
-                let v = ges.velocity(in: self.tableView)
-                // If the offset is 0
-                // gesture always works
-                return v.y > 0 ? true: false
-            }
-            return false
-        }
-
-        // pan on drag view or header view
-        return true
     }
 }

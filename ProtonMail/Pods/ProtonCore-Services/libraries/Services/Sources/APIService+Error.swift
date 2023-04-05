@@ -112,23 +112,6 @@ public extension AuthErrors {
 }
 // This need move to a common framwork
 public extension NSError {
-
-    convenience init(domain: String, code: Int,
-                     localizedDescription: String,
-                     localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) {
-        var userInfo = [NSLocalizedDescriptionKey: localizedDescription]
-
-        if let localizedFailureReason = localizedFailureReason {
-            userInfo[NSLocalizedFailureReasonErrorKey] = localizedFailureReason
-        }
-
-        if let localizedRecoverySuggestion = localizedRecoverySuggestion {
-            userInfo[NSLocalizedRecoverySuggestionErrorKey] = localizedRecoverySuggestion
-        }
-
-        self.init(domain: domain, code: code, userInfo: userInfo)
-    }
-
     class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
     }

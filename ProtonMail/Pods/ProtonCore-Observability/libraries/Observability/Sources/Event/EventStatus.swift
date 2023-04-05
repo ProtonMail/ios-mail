@@ -30,3 +30,8 @@ public enum SuccessOrFailureOrCancelledStatus: String, Encodable, CaseIterable {
     case failed
     case canceled
 }
+
+public enum AuthenticationState: String, Encodable, CaseIterable {
+    case unauthenticated
+    case authenticated
+}

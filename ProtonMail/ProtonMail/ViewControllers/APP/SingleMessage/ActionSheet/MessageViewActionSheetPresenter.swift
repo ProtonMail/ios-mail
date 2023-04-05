@@ -29,33 +29,34 @@ class MessageViewActionSheetPresenter {
         listener: PMActionSheetEventsListener?,
         viewModel: ActionSheetViewModel,
         action: @escaping (MessageViewActionSheetAction) -> Void) {
-            let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
-                action(.dismiss)
-            }
-
             let headerView = PMActionSheetHeaderView(
                 title: viewModel.title,
                 subtitle: nil,
-                leftItem: cancelItem,
-                rightItem: nil
+                leftItem: .right(IconProvider.cross),
+                rightItem: nil,
+                leftItemHandler: {
+                    action(.dismiss)
+                }
             )
 
             let actionGroups: [PMActionSheetItemGroup] = Dictionary(grouping: viewModel.items, by: \.group)
                 .sorted(by: { $0.key.order < $1.key.order })
                 .map { (key: MessageViewActionSheetGroup, value: [MessageViewActionSheetAction]) in
-                    let actions: [PMActionSheetPlainItem] = value.map { item in
-                        PMActionSheetPlainItem(
-                            title: item.title,
-                            icon: item.icon?.withRenderingMode(.alwaysTemplate),
-                            textColor: ColorProvider.TextNorm,
-                            iconColor: ColorProvider.IconNorm) { _ in
-                                action(item)
-                            }
+                    let actions: [PMActionSheetItem] = value.map { item in
+                        let style: PMActionSheetItem.Style
+                        if let icon = item.icon {
+                            style = .default(icon, item.title ?? "")
+                        } else {
+                            style = .text(item.title ?? "")
+                        }
+                        return PMActionSheetItem(style: style) { _ in
+                            action(item)
+                        }
                     }
                     return PMActionSheetItemGroup(title: key.title, items: actions, style: .clickable)
                 }
 
-            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups, maximumOccupy: 0.7)
+            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: actionGroups) /*, maximumOccupy: 0.7) */
             actionSheet.eventsListener = listener
             actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
             delay(0.3) {

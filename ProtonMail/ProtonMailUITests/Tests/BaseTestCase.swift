@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-import pmtest
+import fusion
 @testable import ProtonMail
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"

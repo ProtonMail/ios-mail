@@ -169,8 +169,8 @@ public final class LoginAndSignup {
     let container: Container
     private let isCloseButtonAvailable: Bool
     private let minimumAccountType: AccountType
-    private var loginCoordinator: LoginCoordinator?
-    private var signupCoordinator: SignupCoordinator?
+    private(set) var loginCoordinator: LoginCoordinator?
+    private(set) var signupCoordinator: SignupCoordinator?
     private var mailboxPasswordCoordinator: MailboxPasswordCoordinator?
     private var viewController: UIViewController?
     private var paymentsAvailability: PaymentsAvailability
@@ -209,7 +209,13 @@ public final class LoginAndSignup {
                               completion: @escaping (LoginAndSignupResult) -> Void) -> UINavigationController {
         self.viewController = viewController
         self.customization = customization
-        self.loginAndSignupCompletion = completion
+
+        container.registerHumanVerificationDelegates()
+        self.loginAndSignupCompletion = { [weak self] in
+            self?.container.unregisterHumanVerificationDelegates()
+            completion($0)
+        }
+
         let shouldShowCloseButton = viewController == nil ? false : isCloseButtonAvailable
         let loginCoordinator = LoginCoordinator(container: container,
                                                 isCloseButtonAvailable: shouldShowCloseButton,
@@ -238,6 +244,7 @@ public final class LoginAndSignup {
 
     private func presentSignup(_ start: FlowStartKind, customization: LoginCustomizationOptions, completion: @escaping (LoginAndSignupResult) -> Void) {
         signupCoordinator = SignupCoordinator(container: container,
+                                              minimumAccountType: minimumAccountType,
                                               isCloseButton: isCloseButtonAvailable,
                                               paymentsAvailability: paymentsAvailability,
                                               signupAvailability: signupAvailability,
@@ -261,7 +268,11 @@ extension LoginAndSignup: LoginAndSignupInterface {
                                   updateBlock: @escaping (LoginAndSignupResult) -> Void) {
         self.viewController = viewController
         self.customization = customization
-        self.loginAndSignupCompletion = updateBlock
+        container.registerHumanVerificationDelegates()
+        self.loginAndSignupCompletion = { [weak self] in
+            self?.container.unregisterHumanVerificationDelegates()
+            updateBlock($0)
+        }
         presentSignup(.over(viewController, .coverVertical), customization: customization, completion: updateBlock)
     }
     

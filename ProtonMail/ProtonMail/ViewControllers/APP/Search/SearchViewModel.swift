@@ -431,7 +431,7 @@ extension SearchViewModel: MoveToActionSheetProtocol {
 extension SearchViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
                 .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {

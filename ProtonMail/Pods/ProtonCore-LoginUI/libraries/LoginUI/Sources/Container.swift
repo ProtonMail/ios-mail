@@ -81,6 +81,16 @@ final class Container {
         }
     }
 
+    func registerHumanVerificationDelegates() {
+        api.humanDelegate?.responseDelegateForLoginAndSignup = self
+        api.humanDelegate?.paymentDelegateForLoginAndSignup = self
+    }
+
+    func unregisterHumanVerificationDelegates() {
+        api.humanDelegate?.responseDelegateForLoginAndSignup = nil
+        api.humanDelegate?.paymentDelegateForLoginAndSignup = nil
+    }
+
     // MARK: Login view models
     
     func makeLoginViewModel() -> LoginViewModel {

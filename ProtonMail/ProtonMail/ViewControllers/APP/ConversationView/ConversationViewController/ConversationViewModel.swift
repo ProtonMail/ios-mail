@@ -906,7 +906,7 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
 extension ConversationViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType]) {
         guard let message = messages.first else { return }
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash

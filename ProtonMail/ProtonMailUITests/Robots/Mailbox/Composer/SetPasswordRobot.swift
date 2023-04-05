@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
    

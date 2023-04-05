@@ -234,7 +234,7 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     }
 
     func charactersTyped(chars: String, type: TextFieldType) throws {
-        let value: String = chars.count > 1 ? "Paste": chars
+        let value: String = chars.count > 1 ? "Paste" : chars
         switch type {
         case .username, .username_email:
             challenge.behaviouralFingerprint.keydownUsername.append(value)

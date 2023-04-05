@@ -43,3 +43,21 @@ final class OfficialBadge: PaddingLabel {
         setCornerRadius(radius: frame.height / 2)
     }
 }
+
+final class OfficialBadgeComponent: PMActionSheetComponent {
+    typealias Element = OfficialBadge
+    // [up, right, bottom, left]
+    public let edge: [CGFloat?]
+    public let offset: UIOffset?
+
+    init(edge: [CGFloat?], offset: UIOffset? = nil) {
+        self.edge = edge
+        self.offset = offset
+    }
+
+    func makeElement() -> OfficialBadge {
+        let badge = OfficialBadge()
+        badge.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return badge
+    }
+}

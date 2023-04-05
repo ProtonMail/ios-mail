@@ -42,10 +42,10 @@ public struct ResponseError: Error, Equatable {
     /// * there is no "Code" key in the response body JSON
     /// * the value for "Code" key in the response body JSON is not an integer
     public let responseCode: Int?
-    
+
     public let userFacingMessage: String?
     public let underlyingError: NSError?
-    
+
     public var bestShotAtReasonableErrorCode: Int {
         responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
     }
@@ -219,9 +219,9 @@ public extension ResponseError {
 }
 
 public extension Error {
-    
+
     // TODO: these widely accessible API is making it very difficult to understand what is actually presented to the user
-    
+
     var responseCode: Int? {
         (self as? ResponseError)?.responseCode
     }
@@ -229,7 +229,7 @@ public extension Error {
     var httpCode: Int? {
         (self as? ResponseError)?.httpCode
     }
-    
+
     var bestShotAtReasonableErrorCode: Int {
         (self as? ResponseError)?.bestShotAtReasonableErrorCode ?? (self as NSError).code
     }

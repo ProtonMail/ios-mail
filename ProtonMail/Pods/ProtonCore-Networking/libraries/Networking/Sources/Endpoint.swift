@@ -57,9 +57,24 @@ extension ErrorResponse {
 
 public extension NSError {
     convenience init(_ serverError: ErrorResponse) {
-        let userInfo = [NSLocalizedDescriptionKey: serverError.error,
-                        NSLocalizedFailureReasonErrorKey: serverError.errorDescription ?? ""]
+        self.init(domain: "ProtonCore-Networking", code: serverError.code,
+                  localizedDescription: serverError.error,
+                  localizedFailureReason: serverError.errorDescription)
+    }
 
-        self.init(domain: "ProtonCore-Networking", code: serverError.code, userInfo: userInfo)
+    convenience init(domain: String, code: Int,
+                     localizedDescription: String,
+                     localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) {
+        var userInfo = [NSLocalizedDescriptionKey: localizedDescription]
+
+        if let localizedFailureReason = localizedFailureReason {
+            userInfo[NSLocalizedFailureReasonErrorKey] = localizedFailureReason
+        }
+
+        if let localizedRecoverySuggestion = localizedRecoverySuggestion {
+            userInfo[NSLocalizedRecoverySuggestionErrorKey] = localizedRecoverySuggestion
+        }
+
+        self.init(domain: domain, code: code, userInfo: userInfo)
     }
 }

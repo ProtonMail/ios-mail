@@ -68,7 +68,7 @@ class JKBCryptRandom: NSObject {
 
         var sequence: [Int32] = [Int32](repeating: 0, count: length)
         if unique {
-            if (first <= second && (length > Int(second - first) + 1)) || (first > second  && (length > Int(first - second) + 1)) {
+            if (first <= second && (length > Int(second - first) + 1)) || (first > second && (length > Int(first - second) + 1)) {
                 return [Int32]()
             }
 

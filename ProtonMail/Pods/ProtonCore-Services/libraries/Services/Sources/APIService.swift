@@ -74,7 +74,6 @@ public protocol API {
     
     // TODO: consider switching to a proper error, if it's even resonable without a major rewrite
     typealias APIError = NSError
-    typealias JSONCompletion = (_ task: URLSessionDataTask?, _ result: Result<JSONDictionary, APIError>) -> Void
     typealias DecodableCompletion<T> = (_ task: URLSessionDataTask?, _ result: Result<T, APIError>) -> Void where T: APIDecodableResponse
     // TODO: modernize the download as well?
     typealias DownloadCompletion = (URLResponse?, URL?, NSError?) -> Void
@@ -271,7 +270,12 @@ public enum HumanVerifyFinishReason {
 }
 
 public protocol HumanVerifyDelegate: AnyObject {
+
+    var responseDelegateForLoginAndSignup: HumanVerifyResponseDelegate? { get set }
+    var paymentDelegateForLoginAndSignup: HumanVerifyPaymentDelegate? { get set }
+
     func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
+
     func getSupportURL() -> URL
 }
 
@@ -371,7 +375,7 @@ public enum SessionAcquiringResult {
     case sessionUnavailableAndNotFetched
 }
 
-public protocol APIService: API {
+public protocol APIService: API, RequestPerforming {
 
     // session and credentials management
     var sessionUID: String { get }
@@ -946,5 +950,24 @@ public extension APIService {
         upload(route: route, files: files, uploadProgress: uploadProgress) { (_: URLSessionDataTask?, result: Result<T, ResponseError>) in
             complete(result)
         }
+    }
+}
+
+extension APIService {
+    public func performRequest(request: Request, parameters: Any?, headers: [String: Any]?, jsonCompletion: JSONCompletion?) {
+        self.request(
+            method: request.method,
+            path: request.path,
+            parameters: parameters,
+            headers: headers,
+            authenticated: request.isAuth,
+            autoRetry: request.autoRetry,
+            customAuthCredential: request.authCredential,
+            nonDefaultTimeout: request.nonDefaultTimeout,
+            retryPolicy: request.retryPolicy,
+            jsonCompletion: { task, result in
+                jsonCompletion?(task, result)
+            }
+        )
     }
 }

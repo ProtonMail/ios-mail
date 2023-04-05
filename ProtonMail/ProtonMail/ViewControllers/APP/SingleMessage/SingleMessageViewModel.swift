@@ -404,7 +404,7 @@ extension SingleMessageViewModel: MoveToActionSheetProtocol {
 extension SingleMessageViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType]) {
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels

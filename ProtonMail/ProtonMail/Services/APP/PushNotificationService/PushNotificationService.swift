@@ -212,7 +212,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         let group = DispatchGroup()
         settingsToReport.forEach { settings in
             group.enter()
-            let completion: API.JSONCompletion = { _, result in
+            let completion: JSONCompletion = { _, result in
                 defer {
                     group.leave()
                 }
@@ -485,8 +485,8 @@ struct UnlockManagerProvider: UnlockProvider {
 }
 
 protocol DeviceRegistrator {
-    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: @escaping API.JSONCompletion)
-    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping API.JSONCompletion)
+    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: @escaping JSONCompletion)
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping JSONCompletion)
 }
 
 extension PMAPIService: DeviceRegistrator {}

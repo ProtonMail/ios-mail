@@ -150,13 +150,13 @@ public final class LoginService: Login {
                 case .success(let user):
                     // This is because of a bug on the API, where accounts with no keys return PasswordMode = 2.
                     // (according to Android code)
-                    if passwordMode == .two && !user.keys.isEmpty {
+                    if passwordMode == .two && !user.keys.isEmpty && self.minimumAccountType != .username {
                         completion(.success(.askSecondPassword))
                         return
                     }
                     PMLog.debug("No mailbox password required, finishing up")
                     self.getAccountDataPerformingAccountMigrationIfNeeded(
-                        user: user, mailboxPassword: mailboxPassword, completion: completion
+                        user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                     )
                 case let .failure(error):
                     PMLog.debug("Getting user info failed with \(error)")

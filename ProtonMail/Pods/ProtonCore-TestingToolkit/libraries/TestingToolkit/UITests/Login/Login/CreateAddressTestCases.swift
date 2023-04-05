@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import pmtest
+import fusion
 import ProtonCore_QuarkCommands
 import ProtonCore_Doh
 
@@ -36,28 +36,25 @@ public class CreateAddressTestCases {
 
     public func testShowCreateAddressSuccessfulCreation<T: CoreElements>(robot _: T.Type) -> T {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        
-        loginRobot
-            .fillUsername(username: random.email)
-            .fillpassword(password: random.password)
-            .signIn(robot: CreateAddressRobot.self)
-            .verify.createAddress(email: random.email)
-            .tapContinueButton()
-        return T()
+
+        return SigninExternalAccountsCapability()
+            .convertExternalAccountToInternal(email: random.email,
+                                              password: random.password,
+                                              username: nil,
+                                              loginRobot: loginRobot,
+                                              retRobot: T.self)
     }
     
     public func testShowCreateAddressNewNameSuccessfulCreation<T: CoreElements>(robot _: T.Type) -> T {
         quarkCommands.createUser(externalEmail: random.email, password: random.password)
-        let newEmail = generateName()
+        let newUsername = generateName()
         
-        loginRobot
-            .fillUsername(username: random.email)
-            .fillpassword(password: random.password)
-            .signIn(robot: CreateAddressRobot.self)
-            .verify.createAddress(email: random.email)
-            .fillUsername(username: newEmail)
-            .tapContinueButton()
-        return T()
+        return SigninExternalAccountsCapability()
+            .convertExternalAccountToInternal(email: random.email,
+                                              password: random.password,
+                                              username: newUsername,
+                                              loginRobot: loginRobot,
+                                              retRobot: T.self)
     }
     
     public func testShowCreateAddressCancelButton() {

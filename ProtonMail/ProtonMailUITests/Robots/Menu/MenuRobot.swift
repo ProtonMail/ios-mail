@@ -9,7 +9,7 @@
 import XCTest
 import ProtonCore_CoreTranslation
 import ProtonCore_TestingToolkit
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let logoutCell = "MenuItemTableViewCell.Sign_out"
