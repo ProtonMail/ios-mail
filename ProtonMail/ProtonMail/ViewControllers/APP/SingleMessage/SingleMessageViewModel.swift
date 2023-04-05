@@ -287,6 +287,10 @@ class SingleMessageViewModel {
     }
 
     func navigateToNextMessage(popCurrentView: (() -> Void)? = nil) {
+        guard UserInfo.isConversationSwipeEnabled else {
+            popCurrentView?()
+            return
+        }
         guard nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
             return
         }
