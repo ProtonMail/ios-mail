@@ -232,7 +232,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         e.isInverted = true
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = false
 
-        sut.navigateToNextMessage()
+        sut.navigateToNextMessage(isInPageView: true)
 
         wait(for: [e], timeout: 2)
     }
@@ -242,7 +242,7 @@ final class SingleMessageViewModelTests: XCTestCase {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
 
-        sut.navigateToNextMessage()
+        sut.navigateToNextMessage(isInPageView: true)
 
         wait(for: [e], timeout: 2)
     }

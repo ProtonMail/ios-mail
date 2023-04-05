@@ -508,7 +508,7 @@ class ConversationViewModelTests: XCTestCase {
         e.isInverted = true
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = false
 
-        sut.navigateToNextConversation()
+        sut.navigateToNextConversation(isInPageView: true)
 
         wait(for: [e], timeout: 2)
     }
@@ -517,10 +517,20 @@ class ConversationViewModelTests: XCTestCase {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
 
-        sut.navigateToNextConversation()
+        sut.navigateToNextConversation(isInPageView: true)
 
         wait(for: [e], timeout: 1)
 	}
+
+    func testNavigateToNextConversation_withFlagIsTrue_notInPageView_coordinatorShouldNotBeCalled() {
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        e.isInverted = true
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+
+        sut.navigateToNextConversation(isInPageView: false)
+
+        wait(for: [e], timeout: 2)
+    }
 
     func testFocusedMode_lastNonExpandedMessage_isPartiallyVisibile() {
         makeSUT(labelID: Message.Location.inbox.labelID)

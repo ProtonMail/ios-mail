@@ -356,10 +356,13 @@ extension MessageEntityTests {
         message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "1"
+        label1.type = 3
         let label2 = Label(context: testContext)
         label2.labelID = "2"
+        label2.type = 3
         let label3 = Label(context: testContext)
         label3.labelID = "sdjfisjfjdsofj"
+        label3.type = 3
 
         var sut = MessageEntity(message)
         sut.setLabels([
@@ -376,14 +379,19 @@ extension MessageEntityTests {
         message.messageID = MessageID.generateLocalID().rawValue
         let label1 = Label(context: testContext)
         label1.labelID = "1"
+        label1.type = 3
         let label2 = Label(context: testContext)
         label2.labelID = "2"
+        label2.type = 3
         let label3 = Label(context: testContext)
         label3.labelID = "sdjfisjfjdsofj"
+        label3.type = 3
         let label4 = Label(context: testContext)
         label4.labelID = "5"
+        label4.type = 3
         let label5 = Label(context: testContext)
         label5.labelID = "10"
+        label5.type = 3
 
         var sut = MessageEntity(message)
         sut.setLabels([
