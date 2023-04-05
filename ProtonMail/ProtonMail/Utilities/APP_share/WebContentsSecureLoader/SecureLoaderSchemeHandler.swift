@@ -210,8 +210,7 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
             urlSchemeTask.didFailWithError(error)
             return
         }
-        guard let image = loadImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
-              let data = image.jpegData(compressionQuality: 1),
+        guard let data = loadEmbeddedImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
               let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/2", headerFields: nil) else {
             urlSchemeTask.didFailWithError(error)
             return
@@ -222,7 +221,7 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
         urlSchemeTask.didFinish()
     }
 
-    private func loadImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> UIImage? {
+    private func loadEmbeddedImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> Data? {
         let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
 
         do {
@@ -231,11 +230,7 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
                 attachmentKeyPacket: keyPacket,
                 userKeys: userKeys
             )
-            if let data = Data(base64Encoded: encoded, options: .ignoreUnknownCharacters),
-               let image = UIImage(data: data) {
-                return image
-            }
-            return nil
+            return Data(base64Encoded: encoded, options: .ignoreUnknownCharacters)
         } catch {
             return nil
         }
