@@ -54,6 +54,15 @@ extension UserInfo {
         true
     }
 
+    /// Swipe to show previous / next conversation or messages
+    static var isConversationSwipeEnabled: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
+
     static var isEncryptedSearchEnabled: Bool {
 //        #if DEBUG_ENTERPRISE
 //        return true

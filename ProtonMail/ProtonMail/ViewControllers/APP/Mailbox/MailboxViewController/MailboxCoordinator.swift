@@ -414,12 +414,20 @@ extension MailboxCoordinator {
         case .singleMessage:
             messageToShow(isNotification: false, node: nil) { [weak self] message in
                 guard let message = message else { return }
-                self?.presentPageViewsFor(message: message)
+                if UserInfo.isConversationSwipeEnabled {
+                    self?.presentPageViewsFor(message: message)
+                } else {
+                    self?.present(message: message)
+                }
             }
         case .conversation:
             conversationToShow(isNotification: false, message: nil) { [weak self] conversation in
                 guard let conversation = conversation else { return }
-                self?.presentPageViewsFor(conversation: conversation, targetID: nil)
+                if UserInfo.isConversationSwipeEnabled {
+                    self?.presentPageViewsFor(conversation: conversation, targetID: nil)
+                } else {
+                    self?.present(conversation: conversation, targetID: nil)
+                }
             }
         }
     }
@@ -438,7 +446,11 @@ extension MailboxCoordinator {
             let messageID = message.messageID
             switch self.viewModel.locationViewMode {
             case .singleMessage:
-                self.presentPageViewsFor(message: message)
+                if UserInfo.isConversationSwipeEnabled {
+                    self.presentPageViewsFor(message: message)
+                } else {
+                    self.present(message: message)
+                }
                 let folderID = message.firstValidFolder()
                 self.switchFolderIfNeeded(folderID: folderID?.rawValue)
             case .conversation:
@@ -448,7 +460,11 @@ extension MailboxCoordinator {
                         L11n.Error.cant_open_message.alertToastBottom()
                         return
                     }
-                    self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
+                    if UserInfo.isConversationSwipeEnabled {
+                        self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
+                    } else {
+                        self?.present(conversation: conversation, targetID: messageID)
+                    }
                     let folderID = message.firstValidFolder()
                     self?.switchFolderIfNeeded(folderID: folderID?.rawValue)
                 }
@@ -526,6 +542,41 @@ extension MailboxCoordinator {
                 completion(nil)
             }
         }
+    }
+
+    private func present(message: MessageEntity) {
+        guard let navigationController = viewController?.navigationController else { return }
+        let coordinator = SingleMessageCoordinator(
+            navigationController: navigationController,
+            labelId: viewModel.labelID,
+            message: message,
+            user: viewModel.user,
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+        )
+        coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
+            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
+        }
+        singleMessageCoordinator = coordinator
+        coordinator.start()
+    }
+
+    private func present(conversation: ConversationEntity, targetID: MessageID?) {
+        guard let navigationController = viewController?.navigationController else { return }
+        let coordinator = ConversationCoordinator(
+            labelId: viewModel.labelID,
+            navigationController: navigationController,
+            conversation: conversation,
+            user: viewModel.user,
+            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
+            contextProvider: contextProvider,
+            targetID: targetID
+        )
+        conversationCoordinator = coordinator
+        coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
+            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
+        }
+        coordinator.start()
     }
 
     private func presentPageViewsFor(message: MessageEntity) {

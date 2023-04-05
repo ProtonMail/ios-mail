@@ -122,6 +122,9 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
+        if !UserInfo.isConversationSwipeEnabled {
+            showToolbarCustomizeSpotlightIfNeeded()
+        }
 
         conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
             self?.displayConversation()

@@ -175,7 +175,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     init(user: UserManager) {
         self.userManager = user
 
-        var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders, .nextMsgAfterMove]
+        var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
+        if UserInfo.isConversationSwipeEnabled {
+            mailboxItems.append(.nextMsgAfterMove)
+        }
 
         if UserInfo.isEncryptedSearchEnabled {
             mailboxItems.insert(contentsOf: [.searchContent, .localStorage], at: 2)
