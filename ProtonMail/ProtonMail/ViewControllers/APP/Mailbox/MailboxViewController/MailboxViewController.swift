@@ -27,6 +27,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonCore_Networking
 import ProtonMailAnalytics
 import SkeletonView
 import SwipyCell
@@ -825,10 +826,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func handleRequestError(_ error: NSError) {
         guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
-        guard checkDoh(error) == false else {
-            return
+        guard checkDoh(error) == false else { return }
+
+        let errorCode: Int
+        let systemErrorsImportantForUser = [
+            NSURLErrorTimedOut,
+            NSURLErrorNotConnectedToInternet,
+            NSURLErrorCannotConnectToHost,
+            NSURLErrorBadServerResponse
+        ]
+
+        if let responseError = error as? ResponseError,
+            !systemErrorsImportantForUser.contains(error.code) {
+            errorCode = responseError.bestShotAtReasonableErrorCode
+        } else {
+            errorCode = error.code
         }
-        switch error.code {
+
+        switch errorCode {
         case NSURLErrorTimedOut, APIErrorCode.HTTP504, APIErrorCode.HTTP404:
             showTimeOutErrorMessage()
         case NSURLErrorNotConnectedToInternet, NSURLErrorCannotConnectToHost:
@@ -1974,8 +1989,12 @@ extension MailboxViewController: MailboxCaptchaVCDelegate {
 extension MailboxViewController {
     private func showErrorMessage(_ error: NSError) {
         guard UIApplication.shared.applicationState == .active else { return }
+        var message = error.localizedDescription
+        if let responseError = error as? ResponseError {
+            message = responseError.localizedDescription
+        }
         let banner = PMBanner(
-            message: error.localizedDescription,
+            message: message,
             style: PMBannerNewStyle.error,
             dismissDuration: .infinity,
             bannerHandler: PMBanner.dismiss
@@ -2285,9 +2304,16 @@ extension MailboxViewController: UITableViewDelegate {
                         self.tableView.showLoadingFooter()
                     }
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
-                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly) { _ in
+                    self.viewModel.fetchMessages(
+                        time: unixTimt,
+                        forceClean: false,
+                        isUnread: self.isShowingUnreadMessageOnly
+                    ) { error in
                         DispatchQueue.main.async {
                             self.tableView.hideLoadingFooter()
+                            if let error = error {
+                                self.handleRequestError(error as NSError)
+                            }
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.showNoResultLabelIfNeeded()
