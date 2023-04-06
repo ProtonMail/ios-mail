@@ -285,7 +285,7 @@ private enum SubviewsFactory {
     static var upgradeContainerView: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1
-        view.layer.borderColor = ColorProvider.BrandNorm.cgColor
+        view.layer.borderColor = ColorProvider.BrandNorm
         view.roundCorner(12.0)
         return view
     }()

@@ -147,7 +147,7 @@ class NewMailboxMessageCellPresenter {
                                    weight: .semibold,
                                    textColor: color)
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
-            ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm.cgColor
+            ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm
 
         guard viewModel.displayOriginIcon,
               !viewModel.folderIcons.isEmpty else {

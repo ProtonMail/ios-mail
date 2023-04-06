@@ -121,7 +121,7 @@ private enum SubviewsFactory {
         let view = UIView()
         view.layer.cornerRadius = 8
         view.layer.borderWidth = 1
-        view.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        view.layer.borderColor = ColorProvider.SeparatorNorm
         view.isUserInteractionEnabled = false
         return view
     }
