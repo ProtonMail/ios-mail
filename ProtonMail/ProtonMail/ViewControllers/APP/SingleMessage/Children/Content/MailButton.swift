@@ -83,7 +83,7 @@ class MailButton: UIControl {
         ].activate()
 
         layer.borderWidth = 1.0
-        layer.borderColor = ColorProvider.InteractionWeak.cgColor
+        layer.borderColor = ColorProvider.InteractionWeak
         roundCorner(20.0)
     }
 

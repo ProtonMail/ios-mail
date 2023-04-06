@@ -146,7 +146,7 @@ private extension NewMailboxMessageContentView {
             let label = PaddingLabel(withInsets: 0, 0, 6, 6)
             label.layer.cornerRadius = 3
             label.layer.borderWidth = 1
-            label.layer.borderColor = ColorProvider.TextNorm.cgColor
+            label.layer.borderColor = ColorProvider.TextNorm
             return label
         }
     }

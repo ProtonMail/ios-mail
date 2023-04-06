@@ -272,7 +272,7 @@ final class RateView: UIView {
             let button = UIButton()
             button.roundCorner(56 / 2)
             button.layer.borderWidth = 1
-            button.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+            button.layer.borderColor = ColorProvider.SeparatorNorm
             button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .highlighted)
             button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .selected)
             return button
@@ -350,7 +350,7 @@ final class FeedbackCommentView: UIView, UITextViewDelegate {
         static var commentTextView: UITextView {
             let textView = UITextView()
             textView.layer.borderWidth = 1
-            textView.layer.borderColor = ColorProvider.InteractionNorm.cgColor
+            textView.layer.borderColor = ColorProvider.InteractionNorm
             textView.roundCorner(8)
             textView.backgroundColor = ColorProvider.BackgroundSecondary
             textView.set(text: nil, preferredFont: .body)

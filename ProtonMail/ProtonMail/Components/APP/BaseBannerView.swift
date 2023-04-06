@@ -33,6 +33,6 @@ class BaseBannerView: UIView {
     private func setupBorderAndCorner() {
         layer.cornerRadius = 8.0
         layer.borderWidth = 1.0
-        layer.borderColor = ColorProvider.InteractionWeak.cgColor
+        layer.borderColor = ColorProvider.InteractionWeak
     }
 }
