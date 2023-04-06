@@ -99,6 +99,6 @@ extension MailListActionSheetItemViewModel {
     static func customizeToolbarActionViewModel() -> MailListActionSheetItemViewModel {
         return .init(type: .toolbarCustomization,
                      title: LocalString._toolbar_customize_general_title,
-                     icon: Asset.icMagicWand.image)
+                     icon: IconProvider.magicWand)
     }
 }

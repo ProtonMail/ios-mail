@@ -15,7 +15,6 @@
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
-  internal static let icMagicWand = ImageAsset(name: "ic-magic-wand")
   internal static let icMinusCircleFilled = ImageAsset(name: "ic-minus-circle-filled")
   internal static let composeScheduleStar = ImageAsset(name: "compose_schedule_star")
   internal static let icThreeDotsHorizontal = ImageAsset(name: "ic-three-dots-horizontal")
