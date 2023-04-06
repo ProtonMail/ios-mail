@@ -171,6 +171,16 @@ class UserManager: Service {
         return service
     }()
 
+    lazy var appRatingService: AppRatingService = { [unowned self] in
+        let service = AppRatingService(
+            dependencies: .init(
+                featureFlagService: featureFlagsDownloadService,
+                appRating: AppRatingManager()
+            )
+        )
+        return service
+    }()
+
     weak var parentManager: UsersManager?
 
     private let appTelemetry: AppTelemetry
@@ -276,6 +286,7 @@ class UserManager: Service {
             userID: userID,
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
+            appRatingStatusProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
             userIntroductionProgressProvider: userCachedStatus,
             senderImageEnableStatusProvider: userCachedStatus

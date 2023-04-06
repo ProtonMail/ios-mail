@@ -20,10 +20,10 @@ import XCTest
 
 class FeatureFlagsRequestTests: XCTestCase {
 
-    var sut: FeatureFlagsRequest!
+    var sut: FetchFeatureFlagsRequest!
     override func setUp() {
         super.setUp()
-        sut = FeatureFlagsRequest()
+        sut = FetchFeatureFlagsRequest()
     }
 
     override func tearDown() {
@@ -36,12 +36,12 @@ class FeatureFlagsRequestTests: XCTestCase {
     }
 
     func testInitWithKeys() {
-        sut = FeatureFlagsRequest(keys: [.inAppFeedback])
+        sut = FetchFeatureFlagsRequest(keys: [.inAppFeedback])
         XCTAssertEqual(sut.keysToFetch, [.inAppFeedback])
     }
 
     func testInitWithEmptyKeys() {
-        sut = FeatureFlagsRequest(keys: [])
+        sut = FetchFeatureFlagsRequest(keys: [])
         XCTAssertEqual(sut.keysToFetch, FeatureFlagKey.allCases)
     }
 

@@ -8,15 +8,33 @@ import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
-class MockAppRatingManagerProtocol: AppRatingManagerProtocol {
-    @FuncStub(MockAppRatingManagerProtocol.requestAppRating) var requestAppRatingStub
-    func requestAppRating() {
-        requestAppRatingStub()
+class MockAppRatingStatusProvider: AppRatingStatusProvider {
+    @FuncStub(MockAppRatingStatusProvider.isAppRatingEnabled, initialReturn: Bool()) var isAppRatingEnabledStub
+    func isAppRatingEnabled() -> Bool {
+        isAppRatingEnabledStub()
     }
 
-    @FuncStub(MockAppRatingManagerProtocol.openAppStoreToReviewApp) var openAppStoreToReviewAppStub
-    func openAppStoreToReviewApp() {
-        openAppStoreToReviewAppStub()
+    @FuncStub(MockAppRatingStatusProvider.setIsAppRatingEnabled) var setIsAppRatingEnabledStub
+    func setIsAppRatingEnabled(_ value: Bool) {
+        setIsAppRatingEnabledStub(value)
+    }
+
+    @FuncStub(MockAppRatingStatusProvider.hasAppRatingBeenShownInCurrentVersion, initialReturn: Bool()) var hasAppRatingBeenShownInCurrentVersionStub
+    func hasAppRatingBeenShownInCurrentVersion() -> Bool {
+        hasAppRatingBeenShownInCurrentVersionStub()
+    }
+
+    @FuncStub(MockAppRatingStatusProvider.setAppRatingAsShownInCurrentVersion) var setAppRatingAsShownInCurrentVersionStub
+    func setAppRatingAsShownInCurrentVersion() {
+        setAppRatingAsShownInCurrentVersionStub()
+    }
+
+}
+
+class MockAppRatingWrapper: AppRatingWrapper {
+    @FuncStub(MockAppRatingWrapper.requestAppRating) var requestAppRatingStub
+    func requestAppRating() {
+        requestAppRatingStub()
     }
 
 }
@@ -387,6 +405,14 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
     @FuncStub(MockEncryptedSearchUserCache.cleanGlobal) var cleanGlobalStub
     func cleanGlobal() {
         cleanGlobalStub()
+    }
+
+}
+
+class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtocol {
+    @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion) {
+        updateFeatureFlagStub(key, value, completion)
     }
 
 }

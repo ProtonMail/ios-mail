@@ -330,6 +330,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        if Message.Location(viewModel.labelID) == .inbox {
+            viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
+        }
+        
         if viewModel.eventsService.status != .started {
             self.startAutoFetch()
         } else {
