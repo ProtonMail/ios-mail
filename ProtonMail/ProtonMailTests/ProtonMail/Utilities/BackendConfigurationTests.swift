@@ -59,7 +59,7 @@ class BackendConfigurationTests: XCTestCase {
         line: UInt = #line
     ) {
         XCTAssertEqual(configuration.environment.appDomain, "proton.me", file: file, line: line)
-        XCTAssertEqual(configuration.environment.apiDomain, "api.protonmail.ch", file: file, line: line)
+        XCTAssertEqual(configuration.environment.apiDomain, "mail-api.proton.me", file: file, line: line)
         XCTAssertEqual(configuration.environment.apiPath, "", file: file, line: line)
     }
 }
