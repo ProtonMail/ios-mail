@@ -46,7 +46,7 @@ final class TrustKitWrapper {
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
+                        "https://mail-api.proton.me/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
                         // api.protonmail.ch certificate
@@ -160,7 +160,7 @@ final class TrustKitWrapper {
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
+                        "https://mail-api.proton.me/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
                         // verify.protonmail.com and verify-api.protonmail.com certificate
@@ -190,7 +190,7 @@ final class TrustKitWrapper {
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
+                        "https://mail-api.proton.me/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
                         // proton.me certificate
@@ -206,7 +206,7 @@ final class TrustKitWrapper {
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
+                        "https://mail-api.proton.me/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
                         // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
@@ -223,7 +223,7 @@ final class TrustKitWrapper {
                     kTSKAllowIPsOnly: true,
                     kTSKDisableDefaultReportUri: true,
                     kTSKReportUris: [
-                        "https://api.protonmail.ch/reports/tls"
+                        "https://mail-api.proton.me/reports/tls"
                     ],
                     kTSKPublicKeyHashes: [
                         // api.protonmail.ch and api.protonvpn.ch proxy domains certificates

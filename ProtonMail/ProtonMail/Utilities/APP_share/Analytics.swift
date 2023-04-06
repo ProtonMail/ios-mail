@@ -34,7 +34,7 @@ class Analytics {
     private(set) var isEnabled = false
 
     private static var sentryEndpoint: String {
-        return "https://cb78ae0c2ede43539c8ea95653847634@api.protonmail.ch/core/v4/reports/sentry/13"
+        return "https://cb78ae0c2ede43539c8ea95653847634@mail-api.proton.me/core/v4/reports/sentry/13"
     }
 
     private let analytics: ProtonMailAnalyticsProtocol
