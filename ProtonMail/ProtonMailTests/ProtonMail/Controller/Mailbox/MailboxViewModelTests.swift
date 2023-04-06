@@ -43,6 +43,7 @@ class MailboxViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var imageTempUrl: URL!
+    var mockFetchMessageDetail: MockFetchMessageDetail!
 
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
@@ -155,7 +156,7 @@ class MailboxViewModelTests: XCTestCase {
 
         try FileManager.default.removeItem(at: imageTempUrl)
     }
-    
+
     func testMessageItemOfIndexPath() {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
@@ -167,13 +168,13 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertNil(sut.item(index:IndexPath(row: 1, section: 0)))
         XCTAssertNil(sut.item(index:IndexPath(row: 0, section: 1)))
     }
-    
+
     func testSelectByID() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
         sut.select(id: "1")
         XCTAssertTrue(sut.selectedIDs.contains("1"))
     }
-    
+
     func testRemoveSelectByID() {
         sut.select(id: "1")
         sut.select(id: "2")
@@ -185,7 +186,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertTrue(sut.selectedIDs.contains("2"))
         XCTAssertEqual(sut.selectedIDs.count, 1)
     }
-    
+
     func testRemoveAllSelectID() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
         sut.select(id: "1")
@@ -194,7 +195,7 @@ class MailboxViewModelTests: XCTestCase {
         sut.removeAllSelectedIDs()
         XCTAssertTrue(sut.selectedIDs.isEmpty)
     }
-    
+
     func testSelectionContains() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
         sut.select(id: "1")
@@ -202,39 +203,39 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertFalse(sut.selectionContains(id: "2"))
         XCTAssertFalse(sut.selectionContains(id: "3"))
     }
-    
+
     func testLocalizedNavigationTitle() {
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertEqual(sut.localizedNavigationTitle, Message.Location.inbox.localizedTitle)
-        
+
         createSut(labelID: Message.Location.archive.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertEqual(sut.localizedNavigationTitle, Message.Location.archive.localizedTitle)
-        
+
         createSut(labelID: "customID",
                   labelType: .folder,
                   isCustom: true,
                   labelName: "custom")
         XCTAssertEqual(sut.localizedNavigationTitle, "custom")
-        
+
         createSut(labelID: "customID2",
                   labelType: .label,
                   isCustom: true,
                   labelName: "custom2")
         XCTAssertEqual(sut.localizedNavigationTitle, "custom2")
-        
+
         createSut(labelID: "customID2",
                   labelType: .label,
                   isCustom: true,
                   labelName: nil)
         XCTAssertEqual(sut.localizedNavigationTitle, "")
     }
-    
+
     func testGetCurrentViewMode() {
         XCTAssertEqual(sut.currentViewMode, conversationStateProviderMock.viewMode)
         conversationStateProviderMock.viewModeStub.fixture = .conversation
@@ -242,7 +243,7 @@ class MailboxViewModelTests: XCTestCase {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         XCTAssertEqual(sut.currentViewMode, .singleMessage)
     }
-    
+
     func testGetLocationViewMode_inDraftAndSent_getSingleMessageOnly() {
         createSut(labelID: Message.Location.draft.rawValue,
                   labelType: .folder,
@@ -252,7 +253,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
-        
+
         createSut(labelID: Message.Location.sent.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -262,7 +263,7 @@ class MailboxViewModelTests: XCTestCase {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
     }
-    
+
     func testGetLocationViewMode_notInDraftOrSent_getViewModeFromConversationStateProvider() {
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -272,7 +273,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
-        
+
         createSut(labelID: "custom",
                   labelType: .folder,
                   isCustom: true,
@@ -281,7 +282,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
-        
+
         createSut(labelID: "custom1",
                   labelType: .label,
                   isCustom: true,
@@ -291,40 +292,40 @@ class MailboxViewModelTests: XCTestCase {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
     }
-    
+
     func testGetIsRequiredHumanCheck() {
         humanCheckStatusProviderMock.isRequiredHumanCheck = false
         XCTAssertFalse(sut.isRequiredHumanCheck)
-        
+
         humanCheckStatusProviderMock.isRequiredHumanCheck = true
         XCTAssertTrue(sut.isRequiredHumanCheck)
     }
-    
+
     func testSetIsRequiredHumanCheck() {
         humanCheckStatusProviderMock.isRequiredHumanCheck = false
         sut.isRequiredHumanCheck = true
         XCTAssertTrue(humanCheckStatusProviderMock.isRequiredHumanCheck)
-        
+
         sut.isRequiredHumanCheck = false
         XCTAssertFalse(humanCheckStatusProviderMock.isRequiredHumanCheck)
     }
-    
+
     func testGetIsCurrentUserSelectedUnreadFilterInInbox() {
         userManagerMock.isUserSelectedUnreadFilterInInbox = false
         XCTAssertFalse(sut.isCurrentUserSelectedUnreadFilterInInbox)
-        
+
         userManagerMock.isUserSelectedUnreadFilterInInbox = true
         XCTAssertTrue(sut.isCurrentUserSelectedUnreadFilterInInbox)
     }
-    
+
     func testSetIsCurrentUserSelectedUnreadFilterInInbox() {
         sut.isCurrentUserSelectedUnreadFilterInInbox = false
         XCTAssertFalse(userManagerMock.isUserSelectedUnreadFilterInInbox)
-        
+
         sut.isCurrentUserSelectedUnreadFilterInInbox = true
         XCTAssertTrue(userManagerMock.isUserSelectedUnreadFilterInInbox)
     }
-    
+
     func testConvertSwipeActionTypeToMessageSwipeAction() {
         XCTAssertEqual(sut
                         .convertSwipeActionTypeToMessageSwipeAction(.none,
@@ -367,53 +368,53 @@ class MailboxViewModelTests: XCTestCase {
                                                                     isStarred: false,
                                                                     isUnread: false), .moveTo)
     }
-    
+
     func testCalculateSpaceUsedPercentage() {
         XCTAssertEqual(sut.calculateSpaceUsedPercentage(usedSpace: 50, maxSpace: 100), 0.5, accuracy: 0.001)
-        
+
         XCTAssertEqual(sut.calculateSpaceUsedPercentage(usedSpace: 33, maxSpace: 100), 0.33, accuracy: 0.001)
     }
-    
+
     func testCalculateIsUsedSpaceExceedThreshold() {
         XCTAssertTrue(sut.calculateIsUsedSpaceExceedThreshold(usedPercentage: 0.6, threshold: 50))
-        
+
         XCTAssertFalse(sut.calculateIsUsedSpaceExceedThreshold(usedPercentage: -0.6, threshold: 50))
     }
-    
+
     func testCalculateFormattedMaxSpace() {
         XCTAssertEqual(sut.calculateFormattedMaxSpace(maxSpace: 500000), "488 KB")
-        
+
         XCTAssertEqual(sut.calculateFormattedMaxSpace(maxSpace: -10), "-10 bytes")
     }
-    
+
     func testCalculateSpaceMessage() {
         let msg = sut.calculateSpaceMessage(usedSpace: 600000,
                                             maxSpace: 500000,
                                             formattedMaxSpace: "488 KB",
                                             usedSpacePercentage: 1.2)
         XCTAssertEqual(msg, String(format: LocalString._space_all_used_warning, "488 KB"))
-        
+
         let msg1 = sut.calculateSpaceMessage(usedSpace: 400000,
                                             maxSpace: 500000,
                                             formattedMaxSpace: "488 KB",
                                              usedSpacePercentage: 0.8)
         XCTAssertEqual(msg1,String(format: LocalString._space_partial_used_warning, 80, "488 KB"))
     }
-    
+
     func testIsInDraftFolder() {
         createSut(labelID: Message.Location.draft.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertTrue(sut.isInDraftFolder)
-        
+
         createSut(labelID: Message.Location.trash.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertFalse(sut.isInDraftFolder)
     }
-    
+
     func testIsHavingUser() {
         createSut(labelID: Message.Location.draft.rawValue,
                   labelType: .folder,
@@ -421,7 +422,7 @@ class MailboxViewModelTests: XCTestCase {
                   labelName: nil,
                   totalUserCount: 3)
         XCTAssertTrue(sut.isHavingUser)
-        
+
         createSut(labelID: Message.Location.draft.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -429,47 +430,47 @@ class MailboxViewModelTests: XCTestCase {
                   totalUserCount: 0)
         XCTAssertFalse(sut.isHavingUser)
     }
-    
+
     func testMessageLocation() {
         createSut(labelID: Message.Location.trash.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertEqual(sut.messageLocation, .trash)
-        
+
         createSut(labelID: "labelID",
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertNil(sut.messageLocation)
     }
-    
+
     func testIsTrashOrSpam() {
         createSut(labelID: Message.Location.trash.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertTrue(sut.isTrashOrSpam)
-        
+
         createSut(labelID: Message.Location.spam.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertTrue(sut.isTrashOrSpam)
-        
+
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertFalse(sut.isTrashOrSpam)
-        
+
         createSut(labelID: "1234",
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
         XCTAssertFalse(sut.isTrashOrSpam)
     }
-    
+
     func testGetActionSheetViewModel() {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
@@ -479,7 +480,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.selectedIDs.count, 0)
         let model = sut.actionSheetViewModel
         XCTAssertEqual(model.title, .localizedStringWithFormat(LocalString._general_message, 0))
-        
+
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -490,7 +491,7 @@ class MailboxViewModelTests: XCTestCase {
         let model2 = sut.actionSheetViewModel
         XCTAssertEqual(model2.title, .localizedStringWithFormat(LocalString._general_conversation, 1))
     }
-    
+
     func testGetEmptyFolderCheckMessage() {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         createSut(labelID: Message.Location.inbox.rawValue,
@@ -499,7 +500,7 @@ class MailboxViewModelTests: XCTestCase {
                   labelName: nil)
         XCTAssertEqual(sut.getEmptyFolderCheckMessage(count: 1),
                        String(format: LocalString._clean_message_warning, 1))
-        
+
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -508,7 +509,7 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.getEmptyFolderCheckMessage(count: 10),
                        String(format: LocalString._clean_conversation_warning, 10))
     }
-    
+
     func testGetGroupContacts() {
         let testData = ContactGroupVO(ID: "1", name: "name1")
         contactGroupProviderMock.contactGroupsToReturn = [testData]
@@ -516,7 +517,7 @@ class MailboxViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.contactGroups(), [testData])
     }
-    
+
     func testGetCustomFolders() {
         let testData = Label(context: testContext)
         testData.labelID = "1"
@@ -1095,6 +1096,42 @@ class MailboxViewModelTests: XCTestCase {
 
         XCTAssertTrue(apiServiceMock.downloadStub.wasCalledExactlyOnce)
     }
+
+    func testFetchMessageDetail_forDraft_ignoreDownloadedIsTrue() throws {
+        let fakeMsg = MessageEntity.make(
+            labels: [LabelEntity.make(labelID: Message.Location.draft.labelID)]
+        )
+        let e = expectation(description: "Closure is called")
+        mockFetchMessageDetail.result = .success(fakeMsg)
+
+        sut.fetchMessageDetail(
+            message: fakeMsg) { _ in
+                e.fulfill()
+            }
+
+        waitForExpectations(timeout: 1)
+
+        let params = try XCTUnwrap(mockFetchMessageDetail.params)
+        XCTAssertTrue(params.ignoreDownloaded)
+    }
+
+    func testFetchMessageDetail_msgIsNotDraft_ignoreDownloadedIsFalse() throws {
+        let fakeMsg = MessageEntity.make(
+            labels: [LabelEntity.make(labelID: Message.Location.inbox.labelID)]
+        )
+        let e = expectation(description: "Closure is called")
+        mockFetchMessageDetail.result = .success(fakeMsg)
+
+        sut.fetchMessageDetail(
+            message: fakeMsg) { _ in
+                e.fulfill()
+            }
+
+        waitForExpectations(timeout: 1)
+
+        let params = try XCTUnwrap(mockFetchMessageDetail.params)
+        XCTAssertFalse(params.ignoreDownloaded)
+    }
 }
 
 extension MailboxViewModelTests {
@@ -1124,11 +1161,12 @@ extension MailboxViewModelTests {
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId
         ), parameters: .init(labelID: LabelID(labelID)))
+        self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
             updateMailbox: updateMailbox,
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
+            fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
                     senderImageService: .init(
