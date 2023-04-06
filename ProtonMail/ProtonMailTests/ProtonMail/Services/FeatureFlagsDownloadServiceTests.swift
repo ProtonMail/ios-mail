@@ -22,6 +22,7 @@ import ProtonCore_TestingToolkit
 class FeatureFlagsDownloadServiceTests: XCTestCase {
 
     var apiServiceMock: APIServiceMock!
+    var appRatingStatusProvider: MockAppRatingStatusProvider!
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var senderImageStatusProviderMock: MockSenderImageStatusProvider!
@@ -31,6 +32,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiServiceMock = APIServiceMock()
+        appRatingStatusProvider = .init()
         scheduleSendEnableStatusMock = .init()
         userIntroductionProgressProviderMock = .init()
         senderImageStatusProviderMock = .init()
@@ -38,6 +40,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             userID: userID,
             apiService: apiServiceMock,
             sessionID: "",
+            appRatingStatusProvider: appRatingStatusProvider,
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
             senderImageEnableStatusProvider: senderImageStatusProviderMock
@@ -47,6 +50,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         apiServiceMock = nil
+        appRatingStatusProvider = nil
         scheduleSendEnableStatusMock = nil
         userIntroductionProgressProviderMock = nil
         senderImageStatusProviderMock = nil

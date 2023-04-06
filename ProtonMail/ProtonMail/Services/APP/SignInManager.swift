@@ -78,6 +78,7 @@ class SignInManager: Service {
         }
 
         self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
         self.usersManager.loggedIn()
         self.usersManager.active(by: auth.sessionID)
