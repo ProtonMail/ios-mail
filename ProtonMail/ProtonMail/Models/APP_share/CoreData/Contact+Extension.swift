@@ -79,25 +79,6 @@ extension Contact {
         return false
     }
 
-    func getCardData() -> [CardData] {
-        var cards: [CardData] = [CardData]()
-        do {
-            if let data = self.cardData.data(using: String.Encoding.utf8) {
-                let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [Any]
-                if let vcards = decoded as? [[String: Any]] {
-                    for vcard in vcards {
-                        let type = vcard["Type"] as? Int ?? 0
-                        let data = vcard["Data"] as? String ?? ""
-                        let signature = vcard["Signature"] as? String ?? ""
-                        cards.append(CardData(type: CardDataType(rawValue: type)!, data: data, signature: signature))
-                    }
-                }
-            }
-        } catch {
-        }
-        return cards
-    }
-
     #if !APP_EXTENSION
     class func makeTempContact(context: NSManagedObjectContext, userID: String, name: String, cardDatas: [CardData], emails: [ContactEditEmail]) throws -> Contact {
         let contact = Contact(context: context)

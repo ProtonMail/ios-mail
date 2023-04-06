@@ -21,6 +21,7 @@
 
 import Foundation
 import enum ProtonCore_DataModel.ClientApp
+import ProtonCore_Authentication
 import ProtonCore_Doh
 import ProtonCore_Login
 import ProtonCore_Networking
@@ -31,6 +32,7 @@ import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
+import ProtonCore_Utilities
 import UIKit
 import TrustKit
 
@@ -167,8 +169,8 @@ public final class LoginAndSignup {
     let container: Container
     private let isCloseButtonAvailable: Bool
     private let minimumAccountType: AccountType
-    private var loginCoordinator: LoginCoordinator?
-    private var signupCoordinator: SignupCoordinator?
+    private(set) var loginCoordinator: LoginCoordinator?
+    private(set) var signupCoordinator: SignupCoordinator?
     private var mailboxPasswordCoordinator: MailboxPasswordCoordinator?
     private var viewController: UIViewController?
     private var paymentsAvailability: PaymentsAvailability
@@ -180,20 +182,14 @@ public final class LoginAndSignup {
     
     public init(appName: String,
                 clientApp: ClientApp,
-                environment: Environment,
-                trustKit: TrustKit? = nil,
-                apiServiceDelegate: APIServiceDelegate,
-                forceUpgradeDelegate: ForceUpgradeDelegate,
+                apiService: APIService,
                 minimumAccountType: AccountType,
                 isCloseButtonAvailable: Bool = true,
                 paymentsAvailability: PaymentsAvailability,
                 signupAvailability: SignupAvailability = .notAvailable) {
         container = Container(appName: appName,
                               clientApp: clientApp,
-                              environment: environment,
-                              trustKit: trustKit,
-                              apiServiceDelegate: apiServiceDelegate,
-                              forceUpgradeDelegate: forceUpgradeDelegate,
+                              apiService: apiService,
                               minimumAccountType: minimumAccountType)
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.paymentsAvailability = paymentsAvailability
@@ -205,30 +201,6 @@ public final class LoginAndSignup {
             FeatureFactory.shared.loadEnv()
         }
     }
-    
-    @available(*, deprecated, message: "DoHInterface is deprecated try to use Environment")
-    public init(appName: String,
-                clientApp: ClientApp,
-                doh: DoHInterface,
-                trustKit: TrustKit? = nil,
-                apiServiceDelegate: APIServiceDelegate,
-                forceUpgradeDelegate: ForceUpgradeDelegate,
-                minimumAccountType: AccountType,
-                isCloseButtonAvailable: Bool = true,
-                paymentsAvailability: PaymentsAvailability,
-                signupAvailability: SignupAvailability = .notAvailable) {
-        container = Container(appName: appName,
-                              clientApp: clientApp,
-                              doh: doh,
-                              trustKit: trustKit,
-                              apiServiceDelegate: apiServiceDelegate,
-                              forceUpgradeDelegate: forceUpgradeDelegate,
-                              minimumAccountType: minimumAccountType)
-        self.isCloseButtonAvailable = isCloseButtonAvailable
-        self.paymentsAvailability = paymentsAvailability
-        self.signupAvailability = signupAvailability
-        self.minimumAccountType = minimumAccountType
-    }
 
     @discardableResult
     private func presentLogin(over viewController: UIViewController?,
@@ -237,7 +209,13 @@ public final class LoginAndSignup {
                               completion: @escaping (LoginAndSignupResult) -> Void) -> UINavigationController {
         self.viewController = viewController
         self.customization = customization
-        self.loginAndSignupCompletion = completion
+
+        container.registerHumanVerificationDelegates()
+        self.loginAndSignupCompletion = { [weak self] in
+            self?.container.unregisterHumanVerificationDelegates()
+            completion($0)
+        }
+
         let shouldShowCloseButton = viewController == nil ? false : isCloseButtonAvailable
         let loginCoordinator = LoginCoordinator(container: container,
                                                 isCloseButtonAvailable: shouldShowCloseButton,
@@ -266,6 +244,7 @@ public final class LoginAndSignup {
 
     private func presentSignup(_ start: FlowStartKind, customization: LoginCustomizationOptions, completion: @escaping (LoginAndSignupResult) -> Void) {
         signupCoordinator = SignupCoordinator(container: container,
+                                              minimumAccountType: minimumAccountType,
                                               isCloseButton: isCloseButtonAvailable,
                                               paymentsAvailability: paymentsAvailability,
                                               signupAvailability: signupAvailability,
@@ -289,7 +268,11 @@ extension LoginAndSignup: LoginAndSignupInterface {
                                   updateBlock: @escaping (LoginAndSignupResult) -> Void) {
         self.viewController = viewController
         self.customization = customization
-        self.loginAndSignupCompletion = updateBlock
+        container.registerHumanVerificationDelegates()
+        self.loginAndSignupCompletion = { [weak self] in
+            self?.container.unregisterHumanVerificationDelegates()
+            updateBlock($0)
+        }
         presentSignup(.over(viewController, .coverVertical), customization: customization, completion: updateBlock)
     }
     

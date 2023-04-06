@@ -20,10 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import pmtest
+import fusion
 
 private let titleId = "CompleteViewController.completeTitleLabel"
-private let descriptionId = "CompleteViewController.completeDescriptionLabel"
 
 public final class CompleteRobot: CoreElements {
 
@@ -33,7 +32,6 @@ public final class CompleteRobot: CoreElements {
         @discardableResult
         public func completeScreenIsShown<T: CoreElements>(robot _: T.Type) -> T {
             staticText(titleId).wait().checkExists()
-            staticText(descriptionId).checkExists()
             return T()
         }
     }

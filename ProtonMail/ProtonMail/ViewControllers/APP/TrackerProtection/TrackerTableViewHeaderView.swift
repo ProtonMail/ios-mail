@@ -41,7 +41,7 @@ class TrackerTableViewHeaderView: UITableViewHeaderFooterView {
 
         trackerCountLabel.text = "\(trackerInfo.urls.count)"
 
-        let chevron = isExpanded ? IconProvider.chevronUp : IconProvider.chevronDown
+        let chevron: UIImage = isExpanded ? IconProvider.chevronUp : IconProvider.chevronDown
         expansionChevron.image = chevron
 
         self.onExpansionToggled = onExpansionToggled

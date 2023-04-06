@@ -56,24 +56,26 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        if isImageRequest(urlSchemeTask: urlSchemeTask) {
-            handleImageRequest(urlSchemeTask: urlSchemeTask)
-        } else if isPMIncomingMailRequest(urlSchemeTask: urlSchemeTask) {
-            handlePMIncomingMailRequest(urlSchemeTask: urlSchemeTask)
-        } else {
-            guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
-            let error = NSError(domain: "cache.proton.ch", code: -999)
+        DispatchQueue.global().async {
+            if self.isImageRequest(urlSchemeTask: urlSchemeTask) {
+                self.handleImageRequest(urlSchemeTask: urlSchemeTask)
+            } else if self.isPMIncomingMailRequest(urlSchemeTask: urlSchemeTask) {
+                self.handlePMIncomingMailRequest(urlSchemeTask: urlSchemeTask)
+            } else {
+                guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
+                let error = NSError(domain: "cache.proton.ch", code: -999)
 
-            let contentLoadingType = contents?.contentLoadingType ?? .none
-            switch contentLoadingType {
-            case .proxyDryRun:
-                fetchTackerInfo(url, urlSchemeTask, error)
-            case .proxy:
-                fetchRemoteImage(url, urlSchemeTask, error)
-            case .none:
-                urlSchemeTask.didFailWithError(error)
-            case .direct:
-                assertionFailure("Content loaded without proxy should not reach here.")
+                let contentLoadingType = self.contents?.contentLoadingType ?? .none
+                switch contentLoadingType {
+                case .proxyDryRun:
+                    self.fetchTackerInfo(url, urlSchemeTask, error)
+                case .proxy:
+                    self.fetchRemoteImage(url, urlSchemeTask, error)
+                case .none:
+                    urlSchemeTask.didFailWithError(error)
+                case .direct:
+                    assertionFailure("Content loaded without proxy should not reach here.")
+                }
             }
         }
     }
@@ -210,8 +212,7 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
             urlSchemeTask.didFailWithError(error)
             return
         }
-        guard let image = loadImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
-              let data = image.jpegData(compressionQuality: 1),
+        guard let data = loadEmbeddedImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
               let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/2", headerFields: nil) else {
             urlSchemeTask.didFailWithError(error)
             return
@@ -222,7 +223,7 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
         urlSchemeTask.didFinish()
     }
 
-    private func loadImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> UIImage? {
+    private func loadEmbeddedImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> Data? {
         let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
 
         do {
@@ -231,11 +232,7 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
                 attachmentKeyPacket: keyPacket,
                 userKeys: userKeys
             )
-            if let data = Data(base64Encoded: encoded, options: .ignoreUnknownCharacters),
-               let image = UIImage(data: data) {
-                return image
-            }
-            return nil
+            return Data(base64Encoded: encoded, options: .ignoreUnknownCharacters)
         } catch {
             return nil
         }

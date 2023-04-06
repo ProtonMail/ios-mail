@@ -25,6 +25,18 @@ import ProtonCore_Services
 public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
 
     public init() {}
+
+    @PropertyStub(\HumanVerifyDelegateMock.responseDelegateForLoginAndSignup, initialGet: nil) public var responseDelegateForLoginAndSignupStub
+    public var responseDelegateForLoginAndSignup: ProtonCore_Services.HumanVerifyResponseDelegate? {
+        get { responseDelegateForLoginAndSignupStub() }
+        set { responseDelegateForLoginAndSignupStub(newValue) }
+    }
+
+    @PropertyStub(\HumanVerifyDelegateMock.paymentDelegateForLoginAndSignup, initialGet: nil) public var paymentDelegateForLoginAndSignupStub
+    public var paymentDelegateForLoginAndSignup: ProtonCore_Services.HumanVerifyPaymentDelegate? {
+        get { paymentDelegateForLoginAndSignupStub() }
+        set { paymentDelegateForLoginAndSignupStub(newValue) }
+    }
     
     @FuncStub(HumanVerifyDelegateMock.onHumanVerify) public var onHumanVerifyStub
     public func onHumanVerify(parameters: HumanVerifyParameters,

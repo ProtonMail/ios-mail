@@ -35,9 +35,13 @@ var beforeSanitizeElements = function (node) {
 
         if (shouldPrefix(element.tagName, item)) {
             var attribute = element.getAttribute(item);
-            const originalUrl = attribute;
-            const replacedUrl = 'proton-' + attribute;
-            element.setAttribute(item, replacedUrl || '');
+            // Don't update base64 string
+            // Mainly for signature case
+            if (!attribute.startsWith('data:')) {
+                const originalUrl = attribute;
+                const replacedUrl = 'proton-' + attribute;
+                element.setAttribute(item, replacedUrl || '');
+            }
         }
 
         // Manage element styles tag

@@ -145,7 +145,7 @@ private enum SubviewFactory {
     static var logoView: UIImageView {
         let imageView = UIImageView(image: IconProvider.mailMain)
         imageView.layer.cornerRadius = 16
-        imageView.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        imageView.layer.borderColor = ColorProvider.SeparatorNorm
         imageView.layer.borderWidth = 1
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -179,7 +179,7 @@ private enum SubviewFactory {
         button.tintColor = ColorProvider.NotificationError
         button.setTitleColor(ColorProvider.NotificationError, for: .normal)
         button.setTitleColor(ColorProvider.NotificationError, for: .disabled)
-        button.layer.borderColor = ColorProvider.NotificationError.cgColor
+        button.layer.borderColor = ColorProvider.NotificationError
         return button
     }
 }

@@ -214,6 +214,7 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
             }
             feedback(true)
         }
+        cell.switchView.accessibilityIdentifier = "SettingsLockView.appKeySwitch"
         return cell
     }
 }

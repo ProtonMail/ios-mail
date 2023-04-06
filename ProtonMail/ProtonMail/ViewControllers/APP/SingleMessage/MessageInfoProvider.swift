@@ -93,14 +93,6 @@ final class MessageInfoProvider {
         return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled
     }
 
-    private var shouldPerformImageProxyRealRun: Bool {
-        imageProxyEnabled && remoteContentPolicy == .allowed
-    }
-
-    private var shouldPerformImageProxyDryRun: Bool {
-        imageProxyEnabled && remoteContentPolicy != .allowed
-    }
-
     init(
         message: MessageEntity,
         messageDecrypter: MessageDecrypterProtocol? = nil,
@@ -389,11 +381,6 @@ final class MessageInfoProvider {
         }
         return PMDateFormatter.shared.titleForScheduledBanner(from: time)
     }
-
-    // If the remote content policy is allow all, do not use the image proxy.
-    var shouldUseImageProxy: Bool {
-        remoteContentPolicy == .allowedAll ? false : shouldApplyImageProxy
-    }
 }
 
 // MARK: Public functions
@@ -431,29 +418,31 @@ extension MessageInfoProvider {
         prepareDisplayBody()
 	}
 
-    func replaceMarkersWithURLs(_ replacements: [Set<UUID>: String]) {
-        dispatchQueue.async { [weak self] in
-            guard
-                let self = self,
-                let currentlyDisplayedBody = self.bodyParts?.originalBody
-            else {
-                return
-            }
-
-            let updatedBody = replacements.reduce(into: currentlyDisplayedBody) { body, replacement in
-                for marker in replacement.key {
-                    guard let rangeToReplace = body.range(of: marker.uuidString) else {
-                        assertionFailure("Current body should contain \(marker)")
-                        continue
-                    }
-
-                    body.replaceSubrange(rangeToReplace, with: replacement.value)
-                }
-            }
-            self.checkBannerStatus(updatedBody)
-            self.updateBodyParts(with: updatedBody)
-            self.updateWebContents()
+    func fetchSenderImageIfNeeded(
+        isDarkMode: Bool,
+        scale: CGFloat,
+        completion: @escaping (UIImage?) -> Void
+    ) {
+        guard let senderImageRequestInfo = message.getSenderImageRequestInfo(isDarkMode: isDarkMode) else {
+            completion(nil)
+            return
         }
+
+        dependencies.fetchSenderImage
+            .callbackOn(.main)
+            .execute(
+                params: .init(
+                    senderImageRequestInfo: senderImageRequestInfo,
+                    scale: scale,
+                    userID: user.userID
+                )) { result in
+                    switch result {
+                    case .success(let image):
+                        completion(image)
+                    case .failure:
+                        completion(nil)
+                    }
+            }
     }
 }
 
@@ -591,7 +580,7 @@ extension MessageInfoProvider {
         }
     }
 
-    private func decryptBody() -> MessageDecrypterProtocol.Output? {
+    private func decryptBody() -> MessageDecrypter.DecryptionOutput? {
         do {
             let decryptionOutput = try messageDecrypter.decrypt(message: message)
             isBodyDecryptable = true
@@ -760,5 +749,6 @@ extension MessageInfoProvider {
     struct Dependencies {
         let imageProxy: ImageProxy
         let fetchAttachment: FetchAttachmentUseCase
+        let fetchSenderImage: FetchSenderImageUseCase
     }
 }

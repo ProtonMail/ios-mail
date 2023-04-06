@@ -25,12 +25,12 @@ import Foundation
 /// Adds automatic `UniquelyMergeable` conformance to dictionaries with `UniquelyMergeable` values.
 extension Dictionary: UniquelyMergeable where Value: UniquelyMergeable {
 
-    var uniqued: [Key: Value] {
+    public var uniqued: [Key: Value] {
         // A dictionary inherently has unique keys.
         return self
     }
 
-    func appending(_ other: [Key: Value]) -> [Key: Value] {
+    public func appending(_ other: [Key: Value]) -> [Key: Value] {
         return merging(other, uniquingKeysWith: { $0.uniquelyMerging(with: $1) })
     }
 }
@@ -38,7 +38,7 @@ extension Dictionary: UniquelyMergeable where Value: UniquelyMergeable {
 extension Dictionary where Value: UniquelyMergeable {
 
     /// Removes the values stored under the `wildcardKey`, and appends them to values for all other keys.
-    func flattened(removing wildcardKey: Key) -> Self {
+    public func flattened(removing wildcardKey: Key) -> Self {
         guard let commonValues = self[wildcardKey] else {
             return self
         }

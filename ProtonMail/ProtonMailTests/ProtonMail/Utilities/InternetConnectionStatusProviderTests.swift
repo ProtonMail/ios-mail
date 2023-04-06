@@ -8,6 +8,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     var notificationCenter: NotificationCenter!
     var reachabilityStub: ReachabilityStub!
     var emitedStatuses: [ConnectionStatus]!
+    private let observerID = UUID()
 
     override func setUp() {
         super.setUp()
@@ -36,12 +37,12 @@ class InternetConnectionStatusProviderTests: XCTestCase {
         }
         reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
 
-        sut.registerConnectionStatus(callback)
+        sut.registerConnectionStatus(observerID: observerID, callback: callback)
         waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testGetConnectionStatusHasChanged() {
-        sut.registerConnectionStatus { [weak self] in
+        sut.registerConnectionStatus(observerID: observerID) { [weak self] in
             self?.emitedStatuses.append($0)
         }
 
@@ -52,7 +53,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     }
 
     func testInvalidNotificationReceived() {
-        sut.registerConnectionStatus { [weak self] in
+        sut.registerConnectionStatus(observerID: observerID) { [weak self] in
             self?.emitedStatuses.append($0)
         }
 
@@ -61,7 +62,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     }
 
     func testStopInternetConnectionStatusObservation() {
-        sut.registerConnectionStatus { [weak self] in
+        sut.registerConnectionStatus(observerID: observerID) { [weak self] in
             self?.emitedStatuses.append($0)
         }
 
@@ -81,4 +82,44 @@ class InternetConnectionStatusProviderTests: XCTestCase {
         XCTAssertEqual(sut.currentStatus, .connectedViaWiFi)
     }
 
+    func testCannotRegisterTwice() {
+        var firstCallbackCounter = 0
+        var secondCallbackCounter = 0
+
+        sut.registerConnectionStatus(observerID: observerID) { _ in
+            firstCallbackCounter += 1
+        }
+
+        sut.registerConnectionStatus(observerID: observerID) { _ in
+            secondCallbackCounter += 1
+        }
+
+        // the act of registering already fires the callback
+        XCTAssertEqual(firstCallbackCounter, 1)
+        XCTAssertEqual(secondCallbackCounter, 1)
+
+        sut.updateNewStatusToAll(.connected)
+
+        // note that only the 2nd counter has been incremented, because the 1st callback is no longer registered
+        XCTAssertEqual(firstCallbackCounter, 1)
+        XCTAssertEqual(secondCallbackCounter, 2)
+    }
+
+    func testUnregistering() {
+        var callbackCounter = 0
+
+        sut.registerConnectionStatus(observerID: observerID) { _ in
+            callbackCounter += 1
+        }
+
+        // the act of registering already fires the callback
+        XCTAssertEqual(callbackCounter, 1)
+
+        sut.unregisterObserver(observerID: observerID)
+
+        sut.updateNewStatusToAll(.connected)
+
+        // note that the counter has not been incremented, because the callback has been unregistered
+        XCTAssertEqual(callbackCounter, 1)
+    }
 }

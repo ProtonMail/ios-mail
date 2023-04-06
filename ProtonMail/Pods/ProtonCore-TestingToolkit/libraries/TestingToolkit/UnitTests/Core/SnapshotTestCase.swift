@@ -33,6 +33,7 @@ open class SnapshotTestCase: XCTestCase {
     #if os(iOS)
     @available(iOS 13, *)
     public func checkSnapshots(controller: UIViewController,
+                               wait: TimeInterval? = nil,
                                size: CGSize = CGSize(width: 750, height: 1334),
                                traits: UITraitCollection = .iPhoneSe(.portrait),
                                perceptualPrecision: Float = 1,
@@ -43,15 +44,20 @@ open class SnapshotTestCase: XCTestCase {
 
         [UIUserInterfaceStyle.light, .dark].forEach {
 
-        assertSnapshot(matching: controller,
-                       as: .image(on: .iPhoneSe,
-                                  perceptualPrecision: perceptualPrecision,
-                                  traits: .init(userInterfaceStyle: $0)),
-                       named: "\($0)",
-                       record: reRecordEverything || record,
-                       file: file,
-                       testName: "\(name)",
-                       line: line)
+            var strategy: Snapshotting<UIViewController, UIImage> = .image(
+                on: .iPhoneSe, perceptualPrecision: perceptualPrecision, traits: .init(userInterfaceStyle: $0)
+            )
+            if let wait {
+                strategy = .wait(for: wait, on: strategy)
+            }
+
+            assertSnapshot(matching: controller,
+                           as: strategy,
+                           named: "\($0)",
+                           record: reRecordEverything || record,
+                           file: file,
+                           testName: "\(name)",
+                           line: line)
         }
     }
 

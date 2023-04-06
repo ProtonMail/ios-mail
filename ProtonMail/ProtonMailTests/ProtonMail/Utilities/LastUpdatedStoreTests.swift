@@ -430,7 +430,7 @@ final class LastUpdatedStoreTests: XCTestCase {
         prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
         prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
 
-        sut.removeUpdateTimeExceptUnread(by: userID, type: .singleMessage)
+        sut.removeUpdateTimeExceptUnread(by: userID)
 
         let labelCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
         XCTAssertEqual(labelCount.total, 100)
@@ -454,7 +454,7 @@ final class LastUpdatedStoreTests: XCTestCase {
         prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
         prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
 
-        sut.removeUpdateTimeExceptUnread(by: userID, type: .conversation)
+        sut.removeUpdateTimeExceptUnread(by: userID)
 
         let labelCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
         XCTAssertEqual(labelCount.total, 100)

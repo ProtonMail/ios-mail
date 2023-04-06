@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     /// Move to folder dialog identifiers
@@ -97,9 +97,9 @@ class MoveToFolderRobotInterface: CoreElements {
     }
     
     @discardableResult
-    func tapDoneSelectingFolderButton() -> InboxRobot {
+    func tapDoneSelectingFolderButton() -> MessageRobot {
         button(id.doneButtonLabel).waitForHittable().tap()
-        return InboxRobot()
+        return MessageRobot()
     }
     
     @discardableResult

@@ -27,6 +27,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonCore_Networking
 import ProtonMailAnalytics
 import SkeletonView
 import SwipyCell
@@ -145,6 +146,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     let connectionStatusProvider = InternetConnectionStatusProvider()
+    private let observerID = UUID()
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
@@ -286,7 +288,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
 
-        connectionStatusProvider.registerConnectionStatus { [weak self] newStatus in
+        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] newStatus in
             self?.updateInterface(connectionStatus: newStatus)
         }
 
@@ -328,6 +330,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        if Message.Location(viewModel.labelID) == .inbox {
+            viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
+        }
+        
         if viewModel.eventsService.status != .started {
             self.startAutoFetch()
         } else {
@@ -716,7 +722,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
-        guard DoHMail.default.errorIndicatesDoHSolvableProblem(error: error) else {
+        guard BackendConfiguration.shared.doh.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
         self.showError()
@@ -759,6 +765,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             }
 
+            showSenderImageIfNeeded(in: mailboxCell, item: mailboxItem)
+
             configureSwipeAction(mailboxCell, item: mailboxItem)
 
 #if DEBUG
@@ -778,6 +786,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         inputCell.isAccessibilityElement = true
     }
 
+    private func showSenderImageIfNeeded(
+        in cell: NewMailboxMessageCell,
+        item: MailboxItem
+    ) {
+        viewModel.fetchSenderImageIfNeeded(
+            item: item,
+            isDarkMode: isDarkMode,
+            scale: currentScreenScale
+        ) { [weak self, weak cell] image in
+            if let image = image, let cell = cell, cell.mailboxItem == item {
+                self?.messageCellPresenter.presentSenderImage(image, in: cell.customView)
+            }
+        }
+    }
+
     // Temp: needs to refactor the code of generating TagUIModel
     private func getTagUIModelFrom(conversation: ConversationEntity) -> [TagUIModel] {
         guard let object = viewModel.coreDataContextProvider.mainContext.object(with: conversation.objectID.rawValue) as? Conversation else {
@@ -787,7 +810,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        if let type = undoActionType {
+        if var type = undoActionType {
+            switch type {
+            case .custom(Message.Location.archive.labelID):
+                type = .archive
+            case .custom(Message.Location.trash.labelID):
+                type = .trash
+            case .custom(Message.Location.spam.labelID):
+                type = .spam
+            default:
+                break
+            }
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         } else {
             let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
@@ -797,10 +830,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func handleRequestError(_ error: NSError) {
         guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
-        guard checkDoh(error) == false else {
-            return
+        guard checkDoh(error) == false else { return }
+
+        let errorCode: Int
+        let systemErrorsImportantForUser = [
+            NSURLErrorTimedOut,
+            NSURLErrorNotConnectedToInternet,
+            NSURLErrorCannotConnectToHost,
+            NSURLErrorBadServerResponse
+        ]
+
+        if let responseError = error as? ResponseError,
+            !systemErrorsImportantForUser.contains(error.code) {
+            errorCode = responseError.bestShotAtReasonableErrorCode
+        } else {
+            errorCode = error.code
         }
-        switch error.code {
+
+        switch errorCode {
         case NSURLErrorTimedOut, APIErrorCode.HTTP504, APIErrorCode.HTTP404:
             showTimeOutErrorMessage()
         case NSURLErrorNotConnectedToInternet, NSURLErrorCannotConnectToHost:
@@ -913,7 +960,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func showRefreshController() {
         let height = tableView.tableFooterView?.frame.height ?? 0
-        let count = tableView.numberOfRows(inSection: 0)
+        let count = tableView.visibleCells.count
         guard height == 0 && count == 0 else {return}
 
         // Show refreshControl if there is no bottom loading view
@@ -955,9 +1002,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private func tappedMessage(_ message: MessageEntity) {
         if getTapped() == false {
             guard viewModel.isInDraftFolder || message.isDraft else {
-                if message.isScheduledSend && !message.contains(location: .sent),
+                if message.contains(location: .scheduled),
                    let scheduledSendTime = message.time,
                    scheduledSendTime.timeIntervalSince(Date()) <= 0 {
+                    // Prevent user trying to edit before receiving sent event
                     let alert = LocalString._scheduled_send_message_timeup.alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
@@ -1945,8 +1993,12 @@ extension MailboxViewController: MailboxCaptchaVCDelegate {
 extension MailboxViewController {
     private func showErrorMessage(_ error: NSError) {
         guard UIApplication.shared.applicationState == .active else { return }
+        var message = error.localizedDescription
+        if let responseError = error as? ResponseError {
+            message = responseError.localizedDescription
+        }
         let banner = PMBanner(
-            message: error.localizedDescription,
+            message: message,
             style: PMBannerNewStyle.error,
             dismissDuration: .infinity,
             bannerHandler: PMBanner.dismiss
@@ -2256,9 +2308,16 @@ extension MailboxViewController: UITableViewDelegate {
                         self.tableView.showLoadingFooter()
                     }
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
-                    self.viewModel.fetchMessages(time: unixTimt, forceClean: false, isUnread: self.isShowingUnreadMessageOnly) { _ in
+                    self.viewModel.fetchMessages(
+                        time: unixTimt,
+                        forceClean: false,
+                        isUnread: self.isShowingUnreadMessageOnly
+                    ) { error in
                         DispatchQueue.main.async {
                             self.tableView.hideLoadingFooter()
+                            if let error = error {
+                                self.handleRequestError(error as NSError)
+                            }
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.showNoResultLabelIfNeeded()
@@ -2550,43 +2609,15 @@ extension MailboxViewController {
 }
 
 extension MailboxViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        viewModel.user.undoActionManager
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }
 
     var composerPresentingVC: UIViewController? {
         self
-    }
-
-    func showUndoAction(undoTokens: [String], title: String) {
-        DispatchQueue.main.async {
-            let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-            banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
-                self?.viewModel.user.undoActionManager.requestUndoAction(undoTokens: undoTokens) { [weak self] isSuccess in
-                    DispatchQueue.main.async {
-                        if isSuccess {
-                            self?.showActionRevertedBanner()
-                        }
-                    }
-                }
-                banner.dismiss(animated: false)
-            }
-            banner.show(at: .bottom, on: self)
-            // Dismiss other banner after the undo banner is shown
-            delay(0.25) { [weak self] in
-                self?.view.subviews
-                    .compactMap { $0 as? PMBanner }
-                    .filter { $0 != banner }
-                    .forEach({ $0.dismiss(animated: false) })
-            }
-        }
-    }
-
-    func showActionRevertedBanner() {
-        let banner = PMBanner(message: LocalString._inbox_action_reverted_title,
-                              style: PMBannerNewStyle.info,
-                              dismissDuration: 1,
-                              bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
     }
 }

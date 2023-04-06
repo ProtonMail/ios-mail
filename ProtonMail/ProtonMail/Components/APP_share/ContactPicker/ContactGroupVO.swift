@@ -88,9 +88,9 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
      */
     private var selectedMembers: MultiSet<DraftEmailData>
 
-    func getSelectedEmailsWithDetail() -> [ComposeViewModelImpl.EncodableRecipient] {
+    func getSelectedEmailsWithDetail() -> [ComposeViewModel.EncodableRecipient] {
         selectedMembers.map { member in
-            ComposeViewModelImpl.EncodableRecipient(address: member.key.email, group: contactTitle)
+            ComposeViewModel.EncodableRecipient(address: member.key.email, group: contactTitle)
         }
     }
 

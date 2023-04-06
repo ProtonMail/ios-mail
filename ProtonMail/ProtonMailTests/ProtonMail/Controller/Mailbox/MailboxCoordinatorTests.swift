@@ -42,6 +42,7 @@ class MailboxCoordinatorTests: XCTestCase {
     var lastUpdatedStoreMock: MockLastUpdatedStore!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var humanCheckStatusProviderMock: MockHumanCheckStatusProvider!
+    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -65,11 +66,21 @@ class MailboxCoordinatorTests: XCTestCase {
         infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        mockSenderImageStatusProvider = .init()
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
             updateMailbox: MockUpdateMailbox(),
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: dummyAPIService,
+                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
+                    senderImageStatusProvider: mockSenderImageStatusProvider,
+                    mailSettings: dummyUser.mailSettings)
+            )
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
@@ -88,9 +99,9 @@ class MailboxCoordinatorTests: XCTestCase {
                                              dependencies: dependencies,
                                              toolbarActionProvider: toolbarActionProviderMock,
                                              saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                                             totalUserCountClosure: {
-            return 0
-        })
+                                             senderImageService: .init(dependencies: .init(apiService: dummyUser.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())), totalUserCountClosure: {
+                                                 0
+                                             })
 
         reachabilityStub = ReachabilityStub()
         connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
@@ -131,6 +142,7 @@ class MailboxCoordinatorTests: XCTestCase {
         infoBubbleViewStatusProviderMock = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
+        mockSenderImageStatusProvider = nil
     }
 
     func testFetchConversationFromBEIfNeeded_withNoConnection() {

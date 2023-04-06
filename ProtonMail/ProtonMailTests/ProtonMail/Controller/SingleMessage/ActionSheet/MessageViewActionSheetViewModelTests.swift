@@ -30,7 +30,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
     func testActionSheet_openInInbox() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.inbox.labelID,
-                                              includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -57,7 +56,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.inbox.labelID,
-                                              includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -84,7 +82,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.inbox.labelID,
-                                              includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
@@ -107,37 +104,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .reportPhishing]
         // check isBodyDecryptable
         XCTAssertEqual(sut.items, expectedOptions3)
-
-        sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.labelID,
-                                              includeStarring: false,
-                                              isStarred: true,
-                                              isBodyDecryptable: false,
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
-        let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
-                                                                .replyAll,
-                                                                .forward,
-                                                                .markUnread,
-                                                                .labelAs,
-                                                                .trash,
-                                                                .archive,
-                                                                .spam,
-                                                                .moveTo,
-                                                                .saveAsPDF,
-                                                                .print,
-                                                                .toolbarCustomization,
-                                                                .viewHeaders,
-                                                                .reportPhishing]
-        // check includeStarring
-        XCTAssertEqual(sut.items, expectedOptions4)
     }
 
     func testActionSheet_openInTrash() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.trash.labelID,
-                                              includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -164,33 +135,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.trash.labelID,
-                                              includeStarring: false,
-                                              isStarred: false,
-                                              isBodyDecryptable: true,
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
-        let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
-                                                                .replyAll,
-                                                                .forward,
-                                                                .markUnread,
-                                                                .labelAs,
-                                                                .archive,
-                                                                .inbox,
-                                                                .delete,
-                                                                .moveTo,
-                                                                .saveAsPDF,
-                                                                .print,
-                                                                .toolbarCustomization,
-                                                                .viewHeaders,
-                                                                .viewHTML,
-                                                                .reportPhishing]
-        // check inCludeStarring
-        XCTAssertEqual(sut.items, expectedOptions2)
-
-        sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.trash.labelID,
-                                              includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -217,7 +161,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.trash.labelID,
-                                              includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
@@ -245,7 +188,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
     func testActionSheet_openInSpam() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.spam.labelID,
-                                              includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -272,33 +214,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.spam.labelID,
-                                              includeStarring: false,
-                                              isStarred: false,
-                                              isBodyDecryptable: true,
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
-        let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
-                                                                .replyAll,
-                                                                .forward,
-                                                                .markUnread,
-                                                                .labelAs,
-                                                                .trash,
-                                                                .spamMoveToInbox,
-                                                                .delete,
-                                                                .moveTo,
-                                                                .saveAsPDF,
-                                                                .print,
-                                                                .toolbarCustomization,
-                                                                .viewHeaders,
-                                                                .viewHTML,
-                                                                .reportPhishing]
-        // check includeStarring
-        XCTAssertEqual(sut.items, expectedOptions2)
-
-        sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.spam.labelID,
-                                              includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -325,7 +240,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.spam.labelID,
-                                              includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
                                               messageRenderStyle: .lightOnly,
@@ -353,7 +267,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
     func testActionSheet_withDarkModeEnable() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.inbox.labelID,
-                                              includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .dark,
@@ -381,7 +294,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.inbox.labelID,
-                                              includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -411,7 +323,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
     func testActionSheet_inScheduledLocation_withSingleMessageMode() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
                                               labelID: Message.Location.scheduled.labelID,
-                                              includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .dark,
@@ -438,24 +349,17 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
             .reportPhishing
         ]
         XCTAssertEqual(sut.items, expectedOptions)
-	}
+    }
+
     func testShouldProperlySetTitle() {
         let aTitle = String.randomString(5)
-        sut = MessageViewActionSheetViewModel(title: aTitle,
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(title: aTitle)
         XCTAssertEqual(sut.title, aTitle)
     }
 
     func testShouldAlwaysIncludeCommonItems() {
         sut = MessageViewActionSheetViewModel(title: "",
                                               labelID: "",
-                                              includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
                                               messageRenderStyle: .lightOnly,
@@ -468,13 +372,14 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
             .forward,
             .markUnread,
             .labelAs,
+            .star,
             .trash,
             .archive,
             .spam,
             .moveTo,
             .saveAsPDF,
             .print,
-			.toolbarCustomization,
+            .toolbarCustomization,
             .viewHeaders,
             .viewHTML,
             .reportPhishing
@@ -482,216 +387,106 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions)
     }
 
+    // MARK: starring
+
     func testShouldIncludeStarringOnlyWhenIncludeStarringIsTrue() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: true,
-                                              isStarred: false,
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(isStarred: false)
         XCTAssert(sut.items.contains(.star))
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: true,
-                                              isStarred: true,
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+
+        sut = makeSUT(isStarred: true)
         XCTAssert(sut.items.contains(.unstar))
     }
 
-    func testShouldNotIncludeStarringOnlyWhenIncludeStarringIsFalse() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: false,
-                                              isStarred: false,
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
-        XCTAssertFalse(sut.items.contains(.star))
-        XCTAssertFalse(sut.items.contains(.unstar))
-    }
+    // MARK: LabelID
 
     func testShouldIncludeTrashIfLabelIdIsOtherThanTrash() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT()
         XCTAssert(sut.items.contains(.trash))
     }
 
     func testShouldNotIncludeTrashIfLabelIdIsTrash() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.trash.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(labelID: Message.Location.trash.labelID)
         XCTAssertFalse(sut.items.contains(.trash))
     }
 
     func testShouldNotIncludeArchiveIfLabelIdIsArchiveOrSpam() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.archive.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(labelID: Message.Location.archive.labelID)
         XCTAssertFalse(sut.items.contains(.archive))
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.spam.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+
+        sut = makeSUT(labelID: Message.Location.spam.labelID)
         XCTAssertFalse(sut.items.contains(.archive))
     }
 
     func testShouldIncludeArchiveIfLabelIdIsOtherThanArchiveOrSpam() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT()
         XCTAssert(sut.items.contains(.archive))
     }
 
     func testShouldNotIncludeInboxIfLabelIdIsOtherThanArchiveOrTrash() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT()
         XCTAssertFalse(sut.items.contains(.inbox))
     }
 
     func testShouldIncludeInboxIfLabelIdIsArchiveOrTrash() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.archive.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(labelID: Message.Location.archive.labelID)
         XCTAssert(sut.items.contains(.inbox))
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.trash.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(labelID: Message.Location.trash.labelID)
         XCTAssert(sut.items.contains(.inbox))
     }
 
     func testShouldNotIncludeSpamMoveToInboxIfLabelIdIsOtherThanSpam() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT()
         XCTAssertFalse(sut.items.contains(.spamMoveToInbox))
     }
 
     func testShouldIncludeSpamMoveToInboxIfLabelIdIsSpam() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.spam.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(labelID: Message.Location.spam.labelID)
         XCTAssert(sut.items.contains(.spamMoveToInbox))
     }
 
     func testShouldIncludeDeleteIfDraftSentSpamTrash() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.draft.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT(labelID: Message.Location.draft.labelID)
         XCTAssert(sut.items.contains(.delete))
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.sent.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+
+        sut = makeSUT(labelID: Message.Location.sent.labelID)
         XCTAssert(sut.items.contains(.delete))
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.spam.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+
+        sut = makeSUT(labelID: Message.Location.spam.labelID)
         XCTAssert(sut.items.contains(.delete))
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.trash.labelID,
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+
+        sut = makeSUT(labelID: Message.Location.trash.labelID)
         XCTAssert(sut.items.contains(.delete))
     }
 
     func testShouldIncludeSpamIfOtherThanDraftSentSpamTrash() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: false)
+        sut = makeSUT()
         XCTAssert(sut.items.contains(.spam))
     }
 
     func testMessageIsScheduleSend_Reply_ReplyAll_Forward_willNotBeSeen() {
-        sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: "",
-                                              includeStarring: Bool.random(),
-                                              isStarred: Bool.random(),
-                                              isBodyDecryptable: Bool.random(),
-                                              messageRenderStyle: .lightOnly,
-                                              shouldShowRenderModeOption: false,
-                                              isScheduledSend: true)
+        sut = makeSUT(isScheduledSend: true)
         XCTAssertFalse(sut.items.contains(.reply))
         XCTAssertFalse(sut.items.contains(.replyAll))
         XCTAssertFalse(sut.items.contains(.forward))
+    }
+
+    private func makeSUT(
+        title: String = "",
+        labelID: LabelID = "",
+        isStarred: Bool = .random(),
+        isBodyDecryptable: Bool = .random(),
+        messageRenderStyle: MessageRenderStyle = .lightOnly,
+        shouldShowRenderModeOption: Bool = .random(),
+        isScheduledSend: Bool = .random()
+    ) -> MessageViewActionSheetViewModel {
+        .init(
+            title: title,
+            labelID: labelID,
+            isStarred: isStarred,
+            isBodyDecryptable: isBodyDecryptable,
+            messageRenderStyle: messageRenderStyle,
+            shouldShowRenderModeOption: shouldShowRenderModeOption,
+            isScheduledSend: isScheduledSend
+        )
     }
 }

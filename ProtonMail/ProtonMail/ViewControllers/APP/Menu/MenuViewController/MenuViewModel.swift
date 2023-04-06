@@ -654,7 +654,7 @@ extension MenuViewModel {
     static func moreItems(for info: MoreItemsInfo) -> [MenuLabel] {
         var newMore = [MenuLabel(location: .settings),
                        MenuLabel(location: .contacts),
-                       MenuLabel(location: .provideFeedback),
+                       MenuLabel(location: .sendFeedback),
                        MenuLabel(location: .bugs),
                        MenuLabel(location: .lockapp),
                        MenuLabel(location: .referAFriend),

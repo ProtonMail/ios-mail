@@ -112,7 +112,7 @@ extension LoginNavigationViewController: UINavigationControllerDelegate {
     }
 }
 
-fileprivate final class ModalLikeTransition: NSObject, UIViewControllerAnimatedTransitioning {
+private final class ModalLikeTransition: NSObject, UIViewControllerAnimatedTransitioning {
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval { 0.3 }
 

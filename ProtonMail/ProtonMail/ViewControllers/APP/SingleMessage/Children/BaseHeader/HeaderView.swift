@@ -20,6 +20,7 @@ import ProtonCore_UIFoundations
 class HeaderView: UIView {
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
+    let senderImageView = SubviewsFactory.senderImageView
     let senderLabel = SubviewsFactory.senderLabel
     let lockImageView = SubviewsFactory.lockImageView
     let lockImageControl = UIControl(frame: .zero)
@@ -86,6 +87,14 @@ class HeaderView: UIView {
             button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
             button.setContentCompressionResistancePriority(.required, for: .vertical)
             return button
+        }
+
+        class var senderImageView: UIImageView {
+            let view = UIImageView(image: nil)
+            view.contentMode = .scaleAspectFit
+            view.layer.cornerRadius = 8
+            view.layer.masksToBounds = true
+            return view
         }
 
         private init() { }

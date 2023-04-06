@@ -61,13 +61,11 @@ final class CreateAddressViewModel {
     
     private let data: CreateAddressData
     private var login: Login
-    private let mailboxPassword: String
     private(set) var user: User
     
     init(data: CreateAddressData, login: Login, defaultUsername: String?) {
         self.data = data
         self.login = login
-        self.mailboxPassword = data.mailboxPassword
         self.user = data.user
         self.defaultUsername = defaultUsername
     }
@@ -82,11 +80,6 @@ final class CreateAddressViewModel {
         isLoading.value = true
         checkAvailability(username: username) { [weak self] in
             self?.setUsername(username: username)
-        }
-    }
-    
-    func logout() {
-        login.logout(credential: data.credential) { _ in
         }
     }
 
@@ -152,8 +145,7 @@ final class CreateAddressViewModel {
     
     private func finishFlow() {
         PMLog.debug("Finishing the flow")
-
-        login.finishLoginFlow(mailboxPassword: mailboxPassword) { [weak self] result in
+        login.finishLoginFlow(mailboxPassword: data.mailboxPassword, passwordMode: data.passwordMode) { [weak self] result in
             switch result {
             case let .success(status):
                 switch status {

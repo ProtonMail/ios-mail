@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_Observability
 
 protocol PaymentsUIViewControllerDelegate: AnyObject {
     func userDidCloseViewController()
@@ -157,6 +158,9 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
+        if mode == .signup {
+            ObservabilityEnv.report(.screenLoadCountTotal(screenName: .planSelection))
+        }
     }
     
     var banner: PMBanner?

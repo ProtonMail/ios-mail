@@ -30,7 +30,7 @@ import WebKit
 ///
 /// HtmlEditorBehavior only adds some functionality to HorizontallyScrollableWebViewContainer's webView, is not a UIView or webView's delegate any more. ComposeViewController is tightly coupled with ComposeHeaderViewController and needs separate refactor, while ContainableComposeViewController and HorizontallyScrollableWebViewContainer contain absolute minimum of logic they need: logic allowing to embed composer into tableView cell and logic allowing 2D scroll in fullsize webView.
 ///
-class ContainableComposeViewController: ComposeViewController, BannerRequester {
+class ContainableComposeViewController: ComposeContentViewController, BannerRequester {
     private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
     private var queueObservation: NSKeyValueObservation!
@@ -45,7 +45,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
 
             let totalHeight = htmlEditor.contentHeight
             self.updateHeight(to: totalHeight)
-            (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
+            self.viewModel.contentHeight = totalHeight
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.willShowMenuNotification), name: UIMenuController.willShowMenuNotification, object: nil)
@@ -125,7 +125,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
 
     override func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
-        guard (self.viewModel as? ContainableComposeViewModel)?.validateAttachmentsSize(withNew: data) == true else {
+        guard viewModel.validateAttachmentsSize(withNew: data) == true else {
             DispatchQueue.main.async {
                 self.latestErrorBanner?.remove(animated: true)
                 self.latestErrorBanner = BannerView(appearance: .red, message: LocalString._the_total_attachment_size_cant_be_bigger_than_25mb, buttons: nil, offset: 8.0)

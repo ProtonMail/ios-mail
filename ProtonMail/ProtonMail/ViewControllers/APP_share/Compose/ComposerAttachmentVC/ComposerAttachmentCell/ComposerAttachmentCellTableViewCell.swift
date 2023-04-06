@@ -44,7 +44,7 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.containerView.roundCorner(8)
         self.containerView.layer.borderWidth = 1
-        self.containerView.layer.borderColor = ColorProvider.InteractionWeak.cgColor
+        self.containerView.layer.borderColor = ColorProvider.InteractionWeak
         self.containerView.backgroundColor = ColorProvider.BackgroundNorm
         self.activityIndicator.color = ColorProvider.IconWeak
     }

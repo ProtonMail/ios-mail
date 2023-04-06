@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Utilities",
-  "version": "3.27.0",
+  "version": "4.0.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "tag": "4.0.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,7 +34,7 @@
   ],
   "dependencies": {
     "ProtonCore-Log": [
-      "3.27.0"
+      "4.0.1"
     ]
   },
   "source_files": "libraries/Utilities/Sources/**/*.swift",

@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 import ProtonCore_TestingToolkit
 
 fileprivate struct id {
@@ -125,7 +125,7 @@ class AccountManagerRobot: CoreElements {
 /**
  RemoveAllAlertRobot class contains actions for Remove all accounts alert.
  */
-class AccountManagerRemoveAllAlertRobot {
+class AccountManagerRemoveAllAlertRobot: CoreElements {
 
     func confirmRemoveAll() -> LoginRobot {
         app.alerts.buttons.element(boundBy: 1).tap()

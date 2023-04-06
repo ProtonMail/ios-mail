@@ -21,7 +21,7 @@
 //
 
 extension Feature {
-    public static var unauthSession = Feature.init(name: "core.unauthSession", isEnable: false)
+    public static var unauthSession = Feature(name: "core.unauthSession", isEnable: false)
 
-    public static var enforceUnauthSessionStrictVerificationOnBackend = Feature.init(name: "core.enforceUnauthSessionStrictVerificationOnBackend", isEnable: false)
+    public static var enforceUnauthSessionStrictVerificationOnBackend = Feature(name: "core.enforceUnauthSessionStrictVerificationOnBackend", isEnable: false)
 }

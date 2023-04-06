@@ -41,7 +41,7 @@ struct PMTabBarConfig {
     ///   - height: Height of tabbar, default value is `48`
     ///   - backgroundColor: Background color of tabbar, default value is `ColorProvider.FloatyBackground`
     ///   - floatingHeight: The floating distance between the tab bar and the bottom of the screen. If the `floatingHeight` is `nil`, then the tab bar won't float. Otherwise, the tab bar will be floating with the designated height. Default value is `nil`, which means the bar won't float.
-    init(items: [PMTabBarItem], height: CGFloat?=nil, backgroundColor: UIColor?=nil, floatingHeight: CGFloat?=nil) {
+    init(items: [PMTabBarItem], height: CGFloat? = nil, backgroundColor: UIColor? = nil, floatingHeight: CGFloat? = nil) {
         self.items = items
         self.height = height ?? 48
         self.floatingHeight = floatingHeight
@@ -62,7 +62,7 @@ public struct PMTabBarItem {
     ///   - color: Title color in normal status, default value is `ColorProvider.FloatyText`
     ///   - selectedColor: Title color in selected status, default value is `.white`
     ///   - selectedBgColor: Background color in selected status, default value is `ColorProvider.FloatyPressed`
-    public init(title: String, color: UIColor?=nil, selectedColor: UIColor?=nil, selectedBgColor: UIColor?=nil) {
+    public init(title: String, color: UIColor? = nil, selectedColor: UIColor? = nil, selectedBgColor: UIColor? = nil) {
         self.title = title
         self.color = color ?? ColorProvider.FloatyText
         self.selectedColor = selectedColor ?? .white
@@ -76,7 +76,7 @@ public struct PMTabBarItem {
     ///   - color: Title color in normal status, default value is `ColorProvider.FloatyText`
     ///   - selectedColor: Title color in selected status, default value is `.white`
     ///   - selectedBgColor: Background color in selected status, default value is `ColorProvider.FloatyPressed`
-    public init(icon: UIImage, color: UIColor?=nil, selectedColor: UIColor?=nil, selectedBgColor: UIColor?=nil) {
+    public init(icon: UIImage, color: UIColor? = nil, selectedColor: UIColor? = nil, selectedBgColor: UIColor? = nil) {
         self.icon = icon
         self.color = color ?? ColorProvider.FloatyText
         self.selectedColor = selectedColor ?? .white

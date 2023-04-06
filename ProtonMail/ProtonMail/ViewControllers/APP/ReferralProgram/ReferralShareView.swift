@@ -219,7 +219,7 @@ private enum SubviewFactory {
         button.titleLabel?.font = UIFont.adjustedFont(forTextStyle: .body)
         button.titleLabel?.textAlignment = .center
         button.setTitleColor(ColorProvider.TextWeak, for: .normal)
-        button.layer.borderColor = ColorProvider.IconWeak.cgColor
+        button.layer.borderColor = ColorProvider.IconWeak
         button.layer.borderWidth = 1
         button.roundCorner(8)
         button.backgroundColor = .clear

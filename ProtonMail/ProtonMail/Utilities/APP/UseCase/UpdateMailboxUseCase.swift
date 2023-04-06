@@ -247,22 +247,32 @@ extension UpdateMailbox {
                     completion(result.error)
                 }
         case .conversation:
-            self.dependencies.fetchLatestEventID.execute(params: (), callback: { _ in })
-            self.dependencies
-                .conversationProvider
-                .fetchConversations(for: labelID,
-                                    before: time,
-                                    unreadOnly: unreadOnly,
-                                    shouldReset: true) { [weak self] result in
-                    guard let self = self else {
-                        completion(result.error)
-                        return
-                    }
-                    self.dependencies.conversationProvider
-                        .fetchConversationCounts(addressID: nil) { _ in
-                            completion(result.error)
-                        }
+            self.dependencies.fetchLatestEventID.execute(params: ()) { [weak self] fetchLatestEventIDResult in
+                if let error = fetchLatestEventIDResult.error {
+                    assertionFailure("\(error)")
                 }
+
+                guard let localSelf = self else {
+                    completion(fetchLatestEventIDResult.error)
+                    return
+                }
+
+                localSelf.dependencies
+                    .conversationProvider
+                    .fetchConversations(for: labelID,
+                                        before: time,
+                                        unreadOnly: unreadOnly,
+                                        shouldReset: true) { [weak localSelf] result in
+                        guard let localSelf = localSelf else {
+                            completion(result.error)
+                            return
+                        }
+                        localSelf.dependencies.conversationProvider
+                            .fetchConversationCounts(addressID: nil) { _ in
+                                completion(result.error)
+                            }
+                    }
+            }
         }
     }
 }

@@ -19,6 +19,8 @@
 import UIKit
 
 class UndoActionHandlerBaseMock: UIViewController, UndoActionHandlerBase {
+    var undoActionManager: ProtonMail.UndoActionManagerProtocol?
+
     var isShowUndoActionCalled = false
     var undoTokens = [String]()
     var bannerMessage: String?

@@ -55,9 +55,7 @@ class HumanVerificationManager: LifetimeTrackable {
             apiService: apiService,
             supportURL: url,
             viewController: nil,
-            clientApp: .mail,
-            responseDelegate: nil,
-            paymentDelegate: nil
+            clientApp: .mail
         )
 
         // add humanVerifyDelegate to humanVerifyDelegates

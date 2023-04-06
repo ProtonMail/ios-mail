@@ -24,13 +24,17 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class PlansRequest: BaseApiRequest<PlansResponse> {
+public final class PlansRequest: BaseApiRequest<PlansResponse> {
+    
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
 
-    override var path: String { super.path + "/v4/plans" }
+    override public var path: String { super.path + "/v4/plans" }
 
-    override var isAuth: Bool { false }
+    override public var isAuth: Bool { false }
 
-    override var parameters: [String: Any]? {
+    override public var parameters: [String: Any]? {
         [
             "Currency": "USD",
             "Cycle": 12
@@ -38,10 +42,10 @@ final class PlansRequest: BaseApiRequest<PlansResponse> {
     }
 }
 
-final class PlansResponse: Response {
+public final class PlansResponse: Response {
     internal var availableServicePlans: [Plan]?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         guard let plansResponse = response["Plans"] else { return false }
         let (result, plans) = decodeResponse(plansResponse, to: [Plan].self, errorToReturn: .plansDecode)

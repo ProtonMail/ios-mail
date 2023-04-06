@@ -2,7 +2,9 @@
    "name": "ProtonMail",
    "options": {
       "createIntermediateGroups": true,
-      "deploymentTarget": "11.0",
+      "deploymentTarget": {
+         "iOS": "14.7"
+      },
       "postGenCommand": "xcodeGen/install_pods.sh"
    },
    "fileGroups": [

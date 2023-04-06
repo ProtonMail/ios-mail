@@ -37,6 +37,7 @@ class UndoActionManagerTests: XCTestCase {
 
         sut = UndoActionManager(
             apiService: apiServiceMock,
+            internetStatusProvider: .init(),
             contextProvider: contextProviderMock,
             getEventFetching: { [weak self] in
                 self?.eventService

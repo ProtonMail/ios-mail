@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     static func messageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }

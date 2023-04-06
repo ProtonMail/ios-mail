@@ -18,12 +18,12 @@
 import UIKit
 
 protocol ContentPrintable: UIViewController {
-    func exportPDF(renderer: UIPrintPageRenderer, fileName: String)
+    func exportPDF(renderer: UIPrintPageRenderer, fileName: String, sourceView: UIView)
     func presentPrintController(renderer: UIPrintPageRenderer, jobName: String)
 }
 
 extension ContentPrintable {
-    func exportPDF(renderer: UIPrintPageRenderer, fileName: String) {
+    func exportPDF(renderer: UIPrintPageRenderer, fileName: String, sourceView: UIView) {
         /*
          `paperRect` and `printableRect` must be set via KVO, because there is no official API for it.
          They could be overridden in `MessagePrintRenderer`, but it would interfere with printing.
@@ -42,6 +42,10 @@ extension ContentPrintable {
         activity.completionWithItemsHandler = { _, _, _, _ in
             // hold onto the file until it is no longer necessary
             _ = tempFile
+        }
+        if let popOver = activity.popoverPresentationController {
+            popOver.sourceView = sourceView
+            popOver.sourceRect = sourceView.bounds
         }
         present(activity, animated: true)
     }

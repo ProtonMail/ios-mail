@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ από %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d δευτερόλεπτα";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Επιλεγμένο";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Τοποθετήστε εδώ για προσθήκη ως συνημμένο";
 
@@ -38,7 +32,7 @@
 "8 to 21 characters long" = "μήκος 8 έως 21 χαρακτήρες";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη, λόγω μη πληρωμής. Παρακαλούμε συνδεθείτε από το proton.me προς εξόφληση του απλήρωτου τιμολόγιού σας.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη, λόγω μη πληρωμής. Παρακαλούμε συνδεθείτε από το proton.me προς εξόφληση του απλήρωτου τιμολογίου σας.";
 
 /* Account manager title */
 "Account" = "Λογαριασμός";
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Διευθύνσεις";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Προηγμένες ρυθμίσεις";
+
 /* Title */
 "Alert" = "Προειδοποίηση";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Όλα τα μηνύματα";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Θα γίνει επαναφορά όλων των ρυθμίσεων προστασίας κατά την αποσύνδεση από την εφαρμογή.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Ελήφθησαν όλα τα μηνύματά σας";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Εμφάνιση";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "Το AppKey προστατεύει περαιτέρω τις πληροφορίες Proton σε περίπτωση περίπλοκων επιθέσεων, όπως ένας εισβολέας που αντιγράφει τα περιεχόμενα της συσκευής σας";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey προστασία";
 
 /* Apply action */
 "Apply" = "Εφαρμογή";
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Λίστα αποκλεισμένων";
+
+/* Button to block a sender */
+"Block sender" = "Αποκλεισμός αποστολέα";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Αποκλείει στους αποστολείς τη γνώση του αν και πότε ανοίξατε το μήνυμα";
@@ -420,7 +426,7 @@
 "Close" = "Κλείσιμο";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Κλείσιμο Κοιν. και Κρυφής Κοιν.";
+"Close CC and BCC" = "Απόκρυψη Κοιν. και Κρυφής Κοιν.";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Κλείσιμο";
@@ -474,7 +480,7 @@
 "Contact saved, will be synced when connection is available" = "Η επαφή αποθηκεύτηκε, θα συγχρονιστεί όταν υπάρξει διαθέσιμη σύνδεση";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.zendesk.com) ή Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.zendesk.com) ή του Twitter.";
 
 /* Action and title
    menu title */
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Δεν επιτρέπεται η δημιουργία ετικέτας";
 
-/* Change language title */
-"Current Language is: " = "Η Τρέχουσα Γλώσσα είναι: ";
-
 /* Placeholder */
 "Current password" = "Τρέχων κωδικός πρόσβασης";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Προσαρμοσμένο";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Προσαρμογή";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Προσαρμογή γραμμής εργαλείων";
@@ -564,7 +570,7 @@
 "Decryption of this content failed" = "Η αποκρυπτογράφηση αυτού του περιεχομένου απέτυχε";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "Η αποκρυπτογράφΗσΗ του κρυπτογραφΗμένου περιεχομένου αυτού του μΗνύματος απέτυχε.";
+"Decryption of this message's encrypted content failed." = "Η αποκρυπτογράφηση του κρυπτογραφημένου περιεχομένου αυτού του μηνύματος απέτυχε.";
 
 /* Title */
 "Default" = "Προεπιλεγμένο";
@@ -625,6 +631,9 @@
 
 /* Message shown to user after discarding action is done */
 "Discarded" = "Απορριμμένα";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Δήλωση αποποίησης ευθύνης";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Παράβλεψη πληκτρολογίου";
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Λήψη μεταδεδομένων ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Λήψη νέων μηνυμάτων ...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Κατεβάζει μηνύματα ηλεκτρονικού ταχυδρομείου, ώστε να μπορείτε να κάνετε αναζήτηση σε αυτά. Τα μηνύματα κρυπτογραφούνται και αποθηκεύονται τοπικά. %1$@";
 
@@ -735,16 +741,13 @@
 "Edit photo" = "Επεξεργασία φωτογραφίας";
 
 /* default vcard types */
-"Email" = "Email";
+"Email" = "Ηλ. μήνυμα";
 
 /* contact placeholder */
 "Email address" = "Διεύθυνση email";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Η διεύθυνση email έχει απενεργοποιηθεί";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "Η διεύθυνση email δεν είναι έγκυρη";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Διευθύνσεις Email";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Μη υποστηριζόμενη ημ/νία λήξης";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Αποτυχία προσδιορισμού του τύπου αρχείου";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Προώθηση";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Προώθηση (στο τελευταίο μήνυμα)";
+
 /* forwarded message title */
 "Forwarded message" = "Προωθημένο μήνυμα";
 
@@ -894,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Προώθ:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Προωθ:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Φύλο";
 
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Μετάβαση στις ρυθμίσεις";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Μετάβαση στην είσοδο";
 
 /* Got it action */
 "Got it" = "Το κατάλαβα";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Πώς θα περιγράφατε την εμπειρία σας στο νέο Proton Mail;";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Αποτυχία Ελέγχου για Άνθρωπο";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Σε περίπτωση που μπλοκάρουν τις ιστοσελίδες Proton, αυτή η ρύθμιση θα επιτρέψει στην εφαρμογή να δοκιμάσει εναλλακτική δρομολόγηση δικτύου ώστε να φτάσει στο Proton, το οποίο μπορεί να είναι χρήσιμο για παράκαμψη τείχους προστασίας ή ζητήματα δικτύου. Συνιστούμε να διατηρήσετε αυτήν τη ρύθμιση για μεγαλύτερη αξιοπιστία. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Το πρωί";
+
 /* menu title */
 "Inbox" = "Εισερχόμενα";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Εισαγωγή Ονόματος Εμφάνισης…";
-
-/* place holder */
-"Input Notification Email …" = "Εισαγωγή E-mail ειδοποίησης…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Μη διασφαλισμένη σύνδεση";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Ο σύνδεσμος αντιγράφηκε.";
 
+/* Button inside the banner */
+"Load" = "Φόρτωση";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Φόρτωση ενσωματωμένων εικόνων";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Κλείδωμα εφαρμογής";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Εισέλθετε ξανά για να συνεχίσετε να λαμβάνετε ενημερώσεις";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Έχετε εξέλθει από το %@";
 
 /* error title */
 "Logs" = "Αρχεία καταγραφής";
@@ -1167,7 +1158,7 @@
 "Message has been moved." = "Το μήνυμα έχει μεταφερθεί.";
 
 /* Title of the view showing the message header */
-"Message headers" = "Headers μηνύματος";
+"Message headers" = "Κεφαλίδες μηνύματος";
 
 /* The title of message history in settings for encrypted search */
 "Message history" = "Ιστορικό μηνυμάτων";
@@ -1234,6 +1225,9 @@
 /* Title */
 "Move to…" = "Μετακίνηση σε…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Μετάβαση στο επόμενο μήνυμα μετά τη μετακίνηση";
+
 /* Onboarding title */
 "Neat and tidy" = "Τακτοποιημένα";
 
@@ -1272,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Επόμενο";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Επόμενο μήνυμα μετά τη μετακίνηση";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Ψευδώνυμο";
@@ -1339,12 +1336,18 @@
 /* Alert title */
 "Notice" = "Ειδοποίηση";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Οι ενέργειες ειδοποίησης και άλλες διαδικασίες στο παρασκήνιο δε θα είναι διαθέσιμες";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Ειδοποιήσεις";
 
 /* The title of Off setting options */
 "Off" = "Ανενεργό";
+
+/* Official badge next to sender's name */
+"Official" = "Επίσημο";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Εκτός σύνδεσης";
@@ -1354,9 +1357,6 @@
 
 /* Action */
 "OK" = "ΟΚ";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Εντάξει";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Παλαιότερο μήνυμα: ";
@@ -1400,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Αποτυχία ενημέρωσης κωδικού πρόσβασης";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Ο κωδικός πρόσβασης ενημερώθηκε";
+
 /* Placeholder */
 "Passwords must match" = "Οι κωδικοί πρόσβασης πρέπει να ταυτίζονται";
 
 /* Text for pause button */
 "Pause" = "Παύση";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Εκτελώντας μια ενέργεια μετακίνησης σε ένα μήνυμα (π.χ. αρχειοθέτηση) θα μεταβείτε στο επόμενο μήνυμα.";
 
 /* default vcard types */
 "Personal" = "Προσωπικό";
@@ -1508,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Πρόβλημα κατά την αποστολή μηνύματος";
 
+/* Settings lock protection section */
+"Protection" = "Προστασία";
+
 /* network troubleshot cell title */
 "Proton is down" = "Το Proton έχει πέσει";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Αυτήν τη στιγμή, το Proton Mail βρίσκεται εκτός σύνδεσης…";
@@ -1522,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Κατάσταση Proton";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Παραχώρηση γνώμης";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Παρεμβολή Διαμεσολαβητή / Τείχους προστασίας";
@@ -1584,8 +1587,14 @@
 /* reply action */
 "Reply" = "Απάντηση";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Απάντηση (στο τελευταίο μήνυμα)";
+
 /* reply all action */
 "Reply all" = "Απάντηση σε όλους";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Απάντηση σε όλους (στο τελευταίο μήνυμα)";
 
 /* menu title */
 "Report a problem" = "Αναφορά προβλήματος";
@@ -1637,7 +1646,7 @@
 "Schedule send" = "Προγραμματισμός αποστολής";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "Το πρόγραμμα θα καταργηθεί";
+"Schedule will be removed" = "Ο προγραμματισμός θα καταργηθεί";
 
 /* mail location title */
 "Scheduled" = "Προγραμματισμένα";
@@ -1674,7 +1683,7 @@
 /* Action */
 "Send anyway" = "Αποστολή οπωσδήποτε";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Αποστολή σχολίων";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1789,8 +1798,11 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Αναβολή";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Ορισμένες εικόνες απέτυχαν να φορτωθούν με προστασία παρακολούθησης.";
+
 /* menu title */
-"Spam" = "Ενοχλητικά";
+"Spam" = "Ανεπιθύμητα";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1852,9 +1864,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Ενέργειες ολίσθησης";
-
-/* Swiping gestures */
-"Swiping gestures" = "Χειρονομίες ολίσθησης";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Αλλαγή λειτουργίας επιλογής";
@@ -1943,9 +1952,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Η διεύθυνση URL στην οποία προσπαθείτε να αποκτήσετε πρόσβαση δεν είναι τυπική και ενδέχεται να μην φορτώσει σωστά. Θέλετε να το ανοίξετε χρησιμοποιώντας το προεπιλεγμένο πρόγραμμα περιήγησης της συσκευής σας;";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Ο χρήστης έχει συνδεθεί ήδη";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Υπάρχουν μη απεσταλμένα μηνύματα που θα χαθούν εάν εξέλθετε";
 
@@ -1960,12 +1966,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Αυτή η συνομιλία περιέχει διαγραμμένα μηνύματα";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα απέτυχε στις απαιτήσεις ταυτοποίησης του τομέα του. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα απέτυχε στις απαιτήσεις ταυτοποίησης του τομέα του. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα φαίνεται να στάλθηκε από μια διεύθυνση του Proton Mail, όμως προήλθε έξω από το σύστημά μας και απέτυχε τις απαιτήσεις μας για ταυτοποίηση. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";
@@ -2040,9 +2040,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Ενέργειες γραμμής εργαλείων (επιλέξτε έως 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Παρακολουθήστε τις αντανταμοιβές σας";
 
@@ -2058,9 +2055,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τα E-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.";
 
 /* Placeholder */
 "Two Factor Code" = "Κωδικός Δύο Παραγόντων (2FA)";
@@ -2156,7 +2150,7 @@
 "Upload iOS contacts to Proton Mail?" = "Ανέβασμα επαφών iOS στο Proton Mail;";
 
 /* default vcard types */
-"URL" = "URL";
+"URL" = "Διεύθυνση URL";
 
 /* Option title */
 "Use folder colors" = "Χρήση χρωμάτων φακέλου";
@@ -2171,7 +2165,7 @@
 "View" = "Προβολή";
 
 /* No comment provided by engineer. */
-"View headers" = "Προβολή Headers";
+"View headers" = "Προβολή Κεφαλίδων";
 
 /* No comment provided by engineer. */
 "View HTML" = "Προβολή HTML";
@@ -2243,7 +2237,7 @@
 "You can now choose and rearrange the actions in this bar" = "Μπορείτε τώρα να επιλέξετε και να αναδιατάξετε τις ενέργειες σε αυτή τη γραμμή εργαλείων";
 
 /* The content of the introducation view of the schedule send */
-"You can now schedule your messages to be sent later" = "Τώρα μπορείτε να χρονοδιαγραφήσετε την αποστολή των μηνυμάτων σας αργότερα";
+"You can now schedule your messages to be sent later" = "Τώρα μπορείτε να προγραμματίσετε την αποστολή των μηνυμάτων σας αργότερα";
 
 /* The description of encrypted search at the pop up. */
 "You can now search within your messages. This feature can be enabled from settings at any time." = "Τώρα μπορείτε να κάνετε αναζήτηση μέσα στα μηνύματά σας. Αυτή η λειτουργία μπορεί να ενεργοποιηθεί από τις ρυθμίσεις ανά πάσα στιγμή.";
@@ -2300,7 +2294,7 @@
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Η χώρα σας ενδέχεται να μπλοκάρει την πρόσβαση στο Proton. Δοκιμάστε να χρησιμοποιήσετε %1$@ (ή οποιοδήποτε άλλο VPN) ή %2$@ για να έχετε πρόσβαση στο Proton.";
 
 /* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Τα email σας συνοδεύονται πλέον από απομακρυσμένες εικόνες που φορτώνονται λόλω προεπιλογής. Οι αποστολείς δεν θα γνωρίζουν εάν, πού ή πότε ανοίξατε τα email τους.\nΓια να το αλλάξετε αυτό, μεταβείτε στις Ρυθμίσεις → Ρυθμίσεις λογαριασμού → Απόρρητο.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Τα email σας συνοδεύονται πλέον από απομακρυσμένες εικόνες που φορτώνονται από προεπιλογή. Οι αποστολείς δεν θα γνωρίζουν εάν, πού ή πότε ανοίξατε τα email τους.\nΓια να το αλλάξετε αυτό, μεταβείτε στις Ρυθμίσεις → Ρυθμίσεις λογαριασμού → Απόρρητο.";
 
 /* Title of user feedback view */
 "Your feedback" = "Η γνώμη σας";
@@ -2323,4 +2317,3 @@
 /* contact placeholder */
 "ZIP" = "T.K";
 
-"Customize (verb)" = "Customize";

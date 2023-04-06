@@ -26,7 +26,7 @@ class EventsServiceMock: EventsFetching {
     @FuncStub(EventsServiceMock.fetchEvents(labelID:)) var callFetchEventsByLabelID
     func fetchEvents(labelID: LabelID) { callFetchEventsByLabelID(labelID) }
 
-    func processEvents(counts: [[String: Any]]?) {}
+    func processEvents(messageCounts: [[String: Any]]?) {}
     func processEvents(conversationCounts: [[String: Any]]?) {}
     func processEvents(mailSettings: [String: Any]?) {}
     func processEvents(space usedSpace: Int64?) {}

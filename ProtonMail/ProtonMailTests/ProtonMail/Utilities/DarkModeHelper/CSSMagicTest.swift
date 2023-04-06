@@ -549,6 +549,9 @@ extension CSSMagicTest {
         XCTAssertNotNil(result)
         XCTAssertEqual(result, 20.0 / 100.0)
 
+        result = CSSMagic.normalize(value: "259", maximum: 100)
+        XCTAssertEqual(result, 1.0)
+
         result = CSSMagic.normalize(value: "35%", maximum: 255)
         XCTAssertNotNil(result)
         XCTAssertEqual(result, 0.35)

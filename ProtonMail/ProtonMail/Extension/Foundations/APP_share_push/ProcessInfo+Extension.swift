@@ -23,6 +23,10 @@ extension ProcessInfo {
     }
 
     static var isRunningUITests: Bool {
-        processInfo.arguments.contains("-disableAnimations")
+        launchArguments.contains("-disableAnimations")
+    }
+
+    static var launchArguments: [String] {
+        processInfo.arguments
     }
 }

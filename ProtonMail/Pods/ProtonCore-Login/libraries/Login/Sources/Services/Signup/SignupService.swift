@@ -48,15 +48,13 @@ public protocol Signup {
 public class SignupService: Signup {
     private let apiService: APIService
     private let authenticator: Authenticator
-    private let challengeParametersProvider: ChallengeParametersProvider
     private let clientApp: ClientApp
 
     // MARK: Public interface
 
-    public init(api: APIService, challengeParametersProvider: ChallengeParametersProvider, clientApp: ClientApp) {
+    public init(api: APIService, clientApp: ClientApp) {
         self.apiService = api
         self.authenticator = Authenticator(api: apiService)
-        self.challengeParametersProvider = challengeParametersProvider
         self.clientApp = clientApp
     }
 
@@ -198,7 +196,7 @@ public class SignupService: Signup {
         let productPrefix: String
     }
 
-    private func gererateAuthParameters(password: String, modulus: String) throws -> AuthParameters {
+    private func generateAuthParameters(password: String, modulus: String) throws -> AuthParameters {
         guard let salt = try SrpRandomBits(PasswordSaltSize.login.IntBits) else {
             throw SignupError.randomBits
         }
@@ -206,13 +204,13 @@ public class SignupService: Signup {
             throw SignupError.cantHashPassword
         }
         let verifier = try auth.generateVerifier(2048)
-        let challenge = challengeParametersProvider.provideParameters()
+        let challenge = apiService.challengeParametersProvider.provideParametersForLoginAndSignup()
         return AuthParameters(salt: salt, verifier: verifier, challenge: challenge, productPrefix: clientApp.name)
     }
 
     private func createUser(userName: String, password: String, email: String?, phoneNumber: String?, modulus: AuthService.ModulusEndpointResponse, domain: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
         do {
-            let authParameters = try gererateAuthParameters(password: password, modulus: modulus.modulus)
+            let authParameters = try generateAuthParameters(password: password, modulus: modulus.modulus)
             let userParameters = UserParameters(userName: userName, email: email, phone: phoneNumber, modulusID: modulus.modulusID, salt: authParameters.salt.encodeBase64(), verifer: authParameters.verifier.encodeBase64(), challenge: authParameters.challenge, productPrefix: authParameters.productPrefix, domain: domain)
 
             PMLog.debug("Creating user with username: \(userParameters.userName)")
@@ -240,7 +238,7 @@ public class SignupService: Signup {
     private func createExternalUser(email: String, password: String, modulus: AuthService.ModulusEndpointResponse, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
 
         do {
-            let authParameters = try gererateAuthParameters(password: password, modulus: modulus.modulus)
+            let authParameters = try generateAuthParameters(password: password, modulus: modulus.modulus)
 
             let externalUserParameters = ExternalUserParameters(email: email, modulusID: modulus.modulusID, salt: authParameters.salt.encodeBase64(), verifer: authParameters.verifier.encodeBase64(), challenge: authParameters.challenge, verifyToken: verifyToken, tokenType: tokenType, productPrefix: authParameters.productPrefix)
 

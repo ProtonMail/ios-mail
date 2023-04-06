@@ -351,7 +351,7 @@
 "New_Plans One plan for all Proton services" = "Единый тариф для всех служб Proton";
 
 /* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступна только годовая подписка без автоматического продления";
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступны только непродлеваемые годовые подписки";
 
 /* New_Plans Plan details P2P/BitTorrent */
 "New_Plans P2P/BitTorrent" = "P2P/BitTorrent";

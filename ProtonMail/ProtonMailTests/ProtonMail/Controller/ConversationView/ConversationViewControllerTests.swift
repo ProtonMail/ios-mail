@@ -15,37 +15,59 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
 import ProtonCore_TestingToolkit
+import ProtonCore_UIFoundations
+@testable import ProtonMail
+import XCTest
 
 class ConversationViewControllerTests: XCTestCase {
 
     var sut: ConversationViewController!
     var viewModelMock: MockConversationViewModel!
     var applicationStateMock: MockApplicationStateProvider!
+    var internetStatusProviderMock: InternetConnectionStatusProvider!
+    var reachabilityStub: ReachabilityStub!
+    var labelProviderMock: MockLabelProvider!
+    var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
+    var toolbarActionProviderMock: MockToolbarActionProvider!
+    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
+    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
+    var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
+    var notificationCenterMock: NotificationCenter!
+    var contextProvider: MockCoreDataContextProvider!
+    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
-        let contextProvider = MockCoreDataContextProvider()
+        contextProvider = MockCoreDataContextProvider()
         let fakeConversation = ConversationEntity(Conversation(context: contextProvider.viewContext))
-        let coordinatorMock = MockConversationCoordinatorProtocol()
+        let coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
-        let reachabilityStub = ReachabilityStub()
-        let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        let labelProviderMock = MockLabelProvider()
-        let toolbarActionProviderMock = MockToolbarActionProvider()
-        let toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
-        let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        let userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
+        reachabilityStub = ReachabilityStub()
+        internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        labelProviderMock = MockLabelProvider()
+        toolbarActionProviderMock = MockToolbarActionProvider()
+        toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
+        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
+        nextMessageAfterMoveStatusProviderMock = .init()
+        notificationCenterMock = .init()
+        mockSenderImageStatusProvider = .init()
 
         let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
+            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
+            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
+            notificationCenter: notificationCenterMock,
+            senderImageStatusProvider: mockSenderImageStatusProvider,
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)), senderImageStatusProvider: mockSenderImageStatusProvider, mailSettings: fakeUser.mailSettings)
+            )
         )
 
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,
+                                                  coordinator: coordinatorMock,
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
                                                   internetStatusProvider: internetStatusProviderMock,
@@ -59,8 +81,7 @@ class ConversationViewControllerTests: XCTestCase {
                                                   goToDraft: { _, _  in },
                                                   dependencies: dependencies)
         applicationStateMock = MockApplicationStateProvider(state: .background)
-        sut = ConversationViewController(coordinator: coordinatorMock,
-                                         viewModel: viewModelMock,
+        sut = ConversationViewController(viewModel: viewModelMock,
                                          applicationStateProvider: applicationStateMock)
     }
 
@@ -69,6 +90,11 @@ class ConversationViewControllerTests: XCTestCase {
         sut = nil
         viewModelMock = nil
         applicationStateMock = nil
+        labelProviderMock = nil
+        toolbarActionProviderMock = nil
+        saveToolbarActionUseCaseMock = nil
+        notificationCenterMock = nil
+        mockSenderImageStatusProvider = nil
     }
 
     @available(iOS 13.0, *)
@@ -120,5 +146,109 @@ class ConversationViewControllerTests: XCTestCase {
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         // No call api when there is no connection
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 3)
+    }
+
+    func testHandleAction_delete_showDeleteAlert() throws {
+        setupSUTWithWindow()
+        let e = expectation(description: "Closure is called")
+
+        sut.handleActionSheetAction(.delete) {
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 5)
+        let alert = sut.presentedViewController as? UIAlertController
+        XCTAssertNotNil(alert)
+
+        let actions = try XCTUnwrap(alert?.actions)
+        XCTAssertEqual(actions.count, 2)
+        XCTAssertTrue(
+            actions.contains(where: { $0.title == LocalString._general_delete_action })
+        )
+        XCTAssertTrue(
+            actions.contains(where: { $0.title == LocalString._general_cancel_button })
+        )
+    }
+
+    func testHandleAction_trash_showMovedBanner_andNavigateToNextMessage() throws {
+        setupSUTWithWindow()
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        viewModelMock.callSearchForScheduled.bodyIs { _, _, _, continueAction in
+            continueAction()
+        }
+        viewModelMock.callHandleActionSheetAction.bodyIs { _, action, completion in
+            XCTAssertEqual(action, .trash)
+            completion()
+        }
+
+        sut.handleActionSheetAction(.trash)
+
+        wait(for: [e], timeout: 2)
+        let banner = try XCTUnwrap(sut.view.subviews.compactMap { $0 as? PMBanner }.first)
+        XCTAssertEqual(banner.message, LocalString._messages_has_been_moved)
+        XCTAssertTrue(viewModelMock.callSearchForScheduled.wasCalledExactlyOnce)
+        XCTAssertTrue(viewModelMock.callHandleActionSheetAction.wasCalledExactlyOnce)
+    }
+
+    func testHandleAction_archive_navigateToNextMessage() {
+        setupSUTWithWindow()
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        viewModelMock.callHandleActionSheetAction.bodyIs { _, action, completion in
+            XCTAssertEqual(action, .archive)
+            completion()
+        }
+
+        sut.handleActionSheetAction(.archive)
+
+        wait(for: [e], timeout: 2)
+        XCTAssertTrue(viewModelMock.callHandleActionSheetAction.wasCalledExactlyOnce)
+    }
+
+    func testHandleAction_spam_navigateToNextMessage() {
+        setupSUTWithWindow()
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        viewModelMock.callHandleActionSheetAction.bodyIs { _, action, completion in
+            XCTAssertEqual(action, .spam)
+            completion()
+        }
+
+        sut.handleActionSheetAction(.spam)
+
+        wait(for: [e], timeout: 2)
+        XCTAssertTrue(viewModelMock.callHandleActionSheetAction.wasCalledExactlyOnce)
+    }
+
+    func testHandleAction_inbox_navigateToNextMessage() {
+        setupSUTWithWindow()
+        nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
+        let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
+        viewModelMock.callHandleActionSheetAction.bodyIs { _, action, completion in
+            XCTAssertEqual(action, .inbox)
+            completion()
+        }
+
+        sut.handleActionSheetAction(.inbox)
+
+        wait(for: [e], timeout: 2)
+        XCTAssertTrue(viewModelMock.callHandleActionSheetAction.wasCalledExactlyOnce)
+    }
+
+    private func makeMessageMock(location: Message.Location) -> MessageEntity {
+        let mockMessage = Message(context: contextProvider.viewContext)
+        let label = Label(context: contextProvider.viewContext)
+        mockMessage.labels = NSSet(array: [label])
+        mockMessage.messageID = UUID().uuidString
+        label.labelID = location.rawValue
+        return MessageEntity(mockMessage)
+    }
+
+    private func setupSUTWithWindow() {
+        sut.loadViewIfNeeded()
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.makeKeyAndVisible()
+        window.rootViewController = sut
     }
 }

@@ -341,7 +341,7 @@ extension ContactGroupsDataService {
                     seal.reject(error)
                 } else {
                     let objectID = label.objectID.uriRepresentation().absoluteString
-                    let action: MessageAction = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: addedEmailIDs, removedEmailList: removedEmailIDs)
+                    let action: MessageAction = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailIDs: addedEmailIDs, removedEmailIDs: removedEmailIDs)
                     let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
                     _ = queue?.addTask(task)
                     seal.fulfill_()

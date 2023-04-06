@@ -56,6 +56,10 @@ class SingleMessageViewModel {
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
+    private let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
+
+    let coordinator: SingleMessageCoordinator
+    private let notificationCenter: NotificationCenter
 
     init(labelId: LabelID,
          message: MessageEntity,
@@ -68,8 +72,11 @@ class SingleMessageViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
+         coordinator: SingleMessageCoordinator,
+         nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
          dependencies: SingleMessageContentViewModel.Dependencies,
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
+         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
+         notificationCenter: NotificationCenter = .default
     ) {
         self.labelId = labelId
         self.message = message
@@ -91,10 +98,13 @@ class SingleMessageViewModel {
             dependencies: dependencies,
             goToDraft: goToDraft
         )
+        self.coordinator = coordinator
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.toolbarActionProvider = toolbarActionProvider
         self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
+        self.nextMessageAfterMoveStatusProvider = nextMessageAfterMoveStatusProvider
+        self.notificationCenter = notificationCenter
     }
 
     var messageTitle: NSAttributedString {
@@ -176,6 +186,9 @@ class SingleMessageViewModel {
             return
         case .viewInLightMode:
             contentViewModel.messageInfoProvider.currentMessageRenderStyle = .lightOnly
+            return
+        case .star, .unstar:
+            starTapped()
             return
         default:
             break
@@ -268,6 +281,24 @@ class SingleMessageViewModel {
         }
         displayAlert()
     }
+
+    func navigate(to navigationAction: SingleMessageNavigationAction) {
+        coordinator.navigate(to: navigationAction)
+    }
+
+    func navigateToNextMessage(isInPageView: Bool, popCurrentView: (() -> Void)? = nil) {
+        guard isInPageView else {
+            popCurrentView?()
+            return
+        }
+        guard nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            self?.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
+        }
+    }
 }
 
 // MARK: - Toolbar action functions
@@ -313,7 +344,6 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
         let actionSheetViewModel = MessageViewActionSheetViewModel(
             title: message.title,
             labelID: labelId,
-            includeStarring: true,
             isStarred: message.isStarred,
             isBodyDecryptable: messageInfoProvider.isBodyDecryptable,
             messageRenderStyle: bodyViewModel.currentMessageRenderStyle,
@@ -374,7 +404,7 @@ extension SingleMessageViewModel: MoveToActionSheetProtocol {
 extension SingleMessageViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType]) {
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels

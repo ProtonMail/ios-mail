@@ -23,8 +23,8 @@
 import Foundation
 
 extension URL {
-    // proton mail app store link
-    static var appleStore: URL {
+    // proton mail app store url scheme
+    static var protonMailAppStoreUrlScheme: URL {
         return URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
     }
 }
