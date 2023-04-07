@@ -721,7 +721,8 @@ extension MailboxViewModel {
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
             userID: user.userID,
-            message: message
+            message: message,
+            ignoreDownloaded: message.isDraft
         )
         dependencies.fetchMessageDetail
             .callbackOn(.main)
