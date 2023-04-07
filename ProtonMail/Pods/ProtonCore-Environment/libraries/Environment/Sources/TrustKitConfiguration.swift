@@ -39,16 +39,18 @@ extension TrustKitWrapper {
     }
 
     private static func pinnedDomains(hardfail: Bool) -> [String : [String : Any]] {
-        [
+        let reportURIs: [String] = [
+            "https://reports.proton.me/reports/tls"
+        ]
+        
+        return [
             "protonmail.ch": [
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKForceSubdomainMatch: true,
                 kTSKNoSSLValidation: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonmail.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonmail.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -62,9 +64,7 @@ extension TrustKitWrapper {
                 kTSKForceSubdomainMatch: true,
                 kTSKNoSSLValidation: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonvpn.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -76,9 +76,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonvpn.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -90,9 +88,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonvpn.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -104,9 +100,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonvpn.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -118,9 +112,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonvpn.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -132,9 +124,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonvpn.ch certificate
                     "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -146,9 +136,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // verify.protonvpn.com and verify-api.protonvpn.com
                     "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
@@ -160,9 +148,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonmail.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // verify.protonmail.com and verify-api.protonmail.com certificate
                     "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
@@ -174,9 +160,7 @@ extension TrustKitWrapper {
                 kTSKEnforcePinning: hardfail,
                 kTSKIncludeSubdomains: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonvpn.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // verify.protonvpn.com and verify-api.protonvpn.com
                     "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
@@ -190,9 +174,7 @@ extension TrustKitWrapper {
                 kTSKForceSubdomainMatch: true,
                 kTSKNoSSLValidation: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonmail.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // proton.me certificate
                     "CT56BhOTmj5ZIPgb/xD5mH8rY3BLo/MlhP7oPyJUEDo=", // Current
@@ -206,9 +188,7 @@ extension TrustKitWrapper {
                 kTSKForceSubdomainMatch: true,
                 kTSKNoSSLValidation: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonmail.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
                     "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
@@ -223,9 +203,7 @@ extension TrustKitWrapper {
                 kTSKNoHostnameValidation: true,
                 kTSKAllowIPsOnly: true,
                 kTSKDisableDefaultReportUri: true,
-                kTSKReportUris: [
-                    "https://api.protonmail.ch/reports/tls"
-                ],
+                kTSKReportUris: reportURIs,
                 kTSKPublicKeyHashes: [
                     // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
                     "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current

@@ -99,7 +99,7 @@ extension BackendConfigurationTests {
         line: UInt = #line
     ) {
         XCTAssertEqual(configuration.environment.doh.signupDomain, "proton.me", file: file, line: line)
-        XCTAssertEqual(configuration.environment.doh.defaultHost, "https://api.protonmail.ch", file: file, line: line)
+        XCTAssertEqual(configuration.environment.doh.defaultHost, "https://mail-api.proton.me", file: file, line: line)
         XCTAssertEqual(configuration.environment.doh.defaultPath, "", file: file, line: line)
     }
 }

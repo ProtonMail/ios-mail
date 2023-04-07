@@ -36,6 +36,10 @@ final class TrustKitWrapper {
     static private(set) var current: TrustKit?
 
     private static func configuration(hardfail: Bool = true) -> Configuration {
+        let reportURIs: [String] = [
+            "https://reports.proton.me/reports/tls"
+        ]
+
         return [
             kTSKSwizzleNetworkDelegates: false,
             kTSKPinnedDomains: [
@@ -45,9 +49,7 @@ final class TrustKitWrapper {
                     kTSKForceSubdomainMatch: true,
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://mail-api.proton.me/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonmail.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -61,9 +63,7 @@ final class TrustKitWrapper {
                     kTSKForceSubdomainMatch: true,
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonvpn.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -75,9 +75,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonvpn.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -89,9 +87,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonvpn.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -103,9 +99,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonvpn.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -117,9 +111,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonvpn.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -131,9 +123,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonvpn.ch certificate
                         "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=", // Current
@@ -145,9 +135,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // verify.protonvpn.com and verify-api.protonvpn.com
                         "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
@@ -159,9 +147,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://mail-api.proton.me/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // verify.protonmail.com and verify-api.protonmail.com certificate
                         "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
@@ -173,9 +159,7 @@ final class TrustKitWrapper {
                     kTSKEnforcePinning: hardfail,
                     kTSKIncludeSubdomains: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://api.protonvpn.ch/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // verify.protonvpn.com and verify-api.protonvpn.com
                         "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=", // Current
@@ -189,9 +173,7 @@ final class TrustKitWrapper {
                     kTSKForceSubdomainMatch: true,
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://mail-api.proton.me/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // proton.me certificate
                         "CT56BhOTmj5ZIPgb/xD5mH8rY3BLo/MlhP7oPyJUEDo=", // Current
@@ -205,9 +187,7 @@ final class TrustKitWrapper {
                     kTSKForceSubdomainMatch: true,
                     kTSKNoSSLValidation: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://mail-api.proton.me/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
                         "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
@@ -222,9 +202,7 @@ final class TrustKitWrapper {
                     kTSKNoHostnameValidation: true,
                     kTSKAllowIPsOnly: true,
                     kTSKDisableDefaultReportUri: true,
-                    kTSKReportUris: [
-                        "https://mail-api.proton.me/reports/tls"
-                    ],
+                    kTSKReportUris: reportURIs,
                     kTSKPublicKeyHashes: [
                         // api.protonmail.ch and api.protonvpn.ch proxy domains certificates
                         "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=", // Current
@@ -232,7 +210,7 @@ final class TrustKitWrapper {
                         "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=", // Backup 2
                         "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw=", // Backup 3
                     ]
-                ],
+                ]
             ]
         ]
     }

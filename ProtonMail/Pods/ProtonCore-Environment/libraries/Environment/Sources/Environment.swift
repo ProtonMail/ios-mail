@@ -125,7 +125,7 @@ extension Environment {
             humanVerificationV3Host: "https://verify.\(customDomain)",
             accountHost: "https://account.\(customDomain)",
             defaultHost: "https://\(customDomain)",
-            apiHost: ProductionHosts.legacyProtonMailAPI.dohHost,
+            apiHost: ProductionHosts.mailAPI.dohHost,
             defaultPath: "/api"
         )
     }
