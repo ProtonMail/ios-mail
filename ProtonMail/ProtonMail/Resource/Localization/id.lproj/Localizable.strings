@@ -1968,7 +1968,7 @@
 "This conversation contains non-trashed messages." = "Percakapan ini berisi pesan yang tidak dibuang.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Percakapan ini berisi pesan yang dibuang";
+"This conversation contains trashed messages" = "Percakapan ini berisi pesan yang telah dibuang";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Email ini mungkin palsu atau tidak diteruskan dengan benar!";

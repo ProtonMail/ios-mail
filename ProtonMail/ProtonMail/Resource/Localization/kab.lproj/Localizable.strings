@@ -10,6 +10,9 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sers-it dagi akken ad ternuḍ d afaylu yeddan";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 yizen yettwasnekzen ɣer teṛcivt";
+
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 yizen yettwasenkez ɣer uspam";
 
@@ -454,6 +457,9 @@
 /* No comment provided by engineer. */
 "Current Recovery Email" = "Tansa imayl tamirant n tririt";
 
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Tafrant tamirant: ";
+
 /* Title */
 "Current sign-in password" = "Awal uffir n tuqqna amiran";
 
@@ -463,6 +469,9 @@
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Sagen";
+
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Sagen afeggag n yifecka";
 
 /* Title */
 "Cut" = "Gzem";
@@ -485,11 +494,17 @@
 /* error details */
 "Decryption of this content failed" = "Azmak n agbur agi icceḍ";
 
+/* error details */
+"Decryption of this message's encrypted content failed." = "Azmak n ugbur n yizen-a yettwawgelhen ur yeddi ara.";
+
 /* Title */
 "Default" = "Amezwar";
 
 /* Settings row */
 "Default browser" = "Iminig amezwer";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Sbadu amatar (afrayan)";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -533,8 +548,17 @@
 /* Action */
 "Discard changes" = "Aggi Isniflen";
 
+/* Message shown to user after discarding action is done */
+"Discarded" = "Yettwasefsex";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Ur-tamasit";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Anef i usnas";
+
+/* Title in settings */
+"Display Name" = "Isem yettwaskanen";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Tebɣiḍ ad tekkseḍ afaylu-agi seg yifuyla yeddan?";
@@ -559,6 +583,9 @@
 
 /* Done action */
 "Done" = "Immed";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Asader iteddu";
 
 /* Action */
 "Draft" = "Arewway";

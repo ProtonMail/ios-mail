@@ -1283,7 +1283,7 @@
 "No email trackers found" = "Стеження не виявлено";
 
 /* network troubleshot cell title */
-"No internet connection" = "Немає з’єднання з інтернетом";
+"No internet connection" = "Немає з'єднання з інтернетом";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Для внутрішнього користувача не отримано жодного ключа";
@@ -1347,7 +1347,7 @@
 "Off" = "Вимкнено";
 
 /* Official badge next to sender's name */
-"Official" = "Офіційне";
+"Official" = "Офіційний";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Не в мережі";

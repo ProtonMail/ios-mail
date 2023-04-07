@@ -1977,7 +1977,7 @@
 "This folder is empty" = "Bu klasör boş";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir web sitesine gidiyor olabilir..\n%@\n\nGüvenliğiniz için daha ileri gitmeyin.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir siteye gidiyor olabilir..\n%@\n\nGüvenliğiniz için daha ileri gitmeyin.";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "İletinin gönderilme zamanlaması kaldırıldı. Daha sonra gönderilmesini istiyorsanız \"Zamanlanmış gönderim\" üzerine dokunabilirsiniz";
@@ -2183,7 +2183,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Uyarı: İnsan doğrulamasını tamamlamadan e-posta gönderemezsiniz!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Uyarı: Şüpheli sahte web sitesi";
+"Warning: suspected fake website" = "Uyarı: Sahte olma olasılığı bulunan şüpheli site";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, büyük olasılıkla zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklar kutusuna kaydedildi ve uygulamayı bir sonraki açışınızda otomatik olarak gönderilecek.";
@@ -2216,7 +2216,7 @@
 "Yesterday" = "Dün";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Web tarayıcısını açmak ve şuraya gitmek üzeresiniz";
+"You are about to launch the web browser and navigate to" = "Tarayıcıyı açmak ve şuraya gitmek üzeresiniz";
 
 /* The title of empty inbox */
 "You are all caught up!" = "Herşeyi gördünüz!";

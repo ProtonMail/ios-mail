@@ -285,6 +285,9 @@
 /* Settings row */
 "Block email tracking" = "封鎖郵件追蹤";
 
+/* Button to block a sender */
+"Block sender" = "封鎖寄件者";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止寄件人得知您閱讀此封郵件。";
 

@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'В EE, MMM d, yyyy в %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Поиск по содержимому сообщений' будет отключен. Для его повторного включения необходимо перейти в настройки, а также скачать все сообщения заново.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Поиск по содержимому сообщений' будет отключён. Для его повторного включения необходимо перейти в настройки, а также скачать все сообщения заново.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ из %2$@";
@@ -1337,7 +1337,7 @@
 "Nothing to see here" = "Тут ничего нет";
 
 /* Alert title */
-"Notice" = "Уведомление";
+"Notice" = "Примечание";
 
 /* AppKey disclaimer when turning on */
 "Notification actions and other background processes will become unavailable" = "Функции уведомлений и другие фоновые процессы станут недоступны";
@@ -1805,7 +1805,7 @@
 "Snooze" = "Отложить";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "Некоторые изображения не могут быть загружены при включенной защите от отслеживания.";
+"Some images could not be loaded with tracking protection." = "Некоторые изображения не могут быть загружены при включённой защите от отслеживания.";
 
 /* menu title */
 "Spam" = "Спам";

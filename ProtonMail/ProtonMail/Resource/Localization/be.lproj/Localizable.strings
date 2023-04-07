@@ -17,7 +17,7 @@
 "+ Drop here to add as attachment" = "+ Перацягніце сюды, каб дадаць як далучэнне";
 
 /* Text for the estimated time label if less than one minute is remaining */
-"<1 minute remaining" = "<Засталася адна хвіліна";
+"<1 minute remaining" = "<Засталася 1 хвіліна";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 хв";
@@ -1350,7 +1350,7 @@
 "Off" = "Выключана";
 
 /* Official badge next to sender's name */
-"Official" = "Афіцыйна";
+"Official" = "Афіцыйны";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Па-за сеткай";
@@ -1371,7 +1371,7 @@
 "On %@" = "%@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "%1$@ а %2$@";
+"On %@ at %@" = "%1$@ у %2$@";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можна дадаць толькі адзін бясплатны ўліковы запіс";
@@ -2213,7 +2213,7 @@
 "wrote:" = "піша:";
 
 /* Error message */
-"Yes, attach details of payment" = "Так, далучыць падрабязнасці плацяжу";
+"Yes, attach details of payment" = "Так, далучыць рэквізіты плацяжу";
 
 /* No comment provided by engineer. */
 "Yesterday" = "Учора";
