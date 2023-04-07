@@ -288,6 +288,12 @@
 /* Settings row */
 "Block email tracking" = "阻止电子邮件追踪";
 
+/* Settings item to open blocked sender list */
+"Block list" = "黑名单";
+
+/* Button to block a sender */
+"Block sender" = "屏蔽发件人";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止发件人查看您是否以及何时打开过邮件。";
 
@@ -663,7 +669,7 @@
 "Download paused: No WiFi detected" = "下载暂停：未检测到WiFi";
 
 /* Text for estimate time label when storage is full */
-"Download paused: Storage full" = "下载暂停：存储已满";
+"Download paused: Storage full" = "下载暂停：存储空间已满";
 
 /* The title of downloaded messages in settings */
 "Download progress" = "下载进度";
@@ -1388,6 +1394,9 @@
 /* Text for pause button */
 "Pause" = "暂停";
 
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "邮件移动（包括存档）后自动查看下一封邮件。";
+
 /* default vcard types */
 "Personal" = "私人";
 
@@ -1622,7 +1631,7 @@
 "Schedule send" = "定时发送";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "将删除计划";
+"Schedule will be removed" = "取消定时发送";
 
 /* mail location title */
 "Scheduled" = "定时发送";
@@ -1735,7 +1744,7 @@
 "Set up swipe gestures to access most used actions." = "设置滑动手势来执行常用操作。";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "设置您的时间表";
+"Set your own schedule" = "自由设置定时发送";
 
 /* menu title */
 "Settings" = "设置";
@@ -1799,7 +1808,7 @@
 "Still can't find a solution" = "问题仍未解决";
 
 /* cell title in device settings */
-"Storage" = "存储";
+"Storage" = "存储空间";
 
 /* Alert title */
 "Storage full" = "存储空间已满";
@@ -1808,7 +1817,7 @@
 "Storage limit" = "存储空间限制";
 
 /* Storage warning */
-"Storage quota exceeded" = "存储配额超标";
+"Storage quota exceeded" = "存储空间超限";
 
 /* The title of storage usage in settings for encrypted search */
 "Storage used" = "存储空间用量";
@@ -1956,7 +1965,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已不在稍后发送计划中。如果您仍想稍后发送，可以点击 “计划发送”";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已取消定时发送。如果仍需稍后发送， 可以再次点击“定时发送”。";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此邮件可能具有欺诈性质，请检查发件人身份和邮件内容，确认信息真实性。";

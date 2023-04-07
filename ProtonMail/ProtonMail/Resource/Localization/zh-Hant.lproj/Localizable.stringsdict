@@ -339,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton 在此訊息中發現 %d 個追蹤程式，也已全數攔截。</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>

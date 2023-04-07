@@ -1093,6 +1093,9 @@
 /* cell title in device settings */
 "Local storage limit" = "Helyi tárhely korlát";
 
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "helyi tárhely korlát.";
+
 /* menu title */
 "Lock The App" = "Alkalmazás zárolása";
 
@@ -1222,6 +1225,9 @@
 /* Title */
 "Move to…" = "Áthelyezés ide…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Következő üzenet megnyitása az áthelyezés után";
+
 /* Onboarding title */
 "Neat and tidy" = "Takaros";
 
@@ -1261,6 +1267,9 @@
 /* title of the next button */
 "Next" = "Következő";
 
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Következő üzenet az áthelyezés után";
+
 /* contacts talbe cell Nickname title */
 "Nickname" = "Becenév";
 
@@ -1278,6 +1287,9 @@
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "Nem található kulcs a belső felhasználóhoz";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "nincs objektum";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "Nincs címzett";
@@ -1396,6 +1408,9 @@
 
 /* Text for pause button */
 "Pause" = "Felfüggesztés";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Egy üzenet áthelyezése (pl archiválás) után, a következő üzenet kerül megjelenítésre.";
 
 /* default vcard types */
 "Personal" = "Személyes";
@@ -1553,6 +1568,9 @@
 /* remove action */
 "Remove" = "Eltávolítás";
 
+/* Settings row */
+"Remove image metadata" = "Metaadatok eltávolítása a képből";
+
 /* action title */
 "Remove password" = "Jelszó eltávolítása";
 
@@ -1602,6 +1620,9 @@
 /* Text for resume button */
 "Resume" = "Folytatás";
 
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "folytatás manuálisan.";
+
 /* Action */
 "Retry" = "Újra";
 
@@ -1617,9 +1638,15 @@
 /* title */
 "Save Changes" = "Változtatások mentése";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Üzenetek ütemezése bármikor";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Ütemezett küldés";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Az ütemezés eltávolításra kerül";
 
 /* mail location title */
 "Scheduled" = "Ütemezett";
@@ -1637,6 +1664,9 @@
 
 /* The link in local storage downloaded messages. */
 "See details" = "Részletek megjelenítése";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Folyamat megtekintése.";
 
 /* section title */
 "Select colour" = "Szín kiválasztása";
@@ -1656,6 +1686,9 @@
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "Küldés azonnal";
 
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Küldés azonnal?";
+
 /* Description */
 "Send message without subject?" = "Elküldi az üzenetet tárgy nélkül?";
 
@@ -1667,6 +1700,9 @@
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "A küldés sikertelen";
+
+/* Alert title */
+"Sending in progress" = "Küldés folyamatban";
 
 /* Description */
 "Sending Message" = "Üzenet küldése";
@@ -1719,6 +1755,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "A leggyakrabban használt műveletekhez állítson be csúsztatás műveletet.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Állítson be saját ütemezést";
+
 /* menu title */
 "Settings" = "Beállítások";
 
@@ -1730,6 +1769,9 @@
 
 /* Action */
 "Show" = "Megjelenítés";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Megjelenítés";
 
 /* Alert title to confirm signout
    menu title */
@@ -1744,11 +1786,17 @@
 /* The text shown on the mailbox when the primary user changed */
 "Signed in as %@" = "Belépve mint %@";
 
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Kijelentkezett a következőből: %1$@ és bejelentkezett: %2$@";
+
 /* skip button title in onboarding page */
 "Skip" = "Kihagyás";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Szüneteltetés";
+
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Néhány kép betöltése nem sikerült a követési védelemmel.";
 
 /* menu title */
 "Spam" = "Levélszemét";
@@ -2044,6 +2092,9 @@
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Korlátlan mappa és címke";
 
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Használja az üzenet ütemezési lehetőséget és tegyen szert további előnyökre, nagyobb csomagra váltással.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Feloldás szükséges";
 
@@ -2062,8 +2113,20 @@
 /* Error message */
 "Unsupported file type" = "Nem támogatott fájltípus";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Akár 3 saját e-mail domain név";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Akár 15 e-mail cím";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500 GB tárhely";
+
 /* update notification email error title */
 "Update Notification Email" = "Értesítési e-mail frissítése";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = ">1 órája frissítve";
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Most frissítve";
@@ -2071,8 +2134,14 @@
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Frissített Proton, egységesített védelem";
 
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Váltás nagyobb csomagra";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Váltson előfizetéses csomagra, hogy erről a címről is küldhessen üzenetet: %@";
+
+/* Action */
+"Upload device contacts" = "Az eszköz névjegyeinek felötlése";
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Feltölti az iOS névjegyeket a Proton Mailre?";
@@ -2098,6 +2167,9 @@
 /* No comment provided by engineer. */
 "View HTML" = "HTML megjelenítése";
 
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Üzenet megtekintése sötét módban";
+
 /* The title of the view message in light mode action in action sheet */
 "View message in Light mode" = "Üzenet megtekintése világos módban";
 
@@ -2112,6 +2184,15 @@
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Az üzenet elküldése nem sikerült, valószínűleg akadozó internet kapcsolat miatt. Az üzenet a Piszkozatok közé került mentésre és az alkalmazás következő indításakor automatikusan elküldésre kerül.";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Hiba a szerverekhez való kapcsolódás közben. Próbáljon újrakapcsolódni.";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Javasoljuk, hogy a következő címzetteknek inkább állítson be egy jelszót:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Javasoljuk, hogy a következő címzetteknek inkább állítson be egy jelszót vagy kapcsolja ki a PGP-t:";
 
 /* week */
 "week" = "hét";
@@ -2137,17 +2218,29 @@
 /* The title of empty inbox */
 "You are all caught up!" = "Minden el van intézve!";
 
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Nincs kapcsolódva. Nem lehetséges megjeleníteni az üzenet tartalmát.";
+
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "Offline vagy";
 
 /* The title of the info bubble view in toolbar customization view. */
 "You can choose and rearrange the actions in your toolbar" = "Kiválaszthatja és újrarendezheti a műveleteket az eszköztárán";
 
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "A beszélgetési nézetet a beállításoknál bármikor kikapcsolhatja.";
+
 /* The content of the Customize toolbar spotlight view. */
 "You can now choose and rearrange the actions in this bar" = "Most már kiválaszthatja és újrarendezheti a műveleteket ezen az eszköztáron";
 
 /* The content of the introducation view of the schedule send */
 "You can now schedule your messages to be sent later" = "Most már ütemezheti is a leveleit későbbi elküldésre";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Most már kereshet az üzeneteiben. Ez a lehetőséget bármikor bekapcsolhatja a beállításoknál.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Kereshet a letöltött üzeneteiben. A többi üzenetnél csak a címzettekben és a tárgy sorban történik keresés.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
@@ -2172,6 +2265,9 @@
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "A változtatások nincsenek elmentve. Szeretné megtartani őket?";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "A rendelkezésre álló tárhely %1$d%%-át felhasználta (összes: %2$@). Váltson egy nagyobb csomagra, hogy továbbra is tudjon küldeni és fogadni üzeneteket.";
 
 /* Content of space warning */
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Felhasználta az összes rendelkezésre álló tárhelyét (%@). Fizessen elő egy nagyobb csomagra, hogy továbbra is küldeni és fogadni tudjon e-maileket.";

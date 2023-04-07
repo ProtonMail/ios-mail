@@ -131,13 +131,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%1$d wątki zostały przeniesione do folderu %2$@</string>
+			<string>%d wątki zostały przeniesione do folderu %@</string>
 			<key>many</key>
-			<string>%1$d wątków zostało przeniesionych do folderu %2$@</string>
+			<string>%d wątków zostało przeniesionych do folderu %@</string>
 			<key>one</key>
-			<string>Wątek został przeniesiony do folderu %2$@</string>
+			<string>%d wątek został przeniesiony do folderu %@</string>
 			<key>other</key>
-			<string>%1$d wątków zostało przeniesionych do folderu %2$@</string>
+			<string>%d wątków zostało przeniesionych do folderu %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
