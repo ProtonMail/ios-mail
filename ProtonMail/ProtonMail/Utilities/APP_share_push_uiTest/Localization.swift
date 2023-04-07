@@ -1470,6 +1470,10 @@ enum L11n {
         static let trackRewardTitle = NSLocalizedString("Track your rewards", comment: "The title of the track reward button in referral share view.")
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
+
+        static let promptContent = NSLocalizedString("Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free.", comment: "The content of the referral prompt view.")
+        static let referAFriend = NSLocalizedString("Refer a friend", comment: "The title of the refer button in referral prompt view.")
+        static let maybeLater = NSLocalizedString("Maybe later", comment: "The title of the maybe later button in referral prompt view.")
 	}
 
     struct SettingsLockScreen {
