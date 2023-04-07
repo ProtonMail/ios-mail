@@ -88,6 +88,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
+    private var configuredActions: [SwipyCellDirection: SwipeActionSettingType] = [:]
 
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -314,7 +315,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.updateUnreadButton()
         deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
-
+        reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
     }
 
@@ -1313,6 +1314,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             partialResult[email.email] = EmailEntity(email: email)
         })
     }
+
+    private func reloadIfSwipeActionsDidChange() {
+        if configuredActions.isEmpty,
+           configuredActions[.left] == userCachedStatus.leftToRightSwipeActionType,
+           configuredActions[.right] == userCachedStatus.rightToLeftSwipeActionType {
+            return
+        }
+        tableView.reloadData()
+    }
 }
 
 // MARK: - Swipe action
@@ -1323,6 +1333,8 @@ extension MailboxViewController {
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
         actions[.left] = userCachedStatus.leftToRightSwipeActionType
         actions[.right] = userCachedStatus.rightToLeftSwipeActionType
+        configuredActions[.left] = userCachedStatus.leftToRightSwipeActionType
+        configuredActions[.right] = userCachedStatus.rightToLeftSwipeActionType
 
         cell.removeAllSwipeTriggers()
 
