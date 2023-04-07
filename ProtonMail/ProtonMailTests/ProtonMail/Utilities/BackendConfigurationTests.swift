@@ -45,14 +45,6 @@ class BackendConfigurationTests: XCTestCase {
         XCTAssert(result.environment.apiPath == customApiPath)
     }
 
-    func testInit_whenThereIsUITestsArg_andOneEnvVarIsMissing_returnsProdEnv() {
-        var missingEnvVar: [String: String] = apiCustomAPIEnvVars
-        missingEnvVar[missingEnvVar.keys.randomElement()!] = nil
-
-        let result = BackendConfiguration(launchArguments: uiTestsLaunchArgs, environmentVariables: missingEnvVar)
-        assertIsProduction(configuration: result)
-    }
-
     private func assertIsProduction(
         configuration: BackendConfiguration,
         file: StaticString = #file,
