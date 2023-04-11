@@ -543,7 +543,7 @@ extension CSSMagic {
     
      b: [0, 255] or [0%, 100%]
     
-     a: [0.0, 1.0] or [0%, 100%]
+     a: [0.0, 1.0] or [0%, 100%] or [0, 255]
      
      For r/ g/ b, they need to follow the same format, all int or all percentage
      
@@ -561,11 +561,20 @@ extension CSSMagic {
               let b = CSSMagic.normalize(value: bValue, maximum: 255) else {
                   return nil
               }
-        if let aValue = splitValues[safe: 3] {
-            if aValue.contains("%"),
-               let a = CSSMagic.normalize(value: aValue, maximum: 100) {
-                return (r, g, b, a)
-            } else if let a = Double(aValue) {
+        guard let aValue = splitValues[safe: 3] else {
+            return (r, g, b, 1)
+        }
+        if aValue.contains("%"),
+           let a = CSSMagic.normalize(value: aValue, maximum: 100) {
+            return (r, g, b, a)
+        } else if var a = Double(aValue) {
+            if a > 1 {
+                a = max(0, min(a, 255))
+                let aValue = "\(a)"
+                let value = CSSMagic.normalize(value: aValue, maximum: 255) ?? 1
+                return (r, g, b, value)
+            } else {
+                a = max(0, min(a, 1))
                 return (r, g, b, CGFloat(a))
             }
         }
@@ -638,14 +647,20 @@ extension CSSMagic {
 
         let s = Int(sValue * 100)
         let l = Int(lValue * 100)
-        if let a = values[safe: 3] {
-            if a.contains("%"),
-               let aValue = CSSMagic.getNormalizeFloat(from: a) {
-                return HSLA(h: h, s: s, l: l, a: aValue)
-            } else if let aValue = Double(a) {
-                return HSLA(h: h, s: s, l: l, a: CGFloat(aValue))
+        guard let a = values[safe: 3] else {
+            return HSLA(h: h, s: s, l: l, a: 1)
+        }
+        if a.contains("%"),
+           let aValue = CSSMagic.getNormalizeFloat(from: a) {
+            return HSLA(h: h, s: s, l: l, a: aValue)
+        } else if var aValue = Double(a) {
+            if aValue > 1 {
+                aValue = max(0, min(aValue, 255))
+                let value = CSSMagic.normalize(value: "\(aValue)", maximum: 255) ?? 1
+                return HSLA(h: h, s: s, l: l, a: value)
             } else {
-                return nil
+                aValue = max(0, min(aValue, 1))
+                return HSLA(h: h, s: s, l: l, a: aValue)
             }
         }
         return HSLA(h: h, s: s, l: l, a: 1)
