@@ -32,7 +32,7 @@ class MailboxRobotInterface: CoreElements {
     required init() {
         super.init()
         if XCUIApplication().exists {
-            table(id.mailboxTableViewIdentifier).firstMatch().wait(time: 20)
+            table(id.mailboxTableViewIdentifier).firstMatch().waitUntilExists(time: 20)
         }
     }
     

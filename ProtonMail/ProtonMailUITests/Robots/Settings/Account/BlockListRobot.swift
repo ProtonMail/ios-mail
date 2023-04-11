@@ -45,13 +45,13 @@ class BlockListRobot: CoreElements {
     class Verify: CoreElements {
         @discardableResult
         func expectedTitleIsShown() -> Self {
-            navigationBar(ID.title.rawValue).wait().checkExists()
+            navigationBar(ID.title.rawValue).waitUntilExists().checkExists()
             return self
         }
 
         @discardableResult
         func emptyListPlaceholderIsShown() -> Self {
-            staticText(ID.placeholder.rawValue).wait().checkExists()
+            staticText(ID.placeholder.rawValue).waitUntilExists().checkExists()
             return self
         }
     }

@@ -118,7 +118,7 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'fusion', :git => proton_test_path, :branch => 'master'
+  pod 'fusion', :git => proton_test_path, :commit => '5905ef7e'
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version

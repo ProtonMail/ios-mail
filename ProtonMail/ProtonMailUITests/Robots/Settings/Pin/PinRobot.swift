@@ -108,7 +108,7 @@ class PinRobot: CoreElements {
     class setPinRobot: CoreElements {
         required init() {
             super.init()
-            staticText(id.setPinStaticTextLabel).wait().checkExists()
+            staticText(id.setPinStaticTextLabel).waitUntilExists().checkExists()
         }
         
         func enterPin(_ pin: String) -> setPinRobot {
@@ -132,7 +132,7 @@ class PinRobot: CoreElements {
     class RepeatPinRobot: CoreElements {
         required init() {
             super.init()
-            staticText(id.repeatPinStaticTextLabel).wait().checkExists()
+            staticText(id.repeatPinStaticTextLabel).waitUntilExists().checkExists()
         }
         
         func enterPin(_ pin: String) -> RepeatPinRobot {
@@ -165,7 +165,7 @@ class PinRobot: CoreElements {
         }
         
         func appUnlockSuccessfully() {
-            staticText(id.pinStaticTextLabel).wait().checkExists()
+            staticText(id.pinStaticTextLabel).waitUntilExists().checkExists()
         }
     }
 }

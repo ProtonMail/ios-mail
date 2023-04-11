@@ -56,7 +56,7 @@ class InboxRobot : MailboxRobotInterface {
         
         @discardableResult
         func inboxShown(time: TimeInterval = 10.0) -> InboxRobot {
-            button(id.composeButtonLabel).wait(time: time).checkExists()
+            button(id.composeButtonLabel).waitUntilExists(time: time).checkExists()
             return InboxRobot()
         }
     }
