@@ -297,6 +297,11 @@ class SingleMessageContentViewController: UIViewController {
                              name: UIApplication.willEnterForegroundNotification,
                              object: nil)
         }
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @objc
@@ -320,6 +325,7 @@ class SingleMessageContentViewController: UIViewController {
         }
         embedAttachmentViewIfNeeded()
         embedHeaderController()
+        showBanner()
     }
 
     private func embedAttachmentViewIfNeeded() {
@@ -360,14 +366,27 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func presentActionSheet(context: MessageHeaderContactContext) {
-        var title = context.contact.title
-        if context.type == .sender {
+        let title: String
+        let showOfficialBadge: Bool
+
+        switch context {
+        case .recipient(let contactVO):
+            title = contactVO.title
+            showOfficialBadge = false
+        case .sender(let sender):
             title = viewModel.messageInfoProvider.senderName
+            showOfficialBadge = sender.isFromProton
         }
-        let actionSheet = PMActionSheet.messageDetailsContact(for: title, subTitle: context.contact.subtitle) { [weak self] action in
+
+        let actionSheet = PMActionSheet.messageDetailsContact(
+            title: title,
+            subtitle: context.contact.subtitle,
+            showOfficialBadge: showOfficialBadge
+        ) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
         }
+
         actionSheet.presentAt(navigationController ?? self, hasTopConstant: false, animated: true)
     }
 
@@ -395,6 +414,16 @@ class SingleMessageContentViewController: UIViewController {
         if shouldReloadWhenAppIsActive {
             viewModel.downloadDetails()
             shouldReloadWhenAppIsActive = false
+        }
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        customView.preferredContentSizeChanged()
+        if let expandedVC = headerViewController as? ExpandedHeaderViewController {
+            expandedVC.preferredContentSizeChanged()
+        } else if let nonExpandedVC = headerViewController as? NonExpandedHeaderViewController {
+            nonExpandedVC.preferredContentSizeChanged()
         }
     }
 }
@@ -463,7 +492,7 @@ extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
         let messageID = viewModel.message.messageID
         // Attachment list needs to check if the body contains content IDs
         // So needs to use full message body or it could miss inline image in the quote
-        let body = viewModel.messageInfoProvider.bodyParts?.body(for: .expanded)
+        let body = viewModel.messageInfoProvider.bodyParts?.originalBody
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body, attachments: attachments))
     }
 }
@@ -487,7 +516,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
     }
 
     func loadRemoteContent() {
-        viewModel.messageInfoProvider.remoteContentPolicy = .allowed
+        viewModel.messageInfoProvider.set(policy: .allowed)
     }
 
     func reloadImagesWithoutProtection() {

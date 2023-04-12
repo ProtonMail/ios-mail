@@ -30,70 +30,51 @@ protocol NewMessageBodyViewModelDelegate: AnyObject {
     func showReloadError()
 }
 
-enum MessageDisplayMode {
-    case collapsed // Only latest message, without previous response
-    case expanded // Full body
-
-    mutating func toggle() {
-        switch self {
-        case .collapsed:
-            self = .expanded
-        case .expanded:
-            self = .collapsed
-        }
-    }
-}
-
 struct BodyParts {
     let originalBody: String
-    let strippedBody: String
-    let darkModeCSS: String?
 
     let bodyHasHistory: Bool
 
-    init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
+    init(originalBody: String) {
+        // Remove color related `!important`
         self.originalBody = originalBody
-        let level = CSSMagic.darkStyleSupportLevel(htmlString: originalBody,
-                                                   isNewsLetter: isNewsLetter,
-                                                   isPlainText: isPlainText)
-        switch level {
-        case .protonSupport:
-            self.darkModeCSS = CSSMagic.generateCSSForDarkMode(htmlString: originalBody)
-        case .notSupport:
-            self.darkModeCSS = nil
-        case .nativeSupport:
-            self.darkModeCSS = ""
-        }
-
+            .preg_replace(
+                "((color|bgcolor|background-color|background|border): .*) (!important);?",
+                replaceto: "$1;"
+            )
         var bodyHasHistory = false
 
         do {
-            let fullHTMLDocument = try SwiftSoup.parse(originalBody)
+            let fullHTMLDocument = try SwiftSoup.parse(self.originalBody)
             fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
 
             for quoteElement in String.quoteElements {
                 let elements = try fullHTMLDocument.select(quoteElement)
                 if !elements.isEmpty() {
                     bodyHasHistory = true
+                    break
                 }
-                try elements.remove()
             }
-            strippedBody = try fullHTMLDocument.html()
         } catch {
             assertionFailure("\(error)")
-            strippedBody = originalBody
         }
 
         self.bodyHasHistory = bodyHasHistory
     }
 
-    func body(for displayMode: MessageDisplayMode) -> String {
-        switch displayMode {
-        case .collapsed:
-            return strippedBody
-        case .expanded:
-            return originalBody
+    func darkModeCSS(body: String) -> String? {
+        let document = CSSMagic.parse(htmlString: body)
+        let level = CSSMagic.darkStyleSupportLevel(document: document)
+        let css: String?
+        switch level {
+        case .protonSupport:
+            css = CSSMagic.generateCSSForDarkMode(document: document)
+        case .notSupport:
+            css = nil
+        case .nativeSupport:
+            css = ""
         }
+        return css
     }
 }
 
@@ -103,6 +84,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     let internetStatusProvider: InternetConnectionStatusProvider
     let linkConfirmation: LinkOpeningMode
     let userKeys: UserKeys
+    let imageProxy: ImageProxy
 
     weak var delegate: NewMessageBodyViewModelDelegate?
     private(set) var spam: SpamType?
@@ -150,12 +132,14 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     init(spamType: SpamType?,
          internetStatusProvider: InternetConnectionStatusProvider,
          linkConfirmation: LinkOpeningMode,
-         userKeys: UserKeys
+         userKeys: UserKeys,
+         imageProxy: ImageProxy
         ) {
         self.spam = spamType
         self.internetStatusProvider = internetStatusProvider
         self.linkConfirmation = linkConfirmation
         self.userKeys = userKeys
+        self.imageProxy = imageProxy
     }
 
     func errorHappens() {
@@ -188,7 +172,7 @@ struct BannerHelper {
     }
 
     func calculateRemoteBannerStatus(bodyToCheck: String, result: @escaping ((Bool) -> Void)) {
-        if remoteContentPolicy != .allowed {
+        if remoteContentPolicy != .allowed && remoteContentPolicy != .allowedAll {
             DispatchQueue.global().async {
                 // this method is slow
                 let shouldShowRemoteBanner = bodyToCheck.hasRemoteImage()

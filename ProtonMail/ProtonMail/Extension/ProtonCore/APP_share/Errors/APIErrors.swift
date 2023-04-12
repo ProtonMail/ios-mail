@@ -32,8 +32,8 @@ extension APIErrorCode {
     static let invalidRequirements = 2000
 
     // Device token
-    static let deviceTokenIsInvalid = 11200
-    static let deviceTokenDoesNotExist = 11211
+    static let deviceTokenIsInvalid = 11210
+    static let deviceTokenDoesNotExist = 2501
 
     static let deviceHavingLowConnectivity = 111222333
 }

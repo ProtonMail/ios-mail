@@ -31,6 +31,7 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Utilities
+import ProtonCore_Foundations
 
 public protocol Signup {
 
@@ -44,22 +45,18 @@ public protocol Signup {
     func validatePhoneNumberServerSide(number: String, completion: @escaping (Result<Void, SignupError>) -> Void)
 }
 
-public protocol ChallangeParametersProvider {
-    func provideParameters() -> [[String: Any]]
-}
-
 public class SignupService: Signup {
     private let apiService: APIService
     private let authenticator: Authenticator
-    private let challangeParametersProvider: ChallangeParametersProvider
+    private let challengeParametersProvider: ChallengeParametersProvider
     private let clientApp: ClientApp
 
     // MARK: Public interface
 
-    public init(api: APIService, challangeParametersProvider: ChallangeParametersProvider, clientApp: ClientApp) {
+    public init(api: APIService, challengeParametersProvider: ChallengeParametersProvider, clientApp: ClientApp) {
         self.apiService = api
         self.authenticator = Authenticator(api: apiService)
-        self.challangeParametersProvider = challangeParametersProvider
+        self.challengeParametersProvider = challengeParametersProvider
         self.clientApp = clientApp
     }
 
@@ -209,7 +206,7 @@ public class SignupService: Signup {
             throw SignupError.cantHashPassword
         }
         let verifier = try auth.generateVerifier(2048)
-        let challenge = challangeParametersProvider.provideParameters()
+        let challenge = challengeParametersProvider.provideParameters()
         return AuthParameters(salt: salt, verifier: verifier, challenge: challenge, productPrefix: clientApp.name)
     }
 

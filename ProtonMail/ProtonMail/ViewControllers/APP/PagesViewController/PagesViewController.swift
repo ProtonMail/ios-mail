@@ -35,6 +35,7 @@ final class PagesViewController<
     private let viewModel: PagesViewModel<IDType, EntityType, FetchResultType>
     private var services: ServiceFactory
     private var titleViewObserver: NSKeyValueObservation?
+    private var spotlight: PagesSpotlightView?
 
     typealias PageCacheType = (refIndex: Int, controller: UIViewController)
     /// Strong reference to VCs to prevent UIPagesViewController release sibling page too early
@@ -77,6 +78,15 @@ final class PagesViewController<
         )
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showSpotlightIfNeeded { [weak self] in
+            delay(0.5) {
+                self?.showToolbarCustomizationSpotlightIfNeeded()
+            }
+        }
+    }
+
     @objc
     func receiveSwipeExpectation(notification: Notification) {
         guard let userInfo = notification.userInfo,
@@ -111,6 +121,7 @@ final class PagesViewController<
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
+        spotlight?.removeFromSuperview()
         switch viewModel.viewMode {
         case .singleMessage:
             let data = singleMessageVC(baseOn: viewController, offset: -1)
@@ -127,6 +138,7 @@ final class PagesViewController<
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
+        spotlight?.removeFromSuperview()
         switch viewModel.viewMode {
         case .singleMessage:
             let data = singleMessageVC(baseOn: viewController, offset: 1)
@@ -259,6 +271,120 @@ extension PagesViewController {
         let lowerBound = index + lowerBuffer
         for data in pageCache where data.value.refIndex > upperBound || data.value.refIndex < lowerBound {
             pageCache.removeValue(forKey: data.key)
+        }
+    }
+}
+
+// MARK: - Spotlight
+extension PagesViewController {
+    private func showSpotlightIfNeeded(animationCompletion: @escaping () -> Void) {
+        if viewModel.hasUserSeenSpotlight() {
+            animationCompletion()
+            return
+        }
+
+        guard
+            let position = viewModel.spotlightPosition(),
+            let scrollView = view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView,
+            let spotlight = setUpSpotlight(in: scrollView, position: position)
+        else {
+            animationCompletion()
+            return
+        }
+        self.spotlight = spotlight
+        updateSpotlightTitleHeight(spotlight: spotlight)
+        viewModel.userHasSeenSpotlight()
+        setUpSpotlightAnimation(in: scrollView, position: position, completion: animationCompletion)
+    }
+
+    private func showToolbarCustomizationSpotlightIfNeeded() {
+        let currentViewController = viewControllers?.first
+        if let conversationViewController = currentViewController as? ConversationViewController {
+            conversationViewController.showToolbarCustomizeSpotlightIfNeeded()
+        } else if let messageViewController = currentViewController as? SingleMessageViewController {
+            messageViewController.showToolbarCustomizeSpotlightIfNeeded()
+        }
+    }
+
+    private func setUpSpotlight(
+        in scrollView: UIScrollView,
+        position: PagesViewModel<IDType, EntityType, FetchResultType>.SpotlightPosition
+    ) -> PagesSpotlightView? {
+        let spotlight: PagesSpotlightView
+        switch position {
+        case .left:
+            guard let target = scrollView.subviews[safe: 0] else { return nil }
+            spotlight = PagesSpotlightView(flipIcon: true)
+            target.addSubview(spotlight)
+            [
+                spotlight.topAnchor.constraint(equalTo: target.topAnchor),
+                spotlight.trailingAnchor.constraint(equalTo: target.trailingAnchor),
+                spotlight.bottomAnchor.constraint(equalTo: target.bottomAnchor),
+                spotlight.widthAnchor.constraint(equalToConstant: 64)
+            ].activate()
+        case .right:
+            guard let target = scrollView.subviews[safe: 2] else { return nil }
+            spotlight = PagesSpotlightView(flipIcon: false)
+            target.addSubview(spotlight)
+            [
+                spotlight.topAnchor.constraint(equalTo: target.topAnchor),
+                spotlight.leadingAnchor.constraint(equalTo: target.leadingAnchor),
+                spotlight.bottomAnchor.constraint(equalTo: target.bottomAnchor),
+                spotlight.widthAnchor.constraint(equalToConstant: 64)
+            ].activate()
+        }
+        return spotlight
+    }
+
+    private func updateSpotlightTitleHeight(spotlight: PagesSpotlightView) {
+        guard let currentVC = self.viewControllers?.first else { return }
+        if let conversationView = currentVC as? ConversationViewController {
+            let tableView = conversationView.customView.tableView
+            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
+            let cellHeight = cell?.frame.height ?? 0
+            spotlight.mockTitleViewHeight?.constant = cellHeight - 2
+        } else if let singleMessageView = currentVC as? SingleMessageViewController {
+            let height = singleMessageView.customView.stackView.arrangedSubviews.first?.frame.height ?? 0
+            spotlight.mockTitleViewHeight?.constant = height + 1
+        }
+    }
+
+    private func setUpSpotlightAnimation(
+        in scrollView: UIScrollView,
+        position: PagesViewModel<IDType, EntityType, FetchResultType>.SpotlightPosition,
+        completion: (() -> Void)?
+    ) {
+        let originalOffset = scrollView.contentOffset
+        var offset = scrollView.contentOffset
+        switch position {
+        case .left:
+            offset.x -= 64
+        case .right:
+            offset.x += 64
+        }
+
+        let delayBeforeAnimationIn = 0.1
+        let animationDurationIn = 0.5
+        let delayBeforeAnimationOut = 0.2
+        let animationDurationOut = 0.25
+        Timer.scheduledTimer(withTimeInterval: delayBeforeAnimationIn, repeats: false) { [weak scrollView] _ in
+            UIView.animate(
+                withDuration: animationDurationIn,
+                animations: {
+                    scrollView?.contentOffset = offset
+                },
+                completion: { _ in
+                    Timer.scheduledTimer(withTimeInterval: delayBeforeAnimationOut, repeats: false) { _ in
+                        UIView.animate(
+                            withDuration: animationDurationOut,
+                            animations: {
+                                scrollView?.contentOffset = originalOffset
+                            }, completion: { _ in
+                                completion?()
+                            }
+                        )
+                    }
+                })
         }
     }
 }

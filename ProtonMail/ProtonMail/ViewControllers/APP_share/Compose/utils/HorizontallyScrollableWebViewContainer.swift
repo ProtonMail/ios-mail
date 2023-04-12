@@ -68,9 +68,16 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         return preferences
     }
 
-    func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+    func prepareWebView(
+        with loader: WebContentsSecureLoader? = nil,
+        urlHandler: WKURLSchemeHandler? = nil,
+        urlSchemesToBeHandled: Set<String> = []
+    ) {
         let preferences = self.webViewPreferences()
         let config = WKWebViewConfiguration()
+        urlSchemesToBeHandled.forEach { scheme in
+            config.setURLSchemeHandler(urlHandler, forURLScheme: scheme)
+        }
         loader?.inject(into: config)
         config.preferences = preferences
         config.dataDetectorTypes = [.phoneNumber, .link]

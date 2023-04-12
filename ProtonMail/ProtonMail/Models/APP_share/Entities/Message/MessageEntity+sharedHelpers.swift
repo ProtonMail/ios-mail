@@ -183,7 +183,7 @@ extension MessageEntity {
     }
 
     var allRecipients: [String] {
-        return recipientsTo + recipientsTo + recipientsBcc
+        return recipientsTo + recipientsCc + recipientsBcc
     }
 }
 
@@ -241,28 +241,19 @@ extension MessageEntity {
 
 // MARK: - Sender related
 
+#if !APP_EXTENSION
 extension MessageEntity {
-
-    func getInitial(senderName: String) -> String {
-        return senderName.isEmpty ? "?" : senderName.initials()
-    }
-
-    func getSender(senderName: String) -> String {
-        return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
-    }
-
-    func getSenderName(replacingEmailsMap: [String: EmailEntity], groupContacts: [ContactGroupVO]) -> String {
-        if isSent || isDraft || isScheduledSend {
-            return allEmailAddresses(replacingEmailsMap, allGroupContacts: groupContacts)
-        } else {
-            return displaySender(replacingEmailsMap)
+    func parseSender() throws -> Sender {
+        guard let rawSender = self.rawSender else {
+            throw SenderError.senderStringIsNil
         }
+        return try Sender.decodeDictionary(jsonString: rawSender)
     }
 
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
-    private func allEmailAddresses(
+    func allEmailAddresses(
         _ replacingEmails: [String: EmailEntity],
         allGroupContacts: [ContactGroupVO]
     ) -> String {
@@ -287,7 +278,7 @@ extension MessageEntity {
             return displayName.isEmpty ? address : displayName
         }
         let result = groupList + lists
-        return result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
+        return result.asCommaSeparatedList(trailingSpace: true)
     }
 
     private func getGroupNameLists(group: [ContactGroupVO],
@@ -303,25 +294,5 @@ extension MessageEntity {
         }
         return nameList
     }
-
-    func displaySender(_ replacingEmails: [String: EmailEntity]) -> String {
-        guard let sender = sender else {
-            assertionFailure("Sender with no name or address")
-            return ""
-        }
-
-        guard let email = replacingEmails[sender.email] else {
-            return sender.name.isEmpty ? sender.email : sender.name
-        }
-
-        if !email.contactName.isEmpty {
-            return email.contactName
-        } else if !email.name.isEmpty {
-            return email.name
-        } else if let displayName = sender.displayName, !displayName.isEmpty {
-            return displayName
-        } else {
-            return sender.email
-        }
-    }
 }
+#endif

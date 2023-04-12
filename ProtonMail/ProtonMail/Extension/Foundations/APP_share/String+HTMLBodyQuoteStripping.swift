@@ -21,20 +21,28 @@ import SwiftSoup
 // swiftlint:disable:file_name
 extension String {
     static let quoteElements: [String] = [
-        ".protonmail_quote",
-        ".gmail_quote",
-        ".yahoo_quoted",
-        ".gmail_extra",
-        ".zmail_extra", // zoho
+        ".protonmail_quote", // Proton Mail
+        // Gmail creates both div.gmail_quote and blockquote.gmail_quote. The div
+        // version marks text but does not cause indentation, but both should be
+        // considered quoted text.
+        ".gmail_quote", // Gmail
+        "div.gmail_extra", // Gmail
+        "div[id*=yahoo_quoted]", // Yahoo Mail
+        "blockquote.iosymail", // Yahoo iOS Mail
+        ".tutanota_quote", // Tutanota Mail
+        ".zmail_extra", // Zoho
+        ".skiff_quote", // Skiff Mail
+        "hr[id=replySplit]",
         ".moz-cite-prefix",
-        "#isForwardContent",
-        "#isReplyContent",
-        "#mailcontent:not(table)",
-        "#origbody",
-        "#reply139content",
-        "#oriMsgHtmlSeperator",
+        "div[id=isForwardContent]",
+        "blockquote[id=isReplyContent]",
+        "div[id=mailcontent]",
+        "div[id=origbody]",
+        "div[id=reply139content]",
+        "blockquote[id=oriMsgHtmlSeperator]",
         "blockquote[type=\"cite\"]",
-        "[name=\"quote\"]" // gmx
+        "[name=\"quote\"]", // gmx
+        ".moz-forward-container"
     ]
 
     func body(strippedFromQuotes: Bool) -> String {

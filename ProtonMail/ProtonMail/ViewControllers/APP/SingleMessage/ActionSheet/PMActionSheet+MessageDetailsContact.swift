@@ -25,8 +25,9 @@ import ProtonCore_UIFoundations
 extension PMActionSheet {
 
     static func messageDetailsContact(
-        for title: String,
-        subTitle: String,
+        title: String,
+        subtitle: String,
+        showOfficialBadge: Bool,
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheet {
         let closeItem = PMActionSheetPlainItem(
@@ -36,9 +37,10 @@ extension PMActionSheet {
         )
         let header = PMActionSheetHeaderView(
             title: title,
-            subtitle: subTitle,
+            subtitle: subtitle,
             leftItem: closeItem,
-            rightItem: nil
+            rightItem: nil,
+            rightTitleViews: showOfficialBadge ? [OfficialBadge()] : []
         )
         let items = [
             copyAddress(action: action),

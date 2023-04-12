@@ -38,9 +38,11 @@ class ConversationViewHeaderView: UIView {
 
         [
             titleTextView.topAnchor.constraint(equalTo: topAnchor),
-            titleTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            titleTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            titleTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            titleTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
+            // must be lower than `required`, calling `systemLayoutSizeFitting` sets `contentView.width` to 0 and it causes a constraint conflict
+                .setPriority(as: .init(rawValue: 999)),
+            titleTextView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleTextView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
 
         [
@@ -64,6 +66,7 @@ private enum SubviewsFactory {
         view.isEditable = false
         view.isScrollEnabled = false
         view.backgroundColor = ColorProvider.BackgroundNorm
+        view.textContainerInset.bottom += 8
         return view
     }
 

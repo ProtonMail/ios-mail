@@ -40,7 +40,10 @@ class NewMessageBodyViewController: UIViewController {
     private lazy var customView = NewMessageBodyView()
 
     private lazy var loader: WebContentsSecureLoader = {
-        HTTPRequestSecureLoader(userKeys: viewModel.userKeys)
+        HTTPRequestSecureLoader(schemeHandler: .init(
+            userKeys: viewModel.userKeys,
+            imageProxy: viewModel.imageProxy
+        ))
     }()
     weak var delegate: NewMessageBodyViewControllerDelegate?
     private(set) var webView: WKWebView?
@@ -65,6 +68,12 @@ class NewMessageBodyViewController: UIViewController {
     private var defaultScale: CGFloat?
     private let viewMode: ViewMode
     private var expectedSwipeAction = PagesSwipeAction.noAction
+
+    var webViewIsLoaded: (() -> Void)?
+
+    var isLoading: Bool {
+        return webView?.isLoading ?? false
+    }
 
     init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
         self.viewModel = viewModel
@@ -212,6 +221,7 @@ class NewMessageBodyViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
                 self?.viewModel.recalculateCellHeight?(true)
+                self?.webViewIsLoaded?()
             }
         }
     }

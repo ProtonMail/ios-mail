@@ -25,8 +25,6 @@ final class FetchMessageDetailTests: XCTestCase {
     private var queueManager: MockQueueManager!
     private var apiService: APIServiceMock!
     private var contextProvider: MockCoreDataContextProvider!
-    private var realAttachmentsFlagProvider: MockRealAttachmentsFlagProvider!
-    private var messageDataAction: MockMessageDataAction!
     private var sut: FetchMessageDetail!
 
     override func setUpWithError() throws {
@@ -35,14 +33,12 @@ final class FetchMessageDetailTests: XCTestCase {
         queueManager = MockQueueManager()
         apiService = APIServiceMock()
         contextProvider = MockCoreDataContextProvider()
-        realAttachmentsFlagProvider = MockRealAttachmentsFlagProvider()
         let cacheService = MockCacheServiceProtocol()
-        messageDataAction = MockMessageDataAction()
+        let messageDataAction = MockMessageDataActionProtocol()
         sut = FetchMessageDetail(
             dependencies: .init(queueManager: queueManager,
                                 apiService: apiService,
                                 contextProvider: contextProvider,
-                                realAttachmentsFlagProvider: realAttachmentsFlagProvider,
                                 messageDataAction: messageDataAction,
                                 cacheService: cacheService)
         )
@@ -54,8 +50,6 @@ final class FetchMessageDetailTests: XCTestCase {
         queueManager = nil
         apiService = nil
         contextProvider = nil
-        realAttachmentsFlagProvider = nil
-        messageDataAction = nil
         sut = nil
     }
 

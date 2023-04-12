@@ -63,16 +63,10 @@
  */
 "Sign in" = "Sign in";
 "Enter your Proton Account details." = "Enter your Proton Account details.";
-"Email or username" = "Email or username";
+"Proton email or username" = "Proton email or username";
 "Password" = "Password";
 "Need help?" = "Need help?";
 "Create an account" = "Create an account";
-
-/**
- *  Login welcome screen
- */
-
-"One account for all Proton services." = "One account for all Proton services.";
 
 /**
  *  Login help
@@ -102,7 +96,8 @@
 "Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
 "An error has occured" = "An error has occured";
 "Proton address required" = "Proton address required";
-"Get a Proton Mail address linked to this account in your Proton web settings" = "Get a Proton Mail address linked to this account in your Proton web settings";
+"Update required" = "Update required";
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Get a Proton Mail address linked to this account in your Proton web settings.";
 "Learn more" = "Learn more";
 
 /**
@@ -275,25 +270,19 @@
 "Upgrade your plan" = "Upgrade your plan";
 "Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
 "You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
-"Select" = "Select";
-"Upgrade" = "Upgrade";
 "Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
 "Current plan will expire on %@" = "Current plan will expire on %@";
 "%@ storage" = "%@ storage";
 "%@ storage / user" = "%@ storage / user";
 "for %@" = "for %@";
-"Medium speed" = "Medium speed";
 "Priority customer support" = "Priority customer support";
 "Adblocker (NetShield)" = "Adblocker (NetShield)";
 "Streaming service support" = "Streaming service support";
-"%@ & %@" = "%@ & %@";
 "High speed" = "High speed";
 "Highest speed" = "Highest speed";
 "Multi-user support" = "Multi-user support";
 "The basic for private and secure communications." = "The basic for private and secure communications.";
 "Full-featured mailbox with advanced protection." = "Full-featured mailbox with advanced protection.";
-"Proton Mail for professionals and businesses" = "Proton Mail for professionals and businesses";
-"Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
 "Complete payment?" = "Complete payment?";
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
 "Complete payment" = "Complete payment";
@@ -346,3 +335,57 @@
 "Subject..." = "Subject...";
 "Please share your problem." = "Please share your problem.";
 "Back" = "Back";
+
+/* Welcome screen */
+
+"Privacy by default" = "Privacy by default";
+
+/* New_Plans */
+
+"New_Plans One plan for all Proton services" = "One plan for all Proton services";
+
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
+
+"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
+
+"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "The storage-focused plan with 200 GB of cloud storage to keep your files private.";
+
+"New_Plans Your privacy and security are our priority." = "Your privacy and security are our priority.";
+
+"New_Plans The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
+
+"New_Plans Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
+
+"New_Plans Unlimited folders, labels, and filters" = "Unlimited folders, labels, and filters";
+
+"New_Plans Up to %@ storage" = "Up to %@ storage";
+
+"New_Plans Free VPN on a single device" = "Free VPN on a single device";
+
+"New_Plans Get %@" = "Get %@";
+
+"New_Plans Get Proton for free" = "Get Proton for free";
+
+"New_Plans Extend subscription" = "Extend subscription";
+
+"New_Plans Highest VPN speed" = "Highest VPN speed";
+
+"New_Plans Built-in ad-blocker (NetShield)" = "Built-in ad-blocker (NetShield)";
+
+"New_Plans Access to streaming services globally" = "Access to streaming services globally";
+
+"New_Plans Secure Core servers" = "Secure Core servers";
+
+"New_Plans TOR over VPN" = "Tor over VPN";
+
+"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
+
+"New_Plans %@ of %@" = "%@ of %@";
+
+"New_Plans Connection issues" = "Connection issues";
+
+"New_Plans Check your internet connection" = "Check your internet connection";
+
+"New_Plans Strict no-logs policy" = "Strict no-logs policy";
+
+"New_Plans Plan successfully upgraded" = "Plan successfully upgraded";

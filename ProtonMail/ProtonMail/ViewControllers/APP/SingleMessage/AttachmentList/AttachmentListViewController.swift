@@ -33,7 +33,6 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     private var isInternetBannerPresented = false
     private var previewer: QuickViewViewController?
     private var lastClickAttachmentID: AttachmentID?
-    private var realAttachment: Bool { userCachedStatus.realAttachments }
 
     // Used in Quick Look dataSource
     private var tempClearFileURL: URL?
@@ -67,8 +66,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(AttachmentListTableViewCell.self)
         tableView.rowHeight = 72.0
 
-        let number = realAttachment ? viewModel.normalAttachments.count : viewModel.attachmentCount
-        title = String(format: LocalString._attachment, number)
+        title = String(format: LocalString._attachment, viewModel.normalAttachments.count)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(reachabilityChanged(_:)),
@@ -108,36 +106,17 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        realAttachment ? 1 : viewModel.attachmentSections.count
+        1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if realAttachment {
-            return viewModel.normalAttachments.count
-        }
-        switch viewModel.attachmentSections[section] {
-        case .normal:
-            return viewModel.normalAttachments.count
-        case .inline:
-            return viewModel.inlineAttachments.count
-        }
+        viewModel.normalAttachments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentListTableViewCell.CellID, for: indexPath)
         if let cellToConfig = cell as? AttachmentListTableViewCell {
-            let attachment: AttachmentInfo
-            if realAttachment {
-                attachment = viewModel.normalAttachments[indexPath.row]
-            } else {
-                let sectionItem = viewModel.attachmentSections[indexPath.section]
-                switch sectionItem {
-                case .inline:
-                    attachment = viewModel.inlineAttachments[indexPath.row]
-                case .normal:
-                    attachment = viewModel.normalAttachments[indexPath.row]
-                }
-            }
+            let attachment = viewModel.normalAttachments[indexPath.row]
 
             let byteCountFormatter = ByteCountFormatter()
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"

@@ -79,6 +79,10 @@ struct Constants {
         static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 1024   // 1 GiB
     }
 
+    enum EncryptedSearch {
+        static let defaultStorageLimit: Int = 1_000_000_000 // 1000 MB
+    }
+
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
                                            "iosmail_mail2022_12_usd_non_renewing",
                                            "iosmail_bundle2022_12_usd_non_renewing"]

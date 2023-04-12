@@ -113,18 +113,6 @@ class UserManagerTests: XCTestCase {
         XCTAssertEqual(sut.userInfo.messageToolbarActions.actions, ["label", "print"])
     }
 
-    func testGetConversationToolbarActions() {
-        sut.userInfo.conversationToolbarActions.actions = ["label", "print"]
-
-        XCTAssertEqual(sut.conversationToolbarActions, [.labelAs, .print])
-    }
-
-    func testSetConversationToolbarActions() {
-        sut.conversationToolbarActions = [.labelAs, .print]
-
-        XCTAssertEqual(sut.userInfo.conversationToolbarActions.actions, ["label", "print"])
-    }
-
     func testGetListViewToolbarActions() {
         sut.userInfo.listToolbarActions.actions = ["label", "print"]
 

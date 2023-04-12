@@ -28,12 +28,12 @@ import XCTest
 class StorefrontCoordinatorTests: XCTestCase {
 
     var sut: StorefrontCoordinator!
-    var sideMenuMock: SideMenuMock!
+    var sideMenuMock: MockSideMenuProtocol!
 
     override func setUp() {
         super.setUp()
 
-        sideMenuMock = SideMenuMock()
+        sideMenuMock = MockSideMenuProtocol()
         sut = StorefrontCoordinator(
             paymentsUI: MockPaymentsUIProtocol(),
             sideMenu: sideMenuMock,
@@ -51,13 +51,13 @@ class StorefrontCoordinatorTests: XCTestCase {
     func testCoordinatorStart() {
         sut.start()
 
-        XCTAssertEqual(sideMenuMock.hideMenu.callCounter, 1)
-        XCTAssertEqual(sideMenuMock.hideMenu.arguments(forCallCounter: 1)?.a1, true)
+        XCTAssertEqual(sideMenuMock.hideMenuStub.callCounter, 1)
+        XCTAssertEqual(sideMenuMock.hideMenuStub.arguments(forCallCounter: 1)?.a1, true)
 
-        XCTAssertEqual(sideMenuMock.setContentViewController.callCounter, 1)
-        XCTAssertEqual(sideMenuMock.setContentViewController.arguments(forCallCounter: 1)?.a2, false)
+        XCTAssertEqual(sideMenuMock.setContentViewControllerStub.callCounter, 1)
+        XCTAssertEqual(sideMenuMock.setContentViewControllerStub.arguments(forCallCounter: 1)?.a2, false)
 
-        let presentedViewController = sideMenuMock.setContentViewController.arguments(forCallCounter: 1)?.a1
+        let presentedViewController = sideMenuMock.setContentViewControllerStub.arguments(forCallCounter: 1)?.a1
 
         XCTAssertTrue(presentedViewController is UINavigationController)
 

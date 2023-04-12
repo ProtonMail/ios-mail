@@ -150,23 +150,25 @@ public enum MailAnalyticsErrorEvent: Error {
     // If the send request returns the custom error code 2001
     case sendMessageInvalidSignature
 
+    case conversationViewEndUpdatesCrash
+
     var name: String {
-        let message: String
         switch self {
         case .coreDataInitialisation:
-            message = "Core Data initialisation error"
+            return "Core Data initialisation error"
         case .abortedConversationRequest:
-            message = "Aborted request without conversation ID"
+            return "Aborted request without conversation ID"
         case .invalidMenuItemRequested:
-            message = "Invalid menu item requested"
+            return "Invalid menu item requested"
         case .decryptMIMEFailed:
-            message = "Decrypt MIME failed"
+            return "Decrypt MIME failed"
         case .coreDataSavingError:
             return "Core Data saving error"
         case .sendMessageInvalidSignature:
             return "Send invalid signature"
+        case .conversationViewEndUpdatesCrash:
+            return "Conversation view endUpdates() crash"
         }
-        return message
     }
 
     var extraInfo: [String: Any]? {
@@ -174,7 +176,7 @@ public enum MailAnalyticsErrorEvent: Error {
         switch self {
         case .coreDataInitialisation(let error):
             info = ["Custom Error": error]
-        case .abortedConversationRequest, .sendMessageInvalidSignature:
+        case .abortedConversationRequest, .conversationViewEndUpdatesCrash, .sendMessageInvalidSignature:
             info = nil
         case let .invalidMenuItemRequested(section, row, itemCount, caller):
             info = [

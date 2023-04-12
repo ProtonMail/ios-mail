@@ -72,6 +72,11 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
         self.setup()
         generateAccessibilityIdentifiers()
         initializeHideKeyboard()
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @IBAction private func clickApplyButton(_ sender: Any) {
@@ -103,6 +108,14 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
             return
         }
         self.navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        setupInfoView()
+        passwordHintLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .semibold)
+        passwordHintPlaceholder.font = .adjustedFont(forTextStyle: .body)
+        passwordHintText.font = .adjustedFont(forTextStyle: .body)
     }
 }
 

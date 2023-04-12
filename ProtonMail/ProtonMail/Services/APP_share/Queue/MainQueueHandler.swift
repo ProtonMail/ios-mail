@@ -117,10 +117,8 @@ final class MainQueueHandler: QueueHandler {
             switch action {
             case .saveDraft(let messageObjectID):
                 self.draft(save: messageObjectID, UID: UID, completion: completeHandler)
-            case .uploadAtt(let attachmentObjectID):
+            case .uploadAtt(let attachmentObjectID), .uploadPubkey(let attachmentObjectID):
                 self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
-            case .uploadPubkey(let attachmentObjectID):
-                self.uploadPubKey(attachmentObjectID, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
@@ -418,21 +416,6 @@ extension MainQueueHandler {
         }
     }
 
-    private func uploadPubKey(_ attachmentURI: String, UID: String, completion: @escaping Completion) {
-        coreDataService.performOnRootSavingContext { context in
-            guard
-                let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
-                let managedObject = try? context.existingObject(with: managedObjectID),
-                let _ = managedObject as? Attachment
-            else {
-                completion(NSError.badParameter(attachmentURI))
-                return
-            }
-
-            self.uploadAttachment(with: attachmentURI, UID: UID, completion: completion)
-        }
-    }
-
     private func handleAttachmentResponse(result: Swift.Result<JSONDictionary, NSError>,
                                           attachment: Attachment,
                                           keyPacket: Data,
@@ -612,7 +595,6 @@ extension MainQueueHandler {
             guard let self = self,
                   let objectID = self.coreDataService
                     .managedObjectIDForURIRepresentation(messageObjectID) else {
-                // error: while trying to get objectID
                 completion(NSError.badParameter(messageObjectID))
                 return
             }
@@ -637,31 +619,39 @@ extension MainQueueHandler {
                     return
                 }
 
-                for att in attachments where !att.isSoftDeleted && att.attachmentID != "0" {
-                    guard let sessionPack = try att.getSession(userKeys: user.userPrivateKeys,
-                                                               keys: user.addressKeys,
-                                                               mailboxPassword: user.mailboxPassword) else { // DONE
+                for attachment in attachments where !attachment.isSoftDeleted && attachment.attachmentID != "0" {
+                    guard let sessionPack = try attachment.getSession(
+                        userKeys: user.userPrivateKeys,
+                        keys: user.addressKeys,
+                        mailboxPassword: user.mailboxPassword
+                    ) else {
                         continue
                     }
-                    guard let newKeyPack = try sessionPack.sessionKey.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo.value)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                    guard let newKeyPack = try sessionPack.sessionKey.getKeyPackage(
+                        publicKey: key.publicKey,
+                        algo: sessionPack.algo.value
+                    )?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                         continue
                     }
-                    att.keyPacket = newKeyPack
-                    att.keyChanged = true
+                    attachment.keyPacket = newKeyPack
+                    attachment.keyChanged = true
                 }
                 let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message)
                 message.addressID = addressID
                 if message.nextAddressID == addressID {
                     message.nextAddressID = nil
                 }
-                let mailbox_pwd = user.mailboxPassword
-                message.body = try self.messageDataService.encryptBody(MessageEntity(message),
-                                                                       clearBody: decryptedBody,
-                                                                       mailbox_pwd: mailbox_pwd)
-                self.messageDataService.saveDraft(message)
+                let mailboxPassword = user.mailboxPassword
+                message.body = try self.messageDataService.encryptBody(
+                    MessageEntity(message),
+                    clearBody: decryptedBody,
+                    mailbox_pwd: mailboxPassword
+                )
+                if let error = context.saveUpstreamIfNeeded() {
+                    throw error
+                }
                 completion(nil)
             } catch let ex as NSError {
-                // error: context thrown trying to get Message
                 completion(ex)
                 return
             }
@@ -843,7 +833,7 @@ extension MainQueueHandler {
                 completion(NSError.badParameter("contact objectID"))
                 return
             }
-            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { contact, error in
+            service.update(contactID: ContactID(contact.contactID), cards: cardDatas) { error in
                 completion(error)
             }
         }

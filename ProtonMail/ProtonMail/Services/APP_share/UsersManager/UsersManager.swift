@@ -26,6 +26,7 @@ import GoLibs
 import LifetimeTracker
 #endif
 import PromiseKit
+import ProtonCore_Challenge
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Keymaker
@@ -77,7 +78,7 @@ class UsersManager: Service {
     /// Server's config like url port path etc..
     var doh: DoH & ServerConfig
 
-    var users: [UserManager] = [] {
+    private(set) var users: [UserManager] = [] {
         didSet {
             userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }
@@ -96,6 +97,12 @@ class UsersManager: Service {
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
     private let userDataCache: CachedUserDataProvider
+
+    #if !APP_EXTENSION
+    private var encryptedSearchCache: EncryptedSearchUserCache {
+        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
+    }
+    #endif
 
     init(
         doh: DoH & ServerConfig,
@@ -124,7 +131,8 @@ class UsersManager: Service {
     func add(auth: AuthCredential, user: UserInfo) {
         self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
-        let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+        let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                       challengeParametersProvider: .forAPIService(clientApp: .mail))
         apiService.serviceDelegate = self
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -245,7 +253,8 @@ class UsersManager: Service {
         if let oldAuth = oldAuthFetch(), let user = oldUserInfo() {
             let session = oldAuth.sessionID
 
-            let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+            let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                           challengeParametersProvider: .forAPIService(clientApp: .mail))
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -307,7 +316,8 @@ class UsersManager: Service {
 
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+                let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                               challengeParametersProvider: .forAPIService(clientApp: .mail))
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -393,6 +403,9 @@ extension UsersManager {
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
                 NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
+            #if !APP_EXTENSION
+            ImageProxyCache.shared.purge()
+            #endif
             completion?()
         }.cauterize()
     }
@@ -433,6 +446,8 @@ extension UsersManager {
 
     func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
+            try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
+
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.authKeychainStore)
             KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
@@ -451,6 +466,10 @@ extension UsersManager {
             }
             self.users = []
             self.save()
+
+            #if !APP_EXTENSION
+            self.encryptedSearchCache.cleanGlobal()
+            #endif
 
             if !ProcessInfo.isRunningUnitTests {
                 keymaker.wipeMainKey()
@@ -556,7 +575,8 @@ extension UsersManager {
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLagcy(), let user = oldUserInfoLagcy() {
             let session = oldAuth.sessionID
-            let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+            let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                           challengeParametersProvider: .forAPIService(clientApp: .mail))
             apiService.serviceDelegate = self
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
@@ -604,7 +624,8 @@ extension UsersManager {
 
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
-                let apiService = PMAPIService(doh: self.doh, sessionUID: session)
+                let apiService = PMAPIService.createAPIService(doh: self.doh, sessionUID: session,
+                                                               challengeParametersProvider: .forAPIService(clientApp: .mail))
                 apiService.serviceDelegate = self
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)

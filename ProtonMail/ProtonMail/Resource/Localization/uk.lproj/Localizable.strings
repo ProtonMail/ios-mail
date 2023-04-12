@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Ви дійсно хочете вийти?";
 
+/* One of the schedule time options */
+"As scheduled" = "Як заплановано";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "%@";
 
@@ -356,7 +359,7 @@
 "Cancel Check" = "Скасувати перевірку";
 
 /* Title */
-"Cancelling" = "Скасування";
+"Canceling" = "Скасування";
 
 /* Warning message */
 "Cannot empty folder right now." = "Зараз неможливо спорожнити теку.";
@@ -910,7 +913,7 @@
 "Go to drafts" = "Перейти до чернеток";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Перейти до налаштувань";
+"Go to settings" = "Перейти до параметрів";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to sign-in" = "Перейти до входу";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Приховати подробиці";
 
-/* hours */
-"hours" = "годин";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Псевдоніми Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Як би ви описали свої враження від нового Proton Mail?";
@@ -952,7 +955,7 @@
 "Human Check Warning" = "Попередження про перевірку \"Я не робот\"";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Я користуюся службою Proton Mail і думаю, що вам вона теж може сподобатися. Це безпечна служба електронної пошти, яка захищає вашу приватність. Зареєструйтеся за цим посиланням, щоб отримати 1 місяць користування преміумфункціями безплатно:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Я користуюся службою Proton Mail і думаю, що вам вона теж може сподобатися. Це безпечна служба електронної пошти, яка захищає вашу приватність. Щоб отримати 1 місяць користування преміумфункціями безплатно, зареєструйтеся за цим посиланням:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Якщо ви втратите WiFi-з'єднання, завантаження продовжиться через мобільні дані.";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Посилання скопійовано.";
-
-/* Button inside the banner */
-"Load anyway" = "Все одно завантажити";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Завантажити вбудовані зображення";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша команда підтримки клієнтів спробує активувати ваш план обслуговування вручну якщо ви погодитеся прикріпити технічні дані, що надаються App Store під час покупки. Ці дані не містять жодних відомостей про ваш обліковий запис iTunes, Apple ID, пов'язаних з платіжними картками або будь-якою іншою інформацією про користувача. Технічні дані допомагають нам перевірити та засвідчити, що транзакція була виконана на серверах App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Наша система позначила це повідомлення спробою шахрайства. Переконайтеся, що воно надійне";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша система позначила це повідомлення як спроба шахрайства. Будь ласка, переконайтеся, що воно надійне.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Тека вищого рівня";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Зберегти зміни";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Заплануйте надсилання повідомлень в будь-який час";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Запланувати надсилання";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Оберіть колір";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Виберіть дату і час";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Вибрані";
@@ -1752,8 +1752,11 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Налаштуйте жести посування для найуживаніших швидких дій.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Налаштуйте власний розклад";
+
 /* menu title */
-"Settings" = "Налаштування";
+"Settings" = "Параметри";
 
 /* The title of the share button in referral share view. */
 "Share" = "Поділитися";
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Відкласти";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "У зв'язку із захистом від стеження, не вдалося завантажити деякі зображення.";
 
 /* menu title */
 "Spam" = "Спам";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Необмежено";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Необмежена кількість тек і міток";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Користуйтеся власним розкладом листування та іншими перевагами після оновлення тарифного плану.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Необхідно відімкнути";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Непідтримуваний тип файлу";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "До 3 власних доменів";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "До 15 адрес електронної пошти";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "До 500 ГБ сховища";
+
 /* update notification email error title */
 "Update Notification Email" = "Оновити адресу для сповіщень";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Оновлений Proton, єдиний захист";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Покращити зараз";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний тарифний план, щоб надіслати з вашої адреси %@";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "Поштовий індекс";
 
+"Customize (verb)" = "Customize";

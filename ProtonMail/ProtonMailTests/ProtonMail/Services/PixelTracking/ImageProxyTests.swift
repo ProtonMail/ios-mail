@@ -23,16 +23,26 @@ import XCTest
 
 class ImageProxyTests: XCTestCase {
     private var apiServiceMock: APIServiceMock!
-    private var delegate: ImageProxyDelegateMock!
+    private var delegate: MockImageProxyDelegate!
     private var sut: ImageProxy!
 
     private let incomingMessage = """
 <html>
     <head>
         <style>
+            /* Sometimes message CSS contains URLs like https://example.com that should not be fetched. */
+
+            @import url("https://tracking.example.com/font.ttf");
+
+            @font-face {
+                font-family: myFont;
+                src: url("https://tracking.example.com/font.woff");
+            }
+
             body {
                 background-image : url ( " https://tracking.example.com/images/1.png ");
             }
+
             div {
                 background: url(http://tracking.example.com/images/2.png);
             }
@@ -58,9 +68,19 @@ class ImageProxyTests: XCTestCase {
     private let expectedStrippedMessage = """
 <html>
     <head>
-        <style>body {
+        <style>/* Sometimes message CSS contains URLs like https://example.com that should not be fetched. */
+
+            @import url("160C6ADB-F096-4AF8-A400-6EEB816FB4DD");
+
+            @font-face {
+                font-family: myFont;
+                src: url("CF9E127D-B000-417A-8731-50F7D7895BDA");
+            }
+
+            body {
                 background-image : url ( " E621E1F8-C36C-495A-93FC-0C247A3E6E5F ");
             }
+
             div {
                 background: url(AA2A26E9-B322-4BB3-ACFC-CBA6C24E6E07);
             }</style>
@@ -96,7 +116,9 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         "https://tracking.example.com/images/6.png": "8CE737FF-EEB2-4D5F-8A7C-B093C785864D",
         "http://tracking.example.com/images/7.png": "CC96C0C5-4B5B-432E-8A95-B32AC55BB343",
         "http://tracking.example.com/images/8.png": "D7FCCD3B-B0E9-4BA2-ACC9-A76AEC705E96",
-        "https://example.com/images/safe.png": "9954E711-8EAA-4B88-83E2-84FB42AED355"
+        "https://example.com/images/safe.png": "9954E711-8EAA-4B88-83E2-84FB42AED355",
+        "https://tracking.example.com/font.ttf": "160C6ADB-F096-4AF8-A400-6EEB816FB4DD",
+        "https://tracking.example.com/font.woff": "CF9E127D-B000-417A-8731-50F7D7895BDA"
     ].reduce(into: [:]) { acc, element in
         acc[UnsafeRemoteURL(value: element.key)] = UUID(uuidString: element.value)!
     }
@@ -107,33 +129,35 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         try super.setUpWithError()
 
         apiServiceMock = APIServiceMock()
-        delegate = ImageProxyDelegateMock()
+        delegate = MockImageProxyDelegate()
         let dependencies = ImageProxy.Dependencies(apiService: apiServiceMock)
         sut = ImageProxy(dependencies: dependencies)
 
         apiServiceMock.dohStub.fixture = DohMock()
 
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
-            let url = URL(string: urlString)!
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                let url = URL(string: urlString)!
 
-            var headers: [String: String] = [
-                "Content-Type": self.testImageContentType
-            ]
+                var headers: [String: String] = [
+                    "Content-Type": self.testImageContentType
+                ]
 
-            let originalSrcURL = url.query!.components(separatedBy: "=")[1].removingPercentEncoding!
-            if originalSrcURL.contains(check: "track") {
-                headers["x-pm-tracker-provider"] = "{0:\"MailChimp.com\"}"
+                let originalSrcURL = url.query!.components(separatedBy: "=")[1].removingPercentEncoding!
+                if originalSrcURL.contains(check: "track") {
+                    headers["x-pm-tracker-provider"] = "{0:\"MailChimp.com\"}"
+                }
+
+                try! FileManager.default.createDirectory(
+                    at: destinationDirectoryURL.deletingLastPathComponent(),
+                    withIntermediateDirectories: true
+                )
+
+                try! Data(base64Encoded: self.base64Image)!.write(to: destinationDirectoryURL)
+
+                let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: headers)
+                completion(response, destinationDirectoryURL, nil)
             }
-
-            try! FileManager.default.createDirectory(
-                at: destinationDirectoryURL.deletingLastPathComponent(),
-                withIntermediateDirectories: true
-            )
-
-            try! Data(base64Encoded: self.base64Image)!.write(to: destinationDirectoryURL)
-            
-            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: headers)
-            completion(response, destinationDirectoryURL, nil)
         }
 
         apiServiceMock.requestJSONStub.bodyIs { _, _, urlString, _, _, _, _, _, _, _, completion in
@@ -162,62 +186,94 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut = nil
         apiServiceMock = nil
         delegate = nil
-        Environment.restore()
+        LocaleEnvironment.restore()
 
         try super.tearDownWithError()
     }
 
-    func testReplacesRemoteSrcURLsWithUUIDs() throws {
-        let processedBody = try sut.process(body: incomingMessage, delegate: delegate)
-        assertHTMLsAreEqual(processedBody, expectedStrippedMessage)
-    }
+    func testFetchRemoteImageIfNeeded() {
+        let url = URL(string: "proton-http://test.com")!
+        let e = expectation(description: "Closure is called")
 
-    func testDownloadsImagesAndProvidesThemAsSafeBase64SrcURLs() throws {
-        _ = try sut.process(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
-
-        let expectedOutput: [Set<UUID>: Base64Image] = predefinedUUIDs.reduce(into: [:]) { acc, element in
-            acc[[element.value]] = Base64Image(url: "data:\(testImageContentType);base64,\(base64Image)")
-        }
-        XCTAssertEqual(output.safeBase64Contents, expectedOutput)
-    }
-
-    func testDetectsTrackers() throws {
-        _ = try sut.process(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        XCTAssert(delegate.didFinishWithOutput.wasCalledExactlyOnce)
-        let trackingOutput = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
-        XCTAssertEqual(trackingOutput.summary.totalTrackerCount, 8)
-    }
-
-    func testReturnsUnmodifiedBodyIfNoRemoteImagesAreFound() throws {
-        let incomingBody = """
-<html>
-    <body>
-    </body>
-</html>
-"""
-        let processedBody = try sut.process(body: incomingBody, delegate: delegate)
-        XCTAssertEqual(processedBody, incomingBody)
-        waitForProxyToFinishProcessing()
-        XCTAssertFalse(delegate.didFinishWithOutput.wasCalled)
-    }
-
-    func testProvidesAListOfFailuresDueToResponseErrors() throws {
-        apiServiceMock.downloadStub.bodyIs { _, urlString, _, _, _, _, _, _, _, completion in
-            let url = URL(string: urlString)!
-            let response = HTTPURLResponse(url: url, statusCode: 500, httpVersion: nil, headerFields: [:])
-            completion(response, nil, nil)
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(_):
+                XCTFail("Should not reach here")
+            }
+            e.fulfill()
         }
 
-        _ = try sut.process(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
-        assertRemoteURLsHaveBeenListedForReload(output.failedUnsafeRemoteURLs)
+        waitForExpectations(timeout: 1)
     }
 
-    func testProvidesAListOfFailuresDueToNonImageResponses() throws {
+    func testFetchRemoteImageIfNeeded_callMultipleTimesForSameURL_apiIsCalledOnce() {
+        let url = URL(string: "proton-http://test.com")!
+        var expectations: [XCTestExpectation] = []
+
+        for _ in 0...5 {
+            let e = expectation(description: "Closure is called")
+            sut.fetchRemoteImageIfNeeded(url: url) { result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(_):
+                    XCTFail("Should not reach here")
+                }
+                e.fulfill()
+            }
+            expectations.append(e)
+        }
+
+        wait(for: expectations, timeout: 2)
+
+        XCTAssertTrue(apiServiceMock.downloadStub.wasCalledExactlyOnce)
+    }
+
+    func testFetchRemoteImageIfNeeded_withUrlWithoutScheme_errorIsReturned() {
+        let url = URL(string: "test.com")!
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                XCTFail("Should not reach here")
+            case .failure(let error):
+                if let err = error as? ImageProxyError {
+                    XCTAssertEqual(err, .schemeNotFound)
+                } else {
+                    XCTFail("Should not reach here")
+                }
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testFetchRemoteImageIfNeeded_withSchemeHasNoProtonPrefix_errorIsReturned() {
+        let url = URL(string: "https://test.com")!
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                XCTFail("Should not reach here")
+            case .failure(let error):
+                if let err = error as? ImageProxyError {
+                    XCTAssertEqual(err, .schemeHasNoPrefix)
+                } else {
+                    XCTFail("Should not reach here")
+                }
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testFetchRemoteImageIfNeeded_withAPIError_errorIsReturned() {
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!
 
@@ -234,63 +290,41 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
             ]
 
             try! JSONSerialization.data(withJSONObject: errorResponse).write(to: destinationDirectoryURL)
-            
+
             let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: headers)
             completion(response, destinationDirectoryURL, nil)
         }
+        let url = URL(string: "proton-http://test.com")!
+        let e = expectation(description: "Closure is called")
 
-        _ = try sut.process(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        let output = try XCTUnwrap(delegate.didFinishWithOutput.lastArguments?.a2)
-        assertRemoteURLsHaveBeenListedForReload(output.failedUnsafeRemoteURLs)
-    }
+        sut.fetchRemoteImageIfNeeded(url: url) { result in
+            switch result {
+            case .success(_):
+                XCTFail("Should not reach here")
+            case .failure(_):
+                break
+            }
+            e.fulfill()
+        }
 
-    func testCachesTheData() throws {
-        _ = try sut.process(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        let numberOfCalls = apiServiceMock.downloadStub.callCounter
-
-        _ = try sut.process(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        XCTAssertEqual(apiServiceMock.downloadStub.callCounter, numberOfCalls)
-    }
-
-    func testDryRun() throws {
-        try sut.dryRun(body: incomingMessage, delegate: delegate)
-        waitForProxyToFinishProcessing()
-        XCTAssertEqual(delegate.didFinishDryRunWithOutput.callCounter, 1)
-        let trackingOutput = try XCTUnwrap(delegate.didFinishDryRunWithOutput.lastArguments?.a2)
-        XCTAssertEqual(trackingOutput.summary.totalTrackerCount, 8)
-    }
+        waitForExpectations(timeout: 1)
+	}
 
     private func assertRemoteURLsHaveBeenListedForReload(
         _ failedRequests: [Set<UUID>: UnsafeRemoteURL],
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        let expectedFailedRequests: [Set<UUID>: UnsafeRemoteURL] = predefinedUUIDs.reduce(into: [:]) { acc, element in
-            acc[[element.value]] = element.key
-        }
+        let expectedFailedRequests: [Set<UUID>: UnsafeRemoteURL] = predefinedUUIDs
+            .filter { $0.key.value.hasSuffix(".png") }
+            .reduce(into: [:]) { acc, element in
+                acc[[element.value]] = element.key
+            }
         XCTAssertEqual(failedRequests, expectedFailedRequests, file: file, line: line)
     }
 
     /// This method is needed because most of the related code runs on a background queue
     private func waitForProxyToFinishProcessing() {
         Thread.sleep(forTimeInterval: 0.1)
-    }
-}
-
-class ImageProxyDelegateMock: ImageProxyDelegate {
-    @FuncStub(imageProxy(_:didFinishDryRunWithOutput:)) var didFinishDryRunWithOutput
-    func imageProxy(
-        _ imageProxy: ProtonMail.ImageProxy,
-        didFinishDryRunWithOutput output: ProtonMail.ImageProxyDryRunOutput
-    ) {
-        didFinishDryRunWithOutput(imageProxy, output)
-    }
-
-    @FuncStub(imageProxy(_:didFinishWithOutput:)) var didFinishWithOutput
-    func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
-        didFinishWithOutput(imageProxy, output)
     }
 }

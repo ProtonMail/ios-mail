@@ -51,9 +51,10 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func fetchMessageDetail(params: Params, callback: @escaping Callback) {
+        let request = MessageDetailRequest(messageID: params.message.messageID)
         dependencies
             .apiService
-            .messageDetail(messageID: params.message.messageID) { [weak self] _, result in
+            .perform(request: request) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return
@@ -135,15 +136,11 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {
-        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let localAttachments = message.attachments.allObjects
             .compactMap { $0 as? Attachment }
             .filter { attach in
                 if attach.isUploaded || attach.isSoftDeleted { return false }
-                if realAttachments {
-                    return !attach.inline()
-                }
-                return true
+                return !attach.inline()
             }
         return localAttachments
     }
@@ -165,22 +162,29 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 }
             }
         }
-        let realAttachments = dependencies.realAttachmentsFlagProvider.realAttachments
         let attachmentCount = message.attachments
             .compactMap { $0 as? Attachment }
-            .filter { !$0.inline() || !realAttachments }
+            .filter { !$0.inline() }
             .count
         message.numAttachments = NSNumber(value: attachmentCount)
     }
 
     private func updatingUnread(message: MessageEntity) throws -> MessageEntity {
-        if let labelID = message.firstValidFolder(), message.unRead {
-            _ = dependencies.messageDataAction.mark(messages: [message], labelID: labelID, unRead: false)
+        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
+
+        guard message.unRead else {
+            return message
         }
 
-        if message.unRead {
-            dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
+        if let labelID = message.firstValidFolder() {
+            _ = dependencies.messageDataAction.mark(
+                messageObjectIDs: [message.objectID.rawValue],
+                labelID: labelID,
+                unRead: false
+            )
         }
+
+        dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
 
         var result: Result<MessageEntity, Error>!
 
@@ -201,8 +205,6 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 result = .failure(error)
             }
         }
-
-        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
 
         return try result.get()
     }
@@ -242,7 +244,6 @@ extension FetchMessageDetail {
         let queueManager: QueueManagerProtocol?
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
-        let realAttachmentsFlagProvider: RealAttachmentsFlagProvider
         let messageDataAction: MessageDataActionProtocol
         let cacheService: CacheServiceProtocol
     }

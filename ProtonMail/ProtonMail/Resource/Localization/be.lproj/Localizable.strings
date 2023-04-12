@@ -1,0 +1,2335 @@
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+", will not be searched. To search within them, increase the %1$@" = ", не будзе шукацца. Для таго, каб працягнуць пошук, павялічце %1$@";
+
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Паказаць паведамленне цалкам]";
+
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "E, d MMM, yyyy а %@";
+
+/* Message for the alert to delete all downloaded messages. */
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "\"Пошук па змесціву ў паведамленні\" будзе адключаны. Яго можна будзе ўключыць зноў у наладах і ўсе паведамленні спампуюцца яшчэ раз.";
+
+/* The text combining size of index and storage limit */
+"%@ of %@" = "%1$@ з %2$@";
+
+/* undo send seconds options, e.g. 5 seconds */
+"%d seconds" = "%d секунд(-ы)";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "Выбрана: %d";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Перацягніце сюды, каб дадаць як далучэнне";
+
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<Засталася адна хвіліна";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1 хв";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 паведамленне перамешчана ў архіў";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 паведамленне перамешчана ў спам";
+
+/* Placeholder */
+"8 to 21 characters long" = "Ад 8 да 21 сімвала";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ да гэтага ўліковага запісу адключаны па прычыне пратэрмінаванага плацяжу. Увайдзіце праз proton.me, каб аплаціць рахунак.";
+
+/* Account manager title */
+"Account" = "Уліковы запіс";
+
+/* section title in settings */
+"Account settings" = "Налады ўліковага запісу";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Дзеянне вернута";
+
+/* new contacts add Anniversary */
+"Add anniversary" = "Дадаць гадавіну";
+
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
+"Add attachment" = "Дадаць далучэнне";
+
+/* new contacts add Birthday */
+"Add birthday" = "Дадаць дзень нараджэння";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Дадаць копію і схаваную копію";
+
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Дадаць кантакты";
+
+/* Action */
+"Add Folder" = "Дадаць папку";
+
+/* new contacts add Gender */
+"Add gender" = "Дадаць пол";
+
+/* add label action */
+"Add Label" = "Дадаць метку";
+
+/* add new address action */
+"Add new address" = "Дадаць новы адрас";
+
+/* new custom field action */
+"Add new custom field" = "Дадаць карыстальніцкае поле";
+
+/* new email action */
+"Add new email" = "Дадаць новы адрас электроннай пошты";
+
+/* new field action */
+"Add new field" = "Дадаць новае поле";
+
+/* new phone action */
+"Add new phone number" = "Дадаць новы нумар тэлефона";
+
+/* action */
+"Add new URL" = "Дадаць новы URL-адрас";
+
+/* new contacts add Nickname */
+"Add nickname" = "Дадаць псеўданім";
+
+/* new contacts add Organization */
+"Add organization" = "Дадаць арганізацыю";
+
+/* The button text for add profile picture */
+"Add photo" = "Дадаць фатаграфію";
+
+/* mark message star */
+"Add Star" = "Дадаць зорачку";
+
+/* new contacts add Title */
+"Add title" = "Дадаць загаловак";
+
+/* Title */
+"Add to contacts" = "Дадаць у кантакты";
+
+/* default vcard types */
+"Address" = "Адрас";
+
+/* cell title in device settings */
+"Addresses" = "Адрасы";
+
+/* Title */
+"Alert" = "Абвестка";
+
+/* Title */
+"All contacts are imported" = "Усе кантакты імпартаваны";
+
+/* mail location title
+   menu title */
+"All Mail" = "Уся пошта";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon logging out of the app." = "Усе налады абароны скінуцца і сатруцца адразу пасля выхаду з праграмы.";
+
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Усе вашы паведамленні спампаваны";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Дазваляць альтэрнатыўную маршрутызацыю";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Дазваляе вам адкрываць раней адкрытыя далучэнні, пакуль вы знаходзіцеся па-за сеткай.";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Дазваляе вам адкрываць раней прачытаныя паведамленні пакуль вы знаходзіцеся па-за сеткай.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Дазваляе вам шукаць сярод вашых паведамленняў. %1$@";
+
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Таксама архіваваць?";
+
+/* cell title in app settings */
+"Alternative routing" = "Альтэрнатыўная маршрутызацыя";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Заўсёды выключана";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Заўсёды ўключана";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Гадавіна";
+
+/* network troubleshot cell title */
+"Antivirus interference" = "Канфлікт з антывірусам";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Усе незахаваныя змены будуць страчаны.";
+
+/* when server not reachable */
+"API Server not reachable…" = "Сервер з API недаступны…";
+
+/* security title in settings */
+"App PIN" = "PIN праграмы";
+
+/* security title in settings */
+"App PIN & Face ID" = "PIN праграмы і Face ID";
+
+/* security title in settings */
+"App PIN & Touch ID" = "PIN праграмы і Touch ID";
+
+/* section title in settings */
+"App settings" = "Налады праграмы";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Знешні выгляд";
+
+/* Apply action */
+"Apply" = "Ужыць";
+
+/* Title */
+"Apply Labels" = "Ужыць меткі";
+
+/* button title */
+"Apply Password" = "Ужыць пароль";
+
+/* menu title
+   Push notification action to archive
+   The title of the archive action in action sheet */
+"Archive" = "Архіў";
+
+/* Push notification action archive */
+"Archive (verb)" = "Архіваваць";
+
+/* Message of message permanent deletion alert, singular */
+"Are you sure you want to delete permanently this message?" = "Вы сапраўды хочаце незваротна выдаліць гэта паведамленне?";
+
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete these %d messages permanently?" = "Вы сапраўды хочаце назаўсёды выдаліць гэтыя %d паведамленні?";
+
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "Вы сапраўды хочаце выйсці з %@?";
+
+/* Alert to confirm sign out
+   Alert when sign out non-primary account from account manager */
+"Are you sure you want to sign out?" = "Вы сапраўды хочаце выйсці?";
+
+/* One of the schedule time options */
+"As scheduled" = "Як запланавана";
+
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "А %@";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Не атрымалася знайсці прынамсі адзін адрас электроннай пошты ў групе";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Не атрымалася знайсці прынамсі адзін адрас электроннай пошты ў групе.";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Прынамсі адзін адрас электроннай пошты атрымальніка адфарматаваны няправільна. Праверце іх яшчэ раз.";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Прынамсі адзін адрас электроннай пошты/дамен атрымальніка не існуе або дрэнна адфарматаваны. Паведамленне перамешчана ў чарнавікі.";
+
+/* No comment provided by engineer. */
+"attachment" = "далучэнне";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Не ўдалося далучыць";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Далучэнне імпартавана";
+
+/* Alert title */
+"Attachment limit" = "Абмежаванне далучэння";
+
+/* No comment provided by engineer. */
+"attachments" = "далучэнні";
+
+/* The title of attachments in local storage settings */
+"Attachments" = "Далучэнні";
+
+/* Title */
+"Authentication" = "Аўтэнтыфікацыя";
+
+/* Title */
+"Auto Lock Time" = "Час аўтаматычнага блакіравання";
+
+/* settings general section title */
+"Auto-load embedded images" = "Аўтаматычная загрузка ўбудаваных відарысаў";
+
+/* settings general section title */
+"Auto-load remote content" = "Аўтаматычная загрузка аддаленага змесціва";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Даступныя дзеянні";
+
+/* Example feedback */
+"Awful" = "Жахліва";
+
+/* top left back button */
+"Back" = "Назад";
+
+/* Error title */
+"Bad parameter" = "Няправільны параметр";
+
+/* Error Description */
+"Bad parameter: %@" = "Няправільны параметр: %@";
+
+/* Error Description */
+"Bad response" = "Няправільны адказ";
+
+/* Title */
+"Bcc" = "Схаваная копія";
+
+/* message Bcc: feild */
+"Bcc:" = "Схаваная копія:";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Дзень нараджэння";
+
+/* Settings row */
+"Block email tracking" = "Блакіраваць адсочванне электроннай пошты";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Не дазваляе адпраўнікам бачыць ці адкрывалі вы паведамленне";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Праглядайце ланцужкі паведамленняў у рэжыме размовы.";
+
+/* Title */
+"Bug Description" = "Апісанне памылкі";
+
+/* Title */
+"Bug Report Received" = "Справаздача пра памылку атрымана";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Кэшаваныя даныя";
+
+/* Call the contact (button title text) */
+"Call contact" = "Патэлефанаваць кантакту";
+
+/* Error */
+"Can't copy the file" = "Немагчыма скапіяваць файл";
+
+/* update password error */
+"Can't create a SRP Client" = "Немагчыма стварыць кліент SRP";
+
+/* update password error */
+"Can't create a SRP verifier!" = "Немагчыма стварыць верыфікатар SRP!";
+
+/* When quick look attachment but can't decrypt it! */
+"Can't decrypt this attachment!" = "Немагчыма расшыфраваць гэта далучэнне!";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Немагчыма выдаліць групу кантактаў праз API";
+
+/* Description */
+"Can't find the value from the response body" = "Немагчыма знайсці значэнне з цела адказу";
+
+/* when quick look attachment but can't find the data */
+"Can't find this attachment!" = "Немагчыма знайсці гэта далучэнне!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus ID!" = "Немагчыма атрымаць ідэнтыфікатар модуля!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "Немагчыма атрымаць модуль!";
+
+/* update password error */
+"Can't get user auth info" = "Немагчыма атрымаць інфармацыю карыстальніка для аўтэнтыфікацыі";
+
+/* Error */
+"Can't load the file" = "Немагчыма загрузіць файл";
+
+/* Error */
+"Can't open the file" = "Немагчыма адкрыць файл";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Немагчыма абнавіць групу кантактаў праз API";
+
+/* Button to cancel encrypted search
+   Cancel action
+   general cancel action
+   Title for the alert button to cancel delete all downloaded messages.
+   Title for the alert button to cancel disable content search. */
+"Cancel" = "Скасаваць";
+
+/* Action */
+"Cancel Check" = "Скасаваць праверку";
+
+/* Title */
+"Canceling" = "Скасаванне";
+
+/* Warning message */
+"Cannot empty folder right now." = "У дадзены момант немагчыма ачысціць папку.";
+
+/* message Cc: feild
+   Title */
+"Cc" = "Копія";
+
+/* settings general section title */
+"Change account password" = "Змяніць пароль уліковага запісу";
+
+/* Title */
+"Change default address to…" = "Змяніць прадвызначаны адрас на…";
+
+/* settings general section title */
+"Change mailbox password" = "Змяніць пароль паштовай скрыні";
+
+/* settings general section title
+   title */
+"Change password" = "Змяніць пароль";
+
+/* update password error title */
+"Change Password" = "Змяніць пароль";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Змяніць PIN-код";
+
+/* Title */
+"Change sender address to…" = "Змяніць адрас адпраўніка на…";
+
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Зарадзіце сваю прыладу або ўзнавіце ўручную.";
+
+/* Action */
+"Check Again" = "Праверыць яшчэ раз";
+
+/* Proton is down description. */
+"Check Proton Status for our system status." = "Праверце статус Proton, каб даведацца пра статус нашай сістэмы.";
+
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "Выберыце іншы адрас адпраўніка";
+
+/* contact placeholder */
+"City" = "Горад";
+
+/* The title of the button in local storage attachments
+   The title of the button in local storage cached data
+   The title of the button to clear the search index */
+"Clear" = "Ачысціць";
+
+/* cell title in device setting */
+"Clear local cache" = "Ачысціць лакальны кэш";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "Ачысціць стыль";
+
+/* general close action */
+"Close" = "Закрыць";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Закрыць копію і схаваную копію";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Закрыццё";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Згарнуць папку";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Згарнуць паведамленне";
+
+/* cell title in device settings
+   The title of combined contact in settings */
+"Combined contacts" = "Камбінаваныя кантакты";
+
+/* Action
+   Springboard (3D Touch) shortcuts action */
+"Compose" = "Напісаць";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Напісаць паведамленне";
+
+/* Title */
+"Compose to" = "Напісаць";
+
+/* Action
+   The title of button of PIN code setup2 */
+"Confirm" = "Пацвердзіць";
+
+/* Title */
+"Confirm new mailbox password" = "Пацвердзіць новы пароль паштовай скрыні";
+
+/* Placeholder */
+"Confirm new password" = "Пацвердзіць новы пароль";
+
+/* Title */
+"Confirm new sign-in password" = "Пацвердзіць новы пароль уваходу";
+
+/* alert title */
+"Confirm phishing report" = "Пацвердзіць скаргу на фішынг";
+
+/* Title */
+"Confirmation" = "Пацвярджэнне";
+
+/* Text for status label when no wifi is available */
+"Connect to WiFi or enable \"Download via mobile data\"." = "Падлучыцеся да Wi-Fi або ўключыце \"Спампаваць праз мабільны інтэрнэт\".";
+
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Кантакт выдалены і будзе сінхранізаваны, калі злучэнне стане даступным";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Кантакт захаваны і будзе сінхранізаваны пры аднаўленні злучэння з інтэрнэтам";
+
+/* No other solution description. */
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Звяжыцеся з намі наўпрост праз нашу форму зваротнай сувязі, электроннай пошты (support@protonmail.zendesk.com) або Twitter.";
+
+/* Action and title
+   menu title */
+"Contacts" = "Кантакты";
+
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Даступны пошук па змесціву";
+
+/* Action
+   The title of button of PIN code setup1 */
+"Continue" = "Працягнуць";
+
+/* No comment provided by engineer. */
+"Conversation grouping" = "Групаванне размоў";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Рэжым размовы";
+
+/* The title of the conversation notice view shown in the conversation view. */
+"Conversations are optional" = "Неабавязковыя размовы";
+
+/* Title */
+"Copy" = "Капіяваць";
+
+/* Title */
+"Copy address" = "Капіяваць адрас";
+
+/* Title */
+"Copy name" = "Капіяваць імя";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Немагчыма адкрыць паведамленне. Паспрабуйце яшчэ раз.";
+
+/* contact placeholder */
+"Country" = "Краіна";
+
+/* top right action text */
+"Create" = "Стварыць";
+
+/* Alert title */
+"Creating folder not allowed" = "Стварэнне папкі не дазволена";
+
+/* Alert title */
+"Creating label not allowed" = "Стварэнне меткі не дазволена";
+
+/* Change language title */
+"Current Language is: " = "Бягучая мова: ";
+
+/* Placeholder */
+"Current password" = "Бягучы пароль";
+
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Бягучы адрас электроннай пошты для аднаўлення доступу";
+
+/* The text for current selection of the storage limit of encrypted search */
+"Current selection: " = "Бягучы выбар: ";
+
+/* Title */
+"Current sign-in password" = "Бягучы пароль уваходу";
+
+/* contacts default label type
+   Custom option for time config picker */
+"Custom" = "Карыстальніцкае";
+
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Наладжванне панэлі інструментаў";
+
+/* Title */
+"Cut" = "Выразаць";
+
+/* cell title in app setting */
+"Dark mode" = "Цёмны рэжым";
+
+/* message Date: text */
+"Date:" = "Дата:";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Дата: %@";
+
+/* days */
+"days" = "дзён";
+
+/* error title */
+"Decryption error" = "Памылка расшыфроўкі";
+
+/* error details */
+"Decryption of this content failed" = "Не ўдалося расшыфраваць гэта змесціва";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "Не ўдалося расшыфраваць змесціва гэтага зашыфраванага паведамлення.";
+
+/* Title */
+"Default" = "Прадвызначана";
+
+/* Settings row */
+"Default browser" = "Прадвызначаны браўзер";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Вызначыце падказку (неабавязкова)";
+
+/* general delete action
+   The title of the delete action in action sheet
+   Title for the alert button to delete all downloaded messages. */
+"Delete" = "Выдаліць";
+
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "Выдаліць %d паведамленні(-яў)";
+
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Выдаліць усе спампаваныя паведамленні?";
+
+/* Title-Contacts */
+"Delete contact" = "Выдаліць кантакт";
+
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Выдаліць групу кантактаў";
+
+/* The title of delete folder button */
+"Delete folder" = "Выдаліць папку";
+
+/* The title of delete label button */
+"Delete label" = "Выдаліць метку";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Выдаліць паведамленне";
+
+/* Title */
+"Details" = "Падрабязнасці";
+
+/* Firewall interference description. */
+"Disable any proxies or firewalls, or contact your network administrator." = "Адключыце ўсе проксі-серверы або міжсеткавыя экраны. Таксама вы можаце звярнуцца да свайго сеткавага адміністратара.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Адключыць праверку";
+
+/* Action
+   The text for downloaded messages in local storage when encrypted search is disabled. */
+"Disabled" = "Адключана";
+
+/* Message for the alert to disable content search. */
+"Disabling the feature now will delete the messages that have already been downloaded." = "Адключэнне гэтай функцыі прывядзе да выдалення ўсіх паведамленняў, якія былі спампаваны раней.";
+
+/* Action */
+"Discard" = "Адхіліць";
+
+/* Action */
+"Discard changes" = "Адхіліць змены";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Адхілена";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Ігнараваць клавіятуру";
+
+/* Title in settings */
+"Display Name" = "Бачнае імя";
+
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Вы сапраўды хочаце выдаліць гэты файл з далучэнняў?";
+
+/* Description */
+"Do you want to cancel the process?" = "Вы сапраўды хочаце скасаваць працэс?";
+
+/* Warning message */
+"Do you want to discard the changes?" = "Вы сапраўды хочаце адхіліць змены?";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Вы сапраўды хочаце адхіліць вашы змены?";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Вы ўсё роўна хочаце адправіць паведамленне?";
+
+/* Action */
+"Don't remind me again" = "Больш не нагадваць";
+
+/* Title */
+"Don't Show Again" = "Больш не паказваць";
+
+/* Done action */
+"Done" = "Гатова";
+
+/* Text for status label when pause button is pressed */
+"Download paused" = "Спампоўванне прыпынена";
+
+/* Text for estimate time label when low battery */
+"Download paused: Low battery" = "Спампоўванне прыпынена: нізкі ўзровень зараду акумулятара";
+
+/* Text for estimate time label when no internet connection is available */
+"Download paused: No connectivity" = "Спампоўванне прыпынена: адсутнічае злучэнне";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Спампоўванне прыпынена: сетка Wi-Fi не выяўлена";
+
+/* Text for estimate time label when storage is full */
+"Download paused: Storage full" = "Спампоўванне прыпынена: сховішча запоўнена";
+
+/* The title of downloaded messages in settings */
+"Download progress" = "Выконваецца спампоўванне";
+
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Спампоўванне праз мабільны інтэрнэт";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Спампаваныя паведамленні";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Спампаваныя паведамленні будуць выдалены";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Спампоўванне паведамлення %1$d з %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Спампоўванне метаданых...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages ..." = "Спампоўванне новых паведамленняў...";
+
+/* The footer of encrypted search in settings */
+"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Спампоўвае лісты, каб вы маглі шукаць у іх. Паведамленні зашыфраваны і захоўваюцца на вашай прыладзе. %1$@";
+
+/* Action */
+"Draft" = "Чарнавік";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "Чарнавік усё яшчэ запампоўваецца…";
+
+/* hint message */
+"Draft saved" = "Чарнавік захаваны";
+
+/* menu title */
+"Drafts" = "Чарнавікі";
+
+/* Onboarding title */
+"Easily up-to-date" = "Лёгка абнавіць";
+
+/* Action
+   The button title of the scheduled message banner. */
+"Edit" = "Рэдагаваць";
+
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Рэдагаваць аватар";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Рэдагаваць кантакт";
+
+/* The title of edit folder page */
+"Edit folder" = "Рэдагаванне папкі";
+
+/* The title for the contact group editing view */
+"Edit group" = "Рэдагаванне групы";
+
+/* The title of edit label page */
+"Edit label" = "Рэдагаванне меткі";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Рэдагаваць фатаграфію";
+
+/* default vcard types */
+"Email" = "Электронная пошта";
+
+/* contact placeholder */
+"Email address" = "Адрас электроннай пошты";
+
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "Адрас электроннай пошты адключаны";
+
+/* The error message is shown in composer */
+"Email address is invalid" = "Памылковы адрас электроннай пошты";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "Адрасы электроннай пошты";
+
+/* Send an email to the current contact (button title text) */
+"Email contact" = "Напісаць кантакту";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "Не ўдалося адправіць. Паведамленне захавана ў чарнавіках.";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Праграмы сачэння электроннай пошты могуць парушыць вашу прыватнасць.";
+
+/* Name of the feature */
+"Email tracking protection" = "Абарона ад праграм сачэння электроннай пошты";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Ачысціць спам";
+
+/* Alert title */
+"Empty spam folder" = "Ачысціць папку са спамам";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Ачысціць сметніцу";
+
+/* Alert title */
+"Empty trash folder" = "Ачысціць папку сметніцы";
+
+/* Button to enable encrypted search
+   The title of the button to move to settings and enable encrypted search. */
+"Enable" = "Уключыць";
+
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Уключыць пошук па змесціву";
+
+/* Title */
+"Enable email notices" = "Уключыць апавяшчэнні пошты";
+
+/* Title */
+"Enable signature" = "Уключыць подпіс";
+
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Зашыфравана Proton";
+
+/* contact section title */
+"Encrypted contact details" = "Зашыфраваныя кантактныя звесткі";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Зашыфравана скразным метадам";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Зашыфраванае скразным метадам і падпісанае паведамленне";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Паведамленне зашыфравана скразным метадам";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Паведамленне зашыфравана скразным метадам ад праверанага адпраўніка";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Зашыфравана скразным метадам для праверанага атрымальніка";
+
+/* Action in 2fa popup view */
+"Enter" = "Увесці";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Увядзіце PIN-код ад 4 да 21 сімвала.";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Увядзіце новы PIN-код";
+
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Увядзіце пароль для выканання змен";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Увядзіце свой PIN, каб разблакіраваць паштовую скрыню.";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "Увядзіце сюды свой подпіс";
+
+/* Title of alert in share extension. */
+"Error" = "Памылка";
+
+/* incorrect email format error in composer */
+"Error sending" = "Памылка адпраўкі";
+
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Прыблізна засталося часу...";
+
+/* lock app option */
+"Every time enter app" = "Падчас кожнага ўваходу ў праграму";
+
+/* Text for the link in the banner when content search is slow. */
+"Exclude message content" = "Выключыць змесціва паведамлення";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Разгарнуць папку";
+
+/* alert title */
+"Expiration not supported" = "Тэрмін дзеяння не падтрымліваецца";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID ";
+
+/* Error message */
+"Failed to determine type of file" = "Не ўдалося вызначыць тып файла";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Не ўдалося загрузіць змесціва!\nПаспрабуйце яшчэ раз.";
+
+/* default vcard types */
+"Fax" = "Факс";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Файл, метка і пазначэнне паведамленняў колерам дапамогуць стварыць ідэальную паштовую скрыню, якая будзе пасаваць менавіта вам.";
+
+/* place holder */
+"Folder Name" = "Назва папкі";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Папкі";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Згодна з наладамі прылады";
+
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Забаронена";
+
+/* forward action */
+"Forward" = "Пераслаць";
+
+/* forwarded message title */
+"Forwarded message" = "Перасланае паведамленне";
+
+/* Text for status label when storage is full */
+"Free up at least 100 MB of storage to continue." = "Вызваліце прынамсі 100 МБ сховішча для таго, каб працягнуць.";
+
+/* Title */
+"From" = "Ад";
+
+/* Title */
+"From your photo library" = "З вашай бібліятэкі фатаграфій";
+
+/* message From: field text */
+"From:" = "Ад:";
+
+/* abbreviation of forward: */
+"Fw:" = "Пераслаць:";
+
+/* abbreviation of forward: */
+"Fwd:" = "Пераслаць:";
+
+/* contacts talbe cell gender title */
+"Gender" = "Пол";
+
+/* section title in settings */
+"General settings" = "Агульныя налады";
+
+/* title of the next button */
+"Get Started" = "Пачаць працу";
+
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Вярнуцца (рэкамендуецца)";
+
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Перайсці да чарнавікоў";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Перайсці ў налады";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign-in" = "Перайсці да ўваходу";
+
+/* Got it action */
+"Got it" = "Зразумела";
+
+/* network troubleshot cell title */
+"Government block" = "Дзяржаўная блакіроўка";
+
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Групаваць разам лісты з адной размовы.";
+
+/* The instruction label for the group name textfield */
+"Group name" = "Назва групы";
+
+/* menu title (contact groups) */
+"Groups" = "Групы";
+
+/* Action */
+"Hide" = "Схаваць";
+
+/* Title */
+"Hide details" = "Схаваць падрабязнасці";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Псеўданімы Hide My Email";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new Proton Mail?" = "Якія ў вас уражанні ад новай версіі Proton Mail?";
+
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
+
+/* Description */
+"Human Check Failed" = "Не ўдалося прайсці антыспамаваю праверку";
+
+/* human check warning title */
+"Human Check Warning" = "Папярэджанне пра антыспамавую праверку";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Я выкарыстоўваю Proton Mail і думаю, што ён спадабаецца вам таксама. Гэта бяспечны сэрвіс электроннай пошты, які абараняе вашу прыватнасць. Зарэгіструйцеся па спасылцы і атрымайце 1 месяц бясплатных прэміяльных магчымасцяў:";
+
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "Пры страце злучэння па Wi-Fi працягваць спампоўваць праз мабільны інтэрнэт.";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ігнараваць папярэджанне і працягнуць";
+
+/* Action */
+"Import Error" = "Памылка імпартавання";
+
+/* Title */
+"Import from…" = "Імпартаваць з…";
+
+/* Downloading attachments from cloud */
+"Importing" = "Імпартаванне";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Імпартаванне далучэння. Гэта можа заняць некаторы час";
+
+/* import contact title */
+"Importing Contacts" = "Імпартаванне кантактаў";
+
+/* alternative routing description
+   The footer of alternative routing setting */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У выпадку блакіроўкі сайтаў Proton гэта налада дазваляе праграме скарыстацца альтэрнатыўнай сеткавай маршрутызацыяй, каб атрымаць доступ да Proton, што можа быць карысным для абыходу міжсеткавых экранаў або праблем з сеткай. Для большай надзейнасці мы рэкамендуем пакінуць гэту наладу актыўнай. %1$@";
+
+/* menu title */
+"Inbox" = "Уваходныя";
+
+/* Error */
+"Incorrect PIN." = "Няправільны PIN.";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Інфармацыя пра аб'ём сховішча, які выкарыстоўвае ўліковы запіс Proton Mail на вашай прыладзе.";
+
+/* Option title */
+"Inherit color from parent folder" = "Унаследаваць колер ад бацькоўскай папкі";
+
+/* A label message */
+"Inherited from parent folder" = "Унаследавана ад бацькоўскай папкі";
+
+/* Title */
+"inline attachments" = "убудаваныя далучэнні";
+
+/* place holder */
+"Input Display Name…" = "Увядзіце бачнае імя…";
+
+/* place holder */
+"Input Notification Email …" = "Увядзіце электронную пошту для апавяшчэння…";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Небяспечнае злучэнне";
+
+/* The preconditions are not met */
+"Internal Error" = "Унутраная памылка";
+
+/* default vcard types */
+"Internet" = "Інтэрнэт";
+
+/* network troubleshot cell title */
+"Internet Service Provider (ISP) problem" = "Праблема з пастаўшчыком паслуг інтэрнэту (ISP)";
+
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Уводзіны ў абноўлены выгляд Proton. \nШмат сэрвісаў, адна місія. Вітаем у інтэрнэце, дзе прыватнасць з'яўляецца паўсядзённасцю.";
+
+/* update password error */
+"Invalid hashed password!" = "Памылковы хэшаваны пароль!";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Памылковы URL-адрас";
+
+/* Error message */
+"Invalid username!" = "Памылковае імя карыстальніка!";
+
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Запрашайце сяброў у Proton,\n атрымайце да 90 $ у крэдытах!";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Запрасіце свае кантакты ў Proton Mail, каб выкарыстоўваць бесперабойнае скразное шыфраванне, або абараніце паролем паведамленні, якія вы ім адпраўляеце.";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Запрашайце сваіх сяброў у Proton: яны змогуць паспрабаваць Mail Plus бясплатна, а вы зарабіць крэдыты, калі яны аформяць падпіску на платны тарыфны план.";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Гэта памылка датычыцца куплі ў праграме?";
+
+/* No comment provided by engineer. */
+"Label as" = "Пазначыць меткай";
+
+/* Title */
+"Label as…" = "Пазначыць як…";
+
+/* createing lable input place holder */
+"Label Name" = "Назва меткі";
+
+/* VoiceOver: email has lables */
+"Labels" = "Меткі";
+
+/* cell title in device settings */
+"Language" = "Мова";
+
+/* Action */
+"Later" = "Пазней";
+
+/* Action
+   alternative routing link name in description
+   The title of learn more link */
+"Learn more" = "Даведацца больш";
+
+/* The title of learn more link */
+"Learn more." = "Даведацца больш.";
+
+/* settings swipe actions section title */
+"Left to Right" = "Злева направа";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "застаецца менш за 1 хвіліну";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Дасягнута абмежаванне";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Спасылка скапіявана.";
+
+/* Button inside the banner */
+"Load anyway" = "Усё роўна загрузіць";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Загрузіць убудаваныя відарысы";
+
+/* Action
+   The title of loading remote content banner. */
+"Load remote content" = "Загрузіць аддаленае змесціва";
+
+/* No comment provided by engineer. */
+"Loading…" = "Загрузка…";
+
+/* The title of local storage in settings */
+"Local storage" = "Лакальнае сховішча";
+
+/* cell title in device settings */
+"Local storage limit" = "Абмежаванне лакальнага сховішча";
+
+/* Text for the link to show when indexing is stopped because of storage limit reached. */
+"local storage limit." = "абмежаванне лакальнага сховішча.";
+
+/* menu title */
+"Lock The App" = "Заблакіраваць праграму";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Увайдзіце яшчэ раз, каб працягваць атрымліваць абнаўленні";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Вы выйшлі з %@";
+
+/* error title */
+"Logs" = "Журнал";
+
+/* cell title in device settings */
+"Mailbox" = "Паштовая скрыня";
+
+/* No comment provided by engineer. */
+"Manage" = "Кіраваць";
+
+/* menu title */
+"Manage accounts" = "Кіраванне ўліковымі запісамі";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Кіраванне адрасамі";
+
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Пазначыць як надзейнае";
+
+/* Push notification action mark as read
+   The title of the read action in action sheet */
+"Mark as read" = "Пазначыць як прачытанае";
+
+/* Action */
+"Mark as read/unread" = "Пазначыць як прачытанае/непрачытанае";
+
+/* The title of the unread action in action sheet */
+"Mark as unread" = "Пазначыць як непрачытанае";
+
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
+
+/* menu title */
+"Menu" = "Меню";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Паведамленне";
+
+/* No comment provided by engineer. */
+"Message actions" = "Дзеянні з паведамленнямі";
+
+/* Title of the view showing the message body */
+"Message body" = "Цела паведамлення";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Не атрымалася адправіць паведамленне. Прынамсі адзін адрас электроннай пошты/дамен атрымальніка не існуе або ён дрэнна адфарматаваны.";
+
+/* Text for the search info banner when indexing is paused. */
+"Message downloading paused. Find out how to %1$@" = "Спампоўванне паведамленняў прыпынена. Даведайцеся як %1$@";
+
+/* Composer expiration page title */
+"Message expiration" = "Тэрмін дзеяння паведамлення";
+
+/* No comment provided by engineer. */
+"Message expired" = "Тэрмін дзеяння паведамлення завяршыўся";
+
+/* Title */
+"Message has been deleted." = "Паведамленне выдалена.";
+
+/* Title */
+"Message has been moved." = "Паведамленне перамешчана.";
+
+/* Title of the view showing the message header */
+"Message headers" = "Загалоўкі паведамлення";
+
+/* The title of message history in settings for encrypted search */
+"Message history" = "Гісторыя паведамленняў";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Паведамленне перамешчана ў сметніцу";
+
+/* Placeholder */
+"Message Password" = "Пароль паведамлення";
+
+/* Alert title */
+"Message saved to Drafts" = "Паведамленне захавана ў Чарнавікі";
+
+/* Description */
+"Message sending failed. Please try again." = "Не ўдалося адправіць паведамленне. Паспрабуйце яшчэ раз.";
+
+/* Description after message have been sent */
+"Message sent" = "Паведамленне адпраўлена";
+
+/* Text for the search info banner when indexing is ongoing. */
+"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Паведамленні спампоўваюцца для пошуку змесціва. Некаторыя вынікі могуць быць не адлюстраваны. %1$@";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Самыя апошнія паведамленні ";
+
+/* Text for the search info banner when indexing is stopped because of storage exceeded. */
+"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Паведамленні да %@ не будуць шукацца. Каб шукаць сярод іх, вызваліце прастору ў сховішчы на гэтай прыладзе.";
+
+/* Text for the alert to enable encrypted search */
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Паведамленні будуць спампаваны праз Wi-Fi. Гэта зойме некаторы час і ваша прылада можа крыху нагрэцца. Вы можаце прыпыніць гэта дзеянне ў любы час.";
+
+/* default vcard types */
+"Mobile" = "Мабільны";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Мабільны подпіс";
+
+/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
+"Monday (%@) at 08:%02d" = "панядзелак (%1$@) а 08:%2$d";
+
+/* More actions button */
+"More" = "Больш";
+
+/* No comment provided by engineer. */
+"Move message" = "Перамясціць паведамленне";
+
+/* No comment provided by engineer. */
+"Move to" = "Перамясціць у";
+
+/* Action title of move to archive */
+"Move to archive" = "Перамясціць у архіў";
+
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Перамясціць ва ўваходныя";
+
+/* Action title of move to spam
+   The title of the spam action in action sheet */
+"Move to spam" = "Перамясціць у спам";
+
+/* Push notification action move to trash
+   The title of the remove action in action sheet */
+"Move to trash" = "Перамясціць у сметніцу";
+
+/* Title */
+"Move to…" = "Перамясціць у…";
+
+/* Onboarding title */
+"Neat and tidy" = "Просты і лаканічны";
+
+/* The title of alternative routing settings */
+"Networking" = "Сетка";
+
+/* Contacts add new contact */
+"New contact" = "Новы кантакт";
+
+/* The title of create folder page */
+"New folder" = "Новая папка";
+
+/* No comment provided by engineer. */
+"New Folder" = "Новая папка";
+
+/* The title for the contact group creation view */
+"New group" = "Новая група";
+
+/* The title of create label page */
+"New label" = "Новая метка";
+
+/* No comment provided by engineer. */
+"New Label" = "Новая метка";
+
+/* Title */
+"New mailbox password" = "Новы пароль паштовай скрыні";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Новае паведамленне";
+
+/* Placeholder */
+"New password" = "Новы пароль";
+
+/* Title */
+"New sign-in password" = "Новы пароль уваходу";
+
+/* title of the next button */
+"Next" = "Далей";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Псеўданім";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Далучэнні не знойдзены";
+
+/* Title */
+"No connectivity detected…" = "Не выяўлена падлучэння…";
+
+/* Short hint in the header view */
+"No email trackers found" = "Праграмы сачэння не знойдзены";
+
+/* network troubleshot cell title */
+"No internet connection" = "Няма злучэння з інтэрнэтам";
+
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Для ўнутранага карыстальніка не атрымана ніводнага ключа";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "няма аб'екта";
+
+/* Placeholder if message sender is empty */
+"No Recipient" = "Няма атрымальніка";
+
+/* zero messages matching search query */
+"No results found" = "Нічога не знойдзена";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Для ўнутранага карыстальніка не атрымана ніводнага сапраўднага ключа";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Ніводны з атрыманых ключоў WKD для карыстальніка несапраўдны для адпраўкі";
+
+/* Error message */
+"No, not related to in-app purchase" = "Не мае ніякага дачынення да куплі праз праграму";
+
+/* A *short* description saying that there is no contact group associated with this contact email
+   Action title of none
+   The protection title of None protection
+   Title */
+"None" = "Няма";
+
+/* Title */
+"normal attachments" = "звычайныя далучэнні";
+
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "Не спам (перамясціць ва ўваходныя)";
+
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Не ўсе паведамленні былі спампаваны. Вызваліце месца на прыладзе, каб спампаваць іх усе.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Не ўсе паведамленні былі спампаваны. Павялічце абмежаванне сховішча ніжэй, каб спампаваць іх усе.";
+
+/* No comment provided by engineer. */
+"Not set" = "Не зададзена";
+
+/* title */
+"Notes" = "Нататкі";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Тут нічога няма";
+
+/* Alert title */
+"Notice" = "Заўвага";
+
+/* A option title that enable/disable notification feature
+   cell title in device settings */
+"Notifications" = "Апавяшчэнні";
+
+/* The title of Off setting options */
+"Off" = "Выключана";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Па-за сеткай";
+
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Вы па-за сеткай, паведамленне ў чарзе на адпраўку";
+
+/* Action */
+"OK" = "Добра";
+
+/* Title for the alert button to disable content search. */
+"Okay" = "Добра";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Старыя паведамленні: ";
+
+/* The title of On setting options */
+"On" = "Уключана";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "%@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "%1$@ а %2$@";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Можна дадаць толькі адзін бясплатны ўліковы запіс";
+
+/* Open action */
+"Open" = "Адкрыць";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Адкрыць пераключальнік уліковых запісаў";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Арганізацыя";
+
+/* default vcard types */
+"Other" = "Іншае";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша служба падтрымкі кліентаў паспрабуе змяніць ваш тарыфны план уручную, калі вы згадзіцеся дадаць тэхнічныя даныя, якія былі выдадзены крамай App Store праграме ў момант куплі. Сярод гэтых даных няма ніякіх падрабязнасцей пра ваш уліковы запіс iTunes, Apple ID, прывязаныя крэдытныя карткі або якой-небудзь іншай карыстальніцкай інфармацыі. Тэхнічныя даныя толькі дапамогуць нам праверыць, што трансакцыя цалкам завяршылася на серверах App Store.";
+
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша сістэма пазначыла гэта паведамленне як спробу фішынгу. Праверце яго надзейнасць.";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "Бацькоўская папка";
+
+/* title */
+"Password Hint" = "Падказка да пароля";
+
+/* update password error */
+"Password update failed" = "Не ўдалося абнавіць пароль";
+
+/* Placeholder */
+"Passwords must match" = "Паролі павінны супадаць";
+
+/* Text for pause button */
+"Pause" = "Прыпыніць";
+
+/* default vcard types */
+"Personal" = "Асабісты";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "Зашыфравана з дапамогай PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "Паведамленне падпісана і зашыфравана з дапамогай PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "Паведамленне зашыфравана з дапамогай PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Паведамленне зашыфравана з дапамогай PGP ад праверанага адпраўніка";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Зашыфравана з дапамогай PGP для праверанага атрымальніка";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "Падпісана з дапамогай PGP";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Паведамленне падпісана з дапамогай PGP ад праверанага адпраўніка";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Паведамленне падпісана з дапамогай PGP. Не ўдалося праверыць адпраўніка";
+
+/* default vcard types */
+"Phone" = "Тэлефон";
+
+/* contact placeholder */
+"Phone number" = "Нумар тэлефона";
+
+/* The protection title of PIN code protection */
+"PIN code" = "PIN-код";
+
+/* Description */
+"PIN code can't be empty." = "PIN-код не можа быць пустым.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Занадта доўгі PIN";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Занадта кароткі PIN";
+
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Падлучыцеся і паўтарыце спробу";
+
+/* Text for status label when no internet connection is available */
+"Please connect to the internet to continue." = "Падлучыце інтэрнэт, каб працягнуць.";
+
+/* error message */
+"Please input a valid email address." = "Увядзіце сапраўдны адрас электроннай пошты.";
+
+/* Alert message */
+"Please keep Proton Mail open until the operation is done." = "Не закрывайце Proton Mail, пакуль аперацыя не завершыцца.";
+
+/* no internet connection description */
+"Please make sure that your internet connection is working." = "Пераканайцеся, што ваша злучэнне з інтэрнэтам працуе.";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Назавіце групу";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "Выберыце прынамсі адзін адрас электроннай пошты";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Выберыце прынамсі адзін адрас электроннай пошты для групы кантактаў";
+
+/* No comment provided by engineer. */
+"Please set a recovery / notification email" = "Задайце электронную пошту для аднаўлення доступу або апавяшчэнняў";
+
+/* The body of the email draft created in the network troubleshoot view. */
+"Please share your problem." = "Абагуліце сваю праблему.";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 меткі";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Палепшыце свой тарыфны план";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Палепшыце свой тарыфны план, каб мець магчымасць адпраўляць і атрымліваць лісты.";
+
+/* Description */
+"Please use Proton Mail App sign-in first." = "Спачатку ўвайдзіце праз праграму Proton Mail.";
+
+/* No comment provided by engineer. */
+"Print" = "Друкаваць";
+
+/* cell title in device settings */
+"Privacy" = "Прыватнасць";
+
+/* Onboarding title */
+"Privacy for all" = "Прыватнасць для ўсяго";
+
+/* Local notification title */
+"Problem sending message" = "Праблема з адпраўкай паведамлення";
+
+/* network troubleshot cell title */
+"Proton is down" = "Proton зараз недаступны";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail зараз недаступны…";
+
+/* The message about the app is not having the permission to access photo library */
+"Proton Mail needs photo library access in your device settings." = "Proton Mail неабходны доступ да бібліятэкі фатаграфій у наладах вашай прылады.";
+
+/* Name of the link of Proton Status */
+"Proton Status" = "Статус Proton";
+
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Напісаць водгук";
+
+/* network troubleshot cell title */
+"Proxy/Firewall interference" = "Канфлікт з проксі-серверам або міжсеткавым экранам";
+
+/* The title of re auth alert */
+"Re-authenticate" = "Паўторная аўтэнтыфікацыя";
+
+/* abbreviation of reply: */
+"Re:" = "Адказаць:";
+
+/* No comment provided by engineer. */
+"Read" = "Прачытана";
+
+/* Title */
+"Reading device contacts data…" = "Чытанне кантактных даных на прыладзе…";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Апавяшчэнне прачытання адпраўлена";
+
+/* The error message is shown in composer */
+"Recipient not found" = "Атрымальнік не знойдзены";
+
+/* Title */
+"Recovery Code" = "Код аднаўлення";
+
+/* Title */
+"Recovery email" = "Электронная пошта для аднаўлення доступу";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "Аднаўленне ўключана";
+
+/* menu title */
+"Refer a friend" = "Запрасіць сябра";
+
+/* Title */
+"Remind Me Later" = "Нагадаць мне пазней";
+
+/* remove action */
+"Remove" = "Выдаліць";
+
+/* Settings row */
+"Remove image metadata" = "Выдаліць метаданыя відарыса";
+
+/* action title */
+"Remove password" = "Выдаліць пароль";
+
+/* The button to enable label list reorder */
+"Reorder" = "Змяніць парадак";
+
+/* textview title */
+"Repeat password" = "Паўтарыце пароль";
+
+/* The title of PIN code setup2 view
+   The title of textfield of PIN code setup2 */
+"Repeat PIN code" = "Паўтарыце PIN-код";
+
+/* reply action */
+"Reply" = "Адказаць";
+
+/* reply all action */
+"Reply all" = "Адказаць усім";
+
+/* menu title */
+"Report a problem" = "Паведаміць пра праблему";
+
+/* No comment provided by engineer. */
+"Report phishing" = "Паведаміць пра фішынг";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Адпраўляючы скаргу пра спробу фішынгу, вы адправіце гэта паведамленне нам, каб мы маглі прааналізаваць яго і палепшыць нашы фільтры. Гэта азначае, што мы зможам цалкам убачыць змесціва гэтага паведамлення.";
+
+/* link opeining confirmation */
+"Request link confirmation" = "Запытваць пацвярджэнне пры пераходзе па спасылках";
+
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Скінуць да прадвызначаных";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Скінуць да прадвызначаных?";
+
+/* Title */
+"Resetting message cache…" = "Скіданне кэшу паведамлення…";
+
+/* Text for resume button */
+"Resume" = "Узнавіць";
+
+/* Text for the link to show when indexing is paused. */
+"resume manually." = "узнавіць уручную.";
+
+/* Action */
+"Retry" = "Паўтарыць";
+
+/* settings swipe actions section title */
+"Right to Left" = "Справа налева";
+
+/* Title */
+"Save" = "Захаваць";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "Захаваць як PDF";
+
+/* title */
+"Save Changes" = "Захаваць змены";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Заплануйце адпраўку паведамленняў у любы час";
+
+/* Action
+   The action title of the alert of the user trying to send a message that was schedule-send. */
+"Schedule send" = "Запланаваць адпраўку";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Расклад будзе выдалены";
+
+/* mail location title */
+"Scheduled" = "Запланавана";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Планаванне паведамлення...";
+
+/* Springboard (3D Touch) shortcuts action
+   Title */
+"Search" = "Пошук";
+
+/* cell title in device settings
+   The title of encrypted search in settings */
+"Search message content" = "Пошук змесціва паведамлення";
+
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Пошук займае занадта шмат часу? %1$@ з гэтага пошуку для атрымання больш хуткіх вынікаў.";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Паглядзець падрабязнасці";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Паглядзець ход выканання.";
+
+/* section title */
+"Select colour" = "Выбар колеру";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Выбрана";
+
+/* Action */
+"Send" = "Адправіць";
+
+/* Action */
+"Send anyway" = "Усё роўна адправіць";
+
+/* Title of button to send feedback */
+"Send feedback" = "Адправіць водгук";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Адправіць адразу";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Адправіць адразу?";
+
+/* Description */
+"Send message without subject?" = "Адправіць паведамленне без тэмы?";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Адправіць апавяшчэнне пра прачытанне";
+
+/* encryption lock description */
+"Sender Verification Failed" = "Не ўдалося праверыць адпраўніка";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Не ўдалося адправіць";
+
+/* Alert title */
+"Sending in progress" = "Выконваецца адпраўка";
+
+/* Description */
+"Sending Message" = "Адпраўка паведамлення";
+
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "Адпраўка паведамлення…";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Адпраўка паведамленняў з адраса %1$@ з'яўляецца платнай функцыяй. Ваша паведамленне будзе адпраўлена з вашага прадвызначанага адраса %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Адправіць можна будзе\nпасля запампоўвання далучэнняў";
+
+/* menu title */
+"Sent" = "Адпраўленыя";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "Адпраўлена Proton Mail з дапамогай шыфравання нулявога доступу";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Адпраўлена Proton Mail з дапамогай шыфравання нулявога доступу праверанаму атрымальніку";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "Адпраўлена з дапамогай скразнога шыфравання";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "Адпраўлена вамі з дапамогай скразнога шыфравання праверанаму атрымальніку";
+
+/* Description */
+"Sent Failed" = "Не ўдалося адправіць";
+
+/* Title */
+"Set" = "Задаць";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Задаць пароль, каб зашыфраваць гэта паведамленне для тых, хто не карыстаецца Proton Mail.";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Задаць тэрмін дзеяння для ліста";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "Задаць пароль для ліста";
+
+/* Title */
+"Set Password" = "Задаць пароль";
+
+/* The title of PIN code setup1 view */
+"Set PIN code" = "Задаць PIN-код";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Наладзьце жэсты правядзення для доступу да дзеянняў, якія вы часта выкарыстоўваеце.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Прызначыць свой уласны расклад";
+
+/* menu title */
+"Settings" = "Налады";
+
+/* The title of the share button in referral share view. */
+"Share" = "Абагуліць";
+
+/* action */
+"Share contact" = "Абагуліць кантакт";
+
+/* Action */
+"Show" = "Паказаць";
+
+/* The button title of the conversation notice view shown in the conversation view. */
+"Show me" = "Паказаць мне";
+
+/* Alert title to confirm signout
+   menu title */
+"Sign out" = "Выйсці";
+
+/* Action */
+"Sign Out" = "Выйсці";
+
+/* Title in signature settings */
+"Signature" = "Подпіс";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Увайшлі як %@";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Вы выйшлі з %1$@ і ўвайшлі ў %2$@";
+
+/* skip button title in onboarding page */
+"Skip" = "Прапусціць";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Адкласці";
+
+/* The banner shown in case of proxy failure */
+"Some images failed to load with tracking protection." = "Не ўдалося загрузіць некаторыя відарысы з абаронай ад сачэння.";
+
+/* menu title */
+"Spam" = "Спам";
+
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
+"Star" = "Зорачка";
+
+/* Title */
+"Star/unstar" = "Паставіць/прыбраць зорачку";
+
+/* menu title
+   Springboard (3D Touch) shortcuts action
+   VoiceOver: email is starred */
+"Starred" = "З зорачкай";
+
+/* contact placeholder */
+"State" = "Стан";
+
+/* network troubleshot cell title */
+"Still can't find a solution" = "Рашэнне ўсё яшчэ не знойдзена";
+
+/* cell title in device settings */
+"Storage" = "Сховішча";
+
+/* Alert title */
+"Storage full" = "Сховішча запоўнена";
+
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Абмежаванне сховішча";
+
+/* Storage warning */
+"Storage quota exceeded" = "Перавышана квота на аб'ём сховішча";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Выкарыстана сховішча";
+
+/* The text for determining the size of the encrypted search index */
+"Storage used: " = "Выкарыстана сховішча: ";
+
+/* Title */
+"Storage Warning" = "Папярэджанне пра сховішча";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "Захоўваецца з шыфраваннем нулявога доступу";
+
+/* contact placeholder */
+"Street" = "Вуліца";
+
+/* Placeholder */
+"Subject" = "Тэма";
+
+/* subject: text when forward */
+"Subject:" = "Тэма:";
+
+/* The subject of the email draft created in the network troubleshoot view. */
+"Subject..." = "Тэма...";
+
+/* menu title
+   The title of a subscription plans screen */
+"Subscription" = "Падпіска";
+
+/* cell title in app settings */
+"Swipe actions" = "Дзеянні правядзення";
+
+/* Swiping gestures */
+"Swiping gestures" = "Жэсты правядзення";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Пераключыць рэжым выбару";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Пераключыць фільтр на непрачытаныя";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Уліковы запіс зменены на \"%@\"";
+
+/* Error */
+"System can't copy the file" = "Сістэма не можа скапіяваць файл";
+
+/* Title */
+"Take new photo" = "Зрабіць новую фатаграфію";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Націсніце тут, каб задаць";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Падзяліцеся з намі вашымі ўражаннямі (неабавязкова).";
+
+/* Antivirus interference description. */
+"Temporarily disable or remove your antivirus software." = "Часова адключыце або выдаліце антывірус.";
+
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Умовы выкарыстання";
+
+/* No comment provided by engineer. */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Дзякуй, што адправілі справаздачу пра памылку. Мы дадалі ваш зварот у нашу сістэму адсочвання памылак.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Дзякуй за ваш водгук!";
+
+/* Error message */
+"The 2 passwords are not matching" = "Паролі не супадаюць";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Дзеянні на панэлі інструментаў будуць скінуты да прадвызначаных";
+
+/* Info banner to inform the user that indexing might be stopped when the app is closed. */
+"The download will stop if the Proton Mail app is closed." = "Спампоўванне будзе скасавана, калі закрыць праграму Proton Mail.";
+
+/* Description */
+"The draft cache is broken. Please try again." = "Кэш чарнавікоў сапсаваны. Паспрабуйце яшчэ раз.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Немагчыма далучыць наступныя файлы:";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "Паведамленне адпраўляецца і пасля завяршэння адпраўкі будзе перамешчана ў папку \"Адпраўленыя\".";
+
+/* update password error */
+"The new password can't be empty." = "Новы пароль не можа быць пустым.";
+
+/* update password error */
+"The new password does not match." = "Новы пароль не супадае.";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Новы пароль павінен змяшчаць прынамсі 8 сімвалаў";
+
+/* update password error */
+"The password is wrong." = "Няправільны пароль.";
+
+/* Error message */
+"The password must be between 8 and 21 characters long" = "Ваш пароль павінен мець даўжыню ў межах ад 8 да 21 сімвала";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-коды павінны супадаць!";
+
+/* update password error */
+"The private key update failed." = "Не ўдалося абнавіць прыватны ключ.";
+
+/* Title */
+"The request timed out." = "Перавышаны тэрмін чакання запыту.";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Несапраўдны ключ адпраўкі";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "У будучым час адпраўкі павінен быць не менш за 5 хвілін.";
+
+/* Description */
+"The size limit for attachments is 25 MB." = "Абмежаванне памеру для далучэнняў складае 25 МБ.";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адрас, які вы спрабуеце адкрыць з'яўляецца нестандартным і можа быць загружаны некарэктна. Вы сапраўды хочаце адкрыць яго прадвызначаным браўзерам на вашай прыладзе?";
+
+/* Alert when the account is already logged in */
+"The user is already logged in" = "Гэты карыстальнік ужо ўвайшоў";
+
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Ёсць неадпраўленыя паведамленні, якія будуць страчаны пры выхадзе з сістэмы";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Гэта дзеянне нельга будзе адрабіць.";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Гэта дзеянне нельга будзе адрабіць. Лісты, якія знаходзяцца ў гэтай папцы не будуць выдалены, і іх можна будзе знайсці ў папцы \"Уся пошта\".";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "У гэтай размове маюцца паведамленні, якія не былі перамешчаны ў сметніцу.";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Гэта размова змяшчае выдаленыя паведамленні";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі свайго дамена. Ён можа быць падроблены або перасланы неналежным чынам!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі свайго дамена. Ён можа быць падроблены або перасланы неналежным чынам!";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Верагодна, што крыніцай гэтага ліста з'яўляецца адрас, які адносіцца да Proton Mail, але сам ліст прыйшоў не з нашай сістэмы і не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі. Ён можа быць падроблены або перасланы неналежным чынам!";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Гэта функцыя затрымлівае адпраўку вашых паведамленняў, што дае вам магчымасць адрабіць адпраўку на працягу выбранага перыяду часу.";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "Гэта папка пустая";
+
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Гэта спасылка вядзе на вэб-сайт, на якім могуць скрасці вашы даныя: паролі або інфармацыю аб крэдытных картках.\n%@\n\nНе працягвайце ў мэтах бяспекі.";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Гэта паведамленне больш не запланавана для адпраўкі пазней. Калі вы ўсё яшчэ хочаце адправіць яго пазней, вы можаце націснуць на \"Запланаваць адпраўку\"";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Гэта паведамленне можа быць спробай фішынгу. Праверце адпраўніка і змесціва, каб пераканацца ў іх надзейнасці.";
+
+/* The title of auto reply banner */
+"This message was automatically generated" = "Гэта паведамленне згенерыравана аўтаматычна";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Гэта паведамленне будзе адпраўлена %1$@ а %2$@";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Тэрмін дзеяння гэтага паведамлення міне праз %1$dДЗ %2$dГ %3$dХВ";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Гэты параметр вернецца ў Safari, калі выбраны браўзер будзе выдалены.";
+
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Гэта панэль інструментаў з'явіцца пры выбары некалькіх паведамленняў у вашых уваходных.";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Гэта панэль інструментаў бачная пры чытанні паведамлення.";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "Час адпачыць";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Час";
+
+/* contacts talbe cell Title title */
+"Title" = "Пасада";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Не ўдалося праверыць сертыфікат TLS. Магчыма, што ваша злучэнне адсочваецца і праграма часова заблакіравана для вашай бяспекі.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Не ўдалося праверыць сертыфікат TLS. Магчыма, што ваша злучэнне адсочваецца і праграма часова заблакіравана для вашай бяспекі.\n\nНеадкладна пераключыце сетку.";
+
+/* message To: feild
+   Title */
+"To" = "Каму";
+
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Сёння а %@";
+
+/* One of schedule time options */
+"Tomorrow" = "Заўтра";
+
+/* scheduled send message at tomorrow morning Action */
+"Tomorrow at 08:%02d AM" = "Заўтра а 08:%02d";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Заўтра а %@";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Занадта шмат паведамленняў чакаюць адпраўкі.\nПачакайце, пакуль адправіцца іншае паведамленне, каб запланаваць гэта.";
+
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Дзеянні панэлі інструментаў (выберыце да 5 дзеянняў)";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Сачэнне за маімі ўзнагародамі";
+
+/* mail location desc
+   menu title */
+"Trash" = "Сметніца";
+
+/* network troubleshot view title */
+"TroubleShooting" = "Выпраўленне непаладак";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "Давераныя ключы несапраўдныя для адпраўкі";
+
+/* ISP problem description */
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падлучыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў, у якія вы ўвайшлі.";
+
+/* Placeholder */
+"Two Factor Code" = "Двухфактарны код";
+
+/* Internal type casting error */
+"Type casting error" = "Не ўдалося перадаць тып значэння пераменнай";
+
+/* Description */
+"Unable to edit this message offline" = "Немагчыма рэдагаваць гэта паведамленне па-за сеткай";
+
+/* Description */
+"Unable to parse response" = "Немагчыма прааналізаваць адказ";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Немагчыма прааналізаваць аб'ект адказу: \n%@";
+
+/* error when sending the message */
+"Unable to send the email" = "Немагчыма адправіць ліст";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Схаваныя атрымальнікі";
+
+/* Action */
+"Undo" = "Адрабіць";
+
+/* No comment provided by engineer. */
+"Undo send" = "Адрабіць адпраўку";
+
+/* title, default display name */
+"Unknown" = "Невядома";
+
+/* Error */
+"Unknown Error" = "Невядомая памылка";
+
+/* The text for current selection of the storage limit of encrypted search when there is no limit. */
+"Unlimited" = "Неабмежавана";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Неабмежаваная колькасць папак і метак";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Разблакіруйце карыстальніцкі расклад адпраўкі лістоў і іншыя перавагі пасля паляпшэння свайго тарыфнага плана.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Патрабуецца разблакіроўка";
+
+/* The unread title of unread action button in mailbox view */
+"unread" = "непрачытаныя";
+
+/* No comment provided by engineer. */
+"Unread" = "Непрачытаныя";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Прыбраць зорачку";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Адпісацца ад спіса рассылкі";
+
+/* Error message */
+"Unsupported file type" = "Тып файла не падтрымліваецца";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Да 3 карыстальніцкі даменаў электроннай пошты";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Да 15 адрасоў электроннай пошты";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Да 500 ГБ сховішча";
+
+/* update notification email error title */
+"Update Notification Email" = "Абнавіць адрас электроннай пошты для апавяшчэнняў";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Абноўлена >1 гадзіну таму";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Абноўлена толькі што";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Абноўлены Proton, уніфікаваная абарона";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Палепшыць зараз";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Перайдзіце на платны тарыфны план, каб мець магчымасць адпраўляць з вашага адраса %@";
+
+/* Action */
+"Upload device contacts" = "Запампаваць кантакты з прылады";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Запампаваць кантакты iOS у Proton Mail?";
+
+/* default vcard types */
+"URL" = "URL-адрас";
+
+/* Option title */
+"Use folder colors" = "Выкарыстоўваць колеры папак";
+
+/* error title */
+"Verification error" = "Памылка праверкі";
+
+/* error details */
+"Verification of this content’s signature failed" = "Не ўдалося праверыць подпіс гэтага змесціва";
+
+/* View action for view scheduled message. */
+"View" = "Прагледзець";
+
+/* No comment provided by engineer. */
+"View headers" = "Прагляд загалоўкаў";
+
+/* No comment provided by engineer. */
+"View HTML" = "Паглядзець HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Паглядзець паведамленні ў цёмным рэжыме";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Паглядзець паведамленні ў светлым рэжыме";
+
+/* Title */
+"Warning" = "Папярэджанне";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't send email!" = "Папярэджанне: вы не зможаце адпраўляць пошту, пакуль не пройдзеце антыспамаваю праверку!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Папярэджанне: гэты вэб-сайт можа быць падробленым";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Мы не змаглі адправіць ваша паведамленне. Верагодна, што ў вас дрэннае злучэнне. Ваша паведамленне захавана ў чарнавіках і будзе аўтаматычна адпраўлена падчас наступнага запуску праграмы.";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Узнікла праблема з падлучэннем да сервераў. Паспрабуйце падлучыцца яшчэ раз.";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Замест гэтага мы рэкамендуем наладзіць пароль для наступных атрымальнікаў:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Замест гэтага мы рэкамендуем наладзіць пароль або адключыць PGP для наступных атрымальнікаў:";
+
+/* week */
+"week" = "тыдзень";
+
+/* Example feedback */
+"Wonderful" = "Цудоўна";
+
+/* default vcard types */
+"Work" = "Працоўны";
+
+/* Title */
+"wrote:" = "піша:";
+
+/* Error message */
+"Yes, attach details of payment" = "Так, далучыць падрабязнасці плацяжу";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Учора";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Вы збіраецеся запусціць браўзер і перайсці па спасылцы";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Усё прачытана!";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Вы па-за сеткай. Мы не можам адлюстраваць змесціва вашага паведамлення.";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Вы па-за сеткай";
+
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Вы можаце выбраць і змяніць парадак дзеянняў на панэлі інструментаў";
+
+/* The message of the conversation notice view shown in the conversation view. */
+"You can disable conversations from settings any time." = "Вы можаце адключыць размовы праз налады ў любы час.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Цяпер вы можаце выбраць і змяніць парадак паказу дзеянняў на гэтай панэлі";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Цяпер вы можаце запланаваць адпраўку паведамленняў на больш позні час";
+
+/* The description of encrypted search at the pop up. */
+"You can now search within your messages. This feature can be enabled from settings at any time." = "Цяпер вы можаце шукаць сярод вашых паведамленняў. Гэту функцыю можна ўключыць у наладах у любы час.";
+
+/* Explanation of downloaded messages for encrypted search */
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Цяпер вы можаце шукаць сярод вашых спампаваных паведамленняў. Для ўсіх астатніх паведамленняў пошук будзе праводзіцца толькі па тэме і атрымальніку.";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "Вы не можаце задаць адрас %@ як прадвызначаны, бо гэта функцыя з'яўляецца платнай.";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Вы адключылі Face ID у наладах сістэмы. Face ID выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, уключыце Face ID у наладах або паўторна ўвайдзіце ў праграму.";
+
+/* Message */
+"You have %d new emails!" = "У вашай скрыні ёсць новыя лісты (колькасць: %d)!";
+
+/* Title */
+"You have a new email!" = "Вы атрымалі новы ліст!";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Вы ўвялі прынамсі адзін памылковы адрас электроннай пошты. Праверце вашых атрымальнікаў.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Вы ўвялі прынамсі аднаго невядомага атрымальніка. Праверце вашых атрымальнікаў.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "У вас няма паведамленняў.";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "У вас ёсць незахаваныя змены. Вы сапраўды хочаце захаваць іх?";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Вы выкарысталі %1$d%% прасторы вашага сховішча (%2$@). Палепшыце свой тарыфны план, каб мець магчымасць адпраўляць і атрымліваць лісты.";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Вы выкарысталі ўсю прастору свайго сховішча (%@). Палепшыце свой тарыфны план, каб мець магчымасць адпраўляць і атрымліваць лісты.";
+
+/* Description */
+"You need at least one recipient to send" = "Для адпраўкі вам неабходны прынамсі адзін атрымальнік";
+
+/* Alert to confirm signout */
+"You will be switched to %@" = "Вы будзеце пераключаны на %@";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Вы збіраецеся незваротна выдаліць паведамленне. Вы ўпэўнены?";
+
+/* Title of the spotlight for tracker protection */
+"You’re safe from email trackers" = "Вы абаронены ад праграм сачэння ў лістах";
+
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Змены будуць адхілены";
+
+/* Goverment blocking description */
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Магчыма, доступ да Proton у вашай краіне заблакіраваны. Паспрабуйце скарыстацца %1$@ (пасуе любы іншы VPN) або %2$@ для доступу да Proton.";
+
+/* Spotlight explanation of the feature */
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Цяпер у вашых лістах прадвызначана загружаецца аддаленае змесціва. Адпраўнікі не будуць ведаць, дзе і калі вы адкрывалі іх лісты.\nДля таго, каб змяніць гэта, перайдзіце ў Налады → Налады ўліковага запісу → Прыватнасць.";
+
+/* Title of user feedback view */
+"Your feedback" = "Ваш водгук";
+
+/* The section title of folder manager table */
+"Your folders" = "Вашы папкі";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Ваша запрашальная спасылка";
+
+/* The section title of label manager table */
+"Your labels" = "Вашы меткі";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Вашы паведамленні спампоўваюцца...";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Тэрмін дзеяння вашага сеансу завяршыўся, таму што вы былі неактыўныя некаторы час або ён быў адкліканы. Увайдзіце ў праграму паўторна.";
+
+/* contact placeholder */
+"ZIP" = "Паштовы індэкс";
+
+"Customize (verb)" = "Customize";

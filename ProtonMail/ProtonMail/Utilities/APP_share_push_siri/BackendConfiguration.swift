@@ -25,7 +25,7 @@ protocol BackendEnvironment {
 
 struct ProductionEnvironment: BackendEnvironment {
     let appDomain = "proton.me"
-    let apiDomain = "api.protonmail.ch"
+    let apiDomain = "mail-api.proton.me"
     let apiPath = ""
 }
 

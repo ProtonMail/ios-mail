@@ -48,62 +48,82 @@ final class LabelsDataServiceTests: XCTestCase {
         mockContextProvider = nil
     }
 
-    func testRemoveDeletedLabelAndFolder() throws {
-        let context = mockContextProvider.viewContext
-        try prepareTestLabelData(context: context)
-        let expectation1 = expectation(description: "Closure is called")
+    func testFetchV4Labels_overwritesLocalFoldersAndLabelsWithOnesReturnedByBackend() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            let type = Int(String(path.last!))!
 
-        sut.cleanLabelsAndFolders(except: ["1", "3"]) {
-            expectation1.fulfill()
+            let id: String
+            switch PMLabelType(rawValue: type) {
+            case .label:
+                id = "new custom label"
+            case .folder:
+                id = "new custom folder"
+            default:
+                fatalError("Unexpected call to \(path)")
+            }
+
+            let labelData: [[String: Any]] = [
+                ["ID": id, "Type": type]
+            ]
+
+            completion(nil, .success(["Labels": labelData]))
         }
-        waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(mockApiService.requestJSONStub.wasNotCalled)
+        mockContextProvider.performAndWaitOnRootSavingContext { context in
+            let oldCustomLabel = Label(context: context)
+            oldCustomLabel.labelID = "old custom label"
+            oldCustomLabel.type = PMLabelType.label.rawValue as NSNumber
+            oldCustomLabel.userID = self.userID
 
-        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        request.predicate = NSPredicate(
-            format: "%K == %@ AND (%K == 1 OR %K == 3)",
-            Label.Attributes.userID,
-            userID,
-            Label.Attributes.type,
-            Label.Attributes.type)
-        let result = try context.fetch(request)
-        let ids = result.compactMap { $0.labelID }.sorted()
-        XCTAssertTrue(result.count == 2)
-        XCTAssertEqual(ids, ["1", "3"])
+            XCTAssertNil(context.saveUpstreamIfNeeded())
+        }
 
-        let groupRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        groupRequest.predicate = NSPredicate(
-            format: "%K == %@ AND %K == 2",
-            Label.Attributes.userID,
-            userID,
-            Label.Attributes.type)
-        let result2 = try context.fetch(groupRequest)
-        XCTAssertEqual(result2.count, 1)
+        let exp = expectation(description: "call has completed")
+
+        sut.fetchV4Labels { result in
+            XCTAssertNil(result.error)
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        let newLabels = sut.getAllLabels(of: .all)
+        let menuLabels: [MenuLabel] = Array(labels: newLabels, previousRawData: [])
+        let (labelItems, folderItems) = menuLabels.sortoutData()
+
+        XCTAssertEqual(labelItems.map(\.location.rawLabelID), ["new custom label"])
+        XCTAssertEqual(folderItems.map(\.location.rawLabelID), ["new custom folder"])
     }
-}
 
-extension LabelsDataServiceTests {
-    private func prepareTestLabelData(context: NSManagedObjectContext) throws {
-        let label = Label(context: context)
-        label.labelID = "1"
-        label.type = NSNumber(1)
-        label.userID = userID
+    func testFetchV4Labels_regeneratesSystemFolders() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(["Labels": []]))
+        }
 
-        let groupLabel = Label(context: context)
-        groupLabel.labelID = "2"
-        groupLabel.type = NSNumber(2)
-        groupLabel.userID = userID
+        mockContextProvider.performAndWaitOnRootSavingContext { context in
+            let inboxFolder = Label(context: context)
+            inboxFolder.labelID = Message.Location.inbox.rawValue
 
-        let folderLabel = Label(context: context)
-        folderLabel.labelID = "3"
-        folderLabel.type = NSNumber(3)
-        folderLabel.userID = userID
+            XCTAssertNil(context.saveUpstreamIfNeeded())
+        }
 
-        let folderLabel2 = Label(context: context)
-        folderLabel2.labelID = "4"
-        folderLabel2.type = NSNumber(3)
-        folderLabel2.userID = userID
-        try context.save()
+        let exp = expectation(description: "call has completed")
+
+        sut.fetchV4Labels { result in
+            XCTAssertNil(result.error)
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        let systemFolderFetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+        systemFolderFetchRequest.predicate = NSPredicate(format: "type == 0")
+
+        let systemFolderIDs = try mockContextProvider.read { context in
+            let systemFolders = try context.fetch(systemFolderFetchRequest)
+            return systemFolders.map(\.labelID)
+        }
+
+        XCTAssertEqual(systemFolderIDs.sorted(), LabelsDataService.defaultFolderIDs.sorted())
     }
 }

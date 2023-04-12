@@ -97,10 +97,13 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
         let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
-        view.senderLabel.set(text: viewModel.sender,
-                             preferredFont: .body,
-                             weight: viewModel.isRead ? .regular : .bold,
-                             textColor: color)
+
+        view.configureSenderRow(
+            components: viewModel.sender,
+            preferredFont: .body,
+            weight: viewModel.isRead ? .regular : .bold,
+            textColor: color
+        )
 
         let weight: UIFont.Weight = viewModel.isRead ? .regular : .semibold
         if let scheduledTime = viewModel.scheduledTime {

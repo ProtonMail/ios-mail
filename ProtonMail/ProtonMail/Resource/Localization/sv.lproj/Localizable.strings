@@ -175,10 +175,10 @@
 "Allow alternative routing" = "Tillåt alternativ routing";
 
 /* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Låter dig öppna tidigare öppnade bilagor när du inte är ansluten.";
+"Allows you to open previously opened attachments while offline." = "Låter dig öppna tidigare öppnade bilagor när du är offline.";
 
 /* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Låter dig öppna tidigare lästa meddelanden när du inte är ansluten.";
+"Allows you to open previously read messages while offline." = "Låter dig öppna tidigare lästa meddelanden när du är offline.";
 
 /* The text explaining what downloaded messages in local storage is used for. */
 "Allows you to search within your messages. %1$@" = "Låter dig söka inom dina meddelanden. %1$@";
@@ -257,6 +257,9 @@
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Är du säker på att du vill logga ut?";
+
+/* One of the schedule time options */
+"As scheduled" = "Enligt schema";
 
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Kl. %@";
@@ -401,7 +404,7 @@
 "Cancel Check" = "Avbryt kontroll";
 
 /* Title */
-"Cancelling" = "Avbryter";
+"Canceling" = "Avbryter";
 
 /* Warning message */
 "Cannot empty folder right now." = "Kan inte tömma mapp just nu.";
@@ -507,7 +510,7 @@
 "Confirmation" = "Bekräftelse";
 
 /* Text for status label when no wifi is available */
-"Connect to WiFi or enable \"Download via mobile data\"." = "Anslut till WiFi eller aktivera \"Ladda ner via mobildata\".";
+"Connect to WiFi or enable \"Download via mobile data\"." = "Anslut till WiFi eller aktivera “Ladda ner via mobildata“.";
 
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt borttagen, kommer att synkroniseras när anslutning är tillgänglig";
@@ -657,13 +660,16 @@
 "Disabled" = "Inaktiverad";
 
 /* Message for the alert to disable content search. */
-"Disabling the feature now will delete the messages that have already been downloaded." = "Inaktivering av funktionen nu kommer att radera meddelandena som redan har laddats ned.";
+"Disabling the feature now will delete the messages that have already been downloaded." = "Inaktivering av funktionen nu kommer att ta bort meddelanden som redan har laddats ner.";
 
 /* Action */
 "Discard" = "Avfärda";
 
 /* Action */
 "Discard changes" = "Ignorera ändringar";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Kastad";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Avfärda tangentbord";
@@ -792,7 +798,7 @@
 "Email contact" = "E-posta kontakt";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "Kunde inte skicka e-posten. Meddelandet har sparats som utkast.";
+"Email failed to send. Message saved as draft." = "E-post kunde inte skickas. Meddelande sparat som utkast.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "E-postspårare kan kränka din integritet.";
@@ -978,8 +984,8 @@
 /* Title */
 "Hide details" = "Dölj detaljer";
 
-/* hours */
-"hours" = "timmar";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email-alias";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hur skulle du beskriva din upplevelse med nya Proton Mail?";
@@ -997,7 +1003,7 @@
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jag har använt Proton Mail och tänkte att du kanske skulle gilla det. Det är en säker e-posttjänst som skyddar din integritet. Registrera dig via denna länk för att få 1 månad med premiumfunktioner gratis:";
 
 /* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Om du förlorar din WiFi-anslutning kommer nedladdning att fortsätta via mobilnätet.";
+"If you lose your WiFi connection, download will continue over mobile data." = "Om du förlorar din WiFi-anslutning kommer nedladdningen att fortsätta via mobildata.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorera varning och fortsätt";
@@ -1122,9 +1128,6 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Länk kopierad.";
 
-/* Button inside the banner */
-"Load anyway" = "Ladda ändå";
-
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ladda inbäddade bilder";
 
@@ -1200,7 +1203,7 @@
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Meddelandet kunde inte skickas. Minst en mottagares e-postadress/domän finns inte eller är felaktigt formaterad.";
 
 /* Text for the search info banner when indexing is paused. */
-"Message downloading paused. Find out how to %1$@" = "Hämtning av meddelande pausad. Ta reda på hur %1$@";
+"Message downloading paused. Find out how to %1$@" = "Nedladdning av meddelande har pausats. Ta reda på hur du %1$@";
 
 /* Composer expiration page title */
 "Message expiration" = "När meddelandet löper ut";
@@ -1227,7 +1230,7 @@
 "Message Password" = "Meddelandelösenord";
 
 /* Alert title */
-"Message saved to Drafts" = "Meddelande har sparats i Utkast";
+"Message saved to Drafts" = "Meddelande sparat i utkast";
 
 /* Description */
 "Message sending failed. Please try again." = "Misslyckades att skicka meddelande. Försök igen.";
@@ -1245,7 +1248,7 @@
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Meddelande från innan %@ kommer inte att sökas. För att söka inom dessa, frigör lagringsutrymme på denna enhet.";
 
 /* Text for the alert to enable encrypted search */
-"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelanden kommer att hämtas via WiFi. Det kan ta en stund och din enhet kan bli lite varmare. Du kan pausa åtgärden när som helst.";
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelanden kommer att ladda ner via WiFi. Detta kan ta lite tid och din enhet kan bli lite varmare. Du kan pausa åtgärden när som helst.";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1437,7 +1440,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var uppfylld på Appstores servrar.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Överordnad mapp";
@@ -1680,6 +1683,9 @@
 /* title */
 "Save Changes" = "Spara ändringar";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schemalägg meddelanden när som helst";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Schemalägg sändning";
@@ -1699,7 +1705,7 @@
 
 /* cell title in device settings
    The title of encrypted search in settings */
-"Search message content" = "Sök efter innehåll i meddelande";
+"Search message content" = "Sök meddelandeinnehåll";
 
 /* Text for the banner when content search is slow. */
 "Search taking too long? %1$@ from this search for faster results." = "Tar sökningen för lång tid? %1$@ från denna sökning för snabbare resultat.";
@@ -1712,9 +1718,6 @@
 
 /* section title */
 "Select colour" = "Välj färg";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Välj datum och tid";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valda";
@@ -1759,7 +1762,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Att skicka meddelanden från %1$@-adress är en betald funktion. Ditt meddelande kommer att skickas från din standardadress %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Det är möjligt att skicka efter att bifogade filer har laddats upp";
+"Sending will be available\nwhen attachments are uploaded" = "Sändning kommer vara tillgänglig\nnär bilagorna är uppladdade";
 
 /* menu title */
 "Sent" = "Skickat";
@@ -1786,7 +1789,7 @@
 "Set a password to encrypt this message for non-Proton Mail users." = "Ställ in ett lösenord för att kryptera detta meddelande för icke Proton Mail-användare.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Ange e-post förfallotid";
+"Set mail expiration" = "Ställ in utgångstid för e-post";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Ställ in e-postlösenord";
@@ -1799,6 +1802,9 @@
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Ställ in svepgester för att komma åt de mest använda åtgärderna.";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Ställ in ditt eget schema";
 
 /* menu title */
 "Settings" = "Inställningar";
@@ -1837,9 +1843,6 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Skjut upp";
 
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Vissa bilder kunde inte laddas med spårningsskydd.";
-
 /* menu title */
 "Spam" = "Skräppost";
 
@@ -1848,7 +1851,7 @@
 "Star" = "Stjärnmärk";
 
 /* Title */
-"Star/unstar" = "Stjärnmärk/ta bort stjärnmärking";
+"Star/unstar" = "Stjärnmärk/ta bort stjärnmärkning";
 
 /* menu title
    Springboard (3D Touch) shortcuts action
@@ -1877,7 +1880,7 @@
 "Storage used" = "Använt utrymme";
 
 /* The text for determining the size of the encrypted search index */
-"Storage used: " = "Använt utrymme: ";
+"Storage used: " = "Använt lagringsutrymme: ";
 
 /* Title */
 "Storage Warning" = "Lagringsvarning";
@@ -2046,7 +2049,7 @@
 "This message will expire in %dD %dH %dM" = "Detta meddelande kommer löpa ut om %1$dD %2$dT %3$dM";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Denna inställning kommer att gå tillbaks till Safari om standardwebbläsaren avinstalleras.";
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Denna preferens kommer återgå till Safari om den valda webbläsaren är avinstallerad.";
 
 /* The title of the info label in the second segment of the Customize toolbar setting view. */
 "This toolbar appears when selecting multiple messages in your inbox." = "Detta verktygsfält visas när du väljer flera meddelanden i din inkorg.";
@@ -2067,7 +2070,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Validering av TLS-certifikat misslyckades. Din anslutning kan vara övervakad och appen är tillfälligt blockerad för din säkerhet.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n Växla omedelbart till annat nätverk.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS-certifikatvalideringen misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\nVäxla nätverk omedelbart.";
 
 /* message To: feild
    Title */
@@ -2149,6 +2152,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Obegränsat";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Obegränsat antal mappar och etiketter";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås upp anpassat meddelandeschemaläggning och andra fördelar när du uppgraderar ditt paket.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Upplåsning krävs";
 
@@ -2167,6 +2176,15 @@
 /* Error message */
 "Unsupported file type" = "Filtyp stöds inte";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Upp till 3 anpassade e-postdomäner";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Upp till 15 e-postadresser";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Upp till 500 GB lagringsutrymme";
+
 /* update notification email error title */
 "Update Notification Email" = "Uppdatera e-postavisering";
 
@@ -2181,6 +2199,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Uppdaterat Proton, enhetligt skydd";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Uppgradera nu";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till ett betalt paket för att skicka från din %@-adress";
@@ -2285,7 +2306,7 @@
 "You can now search within your messages. This feature can be enabled from settings at any time." = "Du kan du söka inom dina meddelanden. Denna funktion kan aktiveras från inställningarna när som helst.";
 
 /* Explanation of downloaded messages for encrypted search */
-"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Du kan söka inom nedladdade meddelanden. För alla andra meddelanden kommer endast mottagarlistan och ämnesrubriken genomsökas.";
+"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "Du kan söka i nedladdade meddelanden. För alla andra meddelanden kommer endast mottagarlistan och ämnesraden att sökas.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
@@ -2336,7 +2357,7 @@
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ditt land kanske blockerar åtkomst till Proton. Prova att använda %1$@ (eller någon annan VPN) eller %2$@ för att komma åt Proton.";
 
 /* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Bilder i meddelanden visas just nu automatiskt. Avsändaren kommer inte att kunna se om, varifrån eller när du läst deras meddelanden. Du kan ändra hur bilder hanteras under Inställningar → Kontoinställningar → Integritet.";
+"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "Dina e-postmeddelanden levereras nu med fjärrbilder laddade som standard. Avsändare kommer inte veta om, var eller när du öppnade deras e-postmeddelanden.\nFör att ändra detta, gå till Inställningar → Kontoinställningar → Integritet.";
 
 /* Title of user feedback view */
 "Your feedback" = "Din feedback";
@@ -2359,3 +2380,4 @@
 /* contact placeholder */
 "ZIP" = "ZIP";
 
+"Customize (verb)" = "Customize";

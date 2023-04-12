@@ -37,7 +37,13 @@ class HeaderData: NSObject {
     
     init(message: MessageEntity) {
         self.title = message.title
-        self.sender = message.sender ?? ContactVO(name: "Unknown", email: "Unknown")
+        do {
+            let sender = try message.parseSender()
+            self.sender = ContactVO(name: sender.name, email: sender.address)
+        } catch {
+            assertionFailure("\(error)")
+            self.sender = ContactVO(name: "Unknown", email: "Unknown")
+        }
         self.to = ContactPickerModelHelper.contacts(from: message.rawTOList).compactMap { $0 as? ContactVO }
         self.cc = ContactPickerModelHelper.contacts(from: message.rawCCList).compactMap { $0 as? ContactVO }
         self.bcc = ContactPickerModelHelper.contacts(from: message.rawBCCList).compactMap { $0 as? ContactVO }

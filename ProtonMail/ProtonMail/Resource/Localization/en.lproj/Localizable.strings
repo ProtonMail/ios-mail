@@ -396,7 +396,7 @@
 "Cancel Check" = "Cancel Check";
 
 /* Title */
-"Cancelling" = "Cancelling";
+"Canceling" = "Canceling";
 
 /* Warning message */
 "Cannot empty folder right now." = "Cannot empty folder right now.";
@@ -967,9 +967,6 @@
 /* Title */
 "Hide details" = "Hide details";
 
-/* hours */
-"hours" = "hours";
-
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
 
@@ -1098,9 +1095,6 @@
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limit reached";
-
-/* Button inside the banner */
-"Load anyway" = "Load anyway";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Load embedded images";
@@ -1405,7 +1399,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Our system flagged this message as a phishing attempt. Please check that it is legitimate.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Parent folder";
@@ -1786,9 +1780,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Snooze";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Some images failed to load with tracking protection.";
 
 /* menu title */
 "Spam" = "Spam";
@@ -2284,3 +2275,5 @@
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Show full message]";
+
+"Customize (verb)" = "Customize";

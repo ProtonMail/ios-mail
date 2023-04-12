@@ -39,6 +39,8 @@ protocol HtmlEditorBehaviourDelegate: AnyObject {
 
 /// Html editor
 class HtmlEditorBehaviour: NSObject {
+    typealias LoadCompletion = (Swift.Result<Void, Error>) -> Void
+
     enum Exception: Error {
         case castError
         case resEmpty
@@ -50,9 +52,12 @@ class HtmlEditorBehaviour: NSObject {
         case addImage, removeImage, moveCaret, heightUpdated
     }
 
-    //
-    private var isEditorLoaded: Bool = false
-    private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown)
+    private(set) var isEditorLoaded: Bool = false
+    private var contentHTML: WebContents = WebContents(
+        body: "",
+        remoteContentMode: .lockdown,
+        messageDisplayMode: .collapsed
+    )
     @objc private(set) dynamic var contentHeight: CGFloat = 0
 
     //
@@ -102,8 +107,9 @@ class HtmlEditorBehaviour: NSObject {
             let script = try Bundle.loadResource(named: "HtmlEditor", ofType: "js")
             let purifier = try Bundle.loadResource(named: "purify.min", ofType: "js")
             let jsQuotes = try Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
+            let escape = try Bundle.loadResource(named: "Escape", ofType: "js")
 
-            let fullScript = [jsQuotes, script, purifier].joined(separator: "\n")
+            let fullScript = [jsQuotes, script, purifier, escape].joined(separator: "\n")
             let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
                 .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: fullScript)
             return editor
@@ -195,17 +201,17 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Returns: return body promise
     func getHtml() -> Promise<String> {
-        return run(with: "html_editor.getHtml();")
+        return run(with: "html_editor.getHtmlForDraft();")
     }
 
-    func setHtml(body: WebContents) {
+    func setHtml(body: WebContents, completion: LoadCompletion? = nil) {
         contentHTML = body
         if isEditorLoaded {
-            self.loadContent()
+            self.loadContent(completion: completion)
         }
     }
 
-    private func loadContent() {
+    private func loadContent(completion: LoadCompletion? = nil) {
         guard let webView = webView else {
             return
         }
@@ -219,7 +225,9 @@ class HtmlEditorBehaviour: NSObject {
                 return Promise()
             }
         }.then { () -> Promise<Void> in
-            self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.default.value));")
+            let isImageProxyEnable = self.contentHTML.contentLoadingType == .proxy ||
+                self.contentHTML.contentLoadingType == .proxyDryRun
+            return self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.composer.value), \(isImageProxyEnable));")
         }.then { _ -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { width -> Promise<Void> in
@@ -234,7 +242,9 @@ class HtmlEditorBehaviour: NSObject {
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
             self.updateFontSize()
-        }.catch { _ in
+            completion?(.success(()))
+        }.catch { error in
+            completion?(.failure(error))
         }
     }
 
@@ -242,7 +252,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html: String) {
-        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(DomPurifyConfig.default.value));").catch { _ in
+        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(DomPurifyConfig.composer.value));").catch { _ in
         }
     }
 
@@ -287,15 +297,13 @@ class HtmlEditorBehaviour: NSObject {
             // nothing
         }
     }
-}
 
-extension HtmlEditorBehaviour {
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if !isEditorLoaded {
-            isEditorLoaded = true
-            self.loadContent()
+    func loadContentIfNeeded() {
+        guard !isEditorLoaded else {
+            return
         }
+        isEditorLoaded.toggle()
+        loadContent()
     }
 }
 

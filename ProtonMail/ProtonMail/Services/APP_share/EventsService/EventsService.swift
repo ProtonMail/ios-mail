@@ -478,6 +478,7 @@ extension EventsService {
                                         for label in labels {
                                             label.order = conversationObject.order
                                             label.userID = self.userManager.userID.rawValue
+                                            label.conversationID = conversationObject.conversationID
                                         }
                                     }
                                 }
@@ -762,29 +763,24 @@ extension EventsService {
             return
         }
 
-        coreDataService.enqueueOnRootSavingContext { [weak self] context in
-            guard let self = self else { return }
-            for count in messageCounts {
-                if let labelID = count["LabelID"] as? String {
-                    guard let unread = count["Unread"] as? Int else {
-                        continue
-                    }
-                    let total = count["Total"] as? Int
-                    self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .singleMessage, shouldSave: false)
-                    self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .singleMessage)
+        for count in messageCounts {
+            if let labelID = count["LabelID"] as? String {
+                guard let unread = count["Unread"] as? Int else {
+                    continue
                 }
+                let total = count["Total"] as? Int
+                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .singleMessage, shouldSave: false)
+                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .singleMessage)
             }
-
-            _ = context.saveUpstreamIfNeeded()
-
-            guard let users = self.userManager.parentManager,
-                  let primaryUser = users.firstUser,
-                  primaryUser.userInfo.userId == self.userManager.userInfo.userId,
-                  primaryUser.getCurrentViewMode() == .singleMessage else { return }
-
-            let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .singleMessage)
-            UIApplication.setBadge(badge: max(0, unreadCount))
         }
+
+        guard let users = self.userManager.parentManager,
+              let primaryUser = users.firstUser,
+              primaryUser.userInfo.userId == self.userManager.userInfo.userId,
+              primaryUser.getCurrentViewMode() == .singleMessage else { return }
+
+        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .singleMessage)
+        UIApplication.setBadge(badge: max(0, unreadCount))
     }
 
     func processEvents(conversationCounts: [[String: Any]]?) {

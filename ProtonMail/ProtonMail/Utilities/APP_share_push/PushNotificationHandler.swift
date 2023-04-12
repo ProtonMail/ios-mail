@@ -49,7 +49,6 @@ final class PushNotificationHandler {
             let payload = try pushNotificationPayload(userInfo: bestContent.userInfo)
             let uid = try uid(in: payload)
             bestContent.threadIdentifier = uid
-            userCachedStatus.hasMessageFromNotification = true
 
             let encryptionKit = try encryptionKit(for: uid)
             let decryptedMessage = try decryptMessage(in: payload, encryptionKit: encryptionKit)

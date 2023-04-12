@@ -95,15 +95,13 @@ final class SearchViewModel: NSObject {
 
     init(user: UserManager,
          coreDataContextProvider: CoreDataContextProviderProtocol,
-         queueManager: QueueManagerProtocol,
-         realAttachmentsFlagProvider: RealAttachmentsFlagProvider) {
+         queueManager: QueueManagerProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         let fetchMessageDetailUseCase = FetchMessageDetail(
             dependencies: .init(queueManager: queueManager,
                                 apiService: user.apiService,
                                 contextProvider: coreDataContextProvider,
-                                realAttachmentsFlagProvider: realAttachmentsFlagProvider,
                                 messageDataAction: user.messageService,
                                 cacheService: user.cacheService)
         )
@@ -220,9 +218,11 @@ extension SearchViewModel: SearchVMProtocol {
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let contactGroups = user.contactGroupService.getAllContactGroupVOs()
-        let senderName = message.getSenderName(replacingEmailsMap: sharedReplacingEmailsMap, groupContacts: contactGroups)
-        let initial = message.getInitial(senderName: senderName)
-        let sender = message.getSender(senderName: senderName)
+        let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
+            for: message,
+            basedOn: sharedReplacingEmailsMap,
+            groupContacts: contactGroups
+        )
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(of: .folder)
         let isSelected = self.selectedMessages.contains(message)
@@ -232,9 +232,9 @@ extension SearchViewModel: SearchVMProtocol {
             location: nil,
             isLabelLocation: true, // to show origin location icons
             style: isEditing ? .selection(isSelected: isSelected) : style,
-            initial: initial,
+            initial: senderRowComponents.initials(),
             isRead: !message.unRead,
-            sender: sender,
+            sender: senderRowComponents,
             time: date(of: message, weekStart: weekStart),
             isForwarded: message.isForwarded,
             isReply: message.isReplied,
@@ -318,7 +318,7 @@ extension SearchViewModel: SearchVMProtocol {
         case .toolbarCustomization:
             // TODO: Add implementation
             break
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
     }
@@ -430,7 +430,7 @@ extension SearchViewModel {
     }
 
     private func mark(messages: [MessageEntity], unread: Bool) {
-        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+        messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
     }
 
     private func move(toLabel: Message.Location) {

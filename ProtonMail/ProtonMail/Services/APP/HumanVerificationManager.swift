@@ -48,7 +48,7 @@ class HumanVerificationManager: LifetimeTrackable {
         }
 
         // create new HumanVerifyDelegate
-        guard let url = URL(string: "https://proton.me/support/knowledge-base/human-verification/") else {
+        guard let url = URL(string: "https://proton.me/support/human-verification/") else {
             fatalError("Shouldn't fail")
         }
         let humanDelegate = HumanCheckHelper(
@@ -56,7 +56,6 @@ class HumanVerificationManager: LifetimeTrackable {
             supportURL: url,
             viewController: nil,
             clientApp: .mail,
-            versionToBeUsed: .v3,
             responseDelegate: nil,
             paymentDelegate: nil
         )

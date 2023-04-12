@@ -99,15 +99,18 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
             urlSchemeTask.didFailWithError(RequestInterceptorError.noUrlInRequest)
             return
         }
+        #if DEBUG_CORE_INTERNALS
         PMLog.debug("request interceptor starts request to \(urlString) with \(DoHConstants.dohHostHeader): \(request.allHTTPHeaderFields?[DoHConstants.dohHostHeader] ?? "")")
-        
+        #endif
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         configuration.httpCookieStorage = cookiesStorage
         configuration.httpCookieAcceptPolicy = .always
+        #if DEBUG_CORE_INTERNALS
         let cookies = configuration.httpCookieStorage?.cookies(for: request.url!) ?? []
         let headers = HTTPCookie.requestHeaderFields(with: cookies)
         PMLog.debug("[COOKIES][REQUEST][INTERCEPTOR] \(headers)")
+        #endif
         let task = session.dataTask(with: request) { [weak self] data, response, error in
             if let response = response {
                 self?.transformAndProcessResponse(response, request.allHTTPHeaderFields, apiRange, urlSchemeTask)

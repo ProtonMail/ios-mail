@@ -32,7 +32,7 @@ protocol QueueHandler {
 
 protocol QueueHandlerRegister {
     func registerHandler(_ handler: QueueHandler)
-    func unregisterHandler(_ handler: QueueHandler)
+    func unregisterHandler(for userID: UserID)
 }
 
 /// This manager is used to handle the queue opeartions of all users.
@@ -143,9 +143,9 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         }
     }
 
-    func unregisterHandler(_ handler: QueueHandler) {
+    func unregisterHandler(for userID: UserID) {
         self.queue.async {
-            _ = self.handlers.removeValue(forKey: handler.userID)
+            _ = self.handlers.removeValue(forKey: userID)
         }
     }
 

@@ -16,4 +16,5 @@ enum ConversationNavigationAction {
     case addNewFolder
     case toolbarCustomization(currentActions: [MessageViewActionSheetAction],
                               allActions: [MessageViewActionSheetAction])
+    case toolbarSettingView
 }

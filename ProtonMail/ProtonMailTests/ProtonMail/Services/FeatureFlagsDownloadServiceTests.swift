@@ -23,7 +23,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
 
     var apiServiceMock: APIServiceMock!
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
-    var realAttachmentFlagProviderMock: MockRealAttachmentsFlagProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
@@ -32,14 +31,12 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         super.setUp()
         apiServiceMock = APIServiceMock()
         scheduleSendEnableStatusMock = .init()
-        realAttachmentFlagProviderMock = .init()
         userIntroductionProgressProviderMock = .init()
         sut = FeatureFlagsDownloadService(
             userID: userID,
             apiService: apiServiceMock,
             sessionID: "",
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
-            realAttachmentsFlagProvider: realAttachmentFlagProviderMock,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock
         )
     }
@@ -47,7 +44,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         apiServiceMock = nil
-        realAttachmentFlagProviderMock = nil
         scheduleSendEnableStatusMock = nil
         userIntroductionProgressProviderMock = nil
         sut = nil
@@ -93,11 +89,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         let argument = try XCTUnwrap(scheduleSendEnableStatusMock.callSetScheduleSendStatus.lastArguments)
         XCTAssertTrue(argument.a1)
         XCTAssertEqual(argument.a2, userID)
-
-
-        XCTAssertTrue(realAttachmentFlagProviderMock.callSet.wasCalledExactlyOnce)
-        let argument1 = try XCTUnwrap(realAttachmentFlagProviderMock.callSet.lastArguments?.a1)
-        XCTAssertTrue(argument1)
     }
 
     func testFetchingFlagsIn5mins_receiveFetchingTooOften() {

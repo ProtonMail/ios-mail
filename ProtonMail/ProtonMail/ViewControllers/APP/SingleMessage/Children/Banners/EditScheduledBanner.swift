@@ -89,6 +89,11 @@ class EditScheduledBanner: UIView {
         editButton.contentEdgeInsets = .init(top: 0, left: 10, bottom: 0, right: 10)
     }
 
+    func refreshFontSize() {
+        infoLabel.font = .adjustedFont(forTextStyle: .footnote)
+        editButton.titleLabel?.font = .adjustedFont(forTextStyle: .caption1)
+    }
+
     @objc
     private func handleEditAction() {
         editAction?()

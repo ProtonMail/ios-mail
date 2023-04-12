@@ -81,7 +81,7 @@ public final class SignupRobot: CoreElements {
         
         @discardableResult
         public func otherAccountExtButtonIsNotShown() -> SignupRobot {
-            button(otherAccountExtName).wait().checkDoesNotExist()
+            button(otherAccountExtName).waitUntilGone()
             return SignupRobot()
         }
 

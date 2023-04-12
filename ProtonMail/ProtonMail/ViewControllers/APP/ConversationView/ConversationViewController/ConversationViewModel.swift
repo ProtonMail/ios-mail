@@ -1,6 +1,7 @@
 import CoreData
 import ProtonCore_UIFoundations
 import ProtonCore_DataModel
+import ProtonMailAnalytics
 
 enum MessageDisplayRule {
     case showNonTrashedOnly
@@ -26,6 +27,7 @@ class ConversationViewModel {
     var leaveFocusedMode: (() -> Void)?
     var dismissDeletedMessageActionSheet: ((MessageID) -> Void)?
     var viewModeIsChanged: ((ViewMode) -> Void)?
+    var conversationIsReadyToBeDisplayed: (() -> Void)?
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
@@ -49,7 +51,9 @@ class ConversationViewModel {
     let user: UserManager
     let messageService: MessageDataService
     /// MessageID that want to expand at the beginning
-    let targetID: MessageID?
+    private(set) var targetID: MessageID?
+    /// The messageID of a draft that should be opened at the beginning
+    var draftID: MessageID?
     private let conversationMessagesProvider: ConversationMessagesProvider
     private let conversationUpdateProvider: ConversationUpdateProvider
     private let conversationService: ConversationProvider
@@ -61,16 +65,20 @@ class ConversationViewModel {
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    var shouldIgnoreUpdateOnce = false
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
-    private(set) var isExpandedAtLaunch = false
 
     /// Focused mode means that the messages above the first expanded one are hidden from view.
-    private(set) var focusedMode = true
+    private(set) var focusedMode = true {
+        didSet {
+            if oldValue && !focusedMode {
+                leaveFocusedMode?()
+            }
+        }
+    }
 
     var firstExpandedMessageIndex: Int? {
         messagesDataSource.firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false })
@@ -153,7 +161,7 @@ class ConversationViewModel {
         self.labelProvider = labelProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
-        headerSectionDataSource = [.header(subject: conversation.subject)]
+        headerSectionDataSource = []
 
         recordNumOfMessages = conversation.messageCount
         self.connectionStatusProvider = internetStatusProvider
@@ -165,11 +173,7 @@ class ConversationViewModel {
     }
 
     func scrollViewDidScroll() {
-        if focusedMode {
-            focusedMode = false
-
-            leaveFocusedMode?()
-        }
+        focusedMode = false
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
@@ -225,10 +229,6 @@ class ConversationViewModel {
     func stopObserveConversationAndMessages() {
         conversationUpdateProvider.stopObserve()
         conversationMessagesProvider.stopObserve()
-    }
-
-    func setCellIsExpandedAtLaunch() {
-        self.isExpandedAtLaunch = true
     }
 
     func messageType(with message: MessageEntity) -> ConversationViewItemType {
@@ -338,6 +338,68 @@ class ConversationViewModel {
         toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
     }
 
+    func headerCellVisibility(at index: Int) -> CellVisibility {
+        guard focusedMode else {
+            return .full
+        }
+
+        switch headerSectionDataSource[index] {
+        case .trashedHint:
+            // in focused mode, the trashed hint should only be partially visible if there's no previous message to partially show
+            let numberOfNonTrashedMessages = messagesDataSource
+                .filter { $0.messageViewModel?.isTrashed == false }
+                .count
+
+            return numberOfNonTrashedMessages == 1 ? .partial : .hidden
+        case .message:
+            assertionFailure("headerSectionDataSource should not contain ConversationViewItemType.message")
+            return .full
+        }
+    }
+
+    func messageCellVisibility(at index: Int) -> CellVisibility {
+        guard focusedMode else {
+            return .full
+        }
+
+        // if we're in focused mode, but no message is expanded, it means that messages are still loading
+        guard let firstExpandedMessageIndex = firstExpandedMessageIndex else {
+            return .hidden
+        }
+
+        if index > firstExpandedMessageIndex {
+            return .full
+        } else {
+            let messagesBeforeAndIncludingExpandedOne = messagesDataSource[0...firstExpandedMessageIndex]
+
+            let indexesOfDisplayMessages: [Int] = messagesBeforeAndIncludingExpandedOne
+                .enumerated()
+                .compactMap { index, item in
+                    if displayRule == .showAll {
+                        return index
+                    } else if item.messageViewModel?.isTrashed == true && displayRule == .showTrashedOnly {
+                        return index
+                    } else if item.messageViewModel?.isTrashed == false && displayRule == .showNonTrashedOnly {
+                        return index
+                    }
+                    return nil
+                }
+
+            switch index {
+            case indexesOfDisplayMessages.last:
+                return .full
+            case indexesOfDisplayMessages.dropLast().last:
+                return .partial
+            default:
+                return .hidden
+            }
+        }
+    }
+
+    func cellTapped() {
+        focusedMode = false
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
         let hasMessages = !self.messagesDataSource.isEmpty
@@ -408,7 +470,7 @@ class ConversationViewModel {
         self.headerSectionDataSource.append(.trashedHint)
         let visible = self.tableView?.visibleCells.count ?? 0
         if visible > 0 {
-            let row = IndexPath(row: 1, section: 0)
+            let row = IndexPath(row: 0, section: 0)
             self.tableView?.insertRows(at: [row], with: .automatic)
         }
     }
@@ -472,23 +534,42 @@ extension ConversationViewModel {
             tableView.beginUpdates()
         case let .didUpdate(messages):
             updateDataSource(with: messages)
-            tableView.endUpdates()
+            do {
+                try ObjC.catchException {
+                    tableView.endUpdates()
+                }
+                Breadcrumbs.shared.clearCrumbs(for: .conversationViewEndUpdatesCrash)
+            } catch {
+                // unfortunately the error doesn't contain anything useful
+                assertionFailure("\(error)")
+
+                let trace = Breadcrumbs.shared.trace(for: .conversationViewEndUpdatesCrash)
+                Analytics.shared.sendError(.conversationViewEndUpdatesCrash, trace: trace)
+
+                // this call will sync the data again at the expense of no animation
+                tableView.reloadData()
+
+                /// It's necessary to call this again for the changes made by `reloadData` to be visible,
+                /// because we're in the middle of an update after the `beginUpdates` call above.
+                /// Now it's safe, so we don't need to catch again.
+                tableView.endUpdates()
+            }
 
             observeNewMessages()
 
-            if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
+            if recordNumOfMessages == messagesDataSource.count {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
                     self.conversationViewController?.attemptAutoScroll(to: path, position: .top)
-                    setCellIsExpandedAtLaunch()
                 }
+
+                self.conversationIsReadyToBeDisplayed?()
             }
-            shouldIgnoreUpdateOnce = false
 
             refreshView?()
         case let .insert(row):
             tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
-        case let .update(message, _, _):
+        case let .update(message):
             let messageId = message.messageID
             guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }),
                   let viewModel = messagesDataSource[index].messageViewModel else {
@@ -624,10 +705,54 @@ extension ConversationViewModel {
         case .print, .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
              .viewInLightMode, .replyOrReplyAll, .saveAsPDF, .dismiss, .forward,
              .labelAs, .moveTo, .reply, .replyAll, .star, .unstar, .toolbarCustomization,
-             .more:
+             .more, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
         completion()
+    }
+
+    func findLatestMessageForAction() -> MessageEntity? {
+        let messageNotDraftAndTrash = messagesDataSource
+            .compactMap(\.message)
+            .last { msg in
+                !msg.isDraft && !msg.isTrash
+            }
+        guard messageNotDraftAndTrash == nil else {
+            return messageNotDraftAndTrash
+        }
+        // If message are all in trash or draft, return the latest message that is not draft.
+        return messagesDataSource
+            .last(where: { $0.message?.isDraft == false })?
+            .message
+    }
+
+    func isCellExpanded(messageID: MessageID) -> Bool {
+        let targetSource = messagesDataSource.first(where: { $0.message?.messageID == messageID })
+        return targetSource?.messageViewModel?.state.isExpanded ?? false
+    }
+
+    func expandHistoryIfNeeded(messageID: MessageID, completion: @escaping () -> Void) {
+        let targetSource = messagesDataSource.first(where: { $0.message?.messageID == messageID })
+        let singleMessageContentViewModel = targetSource?.messageViewModel?.state.expandedViewModel?
+            .messageContent
+        let targetMessageInfoProvider = singleMessageContentViewModel?.messageInfoProvider
+        guard targetMessageInfoProvider?.displayMode == .collapsed else {
+            completion()
+            return
+        }
+        singleMessageContentViewModel?.webContentIsUpdated = { [weak singleMessageContentViewModel] in
+            completion()
+            singleMessageContentViewModel?.webContentIsUpdated = nil
+        }
+        targetMessageInfoProvider?.displayMode = .expanded
+    }
+
+    func getMessageBodyBy(messageID: MessageID) -> String? {
+        let viewModel = messagesDataSource
+            .first(where: { $0.message?.messageID == messageID })
+        let singleMessageVM = viewModel?.messageViewModel?.state.expandedViewModel?.messageContent
+        let infoProvider = singleMessageVM?.messageInfoProvider
+        return infoProvider?.bodyParts?.originalBody
     }
 }
 
@@ -635,70 +760,94 @@ extension ConversationViewModel {
 extension ConversationViewModel: ToolbarCustomizationActionHandler {
 
     func toolbarActionTypes() -> [MessageViewActionSheetAction] {
-        let originMessageListIsSpamOrTrash = [
-            Message.Location.spam.labelID,
-            Message.Location.trash.labelID
-        ].contains(labelId)
-        let isInTrashOrSpam = originMessageListIsSpamOrTrash || areAllMessagesInThreadInTheTrash || areAllMessagesInThreadInSpam
+        let locationIsInSpam = labelId == Message.Location.spam.labelID || areAllMessagesInThreadInSpam
+        let locationIsInTrash = labelId == Message.Location.trash.labelID
+        let locationIsInArchive = labelId == Message.Location.archive.labelID
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
         let isInArchive = conversation.contains(of: .archive)
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = conversation.contains(of: .spam)
 
-        let actions = toolbarActionProvider.conversationToolbarActions
+        var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
+            .replaceReplyAndReplyAllWithConversationVersion()
+            .replaceForwardWithConversationVersion()
+
+        let messageForAction = findLatestMessageForAction()
+        let hasMultipleRecipients = (messageForAction?.allRecipients.count ?? 0) > 1
+        if messageForAction?.isScheduledSend == true {
+            let forbidActions: [MessageViewActionSheetAction] = [
+                .replyInConversation,
+                .replyOrReplyAllInConversation,
+                .replyAllInConversation,
+                .reply,
+                .forward,
+                .forwardInConversation,
+                .replyAll,
+                .replyOrReplyAll
+            ]
+            actions = actions.filter { !forbidActions.contains($0) }
+        }
 
         return replaceActionsLocally(actions: actions,
-                                     isInSpam: isInSpam || isInTrashOrSpam,
-                                     isInTrash: isInTrash || isInTrashOrSpam,
-                                     isInArchive: isInArchive,
+                                     isInSpam: isInSpam || locationIsInSpam,
+                                     isInTrash: isInTrash || locationIsInTrash,
+                                     isInArchive: isInArchive || locationIsInArchive,
                                      isRead: isConversationRead,
                                      isStarred: isConversationStarred,
-                                     hasMultipleRecipients: false)
+                                     hasMultipleRecipients: hasMultipleRecipients)
     }
 
     func toolbarCustomizationAllAvailableActions() -> [MessageViewActionSheetAction] {
-        let actionSheetViewModel = ConversationActionSheetViewModel(
-            title: conversation.subject,
-            isUnread: conversation.isUnread(labelID: labelId),
-            isStarred: conversation.starred) { location in
-                areAllMessagesIn(location: location)
-            }
+        let actionSheetViewModel = MessageViewActionSheetViewModel(
+            title: "",
+            labelID: labelId,
+            includeStarring: true,
+            isStarred: true,
+            isBodyDecryptable: true,
+            messageRenderStyle: .lightOnly,
+            shouldShowRenderModeOption: false,
+            isScheduledSend: false
+        )
         let isInSpam = conversation.contains(of: .spam)
         let isInArchive = conversation.contains(of: .archive)
-        let isInTrash = areAllMessagesInThreadInTheTrash
+        let isInTrash = areAllMessagesInThreadInTheTrash || conversation.contains(of: .trash)
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
+        let messageForAction = findLatestMessageForAction()
+        let hasMultipleRecipients = (messageForAction?.allRecipients.count ?? 0) > 1
 
-        return replaceActionsLocally(actions: actionSheetViewModel.items,
-                                     isInSpam: isInSpam,
-                                     isInTrash: isInTrash,
-                                     isInArchive: isInArchive,
-                                     isRead: isConversationRead,
-                                     isStarred: isConversationStarred,
-                                     hasMultipleRecipients: false)
+        let actions = actionSheetViewModel.items
+            .replaceReplyAndReplyAllWithConversationVersion()
+            .replaceForwardWithConversationVersion()
+        return replaceActionsLocally(
+            actions: actions,
+            isInSpam: isInSpam,
+            isInTrash: isInTrash,
+            isInArchive: isInArchive,
+            isRead: isConversationRead,
+            isStarred: isConversationStarred,
+            hasMultipleRecipients: hasMultipleRecipients
+        )
     }
 
     func saveToolbarAction(actions: [MessageViewActionSheetAction],
                            completion: ((NSError?) -> Void)?) {
         let preference: ToolbarActionPreference = .init(
-            conversationActions: actions,
-            messageActions: nil,
+            messageActions: actions,
             listViewActions: nil
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(
-            params: .init(preference: preference)
-        ) { result in
-            switch result {
-            case .success:
-                completion?(nil)
-            case let .failure(error):
-                completion?(error as NSError)
+            .execute(params: .init(preference: preference)) { result in
+                switch result {
+                case .success:
+                    completion?(nil)
+                case let .failure(error):
+                    completion?(error as NSError)
+                }
             }
-        }
     }
 }
 
@@ -805,7 +954,11 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
         if let targetID = self.targetID,
            let index = dataModels.lastIndex(where: { $0.message?.messageID == targetID }) {
+            defer {
+                self.targetID = nil
+            }
             if dataModels[index].messageViewModel?.isDraft ?? false {
+                draftID = targetID
                 // The draft can't expand
                 return nil
             }
@@ -954,6 +1107,11 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
 
 extension ConversationViewModel: ConversationViewTrashedHintDelegate {
     func clickTrashedMessageSettingButton() {
+        // If we're in the focused mode, the trash banner is only partially visible (if at all).
+        guard !focusedMode else {
+            return
+        }
+
         switch self.displayRule {
         case .showTrashedOnly:
             self.displayRule = .showAll
@@ -962,7 +1120,7 @@ extension ConversationViewModel: ConversationViewTrashedHintDelegate {
         case .showAll:
             self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         }
-        let row = IndexPath(row: 1, section: 0)
+        let row = IndexPath(row: 0, section: 0)
         self.reloadRowsIfNeeded(additional: row)
     }
 
@@ -1017,14 +1175,19 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
     func viewModeHasChanged(viewMode: ViewMode) {
         viewModeIsChanged?(viewMode)
     }
-
-    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-
-    }
 }
 
 extension ConversationViewModel {
     struct Dependencies {
         let fetchMessageDetail: FetchMessageDetailUseCase
+    }
+
+    enum CellVisibility {
+        /// The cell is fully visible.
+        case full
+        /// Only a few pixels are visible, used for showing a part of the previous message in focused mode.
+        case partial
+        /// The cell is not visible.
+        case hidden
     }
 }

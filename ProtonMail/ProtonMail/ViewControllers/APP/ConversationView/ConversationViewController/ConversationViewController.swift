@@ -22,6 +22,7 @@
 
 import LifetimeTracker
 import MBProgressHUD
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
@@ -46,6 +47,10 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     private let storedSizeHelper = ConversationStoredSizeHelper()
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
+
+    // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
+    // this is to avoid making the view unusable
+    private var conversationIsReadyToBeDisplayedTimer: Timer?
 
     init(coordinator: ConversationCoordinatorProtocol,
          viewModel: ConversationViewModel,
@@ -92,14 +97,15 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             }
         }
 
-        setUpToolBarIfNeeded()
-
         registerNotification()
+
+        hideConversationUntilItIsReady()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpNavigationBar()
+        setUpToolBarIfNeeded()
 
         if !ProcessInfo.isRunningUnitTests {
             viewModel.observeConversationMessages(tableView: customView.tableView)
@@ -111,15 +117,20 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard !customView.tableView.visibleCells.isEmpty,
-              !viewModel.isExpandedAtLaunch else { return }
+        guard !viewModel.messagesDataSource.isEmpty else { return }
 
-        if viewModel.firstExpandedMessageIndex != nil {
-            viewModel.setCellIsExpandedAtLaunch()
-        } else if let targetID = self.viewModel.targetID {
-            self.cellTapped(messageId: targetID)
+        if !UserInfo.isConversationSwipeEnabled {
+            showToolbarCustomizeSpotlightIfNeeded()
         }
-        showToolbarCustomizeSpotlightIfNeeded()
+
+        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+            self?.displayConversation()
+        }
+
+        if let draftID = viewModel.draftID {
+            cellTapped(messageId: draftID)
+            viewModel.draftID = nil
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -127,6 +138,19 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         self.navigationItem.backBarButtonItem = nil
         viewModel.stopObserveConversationAndMessages()
         self.dismissActionSheet()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if !customView.tableView.frame.isEmpty, let headerView = customView.tableView.tableHeaderView {
+            // Apparently setting the frame and setting the tableViewHeader property again is needed
+            // https://stackoverflow.com/questions/16471846/is-it-possible-to-use-autolayout-with-uitableviews-tableheaderview
+            headerView.frame.size = headerView.systemLayoutSizeFitting(
+                CGSize(width: customView.tableView.frame.width, height: 0)
+            )
+            customView.tableView.tableHeaderView = headerView
+        }
     }
 
     private func leaveFocusedMode() {
@@ -140,7 +164,8 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         let contentHeightAfterExpansion = customView.tableView.contentSize.height
         let previouslyHiddenContentHeight = contentHeightAfterExpansion - contentHeightBeforeExpansion
 
-        DispatchQueue.main.async {
+        // the 1/60 second (based on 60 FPS) makes the leaving animation much smoother
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 / 60) {
             self.customView.tableView.contentOffset.y += previouslyHiddenContentHeight
         }
     }
@@ -151,7 +176,18 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         }
     }
 
-    func cellTapped(messageId: MessageID) {
+    func cellTapped(
+        messageId: MessageID,
+        shouldOpenHistory: Bool = false,
+		caller: StaticString = #function,
+        reloadCompletion: (() -> Void)? = nil
+    ) {
+        // this method sometimes appears in the stack trace for this crash
+        Breadcrumbs.shared.add(message: "\(caller)", to: .conversationViewEndUpdatesCrash)
+        Breadcrumbs.shared.add(message: "cellTapped(messageId: \(messageId)", to: .conversationViewEndUpdatesCrash)
+
+        viewModel.cellTapped()
+
         guard let index = self.viewModel.messagesDataSource
                 .firstIndex(where: { $0.message?.messageID == messageId }),
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
@@ -162,9 +198,16 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             self.update(draft: messageViewModel.message)
         } else {
             let indexPath = IndexPath(row: index, section: 1)
+            if let cachedVC = cachedViewControllers[indexPath] {
+                unembed(cachedVC)
+            }
             cachedViewControllers[indexPath] = nil
-            messageViewModel.toggleState()
-            customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
+            messageViewModel.toggleState(shouldOpenHistory: shouldOpenHistory)
+            customView.tableView.reloadRows(
+                at: [.init(row: index, section: 1)],
+                with: .automatic,
+                completion: { reloadCompletion?() }
+            )
             checkNavigationTitle()
             messageViewModel.state.expandedViewModel?.messageContent.markReadIfNeeded()
         }
@@ -205,11 +248,15 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     private func setUpTableView() {
         customView.tableView.dataSource = self
         customView.tableView.delegate = self
-        customView.tableView.register(cellType: ConversationViewHeaderCell.self)
         customView.tableView.register(cellType: ConversationMessageCell.self)
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
+
+        let headerView = ConversationViewHeaderView()
+        headerView.titleTextView.set(text: viewModel.conversation.subject, preferredFont: .title3)
+        headerView.titleTextView.textAlignment = .center
+        customView.tableView.tableHeaderView = headerView
     }
 
     private func registerNotification() {
@@ -226,9 +273,18 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                              name: UIApplication.willEnterForegroundNotification,
                              object: nil)
         }
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     private func setupViewModel() {
+        viewModel.conversationIsReadyToBeDisplayed = { [weak self] in
+             self?.displayConversation()
+        }
+
         viewModel.refreshView = { [weak self] in
             guard let self = self else { return }
             self.refreshNavigationViewIfNeeded()
@@ -296,7 +352,26 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         }
     }
 
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        refreshNavigationViewIfNeeded(forceUpdate: true)
+    }
+
     required init?(coder: NSCoder) { nil }
+
+    private func hideConversationUntilItIsReady() {
+        customView.tableView.alpha = 0
+    }
+
+    private func displayConversation() {
+        conversationIsReadyToBeDisplayedTimer = nil
+
+        if Int(customView.tableView.alpha) < 1 {
+            UIView.animate(withDuration: 0.25) {
+                self.customView.tableView.alpha = 1
+            }
+        }
+    }
 }
 
 extension ConversationViewController: UIScrollViewDelegate {
@@ -334,8 +409,6 @@ extension ConversationViewController: UITableViewDataSource {
                        useShowButton: self.viewModel.shouldTrashedHintBannerUseShowButton(),
                        delegate: self.viewModel)
             return cell
-        case .header(let subject):
-            return headerCell(tableView, subject: subject)
         case .message(let viewModel):
             if (viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly) ||
                 (!viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly) {
@@ -436,52 +509,28 @@ private extension ConversationViewController {
     private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
         switch indexPath.section {
         case 0:
-            guard headerShouldBeVisible(at: indexPath.row) else {
-                return 0
-            }
-
-            return UITableView.automaticDimension
-        case 1:
-            guard messageShouldBeVisible(at: indexPath.row) else {
-                return 0
-            }
-
-            guard let viewType = self.viewModel.messagesDataSource[safe: indexPath.row] else {
+            switch viewModel.headerCellVisibility(at: indexPath.row) {
+            case .full:
                 return UITableView.automaticDimension
+            case .partial:
+                return 24
+            case .hidden:
+                return 0
             }
 
-            return countHeightFor(viewType: viewType, estimated: estimated)
+        case 1:
+            switch viewModel.messageCellVisibility(at: indexPath.row) {
+            case .full:
+                let viewType = viewModel.messagesDataSource[indexPath.row]
+                return countHeightFor(viewType: viewType, estimated: estimated)
+            case .partial:
+                return 24
+            case .hidden:
+                return 0
+            }
         default:
             fatalError("Not supported section")
         }
-    }
-
-    private func headerShouldBeVisible(at index: Int) -> Bool {
-        switch self.viewModel.headerSectionDataSource[index] {
-        case .trashedHint:
-            return !viewModel.focusedMode
-        default:
-            return true
-        }
-    }
-
-    private func messageShouldBeVisible(at index: Int) -> Bool {
-        guard viewModel.focusedMode, let firstExpandedMessageIndex = viewModel.firstExpandedMessageIndex else {
-            return true
-        }
-
-        return index >= firstExpandedMessageIndex
-    }
-
-    private func headerCell(
-        _ tableView: UITableView,
-        subject: String
-    ) -> UITableViewCell {
-        let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
-        cell.customView.titleTextView.set(text: subject,
-                                          preferredFont: .title3)
-        cell.customView.titleTextView.textAlignment = .center
-        return cell
     }
 
     private func messageCell(
@@ -585,15 +634,14 @@ private extension ConversationViewController {
     }
 
     private func checkNavigationTitle() {
-        let tableview = customView.tableView
-        guard let cell = tableview.visibleCells.compactMap({ $0 as? ConversationViewHeaderCell }).first else {
-            presentDetailedNavigationTitle()
-            customView.separator.isHidden = false
+        let tableView = customView.tableView
+
+        guard let headerView = tableView.tableHeaderView as? ConversationViewHeaderView else {
             return
         }
 
-        let headerLabelConvertedFrame = cell.convert(cell.customView.titleTextView.frame, to: customView.tableView)
-        let shouldPresentDetailedNavigationTitle = tableview.contentOffset.y >= headerLabelConvertedFrame.maxY
+        let headerLabelConvertedFrame = headerView.convert(headerView.titleTextView.frame, to: tableView)
+        let shouldPresentDetailedNavigationTitle = tableView.contentOffset.y >= headerLabelConvertedFrame.maxY
 
         if shouldPresentDetailedNavigationTitle {
             presentDetailedNavigationTitle()
@@ -601,11 +649,11 @@ private extension ConversationViewController {
             presentSimpleNavigationTitle()
         }
 
-        let separatorConvertedFrame = cell.convert(cell.customView.separator.frame, to: customView.tableView)
-        let shouldShowSeparator = customView.tableView.contentOffset.y >= separatorConvertedFrame.maxY
+        let separatorConvertedFrame = headerView.convert(headerView.separator.frame, to: tableView)
+        let shouldShowSeparator = tableView.contentOffset.y >= separatorConvertedFrame.maxY
         customView.separator.isHidden = !shouldShowSeparator
 
-        cell.customView.topSpace = tableview.contentOffset.y < 0 ? tableview.contentOffset.y : 0
+        headerView.topSpace = tableView.contentOffset.y < 0 ? tableView.contentOffset.y : 0
     }
 
     private func presentDetailedNavigationTitle() {
@@ -616,15 +664,16 @@ private extension ConversationViewController {
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
     }
 
-    private func refreshNavigationViewIfNeeded() {
+    private func refreshNavigationViewIfNeeded(forceUpdate: Bool = false) {
         // only reassign the titleView if needed
         if let titleView = navigationItem.titleView as? ConversationNavigationSimpleView {
-            if titleView.titleLabel.attributedText?.string != viewModel.messagesTitle {
+            if titleView.titleLabel.attributedText?.string != viewModel.messagesTitle || forceUpdate {
                 navigationItem.titleView = viewModel.simpleNavigationViewType.titleView
             }
         } else if let titleView = navigationItem.titleView as? ConversationNavigationDetailView {
             if titleView.topLabel.attributedText?.string != viewModel.messagesTitle ||
-                titleView.bottomLabel.attributedText?.string != viewModel.conversation.subject {
+                titleView.bottomLabel.attributedText?.string != viewModel.conversation.subject ||
+                forceUpdate {
                 navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
             }
         }
@@ -677,15 +726,15 @@ private extension Array where Element == ConversationViewItemType {
 extension ConversationViewController {
     func setUpToolBarIfNeeded() {
         let actions = calculateToolBarActions()
-        guard customView.toolBar.types != actions.map(\.type) else {
+        guard customView.toolbar.types != actions.map(\.type) else {
             return
         }
-        customView.toolBar.setUpActions(actions)
+        customView.toolbar.setUpActions(actions)
     }
 
     func showToolbarCustomizeSpotlightIfNeeded() {
         guard viewModel.shouldShowToolbarCustomizeSpotlight(),
-            let targetRect = customView.toolbarLastButtonCGRect(),
+              let targetRect = customView.toolbarCGRect(),
               let navView = navigationController?.view,
               !navView.subviews.contains(where: { $0 is ToolbarCustomizeSpotlightView })
         else {
@@ -697,6 +746,9 @@ extension ConversationViewController {
             view: navView,
             targetFrame: convertedRect
         )
+        spotlight.navigateToToolbarCustomizeView = { [weak self] in
+            self?.coordinator.handle(navigationAction: .toolbarSettingView)
+        }
         viewModel.setToolbarCustomizeSpotlightViewIsShown()
     }
 
@@ -749,14 +801,18 @@ extension ConversationViewController {
 
     @objc
     private func moreButtonTapped() {
-        guard let navigationVC = self.navigationController else { return }
+        guard let navigationVC = self.navigationController,
+              let messageToApplyAction = viewModel.findLatestMessageForAction()
+        else { return }
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
+        let isScheduleSend = messageToApplyAction.isScheduledSend
 
         let actionSheetViewModel = ConversationActionSheetViewModel(
             title: viewModel.conversation.subject,
             isUnread: isUnread,
             isStarred: isStarred,
+            isScheduleSend: isScheduleSend,
             areAllMessagesIn: { [weak self] location in
                 self?.viewModel.areAllMessagesIn(location: location) ?? false
             }
@@ -787,7 +843,8 @@ extension ConversationViewController {
 private extension ConversationViewController {
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .reply, .replyAll, .forward:
+        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation,
+                .replyOrReplyAllInConversation, .replyAllInConversation:
             handleOpenComposerAction(action)
         case .labelAs:
             showLabelAsActionSheet(dataSource: .conversation)
@@ -818,22 +875,29 @@ private extension ConversationViewController {
             viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
                 self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
             }, continueAction: continueAction)
-        case .archive, .spam, .print, .viewHeaders, .viewHTML, .reportPhishing, .inbox,
-                .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .replyOrReplyAll, .saveAsPDF:
+        case .archive, .spam, .inbox, .spamMoveToInbox:
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             })
+        case .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
+                .viewInLightMode, .replyOrReplyAll:
+            // Actions here are applied to single message, not conversation.
+            handleActionForLastMessageInConversation(action: action)
+        case .print:
+            handlePrintActionOnToolbar()
+        case .saveAsPDF:
+            handleExportPDFOnToolbar()
         }
     }
 
     private func handleOpenComposerAction(_ action: MessageViewActionSheetAction) {
-        guard let message = viewModel.messagesDataSource.newestMessage else { return }
+        guard let message = viewModel.findLatestMessageForAction() else { return }
         switch action {
-        case .reply:
+        case .reply, .replyInConversation:
             coordinator.handle(navigationAction: .reply(message: message))
-        case .replyAll:
+        case .replyAll, .replyAllInConversation:
             coordinator.handle(navigationAction: .replyAll(message: message))
-        case .forward:
+        case .forward, .forwardInConversation:
             coordinator.handle(navigationAction: .forward(message: message))
         default:
             return
@@ -894,12 +958,96 @@ private extension ConversationViewController {
                            shouldShowRenderModeOption: shouldDisplayRenderModeOptions,
                            body: infoProvider?.bodyParts?.originalBody)
     }
+
+    private func handlePrintActionOnToolbar() {
+        prepareForPrinting(completion: { [weak self] renderer, subject in
+            guard let renderer = renderer, let subject = subject else {
+                return
+            }
+            self?.presentPrintController(renderer: renderer,
+                                         jobName: subject)
+        })
+    }
+
+    private func handleExportPDFOnToolbar() {
+        prepareForPrinting(completion: { [weak self] renderer, subject in
+            guard let renderer = renderer, let subject = subject else {
+                return
+            }
+            self?.exportPDF(renderer: renderer,
+                            fileName: "\(subject).pdf")
+        })
+    }
+
+    private func prepareForPrinting(completion: @escaping (ConversationPrintRenderer?, String?) -> Void) {
+        guard let message = viewModel.findLatestMessageForAction() else {
+            completion(nil, nil)
+            return
+        }
+
+        if !viewModel.isCellExpanded(messageID: message.messageID) {
+            cellTapped(
+                messageId: message.messageID,
+                shouldOpenHistory: true,
+                reloadCompletion: { [weak self] in
+                    self?.expandedMessageAndShowPrintProgress(message: message, completion: completion)
+                }
+            )
+        } else {
+            expandedMessageAndShowPrintProgress(message: message, completion: completion)
+        }
+    }
+
+    private func expandedMessageAndShowPrintProgress(
+        message: MessageEntity,
+        completion: @escaping (ConversationPrintRenderer?, String?) -> Void
+    ) {
+        viewModel.expandHistoryIfNeeded(
+            messageID: message.messageID,
+            completion: { [weak self] in
+                guard let contentsController = self?.contentController(for: message),
+                      let subject = self?.viewModel.conversation.subject else {
+                    completion(nil, nil)
+                    return
+                }
+                self?.showProgressHud()
+                if contentsController.messageBodyViewController.isLoading {
+                    contentsController.messageBodyViewController.webViewIsLoaded = { [weak contentsController] in
+                        defer {
+                            self?.hideProgressHud()
+                            contentsController?.messageBodyViewController.webViewIsLoaded = nil
+                        }
+                        guard let contentsController = contentsController else {
+                            completion(nil, nil)
+                            return
+                        }
+                        let renderer = ConversationPrintRenderer([contentsController])
+                        completion(renderer, subject)
+                    }
+                } else {
+                    self?.hideProgressHud()
+                    let renderer = ConversationPrintRenderer([contentsController])
+                    completion(renderer, subject)
+                }
+            }
+        )
+    }
+
+    private func handleActionForLastMessageInConversation(action: MessageViewActionSheetAction) {
+        guard let message = viewModel.findLatestMessageForAction() else {
+            return
+        }
+        let body = viewModel.getMessageBodyBy(messageID: message.messageID)
+        handleActionSheetAction(action, message: message, body: body)
+    }
 }
 
 enum ActionSheetDataSource {
     case message(_ message: MessageEntity)
     case conversation
 }
+
+extension ConversationViewController: ContentPrintable {}
 
 extension ConversationViewController: LabelAsActionSheetPresentProtocol {
     var labelAsActionHandler: LabelAsActionSheetProtocol {
@@ -1226,4 +1374,20 @@ extension ConversationViewController: UndoActionHandlerBase {
     }
 
     func showUndoAction(undoTokens: [String], title: String) { }
+}
+
+private extension UITableView {
+    func reloadRows(at indexPaths: [IndexPath],
+                    with animation: UITableView.RowAnimation,
+                    completion: @escaping () -> Void) {
+        UIView.animate(
+            withDuration: 0,
+            animations: {
+                self.reloadRows(at: indexPaths, with: animation)
+            },
+            completion: { _ in
+                completion()
+            }
+        )
+    }
 }

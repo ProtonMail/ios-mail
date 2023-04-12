@@ -49,6 +49,14 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate,
+              delegate.isReachable() else {
+            // If device has connection, skeleton view will be dismissed after fetching user info
+            // If device doesn't have connection, doesn't need to waste time to wait
+            NotificationCenter.default.post(name: .switchView, object: nil)
+            return
+        }
+
         guard isEnabledTimeout else { return }
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
             NotificationCenter.default.post(name: .switchView, object: nil)

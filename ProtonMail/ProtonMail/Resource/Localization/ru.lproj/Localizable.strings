@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Вы уверены, что хотите выйти?";
 
+/* One of the schedule time options */
+"As scheduled" = "Как запланировано";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "В %@";
 
@@ -356,7 +359,7 @@
 "Cancel Check" = "Отменить проверку";
 
 /* Title */
-"Cancelling" = "Отменяется";
+"Canceling" = "Отмена";
 
 /* Warning message */
 "Cannot empty folder right now." = "В данный момент невозможно очистить папку.";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Скрыть подробности";
 
-/* hours */
-"hours" = "часов";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Псевдонимы Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Как бы вы описали свои впечатления от новой Proton Mail?";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Ссылка скопирована.";
-
-/* Button inside the banner */
-"Load anyway" = "Все равно скачать";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Показывать встроенные изображения";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Наша поддержка клиентов попытается активировать ваш тариф вручную, если вы согласитесь вложить технические данные, которые App Store предоставил приложению в момент покупки. Эти данные не содержат сведений о вашем аккаунте iTunes, Apple ID, привязанных платежных картах или любой другой пользовательской информации. Технические данные только помогают нам проверить и удостовериться в том, что транзакция была совершена на серверах App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является оно законным";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно подлинным.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Родительская папка";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Сохранить изменения";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Планируйте сообщения в любое время";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Запланированная отправка";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Выберите цвет";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Установите дату и время";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Выбрано";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Настроить жесты для наиболее используемых действий.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Установить собственное расписание";
+
 /* menu title */
 "Settings" = "Настройки";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Отложить";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Некоторые изображения не удалось загрузить с защитой от отслеживания.";
 
 /* menu title */
 "Spam" = "Спам";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Неограничено";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Неограниченное количество папок / ярлыков";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Разблокируйте возможность планирования пользовательских сообщений и другие преимущества при улучшении тарифа.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Требуется разблокировка";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Неподдерживаемый тип файла";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "До 3 пользовательских доменов электронной почты";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "До 15 адресов электронной почты";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "До 500 ГБ хранилища";
+
 /* update notification email error title */
 "Update Notification Email" = "Обновить электронную почту для уведомлений";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Обновленный Proton, комплексная защита";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Улучшить сейчас";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдите на платный тариф для отправки с вашего адреса %@";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "Почтовый индекс";
 
+"Customize (verb)" = "Customize";

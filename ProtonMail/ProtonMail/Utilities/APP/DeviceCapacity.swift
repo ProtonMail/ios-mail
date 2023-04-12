@@ -17,29 +17,40 @@
 
 import Foundation
 
+protocol DiskUsageProtocol {
+    var availableCapacity: ByteCount { get }
+    var isLowOnFreeSpace: Bool { get }
+}
+
+protocol MemoryUsageProtocol {
+    var physicalMemory: UInt { get }
+    var usagePercentage: Double { get }
+    var used: UInt { get }
+}
+
 enum DeviceCapacity {
-    enum Disk {
-        static func free() -> Int {
+    struct Disk: DiskUsageProtocol {
+        var availableCapacity: ByteCount {
             let homeDirectoryURL = URL(fileURLWithPath: NSHomeDirectory())
             return homeDirectoryURL.value(forKey: .volumeAvailableCapacityKey, keyPath: \.volumeAvailableCapacity) ?? 0
         }
 
-        static func isLowOnFreeSpace() -> Bool {
+        var isLowOnFreeSpace: Bool {
             let lowStorageLimit = 100_000_000
-            return free() < lowStorageLimit
+            return availableCapacity < lowStorageLimit
         }
     }
 
-    enum Memory {
-        static func total() -> UInt64 {
-            ProcessInfo.processInfo.physicalMemory
+    struct Memory: MemoryUsageProtocol {
+        var physicalMemory: UInt {
+            UInt(ProcessInfo.processInfo.physicalMemory)
         }
 
-        static func usage() -> Double {
-            return Double(used()) / Double(total())
+        var usagePercentage: Double {
+            Double(used) / Double(physicalMemory)
         }
 
-        static func used() -> UInt64 {
+        var used: UInt {
             var taskInfo = task_vm_info_data_t()
             var outputCount = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size / MemoryLayout<integer_t>.size)
 
@@ -51,15 +62,15 @@ enum DeviceCapacity {
 
             assert(result == KERN_SUCCESS)
 
-            return taskInfo.phys_footprint
+            return UInt(taskInfo.phys_footprint)
         }
 
 #if DEBUG
-        static func test() {
+        func test() {
             if #available(iOS 15.0, *) {
                 print("You should see this in Xcode under Memory Use:")
-                print(used().formatted(.byteCount(style: .memory)))
-                print(usage().formatted(.percent.precision(.fractionLength(2))))
+                print(used.formatted(.byteCount(style: .memory)))
+                print(usagePercentage.formatted(.percent.precision(.fractionLength(2))))
             }
         }
 #endif

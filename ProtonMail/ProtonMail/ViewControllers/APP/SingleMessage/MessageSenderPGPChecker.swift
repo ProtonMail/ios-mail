@@ -19,8 +19,13 @@ import ProtonCore_Crypto
 import ProtonCore_Log
 import ProtonCore_Services
 
+struct CheckedSenderContact {
+    let sender: Sender
+    let encryptionIconStatus: EncryptionIconStatus?
+}
+
 final class MessageSenderPGPChecker {
-    typealias Complete = (ContactVO?) -> Void
+    typealias Complete = (CheckedSenderContact?) -> Void
 
     private let message: MessageEntity
     private let user: UserManager
@@ -42,7 +47,7 @@ final class MessageSenderPGPChecker {
     }
 
     func check(complete: @escaping Complete) {
-        guard let sender = message.sender, message.isDetailDownloaded else {
+        guard message.isDetailDownloaded, let sender = try? message.parseSender() else {
             complete(nil)
             return
         }
@@ -52,22 +57,22 @@ final class MessageSenderPGPChecker {
             return
         }
 
-        let senderAddress = sender.email
+        let senderAddress = sender.address
 
         let entity = message
         verifySenderAddress(senderAddress) { verifyResult in
             let helper = MessageEncryptionIconHelper()
             let iconStatus = helper.receivedStatusIconInfo(entity, verifyResult: verifyResult)
-            sender.encryptionIconStatus = iconStatus
-            complete(sender)
+            let checkedContact = CheckedSenderContact(sender: sender, encryptionIconStatus: iconStatus)
+            complete(checkedContact)
         }
     }
 
-    private func checkSentPGP(sender: ContactVO, complete: @escaping Complete) {
+    private func checkSentPGP(sender: Sender, complete: @escaping Complete) {
         let helper = MessageEncryptionIconHelper()
         let iconStatus = helper.sentStatusIconInfo(message: message)
-        sender.encryptionIconStatus = iconStatus
-        complete(sender)
+        let checkedContact = CheckedSenderContact(sender: sender, encryptionIconStatus: iconStatus)
+        complete(checkedContact)
     }
 
     private func verifySenderAddress(_ address: String, completion: @escaping (VerificationResult) -> Void) {

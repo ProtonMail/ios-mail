@@ -266,6 +266,8 @@ extension SettingsDeviceViewController {
                 case .language:
                     let language: ELanguage = LanguageManager.currentLanguageEnum()
                     cellToConfig.configure(right: language.nativeDescription, imageType: .system)
+                case .LocalizationPreview:
+                    cellToConfig.configure(right: "Test only", imageType: .system)
                 }
             }
             return cell
@@ -382,6 +384,8 @@ extension SettingsDeviceViewController {
                     self.inAppLanguage(indexPath)
                 }
                 #endif
+            case .LocalizationPreview:
+                coordinator?.go(to: .LocalizationPreview)
             }
         case .clearCache:
             self.cleanCache()

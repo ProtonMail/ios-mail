@@ -84,25 +84,17 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
     func saveToolbarAction(actions: [MessageViewActionSheetAction],
                            completion: ((NSError?) -> Void)?) {
         let preference: ToolbarActionPreference = .init(
-            conversationActions: nil,
             messageActions: nil,
             listViewActions: actions
         )
         saveToolbarActionUseCase
             .callbackOn(.main)
-            .executionBlock(
-            params: .init(preference: preference)
-        ) { result in
-            switch result {
-            case .success:
-                completion?(nil)
-            case let .failure(error):
-                completion?(error as NSError)
+            .execute(params: .init(preference: preference)) { result in
+                completion?(result.error as? NSError)
             }
-        }
     }
 
-    func handleBarActions(_ action: MessageViewActionSheetAction, selectedIDs: Set<String>) {
+    func handleBarActions(_ action: MessageViewActionSheetAction) {
         switch action {
         case .markRead:
             mark(IDs: selectedIDs, unread: false)
@@ -132,7 +124,7 @@ extension MailboxViewModel: ToolbarCustomizationActionHandler {
                             to: Message.Location.archive.labelID)
         case .moveTo, .labelAs, .more, .reply, .replyOrReplyAll, .replyAll, .forward,
              .print, .viewHeaders, .viewHTML, .reportPhishing, .dismiss,
-             .viewInLightMode, .viewInDarkMode, .toolbarCustomization, .saveAsPDF:
+             .viewInLightMode, .viewInDarkMode, .toolbarCustomization, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             assertionFailure("should not reach here")
         }
     }

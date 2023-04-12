@@ -63,7 +63,7 @@ class ConversationMessageViewModel {
         self.message = message
     }
 
-    func toggleState() {
+    func toggleState(shouldOpenHistory: Bool = false) {
         state = state.isExpanded ?
             .collapsed(viewModel: .init(
                 message: message,
@@ -77,7 +77,10 @@ class ConversationMessageViewModel {
             ))
     }
 
-    private func singleMessageContentViewModel(for message: MessageEntity) -> SingleMessageContentViewModel {
+    private func singleMessageContentViewModel(
+        for message: MessageEntity,
+        shouldOpenHistory: Bool = false
+    ) -> SingleMessageContentViewModel {
         let context = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,
@@ -88,7 +91,6 @@ class ConversationMessageViewModel {
                 queueManager: sharedServices.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: sharedServices.get(by: CoreDataService.self),
-                realAttachmentsFlagProvider: userCachedStatus,
                 messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
@@ -100,6 +102,7 @@ class ConversationMessageViewModel {
             internetStatusProvider: internetStatusProvider,
             systemUpTime: userCachedStatus,
             dependencies: dependencies,
+            shouldOpenHistory: shouldOpenHistory,
             goToDraft: goToDraft
         )
     }

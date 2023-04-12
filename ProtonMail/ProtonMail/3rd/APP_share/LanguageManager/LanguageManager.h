@@ -29,39 +29,33 @@
 /// Map to swift as a service
 typedef NS_ENUM(NSInteger, ELanguage)
 {
-    ELanguageEnglish,
-    ELanguageGerman, //added at inital
-    ELanguageFrench,
-    ELanguageRussian,
-    ELanguageSpanish,
-    ELanguageTurkish,
-    
-    ELanguagePolish, //added at 07/05/2017
-    ELanguageUkrainian,
-    
-    ELanguageDutch, //added at 08/07/2017
-    
-    ELanguageItalian, //add at 10/05/2017
-    
-    ELanguagePortugueseBrazil, //add at 18/10/2017
-    
+    ELanguageBelarusian, // added at 02/21/2023
+    ELanguageCatalan,            // add at 12/20/2018
     ELanguageChineseSimplified,  // add at 12/20/2018
     ELanguageChineseTraditional, // add at 12/20/2018
-    ELanguageCatalan,            // add at 12/20/2018
-    ELanguageDanish,             // add at 12/20/2018
-    ELanguageCzech,              // add at 12/20/2018
-    ELanguagePortuguese,         // add at 12/20/2018
-    ELanguageRomanian,           // add at 12/26/2018
-    
     ELanguageCroatian,          // add at 12/02/2019
-    
+    ELanguageCzech,              // add at 12/20/2018
+    ELanguageDanish,             // add at 12/20/2018
+    ELanguageDutch, //added at 08/07/2017
+    ELanguageEnglish,
+    ELanguageFrench,
+    ELanguageGerman, //added at inital
+    ELanguageGreek, // added at 02/21/2023
     ELanguageHungarian,         // add at 04/16/2019
     ELanguageIcelandic,         // add at 04/16/2019
-    ELanguageKabyle,            // add at 04/16/2019
-    ELanguageSwedish,           // add at 04/16/2019
-    
-    ELanguageJapanese,          // add at 07/01/2019
     ELanguageIndonesian,        // add at 07/01/2019
+    ELanguageItalian, //add at 10/05/2017
+    ELanguageJapanese,          // add at 07/01/2019
+    ELanguageKabyle,            // add at 04/16/2019
+    ELanguagePolish, //added at 07/05/2017
+    ELanguagePortuguese,         // add at 12/20/2018
+    ELanguagePortugueseBrazil, //add at 18/10/2017
+    ELanguageRomanian,           // add at 12/26/2018
+    ELanguageRussian,
+    ELanguageSpanish,
+    ELanguageSwedish,           // add at 04/16/2019
+    ELanguageTurkish,
+    ELanguageUkrainian,
     
     ELanguageCount
 };

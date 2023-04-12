@@ -22,7 +22,7 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 
 protocol MessageInfoProviderDelegate: AnyObject {
-    func update(senderContact: ContactVO?)
+    func providerHasChanged()
     func hideDecryptionErrorBanner()
     func showDecryptionErrorBanner()
     func updateBannerStatus()
@@ -43,20 +43,21 @@ final class MessageInfoProvider {
     private(set) var message: MessageEntity {
         willSet {
             let bodyHasChanged = message.body != newValue.body
-            if bodyHasChanged {
+            if bodyHasChanged || bodyParts == nil {
                 bodyParts = nil
                 hasAutoRetriedDecrypt = false
-                imageProxyHasStartedRunningOnCurrentBody = false
-                imageProxyHasStartedPerformingDryRunOnCurrentBody = false
                 trackerProtectionSummary = nil
             }
         }
         didSet {
-            let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-            let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
-            pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
-            prepareDisplayBody()
-            checkSenderPGP()
+            let bodyHasChanged = message.body != oldValue.body
+            if bodyHasChanged || bodyParts == nil {
+                let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+                let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
+                pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
+                prepareDisplayBody()
+                checkSenderPGP()
+            }
         }
     }
 
@@ -84,27 +85,29 @@ final class MessageInfoProvider {
     private let labelID: LabelID
     private weak var delegate: MessageInfoProviderDelegate?
     private var pgpChecker: MessageSenderPGPChecker?
-    private let imageProxy: ImageProxy
     private let dependencies: Dependencies
 
-    private var imageProxyHasStartedRunningOnCurrentBody = false
-    private var imageProxyHasStartedPerformingDryRunOnCurrentBody = false
+    private var shouldApplyImageProxy: Bool {
+        let messageNotSentByUs = !message.isSent
+        let remoteContentAllowed = remoteContentPolicy == .allowed
+        return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled
+    }
 
     private var shouldPerformImageProxyRealRun: Bool {
-        imageProxyEnabled && remoteContentPolicy == .allowed && !imageProxyHasStartedRunningOnCurrentBody
+        imageProxyEnabled && remoteContentPolicy == .allowed
     }
 
     private var shouldPerformImageProxyDryRun: Bool {
-        imageProxyEnabled && remoteContentPolicy != .allowed && !imageProxyHasStartedPerformingDryRunOnCurrentBody
+        imageProxyEnabled && remoteContentPolicy != .allowed
     }
 
     init(
         message: MessageEntity,
         messageDecrypter: MessageDecrypterProtocol? = nil,
         user: UserManager,
-        imageProxy: ImageProxy,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
+        shouldOpenHistory: Bool = false,
         dependencies: Dependencies
     ) {
         self.message = message
@@ -116,18 +119,28 @@ final class MessageInfoProvider {
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
         self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
-        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? .allowed : .disallowed
+
+        // If the message is sent by us, we do not use the image proxy to load the content.
+        let imageProxyEnabled = UserInfo.isImageProxyAvailable &&
+            user.userInfo.imageProxy.contains(.imageProxy) &&
+            !message.isSent
+        let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedAll : .allowed
+        self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? allowedPolicy : .disallowed
+
         self.embeddedContentPolicy = user.userInfo.isAutoLoadEmbeddedImagesEnabled ? .allowed : .disallowed
         self.userAddressUpdater = user
-        self.imageProxy = imageProxy
         self.systemUpTime = systemUpTime
         self.labelID = labelID
         self.dependencies = dependencies
 
+        if shouldOpenHistory {
+            displayMode = .expanded
+        }
+
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
         } else {
-            self.currentMessageRenderStyle = message.isNewsLetter ? .lightOnly : .dark
+            self.currentMessageRenderStyle = .dark
         }
     }
 
@@ -136,45 +149,39 @@ final class MessageInfoProvider {
         self.checkSenderPGP()
     }
 
-    convenience init(
-        message: MessageEntity,
-        user: UserManager,
-        systemUpTime: SystemUpTimeProtocol,
-        labelID: LabelID,
-        dependencies: Dependencies
-    ) {
-        let imageProxyDependencies = ImageProxy.Dependencies(apiService: user.apiService)
-        let imageProxy = ImageProxy(dependencies: imageProxyDependencies)
-        self.init(
-            message: message,
-            user: user,
-            imageProxy: imageProxy,
-            systemUpTime: systemUpTime,
-            labelID: labelID,
-            dependencies: dependencies
-        )
-    }
-
     lazy var senderName: String = {
-        guard let senderInfo = message.sender else {
-            assert(false, "Sender with no name or address")
+        let sender: Sender
+
+        do {
+            sender = try message.parseSender()
+        } catch {
+            assertionFailure("\(error)")
             return ""
         }
-        guard let contactName = contactService.getName(of: senderInfo.email) else {
-            return senderInfo.name.isEmpty ? senderInfo.email : senderInfo.name
+
+        guard let contactName = contactService.getName(of: sender.address) else {
+            return sender.name.isEmpty ? sender.address : sender.name
         }
         return contactName
     }()
 
-    private(set) var checkedSenderContact: ContactVO? {
+    private(set) var checkedSenderContact: CheckedSenderContact? {
         didSet {
-            delegate?.update(senderContact: checkedSenderContact)
+            delegate?.providerHasChanged()
         }
     }
 
     var initials: String { senderName.initials() }
 
-    var senderEmail: String { "\((message.sender?.email ?? ""))" }
+    var senderEmail: String {
+        do {
+            let sender = try message.parseSender()
+            return sender.address
+        } catch {
+            assertionFailure("\(error)")
+            return ""
+        }
+    }
 
     var time: String {
         if message.contains(location: .scheduled), let date = message.time {
@@ -195,8 +202,8 @@ final class MessageInfoProvider {
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .medium
         dateFormatter.dateStyle = .long
-        dateFormatter.timeZone = Environment.timeZone
-        dateFormatter.locale = Environment.locale()
+        dateFormatter.timeZone = LocaleEnvironment.timeZone
+        dateFormatter.locale = LocaleEnvironment.locale()
         return dateFormatter.string(from: date)
     }()
 
@@ -269,20 +276,16 @@ final class MessageInfoProvider {
     }()
 
     // [cid, base64String]
-    private var embeddedBase64: [String: String] = [:]
+    private var inlineContentIDMap: [String: String] = [:]
     private var embeddedStatus = EmbeddedDownloadStatus.none
     private(set) var hasStrippedVersion: Bool = false {
         didSet { delegate?.update(hasStrippedVersion: hasStrippedVersion) }
     }
 
-    private var unhandledFailedProxyRequests: [Set<UUID>: UnsafeRemoteURL] = [:]
-
     private(set) var shouldShowRemoteBanner = false
     private(set) var shouldShowEmbeddedBanner = false
 
-    var shouldShowImageProxyFailedBanner: Bool {
-        !unhandledFailedProxyRequests.isEmpty
-    }
+    var shouldShowImageProxyFailedBanner: Bool = false
 
     private var hasAutoRetriedDecrypt = false
     private(set) var bodyParts: BodyParts? {
@@ -298,7 +301,15 @@ final class MessageInfoProvider {
 
     var remoteContentPolicy: WebContents.RemoteContentPolicy {
         didSet {
-            guard remoteContentPolicy != oldValue else { return }
+            if message.isSent && remoteContentPolicy == .allowed {
+                remoteContentPolicy = .allowedAll
+            }
+            if !imageProxyEnabled && remoteContentPolicy == .allowed {
+                remoteContentPolicy = .allowedAll
+            }
+            if remoteContentPolicy == .allowedAll {
+                shouldShowImageProxyFailedBanner = false
+            }
             prepareDisplayBody()
         }
     }
@@ -334,14 +345,16 @@ final class MessageInfoProvider {
     }
 
     var shouldDisplayRenderModeOptions: Bool {
-        if message.isNewsLetter { return false }
-        guard let css = self.bodyParts?.darkModeCSS, !css.isEmpty else {
-            // darkModeCSS is nil or empty
-            return false
-        }
-
         if #available(iOS 12.0, *) {
-            return UIApplication.shared.windows[0].traitCollection.userInterfaceStyle == .dark
+            if userCachedStatus.darkModeStatus == .forceOff {
+                return false
+            }
+            let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
+            if keywords.contains(where: { bodyParts?.originalBody.preg_match($0) ?? false }) {
+                return false
+            } else {
+                return true
+            }
         } else {
             return false
         }
@@ -376,6 +389,11 @@ final class MessageInfoProvider {
         }
         return PMDateFormatter.shared.titleForScheduledBanner(from: time)
     }
+
+    // If the remote content policy is allow all, do not use the image proxy.
+    var shouldUseImageProxy: Bool {
+        remoteContentPolicy == .allowedAll ? false : shouldApplyImageProxy
+    }
 }
 
 // MARK: Public functions
@@ -400,10 +418,18 @@ extension MessageInfoProvider {
         self.delegate = delegate
     }
 
-    func reloadImagesWithoutProtection() {
-        replaceMarkersWithURLs(unhandledFailedProxyRequests.mapValues(\.value))
-        unhandledFailedProxyRequests.removeAll()
+    func set(policy: WebContents.RemoteContentPolicy) {
+        guard policy != remoteContentPolicy else {
+            return
+        }
+        remoteContentPolicy = policy
+        prepareDisplayBody()
     }
+
+    func reloadImagesWithoutProtection() {
+        remoteContentPolicy = .allowedAll
+        prepareDisplayBody()
+	}
 
     func replaceMarkersWithURLs(_ replacements: [Set<UUID>: String]) {
         dispatchQueue.async { [weak self] in
@@ -424,7 +450,7 @@ extension MessageInfoProvider {
                     body.replaceSubrange(rangeToReplace, with: replacement.value)
                 }
             }
-
+            self.checkBannerStatus(updatedBody)
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
         }
@@ -496,32 +522,9 @@ extension MessageInfoProvider {
     private func prepareDisplayBody() {
         dispatchQueue.async {
             self.checkAndDecryptBody()
-            guard var decryptedBody = self.bodyParts?.originalBody else {
+            guard let decryptedBody = self.bodyParts?.originalBody else {
                 self.prepareDecryptFailedBody()
                 return
-            }
-
-            if self.shouldPerformImageProxyRealRun {
-                do {
-                    let bodyWithoutRemoteURLs = try self.imageProxy.process(body: decryptedBody, delegate: self)
-                    self.imageProxyHasStartedRunningOnCurrentBody = true
-                    decryptedBody = bodyWithoutRemoteURLs
-                    self.updateBodyParts(with: decryptedBody)
-                } catch {
-                    // ImageProxy will only fail if the HTML is malformed, the other errors are contained
-                    assertionFailure("\(error)")
-                    self.prepareDecryptFailedBody()
-                    return
-                }
-            } else if self.shouldPerformImageProxyDryRun {
-                do {
-                    try self.imageProxy.dryRun(body: decryptedBody, delegate: self)
-                    self.imageProxyHasStartedPerformingDryRunOnCurrentBody = true
-                } catch {
-                    // dry run errors should be silenced
-                    assertionFailure("\(error)")
-                    return
-                }
             }
 
             self.checkBannerStatus(decryptedBody)
@@ -607,11 +610,7 @@ extension MessageInfoProvider {
     }
 
     private func updateBodyParts(with newBody: String) {
-        bodyParts = BodyParts(
-            originalBody: newBody,
-            isNewsLetter: message.isNewsLetter,
-            isPlainText: message.isPlainText
-        )
+        bodyParts = BodyParts(originalBody: newBody)
     }
 
     private func updateWebContents() {
@@ -620,12 +619,32 @@ extension MessageInfoProvider {
             embeddedImages: attachments
         )
 
-        let body = bodyParts?.body(for: displayMode) ?? ""
+        let body = bodyParts?.originalBody ?? .empty
+
+        let contentLoadingType: WebContents.LoadingType
+        // The sent message will not use the proxy. The remote content should be loaded directly through the webview.
+        if message.isSent && remoteContentPolicy == .allowed {
+            remoteContentPolicy = .allowedAll
+            contentLoadingType = .direct
+            // The `allowedAll` policy will by pass the proxy and load the content through the webview.
+        } else if remoteContentPolicy == .allowedAll {
+            contentLoadingType = .direct
+        } else if shouldApplyImageProxy {
+            contentLoadingType = .proxy
+        } else if imageProxyEnabled {
+            contentLoadingType = .proxyDryRun
+        } else {
+            contentLoadingType = .none
+        }
+
+        let css = bodyParts?.darkModeCSS(body: body)
         contents = WebContents(
             body: body,
             remoteContentMode: remoteContentPolicy,
+            messageDisplayMode: displayMode,
+            contentLoadingType: contentLoadingType,
             renderStyle: currentMessageRenderStyle,
-            supplementCSS: bodyParts?.darkModeCSS,
+            supplementCSS: css,
             webImages: webImages
         )
     }
@@ -678,11 +697,12 @@ extension MessageInfoProvider {
                     )
                 ) { result in
                     defer { group.leave() }
-                    guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else { return }
+                    guard let base64Attachment = try? result.get().encoded,
+                          !base64Attachment.isEmpty else { return }
                     stringsQueue.sync {
                         let scheme = HTTPRequestSecureLoader.imageCacheScheme
                         let value = "src=\"\(scheme)://\(inline.id)\""
-                        self?.embeddedBase64["src=\"cid:\(contentID)\""] = value
+                        self?.inlineContentIDMap["src=\"cid:\(contentID)\""] = value
                     }
                 }
             }
@@ -706,8 +726,8 @@ extension MessageInfoProvider {
             }
 
             var updatedBody = currentlyDisplayedBodyParts.originalBody
-            for (cid, base64) in self.embeddedBase64 {
-                updatedBody = updatedBody.replacingOccurrences(of: cid, with: base64)
+            for (cid, cidWithScheme) in self.inlineContentIDMap {
+                updatedBody = updatedBody.replacingOccurrences(of: cid, with: cidWithScheme)
             }
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
@@ -729,25 +749,16 @@ extension MessageInfoProvider {
 }
 
 extension MessageInfoProvider: ImageProxyDelegate {
-    func imageProxy(_ imageProxy: ImageProxy, didFinishDryRunWithOutput output: ImageProxyDryRunOutput) {
-        let realRunHasAlreadyCompleted = trackerProtectionSummary != nil
-
-        guard !realRunHasAlreadyCompleted else {
-            return
-        }
-
+    func imageProxy(_ imageProxy: ImageProxy, output: ImageProxyOutput) {
+        shouldShowImageProxyFailedBanner = output.hasEncounteredErrors
         trackerProtectionSummary = output.summary
-    }
-
-    func imageProxy(_ imageProxy: ImageProxy, didFinishWithOutput output: ImageProxyOutput) {
-        trackerProtectionSummary = output.summary
-        unhandledFailedProxyRequests = output.failedUnsafeRemoteURLs
-        replaceMarkersWithURLs(output.safeBase64Contents.mapValues(\.url))
+        delegate?.updateBannerStatus()
     }
 }
 
 extension MessageInfoProvider {
     struct Dependencies {
+        let imageProxy: ImageProxy
         let fetchAttachment: FetchAttachmentUseCase
     }
 }

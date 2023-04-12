@@ -309,19 +309,4 @@ extension String_ExtensionTests {
             XCTAssertTrue(result2.preg_match(ans))
         }
     }
-
-    func testToContact() {
-        var data = "{\"Name\": \"Tester\"}"
-        XCTAssertNil(data.toContact())
-
-        data = "{\"Address\": \"zzz@test.com\"}"
-        var contact = data.toContact()
-        XCTAssertEqual(contact?.name, "")
-        XCTAssertEqual(contact?.email, "zzz@test.com")
-
-        data = "{\"Name\": \"Hi\", \"Address\": \"abc@test.com\"}"
-        contact = data.toContact()
-        XCTAssertEqual(contact?.name, "Hi")
-        XCTAssertEqual(contact?.email, "abc@test.com")
-    }
 }

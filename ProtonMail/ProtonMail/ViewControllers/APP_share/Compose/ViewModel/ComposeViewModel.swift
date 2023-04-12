@@ -53,6 +53,15 @@ class ComposeViewModel: NSObject {
     let originalScheduledTime: OriginalScheduleDate?
     // we can't use `dependencies` as name bc it clashes with the subclass attribute of the same name
     let deps: Dependencies
+    var urlSchemesToBeHandle: Set<String> {
+        let schemes: [HTTPRequestSecureLoader.ProtonScheme] = [.http, .https, .noProtocol]
+        return Set(schemes.map(\.rawValue))
+    }
+
+    private(set) var contacts: [ContactPickerModelProtocol] = []
+    private var emailsController: NSFetchedResultsController<Email>?
+
+    private(set) var phoneContacts: [ContactPickerModelProtocol] = []
 
     init(
         msgDataService: MessageDataService,
@@ -159,7 +168,7 @@ class ComposeViewModel: NSObject {
 
     func getHtmlBody() -> WebContents {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
-        return WebContents(body: "", remoteContentMode: .lockdown)
+        return WebContents(body: "", remoteContentMode: .lockdown, messageDisplayMode: .expanded)
     }
 
     func collectDraft(_ title: String, body: String, expir: TimeInterval, pwd: String, pwdHit: String) {
@@ -221,30 +230,7 @@ class ComposeViewModel: NSObject {
     }
 
     func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
-        guard let attachments = getAttachments() else { return }
-        let inlineAttachments = attachments
-            .filter({ attachment in
-                guard let contentId = attachment.contentID() else { return false }
-                return !contentId.isEmpty && attachment.inline()
-            })
-        let userKeys = getUser().toUserKeys()
-
-        for att in inlineAttachments {
-            guard let contentId = att.contentID() else { continue }
-            deps.fetchAttachment.callbackOn(.main).execute(
-                params: .init(
-                    attachmentID: AttachmentID(att.attachmentID),
-                    attachmentKeyPacket: att.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
-                    userKeys: userKeys
-                )
-            ) { result in
-                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
-                    return
-                }
-                htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.mimeType);base64,\(base64Att)")
-            }
-        }
+        fatalError("This method must be overridden")
     }
 
 	func isDraftHavingEmptyRecipient() -> Bool {
@@ -268,10 +254,84 @@ class ComposeViewModel: NSObject {
     func shouldShowScheduleSendConfirmationAlert() -> Bool {
         return isEditingScheduleMsg && deliveryTime == nil
 	}
+
+    func fetchContacts() {
+        let service = getUser().contactService
+        emailsController = service.makeAllEmailsFetchedResultController()
+        emailsController?.delegate = self
+        try? emailsController?.performFetch()
+        let allContacts = (emailsController?.fetchedObjects ?? [])
+            .map { email in
+                ContactVO(
+                    name: email.name,
+                    email: email.email,
+                    isProtonMailContact: true
+                )
+            }
+        // Remove the duplicated items
+        var set = Set<ContactVO>()
+        var filteredResult = [ContactVO]()
+        for contact in allContacts {
+            if !set.contains(contact) {
+                set.insert(contact)
+                filteredResult.append(contact)
+            }
+        }
+        self.contacts = filteredResult
+    }
+
+    func fetchPhoneContacts(completion: (() -> Void)?) {
+        let service = getUser().contactService
+        service.getContactVOsFromPhone { contacts, error in
+            self.phoneContacts = contacts
+            completion?()
+        }
+    }
+
+    func addContactWithPhoneContact() {
+        let user = getUser()
+        var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = phoneContacts
+
+        if user.hasPaidMailPlan {
+            let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter {
+                $0.contactCount > 0
+            }
+            contactsWithoutLastTimeUsed.append(contentsOf: contactGroupsToAdd)
+        }
+        // sort the contact group and phone address together
+        contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+
+        self.contacts += contactsWithoutLastTimeUsed
+    }
 }
 
 extension ComposeViewModel {
     struct Dependencies {
         let fetchAttachment: FetchAttachmentUseCase
+    }
+}
+
+extension ComposeViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard let emails = controller.fetchedObjects as? [Email] else {
+            return
+        }
+        let allContacts = emails.map { email in
+            ContactVO(
+                name: email.name,
+                email: email.email,
+                isProtonMailContact: true
+            )
+        }
+        // Remove the duplicated items
+        var set = Set<ContactVO>()
+        var filteredResult = [ContactVO]()
+        for contact in allContacts {
+            if !set.contains(contact) {
+                set.insert(contact)
+                filteredResult.append(contact)
+            }
+        }
+        self.contacts = filteredResult
     }
 }

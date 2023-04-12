@@ -13,11 +13,7 @@ extension ConversationViewModel {
             guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) else {
                 return
             }
-            self.shouldIgnoreUpdateOnce = true
-            let indexPath = IndexPath(row: index, section: 1)
-            conversationViewController?.cellTapped(messageId: message.messageID)
-            messageService.mark(messages: [message], labelID: messageLocation, unRead: true)
-            self.conversationViewController?.attemptAutoScroll(to: indexPath, position: .top)
+            messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: messageLocation, unRead: true)
         case .star:
             messageService.label(messages: [message], label: Message.Location.starred.labelID, apply: true, shouldFetchEvent: true)
             shouldDismissView = false

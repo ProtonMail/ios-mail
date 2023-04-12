@@ -27,23 +27,24 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     private var fetchMessage: MockFetchMessages!
     private var fetchLatestEventID: MockFetchLatestEventId!
     private var mailboxSource: MockUpdateMailboxSource!
-    private var messageInfoCache: MessageInfoCacheMock!
     private var sut: UpdateMailbox!
 
     override func setUpWithError() throws {
         self.eventService = EventsServiceMock()
         self.messageDataService = MockMessageDataService()
-        let contextProviderMock = MockCoreDataContextProvider()
-        self.conversationProvider = MockConversationProvider(context: contextProviderMock.viewContext)
+        self.conversationProvider = MockConversationProvider()
         self.purgeOldMessages = MockPurgeOldMessages()
         self.fetchMessageWithReset = MockFetchMessagesWithReset()
         self.fetchMessage = MockFetchMessages()
         self.fetchLatestEventID = MockFetchLatestEventId()
         self.mailboxSource = MockUpdateMailboxSource()
-        self.messageInfoCache = MessageInfoCacheMock()
         self.sut = UpdateMailbox(
-            dependencies: .init(messageInfoCache: self.messageInfoCache, eventService: self.eventService, messageDataService: self.messageDataService, conversationProvider: self.conversationProvider, purgeOldMessages: self.purgeOldMessages, fetchMessageWithReset: self.fetchMessageWithReset, fetchMessage: self.fetchMessage, fetchLatestEventID: self.fetchLatestEventID), parameters: .init(labelID: LabelID("TestID")))
+            dependencies: .init(eventService: self.eventService, messageDataService: self.messageDataService, conversationProvider: self.conversationProvider, purgeOldMessages: self.purgeOldMessages, fetchMessageWithReset: self.fetchMessageWithReset, fetchMessage: self.fetchMessage, fetchLatestEventID: self.fetchLatestEventID), parameters: .init(labelID: LabelID("TestID")))
         self.sut.setup(source: self.mailboxSource)
+
+        conversationProvider.fetchConversationCountsStub.bodyIs { _, _, completion in
+            completion?(.success(()))
+        }
     }
 
     override func tearDownWithError() throws {
@@ -55,7 +56,6 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchMessage = nil
         self.fetchLatestEventID = nil
         self.mailboxSource = nil
-        self.messageInfoCache = nil
         self.sut = nil
     }
 
@@ -152,7 +152,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let conversationExpected = expectation(description: "Fetch conversation")
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+        self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTAssertTrue(shouldReset)
             conversationExpected.fulfill()
             completion?(.success)
@@ -192,7 +192,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let conversationExpected = expectation(description: "Fetch conversation")
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+        self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTAssertTrue(shouldReset)
             conversationExpected.fulfill()
             completion?(.success)
@@ -335,7 +335,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         }
 
         let conversationExpected = expectation(description: "Fetch conversation")
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+        self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTAssertTrue(shouldReset)
             conversationExpected.fulfill()
             completion?(.success)
@@ -398,7 +398,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.mailboxSource.locationViewMode = .conversation
         self.sut.setup(isFetching: true)
 
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+        self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTFail("isFetching, shouldn't trigger")
         }
 
@@ -426,7 +426,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.mailboxSource.locationViewMode = .conversation
         self.sut.setup(isFetching: true)
 
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+        self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTFail("isFetching, shouldn't trigger")
         }
         self.eventService.callFetchEvents.bodyIs { _, _, _, _ in
@@ -459,7 +459,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.sut.setup(isFetching: false)
 
         let conversationExpected = expectation(description: "Fetch conversation")
-        self.conversationProvider.callFetchConversations.bodyIs { _, _, _, _, shouldReset, completion in
+        self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
             XCTAssertFalse(shouldReset)
             conversationExpected.fulfill()
             completion?(.success)

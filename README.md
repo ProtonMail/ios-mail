@@ -1,38 +1,51 @@
 
-# iOS-mail
-
-## Introduction
-
-iOS-mail — ProtonMail iOS client app
-
-The app is intended for all users of the ProtonMail service. Whether they are paid or free, they can compose and read emails, manage folders and labels, manage some account settings and create a new account. The app supports iOS versions 11 and above.
-
-## License
-
-The code and data files in this distribution are licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <https://www.gnu.org/licenses/> for a copy of this license.
-
-See [LICENSE](LICENSE) file
+# iOS Mail
 
 ## Table of Contents
 
 <!-- TOC depthFrom:3 -->
-- [Introduction](#Introduction)
-- [License](#License)
-- [Architecture](#Architecture)
-- [Dependencies](#Dependencies)
-    - [Internal](#Internal)
-    - [Third Party](#Third-Party)
-- [Content Explanation](#Content-Explanation)
-- [Setup](#setup)
-- [Live version](#live-version)
-- [Articles](#Articles)
+- [Introduction](#introduction)
+- [Project setup](#project-setup)
+- [Running Proton Mail](#running-proton-mail)
+- [Dependencies](#dependencies)
+    - [Internal](#internal)
+    - [Third Party](#third-party)
+- [Articles](#articles)
+- [License](#license)
+- [Download from the Apple Store](#download-from-the-Apple-Store)
 - [Our Team](#our-team)
-- [TODO](#todo)
 <!-- /TOC -->
 
-## Architecture
+## Introduction
 
-[MVVM-C](mvvmc.png) with services. Model-View-ViewModel architecture, plus the Coordinator pattern.
+Proton Mail iOS client for encrypted email.
+
+The application contains the following features among others (some are only available to paid users): create new accounts, sign in to multiple accounts, read and compose emails, schedule emails to be sent at a specific time, protect emails with a password, set emails expiration time, organise emails with labels and folders, manage contacts, change account settings, and many more...
+
+Currently the application supports iOS version 11 and above
+
+## Project setup
+
+1. As a first step, you have to have macOS up to date and install Xcode 14+
+
+2. The project uses [Mint](https://github.com/yonaskolb/mint) as a package manager. If you don't have it installed, you can do it via [Homebrew](https://brew.sh/) by `brew bundle --file="ProtonMail/Brewfile" --no-upgrade`. Once you have it ready, in order to install dependecies run:
+
+`mint bootstrap`
+
+3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier. After cloning the repository run these two commands:  
+
+`git submodule init`
+`git submodule update`
+
+4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project. To create the corresponding project files run: 
+
+`sh ProtonMail/xcodeGenHelper.sh`
+
+## Running Proton Mail
+
+1. In order to run the project you will need first to set your own provisioning profile. You can do that in the `Signing & Capabilities` settings of the `ProtonMail` target.
+
+2. For development purposes we have Core Data's concurrency flag enabled. That could occasionaly crash the application. If you want to disable the flag, go to the `ProtonMail` scheme and uncheck the laujnch argument `-com.apple.CoreData.ConcurrencyDebug 1`
 
 ## Dependencies
 
@@ -47,39 +60,22 @@ See [LICENSE](LICENSE) file
 
 [Acknowledgements](Acknowledgements.md)
 
-## Content Explanation
-
-<!-- TOC depthFrom:3 -->
-- [OpenPGP](OpenPGP/README.md)
-- [Keymaker](ProtonMail/Keymaker/README.md)
-- [ProtonMail](ProtonMail/ProtonMail/README.md)
-- [PushService](ProtonMail/PushService/README.md)
-- [Share](ProtonMail/Share/README.md)
-- [Siri](ProtonMail/Siri/README.md)
-- [Scripts](Scripts/README.md)
-- [Trust Model](ProtonMail/README.md#Trust-Model)
-- [Local Data Protection](ProtonMail/README.md#Local-Data)
-<!-- /TOC -->
-
-## Setup
-
-1. Have macOS up to date and install Xcode 14 +
-2. We are using [Mint](https://github.com/yonaskolb/mint) as our package manager, If you don't have it, you can install it via [Homebrew](https://brew.sh/) by `brew bundle --file="ProtonMail/Brewfile" --no-upgrade` then run `mint bootstrap` to install dependecies
-3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
-4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project, `sh ProtonMail/xcodeGenHelper.sh`
-5. Open `ProtonMail/ProtonMail.xcworkspace` and update project settings to use your own provisioning profile.
-6. Run the app.
-
-## Live version
-
-Current live version 4.2.2
-
-- [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
-
 ## Articles
 
-- [Open sourcing](https://proton.me/blog/ios-open-source)
-- [Security model](https://proton.me/blog/ios-security-model)
+These are some articles from our [blog](https://proton.me/blog) that you might find useful:
+
+- [Proton Mail iOS app goes open source!](https://proton.me/blog/ios-open-source)
+- [Proton Mail iOS client security](https://proton.me/blog/ios-security-model)
+
+## License
+
+The code and data files in this distribution are licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <https://www.gnu.org/licenses/> for a copy of this license.
+
+See [LICENSE](LICENSE) file
+
+## Download from the Apple Store
+
+You can follow this link to download Proton Mail from the [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
 
 ## Our Team
 
@@ -88,3 +84,4 @@ Current live version 4.2.2
 - [Steven](https://github.com/Linquas)
 - [Jacek](https://github.com/jacekkra)
 - [Xavi](https://github.com/xavigil)
+

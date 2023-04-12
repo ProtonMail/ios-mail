@@ -113,7 +113,22 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
-    private var isSwipingCell = false
+    private var isSwipingCell = false {
+        didSet {
+            let hasChangedFromTrueToFalse = oldValue && !isSwipingCell
+
+            if
+                hasChangedFromTrueToFalse,
+                contentChangeOccurredDuringLastSwipeGesture,
+                let fetchedResultsController = viewModel.fetchedResultsController
+            {
+                contentChangeOccurredDuringLastSwipeGesture = false
+                controllerDidChangeContent(fetchedResultsController)
+            }
+        }
+    }
+
+    private var contentChangeOccurredDuringLastSwipeGesture = false
 
     private var notificationsAreScheduled = false
 
@@ -342,6 +357,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         checkHuman()
 
         showFeedbackViewIfNeeded()
+        showDropVersionsAlertIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -500,6 +516,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                       newElement,
                                       bannerContainer as Any,
                                       tableView as Any]
+    }
+
+    private func showDropVersionsAlertIfNeeded() {
+        let deviceVersion = (UIDevice.current.systemVersion as NSString).floatValue
+        let alertTitle = "Last update compatible with your iOS version"
+        let alertMessage = "\nThis update will be the last one compatible with iOS 13 and below.\nYou can continue using your Proton Mail app but you will no longer receive updates with new features and security patches.\n\nPlease update your device to iOS 14 or above to receive the latest updates.\n\nStay secure,\nThe Proton Team"
+        if !userCachedStatus.didShowDropVersionAlert && deviceVersion < 14 {
+            let alertController = alertMessage.alertController(alertTitle)
+            alertController.addOKAction()
+            self.present(alertController, animated: true) {
+                userCachedStatus.didShowDropVersionAlert = true
+            }
+        }
     }
 
     // MARK: - Public methods
@@ -704,7 +733,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 return
             }
 
-            mailboxCell.id = mailboxItem.itemID
+            mailboxCell.mailboxItem = mailboxItem
             mailboxCell.cellDelegate = self
 
             switch mailboxItem {
@@ -738,6 +767,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         case .skeleton:
             inputCell.showAnimatedGradientSkeleton()
             inputCell.backgroundColor = ColorProvider.BackgroundNorm
+            inputCell.accessibilityIdentifier = "SkeletonCell"
         }
 
         let accessibilityAction =
@@ -1239,12 +1269,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
 // MARK: - Swipe action
 extension MailboxViewController {
-    private func configureSwipeAction(_ cell: SwipyCell, item: MailboxItem) {
+    private func configureSwipeAction(_ cell: NewMailboxMessageCell, item: MailboxItem) {
         cell.delegate = self
 
         var actions: [SwipyCellDirection: SwipeActionSettingType] = [:]
         actions[.left] = userCachedStatus.leftToRightSwipeActionType
         actions[.right] = userCachedStatus.rightToLeftSwipeActionType
+
+        cell.removeAllSwipeTriggers()
 
         for (direction, action) in actions {
             let msgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(
@@ -1254,23 +1286,21 @@ extension MailboxViewController {
             )
 
             guard msgAction != .none && viewModel.isSwipeActionValid(msgAction, item: item) else {
-                cell.removeSwipeTrigger(forState: .state(0, direction))
                 continue
             }
 
+            // without calling this, the cell cannot be swiped
+            // `completion` is nil because the logic in SwipyCell is flawed
+            // the only reason we use this library is for the animation and handling the gesture
             cell.addSwipeTrigger(
                 forState: .state(0, direction),
                 withMode: .exit,
                 swipeView: makeSwipeView(messageSwipeAction: msgAction),
-                swipeColor: msgAction.actionColor
-            ) { [weak self] (cell, trigger, state, mode) in
-                guard let self = self else { return }
-                self.isSwipingCell = true
-                self.handleSwipeAction(on: cell, action: msgAction, item: item)
-                delay(0.5) {
-                    self.isSwipingCell = false
-                }
-            }
+                swipeColor: msgAction.actionColor,
+                completion: nil
+            )
+
+            cell.swipeActions[direction] = msgAction
         }
     }
 
@@ -1315,7 +1345,7 @@ extension MailboxViewController {
             folderButtonTapped(isFromSwipeAction: true)
             return true
         case .unread, .read, .star, .unstar:
-            viewModel.handleSwipeAction(action)
+            viewModel.handleSwipeAction(action, on: item)
             return false
         case .trash:
             guard viewModel.labelID != Message.Location.trash.labelID else { return true }
@@ -1330,14 +1360,14 @@ extension MailboxViewController {
             }
 
             showMessageMoved(title: message, undoActionType: undoAction)
-            viewModel.handleSwipeAction(.trash)
+            viewModel.handleSwipeAction(.trash, on: item)
             return true
         case .archive:
-            viewModel.handleSwipeAction(.archive)
+            viewModel.handleSwipeAction(.archive, on: item)
             showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title, undoActionType: .archive)
             return true
         case .spam:
-            viewModel.handleSwipeAction(.spam)
+            viewModel.handleSwipeAction(.spam, on: item)
             showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title, undoActionType: .spam)
             return true
         }
@@ -1405,7 +1435,7 @@ extension MailboxViewController {
                         var scheduledSendNum: Int?
                         let continueAction: () -> Void = { [weak self] in
                             guard let self = self else { return }
-                            self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                            self.viewModel.handleBarActions(action)
                             if action != .markRead && action != .markUnread {
                                 let message: String
                                 if let num = scheduledSendNum {
@@ -1426,7 +1456,7 @@ extension MailboxViewController {
                             continueAction: continueAction
                         )
                     default:
-                        self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
+                        self.viewModel.handleBarActions(action)
                         if ![.markRead, .markUnread, .star, .unstar].contains(action) {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                             self.hideSelectionMode()
@@ -1887,12 +1917,12 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             folderButtonTapped()
         case .toolbarCustomization:
             let allActions = viewModel.toolbarCustomizationAllAvailableActions()
-            let currentActions = viewModel.actionsForToolbarCustomizeView()
+            let currentActions = viewModel.actionsForToolbarCustomizeView().replaceReplyAndReplyAllAction()
             coordinator?.presentToolbarCustomizationView(
                 allActions: allActions,
                 currentActions: currentActions
             )
-        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF:
+        case .reply, .replyAll, .forward, .print, .viewHeaders, .viewHTML, .reportPhishing, .spamMoveToInbox, .viewInDarkMode, .viewInLightMode, .more, .replyOrReplyAll, .saveAsPDF, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
             break
         }
     }
@@ -2065,6 +2095,11 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
 
         if shouldKeepSkeletonUntilManualDismissal {
+            return
+        }
+
+        if isSwipingCell {
+            contentChangeOccurredDuringLastSwipeGesture = true
             return
         }
 
@@ -2312,21 +2347,9 @@ extension MailboxViewController: UITableViewDelegate {
 }
 
 extension MailboxViewController: NewMailboxMessageCellDelegate {
-    func getExpirationDate(id: String) -> String? {
-        let tappedCell = tableView.visibleCells
-            .compactMap { $0 as? NewMailboxMessageCell }
-            .first(where: { $0.id == id })
-        guard let cell = tappedCell,
-              let indexPath = tableView.indexPath(for: cell),
-              let expirationTime = viewModel.item(index: indexPath)?.expirationTime else { return nil }
-        return expirationTime.countExpirationTime(processInfo: userCachedStatus)
-    }
 
-    func didSelectButtonStatusChange(id: String?) {
-        let tappedCell = tableView.visibleCells
-            .compactMap { $0 as? NewMailboxMessageCell }
-            .first(where: { $0.id == id })
-        guard let cell = tappedCell, let indexPath = tableView.indexPath(for: cell) else { return }
+    func didSelectButtonStatusChange(cell: NewMailboxMessageCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
 
         if !listEditing {
             self.enterListEditingMode(indexPath: indexPath)
@@ -2382,6 +2405,7 @@ extension MailboxViewController: EventsConsumer {
 
 extension MailboxViewController: SwipyCellDelegate {
     func swipyCellDidStartSwiping(_ cell: SwipyCell) {
+        isSwipingCell = true
         tableView.visibleCells.filter({ $0 != cell }).forEach { cell in
             if let swipyCell = cell as? SwipyCell {
                 swipyCell.gestureRecognizers?.compactMap({ $0 as? UIPanGestureRecognizer }).forEach({ $0.isEnabled = false })
@@ -2392,11 +2416,35 @@ extension MailboxViewController: SwipyCellDelegate {
     }
 
     func swipyCellDidFinishSwiping(_ cell: SwipyCell, atState state: SwipyCellState, triggerActivated activated: Bool) {
-
         tableView.visibleCells.forEach { cell in
             if let swipyCell = cell as? SwipyCell {
                 swipyCell.gestureRecognizers?.compactMap({ $0 as? UIPanGestureRecognizer }).forEach({ $0.isEnabled = true })
             }
+        }
+
+        guard let mailboxCell = cell as? NewMailboxMessageCell, let mailboxItem = mailboxCell.mailboxItem else {
+            assertionFailure("Invalid cell configuration")
+            isSwipingCell = false
+            return
+        }
+
+        delay(0.25) {
+            if activated {
+                let action: MessageSwipeAction?
+
+                switch state {
+                case .none:
+                    action = nil
+                case .state(_, let direction):
+                    action = mailboxCell.swipeActions[direction]
+                }
+
+                if let action = action {
+                    self.handleSwipeAction(on: cell, action: action, item: mailboxItem)
+                }
+            }
+
+            self.isSwipingCell = false
         }
     }
 

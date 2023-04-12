@@ -21,12 +21,14 @@ import Foundation
 final class MockFetchMessageDetail: FetchMessageDetailUseCase {
     private(set) var executionTime: Int = 0
     var result: Swift.Result<MessageEntity, Error>
+    private(set) var params: FetchMessageDetail.Params?
 
     init(stubbedResult: Swift.Result<MessageEntity, Error>) {
         result = stubbedResult
     }
 
     override func executionBlock(params: FetchMessageDetail.Params, callback: @escaping NewUseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>.Callback) {
+        self.params = params
         executionTime += 1
         callback(result)
     }

@@ -22,60 +22,132 @@
 
 import XCTest
 @testable import ProtonMail
+import ProtonCore_Keymaker
 
 class SettingsLockViewModelTests: XCTestCase {
     var sut: SettingsLockViewModel!
+    var mockRouter: MockSettingsLockRouterProtocol!
     var biometricStub: BioMetricStatusStub!
-    var userCacheStatusStub: CacheStatusStub!
+    var mockKeymaker: MockKeymakerProtocol!
+    var mockLockPreferences: MockLockPreferences!
+    var mockNotificationCenter: NotificationCenter!
+    var isAppKeyEnabled: Bool = false
+    var mockUI: MockSettingsLockUIProtocol!
+    let waitTimeout = 2.0
 
     override func setUpWithError() throws {
+        mockRouter = MockSettingsLockRouterProtocol()
         biometricStub = BioMetricStatusStub()
-        userCacheStatusStub = CacheStatusStub()
-        sut = SettingsLockViewModelImpl(biometricStatus: biometricStub, userCacheStatus: userCacheStatusStub)
+        biometricStub.biometricTypeStub = .faceID
+        mockKeymaker = MockKeymakerProtocol()
+        mockKeymaker.activateStub.bodyIs { _, _, completion in completion(true) }
+        mockKeymaker.deactivateStub.bodyIs { _, _ in return true }
+        mockLockPreferences = MockLockPreferences()
+        mockNotificationCenter = NotificationCenter()
+        mockUI = MockSettingsLockUIProtocol()
+        sut = SettingsLockViewModel(
+            router: mockRouter,
+            dependencies: .init(
+                biometricStatus: biometricStub,
+                userPreferences: mockLockPreferences,
+                coreKeymaker: mockKeymaker,
+                notificationCenter: mockNotificationCenter,
+                enableAppKeyFeature: isAppKeyFeatureEnabled
+            )
+        )
+        sut.setUIDelegate(mockUI)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        mockRouter = nil
+        biometricStub = nil
+        mockKeymaker = nil
+        mockLockPreferences = nil
+        mockNotificationCenter = nil
+        mockUI = nil
     }
 
-    func testUpdateProtectionItemWithNoLockOn() throws {
-        sut.updateProtectionItems()
-
-        XCTAssertEqual(sut.sections.count, 1)
-        XCTAssertEqual(sut.sections[0], .enableProtection)
+    private func isAppKeyFeatureEnabled() -> Bool {
+        isAppKeyEnabled
     }
 
-    func testUpdateProtectionItemWithPINCodeOn() throws {
-        biometricStub.biometricTypeStub = .none
-        userCacheStatusStub.isPinCodeEnabledStub = true
-
-        sut.updateProtectionItems()
-
-        XCTAssertEqual(sut.sections.count, 3)
-        XCTAssertEqual(sut.sections[0], .enableProtection)
-        XCTAssertEqual(sut.sections[1], .changePin)
-        XCTAssertEqual(sut.sections[2], .timing)
+    func testViewWillAppear_callsReloadData() {
+        sut.viewWillAppear()
+        XCTAssert(mockUI.reloadDataStub.wasCalled)
     }
 
-    func testUpdateProtectionItemWithTouchIDOn() throws {
-        biometricStub.biometricTypeStub = .touchID
-        userCacheStatusStub.isTouchIDEnabledStub = true
-
-        sut.updateProtectionItems()
-
-        XCTAssertEqual(sut.sections.count, 2)
-        XCTAssertEqual(sut.sections[0], .enableProtection)
-        XCTAssertEqual(sut.sections[1], .timing)
+    func testViewWillAppear_whenEnteringForTheFirstTime_sectionsAreCorrect() {
+        sut.viewWillAppear()
+        XCTAssert(sut.sections == [.protection])
     }
 
-    func testUpdateProtectionItemWithFaceIDOn() throws {
-        biometricStub.biometricTypeStub = .faceID
-        userCacheStatusStub.isTouchIDEnabledStub = true
+    func testViewWillAppear_whenEnteringForTheFirstTime_protectionItemsAreCorrect() {
+        sut.viewWillAppear()
+        XCTAssert(sut.protectionItems == [.none, .pinCode, .biometric])
+    }
 
-        sut.updateProtectionItems()
+    func testViewWillAppear_whenPinEnabledAndAppKeyDisabled() {
+        mockLockPreferences.isPinCodeEnabledStub.fixture = true
+        sut.viewWillAppear()
+        XCTAssert(sut.sections == [.protection, .changePin, .autoLockTime])
+    }
 
-        XCTAssertEqual(sut.sections.count, 2)
-        XCTAssertEqual(sut.sections[0], .enableProtection)
-        XCTAssertEqual(sut.sections[1], .timing)
+    func testViewWillAppear_whenPinEnabledAndAppKeyEnabled() {
+        isAppKeyEnabled = true
+        mockLockPreferences.isPinCodeEnabledStub.fixture = true
+        sut.viewWillAppear()
+        XCTAssert(sut.sections == [.protection, .changePin, .appKeyProtection, .autoLockTime])
+    }
+
+    func testViewWillAppear_whenBiometricLockEnabledAndAppKeyDisabled() {
+        mockLockPreferences.isTouchIDEnabledStub.fixture = true
+        sut.viewWillAppear()
+        XCTAssert(sut.sections == [.protection, .autoLockTime])
+    }
+
+    func testViewWillAppear_whenBiometricLockEnabledAndAppKeyEnabled() {
+        isAppKeyEnabled = true
+        mockLockPreferences.isTouchIDEnabledStub.fixture = true
+        sut.viewWillAppear()
+        XCTAssert(sut.sections == [.protection, .appKeyProtection, .autoLockTime])
+    }
+
+    func testDidTapNoProtection_notifiesAppLockProtectionDisabled() {
+        let expect = expectation(description: "")
+        mockNotificationCenter.addObserver(forName: .appLockProtectionDisabled, object: nil, queue: nil) { _ in
+            expect.fulfill()
+        }
+        sut.input.didTapNoProtection()
+        XCTAssert(mockUI.reloadDataStub.wasCalled)
+        waitForExpectations(timeout: waitTimeout)
+    }
+
+    func testDidTapPinProtection_navigatesToPinSetup() {
+        sut.input.didTapPinProtection()
+        XCTAssert(mockRouter.goStub.wasCalledExactlyOnce)
+    }
+
+    func testDidTapChangePinCode_navigatesToPinSetup() {
+        sut.input.didTapChangePinCode()
+        XCTAssert(mockRouter.goStub.wasCalledExactlyOnce)
+    }
+
+    func testDidTapBiometricProtection_callsKeymakerAndNotifiesAppLockProtectionEnabled() {
+        let expect = expectation(description: "")
+        mockNotificationCenter.addObserver(forName: .appLockProtectionEnabled, object: nil, queue: nil) { _ in
+            expect.fulfill()
+        }
+        sut.didTapBiometricProtection()
+        // RandomPinProtection is not easy to mock to be able to assert AppKey functionality
+        XCTAssert(mockKeymaker.deactivateStub.capturedArguments[0].a1 is PinProtection)
+        XCTAssert(mockKeymaker.activateStub.capturedArguments[0].a1 is BioProtection)
+        XCTAssert(mockLockPreferences.setKeymakerRandomkeyStub.capturedArguments[0].a1 != nil)
+        waitForExpectations(timeout: waitTimeout)
+    }
+
+    func testDidPickAutoLockTime_savesValue() {
+        sut.input.didPickAutoLockTime(value: 37)
+        XCTAssert(mockLockPreferences.setLockTimeStub.capturedArguments.first!.value == .minutes(37))
     }
 }

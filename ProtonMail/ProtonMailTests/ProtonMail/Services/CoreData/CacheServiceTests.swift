@@ -191,7 +191,7 @@ class CacheServiceTest: XCTestCase {
     
     func testMarkReadMessageAsRead() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: Message.Location.inbox.labelID)
-        XCTAssertTrue(sut.mark(message: MessageEntity(self.testMessage), labelID: Message.Location.inbox.labelID, unRead: false))
+        XCTAssertTrue(sut.mark(messageObjectID: testMessage.objectID, labelID: Message.Location.inbox.labelID, unRead: false))
         
         XCTAssertFalse(self.testMessage.unRead)
         let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage)
@@ -200,7 +200,7 @@ class CacheServiceTest: XCTestCase {
     
     func testMarkReadMessageAsUnread() {
         loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: Message.Location.inbox.labelID)
-        XCTAssertTrue(sut.mark(message: MessageEntity(self.testMessage), labelID: Message.Location.inbox.labelID, unRead: true))
+        XCTAssertTrue(sut.mark(messageObjectID: testMessage.objectID, labelID: Message.Location.inbox.labelID, unRead: true))
         
         XCTAssertTrue(self.testMessage.unRead)
         let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage)
@@ -211,7 +211,7 @@ class CacheServiceTest: XCTestCase {
         self.testMessage.unRead = true
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: Message.Location.inbox.labelID)
         
-        XCTAssertTrue(sut.mark(message: MessageEntity(self.testMessage), labelID: Message.Location.inbox.labelID, unRead: false))
+        XCTAssertTrue(sut.mark(messageObjectID: testMessage.objectID, labelID: Message.Location.inbox.labelID, unRead: false))
         
         XCTAssertFalse(self.testMessage.unRead)
         let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage)
@@ -222,7 +222,7 @@ class CacheServiceTest: XCTestCase {
         self.testMessage.unRead = true
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: Message.Location.inbox.labelID)
         
-        XCTAssertTrue(sut.mark(message: MessageEntity(self.testMessage), labelID: Message.Location.inbox.labelID, unRead: true))
+        XCTAssertTrue(sut.mark(messageObjectID: testMessage.objectID, labelID: Message.Location.inbox.labelID, unRead: true))
         
         XCTAssertTrue(self.testMessage.unRead)
         let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage)

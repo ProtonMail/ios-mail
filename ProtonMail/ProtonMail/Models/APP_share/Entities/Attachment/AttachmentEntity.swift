@@ -64,10 +64,16 @@ extension AttachmentEntity {
     }
 
     static func convert(from attachments: NSSet) -> [AttachmentEntity] {
-        return attachments.allObjects.compactMap { item in
-            guard let data = item as? Attachment else { return nil }
-            return AttachmentEntity(data)
-        }.sorted { $0.order < $1.order }
+        return attachments.allObjects
+            .compactMap { item -> AttachmentEntity? in
+                guard let data = item as? Attachment else { return nil }
+                return AttachmentEntity(data)
+            }
+            .filter { !($0.localURL?.absoluteString.contains(check: "Shared/AppGroup") ?? false) }
+            .sorted { $0.order < $1.order }
+        // Remove not uploaded attachment from share extension
+        // Upload won't be recovered
+        // If attachments are uploaded, localURL will become nil
     }
 }
 

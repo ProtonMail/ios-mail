@@ -23,7 +23,6 @@
 import Foundation
 
 final class AttachmentViewModel {
-    private let realAttachmentFlagProvider: RealAttachmentsFlagProvider
     private(set) var attachments: Set<AttachmentInfo> = [] {
         didSet {
             reloadView?()
@@ -43,19 +42,8 @@ final class AttachmentViewModel {
         return totalSize
     }
 
-    init (realAttachmentFlagProvider: RealAttachmentsFlagProvider = userCachedStatus) {
-        self.realAttachmentFlagProvider = realAttachmentFlagProvider
-    }
-
-    func attachmentHasChanged(
-        attachments: [AttachmentInfo],
-        inlines: [AttachmentInfo],
-        mimeAttachments: [MimeAttachment]
-    ) {
+    func attachmentHasChanged(attachments: [AttachmentInfo], mimeAttachments: [MimeAttachment]) {
         var files: [AttachmentInfo] = attachments
-        if !realAttachmentFlagProvider.realAttachments {
-            files.append(contentsOf: inlines)
-        }
         files.append(contentsOf: mimeAttachments)
         self.attachments = Set(files)
     }

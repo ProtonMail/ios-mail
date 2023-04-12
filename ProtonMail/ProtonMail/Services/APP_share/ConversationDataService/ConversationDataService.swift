@@ -29,6 +29,7 @@ enum ConversationError: Error {
     case emptyLabel
 }
 
+// sourcery: mock
 protocol ConversationProvider: AnyObject {
     // MARK: - Collection fetching
     func fetchConversationCounts(addressID: String?, completion: ((Result<Void, Error>) -> Void)?)

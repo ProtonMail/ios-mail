@@ -63,13 +63,7 @@ class SettingDetailViewController: UIViewController {
         doneButton.target = self
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
         doneButton.title = LocalString._general_save_action
-        var attribute = FontManager.DefaultStrong
-        let normalForegroundColor: UIColor = ColorProvider.InteractionNorm
-        attribute[.foregroundColor] = normalForegroundColor
-        doneButton.setTitleTextAttributes(attribute, for: .normal)
-        let disabledForegroundColor: UIColor = ColorProvider.InteractionNormDisabled
-        attribute[.foregroundColor] = disabledForegroundColor
-        doneButton.setTitleTextAttributes(attribute, for: .disabled)
+        setUpDoneButtonAttribute()
         doneButton.isEnabled = false
 
         self.navigationItem.rightBarButtonItem = doneButton
@@ -144,6 +138,12 @@ class SettingDetailViewController: UIViewController {
         if !viewModel.isSwitchEnabled() {
             presentPlanUpgrade()
         }
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(preferredContentSizeChanged(_:)),
+                         name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
     }
 
     @objc func back(sender: UIBarButtonItem) {
@@ -187,6 +187,16 @@ class SettingDetailViewController: UIViewController {
     }
 
     // MARK: private methods
+
+    private func setUpDoneButtonAttribute() {
+        var attribute = FontManager.DefaultStrong
+        let normalForegroundColor: UIColor = ColorProvider.InteractionNorm
+        attribute[.foregroundColor] = normalForegroundColor
+        doneButton.setTitleTextAttributes(attribute, for: .normal)
+        let disabledForegroundColor: UIColor = ColorProvider.InteractionNormDisabled
+        attribute[.foregroundColor] = disabledForegroundColor
+        doneButton.setTitleTextAttributes(attribute, for: .disabled)
+    }
 
     private func presentPlanUpgrade() {
         self.paymentsUI = PaymentsUI(payments: self.viewModel.userManager.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
@@ -290,6 +300,16 @@ class SettingDetailViewController: UIViewController {
                           localizedFailureReason: LocalString._settings_recovery_email_empty_alert_content,
                           localizedRecoverySuggestion: error.localizedRecoverySuggestion)
         self.showErrorAlert(err)
+    }
+
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        switchLabel.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        inputTextView.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        inputTextField.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        textFiledSectionTitle.font = .adjustedFont(forTextStyle: .body, weight: .regular)
+        notesLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
+        setUpDoneButtonAttribute()
     }
 }
 

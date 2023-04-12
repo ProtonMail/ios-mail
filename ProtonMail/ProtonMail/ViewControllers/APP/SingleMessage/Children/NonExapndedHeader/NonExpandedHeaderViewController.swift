@@ -53,53 +53,65 @@ class NonExpandedHeaderViewController: UIViewController {
     }
 
     private func setUpView() {
-        customView.initialsLabel.set(text: viewModel.infoProvider?.initials, preferredFont: .footnote)
+        customView.initialsLabel.set(text: viewModel.infoProvider.initials, preferredFont: .footnote)
         customView.initialsLabel.textAlignment = .center
-        customView.originImageView.image = viewModel.infoProvider?.originImage(isExpanded: false)
-        customView.originImageContainer.isHidden = viewModel.infoProvider?.originImage(isExpanded: false) == nil
+        customView.originImageView.image = viewModel.infoProvider.originImage(isExpanded: false)
+        customView.originImageContainer.isHidden = viewModel.infoProvider.originImage(isExpanded: false) == nil
         customView.sentImageView.superview?.isHidden = !viewModel.shouldShowSentImage
-        customView.senderLabel.set(text: viewModel.infoProvider?.senderName,
+        customView.senderLabel.set(text: viewModel.infoProvider.senderName,
                                    preferredFont: .subheadline,
                                    weight: .semibold)
-        customView.senderAddressLabel.label.set(text: viewModel.infoProvider?.senderEmail,
+        customView.senderAddressLabel.label.set(text: viewModel.infoProvider.senderEmail,
                                                 preferredFont: .footnote,
                                                 textColor: ColorProvider.InteractionNorm,
                                                 lineBreakMode: .byTruncatingMiddle)
-        customView.timeLabel.set(text: viewModel.infoProvider?.time,
+
+        customView.officialBadge.isHidden = viewModel.isOfficialBadgeHidden
+
+        customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
-        customView.recipientLabel.text = viewModel.infoProvider?.simpleRecipient
+        customView.recipientLabel.text = viewModel.infoProvider.simpleRecipient
         updateTrackerDetectionStatus()
         customView.expandView = { [weak self] in
             self?.showDetailsAction?()
         }
-        let isStarred = viewModel.infoProvider?.message.isStarred ?? false
+        let isStarred = viewModel.infoProvider.message.isStarred
         customView.starImageView.isHidden = !isStarred
-        let tags = viewModel.infoProvider?.message.tagUIModels ?? []
+        let tags = viewModel.infoProvider.message.tagUIModels()
         tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
-        let contact = viewModel.infoProvider?.checkedSenderContact
-        update(senderContact: contact)
+        let contact = viewModel.infoProvider.checkedSenderContact
+        update(senderEncryptionIconStatus: contact?.encryptionIconStatus)
     }
 
     func updateTrackerDetectionStatus() {
         customView.showTrackerDetectionStatus(viewModel.trackerDetectionStatus)
     }
 
-    func update(senderContact: ContactVO?) {
-        if let contact = senderContact {
-            let icon = contact.encryptionIconStatus?.icon
-            customView.lockImageView.image = icon
-            customView.lockImageView.tintColor = contact.encryptionIconStatus?.iconColor.color ?? .black
-            customView.lockContainer.isHidden = icon == nil
+    private func update(senderEncryptionIconStatus: EncryptionIconStatus?) {
+        if let senderEncryptionIconStatus = senderEncryptionIconStatus {
+            customView.lockImageView.image = senderEncryptionIconStatus.icon
+            customView.lockImageView.tintColor = senderEncryptionIconStatus.iconColor.color
+            customView.lockContainer.isHidden = false
         } else {
             customView.lockContainer.isHidden = true
         }
     }
 
+    func preferredContentSizeChanged() {
+        customView.preferredContentSizeChanged()
+        setUpTags()
+    }
+
+    private func setUpTags() {
+        let tags = viewModel.infoProvider.message.tagUIModels()
+        tagsPresenter.presentTags(tags: tags, in: customView.tagsView)
+    }
+
 	private func setUpTimeLabelUpdate() {
         viewModel.setupTimerIfNeeded()
         viewModel.updateTimeLabel = { [weak self] in
-            self?.customView.timeLabel.text = self?.viewModel.infoProvider?.time
+            self?.customView.timeLabel.text = self?.viewModel.infoProvider.time
         }
     }
 
@@ -109,7 +121,7 @@ class NonExpandedHeaderViewController: UIViewController {
 
     @objc
     private func lockTapped() {
-        viewModel.infoProvider?.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
+        viewModel.infoProvider.checkedSenderContact?.encryptionIconStatus?.text.alertToastBottom()
     }
 
     private func setUpViewModelObservations() {

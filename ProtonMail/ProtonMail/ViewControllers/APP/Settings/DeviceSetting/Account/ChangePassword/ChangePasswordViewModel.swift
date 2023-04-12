@@ -73,7 +73,7 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
         let newpwd = newPassword // .trim();
         let confirmpwd = confirmNewPassword // .trim();
 
-        if newpwd.isEmpty || confirmpwd.isEmpty {
+        if newpwd.value.isEmpty || confirmpwd.value.isEmpty {
             complete(UpdatePasswordError.passwordEmpty.error)
         } else if newpwd.value.count < 8 {
             complete(UpdatePasswordError.minimumLengthError.error)
@@ -128,7 +128,7 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
         let currentPassword = current
         let confirmpwd = confirmNewPassword
 
-        if newPassword.isEmpty || confirmpwd.isEmpty {
+        if newPassword.value.isEmpty || confirmpwd.value.isEmpty {
             complete(UpdatePasswordError.passwordEmpty.error)
         } else if newPassword != confirmpwd {
             complete(UpdatePasswordError.newNotMatch.error)
@@ -182,7 +182,7 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
         // passwords support empty spaces like " * * "
         let currentPassword = current
         let confirmpwd = confirmNewPassword
-        if newPassword.isEmpty || confirmpwd.isEmpty {
+        if newPassword.value.isEmpty || confirmpwd.value.isEmpty {
             complete(UpdatePasswordError.passwordEmpty.error)
         } else if newPassword.value.count < 8 {
             complete(UpdatePasswordError.minimumLengthError.error)

@@ -120,61 +120,6 @@ extension CacheServiceTest {
         let unwarpAtt = try XCTUnwrap(att)
         XCTAssertTrue(unwarpAtt.isSoftDeleted)
     }
-
-    func testUpdateUnreadLastUpdateTime() {
-        let startDate = Date(timeIntervalSince1970: 1613816451)
-        let endDate = Date(timeIntervalSince1970: 1614162051)
-        sut.updateLastUpdatedTime(labelID: "02", isUnread: true, startTime: startDate, endTime: endDate, msgCount: 10, msgType: .singleMessage)
-
-        var dataToCheck: LabelCountEntity = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, type: .singleMessage)!
-        XCTAssertFalse(dataToCheck.isUnreadNew)
-        XCTAssertEqual(dataToCheck.unreadStart, startDate)
-        XCTAssertEqual(dataToCheck.unreadEnd, endDate)
-
-        let laterEndDate = endDate.addingTimeInterval(10000)
-        sut.updateLastUpdatedTime(labelID: "02", isUnread: true, startTime: startDate, endTime: laterEndDate, msgCount: 20, msgType: .singleMessage)
-
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, type: .singleMessage)!
-        XCTAssertFalse(dataToCheck.isUnreadNew)
-        XCTAssertEqual(dataToCheck.unreadStart, startDate)
-        XCTAssertEqual(dataToCheck.unreadEnd, laterEndDate)
-
-        let earlierEndDate = endDate.addingTimeInterval(-10000)
-        sut.updateLastUpdatedTime(labelID: "02", isUnread: true, startTime: startDate, endTime: earlierEndDate, msgCount: 20, msgType: .singleMessage)
-
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, type: .singleMessage)!
-        XCTAssertFalse(dataToCheck.isUnreadNew)
-        XCTAssertEqual(dataToCheck.unreadStart, startDate)
-        XCTAssertEqual(dataToCheck.unreadEnd, earlierEndDate)
-    }
-
-    func testUpdateReadLastUpdateTime() {
-        let startDate = Date(timeIntervalSince1970: 1613816451)
-        let endDate = Date(timeIntervalSince1970: 1614162051)
-        sut.updateLastUpdatedTime(labelID: "02", isUnread: false, startTime: startDate, endTime: endDate, msgCount: 10, msgType: .singleMessage)
-
-        var dataToCheck: LabelCountEntity = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, type: .singleMessage)!
-        XCTAssertFalse(dataToCheck.isNew)
-        XCTAssertEqual(dataToCheck.start, startDate)
-        XCTAssertEqual(dataToCheck.end, endDate)
-        XCTAssertEqual(dataToCheck.total, 10)
-
-        let laterEndDate = endDate.addingTimeInterval(10000)
-        sut.updateLastUpdatedTime(labelID: "02", isUnread: false, startTime: startDate, endTime: laterEndDate, msgCount: 20, msgType: .singleMessage)
-
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, type: .singleMessage)!
-        XCTAssertFalse(dataToCheck.isNew)
-        XCTAssertEqual(dataToCheck.start, startDate)
-        XCTAssertEqual(dataToCheck.end, laterEndDate)
-
-        let earlierEndDate = endDate.addingTimeInterval(-10000)
-        sut.updateLastUpdatedTime(labelID: "02", isUnread: false, startTime: startDate, endTime: earlierEndDate, msgCount: 20, msgType: .singleMessage)
-
-        dataToCheck = self.lastUpdatedStore.lastUpdate(by: "02", userID: sut.userID, type: .singleMessage)!
-        XCTAssertFalse(dataToCheck.isNew)
-        XCTAssertEqual(dataToCheck.start, startDate)
-        XCTAssertEqual(dataToCheck.end, earlierEndDate)
-    }
 }
 
 private extension Attachment {

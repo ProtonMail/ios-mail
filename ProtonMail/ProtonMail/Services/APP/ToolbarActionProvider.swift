@@ -20,6 +20,5 @@ import ProtonCore_DataModel
 
 protocol ToolbarActionProvider: AnyObject {
     var messageToolbarActions: [MessageViewActionSheetAction] { get set }
-    var conversationToolbarActions: [MessageViewActionSheetAction] { get set }
     var listViewToolbarActions: [MessageViewActionSheetAction] { get set }
 }

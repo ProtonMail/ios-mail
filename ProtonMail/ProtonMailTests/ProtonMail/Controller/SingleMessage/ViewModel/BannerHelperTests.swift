@@ -110,4 +110,16 @@ class BannerHelperTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 5)
     }
+
+    func testCalculateRemoteBannerStatus_havingImages_withAllowAllPolicy_returnFalse() {
+        sut = BannerHelper(embeddedContentPolicy: .allowed,
+                           remoteContentPolicy: .allowedAll,
+                           isHavingEmbeddedImages: false)
+        let expectation = expectation(description: "getRemoteBannerStatus")
+        sut.calculateRemoteBannerStatus(bodyToCheck: bodyWithRemoteImages) { result in
+            XCTAssertFalse(result)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+    }
 }

@@ -20,16 +20,14 @@ import UserNotifications
 final class PushNotificationActionsHandler {
     private let dependencies: Dependencies
 
-    private var isExtraSecurityEnabled: Bool {
-        dependencies.cacheStatusInject.isPinCodeEnabled || dependencies.cacheStatusInject.isTouchIDEnabled
-    }
-
     init(dependencies: Dependencies = Dependencies()) {
         self.dependencies = dependencies
 
         let notificationsToObserve: [Notification.Name] = [
-            .appExtraSecurityEnabled,
-            .appExtraSecurityDisabled,
+            .appLockProtectionEnabled,
+            .appLockProtectionDisabled,
+            .appKeyEnabled,
+            .appKeyDisabled,
             .didSignIn,
             .didSignOut
         ]
@@ -46,11 +44,11 @@ final class PushNotificationActionsHandler {
     /// Registers the relevant UNNotificationActions to be shown in push notifications if any
     func registerActions() {
         guard dependencies.isNotificationActionsFeatureEnabled else {
-            // we remove actions in case it they were registered in a previous test build
+            // we remove actions in case they were registered in a previous test build
             removePushNotificationActions()
             return
         }
-        if isExtraSecurityEnabled {
+        if dependencies.cacheStatusInject.isAppLockedAndAppKeyEnabled {
             /// We don't show notification actions if extra security is enabled (FaceId, TouchId, PIN code, ... ).
             /// The reason for that is that the user's access token for API requests is encrypted and not accessible
             /// without user interaction. Therefore, it has been decided to not show notification actions because we
@@ -65,18 +63,20 @@ final class PushNotificationActionsHandler {
         PushNotificationAction(rawValue: actionIdentifier) != nil
     }
 
-    func handle(action actionIdentifier: String, userId: UserID, messageId: String) {
+    func handle(action actionIdentifier: String, userId: UserID, messageId: String, completion: @escaping () -> Void) {
         guard let action = PushNotificationAction(rawValue: actionIdentifier) else {
             let message = "Unrecognised action \(actionIdentifier)"
             SystemLogger.log(message: message, category: .pushNotification, isError: true)
+            completion()
             return
         }
         guard dependencies.isNetworkAvailable() else {
             SystemLogger.log(message: "Network unavailable", category: .pushNotification)
             enqueueTask(action: action, userId: userId, messageId: messageId)
+            completion()
             return
         }
-        executeTask(action: action, userId: userId, messageId: messageId)
+        executeTask(action: action, userId: userId, messageId: messageId, completion: completion)
     }
 }
 
@@ -114,9 +114,15 @@ private extension PushNotificationActionsHandler {
         SystemLogger.log(message: "Action enqueued \(action)", category: .pushNotification)
     }
 
-    private func executeTask(action: PushNotificationAction, userId: UserID, messageId: String) {
+    private func executeTask(
+        action: PushNotificationAction,
+        userId: UserID,
+        messageId: String,
+        completion: @escaping () -> Void
+    ) {
         guard let userManager = sharedServices.get(by: UsersManager.self).getUser(by: userId) else {
             SystemLogger.log(message: "User not found for \(action)", category: .pushNotification, isError: true)
+            completion()
             return
         }
         let params = ExecuteNotificationAction.Parameters(
@@ -125,14 +131,15 @@ private extension PushNotificationActionsHandler {
             messageId: messageId
         )
         SystemLogger.log(message: "Request sent for action \(action)", category: .pushNotification)
-        dependencies.actionRequest.execute(params: params) { [weak self] result in
+        dependencies.actionRequest.callbackOn(.main).execute(params: params) { [weak self] result in
             switch result {
             case .success:
-                break
+                completion()
             case .failure(let error):
                 let message = "\(action) error: \(error)"
                 SystemLogger.log(message: message, category: .pushNotification, isError: true)
                 self?.enqueueTask(action: action, userId: userId, messageId: messageId)
+                completion()
             }
         }
     }
@@ -173,7 +180,7 @@ extension PushNotificationActionsHandler {
             cacheStatusInject: CacheStatusInject = userCachedStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default,
             userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current(),
-            isNotificationActionsFeatureEnabled: Bool = false
+            isNotificationActionsFeatureEnabled: Bool = true
         ) {
             self.queue = queue
             self.actionRequest = actionRequest

@@ -236,12 +236,12 @@ final class ToolbarCustomizeViewModelTests: XCTestCase {
     }
 
     func testHideInfoBubbleView() {
-        toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldShowViewStub.fixture = false
+        toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldHideToolbarCustomizeInfoBubbleViewStub.fixture = false
         XCTAssertTrue(sut.shouldShowInfoBubbleView)
 
         sut.hideInfoBubbleView()
 
-        XCTAssertTrue(toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldShowViewStub.getWasCalled)
+        XCTAssertTrue(toolbarCustomizationInfoBubbleViewStatusProviderMock.shouldHideToolbarCustomizeInfoBubbleViewStub.getWasCalled)
     }
 
     func testMoveAction_toInvalidSection_noChangeIsApplied() {
@@ -300,5 +300,37 @@ final class ToolbarCustomizeViewModelTests: XCTestCase {
 
     func testGetAlertContent() {
         XCTAssertEqual(sut.alertContent, LocalString._toolbar_customize_reset_alert_content)
+    }
+
+    func testCellActionEnable_oneCurrentAction_returnFalse() {
+        sut.setActions(actions: [.delete])
+
+        XCTAssertFalse(sut.cellActionEnable(at: .init(row: 0, section: 0)))
+    }
+
+    func testCellActionEnable_moreThanOneCurrentAction_returnTrue() {
+        sut.setActions(actions: [.delete, .moveTo])
+
+        XCTAssertTrue(sut.cellActionEnable(at: .init(row: 0, section: 0)))
+    }
+
+    func testCellActionEnable_section1_returnTrue() {
+        sut.setActions(actions: [.delete])
+
+        XCTAssertTrue(sut.cellActionEnable(at: .init(row: Int.random(in: Int.min...Int.max), section: 1)))
+
+        sut.setActions(actions: [.delete, .moveTo])
+
+        XCTAssertTrue(sut.cellActionEnable(at: .init(row: Int.random(in: Int.min...Int.max), section: 1)))
+    }
+
+    func testCellActionEnable_otherSection_returnFalse() {
+        sut.setActions(actions: [.delete])
+
+        XCTAssertFalse(sut.cellActionEnable(at: .init(row: Int.random(in: Int.min...Int.max), section: Int.random(in: 2...Int.max))))
+
+        sut.setActions(actions: [.delete, .moveTo])
+
+        XCTAssertFalse(sut.cellActionEnable(at: .init(row: Int.random(in: Int.min...Int.max), section: Int.random(in: 2...Int.max))))
     }
 }
