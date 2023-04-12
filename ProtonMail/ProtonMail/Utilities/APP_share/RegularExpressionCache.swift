@@ -19,14 +19,21 @@ import Foundation
 
 final class RegularExpressionCache {
     private static var cache: [String: NSRegularExpression] = [:]
+    private static let serialQueue: DispatchQueue = DispatchQueue(label: "me.proton.mail.RegularExpressionCache")
 
     static func regex(for pattern: String, options: NSRegularExpression.Options) throws -> NSRegularExpression {
         let key = "\(pattern) - \(options.rawValue)"
-        if let regex = cache[key] {
+        var cachedRegex: NSRegularExpression?
+        serialQueue.sync {
+            cachedRegex = cache[key]
+        }
+        if let regex = cachedRegex {
             return regex
         } else {
             let regex = try NSRegularExpression(pattern: pattern, options: options)
-            cache[key] = regex
+            serialQueue.sync {
+                cache[key] = regex
+            }
             return regex
         }
     }
