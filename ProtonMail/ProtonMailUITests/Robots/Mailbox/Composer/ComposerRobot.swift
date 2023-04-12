@@ -365,7 +365,7 @@ class ComposerRobot: CoreElements {
         
         @discardableResult
         func invalidAddressToastIsShown() -> ComposerRobot {
-            staticText(id.invalidAddressStaticTextIdentifier).wait().checkExists()
+            staticText(id.invalidAddressStaticTextIdentifier).waitUntilExists().checkExists()
             return ComposerRobot()
         }
         

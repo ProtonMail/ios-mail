@@ -73,7 +73,7 @@ class PinTests: BaseTestCase {
     
     func testIncorrectPinBeforeThirtySec() {
         pinRobot
-            .pinTimmer()
+            .pinTimer()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -88,7 +88,7 @@ class PinTests: BaseTestCase {
 
     func testErrorMessageOnThreeRmainingPinTries() {
         pinRobot
-            .pinTimmer()
+            .pinTimer()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()

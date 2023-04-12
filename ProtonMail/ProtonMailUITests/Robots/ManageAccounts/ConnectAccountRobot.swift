@@ -144,7 +144,7 @@ class ConnectAccountRobot: CoreElements {
         /// Free users limit alert is shown.
         func limitReachedDialogDisplayed() {
             staticText(id.limitReachedText).firstMatch()
-                .wait().checkExists()
+                .waitUntilExists().checkExists()
         }
     }
 }

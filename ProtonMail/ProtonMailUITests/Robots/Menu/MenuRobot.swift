@@ -179,7 +179,7 @@ class MenuRobot: CoreElements {
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {
-                staticText(shortName).wait().checkExists()
+                staticText(shortName).waitUntilExists().checkExists()
             }
             
             func accountAtPositionSignedOut(_ position: Int) {
@@ -209,7 +209,7 @@ class MenuRobot: CoreElements {
         
         class Verify: CoreElements {
             func invalidCredentialDialogDisplay() {
-                staticText(id.iapErrorAlertTitle).wait().checkExists()
+                staticText(id.iapErrorAlertTitle).waitUntilExists().checkExists()
             }
         }
     }
@@ -226,8 +226,8 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
             @discardableResult
             func checkDialog() -> ForceUpgradeDialogRobot {
-                staticText(id.forceUpgrateAlertTitle).wait().checkExists()
-                staticText(id.forceUpgrateAlertMessage).wait().checkExists()
+                staticText(id.forceUpgrateAlertTitle).waitUntilExists().checkExists()
+                staticText(id.forceUpgrateAlertMessage).waitUntilExists().checkExists()
                 return ForceUpgradeDialogRobot()
             }
         }
