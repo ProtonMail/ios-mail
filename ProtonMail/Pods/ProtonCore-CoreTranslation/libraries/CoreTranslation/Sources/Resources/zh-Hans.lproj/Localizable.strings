@@ -311,7 +311,7 @@
 "Network connection error" = "网络连接错误";
 
 /* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "邮箱容量 %@，已使用 %@";
+"New_Plans %@ of %@" = "邮箱容量 %2$@，已使用 %1$@";
 
 /* New_Plans Plan details Access to streaming services globally */
 "New_Plans Access to streaming services globally" = "畅享全球流媒体服务";

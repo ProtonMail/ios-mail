@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Відновлення активовано";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Запросити друга";
 
 /* Title */
@@ -2249,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ви не можете встановити адресу %@ типовою, тому що це платна функція.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Ви вимкнули Face ID в параметрах системи. Face ID використовується для захисту важливої інформації облікового запису. Щоб отримати доступ до свого облікового запису, перейдіть до параметрів і повторно активуйте Face ID, або увійдіть знову.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ви вимкнули %@ в параметрах системи. %@ використовується для захисту важливої інформації облікового запису. Щоб отримати доступ до свого облікового запису, перейдіть до параметрів і повторно активуйте %@, або увійдіть знову.";
 
 /* Message */
 "You have %d new emails!" = "У вас %d нових листів!";

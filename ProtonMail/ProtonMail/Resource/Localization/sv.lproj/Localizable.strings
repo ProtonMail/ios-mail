@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Återställning aktiverad";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Hänvisa en vän";
 
 /* Title */
@@ -2249,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du inaktiverade Face ID i dina systeminställningar. Face ID har använts för att skydda viktig kontoinformation. För åtkomst till ditt konto, gå till inställningar och återaktivera Face ID, eller logga in igen.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du inaktiverade %@ i dina systeminställningar. %@ har använts för att skydda viktig kontoinformation. För åtkomst till ditt konto, gå till inställningar och återaktivera %@, eller logga in igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nya e-postmeddelanden!";

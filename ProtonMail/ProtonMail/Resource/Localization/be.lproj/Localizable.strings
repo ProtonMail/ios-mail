@@ -471,7 +471,7 @@
 "Confirmation" = "Пацвярджэнне";
 
 /* Text for status label when no wifi is available */
-"Connect to WiFi or enable \"Download via mobile data\"." = "Падлучыцеся да Wi-Fi або ўключыце \"Спампаваць праз мабільны інтэрнэт\".";
+"Connect to WiFi or enable \"Download via mobile data\"." = "Падключыцеся да Wi-Fi або ўключыце \"Спампоўваць праз мабільны інтэрнэт\".";
 
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Кантакт выдалены і будзе сінхранізаваны, калі злучэнне стане даступным";
@@ -848,9 +848,6 @@
 
 /* alert title */
 "Expiration not supported" = "Тэрмін дзеяння не падтрымліваецца";
-
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID ";
 
 /* Error message */
 "Failed to determine type of file" = "Не ўдалося вызначыць тып файла";
@@ -1280,7 +1277,7 @@
 "No attachment found" = "Далучэнні не знойдзены";
 
 /* Title */
-"No connectivity detected…" = "Не выяўлена падлучэння…";
+"No connectivity detected…" = "Не выяўлена злучэння…";
 
 /* Short hint in the header view */
 "No email trackers found" = "Праграмы сачэння не знойдзены";
@@ -1461,10 +1458,10 @@
 "PIN is too short" = "Занадта кароткі PIN";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Падлучыцеся і паўтарыце спробу";
+"Please connect and retry" = "Падключыцеся і паўтарыце спробу";
 
 /* Text for status label when no internet connection is available */
-"Please connect to the internet to continue." = "Падлучыце інтэрнэт, каб працягнуць.";
+"Please connect to the internet to continue." = "Падключыцеся да інтэрнэту, каб працягнуць.";
 
 /* error message */
 "Please input a valid email address." = "Увядзіце сапраўдны адрас электроннай пошты.";
@@ -1562,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Аднаўленне ўключана";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Запрасіць сябра";
 
 /* Title */
@@ -2057,7 +2055,7 @@
 "Trusted keys are not valid for sending" = "Давераныя ключы несапраўдныя для адпраўкі";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падлучыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падключыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
 
 /* Placeholder */
 "Two Factor Code" = "Двухфактарны код";
@@ -2192,7 +2190,7 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Мы не змаглі адправіць ваша паведамленне. Верагодна, што ў вас дрэннае злучэнне. Ваша паведамленне захавана ў чарнавіках і будзе аўтаматычна адпраўлена падчас наступнага запуску праграмы.";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Узнікла праблема з падлучэннем да сервераў. Паспрабуйце падлучыцца яшчэ раз.";
+"We have trouble connecting to the servers. Please reconnect." = "Узнікла праблема з падключэннем да сервераў. Паспрабуйце падключыцца яшчэ раз.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Замест гэтага мы рэкамендуем наладзіць пароль для наступных атрымальнікаў:";
@@ -2252,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Вы не можаце задаць адрас %@ як прадвызначаны, бо гэта функцыя з'яўляецца платнай.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Вы адключылі Face ID у наладах сістэмы. Face ID выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, уключыце Face ID у наладах або паўторна ўвайдзіце ў праграму.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Вы адключылі %@ у наладах сістэмы. %@ выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, уключыце %@ у наладах або паўторна ўвайдзіце ў праграму.";
 
 /* Message */
 "You have %d new emails!" = "У вашай скрыні ёсць новыя лісты (колькасць: %d)!";

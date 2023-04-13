@@ -942,9 +942,6 @@
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Wie würdest du deine Erfahrungen mit dem neuen Proton Mail beschreiben?";
 
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
-
 /* Description */
 "Human Check Failed" = "Menschliche Überprüfung fehlgeschlagen";
 
@@ -1562,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Wiederherstellung aktiviert";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Wirb einen Freund";
 
 /* Title */
@@ -2252,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kannst die %@-Adresse nicht als Standard festlegen, da es sich um eine kostenpflichtige Funktion handelt.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du hast Face ID in deinen Systemeinstellungen deaktiviert. Face ID wurde verwendet, um wichtige Kontoinformationen zu schützen. Um auf dein Konto zuzugreifen, wechsle in die Einstellungen und aktiviere Face ID wieder oder melde dich erneut an.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du hast %@ in deinen Systemeinstellungen deaktiviert. %@ wurde verwendet, um wichtige Kontoinformationen zu schützen. Um auf dein Konto zuzugreifen, wechsle in die Einstellungen und aktiviere %@ wieder oder melde dich erneut an.";
 
 /* Message */
 "You have %d new emails!" = "Du hast %d neue Nachrichten!";

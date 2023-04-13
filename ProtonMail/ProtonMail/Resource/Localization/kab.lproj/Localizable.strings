@@ -10,6 +10,12 @@
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sers-it dagi akken ad ternuḍ d afaylu yeddan";
 
+/* Text for the estimated time label if less than one minute is remaining */
+"<1 minute remaining" = "<1 tesdat i d-yeqqimen";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1tsd";
+
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 yizen yettwasnekzen ɣer teṛcivt";
 
@@ -18,6 +24,9 @@
 
 /* Placeholder */
 "8 to 21 characters long" = "8 ar 21 n yisekkilen";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Anekcum ar umiḍan-agi yensa ɣef sebba n lexlas mazal. Ma ulac aɣilif qqen ar proton.me akken ad xelseḍ tafaturt mazal.";
 
 /* Account manager title */
 "Account" = "Amiḍan";
@@ -174,6 +183,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Titedt tebɣiḍ ad teffɣeḍ?";
 
+/* One of the schedule time options */
+"As scheduled" = "Akken yettusɣawes";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Ɣef %@";
 
@@ -210,6 +222,9 @@
 /* Title */
 "Authentication" = "Asesteb";
 
+/* Title */
+"Auto Lock Time" = "Akud n usewḥel awurman";
+
 /* settings general section title */
 "Auto-load embedded images" = "Sali tugniwin tusliɣin s wudem awurman";
 
@@ -234,6 +249,9 @@
 /* Error Description */
 "Bad response" = "Yir tiririt";
 
+/* Title */
+"Bcc" = "Anɣ. Uff. I";
+
 /* message Bcc: feild */
 "Bcc:" = "Anɣ. Uff. I:";
 
@@ -243,6 +261,15 @@
 /* Settings row */
 "Block email tracking" = "Sewḥel aḍfar n yimaylen";
 
+/* Settings item to open blocked sender list */
+"Block list" = "Tabdart n usewḥel";
+
+/* Button to block a sender */
+"Block sender" = "Sewḥel amazan";
+
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Yessewḥal imazanen ɣef tmeẓriwt ma teldiḍ izen neɣ melmi t-teldiḍ";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Wali iznan deg uskar n udiwenni.";
 
@@ -251,6 +278,9 @@
 
 /* Title */
 "Bug Report Received" = "Tuzna n ubug tettwarmes";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Isefka yettwaffren";
 
 /* Call the contact (button title text) */
 "Call contact" = "Siwel i unermis";
@@ -336,6 +366,9 @@
 /* Title */
 "Change sender address to…" = "Beddel tansa n umesgal ɣer…";
 
+/* Text for status label when low battery */
+"Charge your device or resume manually." = "Ččar ibenk-ik neɣ ales s ufus.";
+
 /* Action */
 "Check Again" = "Senqed tikelt nniḍen";
 
@@ -417,6 +450,9 @@
    menu title */
 "Contacts" = "Inermisen";
 
+/* The title of the pop up when encrypted search is available. */
+"Content search available" = "Anadi deg ugbur yella";
+
 /* Action
    The title of button of PIN code setup1 */
 "Continue" = "Kemmel";
@@ -438,6 +474,9 @@
 
 /* Title */
 "Copy name" = "Isem tmurt";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Yegguma ad yeldi yizen, ales ticki.";
 
 /* contact placeholder */
 "Country" = "Tamurt";
@@ -514,6 +553,9 @@
 /* Title of message permanent deletion alert, plural */
 "Delete %d Messages" = "Kkes %d n yiznan";
 
+/* Title for the alert to delete all downloaded messages. */
+"Delete all downloaded messages?" = "Kkes akk iznan i d-yettwasadren?";
+
 /* Title-Contacts */
 "Delete contact" = "Kkes anermis";
 
@@ -584,8 +626,28 @@
 /* Done action */
 "Done" = "Immed";
 
+/* Text for status label when pause button is pressed */
+"Download paused" = "Asader yeḥbes";
+
+/* Text for estimate time label when no wifi is available */
+"Download paused: No WiFi detected" = "Yeḥbes usader: Ulac WiFi";
+
 /* The title of downloaded messages in settings */
 "Download progress" = "Asader iteddu";
+
+/* cell title in device settings
+   The title of downloaded messages in local storage settings
+   The title of downloaded messages in settings */
+"Downloaded messages" = "Iznan i d-yettwasadren";
+
+/* Title for the alert to disable content search. */
+"Downloaded messages will be deleted" = "Iznan i d-yettwasadren ad-ttwakksen";
+
+/* The text for the number of downloaded messages. */
+"Downloading message %1d out of %2d" = "Asader n yizen %1$d ɣef %2$d";
+
+/* The text when metadata indexing is in progress. */
+"Downloading metadata ..." = "Asader n taffa meta ...";
 
 /* Action */
 "Draft" = "Arewway";
@@ -655,6 +717,9 @@
    The title of the button to move to settings and enable encrypted search. */
 "Enable" = "Rmed";
 
+/* Title for the alert to enable encrypted search */
+"Enable content search" = "Rmed anadi n ugbur";
+
 /* Title */
 "Enable email notices" = "Sermed tilɣa n imayl";
 
@@ -706,6 +771,9 @@
 /* incorrect email format error in composer */
 "Error sending" = "Tuzna n Tuccḍa";
 
+/* The default text while estimating the time remaining */
+"Estimating time remaining ..." = "Akud yettuṛaǧun ad d-yeqqim ...";
+
 /* lock app option */
 "Every time enter app" = "Tal tulya n usnas";
 
@@ -720,6 +788,9 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Tuzna n usali n ugbur tecceḍ!\nTtxil ɛreḍ tikkelt-nniḍen.";
+
+/* default vcard types */
+"Fax" = "Fax";
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Afaylu, tabzimt d yiznan s tengalt n yini akken ad ternuḍ tabwaṭ n tnaka tudmawant ifazen.";
@@ -738,6 +809,9 @@
 
 /* forward action */
 "Forward" = "Ɣer sdat";
+
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Welleh (izen aneggaru)";
 
 /* forwarded message title */
 "Forwarded message" = "Izen yettwassekki";
@@ -821,6 +895,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
 
+/* One of schedule time options */
+"In the morning" = "Taṣebḥit";
+
 /* menu title */
 "Inbox" = "Tanaka n urmas";
 
@@ -845,6 +922,9 @@
 /* The preconditions are not met */
 "Internal Error" = "Tuccḍa tadigant";
 
+/* default vcard types */
+"Internet" = "Internet";
+
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Ugur n usaǧǧaw n umeẓlu n internet (ISP)";
 
@@ -859,6 +939,9 @@
 
 /* Error message */
 "Invalid username!" = "Yir isem n useqdac!";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Snubget-d imeddukkal-ik ɣer Proton: Ad ɛerḍen Mail Plus baṭel, ad d-trebḥeḍ ismaden mi ara jerrden ɣer kra n uɣawas n lexlaṣ.";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Abug-agi yeɛna tiɣin seg usnas?";
@@ -900,6 +983,9 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Aseɣwen yettwanɣel.";
+
+/* Button inside the banner */
+"Load" = "Sali";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Sali tugniwin tusliɣin";
@@ -1002,6 +1088,9 @@
 /* default vcard types */
 "Mobile" = "Aziraz";
 
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Azmul n uziraz";
+
 /* More actions button */
 "More" = "Ugar";
 
@@ -1076,6 +1165,9 @@
 /* Title */
 "No connectivity detected…" = "Ulac tuqqna yettwafen…";
 
+/* Short hint in the header view */
+"No email trackers found" = "Ulac ineḍfaren n yimayl yettwafen";
+
 /* network troubleshot cell title */
 "No internet connection" = "Ulac tuqqna internet";
 
@@ -1131,11 +1223,17 @@
 /* The title of Off setting options */
 "Off" = "Yensa";
 
+/* Official badge next to sender's name */
+"Official" = "Unṣib";
+
 /* Title of the alert when the device is offline */
 "Offline" = "Ur yeqqin ara";
 
 /* Action */
 "OK" = "Ih";
+
+/* The text for determining the oldest message in the encrypted search index */
+"Oldest message: " = "Izen aqbur: ";
 
 /* The title of On setting options */
 "On" = "Yermed";
@@ -1172,6 +1270,9 @@
 
 /* update password error */
 "Password update failed" = "Aleqqem n wawal uffir yecceḍ";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Awal uffir yettwaleqqem";
 
 /* Placeholder */
 "Passwords must match" = "Awalen uffiren ilaq ad ilin kifkif";
@@ -1275,6 +1376,9 @@
 /* Local notification title */
 "Problem sending message" = "Yalla-d wugur deg tuzna n yizen";
 
+/* Settings lock protection section */
+"Protection" = "Ammesten";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton yuɣ-it wugur";
 
@@ -1317,7 +1421,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Tiririt termed";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Snubget-d ameddakkel";
 
 /* Title */
@@ -1394,6 +1499,9 @@
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Sɣiwes tuzna";
 
+/* mail location title */
+"Scheduled" = "Yettusɣiwes";
+
 /* The title of the banner that will be shown when you schedule a message. */
 "Scheduling message..." = "Asɣiwes n yizen...";
 
@@ -1404,6 +1512,12 @@
 /* cell title in device settings
    The title of encrypted search in settings */
 "Search message content" = "Agbur n yizen n unadi";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Ẓer talqayt";
+
+/* Text for the link to show the current indexing progress */
+"See progress." = "Ẓer akala.";
 
 /* section title */
 "Select colour" = "Fren ini";
@@ -1692,6 +1806,9 @@
 /* The title of auto reply banner */
 "This message was automatically generated" = "Izen-a tettusirew s wudem awurman";
 
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Izen-agi ad yettwazen deg %1$@ ɣef %2$@";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Izen-agi ad ifat di %1$dD %2$dH %3$dM";
 
@@ -1706,6 +1823,12 @@
 
 /* contacts talbe cell Title title */
 "Title" = "Azwel";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Aseɣbel n uselkin TLS ur yeddi ara. Tuqqna-inek·inem ahat ad tettuɛass, ɣef waya asnas ad yettusewḥel i kra n wakud i uḍman n tɣellist-inek·inem.\n\nbeddel tura tura azeṭṭa.";
 
 /* message To: feild
    Title */
@@ -1781,6 +1904,9 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "War talast";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Ikaramen d tebzimin war talast";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Tukksa n usekkeṛ tettusra";
 
@@ -1799,6 +1925,12 @@
 /* Error message */
 "Unsupported file type" = "Askar n ufeylu ur yettusefrak ara";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Alamma d 15 n tansiwin n yimayl";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Alamma d 500 GAṬ n uḥraz";
+
 /* update notification email error title */
 "Update Notification Email" = "Leqqem ilɣa s yimayl";
 
@@ -1811,6 +1943,9 @@
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Lqem amaynut n Proton, ammesten yezdin";
 
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Sali aswir tura";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Ali ar lqem s yidrimen akken ad tazneḍ imaylen seg tansa-ik %@";
 
@@ -1819,6 +1954,9 @@
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Sali inermisen n iOS ɣer proton Mail?";
+
+/* default vcard types */
+"URL" = "URL";
 
 /* Option title */
 "Use folder colors" = "Seqdec initen n ukaram";
@@ -1902,7 +2040,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ur tezmireḍ ara ad tesbaduḍ tansa %@ am tansa tamezwert acku d tawuri n lexlaṣ.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Tessenseḍ Face ID deg yiɣewwaren n unagraw-inek·inem. Face ID yettuseqdec i ummesten n telɣut n umiḍan yesɛan azal. I unekcum ɣer umiḍan-ik·im, rzu ɣer yiɣewwaren syen ales armad n Face ID neɣ ales tuqqna.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Tessenseḍ %@ deg yiɣewwaren n unagraw-inek·inem. %@ yettuseqdec i ummesten n telɣut n umiḍan yesɛan azal. I unekcum ɣer umiḍan-ik·im, rzu ɣer yiɣewwaren syen ales armad n %@ neɣ ales tuqqna.";
 
 /* Message */
 "You have %d new emails!" = "Ɣur-k %d imaylen imaynuten!";
