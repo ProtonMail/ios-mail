@@ -49,6 +49,7 @@ class TrackerTableViewHeaderView: UITableViewHeaderFooterView {
 
     private func setupSubviews() {
         let row = UIStackView(arrangedSubviews: [providerNameLabel, UIView(), trackerCountLabel, expansionChevron])
+        row.alignment = .center
         row.spacing = 16
         contentView.addSubview(row)
         row.centerInSuperview()
