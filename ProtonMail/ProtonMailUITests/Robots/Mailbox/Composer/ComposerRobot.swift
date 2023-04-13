@@ -281,7 +281,7 @@ class ComposerRobot: CoreElements {
     }
     
     func pasteSubject(_ subjectText: String) -> ComposerRobot {
-        Element.system.saveToClipBoard(subjectText)
+        device().saveTextToClipboard(subjectText)
         textField(id.subjectTextFieldIdentifier).tap()
         textField(id.subjectTextFieldIdentifier).longPress()
         menuItem().byIndex(0).onChild(staticText().byIndex(0)).tap()
