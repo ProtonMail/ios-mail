@@ -998,7 +998,7 @@
 "inline attachments" = "beszúrt mellékletek";
 
 /* place holder */
-"Input Display Name…" = "Írja be a megjelenítendő nevet…";
+"Input Display Name…" = "Írja be a megjelenített nevet…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nem biztonságos kapcsolat";
@@ -1112,7 +1112,7 @@
 "Manage accounts" = "Fiókok kezelése";
 
 /* The title for the view where user can manage emails in the contact group */
-"Manage addresses" = "Tagok kezelése";
+"Manage addresses" = "Címek kezelése";
 
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Megjelölés helyénvalóként";
@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Helyreállítás engedélyezve";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Ajánlja egy barátnak";
 
 /* Title */
@@ -1606,7 +1607,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Link jóváhagyás kérése";
+"Request link confirmation" = "Hivatkozás megnyitásának megerősítése";
 
 /* The title of the reset button in toolbar customization view. */
 "Reset to default" = "Alapbeállítások visszaállítása";
@@ -1826,7 +1827,7 @@
 "Storage full" = "Tárhely megtelt";
 
 /* The title of storage limit in settings for encrypted search */
-"Storage limit" = "A tárhely kapacitása";
+"Storage limit" = "Tárhely korlát";
 
 /* Storage warning */
 "Storage quota exceeded" = "Túllépte a tárhely méretét";
@@ -2246,7 +2247,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Kikapcsolta a Face ID-t a rendszerbeállításokban. A Face ID fontos fiókinformációk védelméhez volt beállítva. Ahhoz, hogy hozzáférhessen a fiókjához, aktiválja a Face ID-t a beállításokban, vagy jelentkezzen be újra.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Kikapcsolta a %@-t a rendszerbeállításokban. A %@ fontos fiókinformációk védelméhez volt beállítva. Ahhoz, hogy hozzáférhessen a fiókjához, aktiválja a %@-t a beállításokban, vagy jelentkezzen be újra.";
 
 /* Message */
 "You have %d new emails!" = "%d új üzenete van!";

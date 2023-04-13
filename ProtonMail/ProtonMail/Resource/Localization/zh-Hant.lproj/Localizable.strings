@@ -177,6 +177,12 @@
 /* The title of section inside the dark mode setting page */
 "Appearance" = "外觀";
 
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "程式金鑰更深層保護您的 Proton 資訊，以防遭到精心策劃的攻擊，例如：攻擊者複製您裝置的內容。%1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "程式金鑰防護";
+
 /* Apply action */
 "Apply" = "套用";
 
@@ -284,6 +290,9 @@
 
 /* Settings row */
 "Block email tracking" = "封鎖郵件追蹤";
+
+/* Settings item to open blocked sender list */
+"Block list" = "攔截清單";
 
 /* Button to block a sender */
 "Block sender" = "封鎖寄件者";
@@ -1213,6 +1222,9 @@
 /* Title */
 "Move to…" = "移至…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "移動後瀏覽至下一則訊息";
+
 /* Onboarding title */
 "Neat and tidy" = "整齊俐落";
 
@@ -1251,6 +1263,9 @@
 
 /* title of the next button */
 "Next" = "下一個";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "移動後移至新訊息";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "暱稱";
@@ -1390,6 +1405,9 @@
 
 /* Text for pause button */
 "Pause" = "暫停";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "執行移動訊息 (例如：封存檔) 後，將瀏覽至下一則訊息。";
 
 /* default vcard types */
 "Personal" = "個人";
@@ -1538,7 +1556,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "已啟用復原";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "推薦好友";
 
 /* Title */
@@ -2222,7 +2241,7 @@
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "您在系統設定裡停用了 Face ID。Face ID 已被使用於保護重要的帳號資訊上。若要存取您的帳號，請前往「前定」重新啟用Face ID或重新登入。";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您在系統設定裡停用了 %@。%@ 已被使用於保護重要的帳號資訊上。若要存取您的帳號，請前往「前定」重新啟用%@或重新登入。";
 
 /* Message */
 "You have %d new emails!" = "您有 %d 封新郵件！";
