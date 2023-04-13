@@ -21,6 +21,15 @@ enum MailboxItem: Hashable {
     case message(MessageEntity)
     case conversation(ConversationEntity)
 
+    var expirationTime: Date? {
+        switch self {
+        case .message(let message):
+            return message.expirationTime
+        case .conversation(let conversation):
+            return conversation.expirationTime
+        }
+    }
+
     var isScheduledForSending: Bool {
         switch self {
         case .message(let message):
@@ -63,6 +72,15 @@ enum MailboxItem: Hashable {
             return message.unRead
         case .conversation(let conversation):
             return conversation.isUnread(labelID: labelID)
+        }
+    }
+
+    func time(labelID: LabelID) -> Date? {
+        switch self {
+        case .message(let message):
+            return message.time
+        case .conversation(let conversation):
+            return conversation.getTime(labelID: labelID)
         }
     }
 }

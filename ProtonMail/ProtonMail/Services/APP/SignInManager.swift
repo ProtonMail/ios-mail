@@ -118,8 +118,6 @@ class SignInManager: Service {
             return
         }
 
-        self.queueHandlerRegister.registerHandler(user.mainQueueHandler)
-
         showSkeleton()
 
         let userDataService = user.userService
@@ -134,7 +132,7 @@ class SignInManager: Service {
                 self.usersManager.update(userInfo: userInfo, for: auth.sessionID)
 
                 guard userInfo.delinquentParsed.isAvailable else {
-                    self.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
+                    self.queueHandlerRegister.unregisterHandler(for: user.userID)
                     self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
                         onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                     }
@@ -142,11 +140,9 @@ class SignInManager: Service {
                 }
 
                 tryUnlock()
-
-                NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
             }
         }.catch(on: .main) { [weak self] error in
-            self?.queueHandlerRegister.unregisterHandler(user.mainQueueHandler)
+            self?.queueHandlerRegister.unregisterHandler(for: user.userID)
             _ = self?.usersManager.logout(user: user, completion: {
                 onError(error as NSError)
             })
@@ -176,6 +172,10 @@ private extension SpotlightableFeatureKey {
             return true
         case .toolbarCustomization:
             return UserInfo.isToolbarCustomizationEnable
+        case .messageSwipeNavigation:
+            return UserInfo.isConversationSwipeEnabled
+        case .encryptedSearchAvailable:
+            return false
         }
     }
 }

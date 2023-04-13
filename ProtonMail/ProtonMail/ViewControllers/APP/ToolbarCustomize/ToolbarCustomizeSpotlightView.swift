@@ -18,16 +18,20 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
+final class ToolbarCustomizeSpotlightView: UIView {
     private var dismissGesture: UITapGestureRecognizer?
     private let shadowView = SubviewsFactory.shadowView
+    private let arrowView = SubviewsFactory.arrowView
     private let infoView = SubviewsFactory.infoView
     private let circleRadius: CGFloat = 25.0
 
     private let titleLabel = SubviewsFactory.titleLabel
     private let contentLabel = SubviewsFactory.contentLabel
     private let iconImageView = SubviewsFactory.iconImageView
-    private let closeImageView = SubviewsFactory.closeImageView
+    private let customizeButton = SubviewsFactory.customizeButton
+    private let labelsStackView = SubviewsFactory.labelsStackView
+
+    var navigateToToolbarCustomizeView: (() -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -43,11 +47,13 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
     private func addSubviews() {
         addSubview(shadowView)
         addSubview(infoView)
+        addSubview(arrowView)
 
-        infoView.addSubview(titleLabel)
-        infoView.addSubview(contentLabel)
+        labelsStackView.addArrangedSubview(titleLabel)
+        labelsStackView.addArrangedSubview(contentLabel)
+        infoView.addSubview(labelsStackView)
         infoView.addSubview(iconImageView)
-        infoView.addSubview(closeImageView)
+        infoView.addSubview(customizeButton)
     }
 
     private func setupLayout() {
@@ -56,25 +62,22 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
         [
             iconImageView.widthAnchor.constraint(equalToConstant: 48),
             iconImageView.heightAnchor.constraint(equalToConstant: 48),
-            iconImageView.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
-            iconImageView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16)
+            iconImageView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16),
+            iconImageView.centerYAnchor.constraint(equalTo: labelsStackView.centerYAnchor)
         ].activate()
 
         [
-            closeImageView.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
-            closeImageView.heightAnchor.constraint(equalToConstant: 24),
-            closeImageView.widthAnchor.constraint(equalToConstant: 24),
-            closeImageView.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -16)
+            labelsStackView.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 16),
+            labelsStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            labelsStackView.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -16),
+            labelsStackView.bottomAnchor.constraint(equalTo: customizeButton.topAnchor, constant: -12)
         ].activate()
 
         [
-            titleLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: closeImageView.leadingAnchor, constant: -9),
-            contentLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            contentLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
-            contentLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -16)
+            customizeButton.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16),
+            customizeButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -16),
+            customizeButton.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -16),
+            customizeButton.heightAnchor.constraint(equalToConstant: 32)
         ].activate()
         titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
@@ -83,6 +86,8 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(dismiss))
         addGestureRecognizer(gesture)
         self.dismissGesture = gesture
+
+        customizeButton.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }
 
     @objc
@@ -90,16 +95,24 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
         removeFromSuperview()
     }
 
+    @objc
+    private func handleTap() {
+        removeFromSuperview()
+        navigateToToolbarCustomizeView?()
+    }
+
     func presentOn(view: UIView, targetFrame: CGRect) {
-        self.passThroughFrame = targetFrame
         view.addSubview(self)
+
         self.frame = view.bounds
         let infoViewWidth = min(frame.width - 32.0, 360)
+
         let infoViewHeight = calculateInfoViewHeight(width: infoViewWidth)
 
         let path = UIBezierPath(rect: self.bounds)
-        let circlePath = makeCirclePath(targetFrame: targetFrame)
-        path.append(circlePath)
+
+        let rectanglePath = makeRectanglePath(targetFrame: targetFrame)
+        path.append(rectanglePath)
 
         let infoViewRect = makeInfoViewRect(targetFrame: targetFrame, infoViewHeight: infoViewHeight)
         let infoViewPath = makeInfoViewPath(targetFrame: targetFrame, rect: infoViewRect)
@@ -109,25 +122,31 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
         mask.path = path.cgPath
         mask.fillRule = .evenOdd
 
-        let shadowLayer = makeCircleShadowLayer(circlePath: circlePath.cgPath)
-        shadowView.layer.addSublayer(shadowLayer)
-
         infoView.frame = infoViewRect
         infoView.layer.cornerRadius = 16
         infoView.layer.masksToBounds = true
 
         self.shadowView.layer.mask = mask
+
+        let arrowViewRect = makeArrowViewRect(targetFrame: targetFrame)
+        let arrowViewPath = makeArrowPath()
+        arrowView.frame = arrowViewRect
+
+        let arrowMask = CAShapeLayer()
+        arrowMask.path = arrowViewPath.cgPath
+
+        arrowView.layer.mask = arrowMask
     }
 
     private func calculateInfoViewHeight(width: CGFloat) -> CGFloat {
         let iconWidth: CGFloat = 48.0
-        let closeIconWidth: CGFloat = 24.0
         let padding: CGFloat = 16.0
         let verticalPadding: CGFloat = 16.0
         let spacingBetweenIcon: CGFloat = 12.0
         let spacingBetweenCloseIcon: CGFloat = 9.0
+        let buttonHeight: CGFloat = 32.0
 
-        let labelWidth = width - iconWidth - closeIconWidth - padding * 2 -
+        let labelWidth = width - iconWidth - padding * 2 -
             spacingBetweenIcon - spacingBetweenCloseIcon
 
         let titleLabelHeight = titleLabel
@@ -136,7 +155,7 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
         let contentLabelHeight = contentLabel
             .textRect(forBounds: CGRect(x: 0, y: 0, width: labelWidth, height: CGFloat.greatestFiniteMagnitude),
                       limitedToNumberOfLines: 0).height
-        return titleLabelHeight + contentLabelHeight + verticalPadding * 2
+        return titleLabelHeight + contentLabelHeight + verticalPadding * 3 + buttonHeight
     }
 
     private func makeCirclePath(targetFrame: CGRect) -> UIBezierPath {
@@ -149,12 +168,37 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
                             clockwise: true)
     }
 
+    private func makeRectanglePath(targetFrame: CGRect) -> UIBezierPath {
+        return UIBezierPath(roundedRect: targetFrame, cornerRadius: 0)
+    }
+
+    private func makeArrowViewRect(targetFrame: CGRect) -> CGRect {
+        let verticalSpacing: CGFloat = 19.0
+        let x = targetFrame.midX - 10
+        let y = targetFrame.minY - verticalSpacing
+        let width = 24
+        let height = 12
+        return CGRect(x: Int(x), y: Int(y), width: width, height: height)
+    }
+
+    private func makeArrowPath() -> UIBezierPath {
+        let path = UIBezierPath()
+        let arrowLeftPoint = CGPoint(x: 0, y: 0)
+        let arrowTopPoint = CGPoint(x: 12, y: 12)
+        let arrowRightPoint = CGPoint(x: 24, y: 0)
+        path.move(to: arrowLeftPoint)
+        path.addLine(to: arrowTopPoint)
+        path.addLine(to: arrowRightPoint)
+        path.addLine(to: arrowLeftPoint)
+        return path
+    }
+
     private func makeInfoViewRect(targetFrame: CGRect, infoViewHeight: CGFloat) -> CGRect {
         let infoViewWidth = min(frame.width - 32.0, 360)
         let center = CGPoint(x: targetFrame.midX, y: targetFrame.midY)
         let verticalSpacing: CGFloat = 19.0
         let trailingSpacing: CGFloat = 16.0
-        let y = center.y - circleRadius - verticalSpacing
+        let y = center.y - (targetFrame.height / 2) - verticalSpacing
         let x = frame.width - infoViewWidth - trailingSpacing
         let height = max(102, infoViewHeight)
         return CGRect(x: x,
@@ -166,7 +210,7 @@ final class ToolbarCustomizeSpotlightView: TouchPassingThroughTargetView {
     private func makeInfoViewPath(targetFrame: CGRect, rect: CGRect) -> UIBezierPath {
         let center = CGPoint(x: targetFrame.midX, y: targetFrame.midY)
         let verticalSpacing: CGFloat = 19.0
-        let y = center.y - circleRadius - verticalSpacing
+        let y = center.y - (targetFrame.height / 2) - verticalSpacing
         // draw the round rect of the infoView
         let infoViewPath = UIBezierPath(roundedRect: rect,
                                         cornerRadius: 16)
@@ -199,6 +243,12 @@ private enum SubviewsFactory {
         return view
     }
 
+    static var arrowView: UIView {
+        let view = UIView()
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        return view
+    }
+
     static var infoView: UIView {
         let view = UIView()
         view.backgroundColor = ColorProvider.BackgroundNorm
@@ -228,9 +278,20 @@ private enum SubviewsFactory {
         return imageView
     }
 
-    static var closeImageView: UIImageView {
-        let imageView = UIImageView(image: IconProvider.cross)
-        imageView.tintColor = ColorProvider.IconNorm
-        return imageView
+    static var customizeButton: UIButton {
+        let button = UIButton(frame: .zero)
+        button.backgroundColor = ColorProvider.InteractionWeak
+        button.setTitle(L11n.Toolbar.customizeSpotlight, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 13)
+        button.layer.cornerRadius = 8
+        button.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        return button
+    }
+
+    static var labelsStackView: UIStackView {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 2
+        return view
     }
 }

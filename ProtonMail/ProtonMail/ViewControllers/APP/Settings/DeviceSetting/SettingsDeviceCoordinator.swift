@@ -31,6 +31,7 @@ class SettingsDeviceCoordinator {
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
+        case LocalizationPreview = "languageDebug"
     }
 
     private let usersManager: UsersManager
@@ -73,6 +74,8 @@ class SettingsDeviceCoordinator {
             openGesture()
         case .darkMode:
             openDarkMode()
+        case .LocalizationPreview:
+            openLocalizationPreview()
         }
     }
 
@@ -93,7 +96,7 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockCoordinator(navigationController: self.navigationController)
+        let lockSetting = SettingsLockRouter(navigationController: self.navigationController)
         lockSetting.start()
     }
 
@@ -127,9 +130,14 @@ class SettingsDeviceCoordinator {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
+    private func openLocalizationPreview() {
+        let viewModel = LocalizationPreviewVM()
+        let languageVC = LocalizationPreviewTableViewController(viewModel: viewModel)
+        navigationController?.show(languageVC, sender: nil)
+    }
+
     func openToolbarCustomizationView() {
         let viewModel = ToolbarSettingViewModel(
-            viewMode: userManager.getCurrentViewMode(),
             infoBubbleViewStatusProvider: userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(

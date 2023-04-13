@@ -18,13 +18,13 @@ class PMDateFormatterTests: XCTestCase {
 
         notificationCenter = nil
         sut = nil
-        Environment.restore()
+        LocaleEnvironment.restore()
     }
 
     func testFormattingWithEnglishUKLocaleWhenWeekStartIsMonday() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00")
@@ -50,9 +50,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithEnglishUKLocaleWhenWeekStartIsSunday() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .sunday), "12:00")
@@ -71,9 +71,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithEnglishUKLocaleWhenWeekStartIsSaturday() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .saturday), "12:00")
@@ -92,9 +92,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithEnglishUSALocaleWhenWeekStartIsMonday() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2021-06-24 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00 AM")
@@ -115,9 +115,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithAutomaticEn_USWeekStart() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2021-06-23 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2021-06-23 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInYesterday = { _ in true }
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-22 00:00:00"), weekStart: .automatic), "Yesterday")
@@ -129,9 +129,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testFormattingWithAutomaticEn_GNWeekStart() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2021-06-23 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2021-06-23 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInYesterday = { _ in true }
         XCTAssertEqual(sut.string(from: Date.fixture("2021-06-22 00:00:00"), weekStart: .automatic), "Yesterday")
@@ -151,9 +151,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduleMsg_dateIn10Mins() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInToday = { _ in true }
 
         let sendDate = Date.fixture("2022-04-22 00:09:00")
@@ -167,9 +167,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduleMsg_dateIn30Mins() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInToday = { _ in true }
 
         let sendDate = Date.fixture("2022-04-22 00:30:00")
@@ -180,9 +180,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduleMsg_dateMoreThan30Mins_inToday() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInToday = { _ in true }
 
         let sendDate = Date.fixture("2022-04-22 12:30:00")
@@ -190,9 +190,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduleMsg_dateInTomorrow() {
-        Environment.locale = { .enGB }
-        Environment.currentDate = { Date.fixture("2022-04-22 01:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enGB }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 01:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInTomorrow = { _ in true }
 
         let sendDate = Date.fixture("2022-04-23 18:00:00")
@@ -200,9 +200,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduleMsg_dateIn3Days() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInToday = { _ in false }
         sut.isDateInTomorrow = { _ in false }
 
@@ -211,9 +211,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testCheckIsDateWillHappenInTheNext10Mins() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         let date = Date.fixture("2022-04-22 00:05:00")
         XCTAssertTrue(sut.checkIsDateWillHappenInTheNext10Mins(date))
@@ -223,9 +223,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testTitleForScheduledBanner() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         let date = Date.fixture("2022-04-25 01:05:00")
         XCTAssertEqual(sut.titleForScheduledBanner(from: date).0,
@@ -235,9 +235,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduledMsg_withTimeInThePast() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         let pastDate = Date.fixture("2022-04-21 00:00:00")
         XCTAssertEqual(sut.stringForScheduledMsg(from: pastDate),
@@ -245,9 +245,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduledMsg_withTimeLessIn1Minutes_inListView() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInToday = { _ in true }
 
         let date = Date.fixture("2022-04-22 00:00:40")
@@ -255,9 +255,9 @@ class PMDateFormatterTests: XCTestCase {
     }
 
     func testStringForScheduledMsg_withTimeLessIn1Minutes_notInListView() {
-        Environment.locale = { .enUS }
-        Environment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
-        Environment.timeZone = TimeZone(secondsFromGMT: 0)!
+        LocaleEnvironment.locale = { .enUS }
+        LocaleEnvironment.currentDate = { Date.fixture("2022-04-22 00:00:00") }
+        LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
         sut.isDateInToday = { _ in true }
 
         let date = Date.fixture("2022-04-22 00:00:40")

@@ -75,6 +75,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
 enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
+    case LocalizationPreview = 2
 
     var description: String {
         switch self {
@@ -82,6 +83,8 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
             return LocalString._push_notification
         case .language:
             return LocalString._app_language
+        case .LocalizationPreview:
+            return "Localization Preview"
         }
     }
 }
@@ -89,7 +92,7 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
 final class SettingsDeviceViewModel {
     let sections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
     private(set) var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
-    let generalSettings: [GeneralSectionItem] = [.notification, .language]
+    private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private(set) var userManager: UserManager
     private let users: UsersManager
@@ -135,9 +138,13 @@ final class SettingsDeviceViewModel {
         self.users = users
         self.dohSetting = dohSetting
         self.biometricStatus = biometricStatus
-        if #available(iOS 13, *), UserInfo.isDarkModeEnable {
+        if #available(iOS 13, *) {
             appSettigns.insert(.darkMode, at: 0)
         }
+
+        #if DEBUG_ENTERPRISE
+        generalSettings.append(.LocalizationPreview)
+        #endif
 
         if UserInfo.isToolbarCustomizationEnable {
             appSettigns.append(.toolbar)

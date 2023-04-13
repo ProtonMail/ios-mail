@@ -22,12 +22,11 @@
 
 import Foundation
 import UIKit
-import MCSwipeTableViewCell
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 /// Custom cell for Contact list, Group list and composer autocomplete
-final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
+final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
 
     /// easiler to access
     static let cellID = "ContactCell"
@@ -51,6 +50,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
         shortName.backgroundColor = ColorProvider.InteractionWeak
         shortName.textAlignment = .center
         shortName.set(text: nil, preferredFont: .footnote)
+        groupImage.image = IconProvider.users
         self.backgroundColor = ColorProvider.BackgroundNorm
 
         nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)

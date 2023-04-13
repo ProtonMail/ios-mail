@@ -26,7 +26,6 @@ import ProtonCore_Services
 typealias SaveToolbarActionSettingsForUsersUseCase = NewUseCase<Void, SaveToolbarActionSettings.Params>
 
 struct ToolbarActionPreference {
-    let conversationActions: [MessageViewActionSheetAction]?
     let messageActions: [MessageViewActionSheetAction]?
     let listViewActions: [MessageViewActionSheetAction]?
 }
@@ -45,8 +44,6 @@ final class SaveToolbarActionSettings: SaveToolbarActionSettingsForUsersUseCase 
     }
 
     override func executionBlock(params: Params, callback: @escaping NewUseCase<Void, Params>.Callback) {
-        let conversationActions = params.preference.conversationActions
-            .map(ServerToolbarAction.convert)
         let messageActions = params.preference.messageActions
             .map(ServerToolbarAction.convert)
         let listViewActions = params.preference.listViewActions
@@ -54,7 +51,7 @@ final class SaveToolbarActionSettings: SaveToolbarActionSettingsForUsersUseCase 
 
         guard let request = UpdateToolbarActionSettingRequest(
             message: messageActions,
-            conversation: conversationActions,
+            conversation: nil,
             listView: listViewActions
         ) else {
             callback(.failure(UpdateToolbarActionError.invalidInput))
@@ -82,6 +79,18 @@ final class SaveToolbarActionSettings: SaveToolbarActionSettingsForUsersUseCase 
 extension SaveToolbarActionSettings {
     struct Params {
         let preference: ToolbarActionPreference
+        let inboxDefaultActions: [MessageViewActionSheetAction] = MessageViewActionSheetAction.defaultActions
+        let messageDefaultActions: [MessageViewActionSheetAction] = MessageViewActionSheetAction.defaultActions
+
+        init(preference: ToolbarActionPreference) {
+            let messageActions: [MessageViewActionSheetAction]? =
+                preference.messageActions == messageDefaultActions ? [] : preference.messageActions
+            let listViewActions: [MessageViewActionSheetAction]? =
+                preference.listViewActions == inboxDefaultActions ? [] : preference.listViewActions
+            self.preference = .init(
+                messageActions: messageActions,
+                listViewActions: listViewActions)
+        }
     }
 
     struct Dependencies {

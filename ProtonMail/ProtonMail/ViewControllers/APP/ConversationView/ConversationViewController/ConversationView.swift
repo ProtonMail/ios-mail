@@ -5,7 +5,7 @@ class ConversationView: UIView {
 
     let tableView = SubviewsFactory.tableView
     let separator = SubviewsFactory.separator
-    let toolBar = SubviewsFactory.toolBar
+    let toolbar = SubviewsFactory.toolBar
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -26,13 +26,13 @@ class ConversationView: UIView {
         backgroundColor = ColorProvider.BackgroundSecondary
         addSubviews()
         setUpLayout()
-        accessibilityElements = [tableView, toolBar]
+        accessibilityElements = [tableView, toolbar]
     }
 
     private func addSubviews() {
         addSubview(separator)
         stackView.addArrangedSubview(tableView)
-        stackView.addArrangedSubview(toolBar)
+        stackView.addArrangedSubview(toolbar)
         stackView.addArrangedSubview(spacer)
         addSubview(stackView)
     }
@@ -78,11 +78,16 @@ class ConversationView: UIView {
         return view
     }
 
-    func toolbarLastButtonCGRect() -> CGRect? {
-        guard let rect = toolBar.lastButtonCGRect() else {
-            return nil
-        }
-        return toolBar.convert(rect, to: self)
+    func toolbarCGRect() -> CGRect? {
+        layoutIfNeeded()
+        let height = frame.height - toolbar.frame.maxY + toolbar.frame.height
+        let newFrame: CGRect = .init(
+            x: toolbar.frame.minX,
+            y: toolbar.frame.minY,
+            width: toolbar.frame.width,
+            height: height
+        )
+        return newFrame
     }
 }
 

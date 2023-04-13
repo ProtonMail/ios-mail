@@ -73,7 +73,7 @@ class ContactsViewModel: ViewModelTimer {
         fatalError("This method must be overridden")
     }
 
-    func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
+    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
         fatalError("This method must be overridden")
     }
 

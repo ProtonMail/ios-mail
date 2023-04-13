@@ -23,7 +23,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var contextProviderMock: MockCoreDataContextProvider!
     var sut: SingleMessageViewModel!
     var toolbarProviderMock: MockToolbarActionProvider!
-    var realAttachmentFlagProviderMock: MockRealAttachmentsFlagProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
@@ -32,7 +31,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         super.setUp()
         toolbarProviderMock = MockToolbarActionProvider()
         contextProviderMock = MockCoreDataContextProvider()
-        realAttachmentFlagProviderMock = .init()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
@@ -43,7 +41,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         sut = nil
         contextProviderMock = nil
         toolbarProviderMock = nil
-        realAttachmentFlagProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         toolbarCustomizeSpotlightStatusProvider = nil
     }
@@ -124,6 +121,23 @@ final class SingleMessageViewModelTests: XCTestCase {
         ])
     }
 
+    func testToolbarActionTypes_withScheduleSendMsg_notContainsReplyForwardActions() {
+        var flags = MessageFlag()
+        flags.insert(.scheduledSend)
+        let msg = MessageEntity.make(rawFlag: flags.rawValue)
+        toolbarProviderMock.messageToolbarActions = [.reply, .forward]
+        makeSUT(labelID: Message.Location.inbox.labelID, message: msg)
+
+
+        let result = sut.toolbarActionTypes()
+
+        XCTAssertFalse(result.contains(.reply))
+        XCTAssertFalse(result.contains(.forward))
+        XCTAssertFalse(result.contains(.replyInConversation))
+        XCTAssertFalse(result.contains(.forwardInConversation))
+        XCTAssertFalse(result.contains(.replyOrReplyAll))
+    }
+
     func testToolbarCustomizationAllAvailableActions_sameAsActionInActionSheet() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         let bodyViewModel = sut.contentViewModel.messageBodyViewModel
@@ -137,9 +151,11 @@ final class SingleMessageViewModelTests: XCTestCase {
                                                        shouldShowRenderModeOption: bodyInfo.shouldDisplayRenderModeOptions,
                                                        isScheduledSend: bodyInfo.message.isScheduledSend).items
         expected = expected.filter({ $0 != .reply && $0 != .replyAll })
-        expected.insert(.replyOrReplyAll, at: 0)
+        expected.insert(.reply, at: 0)
 
-        XCTAssertEqual(sut.toolbarCustomizationAllAvailableActions(), expected)
+        // Action sheet has no star action
+        let filteredAction = sut.toolbarCustomizationAllAvailableActions().filter { $0 != .star }
+        XCTAssertEqual(filteredAction, expected)
     }
 
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {
@@ -216,9 +232,9 @@ final class SingleMessageViewModelTests: XCTestCase {
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: .none,
-                user: fakeUser
+                user: fakeUser,
+                imageProxy: .init(dependencies: .init(apiService: apiMock))
             ),
-            nonExpandedHeader: .init(isScheduledSend: message.isScheduledSend),
             bannerViewModel: components.banner(labelId: labelID, message: message, user: fakeUser),
             attachments: .init()
         )
@@ -228,7 +244,6 @@ final class SingleMessageViewModelTests: XCTestCase {
                 queueManager: nil,
                 apiService: fakeUser.apiService,
                 contextProvider: contextProviderMock,
-                realAttachmentsFlagProvider: realAttachmentFlagProviderMock,
                 messageDataAction: fakeUser.messageService,
                 cacheService: fakeUser.cacheService
             )
@@ -239,6 +254,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             labelId: labelID,
             message: message,
             user: fakeUser,
+            imageProxy: .init(dependencies: .init(apiService: apiMock)),
             childViewModels: childViewModels,
             internetStatusProvider: InternetConnectionStatusProvider(),
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,

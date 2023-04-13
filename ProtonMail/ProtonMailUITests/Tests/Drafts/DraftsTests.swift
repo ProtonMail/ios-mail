@@ -72,6 +72,7 @@ class DraftsTests: BaseTestCase {
             .send()
             .menuDrawer()
             .sent()
+            .refreshMailbox()
             .verify.messageWithSubjectExists(subject)
     }
 

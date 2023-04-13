@@ -238,8 +238,8 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
                 return
             }
 
-            self?.viewModel.fetchContacts { (_: [Contact]?, error: NSError?) in
-                if let error = error as NSError? {
+            self?.viewModel.fetchContacts { error in
+                if let error = error {
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self?.present(alertController, animated: true, completion: nil)
@@ -348,7 +348,7 @@ extension ContactsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
+        return self.viewModel.sectionForSectionIndexTitle(title: title, at: index)
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {

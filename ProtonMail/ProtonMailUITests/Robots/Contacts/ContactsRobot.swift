@@ -8,6 +8,7 @@
 
 import pmtest
 import ProtonMail
+import XCTest
 
 fileprivate struct id {
     static let addContactAlertButtonText = LocalString._contacts_new_contact
@@ -88,7 +89,7 @@ class ContactsRobot: CoreElements {
         }
         
         private func swipeLeftToDelete(_ name: String) -> ContactsView {
-            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().swipeLeft()
+            cell(id.contactCellIdentifier(name)).firstMatch().swipeUpUntilVisible(maxAttempts: 20).swipeLeft()
             return ContactsView()
         }
         
@@ -105,11 +106,11 @@ class ContactsRobot: CoreElements {
         class Verify: CoreElements {
 
             func contactExists(_ name: String) {
-                cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().checkExists()
+                cell(id.contactCellIdentifier(name)).firstMatch().swipeUpUntilVisible().checkExists()
             }
 
             func contactDoesNotExists(_ name: String) {
-                cell(id.contactCellIdentifier(name)).waitUntilGone()
+                cell(id.contactCellIdentifier(name)).firstMatch().waitUntilGone()
             }
         }
     }
@@ -130,14 +131,17 @@ class ContactsRobot: CoreElements {
         }
         
         func sendGroupEmail(_ name: String) -> ComposerRobot {
-            button(id.groupCellSendImailButtonIdentifier(name)).swipeDownUntilVisible().tap()
+            button(id.groupCellSendImailButtonIdentifier(name)).swipeUpUntilVisible().tap()
             return ComposerRobot()
         }
         
         private func swipeLeftToDelete(_ withName: String) -> ContactsGroupView {
+            scrollToTop()
             cell(id.groupCellIdentifier(withName))
                 .onChild(staticText(id.groupStaticTextIdentifier(withName)))
                 .swipeUpUntilVisible(maxAttempts: 20)
+                .swipeDownUntilVisible(maxAttempts: 20)
+                .waitForHittable()
                 .swipeLeft()
             return self
         }
@@ -150,6 +154,11 @@ class ContactsRobot: CoreElements {
         private func confirmDeletion() -> ContactsGroupView {
             button(id.deleteGroupAlertButtonText).tap()
             return self
+        }
+
+        private func scrollToTop() {
+            let systemaApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+            systemaApp.statusBars.allElementsBoundByIndex.first(where: { $0.isHittable })?.tap()
         }
 
         class Verify: CoreElements {

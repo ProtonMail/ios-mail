@@ -350,7 +350,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         let msgID = message.messageID
         let closure = runInQueue ? self.queueManager?.queue: noQueue
         closure? {
-            let completionWrapper: API.JSONCompletion = { _, result in
+            let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { _, result in
                 let objectId = message.objectID.rawValue
                 self.contextProvider.performOnRootSavingContext { context in
                     let response = try? result.get()
@@ -377,14 +377,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         return
                                     }
                                 }
-                                let realAttachments = userCachedStatus.realAttachments
                                 let localAttachments = newMessage.attachments.allObjects.compactMap { $0 as? Attachment}.filter { attach in
                                     if attach.isSoftDeleted {
                                         return false
-                                    } else if realAttachments {
-                                        return !attach.inline()
                                     }
-                                    return true
+                                    return !attach.inline()
                                 }
                                 let localAttachmentCount = localAttachments.count
 
@@ -410,15 +407,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
                                 // Use local attachment count since the not-uploaded attachment is not counted
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
-
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
-                                if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messages: [MessageEntity(newMessage)], labelID: LabelID(labelID), unRead: false)
-                                }
+
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
+                                    if let labelID = newMessage.firstValidFolder() {
+                                        self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
+                                    }
                                 }
+
                                 newMessage.unRead = false
                                 PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
                                 error = context.saveUpstreamIfNeeded()
@@ -443,13 +441,14 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     }
                 }
             }
-            self.apiService.messageDetail(messageID: msgID, completion: completionWrapper)
+            let request = MessageDetailRequest(messageID: msgID)
+            self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
         }
     }
 
     func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Error?) -> Void) {
         self.queueManager?.queue {
-            let completionWrapper: API.JSONCompletion = { task, result in
+            let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
                 self.contextProvider.performOnRootSavingContext { context in
                     switch result {
                     case .success(let response):
@@ -472,7 +471,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
                                     if let labelID = messageOut.firstValidFolder() {
-                                        self.mark(messages: [MessageEntity(messageOut)], labelID: LabelID(labelID), unRead: false)
+                                        self.mark(
+                                            messageObjectIDs: [messageOut.objectID],
+                                            labelID: LabelID(labelID),
+                                            unRead: false
+                                        )
                                     }
 
                                     DispatchQueue.main.async {
@@ -499,17 +502,16 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             self.contextProvider.performOnRootSavingContext { context in
                 guard
-                    let message = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+                    let message = Message.messageForMessageID(messageID.rawValue,
+                                                              inManagedObjectContext: context),
+                    message.isDetailDownloaded
                 else {
-                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
-                    return
-                }
-                guard message.isDetailDownloaded else {
-                    self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    let request = MessageDetailRequest(messageID: messageID)
+                    self.apiService.perform(request: request, jsonDictionaryCompletion: completionWrapper)
                     return
                 }
                 if let labelID = message.firstValidFolder() {
-                    self.mark(messages: [MessageEntity(message)], labelID: LabelID(labelID), unRead: false)
+                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
                 }
                 DispatchQueue.main.async {
                     completion(nil)
@@ -572,7 +574,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      ContextLabel.Attributes.userID,
                                                      self.userID.rawValue,
                                                      ContextLabel.Attributes.unreadCount,
-                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     "conversation.\(Conversation.Attributes.isSoftDeleted)",
                                                      NSNumber(false))
             } else {
                 fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K == %@)",
@@ -580,7 +582,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                                      labelID.rawValue,
                                                      ContextLabel.Attributes.userID,
                                                      self.userID.rawValue,
-                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     "conversation.\(Conversation.Attributes.isSoftDeleted)",
                                                      NSNumber(false))
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
@@ -779,6 +781,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func saveDraft(_ message: Message?) {
         if let message = message, let context = message.managedObjectContext {
             context.performAndWait {
+                if message.title.isEmpty {
+                    message.title = "(No Subject)"
+                }
                 _ = context.saveUpstreamIfNeeded()
 
                 self.queue(
@@ -984,11 +989,22 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             )
             let sendBuilder = MessageSendingRequestBuilder(dependencies: dependencies)
 
+            let fetchAndVerifyContacts = FetchAndVerifyContacts(user: userManager)
+            let fetchAndVerifyContactsParams = FetchAndVerifyContacts.Parameters(emailAddresses: emails)
+
             // build contacts if user setup key pinning
             var contacts = [PreContact]()
             firstly {
-                // fech addresses contact
-                userManager.messageService.contactDataService.fetchAndVerifyContacts(byEmails: emails)
+                Promise<[PreContact]> { seal in
+                    fetchAndVerifyContacts.execute(params: fetchAndVerifyContactsParams) { result in
+                        switch result {
+                        case .success(let preContacts):
+                            seal.fulfill(preContacts)
+                        case .failure(let error):
+                            seal.reject(error)
+                        }
+                    }
+                }
             }.then { cs -> Guarantee<[Result<KeysResponse>]> in
                 // Debug info
                 status.insert(SendStatus.fetchEmailOK)
@@ -1358,36 +1374,40 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             return Promise()
         }
 
-        let fetchedMessageController = self.fetchedMessageControllerForID(originMessageID)
+        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, originMessageID.rawValue)
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+        ]
 
         return Promise { seal in
-            do {
-                try fetchedMessageController.performFetch()
-                guard let message: Message = fetchedMessageController.fetchedObjects?.first as? Message,
-                    message.managedObjectContext != nil else {
+            self.contextProvider.performOnRootSavingContext { context in
+                do {
+                    guard let msgToUpdate = try fetchRequest.execute().first else {
                         seal.fulfill_()
                         return
-                }
-                self.contextProvider.performOnRootSavingContext { context in
-                    defer {
-                        seal.fulfill_()
                     }
-                    if let msgToUpdate = try? context.existingObject(with: message.objectID) as? Message {
-                        // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
-                        if act == 0 {
-                            msgToUpdate.replied = true
-                        } else if act == 1 {
-                            msgToUpdate.repliedAll = true
-                        } else if act == 2 {
-                            msgToUpdate.forwarded = true
-                        } else {
-                            // ignore
-                        }
-                        _ = context.saveUpstreamIfNeeded()
+
+                    // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                    if act == 0 {
+                        msgToUpdate.replied = true
+                    } else if act == 1 {
+                        msgToUpdate.repliedAll = true
+                    } else if act == 2 {
+                        msgToUpdate.forwarded = true
+                    } else {
+                        // ignore
                     }
+
+                    if let error = context.saveUpstreamIfNeeded(){
+                        throw error
+                    }
+
+                    seal.fulfill_()
+                } catch {
+                    seal.reject(error)
                 }
-            } catch {
-                seal.fulfill_()
             }
         }
     }
@@ -1477,7 +1497,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let completionBlock: () -> Void = {
                 self.labelDataService.fetchV4Labels { _ in
                     self.contactDataService.cleanUp().ensure {
-                        self.contactDataService.fetchContacts { (_, error) in
+                        self.contactDataService.fetchContacts { error in
                             if error == nil {
                                 _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
                                     completion(error)

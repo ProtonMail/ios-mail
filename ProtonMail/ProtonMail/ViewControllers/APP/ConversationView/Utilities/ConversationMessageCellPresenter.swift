@@ -44,10 +44,7 @@ class ConversationMessageCellPresenter {
                            weight: weight,
                            textColor: color)
 
-        view.senderLabel.set(text: model.sender,
-                             preferredFont: .subheadline,
-                             weight: weight,
-                             textColor: color)
+        view.configureSenderRow(components: model.sender, preferredFont: .subheadline, weight: weight, textColor: color)
     }
 
     private func presentIcons(model: ConversationMessageModel, in view: ConversationMessageView) {

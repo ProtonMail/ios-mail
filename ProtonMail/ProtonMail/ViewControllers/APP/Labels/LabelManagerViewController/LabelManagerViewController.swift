@@ -90,6 +90,14 @@ final class LabelManagerViewController: UITableViewController {
     private func viewTitle() -> String {
         return viewModel.output.labelType.isFolder ? LocalString._folders : LocalString._labels
     }
+
+    /// Function to keep the scroll position after reloading the tableview data
+    private func reloadDataWithoutScroll() {
+        let contentOffset = tableView.contentOffset
+        tableView.reloadData()
+        tableView.layoutIfNeeded()
+        tableView.setContentOffset(contentOffset, animated: false)
+    }
 }
 
 // MARK: LabelManagerUIProtocol
@@ -97,7 +105,7 @@ final class LabelManagerViewController: UITableViewController {
 extension LabelManagerViewController: LabelManagerUIProtocol {
     func reloadData() {
         hideLoadingHUD()
-        tableView.reloadData()
+        reloadDataWithoutScroll()
     }
 
     func viewModeDidChange(mode: LabelManagerViewModel.ViewMode) {
@@ -387,23 +395,23 @@ extension LabelManagerViewController {
 extension LabelManagerViewController {
 
     private enum SubviewFactory {
-        static var navBarButtonTextAttr: [NSAttributedString.Key : Any] = {
+        static var navBarButtonTextAttr: [NSAttributedString.Key : Any] {
             var attr = FontManager.HeadlineSmall
             attr[.foregroundColor] = ColorProvider.InteractionNorm as UIColor
             return attr
-        }()
+        }
 
-        static var navBarReorderButton: UIBarButtonItem = {
+        static var navBarReorderButton: UIBarButtonItem {
             let button = UIBarButtonItem(title: LocalString._reorder, style: .plain, target: nil, action: nil)
             button.setTitleTextAttributes(navBarButtonTextAttr, for: .normal)
             return button
-        }()
+        }
 
-        static var navBarDoneButton: UIBarButtonItem = {
+        static var navBarDoneButton: UIBarButtonItem {
             let button = UIBarButtonItem(title: LocalString._general_done_button, style: .plain, target: nil, action: nil)
             button.setTitleTextAttributes(navBarButtonTextAttr, for: .normal)
             return button
-        }()
+        }
     }
 }
 

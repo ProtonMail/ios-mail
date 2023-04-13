@@ -34,7 +34,7 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
         mockUser = UserManager(api: mockApiService, role: .none)
         infoBubbleViewStatusStub = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         mockSaveToolbarActionSettings = MockSaveToolbarActionSettingsForUsersUseCase()
-        makeSUT(viewMode: .singleMessage)
+        makeSUT()
     }
 
     override func tearDown() {
@@ -76,7 +76,7 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
         mockUser.messageToolbarActions = actions
         let listActions: [MessageViewActionSheetAction] = [.moveTo, .labelAs]
         mockUser.listViewToolbarActions = listActions
-        makeSUT(viewMode: .singleMessage)
+        makeSUT()
         sut.loadViewIfNeeded()
 
         var tableView = try XCTUnwrap(
@@ -102,10 +102,10 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
 
     func testContainerView_itemIsLoaded_inConversation() throws {
         let actions: [MessageViewActionSheetAction] = [.markUnread, .trash, .moveTo, .labelAs]
-        mockUser.conversationToolbarActions = actions
         let listActions: [MessageViewActionSheetAction] = [.moveTo, .labelAs]
         mockUser.listViewToolbarActions = listActions
-        makeSUT(viewMode: .conversation)
+        mockUser.messageToolbarActions = actions
+        makeSUT()
         sut.loadViewIfNeeded()
 
         var tableView = try XCTUnwrap(
@@ -129,9 +129,8 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
         )
     }
 
-    private func makeSUT(viewMode: ViewMode) {
+    private func makeSUT() {
         viewModel = ToolbarSettingViewModel(
-            viewMode: viewMode,
             infoBubbleViewStatusProvider: infoBubbleViewStatusStub,
             toolbarActionProvider: mockUser,
             saveToolbarActionUseCase: mockSaveToolbarActionSettings

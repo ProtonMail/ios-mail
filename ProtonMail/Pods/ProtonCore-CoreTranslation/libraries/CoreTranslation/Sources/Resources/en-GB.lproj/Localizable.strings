@@ -104,9 +104,6 @@
 /* Email address already used error */
 "Email address already used." = "Email address already used.";
 
-/* Username field title */
-"Email or username" = "Email or username";
-
 /* 2FA screen recovery field info */
 "Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
 
@@ -208,8 +205,7 @@
    OK button */
 "OK" = "OK";
 
-/* *
- *  Login welcome screen */
+/* Signup main view description */
 "One account for all Proton services." = "One account for all Proton services.";
 
 /* Other sign-in issues button */
@@ -297,9 +293,6 @@
 /* Search country placeholder */
 "Search country" = "Search country";
 
-/* Select plan button */
-"Select" = "Select";
-
 /* *
  *  Payments UI */
 "Select a plan" = "Select a plan";
@@ -366,9 +359,6 @@
 /* *
  *  Force upgrade */
 "Update required" = "Update required";
-
-/* Upgrade plan button */
-"Upgrade" = "Upgrade";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Use recovery code";

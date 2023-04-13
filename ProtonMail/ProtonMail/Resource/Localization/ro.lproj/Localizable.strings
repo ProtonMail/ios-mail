@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Sigur doriți să vă deconectați?";
 
+/* One of the schedule time options */
+"As scheduled" = "Ca programat";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "La %@";
 
@@ -356,7 +359,7 @@
 "Cancel Check" = "Anulare verificare";
 
 /* Title */
-"Cancelling" = "Se anulează";
+"Canceling" = "Se anulează";
 
 /* Warning message */
 "Cannot empty folder right now." = "Nu se poate goli folderul în acest moment.";
@@ -856,7 +859,7 @@
 "Fax" = "Fax";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Clasificați, etichetați și codificați prin culori mesajele pentru a vă crea o experiență personală de utilizare.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Clasificați, etichetați și atribuiți culori mesajelor ușurându-vă utilizarea.";
 
 /* place holder */
 "Folder Name" = "Nume folder";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Ascundere detalii";
 
-/* hours */
-"hours" = "ore";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Ascundere aliasuri e-mail";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Cum ați descrie experiența avută cu noul Proton Mail?";
@@ -1031,7 +1034,7 @@
 "Invite friends to Proton,\n get up to $90 in credits!" = "Invitați-vă prietenii la Proton,\n obțineți până la 90$ în credite!";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitați-vă contactele la Proton Mail pentru a se bucura de o criptare perfectă de la un capăt la altul sau adăugați protecție prin parolă la mesajele pe care le trimiteți.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invitați persoane pentru a beneficia de criptare perfectă sau adăugați parole la mesaje.";
 
 /* The article content of the referral share view. */
 "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Invitați-vă prietenii la Proton: vor încerca gratuit Mail Plus și veți câștiga credite când se vor abona la un plan cu plată.";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Legătura a fost copiată.";
-
-/* Button inside the banner */
-"Load anyway" = "Continuare încărcare";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Încărcare imagini integrate";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Echipa noastră de asistență pentru clienți va încerca să activeze manual abonamentul dacă sunteți de acord să atașați datele tehnice pe care App Store le-a furnizat aplicației la momentul cumpărării. Aceste date nu includ detalii despre contul iTunes, ID-ul Apple, cardurile de plată asociate sau orice alte informații despre utilizator. Datele tehnice ne ajută doar să verificăm dacă tranzacția a fost realizară pe serverele magazinului de aplicații App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Sistemul nostru a marcat acest mesaj ca o încercare de înșelăciune. Verificați dacă este legitim.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistemul nostru a marcat acest mesaj ca o încercare de înșelăciune. Verificați dacă este legitim.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder părinte";
@@ -1506,7 +1506,7 @@
 "Privacy" = "Confidențialitate";
 
 /* Onboarding title */
-"Privacy for all" = "Confidențialitate pentru toți";
+"Privacy for all" = "Intimitate pentru toți";
 
 /* Local notification title */
 "Problem sending message" = "Problemă trimitere mesaj";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Salvare modificări";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Programați mesajele oricând";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Trimitere programată";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Selectare culoare";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Selectare data și ora";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selectat";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Setare gesturi glisare accesare acțiuni folosite des.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Setați programări personale";
+
 /* menu title */
 "Settings" = "Setări";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Amânare";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Încărcarea unor imagini a eșuat cu protecția de urmărire activată.";
 
 /* menu title */
 "Spam" = "Nedorite";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Nelimitat";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Foldere și etichete nelimitate";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Deblocați programarea personalizată a mesajelor și alte avantaje trecând la un plan superior.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Deblocare necesară.";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Tip de fișier nesuportat.";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Până la 3 domenii de e-mail personale";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Până la 15 adrese de e-mail";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Până la 500 GB spațiu de stocare";
+
 /* update notification email error title */
 "Update Notification Email" = "Actualizare e-mail de notificare.";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton actualizat, protecție unificată";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Modernizare";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan cu plată pentru a trimite de la adresa %@";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "ZIP";
 
+"Customize (verb)" = "Customize";

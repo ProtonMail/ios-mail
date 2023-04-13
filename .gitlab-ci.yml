@@ -52,6 +52,7 @@ unit_tests:
   coverage: '/Test Coverage: \d*.\d*%/'
   only:
     - master
+    - main
     - develop
     - /^release\/.*$/
     - merge_requests
@@ -91,6 +92,7 @@ ui_tests_smoke:
   only:
     refs:
       - master
+      - main
       - develop
       - /^release\/.*$/
       - merge_requests
@@ -173,6 +175,10 @@ ui_feature_tests:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
     - bundle install
     - bundle exec fastlane feature_tests
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
   tags:
     - iOS_UITEST
 

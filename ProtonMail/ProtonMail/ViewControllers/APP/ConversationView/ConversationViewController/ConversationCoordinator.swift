@@ -1,5 +1,6 @@
 import SafariServices
 
+// sourcery: mock
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? { get set }
@@ -56,7 +57,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 queueManager: sharedServices.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: sharedServices.get(by: CoreDataService.self),
-                realAttachmentsFlagProvider: userCachedStatus,
                 messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
@@ -125,6 +125,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                                        allActions: allActions):
             presentToolbarCustomization(allActions: allActions,
                                         currentActions: currentActions)
+        case .toolbarSettingView:
+            presentToolbarCustomizationSettingView()
         }
     }
 
@@ -260,5 +262,15 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         }
         let nav = UINavigationController(rootViewController: view)
         viewController?.navigationController?.present(nav, animated: true)
+    }
+
+    private func presentToolbarCustomizationSettingView() {
+        let viewModel = ToolbarSettingViewModel(
+            infoBubbleViewStatusProvider: userCachedStatus,
+            toolbarActionProvider: user,
+            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
+        )
+        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

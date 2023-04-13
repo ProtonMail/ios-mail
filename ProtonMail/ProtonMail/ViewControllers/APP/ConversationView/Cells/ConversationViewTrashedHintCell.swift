@@ -60,11 +60,12 @@ class ConversationViewTrashedHintCell: UITableViewCell {
 
     private func setUpLayout() {
         [
-            customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
-            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2).setPriority(as: .defaultHigh),
+            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8)
+            // must be lower than `required`, calling `systemLayoutSizeFitting` sets `contentView.width` to 0 and it causes a constraint conflict
+                .setPriority(as: .init(rawValue: 999)),
+            customView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2)
-                .setPriority(as: .defaultHigh)
         ].activate()
     }
 

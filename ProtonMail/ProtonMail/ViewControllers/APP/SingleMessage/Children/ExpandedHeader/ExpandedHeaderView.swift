@@ -23,18 +23,11 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class ExpandedHeaderView: UIView {
+class ExpandedHeaderView: HeaderView {
 
-    let initialsContainer = SubviewsFactory.container
-    let initialsLabel = UILabel.initialsLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, distribution: .fill, alignment: .fill)
-    let senderNameLabel = SubviewsFactory.senderLabel
     let senderEmailControl = TextControl()
-    let lockImageView = SubviewsFactory.imageView
-    let lockImageControl = UIControl(frame: .zero)
-    private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
-    let timeLabel = SubviewsFactory.timeLabel
-    let starImageView = SubviewsFactory.starImageView
+    let hideDetailButton = SubviewsFactory.hideDetailButton
 
     init() {
         super.init(frame: .zero)
@@ -46,11 +39,19 @@ class ExpandedHeaderView: UIView {
         lockImageControl.addSubview(lockImageView)
 
         addSubview(initialsContainer)
-        addSubview(senderNameLabel)
+
+        let firstLineViews: [UIView] = [
+            senderLabel,
+            officialBadge,
+            UIView(),
+            starImageView,
+            timeLabel
+        ]
+        firstLineViews.forEach(firstLineStackView.addArrangedSubview(_:))
+        addSubview(firstLineStackView)
+
         addSubview(senderEmailControl)
         addSubview(lockContainer)
-        addSubview(timeLabel)
-        addSubview(starImageView)
         addSubview(contentStackView)
         initialsContainer.addSubview(initialsLabel)
     }
@@ -60,6 +61,13 @@ class ExpandedHeaderView: UIView {
         setUpFirstLineLayout()
         setUpSenderMailLineLayout()
         setUpContentStackViewLayout()
+    }
+
+    func preferredContentSizeChanged() {
+        senderLabel.font = .adjustedFont(forTextStyle: .subheadline)
+        hideDetailButton.titleLabel?.font = .adjustedFont(forTextStyle: .footnote)
+        [initialsLabel, timeLabel, senderEmailControl.label]
+            .forEach { $0.font = .adjustedFont(forTextStyle: .footnote) }
     }
 
     required init?(coder: NSCoder) {
@@ -88,23 +96,14 @@ extension ExpandedHeaderView {
 
     private func setUpFirstLineLayout() {
         [
-            senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
-            senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
-            senderNameLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8)
-        ].activate()
-
-        [
-            timeLabel.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
-            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
-        ].activate()
-        timeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
-        [
-            starImageView.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
-            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4),
+            firstLineStackView.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
+            firstLineStackView.topAnchor.constraint(equalTo: initialsContainer.topAnchor),
+            firstLineStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             starImageView.widthAnchor.constraint(equalToConstant: 16),
             starImageView.heightAnchor.constraint(equalToConstant: 16)
         ].activate()
+
+        timeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     private func setUpSenderMailLineLayout() {
@@ -113,12 +112,12 @@ extension ExpandedHeaderView {
         [
             lockContainer.heightAnchor.constraint(equalToConstant: 16),
             lockContainer.widthAnchor.constraint(equalToConstant: 16),
-            lockContainer.leadingAnchor.constraint(equalTo: senderNameLabel.leadingAnchor),
+            lockContainer.leadingAnchor.constraint(equalTo: senderLabel.leadingAnchor),
             lockContainer.centerYAnchor.constraint(equalTo: senderEmailControl.centerYAnchor)
         ].activate()
 
         [
-            senderEmailControl.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 4),
+            senderEmailControl.topAnchor.constraint(equalTo: senderLabel.bottomAnchor, constant: 4),
             senderEmailControl.leadingAnchor.constraint(equalTo: lockContainer.trailingAnchor, constant: 4),
             senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -88),
             senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -5)
@@ -131,44 +130,5 @@ extension ExpandedHeaderView {
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ].activate()
-    }
-}
-
-private enum SubviewsFactory {
-    static var container: UIView {
-        let view = UIView()
-        view.backgroundColor = ColorProvider.InteractionWeak
-        view.layer.cornerRadius = 8
-        view.isUserInteractionEnabled = false
-        return view
-    }
-
-    static var starImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.starFilled
-        imageView.tintColor = ColorProvider.NotificationWarning
-        return imageView
-    }
-
-    static var imageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }
-
-    static var timeLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.textAlignment = .right
-        label.set(text: nil,
-                  preferredFont: .footnote,
-                  textColor: ColorProvider.TextWeak)
-        return label
-    }
-
-    static var senderLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.set(text: nil, preferredFont: .subheadline)
-        return label
     }
 }

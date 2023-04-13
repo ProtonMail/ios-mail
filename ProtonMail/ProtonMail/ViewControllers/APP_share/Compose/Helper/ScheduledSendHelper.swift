@@ -19,6 +19,7 @@ import Foundation
 import ProtonCore_UIFoundations
 import UIKit
 
+// sourcery: mock
 protocol ScheduledSendHelperDelegate: AnyObject {
     func actionSheetWillAppear()
     func actionSheetWillDisappear()
@@ -59,7 +60,7 @@ final class ScheduledSendHelper {
         self.originalScheduledTime = originalScheduledTime
     }
 
-    func presentActionSheet() {
+    func presentActionSheet(date: Date = Date()) {
         guard let viewController = viewController else { return }
         guard !isActionSheetShownOnView else {
             return
@@ -70,7 +71,7 @@ final class ScheduledSendHelper {
             controller.view.becomeFirstResponder()
             controller.view.endEditing(true)
         }
-        self.current = Date()
+        self.current = date
 
         let header = self.setUpActionHeader()
 
@@ -100,25 +101,34 @@ extension ScheduledSendHelper {
             title: title,
             subtitle: "",
             leftItem: cancelItem,
-            rightItem: nil,
-            showDragBar: false
+            rightItem: nil
         )
         return header
     }
 
     private func setUpTomorrowAction() -> PMActionSheetPlainItem? {
-        guard let tomorrow = self.current.tomorrow(at: 8, minute: 0) else {
+        let date: Date?
+        let title: String
+        if (0..<6).contains(current.hour) {
+            date = current.today(at: 8, minute: 0)
+            title = L11n.ScheduledSend.inTheMorning
+        } else {
+            date = current.tomorrow(at: 8, minute: 0)
+            title = L11n.ScheduledSend.tomorrow
+        }
+
+        guard let date = date else {
             return nil
         }
         return PMActionSheetPlainItem(
-            title: L11n.ScheduledSend.tomorrow,
-            detail: tomorrow.localizedString(withTemplate: nil),
+            title: title,
+            detail: date.localizedString(withTemplate: nil),
             icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
-            self?.delegate?.scheduledTimeIsSet(date: tomorrow)
-            self?.actionSheet?.dismiss(animated: true)
-        }
+            detailCompressionResistancePriority: .required,
+            handler: { [weak self] _ in
+                self?.delegate?.scheduledTimeIsSet(date: date)
+                self?.actionSheet?.dismiss(animated: true)
+            })
     }
 
     private func setUpMondayAction() -> PMActionSheetPlainItem? {
@@ -129,11 +139,11 @@ extension ScheduledSendHelper {
             title: next.formattedWith("EEEE").capitalized,
             detail: next.localizedString(withTemplate: nil),
             icon: nil,
-            detailCompressionResistancePriority: .required
-        ) { [weak self] _ in
-            self?.delegate?.scheduledTimeIsSet(date: next)
-            self?.actionSheet?.dismiss(animated: true)
-        }
+            detailCompressionResistancePriority: .required,
+            handler: { [weak self] _ in
+                self?.delegate?.scheduledTimeIsSet(date: next)
+                self?.actionSheet?.dismiss(animated: true)
+            })
     }
 
     private func setUpCustomAction() -> PMActionSheetPlainItem {

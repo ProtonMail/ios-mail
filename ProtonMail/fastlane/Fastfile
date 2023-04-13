@@ -302,7 +302,7 @@ platform :ios do
     )
 
     try_scan(
-      device: "iPhone 12",
+      device: "iPhone 14",
       reset_simulator: true,
       try_count: 2,
       parallel_workers: 3,
@@ -336,10 +336,10 @@ platform :ios do
     )
 
     try_scan(
-      device: "iPhone 12",
+      device: "iPhone 14",
       reset_simulator: true,
       parallel_workers: ENV["NUMBER_OF_DEVICES"],
-      try_parallel: false,
+      try_parallel: true,
       retry_parallel: false,
       scheme: "ProtonMailUITests",
       testplan: ENV["TEST_PLAN"],

@@ -60,6 +60,7 @@ internal enum Asset {
   internal static let icMagnifier = ImageAsset(name: "ic-magnifier")
   internal static let icPenSquare = ImageAsset(name: "ic-pen-square")
   internal static let icStarFilled = ImageAsset(name: "ic-star-filled")
+  internal static let icSwipeLeft = ImageAsset(name: "ic-swipe-left")
   internal static let magicWand = ImageAsset(name: "magicWand")
   internal static let icChevronDown = ImageAsset(name: "ic-chevron-down")
   internal static let icChevronUp = ImageAsset(name: "ic-chevron-up")

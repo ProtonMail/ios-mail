@@ -139,6 +139,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+        sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
 
 #if DEBUG
         if !ProcessInfo.isRunningUnitTests {
@@ -158,7 +159,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
         #if DEBUG
-        if CommandLine.arguments.contains("-disableAnimations") {
+        if ProcessInfo.isRunningUITests {
             UIView.setAnimationsEnabled(false)
         }
         #endif

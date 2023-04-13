@@ -26,9 +26,6 @@ public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
 
     public init() {}
     
-    @PropertyStub(\HumanVerifyDelegateMock.version, initialGet: .v3) var versionStub
-    public var version: HumanVerificationVersion { versionStub() }
-
     @FuncStub(HumanVerifyDelegateMock.onHumanVerify) public var onHumanVerifyStub
     public func onHumanVerify(parameters: HumanVerifyParameters,
                               currentURL: URL?,

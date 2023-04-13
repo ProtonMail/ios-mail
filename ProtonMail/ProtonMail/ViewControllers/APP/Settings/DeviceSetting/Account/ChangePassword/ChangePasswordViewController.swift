@@ -172,6 +172,7 @@ class ChangePasswordViewController: UIViewController {
                     }
                 } else {
                     _ = self.navigationController?.popToRootViewController(animated: true)
+                    L11n.Settings.passwordUpdated.alertToast(withTitle: false)
                 }
             })
         }

@@ -28,7 +28,7 @@ extension Date {
         case monday, tuesday, wednesday, thursday, friday, saturday
       }
 
-    static func is12H(locale: Locale = Environment.locale()) -> Bool {
+    static func is12H(locale: Locale = LocaleEnvironment.locale()) -> Bool {
         let format = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale)
         // 12H: format = "h a"
         // 24H: format = "HH \'h\'"
@@ -45,8 +45,8 @@ extension Date {
 
     func localizedString(
         withTemplate formatTemplate: String?,
-        locale: Locale = Environment.locale(),
-        timeZone: TimeZone = Environment.timeZone
+        locale: Locale = LocaleEnvironment.locale(),
+        timeZone: TimeZone = LocaleEnvironment.timeZone
     ) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
@@ -76,6 +76,10 @@ extension Date {
         Calendar.current.component(.weekday, from: self)
     }
 
+    var hour: Int {
+        Calendar.current.component(.hour, from: self)
+    }
+
     func tomorrow(at hour: Int, minute: Int) -> Date? {
         guard let setDate = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: self),
               let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: setDate) else { return nil }
@@ -94,6 +98,10 @@ extension Date {
 
     func add(_ component: Calendar.Component, value: Int) -> Date? {
         Calendar.current.date(byAdding: component, value: value, to: self)
+    }
+
+    func today(at hour: Int, minute: Int) -> Date? {
+        return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: self)
     }
 }
 

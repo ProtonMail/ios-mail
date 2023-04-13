@@ -35,8 +35,6 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     private let dummyMessageId = "dummy_message_id"
     private let dummyUserId = UserID(rawValue: "dummy_user_id")
 
-    private let sleepWaitingForAsyncCall: UInt32 = 1
-
     override func setUp() {
         super.setUp()
         dummyUserManager = createUserManager(userID: dummyUserId.rawValue)
@@ -68,8 +66,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         sut = nil
     }
 
-    func testRegisterActions_whenExtraSecurityEnabled() {
-        mockCacheStatusInject.isPinCodeEnabledStub = true
+    func testRegisterActions_whenAppLockedAndAppKeyEnabled() {
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = true
         sut.registerActions()
 
         let expectation = expectation(description: "categories are registered")
@@ -80,9 +78,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
     }
 
-    func testRegisterActions_whenNoExtraSecurityEnabled() {
-        mockCacheStatusInject.isPinCodeEnabledStub = false
-        mockCacheStatusInject.isTouchIDEnabledStub = false
+    func testRegisterActions_whenNotAppLockedAndAppKeyEnabled() {
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = false
         sut.registerActions()
 
         let expectation = expectation(description: "categories are registered")
@@ -103,34 +100,52 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
 
     func testHandleAction_whenNetworkUnavailable() {
         mockIsNetworkAvailable = false
-        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId)
-
-        sleep(sleepWaitingForAsyncCall)
-        XCTAssertTrue(mockQueueManager.addTaskWasCalled)
-        XCTAssertFalse(mockExecuteNotificationAction.executionBlock.wasCalled)
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssert(self.mockQueueManager.addTaskWasCalled == true)
+            XCTAssert(self.mockExecuteNotificationAction.executionBlock.wasCalled == false)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
     }
 
-    func testHandleAction_whenNetworkAvailable() {
+    func testHandleAction_whenNetworkAvailableAndRequestSucceeds() {
         mockIsNetworkAvailable = true
-        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId)
+        mockExecuteNotificationAction.result = .success(Void())
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssert(self.mockQueueManager.addTaskWasCalled == false)
+            XCTAssert(self.mockExecuteNotificationAction.executionBlock.wasCalled == true)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
+    }
 
-        sleep(sleepWaitingForAsyncCall)
-        XCTAssertFalse(mockQueueManager.addTaskWasCalled)
-        XCTAssertTrue(mockExecuteNotificationAction.executionBlock.wasCalled)
+    func testHandleAction_whenNetworkAvailableAndRequestFails() {
+        mockIsNetworkAvailable = true
+        mockExecuteNotificationAction.result = .failure(NSError.badResponse())
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: PushNotificationAction.archive.rawValue, userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssert(self.mockQueueManager.addTaskWasCalled == true)
+            XCTAssert(self.mockExecuteNotificationAction.executionBlock.wasCalled == true)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
     }
 
     func testHandleAction_whenUnrecognisedAction() {
         mockIsNetworkAvailable = Bool.random()
-        sut.handle(action: "unexisting action", userId: dummyUserId, messageId: dummyMessageId)
-
-        sleep(sleepWaitingForAsyncCall)
-        XCTAssertFalse(mockQueueManager.addTaskWasCalled)
-        XCTAssertFalse(mockExecuteNotificationAction.executionBlock.wasCalled)
+        let expectation = expectation(description: "completion is called")
+        sut.handle(action: "unexisting action", userId: dummyUserId, messageId: dummyMessageId) {
+            XCTAssertFalse(self.mockQueueManager.addTaskWasCalled)
+            XCTAssertFalse(self.mockExecuteNotificationAction.executionBlock.wasCalled)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2.0)
     }
 
-    func testRegisterActions_whenActionsAreRegisteredAndSecurityEnabledReceived_itShouldDeregisterActions() {
-        mockCacheStatusInject.isPinCodeEnabledStub = false
-        mockCacheStatusInject.isTouchIDEnabledStub = false
+    func testRegisterActions_whenActionsAreRegisteredAndAppKeyEnabledReceived_itShouldDeregisterActions() {
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = false
         sut.registerActions()
 
         let expectation1 = expectation(description: "categories are registered")
@@ -141,8 +156,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         // Security is enabled
-        mockCacheStatusInject.isPinCodeEnabledStub = true
-        mockNotificationCenter.post(name: .appExtraSecurityEnabled, object: nil)
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = true
+        mockNotificationCenter.post(name: .appKeyEnabled, object: nil)
 
         let expectation2 = expectation(description: "categories are unregistered")
         mockUserNotificationCenter.getNotificationCategories { categories in
@@ -153,9 +168,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
     }
 
-    func testRegisterActions_whenActionsAreNotRegisteredAndSecurityDisabledReceived_itShouldRegisterActions() {
-        mockCacheStatusInject.isPinCodeEnabledStub = true
-        mockCacheStatusInject.isTouchIDEnabledStub = false
+    func testRegisterActions_whenActionsAreNotRegisteredAndAppKeyDisabledReceived_itShouldRegisterActions() {
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = true
         sut.registerActions()
 
         let expectation1 = expectation(description: "categories are not registered")
@@ -166,9 +180,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         // Security is disabled
-        mockCacheStatusInject.isPinCodeEnabledStub = false
-        mockCacheStatusInject.isTouchIDEnabledStub = false
-        mockNotificationCenter.post(name: .appExtraSecurityDisabled, object: nil)
+        mockCacheStatusInject.isAppLockedAndAppKeyEnabled = false
+        mockNotificationCenter.post(name: .appKeyDisabled, object: nil)
 
         let expectation2 = expectation(description: "categories are registered")
         mockUserNotificationCenter.getNotificationCategories { categories in

@@ -148,4 +148,25 @@ class LabelsFoldersTests: BaseTestCase {
             .deleteFolderLabel(newFolderName)
             .verify.folderLabelDeleted(newFolderName)
     }
+    
+    func testCreateSubFolder() {
+        let user = testData.onePassUser
+        let folderName = StringUtils().randomAlphanumericString()
+        
+        loginRobot
+            .loginUser(user)
+            .menuDrawer()
+            .settings()
+            .selectAccount(user.email)
+            .folders()
+            .addFolder()
+            .selectParentFolderOption()
+            .selectParentFolder("sss")
+            .tapDoneButton()
+            .createFolderLabel(folderName)
+            .selectFolderLabel(folderName)
+            .delete()
+            .confirmDelete()
+            .verify.folderLabelDeleted(folderName)
+    }
 }

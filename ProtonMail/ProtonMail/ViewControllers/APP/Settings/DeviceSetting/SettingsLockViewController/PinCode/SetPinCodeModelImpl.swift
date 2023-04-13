@@ -67,13 +67,31 @@ class SetPinCodeModelImpl: PinCodeViewModel {
         self.isPinMatched { matched in
             if matched {
                 keymaker.deactivate(BioProtection())
-                keymaker.activate(PinProtection(pin: self.enterPin)) { activated in
+                keymaker.activate(PinProtection(pin: self.enterPin)) { [unowned self] activated in
                     if activated {
-                        NotificationCenter.default.post(name: .appExtraSecurityEnabled, object: nil, userInfo: nil)
+                        NotificationCenter.default.post(name: .appLockProtectionEnabled, object: nil, userInfo: nil)
                     }
-                    completion(activated)
+                    disableAppKey {
+                        completion(activated)
+                    }
                 }
             }
+        }
+    }
+
+    private func disableAppKey(completion: (() -> Void)?) {
+        userCachedStatus.keymakerRandomkey = String.randomString(32)
+        if let randomProtection = RandomPinProtection.randomPin {
+            keymaker.activate(randomProtection) { activated in
+                guard activated else {
+                    completion?()
+                    return
+                }
+                NotificationCenter.default.post(name: .appKeyDisabled, object: nil, userInfo: nil)
+                completion?()
+            }
+        } else {
+            completion?()
         }
     }
 

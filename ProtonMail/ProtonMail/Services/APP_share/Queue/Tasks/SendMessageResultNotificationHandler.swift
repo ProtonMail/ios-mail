@@ -51,9 +51,7 @@ final class SendMessageResultNotificationHandler {
 
     private func handleSendMessageTaskSuccess() {
         #if APP_EXTENSION
-        DispatchQueue.main.async {
-            NSError.alertMessageSentToast()
-        }
+        NSError.alertMessageSentToast()
         #endif
     }
 

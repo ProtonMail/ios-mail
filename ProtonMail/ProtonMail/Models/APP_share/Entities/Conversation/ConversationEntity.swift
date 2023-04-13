@@ -118,47 +118,8 @@ extension ConversationEntity {
 
 // MARK: - Senders
 extension ConversationEntity {
-    func getSenders() -> [ContactPickerModelProtocol] {
-        ContactPickerModelHelper.contacts(from: self.senders)
-    }
-
-    /// This method will return a string that contains the name of all senders with ',' between them.
-    /// e.g Georage, Paul, Ringo
-    /// - Returns: String of all name of the senders.
-    func getJoinedSendersName(_ replacingEmails: [String: EmailEntity]) -> String {
-        let lists: [String] = self.getSenders().compactMap { contact in
-            if let displayEmail = contact.displayEmail,
-               let name = replacingEmails[displayEmail]?.name,
-               !name.isEmpty {
-                return name
-            } else if !(contact.displayName?.isEmpty ?? true) {
-                return contact.displayName
-            } else {
-                return contact.displayEmail
-            }
-        }
-        return lists.asCommaSeparatedList(trailingSpace: true)
-    }
-
-    func initial(_ replacingEmails: [String: EmailEntity]) -> String {
-        guard let senderName = getSendersName(replacingEmails).first else {
-            return "?"
-        }
-        return senderName.initials()
-    }
-
-    func getSendersName(_ replacingEmails: [String: EmailEntity]) -> [String] {
-        return self.getSenders().compactMap { contact in
-            if let displayEmail = contact.displayEmail,
-               let name = replacingEmails[displayEmail]?.name,
-               !name.isEmpty {
-                return name
-            } else if !(contact.displayName?.isEmpty ?? true) {
-                return contact.displayName
-            } else {
-                return contact.displayEmail
-            }
-        }
+    func parseSenders() throws -> [Sender] {
+        try Sender.decodeListOfDictionaries(jsonString: senders)
     }
 }
 

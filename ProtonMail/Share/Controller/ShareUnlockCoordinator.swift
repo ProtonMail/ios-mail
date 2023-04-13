@@ -104,6 +104,11 @@ extension ShareUnlockCoordinator: SharePinUnlockViewControllerDelegate {
     }
 
     func next() {
-        UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
+        UnlockManager.shared.unlockIfRememberedCredentials(
+            requestMailboxPassword: { },
+            unlocked: {
+                self.go(dest: .composer)
+            }
+        )
     }
 }

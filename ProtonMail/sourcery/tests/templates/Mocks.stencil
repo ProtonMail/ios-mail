@@ -1,11 +1,29 @@
 import CoreData
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
+import ProtonCore_Keymaker
 
 @testable import ProtonMail
 
 {% for type in types.protocols where type|annotated:"mock" %}
 class Mock{{ type.name }}: {{ type.name }} {
+    {% for variable in type.instanceVariables %}
+    @PropertyStub(\Mock{{ type.name }}.{{ variable.name }}, initialGet: {% if variable.typeName.isOptional %}nil{% elif variable.type.kind == "enum" %}.{{ variable.type.cases[0].name }}{% else %}{{ variable.typeName }}(){% endif %}) var {{ variable.name }}Stub
+    var {{ variable.name }}: {{ variable.typeName }} {
+    {% if variable.isMutable %}
+        get {
+            {{ variable.name }}Stub()
+        }
+        set {
+            {{ variable.name }}Stub(newValue)
+        }
+    }
+    {% else %}
+        {{ variable.name }}Stub()
+    }
+    {% endif %}
+
+    {% endfor %}
     {% for method in type.methods|!definedInExtension %}
     {% if method.returnTypeName.name == "Void" %}
     @FuncStub(Mock{{ type.name }}.{{ method.callName }}) var {{ method.callName }}Stub
@@ -16,6 +34,8 @@ class Mock{{ type.name }}: {{ type.name }} {
     {% endif %}
         {{ method.callName }}Stub({% for parameter in method.parameters %}{{ parameter.name }}{{ ', ' if not forloop.last }}{% endfor %})
     }
+
 {% endfor %}
 }
+
 {% endfor %}

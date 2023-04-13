@@ -24,7 +24,7 @@ import ProtonCore_Log
 
 struct Quad9: DoHProviderInternal {
     
-    let supported: [DNSType] = [.txt]
+    let supported: [DNSRecordType] = [.a, .txt]
     
     let networkingEngine: DoHNetworkingEngine
 
@@ -32,13 +32,5 @@ struct Quad9: DoHProviderInternal {
         self.networkingEngine = networkingEngine
     }
 
-    let url = "https://dns11.quad9.net:5053"
-
-    func query(host: String, sessionId: String?) -> String {
-        if let sessionId = sessionId {
-            return self.url + "/dns-query?type=TXT&name=" + sessionId + "." + host
-        } else {
-            return self.url + "/dns-query?type=TXT&name=" + host
-        }
-    }
+    let queryUrl = URL(string: "https://dns11.quad9.net:5053/dns-query")!
 }

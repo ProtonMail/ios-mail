@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G217" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" valueTransformerName="StringCryptoTransformer">
             <userInfo>
@@ -21,7 +21,7 @@
         <attribute name="headerInfo" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="Headers"/>
-                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
+                <entry key="JSONTransformerName" value="JsonDictionaryToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="isSoftDeleted" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
@@ -57,7 +57,7 @@
         <attribute name="cardData" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="Cards"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="contactID" attributeType="String" valueTransformerName="StringCryptoTransformer">
@@ -203,13 +203,13 @@
         <attribute name="recipients" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="Recipients"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="senders" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="Senders"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
@@ -299,7 +299,7 @@
         <attribute name="type" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="Type"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="userID" optional="YES" attributeType="String">
@@ -417,7 +417,7 @@
         <attribute name="bccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="BCCList"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="body" attributeType="String">
@@ -432,7 +432,7 @@
         <attribute name="ccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="CCList"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="conversationID" optional="YES" attributeType="String">
@@ -496,7 +496,7 @@
         <attribute name="parsedHeaders" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="ParsedHeaders"/>
-                <entry key="JSONTransformerName" value="AnyJsonToStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonDictionaryToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="password" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String"/>
@@ -505,13 +505,13 @@
         <attribute name="replyTos" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="ReplyTos"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="sender" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="Sender"/>
-                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
+                <entry key="JSONTransformerName" value="JsonDictionaryToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
@@ -540,7 +540,7 @@
         <attribute name="toList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="ToList"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonArrayToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="unRead" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO">
@@ -551,7 +551,7 @@
         <attribute name="unsubscribeMethods" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="UnsubscribeMethods"/>
-                <entry key="JSONTransformerName" value="AnyJsonToStringTransformer"/>
+                <entry key="JSONTransformerName" value="JsonDictionaryToStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="userID" optional="YES" attributeType="String">

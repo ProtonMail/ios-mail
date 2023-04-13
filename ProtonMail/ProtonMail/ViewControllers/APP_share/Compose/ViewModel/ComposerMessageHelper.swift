@@ -115,6 +115,7 @@ final class ComposerMessageHelper: NSObject {
     }
 
     func setNewMessage(_ message: Message) {
+        removeNotExistingAttachment(message: message)
         self.message = message
         // Cleanup password when user opens the draft
         self.message?.password = .empty
@@ -126,7 +127,11 @@ final class ComposerMessageHelper: NSObject {
 
     func markAsRead() {
         if let msg = message, msg.unRead {
-            messageDataService.mark(messages: [MessageEntity(msg)], labelID: Message.Location.draft.labelID, unRead: false)
+            messageDataService.mark(
+                messageObjectIDs: [msg.objectID],
+                labelID: Message.Location.draft.labelID,
+                unRead: false
+            )
         }
     }
 
@@ -156,7 +161,7 @@ final class ComposerMessageHelper: NSObject {
             return
         }
 
-        let filename = "publicKey - " + email + " - " + fingerprint + ".asc"
+        let filename = "publickey - \(email) - \(fingerprint).asc"
         var attached: Bool = false
         // check if key already attahced
         let atts = attachments.filter({ !$0.isSoftDeleted })
@@ -223,6 +228,18 @@ final class ComposerMessageHelper: NSObject {
 
 // MARK: - attachment related functions
 extension ComposerMessageHelper {
+    func removeNotExistingAttachment(message: Message) {
+        let notExistingAttachments: [Attachment] = message.attachments
+            .compactMap { $0 as? Attachment }
+            .filter { $0.localURL?.absoluteString.contains(check: "Shared/AppGroup") ?? false }
+        guard !notExistingAttachments.isEmpty,
+              let context = notExistingAttachments.first?.managedObjectContext else { return }
+        context.performAndWait {
+            notExistingAttachments.forEach { $0.isSoftDeleted = true }
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
     func addAttachment(_ file: FileData, shouldStripMetaData: Bool, order: Int? = nil, completion: ((Attachment?) -> Void)?) {
         guard let msg = message else {
             return

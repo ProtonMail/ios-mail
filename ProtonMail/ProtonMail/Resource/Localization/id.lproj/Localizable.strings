@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Apakah Anda yakin ingin keluar?";
 
+/* One of the schedule time options */
+"As scheduled" = "Sebagaimana terjadwal";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Pukul %@";
 
@@ -356,7 +359,7 @@
 "Cancel Check" = "Batalkan Pemeriksaan";
 
 /* Title */
-"Cancelling" = "Membatalkan";
+"Canceling" = "Membatalkan";
 
 /* Warning message */
 "Cannot empty folder right now." = "Folder tidak dapat dikosongkan pada saat ini.";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Sembunyikan rincian";
 
-/* hours */
-"hours" = "jam";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan Proton Mail yang baru?";
@@ -970,7 +973,7 @@
 "Importing" = "Mengimpor";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Mengimpor lampiran, proses ini dapat memakan waktu hingga beberapa menit";
+"Importing attachment, that can take a while" = "Mengimpor lampiran, proses ini dapat memakan waktu sejenak";
 
 /* import contact title */
 "Importing Contacts" = "Mengimpor Kontak";
@@ -1037,7 +1040,7 @@
 "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Undang teman Anda ke Proton: mereka dapat mencoba Mail Plus secara gratis, dan Anda akan memperoleh saldo ketika mereka berlangganan ke paket berbayar.";
 
 /* Error message */
-"Is this bug report about an in-app purchase?" = "Apakah laporan bug ini menyangkut seputar pembelian dalam aplikasi (in-app purchase)?";
+"Is this bug report about an in-app purchase?" = "Apakah laporan bug ini menyangkut pembelian dalam aplikasi (in-app purchase)?";
 
 /* No comment provided by engineer. */
 "Label as" = "Labeli sebagai";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Tautan disalin.";
-
-/* Button inside the banner */
-"Load anyway" = "Tetap muat";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Muat gambar yang tersemat";
@@ -1131,10 +1131,10 @@
 "Mark as read" = "Tandai sudah dibaca";
 
 /* Action */
-"Mark as read/unread" = "Tandai telah dibaca/belum dibaca";
+"Mark as read/unread" = "Tandai telah/belum dibaca";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "Tandai sebagai belum dibaca";
+"Mark as unread" = "Tandai belum dibaca";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Tim Layanan Konsumen kami akan mencoba untuk mengaktifkan paket layanan Anda secara manual apabila Anda bersedia untuk melampirkan data teknis aplikasi yang disediakan oleh App Store pada saat pembayaran. Data ini tidak berisi rincian tentang akun iTunes, Apple ID, kartu kredit, atau informasi pengguna lain yang terhubung dengan Anda. Data teknis ini hanya akan digunakan untuk membantu kami memeriksa dan memverifikasi apakah transaksi Anda memang benar telah tuntas pada server App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Sistem kami menandai pesan ini sebagai bentuk upaya phishing. Mohon periksa keabsahan pesan ini";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistem kami menandai pesan ini sebagai bentuk upaya phishing. Mohon periksa keabsahan pesan ini.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Folder induk";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Simpan Perubahan";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Jadwalkan pesan sesuai keinginan Anda";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Jadwalkan pengiriman";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Pilih warna";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Pilih tanggal dan waktu";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Terpilih";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Atur gestur usap untuk mengakses tindakan yang paling sering digunakan.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Tentukan jadwal Anda sendiri";
+
 /* menu title */
 "Settings" = "Pengaturan";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Tunda";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Gambar tertentu tidak dapat dimuat dengan perlindungan pelacak yang aktif.";
 
 /* menu title */
 "Spam" = "Spam";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Tidak terbatas";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Dapatkan fitur penjadwalan pesan khusus dan berbagai kelebihan lainnya dengan meningkatkan akun Anda.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Pembukaan kunci diperlukan";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Tipe berkas tidak didukung";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Hingga 3 domain email khusus";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Hingga 15 alamat email";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Kuota penyimpanan hingga 500 GB";
+
 /* update notification email error title */
 "Update Notification Email" = "Perbarui Email Notifikasi";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton yang baru, dengan perlindungan yang tersatukan";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Tingkatkan sekarang";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Tingkatkan jenis akun Anda ke akun berbayar untuk dapat mengirim dari alamat %@ Anda";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "Kode pos";
 
+"Customize (verb)" = "Customize";

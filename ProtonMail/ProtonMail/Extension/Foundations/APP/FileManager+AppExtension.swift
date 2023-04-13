@@ -38,3 +38,22 @@ extension FileManager {
         }
     }
 }
+
+protocol FileManagerProtocol {
+    var temporaryDirectory: URL { get }
+
+    func isWritableFile(atPath path: String) -> Bool
+    func fileExists(atPath path: String) -> Bool
+    func createDirectory(
+        at url: URL,
+        withIntermediateDirectories createIntermediates: Bool,
+        attributes: [FileAttributeKey: Any]?
+    ) throws
+    func url(
+        for directory: FileManager.SearchPathDirectory,
+        in domain: FileManager.SearchPathDomainMask,
+        appropriateFor url: URL?,
+        create shouldCreate: Bool
+    ) throws -> URL
+    func removeItem(atPath path: String) throws
+}

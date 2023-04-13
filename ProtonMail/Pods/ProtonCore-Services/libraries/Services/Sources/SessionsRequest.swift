@@ -23,7 +23,7 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Doh
 
-final class SessionsRequestResponse: Response, Codable {
+public final class SessionsRequestResponse: Response, Codable {
     public let accessToken: String
     public let refreshToken: String
     public let tokenType: String
@@ -31,26 +31,16 @@ final class SessionsRequestResponse: Response, Codable {
     public let UID: String
 }
 
-final class SessionsRequest: Request {
-    let path = "/auth/v4/sessions"
-    let method: HTTPMethod = .post
-    let isAuth = false
-}
-
-extension PMAPIService {
+public final class SessionsRequest: Request {
+    public let path = "/auth/v4/sessions"
+    public let method: HTTPMethod = .post
+    public let isAuth = false
+    public let challenge: ChallengeProperties?
     
-    func performSessionsRequest(completion: @escaping (Result<Credential, ResponseError>) -> Void) {
-        let sessionsRequest = SessionsRequest()
-        sessionRequest(request: sessionsRequest) { (task, result: Result<SessionsRequestResponse, APIError>) in
-            switch result {
-            case .success(let sessionsResponse):
-                let credential = Credential(UID: sessionsResponse.UID, accessToken: sessionsResponse.accessToken, refreshToken: sessionsResponse.refreshToken, userName: "", userID: "", scopes: sessionsResponse.scopes)
-                completion(.success(credential))
-            case .failure(let error):
-                let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)
-                let responseCode = error.domain == ResponseErrorDomains.withResponseCode.rawValue ? error.code : nil
-                completion(.failure(.init(httpCode: httpCode, responseCode: responseCode, userFacingMessage: error.localizedDescription, underlyingError: error)))
-            }
-        }
+    public var challengeProperties: ChallengeProperties? {
+        return challenge
+    }
+    public init(challenge: ChallengeProperties?) {
+        self.challenge = challenge
     }
 }

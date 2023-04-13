@@ -23,8 +23,9 @@
 import Foundation
 import CoreData
 
+// sourcery: mock
 protocol MessageDataActionProtocol {
-    func mark(messages: [MessageEntity], labelID: LabelID, unRead: Bool) -> Bool
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool
 }
 
 extension MessageDataService: MessageDataActionProtocol {
@@ -121,14 +122,14 @@ extension MessageDataService: MessageDataActionProtocol {
     /// - Parameter message: message
     /// - Returns: true if change to unread and push to the queue
     @discardableResult
-    func mark(messages: [MessageEntity], labelID: LabelID, unRead: Bool) -> Bool {
-        guard !messages.isEmpty else {
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
+        guard !messageObjectIDs.isEmpty else {
             return false
         }
-        let ids = messages.map { $0.objectID.rawValue.uriRepresentation().absoluteString }
+        let ids = messageObjectIDs.map { $0.uriRepresentation().absoluteString }
         self.queue(unRead ? .unread(currentLabelID: labelID.rawValue, itemIDs: [], objectIDs: ids) : .read(itemIDs: [], objectIDs: ids))
-        for message in messages {
-            _ = self.cacheService.mark(message: message, labelID: labelID, unRead: unRead)
+        for messageObjectID in messageObjectIDs {
+            _ = self.cacheService.mark(messageObjectID: messageObjectID, labelID: labelID, unRead: unRead)
         }
         return true
     }

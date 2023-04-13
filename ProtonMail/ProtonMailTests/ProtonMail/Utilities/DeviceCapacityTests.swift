@@ -45,12 +45,12 @@ class DeviceCapacityTests: XCTestCase {
     }
 
     func testDisk_detectsDecreaseInFreeSpaceAfterWritingAFile() throws {
-        let freeSpaceBeforeWrite = SUT.Disk.free()
+        let freeSpaceBeforeWrite = SUT.Disk().availableCapacity
 
         let testData = Data("foo".utf8)
         try testData.write(to: testFileURL)
 
-        let freeSpaceAfterWrite = SUT.Disk.free()
+        let freeSpaceAfterWrite = SUT.Disk().availableCapacity
 
         let expectedDecreaseInReportedSpace = 4096 // note: actually not test data size!
         XCTAssertEqual(freeSpaceBeforeWrite - freeSpaceAfterWrite, expectedDecreaseInReportedSpace)

@@ -266,8 +266,7 @@ extension MailboxCoordinator {
         let viewModel = SearchViewModel(
             user: viewModel.user,
             coreDataContextProvider: services.get(by: CoreDataService.self),
-            queueManager: services.get(by: QueueManager.self),
-            realAttachmentsFlagProvider: userCachedStatus
+            queueManager: services.get(by: QueueManager.self)
         )
         let viewController = SearchViewController(viewModel: viewModel)
         viewModel.uiDelegate = viewController
@@ -299,7 +298,7 @@ extension MailboxCoordinator {
             // Prevent the app tries to push a new view when the app enters
             // the background due to long network fetching time.
             // It could cause the app crashed in the background.
-            guard self?.getApplicationState() == .active else {
+            if self?.getApplicationState() == .background {
                 return
             }
             goToDetailPage()
@@ -552,13 +551,13 @@ extension MailboxCoordinator {
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
             labelID: viewModel.labelID,
             user: viewModel.user,
+            userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
-        let page = PagesViewController(viewModel: pageVM, services: services)
-        navigationController.show(page, sender: nil)
+        presentPageViews(pageVM: pageVM)
     }
 
     private func presentPageViewsFor(conversation: ConversationEntity, targetID: MessageID?) {
@@ -569,13 +568,24 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             targetMessageID: targetID,
+            userIntroduction: userCachedStatus,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
+        presentPageViews(pageVM: pageVM)
+    }
+
+    private func presentPageViews<T, U, V>(pageVM: PagesViewModel<T, U, V>) {
+        guard let navigationController = viewController?.navigationController else { return }
+        var viewControllers = navigationController.viewControllers
+        if viewControllers.last is MessagePlaceholderVC {
+            _ = viewControllers.removeLast()
+        }
         let page = PagesViewController(viewModel: pageVM, services: services)
-        navigationController.show(page, sender: nil)
+        viewControllers.append(page)
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 
     private func presentMessagePlaceholder() {

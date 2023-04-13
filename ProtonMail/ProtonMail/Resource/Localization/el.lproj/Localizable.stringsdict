@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d Selected</string>
+			<string>%d Επιλεγμένο</string>
 			<key>other</key>
-			<string>%d Selected</string>
+			<string>%d Επιλεγμένα</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -271,9 +271,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d second</string>
+			<string>%d δευτερόλεπτο</string>
 			<key>other</key>
-			<string>%d seconds</string>
+			<string>%d δευτερόλεπτα</string>
 		</dict>
 	</dict>
 	<key>%u conversation</key>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Αυτά τα %d μηνύματα θα μετακινηθούν στα Πρόχειρα και ο προγραμματισμός τους θα αφαιρεθεί.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

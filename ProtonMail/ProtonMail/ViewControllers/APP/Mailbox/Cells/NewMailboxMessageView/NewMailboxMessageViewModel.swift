@@ -28,7 +28,7 @@ struct NewMailboxMessageViewModel {
     let style: NewMailboxMessageViewStyle
     let initial: String
     let isRead: Bool
-    let sender: String
+    let sender: [SenderRowComponent]
     let time: String
     let isForwarded: Bool
     let isReply: Bool

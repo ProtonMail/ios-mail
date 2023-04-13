@@ -80,7 +80,7 @@ class WindowsCoordinator: LifetimeTrackable {
 
     var currentWindow: UIWindow? {
         didSet {
-            if #available(iOS 13, *), UserInfo.isDarkModeEnable {
+            if #available(iOS 13, *) {
                 switch darkModeCache.darkModeStatus {
 
                 case .followSystem:
@@ -203,7 +203,7 @@ class WindowsCoordinator: LifetimeTrackable {
         let unlockManager: UnlockManager = self.services.get()
         let flow = unlockManager.getUnlockFlow()
         Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
-        if flow == .requireTouchID || flow == .requirePin {
+        if userCachedStatus.isAppLockedAndAppKeyEnabled {
             self.lock()
         } else {
             DispatchQueue.main.async {
@@ -275,7 +275,7 @@ class WindowsCoordinator: LifetimeTrackable {
 
             Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
-            queueManager.unregisterHandler(user.mainQueueHandler)
+            queueManager.unregisterHandler(for: user.userID)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
                 guard let self = self else { return }
                 guard let appWindow = self.appWindow else {return}
@@ -545,10 +545,6 @@ class WindowsCoordinator: LifetimeTrackable {
 	@objc
     private func updateUserInterfaceStyle() {
         guard #available(iOS 13, *) else { return }
-        guard UserInfo.isDarkModeEnable else {
-            currentWindow?.overrideUserInterfaceStyle = .light
-            return
-        }
         switch darkModeCache.darkModeStatus {
         case .followSystem:
             currentWindow?.overrideUserInterfaceStyle = .unspecified

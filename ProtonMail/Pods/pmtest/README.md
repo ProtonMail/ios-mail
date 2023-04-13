@@ -12,7 +12,8 @@
 ### Table of contents
 1. [Installation](#installation)
 2. [Usage](#usage)
-    - [Getting started](#getting_started)cell(cellIdentifier).checkDoesNotExist()
+    - [Getting started](#getting_started)
+    - [Getting started Mac](#getting_started_mac)
     - [Locating the element](#locate)
     - [Performing actions on element](#act)
     - [Checking element states](#check)
@@ -35,6 +36,8 @@ Then run `pod install` in the project directory to install.
 To start using the `pmtest` you should select one of the below options:
 1. Extend your test class with `CoreTestCase` class which extends XCTestCase class and then access any element by its type.
    ```swift
+   import pmtest
+   
    class SampleTestCase: CoreTestCase {
    
       func testLoginSample() {
@@ -74,7 +77,20 @@ To start using the `pmtest` you should select one of the below options:
       }
    }
    ```
+#### Getting started Mac <a name="getting_started_mac"></a>
 
+To start using the `pmtest` you should select one of the below options:
+1. Extend your test class with `MacCoreTestCase` class which extends XCTestCase class and then access any element by its type.
+   ```swift
+   import pmtest
+
+   class SampleTestCase: MacCoreTestCase {
+   
+      func testLoginSample() {
+         /// same as normal iOS locators 
+      }
+   }
+   ```
 #### Locating the element <a name="locate"></a>
 
 Different strategies can be applied in order to locate the UI element depending on layout hierarchy complexity:

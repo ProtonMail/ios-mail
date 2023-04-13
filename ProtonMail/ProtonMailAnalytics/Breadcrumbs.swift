@@ -19,11 +19,11 @@ import Foundation
 
 public enum BreadcrumbEvent: String {
     case generic
-    case invalidSwipeAction
     case malformedConversationRequest
     case randomLogout
     case malformedConversationLabelRequest
     case invalidSignatureWhenSendingMessage
+    case conversationViewEndUpdatesCrash
 }
 
 /// In memory object tracing custom information for specific events.
@@ -60,6 +60,12 @@ public class Breadcrumbs {
                 crumbs = Array(crumbs.dropFirst())
             }
             events[event] = crumbs
+        }
+    }
+
+    public func clearCrumbs(for event: BreadcrumbEvent) {
+        queue.sync {
+            events[event] = nil
         }
     }
 

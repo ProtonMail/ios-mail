@@ -21,6 +21,7 @@
 //
 
 import ProtonCore_Networking
+import ProtonCore_CoreTranslation
 
 public let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
@@ -85,9 +86,14 @@ public extension ResponseError {
         return bestShotAtReasonableErrorCode == APIErrorCode.potentiallyBlocked
     }
     
-    var isExternalAccountsNotSupportedError: Bool {
+    var isAppVersionTooOldForExternalAccountsError: Bool {
         guard let responseCode = responseCode else { return false }
-        return responseCode == APIErrorCode.appVersionTooOldForExternalAccounts || responseCode == APIErrorCode.appVersionNotSupportedForExternalAccounts
+        return responseCode == APIErrorCode.appVersionTooOldForExternalAccounts
+    }
+    
+    var isAppVersionNotSupportedForExternalAccountsError: Bool {
+        guard let responseCode = responseCode else { return false }
+        return responseCode == APIErrorCode.appVersionNotSupportedForExternalAccounts
     }
 }
 
@@ -95,8 +101,10 @@ public extension AuthErrors {
     static func from(_ responseError: ResponseError) -> AuthErrors {
         if responseError.isApiIsBlockedError {
             return .apiMightBeBlocked(message: responseError.networkResponseMessageForTheUser, originalError: responseError)
-        } else if responseError.isExternalAccountsNotSupportedError {
-            return .externalAccountsNotSupported(message: responseError.networkResponseMessageForTheUser, originalError: responseError)
+        } else if responseError.isAppVersionTooOldForExternalAccountsError {
+            return .externalAccountsNotSupported(message: responseError.networkResponseMessageForTheUser, title: CoreString._ls_external_accounts_update_required_popup_title, originalError: responseError)
+        } else if responseError.isAppVersionNotSupportedForExternalAccountsError {
+            return .externalAccountsNotSupported(message: responseError.networkResponseMessageForTheUser, title: CoreString._ls_external_accounts_address_required_popup_title, originalError: responseError)
         } else {
             return .networkingError(responseError)
         }

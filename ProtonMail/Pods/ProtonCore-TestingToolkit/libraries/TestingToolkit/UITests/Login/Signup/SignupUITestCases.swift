@@ -77,6 +77,14 @@ public class SignupUITestCases {
             .verify.otherAccountExtButtonIsNotShown()
     }
     
+    public func testBothAccountExtExternalSignupFeatureOn(signupRobot: SignupRobot) {
+        signupRobot
+            .verify.signupScreenIsShown()
+            .verify.otherAccountExtButtonIsShown()
+            .otherAccountButtonTap()
+            .verify.otherAccountIntButtonIsShown()
+    }
+    
     public func testIntAccountOnlyExternalSignupFeatureOff(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
@@ -140,6 +148,7 @@ public class SignupUITestCases {
             .verify.usernameAlreadyExists()
     }
     
+    // no plan selector
     public func testSignupNewExtAccountSuccess(signupRobot: SignupRobot,
                                                randomEmail: String,
                                                password: String,
@@ -149,10 +158,9 @@ public class SignupUITestCases {
             .otherAccountButtonTap()
             .verify.signupScreenIsShown()
             .insertExternalEmail(name: randomEmail)
-            .nextButtonTap(robot: EmailVerificationRobot.self)
-            .verify.emailVerificationScreenIsShown()
-            .insertCode(code: emailVerificationCode)
-            .nextButtonTap(robot: PasswordRobot.self)
+            .nextButtonTapToOwnershipHV()
+            .fillInCodeV3(emailVerificationCode)
+            .verifyCodeButton(to: PasswordRobot.self)
             .verify.passwordScreenIsShown()
             .insertPassword(password: password)
             .insertRepeatPassword(password: password)
@@ -429,5 +437,27 @@ public class SignupUITestCases {
             .swipeUpWebView()
             .backButton()
             .verify.recoveryScreenIsShown()
+    }
+    
+    public func testSignupNewExtAccountWithFreePlanSuccess(signupRobot: SignupRobot,
+                                                           randomEmail: String,
+                                                           password: String,
+                                                           emailVerificationCode: String) -> AccountSummaryRobot {
+        return signupRobot
+            .verify.signupScreenIsShown()
+            .otherAccountButtonTap()
+            .verify.signupScreenIsShown()
+            .insertExternalEmail(name: randomEmail)
+            .nextButtonTapToOwnershipHV()
+            .fillInCodeV3(emailVerificationCode)
+            .verifyCodeButton(to: PasswordRobot.self)
+            .verify.passwordScreenIsShown()
+            .insertPassword(password: password)
+            .insertRepeatPassword(password: password)
+            .nextButtonTap(robot: PaymentsUIRobot.self)
+            .verify.paymentsUIScreenIsShown()
+            .selectPlanCell(plan: .free)
+            .freePlanButtonTap()
+            .proceed(email: randomEmail, code: emailVerificationCode, to: AccountSummaryRobot.self)
     }
 }

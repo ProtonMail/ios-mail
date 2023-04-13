@@ -23,21 +23,13 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class NewMailboxMessageContentView: UIView {
+class NewMailboxMessageContentView: BaseMessageView {
 
-    let contentStackView = SubviewsFactory.verticalStackVIew
+    let contentStackView = SubviewsFactory.verticalStackView
     let firstLineStackView = SubviewsFactory.horizontalStackView
-    let replyImageView = SubviewsFactory.replyImageView
-    let replyAllImageView = SubviewsFactory.replyAllImageView
-    let forwardImageView = SubviewsFactory.forwardImageView
     let draftImageView = SubviewsFactory.draftImageView
-    let senderLabel = SubviewsFactory.senderLabel
-    let timeLabel = UILabel(frame: .zero)
     let secondLineStackView = SubviewsFactory.horizontalStackView
     let titleLabel = UILabel(frame: .zero)
-    let attachmentImageView = SubviewsFactory.attachmentImageView
-    let starImageView = SubviewsFactory.startImageView
-    let tagsView = SingleRowTagsView()
     let messageCountLabel = SubviewsFactory.messageCountLabel
     let originalImagesStackView = SubviewsFactory.horizontalStackView
 
@@ -67,7 +59,7 @@ class NewMailboxMessageContentView: UIView {
         firstLineStackView.addArrangedSubview(replyAllImageView)
         firstLineStackView.addArrangedSubview(forwardImageView)
         firstLineStackView.addArrangedSubview(draftImageView)
-        firstLineStackView.addArrangedSubview(StackViewContainer(view: senderLabel, bottom: -4))
+        firstLineStackView.addArrangedSubview(sendersStackView)
         firstLineStackView.addArrangedSubview(UIView())
         firstLineStackView.addArrangedSubview(StackViewContainer(view: timeLabel, bottom: -2))
 
@@ -90,7 +82,7 @@ class NewMailboxMessageContentView: UIView {
         ]
             .activate()
 
-        [senderLabel, titleLabel].forEach { view in
+        [titleLabel].forEach { view in
             view.setContentHuggingPriority(.defaultLow, for: .horizontal)
             view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         }
@@ -129,78 +121,36 @@ class NewMailboxMessageContentView: UIView {
 
         contentStackView.setCustomSpacing(2, after: firstLineStackView)
         contentStackView.setCustomSpacing(12, after: secondLineStackView)
-        secondLineStackView.setCustomSpacing(8, after: senderLabel)
+        secondLineStackView.setCustomSpacing(8, after: sendersStackView)
     }
 
     required init?(coder: NSCoder) {
         nil
     }
-
 }
 
-private enum SubviewsFactory {
+private extension NewMailboxMessageContentView {
+    private class SubviewsFactory: BaseMessageView.SubviewsFactory {
+        static var horizontalStackView: UIStackView {
+            .stackView(alignment: .center, spacing: 4)
+        }
 
-    static var horizontalStackView: UIStackView {
-        .stackView(alignment: .center, spacing: 4)
-    }
+        static var verticalStackView: UIStackView {
+            .stackView(axis: .vertical)
+        }
 
-    static var verticalStackVIew: UIStackView {
-        .stackView(axis: .vertical)
-    }
+        static var senderLabel: UILabel {
+            let label = UILabel(frame: .zero)
+            label.textColor = ColorProvider.TextNorm
+            return label
+        }
 
-    static var forwardImageView: UIImageView {
-        imageView(IconProvider.arrowRight)
-    }
-
-    static var replyImageView: UIImageView {
-        imageView(IconProvider.arrowUpAndLeft)
-    }
-
-    static var replyAllImageView: UIImageView {
-        imageView(IconProvider.arrowsUpAndLeft)
-    }
-
-    static var senderLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.textColor = ColorProvider.TextNorm
-        return label
-    }
-
-    static var attachmentImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.paperClip.toTemplateUIImage()
-        imageView.tintColor = ColorProvider.IconWeak
-        return imageView
-    }
-
-    static var startImageView: UIImageView {
-        let view = imageView(IconProvider.starFilled.toTemplateUIImage())
-        view.tintColor = ColorProvider.NotificationWarning
-        return view
-    }
-
-    static var draftImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = IconProvider.pencil
-        imageView.tintColor = ColorProvider.IconNorm
-        return imageView
-    }
-
-    static func imageView(_ image: UIImage) -> UIImageView {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = image
-        imageView.tintColor = ColorProvider.IconNorm
-        return imageView
-    }
-
-    static var messageCountLabel: PaddingLabel {
-        let label = PaddingLabel(withInsets: 0, 0, 6, 6)
-        label.layer.cornerRadius = 3
-        label.layer.borderWidth = 1
-        label.layer.borderColor = ColorProvider.TextNorm.cgColor
-        return label
+        static var messageCountLabel: PaddingLabel {
+            let label = PaddingLabel(withInsets: 0, 0, 6, 6)
+            label.layer.cornerRadius = 3
+            label.layer.borderWidth = 1
+            label.layer.borderColor = ColorProvider.TextNorm.cgColor
+            return label
+        }
     }
 }

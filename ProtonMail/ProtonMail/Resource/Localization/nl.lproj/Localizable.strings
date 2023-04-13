@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Weet u zeker dat u zich wilt afmelden?";
 
+/* One of the schedule time options */
+"As scheduled" = "Zoals gepland";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Om %@";
 
@@ -356,7 +359,7 @@
 "Cancel Check" = "Annuleer controle";
 
 /* Title */
-"Cancelling" = "Annuleren";
+"Canceling" = "Annuleren";
 
 /* Warning message */
 "Cannot empty folder right now." = "Kan de map momenteel niet leegmaken.";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Verberg details";
 
-/* hours */
-"hours" = "uren";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email-aliassen";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hoe zou u uw ervaring met de nieuwe Proton Mail omschrijven?";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Koppeling gekopieerd.";
-
-/* Button inside the banner */
-"Load anyway" = "Toch laden";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ingesloten afbeeldingen laden";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Onze klantenondersteuning zal proberen uw serviceplan handmatig te activeren als u ermee instemt technische gegevens te koppelen die App Store op het moment van aankoop heeft verstrekt. Deze gegevens bevatten geen details over uw iTunes-account, Apple-ID, gekoppelde creditcards of andere gebruikersgegevens. Technische data helpt ons alleen te verifiëren of de transactie is uitgevoerd op de servers van de App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Bovenliggende map";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Wijzigingen opslaan";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Plan berichten in op ieder moment";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Ingepland versturen";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Kleur selecteren";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Selecteer datum en tijd";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Geselecteerd";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Stel veeg gebaren in om toegang te krijgen tot de meest gebruikte acties.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Maak uw eigen planning";
+
 /* menu title */
 "Settings" = "Instellingen";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Uitstellen";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Sommige afbeeldingen konden niet geladen worden met bescherming tegen tracking.";
 
 /* menu title */
 "Spam" = "Spam";
@@ -2009,6 +2009,9 @@
 /* The subtitle of empty inbox */
 "Time to relax" = "Tijd om te ontspannen";
 
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Timing";
+
 /* contacts talbe cell Title title */
 "Title" = "Titel";
 
@@ -2098,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Onbeperkt";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Onbeperkte mappen en labels";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Ontgrendel aangepaste berichten inplannen en andere voordelen als u uw abonnement upgrade.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Ontgrendeling vereist";
 
@@ -2116,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Niet-ondersteund bestandstype";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Tot wel 3 aangepaste e-mail domeinen";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Tot wel 15 e-mailadressen";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Tot wel 500 GB Opslag";
+
 /* update notification email error title */
 "Update Notification Email" = "Notificatie-e-mailadres bijwerken";
 
@@ -2127,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Vernieuwde Proton, uniforme beveiliging";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Upgrade nu";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
@@ -2305,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "Postcode";
 
+"Customize (verb)" = "Customize";

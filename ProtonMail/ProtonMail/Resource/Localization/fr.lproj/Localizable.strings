@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "Voulez-vous vraiment vous déconnecter ?";
 
+/* One of the schedule time options */
+"As scheduled" = "Comme prévu";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "À %@";
 
@@ -356,7 +359,7 @@
 "Cancel Check" = "Annuler la vérification";
 
 /* Title */
-"Cancelling" = "Annulation en cours";
+"Canceling" = "Annulation en cours";
 
 /* Warning message */
 "Cannot empty folder right now." = "Impossible de vider le dossier maintenant.";
@@ -841,7 +844,7 @@
 "Expand folder" = "Agrandir le dossier";
 
 /* alert title */
-"Expiration not supported" = "Fonction de message avec délai d'expiration non prise en charge";
+"Expiration not supported" = "La fonction de message avec délai d'expiration n'est pas prise en charge.";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -936,8 +939,8 @@
 /* Title */
 "Hide details" = "Masquer les détails";
 
-/* hours */
-"hours" = "heures";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Comment décririez-vous votre expérience avec le nouveau Proton Mail ?";
@@ -1076,9 +1079,6 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Lien copié.";
-
-/* Button inside the banner */
-"Load anyway" = "Charger quand même";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Charger les images intégrées";
@@ -1392,7 +1392,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Notre équipe du service client essaiera d'activer votre abonnement manuellement si vous acceptez de joindre les données techniques que l'App Store a fournies à l'application au moment de l'achat. Ces données ne comprennent aucun détail sur votre compte iTunes, votre identifiant Apple, les cartes de paiement liées ou toute autre information sur l'utilisateur. Les données techniques nous aident uniquement à contrôler et à vérifier que la transaction a été effectuée sur les serveurs de l'App Store.";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Notre système a marqué ce message comme étant une tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu'il est légitime.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Notre système a signalé ce message comme tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu'il est légitime.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Dossier parent";
@@ -1632,6 +1632,9 @@
 /* title */
 "Save Changes" = "Enregistrer les modifications";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Planifiez l'envoi de messages quand vous le voulez";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "Programmer l'envoi";
@@ -1664,9 +1667,6 @@
 
 /* section title */
 "Select colour" = "Sélectionner la couleur";
-
-/* Option for set up scheduled send */
-"Select date and time" = "Sélectionnez la date et l’heure";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Sélectionné";
@@ -1752,6 +1752,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Configurez des gestes de balayage pour accéder aux actions les plus utilisées.";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Définissez votre propre horaire";
+
 /* menu title */
 "Settings" = "Paramètres";
 
@@ -1788,9 +1791,6 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Mettre en pause";
-
-/* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Certaines images n'ont pas pu être chargées avec la protection contre le suivi.";
 
 /* menu title */
 "Spam" = "Indésirables/spam";
@@ -2101,6 +2101,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Illimité";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Nombre illimité de dossiers et labels";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Activez la personnalisation de l'envoi programmé de messages et d'autres fonctionnalités en passant à un abonnement supérieur.";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Déverrouillage nécessaire";
 
@@ -2119,6 +2125,15 @@
 /* Error message */
 "Unsupported file type" = "Type de fichier non pris en charge";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Jusqu'à 3 domaines de messagerie personnalisés";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Jusqu'à 15 adresses électroniques";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Jusqu'à 500 Go d'espace de stockage";
+
 /* update notification email error title */
 "Update Notification Email" = "Mettre à jour l'adresse électronique de notification";
 
@@ -2130,6 +2145,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Nouvelle version, protection unifiée";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Changer d'abonnement";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Passez à un abonnement payant pour envoyer depuis votre adresse %@.";
@@ -2308,3 +2326,4 @@
 /* contact placeholder */
 "ZIP" = "Code postal";
 
+"Customize (verb)" = "Customize";

@@ -42,11 +42,40 @@ extension Attachment {
 
     override func prepareForDeletion() {
         super.prepareForDeletion()
-        if let localURL = localURL {
+        if let localURL = filePathByLocalURL() {
             do {
                 try FileManager.default.removeItem(at: localURL as URL)
             } catch {
             }
+        }
+    }
+
+    /// Application folder could be changed by system.
+    /// When this happens, original localURL can no longer be used.
+    /// Assemble new path with original localURL.
+    func filePathByLocalURL() -> URL? {
+        if ProcessInfo.isRunningUnitTests {
+            // PrepareSendMetadataTests
+            return localURL
+        }
+        #if APP_EXTENSION
+        // Share extension doesn't have recovery situation
+        // Also its path is different from main app 
+        return localURL
+        #endif
+        guard let localURL = self.localURL else { return nil }
+
+        let nameUUID = localURL.deletingPathExtension().lastPathComponent
+        do {
+            let writeURL = try FileManager.default.url(
+                for: .cachesDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            ).appendingPathComponent(String(nameUUID))
+            return writeURL
+        } catch {
+            return nil
         }
     }
 
@@ -56,11 +85,12 @@ extension Attachment {
 
     // Mark : functions
     func encrypt(byKey key: Key) throws -> (Data, URL)? {
-        if let clearData = self.fileData, localURL == nil {
+        let path = filePathByLocalURL()
+        if let clearData = self.fileData, path == nil {
             try writeToLocalURL(data: clearData)
             self.fileData = nil
         }
-        guard let localURL = self.localURL else {
+        guard let localURL = path else {
             return nil
         }
 
@@ -92,7 +122,7 @@ extension Attachment {
             let dataToSign: Data
             if let fileData = fileData {
                 dataToSign = fileData
-            } else if let localURL = localURL {
+            } else if let localURL = filePathByLocalURL() {
                 dataToSign = try Data(contentsOf: localURL)
             } else {
                 return nil
@@ -178,14 +208,13 @@ extension Attachment {
     }
 
     func cleanLocalURLs() {
-        if let localURL = localURL {
-            try? FileManager.default.removeItem(at: localURL)
-            self.localURL = nil
-        }
-        let cipherURL = localURL?.appendingPathExtension("cipher")
-        if let cipherURL = cipherURL {
-            try? FileManager.default.removeItem(at: cipherURL)
-        }
+        guard let localURL = filePathByLocalURL() else { return }
+        try? FileManager.default.removeItem(at: localURL)
+
+        let cipherURL = localURL.appendingPathExtension("cipher")
+        try? FileManager.default.removeItem(at: cipherURL)
+
+        self.localURL = nil
     }
 }
 
@@ -232,16 +261,10 @@ extension UIImage: AttachmentConvertible {
 
                     attachment.message = message
 
-                    if userCachedStatus.realAttachments {
-                        let attachments = message.attachments
-                            .compactMap({ $0 as? Attachment })
-                            .filter { !$0.inline() }
-                        message.numAttachments = NSNumber(value: attachments.count)
-                    } else {
-                        let number = message.numAttachments.int32Value
-                        let newNum = number > 0 ? number + 1 : 1
-                        message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                    }
+                    let attachments = message.attachments
+                        .compactMap({ $0 as? Attachment })
+                        .filter { !$0.inline() }
+                    message.numAttachments = NSNumber(value: attachments.count)
                     attachment.order = message.numAttachments.int32Value
                     _ = context.saveUpstreamIfNeeded()
                     fulfill(attachment)
@@ -286,16 +309,10 @@ extension Data: AttachmentConvertible {
                 }
                 attachment.message = message
 
-                if userCachedStatus.realAttachments {
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                } else {
-                    let number = message.numAttachments.int32Value
-                    let newNum = number > 0 ? number + 1 : 1
-                    message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
-                }
+                let attachments = message.attachments
+                    .compactMap({ $0 as? Attachment })
+                    .filter { !$0.inline() }
+                message.numAttachments = NSNumber(value: attachments.count)
                 attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
                 fulfill(attachment)
@@ -333,16 +350,10 @@ extension URL: AttachmentConvertible {
                 }
                 attachment.message = message
 
-                if userCachedStatus.realAttachments {
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                } else {
-                    let number = message.numAttachments.int32Value
-                    let newNum = number > 0 ? number + 1 : 1
-                    message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                }
+                let attachments = message.attachments
+                    .compactMap({ $0 as? Attachment })
+                    .filter { !$0.inline() }
+                message.numAttachments = NSNumber(value: attachments.count)
                 attachment.order = message.numAttachments.int32Value
                 _ = context.saveUpstreamIfNeeded()
                 fulfill(attachment)

@@ -547,7 +547,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
         self.composerMessageHelper.addPublicKeyIfNeeded(
             email: addr.email,
-            fingerprint: key.shortFingerpritn,
+            fingerprint: key.shortFingerprint,
             data: data,
             shouldStripMetaDate: stripMetadata
         ) { attachmentToAdd in
@@ -601,8 +601,14 @@ class ComposeViewModelImpl: ComposeViewModel {
         composerMessageHelper.markAsRead()
     }
 
+    var imageProxyEnabled: Bool {
+        return UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy)
+    }
+
     override func getHtmlBody() -> WebContents {
-        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.userInfo.isAutoLoadRemoteContentEnabled ? .allowed : .disallowed
+        let allowPolicy: WebContents.RemoteContentPolicy = imageProxyEnabled ? .allowed : .allowedAll
+        let contentLoadingType: WebContents.LoadingType = !imageProxyEnabled ? .direct : .proxy
+        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.userInfo.isAutoLoadRemoteContentEnabled ? allowPolicy : .disallowed
 
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
@@ -615,13 +621,14 @@ class ComposeViewModelImpl: ComposeViewModel {
             var css: String?
             do {
                 body = try self.messageService.messageDecrypter.decrypt(message: msg)
-                if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                    css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+                let document = CSSMagic.parse(htmlString: body)
+                if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                    css = CSSMagic.generateCSSForDarkMode(document: document)
                 }
             } catch {
                 body = msg.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, contentLoadingType: contentLoadingType, supplementCSS: css)
         case .reply, .replyAll:
             let msg = composerMessageHelper.message!
             var body = ""
@@ -646,10 +653,11 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
             var css: String?
-            if CSSMagic.darkStyleSupportLevel(htmlString: result, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            let document = CSSMagic.parse(htmlString: result)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, contentLoadingType: contentLoadingType, supplementCSS: css)
         case .forward:
             let msg = composerMessageHelper.message!
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -683,32 +691,33 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, contentLoadingType: contentLoadingType)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css: String?
-            if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            let document = CSSMagic.parse(htmlString: body)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
                 \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
                 """
 
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             } else if signatureHtml.trim().isEmpty {
                 // add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
+                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
         }
 
     }
@@ -751,6 +760,35 @@ class ComposeViewModelImpl: ComposeViewModel {
             return (body?.isEmpty ?? false) || body == signature
         }
         return false
+    }
+
+    override func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
+        guard let attachments = getAttachments() else { return }
+        let inlineAttachments = attachments
+            .filter({ attachment in
+                guard let contentId = attachment.contentID() else { return false }
+                return !contentId.isEmpty && attachment.inline()
+            })
+        let userKeys = getUser().toUserKeys()
+
+        for att in inlineAttachments {
+            guard let contentId = att.contentID() else { continue }
+            deps.fetchAttachment.callbackOn(.main).execute(
+                params: .init(
+                    attachmentID: AttachmentID(att.attachmentID),
+                    attachmentKeyPacket: att.keyPacket,
+                    purpose: .decryptAndEncodeAttachment,
+                    userKeys: userKeys
+                )
+            ) { result in
+                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
+                    return
+                }
+                // If the image proxy is enable, the cid will have `proton-` prefix.
+                let cid = self.imageProxyEnabled ? "proton-cid:\(contentId)" : "cid:\(contentId)"
+                htmlEditor.update(embedImage: cid, encoded:"data:\(att.mimeType);base64,\(base64Att)")
+            }
+        }
     }
 }
 
@@ -801,13 +839,9 @@ extension ComposeViewModelImpl {
             let recipients = try JSONDecoder().decode([DecodableRecipient].self, from: jsonData)
 
             for recipient in recipients {
-                let group = recipient.group
                 let name = displayNameForRecipient(recipient)
 
-                if recipient.group.isEmpty {
-                    // contact
-                    out.append(ContactVO(name: name, email: recipient.address))
-                } else {
+                if let group = recipient.group, !group.isEmpty {
                     // contact group
                     let toInsert = DraftEmailData(name: name, email: recipient.address)
                     if var data = groups[group] {
@@ -816,6 +850,9 @@ extension ComposeViewModelImpl {
                     } else {
                         groups.updateValue([toInsert], forKey: group)
                     }
+                } else {
+                    // contact
+                    out.append(ContactVO(name: name, email: recipient.address))
                 }
             }
 
@@ -842,30 +879,14 @@ extension ComposeViewModelImpl {
         }
     }
 
-    func toContact(_ json: String) -> ContactVO? {
-        var out: ContactVO?
-        let recipients: [String: String] = self.parse(json)
-
-        let name = recipients["Name"] ?? ""
-        let address = recipients["Address"] ?? ""
-
-        if !address.isEmpty {
-            out = ContactVO(name: name, email: address)
-        }
-        return out
-    }
-
-    func parse (_ json: String) -> [String: String] {
-        if json.isEmpty {
-            return ["": ""]
-        }
+    private func toContact(_ json: String) -> ContactVO? {
         do {
-            let data: Data! = json.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: String]
-            return decoded ?? ["": ""]
+            let sender = try Sender.decodeDictionary(jsonString: json)
+            return ContactVO(name: sender.name, email: sender.address)
         } catch {
+            assertionFailure("\(error)")
+            return nil
         }
-        return ["": ""]
     }
 
     func htmlSignature() -> String {
@@ -919,7 +940,7 @@ extension ComposeViewModelImpl {
         }
 
         let address: String
-        let group: String
+        let group: String?
         let name: String?
     }
 }

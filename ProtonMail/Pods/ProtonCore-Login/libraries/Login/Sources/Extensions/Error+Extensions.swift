@@ -30,7 +30,7 @@ extension LoginError {
             return message
         case let .apiMightBeBlocked(message: message, _):
             return message
-        case let .externalAccountsNotSupported(message: message, _):
+        case let .externalAccountsNotSupported(message: message, _, _):
             return message
         case let .invalidCredentials(message: message):
             return message
@@ -71,8 +71,8 @@ public extension AuthErrors {
         case let .apiMightBeBlocked(message, originalError):
             return .apiMightBeBlocked(message: message, originalError: originalError)
             
-        case let .externalAccountsNotSupported(message, originalError):
-            return .externalAccountsNotSupported(message: message, originalError: originalError)
+        case let .externalAccountsNotSupported(message, title, originalError):
+            return .externalAccountsNotSupported(message: message, title: title, originalError: originalError)
             
         case .networkingError(let responseError):
             return .generic(message: responseError.networkResponseMessageForTheUser,

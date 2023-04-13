@@ -243,7 +243,7 @@ extension PMAPIService {
                                 }
                             }
                         }
-                    case .success(let decodableObject):
+                    case .success:
                         verificationCodeBlock?(true, nil) {
                             // finish request with new completion block
                             decodableCompletion(task, decodableResult)

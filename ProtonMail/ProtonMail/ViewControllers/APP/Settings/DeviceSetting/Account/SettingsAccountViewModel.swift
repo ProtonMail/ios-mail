@@ -94,7 +94,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
     case undoSend
-    case search
+    case searchContent
+    case localStorage
     case labels
     case folders
     case storage
@@ -107,8 +108,10 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._conversation_settings_title
         case .undoSend:
             return LocalString._account_settings_undo_send_row_title
-        case .search:
-            return LocalString._general_search_placeholder
+        case .searchContent:
+            return L11n.EncryptedSearch.settings_title_of_encrypted_search
+        case .localStorage:
+            return LocalString._settings_title_of_local_storage
         case .labels:
             return LocalString._labels
         case .folders:
@@ -157,18 +160,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     }
 
     let addrItems: [SettingsAddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-
-    var mailboxItems: [SettingsMailboxItem] {
-        var items: [SettingsMailboxItem] = [.privacy, .undoSend]
-
-        if userManager.conversationStateService.isConversationFeatureEnabled {
-            items.append(.conversation)
-        }
-
-        items.append(contentsOf: [.labels, .folders])
-
-        return items
-    }
+    let mailboxItems: [SettingsMailboxItem]
 
     private let userManager: UserManager
 
@@ -176,7 +168,12 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     init(user: UserManager) {
         self.userManager = user
-        user.conversationStateService.add(delegate: self)
+
+        var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
+        if UserInfo.isEncryptedSearchEnabled {
+            mailboxItems.insert(contentsOf: [.searchContent, .localStorage], at: 2)
+        }
+        self.mailboxItems = mailboxItems
     }
 
     var storageText: String {
@@ -267,12 +264,4 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             }
         }
     }
-}
-
-extension SettingsAccountViewModelImpl: ConversationStateServiceDelegate {
-    func conversationModeFeatureFlagHasChanged(isFeatureEnabled: Bool) {
-        reloadTable?()
-    }
-
-    func viewModeHasChanged(viewMode: ViewMode) {}
 }
