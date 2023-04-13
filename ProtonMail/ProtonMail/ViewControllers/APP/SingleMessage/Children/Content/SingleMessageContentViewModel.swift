@@ -8,9 +8,12 @@ struct SingleMessageContentViewContext {
 }
 
 protocol SingleMessageContentUIProtocol: AnyObject {
-    func updateContentBanner(shouldShowRemoteContentBanner: Bool,
-                             shouldShowEmbeddedContentBanner: Bool,
-                             shouldShowImageProxyFailedBanner: Bool)
+    func updateContentBanner(
+        shouldShowRemoteContentBanner: Bool,
+        shouldShowEmbeddedContentBanner: Bool,
+        shouldShowImageProxyFailedBanner: Bool,
+        shouldShowSenderIsBlockedBanner: Bool
+    )
     func setDecryptionErrorBanner(shouldShow: Bool)
     func update(hasStrippedVersion: Bool)
     func updateAttachmentBannerIfNeeded()
@@ -50,6 +53,7 @@ class SingleMessageContentViewModel {
 
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let messageService: MessageDataService
+    private let observerID = UUID()
 
     var isExpanded = false {
         didSet { isExpanded ? createExpandedHeaderViewModel() : createNonExpandedHeaderViewModel() }
@@ -87,6 +91,19 @@ class SingleMessageContentViewModel {
 
     var webContentIsUpdated: (() -> Void)?
 
+    var isSenderCurrentlyBlocked: Bool {
+        do {
+            let incomingDefaultsForSenderEmail = try dependencies.incomingDefaultService.listLocal(
+                query: .email(messageInfoProvider.senderEmail)
+            )
+
+            return incomingDefaultsForSenderEmail.map(\.location).contains(.blocked)
+        } catch {
+            assertionFailure("\(error)")
+            return false
+        }
+    }
+
     init(context: SingleMessageContentViewContext,
          imageProxy: ImageProxy,
          childViewModels: SingleMessageChildViewModels,
@@ -101,8 +118,21 @@ class SingleMessageContentViewModel {
         self.message = context.message
         let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
             imageProxy: imageProxy,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService))
+            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: user.apiService,
+                            internetStatusProvider: internetStatusProvider
+                        )
+                    ),
+                    senderImageStatusProvider: dependencies.senderImageStatusProvider,
+                    mailSettings: user.mailSettings
+                )
+            )
         )
+
         self.messageInfoProvider = .init(
             message: context.message,
             user: user,
@@ -161,7 +191,16 @@ class SingleMessageContentViewModel {
     }
 
     func viewDidLoad() {
+        becomeBlockedSenderCacheUpdaterDelegate()
         downloadDetails()
+    }
+
+    func viewWillAppear() {
+        becomeBlockedSenderCacheUpdaterDelegate()
+    }
+
+    private func becomeBlockedSenderCacheUpdaterDelegate() {
+        dependencies.blockedSenderCacheUpdater.delegate = self
     }
 
     func downloadDetails() {
@@ -196,6 +235,32 @@ class SingleMessageContentViewModel {
                     self.messageBodyViewModel.errorHappens()
                 }
             }
+        }
+    }
+
+    /// - param blocked: whether to block or unblock the sender
+    /// - returns: true if action was successful (errors are handled by the view model)
+    func updateSenderBlockedStatus(blocked: Bool) -> Bool {
+        let senderEmail = messageInfoProvider.senderEmail
+
+        defer {
+            updateBannerStatus()
+        }
+
+        do {
+            if blocked {
+                let parameters = BlockSender.Parameters(emailAddress: senderEmail)
+                try dependencies.blockSender.execute(parameters: parameters)
+            } else {
+                let parameters = UnblockSender.Parameters(emailAddress: senderEmail)
+                try dependencies.unblockSender.execute(parameters: parameters)
+            }
+
+            updateErrorBanner?(nil)
+            return true
+        } catch {
+            updateErrorBanner?(error as NSError)
+            return false
         }
     }
 
@@ -244,7 +309,7 @@ class SingleMessageContentViewModel {
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        internetStatusProvider.registerConnectionStatus { [weak self] networkStatus in
+        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
             guard self?.message.body.isEmpty == true else {
                 return
             }
@@ -275,6 +340,14 @@ class SingleMessageContentViewModel {
     }
 }
 
+extension SingleMessageContentViewModel: BlockedSenderCacheUpdaterDelegate {
+    func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
+        if newState == .idle {
+            updateBannerStatus()
+        }
+    }
+}
+
 extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func update(renderStyle: MessageRenderStyle) {
         DispatchQueue.main.async {
@@ -287,7 +360,8 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
             self.uiDelegate?.updateContentBanner(
                 shouldShowRemoteContentBanner: self.messageInfoProvider.shouldShowRemoteBanner,
                 shouldShowEmbeddedContentBanner: self.messageInfoProvider.shouldShowEmbeddedBanner,
-                shouldShowImageProxyFailedBanner: self.messageInfoProvider.shouldShowImageProxyFailedBanner
+                shouldShowImageProxyFailedBanner: self.messageInfoProvider.shouldShowImageProxyFailedBanner,
+                shouldShowSenderIsBlockedBanner: self.isSenderCurrentlyBlocked
             )
         }
     }
@@ -344,6 +418,11 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 
 extension SingleMessageContentViewModel {
     struct Dependencies {
+        let blockSender: BlockSender
+        let blockedSenderCacheUpdater: BlockedSenderCacheUpdater
         let fetchMessageDetail: FetchMessageDetailUseCase
+        let incomingDefaultService: IncomingDefaultService
+        let senderImageStatusProvider: SenderImageStatusProvider
+        let unblockSender: UnblockSender
     }
 }

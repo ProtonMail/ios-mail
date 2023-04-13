@@ -1,30 +1,50 @@
+# See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
+
 stages:
   - i18n
+  - linting
+  - deploy
   - test
   - report
-  - test_flight
+  - cleanup
+  - testflight
   - enterprise
-  - bot # comes from translations/generator job
+  - bot
 
-.run_xcodegen_if_needed: &run_xcodegen_if_needed
-  - sh xcodeGenHelper.sh
-  - git restore . # CI will re-download Pods, so we need to restore them to preserve local changes committed to out repo
-
-.before_script_mac: &before_script_mac
-  - cd ProtonMail/ProtonMailUITests
-  - sh Tests/TestPlans/scripts/prepare_users.sh
-  - cd ..
-  - *run_xcodegen_if_needed
-
-.set_up_brew_dependecies: &set_up_brew_dependecies
+.setup_basic_tools: &setup_basic_tools
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
   - mint bootstrap --link
 
+.setup_project: &setup_project
+  - *setup_basic_tools
+
+  - git submodule init
+  - git submodule update --init --recursive
+
+  - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+
+  - cd ProtonMail
+  - bundle install
+  - sh xcodeGenHelper.sh
+  - cd ..
+
+.prepare_users_for_ui_tests: &prepare_users_for_ui_tests
+  - cd ProtonMail/ProtonMailUITests
+  - sh Tests/TestPlans/scripts/prepare_users.sh
+  - cd ../..
+
+.configure_sentry: &configure_sentry
+  - curl -sL https://sentry.io/get-cli/ | bash || true
+
+.build_for_testflight: &build_for_testflight
+  - cd ProtonMail
+  - *configure_sentry
+  - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+  - bundle exec fastlane ios build
+
 .enterprise_config_setting: &enterprise_config_setting
   - cd ProtonMail
-  - *run_xcodegen_if_needed
-  - touch ~/.bashrc
-  - curl -sL https://sentry.io/get-cli/ | bash || true
+  - *configure_sentry
   - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
   - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
   - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
@@ -41,12 +61,45 @@ include:
     ref: master
     file: "/jobs/commit-locales.gitlab-ci.yml"
 
+  - project: 'proton/devops/atlas-deploy'
+    file: '/scenarios/pipeline-env.yml'
+
+  - project: "tpe/testmo-reporter"
+    file: '/scenarios/testmo-script.yml'
+
 variables:
-  LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
   GEM_HOME: "$CI_PROJECT_DIR/gem"
+  ATLAS_DEPLOY_LIST: ""
+  ATLAS_LINK_APP: mail
+  ATLAS_DEPLOY_SCOPE: "mail-ios-$CI_PIPELINE_ID"
+  ATLAS_DEPLOY_ENV: "true"
 
-unit_tests:
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+default:
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
+
+linting:
+  stage: linting
+  before_script:
+    - *setup_basic_tools
+  script:
+    - pip3 install -r Scripts/requirements.txt
+    - python3 Scripts/linkAvailabilityCheck.py
+
+    - cd ProtonMail
+    - xcodeGen/swiftlint.sh
+  tags:
+    - iOS_ARM_TAIPEI
+
+test:unit:
   dependencies: []
   stage: test
   coverage: '/Test Coverage: \d*.\d*%/'
@@ -68,23 +121,14 @@ unit_tests:
     paths:
       - test_output/slatherOutput/
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - cd ProtonMail
-    - *run_xcodegen_if_needed
-    - bundle install
     - bundle exec fastlane unit_test
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
-ui_tests_smoke:
+test:ui:smoke:
   dependencies: []
   stage: test
   except:
@@ -111,29 +155,22 @@ ui_tests_smoke:
       junit:
         - test_output/TestResults/ProtonMailUITests.xcresult/report.junit
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
-    - *before_script_mac
+    - *setup_project
+    - *prepare_users_for_ui_tests
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - bundle install
+    - cd ProtonMail
     - bundle exec fastlane ui_test
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_UITEST
   allow_failure: false
-  
-report:ui-tests-smoke:
+
+report:slack:smoke:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   dependencies:
-    - ui_tests_smoke
+    - test:ui:smoke
   rules:
-    - if: '$CI_COMMIT_BRANCH'
+    - if: "$CI_COMMIT_BRANCH"
       when: never
     - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
       when: never
@@ -147,10 +184,10 @@ report:ui-tests-smoke:
       --slack-channel mail-ios-uitests
   allow_failure: true
 
-ui_feature_tests:
+test:ui:feature:
   dependencies: []
   stage: test
-  rules:
+  rules: &rules_feature
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   variables:
     GIT_DEPTH: 1
@@ -161,57 +198,51 @@ ui_feature_tests:
       - test_output/TestResults
     expire_in: 10 days
     reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: test_output/slatherOutput/cobertura.xml
-      junit: test_output/TestResults/ProtonMailUITests.xcresult/report.junit
+      junit: test_output/TestResults/report.xml
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
-    - *before_script_mac
+    - *setup_project
+    - *prepare_users_for_ui_tests
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
-    - bundle install
+    - cd ProtonMail
     - bundle exec fastlane feature_tests
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_UITEST
 
-report:ui_feature_tests:
+report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   dependencies:
-    - ui_feature_tests
+    - test:ui:feature
   variables:
     GIT_DEPTH: 1
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: always
-    - if: '$CI_COMMIT_BRANCH'
-      when: never
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: never
-    - when: manual
+  rules: *rules_feature
   script:
     - test_reporter.py
-      --path test_output/TestResults/ProtonMailUITests.xcresult/
+      --path test_output/TestResults/
       --platform ios
       --job-name $TEST_PLAN
       --slack-channel mail-ios-uitests
   allow_failure: true
 
+report:testmo:feature:
+  stage: report
+  extends: .testmo-upload
+  dependencies:
+    - test:ui:feature
+  rules: *rules_feature
+  variables:
+    PROJECT_ID: "7"
+    NAME: "$TEST_PLAN"
+    MILESTONE: "nightly-automation"
+    TAGS: "$CI_COMMIT_REF_SLUG"
+    SOURCE: "ios"
+    RESULT_FOLDER: "./test_output/TestResults/*.xml"
 
 # --- Build app and send to testflight
-build-app-and-upload:
+testflight:build:upload:
   dependencies: []
-  stage: test_flight
+  stage: testflight
   variables:
     GIT_STRATEGY: clone
   rules:
@@ -224,28 +255,17 @@ build-app-and-upload:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
-    - cd ProtonMail
-    - *run_xcodegen_if_needed
-    - touch ~/.bashrc
-    - curl -sL https://sentry.io/get-cli/ | bash || true
-    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - bundle install
-    - bundle exec fastlane ios build
+    - *build_for_testflight
     - ./fastlane/add_git_tag.sh
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_BUILD
 
+# TODO: this is almost identical to testflight:build:upload:, perhaps we can combine them
 nightly-build-and-upload:
   dependencies: []
-  stage: test_flight
+  stage: testflight
   only:
     refs:
       - schedules
@@ -257,26 +277,14 @@ nightly-build-and-upload:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
-    - cd ProtonMail
-    - *run_xcodegen_if_needed
-    - touch ~/.bashrc
-    - curl -sL https://sentry.io/get-cli/ | bash || true
-    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - bundle install
-    - bundle exec fastlane ios build
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
+    - *build_for_testflight
   tags:
     - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for test and upload
-enterprise-test:
+enterprise:test:
   dependencies: []
   stage: enterprise
   variables:
@@ -291,17 +299,10 @@ enterprise-test:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
     - *enterprise_config_setting
-    - bundle install
     - bundle exec fastlane ios enterprise usingTimeStamp:true
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
@@ -331,23 +332,3 @@ commit-locales-release:
       - branches
     variables:
       - $CI_COMMIT_REF_NAME == 'develop'
-
-# sonarqube-check:
-#   stage: code_quality
-#   image:
-#     name: sonarsource/sonar-scanner-cli:latest
-#     entrypoint: [""]
-#   variables:
-#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-#     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-#   cache:
-#     key: "${CI_JOB_NAME}"
-#     paths:
-#       - .sonar/cache
-#   script:
-#     - sonar-scanner
-#   allow_failure: true
-#   only:
-#     - merge_requests
-#     - master # or the name of your main branch
-#     - develop

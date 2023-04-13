@@ -27,6 +27,12 @@ import ProtonCore_HumanVerification
 import ProtonCore_Login
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonCore_Observability
+
+enum SignupAccountType {
+    case `internal`
+    case external
+}
 
 protocol SignupViewControllerDelegate: AnyObject {
     func validatedName(name: String, signupAccountType: SignupAccountType)
@@ -34,11 +40,6 @@ protocol SignupViewControllerDelegate: AnyObject {
     func signupCloseButtonPressed()
     func signinButtonPressed()
     func hvEmailAlreadyExists(email: String)
-}
-
-enum SignupAccountType {
-    case `internal`
-    case external
 }
 
 class SignupViewController: UIViewController, AccessibleView, Focusable {
@@ -52,9 +53,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var showSeparateDomainsButton = true
     var minimumAccountType: AccountType?
     var tapGesture: UITapGestureRecognizer?
-
-    private let isExternalAccountFeatureEnabled = FeatureFactory.shared.isEnabled(.externalSignup)
-
+    
     // MARK: Outlets
 
     @IBOutlet weak var contentView: UIView!
@@ -159,7 +158,6 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     // MARK: View controller life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        showOtherAccountButton = isExternalAccountFeatureEnabled && minimumAccountType == .external
         view.backgroundColor = ColorProvider.BackgroundNorm
         
         brandLogo.image = IconProvider.masterBrandGlyph
@@ -212,14 +210,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         nextButton.isSelected = true
         currentlyUsedTextField.isError = false
         if signupAccountType == .internal {
-            switch minimumAccountType {
-            case .username:
-                checkUsernameWithoutSpecifyingDomain(userName: currentlyUsedTextField.value)
-            case .internal, .external:
-                checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
-            case .none:
-                assertionFailure("signupAccountType should be configured during the segue")
-            }
+            checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
         } else {
             checkEmail(email: currentlyUsedTextField.value)
         }
@@ -236,19 +227,27 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         var sheet: PMActionSheet?
         let currentDomain = viewModel.currentlyChosenSignUpDomain
         let items = viewModel.allSignUpDomains.map { [weak self] domain in
-            PMActionSheetPlainItem(title: "@\(domain)", icon: nil, isOn: domain == currentDomain) { [weak self] _ in
+            let isOn = domain == currentDomain
+            return PMActionSheetItem(style: .text("@\(domain)"), markType: isOn ? .checkMark : .none) { [weak self] _ in
                 sheet?.dismiss(animated: true)
                 self?.viewModel.currentlyChosenSignUpDomain = domain
                 self?.configureDomainSuffix()
             }
         }
-        let header = PMActionSheetHeaderView(title: CoreString._su_domains_sheet_title,
-                                             subtitle: nil,
-                                             leftItem: PMActionSheetPlainItem(title: nil, icon: IconProvider.crossSmall) { _ in sheet?.dismiss(animated: true) },
-                                             rightItem: nil,
-                                             hasSeparator: false)
-        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
-        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        let header = PMActionSheetHeaderView(
+            title: CoreString._su_domains_sheet_title,
+            subtitle: nil,
+            leftItem: .right(IconProvider.crossSmall),
+            rightItem: nil,
+            showDragBar: false,
+            hasSeparator: false,
+            leftItemHandler: {
+                sheet?.dismiss(animated: true)
+            },
+            rightItemHandler: nil
+        )
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .singleSelection)
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup])
         sheet?.eventsListener = self
         sheet?.presentAt(self, animated: true)
     }
@@ -270,12 +269,14 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         externalEmailTextField.value = ""
         switch signupAccountType {
         case .external:
+            ObservabilityEnv.report(.screenLoadCountTotal(screenName: .externalAccountAvailable))
             externalEmailTextField.isHidden = false
             usernameAndDomainsView.isHidden = true
             domainsView.isHidden = true
             domainsBottomSeparatorView.isHidden = true
             internalNameTextField.isHidden = true
         case .internal:
+            ObservabilityEnv.report(.screenLoadCountTotal(screenName: .protonAccountAvailable))
             externalEmailTextField.isHidden = true
             usernameAndDomainsView.isHidden = false
             domainsView.isHidden = false
@@ -290,12 +291,6 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configureDomainSuffix() {
-        guard minimumAccountType != .username else {
-            domainsView.isHidden = true
-            domainsBottomSeparatorView.isHidden = true
-            return
-        }
-        
         guard showSeparateDomainsButton else {
             domainsView.isHidden = true
             domainsBottomSeparatorView.isHidden = true
@@ -355,26 +350,10 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             self.nextButton.isSelected = false
             switch result {
             case .success:
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .successful))
                 self.delegate?.validatedName(name: userName, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                switch error {
-                case .generic(let message, _, _):
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message)
-                    }
-                case .notAvailable(let message):
-                    self.currentlyUsedTextField.isError = true
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message)
-                    }
-                case let .apiMightBeBlocked(message, _):
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message,
-                                       button: CoreString._net_api_might_be_blocked_button) { [weak self] in
-                            self?.onDohTroubleshooting()
-                        }
-                    }
-                }
+                self.handleCheckFailure(error: error)
             }
         }
     }
@@ -386,26 +365,10 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             self.nextButton.isSelected = false
             switch result {
             case .success:
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .successful))
                 self.delegate?.validatedName(name: userName, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                switch error {
-                case .generic(let message, _, _):
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message)
-                    }
-                case .notAvailable(let message):
-                    self.currentlyUsedTextField.isError = true
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message)
-                    }
-                case let .apiMightBeBlocked(message, _):
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message,
-                                       button: CoreString._net_api_might_be_blocked_button) { [weak self] in
-                            self?.onDohTroubleshooting()
-                        }
-                    }
-                }
+                self.handleCheckFailure(error: error)
             }
         }
     }
@@ -417,28 +380,10 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             self.nextButton.isSelected = false
             switch result {
             case .success:
+                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .successful))
                 self.delegate?.validatedEmail(email: email, signupAccountType: self.signupAccountType)
             case .failure(let error):
-                switch error {
-                case .generic(let message, let code, _):
-                    if code == APIErrorCode.humanVerificationAddressAlreadyTaken {
-                        self.delegate?.hvEmailAlreadyExists(email: email)
-                    } else if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message)
-                    }
-                case .notAvailable(let message):
-                    self.currentlyUsedTextField.isError = true
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message)
-                    }
-                case let .apiMightBeBlocked(message, _):
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
-                        self.showError(message: message,
-                                       button: CoreString._net_api_might_be_blocked_button) { [weak self] in
-                            self?.onDohTroubleshooting()
-                        }
-                    }
-                }
+                self.handleCheckFailure(error: error, email: email, isExternalEmail: true)
             }
         } editEmail: {
             self.unlockUI()
@@ -447,6 +392,44 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
+    private func handleCheckFailure(error: AvailabilityError, email: String = "", isExternalEmail: Bool = false) {
+        switch error {
+        case .generic(let message, let code, _):
+            if isExternalEmail, code == APIErrorCode.humanVerificationAddressAlreadyTaken {
+                self.delegate?.hvEmailAlreadyExists(email: email)
+            } else if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                if isExternalEmail {
+                    ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
+                } else {
+                    ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
+                }
+                self.showError(message: message)
+            }
+        case .notAvailable(let message):
+            if isExternalEmail {
+                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
+            } else {
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
+            }
+            self.currentlyUsedTextField.isError = true
+            if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                self.showError(message: message)
+            }
+        case let .apiMightBeBlocked(message, _):
+            if isExternalEmail {
+                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
+            } else {
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
+            }
+            if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                self.showError(message: message,
+                               button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                    self?.onDohTroubleshooting()
+                }
+            }
+        }
+    }
+    
     private func showError(message: String, button: String? = nil, action: (() -> Void)? = nil) {
         showBanner(message: message, button: button, action: action, position: PMBannerPosition.top)
     }

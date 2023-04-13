@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 import ProtonCore_TestingToolkit
 
 fileprivate struct id {
@@ -15,6 +15,7 @@ fileprivate struct id {
     static let displayNameLabel = "Display Name"
     static let defaultLabel = LocalString._general_default
     static let signatureLabel = LocalString._settings_signature_title
+    static let blockListLabel = "Block list"
     static let deleteAccount = "Delete account"
     static let mobileSignatureLabel = "Mobile Signature"
     
@@ -83,6 +84,11 @@ class AccountSettingsRobot: CoreElements {
         staticText(id.signatureLabel).tap()
         return SignatureRobot()
     }
+
+    func blockList() -> BlockListRobot {
+        staticText(id.blockListLabel).swipeUpUntilVisible().tap()
+        return BlockListRobot()
+    }
     
     func deleteAccount<T: CoreElements>(to: T) -> T {
         staticText(id.deleteAccount).tap()
@@ -104,7 +110,7 @@ class AccountSettingsRobot: CoreElements {
         class Verify: CoreElements {
             @discardableResult
             func changeDefaultAddressViewShown(_ email: String) -> DefaultEmailAddressRobot {
-                button(email).wait().checkExists()
+                button(email).waitUntilExists().checkExists()
                 return DefaultEmailAddressRobot()
             }
         }
@@ -143,13 +149,13 @@ class AccountSettingsRobot: CoreElements {
         
         @discardableResult
         func displayNameShownWithText(_ name: String) -> AccountSettingsRobot {
-            staticText(name).wait().checkExists()
+            staticText(name).waitUntilExists().checkExists()
             return AccountSettingsRobot()
         }
         
         @discardableResult
         func deleteAccountShown() -> AccountSettingsRobot {
-            staticText(id.deleteAccount).wait().checkExists()
+            staticText(id.deleteAccount).waitUntilExists().checkExists()
             return AccountSettingsRobot()
         }
     }

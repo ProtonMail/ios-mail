@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ af %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d sekunder";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d valgt";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Drop hér for at tilføje som vedhæftning";
 
@@ -26,7 +20,7 @@
 "<1 minute remaining" = "<1 minut tilbage";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "<1m";
+"<1m" = "<1 min";
 
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 besked flyttet til arkiv";
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Adresser";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Avancerede indstillinger";
+
 /* Title */
 "Alert" = "Advarsel";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Alle mails";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet ved log ud af appen.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alle dine beskeder er downloadet";
@@ -169,7 +163,7 @@
 "API Server not reachable…" = "API-server ikke tilgængelig…";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "App-PIN";
 
 /* security title in settings */
 "App PIN & Face ID" = "App-PIN & Face ID";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Udseende";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey beskytter dine Proton-oplysninger yderligere i tilfælde af omfattende angreb, såsom en angriber, der kloner indholdet af din enhed. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey-beskyttelse";
 
 /* Apply action */
 "Apply" = "Anvend";
@@ -280,16 +280,22 @@
 "Bad response" = "Ugyldigt svar";
 
 /* Title */
-"Bcc" = "Bcc";
+"Bcc" = "BCC";
 
 /* message Bcc: feild */
-"Bcc:" = "Bcc:";
+"Bcc:" = "BCC:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fødselsdag";
 
 /* Settings row */
 "Block email tracking" = "Bloker sporing af e-mail";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Blokeringsliste";
+
+/* Button to block a sender */
+"Block sender" = "Blokér afsender";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokerer afsendere fra at se, om og hvornår du har åbnet beskeden";
@@ -366,7 +372,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "Cc";
+"Cc" = "CC";
 
 /* settings general section title */
 "Change account password" = "Skift adgangskode til konto";
@@ -500,7 +506,7 @@
 "Copy" = "Kopiér";
 
 /* Title */
-"Copy address" = "Kopiér addresse";
+"Copy address" = "Kopiér adresse";
 
 /* Title */
 "Copy name" = "Kopiér navn";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Oprettelse af etiket ikke tilladt";
 
-/* Change language title */
-"Current Language is: " = "Nuværende sprog er: ";
-
 /* Placeholder */
 "Current password" = "Aktuel adgangskode";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Tilpasset";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Tilpas";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Tilpas værktøjsbjælker";
@@ -624,7 +630,10 @@
 "Discard changes" = "Kassér ændringer";
 
 /* Message shown to user after discarding action is done */
-"Discarded" = "Kassér";
+"Discarded" = "Kasseret";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Ansvarsfraskrivelse";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Afvis tastatur";
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Downloader metadata ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Downloader nye beskeder ...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloader e-mails, så du kan søge i dem. Beskederne er krypterede og lagres lokalt. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "E-mailadresse deaktiveret";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "E-mailadresse er ugyldig";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailadresser";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Udløb ikke understøttet";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Ansigts-ID";
-
 /* Error message */
 "Failed to determine type of file" = "Filtypebestemmelse mislykkedes";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Videresend";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Videresend (sidste besked)";
+
 /* forwarded message title */
 "Forwarded message" = "Videresendt besked";
 
@@ -894,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Vs:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Videresend:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Køn";
 
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Gå til indstillinger";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Gå til log ind";
 
 /* Got it action */
 "Got it" = "Forstået";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Robottjek mislykkedes";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Om morgenen";
+
 /* menu title */
 "Inbox" = "Indbakke";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Angiv visningsnavn…";
-
-/* place holder */
-"Input Notification Email …" = "Angiv notifikations-e-mail…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Usikker forbindelse";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Link kopieret.";
 
+/* Button inside the banner */
+"Load" = "Indlæs";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Indlæs indlejrede billeder";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Lås app'en";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log ind igen for at fortsat at modtage opdateringer";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Logget ud af %@";
 
 /* error title */
 "Logs" = "Logger";
@@ -1135,9 +1126,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markér som ulæst";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
@@ -1170,7 +1158,7 @@
 "Message has been moved." = "Besked er flyttet.";
 
 /* Title of the view showing the message header */
-"Message headers" = "Beskedoverskrfter";
+"Message headers" = "Beskedoverskrifter";
 
 /* The title of message history in settings for encrypted search */
 "Message history" = "Beskedhistorik";
@@ -1237,6 +1225,9 @@
 /* Title */
 "Move to…" = "Flyt til…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Navigér til næste besked efter flytning";
+
 /* Onboarding title */
 "Neat and tidy" = "Pæn og ryddelig";
 
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Næste";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Næste besked efter flytning";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Kaldenavn";
@@ -1342,12 +1336,18 @@
 /* Alert title */
 "Notice" = "Notits";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Notifikationshandlinger og andre baggrundsprocesser vil blive utilgængelige";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Notifikationer";
 
 /* The title of Off setting options */
 "Off" = "Fra";
+
+/* Official badge next to sender's name */
+"Official" = "Officiel";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
@@ -1357,9 +1357,6 @@
 
 /* Action */
 "OK" = "Ok";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "OK";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Ældste besked: ";
@@ -1403,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Adgangskodeopdatering mislykkedes";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Adgangskode opdateret";
+
 /* Placeholder */
 "Passwords must match" = "Adgangskoder skal være ens";
 
 /* Text for pause button */
 "Pause" = "Sæt på pause";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du udfører en flyttehandling på en besked (f.eks. arkiverer), navigeres der til den næste besked.";
 
 /* default vcard types */
 "Personal" = "Privat";
@@ -1511,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Problem med at sende besked";
 
+/* Settings lock protection section */
+"Protection" = "Beskyttelse";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton er nede";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail er i øjeblikket offline…";
@@ -1525,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Giv feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/firewall-forstyrrelse";
@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Gendannelse aktiveret";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Henvis en ven";
 
 /* Title */
@@ -1587,8 +1588,14 @@
 /* reply action */
 "Reply" = "Svar";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Svar (på den sidste besked)";
+
 /* reply all action */
 "Reply all" = "Svar alle";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Svar alle (på den sidste besked)";
 
 /* menu title */
 "Report a problem" = "Anmeld et problem";
@@ -1677,7 +1684,7 @@
 /* Action */
 "Send anyway" = "Send alligevel";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Send feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1792,6 +1799,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Udsæt";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Nogle billeder kunne ikke indlæses med sporingsbeskyttelse.";
+
 /* menu title */
 "Spam" = "Spam";
 
@@ -1855,9 +1865,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Strygehandlinger";
-
-/* Swiping gestures */
-"Swiping gestures" = "Strygebevægelser";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Skift valgmetode";
@@ -1946,9 +1953,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL'en, du forsøger at få adgang til, er ikke standard og kan måske ikke indlæses korrekt. Vil du åbne den ved hjælp af din enheds standardbrowser?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Brugeren er allerede logget ind";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Der er usendte beskeder, der vil gå tabt, hvis du logger ud";
 
@@ -1963,12 +1967,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail fejlede Reverse DNS Lookup. Den kan være falsk eller forkert videresendt!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail har ikke bestået sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail ser ud til at være fra en Proton Mail-adresse, men den kom fra et sted uden for vores system og har ikke overholdt vores godkendelseskrav. Den kan være forfalsket eller ukorrekt videresendt!";
@@ -2043,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Værktøjslinjehandlinger (vælg op til 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Spor dine belønninger";
 
@@ -2061,9 +2056,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Slå funktionen til for at autoudfylde e-mailadresser vha. kontakter fra alle dine indloggede konti.";
 
 /* Placeholder */
 "Two Factor Code" = "To-faktorkode";
@@ -2258,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du har deaktiveret FaceID i dine systemindstillinger. FaceID er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere FaceID eller logge ind igen.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du har deaktiveret %@ i dine systemindstillinger. %@ er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere %@ eller logge ind igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nye e-mails!";
@@ -2326,4 +2318,3 @@
 /* contact placeholder */
 "ZIP" = "Postnummer";
 
-"Customize (verb)" = "Customize";

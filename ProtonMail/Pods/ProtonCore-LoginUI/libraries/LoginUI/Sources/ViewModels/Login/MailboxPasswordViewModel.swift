@@ -45,8 +45,8 @@ final class MailboxPasswordViewModel {
 
     func unlock(password: String) {
         isLoading.value = true
-
-        login.finishLoginFlow(mailboxPassword: password) { [weak self] result in
+        // we know that password mode is .two because we are in the MailboxPasswordViewModel, shown only when there's a second password needed
+        login.finishLoginFlow(mailboxPassword: password, passwordMode: .two) { [weak self] result in
             switch result {
             case let .failure(error):
                 self?.error.publish(error)

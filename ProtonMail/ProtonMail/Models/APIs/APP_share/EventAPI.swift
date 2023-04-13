@@ -87,6 +87,7 @@ final class EventCheckResponse: Response {
     var domains: [[String: Any]]? // TODO:: use when we add domain configure in the app
 
     var addresses: [[String: Any]]?
+    var incomingDefaults: [[String: Any]]?
 
     var organization: [String: Any]? // TODO:: use when we add org setting in the app
 
@@ -121,6 +122,7 @@ final class EventCheckResponse: Response {
         // self.domains  = response["Domains"] as? [[String : Any]]
 
         self.addresses = response["Addresses"] as? [[String: Any]]
+        self.incomingDefaults = response["IncomingDefaults"] as? [[String: Any]]
 
         // self.organization = response["Organization"] as? [String : Any]
 
@@ -302,5 +304,17 @@ final class AddressEvent: Event {
         super.init(id: event["ID"] as? String,
                    action: EventAction(rawValue: actionInt) ?? .unknown)
         self.address = event["Address"] as? [String: Any]
+    }
+}
+
+
+final class IncomingDefaultEvent: Event {
+    private(set) var incomingDefault: [String: Any]?
+
+    init(event: [String: Any]!) {
+        let actionInt = event["Action"] as? Int ?? 255
+        super.init(id: event["ID"] as? String,
+                   action: EventAction(rawValue: actionInt) ?? .unknown)
+        self.incomingDefault = event["IncomingDefault"] as? [String: Any]
     }
 }

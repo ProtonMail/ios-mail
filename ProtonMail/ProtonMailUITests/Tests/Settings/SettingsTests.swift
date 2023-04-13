@@ -27,7 +27,7 @@ class SettingsTests : BaseTestCase {
             .pin()
             .enablePin()
             .setPin(correctPin)
-            .pinTimmer()
+            .pinTimer()
             .selectAutoLockNone()
             .navigateUpToSettings()
             .close()
@@ -36,7 +36,7 @@ class SettingsTests : BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .pinTimmer()
+            .pinTimer()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -59,7 +59,7 @@ class SettingsTests : BaseTestCase {
             .pin()
             .enablePin()
             .setPin(correctPin)
-            .pinTimmer()
+            .pinTimer()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -99,5 +99,19 @@ class SettingsTests : BaseTestCase {
             .selectAlwaysOff()
             .navigateBackToSettings()
             .verify.darkModeIsOff()
+    }
+
+    func testBlockList() {
+        let user = testData.onePassUser
+
+        inboxRobot
+            .menuDrawer()
+            .settings()
+            .selectAccount(user.email)
+            .blockList()
+            .pullDownToRefresh()
+            .verify
+            .expectedTitleIsShown()
+            .emptyListPlaceholderIsShown()
     }
 }

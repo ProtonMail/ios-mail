@@ -24,30 +24,30 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
+public final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
     private let planId: String
     private let amount: Int
     private let paymentAction: PaymentAction?
 
-    init(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) {
+    public init(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) {
         self.planId = planId
         self.amount = amount
         self.paymentAction = paymentAction
         super.init(api: api)
     }
 
-    init(api: APIService, planId: String) {
+    public init(api: APIService, planId: String) {
         self.planId = planId
         self.amount = 0
         self.paymentAction = nil
         super.init(api: api)
     }
 
-    override var method: HTTPMethod { .post }
+    override public var method: HTTPMethod { .post }
 
-    override var path: String { super.path + "/v4/subscription" }
+    override public var path: String { super.path + "/v4/subscription" }
 
-    override var parameters: [String: Any]? {
+    override public var parameters: [String: Any]? {
         var params: [String: Any] = ["Amount": amount, "Currency": "USD", "PlanIDs": [planId: 1], "Cycle": 12]
         guard amount != .zero, let paymentAction = paymentAction else {
             return params
@@ -57,10 +57,10 @@ final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
     }
 }
 
-final class SubscriptionResponse: Response {
+public final class SubscriptionResponse: Response {
     var newSubscription: Subscription?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
 
         guard let code = response["Code"] as? Int, code == 1000 else {
@@ -78,15 +78,19 @@ final class SubscriptionResponse: Response {
     }
 }
 
-final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
+public final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
 
-    override var path: String { super.path + "/v4/subscription" }
+    override public init(api: APIService) {
+        super.init(api: api)
+    }
+    
+    override public var path: String { super.path + "/v4/subscription" }
 }
 
-final class GetSubscriptionResponse: Response {
+public final class GetSubscriptionResponse: Response {
     var subscription: Subscription?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
 
         guard let response = response["Subscription"] as? [String: Any],

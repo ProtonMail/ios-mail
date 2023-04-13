@@ -234,39 +234,22 @@ platform :ios do
     set_up_keychain(true)
 
     # Set build version by git log numbers
-    if options[:usingTimeStamp]
-      timeStamp = Time.now.getutc.to_i
-      bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
-    else
-      bundle_version = sh("./setup_bundle_version.sh")
-    end
+    timeStamp = Time.now.getutc.to_i
+    bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
 
     build_enterprise_app
 
-    # begin
-    #   sentry_upload_dsym(
-    #     auth_token: ENV["SENTRY_AUTH_TOKEN"],
-    #     org_slug: ENV["SENTRY_ORG"],
-    #     project_slug: ENV["SENTRY_PROJECT"],
-    #     url: ENV["SENTRY_URL"]
-    #   )
-    # rescue => ex
-    #   puts("Sentry upload error: #{ex}")
-    # end
-
     branchName = git_branch
     lastGitCommitHash = last_git_commit[:commit_hash]
-    releaseNote = "Build on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
+    releaseNote = "Built on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
 
     firebase_app_distribution(
-              app: "1:75309174866:ios:fb09e26e4130a105",
-              groups: "v4-internal-test-group",
-              release_notes: releaseNote
-          )
+      app: "1:75309174866:ios:fb09e26e4130a105",
+      groups: "v4-internal-test-group",
+      release_notes: releaseNote
+    )
 
     tear_down_keychain
-
-  # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
   %w{major minor patch}.each do |part|
@@ -281,17 +264,15 @@ platform :ios do
       version: '14.2',
       select_for_current_build_only: true,
     )
-    scan(
+    run_tests(
       device: "iPhone 8",
       scheme: "ProtonMailTests",
       app_identifier: APP_IDENTIFIER,
-      reset_simulator: true,
-      xcargs: "-quiet"
+      reset_simulator: true
     )
 
-    slather(sonarqube_xml: true, configuration: "Debug")
-    slather(cobertura_xml: true, configuration: "Debug")
-    slather(simple_output: true, configuration: "Debug")
+    slather(cobertura_xml: true)
+    slather(simple_output: true)
   end
 
   desc "Run ui test and get test coverage"
@@ -301,6 +282,7 @@ platform :ios do
       select_for_current_build_only: true,
     )
 
+    # TODO: try_scan seems unmaintained and is possibly deprecated, see https://github.com/alteral/fastlane-plugin-try_scan#important-announcement-%EF%B8%8F
     try_scan(
       device: "iPhone 14",
       reset_simulator: true,
@@ -317,15 +299,15 @@ platform :ios do
       result_bundle: true,
       xcargs: "-quiet",
       fail_build: false # Otherwise following steps won't be executed
-   )
+    )
     xchtmlreport(
       result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
       enable_junit: true,
       binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
     )
 
-    slather(cobertura_xml: true, configuration: "Debug")
-    slather(simple_output: true, configuration: "Debug")
+    slather(cobertura_xml: true)
+    slather(simple_output: true)
   end
 
   desc "Run feature ui test and get test coverage"
@@ -335,34 +317,17 @@ platform :ios do
       select_for_current_build_only: true,
     )
 
-    try_scan(
+    run_tests(
       device: "iPhone 14",
       reset_simulator: true,
-      parallel_workers: ENV["NUMBER_OF_DEVICES"],
-      try_parallel: true,
-      retry_parallel: false,
+      parallel_testing: true,
+      concurrent_workers: ENV["NUMBER_OF_DEVICES"],
       scheme: "ProtonMailUITests",
       testplan: ENV["TEST_PLAN"],
       app_identifier: APP_IDENTIFIER,
-      output_types: "junit",
-      reinstall_app: true,
       output_directory: "../test_output/TestResults",
-      result_bundle: true,
-      xcargs: "-quiet",
-      fail_build: false # Otherwise following steps won't be executed
+      output_files: "report.xml",
+      result_bundle: true
     )
-    xchtmlreport(
-      result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
-      enable_junit: true,
-      binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
-    )
-
-    slather(cobertura_xml: true, configuration: "Debug")
-    slather(simple_output: true, configuration: "Debug")
-  end
-
-  error do |lane, exception|
-    send_to_slack(false, "", exception, "")
-    tear_down_keychain
   end
 end

@@ -48,4 +48,20 @@ extension UIViewController {
         let backItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backItem
     }
+
+    var isDarkMode: Bool {
+        if #available(iOS 12.0, *) {
+            return traitCollection.userInterfaceStyle == .dark
+        } else {
+            return false
+        }
+    }
+
+    var currentScreenScale: CGFloat {
+        if #available(iOS 13.0, *) {
+            return view.window?.windowScene?.screen.scale ?? UIScreen.main.scale
+        } else {
+            return UIScreen.main.scale
+        }
+    }
 }

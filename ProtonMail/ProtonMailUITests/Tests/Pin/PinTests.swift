@@ -73,7 +73,7 @@ class PinTests: BaseTestCase {
     
     func testIncorrectPinBeforeThirtySec() {
         pinRobot
-            .pinTimmer()
+            .pinTimer()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -88,7 +88,7 @@ class PinTests: BaseTestCase {
 
     func testErrorMessageOnThreeRmainingPinTries() {
         pinRobot
-            .pinTimmer()
+            .pinTimer()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -102,5 +102,15 @@ class PinTests: BaseTestCase {
             .inputIncorrectPinNTimesStayLoggedIn(count: 6)
             .verify.pinErrorMessageShowsThreeRemainingTries(3)
     }
-}
 
+    func testLogoutBeforeUnlockingDoesNotCrash() {
+        pinRobot
+            .enableAppKey()
+            .pinTimer()
+            .selectAutolockEveryTime()
+            .foregroundApp()
+            .logout()
+            .verify
+            .loginScreenIsShown()
+    }
+}

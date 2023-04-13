@@ -64,40 +64,37 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
 
     @objc private func addButtonTapped() {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
-            let viewController = self?.tabBarController ?? self
-            let subViews = viewController?.view.subviews
-            let actionSheet = subViews?.compactMap { $0 as? PMActionSheet }.last
-            actionSheet?.dismiss(animated: true)
-        }
         let headerView =
             PMActionSheetHeaderView(title: LocalString._contacts_action_sheet_title,
                                     subtitle: nil,
-                                    leftItem: cancelItem,
-                                    rightItem: nil)
-        let newContactAction =
-            PMActionSheetPlainItem(title: LocalString._contacts_new_contact,
-                                   icon: IconProvider.userPlus,
-                                   iconColor: ColorProvider.IconNorm) { _ in
-                self.addContactTapped()
-            }
-        let newContactGroupAction =
-            PMActionSheetPlainItem(title: LocalString._contact_groups_new,
-                                   icon: IconProvider.usersPlus,
-                                   iconColor: ColorProvider.IconNorm) { _ in
-                self.addContactGroupTapped()
-            }
-        let uploadDeviceContactAction =
-            PMActionSheetPlainItem(title: LocalString._contacts_upload_device_contacts,
-                                   icon: IconProvider.mobilePlus,
-                                   iconColor: ColorProvider.IconNorm) { _ in
-                self.importButtonTapped()
-            }
+                                    leftItem: .right(IconProvider.cross),
+                                    rightItem: nil,
+                                    leftItemHandler: { [weak self] in
+                                        let viewController = self?.tabBarController ?? self
+                                        let subViews = viewController?.view.subviews
+                                        let actionSheet = subViews?.compactMap { $0 as? PMActionSheet }.last
+                                        actionSheet?.dismiss(animated: true)
+                                    })
+        let newContactAction = PMActionSheetItem(
+            style: .default(IconProvider.userPlus, LocalString._contacts_new_contact)
+        ) { _ in
+            self.addContactTapped()
+        }
+        let newContactGroupAction = PMActionSheetItem(
+            style: .default(IconProvider.usersPlus, LocalString._contact_groups_new)
+        ) { _ in
+            self.addContactGroupTapped()
+        }
+        let uploadDeviceContactAction = PMActionSheetItem(
+            style: .default(IconProvider.mobilePlus, LocalString._contacts_upload_device_contacts)
+        ) { _ in
+            self.importButtonTapped()
+        }
         let actionsGroup = PMActionSheetItemGroup(items: [newContactAction,
                                                           newContactGroupAction,
                                                           uploadDeviceContactAction],
                                                   style: .clickable)
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup], maximumOccupy: 0.7)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup]) /*, maximumOccupy: 0.7) */
         actionSheet.presentAt(self.tabBarController ?? self, animated: true)
     }
 

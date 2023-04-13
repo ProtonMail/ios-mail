@@ -50,6 +50,8 @@ public class PMBanner: UIView, AccessibleView {
     private var bottomConstraint: NSLayoutConstraint?
     private var initLocation: CGPoint = .zero
     private var lastLocation: CGPoint = .zero
+    /// auto detect url in ui text view
+    private var autoDetectLinks: Bool = false
 
     public let userInfo: [AnyHashable: Any]?
 
@@ -173,6 +175,13 @@ extension PMBanner {
     ///   - linkHandler: A block to execute when the user clicks the link.
     public func add(linkAttributed: [NSAttributedString.Key: Any]?, linkHandler: @escaping ((PMBanner, URL) -> Void)) {
         self.linkAttributed = linkAttributed
+        self.linkHandler = linkHandler
+    }
+    
+    /// Add handler for links
+    /// - Parameter linkHandler: A block to execute when the user clicks the link.
+    public func addLinkHandler(linkHandler: @escaping ((PMBanner, URL) -> Void)) {
+        self.autoDetectLinks = true
         self.linkHandler = linkHandler
     }
 
@@ -408,6 +417,9 @@ extension PMBanner {
         }
         textView.textContainerInset = .zero
         textView.translatesAutoresizingMaskIntoConstraints = false
+        if autoDetectLinks {
+            textView.dataDetectorTypes = UIDataDetectorTypes.link
+        }
         self.addSubview(textView)
         return textView
     }
@@ -465,15 +477,24 @@ extension PMBanner {
         self.layoutIfNeeded()
 
         let initValue = self.frame.height
-        switch position {
-        case .top, .topCustom:
-            self.topConstraint = self.topAnchor.constraint(equalTo: parent.topAnchor, constant: -1 * initValue)
-            self.topConstraint?.isActive = true
-        case .bottom, .bottomCustom:
-            self.bottomConstraint = self.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: initValue)
-            self.bottomConstraint?.isActive = true
+
+        let parentTopAnchor, parentBottomAnchor: NSLayoutYAxisAnchor
+        if let tableView = parent as? UIScrollView {
+            parentTopAnchor = tableView.frameLayoutGuide.topAnchor
+            parentBottomAnchor = tableView.frameLayoutGuide.bottomAnchor
+        } else {
+            parentTopAnchor = parent.topAnchor
+            parentBottomAnchor = parent.bottomAnchor
         }
 
+        switch position {
+        case .top, .topCustom:
+            self.topConstraint = self.topAnchor.constraint(equalTo: parentTopAnchor, constant: -1 * initValue)
+            self.topConstraint?.isActive = true
+        case .bottom, .bottomCustom:
+            self.bottomConstraint = self.bottomAnchor.constraint(equalTo: parentBottomAnchor, constant: initValue)
+            self.bottomConstraint?.isActive = true
+        }
     }
 
     private func calcBannerHeight() -> CGFloat {
@@ -485,13 +506,13 @@ extension PMBanner {
     }
 
     private func showAnimate(ignoreKeyboard: Bool) {
-        let keyboardHeight = ignoreKeyboard ? 0: self.getKeyboardHeight()
+        let keyboardHeight = ignoreKeyboard ? 0 : self.getKeyboardHeight()
         guard let parent = self.superview else { return }
         switch self.position! {
         case .top, .topCustom:
             self.topConstraint?.constant = self.position!.edgeInsets.top + parent.safeGuide.top
         case .bottom, .bottomCustom:
-            let height = keyboardHeight > 0 ? keyboardHeight: parent.safeGuide.bottom
+            let height = keyboardHeight > 0 ? keyboardHeight : parent.safeGuide.bottom
             self.bottomConstraint?.constant = -1 * self.position!.edgeInsets.bottom - height
         }
         UIView.animate(withDuration: ANIMATE_DURATION) {

@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_Observability
 
 protocol EmailVerificationViewControllerDelegate: AnyObject {
     func validatedToken(verifyToken: String)
@@ -35,7 +36,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     weak var delegate: EmailVerificationViewControllerDelegate?
     var viewModel: EmailVerificationViewModel!
     var customErrorPresenter: LoginErrorPresenter?
-    var onDohTroubleshooting: () -> Void =  { }
+    var onDohTroubleshooting: () -> Void = { }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -96,6 +97,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
         setupGestures()
         setupNotifications()
         generateAccessibilityIdentifiers()
+        ObservabilityEnv.report(.screenLoadCountTotal(screenName: .emailVerification))
     }
     
     override func viewDidAppear(_ animated: Bool) {

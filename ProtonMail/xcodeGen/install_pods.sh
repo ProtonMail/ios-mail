@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Do not need the access to pod repo while generating the project file.
-pod install --no-repo-update
+bundle exec pod install --no-repo-update

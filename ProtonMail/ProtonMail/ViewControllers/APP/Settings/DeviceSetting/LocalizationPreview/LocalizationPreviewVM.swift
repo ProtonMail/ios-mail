@@ -23,7 +23,7 @@ protocol LocalizationPreviewUIProtocol: AnyObject {
 
 final class LocalizationPreviewVM {
     private weak var uiDelegate: LocalizationPreviewUIProtocol?
-    private let languages: [ELanguage] = ELanguage.allItems()
+    private let languages: [ELanguage] = ELanguage.allCases
     private(set) var keys: [String] = []
     private(set) var source: [String: [String]] = [:]
 
@@ -32,7 +32,7 @@ final class LocalizationPreviewVM {
     }
 
     func prepareData() {
-        let currentCode = LanguageManager.currentLanguageCode() ?? "en"
+        let currentCode = LanguageManager().currentLanguageCode() ?? "en"
         for lang in languages {
             setUpL11n(for: lang)
         }
@@ -54,15 +54,15 @@ final class LocalizationPreviewVM {
     }
 
     private func switchLanguage(to langCode: String) {
-        LanguageManager.saveLanguage(byCode: langCode)
+        LanguageManager().saveLanguage(by: langCode)
         LocalizedString.reset()
     }
 
     private func setUpL11n(for lang: ELanguage) {
-        switchLanguage(to: lang.code)
+        switchLanguage(to: lang.languageCode)
         let allLocalizations = LocalizationList().all
         for (key, value) in allLocalizations {
-            let newValues = processPluralIfNeeded(key: key, value: value, code: lang.code).map { "\(lang.code) - \($0)" }
+            let newValues = processPluralIfNeeded(key: key, value: value, code: lang.languageCode).map { "\(lang.languageCode) - \($0)" }
             if source[key] == nil {
                 source[key] = newValues
             } else {
@@ -75,29 +75,29 @@ final class LocalizationPreviewVM {
         let target = [
             "L11n.EmailTrackerProtection.n_email_trackers_blocked",
             "L11n.EmailTrackerProtection.proton_found_n_trackers_on_this_message",
-            "LocalString._extra_addresses",
-            "LocalString._mailblox_last_update_time",
-            "LocalString._general_message",
-            "LocalString._minute",
-            "LocalString._general_conversation",
-            "LocalString._attempt_remaining",
-            "LocalString._attempt_remaining_until_secure_data_wipe",
-            "LocalString._hour",
-            "LocalString._day",
-            "LocalString._inbox_swipe_to_move_banner_title",
-            "LocalString._inbox_swipe_to_move_conversation_banner_title",
-            "LocalString._inbox_swipe_to_label_banner_title",
-            "LocalString._inbox_swipe_to_label_conversation_banner_title",
-            "LocalString._clean_message_warning",
-            "LocalString._clean_conversation_warning",
-            "LocalString._contact_groups_member_count_description",
-            "LocalString._scheduled_message_time_in_minute",
-            "LocalString._delete_scheduled_alert_message",
-            "LocalString._message_moved_to_drafts",
-            "LocalString._undo_send_seconds_options",
-            "LocalString._contact_groups_selected_group_count_description",
-            "LocalString._attachment",
-            "LocalString._scheduled_message_time_in_minute"
+            "LocalizedString._extra_addresses",
+            "LocalizedString._mailblox_last_update_time",
+            "LocalizedString._general_message",
+            "LocalizedString._minute",
+            "LocalizedString._general_conversation",
+            "LocalizedString._attempt_remaining",
+            "LocalizedString._attempt_remaining_until_secure_data_wipe",
+            "LocalizedString._hour",
+            "LocalizedString._day",
+            "LocalizedString._inbox_swipe_to_move_banner_title",
+            "LocalizedString._inbox_swipe_to_move_conversation_banner_title",
+            "LocalizedString._inbox_swipe_to_label_banner_title",
+            "LocalizedString._inbox_swipe_to_label_conversation_banner_title",
+            "LocalizedString._clean_message_warning",
+            "LocalizedString._clean_conversation_warning",
+            "LocalizedString._contact_groups_member_count_description",
+            "LocalizedString._scheduled_message_time_in_minute",
+            "LocalizedString._delete_scheduled_alert_message",
+            "LocalizedString._message_moved_to_drafts",
+            "LocalizedString._undo_send_seconds_options",
+            "LocalizedString._contact_groups_selected_group_count_description",
+            "LocalizedString._attachment",
+            "LocalizedString._scheduled_message_time_in_minute"
         ]
         guard target.contains(key) else { return [value] }
         let result = [0, 1, 2].map { String(format: value, $0) }

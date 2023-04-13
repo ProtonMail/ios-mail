@@ -19,10 +19,6 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class TrackerTableViewCell: UITableViewCell {
-    static var CellID: String {
-        return "\(self)"
-    }
-
     private let contentTextView = SubviewFactory.contentTextView
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

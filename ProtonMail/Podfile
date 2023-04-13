@@ -5,19 +5,23 @@ def proton_core_path
 end
 
 def proton_test_path
-  return "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
+  return "git@gitlab.protontech.ch:tpe/apple-fusion.git"
 end
 
 # proton url is set to env variable because the core module podspecs expect it.
 # it's part of transition into open sourced core modules and it will not be necessary when they are on github
 ENV['PROTON_CORE_GIT_URL'] = proton_core_path
 
-platform :ios, '11.0'
+def minimum_deployment_target
+  '14.7'
+end
+
+platform :ios, minimum_deployment_target
 inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.27.0'
+  '4.0.1'
 end
 
 def crypto_variant
@@ -58,6 +62,7 @@ def pm_pods
   pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
@@ -113,7 +118,7 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'pmtest', :git => proton_test_path, :branch => 'master'
+  pod 'fusion', :git => proton_test_path, :commit => '5905ef7e'
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
@@ -137,7 +142,7 @@ end
 post_install do | installer |
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = minimum_deployment_target
       config.build_settings['SWIFT_VERSION'] = '5.0'
       config.build_settings['ENABLE_BITCODE'] = 'NO'
       config.build_settings['CODE_SIGN_IDENTITY'] = ''

@@ -23,12 +23,10 @@
 import ProtonCore_TestingToolkit
 
 class LoginTests: BaseTestCase {
-    
+
     private let loginRobot = LoginRobot()
 
     func testLoginWithOnePass() {
-        app.launchEnvironment["MAIL_APP_API_DOMAIN"] = ProcessInfo.processInfo.environment["MAIL_APP_API_DOMAIN"]
-        app.launchEnvironment["MAIL_APP_API_PATH"] = ProcessInfo.processInfo.environment["MAIL_APP_API_PATH"]
         let user = testData.onePassUser
         loginRobot
             .loginUser(user)
@@ -41,42 +39,42 @@ class LoginTests: BaseTestCase {
             .loginTwoPasswordUser(user)
             .verify.inboxShown()
     }
-    
+
     func testLoginWithOnePassAnd2FA() {
         let user = testData.onePassUserWith2Fa
         loginRobot
             .loginUserWithTwoFA(user)
             .verify.inboxShown()
     }
-    
+
     func testLoginWithTwoPassAnd2FA() {
         let user = testData.twoPassUserWith2Fa
         loginRobot
             .loginTwoPasswordUserWithTwoFA(user)
             .verify.inboxShown()
     }
-    
+
     func testLoginWithInvalidPassword() {
         let user = testData.onePassUser
         loginRobot
             .loginWithInvalidPassword(user)
             .verify.incorrectCredentialsErrorDialog()
     }
-    
+
     func testLoginWithInvalidUserAndPassword() {
         let user = testData.onePassUser
         loginRobot
             .loginWithInvalidUserAndPassword(user)
             .verify.incorrectCredentialsErrorDialog()
     }
-    
+
     func testLoginWithInvalidUser() {
         let user = testData.onePassUser
         loginRobot
             .loginWithInvalidUser(user)
             .verify.incorrectCredentialsErrorDialog()
     }
-    
+
     func testLoginWithInvalid2Pass() {
         let user = testData.twoPassUser
         loginRobot

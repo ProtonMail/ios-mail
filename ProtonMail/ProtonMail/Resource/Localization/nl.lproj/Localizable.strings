@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ van %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d seconden";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Geselecteerd";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Sleep hier om toe te voegen als bijlage";
 
@@ -26,7 +20,7 @@
 "<1 minute remaining" = "<1 minuut resterend";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "<1m";
+"<1m" = "<1 min";
 
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 bericht verplaatst naar archief";
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Adressen";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Geavanceerde instellingen";
+
 /* Title */
 "Alert" = "Waarschuwing";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Alle berichten";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Alle beveiligingsinstellingen worden gereset en gewist bij het uitloggen van de app.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Al uw berichten zijn gedownload";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Uiterlijk";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey is een extra bescherming voor uw Proton-informatie in het geval dat een aanvaller een uitgebreide aanval uitvoert, zoals het klonen van de inhoud uw toestel. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey-bescherming";
 
 /* Apply action */
 "Apply" = "Toepassen";
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Blokkeer e-mailtracking";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Blokkeringslijst";
+
+/* Button to block a sender */
+"Block sender" = "Blokkeer afzender";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokkeert dat afzenders kunnen zien of en wanneer u het bericht hebt geopend";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Label aanmaken is niet toegestaan";
 
-/* Change language title */
-"Current Language is: " = "Huidige taal is: ";
-
 /* Placeholder */
 "Current password" = "Huidig wachtwoord";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Aangepast";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Personaliseer";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Pas de werkbalk aan";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Verwijderd";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Disclaimer";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Toetsenbord verbergen";
 
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Metagegevens downloaden...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Nieuwe berichten downloaden...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloadt e-mails zodat ze kunnen worden doorzocht. De berichten worden versleuteld en lokaal opgeslagen. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "E-mailadres uitgeschakeld";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "E-mailadres is ongeldig";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailadressen";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Vervaldatum niet ondersteund";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Kon bestandstype niet bepalen";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Doorsturen";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Doorsturen (laatste bericht)";
+
 /* forwarded message title */
 "Forwarded message" = "Doorgestuurd bericht";
 
@@ -894,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Fw:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Geslacht";
 
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ga naar instellingen";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Ga naar aanmelden";
 
 /* Got it action */
 "Got it" = "Begrepen";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hoe zou u uw ervaring met de nieuwe Proton Mail omschrijven?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Persoonsverificatie Mislukt";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "'s Ochtends";
+
 /* menu title */
 "Inbox" = "Inbox";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Weergavenaam invoeren…";
-
-/* place holder */
-"Input Notification Email …" = "Notificatie e-mailadres invoeren …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Onveilige verbinding";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Koppeling gekopieerd.";
 
+/* Button inside the banner */
+"Load" = "Laden";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Ingesloten afbeeldingen laden";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "App vergrendelen";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Meld opnieuw aan om updates blijven ontvangen";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Afgemeld van %@";
 
 /* error title */
 "Logs" = "Logboeken";
@@ -1135,9 +1126,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markeer als ongelezen";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPromp";
 
 /* menu title */
 "Menu" = "Menu";
@@ -1237,6 +1225,9 @@
 /* Title */
 "Move to…" = "Verplaatsen naar…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Navigeer naar het volgende bericht na verplaatsen";
+
 /* Onboarding title */
 "Neat and tidy" = "Netjes en opgeruimd";
 
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Volgende";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Volgend bericht na verplaatsen";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Bijnaam";
@@ -1342,12 +1336,18 @@
 /* Alert title */
 "Notice" = "Melding";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Meldingen en andere achtergrondprocessen zullen onbeschikbaar worden";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Meldingen";
 
 /* The title of Off setting options */
 "Off" = "Uit";
+
+/* Official badge next to sender's name */
+"Official" = "Officieel";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Offline";
@@ -1357,9 +1357,6 @@
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Oké";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Oudste bericht: ";
@@ -1403,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Wachtwoord wijzigen mislukt";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Wachtwoord bijgewerkt";
+
 /* Placeholder */
 "Passwords must match" = "Wachtwoorden moeten overeenkomen";
 
 /* Text for pause button */
 "Pause" = "Pauzeer";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Een verplaatsactie uitvoeren op een bericht (bv. archiveren) zal navigeren naar het volgende bericht.";
 
 /* default vcard types */
 "Personal" = "Persoonlijk";
@@ -1511,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Probleem bij verzenden bericht";
 
+/* Settings lock protection section */
+"Protection" = "Bescherming";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton is onbereikbaar";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail is momenteel offline…";
@@ -1525,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Geef feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall interferentie";
@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Herstel ingeschakeld";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Verwijs een vriend door";
 
 /* Title */
@@ -1587,8 +1588,14 @@
 /* reply action */
 "Reply" = "Beantwoorden";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Beantwoord (laatste boodschap)";
+
 /* reply all action */
 "Reply all" = "Allen beantwoorden";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Beantwoord allen (laatste boodschap)";
 
 /* menu title */
 "Report a problem" = "Meld een probleem";
@@ -1677,7 +1684,7 @@
 /* Action */
 "Send anyway" = "Toch verzenden";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Feedback versturen";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1792,6 +1799,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Uitstellen";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Sommige afbeeldingen konden niet geladen worden met bescherming tegen tracking.";
+
 /* menu title */
 "Spam" = "Spam";
 
@@ -1855,9 +1865,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Veegacties";
-
-/* Swiping gestures */
-"Swiping gestures" = "Swipe gebaren";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Schakelen tussen selectiemodus";
@@ -1946,9 +1953,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "De URL die u probeert te openen is niet standaard en kan mogelijk niet correct geladen worden. Wilt u deze openen met de standaard browser van uw apparaat?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "De gebruiker is al ingelogd";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Er zijn niet-verzonden berichten die verloren gaan als u u uitlogt";
 
@@ -1963,12 +1967,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Dit e-mailadres gebruikt foutieve domeininstellingen. Het kan een nepbericht zijn, of het is op de verkeerde manier doorgestuurd!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk wordt deze gespoofed of onjuist doorgestuurd!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig van een Proton Mail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
@@ -2043,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Werkbalk acties (selecteer tot 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Volg uw bonussen";
 
@@ -2061,9 +2056,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
 
 /* Placeholder */
 "Two Factor Code" = "Tweestapsverificatie code";
@@ -2258,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "U heeft Face ID uitgeschakeld in uw systeeminstellingen. Face ID is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer Face ID of log opnieuw in.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "U heeft %@ uitgeschakeld in uw systeeminstellingen. %@ is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer %@ of log opnieuw in.";
 
 /* Message */
 "You have %d new emails!" = "U heeft %d nieuwe e-mails!";
@@ -2326,4 +2318,3 @@
 /* contact placeholder */
 "ZIP" = "Postcode";
 
-"Customize (verb)" = "Customize";

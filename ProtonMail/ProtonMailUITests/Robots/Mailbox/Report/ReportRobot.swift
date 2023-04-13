@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let sendButtonIdentifier = LocalString._general_send_action
@@ -22,9 +22,9 @@ class ReportRobot: CoreElements {
     required init() {
         super.init()
         //let label = LocalString._menu_bugs_title
-        navigationBar(id.titleStaticTextIdentifier).onChild(staticText(id.titleStaticTextIdentifier)).byIndex(0).wait().checkExists()
-        textView(id.bugDescriptionTextViewIdentifier).wait().checkExists()
-        button(id.sendButtonIdentifier).wait().checkExists()
+        navigationBar(id.titleStaticTextIdentifier).onChild(staticText(id.titleStaticTextIdentifier)).byIndex(0).waitUntilExists().checkExists()
+        textView(id.bugDescriptionTextViewIdentifier).waitUntilExists().checkExists()
+        button(id.sendButtonIdentifier).waitUntilExists().checkExists()
     }
     
     func menu() -> MenuRobot {

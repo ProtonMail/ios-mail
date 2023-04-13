@@ -417,7 +417,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d min geleden bijgewerkt</string>
+			<string>%d minuten geleden bijgewerkt</string>
 			<key>other</key>
 			<string>%d minuten geleden bijgewerkt</string>
 		</dict>

@@ -182,6 +182,65 @@ class ConversationEntityTests: XCTestCase {
             XCTAssertNil(sut.getTime(labelID: labelID))
         }
     }
+
+    func testGetSenderImageRequestInfo_displaySenderImageIsTrue_returnInfo() throws {
+        let address = "\(String.randomString(10))@pm.me"
+        let bimiSelector = String.randomString(20)
+        let isDarkMode = Bool.random()
+        let rawSender = """
+        [
+            {
+            "Name": "1",
+            "Address": "\(String.randomString(10))",
+            "IsProton": 0,
+            "IsSimpleLogin": 0,
+            "DisplaySenderImage": 1,
+            "BimiSelector": "\(String.randomString(10))"
+            },
+            {
+            "Name": "2",
+            "Address": "\(address)",
+            "IsProton": 0,
+            "IsSimpleLogin": 0,
+            "DisplaySenderImage": 1,
+            "BimiSelector": "\(bimiSelector)"
+            }
+        ]
+        """
+        let sut = ConversationEntity.make(senders: rawSender)
+
+        let result = try XCTUnwrap(sut.getSenderImageRequestInfo(isDarkMode: isDarkMode))
+
+        XCTAssertEqual(result.isDarkMode, isDarkMode)
+        XCTAssertEqual(result.bimiSelector, bimiSelector)
+        XCTAssertEqual(result.senderAddress, address)
+    }
+
+    func testGetSenderImageRequestInfo_displaySenderImageIsFalse_returnNil() throws {
+        let rawSender = """
+        [
+            {
+            "Name": "1",
+            "Address": "\(String.randomString(10))",
+            "IsProton": 0,
+            "IsSimpleLogin": 0,
+            "DisplaySenderImage": 1,
+            "BimiSelector": "\(String.randomString(10))"
+            },
+            {
+            "Name": "2",
+            "Address": "\(String.randomString(10))",
+            "IsProton": 0,
+            "IsSimpleLogin": 0,
+            "DisplaySenderImage": 0,
+            "BimiSelector": "\(String.randomString(10))"
+            }
+        ]
+        """
+        let sut = ConversationEntity.make(senders: rawSender)
+
+        XCTAssertNil(sut.getSenderImageRequestInfo(isDarkMode: Bool.random()))
+    }
 }
 
 extension ConversationEntityTests {

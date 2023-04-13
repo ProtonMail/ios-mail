@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ din %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d secunde";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "Selectate: %d";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Plasaţi aici pentru atașare";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Adrese";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Setări avansate";
+
 /* Title */
 "Alert" = "Alertă";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Toată corespondența";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Toate setările de protecție vor fi resetate și șterse după ce vă deconectați din aplicație.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Toate mesajele vor fi descărcate";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Aspect";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey vă protejează în continuare informațiile Proton în cazul unor atacuri complexe, cum ar fi un atacator care vă clonează conținutul dispozitivului. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "Protecție AppKey";
 
 /* Apply action */
 "Apply" = "Aplicare";
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Blocare urmărire e-mailuri";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Listă adrese blocate";
+
+/* Button to block a sender */
+"Block sender" = "Blocare expeditor";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Împiedică expeditorii să vadă dacă și când ați deschis mesajul.";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Crearea etichetei nu este permisă";
 
-/* Change language title */
-"Current Language is: " = "Limba curentă este: ";
-
 /* Placeholder */
 "Current password" = "Parola actuală";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Personalizat";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Personalizare";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Personalizare utilitare";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Anulat";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Exonerare";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ascundere tastatură";
 
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Se descarcă metadatele...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Se descarcă mesaje noi...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Descarcă mesajele pentru a permite căutarea în conținut. Mesajele sunt criptate și stocate local. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Adresă de e-mail dezactivată";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "Adresa de e-mail nu este validă";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adrese de e-mail";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Expirare nesuportată";
 
-/* The protection title of Face ID protection */
-"Face ID" = "ID facial";
-
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Redirecționare";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Înainte (ultimul mesaj)";
+
 /* forwarded message title */
 "Forwarded message" = "Mesaj redirecționat";
 
@@ -892,10 +895,7 @@
 "From:" = "De la:";
 
 /* abbreviation of forward: */
-"Fw:" = "Fw:";
-
-/* abbreviation of forward: */
-"Fwd:" = "Red:";
+"Fw:" = "Rd:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Gen";
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Accesare setări";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "La autentificare";
 
 /* Got it action */
 "Got it" = "Am înțeles";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Cum ați descrie experiența avută cu noul Proton Mail?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Eșuare verificare persoană";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Dimineața";
+
 /* menu title */
 "Inbox" = "Primite";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Introducere nume afișat…";
-
-/* place holder */
-"Input Notification Email …" = "Introducere e-mail de notificare…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Conexiune nesigură";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Legătura a fost copiată.";
 
+/* Button inside the banner */
+"Load" = "Încărcare";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Încărcare imagini integrate";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Blocare aplicație";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Conectați-vă din nou pentru a continua să primiți actualizări";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Deconectat de la %@";
 
 /* error title */
 "Logs" = "Jurnale";
@@ -1135,9 +1126,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marcare ca necitit";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Meniu";
@@ -1237,6 +1225,9 @@
 /* Title */
 "Move to…" = "Mutare în…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Navigare la mesajul următor după mutare";
+
 /* Onboarding title */
 "Neat and tidy" = "Curată și ordonată";
 
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Înainte";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Mesaj următor după mutare";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Porecla";
@@ -1342,12 +1336,18 @@
 /* Alert title */
 "Notice" = "Notificare";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Acțiunile de notificare și alte procese din fundal nu vor mai fi disponibile.";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Notificări";
 
 /* The title of Off setting options */
 "Off" = "Dezactivat";
+
+/* Official badge next to sender's name */
+"Official" = "Oficial";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Deconectat";
@@ -1357,9 +1357,6 @@
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "OK";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Cel mai vechi mesaj: ";
@@ -1403,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Actualizarea parolei a eșuat.";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Parolă actualizată";
+
 /* Placeholder */
 "Passwords must match" = "Parolele trebuie să corespundă.";
 
 /* Text for pause button */
 "Pause" = "Pauză";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "După efectuarea unei acțiuni de mutare a unui mesaj (ex. în arhivă) se va trece la următorul mesaj.";
 
 /* default vcard types */
 "Personal" = "Personal";
@@ -1511,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Problemă trimitere mesaj";
 
+/* Settings lock protection section */
+"Protection" = "Protecție";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton nu este disponibil";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail nu este momentan disponibil…";
@@ -1526,9 +1529,6 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Stare Proton";
 
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Furnizați informații";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferență proxy/paravan de protecție";
 
@@ -1536,7 +1536,7 @@
 "Re-authenticate" = "Reautentificare";
 
 /* abbreviation of reply: */
-"Re:" = "Re:";
+"Re:" = "Rs:";
 
 /* No comment provided by engineer. */
 "Read" = "Citite";
@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperare activată";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Recomandați pe cineva";
 
 /* Title */
@@ -1587,8 +1588,14 @@
 /* reply action */
 "Reply" = "Răspuns";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Răspuns (ultimului mesaj)";
+
 /* reply all action */
 "Reply all" = "Răspuns tuturor";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Răspuns tuturor (ultimului mesaj)";
 
 /* menu title */
 "Report a problem" = "Raportare problemă";
@@ -1677,7 +1684,7 @@
 /* Action */
 "Send anyway" = "Trimitere așa";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Trimitere feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1792,6 +1799,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Amânare";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Unele imagini nu au putut fi încărcate datorită protecției împotriva urmăririi activată.";
+
 /* menu title */
 "Spam" = "Nedorite";
 
@@ -1855,9 +1865,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Acțiuni de glisare";
-
-/* Swiping gestures */
-"Swiping gestures" = "Gesturi glisare";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Comutare mod selectare";
@@ -1946,9 +1953,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adresa URL pe care încercați să o accesați nu este standard și s-ar putea să nu se încarce corect. Doriți să o deschideți folosind navigatorul implicit al dispozitivului?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Utilizator deja conectat.";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Există mesaje netrimise care vor fi pierdute dacă vă deconectați.";
 
@@ -1963,12 +1967,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Această conversaţie conţine mesaje care sunt șterse";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă Proton Mail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
@@ -2043,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Acțiuni bară utilitare (selectați max 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "ID amprentă";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Monitorizare recompense";
 
@@ -2061,9 +2056,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activați funcția pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
 
 /* Placeholder */
 "Two Factor Code" = "Cod doi factori";
@@ -2258,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Ați dezactivat Face ID în setările de sistem. Face ID a fost utilizat pentru a proteja informații importante despre cont. Pentru a accesa contul, accesați setările și reactivați Face ID sau reconectați-vă.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ați dezactivat %@ în setările de sistem. %@ a fost utilizat pentru a proteja informații importante despre cont. Pentru a accesa contul, accesați setările și reactivați %@ sau reconectați-vă.";
 
 /* Message */
 "You have %d new emails!" = "Aveți %d mesaje noi!";
@@ -2324,6 +2316,5 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesiunea a expirat deoarece nu s-a identificat vreo activitate de ceva timp sau pentru că a fost anulată. Reautentificați-vă.";
 
 /* contact placeholder */
-"ZIP" = "ZIP";
+"ZIP" = "Cod Poștal";
 
-"Customize (verb)" = "Customize";

@@ -304,13 +304,13 @@ extension PMAPIService {
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authCredential == nil {
 
-            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
+            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains)
 
         // 401 handling for unauth sessions, when credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authRetry, authRetryRemains > 0, let authCredential = authCredential {
 
-            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
                                                          productPrefix: challengeParametersProvider.prefix)
             refreshAuthCredential(credentialsCausing401: authCredential,
                                   withoutSupportForUnauthenticatedSessions: false,
@@ -346,8 +346,8 @@ extension PMAPIService {
             
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
             
-            handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
-
+            protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, forceUpgradeHandler)
+            
         } else {
             completion.call(task: task, error: error)
         }
@@ -393,13 +393,13 @@ extension PMAPIService {
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authCredential == nil {
 
-            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains, authCredential)
+            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains)
 
         // 401 handling for unauth sessions, when credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authRetry, authRetryRemains > 0, let authCredential = authCredential {
 
-            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParameters(),
+            let deviceFingerprints = ChallengeProperties(challenges: challengeParametersProvider.provideParametersForSessionFetching(),
                                                          productPrefix: challengeParametersProvider.prefix)
             refreshAuthCredential(credentialsCausing401: authCredential,
                                   withoutSupportForUnauthenticatedSessions: false,
@@ -434,7 +434,7 @@ extension PMAPIService {
             }
             
         } else {
-            handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
+            protonMailResponseCodeHandler.handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, forceUpgradeHandler)
         }
         self.debugError(error)
     }
@@ -484,64 +484,31 @@ extension PMAPIService {
     private func handleSessionAcquiring<T>(_ method: HTTPMethod, _ path: String, _ parameters: Any?, _ headers: [String: Any]?,
                                            _ authenticated: Bool, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
                                            _ completion: PMAPIService.APIResponseCompletion<T>, _ task: URLSessionDataTask?,
-                                           _ authRetry: Bool, _ authRetryRemains: Int, _ authCredential: AuthCredential?) where T: APIDecodableResponse {
+                                           _ authRetry: Bool, _ authRetryRemains: Int) where T: APIDecodableResponse {
 
-        acquireSession(deviceFingerprints: deviceFingerprints) { (result: SessionAcquisitionResult) in
-            switch result {
-            case .acquired(let newCredentials):
-                self.performRequestHavingFetchedCredentials(
-                    method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated,
-                    authRetry: false, authRetryRemains: 0, fetchingCredentialsResult: .found(credentials: newCredentials),
-                    nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: completion
-                )
-            case .acquiringError(let responseError):
-                guard let responseCode = responseError.responseCode else {
-                    completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
-                    return
+        fetchExistingCredentialsOrAcquireNewUnauthCredentials(
+            deviceFingerprints: deviceFingerprints,
+            completion: { (result: FetchingExistingOrAcquiringNewUnauthCredentialsResult) in
+                switch result {
+                case .foundExisting(let newCredentials), .triedAcquiringNew(.acquired(let newCredentials)):
+                    self.performRequestHavingFetchedCredentials(
+                        method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated,
+                        authRetry: false, authRetryRemains: 0, fetchingCredentialsResult: .found(credentials: newCredentials),
+                        nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: completion
+                    )
+                case .triedAcquiringNew(.acquiringError(let responseError)):
+                    guard let responseCode = responseError.responseCode else {
+                        completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
+                        return
+                    }
+                    self.protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion, self.humanVerificationHandler, self.forceUpgradeHandler)
+                case .triedAcquiringNew(.wrongConfigurationNoDelegate(let error)):
+                    self.debugError(error)
+                    completion.call(task: nil, error: error)
                 }
-                self.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion)
-            case .wrongConfigurationNoDelegate(let error):
-                self.debugError(error)
-                completion.call(task: nil, error: error)
             }
-        }
+        )
     }
-    
-    private func handleProtonResponseCode<T>(
-        _ task: URLSessionDataTask?, _ response: Either<JSONDictionary, ResponseError>, _ responseCode: Int, _ method: HTTPMethod, _ path: String, _ parameters: Any?,
-        _ headers: [String: Any]?, _ authenticated: Bool, _ authRetry: Bool, _ authRetryRemains: Int,
-        _ authCredential: AuthCredential?, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
-        _ completion: APIResponseCompletion<T>
-    ) where T: APIDecodableResponse {
-
-        if responseCode == APIErrorCode.humanVerificationRequired {
-            // human verification required
-            self.humanVerificationHandler(method: method,
-                                          path: path,
-                                          parameters: parameters,
-                                          headers: headers,
-                                          authenticated: authenticated,
-                                          authRetry: authRetry,
-                                          authRetryRemains: authRetryRemains,
-                                          customAuthCredential: authCredential,
-                                          nonDefaultTimeout: nonDefaultTimeout,
-                                          retryPolicy: retryPolicy,
-                                          task: task,
-                                          response: response.responseDictionary,
-                                          completion: completion)
-        } else if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
-            self.forceUpgradeHandler(errorMessage: response.errorMessage)
-            completion.call(task: task, response: .left(response.responseDictionary))
-        } else if responseCode == APIErrorCode.API_offline {
-            completion.call(task: task, response: .left(response.responseDictionary))
-        } else {
-            switch response {
-            case .left(let jsonDictionary): completion.call(task: task, response: .left(jsonDictionary))
-            case .right(let responseError): completion.call(task: task, error: responseError as NSError)
-            }
-        }
-    }
-    
 }
 
 // MARK: - Helper methods for creating the request, debugging etc.

@@ -167,7 +167,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
             self.navigateToCreateFolder(type: .label)
         case .addFolder:
             self.navigateToCreateFolder(type: .folder)
-        case .provideFeedback:
+        case .sendFeedback:
             let inboxLabel = MenuLabel(location: .inbox)
             labelToHighlight = inboxLabel
             if checkIsCurrentViewInInboxView() {
@@ -385,7 +385,19 @@ extension MenuCoordinator {
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
-            fetchMessageDetail: fetchMessageDetail
+            fetchMessageDetail: fetchMessageDetail,
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: user.apiService,
+                            internetStatusProvider: InternetConnectionStatusProvider()
+                        )
+                    ),
+                    senderImageStatusProvider: userCachedStatus,
+                    mailSettings: user.mailSettings
+                )
+            )
         )
         return mailboxVMDependencies
     }
@@ -416,6 +428,10 @@ extension MenuCoordinator {
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)
+            ),
+            senderImageService: .init(
+                dependencies: .init(apiService: userManager.apiService,
+                                    internetStatusProvider: InternetConnectionStatusProvider())
             ),
             totalUserCountClosure: { [weak self] in
                 return self?.usersManager.count ?? 0

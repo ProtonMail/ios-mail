@@ -42,12 +42,10 @@ public struct ResponseError: Error, Equatable {
     /// * there is no "Code" key in the response body JSON
     /// * the value for "Code" key in the response body JSON is not an integer
     public let responseCode: Int?
-    
+
     public let userFacingMessage: String?
     public let underlyingError: NSError?
 
-    public var localizedDescription: String { userFacingMessage ?? underlyingError?.localizedDescription ?? "" }
-    
     public var bestShotAtReasonableErrorCode: Int {
         responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
     }
@@ -68,6 +66,20 @@ public struct ResponseError: Error, Equatable {
                       responseCode: responseCode,
                       userFacingMessage: underlyingError.localizedDescription,
                       underlyingError: underlyingError as NSError)
+    }
+}
+
+extension ResponseError: LocalizedError {
+    public var errorDescription: String? {
+        if let userFacingMessage = userFacingMessage {
+            return userFacingMessage
+        } else if let underlyingError = underlyingError {
+            return underlyingError.localizedDescription
+        } else if isNetworkIssueError {
+            return CoreString._net_connection_error
+        } else {
+            return nil
+        }
     }
 }
 
@@ -200,18 +212,16 @@ open class Response: ResponseType {
 }
 
 public extension ResponseError {
+    @available(*, deprecated, message: "Call localizedDescription directly")
     var networkResponseMessageForTheUser: String {
-        if isNetworkIssueError {
-            return CoreString._net_connection_error
-        }
-        return localizedDescription
+        localizedDescription
     }
 }
 
 public extension Error {
-    
+
     // TODO: these widely accessible API is making it very difficult to understand what is actually presented to the user
-    
+
     var responseCode: Int? {
         (self as? ResponseError)?.responseCode
     }
@@ -219,15 +229,17 @@ public extension Error {
     var httpCode: Int? {
         (self as? ResponseError)?.httpCode
     }
-    
+
     var bestShotAtReasonableErrorCode: Int {
         (self as? ResponseError)?.bestShotAtReasonableErrorCode ?? (self as NSError).code
     }
 
+    @available(*, deprecated, message: "Call localizedDescription directly")
     var messageForTheUser: String {
-        (self as? ResponseError)?.networkResponseMessageForTheUser ?? self.localizedDescription
+        localizedDescription
     }
-    
+
+    @available(*, deprecated, message: "Do not use, this will become non-public soon.")
     var isNetworkIssueError: Bool {
         guard let responseError = self as? ResponseError else { return false }
         if responseError.responseCode == 3500 { // tls

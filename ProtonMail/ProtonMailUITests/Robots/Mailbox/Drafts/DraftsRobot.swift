@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"
@@ -52,13 +52,13 @@ class DraftsRobot: MailboxRobotInterface {
         }
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).wait().checkExists()
+            staticText(subject).waitUntilExists().checkExists()
         }
         
         func messageWithSubjectAndRecipientExists(_ subject: String, _ to: String) {
             staticText(subject)
                 .firstMatch()
-                .wait()
+                .waitUntilExists()
                 .checkExists()
         }
     }

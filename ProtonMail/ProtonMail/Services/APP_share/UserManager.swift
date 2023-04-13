@@ -73,7 +73,8 @@ class UserManager: Service {
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userID)
+                lastUpdatedStore.cleanUp(userId: self.userID),
+                self.incomingDefaultService.cleanUp()
             ]
             self.deactivatePayments()
             #if !APP_EXTENSION
@@ -101,6 +102,7 @@ class UserManager: Service {
     }
 
     static func cleanUpAll() -> Promise<Void> {
+        IncomingDefaultService.cleanUpAll()
         LocalNotificationService.cleanUpAll()
 
         var wait = Promise<Void>()
@@ -140,7 +142,6 @@ class UserManager: Service {
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
-            userDefaults: SharedCacheBase.getDefault(),
             viewMode: self.userInfo.viewMode
         )
     }()
@@ -167,6 +168,16 @@ class UserManager: Service {
                                                coreDataService: coreDataService,
                                                queueManager: sharedServices.get(by: QueueManager.self),
                                                userID: self.userID)
+        return service
+    }()
+
+    lazy var appRatingService: AppRatingService = { [unowned self] in
+        let service = AppRatingService(
+            dependencies: .init(
+                featureFlagService: featureFlagsDownloadService,
+                appRating: AppRatingManager()
+            )
+        )
         return service
     }()
 
@@ -233,14 +244,32 @@ class UserManager: Service {
         return service
     }()
 
+    lazy var incomingDefaultService: IncomingDefaultService = { [unowned self] in
+        return IncomingDefaultService(
+            dependencies: .init(
+                apiService: apiService,
+                contextProvider: coreDataService,
+                userInfo: userInfo
+            )
+        )
+    }()
+
     lazy var eventsService: EventsFetching = { [unowned self] in
-        let service = EventsService(userManager: self, contactCacheStatus: userCachedStatus)
+        let useCase = FetchMessageMetaData(
+            params: .init(userID: userInfo.userId),
+            dependencies: .init(messageDataService: messageService, contextProvider: coreDataService)
+        )
+        let service = EventsService(
+            userManager: self,
+            dependencies: .init(fetchMessageMetaData: useCase, contactCacheStatus: userCachedStatus, incomingDefaultService: incomingDefaultService)
+        )
         return service
     }()
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
         let manager = UndoActionManager(
             apiService: self.apiService,
+            internetStatusProvider: sharedServices.get(),
             contextProvider: coreDataService,
             getEventFetching: { [weak self] in
                 self?.eventsService
@@ -257,8 +286,10 @@ class UserManager: Service {
             userID: userID,
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
+            appRatingStatusProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
-            userIntroductionProgressProvider: userCachedStatus
+            userIntroductionProgressProvider: userCachedStatus,
+            senderImageEnableStatusProvider: userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)
         return service
@@ -274,6 +305,21 @@ class UserManager: Service {
     }()
 
     #if !APP_EXTENSION
+    lazy var blockedSenderCacheUpdater: BlockedSenderCacheUpdater = { [unowned self] in
+        let refetchAllBlockedSenders = RefetchAllBlockedSenders(
+            dependencies: .init(incomingDefaultService: incomingDefaultService)
+        )
+
+        return BlockedSenderCacheUpdater(
+            dependencies: .init(
+                fetchStatusProvider: userCachedStatus,
+                internetConnectionStatusProvider: InternetConnectionStatusProvider(),
+                refetchAllBlockedSenders: refetchAllBlockedSenders,
+                userInfo: userInfo
+            )
+        )
+    }()
+
     lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
                                  apiService: self.apiService,
                                  localStorage: userCachedStatus,
@@ -297,20 +343,25 @@ class UserManager: Service {
         return userInfo.telemetry == 1
     }
 
+    var mailSettings: MailSettings
+
     init(
         api: APIService,
         userInfo: UserInfo,
         authCredential: AuthCredential,
+        mailSettings: MailSettings?,
         parent: UsersManager?,
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         self.userInfo = userInfo
         self.apiService = api
         self.authCredential = authCredential
+        self.mailSettings = mailSettings ?? .init()
         self.appTelemetry = appTelemetry
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
+        acquireSessionIfNeeded()
         self.parentManager = parent
         let handler = self.makeQueueHandler()
         let queueManager = sharedServices.get(by: QueueManager.self)
@@ -323,6 +374,7 @@ class UserManager: Service {
         api: APIService,
         role: UserInfo.OrganizationRole,
         userInfo: UserInfo = UserInfo.getDefault(),
+        mailSettings: MailSettings = .init(),
         appTelemetry: AppTelemetry = MailAppTelemetry()
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
@@ -333,9 +385,20 @@ class UserManager: Service {
         self.apiService = api
         self.appTelemetry = appTelemetry
         self.authCredential = AuthCredential.none
+        self.mailSettings = mailSettings
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
+        acquireSessionIfNeeded()
+    }
+
+    private func acquireSessionIfNeeded() {
+        self.apiService.acquireSessionIfNeeded { result in
+            guard case .success(.sessionAlreadyPresent) = result else {
+                assertionFailure("Lack of session just after the auth delegate being configured indicates the programmers error")
+                return
+            }
+        }
     }
 
     func isMatch(sessionID uid: String) -> Bool {
@@ -344,9 +407,10 @@ class UserManager: Service {
 
     func fetchUserInfo() {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
-        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] info in
-            guard let info = info else { return }
+        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] tuple in
+            guard let info = tuple.0 else { return }
             self?.userInfo = info
+            self?.mailSettings = tuple.1
             self?.save()
             #if !APP_EXTENSION
             guard let self = self,
@@ -494,9 +558,13 @@ extension UserManager: UserDataSource {
             self.save()
         }
     }
+
     func updateFromEvents(mailSettingsRes: [String: Any]?) {
         if let settings = mailSettingsRes {
             userInfo.parse(mailSettings: settings)
+            if let mailSettings = try? MailSettings(dict: settings) {
+                self.mailSettings = mailSettings
+            }
             self.save()
         }
     }
@@ -674,12 +742,18 @@ extension UserManager: UserAddressUpdaterProtocol {
 
 extension UserManager: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+        if authCredential.isForUnauthenticatedSession {
+            assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
+        }
         self.authCredential = authCredential
         isLoggedOut = false
         self.save()
     }
 
-    func sessionWasInvalidated(for sessionUID: String) {
+    func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        if !isAuthenticatedSession {
+            assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
+        }
         isLoggedOut = true
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])

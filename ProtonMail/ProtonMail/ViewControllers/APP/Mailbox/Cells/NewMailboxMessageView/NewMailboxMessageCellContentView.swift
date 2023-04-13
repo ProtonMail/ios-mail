@@ -29,6 +29,7 @@ class NewMailboxMessageCellContentView: UIView {
     let leftContainer = UIControl()
     let initialsContainer = SubviewsFactory.container
     let initialsLabel = UILabel.initialsLabel
+    let senderImageView = SubviewsFactory.senderImageView
     let checkBoxView = NewMailboxMessageCheckBoxView()
     let scheduledIconView = SubviewsFactory.scheduledIconView
     let scheduledContainer = SubviewsFactory.scheduledContainer
@@ -48,6 +49,7 @@ class NewMailboxMessageCellContentView: UIView {
         leftContainer.addSubview(scheduledIconView)
         leftContainer.addSubview(scheduledContainer)
         initialsContainer.addSubview(initialsLabel)
+        initialsContainer.addSubview(senderImageView)
     }
 
     private func setUpLayout() {
@@ -87,8 +89,10 @@ class NewMailboxMessageCellContentView: UIView {
         [
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
-            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
+            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
         ].activate()
+
+        senderImageView.fillSuperview()
     }
 
     required init?(coder: NSCoder) {
@@ -117,8 +121,16 @@ private enum SubviewsFactory {
         let view = UIView()
         view.layer.cornerRadius = 8
         view.layer.borderWidth = 1
-        view.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        view.layer.borderColor = ColorProvider.SeparatorNorm
         view.isUserInteractionEnabled = false
+        return view
+    }
+
+    static var senderImageView: UIImageView {
+        let view = UIImageView(image: nil)
+        view.contentMode = .scaleAspectFit
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
         return view
     }
 }

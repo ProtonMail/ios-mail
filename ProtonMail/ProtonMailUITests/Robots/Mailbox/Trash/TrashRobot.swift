@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
@@ -46,7 +46,7 @@ class TrashRobot: MailboxRobotInterface {
     class Verify : MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).wait().checkExists()
+            staticText(subject).waitUntilExists().checkExists()
         }
     }
 }

@@ -25,7 +25,12 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import UIKit
 
-class SettingsAccountCoordinator {
+// sourcery: mock
+protocol SettingsAccountCoordinatorProtocol: AnyObject {
+    func go(to dest: SettingsAccountCoordinator.Destination)
+}
+
+class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
 
@@ -51,6 +56,8 @@ class SettingsAccountCoordinator {
         case searchContent
         case localStorage
         case deleteAccount
+        case nextMsgAfterMove
+        case blockList
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -66,6 +73,8 @@ class SettingsAccountCoordinator {
 
     func go(to dest: Destination) {
         switch dest {
+        case .blockList:
+            openBlockList()
         case .singlePwd:
             openChangePassword(ofType: ChangeSinglePasswordViewModel.self)
         case .loginPwd:
@@ -96,6 +105,8 @@ class SettingsAccountCoordinator {
             openLocalStorage()
         case .deleteAccount:
             openAccountDeletion()
+        case .nextMsgAfterMove:
+            openNextMessageAfterMove()
         }
     }
 
@@ -107,6 +118,28 @@ class SettingsAccountCoordinator {
             return
         }
         go(to: destination)
+    }
+
+    private func openBlockList() {
+        let incomingDefaultService = user.incomingDefaultService
+
+        let unblockSender = UnblockSender(
+            dependencies: .init(
+                incomingDefaultService: incomingDefaultService,
+                queueManager: sharedServices.get(by: QueueManager.self),
+                userInfo: user.userInfo
+            )
+        )
+
+        let viewModel = BlockedSendersViewModel(
+            dependencies: .init(
+                cacheUpdater: user.blockedSenderCacheUpdater,
+                incomingDefaultService: incomingDefaultService,
+                unblockSender: unblockSender
+            )
+        )
+        let viewController = BlockedSendersViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {
@@ -215,5 +248,11 @@ class SettingsAccountCoordinator {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addCloseAction()
         navigationController?.topViewController?.present(alert, animated: true, completion: nil)
+    }
+
+    private func openNextMessageAfterMove() {
+        let viewModel = NextMessageAfterMoveViewModel(user, apiService: user.apiService)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct ui {
     static let enableSignatureStaticTextLabel = LocalString._settings_enable_signature_title
@@ -22,7 +22,7 @@ class PrivacyRobot: CoreElements {
     var verify = Verify()
     
     func disableAutoShowImages() -> PrivacyRobot {
-        if (Element.swittch.isEnabledByIndex(0)) {
+        if (swittch().byIndex(0).enabled()) {
             /// Turn switch OFF and then ON
             swittch().byIndex(0).tap()
         } else {
@@ -34,7 +34,7 @@ class PrivacyRobot: CoreElements {
     }
     
     func enableAutoShowImages() -> PrivacyRobot {
-        if (Element.swittch.isEnabledByIndex(0)) {
+        if (swittch().byIndex(0).enabled()) {
             /// Turn switch OFF and then ON
             swittch().byIndex(0).tap()
             swittch().byIndex(0).tap()
@@ -56,7 +56,7 @@ class PrivacyRobot: CoreElements {
     class Verify: CoreElements {
 
         func autoShowImagesSwitchIsDisabled() {
-            Element.assert.switchByIndexHasValue(0, 0)
+            swittch().byIndex(0).hasValue("0").checkExists()
         }
     }
 }

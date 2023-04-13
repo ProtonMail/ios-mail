@@ -17,14 +17,14 @@ RSYNC_PROTECT_TMP_FILES=(--filter "P .*.??????")
 variant_for_slice()
 {
   case "$1" in
-  "GoLibs.xcframework/macos-arm64_x86_64")
-    echo ""
-    ;;
   "GoLibs.xcframework/ios-arm64")
     echo ""
     ;;
   "GoLibs.xcframework/ios-arm64_x86_64-simulator")
     echo "simulator"
+    ;;
+  "GoLibs.xcframework/macos-arm64_x86_64")
+    echo ""
     ;;
   esac
 }
@@ -32,13 +32,13 @@ variant_for_slice()
 archs_for_slice()
 {
   case "$1" in
-  "GoLibs.xcframework/macos-arm64_x86_64")
-    echo "arm64 x86_64"
-    ;;
   "GoLibs.xcframework/ios-arm64")
     echo "arm64"
     ;;
   "GoLibs.xcframework/ios-arm64_x86_64-simulator")
+    echo "arm64 x86_64"
+    ;;
+  "GoLibs.xcframework/macos-arm64_x86_64")
     echo "arm64 x86_64"
     ;;
   esac

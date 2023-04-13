@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ af %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d sekúndur";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d valið";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Slepptu hér til að bæta við sem viðhengi";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Vistföng";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Ítarlegar stillingar";
+
 /* Title */
 "Alert" = "Aðvörun";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Allur póstur";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Allar verndarstillingar verða endurstilltar og þurrkaðar út þegar þú skráir þig úr forritinu.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Öllum skilaboðum þínum er hlaðið niður";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Útlit";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey verndar frekar þínar Proton upplýsingar ef um viðamiklar árásir er að ræða, svo sem þegar árásarmaður klónar innihaldið á tækinu þínu. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey vörn";
 
 /* Apply action */
 "Apply" = "Virkja";
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Lokaðu fyrir rakningu tölvupósts";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Listi yfir bannað";
+
+/* Button to block a sender */
+"Block sender" = "Útiloka sendanda";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Hindrar sendendur í að sjá hvort og hvenær þú opnaðir skilaboðin";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Ekki leyft að búa til merki";
 
-/* Change language title */
-"Current Language is: " = "Núverandi tungumál er: ";
-
 /* Placeholder */
 "Current password" = "Núverandi lykilorð";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Sérsniðið";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Sérsníða";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Sérsníða verkfærastiku";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Hent";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Fyrirvari";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Sleppa lyklaborði";
 
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Sæki lýsigögn ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Sæki ný skilaboð ...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Hleður niður tölvupósti svo þú getir leitað í þeim. Skilaboð eru dulkóðuð og geymd staðbundið. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Netfang er óvirkt";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "Tölvupóstfangið er ógilt";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Tölvupóstföng";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Fyrning ekki studd";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Andlits ID";
-
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Áframsenda";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Áframsenda (síðustu skilaboð)";
+
 /* forwarded message title */
 "Forwarded message" = "Áframsend skilaboð";
 
@@ -894,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Áfram:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Áfram:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Kyn";
 
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Fara í stillingar";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Farðu í innskráningu";
 
 /* Got it action */
 "Got it" = "Náði því";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvernig myndir þú lýsa upplifun þinni af nýju Proton tölvupóstforriti?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Mennskuprófun mistókst";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Á morgnana";
+
 /* menu title */
 "Inbox" = "Innhólf";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Settu inn birtingarnafn...";
-
-/* place holder */
-"Input Notification Email …" = "Setja inn tilkynningapóst ...";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Óörugg tenging";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Krækja afrituð.";
 
+/* Button inside the banner */
+"Load" = "Hlaða inn";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Læsa forritinu";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Skráðu þig inn aftur til að halda áfram að fá uppfærslur";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Útskráður frá %@";
 
 /* error title */
 "Logs" = "Aðgerðaskrár";
@@ -1135,9 +1126,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Merkja sem ólesið";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Valmynd";
@@ -1237,6 +1225,9 @@
 /* Title */
 "Move to…" = "Færa í…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Farðu í næstu skilaboð eftir flutning";
+
 /* Onboarding title */
 "Neat and tidy" = "Hreint og fínt";
 
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Næsta";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Næstu skilaboð eftir flutning";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Gælunafn";
@@ -1342,12 +1336,18 @@
 /* Alert title */
 "Notice" = "Tilkynning";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Tilkynningaraðgerðir og önnur bakgrunnsferli verða ekki tiltæk";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Tilkynningar";
 
 /* The title of Off setting options */
 "Off" = "Óvirkt";
+
+/* Official badge next to sender's name */
+"Official" = "Opinber";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Ótengdur";
@@ -1357,9 +1357,6 @@
 
 /* Action */
 "OK" = "Í lagi";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Í lagi";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Elstu skilaboð: ";
@@ -1403,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Uppfærsla lykilorðs mistókst";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Lykilorð uppfært";
+
 /* Placeholder */
 "Passwords must match" = "Lykilorðin verða að samsvara";
 
 /* Text for pause button */
 "Pause" = "Í bið";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Ef þú framkvæmir flutningsaðgerð á skilaboðum (t.d. í skjalasafn) verður farið í næstu skilaboð.";
 
 /* default vcard types */
 "Personal" = "Persónulegt";
@@ -1511,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Vandamál við að senda skilaboð";
 
+/* Settings lock protection section */
+"Protection" = "Vörn";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton liggur niðri";
-
-/* Title */
-"Proton Mail" = "Proton tölvupóstur";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton tölvupóstur er ótengdur í augnablikinu";
@@ -1525,9 +1528,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Staða Proton";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Gefðu endurgjöf";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Truflanir vegna milliþjóna/eldveggja";
@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Endurheimt virkjuð";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Vísa vini á";
 
 /* Title */
@@ -1587,8 +1588,14 @@
 /* reply action */
 "Reply" = "Svara";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Svara (síðustu skilaboðum)";
+
 /* reply all action */
 "Reply all" = "Svara öllum";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Svaraðu öllum (síðustu skilaboðum)";
 
 /* menu title */
 "Report a problem" = "Tilkynna vandamál";
@@ -1677,7 +1684,7 @@
 /* Action */
 "Send anyway" = "Senda samt";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Senda endurgjöf";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1792,6 +1799,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Ekki var hægt að hlaða upp sumum myndum með rakningarvörn.";
+
 /* menu title */
 "Spam" = "Ruslpóstur";
 
@@ -1855,9 +1865,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Stroku aðgerðir";
-
-/* Swiping gestures */
-"Swiping gestures" = "Strokubendingar";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Skiptu um valham";
@@ -1946,9 +1953,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Slóðin sem þú ert að reyna að opna er ekki stöðluð og gæti hlaðist rangt inn. Viltu opna hana með sjálfgefna varfranum á tækinu þínu?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Notandinn er þegar skráður inn";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Enn eru ósend skilaboð sem munu tapast ef þú skráir þig út";
 
@@ -1963,12 +1967,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Þetta samtal inniheldur skilaboð sem eru í ruslinu";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá Proton tölvupóst netfangi en kom í rauninni utan kerfisins og stóðst ekki auðkenningarkröfur okkar. Hann gæti verið falsaður eða áframsendur á rangan hátt!";
@@ -2043,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Aðgerðir á tækjastiku (velja allt að 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Snerti auðkenni";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Fylgstu með verðlaununum þínum";
 
@@ -2061,9 +2056,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Kveiktu á þessum eiginleika til að sjálfvirkt klára netföng með því að nota tengiliði úr öllum þeim notendaaðgöngum sem þú ert skráður inn í.";
 
 /* Placeholder */
 "Two Factor Code" = "Tveggja-þátta lykilkóði";
@@ -2258,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Þú getur ekki sett %@ póstfangið sem sjálfgefið því það er eiginleiki sem þarf að greiða fyrir.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Þú gerðir andlitsauðkenni óvirkt í kerfisstillingunum þínum. Andlitsauðkenni hefur verið notað til að vernda mikilvægar upplýsingar notandaaðgangsins. Til að tengjast notandaaðgangnum, farðu þá í stillingar og virkjaðu andlitsauðkenni aftur, eða skráðu þig aftur inn.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Þú gerðir andlitsauðkenni óvirkt í kerfisstillingunum þínum. Andlitsauðkenni hefur verið notað til að vernda mikilvægar upplýsingar notandaaðgangsins. Til að tengjast notandaaðgangnum, farðu þá í stillingar og virkjaðu andlitsauðkenni aftur, eða skráðu þig aftur inn.";
 
 /* Message */
 "You have %d new emails!" = "Þú hefur fengið %d nýja tölvupósta!";
@@ -2326,4 +2318,3 @@
 /* contact placeholder */
 "ZIP" = "Póstnúmer";
 
-"Customize (verb)" = "Customize";

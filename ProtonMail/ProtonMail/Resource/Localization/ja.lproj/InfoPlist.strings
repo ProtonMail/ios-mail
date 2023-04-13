@@ -1,6 +1,3 @@
-/* Bundle display name */
-"CFBundleDisplayName" = "Proton Mail";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "メールにメディアを添付するために必要です。";
 

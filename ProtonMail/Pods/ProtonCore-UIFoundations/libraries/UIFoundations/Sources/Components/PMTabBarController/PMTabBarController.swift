@@ -169,7 +169,7 @@ extension PMTabBarController {
     }
 
     private func setupStack(container: UIView, height: CGFloat, isFloatBar: Bool) -> UIStackView {
-        let padding = isFloatBar ? self.PADDING: 22
+        let padding = isFloatBar ? self.PADDING : 22
         let stack = UIStackView(.horizontal, alignment: .center, distribution: .fillProportionally, useAutoLayout: true)
         stack.spacing = 8
         container.addSubview(stack)

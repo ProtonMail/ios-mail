@@ -51,7 +51,7 @@ struct Sender: Codable {
         isSimpleLogin == 1
     }
 
-    var shouldDislaySenderImage: Bool {
+    var shouldDisplaySenderImage: Bool {
         displaySenderImage == 1
     }
 }

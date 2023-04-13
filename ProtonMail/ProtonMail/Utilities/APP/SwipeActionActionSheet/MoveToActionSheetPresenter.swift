@@ -36,46 +36,15 @@ class MoveToActionSheetPresenter {
         done: @escaping (_ havingUnsaveChanges: Bool) -> Void
     ) {
         var folderSelectionActionSheet: PMActionSheet?
-        let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
-                                                icon: nil,
-                                                textColor: ColorProvider.BrandNorm) { _ in
-            // Collect current label markType status of all options in the action sheet
-            var currentMarkTypes = viewModel.initialLabelSelectionStatus
-            let currentLabelOptions = folderSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
-            currentLabelOptions?.forEach({ item in
-                if let option = currentMarkTypes.first(where: { key, _ in
-                    key.name == item.title
-                }) {
-                    currentMarkTypes[option.key] = item.markType
-                }
-            })
-
-            done(currentMarkTypes != viewModel.initialLabelSelectionStatus)
-        }
-
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { _ in
-            // Collect current label markType status of all options in the action sheet
-            var currentMarkTypes = viewModel.initialLabelSelectionStatus
-            let currentLabelOptions = folderSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
-            currentLabelOptions?.forEach({ item in
-                if let option = currentMarkTypes.first(where: { key, _ in
-                    key.name == item.title
-                }) {
-                    currentMarkTypes[option.key] = item.markType
-                }
-            })
-
-            cancel(currentMarkTypes != viewModel.initialLabelSelectionStatus)
-        }
 
         let rows = viewModel.menuLabels.getNumberOfRows()
-        var folderActions: [PMActionSheetPlainItem] = []
+        var folderActions: [PMActionSheetItem] = []
         for i in 0..<rows {
             guard let menuLabel = viewModel.menuLabels.getFolderItem(at: i) else {
                 continue
             }
 
-            var icon: UIImage?
+            var icon: UIImage
             if let menuIcon = menuLabel.location.icon {
                 icon = menuIcon
             } else {
@@ -90,26 +59,62 @@ class MoveToActionSheetPresenter {
 
             let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
             let isOn = markType != .none
-            let item = PMActionSheetPlainItem(title: menuLabel.name,
-                                              icon: icon?.withRenderingMode(.alwaysTemplate),
-                                              iconColor: iconColor,
-                                              isOn: isOn,
-                                              markType: markType,
-                                              indentationLevel: menuLabel.indentationLevel) { item in
-                selected(menuLabel, item.isOn)
-            }
+            let item = PMActionSheetItem(
+                components: [
+                    PMActionSheetIconComponent(
+                        icon: icon.withRenderingMode(.alwaysTemplate),
+                        iconColor: iconColor,
+                        edge: [nil, nil, nil, 16]
+                    ),
+                    PMActionSheetTextComponent(text: .left(menuLabel.name), edge: [nil, 16, nil, 12])
+                ],
+                indentationLevel: menuLabel.indentationLevel,
+                markType: markType,
+                handler: { item in
+                    let isSelected = item.markType != .none
+                    selected(menuLabel, isSelected)
+                })
             folderActions.append(item)
         }
 
-        let headerView = PMActionSheetHeaderView(title: LocalString._move_to_title,
-                                                 subtitle: nil,
-                                                 leftItem: cancelItem,
-                                                 rightItem: doneButton)
-        let add = PMActionSheetPlainItem(title: LocalString._move_to_new_folder,
-                                         icon: IconProvider.plus,
-                                         textColor: ColorProvider.TextWeak) { _ in
-            addNewFolder()
-        }
+        let headerView = PMActionSheetHeaderView(
+            title: LocalString._move_to_title,
+            leftItem: .right(IconProvider.cross),
+            rightItem: .left(LocalString._move_to_done_button_title),
+            leftItemHandler: { [weak self] in
+                guard let self = self else { return }
+                let currentMarkTypes = self.currentMarkTypes(
+                    viewModel: viewModel,
+                    folderSelectionActionSheet: folderSelectionActionSheet
+                )
+
+                cancel(currentMarkTypes != viewModel.initialLabelSelectionStatus)
+            }, rightItemHandler: { [weak self] in
+                guard let self = self else { return }
+                let currentMarkTypes = self.currentMarkTypes(
+                    viewModel: viewModel,
+                    folderSelectionActionSheet: folderSelectionActionSheet
+                )
+
+                done(currentMarkTypes != viewModel.initialLabelSelectionStatus)
+            }
+        )
+
+        let add = PMActionSheetItem(
+            components: [
+                PMActionSheetIconComponent(
+                    icon: IconProvider.plus,
+                    iconColor: ColorProvider.TextWeak,
+                    edge: [nil, nil, nil, 16]
+                ),
+                PMActionSheetTextComponent(
+                    text: .left(LocalString._label_as_new_label),
+                    textColor: ColorProvider.TextWeak,
+                    edge: [nil, 16, nil, 12]
+                )
+            ]) { _ in
+                addNewFolder()
+            }
         let addFolderGroup = PMActionSheetItemGroup(items: [add], style: .clickable)
 
         let foldersGroup = PMActionSheetItemGroup(items: folderActions, style: .singleSelection)
@@ -117,7 +122,7 @@ class MoveToActionSheetPresenter {
         if hasNewFolderButton {
             itemGroups.insert(addFolderGroup, at: 0)
         }
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups, maximumOccupy: 0.7)
+        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups) /*, maximumOccupy: 0.7) */
         actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         folderSelectionActionSheet = actionSheet
@@ -126,5 +131,32 @@ class MoveToActionSheetPresenter {
                 UIAccessibility.post(notification: .screenChanged, argument: actionSheet)
             }
         }
+    }
+
+    private func currentMarkTypes(
+        viewModel: MoveToActionSheetViewModel,
+        folderSelectionActionSheet: PMActionSheet?
+    ) -> [MenuLabel : PMActionSheetItem.MarkType] {
+        // Collect current label markType status of all options in the action sheet
+        var currentMarkTypes = viewModel.initialLabelSelectionStatus
+
+        folderSelectionActionSheet?.itemGroups.last?.items
+            .forEach { item in
+                for component in item.components {
+                    guard let textComponent = component as? PMActionSheetTextComponent else { continue }
+                    var title = ""
+                    switch textComponent.text {
+                    case .left(let text):
+                        title = text
+                    case .right(let attributed):
+                        title = attributed.string
+                    }
+                    if let option = currentMarkTypes.first(where: { $0.key.name == title }) {
+                        currentMarkTypes[option.key] = item.markType
+                    }
+                }
+            }
+
+        return currentMarkTypes
     }
 }

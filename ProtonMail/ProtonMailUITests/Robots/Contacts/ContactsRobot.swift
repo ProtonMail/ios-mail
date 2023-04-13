@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 import ProtonMail
 import XCTest
 
@@ -175,7 +175,7 @@ class ContactsRobot: CoreElements {
     class Verify: CoreElements {
 
         func contactsOpened() {
-            table(id.contactsTableViewIdentifier).wait().checkExists()
+            table(id.contactsTableViewIdentifier).waitUntilExists().checkExists()
         }
     }
 }

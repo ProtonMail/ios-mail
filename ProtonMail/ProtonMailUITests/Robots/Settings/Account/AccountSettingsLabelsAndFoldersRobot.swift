@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let newFolderText = "New folder"
@@ -69,7 +69,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     class Verify: CoreElements {
         
         func folderLabelExists(_ name: String) {
-            cell(id.labelFolderCellIdentifier(name)).wait().checkExists()
+            cell(id.labelFolderCellIdentifier(name)).waitUntilExists().checkExists()
         }
         
         func folderLabelDeleted(_ name: String) {

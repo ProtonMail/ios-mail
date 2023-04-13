@@ -38,7 +38,7 @@ public extension UILabel {
         }
     }
     
-    private func actionHandler(handler:(() -> Void)? = nil) {
+    private func actionHandler(handler: (() -> Void)? = nil) {
         struct ActionHandler {
             static var handler: (() -> Void)?
         }

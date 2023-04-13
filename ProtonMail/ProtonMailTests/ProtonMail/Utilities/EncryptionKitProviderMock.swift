@@ -62,11 +62,14 @@ final class EncryptionKitProviderMock: EncryptionKitProvider {
     =zmIB
     -----END PGP PUBLIC KEY BLOCK-----
     """)
+    private(set) var markForUnsubscribingWasCalled: Bool = false
 
     func encryptionKit(forSession uid: String) -> EncryptionKit? {
         guard uid == Self.UID else { return nil }
         return EncryptionKit(passphrase: passphrase, privateKey: privateKey, publicKey: publicKey.value)
     }
 
-    func markForUnsubscribing(uid: String) {}
+    func markEncryptionKitForUnsubscribing(forSession uid: String) {
+        markForUnsubscribingWasCalled = true
+    }
 }

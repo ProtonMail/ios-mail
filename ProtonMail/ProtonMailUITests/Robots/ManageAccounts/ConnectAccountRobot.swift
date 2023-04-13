@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let usernameTextFieldIdentifier = "LoginViewController.loginTextField.textField"
@@ -144,7 +144,7 @@ class ConnectAccountRobot: CoreElements {
         /// Free users limit alert is shown.
         func limitReachedDialogDisplayed() {
             staticText(id.limitReachedText).firstMatch()
-                .wait().checkExists()
+                .waitUntilExists().checkExists()
         }
     }
 }

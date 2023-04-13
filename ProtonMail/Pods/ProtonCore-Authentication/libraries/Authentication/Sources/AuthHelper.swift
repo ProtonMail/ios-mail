@@ -27,32 +27,31 @@ import ProtonCore_Utilities
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public protocol AuthHelperDelegate: AnyObject {
+public protocol AuthHelperDelegate: AuthSessionInvalidatedDelegate {
     // if credentials are persisted, this is the place to persist new ones
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String)
-    // if credentials are persisted, this is the place to clear credentials
-    func sessionWasInvalidated(for sessionUID: String)
 }
 
 public final class AuthHelper: AuthDelegate {
     
-    private let authCredentials: Atomic<(AuthCredential, Credential)?>
-    private weak var delegate: AuthHelperDelegate?
-    
-    private var delegateExecutor: CompletionBlockExecutor!
+    private let currentCredentials: Atomic<(AuthCredential, Credential)?>
+
+    public private(set) weak var delegate: AuthHelperDelegate?
+    public weak var authSessionInvalidatedDelegateForLoginAndSignup: AuthSessionInvalidatedDelegate?
+    private var delegateExecutor: CompletionBlockExecutor?
     
     public init(authCredential: AuthCredential) {
         let credential = Credential(authCredential)
-        self.authCredentials = .init((authCredential, credential))
+        self.currentCredentials = .init((authCredential, credential))
     }
     
     public init(credential: Credential) {
         let authCredential = AuthCredential(credential)
-        self.authCredentials = .init((authCredential, credential))
+        self.currentCredentials = .init((authCredential, credential))
     }
     
     public init() {
-        self.authCredentials = .init(nil)
+        self.currentCredentials = .init(nil)
     }
     
     public init?(initialBothCredentials: (AuthCredential, Credential)) {
@@ -65,14 +64,14 @@ public final class AuthHelper: AuthDelegate {
               authCredential.userName == credential.userName else {
             return nil
         }
-        self.authCredentials = .init(initialBothCredentials)
+        self.currentCredentials = .init(initialBothCredentials)
     }
     
     public func setUpDelegate(_ delegate: AuthHelperDelegate, callingItOn executor: CompletionBlockExecutor? = nil) {
         if let executor = executor {
             self.delegateExecutor = executor
         } else {
-            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated, attributes: .initiallyInactive)
+            let dispatchQueue = DispatchQueue(label: "me.proton.core.auth-helper.default", qos: .userInitiated)
             self.delegateExecutor = .asyncExecutor(dispatchQueue: dispatchQueue)
         }
         self.delegate = delegate
@@ -87,7 +86,7 @@ public final class AuthHelper: AuthDelegate {
     }
     
     private func fetchCredentials<T>(for sessionUID: String, path: KeyPath<(AuthCredential, Credential), T>) -> T? {
-        authCredentials.transform { authCredentials in
+        currentCredentials.transform { authCredentials in
             guard let existingCredentials = authCredentials else { return nil }
             guard existingCredentials.0.sessionID == sessionUID else {
                 PMLog.error("Asked for wrong credentials. It's a programmers error and should be investigated")
@@ -96,34 +95,9 @@ public final class AuthHelper: AuthDelegate {
             return existingCredentials[keyPath: path]
         }
     }
-    
-    public func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion) {
-        guard let oldCredential = authCredentials.transform({ $0?.1 }) else {
-            PMLog.error("App tried to refresh non-existing credentials. It's a programmers error and should be investigated")
-            complete(.failure(.notImplementedYet("Not logged in")))
-            return
-        }
-        guard oldCredential.UID == sessionUID else {
-            PMLog.error("Asked for refreshing credentials of wrong session. It's a programmers error and should be investigated")
-            complete(.failure(.notImplementedYet("Wrong session")))
-            return
-        }
-        
-        var authenticator: Authenticator? = Authenticator(api: service)
-        authenticator?.refreshCredential(oldCredential) { result in
-            // captured reference ensures the authenticator is not deallocated until the completion block is called
-            authenticator = nil
-            switch result {
-            case .success(.ask2FA((let newCredential, _))), .success(.newCredential(let newCredential, _)), .success(.updatedCredential(let newCredential)):
-                complete(.success(newCredential))
-            case .failure(let authError):
-                complete(.failure(authError))
-            }
-        }
-    }
-    
+
     public func onUpdate(credential: Credential, sessionUID: String) {
-        authCredentials.mutate { credentialsToBeUpdated in
+        currentCredentials.mutate { credentialsToBeUpdated in
             
             guard let existingCredentials = credentialsToBeUpdated else {
                 credentialsToBeUpdated = (AuthCredential(credential), credential)
@@ -146,31 +120,30 @@ public final class AuthHelper: AuthDelegate {
 
             credentialsToBeUpdated = (updatedAuth, updatedCredentials)
             
-            guard let delegate = delegate else { return }
+            guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: updatedAuth, credential: updatedCredentials, for: sessionUID)
             }
         }
     }
     
-    public func onAuthentication(credential: Credential, service: APIService?) {
-        authCredentials.mutate { authCredentials in
+    public func onSessionObtaining(credential: Credential) {
+        currentCredentials.mutate { authCredentials in
             
             let sessionUID = credential.UID
             let newCredentials = (AuthCredential(credential), credential)
-            
-            service?.setSessionUID(uid: sessionUID)
+
             authCredentials = newCredentials
             
-            guard let delegate = delegate else { return }
+            guard let delegate, let delegateExecutor else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: newCredentials.0, credential: newCredentials.1, for: sessionUID)
             }
         }
     }
     
-    public func updateAuth(for sessionUID: String, password: String?, salt: String?, privateKey: String?) {
-        authCredentials.mutate { authCredentials in
+    public func onAdditionalCredentialsInfoObtained(sessionUID: String, password: String?, salt: String?, privateKey: String?) {
+        currentCredentials.mutate { authCredentials in
             guard authCredentials != nil else { return }
             guard authCredentials?.0.sessionID == sessionUID else {
                 PMLog.error("Asked for updating credentials of a wrong session. It's a programmers error and should be investigated")
@@ -178,56 +151,48 @@ public final class AuthHelper: AuthDelegate {
             }
 
             if let password = password {
-                authCredentials?.0.udpate(password: password)
+                authCredentials?.0.update(password: password)
             }
             let saltToUpdate = salt ?? authCredentials?.0.passwordKeySalt
             let privateKeyToUpdate = privateKey ?? authCredentials?.0.privateKey
             authCredentials?.0.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
             
-            guard let delegate = delegate, let existingCredentials = authCredentials else { return }
+            guard let delegate, let delegateExecutor, let existingCredentials = authCredentials else { return }
             delegateExecutor.execute {
                 delegate.credentialsWereUpdated(authCredential: existingCredentials.0, credential: existingCredentials.1, for: sessionUID)
             }
         }
     }
     
-    public func onLogout(sessionUID: String) {
-        authCredentials.mutate { authCredentials in
+    public func onAuthenticatedSessionInvalidated(sessionUID: String) {
+        currentCredentials.mutate { authCredentials in
             guard let existingCredentials = authCredentials else { return }
             guard existingCredentials.0.sessionID == sessionUID else {
                 PMLog.error("Asked for logout of wrong session. It's a programmers error and should be investigated")
                 return
             }
             authCredentials = nil
-            
-            guard let delegate = delegate else { return }
-            delegateExecutor.execute {
-                delegate.sessionWasInvalidated(for: sessionUID)
+
+            delegateExecutor?.execute { [weak self] in
+                self?.delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
             }
+            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: true)
         }
     }
 
-    public func eraseUnauthSessionCredentials(sessionUID: String) {
-        authCredentials.mutate { authCredentials in
+    public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
+        currentCredentials.mutate { authCredentials in
             guard let existingCredentials = authCredentials else { return }
             guard existingCredentials.0.sessionID == sessionUID else {
                 PMLog.error("Asked for erasing the credentials of a wrong session. It's a programmers error and should be investigated")
                 return
             }
             authCredentials = nil
+
+            delegateExecutor?.execute { [weak self] in
+                self?.delegate?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
+            }
+            authSessionInvalidatedDelegateForLoginAndSignup?.sessionWasInvalidated(for: sessionUID, isAuthenticatedSession: false)
         }
-    }
-}
-    
-extension AuthHelper {
-    
-    @available(*, deprecated, message: "Please use onUpdate(credential:sessionUID:) instead")
-    public func onUpdate(auth: Credential) {
-        assertionFailure("Should never be called")
-    }
-    
-    @available(*, deprecated, message: "Please use onRefresh(sessionUID:for:complete:) instead")
-    public func onRefresh(bySessionUID sessionUID: String, complete: @escaping AuthRefreshComplete) {
-        assertionFailure("Should never be called")
     }
 }

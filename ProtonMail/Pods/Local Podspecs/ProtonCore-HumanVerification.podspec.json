@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-HumanVerification",
-  "version": "3.27.0",
+  "version": "4.0.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "tag": "4.0.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -57,19 +57,22 @@
   },
   "dependencies": {
     "ProtonCore-UIFoundations": [
-      "3.27.0"
+      "4.0.1"
     ],
     "ProtonCore-CoreTranslation": [
-      "3.27.0"
+      "4.0.1"
     ],
     "ProtonCore-Foundations": [
-      "3.27.0"
+      "4.0.1"
     ],
     "ProtonCore-Utilities": [
-      "3.27.0"
+      "4.0.1"
     ],
     "ProtonCore-APIClient": [
-      "3.27.0"
+      "4.0.1"
+    ],
+    "ProtonCore-Observability": [
+      "4.0.1"
     ]
   },
   "default_subspecs": [
@@ -81,7 +84,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-          "3.27.0"
+          "4.0.1"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Observability": [
+          "4.0.1"
         ]
       },
       "source_files": "libraries/HumanVerification/Tests/**/*"

@@ -85,7 +85,7 @@ final class MessageSenderPGPChecker {
                 let (senderVerified, verificationKeys) = try keyFetchingResult.get()
 
                 let signatureVerificationResult = try self.messageService.messageDecrypter
-                    .decrypt(message: messageEntity, verificationKeys: verificationKeys)
+                    .decryptAndVerify(message: messageEntity, verificationKeys: verificationKeys)
                     .signatureVerificationResult
 
                 verificationResult = VerificationResult(

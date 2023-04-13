@@ -24,6 +24,7 @@ import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import typealias ProtonCore_Login.AccountType
+import ProtonCore_Observability
 
 protocol RecoveryViewControllerDelegate: AnyObject {
     func recoveryBackButtonPressed()
@@ -146,6 +147,7 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         navigationItem.assignNavItemIndentifiers()
         try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recoveryMail)
         try? recoveryPhoneTextField.setUpChallenge(viewModel.challenge, type: .recoveryPhone)
+        ObservabilityEnv.report(.screenLoadCountTotal(screenName: .setRecoveryMethod))
     }
 
     override func viewDidAppear(_ animated: Bool) {

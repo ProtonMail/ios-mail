@@ -91,6 +91,7 @@ enum SettingsAddressItem: Int, CustomStringConvertible {
 }
 
 enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
+    case blockList
     case privacy
     case conversation
     case undoSend
@@ -99,9 +100,12 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case labels
     case folders
     case storage
+    case nextMsgAfterMove
 
     var description: String {
         switch self {
+        case .blockList:
+            return L11n.BlockSender.blockListSettingsItem
         case .privacy:
             return LocalString._privacy
         case .conversation:
@@ -118,6 +122,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._folders
         case .storage:
             return LocalString._local_storage_limit
+        case .nextMsgAfterMove:
+            return L11n.NextMsgAfterMove.settingTitle
         }
     }
 }
@@ -170,9 +176,18 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         self.userManager = user
 
         var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
+        if UserInfo.isConversationSwipeEnabled {
+            mailboxItems.append(.nextMsgAfterMove)
+        }
+
         if UserInfo.isEncryptedSearchEnabled {
             mailboxItems.insert(contentsOf: [.searchContent, .localStorage], at: 2)
         }
+
+        if UserInfo.isBlockSenderEnabled {
+            mailboxItems.append(.blockList)
+        }
+
         self.mailboxItems = mailboxItems
     }
 

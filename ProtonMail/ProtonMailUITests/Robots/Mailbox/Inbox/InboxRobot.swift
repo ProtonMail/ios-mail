@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let mailboxTableView = "mailboxTableView"
@@ -38,12 +38,6 @@ class InboxRobot : MailboxRobotInterface {
         return self
     }
     
-    @discardableResult
-    override func refreshGentlyMailbox() -> InboxRobot {
-        super.refreshGentlyMailbox()
-        return self
-    }
-    
     func backgroundAppWithoutPin() -> InboxRobot {
         XCUIDevice.shared.press(.home)
         sleep(3)    //It's always more stable when there is a small gap between background and foreground
@@ -61,8 +55,8 @@ class InboxRobot : MailboxRobotInterface {
     class Verify: MailboxRobotVerifyInterface {
         
         @discardableResult
-        func inboxShown() -> InboxRobot {
-            button(id.composeButtonLabel).wait().checkExists()
+        func inboxShown(time: TimeInterval = 10.0) -> InboxRobot {
+            button(id.composeButtonLabel).waitUntilExists(time: time).checkExists()
             return InboxRobot()
         }
     }

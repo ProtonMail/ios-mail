@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let pinCellIdentifier = "SettingsLockView.pinCodeCell"
@@ -15,6 +15,8 @@ fileprivate struct id {
     static let pinStaticTextLabel = LocalString._app_pin
     static let setPinStaticTextLabel =  LocalString._pin_code_setup1_title
     static let repeatPinStaticTextLabel = LocalString._pin_code_setup2_title
+    static let appKeySwitchIdentifier = "SettingsLockView.appKeySwitch"
+    static let appKeyConfirmationAlertButtonLabel = "Continue"
     static let noneAutoLockButtonLabel = LocalString._general_none
     static let everyTimeLockButtonLabel = LocalString._settings_every_time_enter_app
     static let backToSettingsNavBarButtonIdentifier = LocalString._menu_settings_title
@@ -45,16 +47,21 @@ class PinRobot: CoreElements {
         button(id.backToSettingsNavBarButtonIdentifier).tap()
         return SettingsRobot()
     }
-    
+
+    @available(*, deprecated, renamed: "pinTimer")
     func pinTimmer() -> AutoLockTimeRobot {
+        pinTimer()
+    }
+
+    func pinTimer() -> AutoLockTimeRobot {
         cell(id.pinTimerCellIdentifier).tap()
         return AutoLockTimeRobot()
     }
-    
-    @discardableResult
-    func usePin() -> PinInputRobot {
-        swittch(id.pinCellIdentifier).tap()
-        return PinInputRobot()
+
+    func enableAppKey() -> PinRobot {
+        swittch(id.appKeySwitchIdentifier).tap()
+        button(id.appKeyConfirmationAlertButtonLabel).tap()
+        return PinRobot()
     }
     
     @discardableResult
@@ -101,7 +108,7 @@ class PinRobot: CoreElements {
     class setPinRobot: CoreElements {
         required init() {
             super.init()
-            staticText(id.setPinStaticTextLabel).wait().checkExists()
+            staticText(id.setPinStaticTextLabel).waitUntilExists().checkExists()
         }
         
         func enterPin(_ pin: String) -> setPinRobot {
@@ -125,7 +132,7 @@ class PinRobot: CoreElements {
     class RepeatPinRobot: CoreElements {
         required init() {
             super.init()
-            staticText(id.repeatPinStaticTextLabel).wait().checkExists()
+            staticText(id.repeatPinStaticTextLabel).waitUntilExists().checkExists()
         }
         
         func enterPin(_ pin: String) -> RepeatPinRobot {
@@ -158,7 +165,7 @@ class PinRobot: CoreElements {
         }
         
         func appUnlockSuccessfully() {
-            staticText(id.pinStaticTextLabel).wait().checkExists()
+            staticText(id.pinStaticTextLabel).waitUntilExists().checkExists()
         }
     }
 }

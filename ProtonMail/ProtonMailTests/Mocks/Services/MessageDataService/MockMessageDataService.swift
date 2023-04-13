@@ -15,12 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
+import PromiseKit
+import ProtonCore_Crypto
+import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {
+    var messageDecrypter: MessageDecrypterProtocol {
+        return mockDecrypter
+    }
+    var mockDecrypter: MessageDecrypterMock!
+
     var pushNotificationMessageID: String? = "pushNotificationID"
     var hasValidEventID = true
 
@@ -31,6 +40,7 @@ class MockMessageDataService: MessageDataServiceProtocol {
 
     var fetchMessagesReturnError: Bool = false
     var fetchMessagesCountReturnEmpty: Bool = false
+    var mockMessage: Message?
     var messageSendingDataResult: MessageSendingData!
 
     func fetchMessages(labelID: LabelID, endTime: Int, fetchUnread: Bool, completion: @escaping (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void) {
@@ -85,5 +95,59 @@ class MockMessageDataService: MessageDataServiceProtocol {
     ) {
         callUpdateMessageAfterSend(message, sendResponse, completionQueue, completion)
         completion()
+    }
+
+    func messageWithLocation(recipientList: String,
+                             bccList: String,
+                             ccList: String,
+                             title: String,
+                             encryptionPassword: String,
+                             passwordHint: String,
+                             expirationTimeInterval: TimeInterval,
+                             body: String,
+                             attachments: [Any]?,
+                             mailbox_pwd: Passphrase,
+                             sendAddress: Address,
+                             inManagedObjectContext context: NSManagedObjectContext) -> Message {
+        return mockMessage ?? Message()
+    }
+
+    @FuncStub(MockMessageDataService.saveDraft) var callSaveDraft
+    func saveDraft(_ message: Message?) {
+        callSaveDraft(message)
+    }
+
+    @FuncStub(MockMessageDataService.updateMessage) var callUpdateMessage
+    func updateMessage(_ message: Message,
+                       expirationTimeInterval: TimeInterval,
+                       body: String,
+                       mailbox_pwd: Passphrase) {
+        callUpdateMessage(message, expirationTimeInterval, body, mailbox_pwd)
+    }
+
+    @FuncStub(MockMessageDataService.mark, initialReturn: false) var callMark
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
+        return callMark(messageObjectIDs, labelID, unRead)
+    }
+
+    @FuncStub(MockMessageDataService.updateAttKeyPacket) var callUpdateAttKeyPacket
+    func updateAttKeyPacket(message: MessageEntity, addressID: String) {
+        callUpdateAttKeyPacket(message, addressID)
+    }
+
+    @FuncStub(MockMessageDataService.delete, initialReturn: Promise()) var callDelete
+    func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void> {
+        return callDelete(att, messageID)
+    }
+
+    @FuncStub(MockMessageDataService.upload) var callUpload
+    func upload(att: Attachment) {
+        callUpload(att)
+    }
+}
+
+final class MockMessageDataAction: MessageDataActionProtocol {
+    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
+        return true
     }
 }

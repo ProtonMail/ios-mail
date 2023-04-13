@@ -291,20 +291,21 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
 
     private func presentComposer(contact: ContactVO) {
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: self.viewModel.coreDataService)
-        viewModel.addToContacts(contact)
-
+        let composer = ComposerViewFactory.makeComposer(
+            msg: nil,
+            action: .newDraft,
+            user: user,
+            contextProvider: viewModel.coreDataService,
+            isEditingScheduleMsg: false,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus,
+            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            toContact: contact
+        )
         guard let nav = navigationController else {
             return
         }
-        let composer = ComposeContainerViewCoordinator(presentingViewController: nav,
-                                                       editorViewModel: viewModel,
-                                                       services: sharedServices)
-        composer.start()
+        nav.present(composer, animated: true)
     }
 
     @objc func didTapEditButton(sender: UIBarButtonItem) {
@@ -693,6 +694,10 @@ extension ContactDetailViewController: UITableViewDelegate {
 }
 
 extension ContactDetailViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

@@ -135,13 +135,13 @@ extension MenuItemTableViewCell {
         }
 
         if label.type == .folder {
+            let iconImage: UIImage
             if label.subLabels.count > 0 {
-                let icon = useFillIcon ? IconProvider.foldersFilled: IconProvider.folders
-                self.icon.image = icon
+                iconImage = useFillIcon ? IconProvider.foldersFilled : IconProvider.folders
             } else {
-                let icon = useFillIcon ? IconProvider.folderFilled: IconProvider.folder
-                self.icon.image = icon
+                iconImage = useFillIcon ? IconProvider.folderFilled : IconProvider.folder
             }
+            self.icon.image = iconImage
         } else if label.type == .label {
             self.icon.image = IconProvider.circleFilled
         } else {

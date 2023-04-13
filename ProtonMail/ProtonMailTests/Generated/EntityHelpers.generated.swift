@@ -84,6 +84,7 @@ extension ContextLabelEntity {
         labelID: LabelID = .init(rawValue: .init()),
         userID: UserID = .init(rawValue: .init()),
         order: Int = .init(),
+        objectID: ObjectID = .init(rawValue: .init()),
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ContextLabelEntity(
@@ -96,6 +97,7 @@ extension ContextLabelEntity {
             labelID: labelID,
             userID: userID,
             order: order,
+            objectID: objectID,
             isSoftDeleted: isSoftDeleted
         )
     }
@@ -163,6 +165,23 @@ extension EmailEntity {
             lastUsedTime: lastUsedTime,
             contactCreateTime: contactCreateTime,
             contactName: contactName
+        )
+    }
+}
+extension IncomingDefaultEntity {
+    static func make(
+        email: String = .init(),
+        id: String? = nil,
+        location: Message.Location = .inbox,
+        time: Date = .init(),
+        userID: UserID = .init(rawValue: .init())
+    ) -> Self {
+        IncomingDefaultEntity(
+            email: email,
+            id: id,
+            location: location,
+            time: time,
+            userID: userID
         )
     }
 }

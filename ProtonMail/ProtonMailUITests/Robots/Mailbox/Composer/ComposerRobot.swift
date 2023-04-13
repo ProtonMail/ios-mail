@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     /// Composer identifiers.
@@ -281,7 +281,7 @@ class ComposerRobot: CoreElements {
     }
     
     func pasteSubject(_ subjectText: String) -> ComposerRobot {
-        Element.system.saveToClipBoard(subjectText)
+        device().saveTextToClipboard(subjectText)
         textField(id.subjectTextFieldIdentifier).tap()
         textField(id.subjectTextFieldIdentifier).longPress()
         menuItem().byIndex(0).onChild(staticText().byIndex(0)).tap()
@@ -365,7 +365,7 @@ class ComposerRobot: CoreElements {
         
         @discardableResult
         func invalidAddressToastIsShown() -> ComposerRobot {
-            staticText(id.invalidAddressStaticTextIdentifier).wait().checkExists()
+            staticText(id.invalidAddressStaticTextIdentifier).waitUntilExists().checkExists()
             return ComposerRobot()
         }
         
