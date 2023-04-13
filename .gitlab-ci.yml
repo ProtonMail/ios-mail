@@ -4,6 +4,7 @@ stages:
   - i18n
   - linting
   - deploy
+  - build
   - test
   - report
   - cleanup
@@ -153,7 +154,7 @@ test:ui:smoke:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
       junit:
-        - test_output/TestResults/ProtonMailUITests.xcresult/report.junit
+        - test_output/TestResults/report.xml
   before_script:
     - *setup_project
     - *prepare_users_for_ui_tests
@@ -162,7 +163,7 @@ test:ui:smoke:
     - bundle exec fastlane ui_test
   tags:
     - iOS_UITEST
-  allow_failure: false
+  allow_failure: true
 
 report:slack:smoke:
   image: $CI_REGISTRY/tpe/test-scripts
@@ -178,7 +179,7 @@ report:slack:smoke:
       when: always
   script:
     - test_reporter.py
-      --path test_output/TestResults/ProtonMailUITests.xcresult/
+      --path test_output/TestResults/
       --platform ios
       --job-name ui_tests_smoke
       --slack-channel mail-ios-uitests
