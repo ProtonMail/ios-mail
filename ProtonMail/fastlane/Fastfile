@@ -400,4 +400,25 @@ platform :ios do
       result_bundle: true
     )
   end
+
+  desc "Run Monkey tests"
+  lane :monkey_tests do |args|
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
+
+     run_tests(
+      device: "iPhone 14",
+      reset_simulator: true,
+      concurrent_workers: ENV["NUMBER_OF_DEVICES"],
+      scheme: "ProtonMailUITests",
+      testplan: "MonkeyTests",
+      app_identifier: APP_IDENTIFIER,
+      output_directory: "../test_output/TestResults",
+      output_files: "report.xml",
+      result_bundle: true
+    )
+  end
+
 end

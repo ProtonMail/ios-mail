@@ -190,7 +190,7 @@ report:slack:smoke:
 
 test:ui:feature:
   stage: test
-  rules: &rules_feature
+  rules: 
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   variables:
     GIT_DEPTH: 1
@@ -212,12 +212,36 @@ test:ui:feature:
   tags:
     - iOS_UITEST
 
+test:ui:monkey:
+  timeout: 2 hours
+  stage: test
+  rules: 
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
+  artifacts:
+    when: always
+    name: "monkey-report"
+    paths:
+      - test_output/TestResults
+    expire_in: 10 days
+    reports:
+      junit: test_output/TestResults/report.xml
+  before_script:
+    - *setup_project
+    - *prepare_users_for_ui_tests
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane monkey_tests
+  tags:
+    - iOS_UITEST
+
 report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   variables:
     GIT_DEPTH: 1
-  rules: *rules_feature
+  rules:
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+      when: always
   script:
     - test_reporter.py
       --path test_output/TestResults/
@@ -226,12 +250,28 @@ report:slack:feature:
       --slack-channel mail-ios-uitests
   allow_failure: true
 
+report:slack:monkey:
+  image: $CI_REGISTRY/tpe/test-scripts
+  stage: report
+  rules:
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
+      when: always
+  script:
+    - test_reporter.py
+      --path test_output/TestResults/
+      --platform ios
+      --job-name Mail-iOS-Monkey-tests
+      --slack-channel mail-ios-uitests
+  allow_failure: true
+
 report:testmo:feature:
   stage: report
   extends: .testmo-upload
   dependencies:
     - test:ui:feature
-  rules: *rules_feature
+  rules:
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+      when: always
   variables:
     PROJECT_ID: "7"
     NAME: "$TEST_PLAN"
@@ -239,6 +279,7 @@ report:testmo:feature:
     TAGS: "$CI_COMMIT_REF_SLUG"
     SOURCE: "ios"
     RESULT_FOLDER: "./test_output/TestResults/*.xml"
+  allow_failure: true
 
 appetize:start:
   dependencies: [test:unit]
