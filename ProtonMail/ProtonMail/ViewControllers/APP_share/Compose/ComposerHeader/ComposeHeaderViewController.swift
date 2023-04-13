@@ -615,15 +615,13 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     private func showContactMenu(contact: ContactGroupVO, contactPicker: ContactPicker) {
         let name = contact.contactTitle
         let selected = contact.getSelectedEmailAddresses()
-        guard let parent = self.parent?.navigationController,
-              let value = ["\(name)": selected].toString() else {
-            return
-        }
+        guard let parent = self.parent?.navigationController else { return }
+        let value = selected.joined(separator: ";")
 
-        let copy = PMActionSheetPlainItem(title: LocalString._general_copy, icon: nil) { _ in
+        let copy = PMActionSheetItem(style: .text(LocalString._general_copy)) { _ in
             UIPasteboard.general.string = value
         }
-        let cut = PMActionSheetPlainItem(title: LocalString._general_cut, icon: nil) { _ in
+        let cut = PMActionSheetItem(style: .text(LocalString._general_cut)) { _ in
             UIPasteboard.general.string = value
             contactPicker.removeContact(contact: contact)
         }
