@@ -118,7 +118,7 @@ class MockMessageDataService: MessageDataServiceProtocol {
     }
 
     @FuncStub(MockMessageDataService.saveDraft) var callSaveDraft
-    func saveDraft(_ message: Message?) {
+    func saveDraft(_ message: MessageEntity) {
         callSaveDraft(message)
     }
 

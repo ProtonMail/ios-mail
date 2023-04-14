@@ -162,7 +162,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         XCTAssertTrue(messageDataServiceMock.callSaveDraft.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callSaveDraft.lastArguments)
-        XCTAssertEqual(argument.a1, testMessage)
+        XCTAssertEqual(argument.a1, MessageEntity(testMessage))
     }
 
     func testMarkAsRead_withReadMsg_markIsNotCalled() {
