@@ -175,7 +175,7 @@ class ContactsRobot: CoreElements {
     class Verify: CoreElements {
 
         func contactsOpened() {
-            table(id.contactsTableViewIdentifier).wait().checkExists()
+            table(id.contactsTableViewIdentifier).waitUntilExists().checkExists()
         }
     }
 }

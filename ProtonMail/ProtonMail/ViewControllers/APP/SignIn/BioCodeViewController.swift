@@ -126,8 +126,15 @@ final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
 extension BioCodeViewController: BioAuthenticating {
     func authenticateUser() {
         guard UIDevice.current.biometricType != .none else {
+            let bioType = UIDevice.hasPhysicalHome ? "Touch ID" : "Face ID"
+            let message = String.localizedStringWithFormat(
+                LocalString._enable_faceid_in_settings,
+                bioType,
+                bioType,
+                bioType
+            )
             let alert = UIAlertController(title: LocalString._unlock_required,
-                                          message: LocalString._enable_faceid_in_settings,
+                                          message: message,
                                           preferredStyle: .alert)
             let settings = UIAlertAction(title: LocalString._go_to_settings, style: .cancel) { _ in
                 guard let url = URL(string: UIApplication.openSettingsURLString) else {

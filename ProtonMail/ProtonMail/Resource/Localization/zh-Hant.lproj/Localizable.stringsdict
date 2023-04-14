@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>此為數 %d 封訊息將會移至草稿，並依其排程進行移除。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

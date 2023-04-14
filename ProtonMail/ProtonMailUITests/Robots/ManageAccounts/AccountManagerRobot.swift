@@ -113,7 +113,7 @@ class AccountManagerRobot: CoreElements {
     class Verify: CoreElements {
         
         func accountLoggedOut(_ email: String) {
-            cell(id.loggedOutUserAccountCellIdentifier(email)).wait().checkExists()
+            cell(id.loggedOutUserAccountCellIdentifier(email)).waitUntilExists().checkExists()
         }
         
         func accountRemoved(_ user: User) {

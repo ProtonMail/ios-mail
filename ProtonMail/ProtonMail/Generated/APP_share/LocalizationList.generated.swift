@@ -780,6 +780,9 @@ struct LocalizationList {
         "L11n.ReferralProgram.trackRewardTitle": L11n.ReferralProgram.trackRewardTitle,
         "L11n.ReferralProgram.termsAndConditionTitle": L11n.ReferralProgram.termsAndConditionTitle,
         "L11n.ReferralProgram.shareContent": L11n.ReferralProgram.shareContent,
+        "L11n.ReferralProgram.promptContent": L11n.ReferralProgram.promptContent,
+        "L11n.ReferralProgram.referAFriend": L11n.ReferralProgram.referAFriend,
+        "L11n.ReferralProgram.maybeLater": L11n.ReferralProgram.maybeLater,
         // L11n.SettingsLockScreen
         "L11n.SettingsLockScreen.protectionTitle": L11n.SettingsLockScreen.protectionTitle,
         "L11n.SettingsLockScreen.advancedSettings": L11n.SettingsLockScreen.advancedSettings,

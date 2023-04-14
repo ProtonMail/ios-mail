@@ -110,7 +110,7 @@ class AccountSettingsRobot: CoreElements {
         class Verify: CoreElements {
             @discardableResult
             func changeDefaultAddressViewShown(_ email: String) -> DefaultEmailAddressRobot {
-                button(email).wait().checkExists()
+                button(email).waitUntilExists().checkExists()
                 return DefaultEmailAddressRobot()
             }
         }
@@ -149,13 +149,13 @@ class AccountSettingsRobot: CoreElements {
         
         @discardableResult
         func displayNameShownWithText(_ name: String) -> AccountSettingsRobot {
-            staticText(name).wait().checkExists()
+            staticText(name).waitUntilExists().checkExists()
             return AccountSettingsRobot()
         }
         
         @discardableResult
         func deleteAccountShown() -> AccountSettingsRobot {
-            staticText(id.deleteAccount).wait().checkExists()
+            staticText(id.deleteAccount).waitUntilExists().checkExists()
             return AccountSettingsRobot()
         }
     }

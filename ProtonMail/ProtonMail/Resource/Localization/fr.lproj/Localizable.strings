@@ -325,7 +325,7 @@
 "Can't create a SRP verifier!" = "Impossible de créer un vérificateur SRP";
 
 /* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Impossible de déchiffrer cette pièce jointe.";
+"Can't decrypt this attachment!" = "Impossible de déchiffrer cette pièce jointe";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
 "Can't delete contact group through API" = "Impossible de supprimer le groupe de contacts via l'API";
@@ -334,7 +334,7 @@
 "Can't find the value from the response body" = "Impossible de trouver la valeur du corps de la réponse";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Impossible de trouver cette pièce-jointe.";
+"Can't find this attachment!" = "Impossible de trouver cette pièce-jointe";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Impossible d’obtenir un identifiant Modulus";
@@ -641,9 +641,6 @@
 /* Title in settings */
 "Display Name" = "Nom d'affichage";
 
-/* Title in display name settings */
-"DisplayName" = "Afficher le nom";
-
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Voulez-vous vraiment supprimer ce fichier des pièces jointes ?";
 
@@ -852,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "La fonctionnalité de message avec délai d'expiration n'est pas prise en charge.";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Le type de fichier n'a pas pu être déterminé.";
 
@@ -947,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Comment décririez-vous votre expérience avec le nouveau Proton Mail ?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "La vérification que vous n'êtes pas un robot n'a pas abouti.";
@@ -1530,9 +1521,6 @@
 "Proton is down" = "Proton est en panne.";
 
 /* Title */
-"Proton Mail" = "Proton Mail";
-
-/* Title */
 "Proton Mail is currently offline…" = "Proton Mail est actuellement hors ligne…";
 
 /* The message about the app is not having the permission to access photo library */
@@ -1571,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Récupération activée";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Parrainer un ami";
 
 /* Title */
@@ -2052,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Actions de la barre d'outils (sélectionnez-en jusqu'à 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Suivre vos parrainages";
 
@@ -2264,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Vous ne pouvez pas définir l’adresse %@ comme valeur par défaut, il s'agit d'une fonctionnalité payante.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Vous avez désactivé Face ID dans vos paramètres système. Face ID est utilisé pour protéger les informations importantes de votre compte. Pour accéder à votre compte, allez dans les paramètres et réactivez Face ID ou connectez-vous à nouveau.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Vous avez désactivé %@ dans vos paramètres système. %@ est utilisé pour protéger les informations importantes de votre compte. Pour accéder à votre compte, allez dans les paramètres et réactivez %@ ou connectez-vous à nouveau.";
 
 /* Message */
 "You have %d new emails!" = "Vous avez %d nouveaux messages.";

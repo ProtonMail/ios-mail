@@ -213,6 +213,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "您确定要退出登录吗？";
 
+/* One of the schedule time options */
+"As scheduled" = "按计划";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "于 %@";
 
@@ -360,6 +363,9 @@
 
 /* Action */
 "Cancel Check" = "取消检查";
+
+/* Title */
+"Canceling" = "正在取消";
 
 /* Warning message */
 "Cannot empty folder right now." = "当前无法清空文件夹。";
@@ -625,6 +631,9 @@
 
 /* Message shown to user after discarding action is done */
 "Discarded" = "草稿已舍弃";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "免责声明";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "收起屏幕键盘";
@@ -1216,6 +1225,9 @@
 /* Title */
 "Move to…" = "移至…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "移动后查看下一封邮件";
+
 /* Onboarding title */
 "Neat and tidy" = "整洁清爽";
 
@@ -1254,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "继续";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "移动后转至下一封";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "昵称";
@@ -1544,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "已启用密保邮箱";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "邀请好友";
 
 /* Title */
@@ -2234,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "您已在系统设置中关闭 Face ID。此账户已受 Face ID 保护，请前往系统设置开启 Face ID 或重新登录。";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您已在系统设置中关闭 %@。此账户已受 %@ 保护，请前往系统设置开启 %@ 或重新登录。";
 
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";

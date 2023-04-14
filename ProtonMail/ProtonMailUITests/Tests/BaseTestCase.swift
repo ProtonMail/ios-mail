@@ -17,6 +17,7 @@ var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
 var apiDomain: String?
+var app = XCUIApplication()
 
 /**
  Parent class for all the test classes.

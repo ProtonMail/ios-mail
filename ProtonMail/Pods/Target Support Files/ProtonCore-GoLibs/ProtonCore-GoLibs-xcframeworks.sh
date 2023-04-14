@@ -20,11 +20,11 @@ variant_for_slice()
   "GoLibs.xcframework/ios-arm64")
     echo ""
     ;;
-  "GoLibs.xcframework/ios-arm64_x86_64-simulator")
-    echo "simulator"
-    ;;
   "GoLibs.xcframework/macos-arm64_x86_64")
     echo ""
+    ;;
+  "GoLibs.xcframework/ios-arm64_x86_64-simulator")
+    echo "simulator"
     ;;
   esac
 }
@@ -35,10 +35,10 @@ archs_for_slice()
   "GoLibs.xcframework/ios-arm64")
     echo "arm64"
     ;;
-  "GoLibs.xcframework/ios-arm64_x86_64-simulator")
+  "GoLibs.xcframework/macos-arm64_x86_64")
     echo "arm64 x86_64"
     ;;
-  "GoLibs.xcframework/macos-arm64_x86_64")
+  "GoLibs.xcframework/ios-arm64_x86_64-simulator")
     echo "arm64 x86_64"
     ;;
   esac

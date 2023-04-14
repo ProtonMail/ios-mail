@@ -141,9 +141,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de e-mails bloqueado</string>
+			<string>%d rastreador de correios electrónicos bloqueado</string>
 			<key>other</key>
-			<string>%d rastreadores de e-mails bloqueados</string>
+			<string>%d rastreadores de correios electrónicos bloqueados</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -157,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de e-mails encontrado</string>
+			<string>%d rastreador de correios electrónicos encontrado</string>
 			<key>other</key>
-			<string>%d rastreadores de e-mails encontrados</string>
+			<string>%d rastreadores de correios electrónicos encontrados</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>

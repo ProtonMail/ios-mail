@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Odzyskiwanie zostało włączone";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Poleć znajomemu";
 
 /* Title */
@@ -2249,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślny, ponieważ jest to funkcja płatna.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Funkcja Face ID, która była używana do ochrony ważnych informacji o koncie została wyłączona w ustawieniach systemu. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj Face ID lub zaloguj się ponownie.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Funkcja %@, która była używana do ochrony ważnych informacji o koncie została wyłączona w ustawieniach systemu. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj %@ lub zaloguj się ponownie.";
 
 /* Message */
 "You have %d new emails!" = "Masz nowe wiadomości! (%d)";

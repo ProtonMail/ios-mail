@@ -44,7 +44,7 @@ open class UIDevice {
 
     public func backgroundApp(app: XCUIApplication = XCUIApplication()) {
         XCUIDevice.shared.press(.home)
-        app.wait(for: .runningBackground, timeout: 5.0)
+        app.wait(forState: .runningBackground, timeout: 5.0)
     }
 
     public func foregroundApp(_ foregroundType: ForegroundType = ForegroundType.activate, app: XCUIApplication = XCUIApplication()) {
@@ -54,12 +54,12 @@ open class UIDevice {
         case .launch:
             app.launch()
         }
-        app.wait(for: .runningForeground, timeout: 5.0)
+        app.wait(forState: .runningForeground, timeout: 5.0)
     }
 
     public func foregroundAppBySiri(_ text: String, app: XCUIApplication = XCUIApplication()) {
         XCUIDevice.shared.siriService.activate(voiceRecognitionText: text)
-        app.wait(for: .runningForeground, timeout: 5.0)
+        app.wait(forState: .runningForeground, timeout: 5.0)
     }
 
     public func saveTextToClipboard(_ text: String) {
@@ -73,5 +73,14 @@ open class UIDevice {
     public func saveUrlToClipboard(_ url: URL) {
         UIPasteboard.general.url = url
     }
+}
+
+extension XCUIApplication {
+
+    @discardableResult
+    func wait(forState state: XCUIApplication.State, timeout: TimeInterval) -> Bool {
+        wait(for: state, timeout: timeout)
+    }
+
 }
 #endif

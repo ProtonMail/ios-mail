@@ -24,7 +24,3 @@ In order to run UI tests the credentials.plist file must be populated with 4 tes
 In case user doesn't have some fields like: *one_time_password_key*, an emty or stub string must be provided.
 
 The complete filled in ***credentials.plist*** file can be downloaded from ***test/credentials*** branch.
-
-### Test plans:
-
-For now there is only one test plan ***SmokeTests.xctesplan*** that is used for running smoke tests on CI for each merge request.

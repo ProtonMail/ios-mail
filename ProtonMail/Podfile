@@ -68,7 +68,7 @@ def pm_pods
   pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.6'
-  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :commit => '923310a'
+  pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
   pod "SkeletonView", '1.30.4'
   pod 'SQLite.swift', '~> 0.13.3'
 end
@@ -118,7 +118,7 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'fusion', :git => proton_test_path, :branch => 'master'
+  pod 'fusion', :git => proton_test_path, :commit => '5905ef7e'
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
@@ -136,7 +136,7 @@ target 'Siri' do
 end
 
 target 'ProtonMailAnalytics' do
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.31.2'
+  pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '7.31.2.fork'
 end
 
 post_install do | installer |
