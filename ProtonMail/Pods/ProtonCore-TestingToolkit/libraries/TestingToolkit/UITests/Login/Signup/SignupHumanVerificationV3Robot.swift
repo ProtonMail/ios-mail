@@ -86,7 +86,6 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     }
     
     public func switchToEmailHVMethod() -> SignupHumanVerificationV3Robot {
-        button(emailSelectedControlLabel).waitForHittable()
         button(emailSelectedControlLabel).tap()
         return self
     }
