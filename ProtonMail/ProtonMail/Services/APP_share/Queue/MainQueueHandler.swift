@@ -653,7 +653,7 @@ extension MainQueueHandler {
                 }
                 let mailboxPassword = user.mailboxPassword
                 message.body = try self.messageDataService.encryptBody(
-                    MessageEntity(message),
+                    .init(addressID),
                     clearBody: decryptedBody,
                     mailbox_pwd: mailboxPassword
                 )
