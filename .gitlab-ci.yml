@@ -10,14 +10,21 @@ stages:
   - cleanup
   - testflight
   - enterprise
+  - distribute
   - bot
 
 .setup_basic_tools: &setup_basic_tools
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
   - mint bootstrap --link
 
+.setup_ruby: &setup_ruby
+  - cd ProtonMail
+  - bundle install
+  - cd ..
+
 .setup_project: &setup_project
   - *setup_basic_tools
+  - *setup_ruby
 
   - git submodule init
   - git submodule update --init --recursive
@@ -25,7 +32,6 @@ stages:
   - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
 
   - cd ProtonMail
-  - bundle install
   - sh xcodeGenHelper.sh
   - cd ..
 
@@ -119,6 +125,7 @@ test:unit:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
     paths:
+      - test_output/Build/Products/Debug-iphonesimulator/ProtonMail.app
       - test_output/slatherOutput/
   before_script:
     - *setup_project
@@ -238,6 +245,49 @@ report:testmo:feature:
     TAGS: "$CI_COMMIT_REF_SLUG"
     SOURCE: "ios"
     RESULT_FOLDER: "./test_output/TestResults/*.xml"
+
+appetize:start:
+  dependencies: [test:unit]
+  stage: distribute
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: appetize:stop
+    url: $APPETIZE_APP_URL?osVersion=16.2&device=iphone14
+  variables:
+    GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
+  before_script:
+    - *setup_ruby
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane upload_to_appetize
+  artifacts:
+    paths:
+      - appetize_public_key.txt
+    reports:
+      dotenv: deploy.env
+  tags:
+    - iOS_ARM_TAIPEI
+
+appetize:stop:
+  dependencies: []
+  stage: .post
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  rules:
+    - when: manual
+      allow_failure: true
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - curl -X DELETE --fail https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY
+  tags:
+    # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
+    - iOS_ARM_TAIPEI
 
 # --- Build app and send to testflight
 testflight:build:upload:
