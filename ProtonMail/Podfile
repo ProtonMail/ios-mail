@@ -25,7 +25,7 @@ def proton_core_version
 end
 
 def crypto_variant
-  "Crypto+Search-Go1.15.15"
+  "Crypto+Search-Go1.20.2"
 end
 
 def common_pods
