@@ -32,7 +32,6 @@ extension PMActionSheet {
         showOptionToBlockSender: Bool,
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheet {
-        let showOfficialBadge = true
         var components: [any PMActionSheetComponent] = [
             PMActionSheetTextComponent(text: .left(title), edge: [nil, nil, nil, 0])
         ]
