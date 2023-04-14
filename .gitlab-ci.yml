@@ -73,7 +73,6 @@ variables:
   GEM_HOME: "$CI_PROJECT_DIR/gem"
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
-  ATLAS_DEPLOY_SCOPE: "mail-ios-$CI_PIPELINE_ID"
   ATLAS_DEPLOY_ENV: "true"
 
 workflow:
