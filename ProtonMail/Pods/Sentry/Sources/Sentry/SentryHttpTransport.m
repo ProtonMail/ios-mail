@@ -84,7 +84,7 @@ SentryHttpTransport ()
         [self sendAllCachedEnvelopes];
 
 #if !TARGET_OS_WATCH
-        [self.reachability monitorURL:[NSURL URLWithString:@"https://sentry.io"]
+        [self.reachability monitorURL:[NSURL URLWithString:@"https://proton.me/"]
                         usingCallback:^(BOOL connected, NSString *_Nonnull typeDescription) {
                             if (connected) {
                                 SENTRY_LOG_DEBUG(@"Internet connection is back.");

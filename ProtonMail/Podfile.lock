@@ -376,13 +376,13 @@ DEPENDENCIES:
   - "ProtonCore-TroubleShooting (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `4.0.1`)"
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `4.0.1`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `4.0.1`)"
-  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.31.2`)
+  - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `7.31.2.fork`)"
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.30.4)
   - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `4.0.1`)"
   - SwiftSoup (~> 2.3)
-  - SwipyCell (from `https://github.com/xxi511/SwipyCell.git`, commit `923310a`)
+  - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.3`)
 
 SPEC REPOS:
@@ -508,14 +508,14 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 4.0.1
   Sentry:
-    :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 7.31.2
+    :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
+    :tag: 7.31.2.fork
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 4.0.1
   SwipyCell:
     :commit: 923310a
-    :git: https://github.com/xxi511/SwipyCell.git
+    :git: "git@gitlab.protontech.ch:jchen/SwipyCell.git"
   TrustKit:
     :branch: release/1.0.3
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -624,14 +624,14 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 4.0.1
   Sentry:
-    :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 7.31.2
+    :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
+    :tag: 7.31.2.fork
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 4.0.1
   SwipyCell:
     :commit: 923310a
-    :git: https://github.com/xxi511/SwipyCell.git
+    :git: "git@gitlab.protontech.ch:jchen/SwipyCell.git"
   TrustKit:
     :commit: d107d7cc825f38ae2d6dc7c54af71d58145c3506
     :git: https://github.com/ProtonMail/TrustKit.git
@@ -692,6 +692,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: bf0dc070832ce71b841aca856f57e7ef2b12fe8a
+PODFILE CHECKSUM: a88de46597caf3ed17a4cbeeff0204c69ded27fc
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.11.3
