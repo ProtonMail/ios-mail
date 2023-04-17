@@ -21,56 +21,15 @@ import ProtonCore_Environment
 import ProtonCore_TestingToolkit
 import ProtonCore_QuarkCommands
 
-final class DeleteAccountTests: BaseTestCase {
-    
-    var doh: (DoH & ServerConfig)? {
-        guard let apiDomain = apiDomain else { return nil }
-        return Environment.custom(apiDomain).doh
-    }
-    
-    private let robot = AccountDeletionButtonRobot()
-    private let loginRobot = LoginRobot()
-    
-    override class func setUp() {
-        environmentFileName = "environment_black"
-        super.setUp()
-    }
-    
-    override func setUp() {
-        usesBlackCredentialsFile = false
-        super.setUp()
-    }
-    
-    func withUserCreated(callPerformOn: DispatchQueue = .main, perform: @escaping (User) -> Void) {
-        let expectation = expectation(description: "should create a user \(UUID().uuidString)")
-        DispatchQueue.global(qos: .userInitiated).async { [self] in
-            QuarkCommands.create(account: .paid(plan: "plus", username: nil, password: nil),
-                                 currentlyUsedHostUrl: doh?.getCurrentlyUsedHostUrl() ?? "",
-                                 callCompletionBlockOn: .global(qos: .userInitiated)) { result in
-                switch result {
-                case .success(let details):
-                    let user = User(email: "\(details.account.username)@\(apiDomain ?? "")",
-                                    password: details.account.password,
-                                    mailboxPassword: details.account.mailboxPassword ?? "",
-                                    twoFASecurityKey: "")
-                    callPerformOn.async {
-                        perform(user)
-                        expectation.fulfill()
-                    }
-                    
-                case .failure(let error):
-                    XCTFail("no user created means no way of testing its deletion :shrug: creation error: \(error)")
-                    expectation.fulfill()
-                }
-            }
-        }
-        wait(for: [expectation], timeout: 600.0, enforceOrder: true)
-    }
-    
+final class DeleteAccountTests: CleanAuthenticatedTestCase {
+
+
+    private let accountDeletionRobot = AccountDeletionButtonRobot()
+
     @discardableResult
-    func logIn(user: User) -> AccountSettingsRobot {
-        loginRobot
-            .loginUser(user)
+    private func openAccountSettings(user: User) -> AccountSettingsRobot {
+
+        InboxRobot()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
@@ -78,80 +37,74 @@ final class DeleteAccountTests: BaseTestCase {
     }
 
     func testDeleteAccountExists()  {
-        withUserCreated { [self] user in
-            
-            logIn(user: user)
-            
-            robot
-                .verify.accountDeletionButtonIsDisplayed(type: .staticText)
-            
-        }
+
+        openAccountSettings(user: user)
+
+        accountDeletionRobot
+            .verify.accountDeletionButtonIsDisplayed(type: .staticText)
     }
     
     func testDeleteAccountCanBeClosed() {
-        withUserCreated { [self] user in
-            
-            logIn(user: user)
-            
-            robot
-                .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
-                .verify.accountDeletionWebViewIsOpened()
-                .verify.accountDeletionWebViewIsLoaded(application: app)
-                .tapCancelButton(to: AccountDeletionButtonRobot.self)
-                .verify.accountDeletionButtonIsDisplayed(type: .staticText)
-        }
+
+        openAccountSettings(user: user)
+
+        accountDeletionRobot
+            .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
+            .verify.accountDeletionWebViewIsOpened()
+            .verify.accountDeletionWebViewIsLoaded(application: app)
+            .tapCancelButton(to: AccountDeletionButtonRobot.self)
+            .verify.accountDeletionButtonIsDisplayed(type: .staticText)
+
     }
     
     func testLoginScreenIsShownAfterSuccessfulDeletion() {
-        withUserCreated { [self] user in
-            
-            logIn(user: user)
-            
-            robot
-                .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
-                .verify.accountDeletionWebViewIsOpened()
-                .verify.accountDeletionWebViewIsLoaded(application: app)
-                .setDeletionReason()
-                .fillInDeletionExplaination()
-                .fillInDeletionEmail()
-                .fillInDeletionPassword(user.password)
-                .confirmBeingAwareAccountDeletionIsPermanent()
-                .tapDeleteAccountButton(to: LoginRobot.self)
-                .verify.loginScreenIsShown()
-        }
+
+        openAccountSettings(user: user)
+
+        accountDeletionRobot
+            .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
+            .verify.accountDeletionWebViewIsOpened()
+            .verify.accountDeletionWebViewIsLoaded(application: app)
+            .setDeletionReason()
+            .fillInDeletionExplaination()
+            .fillInDeletionEmail()
+            .fillInDeletionPassword(user.password)
+            .confirmBeingAwareAccountDeletionIsPermanent()
+            .tapDeleteAccountButton(to: LoginRobot.self)
+            .verify.loginScreenIsShown()
     }
-    
+
+
     func testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser() {
-        withUserCreated(callPerformOn: .global(qos: .userInitiated)) { [self] user1 in
-        withUserCreated { [self] user2 in
-            
-            logIn(user: user1)
-                .navigateBackToSettings()
-                .close()
-                .menuDrawer()
-                .accountsList()
-                .manageAccounts()
-                .addAccount()
-                .connectOnePassAccount(user2)
-                .menuDrawer()
-                .settings()
-                .selectAccount(user2.email)
-                .verify.deleteAccountShown()
-            
-            robot
-                .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
-                .verify.accountDeletionWebViewIsOpened()
-                .verify.accountDeletionWebViewIsLoaded(application: app)
-                .setDeletionReason()
-                .fillInDeletionExplaination()
-                .fillInDeletionEmail()
-                .fillInDeletionPassword(user2.password)
-                .confirmBeingAwareAccountDeletionIsPermanent()
-                .tapDeleteAccountButton(to: InboxRobot.self)
-                .verify.inboxShown()
-                .menuDrawer()
-                .verify.currentAccount(user1)
-        }
-        }
+
+        var user2: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
+        quarkCommands.createUser(username: user2.email, password: user2.password, protonPlanName: UserPlan.free.rawValue)
+
+        openAccountSettings(user: user)
+            .navigateBackToSettings()
+            .close()
+            .menuDrawer()
+            .accountsList()
+            .manageAccounts()
+            .addAccount()
+            .connectOnePassAccount(user2)
+            .menuDrawer()
+            .settings()
+            .selectAccount(user2.email)
+            .verify.deleteAccountShown()
+
+        accountDeletionRobot
+            .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
+            .verify.accountDeletionWebViewIsOpened()
+            .verify.accountDeletionWebViewIsLoaded(application: app)
+            .setDeletionReason()
+            .fillInDeletionExplaination()
+            .fillInDeletionEmail()
+            .fillInDeletionPassword(user2.password)
+            .confirmBeingAwareAccountDeletionIsPermanent()
+            .tapDeleteAccountButton(to: InboxRobot.self)
+            .verify.inboxShown()
+            .menuDrawer()
+            .verify.currentAccount(user)
     }
 }

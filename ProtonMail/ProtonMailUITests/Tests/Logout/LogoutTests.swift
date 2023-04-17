@@ -8,14 +8,12 @@
 
 import ProtonCore_TestingToolkit
 
-class LogoutTests: BaseTestCase {
+class LogoutTests: CleanAuthenticatedTestCase {
     
     private let loginRobot = LoginRobot()
 
     func testLogoutOnePassUser() {
-        let user = testData.onePassUser
-        loginRobot
-            .loginUser(user)
+        InboxRobot()
             .menuDrawer()
             .logoutUser()
             .verify.loginScreenIsShown()

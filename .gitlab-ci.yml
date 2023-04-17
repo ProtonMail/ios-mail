@@ -136,7 +136,6 @@ test:unit:
     - iOS_ARM_TAIPEI
 
 test:ui:smoke:
-  dependencies: []
   stage: test
   except:
     - schedules
@@ -174,8 +173,6 @@ test:ui:smoke:
 report:slack:smoke:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  dependencies:
-    - test:ui:smoke
   rules:
     - if: "$CI_COMMIT_BRANCH"
       when: never
@@ -192,7 +189,6 @@ report:slack:smoke:
   allow_failure: true
 
 test:ui:feature:
-  dependencies: []
   stage: test
   rules: &rules_feature
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
@@ -219,8 +215,6 @@ test:ui:feature:
 report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  dependencies:
-    - test:ui:feature
   variables:
     GIT_DEPTH: 1
   rules: *rules_feature

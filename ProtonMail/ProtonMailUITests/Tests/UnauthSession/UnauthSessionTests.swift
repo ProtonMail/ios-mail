@@ -23,39 +23,10 @@ import ProtonCore_TestingToolkit
 
 private enum CommonUnauthSessionTests {
 
-    static let environment: Environment = .black
-
-    static var endpoints: (String?, String?) {
-        return (
-            URL(string: environment.doh.defaultHost)?.host,
-            environment.doh.defaultPath
-        )
-    }
-
-    static func testBasicOperationsOnAccountAndMailWork(within testCase: XCTestCase) {
-        let randomUsername = StringUtils().randomAlphanumericString(length: 8)
-        let randomPassword = StringUtils().randomAlphanumericString(length: 8)
-
-        let expectQuarkCommandToFinish = testCase.expectation(description: "Quark command should finish")
-        var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
-        QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
-            quarkCommandResult = result
-            expectQuarkCommandToFinish.fulfill()
-        }
-
-        testCase.wait(for: [expectQuarkCommandToFinish], timeout: 5.0)
-        if case .failure(let error) = quarkCommandResult {
-            XCTFail("Internal account creation failed in test \(#function) because of \(error.userFacingMessageInQuarkCommands)")
-            return
-        }
-        
-        let sentRobot = LoginRobot()
-            .fillUsername(username: randomUsername)
-            .fillpassword(password: randomPassword)
-            .signIn(robot: InboxRobot.self)
+    static func testBasicOperationsOnAccountAndMailWork(_ user: User, environment: Environment) {
+        MailboxRobotInterface()
             .compose()
-            .editRecipients("\(randomUsername)@\(environment.doh.signupDomain)")
+            .editRecipients(user.email)
             .changeSubjectTo("unauth session tests")
             .send()
             .menuDrawer()
@@ -68,14 +39,7 @@ private enum CommonUnauthSessionTests {
     }
 }
 
-final class NoUnauthSessionTests: BaseTestCase {
-
-    private var mailboxRobot: MailboxRobotInterface?
-
-    override class func setUp() {
-        super.setUp()
-        (apiDomain, _) = CommonUnauthSessionTests.endpoints
-    }
+final class NoUnauthSessionTests: CleanAuthenticatedTestCase {
 
     override func setUp() {
         launchArguments.append("-testNoUnauthSessions")
@@ -83,17 +47,12 @@ final class NoUnauthSessionTests: BaseTestCase {
     }
 
     func testRefreshingAndOpeningMailWorks() {
-        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(within: self)
+        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
     }
 
 }
 
-final class UnauthSessionTests: BaseTestCase {
-
-    override class func setUp() {
-        super.setUp()
-        (apiDomain, _) = CommonUnauthSessionTests.endpoints
-    }
+final class UnauthSessionTests: CleanAuthenticatedTestCase {
 
     override func setUp() {
         launchArguments.append("-testUnauthSessionsWithHeader")
@@ -101,6 +60,6 @@ final class UnauthSessionTests: BaseTestCase {
     }
 
     func testRefreshingAndOpeningMailWorks() {
-        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(within: self)
+        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
     }
 }

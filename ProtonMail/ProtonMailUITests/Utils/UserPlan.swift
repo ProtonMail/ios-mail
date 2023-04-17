@@ -19,16 +19,13 @@ import Foundation
 
 
 enum UserPlan: String {
+
     case free = "free"
-    case plus = "plus"
-    case vpnBasic = "vpnbasic"
-    case vpnPlus = "vpnplus"
-    case visionary = "visionary"
-    case visionary2022 = "visionary2022"
-    case trial = "trial"
+    case mail2022 = "mail2022"
     case bundle2022 = "bundle2022"
-    case vpn2022 = "vpn2022"
     case family2022 = "family2022"
-    case bundlePro2022 = "bundlepro2022"
+    case visionary2022 = "visionary2022"
+    case mailpro2022 = "mailpro2022"
+    case bundlepro2022 = "bundlepro2022"
     case enterprise2022 = "enterprise2022"
 }

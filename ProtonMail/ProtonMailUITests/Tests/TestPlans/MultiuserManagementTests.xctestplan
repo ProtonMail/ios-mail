@@ -11,8 +11,8 @@
   "defaultOptions" : {
     "environmentVariableEntries" : [
       {
-        "key" : "MAIL_APP_API_DOMAIN",
-        "value" : "$(MAIL_APP_API_DOMAIN)"
+        "key" : "DYNAMIC_DOMAIN",
+        "value" : "$(DYNAMIC_DOMAIN)"
       }
     ],
     "targetForVariableExpansion" : {
@@ -37,7 +37,7 @@
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
-        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "identifier" : "67596B012358FAE8B0782EE2",
         "name" : "ProtonMailUITests"
       }
     }

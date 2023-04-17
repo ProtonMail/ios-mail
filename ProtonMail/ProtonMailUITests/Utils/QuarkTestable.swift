@@ -19,7 +19,7 @@ import Foundation
 import os.log
 import ProtonCore_QuarkCommands
 import RegexBuilder
-@testable import ProtonMail
+import XCTest
 
 struct QuarkError: Error, LocalizedError {
     let url: URL
@@ -38,10 +38,20 @@ final class UITest: LogObject {
 }
 
 @available(iOS 16.0, *)
-extension QuarkCommands {
+protocol QuarkTestable {
+}
 
-    func createUserWithFixturesLoad(dynamicDomain: String, plan: UserPlan, scenario: MailScenario, isEnableEarlyAccess: Bool = false) async throws -> User {
-        let request = try URLRequest(domain: dynamicDomain, quark: "doctrine:fixtures:load?--append=1&--group[]=\(scenario.name)")
+
+@available(iOS 16.0, *)
+extension QuarkTestable where Self: XCTestCase {
+
+    @MainActor
+    private func record(_ attachement: XCTAttachment) {
+        self.add(attachement)
+    }
+
+    func createUserWithFixturesLoad(domain: String, plan: UserPlan, scenario: MailScenario, isEnableEarlyAccess: Bool) async throws -> User {
+        let request = try URLRequest(domain: domain, quark: "doctrine:fixtures:load?--append=1&--group[]=\(scenario.name)")
 
 
         ConsoleLogger.shared?.log("🕸 URL: \(request.url!)", osLogType: UITest.self)
@@ -129,30 +139,42 @@ extension QuarkCommands {
 
         var numberOfImportedMails = 0
 
-        let numberOfImportedMailsRegex = Regex {
-            "Number of emails imported: "
-            TryCapture {
-                OneOrMore(.digit)
-            } transform: { match in
-                Int(match)
-            }
-        }
+        let numberOfImportedMailsRegex = /Number of emails imported from[^:]*([0-9]+)/
 
         if let match = htmlResponse.firstMatch(of: numberOfImportedMailsRegex) {
-            numberOfImportedMails = match.1
+            numberOfImportedMails = Int(match.1)!
         } else {
             throw QuarkError(url: request.url!, message: "Failed creation of user 👼")
         }
 
 
-        let user = User(id: id, name: name, email: email, password: password, userPlan: UserPlan.free, mailboxPassword: "", twoFASecurityKey: "", twoFARecoveryCodes: [""], numberOfImportedMails: numberOfImportedMails, quarkURL: request.url!)
+        let user = User(id: id, name: name, email: email, password: password, userPlan: UserPlan.mail2022, mailboxPassword: "", twoFASecurityKey: "", twoFARecoveryCodes: [""], numberOfImportedMails: numberOfImportedMails, quarkURL: request.url!)
 
-        async let subscription: Void = plan != UserPlan.free ? enableSubscription(for: user, domain: dynamicDomain, plan: plan.rawValue) : ()
-        async let earlyAccess: Void = isEnableEarlyAccess ? enableEarlyAccess(for: user, domain: dynamicDomain) : ()
+        async let subscription: Void = plan != UserPlan.mail2022 ? enableSubscription(for: user, domain: domain, plan: plan.rawValue) : ()
+        async let earlyAccess: Void = isEnableEarlyAccess ? enableEarlyAccess(for: user, domain: domain) : ()
 
         let _ = await [try subscription, try earlyAccess]
 
+
+        let html = XCTAttachment(data: createData, uniformTypeIdentifier: "public.html")
+        html.name = "Quark user creation HTML response"
+        // Keep the HTML attachment even when the test succeeds.
+        html.lifetime = .keepAlways
+        await record(html)
+
         return user
+    }
+    
+    func deleteUser(domain: String, _ user: User?) async throws {
+        guard let user = user else { throw NSError(domain: "User does no exist 👻", code: 0) }
+        let request = try URLRequest(domain: domain, quark: "user:delete?-u=\(String(describing: user.id))&-s")
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw QuarkError(url: request.url!, message: "Failed user deletion for \(user) 🧟‍♂️")
+        }
+
+        ConsoleLogger.shared?.log("🪦 \(user.name) deleted", osLogType: UITest.self)
     }
 
     private func enableSubscription(for user: User, domain: String, plan: String) async throws {
