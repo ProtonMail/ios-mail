@@ -47,8 +47,8 @@ final class OfficialBadge: PaddingLabel {
 final class OfficialBadgeComponent: PMActionSheetComponent {
     typealias Element = OfficialBadge
     // [up, right, bottom, left]
-    public let edge: [CGFloat?]
-    public let offset: UIOffset?
+    let edge: [CGFloat?]
+    let offset: UIOffset?
 
     init(edge: [CGFloat?], offset: UIOffset? = nil) {
         self.edge = edge

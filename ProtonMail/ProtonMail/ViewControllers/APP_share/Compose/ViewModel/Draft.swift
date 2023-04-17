@@ -46,38 +46,6 @@ final class Draft {
         return .init(name: recipient.name ?? .empty, email: recipient.address)
     }
 
-    init(
-        messageID: MessageID,
-        recipientList: String,
-        bccList: String,
-        ccList: String,
-        sendAddressID: AddressID,
-        title: String,
-        body: String,
-        expiration: TimeInterval,
-        password: String,
-        passwordHint: String,
-        replyTos: String,
-        sender: String,
-        numAttachments: Int,
-        unRead: Bool
-    ) {
-        self.messageID = messageID
-        self.recipientList = recipientList
-        self.bccList = bccList
-        self.ccList = ccList
-        self.sendAddressID = sendAddressID
-        self.title = title
-        self.body = body
-        self.expiration = expiration
-        self.password = password
-        self.passwordHint = passwordHint
-        self.replyTos = replyTos
-        self.sender = sender
-        self.numAttachments = numAttachments
-        self.unRead = unRead
-    }
-
     init(rawMessage: Message) {
         self.messageID = .init(rawMessage.messageID)
         self.recipientList = rawMessage.toList
