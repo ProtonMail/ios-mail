@@ -158,7 +158,7 @@ end
 
 def http_get_json(path)
   response = http_get_raw(path)
-  return JSON.parse(response.body)
+  return JSON.parse(response)
 end
 
 def http_get_raw(path)
@@ -169,7 +169,14 @@ def http_get_raw(path)
   http.use_ssl = true
   req = Net::HTTP::Get.new(uri)
   req['PRIVATE-TOKEN'] = ENV['PRIVATE_TOKEN_GITLAB_API_PROTON_CI']
-  return http.request(req)
+  response = http.request(req)
+  if response.is_a?(Net::HTTPSuccess)
+    return response.body
+  else
+    puts("Invalid response: #{response.inspect()}")
+    puts(response.body)
+    exit(1)
+  end
 end
 
 def send_to_slack(success, changelog, exception, bundle_version)
@@ -221,8 +228,11 @@ platform :ios do
     if existing_environment
       existing_environment_id = existing_environment["id"]
       existing_environment_details = http_get_json("projects/#{ci_project_id}/environments/#{existing_environment_id}")
-      deployment_job_id = existing_environment_details["last_deployment"]["deployable"]["id"]
-      existing_appetize_public_key = http_get_raw("projects/#{ci_project_id}/jobs/#{deployment_job_id}/artifacts/#{appetize_public_key_file}").body.chomp
+      last_deployment_job_id = existing_environment_details.dig("last_deployment", "deployable", "id")
+
+      if last_deployment_job_id
+        existing_appetize_public_key = http_get_raw("projects/#{ci_project_id}/jobs/#{last_deployment_job_id}/artifacts/#{appetize_public_key_file}").chomp
+      end
     end
 
     puts("Existing public key: #{existing_appetize_public_key}")
