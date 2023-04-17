@@ -63,6 +63,7 @@
          ],
          "postBuildScripts": [
             {
+               "basedOnDependencyAnalysis": false,
                "name": "Overwrite Settings.bundle for Debug",
                "path": "xcodeGen/copySettingsEnvironmentBundle.sh"
             },
