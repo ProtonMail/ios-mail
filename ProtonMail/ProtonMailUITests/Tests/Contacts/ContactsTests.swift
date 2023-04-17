@@ -8,15 +8,13 @@
 
 import ProtonCore_TestingToolkit
 
-class ContactsTests : BaseTestCase {
+class ContactsTests : CleanAuthenticatedTestCase {
 
     private var contactsRobot = ContactsRobot()
-    private let loginRobot = LoginRobot()
 
     override func setUp() {
         super.setUp()
-        contactsRobot = loginRobot
-            .loginUser(testData.onePassUser)
+        contactsRobot = InboxRobot()
             .menuDrawer()
             .contacts()
     }
@@ -51,13 +49,15 @@ class ContactsTests : BaseTestCase {
     }
 
     func testCreateAndDeleteGroup() {
-        let contactEmail = testData.internalEmailTrustedKeys
+        let email = testData.newEmailAddress
         let groupName = testData.alphaNumericString
         contactsRobot
+            .addContact()
+            .setNameEmailAndSave(name, email)
             .addGroup()
             .typeGroupName(groupName)
             .tapManageAddresses()
-            .addContactToGroup(contactEmail.email)
+            .addContactToGroup(email)
             .saveContactSelection()
             .groupsView()
             .deleteGroup(groupName)
@@ -65,14 +65,16 @@ class ContactsTests : BaseTestCase {
     }
 
     func testEditGroup() {
-        let contactEmail = testData.internalEmailTrustedKeys
+        let email = testData.newEmailAddress
         let groupName = testData.alphaNumericString
         let newGroupName = testData.alphaNumericString
         contactsRobot
+            .addContact()
+            .setNameEmailAndSave(name, email)
             .addGroup()
             .typeGroupName(groupName)
             .tapManageAddresses()
-            .addContactToGroup(contactEmail.email)
+            .addContactToGroup(email)
             .saveContactSelection()
             .groupsView()
             .clickGroup(groupName)

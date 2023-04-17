@@ -71,24 +71,22 @@ class PinRobot: CoreElements {
     }
     
     func backgroundApp() -> PinRobot {
-        XCUIDevice.shared.press(.home)
-        //It's always more stable when there is a small gap between background and foreground
-        sleep(5)
+        device().backgroundApp()
         return PinRobot()
     }
     
     func foregroundApp() -> PinInputRobot {
-        XCUIApplication().launch()
+        device().foregroundApp(.launch)
         return PinInputRobot()
     }
     
     func activateAppWithPin() -> PinInputRobot {
-        XCUIApplication().activate()
+        device().foregroundApp(.activate)
         return PinInputRobot()
     }
     
     func activateAppWithoutPin() -> PinRobot {
-        XCUIApplication().activate()
+        device().foregroundApp(.activate)
         return PinRobot()
     }
     

@@ -9,16 +9,15 @@
 import XCTest
 import ProtonCore_TestingToolkit
 
-class PinTests: BaseTestCase {
+class PinTests: CleanAuthenticatedTestCase {
 
     private let correctPin = "0000"
     private let pinRobot: PinRobot = PinRobot()
-    private let loginRobot = LoginRobot()
 
     override func setUp() {
         super.setUp()
-        loginRobot
-            .loginUser(testData.onePassUser)
+
+      InboxRobot()
             .menuDrawer()
             .settings()
             .pin()

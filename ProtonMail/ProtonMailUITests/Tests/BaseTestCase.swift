@@ -10,67 +10,68 @@ import Foundation
 import XCTest
 import fusion
 @testable import ProtonMail
+import ProtonCore_Environment
+import ProtonCore_QuarkCommands
+import ProtonCore_TestingToolkit
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"
 var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
-var apiDomain: String?
-var app = XCUIApplication()
+
+var dynamicDomain: String? {
+    let domain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"]
+    return domain?.isEmpty == false ? domain : ""
+}
 
 /**
  Parent class for all the test classes.
-*/
-class BaseTestCase: XCTestCase {
+ */
+class BaseTestCase: CoreTestCase, QuarkTestable {
 
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
     var forceUpgradeStubs = false
     var extAccountNotSupportedStub = false
     var usesBlackCredentialsFile = true
+    private let loginRobot = LoginRobot()
 
-    override class func setUp() {
-        super.setUp()
+    var env: Environment = .black
+    lazy var quarkCommands = QuarkCommands(doh: env.doh)
 
-        /// Get api domain and path from environment variables.
-        apiDomain = ProcessInfo.processInfo.environment[apiDomainKey]
+    @MainActor
+    override func setUp() async throws {
+        try await super.setUp()
+        continueAfterFailure = false
 
-        /// Fall back to local values stored in environment.plist file if domain is nil. Update it to run tests locally against dev environment.
-        if apiDomain?.isEmpty != false {
-            apiDomain = getValueForKey(key: apiDomainKey, filename: environmentFileName)!
-        }
-
-        testData.onePassUser = User(user: loadUser(userKey: "TEST_USER1"))
-        testData.twoPassUser = User(user: loadUser(userKey: "TEST_USER2"))
-        testData.onePassUserWith2Fa = User(user: loadUser(userKey: "TEST_USER3"))
-        testData.twoPassUserWith2Fa = User(user: loadUser(userKey: "TEST_USER4"))
-
-        testData.internalEmailTrustedKeys = User(user: loadUser(userKey: "TEST_RECIPIENT1"))
-        testData.internalEmailNotTrustedKeys = User(user: loadUser(userKey: "TEST_RECIPIENT2"))
-        testData.externalEmailPGPEncrypted = User(user: loadUser(userKey: "TEST_RECIPIENT3"))
-        testData.externalEmailPGPSigned = User(user: loadUser(userKey: "TEST_RECIPIENT4"))
+        setupTest()
     }
 
-    override func setUp() {
-        super.setUp()
+    @MainActor
+    func login(user: User) {
+        loginRobot
+            .loginUser(user)
+    }
+
+    @MainActor
+    func terminateApp() {
+        app.terminate()
+    }
+
+    @MainActor
+    func setupTest() {
 
         continueAfterFailure = false
 
-        app.terminate()
         app.launchArguments = launchArguments
+
         app.launchArguments.append("-disableAnimations")
         app.launchArguments.append("-skipTour")
         app.launchArguments.append("-toolbarSpotlightOff")
+        app.launchArguments.append("-uiTests")
 
-        if apiDomain!.contains("black") {
-            /// Use "credentials_black.plist" in this case.
-            if usesBlackCredentialsFile {
-                credentialsFileName = credentialsBlackFileName
-            }
-            app.launchArguments.append("-uiTests")
-            app.launchEnvironment[apiDomainKey] = apiDomain!
-        }
+        app.launchEnvironment[apiDomainKey] = dynamicDomain!
 
         if humanVerificationStubs {
             app.launchEnvironment["HumanVerificationStubs"] = "1"
@@ -81,12 +82,15 @@ class BaseTestCase: XCTestCase {
         }
         app.launch()
 
+        env = Environment.custom(dynamicDomain!)
+        quarkCommands = QuarkCommands(doh: env.doh)
+
         handleInterruption()
     }
 
-    override func tearDown() {
-        XCUIApplication().terminate()
-        super.tearDown()
+    override func tearDown() async throws {
+        await terminateApp()
+        try await super.tearDown()
     }
 
     func handleInterruption() {
@@ -95,7 +99,7 @@ class BaseTestCase: XCTestCase {
         addUIMonitor(elementQueryToTap: XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons, identifiers: labels)
     }
 
-    private static func loadUser(userKey: String) -> String {
+    private func loadUser(userKey: String) -> String {
         if let user = ProcessInfo.processInfo.environment[userKey] {
             return user
         } else {
@@ -103,7 +107,7 @@ class BaseTestCase: XCTestCase {
         }
     }
 
-    private static func getValueForKey(key: String, filename: String) -> String? {
+    private func getValueForKey(key: String, filename: String) -> String? {
         var data = Data()
         var params = Dictionary<String, String>()
 
@@ -120,3 +124,59 @@ class BaseTestCase: XCTestCase {
         return params[key]
     }
 }
+
+@available(iOS 16.0, *)
+class CleanAuthenticatedTestCase: BaseTestCase {
+
+    var user: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
+
+    override func setUp() async throws {
+        try await super.setUp()
+
+        quarkCommands.createUser(username: user.name, password: user.password, protonPlanName: UserPlan.mailpro2022.rawValue)
+
+        login(user: user)
+    }
+
+    override func tearDown() async throws {
+        try await deleteUser(domain: dynamicDomain!, user)
+        try await super.tearDown()
+    }
+}
+
+@available(iOS 16.0, *)
+class FixtureAuthenticatedTestCase: BaseTestCase {
+
+    var user: User?
+    var scenario: MailScenario { .qaMail001 }
+    var isSubscriptionIncluded: Bool { true }
+
+    override func setUp() async throws {
+        let user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+        self.user = user
+
+        try await super.setUp()
+
+        login(user: user)
+    }
+
+    override func tearDown() async throws {
+        try await deleteUser(domain: dynamicDomain!, user)
+        try await super.tearDown()
+    }
+
+    open override func record(_ issue: XCTIssue) {
+        var myIssue = issue
+        var issueDescription: String = "\n"
+        issueDescription.append("User:")
+        issueDescription.append("\n")
+        issueDescription.append(user.debugDescription)
+        issueDescription.append("\n\n")
+        issueDescription.append("Failure:")
+        issueDescription.append("\n\(myIssue.compactDescription)")
+
+        myIssue.compactDescription = issueDescription
+        super.record(myIssue)
+    }
+}
+

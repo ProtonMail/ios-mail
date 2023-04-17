@@ -18,7 +18,6 @@ fileprivate struct id {
     static let bccTextFieldIdentifier = "bccTextField"
     static let composerWebViewIdentifier = "ComposerBody"
     static let subjectTextFieldIdentifier = "ComposeHeaderViewController.subject"
-    static let pasteMenuItem = app.menuItems.staticTexts.element(boundBy: 0)
     static let popoverDismissRegionOtherIdentifier = "PopoverDismissRegion"
     static let expirationButtonIdentifier = "ComposeContainerViewController.toolbar.hourButton"
     static let passwordButtonIdentifier = "ComposeContainerViewController.toolbar.lockButton"

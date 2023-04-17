@@ -1,7 +1,6 @@
 {
    "targets": {
       "ProtonMailUITests": {
-         "deploymentTarget": "16.2",
          "type": "bundle.ui-testing",
          "platform": "iOS",
          "dependencies": [

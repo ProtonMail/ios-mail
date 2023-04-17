@@ -8,24 +8,23 @@
 
 import ProtonCore_TestingToolkit
 
-class AccountSettingsTests : BaseTestCase {
+class AccountSettingsTests : CleanAuthenticatedTestCase {
 
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
-    private let loginRobot = LoginRobot()
 
     override func setUp() {
         super.setUp()
-        loginRobot
-            .loginUser(testData.onePassUser)
+
+        InboxRobot()
             .menuDrawer()
             .settings()
-            .selectAccount(testData.onePassUser.email)
+            .selectAccount(user.email)
     }
 
     func testChangeSignlePassword() {
         accountSettingsRobot
             .singlePassword()
-            .changePassword(user: testData.onePassUser)
+            .changePassword(user: user)
             .verify.settingsOpened()
     }
 
@@ -33,17 +32,17 @@ class AccountSettingsTests : BaseTestCase {
         accountSettingsRobot
             .recoveryEmail()
             .changeRecoveryEmail(testData.twoPassUser)
-            .verify.recoveryEmailChangedTo(testData.onePassUser.email)
+            .verify.recoveryEmailChangedTo(user.email)
     }
 
     func testNavigateToDefaultEmailAddress() {
         accountSettingsRobot
             .defaultEmailAddress()
-            .verify.changeDefaultAddressViewShown("2\(testData.onePassUser.email)")
+            .verify.changeDefaultAddressViewShown(user.email)
     }
 
     func testChangeDisplayName() {
-        let newDisplayName = "\(testData.onePassUser.name)-\(StringUtils().randomAlphanumericString())"
+        let newDisplayName = "\(user.name)-\(StringUtils().randomAlphanumericString())"
         accountSettingsRobot
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
@@ -52,9 +51,9 @@ class AccountSettingsTests : BaseTestCase {
             
         accountSettingsRobot
             .displayName()
-            .setDisplayNameTextTo(testData.onePassUser.name)
+            .setDisplayNameTextTo(user.name)
             .save()
-            .verify.displayNameShownWithText(testData.onePassUser.name)
+            .verify.displayNameShownWithText(user.name)
     }
 
     func testSwitchSignatureToggleOn() {
