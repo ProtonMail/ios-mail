@@ -104,6 +104,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         self.textView.backgroundColor = ColorProvider.BackgroundNorm
         self.textView.textContainer.lineFragmentPadding = 0
         self.textView.textContainerInset = .init(all: textViewInset)
+        textView.text = L11n.BugReport.placeHolder
         setUpSideMenuMethods()
 
         self.view.addSubview(self.textView)
