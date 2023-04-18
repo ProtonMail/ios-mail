@@ -451,7 +451,6 @@ extension MenuCoordinator {
 
         let view = MailboxViewController()
         view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
-        sharedVMService.mailbox(fromMenu: view)
         let navigation: UINavigationController
         if isSwitchEvent,
            let navigationController = self.mailboxCoordinator?.navigation {

@@ -39,8 +39,6 @@ import SideMenuSwift
 import UIKit
 import UserNotifications
 
-let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
-
 @UIApplicationMain
 class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
@@ -52,7 +50,7 @@ class AppDelegate: UIResponder {
 }
 
 // MARK: - consider move this to coordinator
-extension AppDelegate: UserDataServiceDelegate {
+extension AppDelegate {
     func onLogout() {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)

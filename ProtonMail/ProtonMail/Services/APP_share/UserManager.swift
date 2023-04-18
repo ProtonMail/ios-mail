@@ -111,7 +111,6 @@ class UserManager: Service {
             LabelsDataService.cleanUpAll(),
             ContactDataService.cleanUpAll(),
             ContactGroupsDataService.cleanUpAll(),
-            UserDataService.cleanUpAll(),
             LastUpdatedStore.cleanUpAll()
         ]
         for p in promises {

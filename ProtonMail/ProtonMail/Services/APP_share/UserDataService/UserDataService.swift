@@ -31,27 +31,16 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Keymaker
 
-// TODO:: this class need suport mutiple user later
-protocol UserDataServiceDelegate {
-    func onLogout()
-}
-
 /// Stores information related to the user
 class UserDataService: Service {
     let apiService: APIService
-    var delegate: UserDataServiceDelegate?
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
 
     struct CoderKey {// Conflict with Key object
-        static let userPasswordMode          = "userPasswordModeKey"
-
         static let roleSwitchCache           = "roleSwitchCache"
         static let defaultSignatureStatus    = "defaultSignatureStatus"
 
         static let firstRunKey = "FirstRunKey"
-
-        // new one, check if user logged in already
-        static let atLeastOneLoggedIn = "UsersManager.AtLeastoneLoggedIn"
     }
 
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: CoderKey.roleSwitchCache) {
@@ -68,33 +57,11 @@ class UserDataService: Service {
         }
     }
 
-    var passwordMode: Int = SharedCacheBase.getDefault().integer(forKey: CoderKey.userPasswordMode) {
-        didSet {
-            SharedCacheBase.getDefault().setValue(passwordMode, forKey: CoderKey.userPasswordMode)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-
-    // MARK: - Public variables
-
-    var isMailboxPasswordStored: Bool {
-        return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
-    }
-
-    var isUserCredentialStored: Bool {
-        return isMailboxPasswordStored
-    }
-
-    func allLoggedout() {
-        KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
-    }
-
     // MARK: - methods
     init(check: Bool = true, api: APIService) {  // Add interface for data agent
         self.apiService = api
         if check {
             cleanUpIfFirstRun()
-            launchCleanUp()
         }
     }
 
@@ -198,24 +165,6 @@ class UserDataService: Service {
                 }
             }
         }
-    }
-
-    static func cleanUpAll() -> Promise<Void> {
-        // TODO: logout all users and clear local storage
-        return Promise()
-    }
-
-    func signOut() {
-#if APP_EXTENSION
-#else
-        sharedVMService.signOut()
-#endif
-
-        if !ProcessInfo.isRunningUnitTests {
-            NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
-        }
-        clearAll()
-        delegate?.onLogout()
     }
 
     func updateAddress(authCredential: AuthCredential,
@@ -746,23 +695,10 @@ class UserDataService: Service {
     func cleanUpIfFirstRun() {
         #if !APP_EXTENSION
         if AppCache.isFirstRun() {
-            clearAll()
             SharedCacheBase.getDefault().set(Date(), forKey: CoderKey.firstRunKey)
             SharedCacheBase.getDefault().synchronize()
         }
         #endif
-    }
-
-    func clearAll() {
-        allLoggedout()
-        // mailboxPassword = nil
-        passwordMode = 2
-    }
-
-    func launchCleanUp() {
-        if !self.isUserCredentialStored {
-            passwordMode = 2
-        }
     }
 
     func fetchUserAddresses(completion: ((Swift.Result<AddressesResponse, Error>) -> Void)?) {

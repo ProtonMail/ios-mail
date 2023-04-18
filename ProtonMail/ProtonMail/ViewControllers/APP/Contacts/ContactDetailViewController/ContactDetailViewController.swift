@@ -455,7 +455,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             return cell
         } else if s == .debuginfo {
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
-            cell.configCell(forlog: viewModel.logs)
+            cell.configCell(forlog: "")
             cell.selectionStyle = .none
             return cell
         } else if s == .emails {

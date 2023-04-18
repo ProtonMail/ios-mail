@@ -399,9 +399,6 @@ extension UsersManager {
         return UserManager.cleanUpAll().ensure {
             try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
 
-            self.users.forEach { user in
-                user.userService.signOut()
-            }
             self.users = []
             self.save()
 
@@ -413,8 +410,6 @@ extension UsersManager {
             self.keychain.remove(forKey: CoderKey.disconnectedUsers)
 
             self.currentVersion = self.latestVersion
-
-            sharedUserDataService.signOut()
 
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
@@ -436,6 +431,10 @@ extension UsersManager {
                                  attributes:
                                     nil)
             #endif
+
+            if !ProcessInfo.isRunningUnitTests {
+                NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
+            }
         }
     }
 
