@@ -29,7 +29,7 @@ class MockEventsService: EventsServiceProtocol {
         completion?(fetchLatestEventIDResult)
     }
 
-    func processEvents(counts: [[String: Any]]?) {
+    func processEvents(messageCounts: [[String: Any]]?) {
         wasProcessEventsCalled = true
     }
 

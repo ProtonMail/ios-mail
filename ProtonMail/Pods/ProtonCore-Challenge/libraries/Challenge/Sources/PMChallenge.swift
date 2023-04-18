@@ -234,7 +234,7 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     }
 
     func charactersTyped(chars: String, type: TextFieldType) throws {
-        let value: String = chars.count > 1 ? "Paste": chars
+        let value: String = chars.count > 1 ? "Paste" : chars
         switch type {
         case .username, .username_email:
             challenge.behaviouralFingerprint.keydownUsername.append(value)
@@ -281,17 +281,12 @@ extension PMChallenge {
 }
 
 public extension ChallengeParametersProvider {
-    static func forAPIService(clientApp: ClientApp) -> ChallengeParametersProvider {
-        ChallengeParametersProvider(prefix: clientApp.name) {
-            PMChallenge().export().deviceFingerprintDict()
-        }
+    static func forAPIService(clientApp: ClientApp, challenge: PMChallenge) -> ChallengeParametersProvider {
+        ChallengeParametersProvider(prefix: clientApp.name,
+                                    challengeProtocol: challenge,
+                                    provideParametersForLoginAndSignup: { challenge.export().allFingerprintDict() },
+                                    provideParametersForSessionFetching: { challenge.export().deviceFingerprintDict() })
     }
-}
 
-public extension ChallengeParametersProvider {
-    static func forLoginAndSignup(clientApp: ClientApp, challenge: PMChallenge) -> ChallengeParametersProvider {
-        ChallengeParametersProvider(prefix: clientApp.name) {
-            challenge.export().allFingerprintDict()
-        }
-    }
+    var challenge: PMChallenge? { challengeProtocol as? PMChallenge }
 }

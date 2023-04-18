@@ -28,44 +28,44 @@ final class CountMessagesForLabel: CountMessagesForLabelUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
-        let request = FetchMessagesByLabelRequest(
-            labelID: params.labelID.rawValue,
-            endTime: params.endTime,
-            isUnread: params.isUnread
-        )
-        dependencies
-            .apiService
-            .perform(request: request) { _, result in
-                switch result {
-                case .failure(let error):
-                    callback(.failure(error))
-                case .success(let dict):
-                    do {
-                        let data = try JSONSerialization.data(withJSONObject: dict)
-                        let res = try JSONDecoder().decode(MessageResponse.self, from: data)
-                        callback(.success(res.total))
-                    } catch {
-                        callback(.failure(error))
-                    }
-                }
+        let request = MessageCountRequest()
+        dependencies.apiService.perform(
+            request: request,
+            response: MessageCountResponse()
+        ) { _, response in
+            if let error = response.error {
+                callback(.failure(error))
+                return
             }
+            guard let count = response.counts else {
+                callback(.failure(NSError.unableToParseResponse("Without count")))
+                return
+            }
+            do {
+                let result = try JSONDecoder().decode(type: [MessageCount].self, from: count)
+                guard let target = result.first(where: { $0.labelID == params.labelID }) else {
+                    callback(.failure(NSError.unableToParseResponse("Doesn't include target labelID")))
+                    return
+                }
+                let num = params.isUnread ? target.unread : target.total
+                callback(.success(num))
+            } catch {
+                callback(.failure(error))
+            }
+        }
     }
 }
 
 extension CountMessagesForLabel {
     struct Params {
         let labelID: LabelID
-        /// UNIX timestamp to filter messages at or earlier than timestamp
-        let endTime: Int
         let isUnread: Bool
 
         init(
             labelID: LabelID = LabelLocation.allmail.labelID,
-            endTime: Int = 0,
             isUnread: Bool = false
         ) {
             self.labelID = labelID
-            self.endTime = endTime
             self.isUnread = isUnread
         }
     }
@@ -73,13 +73,23 @@ extension CountMessagesForLabel {
     struct Dependencies {
         let apiService: APIService
     }
+}
 
-    private struct MessageResponse: Codable {
-        let total: Int
+private struct MessageCount: Codable {
+    let total: Int
+    let labelID: LabelID
+    let unread: Int
 
-        // swiftlint:disable:next nesting
-        enum CodingKeys: String, CodingKey {
-            case total = "Total"
-        }
+    enum CodingKeys: String, CodingKey {
+        case total = "Total"
+        case labelID = "LabelID"
+        case unread = "Unread"
+    }
+}
+
+extension JSONDecoder {
+    func decode<D: Decodable>(type: D.Type, from arrayDict: [[String: Any]]) throws -> D {
+        let jsonData = try JSONSerialization.data(withJSONObject: arrayDict, options: [])
+        return try JSONDecoder().decode(type, from: jsonData)
     }
 }

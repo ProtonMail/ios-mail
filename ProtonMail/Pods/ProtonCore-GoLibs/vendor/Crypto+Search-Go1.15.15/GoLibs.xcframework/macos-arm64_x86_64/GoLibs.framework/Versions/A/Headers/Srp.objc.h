@@ -159,11 +159,21 @@ FOUNDATION_EXPORT NSString* _Nonnull const SrpVersion;
 
 @end
 
-// skipped function Argon2PreimageChallenge with unsupported parameter or return types
+/**
+ * Argon2PreimageChallenge computes the base64 solution for a given Argon2 base64
+challenge within deadlineUnixMilli milliseconds, if any was found. Deadlines are measured
+on the wall clock, not the monotonic clock, due to unreliability on mobile devices.
+deadlineUnixMilli = -1 means unlimited time.
+ */
+FOUNDATION_EXPORT NSString* _Nonnull SrpArgon2PreimageChallenge(NSString* _Nullable b64Challenge, int64_t deadlineUnixMilli, NSError* _Nullable* _Nullable error);
 
-
-// skipped function ECDLPChallenge with unsupported parameter or return types
-
+/**
+ * ECDLPChallenge computes the base64 solution for a given ECDLP base64 challenge
+within deadlineUnixMilli milliseconds, if any was found. Deadlines are measured on the
+wall clock, not the monotonic clock, due to unreliability on mobile devices.
+deadlineUnixMilli = -1 means unlimited time.
+ */
+FOUNDATION_EXPORT NSString* _Nonnull SrpECDLPChallenge(NSString* _Nullable b64Challenge, int64_t deadlineUnixMilli, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull SrpGetModulusKey(void);
 

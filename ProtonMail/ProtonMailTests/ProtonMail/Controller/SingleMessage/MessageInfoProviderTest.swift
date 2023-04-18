@@ -31,6 +31,8 @@ final class MessageInfoProviderTest: XCTestCase {
     private var sut: MessageInfoProvider!
     private var user: UserManager!
     private var mockFetchAttachment: MockFetchAttachment!
+    private var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
+    private var imageTempUrl: URL!
 
     private let systemUpTime = SystemUpTimeMock(
         localServerTime: TimeInterval(1635745851),
@@ -47,6 +49,8 @@ final class MessageInfoProviderTest: XCTestCase {
         LocaleEnvironment.locale = { .enUS }
 
         apiMock = APIServiceMock()
+        apiMock.sessionUIDStub.fixture = String.randomString(10)
+        apiMock.dohInterfaceStub.fixture = DohMock()
 
         user = try Self.prepareUser(apiMock: apiMock)
         // testing are more thorough with this setting disabled, even though it is enabled by default
@@ -60,6 +64,7 @@ final class MessageInfoProviderTest: XCTestCase {
 
         messageDecrypter = MessageDecrypterMock(userDataSource: user)
         mockFetchAttachment = MockFetchAttachment()
+        mockSenderImageStatusProvider = .init()
 
         sut = MessageInfoProvider(
             message: message,
@@ -67,11 +72,29 @@ final class MessageInfoProviderTest: XCTestCase {
             user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                                fetchAttachment: mockFetchAttachment)
+            dependencies: .init(
+                imageProxy: .init(dependencies: .init(apiService: apiMock)),
+                fetchAttachment: mockFetchAttachment,
+                fetchSenderImage: FetchSenderImage(
+                    dependencies: .init(
+                        senderImageService: .init(
+                            dependencies: .init(
+                                apiService: user.apiService,
+                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol())
+                        ),
+                        senderImageStatusProvider: mockSenderImageStatusProvider,
+                        mailSettings: user.mailSettings
+                    )
+                )
+            )
         )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
+
+        // Prepare for api mock to write image data to disk
+        imageTempUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent("senderImage", isDirectory: true)
+        try FileManager.default.createDirectory(at: imageTempUrl, withIntermediateDirectories: true)
     }
 
     override func tearDownWithError() throws {
@@ -81,7 +104,9 @@ final class MessageInfoProviderTest: XCTestCase {
         message = nil
         messageDecrypter = nil
         user = nil
+        mockSenderImageStatusProvider = nil
 
+        try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
     }
 
@@ -209,7 +234,12 @@ final class MessageInfoProviderTest: XCTestCase {
             systemUpTime: systemUpTime,
             labelID: labelID,
             dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                                fetchAttachment: mockFetchAttachment)
+                                fetchAttachment: mockFetchAttachment,
+                                fetchSenderImage: FetchSenderImage(dependencies: .init(
+                                    senderImageService: .init(dependencies: .init(apiService: apiMock,
+                                                                                  internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
+                                    senderImageStatusProvider: MockSenderImageStatusProvider(),
+                                    mailSettings: user.mailSettings)))
         )
 
         XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
@@ -229,6 +259,88 @@ final class MessageInfoProviderTest: XCTestCase {
         sut.reloadImagesWithoutProtection()
 
         XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
+    }
+
+    func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
+        user.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return false
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
+        user.mailSettings = .init(hideSenderImages: true)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
+        user.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+
+        sut.fetchSenderImageIfNeeded(isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+
+        XCTAssertTrue(apiMock.requestJSONStub.wasNotCalled)
+    }
+
+    func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
+        user.mailSettings = .init(hideSenderImages: false)
+        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
+            return true
+        }
+        let e = expectation(description: "Closure is called")
+        let msg = MessageEntity.createSenderImageEligibleMessage()
+        sut.update(message: msg)
+        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        apiMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                try? imageData?.write(to: fileUrl)
+                let response = HTTPURLResponse(statusCode: 200)
+                completion(response, nil, nil)
+            }
+        }
+
+        sut.fetchSenderImageIfNeeded(isDarkMode: Bool.random(),
+                                     scale: 1.0) { result in
+            XCTAssertNotNil(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertTrue(apiMock.downloadStub.wasCalledExactlyOnce)
     }
 }
 

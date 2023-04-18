@@ -207,10 +207,13 @@ extension UIColor {
     }
 
     convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
-        precondition(0...1 ~= hue &&
-                     0...1 ~= saturation &&
-                     0...1 ~= lightness &&
-                     0...1 ~= alpha, "input range is out of range 0...1")
+        assert(
+            0...1 ~= hue &&
+            0...1 ~= saturation &&
+            0...1 ~= lightness &&
+            0...1 ~= alpha,
+            "Invalid hue:\(hue), saturation:\(saturation), lightness:\(lightness) or alpha:\(alpha)"
+        )
 
         //From HSL TO HSB ---------
         var newSaturation: CGFloat = 0.0

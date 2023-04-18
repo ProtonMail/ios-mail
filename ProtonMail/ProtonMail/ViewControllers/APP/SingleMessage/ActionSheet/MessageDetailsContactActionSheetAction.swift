@@ -21,6 +21,7 @@
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 enum MessageDetailsContactActionSheetAction {
+    case blockSender
     case copyAddress
     case copyName
     case composeTo

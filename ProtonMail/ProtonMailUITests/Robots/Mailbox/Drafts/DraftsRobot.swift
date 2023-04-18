@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"

@@ -16,6 +16,13 @@ class User {
     var twoFASecurityKey: String
     var name: String
     var pmMeEmail: String
+
+    // quark
+    var id: Int?
+    var userPlan: UserPlan?
+    var twoFARecoveryCodes: [String]?
+    var numberOfImportedMails: Int?
+    var quarkURL: URL?
     
     init(email: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
         self.email = email
@@ -24,6 +31,20 @@ class User {
         self.twoFASecurityKey = twoFASecurityKey
         self.name = String(email.split(separator: "@")[0])
         self.pmMeEmail = "\(name)@pm.me"
+    }
+
+    init(id: Int, name: String, email: String, password: String, userPlan: UserPlan, mailboxPassword: String, twoFASecurityKey: String, twoFARecoveryCodes: [String]?, numberOfImportedMails: Int?, quarkURL: URL) {
+        self.id = id
+        self.name = name
+        self.email = email
+        self.pmMeEmail = "\(name)@pm.me"
+        self.password = password
+        self.userPlan = userPlan
+        self.mailboxPassword = mailboxPassword
+        self.twoFASecurityKey = twoFASecurityKey
+        self.twoFARecoveryCodes = twoFARecoveryCodes
+        self.numberOfImportedMails = numberOfImportedMails
+        self.quarkURL = quarkURL
     }
     
     init(user: String) {

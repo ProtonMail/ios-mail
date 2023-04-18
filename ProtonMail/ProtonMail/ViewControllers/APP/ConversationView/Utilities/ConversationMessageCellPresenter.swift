@@ -13,6 +13,11 @@ class ConversationMessageCellPresenter {
         presentTags(model: model, in: view)
     }
 
+    func present(senderImage: UIImage, in view: ConversationMessageView) {
+        view.senderImageView.image = senderImage
+        view.initialsLabel.isHidden = true
+    }
+
     private func presentInitialsView(model: ConversationMessageModel, in view: ConversationMessageView) {
         if let initials = model.initial {
             view.initialsLabel.isHidden = false

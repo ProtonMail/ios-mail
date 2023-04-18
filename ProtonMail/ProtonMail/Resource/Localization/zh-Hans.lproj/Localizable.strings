@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "共 %2$@，已使用 %1$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d 秒";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "已选择 %d 项";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此处以添加附件";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "地址";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "高级设置";
+
 /* Title */
 "Alert" = "提醒";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "所有邮件";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "退出账户后所有防护设置都将被清除。";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "所有的邮件已下载";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "外观";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey 能进一步保护您的 Proton 数据，防范设备内存复制等极端攻击方式。%1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey 防护";
 
 /* Apply action */
 "Apply" = "应用";
@@ -287,6 +287,12 @@
 
 /* Settings row */
 "Block email tracking" = "阻止电子邮件追踪";
+
+/* Settings item to open blocked sender list */
+"Block list" = "黑名单";
+
+/* Button to block a sender */
+"Block sender" = "屏蔽发件人";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止发件人查看您是否以及何时打开过邮件。";
@@ -514,9 +520,6 @@
 /* Alert title */
 "Creating label not allowed" = "未能创建标签";
 
-/* Change language title */
-"Current Language is: " = "当前语言：";
-
 /* Placeholder */
 "Current password" = "当前密码";
 
@@ -532,6 +535,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "自定义";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "定制";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "定制工具栏";
@@ -612,13 +618,13 @@
 "Disabling the feature now will delete the messages that have already been downloaded." = "现在禁用该功能将删除已经下载的邮件。";
 
 /* Action */
-"Discard" = "放弃";
+"Discard" = "舍弃";
 
 /* Action */
 "Discard changes" = "放弃修改";
 
 /* Message shown to user after discarding action is done */
-"Discarded" = "已放弃";
+"Discarded" = "草稿已舍弃";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "收起屏幕键盘";
@@ -633,10 +639,10 @@
 "Do you want to cancel the process?" = "是否取消该进程？";
 
 /* Warning message */
-"Do you want to discard the changes?" = "放弃更改吗？";
+"Do you want to discard the changes?" = "确定要放弃更改吗？";
 
 /* No comment provided by engineer. */
-"Do you want to discard your changes?" = "放弃更改吗？";
+"Do you want to discard your changes?" = "确定要放弃更改吗？";
 
 /* Alert body for no attachment found */
 "Do you want to send your message anyway?" = "确定要继续发送邮件吗？";
@@ -663,7 +669,7 @@
 "Download paused: No WiFi detected" = "下载暂停：未检测到WiFi";
 
 /* Text for estimate time label when storage is full */
-"Download paused: Storage full" = "下载暂停：存储已满";
+"Download paused: Storage full" = "下载暂停：存储空间已满";
 
 /* The title of downloaded messages in settings */
 "Download progress" = "下载进度";
@@ -685,9 +691,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "正在下载元数据...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "正在下载新邮件 ...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下载邮件以便搜索邮件内容。所有邮件均已加密且仅保存在此设备上。%1$@";
 
@@ -704,7 +707,7 @@
 "Drafts" = "草稿";
 
 /* Onboarding title */
-"Easily up-to-date" = "易于更新";
+"Easily up-to-date" = "有条不紊";
 
 /* Action
    The button title of the scheduled message banner. */
@@ -736,9 +739,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "邮件地址已禁用";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "电子邮箱地址无效";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "邮箱地址";
@@ -840,9 +840,6 @@
 /* alert title */
 "Expiration not supported" = "不支持设置过期时间";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "无法确定文件类型";
 
@@ -870,6 +867,9 @@
 /* forward action */
 "Forward" = "转发";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "转发（最后一封邮件）";
+
 /* forwarded message title */
 "Forwarded message" = "已转发的邮件";
 
@@ -888,9 +888,6 @@
 /* abbreviation of forward: */
 "Fw:" = "转发：";
 
-/* abbreviation of forward: */
-"Fwd:" = "转发：";
-
 /* contacts talbe cell gender title */
 "Gender" = "性别";
 
@@ -898,7 +895,7 @@
 "General settings" = "常规设置";
 
 /* title of the next button */
-"Get Started" = "入门";
+"Get Started" = "立即体验";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
 "Go back (recommended)" = "返回（推荐）";
@@ -908,9 +905,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "前往设置";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "进入登录界面";
 
 /* Got it action */
 "Got it" = "知道了";
@@ -933,11 +927,11 @@
 /* Title */
 "Hide details" = "隐藏详情";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email 邮箱别名";
+
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "您认为新版 Proton Mail的使用体验如何？";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "身份验证失败";
@@ -973,6 +967,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "当 Proton 网站遭到封禁时，此选项允许程序改用其他线路连接 Proton 以绕过防火墙或规避网络故障。推荐开启以增强连接稳定性。%1$@";
 
+/* One of schedule time options */
+"In the morning" = "早晨";
+
 /* menu title */
 "Inbox" = "收件箱";
 
@@ -993,9 +990,6 @@
 
 /* place holder */
 "Input Display Name…" = "输入您的称呼…";
-
-/* place holder */
-"Input Notification Email …" = "请输入通知邮箱 …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "连接不安全";
@@ -1071,6 +1065,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "链接已复制。";
 
+/* Button inside the banner */
+"Load" = "载入";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "加载嵌入图像";
 
@@ -1092,12 +1089,6 @@
 
 /* menu title */
 "Lock The App" = "锁定应用";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "重新登录即可继续接收邮件更新提醒";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "%@ 账户已退出登录";
 
 /* error title */
 "Logs" = "日志";
@@ -1126,9 +1117,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "标为未读";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "菜单";
@@ -1333,12 +1321,18 @@
 /* Alert title */
 "Notice" = "通知";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "推送通知操作和其他后台进程将不能使用";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "通知";
 
 /* The title of Off setting options */
 "Off" = "关";
+
+/* Official badge next to sender's name */
+"Official" = "官方";
 
 /* Title of the alert when the device is offline */
 "Offline" = "已掉线";
@@ -1348,9 +1342,6 @@
 
 /* Action */
 "OK" = "确定";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "确定";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "最早的邮件：";
@@ -1394,11 +1385,17 @@
 /* update password error */
 "Password update failed" = "密码修改失败";
 
+/* Message to show to user after updating password. */
+"Password updated" = "密码已更改";
+
 /* Placeholder */
 "Passwords must match" = "密码必须一致";
 
 /* Text for pause button */
 "Pause" = "暂停";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "邮件移动（包括存档）后自动查看下一封邮件。";
 
 /* default vcard types */
 "Personal" = "私人";
@@ -1502,11 +1499,11 @@
 /* Local notification title */
 "Problem sending message" = "邮件发送失败";
 
+/* Settings lock protection section */
+"Protection" = "安全防护";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton 系统故障";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail 当前处于离线状态…";
@@ -1516,9 +1513,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 运行状态";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "意见反馈";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理服务器或防火墙干扰";
@@ -1578,8 +1572,14 @@
 /* reply action */
 "Reply" = "回复";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "回复（最后一封邮件）";
+
 /* reply all action */
 "Reply all" = "回复所有人";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "回复所有人（最后一封邮件）";
 
 /* menu title */
 "Report a problem" = "反馈问题";
@@ -1623,12 +1623,15 @@
 /* title */
 "Save Changes" = "保存更改";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "自由选择发送时间";
+
 /* Action
    The action title of the alert of the user trying to send a message that was schedule-send. */
 "Schedule send" = "定时发送";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "将删除计划";
+"Schedule will be removed" = "取消定时发送";
 
 /* mail location title */
 "Scheduled" = "定时发送";
@@ -1665,7 +1668,7 @@
 /* Action */
 "Send anyway" = "仍然发送";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "发送反馈";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1740,6 +1743,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "设置滑动手势来执行常用操作。";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "自由设置定时发送";
+
 /* menu title */
 "Settings" = "设置";
 
@@ -1777,6 +1783,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延后";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "部分图片在跟踪防护模式下无法加载。";
+
 /* menu title */
 "Spam" = "垃圾邮件";
 
@@ -1799,7 +1808,7 @@
 "Still can't find a solution" = "问题仍未解决";
 
 /* cell title in device settings */
-"Storage" = "存储";
+"Storage" = "存储空间";
 
 /* Alert title */
 "Storage full" = "存储空间已满";
@@ -1808,7 +1817,7 @@
 "Storage limit" = "存储空间限制";
 
 /* Storage warning */
-"Storage quota exceeded" = "存储配额超标";
+"Storage quota exceeded" = "存储空间超限";
 
 /* The title of storage usage in settings for encrypted search */
 "Storage used" = "存储空间用量";
@@ -1840,9 +1849,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "滑动操作";
-
-/* Swiping gestures */
-"Swiping gestures" = "滑动手势";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "切换选择模式";
@@ -1931,9 +1937,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您即将打开非标准 URL，可能无法正常加载。确定要用默认的浏览器打开吗？";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "该用户已登录";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "仍有未发送的邮件，现在退出邮件将丢失";
 
@@ -1950,12 +1953,6 @@
 "This conversation contains trashed messages" = "此会话包含废弃的邮件";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
-
-/* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "这封邮件看似来自 Proton Mail 地址，但却是从我们的系统外部发来的，并且没能通过我们的验证。这可能是欺诈邮件，也可能是投递过程出现了问题。";
 
 /* Description for undo send */
@@ -1968,7 +1965,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已不在稍后发送计划中。如果您仍想稍后发送，可以点击 “计划发送”";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已取消定时发送。如果仍需稍后发送， 可以再次点击“定时发送”。";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此邮件可能具有欺诈性质，请检查发件人身份和邮件内容，确认信息真实性。";
@@ -2028,9 +2025,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "工具栏操作按钮（最多可选择 5 个）";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "跟踪奖励进展";
 
@@ -2046,9 +2040,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "开启此功能后，您登录的所有账户通讯录中的邮箱地址都可自动补全。";
 
 /* Placeholder */
 "Two Factor Code" = "双重验证码";
@@ -2086,6 +2077,12 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "无限制";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "文件夹和标签不限量";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "升级账户即可解锁更多定时发送选项，以及各种高级功能。";
+
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "需要解锁";
 
@@ -2104,6 +2101,15 @@
 /* Error message */
 "Unsupported file type" = "不支持的文件类型";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "高达 3 个自定义邮箱域名";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "最多 15 个邮箱地址";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "最高 500 GB 存储空间";
+
 /* update notification email error title */
 "Update Notification Email" = "更改通知邮箱";
 
@@ -2115,6 +2121,9 @@
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "新版 Proton，全方位的隐私保护";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "立即升级账户";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "开通付费账户方可从 %@ 地址发送邮件";
@@ -2213,7 +2222,7 @@
 "You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
 
 /* The content of the introducation view of the schedule send */
-"You can now schedule your messages to be sent later" = "您现在可以计划稍后发送邮件";
+"You can now schedule your messages to be sent later" = "现已支持定时发送邮件";
 
 /* The description of encrypted search at the pop up. */
 "You can now search within your messages. This feature can be enabled from settings at any time." = "现已支持搜索邮件内容，此功能可随时在设置中开启。";
@@ -2293,4 +2302,3 @@
 /* contact placeholder */
 "ZIP" = "邮编";
 
-"Customize (verb)" = "Customize";

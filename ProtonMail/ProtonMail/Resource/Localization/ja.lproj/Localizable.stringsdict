@@ -41,7 +41,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d の添付ファイル</string>
+			<string>%d 件の添付ファイル</string>
 		</dict>
 	</dict>
 	<key>%d attempt remaining</key>
@@ -53,7 +53,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>残り %d 回試すことができます</string>
+			<string>残り%d回</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -67,7 +67,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>残り %d 回間違えるとデータが抹消されます!</string>
+			<string>保護されたデータが消去されるまで残り%d回です！</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -81,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件の会話にラベルが付けられました</string>
+			<string>%d 件の会話にラベルを付けました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件のメッセージからラベルが外されました</string>
+			<string>%d 件のメッセージにラベルを付けました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -195,7 +195,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件のメッセージが %@ に移動されました</string>
+			<string>%d件のメッセージが%@へ移動されました</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -211,7 +211,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件のメッセージが下書きに移動されました</string>
+			<string>%d件のメッセージが下書きへ移動されました</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -281,7 +281,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>他 %d</string>
+			<string>ほか%d人</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
@@ -295,7 +295,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件の会話を完全に削除してよろしいですか?</string>
+			<string>%d 件の会話を完全に削除してよろしいですか？</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -309,7 +309,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件のメッセージを完全に削除してよろしいですか?</string>
+			<string>%d 件のメッセージを完全に削除してよろしいですか？</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -339,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Proton は、このメッセージから %d 件のトラッカーを見つけてブロックしました。</string>
+			<string>Proton はこのメッセージから %d 件のトラッカーを見つけてブロックしました。</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 件のメッセージが下書きに移動され、送信予約が削除されます。</string>
+			<string>%d件のメッセージを下書きへ移動して、スケジュールを削除しました。</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

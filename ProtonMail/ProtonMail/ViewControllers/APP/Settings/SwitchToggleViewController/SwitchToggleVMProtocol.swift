@@ -17,6 +17,7 @@
 
 import Foundation
 import struct UIKit.CGFloat
+import enum ProtonCore_Utilities.Either
 
 protocol SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { get }
@@ -38,5 +39,5 @@ protocol SwitchToggleVMOutput {
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)?
     func sectionHeader(of section: Int) -> String?
-    func sectionFooter(of section: Int) -> String?
+    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>?
 }

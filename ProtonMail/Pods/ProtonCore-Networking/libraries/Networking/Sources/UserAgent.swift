@@ -22,7 +22,7 @@
 import Foundation
 
 public final class UserAgent {
-    public static let `default` : UserAgent = UserAgent()
+    public static let `default`: UserAgent = UserAgent()
     
     #if DEBUG_CORE_INTERNALS
     public var initCount: Int = 0

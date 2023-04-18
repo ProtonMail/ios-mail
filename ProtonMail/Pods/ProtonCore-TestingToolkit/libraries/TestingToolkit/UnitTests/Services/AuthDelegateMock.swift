@@ -32,18 +32,30 @@ public final class AuthDelegateMock: AuthDelegate {
     @FuncStub(AuthDelegateMock.credential(sessionUID:), initialReturn: nil) public var getTokenCredentialStub
     public func credential(sessionUID: String) -> Credential? { getTokenCredentialStub(sessionUID) }
     
-    @FuncStub(AuthDelegateMock.onLogout) public var onLogoutStub
-    public func onLogout(sessionUID uid: String) { onLogoutStub(uid) }
+    @FuncStub(AuthDelegateMock.onAuthenticatedSessionInvalidated) public var onAuthenticatedSessionInvalidatedStub
+    public func onAuthenticatedSessionInvalidated(sessionUID uid: String) { onAuthenticatedSessionInvalidatedStub(uid) }
     
     @FuncStub(AuthDelegateMock.onUpdate) public var onUpdateStub
     public func onUpdate(credential: Credential, sessionUID: String) { onUpdateStub(credential, sessionUID) }
     
-    @FuncStub(AuthDelegateMock.onRefresh) public var onRefreshStub
-    public func onRefresh(sessionUID: String, service: APIService, complete: @escaping AuthRefreshResultCompletion) {
-        onRefreshStub(sessionUID, service, complete)
+    @FuncStub(AuthDelegateMock.onUnauthenticatedSessionInvalidated) public var onUnauthenticatedSessionInvalidatedStub
+    public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
+        onUnauthenticatedSessionInvalidatedStub(sessionUID)
     }
-    @FuncStub(AuthDelegateMock.eraseUnauthSessionCredentials) public var eraseUnauthSessionCredentialsStub
-    public func eraseUnauthSessionCredentials(sessionUID: String) {
-        eraseUnauthSessionCredentialsStub(sessionUID)
+
+    @FuncStub(AuthDelegateMock.onSessionObtaining) public var onSessionObtainingStub
+    public func onSessionObtaining(credential: Credential) {
+        onSessionObtainingStub(credential)
+    }
+
+    @FuncStub(AuthDelegateMock.onAdditionalCredentialsInfoObtained) public var updateAuthStub
+    public func onAdditionalCredentialsInfoObtained(sessionUID: String, password: String?, salt: String?, privateKey: String?) {
+        updateAuthStub(sessionUID, password, salt, privateKey)
+    }
+
+    @PropertyStub(\AuthDelegateMock.authSessionInvalidatedDelegateForLoginAndSignup, initialGet: nil) public var authSessionInvalidatedDelegateForLoginAndSignupStub
+    public var authSessionInvalidatedDelegateForLoginAndSignup: ProtonCore_Services.AuthSessionInvalidatedDelegate? {
+        get { authSessionInvalidatedDelegateForLoginAndSignupStub() }
+        set { authSessionInvalidatedDelegateForLoginAndSignupStub(newValue) }
     }
 }

@@ -100,9 +100,12 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let isContactsCached = "isContactsCached"
 
+        static let isAppRatingEnabled = "isAppRatingEnabled"
+        static let appRatingPromptedInVersion = "appRatingPromptedInVersion"
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
+        static let isSenderImageEnabled = "isSenderImageEnabled"
     }
 
     var keymakerRandomkey: String? {
@@ -188,7 +191,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    func migrateLagcy() {
+    func migrateLegacy() {
         guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
             case let locked = Locked<String>(encryptedValue: cypherData),

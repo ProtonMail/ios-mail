@@ -21,7 +21,7 @@
 
 import Foundation
 import XCTest
-import pmtest
+import fusion
 import ProtonCore_CoreTranslation
 
 private let humanVerificationScreenIdentifier = "Human Verification view"

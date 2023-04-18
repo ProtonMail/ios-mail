@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%2$@ 中的 %1$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d 秒鐘";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "已選擇 %d 個";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此處以加入附件";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "位址";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "進階設定";
+
 /* Title */
 "Alert" = "警告";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "所有郵件";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "登出應用程式後，所有保護設定將會被重設。";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "所有您的郵件已下載";
@@ -213,6 +207,9 @@
    Alert when sign out non-primary account from account manager */
 "Are you sure you want to sign out?" = "您確定要登出嗎？";
 
+/* One of the schedule time options */
+"As scheduled" = "按排程";
+
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "於 %@";
 
@@ -287,6 +284,9 @@
 
 /* Settings row */
 "Block email tracking" = "封鎖郵件追蹤";
+
+/* Button to block a sender */
+"Block sender" = "封鎖寄件者";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止寄件人得知您閱讀此封郵件。";
@@ -517,9 +517,6 @@
 /* Alert title */
 "Creating label not allowed" = "不允許建立標籤";
 
-/* Change language title */
-"Current Language is: " = "當前語言為： ";
-
 /* Placeholder */
 "Current password" = "目前密碼";
 
@@ -535,6 +532,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "自訂";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "自訂";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "自訂工具列";
@@ -623,6 +623,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "取消儲存";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "免責聲明";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "收起螢幕鍵盤";
 
@@ -688,9 +691,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "下載中繼資料…";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "下載新郵件…";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下載電子郵件以便您可以在其中進行搜尋。郵件加密過並儲存在本地端。%1$@";
 
@@ -739,9 +739,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "電郵位址已停用";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "電郵位址無效";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "電郵位址";
@@ -843,9 +840,6 @@
 /* alert title */
 "Expiration not supported" = "不支援到期日";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "無法確定檔案類型";
 
@@ -891,9 +885,6 @@
 /* abbreviation of forward: */
 "Fw:" = "轉寄:";
 
-/* abbreviation of forward: */
-"Fwd:" = "轉發至：";
-
 /* contacts talbe cell gender title */
 "Gender" = "性別";
 
@@ -911,9 +902,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "前往設定";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "前往登入介面";
 
 /* Got it action */
 "Got it" = "了解";
@@ -941,9 +929,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "歡迎告訴我們您的新版 Proton Mail 體驗，有讓您感到驚艷嗎？";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "真人驗證失敗";
@@ -979,6 +964,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
+/* One of schedule time options */
+"In the morning" = "在早上";
+
 /* menu title */
 "Inbox" = "收件匣";
 
@@ -999,9 +987,6 @@
 
 /* place holder */
 "Input Display Name…" = "輸入顯示名稱…";
-
-/* place holder */
-"Input Notification Email …" = "輸入通知電郵 …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "不安全的連線";
@@ -1077,6 +1062,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "已複製連結。";
 
+/* Button inside the banner */
+"Load" = "載入";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "載入內崁圖像";
 
@@ -1098,12 +1086,6 @@
 
 /* menu title */
 "Lock The App" = "鎖定應用程式";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "再次登錄以持續接收更新";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "已從 %@ 登出";
 
 /* error title */
 "Logs" = "日誌";
@@ -1132,9 +1114,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "標記為未讀";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "選單";
@@ -1339,12 +1318,18 @@
 /* Alert title */
 "Notice" = "通知";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "通知動作及其他背景執行程序將會無法使用";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "通知";
 
 /* The title of Off setting options */
 "Off" = "關閉";
+
+/* Official badge next to sender's name */
+"Official" = "官方";
 
 /* Title of the alert when the device is offline */
 "Offline" = "離線";
@@ -1354,9 +1339,6 @@
 
 /* Action */
 "OK" = "好";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "好";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "較舊的郵件： ";
@@ -1399,6 +1381,9 @@
 
 /* update password error */
 "Password update failed" = "密碼更新失敗";
+
+/* Message to show to user after updating password. */
+"Password updated" = "密碼已更新";
 
 /* Placeholder */
 "Passwords must match" = "密碼必須相符";
@@ -1508,11 +1493,11 @@
 /* Local notification title */
 "Problem sending message" = "傳送郵件時發生錯誤";
 
+/* Settings lock protection section */
+"Protection" = "保護";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton 目前無法使用";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail 目前處於離線狀態…";
@@ -1523,9 +1508,6 @@
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 狀態";
 
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "提供意見回饋";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
 
@@ -1533,7 +1515,7 @@
 "Re-authenticate" = "重新認證";
 
 /* abbreviation of reply: */
-"Re:" = "Re:";
+"Re:" = "回覆：";
 
 /* No comment provided by engineer. */
 "Read" = "已讀";
@@ -1674,7 +1656,7 @@
 /* Action */
 "Send anyway" = "仍然傳送";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "傳送意見反饋";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1789,6 +1771,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "延後";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "因有追蹤程式保護，因此某些影像無法載入。";
+
 /* menu title */
 "Spam" = "垃圾郵件";
 
@@ -1852,9 +1837,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "滑動操作";
-
-/* Swiping gestures */
-"Swiping gestures" = "滑動手勢";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "切換選擇模式";
@@ -1943,9 +1925,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您所要開啟的網址可能未符合標準規範，因此無法正常加載。是否仍然要使用預設瀏覽器開啟？";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "該使用者已登入";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "如果您現在登出，將會遺失仍未傳送的郵件";
 
@@ -1960,12 +1939,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此交談群組包含已移至「垃圾桶」的郵件";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "此電郵未能通過其網域的認證需求。可能是因為遭人假冒或不當轉寄！";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電郵無法通過其網域的驗證需求。這可能是詐騙郵件或是轉發不當導致！";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此信件看似由 Proton Mail 寄出的 ，但卻並非由我們的系統寄出，而且未能通過我們的認證需求。這可能是偽造或不當轉寄的郵件！";
@@ -2040,9 +2013,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "工具列動作 (最多可選 5 項)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "推薦獎勵總覽";
 
@@ -2058,9 +2028,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "啟用此功能以使用您所有已登入帳號中的聯絡人來自動完成電郵位址。";
 
 /* Placeholder */
 "Two Factor Code" = "兩步驟驗證碼";
@@ -2098,6 +2065,9 @@
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "無限制";
 
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "無限的資料夾 / 標籤";
+
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "升級方案以解鎖自訂訊息排程與其他好處。";
 
@@ -2118,6 +2088,9 @@
 
 /* Error message */
 "Unsupported file type" = "不支援的檔案類型";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "支援 3 個自訂電郵網域";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 15 email addresses" = "多達 15 個電子郵件地址";
@@ -2317,4 +2290,3 @@
 /* contact placeholder */
 "ZIP" = "美國郵區編號";
 
-"Customize (verb)" = "Customize";

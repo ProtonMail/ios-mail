@@ -43,68 +43,54 @@ import ProtonCore_FeatureSwitch
 final class Container {
     let login: Login
     let signupService: Signup
-    let authManager: AuthHelper
     
-    let api: PMAPIService
-    private var humanCheckHelper: HumanCheckHelper?
+    private(set) var api: APIService
     private var paymentsManager: PaymentsManager?
     private let externalLinks: ExternalLinks
     private let clientApp: ClientApp
     private let appName: String
-    private let challenge: PMChallenge
+    let challenge: PMChallenge
     let troubleShootingHelper: TroubleShootingHelper
     
     var token: String?
     var tokenType: String?
     
-    convenience init(appName: String,
-                     clientApp: ClientApp,
-                     environment: Environment,
-                     trustKit: TrustKit? = nil,
-                     apiServiceDelegate: APIServiceDelegate,
-                     forceUpgradeDelegate: ForceUpgradeDelegate,
-                     minimumAccountType: AccountType) {
-        
-        self.init(appName: appName, clientApp: clientApp, doh: environment.doh, trustKit: trustKit,
-                  apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate,
-                  minimumAccountType: minimumAccountType)
-    }
-    
     init(appName: String,
          clientApp: ClientApp,
-         doh: DoHInterface,
-         trustKit: TrustKit? = nil,
-         apiServiceDelegate: APIServiceDelegate,
-         forceUpgradeDelegate: ForceUpgradeDelegate,
+         apiService: APIService,
          minimumAccountType: AccountType) {
-        
-        // use the TrustKit instance passed from the outside
-        if let trustKit = trustKit {
-            PMAPIService.trustKit = trustKit
-        }
-        
-        if PMAPIService.trustKit == nil {
-            let trustKit = TrustKit()
-            trustKit.pinningValidator = .init()
-            PMAPIService.trustKit = trustKit
-        }
-        
-        api = PMAPIService.createAPIServiceWithoutSession(doh: doh, challengeParametersProvider: .forAPIService(clientApp: clientApp))
-        api.forceUpgradeDelegate = forceUpgradeDelegate
-        api.serviceDelegate = apiServiceDelegate
-        authManager = AuthHelper()
-        api.authDelegate = authManager
-        login = LoginService(api: api, authManager: authManager, clientApp: clientApp, minimumAccountType: minimumAccountType)
-        challenge = PMChallenge()
-        signupService = SignupService(api: api,
-                                      challengeParametersProvider: .forLoginAndSignup(clientApp: clientApp, challenge: challenge),
-                                      clientApp: clientApp)
+
         self.appName = appName
         self.clientApp = clientApp
         self.externalLinks = ExternalLinks(clientApp: clientApp)
-        self.troubleShootingHelper = TroubleShootingHelper.init(doh: doh)
+        self.troubleShootingHelper = TroubleShootingHelper(doh: apiService.dohInterface)
+        self.api = apiService
+        if FeatureFactory.shared.isEnabled(.unauthSession) {
+            self.api.acquireSessionIfNeeded { result in PMLog.debug("\(result)") }
+        }
+        self.login = LoginService(api: apiService, clientApp: clientApp, minimumAccountType: minimumAccountType)
+        self.signupService = SignupService(api: apiService, clientApp: clientApp)
+
+        if let challenge = apiService.challengeParametersProvider.challenge {
+            self.challenge = challenge
+        } else {
+            assertionFailure("Misconfiguration of APIService.challengeParametersProvider")
+            let newChallenge = PMChallenge()
+            self.challenge = newChallenge
+            api.challengeParametersProvider = .forAPIService(clientApp: clientApp, challenge: newChallenge)
+        }
     }
-    
+
+    func registerHumanVerificationDelegates() {
+        api.humanDelegate?.responseDelegateForLoginAndSignup = self
+        api.humanDelegate?.paymentDelegateForLoginAndSignup = self
+    }
+
+    func unregisterHumanVerificationDelegates() {
+        api.humanDelegate?.responseDelegateForLoginAndSignup = nil
+        api.humanDelegate?.paymentDelegateForLoginAndSignup = nil
+    }
+
     // MARK: Login view models
     
     func makeLoginViewModel() -> LoginViewModel {
@@ -128,8 +114,7 @@ final class Container {
     
     func makeSignupViewModel() -> SignupViewModel {
         challenge.reset()
-        return SignupViewModel(apiService: api,
-                               signupService: signupService,
+        return SignupViewModel(signupService: signupService,
                                loginService: login,
                                challenge: challenge)
     }
@@ -147,7 +132,7 @@ final class Container {
     }
     
     func makeEmailVerificationViewModel() -> EmailVerificationViewModel {
-        return EmailVerificationViewModel(apiService: api, signupService: signupService)
+        return EmailVerificationViewModel(signupService: signupService)
     }
     
     func makeSummaryViewModel(planName: String?,
@@ -168,18 +153,6 @@ final class Container {
     func makeExternalLinks() -> ExternalLinks {
         return externalLinks
     }
-    
-    func setupHumanVerification(viewController: UIViewController? = nil) {
-        let nonModalUrl = URL(string: "/users/availableExternal")!
-        humanCheckHelper = HumanCheckHelper(apiService: api,
-                                            viewController: viewController,
-                                            nonModalUrls: [nonModalUrl],
-                                            clientApp: clientApp,
-                                            responseDelegate: self,
-                                            paymentDelegate: self)
-        api.humanDelegate = humanCheckHelper
-    }
-    
 }
 
 extension Container: HumanVerifyPaymentDelegate {

@@ -102,5 +102,15 @@ class PinTests: BaseTestCase {
             .inputIncorrectPinNTimesStayLoggedIn(count: 6)
             .verify.pinErrorMessageShowsThreeRemainingTries(3)
     }
-}
 
+    func testLogoutBeforeUnlockingDoesNotCrash() {
+        pinRobot
+            .enableAppKey()
+            .pinTimer()
+            .selectAutolockEveryTime()
+            .foregroundApp()
+            .logout()
+            .verify
+            .loginScreenIsShown()
+    }
+}

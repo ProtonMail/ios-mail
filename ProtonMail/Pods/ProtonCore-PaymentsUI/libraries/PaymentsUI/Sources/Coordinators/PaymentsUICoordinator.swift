@@ -25,6 +25,7 @@ import ProtonCore_Payments
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import ProtonCore_CoreTranslation
+import ProtonCore_Observability
 
 final class PaymentsUICoordinator {
     
@@ -246,25 +247,36 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
             case .purchasedPlan(let plan):
                 self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 self.finishCallback(reason: .purchasedPlan(accountPlan: plan))
+                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful, plan: self.getPlanName(plan: plan)))
             case .toppedUpCredits:
                 self.unfinishedPurchasePlan = self.purchaseManager.unfinishedPurchasePlan
                 self.finishCallback(reason: .toppedUpCredits)
+                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .successful, plan: self.getPlanName(plan: plan.accountPlan)))
             case .purchaseError(let error, let processingPlan):
                 if let processingPlan = processingPlan {
                     self.unfinishedPurchasePlan = processingPlan
                 }
+                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .failed, plan: self.getPlanName(plan: plan.accountPlan)))
                 self.showError(error: error)
             case let .apiMightBeBlocked(message, originalError, processingPlan):
                 if let processingPlan = processingPlan {
                     self.unfinishedPurchasePlan = processingPlan
                 }
                 self.unfinishedPurchasePlan = processingPlan
+                ObservabilityEnv.report(.planSelectionCheckoutTotal(status: .failed, plan: self.getPlanName(plan: plan.accountPlan)))
                 // TODO: should we handle it ourselves? or let the client do it?
                 self.finishCallback(reason: .apiMightBeBlocked(message: message, originalError: originalError))
             case .purchaseCancelled:
                 break
             }
         }
+    }
+    
+    func getPlanName(plan: InAppPurchasePlan) -> PlanName {
+        if plan.isFreePlan { return .free }
+        if plan.isPlusPlan { return .plus }
+        if plan.isUnlimitedPlan { return .unlimited }
+        return .free
     }
     
     func planPurchaseError() {

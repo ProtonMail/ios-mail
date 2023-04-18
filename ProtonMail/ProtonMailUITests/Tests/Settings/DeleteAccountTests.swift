@@ -17,6 +17,7 @@
 
 import XCTest
 import ProtonCore_Doh
+import ProtonCore_Environment
 import ProtonCore_TestingToolkit
 import ProtonCore_QuarkCommands
 
@@ -24,17 +25,7 @@ final class DeleteAccountTests: BaseTestCase {
     
     var doh: (DoH & ServerConfig)? {
         guard let apiDomain = apiDomain else { return nil }
-        guard let appDomain = appDomain else { return nil }
-        guard let apiPath = apiPath else { return nil }
-        return CustomServerConfigDoH(
-            signupDomain: appDomain,
-            captchaHost: "https://api.\(apiDomain)",
-            humanVerificationV3Host: "https://verify.\(appDomain)",
-            accountHost: "https://account.\(appDomain)",
-            defaultHost: "https://\(apiDomain)",
-            apiHost: "",
-            defaultPath: apiPath
-        )
+        return Environment.custom(apiDomain).doh
     }
     
     private let robot = AccountDeletionButtonRobot()
@@ -58,7 +49,7 @@ final class DeleteAccountTests: BaseTestCase {
                                  callCompletionBlockOn: .global(qos: .userInitiated)) { result in
                 switch result {
                 case .success(let details):
-                    let user = User(email: "\(details.account.username)@\(appDomain ?? "")",
+                    let user = User(email: "\(details.account.username)@\(apiDomain ?? "")",
                                     password: details.account.password,
                                     mailboxPassword: details.account.mailboxPassword ?? "",
                                     twoFASecurityKey: "")

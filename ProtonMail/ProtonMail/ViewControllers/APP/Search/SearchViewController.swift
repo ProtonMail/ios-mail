@@ -25,8 +25,8 @@ import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
-import UIKit
 import ProtonMailAnalytics
+import UIKit
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
@@ -558,10 +558,13 @@ extension SearchViewController {
     private func showComposer(message: MessageEntity) {
         guard let viewModel = self.viewModel.getComposeViewModel(message: message),
               let navigationController = self.navigationController else { return }
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
-                                                          editorViewModel: viewModel,
-                                                          services: ServiceFactory.default)
-        coordinator.start()
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus
+        )
+        navigationController.present(composer, animated: true)
     }
 
     private func showComposer(msgID: MessageID) {
@@ -569,10 +572,13 @@ extension SearchViewController {
               let navigationController = self.navigationController else {
             return
         }
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
-                                                          editorViewModel: viewModel,
-                                                          services: ServiceFactory.default)
-        coordinator.start()
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus
+        )
+        navigationController.present(composer, animated: true)
     }
 
     private func prepareFor(message: MessageEntity) {
@@ -625,6 +631,7 @@ extension SearchViewController {
                     user: self.viewModel.user,
                     internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
                     infoBubbleViewStatusProvider: userCachedStatus,
+                    contextProvider: sharedServices.get(by: CoreDataService.self),
                     targetID: messageID
                 )
                 coordinator.goToDraft = { [weak self] msgID, _ in
@@ -696,6 +703,20 @@ extension SearchViewController {
         self.hideActionBar()
         self.hideActionSheet()
     }
+
+    private func showSenderImageIfNeeded(
+        in cell: NewMailboxMessageCell,
+        item: MailboxItem
+    ) {
+        viewModel.fetchSenderImageIfNeeded(
+            item: item,
+            isDarkMode: isDarkMode,
+            scale: currentScreenScale) { [weak self, weak cell] image in
+                if let image = image, let cell = cell, cell.mailboxItem == item {
+                    self?.cellPresenter.presentSenderImage(image, in: cell.customView)
+                }
+            }
+    }
 }
 
 extension SearchViewController: SearchViewUIProtocol {
@@ -750,6 +771,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         let message = self.viewModel.messages[indexPath.row]
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+
+        showSenderImageIfNeeded(in: mailboxCell, item: .message(message))
 
         mailboxCell.mailboxItem = .message(message)
         mailboxCell.cellDelegate = self
@@ -818,6 +841,10 @@ extension SearchViewController: UITextFieldDelegate {
 }
 
 extension SearchViewController: UndoActionHandlerBase {
+    var undoActionManager: UndoActionManagerProtocol? {
+        nil
+    }
+
     var delaySendSeconds: Int {
         self.viewModel.user.userInfo.delaySendSeconds
     }

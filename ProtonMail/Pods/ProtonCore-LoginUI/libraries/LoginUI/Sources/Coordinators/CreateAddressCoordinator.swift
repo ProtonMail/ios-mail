@@ -26,6 +26,7 @@ import ProtonCore_Login
 import ProtonCore_FeatureSwitch
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
+    func userDidGoBack()
     func createAddressCoordinatorDidFinish(endLoading: @escaping () -> Void, createAddressCoordinator: CreateAddressCoordinator, data: LoginData)
 }
 
@@ -81,7 +82,7 @@ final class CreateAddressCoordinator {
 
 extension CreateAddressCoordinator: NavigationDelegate {
     func userDidGoBack() {
-        navigationController.popViewController(animated: true)
+        delegate?.userDidGoBack()
     }
 }
 

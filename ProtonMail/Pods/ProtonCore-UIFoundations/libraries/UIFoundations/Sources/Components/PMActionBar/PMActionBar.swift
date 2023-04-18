@@ -295,7 +295,7 @@ extension PMActionBar {
         btn.sizeToFit()
         btn.widthAnchor.constraint(equalToConstant: btn.bounds.size.width + 2 * PADDING).isActive = true
         btn.tag = TAG_OFFSET + idx
-        let state: UIButton.State = item.isSelected ? .selected: .normal
+        let state: UIButton.State = item.isSelected ? .selected : .normal
         self.setup(button: btn, for: state)
         btn.addTarget(self, action: #selector(self.clickItem(sender:)), for: .touchUpInside)
         return btn
@@ -316,7 +316,7 @@ extension PMActionBar {
         btn.sizeToFit()
         btn.widthAnchor.constraint(equalToConstant: btn.bounds.size.width + 2 * PADDING).isActive = true
         btn.tag = TAG_OFFSET + idx
-        let state: UIButton.State = item.isSelected ? .selected: .normal
+        let state: UIButton.State = item.isSelected ? .selected : .normal
         self.setup(button: btn, for: state)
         btn.addTarget(self, action: #selector(self.clickItem(sender:)), for: .touchUpInside)
         return btn

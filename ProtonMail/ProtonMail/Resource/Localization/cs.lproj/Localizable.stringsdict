@@ -501,9 +501,9 @@
 			<key>few</key>
 			<string>Tyto %d zprávy budou přesunuty do složky Koncepty a jejich plán bude odstraněn.</string>
 			<key>many</key>
-			<string>Těchto %d zpráv bude přesunuto do složky Koncepty a jejich plán bude odstraněn.</string>
+			<string>Těchto %d zpráv bude přesunuto do Konceptů a jejich naplánování bude odebráno.</string>
 			<key>one</key>
-			<string>Tato %d zpráva bude přesunuta do složky Koncepty a její plán bude odstraněn.</string>
+			<string>Tato %d zpráva bude přesunuta do Konceptů a její naplánování bude odebráno.</string>
 			<key>other</key>
 			<string>Těchto %d zpráv bude přesunuto do složky Koncepty a jejich plán bude odstraněn.</string>
 		</dict>

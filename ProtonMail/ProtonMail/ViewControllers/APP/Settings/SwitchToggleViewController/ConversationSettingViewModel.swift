@@ -17,6 +17,7 @@
 
 import Foundation
 import struct UIKit.CGFloat
+import enum ProtonCore_Utilities.Either
 
 final class ConversationSettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
@@ -76,7 +77,7 @@ extension ConversationSettingViewModel: SwitchToggleVMOutput {
         nil
     }
 
-    func sectionFooter(of section: Int) -> String? {
-        LocalString._conversation_settings_footer_title
+    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+        Either.left(LocalString._conversation_settings_footer_title)
     }
 }

@@ -55,9 +55,7 @@ class HumanVerificationManager: LifetimeTrackable {
             apiService: apiService,
             supportURL: url,
             viewController: nil,
-            clientApp: .mail,
-            responseDelegate: nil,
-            paymentDelegate: nil
+            clientApp: .mail
         )
 
         // add humanVerifyDelegate to humanVerifyDelegates
@@ -71,7 +69,7 @@ extension HumanVerificationManager {
 
     func setupUITestsMocks() {
         HTTPStubs.setEnabled(true)
-        stub(condition: isHost("api.protonmail.ch") && isPath("/payments/status") && isMethodGET()) { _ in
+        stub(condition: isHost("proton.me") && isPath("/payments/status") && isMethodGET()) { _ in
             let body = Data(self.responseString9001.utf8)
             let headers = ["Content-Type": "application/json;charset=utf-8"]
             return HTTPStubsResponse(data: body, statusCode: 200, headers: headers)

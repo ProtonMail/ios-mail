@@ -24,23 +24,23 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class TokenStatusRequest: BaseApiRequest<TokenStatusResponse> {
+public final class TokenStatusRequest: BaseApiRequest<TokenStatusResponse> {
     private let token: PaymentToken
 
-    init (api: APIService, token: PaymentToken) {
+    public init (api: APIService, token: PaymentToken) {
         self.token = token
         super.init(api: api)
     }
 
-    override var isAuth: Bool { false }
+    override public var isAuth: Bool { false }
 
-    override var path: String { super.path + "/v4/tokens/" + token.token }
+    override public var path: String { super.path + "/v4/tokens/" + token.token }
 }
 
-final class TokenStatusResponse: Response {
+public final class TokenStatusResponse: Response {
     var paymentTokenStatus: PaymentTokenStatus?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         let (result, tokenStatus) = decodeResponse(response as Any, to: PaymentTokenStatus.self, errorToReturn: .tokenStatusDecode)
         self.paymentTokenStatus = tokenStatus

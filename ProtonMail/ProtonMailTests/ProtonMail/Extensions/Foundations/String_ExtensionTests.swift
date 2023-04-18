@@ -36,7 +36,7 @@ final class String_ExtensionTests: XCTestCase {
     }
 
     func testHasFwd() {
-        XCTAssertTrue("Fwd: Test mail".hasFwd())
+        XCTAssertTrue("Fw: Test mail".hasFwd())
         XCTAssertFalse("Test mail".hasFwd())
     }
 

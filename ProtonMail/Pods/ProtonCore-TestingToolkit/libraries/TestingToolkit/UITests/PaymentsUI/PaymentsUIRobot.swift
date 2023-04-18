@@ -21,7 +21,7 @@
 
 import XCTest
 import ProtonCore_CoreTranslation
-import pmtest
+import fusion
 
 private let title = CoreString._pu_select_plan_title
 private func planCellIdentifier(name: String) -> String {

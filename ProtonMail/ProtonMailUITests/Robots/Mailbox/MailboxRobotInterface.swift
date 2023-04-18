@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 import XCTest
 
 fileprivate struct id {
@@ -86,12 +86,6 @@ class MailboxRobotInterface: CoreElements {
     @discardableResult
     func refreshMailbox() -> MailboxRobotInterface {
         table(id.mailboxTableViewIdentifier).firstMatch().tapThenSwipeDown(0.3, .slow)
-        return self
-    }
-    
-    @discardableResult
-    func refreshGentlyMailbox() -> MailboxRobotInterface {
-        table(id.mailboxTableViewIdentifier).swipeDown().wait(time: 3)
         return self
     }
     

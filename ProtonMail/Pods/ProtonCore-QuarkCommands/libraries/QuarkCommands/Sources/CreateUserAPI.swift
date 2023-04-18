@@ -45,6 +45,7 @@ public enum CreateAccountError: Error {
 }
 
 extension QuarkCommands {
+    @available(*, renamed: "create(account:currentlyUsedHostUrl:callCompletionBlockOn:)")
     public static func create(account: AccountAvailableForCreation,
                               currentlyUsedHostUrl host: String,
                               callCompletionBlockOn: DispatchQueue = .main,
@@ -118,6 +119,15 @@ extension QuarkCommands {
             let created = CreatedAccountDetails(details: String(detailsString), id: String(idString), account: account)
             completion(.success(created))
         }.resume()
+    }
+
+    @available(iOS 13.0, macOS 10.15, *)
+    public static func create(account: AccountAvailableForCreation,
+                              currentlyUsedHostUrl host: String,
+                              callCompletionBlockOn: DispatchQueue = .main) async -> Result<CreatedAccountDetails, CreateAccountError> {
+        return await withCheckedContinuation { continuation in
+            create(account: account, currentlyUsedHostUrl: host, callCompletionBlockOn: callCompletionBlockOn, completion: continuation.resume(returning:))
+        }
     }
 }
 

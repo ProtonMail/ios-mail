@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 
 fileprivate struct id {
     static func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }

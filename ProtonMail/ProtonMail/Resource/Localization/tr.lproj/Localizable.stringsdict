@@ -75,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d deneme sonra güvenli veriler silinecek!</string>
+			<string>%d deneme sonra veriler güvenli olarak silinecek!</string>
 			<key>other</key>
-			<string>%d deneme sonra güvenli veriler silinecek!</string>
+			<string>%d deneme sonra veriler güvenli olarak silinecek!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>

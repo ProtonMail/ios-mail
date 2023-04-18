@@ -1,6 +1,6 @@
 //
-//  PMActionSheetError.swift
-//  ProtonCore-UIFoundations - Created on 26.07.20.
+//  PMActionSheetVM.swift
+//  ProtonCore-UIFoundations-iOS - Created on 2023/1/18.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,175 +19,177 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
-
-protocol PMActionSheetVMProtocol {
-    var itemGroups: [PMActionSheetItemGroup]? { get }
-    var value: PMActionSheetValueStore { get }
-
-    func selectRowAt(_ indexPath: IndexPath)
-    func calcTableViewHeight() -> CGFloat
-    func calcGridCellHeightAt(_ section: Int) -> CGFloat
-}
+import Foundation
 
 /// Provide value and cached
 struct PMActionSheetValueStore {
-    let PLAIN_CELL_NAME = "PMACTIONPLAINCELL"
-    let TOGGLE_CELL_NAME = "PMACTIONTOGGLECELL"
-    let GRID_CELL_NAME = "PMACTIONGRIDCELL"
-    let HEADER_HEIGHT: CGFloat = 44
-    let SECTION_HEADER_HEIGHT: CGFloat = 56
-    let TOGGLE_CELL_HEIGHT: CGFloat = 48
-    let PLAIN_CELL_HEIGHT: CGFloat = 56
-    let GRID_ROW_HEIGHT: CGFloat = 100
-    let BOTTOM_PADDING: CGFloat = 35
-    let RADIUS: CGFloat = 6
-    let DURATION: TimeInterval = 0.25
-
-    var tableViewHeight: CGFloat = -1
-    var gridCellHeight: [Int: CGFloat] = [:]
+    var tableViewHeight: CGFloat {
+        let groupHeight = tableGroupHeight.reduce(0) { partialResult, dict in
+            return partialResult + dict.value
+        }
+        let headerHeight = tableHeaderHeight.reduce(0) { partialResult, dict in
+            return partialResult + dict.value
+        }
+        let height = groupHeight + headerHeight
+        if height == 0 {
+            return -1
+        } else {
+            return height
+        }
+    }
+    // [Section: height]
+    // Height of a item group
+    var tableGroupHeight: [Int: CGFloat] = [:]
+    // [Section: height]
+    // Height of section header
+    var tableHeaderHeight: [Int: CGFloat] = [:]
 }
 
-class PMActionSheetVM: PMActionSheetVMProtocol {
+final class PMActionSheetVM {
+    private weak var actionSheet: PMActionSheetProtocolV2?
+    private(set) var itemGroups: [PMActionSheetItemGroup]
+    private(set) var value = PMActionSheetValueStore()
 
-    private(set) weak var actionsheet: PMActionSheetProtocol?
-    private(set) var itemGroups: [PMActionSheetItemGroup]?
-    private(set) var value: PMActionSheetValueStore
-
-    init(actionsheet: PMActionSheetProtocol, itemGroups: [PMActionSheetItemGroup]) {
-        self.actionsheet = actionsheet
+    init(actionSheet: PMActionSheetProtocolV2, itemGroups: [PMActionSheetItemGroup]) {
+        self.actionSheet = actionSheet
         self.itemGroups = itemGroups
-        self.value = PMActionSheetValueStore()
+    }
+
+    /// Calculate tableview height through given itemGroups
+    func calcTableViewHeight(forceUpdate: Bool = false) -> CGFloat {
+        if self.value.tableViewHeight != -1 && !forceUpdate {
+            return self.value.tableViewHeight
+        }
+        value.tableGroupHeight = [:]
+        value.tableHeaderHeight = [:]
+
+        for (idx, group) in itemGroups.enumerated() {
+            value.tableHeaderHeight[idx] = calcHeaderHeight(title: group.title)
+            let config = PMActionSheetConfig.shared
+            switch group.style {
+            case .clickable, .singleSelection, .multiSelection, .singleSelectionNewStyle, .multiSelectionNewStyle:
+                value.tableGroupHeight[idx] = CGFloat(group.items.count) * config.plainCellHeight
+            case .toggle:
+                value.tableGroupHeight[idx] = CGFloat(group.items.count) * config.plainCellHeight
+            case .grid(let colInRow):
+                value.tableGroupHeight[idx] = calcGridCellHeightAt(idx, colInRow: colInRow)
+            }
+        }
+
+        return value.tableViewHeight
+    }
+
+    /// Calculate grid cell height
+    func calcGridCellHeightAt(_ section: Int, colInRow: Int) -> CGFloat {
+        if let height = value.tableGroupHeight[section] {
+            return height
+        }
+        let config = PMActionSheetConfig.shared
+        let group = itemGroups[section]
+        let numberOfRow: CGFloat = ceil(CGFloat(group.items.count) / CGFloat(colInRow))
+        let height = numberOfRow * gridCellHeight(group: group) + numberOfRow * config.gridLineSpacing
+        value.tableGroupHeight[section] = height
+        return height
+    }
+
+    private func gridCellHeight(group: PMActionSheetItemGroup) -> CGFloat {
+        guard let item = group.items.first else { return PMActionSheetConfig.shared.gridRowHeight }
+        var height: CGFloat = 0
+        for (index, component) in item.components.enumerated() {
+            let element = component.makeElement()
+            element.sizeToFit()
+            let topEdge = component.edge[0] ?? 14
+            height += (topEdge + element.frame.size.height)
+            if index == item.components.count - 1 {
+                height += component.edge[2] ?? 11
+            }
+        }
+        return height
+    }
+
+    private func calcHeaderHeight(title: String?) -> CGFloat {
+        guard let title = title else { return 0 }
+        guard DFSSetting.enableDFS else { return PMActionSheetConfig.shared.sectionHeaderHeight }
+        let label = UILabel(
+            title,
+            font: PMActionSheetConfig.shared.sectionHeaderFont,
+            textColor: nil
+        )
+        label.adjustsFontForContentSizeCategory = true
+        label.sizeToFit()
+        let topPadding: CGFloat = 24
+        let bottomPadding: CGFloat = 8
+        return topPadding + label.frame.height + bottomPadding
     }
 
     /// Handle tableview selected event
     func selectRowAt(_ indexPath: IndexPath) {
-        guard let groups = self.itemGroups else {
-            return
-        }
-        let group = groups[indexPath.section]
+        let group = itemGroups[indexPath.section]
         switch group.style {
         case .clickable:
-            self.handleClickableEvent(group, at: indexPath)
-        case .singleSelection:
-            self.handleSingleSelectionEventAt(indexPath)
-        case .multiSelection:
-            self.handleMultiSelectionEventAt(indexPath)
+            handleClickableEvent(group, at: indexPath)
+        case .singleSelection, .singleSelectionNewStyle:
+            handleSingleSelectionEvent(at: indexPath)
+        case .multiSelection, .multiSelectionNewStyle:
+            handleMultiSelectionEvent(at: indexPath)
         default:
             break
         }
     }
 
-    /// Calculate tableview height through given itemGroups
-    func calcTableViewHeight() -> CGFloat {
-        if self.value.tableViewHeight != -1 {
-            return self.value.tableViewHeight
+    func triggerToggle(at indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        guard let item = itemGroups[safeIndex: section]?.items[safeIndex: row] as? PMActionSheetItem else {
+            return
         }
-
-        var height: CGFloat = 0
-        guard let groups = self.itemGroups else { return 0 }
-        for (idx, group) in groups.enumerated() {
-            let groupHeaderHeight = group.title != nil ? value.SECTION_HEADER_HEIGHT : 0
-            height += groupHeaderHeight
-            switch group.style {
-            case .clickable, .singleSelection, .multiSelection:
-                height += CGFloat(group.items.count) * self.value.PLAIN_CELL_HEIGHT
-            case .toggle:
-                height += CGFloat(group.items.count) * self.value.TOGGLE_CELL_HEIGHT
-            case .grid:
-                height += self.calcGridCellHeightAt(idx)
-            }
-        }
-
-        self.value.tableViewHeight = height
-        return height
-    }
-
-    /// Calculate grid cell height
-    func calcGridCellHeightAt(_ section: Int) -> CGFloat {
-        if let height = self.value.gridCellHeight[section] {
-            return height
-        }
-
-        guard let groups = self.itemGroups else { return 0 }
-        let group = groups[section]
-        let numberOfRow: CGFloat = CGFloat((group.items.count + 1) / 2)
-        let height = numberOfRow * self.value.GRID_ROW_HEIGHT
-        self.value.gridCellHeight[section] = height
-        return height
+        item.toggleState = !item.toggleState
+        item.handler?(item)
     }
 }
 
-// MARK: Handle tableview cell click event
+// MARK: - Handle tableview cell click event
 extension PMActionSheetVM {
     private func handleClickableEvent(_ group: PMActionSheetItemGroup, at indexPath: IndexPath) {
-        guard let item = group.items[indexPath.row] as? PMActionSheetPlainItem else {
+        guard let item = group.items[safeIndex: indexPath.row] else {
             return
         }
         item.handler?(item)
-        self.actionsheet?.dismiss(animated: true)
+        self.actionSheet?.dismiss(animated: true)
     }
 
-    private func handleSingleSelectionEventAt(_ indexPath: IndexPath) {
-        guard self.itemGroups != nil else { return }
-
+    private func handleSingleSelectionEvent(at indexPath: IndexPath) {
         var updateRows: [Int] = []
-        let count = self.itemGroups![indexPath.section].items.count
+        let count = itemGroups[indexPath.section].items.count
         for i in 0..<count {
-            let isOn = i == indexPath.row
-            if var itemToUpdate = itemGroups![indexPath.section].items[i] as? PMActionSheetPlainItem {
-                if itemToUpdate.isOn != isOn {
-                    updateRows.append(i)
-                }
-                itemToUpdate.isOn = isOn
-                itemToUpdate.markType = isOn ? .checkMark : .none
-                self.itemGroups![indexPath.section].items[i] = itemToUpdate
-            } else {
-                self.itemGroups![indexPath.section].items[i].isOn = isOn
+            let isSelected = i == indexPath.row
+            guard let itemToUpdate = itemGroups[safeIndex: indexPath.section]?.items[i],
+                  itemToUpdate.markType.isSelected != isSelected else {
+                continue
             }
-            if i == indexPath.row,
-               let _item = self.itemGroups![indexPath.section].items[i] as? PMActionSheetPlainItem {
-                _item.handler?(_item)
+            updateRows.append(i)
+            itemToUpdate.markType = isSelected ? .checkMark : .none
+            if isSelected {
+                itemToUpdate.handler?(itemToUpdate)
             }
         }
         let updatePaths = updateRows
             .map { IndexPath(row: $0, section: indexPath.section) }
-        self.actionsheet?.reloadRows(at: updatePaths)
+        actionSheet?.reloadRows(at: updatePaths)
     }
 
-    private func handleMultiSelectionEventAt(_ indexPath: IndexPath) {
-        guard self.itemGroups != nil else { return }
-
+    private func handleMultiSelectionEvent(at indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
-        if var _item = self.itemGroups![section].items[row] as? PMActionSheetPlainItem {
-            if _item.markType == .none {
-                _item.markType = .checkMark
-                self.itemGroups![section].items[row] = _item
-            } else {
-                _item.markType = .none
-                self.itemGroups![section].items[row] = _item
-            }
-            _item.handler?(_item)
-        } else {
-            let isOn = self.itemGroups![section].items[row].isOn
-            self.itemGroups![section].items[row].isOn = !isOn
+        guard let item = itemGroups[safeIndex: section]?.items[safeIndex: row] as? PMActionSheetItem else {
+            return
         }
-        self.actionsheet?.reloadRows(at: [indexPath])
-    }
-}
-
-extension PMActionSheetVM: PMActionSheetToggleDelegate {
-    func toggleTriggeredAt(indexPath: IndexPath) {
-        self.handleMultiSelectionEventAt(indexPath)
-    }
-}
-
-extension PMActionSheetVM: PMActionSheetGridDelegate {
-    func tapGridItemAt(section: Int, row: Int) {
-        guard let groups = self.itemGroups else { return }
-        guard let item = groups[section].items[row] as? PMActionSheetPlainItem else { return }
+        if item.markType == .none {
+            item.markType = .checkMark
+        } else {
+            item.markType = .none
+        }
         item.handler?(item)
-        self.actionsheet?.dismiss(animated: true)
+        actionSheet?.reloadRows(at: [indexPath])
     }
 }

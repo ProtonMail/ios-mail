@@ -30,8 +30,8 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
-        dependencies: SingleMessageContentViewModel.Dependencies,
         shouldOpenHistory: Bool,
+        senderImageStatusProvider: SenderImageStatusProvider,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
@@ -51,7 +51,8 @@ class SingleMessageContentViewModelFactory {
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
                      shouldOpenHistory: shouldOpenHistory,
-                     dependencies: dependencies,
+                     dependencies: components.contentViewModelDependencies(user: user,
+                                                                           senderImageStatusProvider: senderImageStatusProvider),
                      goToDraft: goToDraft)
     }
 
@@ -66,6 +67,8 @@ class SingleMessageViewModelFactory {
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
                          imageProxy: ImageProxy,
+                         coordinator: SingleMessageCoordinator,
+                         senderImageStatusProvider: SenderImageStatusProvider,
                          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
@@ -77,16 +80,6 @@ class SingleMessageViewModelFactory {
             bannerViewModel: components.banner(labelId: labelId, message: message, user: user),
             attachments: .init()
         )
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: sharedServices.get(by: QueueManager.self),
-                apiService: user.apiService,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                messageDataAction: user.messageService,
-                cacheService: user.cacheService
-            )
-        )
-        let dependencies: SingleMessageContentViewModel.Dependencies = .init(fetchMessageDetail: fetchMessageDetail)
         return .init(
             labelId: labelId,
             message: message,
@@ -101,7 +94,10 @@ class SingleMessageViewModelFactory {
             toolbarActionProvider: user,
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             systemUpTime: systemUpTime,
-            dependencies: dependencies,
+            coordinator: coordinator,
+            nextMessageAfterMoveStatusProvider: user,
+            dependencies: components.contentViewModelDependencies(user: user,
+                                                                  senderImageStatusProvider: senderImageStatusProvider),
             goToDraft: goToDraft
         )
     }
@@ -109,6 +105,48 @@ class SingleMessageViewModelFactory {
 }
 
 class SingleMessageComponentsFactory {
+    func contentViewModelDependencies(
+        user: UserManager,
+        senderImageStatusProvider: SenderImageStatusProvider
+    ) -> SingleMessageContentViewModel.Dependencies {
+        let incomingDefaultService = user.incomingDefaultService
+        let queueManager = sharedServices.get(by: QueueManager.self)
+
+        let blockSender = BlockSender(
+            dependencies: .init(
+                incomingDefaultService: incomingDefaultService,
+                queueManager: queueManager,
+                userInfo: user.userInfo
+            )
+        )
+
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: queueManager,
+                apiService: user.apiService,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                messageDataAction: user.messageService,
+                cacheService: user.cacheService
+            )
+        )
+
+        let unblockSender = UnblockSender(
+            dependencies: .init(
+                incomingDefaultService: incomingDefaultService,
+                queueManager: queueManager,
+                userInfo: user.userInfo
+            )
+        )
+
+        return .init(
+            blockSender: blockSender,
+            blockedSenderCacheUpdater: user.blockedSenderCacheUpdater,
+            fetchMessageDetail: fetchMessageDetail,
+            incomingDefaultService: incomingDefaultService,
+            senderImageStatusProvider: senderImageStatusProvider,
+            unblockSender: unblockSender
+        )
+    }
 
     func messageBody(
         spamType: SpamType?,

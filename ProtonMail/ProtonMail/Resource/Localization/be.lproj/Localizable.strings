@@ -13,17 +13,11 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ з %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d секунд(-ы)";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "Выбрана: %d";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Перацягніце сюды, каб дадаць як далучэнне";
 
 /* Text for the estimated time label if less than one minute is remaining */
-"<1 minute remaining" = "<Засталася адна хвіліна";
+"<1 minute remaining" = "<Засталася 1 хвіліна";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
 "<1m" = "<1 хв";
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Адрасы";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Дадатковыя налады";
+
 /* Title */
 "Alert" = "Абвестка";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Уся пошта";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Усе налады абароны скінуцца і сатруцца адразу пасля выхаду з праграмы.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Усе вашы паведамленні спампаваны";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Знешні выгляд";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey дадаткова абараняе вашу інфармацыю Proton у выпадку складанай атакі, напрыклад, калі зламыснік кланіруе змесціва вашай прылады. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "Абарона AppKey";
 
 /* Apply action */
 "Apply" = "Ужыць";
@@ -290,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Блакіраваць адсочванне электроннай пошты";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Спіс заблакіраваных";
+
+/* Button to block a sender */
+"Block sender" = "Заблакіраваць адпраўніка";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Не дазваляе адпраўнікам бачыць ці адкрывалі вы паведамленне";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Стварэнне меткі не дазволена";
 
-/* Change language title */
-"Current Language is: " = "Бягучая мова: ";
-
 /* Placeholder */
 "Current password" = "Бягучы пароль";
 
@@ -537,10 +540,13 @@
 
 /* contacts default label type
    Custom option for time config picker */
-"Custom" = "Карыстальніцкае";
+"Custom" = "Карыстальніцкі";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Наладзіць";
 
 /* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Наладжванне панэлі інструментаў";
+"Customize toolbar" = "Наладзіць панэль інструментаў";
 
 /* Title */
 "Cut" = "Выразаць";
@@ -626,6 +632,9 @@
 /* Message shown to user after discarding action is done */
 "Discarded" = "Адхілена";
 
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Адмова ад адказнасці";
+
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Ігнараваць клавіятуру";
 
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Спампоўванне метаданых...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Спампоўванне новых паведамленняў...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Спампоўвае лісты, каб вы маглі шукаць у іх. Паведамленні зашыфраваны і захоўваюцца на вашай прыладзе. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Адрас электроннай пошты адключаны";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "Памылковы адрас электроннай пошты";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адрасы электроннай пошты";
@@ -876,6 +879,9 @@
 /* forward action */
 "Forward" = "Пераслаць";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Пераслаць (апошняе паведамленне)";
+
 /* forwarded message title */
 "Forwarded message" = "Перасланае паведамленне";
 
@@ -894,9 +900,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Пераслаць:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Пераслаць:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Пол";
 
@@ -914,9 +917,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Перайсці ў налады";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Перайсці да ўваходу";
 
 /* Got it action */
 "Got it" = "Зразумела";
@@ -944,9 +944,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Якія ў вас уражанні ад новай версіі Proton Mail?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Не ўдалося прайсці антыспамаваю праверку";
@@ -982,6 +979,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У выпадку блакіроўкі сайтаў Proton гэта налада дазваляе праграме скарыстацца альтэрнатыўнай сеткавай маршрутызацыяй, каб атрымаць доступ да Proton, што можа быць карысным для абыходу міжсеткавых экранаў або праблем з сеткай. Для большай надзейнасці мы рэкамендуем пакінуць гэту наладу актыўнай. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Раніцай";
+
 /* menu title */
 "Inbox" = "Уваходныя";
 
@@ -1002,9 +1002,6 @@
 
 /* place holder */
 "Input Display Name…" = "Увядзіце бачнае імя…";
-
-/* place holder */
-"Input Notification Email …" = "Увядзіце электронную пошту для апавяшчэння…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Небяспечнае злучэнне";
@@ -1081,7 +1078,7 @@
 "Link copied." = "Спасылка скапіявана.";
 
 /* Button inside the banner */
-"Load anyway" = "Усё роўна загрузіць";
+"Load" = "Загрузіць";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Загрузіць убудаваныя відарысы";
@@ -1104,12 +1101,6 @@
 
 /* menu title */
 "Lock The App" = "Заблакіраваць праграму";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Увайдзіце яшчэ раз, каб працягваць атрымліваць абнаўленні";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Вы выйшлі з %@";
 
 /* error title */
 "Logs" = "Журнал";
@@ -1138,9 +1129,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Пазначыць як непрачытанае";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Меню";
@@ -1240,6 +1228,9 @@
 /* Title */
 "Move to…" = "Перамясціць у…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Перайсці да наступнага паведамлення пасля перамяшчэння";
+
 /* Onboarding title */
 "Neat and tidy" = "Просты і лаканічны";
 
@@ -1278,6 +1269,9 @@
 
 /* title of the next button */
 "Next" = "Далей";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Наступнае паведамленне пасля перамяшчэння";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Псеўданім";
@@ -1345,12 +1339,18 @@
 /* Alert title */
 "Notice" = "Заўвага";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Дзеянні апавяшчэнняў і іншыя фонавыя працэсы будуць недаступныя";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Апавяшчэнні";
 
 /* The title of Off setting options */
 "Off" = "Выключана";
+
+/* Official badge next to sender's name */
+"Official" = "Афіцыйны";
 
 /* Title of the alert when the device is offline */
 "Offline" = "Па-за сеткай";
@@ -1360,9 +1360,6 @@
 
 /* Action */
 "OK" = "Добра";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "Добра";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Старыя паведамленні: ";
@@ -1374,7 +1371,7 @@
 "On %@" = "%@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "%1$@ а %2$@";
+"On %@ at %@" = "%1$@ у %2$@";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можна дадаць толькі адзін бясплатны ўліковы запіс";
@@ -1406,11 +1403,17 @@
 /* update password error */
 "Password update failed" = "Не ўдалося абнавіць пароль";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Пароль абноўлены";
+
 /* Placeholder */
 "Passwords must match" = "Паролі павінны супадаць";
 
 /* Text for pause button */
 "Pause" = "Прыпыніць";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Дзеянне па перамяшчэнні паведамлення (напрыклад, у архіў) прывядзе да пераходу да наступнага паведамлення.";
 
 /* default vcard types */
 "Personal" = "Асабісты";
@@ -1514,11 +1517,11 @@
 /* Local notification title */
 "Problem sending message" = "Праблема з адпраўкай паведамлення";
 
+/* Settings lock protection section */
+"Protection" = "Абарона";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton зараз недаступны";
-
-/* Title */
-"Proton Mail" = "Proton Mail";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton Mail зараз недаступны…";
@@ -1528,9 +1531,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Статус Proton";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Напісаць водгук";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Канфлікт з проксі-серверам або міжсеткавым экранам";
@@ -1590,8 +1590,14 @@
 /* reply action */
 "Reply" = "Адказаць";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Адказаць (на апошняе паведамленне)";
+
 /* reply all action */
 "Reply all" = "Адказаць усім";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Адказаць усім (на апошняе паведамленне)";
 
 /* menu title */
 "Report a problem" = "Паведаміць пра праблему";
@@ -1680,7 +1686,7 @@
 /* Action */
 "Send anyway" = "Усё роўна адправіць";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Адправіць водгук";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1796,7 +1802,7 @@
 "Snooze" = "Адкласці";
 
 /* The banner shown in case of proxy failure */
-"Some images failed to load with tracking protection." = "Не ўдалося загрузіць некаторыя відарысы з абаронай ад сачэння.";
+"Some images could not be loaded with tracking protection." = "Немагчыма загрузіць некаторыя відарысы з уключанай абаронай ад адсочвання.";
 
 /* menu title */
 "Spam" = "Спам";
@@ -1861,9 +1867,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Дзеянні правядзення";
-
-/* Swiping gestures */
-"Swiping gestures" = "Жэсты правядзення";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Пераключыць рэжым выбару";
@@ -1952,9 +1955,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адрас, які вы спрабуеце адкрыць з'яўляецца нестандартным і можа быць загружаны некарэктна. Вы сапраўды хочаце адкрыць яго прадвызначаным браўзерам на вашай прыладзе?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Гэты карыстальнік ужо ўвайшоў";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Ёсць неадпраўленыя паведамленні, якія будуць страчаны пры выхадзе з сістэмы";
 
@@ -1969,12 +1969,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Гэта размова змяшчае выдаленыя паведамленні";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі свайго дамена. Ён можа быць падроблены або перасланы неналежным чынам!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі свайго дамена. Ён можа быць падроблены або перасланы неналежным чынам!";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Верагодна, што крыніцай гэтага ліста з'яўляецца адрас, які адносіцца да Proton Mail, але сам ліст прыйшоў не з нашай сістэмы і не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі. Ён можа быць падроблены або перасланы неналежным чынам!";
@@ -2049,9 +2043,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Дзеянні панэлі інструментаў (выберыце да 5 дзеянняў)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Сачэнне за маімі ўзнагародамі";
 
@@ -2067,9 +2058,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падлучыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў, у якія вы ўвайшлі.";
 
 /* Placeholder */
 "Two Factor Code" = "Двухфактарны код";
@@ -2225,7 +2213,7 @@
 "wrote:" = "піша:";
 
 /* Error message */
-"Yes, attach details of payment" = "Так, далучыць падрабязнасці плацяжу";
+"Yes, attach details of payment" = "Так, далучыць рэквізіты плацяжу";
 
 /* No comment provided by engineer. */
 "Yesterday" = "Учора";
@@ -2332,4 +2320,3 @@
 /* contact placeholder */
 "ZIP" = "Паштовы індэкс";
 
-"Customize (verb)" = "Customize";

@@ -108,6 +108,15 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
     }
 
     func cancel(completion: @escaping () -> Void) {
+        /*
+         If the user logs out from the unlock screen before unlocking the app, Core Data will not be set up when `clean()` is called, and the app will crash.
+
+         Therefore we need to set up Core Data now.
+
+         Note: calling `setupCoreData` before the main key is available might break the migration process, but it doesn't matter in this particular case, because we're going to clean the DB anyway.
+         */
+        unlockManager.delegate.setupCoreData()
+
         _ = self.usersManager.clean().done { [weak self] in
             completion()
             self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))

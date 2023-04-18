@@ -102,10 +102,10 @@ class HeaderContainerView: UIView {
         }
         moreControl.addSubview(moreImageView)
         replyControl.layer.borderWidth = 1
-        replyControl.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        replyControl.layer.borderColor = ColorProvider.SeparatorNorm
         replyControl.setCornerRadius(radius: 8)
         moreControl.layer.borderWidth = 1
-        moreControl.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        moreControl.layer.borderColor = ColorProvider.SeparatorNorm
         moreControl.setCornerRadius(radius: 8)
     }
 

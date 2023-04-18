@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 
 // MARK: - Label as functions
 extension MailboxViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [MessageEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(messages: [MessageEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
                 .contains(where: { $0.rawLabelID == label.location.rawLabelID}) {

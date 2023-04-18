@@ -83,7 +83,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         self.userID = data.userID
         // todo support avatar
         self.avatar.image = nil
-        let name = data.name.isEmpty ? data.mail: data.name
+        let name = data.name.isEmpty ? data.mail : data.name
         self.name.text = name
         self.shortName.text = self.name.text?.initials()
         self.mailAddress.text = data.mail
@@ -113,7 +113,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
     }
 
     private func setupUnread(num: Int) {
-        let n = num > 9999 ? "9999+": "\(num)"
+        let n = num > 9999 ? "9999+" : "\(num)"
         self.unread.text = n
     }
 

@@ -25,7 +25,15 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Payments
 
-public enum SignupInitalMode {
+@available(*, deprecated, message: "SignupMode is deprecated")
+public enum SignupMode: Equatable {
+    case `internal`
+    case external
+    case both(initial: SignupInitialMode)
+}
+
+@available(*, deprecated, message: "SignupInitialMode is deprecated")
+public enum SignupInitialMode {
     case `internal`
     case external
 }
@@ -43,37 +51,18 @@ public enum LoginFeatureAvailability<Parameters> {
 public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
 
 public struct SignupParameters {
-    
-    let signupMode: SignupMode
+
     let separateDomainsButton: Bool
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
     
-    // No way to set signupMode because external email signup flow is temporarily turned off
-    // until the updated flow is ready on the BE side
-    init(_ separateDomainsButton: Bool,
-         _ passwordRestrictions: SignupPasswordRestrictions,
-         _ summaryScreenVariant: SummaryScreenVariant,
-         _ signupMode: SignupMode = .internal) {
-
+    public init(separateDomainsButton: Bool,
+                passwordRestrictions: SignupPasswordRestrictions,
+                summaryScreenVariant: SummaryScreenVariant) {
         self.separateDomainsButton = separateDomainsButton
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
-        self.signupMode = signupMode
     }
-    
-    public init(separateDomainsButton: Bool,
-                passwordRestrictions: SignupPasswordRestrictions,
-                summaryScreenVariant: SummaryScreenVariant,
-                signupMode: SignupMode = .internal) {
-        self.init(separateDomainsButton, passwordRestrictions, summaryScreenVariant, signupMode)
-    }
-}
-
-public enum SignupMode: Equatable {
-    case `internal`
-    case external
-    case both(initial: SignupInitalMode)
 }
 
 public struct SignupPasswordRestrictions: OptionSet {

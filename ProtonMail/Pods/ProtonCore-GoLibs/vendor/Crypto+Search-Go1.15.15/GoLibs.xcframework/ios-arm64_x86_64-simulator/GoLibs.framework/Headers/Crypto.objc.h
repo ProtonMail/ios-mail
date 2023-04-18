@@ -30,6 +30,8 @@
 @class CryptoSessionKey;
 @class CryptoSignatureCollector;
 @class CryptoSignatureVerificationError;
+@class CryptoSigningContext;
+@class CryptoVerificationContext;
 @protocol CryptoMIMECallbacks;
 @class CryptoMIMECallbacks;
 @protocol CryptoReader;
@@ -377,11 +379,26 @@ If signKeyRing is not nil, it is used to do an embedded signature.
  */
 - (CryptoEncryptSplitResult* _Nullable)encryptSplitStream:(id<CryptoWriter> _Nullable)dataPacketWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
+ * EncryptSplitStreamWithCompression is used to encrypt data as a stream.
+It takes a writer for the Symmetrically Encrypted Data Packet
+(https://datatracker.ietf.org/doc/html/rfc4880#section-5.7)
+and returns a writer for the plaintext data and the key packet.
+If signKeyRing is not nil, it is used to do an embedded signature.
+ */
+- (CryptoEncryptSplitResult* _Nullable)encryptSplitStreamWithCompression:(id<CryptoWriter> _Nullable)dataPacketWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
  * EncryptStream is used to encrypt data as a Writer.
 It takes a writer for the encrypted data and returns a WriteCloser for the plaintext data
 If signKeyRing is not nil, it is used to do an embedded signature.
  */
 - (id<CryptoWriteCloser> _Nullable)encryptStream:(id<CryptoWriter> _Nullable)pgpMessageWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
+ * EncryptStreamWithCompression is used to encrypt data as a Writer.
+The plaintext data is compressed before being encrypted.
+It takes a writer for the encrypted data and returns a WriteCloser for the plaintext data
+If signKeyRing is not nil, it is used to do an embedded signature.
+ */
+- (id<CryptoWriteCloser> _Nullable)encryptStreamWithCompression:(id<CryptoWriter> _Nullable)pgpMessageWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
  * EncryptWithCompression encrypts with compression support a PlainMessage to PGPMessage using public/private keys.
 * message : The plain data as a PlainMessage.
@@ -409,6 +426,14 @@ returns the creation time of the signature if it succeeds
 and returns a SignatureVerificationError if fails.
  */
 - (BOOL)getVerifiedSignatureTimestamp:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime ret0_:(int64_t* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
+/**
+ * GetVerifiedSignatureTimestampWithContext verifies a PlainMessage with a detached PGPSignature
+returns the creation time of the signature if it succeeds
+and returns a SignatureVerificationError if fails.
+If a context is provided, it verifies that the signature is valid in the given context, using
+the signature notation with name the name set in `constants.SignatureContextName`.
+ */
+- (BOOL)getVerifiedSignatureTimestampWithContext:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime verificationContext:(CryptoVerificationContext* _Nullable)verificationContext ret0_:(int64_t* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
 - (CryptoAttachmentProcessor* _Nullable)newLowMemoryAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename error:(NSError* _Nullable* _Nullable)error;
 - (CryptoManualAttachmentProcessor* _Nullable)newManualAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename dataBuffer:(NSData* _Nullable)dataBuffer error:(NSError* _Nullable* _Nullable)error;
 /**
@@ -429,6 +454,12 @@ containing an encrypted detached signature for a given message Reader.
  * SignDetachedStream generates and returns a PGPSignature for a given message Reader.
  */
 - (CryptoPGPSignature* _Nullable)signDetachedStream:(id<CryptoReader> _Nullable)message error:(NSError* _Nullable* _Nullable)error;
+/**
+ * SignDetachedWithContext generates and returns a PGPSignature for a given PlainMessage.
+If a context is provided, it is added to the signature as notation data
+with the name set in `constants.SignatureContextName`.
+ */
+- (CryptoPGPSignature* _Nullable)signDetachedWithContext:(CryptoPlainMessage* _Nullable)message context:(CryptoSigningContext* _Nullable)context error:(NSError* _Nullable* _Nullable)error;
 /**
  * VerifyDetached verifies a PlainMessage with a detached PGPSignature
 and returns a SignatureVerificationError if fails.
@@ -451,6 +482,20 @@ and returns a SignatureVerificationError if fails.
 and returns a SignatureVerificationError if fails.
  */
 - (BOOL)verifyDetachedStream:(id<CryptoReader> _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifyDetachedStreamWithContext verifies a message reader with a detached PGPSignature
+and returns a SignatureVerificationError if fails.
+If a context is provided, it verifies that the signature is valid in the given context, using
+the signature notations.
+ */
+- (BOOL)verifyDetachedStreamWithContext:(id<CryptoReader> _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime verificationContext:(CryptoVerificationContext* _Nullable)verificationContext error:(NSError* _Nullable* _Nullable)error;
+/**
+ * VerifyDetachedWithContext verifies a PlainMessage with a detached PGPSignature
+and returns a SignatureVerificationError if fails.
+If a context is provided, it verifies that the signature is valid in the given context, using
+the signature notation with name the name set in `constants.SignatureContextName`.
+ */
+- (BOOL)verifyDetachedWithContext:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime verificationContext:(CryptoVerificationContext* _Nullable)verificationContext error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -789,6 +834,13 @@ If signKeyRing is not nil, it is used to do an embedded signature.
  */
 - (id<CryptoWriteCloser> _Nullable)encryptStream:(id<CryptoWriter> _Nullable)dataPacketWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
 /**
+ * EncryptStreamWithCompression is used to encrypt data as a Writer.
+The plaintext data is compressed before being encrypted.
+It takes a writer for the encrypted data packet and returns a writer for the plaintext data.
+If signKeyRing is not nil, it is used to do an embedded signature.
+ */
+- (id<CryptoWriteCloser> _Nullable)encryptStreamWithCompression:(id<CryptoWriter> _Nullable)dataPacketWriter plainMessageMetadata:(CryptoPlainMessageMetadata* _Nullable)plainMessageMetadata signKeyRing:(CryptoKeyRing* _Nullable)signKeyRing error:(NSError* _Nullable* _Nullable)error;
+/**
  * EncryptWithCompression encrypts with compression support a PlainMessage to PGPMessage with a SessionKey.
 * message : The plain data as a PlainMessage.
 * output  : The encrypted data as PGPMessage.
@@ -835,6 +887,47 @@ functions when signature verification fails.
  * Error is the base method for all errors.
  */
 - (NSString* _Nonnull)error;
+@end
+
+/**
+ * SigningContext gives the context that will be
+included in the signature's notation data.
+ */
+@interface CryptoSigningContext : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+/**
+ * NewSigningContext creates a new signing context.
+The value is set to the notation data.
+isCritical controls whether the notation is flagged as a critical packet.
+ */
+- (nullable instancetype)init:(NSString* _Nullable)value isCritical:(BOOL)isCritical;
+@property (nonatomic) NSString* _Nonnull value;
+@property (nonatomic) BOOL isCritical;
+@end
+
+/**
+ * VerificationContext gives the context that will be
+used to verify the signature.
+ */
+@interface CryptoVerificationContext : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+/**
+ * NewVerificationContext creates a new verification context.
+The value is checked against the signature's notation data.
+If isRequired is false, the signature is allowed to have no context set.
+If requiredAfter is != 0, the signature is allowed to have no context set if it
+was created before the unix time set in requiredAfter.
+ */
+- (nullable instancetype)init:(NSString* _Nullable)value isRequired:(BOOL)isRequired requiredAfter:(int64_t)requiredAfter;
+@property (nonatomic) NSString* _Nonnull value;
+@property (nonatomic) BOOL isRequired;
+@property (nonatomic) int64_t requiredAfter;
 @end
 
 /**
@@ -996,6 +1089,22 @@ FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessageFromString(
 FOUNDATION_EXPORT CryptoPlainMessageMetadata* _Nullable CryptoNewPlainMessageMetadata(BOOL isBinary, NSString* _Nullable filename, int64_t modTime);
 
 FOUNDATION_EXPORT CryptoSessionKey* _Nullable CryptoNewSessionKeyFromToken(NSData* _Nullable token, NSString* _Nullable algo);
+
+/**
+ * NewSigningContext creates a new signing context.
+The value is set to the notation data.
+isCritical controls whether the notation is flagged as a critical packet.
+ */
+FOUNDATION_EXPORT CryptoSigningContext* _Nullable CryptoNewSigningContext(NSString* _Nullable value, BOOL isCritical);
+
+/**
+ * NewVerificationContext creates a new verification context.
+The value is checked against the signature's notation data.
+If isRequired is false, the signature is allowed to have no context set.
+If requiredAfter is != 0, the signature is allowed to have no context set if it
+was created before the unix time set in requiredAfter.
+ */
+FOUNDATION_EXPORT CryptoVerificationContext* _Nullable CryptoNewVerificationContext(NSString* _Nullable value, BOOL isRequired, int64_t requiredAfter);
 
 /**
  * RandomToken generates a random token with the specified key size.

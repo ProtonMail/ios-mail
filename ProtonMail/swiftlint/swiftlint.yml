@@ -229,7 +229,7 @@ excluded:
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/utils/TableContainerViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposerContainer/ComposeContainerViewModel.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/HtmlEditor/String+Html+Ext.swift
-  - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposeViewController.swift
+  - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposeContentViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/Helper/AttachReminderHelper.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/ComposerHeader/ComposeHeaderViewController.swift
   - ${PWD}/ProtonMail/ViewControllers/APP_share/Compose/EmbeddableCompose/ContainableComposeViewModel.swift
@@ -385,7 +385,6 @@ excluded:
   - ${PWD}/ProtonMail/ViewControllers/Pin_BioCode/ViewModels/share/ShareUnlockPinCodeModelImpl.swift
   - ${PWD}/ProtonMail/ViewControllers/Pin_BioCode/APP_share/BioCodeView.swift
   - ${PWD}/ProtonMail/ViewControllers/Pin_BioCode/APP_share/PinCodeViewController.swift
-  - ${PWD}/ProtonMail/Resource/APP_share/Generated
   - ${PWD}/ProtonMail/Services/APP_share/LabelsDataService.swift
   - ${PWD}/ProtonMail/Services/APP_share/CoreDataService/CoreDataStore.swift
   - ${PWD}/ProtonMail/Services/APP_share/CoreDataService/CoreDataService.swift

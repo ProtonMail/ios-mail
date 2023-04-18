@@ -19,13 +19,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import WebKit
+
 import ProtonCore_CoreTranslation
-import ProtonCore_UIFoundations
 import ProtonCore_Foundations
 import ProtonCore_Networking
+import ProtonCore_Observability
 import ProtonCore_Services
+import ProtonCore_UIFoundations
+import ProtonCore_Utilities
 
 protocol HumanVerifyViewControllerDelegate: AnyObject {
     func didDismissViewController()
@@ -90,6 +92,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     var viewTitle: String?
     var banner: PMBanner?
     var presentsBannerInsteadOfWebView = false
+    var dispatchQueue: CompletionBlockExecutor = .asyncMainExecutor
     private lazy var currentInterfaceStyle: UserInterfaceStyle = .unspecified
 
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
@@ -122,6 +125,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     // MARK: Actions
 
     @IBAction func closeAction(_ sender: Any) {
+        ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .canceled))
         delegate?.didDismissViewController()
     }
 
@@ -260,14 +264,15 @@ extension HumanVerifyViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        handleFailedRequest(webView, error)
+        handleFailedRequest(error)
     }
 
     func webView(_ webview: WKWebView, didFail _: WKNavigation!, withError error: Error) {
-        handleFailedRequest(webView, error)
+        handleFailedRequest(error)
     }
 
-    private func handleFailedRequest(_ webview: WKWebView, _ error: Error) {
+    private func handleFailedRequest(_ error: Error) {
+        ObservabilityEnv.report(.humanVerificationScreenLoadTotal(status: .failed))
         guard let loadingUrl = lastLoadingURL else { return }
         viewModel.shouldRetryFailedLoading(host: loadingUrl, error: error) { [weak self] in
             if $0 {
@@ -300,8 +305,8 @@ extension HumanVerifyViewController: WKUIDelegate {
 
 extension HumanVerifyViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        viewModel.interpretMessage(message: message, notificationMessage: { type, message in
-            DispatchQueue.main.async { [weak self] in
+        viewModel.interpretMessage(message: message, notificationMessage: { [weak self] type, message in
+            self?.dispatchQueue.execute { [weak self] in
                 if let self = self {
                     switch type {
                     case .success:
@@ -313,14 +318,15 @@ extension HumanVerifyViewController: WKScriptMessageHandler {
                     }
                 }
             }
-        }, loadedMessage: {
-            DispatchQueue.main.async { [weak self] in
+        }, loadedMessage: { [weak self] in
+            ObservabilityEnv.report(.humanVerificationScreenLoadTotal(status: .successful))
+            self?.dispatchQueue.execute { [weak self] in
                 if !(self?.presentsBannerInsteadOfWebView ?? false) {
                     self?.showWebView()
                 }
             }
         }, errorHandler: { [weak self] error, shouldClose in
-            DispatchQueue.main.async { [weak self] in
+            self?.dispatchQueue.execute { [weak self] in
                 if shouldClose {
                     if let code = error.responseCode {
                         switch code {
@@ -329,17 +335,19 @@ extension HumanVerifyViewController: WKScriptMessageHandler {
                         case APIErrorCode.invalidVerificationCode:
                             self?.delegate?.willReopenViewController()
                         default:
+                            ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .failed))
                             self?.delegate?.didDismissWithError(code: code, description: error.localizedDescription)
                         }
                     }
                 } else {
+                    ObservabilityEnv.report(.humanVerificationOutcomeTotal(status: .failed))
                     self?.presentErrorWithoutWebView(message: error.localizedDescription)
                 }
             }
-        }, completeHandler: { method in
-            let delay: TimeInterval = method.predefinedMethod == .captcha ? 1.0 : 0.0
+        }, completeHandler: { [weak self] method in
+            let delay: DispatchTimeInterval = method.predefinedMethod == .captcha ? .seconds(1) : .seconds(0)
             // for captcha method there is an additional artificial delay to see verification animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.dispatchQueue.execute(after: delay) { [weak self] in
                 self?.delegate?.didFinishViewController()
             }
         })

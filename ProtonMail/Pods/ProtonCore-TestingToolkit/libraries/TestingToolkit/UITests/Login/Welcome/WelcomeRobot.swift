@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import pmtest
+import fusion
 import ProtonCore_CoreTranslation
 
 private let footerText = CoreString._ls_welcome_footer
@@ -49,8 +49,8 @@ public final class WelcomeRobot: CoreElements {
     public final class Verify: CoreElements {
 
         @discardableResult
-        public func welcomeScreenIsShown() -> WelcomeRobot {
-            staticText(footerText).wait().checkExists()
+        public func welcomeScreenIsShown(timeout: TimeInterval = 10.0) -> WelcomeRobot {
+            staticText(footerText).wait(time: timeout).checkExists()
             return WelcomeRobot()
         }
 

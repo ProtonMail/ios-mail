@@ -107,7 +107,7 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = section == 0 ? CoreString._as_signed_in_to_protonmail: CoreString._as_signed_out_of_protonmail
+        let title = section == 0 ? CoreString._as_signed_in_to_protonmail : CoreString._as_signed_out_of_protonmail
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.BackgroundNorm
 
@@ -185,7 +185,7 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
 
         let cancel = UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil)
 
-        let arr = data.isSignin ? [signout, remove, cancel]: [signin, remove, cancel]
+        let arr = data.isSignin ? [signout, remove, cancel] : [signin, remove, cancel]
 
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         for action in arr {

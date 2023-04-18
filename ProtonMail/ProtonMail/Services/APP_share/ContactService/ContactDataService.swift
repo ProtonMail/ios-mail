@@ -234,21 +234,25 @@ class ContactDataService: Service {
         }
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
-            self.coreDataService.performOnRootSavingContext { context in
-                if let error = response.error {
-                    if error.responseCode == 13043 { // not exsit
-                        self.cacheService.deleteContact(by: contactID) { _ in
+            if let error = response.error {
+                if error.responseCode == 13043 { // doesn't exist
+                    self.cacheService.deleteContact(by: contactID) { _ in
+                        DispatchQueue.main.async {
+                            completion(error.toNSError)
                         }
-                    } else {
+                    }
+                } else {
+                    self.coreDataService.performOnRootSavingContext { context in
                         let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context)
                         contact?.isSoftDeleted = false
                         _ = context.saveUpstreamIfNeeded()
+                        
+                        DispatchQueue.main.async {
+                            completion(error.toNSError)
+                        }
                     }
-                    DispatchQueue.main.async {
-                        completion(error.toNSError)
-                    }
-                    return
                 }
+            } else {
                 self.cacheService.deleteContact(by: contactID) { (error) in
                     DispatchQueue.main.async {
                         completion(error)
@@ -631,10 +635,6 @@ extension ContactDataService {
             .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
 
-    func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
-        self.processContacts(lastError: nil, completion: completion)
-    }
-
     func getContactVOsFromPhone(_ completion: @escaping ContactVOCompletionBlock) {
         guard addressBookService.hasAccessToAddressBook() else {
             addressBookService.requestAuthorizationWithCompletion { granted, error in
@@ -677,71 +677,6 @@ extension ContactDataService {
             cacheName: nil
         )
         return fetchedResultController
-    }
-
-    private func processContacts(lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
-        struct ContactWrapper: Swift.Hashable {
-            let contact: ContactVO
-            let lastUsedTime: Date?
-        }
-
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
-            var contacts: [ContactWrapper] = []
-
-            // merge address book and core data contacts
-            self.coreDataService.performAndWaitOnRootSavingContext { context in
-                let emailsCache = self.allEmailsInManagedObjectContext(context,
-                                                                       isContactCombine: userCachedStatus.isCombineContactOn)
-                var pm_contacts: [ContactWrapper] = []
-                for email in emailsCache {
-                    if email.managedObjectContext != nil {
-                        let contact = ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
-                        pm_contacts.append(ContactWrapper(contact: contact, lastUsedTime: email.lastUsedTime))
-                    }
-                }
-                contacts.append(contentsOf: pm_contacts)
-            }
-
-            // sort rule: 1. lastUsedTime 2. name 3. email
-            contacts.sort(by: { (first: ContactWrapper, second: ContactWrapper) -> Bool in
-                if let t1 = first.lastUsedTime, let t2 = second.lastUsedTime {
-                    let result = t1.compare(t2)
-                    if result == .orderedAscending {
-                        return false
-                    } else if result == .orderedDescending {
-                        return true
-                    }
-                }
-
-                if first.lastUsedTime != nil && second.lastUsedTime == nil {
-                    return true
-                }
-
-                if second.lastUsedTime != nil && first.lastUsedTime == nil {
-                    return false
-                }
-
-                if first.contact.name.lowercased() != second.contact.name.lowercased() {
-                    return first.contact.name.lowercased() < second.contact.name.lowercased()
-                } else {
-                    return first.contact.email.lowercased() < second.contact.email.lowercased()
-                }
-            })
-
-            // Remove the duplicated items
-            var set = Set<ContactVO>()
-            var filteredResult = [ContactVO]()
-            for wrapper in contacts {
-                if !set.contains(wrapper.contact) {
-                    set.insert(wrapper.contact)
-                    filteredResult.append(wrapper.contact)
-                }
-            }
-
-            DispatchQueue.main.async {
-                completion(filteredResult, lastError)
-            }
-        }
     }
 }
 

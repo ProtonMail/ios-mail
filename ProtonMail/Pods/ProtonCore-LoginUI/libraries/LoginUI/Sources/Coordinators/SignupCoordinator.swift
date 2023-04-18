@@ -60,6 +60,7 @@ final class SignupCoordinator {
     weak var delegate: SignupCoordinatorDelegate?
     
     private let container: Container
+    private let minimumAccountType: AccountType
     private let isCloseButton: Bool
     private let signupAvailability: SignupAvailability
     private var signupParameters: SignupParameters?
@@ -88,6 +89,7 @@ final class SignupCoordinator {
     private let isExternalSignupFeatureEnabled: Bool
     
     init(container: Container,
+         minimumAccountType: AccountType,
          isCloseButton: Bool,
          paymentsAvailability: PaymentsAvailability,
          signupAvailability: SignupAvailability,
@@ -96,6 +98,7 @@ final class SignupCoordinator {
          isExternalSignupFeatureEnabled: Bool = FeatureFactory.shared.isEnabled(.externalSignup),
          signupAccountTypeManager: SignupAccountTypeManagerProtocol = SignupAccountTypeManager()) {
         self.container = container
+        self.minimumAccountType = minimumAccountType
         self.isCloseButton = isCloseButton
         self.signupAvailability = signupAvailability
         self.performBeforeFlow = performBeforeFlow
@@ -123,42 +126,55 @@ final class SignupCoordinator {
             delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
         case .available(let parameters):
             signupParameters = parameters
-            switch parameters.signupMode {
-            case .internal, .both(.internal):
-                signupAccountTypeManager.setSignupAccountType(type: .internal)
-            case .external, .both(.external):
-                if isExternalSignupFeatureEnabled  {
-                    signupAccountTypeManager.setSignupAccountType(type: .external)
-                }
-            }
-            showSignupViewController(kind: kind)
+            showSignupViewController(kind: kind, signupParameters: parameters)
         }
     }
     
     // MARK: - View controller internal account presentation methods
-    
-    private func showSignupViewController(kind: FlowStartKind) {
-        guard let signupParameters = signupParameters else { return }
+
+    func createSignupViewController(signupParameters: SignupParameters) -> SignupViewController {
+
+        switch minimumAccountType {
+        case .username, .external:
+            if isExternalSignupFeatureEnabled {
+                signupAccountTypeManager.setSignupAccountType(type: .external)
+            } else {
+                signupAccountTypeManager.setSignupAccountType(type: .internal)
+            }
+        case .internal:
+            signupAccountTypeManager.setSignupAccountType(type: .internal)
+        }
+
         let signupViewController = UIStoryboard.instantiate(SignupViewController.self)
         signupViewController.viewModel = container.makeSignupViewModel()
         signupViewController.customErrorPresenter = customErrorPresenter
         signupViewController.delegate = self
         self.signupViewController = signupViewController
-        signupViewController.showOtherAccountButton = false
-        if case .both = signupParameters.signupMode, FeatureFactory.shared.isEnabled(.externalSignup) {
-            signupViewController.showOtherAccountButton = true
+
+        switch minimumAccountType {
+        case .username, .internal:
+            signupViewController.showOtherAccountButton = false
+        case .external:
+            signupViewController.showOtherAccountButton = isExternalSignupFeatureEnabled
         }
         signupViewController.showSeparateDomainsButton = signupParameters.separateDomainsButton
         signupViewController.showCloseButton = isCloseButton
+        signupViewController.minimumAccountType = minimumAccountType
         signupViewController.signupAccountType = signupAccountTypeManager.accountType
-        signupViewController.minimumAccountType = container.login.minimumAccountType
+
         signupViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
-            
+
             guard let nav = self.navigationController else { return }
             self.container.troubleShootingHelper.showTroubleShooting(over: nav)
         }
+        return signupViewController
+    }
+    
+    private func showSignupViewController(kind: FlowStartKind, signupParameters: SignupParameters) {
+
+        let signupViewController = createSignupViewController(signupParameters: signupParameters)
 
         switch kind {
         case .unmanaged:
@@ -166,12 +182,10 @@ final class SignupCoordinator {
         case let .over(viewController, modalTransitionStyle):
             let navigationController = LoginNavigationViewController(rootViewController: signupViewController)
             self.navigationController = navigationController
-            container.setupHumanVerification(viewController: navigationController)
             navigationController.modalTransitionStyle = modalTransitionStyle
             viewController.present(navigationController, animated: true, completion: nil)
         case .inside(let navigationViewController):
             self.navigationController = navigationViewController
-            container.setupHumanVerification(viewController: navigationViewController)
             navigationViewController.setViewControllers([signupViewController], animated: true)
         }
     }
@@ -199,7 +213,7 @@ final class SignupCoordinator {
         let recoveryViewController = UIStoryboard.instantiate(RecoveryViewController.self)
         recoveryViewController.viewModel = container.makeRecoveryViewModel(initialCountryCode: countryPicker.getInitialCode())
         recoveryViewController.delegate = self
-        recoveryViewController.minimumAccountType = container.login.minimumAccountType
+        recoveryViewController.minimumAccountType = minimumAccountType
         recoveryViewController.onDohTroubleshooting = { [weak self] in
             guard let self = self else { return }
             self.container.executeDohTroubleshootMethodFromApiDelegate()
@@ -232,12 +246,10 @@ final class SignupCoordinator {
 
     private func showCompleteViewController(email: String? = nil, phoneNumber: String? = nil) {
         var initDisplaySteps: [DisplayProgressStep] = [.createAccount]
-        if container.login.minimumAccountType != .username {
-            if signupAccountTypeManager.accountType == .internal {
-                initDisplaySteps += [.generatingAddress]
-            }
-            initDisplaySteps += [.generatingKeys]
+        if signupAccountTypeManager.accountType == .internal {
+            initDisplaySteps += [.generatingAddress]
         }
+        initDisplaySteps += [.generatingKeys]
 
         if !(paymentsManager?.selectedPlan?.isFreePlan ?? true) {
             initDisplaySteps += [.payment]
@@ -346,7 +358,7 @@ final class SignupCoordinator {
                 break
             }
             
-            guard possiblyRefreshedLoginData.credential.hasFullScope else {
+            guard possiblyRefreshedLoginData.getCredential.hasFullScope else {
                 self?.finishAccountCreation(loginData: possiblyRefreshedLoginData, purchasedPlan: purchasedPlan)
                 return
             }
@@ -436,10 +448,10 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         self.name = name
         signupAccountTypeManager.setSignupAccountType(type: signupAccountType)
         if signupAccountType == .internal {
-            updateAccountType(accountType: .internal)
+            updateLoginAccountType(accountType: .internal)
             showPasswordViewController()
         } else {
-            updateAccountType(accountType: .external)
+            updateLoginAccountType(accountType: .external)
             showEmailVerificationViewController()
         }
     }
@@ -449,7 +461,7 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         self.verifyToken = container.token
         self.tokenType = container.tokenType
         signupAccountTypeManager.setSignupAccountType(type: signupAccountType)
-        updateAccountType(accountType: .external)
+        updateLoginAccountType(accountType: .external)
         showPasswordViewController()
     }
     
@@ -468,9 +480,9 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         delegate?.userSelectedSignin(email: email, navigationViewController: navigationController)
     }
 
-    private func updateAccountType(accountType: AccountType) {
+    private func updateLoginAccountType(accountType: AccountType) {
         // changing accountType to intenal, or external is causing key generation on login part. To avoid that we need to skip this when accountType is username
-        if container.login.minimumAccountType == .username { return }
+        if minimumAccountType == .username { return }
         container.login.updateAccountType(accountType: accountType)
     }
 }

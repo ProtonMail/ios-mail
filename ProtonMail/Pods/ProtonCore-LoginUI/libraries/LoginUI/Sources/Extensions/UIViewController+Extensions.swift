@@ -33,6 +33,12 @@ extension UIViewController {
             action?()
             banner.dismiss()
         }
+        banner.addLinkHandler { _, url in
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
+            banner.dismiss()
+        }
         PMBanner.dismissAll(on: self)
         banner.show(at: position, on: self)
     }

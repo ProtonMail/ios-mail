@@ -33,7 +33,6 @@
 #import "Reachability.h"
 
 //localization
-#import "LanguageManager.h"
 #import "NSBundle+Language.h"
 
 #endif

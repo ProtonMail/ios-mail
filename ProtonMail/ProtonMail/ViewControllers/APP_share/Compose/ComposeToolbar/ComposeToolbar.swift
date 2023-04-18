@@ -117,8 +117,12 @@ extension ComposeToolbar {
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.lockButton.tintColor = ColorProvider.IconNorm
         self.lockButton.setImage(IconProvider.lock, for: .normal)
+        self.lockButtonLockIcon.image = IconProvider.checkmarkCircleFilled
+        self.lockButtonLockIcon.tintColor = ColorProvider.BrandNorm
         self.hourButton.tintColor = ColorProvider.IconNorm
         self.hourButton.setImage(IconProvider.hourglass, for: .normal)
+        self.hourButtonLockIcon.image = IconProvider.checkmarkCircleFilled
+        self.hourButtonLockIcon.tintColor = ColorProvider.BrandNorm
         self.attachmentButton.tintColor = ColorProvider.IconNorm
         self.attachmentButton.setImage(IconProvider.paperClip, for: .normal)
         self.attachmentNumView.backgroundColor = .clear

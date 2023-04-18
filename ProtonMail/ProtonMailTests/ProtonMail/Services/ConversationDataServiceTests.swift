@@ -36,6 +36,7 @@ final class ConversationDataServiceTests: XCTestCase {
         mockLastUpdatedStore = MockLastUpdatedStore()
         mockEventsService = MockEventsService()
         fakeUndoActionManager = UndoActionManager(apiService: mockApiService,
+                                                  internetStatusProvider: .init(),
                                                   contextProvider: mockContextProvider,
                                                   getEventFetching: {return nil},
                                                   getUserManager: {return nil})

@@ -32,7 +32,7 @@ class SenderTests: XCTestCase {
         let auth = try Sender.decodeDictionary(jsonString: jsonString)
         XCTAssertEqual(auth.isFromProton, isProton == 1)
         XCTAssertEqual(auth.isFromSimpleLogin, isSimpleLogin == 1)
-        XCTAssertEqual(auth.shouldDislaySenderImage, shouldDisplaySenderImage == 1)
+        XCTAssertEqual(auth.shouldDisplaySenderImage, shouldDisplaySenderImage == 1)
         if let bimiRandomString {
             XCTAssertEqual(auth.bimiSelector, bimiRandomString)
         } else {
@@ -62,7 +62,7 @@ class SenderTests: XCTestCase {
         XCTAssertEqual(auth.count, 2)
         XCTAssertEqual(auth[0].isFromProton, isProton0 == 1)
         XCTAssertEqual(auth[0].isFromSimpleLogin, isSimpleLogin0 == 1)
-        XCTAssertEqual(auth[0].shouldDislaySenderImage, shouldDisplaySenderImage0 == 1)
+        XCTAssertEqual(auth[0].shouldDisplaySenderImage, shouldDisplaySenderImage0 == 1)
         if let bimiRandomString0 {
             XCTAssertEqual(auth[0].bimiSelector, bimiRandomString0)
         } else {
@@ -70,7 +70,7 @@ class SenderTests: XCTestCase {
         }
         XCTAssertEqual(auth[1].isFromProton, isProton1 == 1)
         XCTAssertEqual(auth[1].isFromSimpleLogin, isSimpleLogin1 == 1)
-        XCTAssertEqual(auth[1].shouldDislaySenderImage, shouldDisplaySenderImage1 == 1)
+        XCTAssertEqual(auth[1].shouldDisplaySenderImage, shouldDisplaySenderImage1 == 1)
         if let bimiRandomString1 {
             XCTAssertEqual(auth[1].bimiSelector, bimiRandomString1)
         } else {
