@@ -37,7 +37,6 @@
          ],
          "preBuildScripts": [
             {
-               "basedOnDependencyAnalysis": false,
                "name": "swiftGen",
                "path": "xcodeGen/swiftGen.sh",
                "outputFiles": [
@@ -45,7 +44,6 @@
                ]
             },
             {
-               "basedOnDependencyAnalysis": false,
                "name": "Sourcery",
                "path": "xcodeGen/sourcery.sh",
                "outputFiles": [
