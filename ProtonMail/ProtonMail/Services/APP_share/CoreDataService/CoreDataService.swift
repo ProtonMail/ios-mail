@@ -135,10 +135,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return context
     }
 
-    func makeNewBackgroundContext() -> NSManagedObjectContext {
-        return container.newBackgroundContext()
-    }
-
     // MARK: - methods
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString), url.scheme == "x-coredata" {
