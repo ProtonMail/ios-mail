@@ -178,7 +178,6 @@ final class SenderImageService {
     enum SenderImageServiceError: Error {
         case invalidState
         case responseIsNotAnImage
-        case requestError(NSError)
         case noCachedImageFound
     }
 }

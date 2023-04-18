@@ -230,13 +230,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.queue(att: att, action: .uploadAtt(attachmentObjectID: att.objectID.uriRepresentation().absoluteString))
     }
 
-    /// upload attachment to server
-    ///
-    /// - Parameter att: Attachment
-    func upload(pubKey: Attachment) {
-        self.queue(att: pubKey, action: .uploadPubkey(attachmentObjectID: pubKey.objectID.uriRepresentation().absoluteString))
-    }
-
     /// delete attachment from server
     ///
     /// - Parameter att: Attachment
