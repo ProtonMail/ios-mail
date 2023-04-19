@@ -83,14 +83,6 @@ class PMToolBarView: UIView {
         accessibilityElements = buttons
     }
 
-    func lastButtonCGRect() -> CGRect? {
-        guard let lastButton = btnStackView.arrangedSubviews
-            .last(where: { $0 is UIButton }) else {
-            return nil
-        }
-        return lastButton.convert(lastButton.bounds, to: self)
-    }
-
     private func addSubviews() {
         addSubview(btnStackView)
         addSubview(separatorView)
