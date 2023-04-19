@@ -229,6 +229,7 @@ report:testmo:feature:
 # --- Build app and send to testflight
 testflight:build:upload:
   dependencies: []
+  needs: []
   stage: testflight
   variables:
     GIT_STRATEGY: clone
