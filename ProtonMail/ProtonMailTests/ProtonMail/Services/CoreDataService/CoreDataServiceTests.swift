@@ -236,55 +236,37 @@ class CoreDataServiceTests: XCTestCase {
         )
     }
 
-    func testWrite_savesContextAtTheEndOfTheBlock() throws {
+    func testNestedRead_canAccessPenCinghangesBeforeWriteSavesContext() throws {
         try sut.write { writeContext in
             let messageInWriteContext = Message(context: writeContext)
             messageInWriteContext.messageID = "1"
 
-            // Notice that by the time this `read` occurs, `writeContext` hasn't been saved yet.
-            self.sut.read { readContext in
-                XCTAssertNil(readContext.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]))
+            let messageIDBeforeTheEndOfTheWriteBlock = try self.sut.read { context in
+                let message = try XCTUnwrap(
+                    context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
+                )
+                return message.messageID
             }
-        }
 
-        // Now that we're out of the `write` block, the context has been saved, so the messageID is available.
-        let messageIDAfterTheEndOfTheWriteBlock = try sut.read { context in
-            let message = try XCTUnwrap(
-                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
-            )
-            return message.messageID
+            XCTAssertEqual(messageIDBeforeTheEndOfTheWriteBlock, "1")
         }
-
-        XCTAssertEqual(messageIDAfterTheEndOfTheWriteBlock, "1")
     }
 
     func testNestedWrite_canOperateOnObjectFromOuterWrite() throws {
-        let exp = expectation(description: "operations have finished")
+        try sut.write { outerContext in
+            let messageInOuterContext = Message(context: outerContext)
+            messageInOuterContext.messageID = "1"
 
-        DispatchQueue.global().async {
-            do {
-                try self.sut.write { outerContext in
-                    let messageInOuterContext = Message(context: outerContext)
-                    messageInOuterContext.messageID = "1"
-
-                    try self.sut.write { _ in
-                        messageInOuterContext.messageID = messageInOuterContext.messageID.appending("2")
-                    }
-
-                    messageInOuterContext.messageID = messageInOuterContext.messageID.appending("3")
-
-                    try self.sut.write { _ in
-                        messageInOuterContext.messageID = messageInOuterContext.messageID.appending("4")
-                    }
-                }
-            } catch {
-                XCTFail("\(error)")
+            try self.sut.write { _ in
+                messageInOuterContext.messageID = messageInOuterContext.messageID.appending("2")
             }
 
-            exp.fulfill()
-        }
+            messageInOuterContext.messageID = messageInOuterContext.messageID.appending("3")
 
-        wait(for: [exp], timeout: 1)
+            try self.sut.write { _ in
+                messageInOuterContext.messageID = messageInOuterContext.messageID.appending("4")
+            }
+        }
 
         let messageIDAfterAllWrites = try sut.read { context in
             let message = try XCTUnwrap(

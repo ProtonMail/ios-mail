@@ -177,7 +177,7 @@ extension IncomingDefaultService {
 // MARK: internals
 
 extension IncomingDefaultService {
-    private func writeToDatabase(block: (NSManagedObjectContext) throws -> Void) throws {
+    private func writeToDatabase(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
         try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             try block(context)
 

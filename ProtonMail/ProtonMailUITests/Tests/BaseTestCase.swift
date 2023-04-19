@@ -48,6 +48,8 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
     /// Runs only once per test run.
     override class func setUp() {
+        super.setUp()
+
         getTestUsersFromYamlFiles()
     }
 
@@ -152,7 +154,7 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         }
         userYamlFiles = getYamlFiles(in: testDataURL)
         
-        XCTAssertTrue(userYamlFiles.count > 0, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
+        assert(!userYamlFiles.isEmpty, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
 
         for file in userYamlFiles {
             do {

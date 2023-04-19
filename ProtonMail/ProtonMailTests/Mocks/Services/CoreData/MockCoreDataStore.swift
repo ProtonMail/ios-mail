@@ -38,6 +38,7 @@ final class MockCoreDataStore {
         description.url = URL(fileURLWithPath: "/dev/null")
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores{ (_, _) in }
+        container.viewContext.automaticallyMergesChangesFromParent = true
         return container
     }
 }
