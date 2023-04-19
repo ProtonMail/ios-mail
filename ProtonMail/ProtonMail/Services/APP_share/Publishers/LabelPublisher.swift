@@ -17,6 +17,7 @@
 
 import CoreData
 
+// sourcery: mock
 protocol LabelPublisherProtocol: AnyObject {
     var delegate: LabelListenerProtocol? { get set }
 

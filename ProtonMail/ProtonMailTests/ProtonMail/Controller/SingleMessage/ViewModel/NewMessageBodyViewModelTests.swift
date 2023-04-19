@@ -22,7 +22,7 @@ import XCTest
 
 class NewMessageBodyViewModelTests: XCTestCase {
     private var sut: NewMessageBodyViewModel!
-    private var newMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegateMock!
+    private var newMessageBodyViewModelDelegateMock: MockNewMessageBodyViewModelDelegate!
     private var imageProxyMock: ImageProxyMock!
     private var apiServiceMock: APIServiceMock!
 
@@ -40,7 +40,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
             userKeys: .init(privateKeys: [], addressesPrivateKeys: [], mailboxPassphrase: .init(value: "passphrase")),
             imageProxy: imageProxyMock
         )
-        newMessageBodyViewModelDelegateMock = NewMessageBodyViewModelDelegateMock()
+        newMessageBodyViewModelDelegateMock = MockNewMessageBodyViewModelDelegate()
         sut.delegate = newMessageBodyViewModelDelegateMock
     }
 

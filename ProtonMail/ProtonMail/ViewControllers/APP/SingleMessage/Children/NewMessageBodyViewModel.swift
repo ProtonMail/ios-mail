@@ -25,6 +25,7 @@ import SwiftSoup
 import UIKit
 import WebKit
 
+// sourcery: mock
 protocol NewMessageBodyViewModelDelegate: AnyObject {
     func reloadWebView(forceRecreate: Bool)
     func showReloadError()

@@ -24,7 +24,7 @@ class ConversationViewModelTests: XCTestCase {
 
     private var sut: ConversationViewModel!
     var contextProviderMock: MockCoreDataContextProvider!
-    var labelProviderMock: MockLabelProvider!
+    var labelProviderMock: MockLabelProviderProtocol!
     var messageMock: MessageEntity!
     var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
     var toolbarActionProviderMock: MockToolbarActionProvider!
@@ -49,7 +49,7 @@ class ConversationViewModelTests: XCTestCase {
         userManagerStub = UserManager(api: apiServiceMock, role: .none)
         let reachabilityStub = ReachabilityStub()
         let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        labelProviderMock = MockLabelProvider()
+        labelProviderMock = MockLabelProviderProtocol()
         toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()

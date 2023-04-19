@@ -18,28 +18,28 @@
 @testable import ProtonMail
 import XCTest
 
-private class UserFeedbackServiceMock: UserFeedbackServiceProtocol {
-    var mockedSendHandler: (() -> UserFeedbackServiceError?)?
-
-    func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {
-        if let mockedHandler = mockedSendHandler {
-            let result = mockedHandler()
-            handler(result)
-        } else {
-            XCTFail("A mockedSendHandler should be defined")
-            handler(nil)
-        }
-    }
-}
-
 private class ViewController: UIViewController, UserFeedbackSubmittableProtocol {}
 
 class UserFeedbackSubmittableProtocolTests: XCTestCase {
-    func testThatSuccessHandlerIsCalled() {
-        let mockedService = UserFeedbackServiceMock()
-        mockedService.mockedSendHandler = {
-            nil
+    private var mockedService: MockUserFeedbackServiceProtocol!
+
+    override func setUp() {
+        super.setUp()
+
+        mockedService = MockUserFeedbackServiceProtocol()
+
+        mockedService.sendStub.bodyIs { _, _, completion in
+            completion(nil)
         }
+    }
+
+    override func tearDown() {
+        mockedService = nil
+
+        super.tearDown()
+    }
+
+    func testThatSuccessHandlerIsCalled() {
         let expectation = expectation(description: "successHandler should get called")
         let viewController = ViewController()
         let feedback = UserFeedback(type: "feedback_type", score: 1, text: "feedback")
@@ -50,9 +50,8 @@ class UserFeedbackSubmittableProtocolTests: XCTestCase {
     }
 
     func testThatFailureHandlerIsCalled() {
-        let mockedService = UserFeedbackServiceMock()
-        mockedService.mockedSendHandler = {
-            UserFeedbackServiceError.feedbackTypeIsTooLong
+        mockedService.sendStub.bodyIs { _, _, completion in
+            completion(.feedbackTypeIsTooLong)
         }
         let expectation = expectation(description: "failureHandler should get called")
         let viewController = ViewController()
