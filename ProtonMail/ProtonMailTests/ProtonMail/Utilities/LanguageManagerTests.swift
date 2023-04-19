@@ -70,4 +70,11 @@ class LanguageManagerTests: XCTestCase {
         let value = try XCTUnwrap(userDefaultMock.string(forKey: LanguageManager.Constant.languageSaveKey))
         XCTAssertEqual(value, language.languageCode)
     }
+
+    func testSaveLauguageByCode_withUnSupportedCode_languageIsSetToEnglish() throws {
+        sut.saveLanguage(by: String.randomString(10))
+
+        let value = try XCTUnwrap(userDefaultMock.string(forKey: LanguageManager.Constant.languageSaveKey))
+        XCTAssertEqual(value, ELanguage.english.languageCode)
+    }
 }
