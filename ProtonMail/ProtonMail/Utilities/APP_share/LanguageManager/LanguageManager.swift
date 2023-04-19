@@ -17,7 +17,6 @@
 
 import Foundation
 
-@available(iOS, deprecated: 13.0, message: "When minimum iOS version is 13+, removing this class")
 final class LanguageManager {
     enum Constant {
         static let languageSaveKey = "kProtonMailCurrentLanguageKey"
@@ -69,6 +68,10 @@ final class LanguageManager {
 
     func saveLanguage(by code: String) {
         guard ELanguage.languageCodes.contains(code) else {
+            userDefault?.set(
+                ELanguage.english.languageCode,
+                forKey: Constant.languageSaveKey
+            )
             return
         }
         userDefault?.set(code, forKey: Constant.languageSaveKey)
