@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonMailAnalytics
 import Foundation
 import PromiseKit
 import enum ProtonCore_Crypto.Based64
@@ -131,7 +132,9 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
     }
 
     private func logInfo(step: SendMessageRequestStep) {
-        SystemLogger.log(message: "\(step.rawValue)", category: .sendMessage, isError: false)
+        let message = "\(step.rawValue)"
+        SystemLogger.log(message: message, category: .sendMessage, isError: false)
+        Breadcrumbs.shared.add(message: message, to: .sendMessage)
     }
 }
 

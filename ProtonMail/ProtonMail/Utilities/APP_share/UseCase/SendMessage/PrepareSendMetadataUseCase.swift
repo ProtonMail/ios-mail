@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonMailAnalytics
 import Foundation
 import GoLibs
 import class ProtonCore_DataModel.Address
@@ -279,11 +280,15 @@ final class PrepareSendMetadata: PrepareSendMetadataUseCase {
 
     private func logInfo(step: PrepareSendMessageMetadataStep, info: String = "") {
         let extraInfo = info.isEmpty ? "" : ": \(info)"
-        SystemLogger.log(message: "\(step.rawValue)\(extraInfo)", category: .sendMessage, isError: false)
+        let message = "\(step.rawValue)\(extraInfo)"
+        SystemLogger.log(message: message, category: .sendMessage, isError: false)
+        Breadcrumbs.shared.add(message: message, to: .sendMessage)
     }
 
     private func logError(step: PrepareSendMessageMetadataStep, error: String) {
-        SystemLogger.log(message: "\(step.rawValue) error: \(error)", category: .sendMessage, isError: true)
+        let message = "\(step.rawValue) error: \(error)"
+        SystemLogger.log(message: message, category: .sendMessage, isError: true)
+        Breadcrumbs.shared.add(message: message, to: .sendMessage)
     }
 }
 
