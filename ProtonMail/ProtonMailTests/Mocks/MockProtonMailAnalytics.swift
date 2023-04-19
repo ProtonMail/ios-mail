@@ -39,7 +39,7 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.event = event
     }
 
-    public func track(error: MailAnalyticsErrorEvent, trace: String?) {
+    public func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool) {
         self.errorEvent = error
     }
 }

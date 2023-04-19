@@ -21,7 +21,7 @@ import Sentry
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
     func setup(environment: String?, debug: Bool)
     func track(event: MailAnalyticsEvent, trace: String?)
-    func track(error: MailAnalyticsErrorEvent, trace: String?)
+    func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool)
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
@@ -51,10 +51,18 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         SentrySDK.capture(event: eventToSend)
     }
 
-    public func track(error errorEvent: MailAnalyticsErrorEvent, trace: String?) {
+    public func track(error errorEvent: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .error)
         eventToSend.message = SentryMessage(formatted: errorEvent.name)
+        if fingerprint {
+            /*
+             The event name stablishes the grouping of the events in Sentry.
+             Otherwise the automatic Sentry fingerprinting could group Sentry.events
+             together even if they have different `message` values.
+             **/
+            eventToSend.fingerprint = [errorEvent.name]
+        }
         // From the Sentry dashboard it is not possible to query using the `extra` field.
         eventToSend.extra = combinedExtra(extraInfo: errorEvent.extraInfo, trace: trace)
         SentrySDK.capture(event: eventToSend)
@@ -147,7 +155,9 @@ public enum MailAnalyticsErrorEvent: Error {
     case decryptMIMEFailed(error: String, messageID: String)
     case coreDataSavingError(error: Error, caller: StaticString, file: StaticString, line: UInt)
 
-    // If the send request returns the custom error code 2001
+    // send message
+    case sendMessageFail(error: String)
+    case sendMessageResponseError(responseCode: Int?)
     case sendMessageInvalidSignature
 
     case conversationViewEndUpdatesCrash
@@ -171,6 +181,11 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Decrypt MIME failed"
         case .coreDataSavingError:
             return "Core Data saving error"
+        case .sendMessageFail(let error):
+            return "Send fail - \(error)"
+        case .sendMessageResponseError(let responseCode):
+            let code = "\(responseCode?.description ?? "n/a" )"
+            return "Send response error - responseCode: \(code)"
         case .sendMessageInvalidSignature:
             return "Send invalid signature"
         case .conversationViewEndUpdatesCrash:
@@ -185,7 +200,8 @@ public enum MailAnalyticsErrorEvent: Error {
         switch self {
         case .coreDataInitialisation(let error):
             info = ["Custom Error": error]
-        case .abortedConversationRequest, .conversationViewEndUpdatesCrash, .sendMessageInvalidSignature:
+        case .abortedConversationRequest, .conversationViewEndUpdatesCrash,
+                .sendMessageFail, .sendMessageResponseError, .sendMessageInvalidSignature:
             info = nil
         case let .invalidMenuItemRequested(section, row, itemCount, caller):
             info = [
