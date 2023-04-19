@@ -152,6 +152,13 @@ public enum MailAnalyticsErrorEvent: Error {
 
     case conversationViewEndUpdatesCrash
 
+    case assertionFailure(
+        message: String,
+        caller: StaticString,
+        file: StaticString,
+        line: UInt
+    )
+
     var name: String {
         switch self {
         case .coreDataInitialisation:
@@ -168,6 +175,8 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Send invalid signature"
         case .conversationViewEndUpdatesCrash:
             return "Conversation view endUpdates() crash"
+        case let .assertionFailure(message, _, _, _):
+            return "Asssertion failure: \(message)"
         }
     }
 
@@ -196,6 +205,13 @@ public enum MailAnalyticsErrorEvent: Error {
                 "Error": error,
                 "File": file,
                 "Line": line
+            ]
+        case let .assertionFailure(message, caller, file, line):
+            info = [
+                "Caller": caller,
+                "File": file,
+                "Line": line,
+                "Message": message
             ]
         }
         return info
