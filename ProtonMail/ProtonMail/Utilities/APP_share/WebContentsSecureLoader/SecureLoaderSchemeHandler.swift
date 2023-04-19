@@ -56,26 +56,24 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        DispatchQueue.global().async {
-            if self.isImageRequest(urlSchemeTask: urlSchemeTask) {
-                self.handleImageRequest(urlSchemeTask: urlSchemeTask)
-            } else if self.isPMIncomingMailRequest(urlSchemeTask: urlSchemeTask) {
-                self.handlePMIncomingMailRequest(urlSchemeTask: urlSchemeTask)
-            } else {
-                guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
-                let error = NSError(domain: "cache.proton.ch", code: -999)
+        if isImageRequest(urlSchemeTask: urlSchemeTask) {
+            handleImageRequest(urlSchemeTask: urlSchemeTask)
+        } else if isPMIncomingMailRequest(urlSchemeTask: urlSchemeTask) {
+            handlePMIncomingMailRequest(urlSchemeTask: urlSchemeTask)
+        } else {
+            guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
+            let error = NSError(domain: "cache.proton.ch", code: -999)
 
-                let contentLoadingType = self.contents?.contentLoadingType ?? .none
-                switch contentLoadingType {
-                case .proxyDryRun:
-                    self.fetchTackerInfo(url, urlSchemeTask, error)
-                case .proxy:
-                    self.fetchRemoteImage(url, urlSchemeTask, error)
-                case .none:
-                    urlSchemeTask.didFailWithError(error)
-                case .direct:
-                    assertionFailure("Content loaded without proxy should not reach here.")
-                }
+            let contentLoadingType = contents?.contentLoadingType ?? .none
+            switch contentLoadingType {
+            case .proxyDryRun:
+                fetchTackerInfo(url, urlSchemeTask, error)
+            case .proxy:
+                fetchRemoteImage(url, urlSchemeTask, error)
+            case .none:
+                urlSchemeTask.didFailWithError(error)
+            case .direct:
+                assertionFailure("Content loaded without proxy should not reach here.")
             }
         }
     }
