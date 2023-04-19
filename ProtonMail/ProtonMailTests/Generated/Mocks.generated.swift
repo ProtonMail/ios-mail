@@ -105,8 +105,8 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     }
 
     @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
-    func updateExpirationOffset(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
-        updateExpirationOffsetStub(message, expirationTime, pwd, pwdHint, completion)
+    func updateExpirationOffset(of messageObjectID: NSManagedObjectID, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
+        updateExpirationOffsetStub(messageObjectID, expirationTime, pwd, pwdHint, completion)
     }
 
 }

@@ -39,7 +39,7 @@ protocol CacheServiceProtocol: Service {
         idsOfMessagesBeingSent: [String]
     ) throws
     func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
-    func updateExpirationOffset(of message: Message,
+    func updateExpirationOffset(of messageObjectID: NSManagedObjectID,
                                 expirationTime: TimeInterval,
                                 pwd: String,
                                 pwdHint: String,
@@ -323,13 +323,13 @@ class CacheService: CacheServiceProtocol {
         }
     }
 
-    func updateExpirationOffset(of message: Message,
+    func updateExpirationOffset(of messageObjectID: NSManagedObjectID,
                                 expirationTime: TimeInterval,
                                 pwd: String,
                                 pwdHint: String,
                                 completion: (() -> Void)?) {
         coreDataService.performOnRootSavingContext { contextToUse in
-            if let msg = try? contextToUse.existingObject(with: message.objectID) as? Message {
+            if let msg = try? contextToUse.existingObject(with: messageObjectID) as? Message {
                 msg.time = Date()
                 msg.password = pwd
                 msg.passwordHint = pwdHint

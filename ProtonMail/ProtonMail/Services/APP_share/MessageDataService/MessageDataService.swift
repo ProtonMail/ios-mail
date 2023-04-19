@@ -1543,11 +1543,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func encryptBody(_ message: MessageEntity,
+    func encryptBody(_ addressID: AddressID,
                      clearBody: String,
                      mailbox_pwd: Passphrase) throws -> String {
         // TODO: Refactor this method later.
-        let addressId = message.addressID.rawValue
+        let addressId = addressID.rawValue
         if addressId.isEmpty {
             return .empty
         }
@@ -1629,7 +1629,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
 
         do {
-            message.body = try self.encryptBody(MessageEntity(message), clearBody: body, mailbox_pwd: mailbox_pwd)
+            message.body = try self.encryptBody(.init(message.addressID ?? ""), clearBody: body, mailbox_pwd: mailbox_pwd)
             if !encryptionPassword.isEmpty {
                 message.passwordEncryptedBody = try body.encryptNonOptional(password: encryptionPassword)
             }
@@ -1660,7 +1660,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }
-        message.body = (try? self.encryptBody(MessageEntity(message), clearBody: body, mailbox_pwd: mailbox_pwd)) ?? ""
+        message.body = (try? self.encryptBody(.init(message.addressID ?? ""), clearBody: body, mailbox_pwd: mailbox_pwd)) ?? ""
     }
 
     func undoSend(

@@ -696,7 +696,7 @@ extension ComposeContainerViewController: AttachmentController {
     }
 
     private func addAttachment(_ attachment: AttachmentEntity, completion: @escaping () -> Void) {
-        viewModel.addAttachment(attachment)
+        viewModel.addAttachment(attachment.objectID)
         viewModel.user.usedSpace(plus: attachment.fileSize.int64Value)
         updateAttachmentView(completion: completion)
     }
