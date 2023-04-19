@@ -55,18 +55,9 @@ class SignInManager: Service {
         return mailboxPassword
     }
 
-    func saveLoginData(loginData: LoginData) -> LoginDataSavingResult {
-        let userInfo: UserInfo
-        let auth: AuthCredential
-        switch loginData {
-        case .userData(let userData):
-            auth = userData.credential
-            userInfo = userData.toUserInfo
-        case .credential(let credential):
-            assertionFailure("Signin was misconfigured — you should always get full user data. Check minimumAccountType parameter value in LoginAndSignup initializer")
-            auth = AuthCredential(credential)
-            userInfo = .init(response: [:])
-        }
+    func saveLoginData(loginData userData: LoginData) -> LoginDataSavingResult {
+        let userInfo = userData.toUserInfo
+        let auth = userData.credential
 
         if self.usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
             return .errorOccurred
@@ -86,7 +77,8 @@ class SignInManager: Service {
             userCachedStatus.markSpotlight(for: feature, asSeen: true, byUserWith: UserID(userInfo.userId))
         }
 
-        self.usersManager.add(auth: auth, user: userInfo)
+        self.usersManager.add(auth: auth, user: userInfo, mailSettings: .init())
+        self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
         self.usersManager.loggedIn()
         self.usersManager.active(by: auth.sessionID)
@@ -95,22 +87,13 @@ class SignInManager: Service {
         return .success
     }
 
-    func finalizeSignIn(loginData: LoginData,
+    func finalizeSignIn(loginData userData: LoginData,
                         onError: @escaping (NSError) -> Void,
                         showSkeleton: () -> Void,
                         tryUnlock: @escaping () -> Void)
     {
-        let userInfo: UserInfo
-        let auth: AuthCredential
-        switch loginData {
-        case .userData(let userData):
-            auth = userData.credential
-            userInfo = userData.toUserInfo
-        case .credential(let credential):
-            assertionFailure("Signin was misconfigured — you should always get full user data. Check minimumAccountType parameter value in LoginAndSignup initializer")
-            auth = AuthCredential(credential)
-            userInfo = .init(response: [:])
-        }
+        let auth = userData.credential
+        let userInfo = userData.toUserInfo
 
         guard let user = usersManager.getUser(by: auth.sessionID),
               let activeUser = usersManager.firstUser else {
@@ -120,15 +103,25 @@ class SignInManager: Service {
 
         showSkeleton()
 
+        if UserInfo.isBlockSenderEnabled {
+            user.blockedSenderCacheUpdater.requestUpdate()
+        }
+
         let userDataService = user.userService
-        userDataService.fetchSettings(userInfo: userInfo, auth: auth).done(on: .main) { [weak self] userInfo in
+        userDataService.fetchSettings(
+            userInfo: userInfo,
+            auth: auth
+        ).done(on: .main) { [weak self] result in
             guard let self = self else { return }
+            let userInfo = result.0
+            let mailSettings = result.1
             self.updateSwipeAction.execute(
                 activeUserInfo: activeUser.userInfo,
                 newUserInfo: user.userInfo,
                 newUserApiService: user.apiService
             ) { [weak self] in
                 guard let self = self else { return }
+                user.mailSettings = mailSettings
                 self.usersManager.update(userInfo: userInfo, for: auth.sessionID)
 
                 guard userInfo.delinquentParsed.isAvailable else {

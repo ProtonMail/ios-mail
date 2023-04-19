@@ -47,7 +47,7 @@ enum AwaitInternalError: Error {
     case synchronousCallPerformedFromTheMainThread
 }
 
-class BaseApiRequest<T: Response>: Request {
+public class BaseApiRequest<T: Response>: Request {
 
     let api: APIService
 
@@ -89,24 +89,24 @@ class BaseApiRequest<T: Response>: Request {
         return try result.get()
     }
 
-    var path: String { "/payments" }
+    public var path: String { "/payments" }
 
-    var method: HTTPMethod { .get }
+    public var method: HTTPMethod { .get }
 
-    var header: [String: Any] { [:] }
+    public var header: [String: Any] { [:] }
 
-    var parameters: [String: Any]? { nil }
+    public var parameters: [String: Any]? { nil }
 
-    var isAuth: Bool { true }
+    public var isAuth: Bool { true }
 
-    var authCredential: AuthCredential? { nil }
+    public var authCredential: AuthCredential? { nil }
 
-    var autoRetry: Bool { true }
+    public var autoRetry: Bool { true }
 }
 
 let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil)
 
-protocol PaymentsApiProtocol {
+public protocol PaymentsApiProtocol {
     func statusRequest(api: APIService) -> StatusRequest
     func buySubscriptionRequest(
         api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction

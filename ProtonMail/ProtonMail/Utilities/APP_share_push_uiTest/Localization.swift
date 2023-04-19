@@ -56,8 +56,8 @@ class LocalizedString {
     lazy var _settings_notification_email = NSLocalizedString("Recovery email", comment: "Title")
     /// "Enable Notification Email"
     lazy var _settings_notification_email_switch_title = NSLocalizedString("Enable email notices", comment: "Title")
-    /// "Input Notification Email …"
-    lazy var _settings_notification_email_placeholder = NSLocalizedString("Input Notification Email …", comment: "place holder")
+    /// "Input Notification Email…"
+    lazy var _settings_notification_email_placeholder = NSLocalizedString("Input Notification Email…", comment: "place holder")
     /// "Current password"
     lazy var _settings_current_password = NSLocalizedString("Current password", comment: "Placeholder")
     /// "New password"
@@ -70,8 +70,6 @@ class LocalizedString {
     lazy var _block_email_tracking = NSLocalizedString("Block email tracking", comment: "Settings row")
     /// "Default browser"
     lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
-    /// "Swiping gestures"
-    lazy var _settings_swiping_gestures = NSLocalizedString("Swiping gestures", comment: "Swiping gestures")
 
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
@@ -149,8 +147,6 @@ class LocalizedString {
 
     /// "Re:"
     lazy var _composer_short_reply   = NSLocalizedString("Re:", comment: "abbreviation of reply:")
-    /// "Fwd:"
-    lazy var _composer_short_forward = NSLocalizedString("Fwd:", comment: "abbreviation of forward:")
     /// "Fw:"
     lazy var _composer_short_forward_shorter = NSLocalizedString("Fw:", comment: "abbreviation of forward:")
     /// "wrote:"
@@ -413,8 +409,8 @@ class LocalizedString {
 
     /// "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded."
     lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
-    /// "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!"
-    lazy var _messages_spam_101_warning = NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
+    /// "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded."
+    lazy var _messages_spam_101_warning = NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.", comment: "spam score warning")
     /// "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate."
     lazy var _messages_spam_102_warning = NSLocalizedString("This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.", comment: "spam score warning")
 
@@ -506,8 +502,8 @@ class LocalizedString {
     /// "You can't set the %@ address as default because it is a paid feature."
     lazy var _settings_change_paid_address_warning = NSLocalizedString("You can't set %@ address as default because it is a paid feature.", comment: "pm.me upgrade warning in composer")
 
-    /// "Current Language is: "
-    lazy var _settings_current_language_is = NSLocalizedString("Current Language is: ", comment: "Change language title")
+    /// "Current Language: "
+    lazy var _settings_current_language_is = NSLocalizedString("Current Language: ", comment: "Change language title")
     /// "Continue"
     lazy var _genernal_continue = NSLocalizedString("Continue", comment: "Action")
     /// "Please input a valid email address."
@@ -638,13 +634,13 @@ class LocalizedString {
 
     lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
-    lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon logging out of the app.", comment: "A description string in pin & faceID setting page")
+    lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon signing out of the app.", comment: "A description string in pin & faceID setting page")
 
     lazy var _timing = NSLocalizedString("Timing", comment: "A section title for timing section to set auto lock timing")
 
     lazy var _go_to_settings = NSLocalizedString("Go to settings", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
-    lazy var _go_to_signin = NSLocalizedString("Go to sign-in", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
+    lazy var _go_to_signin = NSLocalizedString("Go to sign in", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     /// "You have unsaved changes. Do you want to save it?"
     lazy var _you_have_unsaved_changes_do_you_want_to_save_it = NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message")
@@ -998,7 +994,7 @@ class LocalizedString {
 
     /// Account Manger
     lazy var _account = NSLocalizedString("Account", comment: "Account manager title")
-    lazy var _duplicate_logged_in = NSLocalizedString("The user is already logged in", comment: "Alert when the account is already logged in")
+    lazy var _duplicate_logged_in = NSLocalizedString("The user is already signed in", comment: "Alert when the account is already logged in")
 
     lazy var _free_account_limit_reached_title = NSLocalizedString("Limit reached", comment: "Title of alert when the free account limit is reached")
     lazy var _free_account_limit_reached = NSLocalizedString("Only one free account can be added", comment: "Alert when the free account limit is reached")
@@ -1056,7 +1052,7 @@ class LocalizedString {
     lazy var _troubleshoot_support_body = NSLocalizedString("Please share your problem.", comment: "The body of the email draft created in the network troubleshoot view.")
 
     lazy var _recipient_not_found = NSLocalizedString("Recipient not found", comment: "The error message is shown in composer")
-    lazy var _signle_address_invalid_error_content = NSLocalizedString("Email address is invalid", comment: "The error message is shown in composer")
+    lazy var _signle_address_invalid_error_content = NSLocalizedString("Invalid email address", comment: "The error message is shown in composer")
     lazy var _address_invalid_error_content = NSLocalizedString("At least one recipient email address is improperly formatted, please double check them.", comment: "incorrect email format error in composer")
     lazy var _address_invalid_error_title = NSLocalizedString("Error sending", comment: "incorrect email format error in composer")
 
@@ -1115,7 +1111,7 @@ class LocalizedString {
     lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
     lazy var _title_of_viewInDarkMode_action_in_action_sheet = NSLocalizedString("View message in Dark mode", comment: "The title of the view message in dark mode action in action sheet")
 
-    lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.", comment: "The footer of combined contact in settings")
+    lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
@@ -1244,7 +1240,7 @@ class LocalizedString {
 
     lazy var _autoreply_compact_banner_description = NSLocalizedString("This message was automatically generated", comment: "The title of auto reply banner")
 
-    lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "The error message that the incoming mail failed dmarc authentication")
+    lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.", comment: "The error message that the incoming mail failed dmarc authentication")
     lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")
 
     lazy var _conversation_settings_footer_title = NSLocalizedString("Group emails from the same conversation together.", comment: "")
@@ -1282,7 +1278,7 @@ class LocalizedString {
     lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
     lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")
     lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
-    lazy var _provide_feedback = NSLocalizedString("Provide feedback", comment: "Title of menu action to trigger feedback view")
+    lazy var _provide_feedback = NSLocalizedString("Send feedback", comment: "Title of menu action to trigger feedback view")
     lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
     lazy var collalse_message_title_in_converation_view = NSLocalizedString("Collapse message", comment: "The title of button to collapse the expanded message in conversation view for VoiceOver.")
 
@@ -1310,8 +1306,8 @@ class LocalizedString {
     lazy var _clean_conversation_warning = NSLocalizedString("Are you sure you want to permanently delete %d conversation?", comment: "Warning message when users try to empty conversations in the folder")
     lazy var _show_full_message = NSLocalizedString("…[Show full message]", comment: "Button title to show full encrypted message body when decryption failed")
 
-    lazy var _token_revoke_noti_title = NSLocalizedString("Logged out of %@", comment: "The title of notification that will show when the token of one account is revoked")
-    lazy var _token_revoke_noti_body = NSLocalizedString("Log in again to keep receiving updates", comment: "The body of notification that will show when the token of one account is revoked")
+    lazy var _token_revoke_noti_title = NSLocalizedString("Signed out of %@", comment: "The title of notification that will show when the token of one account is revoked")
+    lazy var _token_revoke_noti_body = NSLocalizedString("Sign in again to keep receiving updates", comment: "The body of notification that will show when the token of one account is revoked")
     lazy var _no_attachment_found = NSLocalizedString("No attachment found", comment: "Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body")
     lazy var _do_you_want_to_send_message_anyway = NSLocalizedString("Do you want to send your message anyway?", comment: "Alert body for no attachment found")
 
@@ -1436,6 +1432,19 @@ class LocalizedString {
 }
 
 enum L11n {
+    struct BlockSender {
+        static let blockActionTitleLong = NSLocalizedString("Block sender", comment: "Button to block a sender")
+        static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
+        static let blockListSettingsItem = NSLocalizedString("Block list", comment: "Settings item to open blocked sender list")
+        static let blockListScreenTitle = NSLocalizedString("Blocked Senders", comment: "Title of the blocked sender list screen")
+        static let emptyList = NSLocalizedString("No blocked senders", comment: "Placeholder for empty sender list")
+        static let explanation = NSLocalizedString("New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings.", comment: "")
+        static let senderIsBlockedBanner = NSLocalizedString("Sender has been blocked", comment: "Banner in the message view")
+        static let successfulBlockConfirmation = NSLocalizedString("Sender %@ blocked", comment: "Toast confirming the block")
+        static let successfulUnblockConfirmation = NSLocalizedString("Sender %@ unblocked", comment: "Toast confirming the unblock")
+        static let unblockActionTitleShort = NSLocalizedString("Unblock", comment: "Button to unblock a sender, keep it short to fit in the UI")
+    }
+
     struct EmailTrackerProtection {
         static let title = NSLocalizedString("Email tracking protection", comment: "Name of the feature")
         static let no_email_trackers_found = NSLocalizedString("No email trackers found", comment: "Short hint in the header view")
@@ -1462,7 +1471,7 @@ enum L11n {
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 	}
-    
+
     struct SettingsLockScreen {
         static let protectionTitle = NSLocalizedString("Protection", comment: "Settings lock protection section")
         static let advancedSettings = NSLocalizedString("Advanced settings", comment: "Settings lock advanced settings section")
@@ -1501,7 +1510,7 @@ enum L11n {
         static let default_text_estimated_time_label = NSLocalizedString("Estimating time remaining ...", comment: "The default text while estimating the time remaining")
         static let estimated_time_label_metadata_downloading = NSLocalizedString("Downloading metadata ...", comment: "The text when metadata indexing is in progress.")
         static let estimated_time_less_than_a_minute = NSLocalizedString("<1 minute remaining", comment: "Text for the estimated time label if less than one minute is remaining")
-        static let settings_refresh_index = NSLocalizedString("Downloading new messages ...", comment: "The text to download new message when search index is refreshed.")
+        static let settings_refresh_index = NSLocalizedString("Downloading new messages...", comment: "The text to download new message when search index is refreshed.")
         static let downloaded_messages_oldest_message = NSLocalizedString("Oldest message: ", comment: "The text for determining the oldest message in the encrypted search index")
         static let downloaded_messages_storage_used = NSLocalizedString("Storage used: ", comment: "The text for determining the size of the encrypted search index")
         static let downloaded_messages_storage_limit_selection = NSLocalizedString("Current selection: ", comment: "The text for current selection of the storage limit of encrypted search")
@@ -1511,7 +1520,6 @@ enum L11n {
         static let settings_footer_of_encrypted_search = NSLocalizedString("Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@", comment: "The footer of encrypted search in settings")
         static let settings_footer_of_encrypted_search_learn = NSLocalizedString("Learn more.", comment: "The title of learn more link")
         static let settings_title_of_encrypted_search = NSLocalizedString("Search message content", comment: "The title of encrypted search in settings")
-        static let settingsrefresh_index = NSLocalizedString("Downloading new messages ...", comment: "The text to download new message when search index is refreshed.")
 
         static let popup_title = NSLocalizedString("Content search available", comment: "The title of the pop up when encrypted search is available.")
         static let popup_description = NSLocalizedString("You can now search within your messages. This feature can be enabled from settings at any time.", comment: "The description of encrypted search at the pop up.")
@@ -1529,7 +1537,7 @@ enum L11n {
         static let delete_messages_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel delete all downloaded messages.")
         static let disable_feature_alert_title = NSLocalizedString("Downloaded messages will be deleted", comment: "Title for the alert to disable content search.")
         static let disable_feature_alert_message = NSLocalizedString("Disabling the feature now will delete the messages that have already been downloaded.", comment: "Message for the alert to disable content search.")
-        static let disable_alert_button_delete = NSLocalizedString("Okay", comment: "Title for the alert button to disable content search.")
+        static let disable_alert_button_delete = NSLocalizedString("OK", comment: "Title for the alert button to disable content search.")
         static let disable_feature_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel disable content search.")
         static let message_count = NSLocalizedString("Downloading message %1d out of %2d", comment: "The text for the number of downloaded messages.")
         static let slowSearchMessage = NSLocalizedString("Search taking too long? %1$@ from this search for faster results.", comment: "Text for the banner when content search is slow.")
@@ -1543,6 +1551,7 @@ enum L11n {
         static let searchInfo_partial_link = NSLocalizedString("local storage limit.", comment: "Text for the link to show when indexing is stopped because of storage limit reached.")
         static let searchInfo_lowStorage = NSLocalizedString("Messages from before %@, will not be searched. To search within them, free up storage space on this device.", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
         static let download_will_stop_desc = NSLocalizedString("The download will stop if the Proton Mail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
+        static let less_than_a_minute = NSLocalizedString("<1 minute remaining", comment: "Text for the estimated time label if less than one minute is remaining")
 
         // MARK: - Interrupt reason
         static let download_paused_no_connectivity = NSLocalizedString("Download paused: No connectivity", comment: "Text for estimate time label when no internet connection is available")
@@ -1553,11 +1562,19 @@ enum L11n {
         static let download_paused_low_battery_advice = NSLocalizedString("Charge your device or resume manually.", comment: "Text for status label when low battery")
         static let download_paused_low_storage = NSLocalizedString("Download paused: Storage full", comment: "Text for estimate time label when storage is full")
         static let download_paused_low_storage_advice = NSLocalizedString("Free up at least 100 MB of storage to continue.", comment: "Text for status label when storage is full")
+
+        static let estimating_time_remaining = NSLocalizedString("Estimating time remaining ...", comment: "The default text while estimating the time remaining")
     }
 
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
     }
+
+    struct NextMsgAfterMove {
+        static let settingTitle = NSLocalizedString("Next message after move", comment: "The title of the setting of the next msg after move")
+        static let rowTitle = NSLocalizedString("Navigate to next message after move", comment: "The title of the row inside the setting page of next msg after move function.")
+        static let rowFooterTitle = NSLocalizedString("Performing a move action on a message (e.g. archive) will navigate to the next message.", comment: "The footer title of the setting row of the next msg after move functions.")
+	}
 
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")

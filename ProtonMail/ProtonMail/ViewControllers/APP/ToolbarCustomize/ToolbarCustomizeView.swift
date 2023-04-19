@@ -149,7 +149,8 @@ private enum SubviewsFactory {
         let button = UIButton()
         var attribute = FontManager.Default
         attribute[.font] = UIFont.adjustedFont(forTextStyle: .body)
-        attribute[.foregroundColor] = ColorProvider.BrandNorm.cgColor
+        let color: CGColor = ColorProvider.BrandNorm
+        attribute[.foregroundColor] = color
         button.setAttributedTitle(
             LocalString._toolbar_customize_reset_button__title.apply(style: attribute),
             for: .normal

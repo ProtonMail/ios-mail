@@ -54,6 +54,7 @@ class ExpandedHeaderView: HeaderView {
         addSubview(lockContainer)
         addSubview(contentStackView)
         initialsContainer.addSubview(initialsLabel)
+        initialsContainer.addSubview(senderImageView)
     }
 
     private func setUpLayout() {
@@ -92,6 +93,7 @@ extension ExpandedHeaderView {
             initialsLabel.bottomAnchor.constraint(equalTo: initialsContainer.bottomAnchor, constant: -2),
             initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
+        senderImageView.fillSuperview()
     }
 
     private func setUpFirstLineLayout() {

@@ -296,7 +296,7 @@ public class Keymaker: NSObject {
             guard let mainKey = self.privatelyAccessibleMainKey,
                   (try? protector.lock(value: mainKey)) != nil else
             {
-                isMainThread ? DispatchQueue.main.async{ completion(false) } : completion(false)
+                isMainThread ? DispatchQueue.main.async { completion(false) } : completion(false)
                 return
             }
             
@@ -305,7 +305,7 @@ public class Keymaker: NSObject {
                 self.deactivate(NoneProtection(keychain: self.keychain))
             }
             
-            isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
+            isMainThread ? DispatchQueue.main.async { completion(true) } : completion(true)
         }
     }
     

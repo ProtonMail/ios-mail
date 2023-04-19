@@ -27,7 +27,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 已選定</string>
+			<string>已選取 %d 個</string>
 		</dict>
 	</dict>
 	<key>%d attachment</key>
@@ -53,7 +53,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 次的可用嘗試數</string>
+			<string>剩餘 %d 次嘗試機會</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -67,7 +67,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 次嘗試失敗後，就會進行資料安全清除！</string>
+			<string>%d 次嘗試失敗後，就會進行資料安全抹除！</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -81,7 +81,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個對話已加標籤</string>
+			<string>%d 則對話已上標籤</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -95,7 +95,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個對話已移至 %@</string>
+			<string>%d 則對話已移至 %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -125,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個電郵追蹤器已攔截</string>
+			<string>已封鎖 %d 個電郵追蹤程式</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -139,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個電郵追蹤器已找到</string>
+			<string>已找到 %d 個電郵追蹤程式</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -169,7 +169,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 位成員</string>
+			<string>%d 個成員</string>
 		</dict>
 	</dict>
 	<key>%d message labeled</key>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個郵件已上標籤</string>
+			<string>%d 則訊息已加標籤</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
@@ -195,7 +195,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個郵件已移至 %@</string>
+			<string>%d 則訊息已移至 %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -211,7 +211,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個郵件已移至草稿</string>
+			<string>%d 則訊息已移至草稿</string>
 		</dict>
 	</dict>
 	<key>%d min</key>
@@ -223,7 +223,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 分鐘</string>
+			<string>%d 分</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -251,7 +251,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%u 個會話</string>
+			<string>%u 個交談</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -323,7 +323,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>在 %d 分鐘</string>
+			<string>在 %d 分鐘內</string>
 			<key>zero</key>
 			<string>In %d minute</string>
 		</dict>
@@ -339,7 +339,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>Proton 找到並封鎖了 %d 個追蹤器在這個郵件中。</string>
+			<string>Proton 在此訊息中發現 %d 個追蹤程式，也已全數攔截。</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -355,7 +355,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>這些 %d 郵件將移至草稿匣，並依排程順序移除。</string>
+			<string>These %d messages will move to Drafts and have their schedule removed.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

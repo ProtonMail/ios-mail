@@ -133,7 +133,7 @@ final class CompactBannerView: BaseBannerView {
 
         if #available(iOS 13.0, *) {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-                layer.borderColor = ColorProvider.InteractionWeak.cgColor
+                layer.borderColor = ColorProvider.InteractionWeak
             }
         }
     }

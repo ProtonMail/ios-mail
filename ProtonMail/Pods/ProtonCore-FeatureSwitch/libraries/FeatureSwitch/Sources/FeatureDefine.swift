@@ -25,5 +25,5 @@ extension Feature {
     // hard coded features.
     // this can be overrided by local features.
     // local features can be overrided by remote features
-    public static var testFeature: Feature = Feature.init(name: "testFeature", isEnable: false, flags: [])
+    public static var testFeature: Feature = Feature(name: "testFeature", isEnable: false, flags: [])
 }

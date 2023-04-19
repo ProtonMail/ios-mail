@@ -34,7 +34,7 @@ final class SingleMessageContentViewHistoryButtonContainer: UIView {
     private func setUpButtonStyle() {
         showHideHistoryButton.tintColor = ColorProvider.IconWeak
         showHideHistoryButton.backgroundColor = ColorProvider.BackgroundNorm
-        showHideHistoryButton.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        showHideHistoryButton.layer.borderColor = ColorProvider.SeparatorNorm
         showHideHistoryButton.layer.borderWidth = 1.0
         showHideHistoryButton.layer.cornerRadius = 4.0
         showHideHistoryButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)

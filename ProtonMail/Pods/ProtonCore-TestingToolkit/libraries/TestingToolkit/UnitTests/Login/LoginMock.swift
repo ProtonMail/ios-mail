@@ -21,6 +21,7 @@
 
 import Foundation
 
+import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_DataModel
 import ProtonCore_Networking
@@ -82,8 +83,8 @@ public class LoginMock: Login {
     }
 
     @FuncStub(Login.finishLoginFlow) public var finishLoginFlowStub
-    public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        finishLoginFlowStub(mailboxPassword, completion)
+    public func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        finishLoginFlowStub(mailboxPassword, passwordMode, completion)
     }
 
     @FuncStub(Login.createAccountKeysIfNeeded) public var createAccountKeysIfNeededStub

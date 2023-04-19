@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import pmtest
+import fusion
 import ProtonCore_TestingToolkit
 
 fileprivate struct id {

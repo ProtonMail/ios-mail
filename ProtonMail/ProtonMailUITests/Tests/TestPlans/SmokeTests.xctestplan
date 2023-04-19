@@ -11,10 +11,6 @@
   "defaultOptions" : {
     "environmentVariableEntries" : [
       {
-        "key" : "MAIL_APP_API_PATH",
-        "value" : "$(MAIL_APP_API_PATH)"
-      },
-      {
         "key" : "MAIL_APP_API_DOMAIN",
         "value" : "$(MAIL_APP_API_DOMAIN)"
       }
@@ -41,6 +37,13 @@
         "ExternalAccountsCapabilityATests\/testSignUpWithExternalAccountIsNotAvailable()",
         "ExternalAccountsCapabilityATests\/testSignUpWithInternalAccountWorks()",
         "ExternalAccountsCapabilityATests\/testSignUpWithUsernameAccountIsNotAvailable()",
+        "ExternalAccountsTests\/testSignInWithExternalAccountShowsPopup()",
+        "ExternalAccountsTests\/testSignInWithExternalAccountWorks()",
+        "ExternalAccountsTests\/testSignInWithInternalAccountWorks()",
+        "ExternalAccountsTests\/testSignInWithUsernameAccountWorks()",
+        "ExternalAccountsTests\/testSignUpWithExternalAccountIsNotAvailable()",
+        "ExternalAccountsTests\/testSignUpWithInternalAccountWorks()",
+        "ExternalAccountsTests\/testSignUpWithUsernameAccountIsNotAvailable()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomLabel()",
         "LoginTests\/testLoginWithOnePass()",
@@ -51,7 +54,8 @@
         "MultiuserManagementTests\/testSwitchAccount()",
         "PinTests\/testTurnOnAndOffPin()",
         "SettingsTests\/testEditAutoLockTime()",
-        "SpamTests\/testSwipeToSpamMessage()"
+        "SpamTests\/testSwipeToSpamMessage()",
+        "UnauthSessionTests\/testRefreshingAndOpeningMailWorks()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

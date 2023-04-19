@@ -98,33 +98,33 @@ class UserDataService: Service {
         }
     }
 
-    func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<UserInfo?> {
+    func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<(UserInfo?, MailSettings)> {
         return async {
-
-            let addrApi = GetAddressesRequest()
-            addrApi.auth = auth
+            let addressesApi = GetAddressesRequest()
             let userApi = GetUserInfoRequest()
-            userApi.auth = auth
             let userSettingsApi = GetUserSettings()
-            userSettingsApi.auth = auth
             let mailSettingsApi = GetMailSettings()
-            mailSettingsApi.auth = auth
 
-            let addrRes: AddressesResponse = try `await`(self.apiService.run(route: addrApi))
-            let userRes: GetUserInfoResponse = try `await`(self.apiService.run(route: userApi))
-            let userSettingsRes: SettingsResponse = try `await`(self.apiService.run(route: userSettingsApi))
-            let mailSettingsRes: MailSettingsResponse = try `await`(self.apiService.run(route: mailSettingsApi))
+            let addressesResponse: AddressesResponse = try `await`(self.apiService.run(route: addressesApi))
+            let userInfoResponse: GetUserInfoResponse = try `await`(self.apiService.run(route: userApi))
+            let userSettingsResponse: SettingsResponse = try `await`(self.apiService.run(route: userSettingsApi))
+            let mailSettingsResponse: MailSettingsResponse = try `await`(self.apiService.run(route: mailSettingsApi))
 
-            userRes.userInfo?.set(addresses: addrRes.addresses)
-            userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
-            userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
+            userInfoResponse.userInfo?.set(addresses: addressesResponse.addresses)
+            userInfoResponse.userInfo?.parse(userSettings: userSettingsResponse.userSettings)
+            userInfoResponse.userInfo?.parse(mailSettings: mailSettingsResponse.mailSettings)
 
-            try `await`(self.activeUserKeys(userInfo: userRes.userInfo, auth: auth) )
-            return userRes.userInfo
+            let mailSettings = try? MailSettings(dict: mailSettingsResponse.mailSettings ?? [:])
+
+            try `await`(self.activeUserKeys(userInfo: userInfoResponse.userInfo, auth: auth))
+            return (userInfoResponse.userInfo, mailSettings ?? .init())
         }
     }
 
-    func fetchSettings(userInfo: UserInfo, auth: AuthCredential) -> Promise<UserInfo> {
+    func fetchSettings(
+        userInfo: UserInfo,
+        auth: AuthCredential
+    ) -> Promise<(UserInfo, MailSettings)> {
         return async {
 
             let userSettingsApi = GetUserSettings()
@@ -137,8 +137,9 @@ class UserDataService: Service {
 
             userInfo.parse(userSettings: userSettingsRes.userSettings)
             userInfo.parse(mailSettings: mailSettingsRes.mailSettings)
+            let mailSettings = try? MailSettings(dict: mailSettingsRes.mailSettings ?? [:])
 
-            return userInfo
+            return (userInfo, mailSettings ?? .init())
         }
     }
 

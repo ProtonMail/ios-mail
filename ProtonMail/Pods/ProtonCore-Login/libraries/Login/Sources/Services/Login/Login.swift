@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_APIClient
 import ProtonCore_Networking
 import ProtonCore_DataModel
 import ProtonCore_CoreTranslation
@@ -29,21 +30,23 @@ public struct CreateAddressData {
     public let credential: AuthCredential
     public let user: User
     public let mailboxPassword: String
+    public let passwordMode: PasswordMode
     
-    public init(email: String, credential: AuthCredential, user: User, mailboxPassword: String) {
+    public init(email: String, credential: AuthCredential, user: User, mailboxPassword: String, passwordMode: PasswordMode) {
         self.email = email
         self.credential = credential
         self.user = user
         self.mailboxPassword = mailboxPassword
+        self.passwordMode = passwordMode
     }
 
     public func withUpdatedUser(_ user: User) -> CreateAddressData {
-        CreateAddressData(email: email, credential: credential, user: user, mailboxPassword: mailboxPassword)
+        CreateAddressData(email: email, credential: credential, user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode)
     }
 }
 
 public enum LoginStatus {
-    case finished(LoginData)
+    case finished(UserData)
     case ask2FA
     case askSecondPassword
     case chooseInternalUsernameAndCreateInternalAddress(CreateAddressData)
@@ -315,7 +318,7 @@ public protocol Login {
 
     func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
-    func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void)
 
     func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)

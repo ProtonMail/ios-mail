@@ -99,7 +99,8 @@ extension LabelManagerViewModelTests {
             apiService: mockUserManager.apiService,
             labelService: mockUserManager.labelService,
             labelPublisher: mockLabelPublisher,
-            userManagerSaveAction: mockUserManager
+            userManagerSaveAction: mockUserManager,
+            mailSettingsHandler: mockUserManager
         )
         return dependencies
     }

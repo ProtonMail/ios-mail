@@ -39,7 +39,7 @@ class ForceUpgradeManager: LifetimeTrackable {
     }
 
     var forceUpgradeHelper: ForceUpgradeDelegate = {
-        return ForceUpgradeHelper(config: .mobile(URL.appleStore))
+        return ForceUpgradeHelper(config: .mobile(URL.protonMailAppStoreUrlScheme))
     }()
 }
 
@@ -48,7 +48,7 @@ extension ForceUpgradeManager {
 
     func setupUITestsMocks() {
         HTTPStubs.setEnabled(true)
-        stub(condition: isHost("api.protonmail.ch") && isPath("/payments/status") && isMethodGET()) { _ in
+        stub(condition: isHost("proton.me") && isPath("/payments/status") && isMethodGET()) { _ in
             let body = Data(self.responseString5003.utf8)
             let headers = ["Content-Type": "application/json;charset=utf-8"]
             return HTTPStubsResponse(data: body, statusCode: 200, headers: headers)

@@ -19,7 +19,14 @@ import CoreData
 import Foundation
 import LifetimeTracker
 
-class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>: LifetimeTrackable {
+// sourcery: mock
+protocol PagesViewUIProtocol: AnyObject {
+    func dismiss()
+    func getCurrentObjectID() -> ObjectID?
+    func handlePageViewNavigationDirection(action: PagesSwipeAction, shouldReload: Bool)
+}
+
+class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>: NSObject, LifetimeTrackable {
     enum SpotlightPosition {
         case left, right
     }
@@ -40,6 +47,9 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     private var targetMessageID: MessageID?
     let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
     private let userIntroduction: UserIntroductionProgressProvider
+    weak var uiDelegate: PagesViewUIProtocol?
+    /// ID is moved to other locations by action `Move to`, `Archive` ... etc
+    fileprivate var idHasBeenMoved: ObjectID?
 
     init(
         viewMode: ViewMode,
@@ -50,6 +60,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+        notificationCenter: NotificationCenter = NotificationCenter.default,
         goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
     ) {
         self.goToDraft = goToDraft
@@ -62,10 +73,12 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         self.userIntroduction = userIntroduction
         self.viewMode = viewMode
 
+        super.init()
         self.fetchedResultsController = prepareFetchedResultsController()
         do {
             try fetchedResultsController?.performFetch()
         } catch { }
+        observeSwipeExpectation()
         trackLifetime()
     }
 
@@ -78,6 +91,15 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
             isAscending: isAscending
         ) as? NSFetchedResultsController<FetchResultType>
         return fetchedResultsController
+    }
+
+    func observeSwipeExpectation() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(receiveSwipeExpectation(notification:)),
+            name: .pagesSwipeExpectation,
+            object: nil
+        )
     }
 
     /// - Parameters:
@@ -110,6 +132,20 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
             return .left
         }
         return nil
+	}
+
+    func refetchData() {
+        try? fetchedResultsController?.performFetch()
+    }
+
+    // MARK: - page swipe notification
+    @objc
+    func receiveSwipeExpectation(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let expectation = userInfo["expectation"] as? PagesSwipeAction else { return }
+        let shouldReload = userInfo["reload"] as? Bool
+        idHasBeenMoved = uiDelegate?.getCurrentObjectID()
+        uiDelegate?.handlePageViewNavigationDirection(action: expectation, shouldReload: shouldReload ?? false)
     }
 }
 
@@ -135,6 +171,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: goToDraft
         )
+        self.fetchedResultsController?.delegate = self
     }
 
     override func item(for id: MessageID, offset: Int) -> (MessageEntity?, Int?) {
@@ -142,6 +179,32 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
               let targetIndex = messages.firstIndex(where: { $0.messageID == id.rawValue }),
               let object = messages[safe: targetIndex + offset] else { return (nil, nil) }
         return (MessageEntity(object), targetIndex + offset)
+    }
+}
+
+extension MessagePagesViewModel: NSFetchedResultsControllerDelegate {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+    ) {
+        switch type {
+        case .delete:
+            guard
+                let deletedMessage = anObject as? Message,
+                let currentID = uiDelegate?.getCurrentObjectID(),
+                deletedMessage.objectID == currentID.rawValue
+            else { return }
+            if deletedMessage.objectID == idHasBeenMoved?.rawValue {
+                idHasBeenMoved = nil
+            } else {
+                uiDelegate?.dismiss()
+            }
+        default:
+            break
+        }
     }
 }
 
@@ -168,14 +231,41 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: goToDraft
         )
+        self.fetchedResultsController?.delegate = self
     }
 
     override func item(for id: ConversationID, offset: Int) -> (ConversationEntity?, Int?) {
         guard let contextLabels = fetchedResultsController?.fetchedObjects,
-              let targetIndex = contextLabels.firstIndex(where: { $0.conversation?.conversationID == id.rawValue }),
+              let targetIndex = contextLabels.firstIndex(where: { $0.conversationID == id.rawValue }),
               let context = contextLabels[safe: targetIndex + offset],
               let conversation = context.conversation else { return (nil, nil) }
         return (ConversationEntity(conversation), targetIndex + offset)
+    }
+}
+
+extension ConversationPagesViewModel: NSFetchedResultsControllerDelegate {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+    ) {
+        switch type {
+        case .delete:
+            guard
+                let contextLabel = anObject as? ContextLabel,
+                let currentID = uiDelegate?.getCurrentObjectID(),
+                contextLabel.objectID == currentID.rawValue
+            else { return }
+            if contextLabel.objectID == idHasBeenMoved?.rawValue {
+                idHasBeenMoved = nil
+            } else {
+                uiDelegate?.dismiss()
+            }
+        default:
+            break
+        }
     }
 }
 

@@ -159,6 +159,7 @@ extension MessageEntity {
 
     private var orderedLocations: [LabelLocation] {
         self.labels
+            .filter { $0.type == .folder || Int($0.labelID.rawValue) != nil }
             .compactMap { LabelLocation(labelID: $0.labelID, name: $0.name) }
             .sorted(by: { Int($0.rawLabelID) ?? 0 < Int($1.rawLabelID) ?? 0 })
     }

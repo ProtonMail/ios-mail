@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import Foundation
 import PromiseKit
 
@@ -97,12 +98,13 @@ final class MimeAttachment: AttachmentInfo {
                    order: -1)
     }
 
-    func toAttachment(message: Message?, stripMetadata: Bool) -> Guarantee<Attachment?> {
-        if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
+    func toAttachment(context: NSManagedObjectContext,
+                      stripMetadata: Bool) -> Guarantee<AttachmentEntity?> {
+        if let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
             let fileData = ConcreteFileData(name: fileName, ext: ext, contents: data)
             return fileData.contents.toAttachment(
-                msg,
+                context,
                 fileName: fileData.name,
                 type: fileData.ext,
                 stripMetadata: stripMetadata,

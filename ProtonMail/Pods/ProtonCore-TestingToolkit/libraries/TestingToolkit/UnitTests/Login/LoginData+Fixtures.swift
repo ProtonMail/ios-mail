@@ -21,8 +21,8 @@
 
 import ProtonCore_Login
 
-public extension LoginData {
-    static var dummy: LoginData {
-        LoginData.userData(.init(credential: .dummy, user: .dummy, salts: [], passphrases: [:], addresses: [], scopes: []))
+public extension UserData {
+    static var dummy: UserData {
+        .init(credential: .dummy, user: .dummy, salts: [], passphrases: [:], addresses: [], scopes: [])
     }
 }

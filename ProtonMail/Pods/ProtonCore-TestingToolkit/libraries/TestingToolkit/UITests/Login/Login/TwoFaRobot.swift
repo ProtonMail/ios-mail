@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import pmtest
+import fusion
 
 private let twoFAFieldId = "TwoFactorViewController.codeTextField.textField"
 private let authenticateButtonId = "TwoFactorViewController.authenticateButton"

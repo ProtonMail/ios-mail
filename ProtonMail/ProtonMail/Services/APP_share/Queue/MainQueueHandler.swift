@@ -24,6 +24,7 @@ import Foundation
 import Groot
 import PromiseKit
 import ProtonCore_Crypto
+import ProtonCore_DataModel
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -52,8 +53,7 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager,
-         dependencies: Dependencies = Dependencies()
+         user: UserManager
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -66,7 +66,7 @@ final class MainQueueHandler: QueueHandler {
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
         self.user = user
-        self.dependencies = dependencies
+        self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
     }
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -83,7 +83,8 @@ final class MainQueueHandler: QueueHandler {
                  .updateLabel, .createLabel, .deleteLabel, .signout, .signin,
                  .fetchMessageDetail, .updateAttKeyPacket,
                  .updateContact, .deleteContact, .addContact,
-                 .addContactGroup, .updateContactGroup, .deleteContactGroup:
+                 .addContactGroup, .updateContactGroup, .deleteContactGroup,
+                 .blockSender, .unblockSender:
                 fatalError()
             case .emptyTrash, .emptySpam:   // keep this as legacy option for 2-3 releases after 1.11.12
                 fatalError()
@@ -188,12 +189,16 @@ final class MainQueueHandler: QueueHandler {
                 self.addContact(objectID: objectID, cardDatas: cardDatas, importFromDevice: importFromDevice, completion: completeHandler)
             case .addContactGroup(let objectID, let name, let color, let emailIDs):
                 self.createContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs, completion: completeHandler)
-            case .updateContactGroup(let objectID, let name, let color, let addedEmailList, let removedEmailList):
-                self.updateContactGroup(objectID: objectID, name: name, color: color, addedEmailList: addedEmailList, removedEmailList: removedEmailList, completion: completeHandler)
+            case .updateContactGroup(let objectID, let name, let color, let addedEmailIDs, let removedEmailIDs):
+                self.updateContactGroup(objectID: objectID, name: name, color: color, addedEmailIDs: addedEmailIDs, removedEmailIDs: removedEmailIDs, completion: completeHandler)
             case .deleteContactGroup(let objectID):
                 self.deleteContactGroup(objectID: objectID, completion: completeHandler)
             case let .notificationAction(messageID, action):
                 notificationAction(messageId: messageID, action: action, completion: completeHandler)
+            case .blockSender(let emailAddress):
+                blockSender(emailAddress: emailAddress, completion: completeHandler)
+            case .unblockSender(let emailAddress):
+                unblockSender(emailAddress: emailAddress, completion: completeHandler)
             }
         }
     }
@@ -281,7 +286,7 @@ extension MainQueueHandler {
                     return
                 }
 
-                let completionWrapper: API.JSONCompletion = { task, result in
+                let completionWrapper: JSONCompletion = { task, result in
                     var mess: [String: Any]
 
                     switch result {
@@ -289,11 +294,7 @@ extension MainQueueHandler {
                         mess = response
                     case .failure(let err):
                         DispatchQueue.main.async {
-                            if let responseError = err as? ResponseError, responseError.underlyingError?.code == APIErrorCode.deviceHavingLowConnectivity {
-                                NSError.alertSavingDraftError(details: responseError.localizedDescription)
-                            } else {
-                                NSError.alertSavingDraftError(details: err.localizedDescription)
-                            }
+                            NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
 
                         if err.isStorageExceeded {
@@ -391,12 +392,13 @@ extension MainQueueHandler {
                     }
                 }
 
-                let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(for: message)
+                let addressID: AddressID = .init(message.addressID ?? .empty)
+                let address = self.messageDataService.userAddress(of: addressID) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(of: addressID)
                 let request: Request
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    request = UpdateDraftRequest(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
+                    request = UpdateDraftRequest(message: message, fromAddr: address, authCredential: message.cachedAuthCredential)
                 } else {
-                    request = CreateDraftRequest(message: message, fromAddr: addr)
+                    request = CreateDraftRequest(message: message, fromAddr: address)
                 }
 
                 self.apiService.perform(request: request, response: UpdateDraftResponse()) { task, response in
@@ -417,13 +419,18 @@ extension MainQueueHandler {
     }
 
     private func handleAttachmentResponse(result: Swift.Result<JSONDictionary, NSError>,
-                                          attachment: Attachment,
+                                          attachmentObjectID: NSManagedObjectID,
                                           keyPacket: Data,
                                           completion: @escaping Completion) {
         switch result {
         case .success(let response):
         if let attDict = response["Attachment"] as? [String: Any], let id = attDict["ID"] as? String {
             self.coreDataService.enqueueOnRootSavingContext { context in
+                guard let attachment = try? context.existingObject(with: attachmentObjectID) as? Attachment else {
+                    assertionFailure("An attachment should exist!")
+                    completion(nil)
+                    return
+                }
                 attachment.attachmentID = id
                 attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
@@ -452,7 +459,7 @@ extension MainQueueHandler {
                 .default
                 .post(name: .attachmentUploadFailed,
                       object: nil,
-                      userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                      userInfo: ["objectID": attachmentObjectID.uriRepresentation().absoluteString,
                                  "reason": reason,
                                  "code": err.code])
             completion(err)
@@ -481,8 +488,11 @@ extension MainQueueHandler {
                 .first(where: { $0.contentID() == attachment.contentID() &&
                         $0.attachmentID != "0" }) {
                 // This upload is duplicated
-                context.delete(attachment)
-                _ = context.saveUpstreamIfNeeded()
+                if !attachments.contains(where: { $0.objectID == attachment.objectID }) {
+                    // Delete the attachment if the attachment object is not linked to the message
+                    context.delete(attachment)
+                    _ = context.saveUpstreamIfNeeded()
+                }
                 completion(nil)
                 return
             }
@@ -516,9 +526,9 @@ extension MainQueueHandler {
                     let signed = attachment.sign(byKey: key,
                                                  userKeys: userKeys,
                                                  passphrase: passphrase)
-                    let completionWrapper: API.JSONCompletion = { _, result in
+                    let completionWrapper: JSONCompletion = { _, result in
                         self.handleAttachmentResponse(result: result,
-                                                      attachment: attachment,
+                                                      attachmentObjectID: managedObjectID,
                                                       keyPacket: keyPacket,
                                                       completion: completion)
                     }
@@ -893,10 +903,10 @@ extension MainQueueHandler {
     ///   - objectID: Core data object of the group label
     ///   - name: Group label name
     ///   - color: Group label color
-    ///   - addedEmailList: The emailID list that will add to this group label
-    ///   - removedEmailList: The emailID list that will remove from this group label
+    ///   - addedEmailIDs: The emailID list that will add to this group label
+    ///   - removedEmailIDs: The emailID list that will remove from this group label
     ///   - completion: Completion
-    private func updateContactGroup(objectID: String, name: String, color: String, addedEmailList: [String], removedEmailList: [String], completion: @escaping Completion) {
+    private func updateContactGroup(objectID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String], completion: @escaping Completion) {
         let dataService = self.coreDataService
         let service = self.contactGroupService
         coreDataService.performOnRootSavingContext { context in
@@ -912,11 +922,11 @@ extension MainQueueHandler {
             }.then {
                 return service.addEmailsToContactGroup(groupID: LabelID(groupID),
                                                        emailList: [],
-                                                       emailIDs: addedEmailList)
+                                                       emailIDs: addedEmailIDs)
             }.then {
                 return service.removeEmailsFromContactGroup(groupID: LabelID(groupID),
                                                             emailList: [],
-                                                            emailIDs: removedEmailList)
+                                                            emailIDs: removedEmailIDs)
             }.done {
                 completion(nil)
             }.catch { error in
@@ -1020,12 +1030,33 @@ extension MainQueueHandler {
     }
 }
 
+// MARK: block sender
+
+extension MainQueueHandler {
+    private func blockSender(emailAddress: String, completion: @escaping Completion) {
+        dependencies.incomingDefaultService.performRemoteUpdate(
+            emailAddress: emailAddress,
+            newLocation: .blocked,
+            completion: completion
+        )
+    }
+
+    private func unblockSender(emailAddress: String, completion: @escaping Completion) {
+        dependencies.incomingDefaultService.performRemoteDeletion(emailAddress: emailAddress, completion: completion)
+    }
+}
+
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
+        let incomingDefaultService: IncomingDefaultServiceProtocol
 
-        init(actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction()) {
+        init(
+            actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
+            incomingDefaultService: IncomingDefaultServiceProtocol
+        ) {
             self.actionRequest = actionRequest
+            self.incomingDefaultService = incomingDefaultService
         }
     }
 }

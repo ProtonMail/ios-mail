@@ -23,6 +23,7 @@
 import Foundation
 import Groot
 import PromiseKit
+import ProtonCore_DataModel
 import ProtonCore_Services
 import EllipticCurveKeyPair
 import ProtonMailAnalytics
@@ -45,8 +46,6 @@ protocol EventsFetching: EventsServiceProtocol, Service {
 
     func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?)
     func fetchEvents(labelID: LabelID)
-    func processEvents(counts: [[String: Any]]?)
-    func processEvents(conversationCounts: [[String: Any]]?)
     func processEvents(mailSettings: [String: Any]?)
     func processEvents(space usedSpace: Int64?)
 }
@@ -62,7 +61,7 @@ enum EventError: Error {
 /// This is the protocol being worked on during the refactor. It will end up being the only one for EventsService.
 protocol EventsServiceProtocol: AnyObject {
     func fetchLatestEventID(completion: ((EventLatestIDResponse) -> Void)?)
-    func processEvents(counts: [[String: Any]]?)
+    func processEvents(messageCounts: [[String: Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
 }
 
@@ -73,21 +72,14 @@ final class EventsService: Service, EventsFetching {
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
-    private let coreDataService: CoreDataService
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager!
     private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
     private let dependencies: Dependencies
 
-    init(userManager: UserManager, contactCacheStatus: ContactCacheStatusProtocol) {
+    init(userManager: UserManager, dependencies: Dependencies) {
         self.userManager = userManager
-        let coreDataService = ServiceFactory.default.get(by: CoreDataService.self)
-        self.coreDataService = coreDataService
-        let useCase = FetchMessageMetaData(
-            params: .init(userID: userManager.userInfo.userId),
-            dependencies: .init(messageDataService: userManager.messageService,
-                                contextProvider: coreDataService))
-        self.dependencies = .init(fetchMessageMetaData: useCase, contactCacheStatus: contactCacheStatus)
+        self.dependencies = dependencies
     }
 
     func start() {
@@ -229,14 +221,14 @@ extension EventsService {
                                     }
                             }.then { (_) -> Promise<Void> in
                                 self.processEvents(labels: eventsRes.labels)
-                            }.then({ (_) -> Promise<Void> in
+                            }.then ({ (_) -> Promise<Void> in
                                 self.processEvents(addresses: eventsRes.addresses)
                             })
                             .ensure {
                                 self.processEvents(user: eventsRes.user)
                                 self.processEvents(userSettings: eventsRes.userSettings)
                                 self.processEvents(mailSettings: eventsRes.mailSettings)
-                                self.processEvents(counts: eventsRes.messageCounts)
+                                self.processEvents(messageCounts: eventsRes.messageCounts)
                                 self.processEvents(conversationCounts: eventsRes.conversationCounts)
                                 self.processEvents(space: eventsRes.usedSpace)
 
@@ -271,14 +263,16 @@ extension EventsService {
                             }
                         }.then { (_) -> Promise<Void> in
                             self.processEvents(labels: eventsRes.labels)
-                        }.then({ (_) -> Promise<Void> in
+                        }.then { (_) -> Promise<Void> in
                             self.processEvents(addresses: eventsRes.addresses)
+                        }.then({ (_) -> Promise<Void> in
+                            self.processEvents(incomingDefaults: eventsRes.incomingDefaults)
                         })
                         .ensure {
                             self.processEvents(user: eventsRes.user)
                             self.processEvents(userSettings: eventsRes.userSettings)
                             self.processEvents(mailSettings: eventsRes.mailSettings)
-                            self.processEvents(counts: eventsRes.messageCounts)
+                            self.processEvents(messageCounts: eventsRes.messageCounts)
                             self.processEvents(conversationCounts: eventsRes.conversationCounts)
                             self.processEvents(space: eventsRes.usedSpace)
 
@@ -329,7 +323,7 @@ extension EventsService {
 
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
-            self.coreDataService.enqueueOnRootSavingContext { context in
+            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                 var error: NSError?
                 var messagesNoCache : [MessageID] = []
                 for message in messages {
@@ -444,7 +438,7 @@ extension EventsService {
         }
         return Promise { seal in
             self.incrementalUpdateQueue.sync {
-                self.coreDataService.enqueueOnRootSavingContext { context in
+                dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                     defer {
                         seal.fulfill_()
                     }
@@ -546,7 +540,7 @@ extension EventsService {
         }
 
         return Promise { seal in
-            self.coreDataService.enqueueOnRootSavingContext { context in
+            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                 defer {
                     seal.fulfill_()
                 }
@@ -604,7 +598,7 @@ extension EventsService {
         }
 
         return Promise { seal in
-            self.coreDataService.enqueueOnRootSavingContext { context in
+            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                 defer {
                     seal.fulfill_()
                 }
@@ -659,7 +653,7 @@ extension EventsService {
             return Promise { seal in
                 // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
                 self.incrementalUpdateQueue.sync {
-                    self.coreDataService.enqueueOnRootSavingContext { context in
+                    dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
                         defer {
                             seal.fulfill_()
                         }
@@ -755,56 +749,93 @@ extension EventsService {
         }
     }
 
+    private func processEvents(incomingDefaults: [[String: Any]]?) -> Promise<Void> {
+        guard UserInfo.isBlockSenderEnabled, let incomingDefaults = incomingDefaults else {
+            return Promise()
+        }
+        return Promise { seal in
+            incrementalUpdateQueue.async {
+                for item in incomingDefaults {
+                    let incomingDefaultEvent = IncomingDefaultEvent(event: item)
+                    switch incomingDefaultEvent.action {
+                    case .insert, .update1:
+                        guard let incomingDefault = incomingDefaultEvent.incomingDefault else {
+                            assertionFailure()
+                            continue
+                        }
+                        self.saveIncomingDefault(incomingDefault)
+                    case .delete:
+                        self.deleteIncomingDefaultByID(item)
+                    default:
+                        break
+                    }
+                }
+                seal.fulfill_()
+            }
+        }
+    }
+
+    private func saveIncomingDefault(_ incomingDefault: [String: Any]) {
+        guard let incomingDefaultDTO = try? IncomingDefaultDTO(
+            dict: incomingDefault,
+            keyDecodingStrategy: .decapitaliseFirstLetter,
+            dateDecodingStrategy: .secondsSince1970
+        ) else {
+            assertionFailure()
+            return
+        }
+        do {
+            try dependencies.incomingDefaultService.save(dto: incomingDefaultDTO)
+        } catch {
+            assertionFailure()
+        }
+    }
+
+    private func deleteIncomingDefaultByID(_ incomingDefault: [String: Any]) {
+        guard let incomingDefaultId = incomingDefault["ID"] as? String else {
+            assertionFailure()
+            return
+        }
+        do {
+            try dependencies.incomingDefaultService.hardDelete(query: .id(incomingDefaultId))
+        } catch {
+            assertionFailure()
+        }
+    }
+
     /// Process Message count from event logs
     ///
     /// - Parameter counts: message count dict
-    func processEvents(counts: [[String: Any]]?) {
-        guard let messageCounts = counts, messageCounts.count > 0 else {
-            return
-        }
-
-        for count in messageCounts {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
-                }
-                let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .singleMessage, shouldSave: false)
-                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .singleMessage)
-            }
-        }
-
-        guard let users = self.userManager.parentManager,
-              let primaryUser = users.firstUser,
-              primaryUser.userInfo.userId == self.userManager.userInfo.userId,
-              primaryUser.getCurrentViewMode() == .singleMessage else { return }
-
-        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .singleMessage)
-        UIApplication.setBadge(badge: max(0, unreadCount))
+    func processEvents(messageCounts: [[String: Any]]?) {
+        processEvents(counts: messageCounts, viewMode: .singleMessage)
     }
 
     func processEvents(conversationCounts: [[String: Any]]?) {
-        guard let conversationCounts = conversationCounts, conversationCounts.count > 0 else {
+        processEvents(counts: conversationCounts, viewMode: .conversation)
+    }
+
+    private func processEvents(counts: [[String: Any]]?, viewMode: ViewMode) {
+        guard let counts = counts, !counts.isEmpty else {
             return
         }
 
-        for count in conversationCounts {
+        for count in counts {
             if let labelID = count["LabelID"] as? String {
                 guard let unread = count["Unread"] as? Int else {
                     continue
                 }
                 let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: .conversation, shouldSave: false)
-                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: .conversation)
+                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: viewMode, shouldSave: false)
+                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: viewMode)
             }
         }
 
         guard let users = self.userManager.parentManager,
               let primaryUser = users.firstUser,
               primaryUser.userInfo.userId == self.userManager.userInfo.userId,
-              primaryUser.getCurrentViewMode() == .conversation else { return }
+              primaryUser.getCurrentViewMode() == viewMode else { return }
 
-        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: .conversation)
+        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: self.userManager.userID, type: viewMode)
         UIApplication.setBadge(badge: max(0, unreadCount))
     }
 

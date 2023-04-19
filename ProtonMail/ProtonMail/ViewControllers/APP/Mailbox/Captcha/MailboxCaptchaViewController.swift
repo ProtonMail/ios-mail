@@ -94,7 +94,7 @@ extension MailboxCaptchaViewController {
     private func loadWebView(_ token: String) {
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
         let doh = users.doh
-        let captcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(doh.captchaHost)")!
+        let captcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(doh.getCaptchaHostUrl())")!
         let requestObj = URLRequest(url: captcha)
         self.wkWebView.load(requestObj)
     }

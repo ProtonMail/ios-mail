@@ -27,6 +27,7 @@ protocol BannerViewControllerDelegate: AnyObject {
     func loadRemoteContent()
     func loadEmbeddedImage()
     func reloadImagesWithoutProtection()
+    func unblockSender()
     func handleMessageExpired()
     func hideBannerController()
     func showBannerController()
@@ -218,6 +219,18 @@ final class BannerViewController: UIViewController {
         addBannerView(type: .imageProxyFailure, shouldAddContainer: true, bannerView: banner)
     }
 
+    private func showSenderIsBlockedBanner() {
+        let banner = BannerWithButton(
+            icon: IconProvider.exclamationCircleFilled,
+            content: L11n.BlockSender.senderIsBlockedBanner,
+            buttonTitle: L11n.BlockSender.unblockActionTitleShort,
+            iconColor: ColorProvider.IconNorm
+        ) { [weak self] in
+            self?.unblockSender()
+        }
+        addBannerView(type: .senderIsBlocked, shouldAddContainer: true, bannerView: banner)
+    }
+
     private func showExpirationBanner() {
         let title = BannerViewModel.calculateExpirationTitle(of: viewModel.getExpirationOffset())
         let banner = CompactBannerView(appearance: .expiration,
@@ -334,7 +347,7 @@ final class BannerViewController: UIViewController {
 
 // MARK: - Exposed Method
 extension BannerViewController {
-    func showContentBanner(remoteContent: Bool, embeddedImage: Bool, imageProxyFailure: Bool) {
+    func showContentBanner(remoteContent: Bool, embeddedImage: Bool, imageProxyFailure: Bool, senderIsBlocked: Bool) {
         let bannersBeforeUpdate = displayedBanners
 
         if remoteContent {
@@ -347,6 +360,12 @@ extension BannerViewController {
 
         if imageProxyFailure {
             showImageProxyFailedBanner()
+        }
+
+        if senderIsBlocked {
+            showSenderIsBlockedBanner()
+        } else {
+            hideBanner(type: .senderIsBlocked)
         }
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
@@ -420,6 +439,11 @@ extension BannerViewController {
     private func reloadImagesWithoutProtection() {
         delegate?.reloadImagesWithoutProtection()
         self.hideBanner(type: .imageProxyFailure)
+    }
+
+    private func unblockSender() {
+        delegate?.unblockSender()
+        hideBanner(type: .senderIsBlocked)
     }
 }
 

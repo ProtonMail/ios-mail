@@ -41,7 +41,7 @@ public struct Locked<T> {
         self.encryptedValue = try encryptor(clearValue)
     }
     
-    public func unlock(with decryptor: ((Data) throws ->T)) throws -> T {
+    public func unlock(with decryptor: ((Data) throws -> T)) throws -> T {
         return try decryptor(self.encryptedValue)
     }
 }

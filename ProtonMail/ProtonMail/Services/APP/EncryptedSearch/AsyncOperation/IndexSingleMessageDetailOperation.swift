@@ -45,7 +45,7 @@ final class IndexSingleMessageDetailOperation: AsyncOperation {
             return
         }
         downloadMessageDetail(messageID: MessageID(message.id)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self, !self.isCancelled else { return }
             switch result {
             case .failure(let error):
                 self.log(

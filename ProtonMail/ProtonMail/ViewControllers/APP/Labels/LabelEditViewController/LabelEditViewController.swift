@@ -333,7 +333,7 @@ extension LabelEditViewController {
             return .init()
         }
         let info = LocalString._color_inherited_from_parent_folder
-        let icon = IconProvider.infoCircle
+        let icon: UIImage = IconProvider.infoCircle
         cell.config(info: info, icon: icon, cellHeight: 88)
         cell.addSeparator(padding: 0)
         return cell

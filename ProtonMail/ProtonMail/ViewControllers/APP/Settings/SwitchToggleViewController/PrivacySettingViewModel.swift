@@ -17,6 +17,7 @@
 
 import ProtonCore_DataModel
 import struct UIKit.CGFloat
+import enum ProtonCore_Utilities.Either
 
 extension PrivacySettingViewModel {
     enum SettingPrivacyItem: CustomStringConvertible, CaseIterable {
@@ -117,7 +118,7 @@ extension PrivacySettingViewModel: SwitchToggleVMOutput {
         nil
     }
 
-    func sectionFooter(of section: Int) -> String? {
+    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
         nil
     }
 }

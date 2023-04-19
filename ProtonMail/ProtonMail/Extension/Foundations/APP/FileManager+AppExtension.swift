@@ -57,3 +57,5 @@ protocol FileManagerProtocol {
     ) throws -> URL
     func removeItem(atPath path: String) throws
 }
+
+extension FileManager: FileManagerProtocol {}

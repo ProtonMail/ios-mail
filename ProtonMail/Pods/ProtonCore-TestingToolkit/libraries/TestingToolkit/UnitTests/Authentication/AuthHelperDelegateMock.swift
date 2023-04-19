@@ -34,8 +34,8 @@ public final class AuthHelperDelegateMock: AuthHelperDelegate {
     }
     
     @FuncStub(AuthHelperDelegateMock.sessionWasInvalidated) public var sessionWasInvalidatedStub
-    public func sessionWasInvalidated(for sessionUID: String) {
-        sessionWasInvalidatedStub(sessionUID)
+    public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        sessionWasInvalidatedStub(sessionUID, isAuthenticatedSession)
     }
 
 }

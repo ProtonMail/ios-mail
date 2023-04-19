@@ -1,3 +1,4 @@
+import ProtonCore_DataModel
 import SafariServices
 
 // sourcery: mock
@@ -19,6 +20,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private let contextProvider: CoreDataContextProviderProtocol
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
@@ -28,6 +30,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+         contextProvider: CoreDataContextProviderProtocol,
          targetID: MessageID? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
@@ -36,6 +39,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.targetID = targetID
         self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.contextProvider = contextProvider
     }
 
     func start(openFromNotification: Bool = false) {
@@ -62,11 +66,27 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             )
         )
         let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: fetchMessageDetail
+            fetchMessageDetail: fetchMessageDetail,
+            nextMessageAfterMoveStatusProvider: user,
+            notificationCenter: .default,
+            senderImageStatusProvider: userCachedStatus,
+            fetchSenderImage: FetchSenderImage(
+                dependencies: .init(
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: user.apiService,
+                            internetStatusProvider: internetStatusProvider
+                        )
+                    ),
+                    senderImageStatusProvider: userCachedStatus,
+                    mailSettings: user.mailSettings
+                )
+            )
         )
         let viewModel = ConversationViewModel(
             labelId: labelId,
             conversation: conversation,
+            coordinator: self,
             user: user,
             contextProvider: CoreDataService.shared,
             internetStatusProvider: internetStatusProvider,
@@ -84,7 +104,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 self?.goToDraft?(msgID, originalScheduledTime)
             },
             dependencies: dependencies)
-        let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
+        let viewController = ConversationViewController(viewModel: viewModel)
         self.viewController = viewController
         return viewController
     }
@@ -152,12 +172,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(with contact: ContactVO) {
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: nil,
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
         viewModel.addToContacts(contact)
 
@@ -165,12 +186,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(with mailToURL: URL) {
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: nil,
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
+            internetStatusProvider: internetStatusProvider
         )
         viewModel.parse(mailToURL: mailToURL)
 
@@ -182,21 +204,25 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         guard let rawMessage = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else {
             return
         }
-        let viewModel = ContainableComposeViewModel(
+        let viewModel = ComposeViewModel(
             msg: rawMessage,
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: contextProvider
+            coreDataContextProvider: contextProvider,
+            internetStatusProvider: internetStatusProvider
         )
 
         presentCompose(viewModel: viewModel)
     }
 
-    private func presentCompose(viewModel: ContainableComposeViewModel) {
-        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
-                                                          editorViewModel: viewModel)
-        coordinator.start()
+    private func presentCompose(viewModel: ComposeViewModel) {
+        let composer = ComposerViewFactory.makeComposer(
+            childViewModel: viewModel,
+            contextProvider: contextProvider,
+            userIntroductionProgressProvider: userCachedStatus,
+            scheduleSendEnableStatusProvider: userCachedStatus)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentAddContacts(with contact: ContactVO) {

@@ -30,15 +30,6 @@ class KeychainSaver<T>: Saver<T> where T: Codable {
 
 extension KeychainWrapper: KeyValueStoreProvider {
 
-    func bool(forKey defaultName: String) -> Bool {
-        assert(false, "Looks like this one is never actually used")
-        return false
-    }
-
-    func set(_ value: Bool, forKey defaultName: String) {
-        assert(false, "Looks like this one is never actually used")
-    }
-
     func set(_ intValue: Int, forKey key: String) {
         assert(false, "Looks like this one is never actually used")
     }

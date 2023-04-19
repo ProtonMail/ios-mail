@@ -53,18 +53,12 @@ class CacheServiceParsingTests: XCTestCase {
 
     func testParseMessagesResponse() throws {
         let testData = try XCTUnwrap(testFetchingMessagesDataInInbox.parseObjectAny())
-        let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(
+        try sut.parseMessagesResponse(
             labelID: Message.Location.inbox.labelID,
             isUnread: false,
             response: testData,
             idsOfMessagesBeingSent: []
-        ) { error in
-            XCTAssertNil(error)
-            expect.fulfill()
-        }
-
-        wait(for: [expect], timeout: 1)
+        )
 
         let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage))
         XCTAssertFalse(lastUpdate.isNew)
@@ -86,18 +80,14 @@ class CacheServiceParsingTests: XCTestCase {
     func testParseMessagesResponseWithBadFormattedData() throws {
         let testData = try XCTUnwrap(testBadFormatedFetchingMessagesDataInInbox.parseObjectAny())
 
-        let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(
-            labelID: Message.Location.inbox.labelID,
-            isUnread: false,
-            response: testData,
-            idsOfMessagesBeingSent: []
-        ) { error in
-            XCTAssertNotNil(error)
-            expect.fulfill()
-        }
-
-        wait(for: [expect], timeout: 1)
+        XCTAssertThrowsError(
+            try sut.parseMessagesResponse(
+                labelID: Message.Location.inbox.labelID,
+                isUnread: false,
+                response: testData,
+                idsOfMessagesBeingSent: []
+            )
+        )
 
         let msgs = fetchMessgaes(by: .inbox)
         XCTAssertEqual(msgs.count, 0)
@@ -114,18 +104,12 @@ class CacheServiceParsingTests: XCTestCase {
         // try to update the cache
         let testData = try XCTUnwrap(testFetchingMessagesDataInDraft.parseObjectAny())
 
-        let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(
+        try sut.parseMessagesResponse(
             labelID: Message.Location.draft.labelID,
             isUnread: false,
             response: testData,
             idsOfMessagesBeingSent: [fakeMsg.messageID]
-        ) { error in
-            XCTAssertNil(error)
-            expect.fulfill()
-        }
-
-        wait(for: [expect], timeout: 1)
+        )
 
         let draftMsg = try XCTUnwrap(Message.messageForMessageID("7JU0HG2gpOMhk9dL65NWkF0y0os0WKf03vkDpLig_rAv-MOR5CgowrEUgJ8GBKypj5Aw65mT2A4ryFTmH1HOEA==", inManagedObjectContext: testContext))
         XCTAssertEqual(draftMsg.subject, "(No Subject) Before Update")

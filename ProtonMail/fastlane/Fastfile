@@ -317,7 +317,7 @@ platform :ios do
       result_bundle: true,
       xcargs: "-quiet",
       fail_build: false # Otherwise following steps won't be executed
-   )
+    )
     xchtmlreport(
       result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
       enable_junit: true,
@@ -335,34 +335,20 @@ platform :ios do
       select_for_current_build_only: true,
     )
 
-    try_scan(
+    scan(
       device: "iPhone 14",
       reset_simulator: true,
-      parallel_workers: ENV["NUMBER_OF_DEVICES"],
-      try_parallel: true,
-      retry_parallel: false,
+      parallel_testing: true,
+      concurrent_workers: ENV["NUMBER_OF_DEVICES"],
       scheme: "ProtonMailUITests",
       testplan: ENV["TEST_PLAN"],
       app_identifier: APP_IDENTIFIER,
-      output_types: "junit",
-      reinstall_app: true,
       output_directory: "../test_output/TestResults",
+      output_types: "junit",
+      output_files: "report.xml",
+      reinstall_app: true,
       result_bundle: true,
       xcargs: "-quiet",
-      fail_build: false # Otherwise following steps won't be executed
     )
-    xchtmlreport(
-      result_bundle_path: "../test_output/TestResults/ProtonMailUITests.xcresult",
-      enable_junit: true,
-      binary_path: ENV["HOME"] + "/.mint/bin/xchtmlreport",
-    )
-
-    slather(cobertura_xml: true, configuration: "Debug")
-    slather(simple_output: true, configuration: "Debug")
-  end
-
-  error do |lane, exception|
-    send_to_slack(false, "", exception, "")
-    tear_down_keychain
   end
 end

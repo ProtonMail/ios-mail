@@ -21,10 +21,19 @@ extension EventsService {
     struct Dependencies {
         let fetchMessageMetaData: FetchMessageMetaDataUseCase
         let contactCacheStatus: ContactCacheStatusProtocol
+        let incomingDefaultService: IncomingDefaultServiceProtocol
+        let coreDataProvider: CoreDataContextProviderProtocol
 
-        init(fetchMessageMetaData: FetchMessageMetaDataUseCase, contactCacheStatus: ContactCacheStatusProtocol) {
+        init(
+            fetchMessageMetaData: FetchMessageMetaDataUseCase,
+            contactCacheStatus: ContactCacheStatusProtocol,
+            incomingDefaultService: IncomingDefaultService,
+            coreDataProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
+        ) {
             self.fetchMessageMetaData = fetchMessageMetaData
             self.contactCacheStatus = contactCacheStatus
+            self.incomingDefaultService = incomingDefaultService
+            self.coreDataProvider = coreDataProvider
         }
     }
 }

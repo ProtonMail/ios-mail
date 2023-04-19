@@ -166,7 +166,7 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         case .viewInDarkMode:
             return IconProvider.moon
         case .toolbarCustomization:
-            return Asset.icMagicWand.image
+            return IconProvider.magicWand
         case .more:
             return IconProvider.threeDotsHorizontal
         case .replyOrReplyAll, .replyOrReplyAllInConversation:

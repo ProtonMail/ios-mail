@@ -18,17 +18,22 @@
 import ProtonCore_Services
 
 enum FeatureFlagKey: String, CaseIterable {
+    case appRating = "RatingIOSMail"
     case inAppFeedback = "InAppFeedbackIOS"
     case scheduleSend = "ScheduledSendFreemium"
+    case senderImage = "ShowSenderImages"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
     func handleNewFeatureFlags(_ featureFlags: [String: Any])
 }
 
+// sourcery: mock
 protocol FeatureFlagsDownloadServiceProtocol {
     typealias FeatureFlagsDownloadCompletion =
         (Result<FeatureFlagsResponse, FeatureFlagsDownloadService.FeatureFlagFetchingError>) -> Void
+
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion)
 }
 
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.
@@ -41,21 +46,27 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         subscribersTable.allObjects.compactMap { $0 as? FeatureFlagsSubscribeProtocol }
     }
     private(set) var lastFetchingTime: Date?
+    private let appRatingStatusProvider: AppRatingStatusProvider
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
+    private let senderImageEnableStatusProvider: SenderImageStatusProvider
 
     init(
         userID: UserID,
         apiService: APIService,
         sessionID: String,
+        appRatingStatusProvider: AppRatingStatusProvider,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider
+        userIntroductionProgressProvider: UserIntroductionProgressProvider,
+        senderImageEnableStatusProvider: SenderImageStatusProvider
     ) {
         self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
+        self.appRatingStatusProvider = appRatingStatusProvider
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
+        self.senderImageEnableStatusProvider = senderImageEnableStatusProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -75,7 +86,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             return
         }
 
-        let request = FeatureFlagsRequest()
+        let request = FetchFeatureFlagsRequest()
         apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] task, response in
             guard let self = self else {
                 completion?(.failure(.selfIsReleased))
@@ -121,7 +132,33 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 self.scheduleSendEnableStatusProvider.setScheduleSendStatus(enable: false, userID: self.userID)
             }
 
+            if let appRatingStatus = response.result[FeatureFlagKey.appRating.rawValue] as? Bool {
+                self.appRatingStatusProvider.setIsAppRatingEnabled(appRatingStatus)
+            }
+
+            if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {
+                self.senderImageEnableStatusProvider.setIsSenderImageEnable(
+                    enable: isSenderImageEnable,
+                    userID: self.userID
+                )
+            }
+
             completion?(.success(response))
+        }
+    }
+
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion) {
+        let request = UpdateFeatureFlagsRequest(featureFlagName: FeatureFlagKey.appRating.rawValue, value: value)
+        apiService.perform(
+            request: request,
+            response: FeatureFlagsResponse(),
+            callCompletionBlockUsing: .immediateExecutor
+        ) { task, response in
+            if let error = task?.error {
+                completion(.failure(.networkError(error)))
+            } else {
+                completion(.success(response))
+            }
         }
     }
 

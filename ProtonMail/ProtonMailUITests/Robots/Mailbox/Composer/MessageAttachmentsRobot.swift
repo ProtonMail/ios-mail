@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pmtest
+import fusion
 
 fileprivate struct id {
     static let fromYourPhotoLibraryText = LocalString._from_your_photo_library

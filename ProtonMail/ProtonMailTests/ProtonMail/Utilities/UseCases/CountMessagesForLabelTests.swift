@@ -35,24 +35,11 @@ final class CountMessagesForLabelTests: XCTestCase {
 
     func testExecute_whenRequestSucceeds_itReturnsTheMessageCount() throws {
         let labelIDValue = String.randomString(6)
-        let unreadValue = true
-        let endTimeValue = Int.random(in: 1...99)
+        let unreadValue = false
         let total = Int.random(in: 1...99)
         apiService.requestJSONStub.bodyIs { _, _, path, reqParams, _, _, _, _, _, _, handler in
-            if path == "/mail/v4/messages" {
-                guard
-                    let paramsDict = reqParams as? [String: Any],
-                    let label = paramsDict["LabelID"] as? String,
-                    let unread = paramsDict["Unread"] as? Int,
-                    let end = paramsDict["End"] as? Int
-                else {
-                    XCTFail("Parse reqParams failed")
-                    return
-                }
-                XCTAssertEqual(label, labelIDValue)
-                XCTAssertEqual(unread, unreadValue ? 1 : 0)
-                XCTAssertEqual(end, endTimeValue - 1)
-                handler(nil, .success(["Total": total]))
+            if path == "/mail/v4/messages/count" {
+                handler(nil, .success(self.response(labelID: labelIDValue, total: total, unread: 4)))
             } else {
                 XCTFail("Unhandled path \(path)")
             }
@@ -60,7 +47,6 @@ final class CountMessagesForLabelTests: XCTestCase {
         let expectation1 = expectation(description: "Get result")
         sut.executionBlock(params: .init(
             labelID: LabelID(labelIDValue),
-            endTime: endTimeValue,
             isUnread: unreadValue
         )) { result in
             switch result {
@@ -76,8 +62,8 @@ final class CountMessagesForLabelTests: XCTestCase {
 
     func testExecute_whenRequestSucceeds_itDidNotReturnsTheMessageCount() {
         apiService.requestJSONStub.bodyIs { _, _, path, reqParams, b, _, _, _, _, _, handler in
-            if path == "/mail/v4/messages" {
-                handler(nil, .success([:]))
+            if path == "/mail/v4/messages/count" {
+                handler(nil, .success(self.response(labelID: "bbb", total: 8, unread: 3)))
             } else {
                 XCTFail("Unhandled path \(path)")
             }
@@ -85,15 +71,12 @@ final class CountMessagesForLabelTests: XCTestCase {
         let expectation1 = expectation(description: "Get result")
         sut.executionBlock(params: .init(
             labelID: LabelID("aaa"),
-            endTime: 3,
             isUnread: true
         )) { result in
             switch result {
             case .failure(let error):
-                guard let _ = error as? DecodingError else {
-                    XCTFail("Error type is not expected, please check it")
-                    return
-                }
+                let nsError = error as NSError
+                XCTAssertEqual(nsError.localizedFailureReason, "Unable to parse the response object:\nDoesn\'t include target labelID")
             case .success:
                 XCTFail("Should fail")
             }
@@ -104,7 +87,7 @@ final class CountMessagesForLabelTests: XCTestCase {
 
     func testExecute_whenRequestFailed_itReturnsError() throws {
         apiService.requestJSONStub.bodyIs { _, _, path, reqParams, b, _, _, _, _, _, handler in
-            if path == "/mail/v4/messages" {
+            if path == "/mail/v4/messages/count" {
                 handler(nil, .failure(.badResponse()))
             } else {
                 XCTFail("Unhandled path \(path)")
@@ -113,12 +96,11 @@ final class CountMessagesForLabelTests: XCTestCase {
         let expectation1 = expectation(description: "Get result")
         sut.executionBlock(params: .init(
             labelID: LabelID("aaa"),
-            endTime: 3,
             isUnread: true
         )) { result in
             switch result {
-            case .failure(let error):
-                XCTAssertEqual(error.localizedDescription, "The operation couldn’t be completed. (ProtonCore_Networking.ResponseError error 1.)")
+            case .failure:
+                break
             case .success:
                 XCTFail("Should fail")
             }
@@ -127,4 +109,16 @@ final class CountMessagesForLabelTests: XCTestCase {
         wait(for: [expectation1], timeout: 5)
     }
 
+    private func response(labelID: String, total: Int, unread: Int) -> [String: Any] {
+        [
+            "Code": 1000,
+            "Counts": [
+                [
+                    "LabelID": labelID,
+                    "Total": total,
+                    "Unread": unread
+                ]
+            ]
+        ]
+    }
 }

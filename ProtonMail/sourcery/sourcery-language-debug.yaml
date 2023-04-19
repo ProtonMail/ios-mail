@@ -1,5 +1,0 @@
-sources:
-    - ../ProtonMail/Utilities/APP_share_push_uiTest/Localization.swift
-templates:
-    - lang/LocalizationList.stencil
-output: ../ProtonMail/Resource/APP_share/Generated

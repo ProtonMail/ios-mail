@@ -107,7 +107,7 @@ class SettingsGesturesViewController: ProtonMailViewController {
     }
 
     private func updateTitle() {
-        self.title = LocalString._settings_swiping_gestures
+        self.title = LocalString._swipe_actions
     }
 
     private func showSwipeActionList(selected: SwipeActionItems) {

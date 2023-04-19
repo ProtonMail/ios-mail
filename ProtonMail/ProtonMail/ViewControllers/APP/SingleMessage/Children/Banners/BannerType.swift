@@ -20,6 +20,7 @@ import Foundation
 enum BannerType: Int {
     case imageProxyFailure
     case scheduledSend
+    case senderIsBlocked
     case remoteContent
     case embeddedContent
     case expiration

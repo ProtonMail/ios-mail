@@ -182,7 +182,7 @@ class RoundButton: UIButton {
         let path = UIBezierPath(ovalIn: rect)
         let sublayer = CAShapeLayer()
 
-        sublayer.fillColor = ColorProvider.BackgroundSecondary.cgColor
+        sublayer.fillColor = ColorProvider.BackgroundSecondary
         sublayer.path = path.cgPath
         sublayer.name = "pm_border"
 

@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-GoLibs",
   "module_name": "ProtonCore_Crypto",
-  "version": "3.27.0",
+  "version": "4.0.1",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -18,7 +18,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "3.27.0"
+    "tag": "4.0.1"
   },
   "platforms": {
     "ios": "11.0",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "3.27.0"
+      "4.0.1"
     ]
   },
   "default_subspecs": [
@@ -40,12 +40,12 @@
   ],
   "subspecs": [
     {
-      "name": "Crypto-Go1.18.8",
+      "name": "Crypto-Go1.20.2",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto-Go1.18.8/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto-Go1.20.2/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",
@@ -56,28 +56,12 @@
       ]
     },
     {
-      "name": "Crypto-Go1.19.4",
+      "name": "Crypto-patched-Go1.20.2",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto-Go1.19.4/GoLibs.xcframework",
-      "testspecs": [
-        {
-          "name": "Tests",
-          "test_type": "unit",
-          "source_files": "libraries/Crypto/Tests/**/*.swift",
-          "resources": "libraries/Crypto/Tests/Resources/**/*"
-        }
-      ]
-    },
-    {
-      "name": "Crypto-patched-Go1.19.4",
-      "source_files": [
-        "libraries/Crypto/Sources/*.swift",
-        "libraries/Crypto/Sources/**/*.swift"
-      ],
-      "vendored_frameworks": "vendor/Crypto-patched-Go1.19.4/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto-patched-Go1.20.2/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",
@@ -104,12 +88,12 @@
       ]
     },
     {
-      "name": "Crypto+VPN-Go1.19.4",
+      "name": "Crypto+VPN-Go1.20.2",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto+VPN-Go1.19.4/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto+VPN-Go1.20.2/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",
@@ -136,12 +120,12 @@
       ]
     },
     {
-      "name": "Crypto+Search-Go1.19.4",
+      "name": "Crypto+Search-Go1.20.2",
       "source_files": [
         "libraries/Crypto/Sources/*.swift",
         "libraries/Crypto/Sources/**/*.swift"
       ],
-      "vendored_frameworks": "vendor/Crypto+Search-Go1.19.4/GoLibs.xcframework",
+      "vendored_frameworks": "vendor/Crypto+Search-Go1.20.2/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",

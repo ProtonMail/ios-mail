@@ -25,7 +25,7 @@ import ProtonCore_UIFoundations
 
 enum LabelLocation: Equatable, Hashable, CaseIterable {
     static var allCases: [LabelLocation] = [
-        .provideFeedback,
+        .sendFeedback,
         .inbox,
         .hiddenDraft,
         .draft,
@@ -49,7 +49,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         .addAccount
     ]
 
-    case provideFeedback
+    case sendFeedback
 
     case inbox
     case hiddenDraft // 1 can't be removed
@@ -83,7 +83,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     
     init(id: String, name: String?) {
         switch id {
-        case "Provide feedback": self = .provideFeedback
+        case "Send feedback": self = .sendFeedback
         case "0": self = .inbox
         case "1": self = .hiddenDraft
         case "8": self = .draft
@@ -117,7 +117,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     
     var rawLabelID: String {
         switch self {
-        case .provideFeedback: return "Provide feedback"
+        case .sendFeedback: return "Send feedback"
         case .inbox: return "0"
         case .hiddenDraft: return "1"
         case .draft: return "8"
@@ -152,7 +152,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     
     var localizedTitle: String {
         switch self {
-        case .provideFeedback: return LocalString._provide_feedback
+        case .sendFeedback: return LocalString._provide_feedback
         case .inbox: return LocalString._menu_inbox_title
         case .hiddenDraft: return ""
         case .draft: return LocalString._menu_drafts_title
@@ -184,7 +184,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
 #if !APP_EXTENSION
     var icon: UIImage? {
         switch self {
-        case .provideFeedback:
+        case .sendFeedback:
             return IconProvider.speechBubble
         case .inbox:
             return IconProvider.inbox

@@ -332,7 +332,7 @@ extension AccountSwitcher {
 
     private func setupAccountTable() {
         var height = CGFloat((self.accounts.count - 1)) * self.CELL_HEIGHT + self.HEADER_HEIGHT
-        height = self.accounts.count > 1 ? height: 0
+        height = self.accounts.count > 1 ? height : 0
         self.accountTableHeight.constant = height
         self.accountTable.register(AccountSwitcherCell.nib(), forCellReuseIdentifier: self.CELLID)
         self.accountTable.tableFooterView = UIView(frame: .zero)
@@ -344,7 +344,7 @@ extension AccountSwitcher {
 
 extension AccountSwitcher: UITableViewDataSource, UITableViewDelegate, AccountSwitchCellProtocol {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        DFSSetting.enableDFS ? UITableView.automaticDimension: CELL_HEIGHT
+        DFSSetting.enableDFS ? UITableView.automaticDimension : CELL_HEIGHT
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

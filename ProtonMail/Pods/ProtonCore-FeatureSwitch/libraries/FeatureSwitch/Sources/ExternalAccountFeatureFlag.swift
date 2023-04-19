@@ -20,8 +20,8 @@
 //  along with ProtonCore. If not, see <https://www.gnu.org/licenses/>.
 
 extension Feature {
-    public static var externalSignup = Feature.init(name: "externalSignup", isEnable: false)
+    public static var externalSignup = Feature(name: "externalSignup", isEnable: false)
     
     // control cap C features
-    public static var externalAccountConversion = Feature.init(name: "externalAccountConversion", isEnable: false)
+    public static var externalAccountConversion = Feature(name: "externalAccountConversion", isEnable: false)
 }

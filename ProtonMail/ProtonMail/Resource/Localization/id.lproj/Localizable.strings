@@ -13,12 +13,6 @@
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ dari %2$@";
 
-/* undo send seconds options, e.g. 5 seconds */
-"%d seconds" = "%d detik";
-
-/* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Terpilih";
-
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ Seret ke sini untuk menambahkan lampiran";
 
@@ -116,6 +110,9 @@
 /* cell title in device settings */
 "Addresses" = "Alamat";
 
+/* Settings lock advanced settings section */
+"Advanced settings" = "Pengaturan lanjutan";
+
 /* Title */
 "Alert" = "Peringatan";
 
@@ -125,9 +122,6 @@
 /* mail location title
    menu title */
 "All Mail" = "Seluruh Surat";
-
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Seluruh pengaturan perlindungan akan diatur ulang dan dihapus pada saat Anda keluar dari aplikasi.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Seluruh pesan Anda akan diunduh";
@@ -182,6 +176,12 @@
 
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Tampilan";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey melindungi informasi Proton Anda dalam kasus serangan yang rumit, seperti penyamaran konten perangkat Anda oleh peretas. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "Perlindungan AppKey";
 
 /* Apply action */
 "Apply" = "Terapkan";
@@ -291,6 +291,12 @@
 /* Settings row */
 "Block email tracking" = "Blokir pelacak email";
 
+/* Settings item to open blocked sender list */
+"Block list" = "Daftar blokir";
+
+/* Button to block a sender */
+"Block sender" = "Blokir pengirim";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Mencegah pengirim pesan untuk dapat mengetahui kapan dan apakah Anda telah membuka pesan yang bersangkutan";
 
@@ -322,7 +328,7 @@
 "Can't decrypt this attachment!" = "Lampiran ini tidak dapat didekripsi!";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Tidak dapat menghapus grup kontak melalui API";
+"Can't delete contact group through API" = "Grup kontak tidak dapat dihapus melalui API";
 
 /* Description */
 "Can't find the value from the response body" = "Tidak dapat menemukan nilai dari badan respon";
@@ -372,7 +378,7 @@
 "Change account password" = "Ubah kata sandi akun";
 
 /* Title */
-"Change default address to…" = "Ubah alamt default menjadi…";
+"Change default address to…" = "Ubah alamat default ke…";
 
 /* settings general section title */
 "Change mailbox password" = "Ganti kata sandi kotak pesan";
@@ -520,9 +526,6 @@
 /* Alert title */
 "Creating label not allowed" = "Pembuatan label tidak diizinkan";
 
-/* Change language title */
-"Current Language is: " = "Bahasa saat ini: ";
-
 /* Placeholder */
 "Current password" = "Kata sandi saat ini";
 
@@ -538,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Sesuaikan";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Atur";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Sesuaikan toolbar";
@@ -567,7 +573,7 @@
 "Decryption of this message's encrypted content failed." = "Konten terenkripsi yang terdapat pada pesan ini gagal didekripsi.";
 
 /* Title */
-"Default" = "Default";
+"Default" = "Bawaan";
 
 /* Settings row */
 "Default browser" = "Browser default";
@@ -625,6 +631,9 @@
 
 /* Message shown to user after discarding action is done */
 "Discarded" = "Dibuang";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Penafian";
 
 /* The voiceover title of the dismiss keyboard action */
 "Dismiss keyboard" = "Tutup keyboard";
@@ -691,9 +700,6 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Mengunduh metadata ...";
 
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages ..." = "Mengunduh pesan baru ...";
-
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Mengunduh email agar Anda dapat melakukan pencarian berdasarkan isi pesan yang ada. Seluruh pesan akan disimpan dan dienkripsi secara lokal. %1$@";
 
@@ -742,9 +748,6 @@
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Alamat email dinonaktifkan";
-
-/* The error message is shown in composer */
-"Email address is invalid" = "Alamat email tidak valid";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Alamat email";
@@ -846,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Pemasangan waktu kedaluwarsa tidak didukung";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Face ID";
-
 /* Error message */
 "Failed to determine type of file" = "Gagal menentukan tipe berkas";
 
@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "Teruskan";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Teruskan (pesan terakhir)";
+
 /* forwarded message title */
 "Forwarded message" = "Pesan terusan";
 
@@ -894,9 +897,6 @@
 /* abbreviation of forward: */
 "Fw:" = "Trs:";
 
-/* abbreviation of forward: */
-"Fwd:" = "Fwd:";
-
 /* contacts talbe cell gender title */
 "Gender" = "Jenis kelamin";
 
@@ -914,9 +914,6 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ke pengaturan";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Tuju layar masuk";
 
 /* Got it action */
 "Got it" = "Dimengerti";
@@ -944,9 +941,6 @@
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan Proton Mail yang baru?";
-
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Verifikasi Manusia Gagal";
@@ -982,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan. Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Di pagi hari";
+
 /* menu title */
 "Inbox" = "Kotak masuk";
 
@@ -1002,9 +999,6 @@
 
 /* place holder */
 "Input Display Name…" = "Masukkan Nama Tampilan…";
-
-/* place holder */
-"Input Notification Email …" = "Masukkan Email Notifikasi …";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Koneksi tidak aman";
@@ -1080,6 +1074,9 @@
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Tautan disalin.";
 
+/* Button inside the banner */
+"Load" = "Muat";
+
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Muat gambar yang tersemat";
 
@@ -1101,12 +1098,6 @@
 
 /* menu title */
 "Lock The App" = "Kunci Aplikasi";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Silakan masuk kembali untuk tetap menerima pembaruan";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Anda telah keluar dari %@";
 
 /* error title */
 "Logs" = "Catatan";
@@ -1135,9 +1126,6 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Tandai belum dibaca";
-
-/* Default Prompt text shown in the prompt cell */
-"MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* menu title */
 "Menu" = "Menu";
@@ -1228,7 +1216,7 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Pindah ke spam";
+"Move to spam" = "Pindahkan ke spam";
 
 /* Push notification action move to trash
    The title of the remove action in action sheet */
@@ -1236,6 +1224,9 @@
 
 /* Title */
 "Move to…" = "Pindahkan ke…";
+
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Tuju pesan berikutnya setelah perpindahan";
 
 /* Onboarding title */
 "Neat and tidy" = "Rapi dan teratur";
@@ -1275,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Selanjutnya";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Pesan berikutnya setelah perpindahan";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nama panggilan";
@@ -1342,6 +1336,9 @@
 /* Alert title */
 "Notice" = "Pemberitahuan";
 
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Notifikasi tindakan dan proses latar belakang lainnya akan menjadi tidak tersedia";
+
 /* A option title that enable/disable notification feature
    cell title in device settings */
 "Notifications" = "Notifikasi";
@@ -1349,17 +1346,17 @@
 /* The title of Off setting options */
 "Off" = "Nonaktif";
 
+/* Official badge next to sender's name */
+"Official" = "Resmi";
+
 /* Title of the alert when the device is offline */
-"Offline" = "Offline";
+"Offline" = "Luring";
 
 /* Sending message when device doesn't have netowrk connection description */
 "Offline, message queued for sending" = "Offline, pesan diantrikan untuk pengiriman";
 
 /* Action */
 "OK" = "OK";
-
-/* Title for the alert button to disable content search. */
-"Okay" = "OK";
 
 /* The text for determining the oldest message in the encrypted search index */
 "Oldest message: " = "Pesan terlama: ";
@@ -1403,11 +1400,17 @@
 /* update password error */
 "Password update failed" = "Pembaruan kata sandi gagal";
 
+/* Message to show to user after updating password. */
+"Password updated" = "Kata sandi diperbarui";
+
 /* Placeholder */
 "Passwords must match" = "Kata sandi harus cocok";
 
 /* Text for pause button */
 "Pause" = "Jeda";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Memindahkan pesan ke tempat lain (mis. arsip) akan mengalihkan pilihan ke pesan berikutnya yang tersedia.";
 
 /* default vcard types */
 "Personal" = "Pribadi";
@@ -1511,6 +1514,9 @@
 /* Local notification title */
 "Problem sending message" = "Masalah dalam mengirim pesan";
 
+/* Settings lock protection section */
+"Protection" = "Perlindungan";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton sedang offline";
 
@@ -1525,9 +1531,6 @@
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Status Proton";
-
-/* Title of menu action to trigger feedback view */
-"Provide feedback" = "Berikan tanggapan";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Hadangan Proxy/Firewall";
@@ -1587,8 +1590,14 @@
 /* reply action */
 "Reply" = "Balas";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Balas (ke pesan terakhir)";
+
 /* reply all action */
 "Reply all" = "Balas semua";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Balas semua (ke pesan terakhir)";
 
 /* menu title */
 "Report a problem" = "Laporkan masalah";
@@ -1657,7 +1666,7 @@
 "Search message content" = "Cari konten pesan";
 
 /* Text for the banner when content search is slow. */
-"Search taking too long? %1$@ from this search for faster results." = "Pencarian Anda memakan waktu yang terlalu lama? %1$@ dari pencarian ini untuk hasil yang lebih cepat.";
+"Search taking too long? %1$@ from this search for faster results." = "Apakah pencarian Anda memakan waktu yang terlalu lama? %1$@ dari pencarian ini untuk memperoleh hasil yang lebih cepat.";
 
 /* The link in local storage downloaded messages. */
 "See details" = "Lihat rincian";
@@ -1677,11 +1686,11 @@
 /* Action */
 "Send anyway" = "Tetap kirim";
 
-/* Title of button to send feedback */
+/* Title of menu action to trigger feedback viewTitle of button to send feedback */
 "Send feedback" = "Kirim tanggapan";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
-"Send immediately" = "Kirim segera";
+"Send immediately" = "Kirim dengan segera";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Kirim dengan segera?";
@@ -1792,6 +1801,9 @@
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Tunda";
 
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Sebagian gambar tidak dapat dimuat dengan perlindungan pelacak yang aktif.";
+
 /* menu title */
 "Spam" = "Spam";
 
@@ -1855,9 +1867,6 @@
 
 /* cell title in app settings */
 "Swipe actions" = "Tindakan usap";
-
-/* Swiping gestures */
-"Swiping gestures" = "Gestur usap";
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Ubah mode seleksi";
@@ -1946,9 +1955,6 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL yang hendak Anda akses tidak standar dan mungkin tidak akan dapat termuat sebagaimana mestinya. Apakah Anda ingin membukanya dengan browser default milik perangkat Anda?";
 
-/* Alert when the account is already logged in */
-"The user is already logged in" = "Pengguna sudah masuk";
-
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Terdapat pesan tidak terkirim yang akan hilang apabila Anda keluar";
 
@@ -1962,13 +1968,7 @@
 "This conversation contains non-trashed messages." = "Percakapan ini berisi pesan yang tidak dibuang.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Percakapan ini berisi pesan yang dibuang";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
+"This conversation contains trashed messages" = "Percakapan ini berisi pesan yang telah dibuang";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Email ini mungkin palsu atau tidak diteruskan dengan benar!";
@@ -2043,9 +2043,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Tindakan toolbar (pilih hingga 5 jenis tindakan)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Touch ID";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Lacak hadiah Anda";
 
@@ -2061,9 +2058,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Cobalah untuk terhubung ke Proton melalui jaringan yang berbeda (atau gunakan %1$@ atau %2$@).";
-
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun aktif yang Anda miliki.";
 
 /* Placeholder */
 "Two Factor Code" = "Kode Dua Faktor";
@@ -2225,7 +2219,7 @@
 "Yesterday" = "Kemarin";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Anda akan meluncurkan browser web Anda dan mengunjungi";
+"You are about to launch the web browser and navigate to" = "Anda akan membuka aplikasi browser dan mengunjungi";
 
 /* The title of empty inbox */
 "You are all caught up!" = "Kotak masuk Anda kosong!";
@@ -2326,4 +2320,3 @@
 /* contact placeholder */
 "ZIP" = "Kode pos";
 
-"Customize (verb)" = "Customize";

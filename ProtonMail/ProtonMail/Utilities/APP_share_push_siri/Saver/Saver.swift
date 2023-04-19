@@ -25,10 +25,8 @@ import Foundation
 protocol KeyValueStoreProvider: AnyObject {
     func data(forKey key: String) -> Data?
     func int(forKey key: String) -> Int?
-    func bool(forKey defaultName: String) -> Bool
     func set(_ intValue: Int, forKey key: String)
     func set(_ data: Data, forKey key: String)
-    func set(_ value: Bool, forKey defaultName: String)
     func remove(forKey key: String)
 }
 
@@ -46,14 +44,6 @@ class Saver<T: Codable> {
 }
 
 extension Saver where T == String {
-    private func getString() -> String? {
-        guard let raw = self.store.data(forKey: key),
-            let subscription = String(bytes: raw, encoding: .utf8) else {
-            return nil
-        }
-        return subscription
-    }
-
     func set(newValue: String?) {
         if isCaching {
             self.value = newValue
@@ -64,17 +54,6 @@ extension Saver where T == String {
             return
         }
         self.store.set(raw, forKey: key)
-    }
-
-    func get() -> String? {
-        guard self.isCaching == true else {
-            return self.getString()
-        }
-        guard self.value == nil else {
-            return self.value
-        }
-        self.value = self.getString()
-        return self.value
     }
 }
 
