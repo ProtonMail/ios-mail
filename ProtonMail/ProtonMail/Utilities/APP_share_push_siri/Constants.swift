@@ -56,7 +56,7 @@ struct Constants {
     enum ScheduleSend {
         static let minNumberOfMinutes = 5
         static var minNumberOfSeconds: TimeInterval { TimeInterval(self.minNumberOfMinutes * 60) }
-        static let maxNumberOfSeconds: TimeInterval = 30 * 86_400 // 86400 = 1 day
+        static let maxNumberOfSeconds: TimeInterval = 90 * 86_400 // 86400 = 1 day
     }
 
     enum ImageProxy {
