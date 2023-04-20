@@ -23,9 +23,9 @@
 import Foundation
 
 enum LocaleEnvironment {
-    static var locale: () -> Locale = { Locale.current }
+    static var locale: () -> Locale = { Locale.autoupdatingCurrent }
     static var currentDate: () -> Date = Date.init
-    static var timeZone = TimeZone.current
+    static var timeZone = TimeZone.autoupdatingCurrent
 
     static var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
@@ -35,8 +35,8 @@ enum LocaleEnvironment {
     }
 
     static func restore() {
-        locale = { Locale.current }
+        locale = { Locale.autoupdatingCurrent }
         currentDate = Date.init
-        timeZone = TimeZone.current
+        timeZone = TimeZone.autoupdatingCurrent
     }
 }
