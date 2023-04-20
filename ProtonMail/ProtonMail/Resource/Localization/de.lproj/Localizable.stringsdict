@@ -351,9 +351,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Möchtest du wirklich $%d Nachricht dauerhaft löschen?</string>
+			<string>Möchtest du wirklich %d Nachricht dauerhaft löschen?</string>
 			<key>other</key>
-			<string>Möchtest du wirklich $%d Nachrichten dauerhaft löschen?</string>
+			<string>Möchtest du wirklich %d Nachrichten dauerhaft löschen?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
