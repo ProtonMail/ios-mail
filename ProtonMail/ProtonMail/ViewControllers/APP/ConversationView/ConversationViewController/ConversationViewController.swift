@@ -1347,6 +1347,12 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
+                    self?.viewModel.navigateToNextConversation(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 }
                 guard isHavingUnsavedChanges else {
                     return
