@@ -1,0 +1,19 @@
+{
+  "name": "iosMonkey",
+  "version": "0.0.1",
+  "summary": "This project is a framework for generating randomised user input in iOS apps.",
+  "homepage": "https://github.com/protonmail",
+  "license": "ProtonMail",
+  "authors": "Richard Gasztany",
+  "platforms": {
+    "ios": "11.0",
+    "osx": "11.0"
+  },
+  "source": {
+    "git": ".",
+    "commit": ""
+  },
+  "source_files": "test/**/*.swift",
+  "frameworks": "XCTest",
+  "static_framework": true
+}

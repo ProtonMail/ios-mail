@@ -87,6 +87,14 @@ Run ui test and get test coverage
 
 Run feature ui test and get test coverage
 
+### ios monkey_tests
+
+```sh
+[bundle exec] fastlane ios monkey_tests
+```
+
+Run Monkey tests
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

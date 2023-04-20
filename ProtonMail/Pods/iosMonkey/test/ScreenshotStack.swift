@@ -1,11 +1,11 @@
 //
-//  CoreTestCase.swift
+//  ScreenshotStack.swift
 //
-//  ProtonMail - Created on 08.06.21.
+//  ProtonMail - Created on 12.09.22.
 //
 //  The MIT License
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,30 +25,21 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#if os(iOS)
 import XCTest
 
-open class CoreTestCase: XCTestCase, ElementsProtocol {
-    lazy var testRecorder = XCUITestCaseRecorder(testName: getTestMethodName())
+open class ScreenshotStack {
 
-    override open func setUp() {
-        super.setUp()
-        testRecorder.resumeRecording()
+    private(set) var screenshots: [MonkeyScreenshot] = []
+    let size: Int
+
+    public init(size: Int) {
+        self.size = size
     }
 
-    override open func setUpWithError() throws {
-        try super.setUpWithError()
-    }
-
-    override open func tearDownWithError() throws {
-        if self.testRun?.failureCount != 0 {
-            let attachment = testRecorder.generateGifAttachment()
-            if attachment != nil {
-                attachment!.lifetime = .keepAlways
-                self.add(attachment!)
-            }
+    open func add(_ screenshot: MonkeyScreenshot) {
+        if self.screenshots.count >= self.size {
+            self.screenshots = Array(self.screenshots.dropLast())
         }
-        try super.tearDownWithError()
+        self.screenshots.insert(screenshot, at: 0)
     }
 }
-#endif

@@ -33,6 +33,7 @@
         "DraftsTests\/testSendDraftWithAttachment()",
         "ForceUpgradeTests",
         "HumanVerificationTests",
+        "MonkeyTests",
         "MultiuserManagementTests\/testAddTwoFreeAccounts()",
         "MultiuserManagementTests\/testCancelLoginOnTwoFaPrompt()",
         "MultiuserManagementTests\/testConnectOnePassAccountWithTwoFa()",

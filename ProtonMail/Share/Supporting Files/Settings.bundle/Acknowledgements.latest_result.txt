@@ -94,6 +94,10 @@ body: **Groot**
 **Copyrig…
 version: 3.0.1
 
+name: iosMonkey, nameSpecified: 
+body: The MIT License (MIT…
+version: 0.0.1
+
 name: lottie-ios, nameSpecified: 
 body:                     …
 version: 3.4.3

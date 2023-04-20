@@ -1,11 +1,11 @@
 //
-//  CoreTestCase.swift
+//  MonkeyScreenshot.swift
 //
-//  ProtonMail - Created on 08.06.21.
+//  ProtonMail - Created on 12.09.22.
 //
 //  The MIT License
 //
-//  Copyright (c) 2020 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,30 +25,14 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#if os(iOS)
 import XCTest
 
-open class CoreTestCase: XCTestCase, ElementsProtocol {
-    lazy var testRecorder = XCUITestCaseRecorder(testName: getTestMethodName())
+open class MonkeyScreenshot {
+    var image: UIImage
+    var name: String
 
-    override open func setUp() {
-        super.setUp()
-        testRecorder.resumeRecording()
-    }
-
-    override open func setUpWithError() throws {
-        try super.setUpWithError()
-    }
-
-    override open func tearDownWithError() throws {
-        if self.testRun?.failureCount != 0 {
-            let attachment = testRecorder.generateGifAttachment()
-            if attachment != nil {
-                attachment!.lifetime = .keepAlways
-                self.add(attachment!)
-            }
-        }
-        try super.tearDownWithError()
+    init(image: UIImage, name: String) {
+        self.image = image
+        self.name = name
     }
 }
-#endif
