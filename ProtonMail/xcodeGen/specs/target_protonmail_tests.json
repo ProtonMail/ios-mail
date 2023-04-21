@@ -7,6 +7,9 @@
          "dependencies": [
             {
                "target": "ProtonMail"
+            },
+            {
+               "package": "Difference"
             }
          ],
          "sources": [
