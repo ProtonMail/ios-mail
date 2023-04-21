@@ -83,6 +83,8 @@ final class ComposeViewModelTests: XCTestCase {
         attachmentSoftDeleted.message = message
 
         let result = try XCTUnwrap(sut.getAttachments())
+        // TODO: fix this test and uncomment this line, or replace the test, it's not meaningful
+        // XCTAssertNotEqual(result, [])
         for index in result.indices {
             XCTAssertEqual(result[index].order, index)
         }

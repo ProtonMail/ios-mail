@@ -367,9 +367,13 @@ final class ComposerMessageHelperTests: XCTestCase {
         sut.setNewMessage(objectID: testMessage.objectID)
         let e = expectation(description: "Closure is called")
         messageDataServiceMock.callDelete.bodyIs { _, _, _ in
-            testAttachment.message = Message(context: self.contextProviderMock.mainContext)
+            testAttachment.managedObjectContext!.delete(testAttachment)
             return Promise()
         }
+
+        let draftBeforeDeleting = try XCTUnwrap(sut.draft)
+        XCTAssertEqual(draftBeforeDeleting.numAttachments, 1)
+        XCTAssertNotEqual(sut.attachments, [])
 
         sut.removeAttachment(fileName: fineName, isRealAttachment: true) {
             e.fulfill()
@@ -378,6 +382,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         let draft = try XCTUnwrap(sut.draft)
         XCTAssertEqual(draft.numAttachments, 0)
+        XCTAssertEqual(sut.attachments, [])
         XCTAssertTrue(messageDataServiceMock.callDelete.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callDelete.lastArguments)
         XCTAssertEqual(argument.a1.name, AttachmentEntity(testAttachment).name)
