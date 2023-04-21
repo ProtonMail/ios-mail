@@ -684,6 +684,8 @@ name: TrustKit, nameSpecified:
 body: The MIT License (MIT…
 version: 2.0.0
 
+name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.0.2, source: https://github.com/krzysztofzablocki/Difference
+
 name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.1, source: https://github.com/krzysztofzablocki/LifetimeTracker
 
 add-version-numbers: false
