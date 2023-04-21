@@ -502,7 +502,7 @@ extension UserManager: UserManagerSaveAction {
 extension UserManager: UserDataSource {
 
     var hasPaidMailPlan: Bool {
-        userInfo.role > 0 && userInfo.subscribed != 4
+        userInfo.role > 0 && userInfo.subscribed.contains(.mail)
     }
 
     func getAddressPrivKey(address_id: String) -> String {

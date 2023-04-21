@@ -24,7 +24,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCore_ForceUpgrade.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-GoLibs/ProtonCore_Crypto.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework
-${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification/ProtonCore_HumanVerification.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-Crypto+Search-Go1.20.2/ProtonCore_HumanVerification.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework

@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En gendannelsesmetode vil hjælpe dig med at få adgang til din konto, hvis du glemmer din adgangskode eller bliver låst ude af din konto.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Konto slettet.\nLogger ud...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Kontoopsætning påkrævet";
@@ -36,7 +33,7 @@
 "An error has occured" = "Der er opstået en fejl";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus-forstyrrelser";
+"Antivirus interference" = "Antivirus forstyrrelser";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple meddelte os, at de ikke kunne behandle købet.";
@@ -44,11 +41,8 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple meddelte os, at du har opgraderet tjenesteabonnementet, men at nogle tekniske data mangler. Udfyld fejlrapporten, så vil kundesupportteamet kontakte dig.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelte os, at du har opgraderet tjenesteabonnementet, men vi har registreret, at du siden da har logget ud af kontoen.";
-
 /* Alert message of sign out the email address */
-"Are you sure you want to sign out %@?" = "Er du sikker på, at du vil logge %@ ud?";
+"Are you sure you want to sign out %@?" = "Er du sikker på, at du vil logge ud %@?";
 
 /* *
  * Login 2FA */
@@ -61,10 +55,7 @@
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Ved at klikke på Næste accepterer du Proton's Vilkår og Betingelser";
 
 /* Cancel button */
-"Cancel" = "Annuller";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
+"Cancel" = "Annullér";
 
 /* Change email address button */
 "Change email address" = "Skift e-mailadresse";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakt os direkte via vores supportformular, e-mail (support@protonmail.zendesk.com) eller Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Fortsæt";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Opret en Proton-konto med din aktuelle e-mail";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "E-mailadressen er allerede i brug.";
+
+/* Username field title */
+"Email or username" = "E-mail eller brugernavn";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Nyd en verden med privatliv.";
@@ -289,14 +283,10 @@
 /* alternative routing link name in description
    External accounts not supported popup learn more button
    learn more button */
-"Learn more" = "Få yderligere information";
+"Learn more" = "Få mere at vide";
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Få mere at vide om menneskelig godkendelse, og hvorfor vi beder om det.";
-
-/* *
- * Splash */
-"Made by" = "Lavet af";
 
 /* Mailbox password field title */
 "Mailbox password" = "Postkasseadgangskode";
@@ -353,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Kun årsabonnementer, der ikke forlænges, er tilgængelige via denne app";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Abonnement opgraderet";
 
@@ -400,7 +387,7 @@
 
 /* Action
    OK button */
-"OK" = "OK";
+"OK" = "Ok";
 
 /* Signup main view description */
 "One account for all Proton services." = "Én konto til alle Proton-tjenester.";
@@ -457,12 +444,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Indtast venligst din Proton-kontos adgangskode.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Log ind på den Proton Mail-konto, hvortil abonnementet opgraderes, så vi kan effektuere købet.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Log ind på den Proton Mail-konto, hvortil abonnementet opgraderes, så vi kan effektuere aktiveringen af abonnementet.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Sørg for at din internetforbindelse fungerer.";
 
@@ -485,9 +466,6 @@
 /* Username field title */
 "Proton email or username" = "E-mail eller brugernavn hos Proton";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton er nede";
 
@@ -507,7 +485,7 @@
 "Recovery code" = "Gendannelseskode";
 
 /* Recovery email field title */
-"Recovery email" = "E-mail til gendannelse";
+"Recovery email" = "E-mail til gendanelse";
 
 /* Recovery phone field title */
 "Recovery phone number" = "Telefonnummer til gendannelse";
@@ -522,7 +500,7 @@
 "Remove account from this device" = "Fjern konto fra denne enhed";
 
 /* Repeat password field title */
-"Repeat password" = "Gentag adgangskode";
+"Repeat password" = "Gentag kodeord";
 
 /* request item title */
 "Request an invite" = "Anmod om en invitation";
@@ -578,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Spring over gendannelsesmetode?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Beklager, køb kan ikke behandles i beta-versionen af iOS-app'en. Tak fordi din deltagelse i vores offentlige beta!";
 
@@ -625,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-serverne kan ikke nås. Det kan skyldes forkert netværkskonfiguration, at Proton-servere ikke fungerer eller at Proton-servere er blokeret";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen mislykkedes, da der blev forsøgt at oprette forbindelse til Proton API'et. Din nuværende internetforbindelse kan overvåges. For at beskytte dine data forhindrer vi appen i at få adgang til Proton API'et.\nHvis du vil logge ind eller få adgang til din konto, skal du skifte til et nyt netværk og forsøge at oprette forbindelse igen.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Det tager normalt ikke mere end et minut.";
 
@@ -651,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Prøv en anden metode";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "To-faktor-godkendelse";
@@ -774,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Din Proton Free-konto blev oprettet.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Din session er udløbet. Log venligst ind igen.";
 

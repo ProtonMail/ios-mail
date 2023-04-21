@@ -21,7 +21,6 @@
 
 import Foundation
 import EllipticCurveKeyPair
-import GoLibs
 
 #if canImport(UIKit)
 import UIKit

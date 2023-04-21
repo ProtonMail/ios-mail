@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda obnovení vám pomůže získat přístup k účtu v případě, že zapomenete heslo nebo se z účtu odhlásíte.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Účet byl smazán.\nOdhlašování...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Je vyžadováno nastavení účtu";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nás informoval, že jste navýšil(a) tarif služby, ale některé technické údaje chyběly. Prosím vyplňte zprávu o chybě a náš tým podpory zákazníků vás bude kontaktovat.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nás informoval, že jste navýšil(a) tarif služby, ale zjistili jsme, že jste se od té doby z účtu odhlásili.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Opravdu se chcete odhlásit %@?";
 
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Zrušit";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Změnit e-mailovou adresu";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, e-mail (support@protonmail.zendesk.com), nebo Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Pokračovat";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Vytvořte si účet Proton pomocí aktuálního e-mailu";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "E-mailová adresa už byla použita.";
+
+/* Username field title */
+"Email or username" = "E-mail nebo uživatelské jméno";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Užívejte si svět soukromí.";
@@ -289,14 +283,10 @@
 /* alternative routing link name in description
    External accounts not supported popup learn more button
    learn more button */
-"Learn more" = "Více informací";
+"Learn more" = "Zjistěte více";
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Zjistěte více o ověření CAPTCHA a o tom, proč o ně žádáme.";
-
-/* *
- * Splash */
-"Made by" = "Vytvořil";
 
 /* Mailbox password field title */
 "Mailbox password" = "Heslo k poštovní schránce";
@@ -352,9 +342,6 @@
 
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Prostřednictvím této aplikace je k dispozici pouze roční předplatné, které není obnovováno";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Tarif úspěšně navýšen";
@@ -457,17 +444,11 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Prosím, zadejte Vaše heslo Proton účtu.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Prosím, přihlaste se do Proton Mail účtu pro který aktualizujete tarif služby, aby bylo možné dokončit nákup.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Prosím, přihlaste se do Proton Mail účtu pro který aktualizujete tarif služby, aby bylo možné dokončit aktivaci.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Ujistěte se prosím, že vaše připojení k internetu funguje.";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Prosíme popište váš problém.";
+"Please share your problem." = "Popište prosím váš problém.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Prosím odblokujte aplikaci a pokračujte v aktivaci Vašeho plánu služeb";
@@ -484,9 +465,6 @@
 
 /* Username field title */
 "Proton email or username" = "E-mailová adresa Proton nebo uživatelské jméno";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton zdarma";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton je nedostupný";
@@ -507,7 +485,7 @@
 "Recovery code" = "Kód pro obnovení";
 
 /* Recovery email field title */
-"Recovery email" = "Sekundární e-mail";
+"Recovery email" = "E-mail pro obnovení";
 
 /* Recovery phone field title */
 "Recovery phone number" = "Telefonní číslo pro obnovení";
@@ -522,7 +500,7 @@
 "Remove account from this device" = "Odebrat účet z tohoto zařízení";
 
 /* Repeat password field title */
-"Repeat password" = "Zopakovat heslo";
+"Repeat password" = "Zopakujte heslo";
 
 /* request item title */
 "Request an invite" = "Požádat o pozvánku";
@@ -578,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Přeskočit metodu obnovení?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Omlouváme se, ale nemůžeme zpracovávat nákupy v beta verzi aplikace pro iOS. Děkujeme Vám za účast v našem veřejném beta testování!";
 
@@ -607,7 +582,7 @@
 "switch to" = "přepnout na";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte váš antivirový program.";
+"Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte Váš antivirový program.";
 
 /* Recovery terms and conditions link
    Terms and conditions view title */
@@ -624,9 +599,6 @@
 
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Servery Proton jsou nedostupné. Může to být způsobeno špatnou konfigurací sítě, nefunkčností serverů Proton nebo zablokováním serverů Proton";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Při pokusu o připojení k rozhraní Proton API selhalo ověření certifikátu TLS. Vaše aktuální internetové připojení může být monitorováno. Abychom zajistili bezpečnost vašich dat, bráníme aplikaci v přístupu k rozhraní Proton API.\nChcete-li se přihlásit nebo získat přístup ke svému účtu, přepněte na novou síť a zkuste se znovu připojit.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Nemělo by to trvat déle, než minutu.";
@@ -651,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Zkusit jinou metodu";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Dvoufaktorové ověření";
@@ -774,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Váš účet Proton Free byl úspěšně vytvořen.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Platnost vaší relace vypršela. Znovu se přihlaste.";
 

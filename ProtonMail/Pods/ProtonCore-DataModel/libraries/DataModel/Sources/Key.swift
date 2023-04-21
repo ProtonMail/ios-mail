@@ -85,7 +85,7 @@ extension Key {
 // exposed interfaces
 extension Key {    
     public var isKeyV2: Bool {
-        return signature != nil
+        return token != nil && signature != nil
     }
     
     public var isExternalAddressKey: Bool {

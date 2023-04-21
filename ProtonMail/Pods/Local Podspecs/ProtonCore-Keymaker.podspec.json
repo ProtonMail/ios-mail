@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Keymaker",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -37,12 +37,44 @@
   "default_subspecs": [
     "ErrorWarningEmittingDefaultSubspec"
   ],
+  "appspecs": [
+    {
+      "name": "macOS-AppHost",
+      "source_files": "libraries/Keymaker/AppHosts/macOS/*.m",
+      "info_plist": {
+        "CFBundleIdentifier": "me.proton.account.keymaker.macOS.apphost"
+      },
+      "pod_target_xcconfig": {
+        "CODE_SIGN_ENTITLEMENTS": "$(PODS_TARGET_SRCROOT)/libraries/Keymaker/AppHosts/macOS/AppHost.entitlements",
+        "PRODUCT_BUNDLE_IDENTIFIER": "me.proton.account.keymaker.macOS.apphost",
+        "CODE_SIGN_IDENTITY": "Apple Development",
+        "CODE_SIGN_STYLE": "Automatic",
+        "PROVISIONING_PROFILE_SPECIFIER": "",
+        "DEVELOPMENT_TEAM": "2SB5Z68H26"
+      }
+    },
+    {
+      "name": "iOS-AppHost",
+      "source_files": "libraries/Keymaker/AppHosts/iOS/*.m",
+      "info_plist": {
+        "CFBundleIdentifier": "me.proton.account.keymaker.iOS.apphost"
+      },
+      "pod_target_xcconfig": {
+        "CODE_SIGN_ENTITLEMENTS": "$(PODS_TARGET_SRCROOT)/libraries/Keymaker/AppHosts/iOS/AppHost.entitlements",
+        "PRODUCT_BUNDLE_IDENTIFIER": "me.proton.account.keymaker.iOS.apphost",
+        "CODE_SIGN_IDENTITY": "Apple Development",
+        "CODE_SIGN_STYLE": "Automatic",
+        "PROVISIONING_PROFILE_SPECIFIER": "",
+        "DEVELOPMENT_TEAM": "2SB5Z68H26"
+      }
+    }
+  ],
   "subspecs": [
     {
       "name": "Crypto-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -54,6 +86,28 @@
           "name": "Tests",
           "test_type": "unit",
           "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
         }
       ]
     },
@@ -61,7 +115,7 @@
       "name": "Crypto-patched-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -73,6 +127,28 @@
           "name": "Tests",
           "test_type": "unit",
           "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
         }
       ]
     },
@@ -80,7 +156,7 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -92,6 +168,28 @@
           "name": "Tests",
           "test_type": "unit",
           "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
         }
       ]
     },
@@ -99,7 +197,7 @@
       "name": "Crypto+VPN-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -111,6 +209,69 @@
           "name": "Tests",
           "test_type": "unit",
           "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-patched-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ]
+      },
+      "source_files": [
+        "libraries/Keymaker/Sources/*.swift",
+        "libraries/Keymaker/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
         }
       ]
     },
@@ -118,7 +279,7 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -130,6 +291,28 @@
           "name": "Tests",
           "test_type": "unit",
           "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
         }
       ]
     },
@@ -137,7 +320,7 @@
       "name": "Crypto+Search-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -149,6 +332,28 @@
           "name": "Tests",
           "test_type": "unit",
           "source_files": "libraries/Keymaker/Tests/**/*"
+        },
+        {
+          "name": "AppHostedTests",
+          "test_type": "unit",
+          "source_files": "libraries/Keymaker/AppHostedTests/**/*",
+          "requires_app_host": true,
+          "osx": {
+            "app_host_name": "ProtonCore-Keymaker/macOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/macOS-AppHost": [
+
+              ]
+            }
+          },
+          "ios": {
+            "app_host_name": "ProtonCore-Keymaker/iOS-AppHost",
+            "dependencies": {
+              "ProtonCore-Keymaker/iOS-AppHost": [
+
+              ]
+            }
+          }
         }
       ]
     },

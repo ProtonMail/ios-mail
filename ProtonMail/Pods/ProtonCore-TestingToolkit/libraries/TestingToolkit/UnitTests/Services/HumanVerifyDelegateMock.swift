@@ -44,7 +44,12 @@ public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
                               completion: @escaping ((HumanVerifyFinishReason) -> Void)) {
         onHumanVerifyStub(parameters, currentURL, completion)
     }
-
+    
+    @FuncStub(HumanVerifyDelegateMock.onDeviceVerify, initialReturn: nil) public var onDeviceVerifyStub
+    public func onDeviceVerify(parameters: DeviceVerifyParameters) -> String? {
+        onDeviceVerifyStub(parameters)
+    }
+    
     @FuncStub(HumanVerifyDelegateMock.getSupportURL, initialReturn: URL(string: "https://protoncore.unittest")!) public var getSupportURLStub
     public func getSupportURL() -> URL {
         getSupportURLStub()

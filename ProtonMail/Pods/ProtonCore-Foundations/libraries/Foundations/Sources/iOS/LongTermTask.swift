@@ -58,8 +58,12 @@ public class LongTermTask {
     }
     
     private func scheduleLongTermTask() {
+        guard let application = UIApplication.getInstance() else {
+            return
+        }
+
         finishLongTermTask()
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask { [weak self] in
+        backgroundTaskID = application.beginBackgroundTask { [weak self] in
             self?.finishLongTermTask()
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(timeout)) { [weak self] in
@@ -71,7 +75,7 @@ public class LongTermTask {
     private func finishLongTermTask() {
         if backgroundTaskID == .invalid { return }
         PMLog.debug("End background task: \(backgroundTaskID)")
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        UIApplication.getInstance()?.endBackgroundTask(backgroundTaskID)
         backgroundTaskID = .invalid
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Login",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -34,22 +34,22 @@
 
     ],
     "ProtonCore-Log": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-OpenPGP": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Foundations": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-DataModel": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Observability": [
-      "4.0.1"
+      "5.2.0"
     ]
   },
   "default_subspecs": [
@@ -61,25 +61,25 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -99,25 +99,25 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -137,25 +137,25 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -175,25 +175,63 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "OHHTTPStubs/Swift": [
+
+        ],
+        "TrustKit": [
+
+        ]
+      },
+      "resources": "libraries/Login/Tests/UnitTests/Mocks/Responses/**/*",
+      "source_files": [
+        "libraries/Login/Tests/UnitTests/*.swift",
+        "libraries/Login/Tests/UnitTests/**/*.swift"
+      ]
+    },
+    {
+      "name": "UnitTests-Crypto+VPN-patched-Go1.20.2",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-Authentication/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-ObfuscatedConstants": [
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/TestData": [
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -213,25 +251,25 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -251,25 +289,25 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -289,13 +327,16 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "TrustKit": [
 
@@ -304,20 +345,26 @@
       "source_files": [
         "libraries/Login/Tests/IntegrationTests/*.swift",
         "libraries/Login/Tests/IntegrationTests/**/*.swift"
-      ]
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     },
     {
       "name": "IntegrationTests-Crypto-patched-Go1.20.2",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "TrustKit": [
 
@@ -326,20 +373,26 @@
       "source_files": [
         "libraries/Login/Tests/IntegrationTests/*.swift",
         "libraries/Login/Tests/IntegrationTests/**/*.swift"
-      ]
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     },
     {
       "name": "IntegrationTests-Crypto+VPN-Go1.15.15",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "TrustKit": [
 
@@ -348,20 +401,26 @@
       "source_files": [
         "libraries/Login/Tests/IntegrationTests/*.swift",
         "libraries/Login/Tests/IntegrationTests/**/*.swift"
-      ]
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     },
     {
       "name": "IntegrationTests-Crypto+VPN-Go1.20.2",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "TrustKit": [
 
@@ -370,20 +429,54 @@
       "source_files": [
         "libraries/Login/Tests/IntegrationTests/*.swift",
         "libraries/Login/Tests/IntegrationTests/**/*.swift"
-      ]
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
+    },
+    {
+      "name": "IntegrationTests-Crypto+VPN-patched-Go1.20.2",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-QuarkCommands": [
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
+          "5.2.0"
+        ],
+        "TrustKit": [
+
+        ]
+      },
+      "source_files": [
+        "libraries/Login/Tests/IntegrationTests/*.swift",
+        "libraries/Login/Tests/IntegrationTests/**/*.swift"
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     },
     {
       "name": "IntegrationTests-Crypto+Search-Go1.15.15",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "TrustKit": [
 
@@ -392,20 +485,26 @@
       "source_files": [
         "libraries/Login/Tests/IntegrationTests/*.swift",
         "libraries/Login/Tests/IntegrationTests/**/*.swift"
-      ]
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     },
     {
       "name": "IntegrationTests-Crypto+Search-Go1.20.2",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "4.0.1"
+          "5.2.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "TrustKit": [
 
@@ -414,7 +513,10 @@
       "source_files": [
         "libraries/Login/Tests/IntegrationTests/*.swift",
         "libraries/Login/Tests/IntegrationTests/**/*.swift"
-      ]
+      ],
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     }
   ],
   "subspecs": [
@@ -422,13 +524,13 @@
       "name": "Crypto-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -445,13 +547,13 @@
       "name": "Crypto-patched-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -468,13 +570,13 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -491,13 +593,36 @@
       "name": "Crypto+VPN-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
+        ]
+      },
+      "source_files": [
+        "libraries/Login/Sources/*.swift",
+        "libraries/Login/Sources/**/*.swift"
+      ],
+      "resource_bundles": {
+        "Resources-Login": [
+          "libraries/Login/Tests/UnitTests/Mocks/Responses/**/*.json"
+        ]
+      }
+    },
+    {
+      "name": "Crypto+VPN-patched-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-Authentication/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-Authentication-KeyGeneration/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -514,13 +639,13 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -537,13 +662,13 @@
       "name": "Crypto+Search-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [

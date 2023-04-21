@@ -100,7 +100,7 @@ public class CreateAddressTestCases {
     }
     
     private func generateEmail() -> Email {
-        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))\(StringUtils.randomAlphanumericString(length: 8))@proton.uitests"
+        let randomEmail = "\(StringUtils.randomAlphanumericString(length: 8))@\(StringUtils.randomAlphanumericString(length: 8)).com"
         let randomPassword = StringUtils.randomAlphanumericString(length: 8)
         return Email(email: randomEmail, password: randomPassword)
     }

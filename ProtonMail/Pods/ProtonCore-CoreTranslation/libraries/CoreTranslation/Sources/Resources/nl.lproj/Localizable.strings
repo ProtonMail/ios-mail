@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Een herstelmethode zal u helpen om toegang te krijgen tot uw account in het geval u uw wachtwoord vergeet of van uw account wordt afgesloten.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Account verwijderd. U wordt uitgelogd...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Account setup vereist";
@@ -27,25 +24,22 @@
 "Accounts" = "Accounts";
 
 /* Plan details adblocker */
-"Adblocker (NetShield)" = "Adblocker (NetShield)";
+"Adblocker (NetShield)" = "Advertentieblokkering (NetShield)";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Laat alternatieve routing toe";
+"Allow alternative routing" = "Alternatieve routing toestaan";
 
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Er is een fout opgetreden";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus interferentie";
+"Antivirus interference" = "Interferentie antivirus";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple heeft ons geïnformeerd dat ze de aankoop niet konden verwerken.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar er missen technische gegevens. Dien een bugrapport in en ons ondersteuningsteam neemt contact op met u.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar wij hebben geconstateerd dat u sinsdien uitgelogd bent.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Weet u zeker dat u %@ wilt uitloggen?";
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Annuleren";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Wijzig e-mailadres";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Neem rechtstreeks contact met ons op via ons ondersteuningsformulier, e-mail (support@protonmail.zendesk.com) of Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Doorgaan";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Maak een Proton-account aan met uw huidige e-mail";
@@ -180,10 +171,13 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "E-mail";
+"Email" = "E-mailadres";
 
 /* Email address already used error */
 "Email address already used." = "E-mailadres al in gebruik.";
+
+/* Username field title */
+"Email or username" = "E-mailadres of gebruikersnaam";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Geniet van de wereld van privacy.";
@@ -241,7 +235,7 @@
 "Get verification code" = "Krijg verificatiecode";
 
 /* network troubleshot cell title */
-"Government block" = "Blokkade door overheidsinstanties";
+"Government block" = "Blokkade door overheid";
 
 /* Help button */
 "Help" = "Hulp";
@@ -349,14 +343,11 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Via deze app zijn alleen jaarabonnementen zonder automatische verlenging beschikbaar";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Upgraden van abonnement voltooid";
 
 /* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core servers";
+"New_Plans Secure Core servers" = "Secure Core-servers";
 
 /* New_Plans Plan details no logs policy */
 "New_Plans Strict no-logs policy" = "Strikt geen-logboekbeleid";
@@ -453,17 +444,11 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Gelieve uw Proton Account wachtwoord in te geven.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Log in op het Proton Mail-account dat u het serviceplan aan het upgraden bent, zodat we de aankoop van het serviceplan kunnen voltooien.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Log in op het Proton Mail-account dat u het serviceplan aan het upgraden bent, zodat we de activering van het serviceplan kunnen voltooien.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Deel uw probleem alsjeblieft.";
+"Please share your problem." = "Deel uw probleem.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Gelieve de app te ontgrendelen om verder te gaan met de activering van uw service plan";
@@ -481,11 +466,8 @@
 /* Username field title */
 "Proton email or username" = "Proton-e-mailadres of gebruikersnaam";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
-"Proton is down" = "Proton is buiten werking";
+"Proton is down" = "Proton is onbereikbaar";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Status";
@@ -574,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Herstelmethode overslaan?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we kunnen aankopen niet verwerken in de bètaversie van de iOS-app. Bedankt voor uw deelname aan onze publieke bètaversie!";
 
@@ -621,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "De Proton servers zijn onbereikbaar. Mogelijks door een verkeerde netwerkconfiguratie of Proton servers die buiten gebruik zijn of worden geblokkeerd";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "De validatie van het TLS-certificaat is mislukt bij het maken van een verbinding met de Proton API. Uw huidige internetverbinding kan worden gecontroleerd. Om uw gegevens veilig te houden, voorkomen wij dat de app toegang krijgt tot de Proton API.\nOm in te loggen of toegang te krijgen tot uw account, schakelt u over naar een nieuw netwerk en probeert u opnieuw verbinding te maken.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Dit zou niet meer dan een minuut moeten duren.";
 
@@ -647,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Probeer een andere methode";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Tweestapsverificatie";
@@ -770,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Uw Proton Free account is succesvol aangemaakt.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "De sessie is verlopen. Log opnieuw in.";
 

@@ -154,6 +154,17 @@ extension LoginService {
     public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         PMLog.debug(#function)
 
+        if let protonDomain = allSignUpDomains.first(where: { email.hasSuffix("@\($0)") }) {
+            let suffix = "@\(protonDomain)"
+            let username = String(email.dropLast(suffix.count))
+            // this message is provided just in case this error is not handled properly due to a bug
+            let nonUserFacingMessage = "The email address you provided is Proton Mail address. Please create Proton Mail account."
+            completion(.failure(.protonDomainUsedForExternalAccount(
+                username: username, domain: protonDomain, nonUserFacingMessage: nonUserFacingMessage
+            )))
+            return
+        }
+
         manager.checkAvailableExternal(email) { result in
             completion(result.mapError { $0.asAvailabilityError() })
         }

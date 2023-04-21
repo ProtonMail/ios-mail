@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метад аднаўлення дапаможа атрымаць доступ да вашага ўліковага запісу ў выпадку, калі вы забудзеце пароль або заблакіруеце ўліковы запіс.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Уліковы запіс выдалены.\nАдбываецца выхад...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Патрабуецца наладжванне ўліковага запісу";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "З кампаніі Apple нам паведамілі, што вы палепшылі тарыфны план абслугоўвання, але нам не хапае некаторых тэхнічных даных. Запоўніце справаздачу пра памылкі, і наша каманда падтрымкі кліентаў звяжацца з вамі.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "З кампаніі Apple нам паведамілі, што вы палепшылі тарыфны план абслугоўвання, але мы выявілі, што з таго моманту вы выйшлі з уліковага запісу.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Вы сапраўды хочаце выйсці з %@?";
 
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Скасаваць";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Змяніць адрас электроннай пошты";
@@ -110,10 +101,10 @@
 "Contact support@protonvpn.com to complete your purchase." = "Звяжыцеся з намі праз электронную пошту support@protonvpn.com для завяршэння вашай куплі.";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Звяжыцеся з намі наўпрост праз нашу форму зваротнай сувязі (support@protonmail.zendesk.com) або Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Звяжыцеся з намі наўпрост праз нашу форму зваротнай сувязі, электроннай пошты (support@protonmail.zendesk.com) або Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Працягнуць";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Стварыце ўліковы адрас Proton з вашай бягучай электроннай поштай";
@@ -159,7 +150,7 @@
 "Did not receive the code?" = "Не атрымалі код?";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Адключыце ўсе проксі-серверы/міжсеткавыя экраны або звярніцеся да свайго сеткавага адміністратара.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Адключыце ўсе проксі-серверы або міжсеткавыя экраны. Таксама вы можаце звярнуцца да свайго сеткавага адміністратара.";
 
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Ігнараваць";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "Электронная пошта ўжо выкарыстоўваецца.";
+
+/* Username field title */
+"Email or username" = "Электронная пошта або імя карыстальніка";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Атрымлівайце асалоду ад свету прыватнасці.";
@@ -311,7 +305,7 @@
 
 /* *
  * Networking */
-"Network connection error" = "Памылка злучэння з сеткай";
+"Network connection error" = "Памылка падключэння да сеткі";
 
 /* New_Plans Plan details used storage space */
 "New_Plans %@ of %@" = "%@ з %@";
@@ -323,10 +317,10 @@
 "New_Plans Built-in ad-blocker (NetShield)" = "Убудаваная блакіроўка рэкламы (NetShield)";
 
 /* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Праверце сваё злучэнне з інтэрнэтам";
+"New_Plans Check your internet connection" = "Праверце сваё падключэнне да інтэрнэту";
 
 /* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Праблемы са злучэннем";
+"New_Plans Connection issues" = "Праблемы з падключэннем";
 
 /* New_Plans Extend subscription button */
 "New_Plans Extend subscription" = "Падоўжыць падпіску";
@@ -348,9 +342,6 @@
 
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Праз гэту праграму даступны толькі гадавыя падпіскі без падаўжэння";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Тарыфны план паспяхова палепшаны";
@@ -389,7 +380,7 @@
 "Next" = "Далей";
 
 /* network troubleshot cell title */
-"No internet connection" = "Няма злучэння з інтэрнэтам";
+"No internet connection" = "Няма падключэння да інтэрнэту";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Не, для іншага ўліковага запісу Proton Mail";
@@ -453,14 +444,8 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Увядзіце пароль уліковага запісу Proton.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Увайдзіце ва ўліковы запіс электроннай пошты Proton для якога вы хочаце палепшыць тарыфны план абслугоўвання, каб мы маглі завяршыць куплю.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увайдзіце ва ўліковы запіс электроннай пошты Proton для якога вы хочаце палепшыць тарыфны план абслугоўвання, каб мы маглі завяршыць актывацыю тарыфнага плана абслугоўвання.";
-
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Пераканайцеся, што ваша злучэнне з інтэрнэтам працуе.";
+"Please make sure that your internet connection is working." = "Пераканайцеся, што ваша падключэнне да інтэрнэту працуе.";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Абагуліце сваю праблему.";
@@ -481,17 +466,14 @@
 /* Username field title */
 "Proton email or username" = "Электронная пошта Proton або імя карыстальніка";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
-"Proton is down" = "Proton не працуе";
+"Proton is down" = "Proton зараз недаступны";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Статус Proton";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Канфлікт з проксі-серверам/міжсеткавым экранам";
+"Proxy/Firewall interference" = "Канфлікт з проксі-серверам або міжсеткавым экранам";
 
 /* Error message */
 "Purchase is not possible." = "Купля немагчыма.";
@@ -518,7 +500,7 @@
 "Remove account from this device" = "Выдаліць уліковы запіс з гэтай прылады";
 
 /* Repeat password field title */
-"Repeat password" = "Паўтарыць пароль";
+"Repeat password" = "Паўтарыце пароль";
 
 /* request item title */
 "Request an invite" = "Запытаць запрашэнне";
@@ -574,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Прапусціць метад аднаўлення?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "На жаль, мы не можам апрацаваць куплю ў бэта-версіі праграмы для iOS. Дзякуй, што прынялі ўдзел у нашым публічным бэта-тэсціраванні!";
 
@@ -585,7 +564,7 @@
 
 /* *
  *  Login help */
-"Still need help? Contact us directly." = "Усё яшчэ неабходная дапамога? Звяжыцеся з намі наўпрост.";
+"Still need help? Contact us directly." = "Усё яшчэ неабходна дапамога? Вы можаце звязацца непасрэдна з намі.";
 
 /* Plan details streaming service support */
 "Streaming service support" = "Падтрымка сэрвісу трансляцыі";
@@ -621,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton зараз недаступны. Гэта можа здарыцца па прычыне няправільнай канфігурацыі сеткі. Таксама магчыма, што зараз яны не працуюць або былі заблакіраваны";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не ўдалося праверыць сертыфікат TLS падчас падлучэння да Proton API. Ваша бягучае злучэнне з інтэрнэтам можа адсочвацца. Для таго, каб захаваць вашы даныя ў бяспецы, мы прадухілілі доступ праграмы да Proton API.\nДля ўваходу ў праграму або доступу да вашага ўліковага запісу, пераключыцеся на новую сетку і паспрабуйце падлучыцца яшчэ раз.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Звычайна гэта патрабуе не больш за хвіліну.";
 
@@ -643,13 +619,10 @@
 "TroubleShooting" = "Выпраўленне непаладак";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падлучыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падключыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
 
 /* other method alert button */
 "Try other method" = "Паспрабуйце іншы метад";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Двухфактарная аўтэнтыфікацыя";
@@ -751,7 +724,7 @@
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "У вашым уліковым запісе адсутнічаюць ключы. Вам неабходна ўвайсці ў сістэму праз браўзер для аўтаматычнага генерацыі ключоў. Пасля паспяховага ўваходу праз браўзер, вярніцеся ў праграму і выканайце ўваход.";
 
 /* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Магчыма, доступ да Proton у вашай краіне заблакіраваны. Паспрабуйце скарыстацца %1$@ (таксама, пасуе любы іншы VPN) або %2$@ для доступу да Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Магчыма, доступ да Proton у вашай краіне заблакіраваны. Паспрабуйце скарыстацца %1$@ (пасуе любы іншы VPN) або %2$@ для доступу да Proton.";
 
 /* Email method */
 "Your email will only be used for this one-time verification." = "Ваш адрас электроннай пошты будзе выкарыстаны толькі для бягучай аднаразовай праверкі.";
@@ -770,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш уліковы запіс Proton Free паспяхова створаны.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Ваш сеанс пратэрмінаваны. Увайдзіце яшчэ раз.";
 

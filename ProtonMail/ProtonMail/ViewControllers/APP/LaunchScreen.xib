@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,34 +15,25 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Kxb-Js-wMi" userLabel="Logo">
-                    <rect key="frame" x="108.5" y="221" width="158" height="158"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenMailLogo" translatesAutoresizingMaskIntoConstraints="NO" id="ybe-g7-Ic8">
+                    <rect key="frame" x="123.5" y="269.5" width="128" height="128"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="158" id="TSF-jD-hCc"/>
-                        <constraint firstAttribute="width" constant="158" id="ftW-63-1x7"/>
-                    </constraints>
-                </imageView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchScreenBrand" translatesAutoresizingMaskIntoConstraints="NO" id="mAr-DF-XNE" userLabel="Masterbrand">
-                    <rect key="frame" x="124.5" y="595" width="126" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="32" id="D0z-hm-vZN"/>
+                        <constraint firstAttribute="width" constant="128" id="IcG-y0-ekx"/>
+                        <constraint firstAttribute="height" constant="128" id="o5b-Hg-ZYE"/>
                     </constraints>
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="QeM-zt-UAj"/>
             <color key="backgroundColor" name="LaunchScreenBackground"/>
             <constraints>
-                <constraint firstItem="mAr-DF-XNE" firstAttribute="centerX" secondItem="acj-WQ-DLH" secondAttribute="centerX" id="D0T-uY-469"/>
-                <constraint firstItem="QeM-zt-UAj" firstAttribute="bottom" secondItem="mAr-DF-XNE" secondAttribute="bottom" constant="40" id="GZz-sC-UaF"/>
-                <constraint firstItem="Kxb-Js-wMi" firstAttribute="centerY" secondItem="acj-WQ-DLH" secondAttribute="bottom" multiplier="0.45" id="J7H-gq-90H"/>
-                <constraint firstItem="Kxb-Js-wMi" firstAttribute="centerX" secondItem="acj-WQ-DLH" secondAttribute="centerX" id="j01-Qr-aTR"/>
+                <constraint firstItem="ybe-g7-Ic8" firstAttribute="centerY" secondItem="acj-WQ-DLH" secondAttribute="centerY" id="UlU-ya-oyE"/>
+                <constraint firstItem="ybe-g7-Ic8" firstAttribute="centerX" secondItem="acj-WQ-DLH" secondAttribute="centerX" id="jVZ-tM-msj"/>
             </constraints>
             <point key="canvasLocation" x="327" y="-257"/>
         </view>
     </objects>
     <resources>
-        <image name="launchScreenBrand" width="126" height="32"/>
-        <image name="launchScreenLogo" width="552" height="552"/>
+        <image name="LaunchScreenMailLogo" width="128" height="128"/>
         <namedColor name="LaunchScreenBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

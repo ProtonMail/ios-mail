@@ -278,7 +278,7 @@ extension LabelManagerViewModel: LabelManagerViewModelOutput {
 extension LabelManagerViewModel {
 
     private func allowToCreate() -> Bool {
-        guard dependencies.userInfo.subscribed == 0 else { return true }
+        guard dependencies.userInfo.subscribed.isEmpty else { return true }
         switch labelType {
         case .folder:
             return rawData.count < Constants.FreePlan.maxNumberOfFolders

@@ -214,7 +214,7 @@ private func createAddressDescription(email: String) -> String {
 }
 private let continueButtonIdentifier = "CreateAddressViewController.continueButton"
 private let cancelButtonIdentifier = "CreateAddressViewController.cancelButton"
-private let backButtonIdentifier = "CreateAddressViewController.leftBarButtonItem"
+private let backButtonIdentifier = "UINavigationItem.leftBarButtonItem"
 private let usernameTextFieldId = "CreateAddressViewController.addressTextField.textField"
 private let errorInvalidCharacters = "Username contains invalid characters"
 public final class CreateAddressRobot: CoreElements {

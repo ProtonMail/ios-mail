@@ -31,37 +31,38 @@ public struct WelcomeScreenTexts {
     public init(body: String) {
         self.body = body
     }
-    
-    @available(*, deprecated, message: "Welcome screen no longer has headline")
-    let headline: String = ""
-
-    @available(*, deprecated, renamed: "init(body:)")
-    public init(headline _: String, body: String) {
-        self.init(body: body)
-    }
 }
 
 public struct WelcomeScreenCustomData {
     let topImage: UIImage
-    let logo: UIImage
-    let wordmark: UIImage
+    let wordmarkWithLogo: UIImage
     let body: String
     let brand: Brand
     
-    public init(topImage: UIImage, logo: UIImage, wordmark: UIImage, body: String, brand: Brand) {
+    public init(topImage: UIImage, wordmarkWithLogo: UIImage, body: String, brand: Brand) {
         self.topImage = topImage
-        self.logo = logo
-        self.wordmark = wordmark
+        self.wordmarkWithLogo = wordmarkWithLogo
         self.body = body
         self.brand = brand
     }
-    
-    @available(*, deprecated, message: "Welcome screen no longer has headline")
-    let headline: String = ""
+}
 
-    @available(*, deprecated, renamed: "init(topImage:logo:wordmark:body:brand:)")
-    public init(topImage: UIImage, logo: UIImage, headline _: String, body: String, brand: Brand) {
-        self.init(topImage: topImage, logo: logo, wordmark: UIImage(), body: body, brand: brand)
+enum WelcomeViewLayout: CaseIterable {
+    case small
+    case regular
+    case big
+
+    static func provideLayoutBasedOnUIScreenBounds() -> WelcomeViewLayout {
+        // small iphone size (SE 1st gen, 5, 5s etc.)
+        if UIScreen.main.bounds.width < 340.0 && UIScreen.main.bounds.height < 600.0 {
+            return .small
+        // regular iphone size
+        } else if UIScreen.main.bounds.width < 600.0 {
+            return .regular
+        // iPad territory
+        } else {
+            return .big
+        }
     }
 }
 
@@ -72,6 +73,7 @@ final class WelcomeView: UIView {
     private let signupAvailable: Bool
 
     init(variant: WelcomeScreenVariant,
+         layout: WelcomeViewLayout?,
          target: UIViewController,
          loginAction: Selector,
          signupAction: Selector,
@@ -80,44 +82,35 @@ final class WelcomeView: UIView {
 
         super.init(frame: .zero)
 
-        setUpLayout(variant: variant)
+        setUpLayout(variant: variant,
+                    layout: layout ?? WelcomeViewLayout.provideLayoutBasedOnUIScreenBounds())
         setUpInteractions(target: target, loginAction: loginAction, signupAction: signupAction)
     }
 
     required init?(coder: NSCoder) { fatalError("not designed to be created from IB") }
 
-    private func setUpLayout(variant: WelcomeScreenVariant) {
+    private func setUpLayout(variant: WelcomeScreenVariant, layout: WelcomeViewLayout) {
 
         setUpMainView(for: variant)
-
-        let image: UIImage = IconProvider.swirls
+        let image = top(for: variant)
         let topImage = UIImageView(image: image)
         let top = UIView()
-        let logo = logo(for: variant)
-        let wordmark = wordmark(for: variant)
+        let wordmarkWithLogo = wordmarkWithLogo(for: variant)
         let body = body(for: variant)
-        let (footerBrand, footerLabel) = footer()
-        
-        logo.layer.shadowColor = UIColor(red: 0.051, green: 0.02, blue: 0.18, alpha: 0.07).cgColor
-        logo.layer.shadowRadius = 15.0
-        logo.layer.shadowOffset = .init(width: 0, height: 5.2)
-        logo.layer.shadowOpacity = 1
+        let footerBrand = footer()
 
         setUpButtons()
 
-        [top, logo, wordmark, body, loginButton, signupButton, footerBrand, footerLabel].forEach {
+        [top, wordmarkWithLogo, body, loginButton, signupButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
         
         topImage.translatesAutoresizingMaskIntoConstraints = false
         top.addSubview(topImage)
-        
         top.clipsToBounds = true
-
-        topImage.contentMode = .scaleAspectFill
-        logo.contentMode = .scaleAspectFit
-        wordmark.contentMode = .scaleAspectFit
+        topImage.clipsToBounds = true
+        wordmarkWithLogo.contentMode = .scaleAspectFill
         
         let primaryButton: ProtonButton
         let secondaryButton: ProtonButton
@@ -128,70 +121,72 @@ final class WelcomeView: UIView {
             primaryButton = loginButton
             secondaryButton = signupButton
         }
-        
-        logo.centerXInSuperview()
-        
-        let topOffset: CGFloat
-        let trailingOffset: CGFloat
-        let bodyOffset: CGFloat
-        let buttonOffset: CGFloat
-        let secondaryButtonOffset: CGFloat
-        
-        // small iphone size
-        if UIScreen.main.bounds.width < 340.0 {
-            topOffset = 40.0
-            trailingOffset = 289.0
-            bodyOffset = 16.0
-            buttonOffset = 16.0
-            secondaryButtonOffset = 4.0
-        // regular iphone size
-        } else if UIScreen.main.bounds.width < 600.0 {
-            topOffset = 32.0
-            trailingOffset = 234.0
-            bodyOffset = 24.0
-            buttonOffset = 44.0
-            secondaryButtonOffset = 12.0
-        // iPad territory
-        } else {
-            topOffset = 0.0
-            trailingOffset = 16.0
-            bodyOffset = 24.0
-            buttonOffset = 44.0
-            secondaryButtonOffset = 12.0
+
+        wordmarkWithLogo.centerXInSuperview()
+
+        let topOffset: CGFloat = 48
+        let bodyOffset: CGFloat = 24
+        let buttonOffset: CGFloat = 24
+        let secondaryButtonOffset: CGFloat = 12
+        let bottomOffset: CGFloat = 58
+
+        [top, topImage].forEach { view in
+            [NSLayoutConstraint.Axis.vertical, .horizontal].forEach { axis in
+                view.setContentHuggingPriority(.defaultLow - 1, for: axis)
+                view.setContentCompressionResistancePriority(.defaultLow - 1, for: axis)
+            }
         }
-        
-        let position = NSLayoutConstraint(item: top, attribute: .bottom, relatedBy: .equal,
-                                          toItem: self, attribute: .bottom, multiplier: 0.3, constant: 0)
+
+        // constaints that are common for all the screen sizes
         NSLayoutConstraint.activate([
             top.topAnchor.constraint(equalTo: topAnchor),
             top.leadingAnchor.constraint(equalTo: leadingAnchor),
             top.trailingAnchor.constraint(equalTo: trailingAnchor),
-            position,
-            
-            topImage.topAnchor.constraint(equalTo: top.topAnchor, constant: -topOffset),
-            topImage.trailingAnchor.constraint(equalTo: top.trailingAnchor, constant: trailingOffset),
-            topImage.widthAnchor.constraint(greaterThanOrEqualTo: top.widthAnchor, constant: trailingOffset),
-            topImage.widthAnchor.constraint(greaterThanOrEqualToConstant: image.size.width),  // + trailingOffset),
-            topImage.heightAnchor.constraint(greaterThanOrEqualToConstant: image.size.height), // + topOffset),
-            topImage.widthAnchor.constraint(equalTo: topImage.heightAnchor, multiplier: image.size.width / image.size.height),
+            top.bottomAnchor.constraint(equalTo: wordmarkWithLogo.topAnchor, constant: -topOffset),
 
-            logo.centerYAnchor.constraint(equalTo: top.bottomAnchor, constant: -8),
-            logo.widthAnchor.constraint(equalToConstant: 106),
-            logo.heightAnchor.constraint(equalToConstant: 106),
+            topImage.bottomAnchor.constraint(equalTo: top.bottomAnchor),
+            topImage.centerXAnchor.constraint(equalTo: top.centerXAnchor),
+            topImage.heightAnchor.constraint(greaterThanOrEqualTo: top.heightAnchor),
+            topImage.widthAnchor.constraint(greaterThanOrEqualTo: top.widthAnchor),
+            topImage.widthAnchor.constraint(equalTo: topImage.heightAnchor,
+                                            multiplier: image.size.width / image.size.height),
 
-            wordmark.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 16),
-            body.topAnchor.constraint(equalTo: wordmark.bottomAnchor, constant: bodyOffset),
+            wordmarkWithLogo.widthAnchor.constraint(equalToConstant: 220),
+            wordmarkWithLogo.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            body.topAnchor.constraint(equalTo: wordmarkWithLogo.bottomAnchor, constant: bodyOffset),
             primaryButton.topAnchor.constraint(equalTo: body.bottomAnchor, constant: buttonOffset),
-            secondaryButton.topAnchor.constraint(equalTo: primaryButton.bottomAnchor, constant: secondaryButtonOffset),
-            footerBrand.topAnchor.constraint(greaterThanOrEqualTo: secondaryButton.bottomAnchor, constant: 8),
-            footerBrand.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40),
-            footerBrand.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            
-            footerLabel.topAnchor.constraint(equalTo: footerBrand.bottomAnchor, constant: 8),
-            footerLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            secondaryButton.topAnchor.constraint(equalTo: primaryButton.bottomAnchor, constant: secondaryButtonOffset)
         ])
         
-        NSLayoutConstraint.activate([wordmark, body, loginButton, signupButton].flatMap { view -> [NSLayoutConstraint] in
+        switch layout {
+        case .small:
+            topImage.contentMode = .scaleAspectFit
+            NSLayoutConstraint.activate([
+                topImage.widthAnchor.constraint(equalTo: top.widthAnchor),
+                secondaryButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
+            ])
+        case .regular:
+            topImage.contentMode = .scaleAspectFill
+            addSubview(footerBrand)
+            NSLayoutConstraint.activate([
+                wordmarkWithLogo.centerYAnchor.constraint(equalTo: centerYAnchor),
+                footerBrand.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomOffset),
+                footerBrand.heightAnchor.constraint(equalToConstant: 20),
+                footerBrand.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            ])
+        case .big:
+            topImage.contentMode = .scaleAspectFill
+            addSubview(footerBrand)
+            NSLayoutConstraint.activate([
+                footerBrand.topAnchor.constraint(equalTo: secondaryButton.bottomAnchor, constant: 48),
+                footerBrand.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomOffset),
+                footerBrand.heightAnchor.constraint(equalToConstant: 20),
+                footerBrand.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            ])
+        }
+        
+        NSLayoutConstraint.activate([wordmarkWithLogo, body, loginButton, signupButton].flatMap { view -> [NSLayoutConstraint] in
             let readableContentIfPossible = NSLayoutConstraint(item: view, attribute: .leading, relatedBy: .equal,
                                                                  toItem: readableContentGuide, attribute: .leading, multiplier: 1.0, constant: 0.0)
             readableContentIfPossible.priority = UILayoutPriority(rawValue: UILayoutPriority.required.rawValue - 1)
@@ -199,12 +194,12 @@ final class WelcomeView: UIView {
                 view.centerXAnchor.constraint(equalTo: readableContentGuide.centerXAnchor),
                 readableContentIfPossible,
                 view.leadingAnchor.constraint(greaterThanOrEqualTo: readableContentGuide.leadingAnchor),
-                view.widthAnchor.constraint(lessThanOrEqualToConstant: 344)
+                view.widthAnchor.constraint(lessThanOrEqualToConstant: 457)
             ]
         })
     }
 
-    fileprivate func setUpMainView(for variant: WelcomeScreenVariant) {
+    private func setUpMainView(for variant: WelcomeScreenVariant) {
         switch variant {
         case .mail: ColorProvider.brand = .proton
         case .calendar: ColorProvider.brand = .proton
@@ -216,26 +211,24 @@ final class WelcomeView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
     }
 
-    private func logo(for variant: WelcomeScreenVariant) -> UIImageView {
-        let logo: UIImage
+    private func top(for variant: WelcomeScreenVariant) -> UIImage {
         switch variant {
-        case .mail: logo = IconProvider.mailMain
-        case .calendar: logo = IconProvider.calendarMain
-        case .drive: logo = IconProvider.driveMain
-        case .vpn: logo = IconProvider.vpnMain
-        case .custom(let data): logo = data.logo
+        case .mail: return IconProvider.mailTopImage
+        case .calendar: return IconProvider.calendarTopImage
+        case .drive: return IconProvider.driveTopImage
+        case .vpn: return IconProvider.vpnTopImage
+        case .custom: return IconProvider.mailTopImage
         }
-        return UIImageView(image: logo)
     }
     
-    private func wordmark(for variant: WelcomeScreenVariant) -> UIImageView {
+    private func wordmarkWithLogo(for variant: WelcomeScreenVariant) -> UIImageView {
         let wordmark: UIImage
         switch variant {
-        case .mail: wordmark = IconProvider.mailWordmarkNoIcon
-        case .calendar: wordmark = IconProvider.calendarWordmarkNoIcon
-        case .drive: wordmark = IconProvider.driveWordmarkNoIcon
-        case .vpn: wordmark = IconProvider.vpnWordmarkNoIcon
-        case .custom(let data): wordmark = data.wordmark
+        case .mail: wordmark = IconProvider.mailWordmarkNoBackground
+        case .calendar: wordmark = IconProvider.calendarWordmarkNoBackground
+        case .drive: wordmark = IconProvider.driveWordmarkNoBackground
+        case .vpn: wordmark = IconProvider.vpnWordmarkNoBackground
+        case .custom(let data): wordmark = data.wordmarkWithLogo
         }
         return UIImageView(image: wordmark)
     }
@@ -256,29 +249,12 @@ final class WelcomeView: UIView {
         return body
     }
 
-    private func footer() -> (UIView, UIView) {
-        let brandInFooter = UIImageView(image: IconProvider.masterBrandBrandColorNoEffect)
+    private func footer() -> UIView {
+        let brandInFooter = UIImageView(image: IconProvider.footer)
+        brandInFooter.tintColor = ColorProvider.TextHint
         brandInFooter.translatesAutoresizingMaskIntoConstraints = false
-        brandInFooter.heightAnchor.constraint(equalToConstant: 32).isActive = true
         brandInFooter.contentMode = .scaleAspectFit
-        
-        let font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.08
-        paragraphStyle.alignment = .center
-        let foregroundColor: UIColor = UIColor.dynamic(light: ColorProvider.BrandNorm,
-                                                       dark: ColorProvider.BrandLighten20)
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .foregroundColor: foregroundColor,
-            .kern: 0.07,
-            .paragraphStyle: paragraphStyle
-        ]
-
-        let label = UILabel()
-        label.attributedText = NSAttributedString(string: CoreString._ls_welcome_footer, attributes: attributes)
-
-        return (brandInFooter, label)
+        return brandInFooter
     }
 
     private func setUpButtons() {
@@ -296,5 +272,12 @@ final class WelcomeView: UIView {
     private func setUpInteractions(target: UIViewController, loginAction: Selector, signupAction: Selector) {
         loginButton.addTarget(target, action: loginAction, for: .touchUpInside)
         signupButton.addTarget(target, action: signupAction, for: .touchUpInside)
+    }
+}
+
+extension NSLayoutConstraint {
+    func with(priority: UILayoutPriority) -> Self {
+        self.priority = priority
+        return self
     }
 }

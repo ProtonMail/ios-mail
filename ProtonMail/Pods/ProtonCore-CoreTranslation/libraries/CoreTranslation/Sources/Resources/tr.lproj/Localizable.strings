@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Kurtarma yöntemi, parolanızı unuttuğunuzda ya da oturum açamadığınızda hesabınıza erişmenizi sağlar.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Hesap silindi.\nOturum kapatılıyor...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Hesap kurulumu gerekli";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple, hizmet tarifenizi yükselttiğinizi bildirdi. Ancak bazı teknik veriler eksikti. Lütfen hata bildirimini doldurun. Müşteri destek ekibimiz sizinle görüşecek.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple, bize hizmet tarifenizi yükselttiğiniz hakkında bilgi verdi. Ancak o zamandan beri hesap oturumunuzu kapattığınızı farkettik.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
 
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "İptal";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "E-posta adresini değiştir";
@@ -110,10 +101,10 @@
 "Contact support@protonvpn.com to complete your purchase." = "Satın alma işleminizi tamamlamak için support@protonvpn.com adresine yazın.";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Twitter, e-posta (support@protonmail.zendesk.com) ya da destek isteği formu aracılığıyla doğrudan bizimle görüşebilirsiniz.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Bizimle doğrudan destek isteği formu, e-posta (support@protonmail.zendesk.com) ya da Twitter aracılığıyla görüşebilirsiniz.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "İlerle";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Geçerli e-posta adresinizle bir Proton hesabı oluşturun";
@@ -141,7 +132,7 @@
 "Current plan" = "Geçerli tarife";
 
 /* Plan details renew expired */
-"Current plan will expire on %@" = "Geçerli tarife %@ tarihinde sona erecek";
+"Current plan will expire on %@" = "Geçerli tarifenin süresi %@ tarihinde dolacak";
 
 /* Plan details custom email addresses */
 "Custom email addresses" = "Özel e-posta adresleri";
@@ -180,10 +171,13 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "E-posta adresi";
+"Email" = "E-posta";
 
 /* Email address already used error */
 "Email address already used." = "E-posta adresi zaten kullanılıyor.";
+
+/* Username field title */
+"Email or username" = "E-posta adresi ya da kullanıcı adı";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Gizliliğe saygı duyulan bir dünyanın tadını çıkarın.";
@@ -294,10 +288,6 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "İnsan doğrulaması ve bunu neden istediğimiz hakkında ayrıntılı bilgi alın.";
 
-/* *
- * Splash */
-"Made by" = "Yapan";
-
 /* Mailbox password field title */
 "Mailbox password" = "Posta kutusu parolası";
 
@@ -353,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Bu uygulamada yalnızca yenilenmeyen yıllık abonelikler bulunur";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Tarife yükseltildi";
 
@@ -390,7 +377,7 @@
 "New_Plans Your privacy and security are our priority." = "Gizliliğinizi korumak ve güvenliğinizi sağlamak önceliğimizdir.";
 
 /* Next button */
-"Next" = "Sonraki";
+"Next" = "İleri";
 
 /* network troubleshot cell title */
 "No internet connection" = "İnternet bağlantısı yok";
@@ -457,12 +444,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Lütfen Proton hesabınızın parolasını yazın.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Lütfen, satın alma işleminizi tamamlayabilmemiz için hizmet tarifenizi yükselttiğiniz Proton Mail hesabıyla oturum açın.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Hizmet tarifesini etkinleştirebilmemiz için, lütfen hizmet tarifenizi yükselttiğiniz Proton Mail hesabıyla oturum açın.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Lütfen internet bağlantınızın çalıştığından emin olun.";
 
@@ -484,9 +465,6 @@
 
 /* Username field title */
 "Proton email or username" = "Proton e-posta adresi ya da kullanıcı adı";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton çalışmıyor";
@@ -578,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Kurtarma yöntemi atlansın mı?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Ne yazık ki, iOS uygulamasının beta sürümündeki satın alımları işleyemiyoruz. Herkese açık beta programımıza katıldığınız için teşekkür ederiz!";
 
@@ -607,7 +582,7 @@
 "switch to" = "şuna geç";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Antivirus uygulamanızı geçici olarak devre dışı bırakın veya kaldırın.";
+"Temporarily disable or remove your antivirus software." = "Virüsten koruma uygulamanızı geçici olarak devre dışı bırakın ya da kaldırın.";
 
 /* Recovery terms and conditions link
    Terms and conditions view title */
@@ -624,9 +599,6 @@
 
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton sunucularına erişilemiyor. Bu durum hatalı bir ağ yapılandırmasından, Proton sunucularının çalışmıyor olmasından ya da Proton sunucularına erişimin engelleniyor olmasından kaynaklanabilir";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API hizmeti ile bağlantı kurulmaya çalışılırken TLS sertifikası doğrulanamadı. Geçerli internet bağlantınız izlenebilir. Verilerinizi güvende tutmak için, uygulamanın Proton API hizmetine erişmesini engelliyoruz.\nOturum açmak veya hesabınıza erişmek için başka bir ağa geçin ve yeniden bağlanmayı deneyin.";
 
 /* Complete view description */
 "This should take no more than a minute." = "Bu işlem bir dakikadan uzun sürmemeli.";
@@ -651,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Başka bir yöntem deneyin";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "İki aşamalı doğrulama";
@@ -774,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free hesabınız oluşturuldu.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Oturumunuz zaman aşımına uğradı. Lütfen yeniden oturum açın.";
 

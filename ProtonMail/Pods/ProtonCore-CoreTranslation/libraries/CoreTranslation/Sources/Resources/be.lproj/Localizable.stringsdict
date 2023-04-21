@@ -13,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d злучэнні з VPN</string>
+			<string>%d падключэнні па VPN</string>
 			<key>many</key>
-			<string>%d злучэнняў з VPN</string>
+			<string>%d падключэнняў па VPN</string>
 			<key>one</key>
-			<string>%d злучэнне з VPN</string>
+			<string>%d падключэнне па VPN</string>
 			<key>other</key>
-			<string>%d злучэнні з VPN</string>
+			<string>%d падключэнні па VPN</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -53,13 +53,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d злучэнні</string>
+			<string>%d падключэнні</string>
 			<key>many</key>
-			<string>%d злучэнняў</string>
+			<string>%d падключэнняў</string>
 			<key>one</key>
-			<string>%d злучэнне</string>
+			<string>%d падключэнне</string>
 			<key>other</key>
-			<string>%d злучэнні</string>
+			<string>%d падключэнні</string>
 		</dict>
 	</dict>
 	<key>%d countries</key>
@@ -173,13 +173,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d высакахуткасныя злучэнні з VPN</string>
+			<string>%d высакахуткасныя падключэнні па VPN</string>
 			<key>many</key>
-			<string>%d высакахуткасных злучэнняў з VPN</string>
+			<string>%d высакахуткасных падключэнняў па VPN</string>
 			<key>one</key>
-			<string>%d высакахуткаснае злучэнне з VPN</string>
+			<string>%d высакахуткаснае падключэнне па VPN</string>
 			<key>other</key>
-			<string>%d высакахуткасныя злучэнні з VPN</string>
+			<string>%d высакахуткасныя падключэнні па VPN</string>
 		</dict>
 	</dict>
 	<key>%d users</key>
@@ -213,13 +213,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d злучэнні з VPN на карыстальніка</string>
+			<string>%d падключэнні па VPN на карыстальніка</string>
 			<key>many</key>
-			<string>%d злучэнняў з VPN на карыстальніка</string>
+			<string>%d падключэнняў па VPN на карыстальніка</string>
 			<key>one</key>
-			<string>%d злучэнне з VPN на карыстальніка</string>
+			<string>%d падключэнне па VPN на карыстальніка</string>
 			<key>other</key>
-			<string>%d злучэнні з VPN на карыстальніка</string>
+			<string>%d падключэнні па VPN на карыстальніка</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d addresses per user</key>
@@ -323,13 +323,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d персанальныя календары</string>
+			<string>%d асабістыя календары</string>
 			<key>many</key>
-			<string>%d персанальных календароў</string>
+			<string>%d асабістых календароў</string>
 			<key>one</key>
-			<string>%d персанальны каляндар</string>
+			<string>%d асабісты каляндар</string>
 			<key>other</key>
-			<string>%d персанальныя календары</string>
+			<string>%d асабістыя календары</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d users</key>
@@ -378,13 +378,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d персанальныя календары</string>
+			<string>%d асабістыя календары</string>
 			<key>many</key>
-			<string>%d персанальных календароў</string>
+			<string>%d асабістых календароў</string>
 			<key>one</key>
-			<string>%d персанальны каляндар</string>
+			<string>%d асабісты каляндар</string>
 			<key>other</key>
-			<string>%d персанальныя календары</string>
+			<string>%d асабістыя календары</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars per user</key>
@@ -398,13 +398,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d персанальныя календары на карыстальніка</string>
+			<string>%d асабістыя календары на карыстальніка</string>
 			<key>many</key>
-			<string>%d персанальных календароў на карыстальніка</string>
+			<string>%d асабістых календароў на карыстальніка</string>
 			<key>one</key>
-			<string>%d персанальны каляндар на карыстальніка</string>
+			<string>%d асабісты каляндар на карыстальніка</string>
 			<key>other</key>
-			<string>%d персанальныя календары на карыстальніка</string>
+			<string>%d асабістыя календары на карыстальніка</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
@@ -508,13 +508,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d злучэнні з VPN на сярэдняй хуткасці</string>
+			<string>%d падключэнні па VPN на сярэдняй хуткасці</string>
 			<key>many</key>
-			<string>%d злучэнняў з VPN на сярэдняй хуткасці</string>
+			<string>%d падключэнняў па VPN на сярэдняй хуткасці</string>
 			<key>one</key>
-			<string>%d злучэнне з VPN на сярэдняй хуткасці</string>
+			<string>%d падключэнне па VPN на сярэдняй хуткасці</string>
 			<key>other</key>
-			<string>%d злучэнні з VPN на сярэдняй хуткасці</string>
+			<string>%d падключэнні па VPN на сярэдняй хуткасці</string>
 		</dict>
 	</dict>
 	<key>New_Plans Support for %d custom email domains</key>

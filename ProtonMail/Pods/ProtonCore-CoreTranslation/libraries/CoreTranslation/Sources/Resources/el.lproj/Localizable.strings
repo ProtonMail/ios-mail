@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Μια μέθοδος ανάκτησης θα σας βοηθήσει να αποκτήσετε πρόσβαση στον λογαριασμό σας σε περίπτωση που ξεχάσετε τον κωδικό πρόσβασης σας ή κλειδωθείτε από τον λογαριασμό σας.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Ο λογαριασμός διαγράφηκε.\nΑποσύνδεση...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Απαιτείται ρύθμιση λογαριασμού";
@@ -30,7 +27,7 @@
 "Adblocker (NetShield)" = "Φραγή Διαφημίσεων (NetShield)";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Άδεια εναλλακτικής δρομολόγησης";
+"Allow alternative routing" = "Επιτρέψτε εναλλακτική δρομολόγηση";
 
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Παρουσιάστηκε σφάλμα";
@@ -44,11 +41,8 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο/πλάνο σας, αλλά λείπουν ορισμένα τεχνικά δεδομένα. Συμπληρώστε την φόρμα αναφοράς σφαλμάτων και η ομάδα υποστήριξης πελατών μας, θα επικοινωνήσει μαζί σας.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το λογαριασμό σας / πλάνο, αλλά εντοπίσαμε ότι έχετε αποσυνδεθεί από το λογαριασμό σας, από τότε.";
-
 /* Alert message of sign out the email address */
-"Are you sure you want to sign out %@?" = "Είστε βέβαιοι ότι θέλετε έξοδο του %@;";
+"Are you sure you want to sign out %@?" = "Θέλετε σίγουρα έξοδο του %@;";
 
 /* *
  * Login 2FA */
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Ακύρωση";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Αλλαγή διεύθυνσης email";
@@ -110,10 +101,10 @@
 "Contact support@protonvpn.com to complete your purchase." = "Επικοινωνήστε με το support@protonvpn.com για να ολοκληρώσετε την αγορά σας.";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.zendesk.com) ή Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Επικοινωνήστε μαζί μας απευθείας μέσω της φόρμας υποστήριξης, email (support@protonmail.zendesk.com) ή του Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Συνέχεια";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Δημιουργήστε έναν λογαριασμό Proton με την τρέχουσα διεύθυνσή σας";
@@ -180,7 +171,7 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "E-mail";
+"Email" = "Ηλ. μήνυμα";
 
 /* Email address already used error */
 "Email address already used." = "Το e-mail χρησιμοποιείται ήδη.";
@@ -349,9 +340,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Επιτυχημένη αναβάθμιση προγράμματος";
 
@@ -453,12 +441,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Παρακαλώ εισάγετε τον κωδικό πρόσβασης του λογαριασμού Proton σας.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλούμε εισέλθετε στον λογαριασμό Proton Mail που αναβαθμίζετε το πρόγραμμα της υπηρεσίας του, ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλούμε εισέλθετε στον λογαριασμό Proton Mail που αναβαθμίζετε το πρόγραμμα της υπηρεσίας του, ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του προγράμματός της.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Παρακαλούμε βεβαιωθείτε ότι η σύνδεσή σας στο διαδίκτυο λειτουργεί.";
 
@@ -481,11 +463,8 @@
 /* Username field title */
 "Proton email or username" = "Proton email ή όνομα χρήστη";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
-"Proton is down" = "Το Proton είναι εκτός λειτουργίας";
+"Proton is down" = "Το Proton έχει πέσει";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Κατάσταση Proton";
@@ -518,7 +497,7 @@
 "Remove account from this device" = "Αφαίρεση λογαριασμού από αυτήν τη συσκευή";
 
 /* Repeat password field title */
-"Repeat password" = "Επανάληψη κωδικού πρόσβασης";
+"Repeat password" = "Επανάληψη κωδικού";
 
 /* request item title */
 "Request an invite" = "Αίτηση πρόσκλησης";
@@ -560,7 +539,7 @@
 "Sign in to another account" = "Είσοδος σε άλλον λογαριασμό";
 
 /* Sign out button/ title */
-"Sign out" = "Έξοδος";
+"Sign out" = "Αποσύνδεση";
 
 /* Section title of account manager */
 "Signed in to Proton Mail" = "Εντός Proton Mail";
@@ -574,14 +553,11 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Παράλειψη μεθόδου ανάκτησης;";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Δυστυχώς, δεν μπορούμε να επεξεργαστούμε τις αγορές στην έκδοση beta της εφαρμογής iOS. Σας ευχαριστούμε για τη συμμετοχή σας στο pubic beta!";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Δεν βρέθηκε ακόμα λύση";
+"Still can't find a solution" = "Δεν βρέθηκε λύση";
 
 /* *
  *  Login help */
@@ -621,9 +597,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Οι διακομιστές Proton δεν είναι προσβάσιμοι. Αυτό μπορεί να προκληθεί από λανθασμένη διαμόρφωση δικτύου, διακομιστές Proton που δεν λειτουργούν ή διακομιστές Proton που αποκλείονται";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Η επαλήθευση του πιστοποιητικού TLS απέτυχε όταν προσπαθήσατε να συνδεθείτε στο API του Proton VPN. Η τρέχουσα σύνδεση στο internet μπορεί να παρακολουθείται. Για να διατηρήσουμε τα δεδομένα σας ασφαλή, αποτρέπουμε την πρόσβαση της εφαρμογής στο Proton VPN API.\nΓια να συνδεθείτε ή να αποκτήσετε πρόσβαση στο λογαριασμό σας, μεταβείτε σε ένα νέο δίκτυο και προσπαθήστε να συνδεθείτε ξανά.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Αυτό δεν πρέπει να πάρει πάνω από ένα λεπτό.";
 
@@ -647,9 +620,6 @@
 
 /* other method alert button */
 "Try other method" = "Δοκιμάστε άλλη μέθοδο";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Ταυτοποίηση δύο παραγόντων";
@@ -770,7 +740,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ο λογαριασμός σας Proton Free δημιουργήθηκε επιτυχώς.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Η συνεδρία σας έχει λήξει. Παρακαλώ συνδεθείτε ξανά.";
 

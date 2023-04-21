@@ -171,7 +171,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
 
         setUpCloseButton(showCloseButton: showCloseButton, action: #selector(SignupViewController.onCloseButtonTap(_:)))
         requestDomain()
-        configureAccountType()
+        configureAccountType(nil)
         generateAccessibilityIdentifiers()
         
         try? internalNameTextField.setUpChallenge(viewModel.challenge, type: .username)
@@ -187,21 +187,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     // MARK: Actions
 
     @IBAction func onOtherAccountButtonTap(_ sender: ProtonButton) {
-        cancelFocus()
-        PMBanner.dismissAll(on: self)
-        let isFirstResponder = currentlyUsedTextField.isFirstResponder
-        if isFirstResponder { _ = currentlyUsedTextField.resignFirstResponder() }
-        contentView.fadeOut(withDuration: 0.5) { [self] in
-            self.contentView.fadeIn(withDuration: 0.5)
-            self.currentlyUsedTextField.isError = false
-            if self.signupAccountType == .internal {
-                signupAccountType = .external
-            } else {
-                signupAccountType = .internal
-            }
-            configureAccountType()
-            if isFirstResponder { _ = currentlyUsedTextField.becomeFirstResponder() }
-        }
+        switchSignupAccountFlow(prefilledUsernameOrEmail: nil)
     }
 
     @IBAction func onNextButtonTap(_ sender: ProtonButton) {
@@ -264,12 +250,30 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
-    private func configureAccountType() {
-        internalNameTextField.value = ""
-        externalEmailTextField.value = ""
+    private func switchSignupAccountFlow(prefilledUsernameOrEmail: String?) {
+        cancelFocus()
+        PMBanner.dismissAll(on: self)
+        let isFirstResponder = currentlyUsedTextField.isFirstResponder
+        if isFirstResponder { _ = currentlyUsedTextField.resignFirstResponder() }
+        contentView.fadeOut(withDuration: 0.5) { [self] in
+            self.contentView.fadeIn(withDuration: 0.5)
+            self.currentlyUsedTextField.isError = false
+            if self.signupAccountType == .internal {
+                signupAccountType = .external
+            } else {
+                signupAccountType = .internal
+            }
+            configureAccountType(prefilledUsernameOrEmail)
+            if isFirstResponder { _ = currentlyUsedTextField.becomeFirstResponder() }
+        }
+    }
+
+    private func configureAccountType(_ prefilledUsernameOrEmail: String?) {
         switch signupAccountType {
         case .external:
             ObservabilityEnv.report(.screenLoadCountTotal(screenName: .externalAccountAvailable))
+            internalNameTextField.value = ""
+            externalEmailTextField.value = prefilledUsernameOrEmail ?? ""
             externalEmailTextField.isHidden = false
             usernameAndDomainsView.isHidden = true
             domainsView.isHidden = true
@@ -277,6 +281,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             internalNameTextField.isHidden = true
         case .internal:
             ObservabilityEnv.report(.screenLoadCountTotal(screenName: .protonAccountAvailable))
+            internalNameTextField.value = prefilledUsernameOrEmail ?? ""
+            externalEmailTextField.value = ""
             externalEmailTextField.isHidden = true
             usernameAndDomainsView.isHidden = false
             domainsView.isHidden = false
@@ -389,11 +395,18 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             self.unlockUI()
             self.nextButton.isSelected = false
             _ = self.currentlyUsedTextField.becomeFirstResponder()
+        } protonDomainUsedForExternalAccount: { username in
+            self.unlockUI()
+            self.nextButton.isSelected = false
+            self.switchSignupAccountFlow(prefilledUsernameOrEmail: username)
         }
     }
 
     private func handleCheckFailure(error: AvailabilityError, email: String = "", isExternalEmail: Bool = false) {
         switch error {
+        case .protonDomainUsedForExternalAccount:
+            // this error is not user-facing
+            return
         case .generic(let message, let code, _):
             if isExternalEmail, code == APIErrorCode.humanVerificationAddressAlreadyTaken {
                 self.delegate?.hvEmailAlreadyExists(email: email)

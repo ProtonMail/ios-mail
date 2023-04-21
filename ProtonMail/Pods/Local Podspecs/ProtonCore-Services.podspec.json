@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Services",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ProtonCore-Observability": [
-      "4.0.1"
+      "5.2.0"
     ]
   },
   "default_subspecs": [
@@ -48,13 +48,13 @@
       "source_files": "libraries/Services/Tests/Unit/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Services": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "4.0.1"
+          "5.2.0"
         ]
       }
     },
@@ -62,20 +62,26 @@
       "name": "IntegrationTests",
       "test_type": "unit",
       "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
+        ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Challenge": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Login": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
-      "source_files": "libraries/Services/Tests/Integration/*.swift"
+      "source_files": "libraries/Services/Tests/Integration/*.swift",
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      }
     }
   ],
   "swift_version": "5.6"

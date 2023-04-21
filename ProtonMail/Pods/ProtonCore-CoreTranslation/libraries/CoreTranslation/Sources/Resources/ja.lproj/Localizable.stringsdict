@@ -83,7 +83,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 件のメールアドレス</string>
+			<string>%d email addresses</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -125,7 +125,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d の高速 VPN 接続</string>
+			<string>%d high-speed VPN connections</string>
 		</dict>
 	</dict>
 	<key>%d users</key>
@@ -139,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 人のユーザー</string>
+			<string>%d ユーザー</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d VPN connections per user</key>
@@ -153,7 +153,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>1 ユーザーあたり %d 件の VPN 接続</string>
+			<string>%d VPN connections per user</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d addresses per user</key>
@@ -167,7 +167,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>1 ユーザーあたり %d 件のアドレス</string>
+			<string>%d addresses per user</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d folders and labels</key>
@@ -181,7 +181,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 件のフォルダーおよびラベル</string>
+			<string>%d folders and labels</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d email addresses</key>
@@ -227,7 +227,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 件のパーソナルカレンダー</string>
+			<string>%d personal calendars</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d users</key>
@@ -250,7 +250,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 人のユーザー</string>
+			<string>%d ユーザー</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars</key>
@@ -264,7 +264,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 件のパーソナルカレンダー</string>
+			<string>%d personal calendars</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars per user</key>
@@ -278,7 +278,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>1 ユーザーあたり %d 件の個人用カレンダー</string>
+			<string>%d personal calendars per user</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
@@ -324,7 +324,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 台以上のサーバー</string>
+			<string>%d サーバー</string>
 		</dict>
 	</dict>
 	<key>New_Plans High-speed VPN on %d devices</key>
@@ -338,7 +338,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 台のデバイスで使える高速な VPN</string>
+			<string>High-speed VPN on %d devices</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>
@@ -352,7 +352,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 件の中速の VPN 接続</string>
+			<string>Medium VPN speed %d VPN connections</string>
 		</dict>
 	</dict>
 	<key>New_Plans Support for %d custom email domains</key>
@@ -366,7 +366,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>%d 件の独自メールドメインをサポート</string>
+			<string>Support for %d custom email domains</string>
 		</dict>
 	</dict>
 </dict>

@@ -26,7 +26,6 @@ import ProtonCore_UIFoundations
 import ProtonCore_Utilities
 
 public extension AccountSwitcher {
-
     struct AccountData {
         public let userID: String
         public let name: String
@@ -42,72 +41,96 @@ public extension AccountSwitcher {
             self.isSignin = isSignin
             self.unread = unread
         }
+
+        static func mock() -> AccountData {
+            self.init(
+                userID: "fake",
+                name: "User name",
+                mail: "Mail address",
+                isSignin: true,
+                unread: 0
+            )
+        }
     }
 }
 
 public final class AccountSwitcher: UIView, AccessibleView {
+    private let backgroundView = AccountSwitcher.backgroundView()
+    private let container = AccountSwitcher.container()
+    private let primaryUserView = AccountSwitcher.PrimaryUserView()
+    private let tableHeader = AccountSwitcher.tableHeader()
+    private let accountTable = AccountSwitcher.tableView()
+    private let accountTableHeight: NSLayoutConstraint
+    private let manageView = AccountSwitcher.ManageView()
 
-    @IBOutlet private var containerView: UIView!
-    @IBOutlet private var containerViewTop: NSLayoutConstraint!
-    @IBOutlet var bgView: UIView!
-
-    @IBOutlet private var titleView: UIView!
-    @IBOutlet private var titleViewHeight: NSLayoutConstraint!
-    @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var primaryViewTop: NSLayoutConstraint!
-    @IBOutlet private var shortUserNameView: UIView!
-    @IBOutlet private var shortUserName: UILabel!
-    @IBOutlet private var username: UILabel!
-    @IBOutlet private var usermail: UILabel!
-    @IBOutlet private var accountTable: UITableView!
-    @IBOutlet private var accountTableHeight: NSLayoutConstraint!
-    @IBOutlet private var primaryView: UIView!
-    @IBOutlet private var manageView: UIView!
-    @IBOutlet private var manageAccountLabel: UILabel!
-    @IBOutlet private var manageAccountIcon: UIImageView!
-    @IBOutlet private var primaryViewSeparator: UIView!
-
-    private var accounts: [AccountData]
-    private let origin: CGPoint
-    private let CELLID = "AccountSwitcherCell"
-    private let CELL_HEIGHT: CGFloat = 64
-    private let HEADER_HEIGHT: CGFloat = 52
-    private let disablePanGes: Bool
     private weak var delegate: AccountSwitchDelegate?
     private weak var parentVC: UIViewController?
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var accounts: [AccountData]
+    private let disablePanGes: Bool
+    private let CELLID = "AccountSwitcherCell"
+    private let CELL_HEIGHT: CGFloat = 64
 
     /// Account switcher initialization
     /// - Parameter accounts: The list of account data, the first data is primary user
-    /// - Parameter origin: A point that specifies the coordinates of the rectangle’s origin. Note: only y is used, x will be ignored
     /// - Parameter disablePanGes: Disable pan gesturer of side menu if needed
     /// - Throws: The account number is zero or the signed in account is zero
-    public init(accounts: [AccountData], origin: CGPoint, disablePanGes: Bool = true) throws {
-        self.origin = origin
-        self.accounts = accounts
-        self.disablePanGes = disablePanGes
+    public init(accounts: [AccountData], disablePanGes: Bool = true) throws {
         guard accounts.count > 0 else {
             throw AccountSwitcherError.emptyAccounts
         }
 
         let login = accounts.filter({ $0.isSignin })
-        guard login.count > 0 else {
+        if login.isEmpty {
             throw AccountSwitcherError.noSigninedAccount
         }
+
+        self.accounts = accounts
+        self.disablePanGes = disablePanGes
+
+        let height = CGFloat(accounts.count - 1) * CELL_HEIGHT
+        self.accountTableHeight = accountTable.heightAnchor.constraint(equalToConstant: height)
+        self.accountTableHeight.isActive = true
+
         super.init(frame: .zero)
-        self.nibSetup()
-        observePreferredFontChanged()
+        self.accountTable.delegate = self
+        self.accountTable.dataSource = self
+        primaryUserView.update(account: accounts[0])
+        setUpGesture()
     }
 
-    public func present(on parent: UIViewController, delegate: AccountSwitchDelegate) {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override public func accessibilityPerformEscape() -> Bool {
+        dismiss()
+        return true
+    }
+
+    /// Present switcher
+    /// - Parameters:
+    ///   - parent: ViewController that switcher to present
+    ///   - reference: Reference view to provide switcher topAnchor position
+    ///   - delegate: AccountSwitchDelegate
+    public func present(on parent: UIViewController, reference: UIView, delegate: AccountSwitchDelegate) {
         self.delegate = delegate
         self.parentVC = parent
-        self.delegate?.switcherWillAppear()
         parent.view.addSubview(self)
         self.fillSuperview()
+        accountTable.reloadData { [weak self] in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.accountTableHeight.constant = self.accountTable.contentSize.height
+            }
+        }
+        setUpSubViewsConstraints(referenceItem: reference)
+    }
+
+    /// Dismiss account switcher
+    @objc
+    public func dismiss() {
+        delegate?.switcherWillDisappear()
+        removeFromSuperview()
     }
 
     /// Dismiss account switcher, in case you don't hold the switcher instance
@@ -120,256 +143,44 @@ public final class AccountSwitcher: UIView, AccessibleView {
         }
     }
 
-    /// Dismiss account switcher
-    @objc public func dismiss() {
-        self.delegate?.switcherWillDisappear()
-        self.removeFromSuperview()
-    }
-
     /// Update unread number of userID, in case you don't hold the switcher instance
     public class func updateUnread(on parent: UIViewController, userID: String, unread: Int) {
         let subviews = parent.view.subviews
         for vi in subviews {
-            if let v = vi as? AccountSwitcher {
-                v.updateUnread(userID: userID, unread: unread)
-                break
-            }
+            guard let switcher = vi as? AccountSwitcher else { continue }
+            switcher.updateUnread(userID: userID, unread: unread)
         }
     }
 
     /// Update unread number of userID
     /// If the given userID doesn't exist, do nothing
     public func updateUnread(userID: String, unread: Int) {
-        guard let idx = self.accounts.firstIndex(where: { $0.userID == userID }) else { return }
-        self.accounts[idx].unread = unread
+        guard let idx = accounts.firstIndex(where: { $0.userID == userID }) else { return }
+        accounts[idx].unread = unread
         // the user is not primary user
         guard idx > 0 else { return }
 
-        self.accountTable.beginUpdates()
+        accountTable.beginUpdates()
         let path = IndexPath(row: idx - 1, section: 0)
-        self.accountTable.reloadRows(at: [path], with: .none)
-        self.accountTable.endUpdates()
-    }
-
-    @objc private func clickManager(ges: UILongPressGestureRecognizer) {
-        let point = ges.location(in: self.manageView)
-        let origin = self.manageView.bounds
-        let isInside = origin.contains(point)
-
-        let state = ges.state
-        switch state {
-        case .began:
-            self.setManageView(hightlight: true)
-        case.changed:
-            if !isInside {
-                self.setManageView(hightlight: false)
-            }
-        case .ended:
-            self.setManageView(hightlight: false)
-            if isInside {
-                self.presentAccountManager()
-                self.dismiss()
-            }
-        default:
-            break
-        }
-    }
-
-    private func setManageView(hightlight: Bool) {
-        let color: UIColor = hightlight ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
-        self.manageView.backgroundColor = color
-        self.manageAccountLabel.backgroundColor = color
-        self.manageAccountLabel.textColor = ColorProvider.TextNorm
-        self.manageAccountIcon.image = IconProvider.cogWheel
-        self.manageAccountIcon.backgroundColor = color
-        self.manageAccountIcon.tintColor = ColorProvider.IconNorm
-        manageAccountLabel.font = .adjustedFont(forTextStyle: .subheadline)
-        manageAccountLabel.adjustsFontForContentSizeCategory = true
-    }
-
-    private func presentAccountManager() {
-        guard let _delegate = self.delegate else { return }
-        let vc = AccountManagerVC.instance()
-        let vm = AccountManagerViewModel(accounts: self.accounts,
-                                         uiDelegate: vc)
-        vm.set(delegate: _delegate)
-        guard let nav = vc.navigationController else { return }
-        self.parentVC?.present(nav, animated: true, completion: nil)
-    }
-
-    override public func accessibilityPerformEscape() -> Bool {
-        self.dismiss()
-        return true
-    }
-
-    private func observePreferredFontChanged() {
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
-                         name: UIContentSizeCategory.didChangeNotification,
-                         object: nil)
-    }
-
-    @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
-        username.font = .adjustedFont(forTextStyle: .subheadline)
-        usermail.font = .adjustedFont(forTextStyle: .footnote)
-        shortUserName.font = .adjustedFont(forTextStyle: .footnote)
-        manageAccountLabel.font = .adjustedFont(forTextStyle: .subheadline)
-        titleLabel.font = .adjustedFont(forTextStyle: .body)
+        accountTable.reloadRows(at: [path], with: .none)
+        accountTable.endUpdates()
     }
 }
 
-// MARK: UI Initialization
-extension AccountSwitcher {
-    private func nibSetup() {
-        let view = loadViewFromNib()
-        view.frame = bounds
-        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.translatesAutoresizingMaskIntoConstraints = true
-        addSubview(view)
-        self.setup()
-    }
-
-    private func loadViewFromNib() -> UIView {
-        let bundle = Bundle.switchBundle
-        let name = String(describing: AccountSwitcher.self)
-        let nib = UINib(nibName: name, bundle: bundle)
-        let nibView = nib.instantiate(withOwner: self, options: nil).first as! UIView
-
-        return nibView
-    }
-
-    private func setup() {
-        self.setupContainerView()
-        self.setupGesture()
-        self.setupTitleView()
-        self.setupPrimaryUserData()
-        self.setupAccountTable()
-        self.setManageView(hightlight: false)
-        self.accessibilityViewIsModal = true
-        self.shouldGroupAccessibilityChildren = true
-        self.accessibilityContainerType = .list
-        self.manageAccountLabel.text = CoreString._as_manage_accounts
-        self.generateAccessibilityIdentifiers()
-    }
-
-    private func setupContainerView() {
-        self.containerViewTop.constant = self.origin.y
-        self.containerView.backgroundColor = ColorProvider.BackgroundNorm
-        self.containerView.roundCorner(6)
-    }
-
-    private func setupTitleView() {
-        self.titleView.backgroundColor = ColorProvider.BackgroundNorm
-        self.titleLabel.backgroundColor = ColorProvider.BackgroundNorm
-        self.titleLabel.textColor = ColorProvider.TextNorm
-        self.titleLabel.font = .adjustedFont(forTextStyle: .body)
-        self.primaryViewSeparator.backgroundColor = ColorProvider.InteractionWeak
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            self.titleView.isHidden = false
-            self.titleLabel.text = CoreString._as_accounts
-            self.titleViewHeight.constant = 44
-            self.primaryViewTop.constant = 6
-            return
-        }
-        // iPhone and other device
-        self.titleView.isHidden = true
-        self.titleViewHeight.constant = 0
-        self.primaryViewTop.constant = 0
-    }
-
-    private func setupGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismiss))
-        self.bgView.addGestureRecognizer(tap)
-        self.bgView.accessibilityTraits = .button
-        self.bgView.accessibilityLabel = CoreString._as_dismiss_button
-
-        let tap2 = UILongPressGestureRecognizer(target: self, action: #selector(self.clickManager))
-        tap2.minimumPressDuration = 0
-        self.manageView.addGestureRecognizer(tap2)
-        self.manageView.accessibilityTraits = .button
-
-        if self.disablePanGes {
-            let pan = UIPanGestureRecognizer(target: self, action: nil)
-            self.bgView.addGestureRecognizer(pan)
-            let pan2 = UIPanGestureRecognizer(target: self, action: nil)
-            self.containerView.addGestureRecognizer(pan2)
-        }
-    }
-
-    private func setupPrimaryUserData() {
-        let user = self.accounts[0]
-        self.shortUserNameView.roundCorner(8)
-        self.shortUserName.adjustsFontSizeToFitWidth = true
-        if user.name.isEmpty {
-            self.shortUserName.text = user.mail.initials()
-            self.username.text = user.mail
-        } else {
-            self.shortUserName.text = user.name.initials()
-            self.username.text = user.name
-        }
-        self.usermail.text = user.mail
-        self.usermail.font = .adjustedFont(forTextStyle: .footnote)
-        self.shortUserName.font = .adjustedFont(forTextStyle: .footnote)
-        self.username.textColor = ColorProvider.TextNorm
-        self.usermail.textColor = ColorProvider.TextWeak
-        self.primaryView.backgroundColor = ColorProvider.BackgroundNorm
-        self.username.backgroundColor = ColorProvider.BackgroundNorm
-        self.usermail.backgroundColor = ColorProvider.BackgroundNorm
-        self.shortUserNameView.backgroundColor = ColorProvider.BrandNorm
-        self.shortUserName.backgroundColor = ColorProvider.BrandNorm
-        self.shortUserName.textColor = ColorProvider.White
-
-        username.font = .adjustedFont(forTextStyle: .subheadline)
-        usermail.font = .adjustedFont(forTextStyle: .footnote)
-        shortUserName.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
-        shortUserName.adjustsFontSizeToFitWidth = true
-        username.adjustsFontForContentSizeCategory = true
-        usermail.adjustsFontForContentSizeCategory = true
-        shortUserName.adjustsFontForContentSizeCategory = true
-    }
-
-    private func setupAccountTable() {
-        var height = CGFloat((self.accounts.count - 1)) * self.CELL_HEIGHT + self.HEADER_HEIGHT
-        height = self.accounts.count > 1 ? height : 0
-        self.accountTableHeight.constant = height
-        self.accountTable.register(AccountSwitcherCell.nib(), forCellReuseIdentifier: self.CELLID)
-        self.accountTable.tableFooterView = UIView(frame: .zero)
-        self.accountTable.backgroundColor = ColorProvider.BackgroundNorm
-        self.accountTable.separatorColor = .clear
-        self.accountTable.separatorStyle = .none
-    }
-}
-
-extension AccountSwitcher: UITableViewDataSource, UITableViewDelegate, AccountSwitchCellProtocol {
+extension AccountSwitcher: UITableViewDelegate, UITableViewDataSource, AccountSwitchCellProtocol {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         DFSSetting.enableDFS ? UITableView.automaticDimension : CELL_HEIGHT
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.accounts.count - 1
-    }
-
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return self.HEADER_HEIGHT
-    }
-
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = ColorProvider.BackgroundNorm
-        let font = UIFont.adjustedFont(forTextStyle: .subheadline)
-        let label = UILabel(CoreString._as_switch_to_title, font: font, textColor: ColorProvider.TextWeak)
-        view.addSubview(label)
-        label.constraintToSuperview(top: 24, right: 0, bottom: -8, left: 16)
-        label.backgroundColor = ColorProvider.BackgroundNorm
-        return view
+        accounts.count - 1
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.CELLID, for: indexPath) as! AccountSwitcherCell
-        let data = self.accounts[indexPath.row + 1]
-        cell.config(data: data, delegate: self)
+        let data = accounts[indexPath.row + 1]
+        let n = AccountSwitcher.AccountData(userID: data.userID, name: data.name, mail: data.mail, isSignin: data.isSignin, unread: data.unread)
+        cell.config(data: n, delegate: self)
         return cell
     }
 
@@ -387,5 +198,339 @@ extension AccountSwitcher: UITableViewDataSource, UITableViewDelegate, AccountSw
     public func signinTo(mail: String, userID: String?) {
         self.delegate?.signinAccount(for: mail, userID: userID)
         self.dismiss()
+    }
+}
+
+// MARK: - UI related
+extension AccountSwitcher {
+
+    private func setUpSubViewsConstraints(referenceItem: UIView) {
+        addSubview(backgroundView)
+        backgroundView.fillSuperview()
+
+        addSubview(container)
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: referenceItem.topAnchor),
+            container.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            container.widthAnchor.constraint(lessThanOrEqualToConstant: 375),
+            container.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -8)
+        ])
+        let containerTrail = container.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        containerTrail.priority = .init(999)
+        containerTrail.isActive = true
+
+        container.addSubview(primaryUserView)
+        NSLayoutConstraint.activate([
+            primaryUserView.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
+            primaryUserView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            primaryUserView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+        ])
+
+        var tableViewTopReference: UIView = primaryUserView
+        if accounts.count > 1 {
+            tableViewTopReference = tableHeader
+            container.addSubview(tableHeader)
+            NSLayoutConstraint.activate([
+                tableHeader.topAnchor.constraint(equalTo: primaryUserView.bottomAnchor, constant: 24),
+                tableHeader.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
+                tableHeader.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16)
+            ])
+        }
+
+        container.addSubview(accountTable)
+        NSLayoutConstraint.activate([
+            accountTable.topAnchor.constraint(equalTo: tableViewTopReference.bottomAnchor, constant: 8),
+            accountTable.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            accountTable.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+        ])
+
+        container.addSubview(manageView)
+        NSLayoutConstraint.activate([
+            manageView.topAnchor.constraint(equalTo: accountTable.bottomAnchor),
+            manageView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            manageView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            manageView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -8)
+        ])
+    }
+
+    private func setUpGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismiss))
+        backgroundView.addGestureRecognizer(tap)
+
+        let tap2 = UILongPressGestureRecognizer(target: self, action: #selector(clickManager(gesture:)))
+        tap2.minimumPressDuration = 0
+        manageView.addGestureRecognizer(tap2)
+
+        if self.disablePanGes {
+            let pan = UIPanGestureRecognizer(target: self, action: nil)
+            self.backgroundView.addGestureRecognizer(pan)
+            let pan2 = UIPanGestureRecognizer(target: self, action: nil)
+            self.container.addGestureRecognizer(pan2)
+        }
+    }
+
+    private static func backgroundView() -> UIView {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = ColorProvider.BlenderNorm
+        view.accessibilityTraits = .button
+        view.accessibilityLabel = CoreString._as_dismiss_button
+        return view
+    }
+
+    private static func container() -> UIView {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        view.roundCorner(6)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }
+
+    private static func tableHeader() -> UILabel {
+        let label = UILabel(frame: .zero)
+        label.text = CoreString._as_switch_to_title
+        label.font = .adjustedFont(forTextStyle: .subheadline)
+        label.textColor = ColorProvider.TextWeak
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+
+    private static func tableView() -> UITableView {
+        let CELLID = "AccountSwitcherCell"
+        let table = UITableView(frame: .zero)
+        table.backgroundColor = .clear
+        table.translatesAutoresizingMaskIntoConstraints = false
+        table.register(AccountSwitcherCell.nib(), forCellReuseIdentifier: CELLID)
+        table.tableFooterView = UIView(frame: .zero)
+        table.separatorColor = .clear
+        table.separatorStyle = .none
+        return table
+    }
+}
+
+// MARK: - Actions
+extension AccountSwitcher {
+
+    @objc
+    private func clickManager(gesture: UILongPressGestureRecognizer) {
+        let point = gesture.location(in: manageView)
+        let origin = manageView.bounds
+        let isInside = origin.contains(point)
+
+        let state = gesture.state
+        switch state {
+        case .began:
+            manageView.isHighlight = true
+        case.changed:
+            if !isInside {
+                manageView.isHighlight = false
+            }
+        case .ended:
+            manageView.isHighlight = false
+            if isInside {
+                self.presentAccountManager()
+                self.dismiss()
+            }
+        default:
+            break
+        }
+    }
+
+    private func presentAccountManager() {
+        guard let _delegate = self.delegate else { return }
+        let vc = AccountManagerVC.instance()
+        let vm = AccountManagerViewModel(accounts: accounts, uiDelegate: vc)
+        vm.set(delegate: _delegate)
+        guard let nav = vc.navigationController else { return }
+        self.parentVC?.present(nav, animated: true, completion: nil)
+    }
+}
+
+extension AccountSwitcher {
+    private final class PrimaryUserView: UIView {
+        private var account = AccountData.mock()
+        private let userName = PrimaryUserView.userName()
+        private let mailAddress = PrimaryUserView.mailAddress()
+        private let initials = PrimaryUserView.initials()
+        private let initialsContainer = PrimaryUserView.initialsContainer()
+        private let separator = PrimaryUserView.separator()
+
+        init() {
+            super.init(frame: .zero)
+            translatesAutoresizingMaskIntoConstraints = false
+            update(account: account)
+            addSubComponents()
+            setUpConstraints()
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        func update(account: AccountData) {
+            self.account = account
+            userName.text = account.name.isEmpty ? account.mail : account.name
+            mailAddress.text = account.mail
+            initials.text = account.name.initials()
+        }
+
+        private func addSubComponents() {
+            addSubview(initialsContainer)
+            initialsContainer.addSubview(initials)
+            addSubview(userName)
+            addSubview(mailAddress)
+            addSubview(separator)
+        }
+
+        private func setUpConstraints() {
+            NSLayoutConstraint.activate([
+                initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 18),
+                initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
+                initialsContainer.heightAnchor.constraint(equalToConstant: 28),
+                initialsContainer.widthAnchor.constraint(equalToConstant: 28)
+            ])
+
+            NSLayoutConstraint.activate([
+                initials.topAnchor.constraint(equalTo: initialsContainer.topAnchor, constant: 4),
+                initials.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor),
+                initials.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor),
+                initials.bottomAnchor.constraint(equalTo: initialsContainer.bottomAnchor, constant: -4)
+            ])
+
+            NSLayoutConstraint.activate([
+                userName.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+                userName.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 14),
+                userName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+            ])
+
+            NSLayoutConstraint.activate([
+                mailAddress.topAnchor.constraint(equalTo: userName.bottomAnchor),
+                mailAddress.leadingAnchor.constraint(equalTo: userName.leadingAnchor),
+                mailAddress.trailingAnchor.constraint(equalTo: userName.trailingAnchor),
+                mailAddress.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15)
+            ])
+
+            NSLayoutConstraint.activate([
+                separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+                separator.leadingAnchor.constraint(equalTo: leadingAnchor),
+                separator.trailingAnchor.constraint(equalTo: trailingAnchor),
+                separator.heightAnchor.constraint(equalToConstant: 1)
+            ])
+        }
+
+        private static func userName() -> UILabel {
+            let label = UILabel(frame: .zero)
+            label.font = .adjustedFont(forTextStyle: .subheadline)
+            label.adjustsFontForContentSizeCategory = true
+            label.adjustsFontSizeToFitWidth = true
+            label.textColor = ColorProvider.TextNorm
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }
+
+        private static func mailAddress() -> UILabel {
+            let label = UILabel(frame: .zero)
+            label.font = .adjustedFont(forTextStyle: .footnote)
+            label.adjustsFontForContentSizeCategory = true
+            label.adjustsFontSizeToFitWidth = true
+            label.textColor = ColorProvider.TextWeak
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }
+
+        private static func initials() -> UILabel {
+            let label = UILabel(frame: .zero)
+            label.font = .adjustedFont(forTextStyle: .footnote)
+            label.adjustsFontForContentSizeCategory = true
+            label.adjustsFontSizeToFitWidth = true
+            label.textColor = ColorProvider.White
+            label.textAlignment = .center
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }
+
+        private static func initialsContainer() -> UIView {
+            let view = UIView(frame: .zero)
+            view.backgroundColor = ColorProvider.BrandNorm
+            view.roundCorner(8)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }
+
+        private static func separator() -> UIView {
+            let view = UIView(frame: .zero)
+            view.backgroundColor = ColorProvider.InteractionWeak
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }
+    }
+
+    private final class ManageView: UIView {
+        private let manageLabel = ManageView.manageLabel()
+        private let icon = ManageView.icon()
+        var isHighlight = false {
+            didSet {
+                let color: UIColor = isHighlight ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
+                backgroundColor = color
+            }
+        }
+
+        init() {
+            super.init(frame: .zero)
+            accessibilityTraits = .button
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = ColorProvider.BackgroundNorm
+            setUpConstraints()
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        private func setUpConstraints() {
+            addSubview(icon)
+            NSLayoutConstraint.activate([
+                icon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                icon.centerYAnchor.constraint(equalTo: centerYAnchor),
+                icon.widthAnchor.constraint(equalToConstant: 24),
+                icon.heightAnchor.constraint(equalToConstant: 24)
+            ])
+
+            addSubview(manageLabel)
+            NSLayoutConstraint.activate([
+                manageLabel.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 16),
+                manageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+                manageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+                manageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14)
+            ])
+        }
+
+        private static func manageLabel() -> UILabel {
+            let label = UILabel(frame: .zero)
+            label.text = CoreString._as_manage_accounts
+            label.backgroundColor = .clear
+            label.font = .adjustedFont(forTextStyle: .subheadline)
+            label.adjustsFontSizeToFitWidth = true
+            label.adjustsFontForContentSizeCategory = true
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }
+
+        private static func icon() -> UIImageView {
+            let view = UIImageView(image: IconProvider.cogWheel)
+            view.backgroundColor = .clear
+            view.tintColor = ColorProvider.IconNorm
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }
+    }
+}
+
+private extension UITableView {
+    func reloadData(completion: @escaping () -> Void) {
+        UIView.animate(withDuration: 0, animations: reloadData) { _ in
+            completion()
+        }
     }
 }

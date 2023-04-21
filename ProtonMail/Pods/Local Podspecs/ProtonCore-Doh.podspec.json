@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Doh",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -31,13 +31,13 @@
   },
   "dependencies": {
     "ProtonCore-Log": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Utilities": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-FeatureSwitch": [
-      "4.0.1"
+      "5.2.0"
     ]
   },
   "default_subspecs": [
@@ -50,10 +50,10 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "4.0.1"
+          "5.2.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -68,23 +68,29 @@
       "name": "IntegrationTests",
       "test_type": "unit",
       "dependencies": {
+        "ProtonCore-TestingToolkit/UnitTests/Core": [
+          "5.2.0"
+        ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Environment": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Authentication": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Observability": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/Doh/Tests/Integration/*.swift",
+      "info_plist": {
+        "DYNAMIC_DOMAIN": "$(DYNAMIC_DOMAIN)"
+      },
       "pod_target_xcconfig": {
         "APPLICATION_EXTENSION_API_ONLY": "NO"
       }
