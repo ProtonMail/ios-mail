@@ -23,6 +23,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
 
     var apiServiceMock: APIServiceMock!
     var appRatingStatusProvider: MockAppRatingStatusProvider!
+    var sendRefactorStatusProvider: MockSendRefactorStatusProvider!
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var senderImageStatusProviderMock: MockSenderImageStatusProvider!
@@ -33,6 +34,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         super.setUp()
         apiServiceMock = APIServiceMock()
         appRatingStatusProvider = .init()
+        sendRefactorStatusProvider = .init()
         scheduleSendEnableStatusMock = .init()
         userIntroductionProgressProviderMock = .init()
         senderImageStatusProviderMock = .init()
@@ -41,6 +43,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             apiService: apiServiceMock,
             sessionID: "",
             appRatingStatusProvider: appRatingStatusProvider,
+            sendRefactorStatusProvider: sendRefactorStatusProvider,
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
             senderImageEnableStatusProvider: senderImageStatusProviderMock
@@ -51,6 +54,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         super.tearDown()
         apiServiceMock = nil
         appRatingStatusProvider = nil
+        sendRefactorStatusProvider = nil
         scheduleSendEnableStatusMock = nil
         userIntroductionProgressProviderMock = nil
         senderImageStatusProviderMock = nil

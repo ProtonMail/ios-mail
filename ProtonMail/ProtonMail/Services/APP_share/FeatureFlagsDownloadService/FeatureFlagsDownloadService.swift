@@ -19,6 +19,7 @@ import ProtonCore_Services
 
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
+    case sendRefactor = "SendMessageRefactor"
     case inAppFeedback = "InAppFeedbackIOS"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
@@ -47,6 +48,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     }
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
+    private let sendRefactorStatusProvider: SendRefactorStatusProvider
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let senderImageEnableStatusProvider: SenderImageStatusProvider
@@ -56,6 +58,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         apiService: APIService,
         sessionID: String,
         appRatingStatusProvider: AppRatingStatusProvider,
+        sendRefactorStatusProvider: SendRefactorStatusProvider,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         senderImageEnableStatusProvider: SenderImageStatusProvider
@@ -64,6 +67,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         self.apiService = apiService
         self.sessionID = sessionID
         self.appRatingStatusProvider = appRatingStatusProvider
+        self.sendRefactorStatusProvider = sendRefactorStatusProvider
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.senderImageEnableStatusProvider = senderImageEnableStatusProvider
@@ -134,6 +138,10 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
             if let appRatingStatus = response.result[FeatureFlagKey.appRating.rawValue] as? Bool {
                 self.appRatingStatusProvider.setIsAppRatingEnabled(appRatingStatus)
+            }
+
+            if let sendRefactor = response.result[FeatureFlagKey.sendRefactor.rawValue] as? Bool {
+                self.sendRefactorStatusProvider.setIsSendRefactorEnabled(sendRefactor)
             }
 
             if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {

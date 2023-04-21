@@ -23,7 +23,7 @@ import class ProtonCore_Services.APIErrorCode
 /// Object responsible for triggering the actual send action. SendMessageTask also
 /// manages anything related to the before and after of the actual send request,
 /// specifically alerts/notifications and error management.
-class SendMessageTask {
+final class SendMessageTask {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
