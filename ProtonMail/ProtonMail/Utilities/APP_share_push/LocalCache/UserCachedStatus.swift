@@ -101,6 +101,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let isContactsCached = "isContactsCached"
 
         static let isAppRatingEnabled = "isAppRatingEnabled"
+        static let isSendRefactorEnabled = "isSendRefactorEnabled"
         static let appRatingPromptedInVersion = "appRatingPromptedInVersion"
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"

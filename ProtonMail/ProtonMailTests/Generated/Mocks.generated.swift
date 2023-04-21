@@ -768,6 +768,19 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
 
 }
 
+class MockSendRefactorStatusProvider: SendRefactorStatusProvider {
+    @FuncStub(MockSendRefactorStatusProvider.isSendRefactorEnabled, initialReturn: Bool()) var isSendRefactorEnabledStub
+    func isSendRefactorEnabled() -> Bool {
+        isSendRefactorEnabledStub()
+    }
+
+    @FuncStub(MockSendRefactorStatusProvider.setIsSendRefactorEnabled) var setIsSendRefactorEnabledStub
+    func setIsSendRefactorEnabled(_ value: Bool) {
+        setIsSendRefactorEnabledStub(value)
+    }
+
+}
+
 class MockSenderImageStatusProvider: SenderImageStatusProvider {
     @FuncStub(MockSenderImageStatusProvider.isSenderImageEnabled, initialReturn: Bool()) var isSenderImageEnabledStub
     func isSenderImageEnabled(userID: UserID) -> Bool {

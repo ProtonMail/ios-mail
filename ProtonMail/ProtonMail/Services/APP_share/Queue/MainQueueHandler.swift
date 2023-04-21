@@ -44,6 +44,7 @@ final class MainQueueHandler: QueueHandler {
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
     private let sendMessageResultHandler = SendMessageResultNotificationHandler()
+    private let sendMessageTask: SendMessageTask
     private let dependencies: Dependencies
 
     init(coreDataService: CoreDataService,
@@ -66,6 +67,40 @@ final class MainQueueHandler: QueueHandler {
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
         self.user = user
+
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: ServiceFactory.default.get(by: QueueManager.self),
+                apiService: apiService,
+                contextProvider: coreDataService,
+                messageDataAction: messageDataService,
+                cacheService: user.cacheService
+            )
+        )
+        let sendUseCase = SendMessageBuilder.make(
+            userData: user,
+            apiService: apiService,
+            cacheService: user.cacheService,
+            contactProvider: contactService,
+            messageDataService: messageDataService
+        )
+        let isUserAuthenticated: (UserID) -> Bool = { [weak user] userID in
+            guard let userManager = user else {
+                return false
+            }
+            return userManager.userID == userID
+        }
+        let sendDepenedencies = SendMessageTask.Dependencies(
+            isUserAuthenticated: isUserAuthenticated,
+            messageDataService: messageDataService,
+            fetchMessageDetail: fetchMessageDetail,
+            sendMessage: sendUseCase,
+            localNotificationService: localNotificationService,
+            eventsFetching: user.eventsService,
+            undoActionManager: undoActionManager
+        )
+        self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
+
         self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
     }
 
@@ -130,11 +165,24 @@ final class MainQueueHandler: QueueHandler {
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
             case .send:
+                // This looks like duplicated but we need it
+                // Some how the value of deliveryTime in switch case .send(...) is wrong
+                // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
-                    // This looks like duplicated but we need it
-                    // Some how the value of deliveryTime in switch case .send(...) is wrong
-                    // But correct in if case let
-                    messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
+                    let useSendRefactor = UIApplication.isDebugOrEnterprise ||
+                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled()
+
+                    if useSendRefactor {
+                        let params = SendMessageTask.Params(
+                            messageURI: messageObjectID,
+                            deliveryTime: deliveryTime,
+                            undoSendDelay: user?.userInfo.delaySendSeconds ?? 0,
+                            userID: UserID(rawValue: UID)
+                        )
+                        sendMessageTask.run(params: params, completion: completeHandler)
+                    } else {
+                        messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
+                    }
                 }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
@@ -1050,13 +1098,16 @@ extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
         let incomingDefaultService: IncomingDefaultServiceProtocol
+        let sendRefactorStatusProvider: SendRefactorStatusProvider
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            incomingDefaultService: IncomingDefaultServiceProtocol
+            incomingDefaultService: IncomingDefaultServiceProtocol,
+            sendRefactorStatusProvider: SendRefactorStatusProvider = userCachedStatus
         ) {
             self.actionRequest = actionRequest
             self.incomingDefaultService = incomingDefaultService
+            self.sendRefactorStatusProvider = sendRefactorStatusProvider
         }
     }
 }
