@@ -56,30 +56,150 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        DispatchQueue.global().async {
-            if self.isImageRequest(urlSchemeTask: urlSchemeTask) {
-                self.handleImageRequest(urlSchemeTask: urlSchemeTask)
-            } else if self.isPMIncomingMailRequest(urlSchemeTask: urlSchemeTask) {
-                self.handlePMIncomingMailRequest(urlSchemeTask: urlSchemeTask)
-            } else {
-                guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
-                let error = NSError(domain: "cache.proton.ch", code: -999)
+        if self.isImageRequest(urlSchemeTask: urlSchemeTask) {
+            self.handleImageRequest(urlSchemeTask: urlSchemeTask)
+        } else if self.isPMIncomingMailRequest(urlSchemeTask: urlSchemeTask) {
+            self.handlePMIncomingMailRequest(urlSchemeTask: urlSchemeTask)
+        } else {
+            guard let url = urlSchemeTask.request.url?.absoluteURL else { return }
+            let error = NSError(domain: "cache.proton.ch", code: -999)
 
-                let contentLoadingType = self.contents?.contentLoadingType ?? .none
-                switch contentLoadingType {
-                case .proxyDryRun:
-                    self.fetchTackerInfo(url, urlSchemeTask, error)
-                case .proxy:
-                    self.fetchRemoteImage(url, urlSchemeTask, error)
-                case .none:
-                    urlSchemeTask.didFailWithError(error)
-                case .direct:
-                    assertionFailure("Content loaded without proxy should not reach here.")
-                }
+            let contentLoadingType = self.contents?.contentLoadingType ?? .none
+            switch contentLoadingType {
+            case .proxyDryRun:
+                self.fetchTackerInfo(url, urlSchemeTask, error)
+            case .proxy:
+                self.fetchRemoteImage(url, urlSchemeTask, error)
+            case .none:
+                urlSchemeTask.didFailWithError(error)
+            case .direct:
+                assertionFailure("Content loaded without proxy should not reach here.")
             }
         }
     }
 
+    // If the message has both embedded and remote contents, the webView reload could be triggered twice.
+    // This caused the webView reloads in a short time. There will be duplicated requests that are triggered.
+    // Those requests should be recored here and prevent the callback of the request to be called.
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+        // recorded the request that should be stopped.
+        shouldBeStoppedTasks.append(urlSchemeTask)
+    }
+}
+
+// MARK: - Embedded image
+extension SecureLoaderSchemeHandler {
+    private func isImageRequest(urlSchemeTask: WKURLSchemeTask) -> Bool {
+        guard let url = urlSchemeTask.request.url?.absoluteString else { return false }
+        return url.starts(with: HTTPRequestSecureLoader.ProtonScheme.pmCache.rawValue) ||
+            url.starts(with: HTTPRequestSecureLoader.imageCacheScheme)
+    }
+
+    private func handleImageRequest(urlSchemeTask: WKURLSchemeTask) {
+        let error = NSError(domain: "cache.proton.ch", code: -999)
+        guard
+            let url = urlSchemeTask.request.url,
+            let id = url.host,
+            let keyPacket = contents?.webImages?.embeddedImages.first(where: { $0.id == AttachmentID(id) })?.keyPacket
+        else {
+            urlSchemeTask.didFailWithError(error)
+            return
+        }
+
+        loadEmbeddedImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket) { data in
+            if self.shouldBeStoppedTasks.contains(where: { $0.request == urlSchemeTask.request }) {
+                self.shouldBeStoppedTasks.removeAll(where: { $0.request == urlSchemeTask.request })
+                return
+            }
+            guard
+                let data,
+                let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/2", headerFields: nil)
+            else {
+                urlSchemeTask.didFailWithError(error)
+                return
+            }
+            urlSchemeTask.didReceive(response)
+            urlSchemeTask.didReceive(data)
+            urlSchemeTask.didFinish()
+        }
+    }
+
+    private func loadEmbeddedImageFromCache(
+        attachmentID: String,
+        userKeys: UserKeys,
+        keyPacket: String,
+        completion: @escaping (Data?) -> Void
+    ) {
+        DispatchQueue.global().async {
+            let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
+
+            do {
+                let encoded = try AttachmentDecrypter.decryptAndEncode(
+                    fileUrl: path,
+                    attachmentKeyPacket: keyPacket,
+                    userKeys: userKeys
+                )
+                DispatchQueue.main.async {
+                    completion(Data(base64Encoded: encoded, options: .ignoreUnknownCharacters))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - PMIncoming image
+extension SecureLoaderSchemeHandler {
+    private func isPMIncomingMailRequest(urlSchemeTask: WKURLSchemeTask) -> Bool {
+        guard let url = urlSchemeTask.request.url,
+              let urlComponent = URLComponents(url: url, resolvingAgainstBaseURL: true),
+              let scheme = urlComponent.scheme else {
+            return false
+        }
+        return scheme.contains(HTTPRequestSecureLoader.loopbackScheme)
+    }
+
+    private func handlePMIncomingMailRequest(urlSchemeTask: WKURLSchemeTask) {
+        guard let contents = self.contents,
+              let url = urlSchemeTask.request.url else {
+            urlSchemeTask.didFinish()
+            return
+        }
+
+        let headers: [String: String] = [
+            "Content-Type": "text/html",
+            "Cross-Origin-Resource-Policy": "Same",
+            "Content-Security-Policy": contents.contentSecurityPolicy
+        ]
+
+        let response = HTTPURLResponse(
+            url: url,
+            statusCode: 200,
+            httpVersion: "HTTP/2",
+            headerFields: headers)
+
+        guard let response = response else {
+            urlSchemeTask.didFinish()
+            return
+        }
+
+        urlSchemeTask.didReceive(response)
+        if let found = self.loopbacks[url] {
+            urlSchemeTask.didReceive(found)
+            if let target = latestRequest,
+               url.absoluteString.contains(check: target) {
+                latestRequest = nil
+            }
+        }
+        urlSchemeTask.didFinish()
+    }
+}
+
+// MARK: - Image proxy
+extension SecureLoaderSchemeHandler {
     private func fetchTackerInfo(_ url: URL, _ urlSchemeTask: WKURLSchemeTask, _ error: NSError) {
         imageProxy.fetchRemoteImageTrackerInfo(url: url) { result in
             DispatchQueue.main.async {
@@ -147,103 +267,6 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
             urlsFromProvider.insert(.init(value: url.absoluteStringWithoutProtonPrefix()))
             trackers[trackerInfo] = urlsFromProvider
         }
-    }
-
-    private func isPMIncomingMailRequest(urlSchemeTask: WKURLSchemeTask) -> Bool {
-        guard let url = urlSchemeTask.request.url,
-              let urlComponent = URLComponents(url: url, resolvingAgainstBaseURL: true),
-              let scheme = urlComponent.scheme else {
-            return false
-        }
-        return scheme.contains(HTTPRequestSecureLoader.loopbackScheme)
-    }
-
-    private func handlePMIncomingMailRequest(urlSchemeTask: WKURLSchemeTask) {
-        guard let contents = self.contents,
-              let url = urlSchemeTask.request.url else {
-            urlSchemeTask.didFinish()
-            return
-        }
-
-        let headers: [String: String] = [
-            "Content-Type": "text/html",
-            "Cross-Origin-Resource-Policy": "Same",
-            "Content-Security-Policy": contents.contentSecurityPolicy
-        ]
-
-        let response = HTTPURLResponse(
-            url: url,
-            statusCode: 200,
-            httpVersion: "HTTP/2",
-            headerFields: headers)
-
-        guard let response = response else {
-            urlSchemeTask.didFinish()
-            return
-        }
-
-        urlSchemeTask.didReceive(response)
-        if let found = self.loopbacks[url] {
-            urlSchemeTask.didReceive(found)
-            if let target = latestRequest,
-               url.absoluteString.contains(check: target) {
-                latestRequest = nil
-            }
-        }
-        urlSchemeTask.didFinish()
-    }
-
-    private func isImageRequest(urlSchemeTask: WKURLSchemeTask) -> Bool {
-        guard let url = urlSchemeTask.request.url?.absoluteString else { return false }
-        return url.starts(with: HTTPRequestSecureLoader.ProtonScheme.pmCache.rawValue) ||
-            url.starts(with: HTTPRequestSecureLoader.imageCacheScheme)
-    }
-
-    private func handleImageRequest(urlSchemeTask: WKURLSchemeTask) {
-        let error = NSError(domain: "cache.proton.ch", code: -999)
-        guard let url = urlSchemeTask.request.url,
-              let id = url.host else {
-            urlSchemeTask.didFailWithError(error)
-            return
-        }
-        guard
-            let keyPacket = contents?.webImages?.embeddedImages.first(where: { $0.id == AttachmentID(id) })?.keyPacket
-        else {
-            urlSchemeTask.didFailWithError(error)
-            return
-        }
-        guard let data = loadEmbeddedImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket),
-              let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/2", headerFields: nil) else {
-            urlSchemeTask.didFailWithError(error)
-            return
-        }
-
-        urlSchemeTask.didReceive(response)
-        urlSchemeTask.didReceive(data)
-        urlSchemeTask.didFinish()
-    }
-
-    private func loadEmbeddedImageFromCache(attachmentID: String, userKeys: UserKeys, keyPacket: String) -> Data? {
-        let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
-
-        do {
-            let encoded = try AttachmentDecrypter.decryptAndEncode(
-                fileUrl: path,
-                attachmentKeyPacket: keyPacket,
-                userKeys: userKeys
-            )
-            return Data(base64Encoded: encoded, options: .ignoreUnknownCharacters)
-        } catch {
-            return nil
-        }
-    }
-
-    // If the message has both embedded and remote contents, the webview reload could be triggered twice.
-    // This caused the webview reloads in a short time. There will be duplicated requests that are triggered.
-    // Those requests should be recored here and prevent the callback of the request to be called.
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        // record the request that should be stopped.
-        shouldBeStoppedTasks.append(urlSchemeTask)
     }
 }
 
