@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,26 +18,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenMailLogo" translatesAutoresizingMaskIntoConstraints="NO" id="xyQ-3J-R8K" userLabel="Logo">
-                                <rect key="frame" x="108.66666666666669" y="286.33333333333331" width="158" height="158"/>
+                                <rect key="frame" x="123.66666666666669" y="342" width="128" height="128"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="158" id="H7x-cS-c9T"/>
-                                    <constraint firstAttribute="width" constant="158" id="XW0-ec-fIQ"/>
-                                </constraints>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenMasterbrand" translatesAutoresizingMaskIntoConstraints="NO" id="KXL-Gf-7ud" userLabel="Masterbrand">
-                                <rect key="frame" x="124.66666666666669" y="706" width="126" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="vNB-6K-i3r"/>
+                                    <constraint firstAttribute="height" constant="128" id="H7x-cS-c9T"/>
+                                    <constraint firstAttribute="width" constant="128" id="XW0-ec-fIQ"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" name="LaunchScreenBackground"/>
                         <constraints>
-                            <constraint firstItem="KXL-Gf-7ud" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1vc-ws-Q8t"/>
-                            <constraint firstItem="xyQ-3J-R8K" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="0.45" id="5wy-Y2-IEO"/>
+                            <constraint firstItem="xyQ-3J-R8K" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="5wy-Y2-IEO"/>
                             <constraint firstItem="xyQ-3J-R8K" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YLt-DF-wqF"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="KXL-Gf-7ud" secondAttribute="bottom" constant="40" id="ot3-XF-Lv6"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -47,8 +39,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreenMailLogo" width="552" height="552"/>
-        <image name="LaunchScreenMasterbrand" width="126" height="32"/>
+        <image name="LaunchScreenMailLogo" width="128" height="128"/>
         <namedColor name="LaunchScreenBackground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

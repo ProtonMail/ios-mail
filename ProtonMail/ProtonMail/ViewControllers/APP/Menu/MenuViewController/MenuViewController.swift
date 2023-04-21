@@ -228,17 +228,9 @@ extension MenuViewController {
     @objc
     private func showAccountSwitcher() {
         let list = self.viewModel.getAccountList()
-        var origin = self.primaryUserview.frame.origin
-        origin.y += self.view.safeAreaInsets.top
-        let switcher = try! AccountSwitcher(accounts: list, origin: origin)
-        let userIDs = list.map { $0.userID }
-        for id in userIDs {
-            let unread = self.viewModel.getUnread(of: id)
-            switcher.updateUnread(userID: id, unread: unread)
-        }
+        let switcher = try! AccountSwitcher(accounts: list)
         guard let sideMenu = self.sideMenuController else { return }
-        switcher.present(on: sideMenu, delegate: self)
-
+        switcher.present(on: sideMenu, reference: primaryUserview, delegate: self)
         delay(0.2) { [weak self] in
             self?.view.subviews
                 .compactMap({ $0 as? AccountSwitcher })

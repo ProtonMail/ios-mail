@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un mètode de recuperació us ajudarà a accedir al vostre compte si oblideu la contrasenya o no podeu entrar al compte.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Compte esborrat. Sortint...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Configuració del compte requerida";
@@ -30,7 +27,7 @@
 "Adblocker (NetShield)" = "Bloquejador d'anuncis (NetShield)";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Permetre encaminament alternatiu";
+"Allow alternative routing" = "Autoritza un enrutament alternatiu";
 
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "S'ha produït un error";
@@ -44,27 +41,21 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ens informa que heu millorat el vostre pla, però falten algunes dades tècniques. Empleneu l'informe d'error i el nostre equip us contactarà.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informa que millorat el vostre pla però hem detectat que heu sortit del vostre compte des de llavors.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
 
 /* *
  * Login 2FA */
-"Authenticate" = "Autenticar";
+"Authenticate" = "Autentica";
 
 /* top left back button */
-"Back" = "Anterior";
+"Back" = "Torna";
 
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Clicant a Següent accepteu els Termes i Condicions de Proton";
 
 /* Cancel button */
 "Cancel" = "Cancel·la";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Canvia l'adreça de correu";
@@ -77,7 +68,7 @@
 "Change your password" = "Canvieu la vostra contrasenya";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Visiteu «Estat de Proton» per conèixer l'estat del sistema.";
+"Check Proton Status for our system status." = "Visiteu Proton Status per conèixer l'estat del nostre sistema.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Tanca";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contacteu-nos directament a través del nostre formulari d’assistència, correu electrònic (support@protonmail.zendesk.com) o Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Continua";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Creeu un compte Proton amb el vostre correu electrònic actual";
@@ -150,7 +141,7 @@
 "Customer support" = "Atenció al client";
 
 /* *  Account Deletion */
-"Delete account" = "Eliminar compte";
+"Delete account" = "Elimina el compte";
 
 /* Did not receive code button */
 "Did not receive a code?" = "No heu rebut un codi?";
@@ -289,14 +280,10 @@
 /* alternative routing link name in description
    External accounts not supported popup learn more button
    learn more button */
-"Learn more" = "Saber-ne més";
+"Learn more" = "Més informació";
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Més informació sobre la verificació humana i per què la demanem.";
-
-/* *
- * Splash */
-"Made by" = "Realitzat per";
 
 /* Mailbox password field title */
 "Mailbox password" = "Contrasenya de la bústia de correu";
@@ -353,9 +340,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Només les subscripcions anuals no renovables estan disponibles mitjançant aquesta aplicació";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Pla millorat satisfactoriament";
 
@@ -400,7 +384,7 @@
 
 /* Action
    OK button */
-"OK" = "D'acord";
+"OK" = "OK";
 
 /* Signup main view description */
 "One account for all Proton services." = "Un compte per a tots els serveis Proton.";
@@ -457,14 +441,8 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Introduïu la contrasenya del vostre compte Proton.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Inicieu la sessió al compte de Proton Mail del qual voleu millorar el pla per poder completar la compra.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicieu la sessió al compte de Proton Mail pel qual esteu millorant els serveis per a que puguem completar l'activació del pla.";
-
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Assegureu-vos que la vostra connexió a Internet funciona.";
+"Please make sure that your internet connection is working." = "Asseieu-vos que la vostra connexió a internet funciona.";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Compartiu el problema.";
@@ -482,9 +460,6 @@
  * Login create address */
 "Proton address required" = "Es requereix l'adreça del Proton";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton està caigut";
 
@@ -498,7 +473,7 @@
 "Purchase is not possible." = "La compra no és possible.";
 
 /* quit button */
-"Quit" = "Sortir";
+"Quit" = "Surt";
 
 /* 2FA screen recovery field title */
 "Recovery code" = "Codi de recuperació";
@@ -510,7 +485,7 @@
 "Recovery phone number" = "Número de telèfon de recuperació";
 
 /* Remove button */
-"Remove" = "Suprimir";
+"Remove" = "Suprimeix";
 
 /* old value of remove account button in account manager */
 "Remove account" = "Suprimir el compte";
@@ -534,7 +509,7 @@
 "Resend" = "Tornar a enviar";
 
 /* Button in some alerts */
-"Retry" = "Tornar-ho a provar";
+"Retry" = "Reintenta";
 
 /* Search country placeholder */
 "Search country" = "Cercar país";
@@ -544,7 +519,7 @@
 
 /* *
  *  Payments UI */
-"Select a plan" = "Seleccionar un pla";
+"Select a plan" = "Seleccioneu un pla";
 
 /* Recovery view title
    Set recovery method button */
@@ -555,7 +530,7 @@
 
 /* *
  *  Login screen */
-"Sign in" = "Iniciar la sessió";
+"Sign in" = "Inicia la sessió";
 
 /* Button for signing into another account */
 "Sign in to another account" = "Iniciar sessió a un altre compte";
@@ -575,9 +550,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Voleu ometre el mètode de recuperació?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Ens sap greu, no podem processar compres a la versió beta de l'aplicació iOS. Gràcies per participar a la nostra beta pública!";
 
@@ -592,7 +564,7 @@
 "Streaming service support" = "Suport de serveis de reproducció en línia";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Assumpte…";
+"Subject..." = "Assumpte...";
 
 /* Subscription title */
 "Subscription" = "Subscripció";
@@ -622,9 +594,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "No es pot connectar als servidors del Proton. La causa podria ser una mala configuració de la xarxa, que els servidors del Proton estiguin essent blocats o que els servidors actualment no funcionin";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La validació del certificat TLS ha fallat intentant connectar a l'API de Proton. La vostra connexió a internet actual podria estar controlada. Per mantenir les vostres dades segures, estem evitant que l'aplicació accedeixi a l'API de Proton.\nPer iniciar sessió o accedir al vostre compte, canvieu a una nova xarxa i intenteu tornar a connectar.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Això no hauria de durar més d'un minut.";
 
@@ -632,7 +601,7 @@
 "This will help you access your account in case you forget your password or get locked out of your account." = "Això us ajudarà a accedir al vostre compte si oblideu la vostra contrasenya o no podeu entrar al vostre compte.";
 
 /* Delete account explaination under button */
-"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Això eliminarà permanentment el vostre compte i totes les seves dades. No podreu reactivar aquest compte.";
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "S'eliminarà permanentment el vostre compte i totes les seves dades. No podreu reactivar aquest compte.";
 
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Per utilitzar l'aplicació Proton com a membre d'una organització abans necessiteu canviar la vostra contrasenya iniciant sessió a Proton des d'un navegador.";
@@ -649,9 +618,6 @@
 /* other method alert button */
 "Try other method" = "Provar un altre mètode";
 
-/* network troubleshot view title */
-"Twitter" = "Twitter";
-
 /* 2FA screen title */
 "Two-factor authentication" = "Autenticació de dos factors";
 
@@ -666,7 +632,7 @@
 "Unlock your mailbox" = "Desbloquegeu la vostra bústia de correu";
 
 /* update button */
-"Update" = "Actualitzar";
+"Update" = "Actualitza";
 
 /* *
  *  Force upgrade */
@@ -676,13 +642,13 @@
 "Upgrade your plan" = "Milloreu el vostre pla";
 
 /* 2FA screen recovery button title */
-"Use recovery code" = "Utilitzar codi de recuperació";
+"Use recovery code" = "Utilitza un codi de recuperació";
 
 /* 2FA screen 2FA button title */
-"Use two-factor code" = "Utilitzar codi de dos factors";
+"Use two-factor code" = "Utilitza un codi de dos factors";
 
 /* Email address button */
-"Use your current email instead" = "Utilitzeu el vostre correu electrònic actual";
+"Use your current email instead" = "Utilitzeu el vostre correu electrònic actual.";
 
 /* Username field title */
 "Username" = "Nom d'usuari";
@@ -692,13 +658,13 @@
 "Verification code" = "Codi de verificació";
 
 /* Verify button */
-"Verify" = "Verificar";
+"Verify" = "Verifica";
 
 /* Verifying button */
 "Verifying" = "Verificant";
 
 /* Signup complete progress step payment verification */
-"Verifying your payment" = "Verificant el pagament";
+"Verifying your payment" = "S'està verificant el pagament.";
 
 /* visit item title */
 "Visit our Help Center" = "Visiteu el nostre Centre d'Ajuda";
@@ -768,7 +734,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "S'ha creat correctament el vostre compte Proton Free.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "La vostra sessió ha caducat. Torneu a iniciar sessió.";
 

@@ -10,9 +10,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "パスワードを忘れたり、アカウントにアクセスできなくなった場合に、回復手段を使ってアカウントにアクセスできるようにします。";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "アカウントが削除されました。\nログアウトしています...";
-
 /* *
  *  Login errors */
 "Account setup required" = "アカウントのセットアップが必要です";
@@ -41,9 +38,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Appleからサブスクリプションプランのアップグレードの通知を受けましたが、いくつかの技術情報が見当たりません。顧客サポートチームがご連絡しますので、バグ報告をお願いします。";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Appleからサービスプランのアップグレードの通知を受けましたが、ログアウトしている事を検出しました。";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
 
@@ -59,9 +53,6 @@
 
 /* Cancel button */
 "Cancel" = "キャンセル";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "メールアドレスを変更";
@@ -110,7 +101,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "サポートフォーム、メール (support@protonmail.zendesk.com)、または Twitter から直接、お問い合わせください。";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "続行";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "現在のメールで Proton アカウントを作成";
@@ -156,7 +147,7 @@
 "Did not receive the code?" = "コードを受け取っていませんか?";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "プロキシーやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
+"Disable any proxies or firewalls, or contact your network administrator." = "プロキシやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
 
 /* Cancellation for the credits applied popup */
 "Dismiss" = "却下";
@@ -260,7 +251,7 @@
 "Incorrect mailbox password" = "無効なメールボックスのパスワードです";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "インターネットサービスプロバイダー (ISP) の問題";
+"Internet Service Provider (ISP) problem" = "インターネット サービス プロバイダー (ISP) の問題";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "無効なハッシュ化されたパスワードです";
@@ -280,7 +271,7 @@
 /* alternative routing link name in description
    External accounts not supported popup learn more button
    learn more button */
-"Learn more" = "より詳しく";
+"Learn more" = "詳細";
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "人間であることの検証についてとなぜ必要なのかについての詳細";
@@ -289,7 +280,7 @@
 "Mailbox password" = "メールボックスのパスワード";
 
 /* Manage accounts button */
-"Manage accounts" = "アカウントの管理";
+"Manage accounts" = "アカウント管理";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "複数ユーザー対応";
@@ -336,9 +327,6 @@
 
 /* New_Plans */
 "New_Plans One plan for all Proton services" = "すべての Proton サービスのための 1 つのプラン";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "プランは正常にアップグレードされました";
@@ -432,12 +420,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Proton アカウントのパスワードを入力してください。";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "購入手続きを完了させるためにProton Mailのアカウントにログインしてください。";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "サービスプランの有効化を完了させるために、Proton Mailのアカウントにログインしてください。";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "インターネットに接続されていることを確認してください。";
 
@@ -450,18 +432,12 @@
 /* Plan details priority customer support */
 "Priority customer support" = "優先カスタマーサポート";
 
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
-
 /* *
  * Login create address */
 "Proton address required" = "Proton アドレスが必要です";
 
 /* Username field title */
 "Proton email or username" = "Proton メールまたはユーザー名";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton は現在利用できません";
@@ -470,7 +446,7 @@
 "Proton Status" = "Proton ステータス";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "プロキシーまたはファイアウォールの干渉";
+"Proxy/Firewall interference" = "プロキシまたはファイアウォールの干渉";
 
 /* quit button */
 "Quit" = "終了";
@@ -479,7 +455,7 @@
 "Recovery code" = "回復用コード";
 
 /* Recovery email field title */
-"Recovery email" = "回復用のメールアドレス";
+"Recovery email" = "回復用メールアドレス";
 
 /* Recovery phone field title */
 "Recovery phone number" = "回復用の電話番号";
@@ -550,9 +526,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "回復手段の設定をスキップしますか?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "申し訳ございませんがベータ版のiOSアプリからは課金ができません。\nパブリックベータにご参加頂きありがとうございます。";
 
@@ -591,9 +564,6 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API へ接続している途中に TLS 証明書の検証に失敗しました。現在のインターネット接続は監視されている可能性があります。データを安全に保つに、アプリは Proton API へのアクセスをブロックしています。\nアカウントにログインおよびアクセスするには、新しいネットワークに切り替えてから再度お試しください。";
-
 /* Complete view description */
 "This should take no more than a minute." = "これにはそんなに時間はかかりません。";
 
@@ -617,9 +587,6 @@
 
 /* other method alert button */
 "Try other method" = "他の方法を試してください";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "2 要素認証";
@@ -734,7 +701,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "セッションの有効期限が切れました。再度ログインしてください。";
 

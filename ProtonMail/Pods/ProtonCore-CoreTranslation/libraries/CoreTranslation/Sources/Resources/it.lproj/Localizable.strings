@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un metodo di recupero ti aiuterà ad accedere al tuo account nel caso in cui dimentichi la password o ti blocchi fuori dal tuo account.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Account eliminato.\nDisconnessione...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Configurazione dell'account richiesta";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ci ha informati che hai effettuato l'upgrade del piano, ma alcuni dati tecnici erano mancanti. Per favore compila la segnalazione e il nostro team di assistenza clienti ti contatterà.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ci ha informati che hai effettuato l'upgrade del piano, ma abbiamo rilevato che hai effettuato il logout da quel momento.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Sei sicuro di voler uscire %@?";
 
@@ -63,14 +57,11 @@
 /* Cancel button */
 "Cancel" = "Annulla";
 
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
-
 /* Change email address button */
 "Change email address" = "Cambia indirizzo email";
 
 /* Dialog action button title for organization user first login */
-"Change password" = "Modifica della password";
+"Change password" = "Cambia la password";
 
 /* *
  * Login upgrade username-only account */
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contattaci attraverso il nostro modulo di supporto, email (support@protonmail.zendesk.com), o Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Continua";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Crea un account Proton con la tua email attuale";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "Indirizzo email già in uso.";
+
+/* Username field title */
+"Email or username" = "Email o nome utente";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Goditi il ​​mondo della privacy.";
@@ -294,10 +288,6 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Scopri di più sulla verifica umana e sul motivo per cui la chiediamo.";
 
-/* *
- * Splash */
-"Made by" = "Creato da";
-
 /* Mailbox password field title */
 "Mailbox password" = "Password della casella email";
 
@@ -353,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Solo gli abbonamenti annuali non rinnovabili sono disponibili tramite questa app";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Piano aggiornato con successo";
 
@@ -390,7 +377,7 @@
 "New_Plans Your privacy and security are our priority." = "La tua privacy e la tua sicurezza sono la nostra priorità.";
 
 /* Next button */
-"Next" = "Prossimo";
+"Next" = "Successiva";
 
 /* network troubleshot cell title */
 "No internet connection" = "Nessuna connessione Internet";
@@ -457,12 +444,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Inserisci la password del tuo Account Proton.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Per favore accedi all'account Proton Mail per il quale stai effettuando l'upgrade del piano in modo da poter completare l'acquisto.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Per favore accedi all'account Proton Mail per il quale stai effettuando l'upgrade del piano in modo da poter completare l'attivazione del piano di servizio.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Per favore assicurati che la connessione internet funzioni.";
 
@@ -484,9 +465,6 @@
 
 /* Username field title */
 "Proton email or username" = "Email Proton o nome utente";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton è offline";
@@ -564,7 +542,7 @@
 "Sign in to another account" = "Accedi ad un altro account";
 
 /* Sign out button/ title */
-"Sign out" = "Disconnettiti";
+"Sign out" = "Esci";
 
 /* Section title of account manager */
 "Signed in to Proton Mail" = "Accesso a Proton Mail";
@@ -577,9 +555,6 @@
 
 /* Recovery skip title */
 "Skip recovery method?" = "Ignorare metodo di recupero?";
-
-/* SMS method name */
-"SMS" = "SMS";
 
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Spiacenti, non possiamo elaborare gli acquisti nella versione beta dell'app iOS. Grazie per aver partecipato alla nostra beta pubblica!";
@@ -625,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "I server Proton sono irraggiungibili. Potrebbe essere causato da una configurazione di rete errata, da server Proton non funzionanti o da server Proton bloccati";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "La convalida del certificato TLS non è riuscita nel tentativo di connettersi all'API Proton. La tua connessione internet attuale potrebbe essere monitorata. Per mantenere i tuoi dati al sicuro, stiamo impedendo all'app di accedere all'API Proton.\nPer accedere al tuo account, passa a una nuova rete e prova a connetterti di nuovo.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Non dovrebbe richiedere più di un minuto.";
 
@@ -651,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Prova un altro metodo";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Autenticazione a due fattori";
@@ -774,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Il tuo account Proton Free è stato creato con successo.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "La tua sessione è scaduta. Per favore esegui l'accesso di nuovo.";
 

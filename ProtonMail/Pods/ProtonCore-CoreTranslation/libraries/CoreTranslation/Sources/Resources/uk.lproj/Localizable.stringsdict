@@ -33,7 +33,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d календаря</string>
+			<string>%d календарі</string>
 			<key>many</key>
 			<string>%d календарів</string>
 			<key>one</key>

@@ -77,9 +77,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d eigene Domain</string>
+			<string>%d benutzerdefinierte Domain</string>
 			<key>other</key>
-			<string>%d eigene Domains</string>
+			<string>%d benutzerdefinierte Domains</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -420,9 +420,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Unterstützung für %d eigene E-Mail-Domain</string>
+			<string>Unterstützung für %d benutzerdefinierte E-Mail-Domain</string>
 			<key>other</key>
-			<string>Unterstützung für %d eigene E-Mail-Domains</string>
+			<string>Unterstützung für %d benutzerdefinierte E-Mail-Domains</string>
 		</dict>
 	</dict>
 </dict>

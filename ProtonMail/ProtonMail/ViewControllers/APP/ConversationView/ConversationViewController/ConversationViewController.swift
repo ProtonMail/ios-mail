@@ -1249,7 +1249,7 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
     }
 
     private func allowToCreateLabels(existingLabels: Int) -> Bool {
-        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        let isFreeAccount = viewModel.user.userInfo.subscribed.isEmpty
         if isFreeAccount {
             return existingLabels < Constants.FreePlan.maxNumberOfLabels
         }
@@ -1257,7 +1257,7 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
     }
 
     private func allowToCreateFolders(existingFolders: Int) -> Bool {
-        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        let isFreeAccount = viewModel.user.userInfo.subscribed.isEmpty
         if isFreeAccount {
             return existingFolders < Constants.FreePlan.maxNumberOfFolders
         }

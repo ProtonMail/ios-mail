@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "復原方法可協助您存取帳號，以因應忘記密碼或被鎖在帳號之外。";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "帳號已刪除\n正在登出…";
-
 /* *
  *  Login errors */
 "Account setup required" = "必須設定帳號";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通報我們您已升等服務方案，但缺少部份技術資料。煩請儘速填寫錯誤回報，以利客戶支援團隊及時與您聯繫。";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 通報我們您已升等服務方案，但我們偵測到您同時亦登出帳號。";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
 
@@ -63,14 +57,11 @@
 /* Cancel button */
 "Cancel" = "取消";
 
-/* captha method name */
-"CAPTCHA" = "驗證碼";
-
 /* Change email address button */
 "Change email address" = "變更電郵位址";
 
 /* Dialog action button title for organization user first login */
-"Change password" = "更改密碼";
+"Change password" = "變更密碼";
 
 /* *
  * Login upgrade username-only account */
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電郵 (support@protonmail.zendesk.com) 或 Twitter 聯絡我們。";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "繼續";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "以既有電郵位址創建 Proton 帳號";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "電郵位址已在使用。";
+
+/* Username field title */
+"Email or username" = "電子郵件或使用者名稱";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "擁有隱私權的世界。";
@@ -289,7 +283,7 @@
 /* alternative routing link name in description
    External accounts not supported popup learn more button
    learn more button */
-"Learn more" = "了解更多";
+"Learn more" = "瞭解詳情";
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "了解更多關於真人驗證的必要性。";
@@ -349,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "此應用程式僅提供非續購型年約授權";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "方案升級成功";
 
@@ -386,17 +377,17 @@
 "New_Plans Your privacy and security are our priority." = "您的隱私權與安全防護是我們首要任務。";
 
 /* Next button */
-"Next" = "下一步";
+"Next" = "下一個";
 
 /* network troubleshot cell title */
-"No internet connection" = "沒有網際網路連線";
+"No internet connection" = "無網路連線";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "不是，此為另一 Proton Mail 帳號";
 
 /* Action
    OK button */
-"OK" = "確定";
+"OK" = "好";
 
 /* Signup main view description */
 "One account for all Proton services." = "一組帳號，Proton 服務無限用。";
@@ -435,10 +426,10 @@
 "Payment validated" = "款項已收到";
 
 /* Recovery segmenet phone */
-"Phone" = "電話號碼";
+"Phone" = "電話";
 
 /* SMS label */
-"Phone number" = "電話號碼";
+"Phone number" = "手機號碼";
 
 /* Sub-user configuration error */
 "Please ask your admin to configure your sub-user." = "請洽詢您的管理員以架構您的子使用者";
@@ -452,12 +443,6 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "請輸入您的 Proton 帳號密碼。";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "請登入至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成此次訂購。";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "請登入至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成方案服務啟用。";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "請確認您的網際網路連線正常運作。";
@@ -481,11 +466,8 @@
 /* Username field title */
 "Proton email or username" = "Proton 電子郵件或使用者名稱";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton 免費版";
-
 /* network troubleshot cell title */
-"Proton is down" = "Proton 目前無法使用。";
+"Proton is down" = "Proton 目前無法使用";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton 狀態";
@@ -574,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "略過復原方法？";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "抱歉，我們無法在 iOS 應用程式測試版裡提供訂購授權。誠摯感謝您參與此次公開評測。";
 
@@ -621,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "無法連線到 Proton 伺服器。可能是錯誤的網路組態設定、Proton 伺服器暫停服務，又或者 Proton 伺服器遭到封鎖所導致";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "連接 Proton API 時，TLS 憑證驗證失敗。您現階段網路連線很可能會受到監控。基於防禦您的資料安全無虞，我們正管制此應用程式存取 Proton API。若需登入或存取您的帳號，請切換至新的網路後，再試著連接。";
-
 /* Complete view description */
 "This should take no more than a minute." = "此耗時往往不超過一分鐘。";
 
@@ -647,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "嘗試其他方法";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "兩步驟驗證";
@@ -770,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "您的工作階段已逾期。請重新登入。";
 

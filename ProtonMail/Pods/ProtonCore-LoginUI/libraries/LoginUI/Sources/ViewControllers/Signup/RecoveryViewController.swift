@@ -125,20 +125,16 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        if minimumAccountType == .username {
-            methodStackView.subviews.forEach { $0.isHidden = true }
-            recoveryMethodDescriptionLabel.text = CoreString._su_recovery_email_only_view_desc
-            recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title
-        } else {
-            recoveryMethodDescriptionLabel.text = CoreString._su_recovery_view_desc
-            recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title_optional
-            let skipButton = UIBarButtonItem(title: CoreString._su_skip_button,
-                                             style: .done,
-                                             target: self,
-                                             action: #selector(RecoveryViewController.onSkipButtonTap(_:)))
-            skipButton.tintColor = ColorProvider.BrandNorm
-            navigationItem.rightBarButtonItem = skipButton
-        }
+
+        recoveryMethodDescriptionLabel.text = CoreString._su_recovery_view_desc
+        recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title_optional
+        let skipButton = UIBarButtonItem(title: CoreString._su_skip_button,
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(RecoveryViewController.onSkipButtonTap(_:)))
+        skipButton.tintColor = ColorProvider.BrandNorm
+        navigationItem.rightBarButtonItem = skipButton
+
         setUpBackArrow(action: #selector(RecoveryViewController.onBackButtonTap))
         setupGestures()
         setupNotifications()

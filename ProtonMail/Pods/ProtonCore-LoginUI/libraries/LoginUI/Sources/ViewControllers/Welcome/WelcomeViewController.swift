@@ -35,17 +35,28 @@ public protocol WelcomeViewControllerDelegate: AnyObject {
 public final class WelcomeViewController: UIViewController, AccessibleView {
 
     private let variant: WelcomeScreenVariant
+    private let layout: WelcomeViewLayout?
     private let username: String?
     private let signupAvailable: Bool
     private weak var delegate: WelcomeViewControllerDelegate?
 
     override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
-    public init(variant: WelcomeScreenVariant,
-                delegate: WelcomeViewControllerDelegate,
-                username: String?,
-                signupAvailable: Bool) {
+    public convenience init(variant: WelcomeScreenVariant,
+                            delegate: WelcomeViewControllerDelegate,
+                            username: String?,
+                            signupAvailable: Bool) {
+        self.init(variant: variant, layout: nil, delegate: delegate,
+                  username: username, signupAvailable: signupAvailable)
+    }
+
+    init(variant: WelcomeScreenVariant,
+         layout: WelcomeViewLayout?,
+         delegate: WelcomeViewControllerDelegate,
+         username: String?,
+         signupAvailable: Bool) {
         self.variant = variant
+        self.layout = layout
         self.delegate = delegate
         self.username = username
         self.signupAvailable = signupAvailable
@@ -59,6 +70,7 @@ public final class WelcomeViewController: UIViewController, AccessibleView {
         let loginAction = #selector(WelcomeViewController.loginActionWasPerformed)
         let signupAction = #selector(WelcomeViewController.signupActionWasPerformed)
         view = WelcomeView(variant: variant,
+                           layout: layout,
                            target: self,
                            loginAction: loginAction,
                            signupAction: signupAction,

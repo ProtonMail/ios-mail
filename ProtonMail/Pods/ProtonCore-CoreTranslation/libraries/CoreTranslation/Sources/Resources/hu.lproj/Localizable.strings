@@ -11,10 +11,7 @@
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Egy Proton Kombinált csomag vásárlása már megkezdődött. Kattintson a tovább gombra, hogy befejezhesse a fizetés folyamatát és létrehozhassa a fiókját";
 
 /* Recovery skip description */
-"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Egy visszaállítási mód beállításával könnyen visszaszerezheted a fiókodat, azon esetben ha elfelejtetted volna a jelszavad vagy ki lettél zárva a fiókodból.";
-
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Fiók törölve.\nKijelentkezés...";
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A helyreállítási módszerekkel visszaszerezheti a fiókja elérést, a jelszava elvesztése esetén vagy ha kizáródna a fiókjából.";
 
 /* *
  *  Login errors */
@@ -30,7 +27,7 @@
 "Adblocker (NetShield)" = "Reklámblokkoló (NetShield)";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Alternatív útválasztás engedélyezése";
+"Allow alternative routing" = "Alternatív útválasztó engedélyezése";
 
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Hiba történt";
@@ -43,9 +40,6 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
-
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de úgy vettük észre, hogy azóta kilépett a fiókból.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Biztos, hogy ki szeretne jelentkezni %@?";
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Mégsem";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "E-mail cím módosítása";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Vegye fel velünk a kapcsolatot a támogatási űrlapon, e-mailben (support@protonmail.zendesk.com), vagy a Twitter segítségével.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Tovább";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Hozzon létre egy Proton fiókot a jelenlegi email címével";
@@ -170,9 +161,6 @@
 /* Title of domains bottom action sheet */
 "Domain" = "Domain név";
 
-/* network troubleshot view title */
-"email" = "email";
-
 /* Email field title
    Email label
    email method name
@@ -186,7 +174,7 @@
 "Enjoy the world of privacy." = "Élvezze a magánélet világát.";
 
 /* 2FA screen recovery field info */
-"Enter an 8-character recovery code." = "Írjon be egy 8 karakteres visszaállítási kódot.";
+"Enter an 8-character recovery code." = "Írjon be egy 8 karakteres helyreállítási kódot.";
 
 /* 2FA screen field info
    Email verification code description
@@ -343,9 +331,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Az alkalmazásból csak éves, nem automatikusan megújuló előfizetés érhető el";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Csomag sikeresen frissítve";
 
@@ -444,12 +429,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Adja meg a Proton fiókja jelszavát.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Kérjük, hogy a vásárlás véglegesítéséhez és előfizetői csomagjának frissítéséhez jelentkezzen be Proton Mail fiókjába.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be Proton Mail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Ellenőrizze, hogy az internet kapcsolat működik-e.";
 
@@ -469,11 +448,8 @@
  * Login create address */
 "Proton address required" = "Proton e-mail cím szükséges";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton ingyenes";
-
 /* network troubleshot cell title */
-"Proton is down" = "A Proton nem érhető el";
+"Proton is down" = "A Proton nem működik";
 
 /* Name of the link of Proton Status */
 "Proton Status" = "Proton Állapot";
@@ -491,7 +467,7 @@
 "Recovery code" = "Helyreállítási kód";
 
 /* Recovery email field title */
-"Recovery email" = "Helyreállítási email";
+"Recovery email" = "Helyreállító e-mail";
 
 /* Recovery phone field title */
 "Recovery phone number" = "Helyreállítási telefonszám";
@@ -532,10 +508,10 @@
 
 /* Recovery view title
    Set recovery method button */
-"Set recovery method" = "Helyreállítási mód hozzáadása";
+"Set recovery method" = "Helyreállítási módszer hozzáadása";
 
 /* Recovery view title optional */
-"Set recovery method (optional)" = "Helyreállítási mód hozzáadása (opcionális)";
+"Set recovery method (optional)" = "Helyreállítási módszer hozzáadása (opcionális)";
 
 /* *
  *  Login screen */
@@ -557,10 +533,7 @@
 "Skip" = "Kihagyás";
 
 /* Recovery skip title */
-"Skip recovery method?" = "Helyreállítási mód kihagyása?";
-
-/* SMS method name */
-"SMS" = "SMS";
+"Skip recovery method?" = "Helyreállítási módszer kihagyása?";
 
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Elnézést, de az iOS alkalmazás béta verziójából nem tudunk vásárlásokat fogadni. De azért köszönjük, hogy részt vesz a béta programban!";
@@ -607,7 +580,7 @@
 "This should take no more than a minute." = "Az egész várhatóan nem fog egy percnél több időt igénybe venni.";
 
 /* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
-"This will help you access your account in case you forget your password or get locked out of your account." = "Ezen visszaállítási mód beállításával könnyen visszaszerezheti a fiókját, azon esetben ha elfelejtette volna a jelszavát vagy ki lett volna zárva a fiókjából.";
+"This will help you access your account in case you forget your password or get locked out of your account." = "Ez segít visszaszerezheti a fiókja elérést, a jelszava elvesztése esetén vagy ha kizáródna a fiókjából.";
 
 /* Delete account explaination under button */
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ezzel véglegesen törlődik fiókja és minden ahhoz kapcsolódó adat. A fiók többé nem állítható vissza.";
@@ -626,9 +599,6 @@
 
 /* other method alert button */
 "Try other method" = "Másik módszer";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Kétlépcsős hitelesítés";

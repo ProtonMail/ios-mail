@@ -346,7 +346,7 @@ extension PMAPIService {
             
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
             
-            protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, forceUpgradeHandler)
+            protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, self.deviceVerificationHandler, forceUpgradeHandler)
             
         } else {
             completion.call(task: task, error: error)
@@ -434,7 +434,7 @@ extension PMAPIService {
             }
             
         } else {
-            protonMailResponseCodeHandler.handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, forceUpgradeHandler)
+            protonMailResponseCodeHandler.handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, self.deviceVerificationHandler, forceUpgradeHandler)
         }
         self.debugError(error)
     }
@@ -501,7 +501,7 @@ extension PMAPIService {
                         completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
                         return
                     }
-                    self.protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion, self.humanVerificationHandler, self.forceUpgradeHandler)
+                    self.protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion, self.humanVerificationHandler, self.deviceVerificationHandler, self.forceUpgradeHandler)
                 case .triedAcquiringNew(.wrongConfigurationNoDelegate(let error)):
                     self.debugError(error)
                     completion.call(task: nil, error: error)

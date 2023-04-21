@@ -275,6 +275,8 @@ public protocol HumanVerifyDelegate: AnyObject {
     var paymentDelegateForLoginAndSignup: HumanVerifyPaymentDelegate? { get set }
 
     func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
+    // This function calculate a device challenge using different challenge types and returns the solved hash in Base64 format.
+    func onDeviceVerify(parameters: DeviceVerifyParameters) -> String?
 
     func getSupportURL() -> URL
 }

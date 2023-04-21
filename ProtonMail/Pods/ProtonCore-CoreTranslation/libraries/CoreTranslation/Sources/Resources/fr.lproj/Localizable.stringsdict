@@ -93,9 +93,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d adresse électronique</string>
+			<string>%d adresse e-mail</string>
 			<key>other</key>
-			<string>%d adresses électroniques</string>
+			<string>%d adresses e-mail</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -232,9 +232,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d adresse électronique</string>
+			<string>%d adresse e-mail</string>
 			<key>other</key>
-			<string>%d adresses électroniques</string>
+			<string>%d adresses e-mail</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d personal calendars</key>
@@ -372,7 +372,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Plus d'%d serveur</string>
+			<string>Plus de %d serveur</string>
 			<key>other</key>
 			<string>Plus de %d serveurs</string>
 		</dict>
@@ -420,7 +420,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Prise en charge d'%d domaine de messagerie personnalisé</string>
+			<string>Prise en charge de %d domaine de messagerie personnalisé</string>
 			<key>other</key>
 			<string>Prise en charge de %d domaines de messagerie personnalisés</string>
 		</dict>

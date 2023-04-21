@@ -70,6 +70,7 @@ public class APIErrorCode {
     public static let appVersionTooOldForExternalAccounts = 5098
     public static let appVersionNotSupportedForExternalAccounts = 5099
     public static let humanVerificationRequired = 9001
+    public static let deviceVerificationRequired = 9002
     public static let invalidVerificationCode = 12087
     public static let tooManyVerificationCodes = 12214
     public static let tooManyFailedVerificationAttempts = 85131

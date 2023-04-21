@@ -42,7 +42,7 @@ extension TrustKitWrapper {
         let reportURIs: [String] = [
             "https://reports.proton.me/reports/tls"
         ]
-        
+
         return [
             "protonmail.ch": [
                 kTSKEnforcePinning: hardfail,

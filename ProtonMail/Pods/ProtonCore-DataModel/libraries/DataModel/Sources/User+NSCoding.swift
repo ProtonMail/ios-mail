@@ -117,7 +117,7 @@ extension UserInfo: NSCoding {
             twoFA: aDecoder.decodeInteger(forKey: CoderKey.twoFA),
             enableFolderColor: aDecoder.decodeInteger(forKey: CoderKey.enableFolderColor),
             inheritParentFolderColor: aDecoder.decodeInteger(forKey: CoderKey.inheritParentFolderColor),
-            subscribed: aDecoder.decodeInteger(forKey: CoderKey.subscribed),
+            subscribed: .init(rawValue: UInt8(aDecoder.decodeInteger(forKey: CoderKey.subscribed))),
             groupingMode: aDecoder.decodeInteger(forKey: CoderKey.groupingMode),
             weekStart: aDecoder.decodeInteger(forKey: CoderKey.weekStart),
             delaySendSeconds: aDecoder.decodeIntegerIfPresent(forKey: CoderKey.delaySendSeconds),
@@ -163,7 +163,7 @@ extension UserInfo: NSCoding {
 
         aCoder.encode(credit, forKey: CoderKey.credit)
         aCoder.encode(currency, forKey: CoderKey.currency)
-        aCoder.encode(subscribed, forKey: CoderKey.subscribed)
+        aCoder.encode(Int(subscribed.rawValue), forKey: CoderKey.subscribed)
 
         aCoder.encode(passwordMode, forKey: CoderKey.pwdMode)
         aCoder.encode(twoFactor, forKey: CoderKey.twoFA)

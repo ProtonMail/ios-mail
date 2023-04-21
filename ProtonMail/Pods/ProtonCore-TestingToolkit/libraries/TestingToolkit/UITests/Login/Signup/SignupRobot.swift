@@ -102,6 +102,18 @@ public final class SignupRobot: CoreElements {
             button(domainsButtonId).checkDoesNotExist()
             return SignupRobot()
         }
+
+        @discardableResult
+        public func externalEmailFieldExists() -> SignupRobot {
+            textField(externalEmailTextFieldId).checkExists()
+            return SignupRobot()
+        }
+
+        @discardableResult
+        public func internalNameFieldExists() -> SignupRobot {
+            textField(nameTextFieldId).checkExists()
+            return SignupRobot()
+        }
     }
     
     public func insertName(name: String) -> SignupRobot {

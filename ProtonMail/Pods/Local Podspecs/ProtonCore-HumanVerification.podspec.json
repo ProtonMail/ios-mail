@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-HumanVerification",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -30,67 +30,367 @@
     "APPLICATION_EXTENSION_API_ONLY": "NO"
   },
   "ios": {
-    "frameworks": "UIKit",
-    "source_files": [
-      "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
-      "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
-    ],
-    "resource_bundles": {
-      "Resources-HumanVerification": [
-        "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-        "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
-      ]
-    }
+    "frameworks": "UIKit"
   },
   "osx": {
-    "frameworks": "AppKit",
-    "source_files": [
-      "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
-      "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
-    ],
-    "resource_bundles": {
-      "Resources-HumanVerification": [
-        "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-        "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
-      ]
-    }
+    "frameworks": "AppKit"
   },
   "dependencies": {
     "ProtonCore-UIFoundations": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Foundations": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Utilities": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-APIClient": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Observability": [
-      "4.0.1"
+      "5.2.0"
     ]
   },
   "default_subspecs": [
-
+    "ErrorWarningEmittingDefaultSubspec"
   ],
-  "testspecs": [
+  "subspecs": [
     {
-      "name": "Tests",
-      "test_type": "unit",
+      "name": "Crypto-Go1.20.2",
       "dependencies": {
-        "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
-          "4.0.1"
-        ],
-        "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "4.0.1"
+        "ProtonCore-GoLibs/Crypto-Go1.20.2": [
+          "5.2.0"
         ]
       },
-      "source_files": "libraries/HumanVerification/Tests/**/*"
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto-patched-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto-patched-Go1.20.2": [
+          "5.2.0"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-Go1.15.15",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
+          "5.2.0"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-Go1.20.2": [
+          "5.2.0"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-patched-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+Search-Go1.15.15",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
+          "5.2.0"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+Search-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+Search-Go1.20.2": [
+          "5.2.0"
+        ]
+      },
+      "ios": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/iOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "osx": {
+        "source_files": [
+          "libraries/HumanVerification/Sources/macOS/**/*.{h,m,swift}",
+          "libraries/HumanVerification/Sources/Shared/**/*.{h,m,swift}"
+        ],
+        "resource_bundles": {
+          "Resources-HumanVerification": [
+            "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
+            "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+          ]
+        }
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/HumanVerification": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/HumanVerification/Tests/**/*"
+        }
+      ]
+    },
+    {
+      "name": "ErrorWarningEmittingDefaultSubspec",
+      "source_files": "libraries/ErrorWarningEmittingDefaultSubspec/ErrorWarningEmittingDefaultSubspec.swift"
     }
   ],
   "swift_version": "5.6"

@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Eine Wiederherstellungsmethode hilft dir, auf dein Konto zuzugreifen, falls du dein Passwort vergessen hast oder aus deinem Konto ausgesperrt wurdest.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Konto gelöscht.\nDu wirst abgemeldet...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Kontoeinrichtung erforderlich";
@@ -36,7 +33,7 @@
 "An error has occured" = "Ein Fehler ist aufgetreten";
 
 /* network troubleshot cell title */
-"Antivirus interference" = "Antivirus-Störung";
+"Antivirus interference" = "Antivirus-Einfluss";
 
 /* Error message */
 "Apple informed us they could not process the purchase." = "Apple hat uns mitgeteilt, dass sie den Kauf nicht akzeptieren können.";
@@ -44,11 +41,8 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hat uns mitgeteilt, dass du dein Abonnement gewechselt hast, aber einige technische Details fehlten. Bitte fülle den Fehlerbericht aus und unser Kundendienstteam wird dich kontaktieren.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hat uns mitgeteilt, dass du dein Abonnement gewechselt hast, jedoch haben wir festgestellt, dass du dich seither von deinem Konto abgemeldet hast.";
-
 /* Alert message of sign out the email address */
-"Are you sure you want to sign out %@?" = "Möchtest du dich wirklich von „%@” abmelden?";
+"Are you sure you want to sign out %@?" = "Möchtest du „%@“ wirklich abmelden?";
 
 /* *
  * Login 2FA */
@@ -63,9 +57,6 @@
 /* Cancel button */
 "Cancel" = "Abbrechen";
 
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
-
 /* Change email address button */
 "Change email address" = "E-Mail-Adresse ändern";
 
@@ -77,7 +68,7 @@
 "Change your password" = "Passwort ändern";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Prüfe Proton-Status für unseren Systemstatus.";
+"Check Proton Status for our system status." = "Prüfe den Proton-Status für unseren Systemstatus.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Schließen";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktiere uns direkt über unser Support-Formular, per E-Mail (support@protonmail.zendesk.com) oder Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Weiter";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Erstelle ein Proton-Konto mit deiner aktuellen E-Mail-Adresse";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "E-Mail-Adresse wird bereits verwendet.";
+
+/* Username field title */
+"Email or username" = "E‐Mail‐Adresse oder Benutzername";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Genieße die Welt der Privatsphäre.";
@@ -294,10 +288,6 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Erfahre mehr über die menschliche Verifizierung und warum wir danach fragen.";
 
-/* *
- * Splash */
-"Made by" = "Erstellt von";
-
 /* Mailbox password field title */
 "Mailbox password" = "Postfach‐Passwort";
 
@@ -352,9 +342,6 @@
 
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Über diese App sind nur nicht verlängerbare Jahresabonnements verfügbar.";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Abonnement-Upgrade erfolgreich";
@@ -439,10 +426,10 @@
 "Payment validated" = "Zahlung bestätigt";
 
 /* Recovery segmenet phone */
-"Phone" = "Telefon";
+"Phone" = "Telefonnummer";
 
 /* SMS label */
-"Phone number" = "Rufnummer";
+"Phone number" = "Telefonnummer";
 
 /* Sub-user configuration error */
 "Please ask your admin to configure your sub-user." = "Bitte frage deinen Administrator, damit er deinen Sub-User konfiguriert.";
@@ -456,12 +443,6 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Bitte gib dein Proton-Kontenpasswort ein.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Bitte melde dich bei dem Proton Mail Konto an, bei dem du den Serviceplan aktualisieren möchtest, damit wir den Kauf abschließen können.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Bitte melde dich bei dem Proton Mail Konto an, bei dem du den Serviceplan aktualisieren möchtest, damit wir die Aktivierung des Serviceplans abschließen können.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Bitte stelle sicher, dass deine Internetverbindung funktioniert.";
@@ -485,9 +466,6 @@
 /* Username field title */
 "Proton email or username" = "Proton-E-Mail-Adresse oder Benutzername";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton ist ausgefallen";
 
@@ -507,7 +485,7 @@
 "Recovery code" = "Wiederherstellungscode";
 
 /* Recovery email field title */
-"Recovery email" = "Wiederherstellungs-E-Mail-Adresse";
+"Recovery email" = "Wiederherstellungs-E-Mail";
 
 /* Recovery phone field title */
 "Recovery phone number" = "Rufnummer für die Wiederherstellung";
@@ -522,7 +500,7 @@
 "Remove account from this device" = "Konto von diesem Gerät entfernen";
 
 /* Repeat password field title */
-"Repeat password" = "Passwort erneut eingeben";
+"Repeat password" = "Passwort wiederholen";
 
 /* request item title */
 "Request an invite" = "Anfrage einreichen";
@@ -537,7 +515,7 @@
 "Resend" = "Erneut senden";
 
 /* Button in some alerts */
-"Retry" = "Wiederholen";
+"Retry" = "Erneut versuchen";
 
 /* Search country placeholder */
 "Search country" = "Land suchen";
@@ -578,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Wiederherstellungsmethode überspringen?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Leider können wir in der Beta-Version der iOS-App keine Käufe verarbeiten. Vielen Dank für deine Teilnahme an unserer Public Beta!";
 
@@ -595,7 +570,7 @@
 "Streaming service support" = "Unterstützung von Streaming-Diensten";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Betreff...";
+"Subject..." = "Betreff…";
 
 /* Subscription title */
 "Subscription" = "Abonnement";
@@ -625,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Die Proton-Server sind nicht erreichbar. Das kann mehrere Gründe haben: Eine falsche Netzwerkkonfiguration, nicht funktionierende Proton-Server oder die Proton-Server werden blockiert.";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Die TLS-Zertifikatsvalidierung ist beim Versuch, eine Verbindung zur Proton-API herzustellen, fehlgeschlagen. Deine aktuelle Internetverbindung könnte überwacht werden. Um die Sicherheit deiner Daten zu gewährleisten, wird verhindert, dass die App auf die Proton-API zugreifen kann.\nUm dich anzumelden oder auf dein Konto zuzugreifen, wechsle zu einem neuen Netzwerk und versuche erneut, eine Verbindung herzustellen.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Dies dauert normalerweise nicht länger als eine Minute.";
 
@@ -651,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Eine andere Methode verwenden";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Zwei‐Faktor‐Authentifizierung";
@@ -774,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Dein kostenloses Proton-Konto wurde erfolgreich erstellt.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.";
 

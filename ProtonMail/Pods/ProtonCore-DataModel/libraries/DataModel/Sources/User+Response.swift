@@ -35,7 +35,7 @@ extension UserInfo {
         let maxS = response["MaxSpace"] as? NSNumber
         let credit = response["Credit"] as? NSNumber
         let currency = response["Currency"] as? String
-        let subscribed = response["Subscribed"] as? Int
+        let subscribed = response["Subscribed"] as? UInt8
         self.init(
             maxSpace: maxS?.int64Value,
             usedSpace: usedS?.int64Value,
@@ -48,7 +48,7 @@ extension UserInfo {
             linkConfirmation: response["ConfirmLink"] as? Int,
             credit: credit?.intValue,
             currency: currency,
-            subscribed: subscribed
+            subscribed: subscribed.map(User.Subscribed.init(rawValue:))
         )
     }
 
