@@ -77,22 +77,24 @@ class ContactDataService: Service {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             self.contactCacheStatus.contactsCached = 0
+            let userID = userID.rawValue
+
             self.coreDataService.performOnRootSavingContext { context in
-                let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-                fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID.rawValue)
-                let request1 = NSBatchDeleteRequest(fetchRequest: fetch1)
-                try? context.executeAndMergeChanges(using: request1)
-
-                let fetch2 = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
-                fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
-                let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
-                try? context.executeAndMergeChanges(using: request2)
-
-                let fetch3 = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
-                fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID.rawValue)
-                let request3 = NSBatchDeleteRequest(fetchRequest: fetch3)
-                try? context.executeAndMergeChanges(using: request3)
-
+                Contact.delete(
+                    in: context,
+                    basedOn: NSPredicate(format: "%K == %@", Contact.Attributes.userID, userID)
+                )
+                
+                Email.delete(
+                    in: context,
+                    basedOn: NSPredicate(format: "%K == %@", Email.Attributes.userID, userID)
+                )
+                
+                LabelUpdate.delete(
+                    in: context,
+                    basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
+                )
+                
                 seal.fulfill_()
             }
         }
