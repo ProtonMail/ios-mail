@@ -439,17 +439,22 @@ class SingleMessageContentViewController: UIViewController {
             guard let self = self else { return }
 
             if self.viewModel.updateSenderBlockedStatus(blocked: true) {
-                let banner = PMBanner(
-                    message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail),
-                    style: PMBannerNewStyle.info,
-                    bannerHandler: PMBanner.dismiss
-                )
-                banner.show(at: .bottom, on: self)
+                self.showBottomToast(message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail))
             }
         }
         alert.addAction(confirmAction)
 
         present(alert, animated: true)
+    }
+
+    private func showBottomToast(message: String) {
+        let banner = PMBanner(message: message, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+
+        if let parent = parent {
+            banner.show(at: .bottom, on: parent)
+        } else {
+            PMAssertionFailure("Not attached to a parent")
+        }
     }
 
     @objc
@@ -571,15 +576,12 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
             return
         }
 
-        let banner = PMBanner(
+        showBottomToast(
             message: String(
                 format: L11n.BlockSender.successfulUnblockConfirmation,
                 viewModel.messageInfoProvider.senderEmail
-            ),
-            style: PMBannerNewStyle.info,
-            bannerHandler: PMBanner.dismiss
+            )
         )
-        banner.show(at: .bottom, on: self)
     }
 }
 
