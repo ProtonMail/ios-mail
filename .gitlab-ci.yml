@@ -292,7 +292,7 @@ appetize:start:
   variables:
     GIT_DEPTH: 1
   rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+    - if: $CI_MERGE_REQUEST_ID
       when: manual
       allow_failure: true
   before_script:
@@ -309,18 +309,20 @@ appetize:start:
     - iOS_ARM_TAIPEI
 
 appetize:stop:
-  dependencies: []
-  stage: .post
+  stage: distribute
+  needs:
+    - appetize:start
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
   rules:
-    - when: manual
+    - if: $CI_MERGE_REQUEST_ID
+      when: manual
       allow_failure: true
   variables:
     GIT_STRATEGY: none
   script:
-    - curl -X DELETE --fail https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY
+    - curl -X DELETE --fail "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY"
   tags:
     # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
     - iOS_ARM_TAIPEI
