@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Alle mails";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet, når du logger ud af appen.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alle dine beskeder er downloadet";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fødselsdag";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blokér";
+
 /* Settings row */
 "Block email tracking" = "Bloker sporing af e-mail";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Blokér afsender";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blokerede afsendere";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokerer afsendere fra at se, om og hvornår du har åbnet beskeden";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Oprettelse af etiket ikke tilladt";
 
+/* Change language title */
+"Current Language: " = "Nuværende sprog: ";
+
 /* Placeholder */
 "Current password" = "Aktuel adgangskode";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Downloader metadata ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Downloader nye beskeder...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloader e-mails, så du kan søge i dem. Beskederne er krypterede og lagres lokalt. %1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Gå til indstillinger";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Gå til login";
+
 /* Got it action */
 "Got it" = "Forstået";
 
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Angiv visningsnavn…";
 
+/* place holder */
+"Input Notification Email…" = "Angiv notifikations-e-mail…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Usikker forbindelse";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Vi præsenterer Proton's nye udseende.\nMange tjenester, én mission. Velkommen til et internet, hvor privatlivsbeskyttelse er standard.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ugyldig adresse";
 
 /* update password error */
 "Invalid hashed password!" = "Ugyldig hashet adgangskode!";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markér som ulæst";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Måske senere";
+
 /* menu title */
 "Menu" = "Menu";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Ny kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nye e-mails fra %@ vil ikke blive leveret og vil blive slettet permanent. Administrer blokerede e-mailadresser i indstillingerne.";
+
 /* The title of create folder page */
 "New folder" = "Ny mappe";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Ingen vedhæftning fundet";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Ingen blokerede afsendere";
 
 /* Title */
 "No connectivity detected…" = "Ingen forbindelse fundet…";
@@ -2248,9 +2281,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du har deaktiveret %@ i dine systemindstillinger. %@ er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere %@ eller logge ind igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nye e-mails!";

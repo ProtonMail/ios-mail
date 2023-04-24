@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Все письма";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "При выходе из приложения все настройки защиты будут сброшены и уничтожены.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Все ваши сообщения скачаны";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "День рождения";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Заблокировать";
+
 /* Settings row */
 "Block email tracking" = "Блокировать отслеживание электронной почты";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Заблокировать отправителя";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Заблокированные отправители";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Не дает отправителям видеть, открыли ли вы сообщение и когда оно было открыто";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Создание ярлыка невозможно";
 
+/* Change language title */
+"Current Language: " = "Текущий язык: ";
+
 /* Placeholder */
 "Current password" = "Текущий пароль";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Скачивание метаданных ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Загрузка новых сообщений...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Скачивание сообщений, чтобы вы могли искать по ним. Сообщения будут зашифрованы и сохранены локально. %1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Открыть настройки";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Перейти ко входу";
+
 /* Got it action */
 "Got it" = "Понятно";
 
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Введите отображаемое имя…";
 
+/* place holder */
+"Input Notification Email…" = "Введите электронную почту для уведомлений…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Небезопасное соединение";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Представляем обновленный облик Proton.\nМного служб, одна миссия. Добро пожаловать в Интернет, конфиденциальный по умолчанию.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Недействительный адрес электронной почты";
 
 /* update password error */
 "Invalid hashed password!" = "Недопустимый хешированный пароль!";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Отметить как непрочитанное";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Может, позже";
+
 /* menu title */
 "Menu" = "Меню";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Новый контакт";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Новые письма от %@ не будут доставлены и будут безвозвратно удалены. Управляйте заблокированными адресами электронной почты в настройках.";
+
 /* The title of create folder page */
 "New folder" = "Новая папка";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Вложение не найдено";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Заблокированных отправителей нет";
 
 /* Title */
 "No connectivity detected…" = "Подключение не обнаружено…";
@@ -1699,6 +1732,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Отправить уведомление о прочтении";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Отправитель %@ заблокирован";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Отправитель %@ разблокирован";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Отправитель был заблокирован";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Проверка отправителя не удалась";
 
@@ -1777,6 +1819,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Показать больше";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Войдите снова, чтобы продолжать получать обновления";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Выйти";
@@ -1792,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Вы вышли из %1$@ и вошли в %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Вышел из %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Пропустить";
@@ -1953,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL, к которому вы пытаетесь получить доступ, не стандартный и может быть загружен некорректно. Открыть его браузером по умолчанию вашего устройства?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Пользователь уже вошёл";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Есть неотправленные сообщения, которые будут потеряны при выходе из системы";
 
@@ -1967,6 +2018,9 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "В этой цепочке писем есть удаленные сообщения";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Это письмо не соответствует требованиям подтверждения подлинности домена. Оно может быть поддельным, либо было переслано ненадлежащим образом.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо, по-видимому, пришло с адреса Proton Mail, но было получено не из нашей системы и не прошло проверку подлинности. Это может быть поддельное или неправильно пересланное письмо!";
@@ -1990,7 +2044,7 @@
 "This message was automatically generated" = "Это сообщение было сгенерировано автоматически";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Сообщение будет отправлено %1$@ в %2$@";
+"This message will be sent on %@ at %@" = "Сообщение будет отправлено $%1$@ в $%2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Это письмо будет удалено через %1$dD %2$dH %3$dM";
@@ -2057,6 +2111,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Попробуйте подключиться к Proton из другой сети (или используйте %1$@ или %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.";
+
 /* Placeholder */
 "Two Factor Code" = "Код двухфакторной аутентификации";
 
@@ -2074,6 +2131,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Невозможно отправить письмо";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Разблокировать";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Скрытые получатели";
@@ -2250,7 +2310,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Вы не можете сделать адрес %@ основным т.к. это платная функция.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Вы отключили идентификацию по лицу в системных настройках. Идентификация по лицу использовалась для защиты важной информации аккаунта. Для получения доступу к аккаунту, снова активируйте идентификацию по лицу в настройках или снова войдите в аккаунт.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Вы отключили %@ в системных настройках. %@ служил для защиты важных данных аккаунта. Для доступа к аккаунту, активируйте %@ в настройках или снова войдите в аккаунт.";
 
 /* Message */
 "You have %d new emails!" = "У вас %d новых писем!";
@@ -2311,6 +2371,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Ваши сообщения скачиваются...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Ваша конфиденциальность будет лучше защищена, если ваши контакты также используют Proton Mail. Пригласите друзей в Proton, и вы оба получите платные преимущества бесплатно.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Срок вашей сессии истёк, потому что вы были неактивны некоторое время или она была прервана. Пожалуйста, войдите снова.";

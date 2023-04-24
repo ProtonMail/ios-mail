@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Toată corespondența";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Toate setările de protecție vor fi resetate și șterse la ieșirea din aplicație.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Toate mesajele vor fi descărcate";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data naşterii";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blocare";
+
 /* Settings row */
 "Block email tracking" = "Blocare urmărire e-mailuri";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Blocare expeditor";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Expeditori blocați";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Împiedică expeditorii să vadă dacă și când ați deschis mesajul.";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Crearea etichetei nu este permisă";
 
+/* Change language title */
+"Current Language: " = "Limba curentă: ";
+
 /* Placeholder */
 "Current password" = "Parola actuală";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Se descarcă metadatele...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Se descarcă mesaje noi...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Descarcă mesajele pentru a permite căutarea în conținut. Mesajele sunt criptate și stocate local. %1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Accesare setări";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "La autentificare";
+
 /* Got it action */
 "Got it" = "Am înțeles";
 
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Introducere nume afișat…";
 
+/* place holder */
+"Input Notification Email…" = "Introducere e-mail de notificare…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Conexiune nesigură";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Vă prezentăm aspectul împrospătat al Proton.\nMulte servicii, o singură misiune. Bine ați venit pe un internet în care confidențialitatea este implicită.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Adresă de e-mail nevalidă.";
 
 /* update password error */
 "Invalid hashed password!" = "Parolă generată nevalidă!";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marcare ca necitit";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Poate mai târziu";
+
 /* menu title */
 "Menu" = "Meniu";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Contact nou";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Noile mesaje de la %@ nu vor fi livrate și vor fi șterse definitiv. Gestionați adresele de e-mail blocate în setări.";
+
 /* The title of create folder page */
 "New folder" = "Folder nou";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Nu s-a găsit niciun atașament";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Nu există expeditori blocați";
 
 /* Title */
 "No connectivity detected…" = "Nu există conexiune…";
@@ -1699,6 +1732,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Trimitere confirmare de citire";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Expeditorul %@ este blocat";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Expeditorul %@ este deblocat";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Expeditorul a fost blocat";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
 
@@ -1777,6 +1819,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Arată-mi";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Conectați-vă din nou pentru a continua să primiți actualizări";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Deconectare";
@@ -1792,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "V-ați deconectat din %1$@ și v-ați conectat cu %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Deconectat de la %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Omitere";
@@ -1953,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adresa URL pe care încercați să o accesați nu este standard și s-ar putea să nu se încarce corect. Doriți să o deschideți folosind navigatorul implicit al dispozitivului?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Utilizatorul este deja conectat";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Există mesaje netrimise care vor fi pierdute dacă vă deconectați.";
 
@@ -1967,6 +2018,9 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Această conversaţie conţine mesaje care sunt șterse";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă Proton Mail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
@@ -2057,6 +2111,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activați această funcție pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
+
 /* Placeholder */
 "Two Factor Code" = "Cod doi factori";
 
@@ -2074,6 +2131,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Mesajul nu poate fi trimis";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Deblocare";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatari nedivulgați";
@@ -2250,7 +2310,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ați dezactivat %@ în setările de sistem. %@ a fost utilizat pentru a proteja informații importante despre cont. Pentru a accesa contul, accesați setările și reactivați %@ sau reconectați-vă.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ați dezactivat %@ în setările sistemului. %@ a fost utilizat pentru a proteja informațiile importante ale contului. Pentru a vă accesa contul, accesați setările și reactivați %@ sau reconectați-vă.";
 
 /* Message */
 "You have %d new emails!" = "Aveți %d mesaje noi!";
@@ -2311,6 +2371,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Mesajele se descarcă...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Confidențialitatea vă este mai bine protejată dacă și contactele dvs. utilizează Proton Mail. Invitați-le la Proton și veți beneficia împreună gratuit de avantajele premium.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesiunea a expirat deoarece nu s-a identificat vreo activitate de ceva timp sau pentru că a fost anulată. Reautentificați-vă.";

@@ -733,6 +733,9 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
 
+/* The error message is shown in composer */
+"Invalid email address" = "Nevažeća adresa e-pošte";
+
 /* update password error */
 "Invalid hashed password!" = "Nevažeća hashirana lozinka!";
 
@@ -1673,9 +1676,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Onemogućili ste %@ u postavkama sustava. %@ je bio korišten za zaštitu važnih podataka računa. Da biste pristupili svom računu, idite u postavke i ponovno aktivirajte %@ ili se ponovno prijavite.";
-
 /* Message */
 "You have %d new emails!" = "Imate %d novih poruka e-pošte!";
 
@@ -1718,4 +1718,3 @@
 /* contact placeholder */
 "ZIP" = "Poštanski broj";
 
-"Customize (verb)" = "Customize";

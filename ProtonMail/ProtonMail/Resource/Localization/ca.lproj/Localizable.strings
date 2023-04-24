@@ -1015,6 +1015,9 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentem el nou aspecte de Proton.\nMolts serveis, una missió. Us donem la benvinguda l'internet on tenim la privacitat per defecte.";
 
+/* The error message is shown in composer */
+"Invalid email address" = "Adreça de correu electrònic invàlida";
+
 /* update password error */
 "Invalid hashed password!" = "Contrasenya amb contrasenya no vàlida!";
 
@@ -2248,9 +2251,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "No podeu configurar l'adreça %@ com per defecte perquè és una funció de pagament.";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Heu deshabilitat %@ a la vostra configuració del sistema. El %@ s’ha utilitzat per protegir informació important del compte. Per accedir al vostre compte, aneu a la configuració i reactiveu %@ o torneu a iniciar la sessió.";
 
 /* Message */
 "You have %d new emails!" = "Teniu %d nous correus electrònics!";

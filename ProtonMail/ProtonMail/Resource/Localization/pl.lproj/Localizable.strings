@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Wszystkie wiadomości";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Po wylogowaniu się z aplikacji, wszystkie ustawienia ochrony zostaną zresetowane i usunięte.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Wszystkie wiadomości zostały pobrane";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Urodziny";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Zablokuj";
+
 /* Settings row */
 "Block email tracking" = "Zablokuj śledzenie wiadomości";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Zablokuj nadawcę";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Zablokowani nadawcy";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokuje nadawcom możliwość sprawdzenia, czy i kiedy otwierasz wiadomość";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Tworzenie etykiety nie jest dozwolone";
 
+/* Change language title */
+"Current Language: " = "Obecny język: ";
+
 /* Placeholder */
 "Current password" = "Obecne hasło";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Pobieranie metadanych ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Pobieranie nowych wiadomości...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Pobierz wiadomości, aby je przeszukiwać. Wiadomości zostanę zaszyfrowane i przechowywane lokalnie. %1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Przejdź do ustawień";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Przejdź do logowania";
+
 /* Got it action */
 "Got it" = "Ok";
 
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Wpisz nazwę wyświetlaną…";
 
+/* place holder */
+"Input Notification Email…" = "Wpisz adres powiadomień…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Niezabezpieczone połączenie";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Przedstawiamy odświeżony wygląd usługi Proton.\nWiele usług, jedna misja. Witaj w Internecie, w którym prywatność jest standardem.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Adres e-mail jest nieprawidłowy";
 
 /* update password error */
 "Invalid hashed password!" = "Kryptograficzny skrót hasła jest nieprawidłowy!";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Oznacz jako nieprzeczytane";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Może później";
+
 /* menu title */
 "Menu" = "Menu";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Nowy kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nowe wiadomości z adresu %@ nie zostaną dostarczone i zostaną trwale usunięte. Zarządzaj zablokowanymi adresami w ustawieniach.";
+
 /* The title of create folder page */
 "New folder" = "Nowy folder";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Nie znaleziono załącznika";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Brak zablokowanych nadawców";
 
 /* Title */
 "No connectivity detected…" = "Wykryto brak połączenia…";
@@ -1699,6 +1732,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Wyślij potwierdzenie odczytu";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Nadawca %@ został zablokowany";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Nadawca %@ został odblokowany";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Nadawca został zablokowany";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Weryfikacja nadawcy nie powiodła się";
 
@@ -1777,6 +1819,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Pokaż";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Zaloguj się ponownie, aby otrzymywać powiadomienia";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Wyloguj";
@@ -1792,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Wylogowano z konta %1$@ i zalogowano do %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Wylogowano z konta %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Pomiń";
@@ -1953,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp, nie jest standardowy i może nie załadować się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Użytkownik jest już zalogowany";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "W skrzynce znajdują się niewysłane wiadomości, które zostaną utracone, jeśli się wylogujesz";
 
@@ -1967,6 +2018,9 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ten wątek zawiera usunięte wiadomości";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Ta wiadomość nie spełnia wymogów weryfikacyjnych domeny nadawcy. Może być sfałszowana lub nieprawidłowo przesłana.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ta wiadomość wydaje się pochodzić z adresu Proton Mail, ale pochodzi spoza naszego systemu i nie spełnia kryteriów uwierzytelniania. Może być sfałszowana lub nieprawidłowo przesłana!";
@@ -2057,6 +2111,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Spróbuj połączyć się z usługą Proton z innej sieci (lub przez %1$@ albo %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Włączenie tej funkcji spowoduje automatyczne uzupełnianie adresów e-mail przy użyciu wszystkich kontaktów na Twoich zalogowanych kontach.";
+
 /* Placeholder */
 "Two Factor Code" = "Kod uwierzytelniający";
 
@@ -2074,6 +2131,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Nie można wysłać wiadomości";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Odblokuj";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Nieznani odbiorcy";
@@ -2250,7 +2310,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślny, ponieważ jest to funkcja płatna.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Funkcja %@, która była używana do ochrony ważnych informacji o koncie została wyłączona w ustawieniach systemu. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj %@ lub zaloguj się ponownie.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Funkcja %@ została wyłączona w ustawieniach systemu. Zabezpieczenie %@ było używane do ochrony ważnych informacji o koncie. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj %@ lub zaloguj się ponownie.";
 
 /* Message */
 "You have %d new emails!" = "Masz nowe wiadomości! (%d)";
@@ -2311,6 +2371,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Wiadomości są pobierane...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Twoja prywatność jest lepiej chroniona, jeśli Twoje kontakty również korzystają z poczty Proton Mail. Zaproś swoich znajomych do Proton, a oboje otrzymacie dodatkowe bonusy za darmo.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesja wygasła z powodu braku aktywności lub jej unieważnienia. Zaloguj się ponownie.";

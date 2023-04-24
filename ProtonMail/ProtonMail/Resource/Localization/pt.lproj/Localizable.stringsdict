@@ -385,9 +385,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
+			<string>Proton encontrou e bloqueou %d rastreador nesta mensagem.</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton encontrou e bloqueou %d rastreadores nesta mensagem.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>Esta mensagem (%d) será transferida para a pasta Rascunhos e o seu calendário será removido.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Estas mensagens (%d) serão transferidas para a pasta Rascunhos e o seu calendário será removido.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -417,9 +417,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Actualizado há %d minuto</string>
+			<string>Atualizado há %d minuto</string>
 			<key>other</key>
-			<string>Actualizado há %d minutos</string>
+			<string>Atualizado há %d minutos</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

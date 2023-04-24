@@ -1015,6 +1015,9 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Ontdek de nieuwe look van Proton.\nVeel diensten, één missie. Welkom in een internetomgeving waar privacy de standaard is.";
 
+/* The error message is shown in composer */
+"Invalid email address" = "Ongeldig e-mailadres";
+
 /* update password error */
 "Invalid hashed password!" = "Ongeldige wachtwoordhash!";
 
@@ -1990,7 +1993,7 @@
 "This message was automatically generated" = "Dit bericht werd automatisch gegenereerd";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Dit bericht zal worden verzonden op %1$@ om %2$@";
+"This message will be sent on %@ at %@" = "Dit bericht zal worden verzonden op %1$@ om $%2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Dit bericht verloopt over %1$dd %2$du %3$dm";
@@ -2248,9 +2251,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "U heeft %@ uitgeschakeld in uw systeeminstellingen. %@ is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer %@ of log opnieuw in.";
 
 /* Message */
 "You have %d new emails!" = "U heeft %d nieuwe e-mails!";

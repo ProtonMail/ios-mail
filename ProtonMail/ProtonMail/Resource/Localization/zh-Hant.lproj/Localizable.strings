@@ -876,6 +876,9 @@
 /* forward action */
 "Forward" = "轉寄";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "轉寄 (最新交談訊息相關人等)";
+
 /* forwarded message title */
 "Forwarded message" = "已轉發的訊息";
 
@@ -1011,6 +1014,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton 新樣貌隆重登場！\n多種服務，單一使命。歡迎蒞臨隱私為本的網路世界。";
+
+/* The error message is shown in composer */
+"Invalid email address" = "無效的電郵位址";
 
 /* update password error */
 "Invalid hashed password!" = "無效的雜湊密碼！";
@@ -1206,7 +1212,7 @@
 "Move to" = "移至";
 
 /* Action title of move to archive */
-"Move to archive" = "移至封存";
+"Move to archive" = "移至封存檔";
 
 /* The title of the remove action in action sheet */
 "Move to inbox" = "移至收件匣";
@@ -1265,7 +1271,7 @@
 "Next" = "下一個";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "移動後移至新訊息";
+"Next message after move" = "郵件移動後跳至新訊息";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "暱稱";
@@ -1585,8 +1591,14 @@
 /* reply action */
 "Reply" = "回覆";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "回覆 (傳送至最新交談訊息)";
+
 /* reply all action */
 "Reply all" = "全部回覆";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "回覆全部 (最新交談訊息裡相關人等)";
 
 /* menu title */
 "Report a problem" = "回報問題";
@@ -1981,7 +1993,7 @@
 "This message was automatically generated" = "此郵件是自動產生的電郵";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "郵件將於 %1$@ 的 %2$@ 傳送";
+"This message will be sent on %@ at %@" = "郵件將於 $%1$@ 的 $%2$@ 傳送";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "此郵件將於 %1$d 天 %2$d 小時 %3$d 分後逾期";
@@ -2239,9 +2251,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您在系統設定裡停用了 %@。%@ 已被使用於保護重要的帳號資訊上。若要存取您的帳號，請前往「前定」重新啟用%@或重新登入。";
 
 /* Message */
 "You have %d new emails!" = "您有 %d 封新郵件！";

@@ -277,7 +277,7 @@
 			<key>many</key>
 			<string>%d wiadomości zostało przeniesionych do folderu %@</string>
 			<key>one</key>
-			<string>Wiadomość została przeniesiona do folderu %2$@</string>
+			<string>Wiadomość została przeniesiona do folderu %@</string>
 			<key>other</key>
 			<string>%d wiadomości zostało przeniesionych do folderu %@</string>
 		</dict>
