@@ -24,12 +24,17 @@ import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 
 extension PMActionSheet {
+    enum SenderBlockStatus {
+        case blocked
+        case notBlocked
+        case notApplicable  // for example when the action sheet is for the recipient, not the sender
+    }
 
     static func messageDetailsContact(
         title: String,
         subtitle: String,
         showOfficialBadge: Bool,
-        showOptionToBlockSender: Bool,
+        senderBlockStatus: SenderBlockStatus,
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheet {
         var components: [any PMActionSheetComponent] = [
@@ -63,8 +68,15 @@ extension PMActionSheet {
             addToContacts(action: action)
         ]
 
-        if UserInfo.isBlockSenderEnabled && showOptionToBlockSender {
-            items.append(blockSender(action: action))
+        if UserInfo.isBlockSenderEnabled {
+            switch senderBlockStatus {
+            case .blocked:
+                items.append(unblockSender(action: action))
+            case .notBlocked:
+                items.append(blockSender(action: action))
+            case .notApplicable:
+                break
+            }
         }
 
         return PMActionSheet(headerView: header, itemGroups: [.init(items: items, style: .clickable)])
@@ -107,6 +119,14 @@ extension PMActionSheet {
     ) -> PMActionSheetItem {
         PMActionSheetItem(style: .default(IconProvider.circleSlash, L11n.BlockSender.blockActionTitleLong)) { _ in
             action(.blockSender)
+        }
+    }
+
+    private static func unblockSender(
+        action: @escaping (MessageDetailsContactActionSheetAction) -> Void
+    ) -> PMActionSheetItem {
+        PMActionSheetItem(style: .default(IconProvider.circleSlash, L11n.BlockSender.unblockActionTitleLong)) { _ in
+            action(.unblockSender)
         }
     }
 }

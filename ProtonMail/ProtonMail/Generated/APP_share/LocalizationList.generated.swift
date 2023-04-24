@@ -759,6 +759,7 @@ struct LocalizationList {
         "L11n.BlockSender.senderIsBlockedBanner": L11n.BlockSender.senderIsBlockedBanner,
         "L11n.BlockSender.successfulBlockConfirmation": L11n.BlockSender.successfulBlockConfirmation,
         "L11n.BlockSender.successfulUnblockConfirmation": L11n.BlockSender.successfulUnblockConfirmation,
+        "L11n.BlockSender.unblockActionTitleLong": L11n.BlockSender.unblockActionTitleLong,
         "L11n.BlockSender.unblockActionTitleShort": L11n.BlockSender.unblockActionTitleShort,
         // L11n.EmailTrackerProtection
         "L11n.EmailTrackerProtection.title": L11n.EmailTrackerProtection.title,

@@ -1442,6 +1442,7 @@ enum L11n {
         static let senderIsBlockedBanner = NSLocalizedString("Sender has been blocked", comment: "Banner in the message view")
         static let successfulBlockConfirmation = NSLocalizedString("Sender %@ blocked", comment: "Toast confirming the block")
         static let successfulUnblockConfirmation = NSLocalizedString("Sender %@ unblocked", comment: "Toast confirming the unblock")
+        static let unblockActionTitleLong = NSLocalizedString("Unblock sender", comment: "Button to unblock a sender")
         static let unblockActionTitleShort = NSLocalizedString("Unblock", comment: "Button to unblock a sender, keep it short to fit in the UI")
     }
 

@@ -374,24 +374,24 @@ class SingleMessageContentViewController: UIViewController {
     private func presentActionSheet(context: MessageHeaderContactContext) {
         let title: String
         let showOfficialBadge: Bool
-        let showOptionToBlockSender: Bool
+        let senderBlockStatus: PMActionSheet.SenderBlockStatus
 
         switch context {
         case .recipient(let contactVO):
             title = contactVO.title
             showOfficialBadge = false
-            showOptionToBlockSender = false
+            senderBlockStatus = .notApplicable
         case .sender(let sender):
             title = viewModel.messageInfoProvider.senderName
             showOfficialBadge = sender.isFromProton
-            showOptionToBlockSender = !viewModel.isSenderCurrentlyBlocked
+            senderBlockStatus = viewModel.isSenderCurrentlyBlocked ? .blocked : .notBlocked
         }
 
         let actionSheet = PMActionSheet.messageDetailsContact(
             title: title,
             subtitle: context.contact.subtitle,
             showOfficialBadge: showOfficialBadge,
-            showOptionToBlockSender: showOptionToBlockSender
+            senderBlockStatus: senderBlockStatus
         ) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
@@ -418,6 +418,8 @@ class SingleMessageContentViewController: UIViewController {
             UIPasteboard.general.string = context.contact.name
         case .close:
             break
+        case .unblockSender:
+            unblockSender()
         }
     }
 
