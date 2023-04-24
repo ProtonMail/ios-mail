@@ -587,7 +587,7 @@
 "Delete" = "删除";
 
 /* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "删除 $%d 封邮件";
+"Delete %d Messages" = "删除 %d 封邮件";
 
 /* Title for the alert to delete all downloaded messages. */
 "Delete all downloaded messages?" = "删除所有已下载的邮件？";

@@ -599,7 +599,7 @@
 "Delete" = "Smazat";
 
 /* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "Smazat $%d zpráv";
+"Delete %d Messages" = "Smazat %d zpráv";
 
 /* Title for the alert to delete all downloaded messages. */
 "Delete all downloaded messages?" = "Smazat všechny stažené zprávy?";
