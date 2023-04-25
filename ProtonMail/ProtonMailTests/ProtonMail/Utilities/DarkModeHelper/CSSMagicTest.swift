@@ -407,6 +407,30 @@ extension CSSMagicTest {
         XCTAssertEqual(result?.1, 0.4)
         XCTAssertEqual(result?.2, 0.6)
         XCTAssertEqual(result?.3, 1)
+
+        rgb = "rgba(20%, 40%, 60%, 255.65)"
+        result = CSSMagic.getRGBA(by: rgb)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.0, 0.2)
+        XCTAssertEqual(result?.1, 0.4)
+        XCTAssertEqual(result?.2, 0.6)
+        XCTAssertEqual(result?.3, 1)
+
+        rgb = "rgba(20%, 40%, 60%, 51)"
+        result = CSSMagic.getRGBA(by: rgb)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.0, 0.2)
+        XCTAssertEqual(result?.1, 0.4)
+        XCTAssertEqual(result?.2, 0.6)
+        XCTAssertEqual(result?.3, 0.2)
+
+        rgb = "rgba(20%, 40%, 60%, 1)"
+        result = CSSMagic.getRGBA(by: rgb)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.0, 0.2)
+        XCTAssertEqual(result?.1, 0.4)
+        XCTAssertEqual(result?.2, 0.6)
+        XCTAssertEqual(result?.3, 1)
     }
 
     func testGetHSLAFromRGBA() {
@@ -462,6 +486,30 @@ extension CSSMagicTest {
         XCTAssertEqual(result?.s, 25)
         XCTAssertEqual(result?.l, 40)
         XCTAssertEqual(result?.a, 0.5)
+
+        hsla = "hsla(100, 25%, 40%, 255)"
+        result = CSSMagic.getHSLA(from: hsla)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.h, 100)
+        XCTAssertEqual(result?.s, 25)
+        XCTAssertEqual(result?.l, 40)
+        XCTAssertEqual(result?.a, 1)
+
+        hsla = "hsla(100, 25%, 40%, 51)"
+        result = CSSMagic.getHSLA(from: hsla)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.h, 100)
+        XCTAssertEqual(result?.s, 25)
+        XCTAssertEqual(result?.l, 40)
+        XCTAssertEqual(result?.a, 0.2)
+
+        hsla = "hsla(100, 25%, 40%, 1)"
+        result = CSSMagic.getHSLA(from: hsla)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.h, 100)
+        XCTAssertEqual(result?.s, 25)
+        XCTAssertEqual(result?.l, 40)
+        XCTAssertEqual(result?.a, 1)
     }
 
     func testHSLAForDarkMode() {
