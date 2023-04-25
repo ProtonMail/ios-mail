@@ -2044,7 +2044,7 @@
 "This message was automatically generated" = "Pesan ini dihasilkan secara otomatis";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada $%1$@ pukul $%2$@";
+"This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada %1$@ pukul %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";

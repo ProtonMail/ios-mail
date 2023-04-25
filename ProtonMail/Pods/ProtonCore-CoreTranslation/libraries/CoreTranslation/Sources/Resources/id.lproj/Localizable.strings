@@ -191,10 +191,10 @@
 "Enter the 6-digit code." = "Masukkan kode 6 digit.";
 
 /* Verification */
-"Enter the verification code that was sent to %@" = "Masukkan kode verifikasi yang dikirim ke $%@";
+"Enter the verification code that was sent to %@" = "Masukkan kode verifikasi yang dikirim ke %@";
 
 /* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Masukkan kode verifikasi yang dikirim ke $%@. Apabila Anda tidak menemukan email yang bersangkutan di dalam kotak masuk, mohon periksa folder spam Anda.";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Masukkan kode verifikasi yang dikirim ke %@. Apabila Anda tidak menemukan email yang bersangkutan di dalam kotak masuk, mohon periksa folder spam Anda.";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Masukkan detail Akun Proton Anda.";

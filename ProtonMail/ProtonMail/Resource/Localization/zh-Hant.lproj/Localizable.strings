@@ -1993,7 +1993,7 @@
 "This message was automatically generated" = "此郵件是自動產生的電郵";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "郵件將於 $%1$@ 的 $%2$@ 傳送";
+"This message will be sent on %@ at %@" = "郵件將於 %1$@ 的 %2$@ 傳送";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "此郵件將於 %1$d 天 %2$d 小時 %3$d 分後逾期";

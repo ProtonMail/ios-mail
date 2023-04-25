@@ -1993,7 +1993,7 @@
 "This message was automatically generated" = "Dit bericht werd automatisch gegenereerd";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Dit bericht zal worden verzonden op %1$@ om $%2$@";
+"This message will be sent on %@ at %@" = "Dit bericht zal worden verzonden op %1$@ om %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Dit bericht verloopt over %1$dd %2$du %3$dm";
