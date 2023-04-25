@@ -106,6 +106,27 @@ linting:
   tags:
     - iOS_ARM_TAIPEI
 
+build:debug:for-testing:
+  stage: build
+  allow_failure: false
+  interruptible: true
+  needs:
+    - job: deploy:review
+      artifacts: false
+  artifacts:
+    untracked: true
+    when: on_success
+    paths:
+      - test_output/
+    expire_in: 1 day
+  before_script:
+    - *setup_project
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane build_for_testing
+  tags:
+    - iOS_ARM_TAIPEI
+
 test:unit:
   dependencies: []
   stage: test
@@ -137,6 +158,8 @@ test:unit:
     - iOS_ARM_TAIPEI
 
 test:ui:smoke:
+  dependencies:
+    - deploy:review
   stage: test
   except:
     - schedules
@@ -166,7 +189,8 @@ test:ui:smoke:
     - *prepare_users_for_ui_tests
   script:
     - cd ProtonMail
-    - bundle exec fastlane ui_test
+    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
+    - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
   tags:
     - iOS_UITEST
   allow_failure: true
@@ -190,6 +214,8 @@ report:slack:smoke:
   allow_failure: true
 
 test:ui:feature:
+  dependencies:
+    - build:debug:for-testing
   stage: test
   rules: 
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
@@ -209,7 +235,7 @@ test:ui:feature:
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
     - cd ProtonMail
-    - bundle exec fastlane feature_tests
+    - bundle exec fastlane feature_tests testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
   tags:
     - iOS_UITEST
 
