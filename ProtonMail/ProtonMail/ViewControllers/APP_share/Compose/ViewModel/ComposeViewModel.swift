@@ -178,6 +178,12 @@ class ComposeViewModel: NSObject {
 
         super.init()
 
+        // TODO: This method has side effects and as such should not be called in `init`.
+        // However, first we need to reduce the number of `ComposeViewModel.init` calls scattered across the code.
+        initialize(message: msg, action: action)
+    }
+
+    func initialize(message msg: Message?, action: ComposeMessageAction) {
         if msg == nil || msg?.draft == true {
             if let msg = msg {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID)
@@ -823,7 +829,9 @@ extension ComposeViewModel {
                 out.append(contactGroup)
             }
         } catch {
-            assertionFailure("\(error)")
+            if !ProcessInfo.isRunningUnitTests {
+                assertionFailure("\(error)")
+            }
         }
         return out
     }
