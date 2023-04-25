@@ -452,6 +452,7 @@ open class UIElement {
 
     @discardableResult
     public func checkDoesNotExist(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
+        shouldWaitForExistance = false
         XCTAssertFalse(
             uiElement()!.exists,
             "Expected element \(uiElement().debugDescription) to not exist but it exists.",
