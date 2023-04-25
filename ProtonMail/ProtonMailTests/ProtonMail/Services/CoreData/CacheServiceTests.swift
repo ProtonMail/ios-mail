@@ -21,7 +21,6 @@
 
 import XCTest
 @testable import ProtonMail
-import CoreData
 import Groot
 
 class CacheServiceTest: XCTestCase {

@@ -37,7 +37,6 @@ final class SendMessageTaskTests: XCTestCase {
     private var mockUndoActionManager: MockUndoActionManager!
     private var mockNotificationCenter: NotificationCenter!
     private var mockQueueManager: QueueManager!
-    private let mockCoreDataService = MockCoreDataContextProvider()
 
     private var mockMessagesQueue: PMPersistentQueue!
     private var mockMiscQueue: PMPersistentQueue!
@@ -47,7 +46,7 @@ final class SendMessageTaskTests: XCTestCase {
 
     private lazy var dummyMessageSendingData: MessageSendingData = {
         .init(
-            message: MessageEntity(Message(context: mockCoreDataService.mainContext)),
+            message: .make(),
             cachedUserInfo: nil,
             cachedAuthCredential: nil,
             cachedSenderAddress: nil,
