@@ -108,7 +108,7 @@ class MoveToActionSheetPresenter {
                     edge: [nil, nil, nil, 16]
                 ),
                 PMActionSheetTextComponent(
-                    text: .left(LocalString._label_as_new_label),
+                    text: .left(LocalString._new_folder),
                     textColor: ColorProvider.TextWeak,
                     edge: [nil, 16, nil, 12]
                 )
