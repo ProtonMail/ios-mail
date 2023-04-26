@@ -42,14 +42,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private(set) var viewModel: MailboxViewModel!
 
-    private weak var coordinator: MailboxCoordinator?
+    private weak var coordinator: MailboxCoordinatorProtocol?
 
-    func set(coordinator: MailboxCoordinator) {
+    func set(coordinator: MailboxCoordinatorProtocol) {
         self.coordinator = coordinator
     }
 
     func set(viewModel: MailboxViewModel) {
         self.viewModel = viewModel
+        viewModel.uiDelegate = self
     }
 
     private lazy var replacingEmails: [Email] = viewModel.allEmails
@@ -263,7 +264,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         #endif
         if let destination = self.viewModel.getOnboardingDestination() {
             userCachedStatus.resetTourValue()
-            self.coordinator?.go(to: destination)
+            self.coordinator?.go(to: destination, sender: nil)
         }
 
         // Setup top actions
@@ -567,7 +568,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     @objc func composeButtonTapped() {
         if checkHuman() {
-            self.coordinator?.go(to: .composer)
+            self.coordinator?.go(to: .composer, sender: nil)
         }
     }
 
@@ -576,7 +577,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     @objc func searchButtonTapped() {
-        self.coordinator?.go(to: .search)
+        self.coordinator?.go(to: .search, sender: nil)
     }
 
     @objc func cancelButtonTapped() {
@@ -722,7 +723,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if self.viewModel.isRequiredHumanCheck && isCheckingHuman == false {
             // show human check view with warning
             isCheckingHuman = true
-            self.coordinator?.go(to: .humanCheck)
+            self.coordinator?.go(to: .humanCheck, sender: nil)
             return false
         }
         return true
@@ -889,7 +890,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     @objc private func goTroubleshoot() {
-        self.coordinator?.go(to: .troubleShoot)
+        self.coordinator?.go(to: .troubleShoot, sender: nil)
     }
 
     private func getLatestMessages() {
@@ -1020,7 +1021,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     return
                 }
 
-                self.coordinator?.go(to: .details)
+                self.coordinator?.go(to: .details, sender: nil)
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
                 }
@@ -1030,7 +1031,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             guard !message.messageID.rawValue.isEmpty else {
                 if self.checkHuman() {
                     // TODO::QA
-                    self.coordinator?.go(to: .composeShow)
+                    self.coordinator?.go(to: .composeShow, sender: nil)
                 }
                 self.updateTapped(status: false)
                 return
@@ -1643,7 +1644,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                     self.coordinator?.pendingActionAfterDismissal = { [weak self] in
                         self?.showLabelAsActionSheet(messages: messages)
                     }
-                    self.coordinator?.go(to: .newLabel)
+                    self.coordinator?.go(to: .newLabel, sender: nil)
                 } else {
                     self.showAlertLabelCreationNotAllowed()
                 }
@@ -1693,7 +1694,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                     self.coordinator?.pendingActionAfterDismissal = { [weak self] in
                         self?.showLabelAsActionSheet(conversations: conversations)
                     }
-                    self.coordinator?.go(to: .newLabel)
+                    self.coordinator?.go(to: .newLabel, sender: nil)
                 } else {
                     self.showAlertLabelCreationNotAllowed()
                 }
@@ -1797,7 +1798,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                     self.coordinator?.pendingActionAfterDismissal = { [weak self] in
                         self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
                     }
-                    self.coordinator?.go(to: .newFolder)
+                    self.coordinator?.go(to: .newFolder, sender: nil)
                 } else {
                     self.showAlertFolderCreationNotAllowed()
                 }
@@ -1871,7 +1872,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                     self.coordinator?.pendingActionAfterDismissal = { [weak self] in
                         self?.showMoveToActionSheet(conversations: conversations, isEnableColor: isEnableColor, isInherit: isInherit)
                     }
-                    self.coordinator?.go(to: .newFolder)
+                    self.coordinator?.go(to: .newFolder, sender: nil)
                 } else {
                     self.showAlertFolderCreationNotAllowed()
                 }
@@ -2393,7 +2394,7 @@ extension MailboxViewController: UITableViewDelegate {
         if listEditing {
             handleEditingDataSelection(of: conversation.conversationID.rawValue, indexPath: indexPath)
         } else {
-            self.coordinator?.go(to: .details)
+            self.coordinator?.go(to: .details, sender: nil)
         }
     }
 
@@ -2647,5 +2648,11 @@ extension MailboxViewController: UndoActionHandlerBase {
 
     var composerPresentingVC: UIViewController? {
         self
+    }
+}
+
+extension MailboxViewController: MailboxViewModelUIProtocol {
+    func updateTitle() {
+        setupNavigationTitle(showSelected: listEditing)
     }
 }

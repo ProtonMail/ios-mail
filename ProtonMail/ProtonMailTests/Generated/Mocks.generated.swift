@@ -638,6 +638,39 @@ class MockMailSettingsHandler: MailSettingsHandler {
 
 }
 
+class MockMailboxCoordinatorProtocol: MailboxCoordinatorProtocol {
+    @PropertyStub(\MockMailboxCoordinatorProtocol.pendingActionAfterDismissal, initialGet: nil) var pendingActionAfterDismissalStub
+    var pendingActionAfterDismissal: (() -> Void)? {
+        get {
+            pendingActionAfterDismissalStub()
+        }
+        set {
+            pendingActionAfterDismissalStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockMailboxCoordinatorProtocol.conversationCoordinator, initialGet: nil) var conversationCoordinatorStub
+    var conversationCoordinator: ConversationCoordinator? {
+        conversationCoordinatorStub()
+    }
+
+    @PropertyStub(\MockMailboxCoordinatorProtocol.singleMessageCoordinator, initialGet: nil) var singleMessageCoordinatorStub
+    var singleMessageCoordinator: SingleMessageCoordinator? {
+        singleMessageCoordinatorStub()
+    }
+
+    @FuncStub(MockMailboxCoordinatorProtocol.go) var goStub
+    func go(to dest: MailboxCoordinator.Destination, sender: Any?) {
+        goStub(dest, sender)
+    }
+
+    @FuncStub(MockMailboxCoordinatorProtocol.presentToolbarCustomizationView) var presentToolbarCustomizationViewStub
+    func presentToolbarCustomizationView(allActions: [MessageViewActionSheetAction], currentActions: [MessageViewActionSheetAction]) {
+        presentToolbarCustomizationViewStub(allActions, currentActions)
+    }
+
+}
+
 class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {

@@ -91,6 +91,7 @@ final class AppleContactParser: AppleContactParserProtocol {
                 CoreDataService.shared.mainContext.performAndWait {
                     CoreDataService.shared.mainContext.refreshAllObjects()
                 }
+                CoreDataService.shouldIgnoreContactUpdateInMainContext = false
             }
             self.delegate?.disableCancel()
             self.upload(parsedResults: parsedResults)
