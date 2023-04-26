@@ -34,11 +34,15 @@ struct LabelInfo {
     }
 }
 
-class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
+protocol MailboxViewModelUIProtocol: AnyObject {
+    func updateTitle()
+}
+
+class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelID: LabelID
     let labelType: PMLabelType
     /// This field saves the label object of custom folder/label
-    let label: LabelInfo?
+    private(set) var label: LabelInfo?
     var messageLocation: Message.Location? {
         return Message.Location(rawValue: labelID.rawValue)
     }
@@ -50,6 +54,7 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
+    private var labelPublisher: MailboxLabelPublisher?
 
     private(set) var selectedIDs: Set<String> = Set()
 
@@ -74,6 +79,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
     }
     var isFetchingMessage: Bool { self.dependencies.updateMailbox.isFetching }
     private(set) var isFirstFetch: Bool = true
+
+    weak var uiDelegate: MailboxViewModelUIProtocol?
 
     private let dependencies: Dependencies
 
@@ -133,11 +140,12 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.senderImageService = senderImageService
+        super.init()
         self.conversationStateProvider.add(delegate: self)
         self.dependencies.updateMailbox.setup(source: self)
     }
 
-    /// localized navigation title. overrride it or return label name
+    /// localized navigation title. override it or return label name
     var localizedNavigationTitle: String {
         guard let location = Message.Location(labelID) else {
             return label?.name ?? ""
@@ -294,6 +302,23 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
         return fetchController
     }
 
+    private func makeLabelPublisherIfNeeded() {
+        guard Message.Location(labelID) == nil else {
+            return
+        }
+        labelPublisher = MailboxLabelPublisher(contextProvider: coreDataContextProvider)
+        labelPublisher?.startObserve(
+            labelID: labelID,
+            userID: user.userID,
+            onContentChanged: { [weak self] labels in
+                if let label = labels.first {
+                    self?.label = .init(name: label.name)
+                    self?.uiDelegate?.updateTitle()
+                }
+            }
+        )
+    }
+
     /// Setup fetch controller to fetch message of specific labelID
     ///
     /// - Parameter delegate: delegate from viewcontroller
@@ -304,6 +329,8 @@ class MailboxViewModel: StorageLimit, UpdateMailboxSourceProtocol {
 
         self.unreadFetchedResult = self.makeUnreadFetchController()
         self.unreadFetchedResult?.delegate = delegate
+
+        makeLabelPublisherIfNeeded()
     }
 
     /// reset delegate if fetch controller is valid

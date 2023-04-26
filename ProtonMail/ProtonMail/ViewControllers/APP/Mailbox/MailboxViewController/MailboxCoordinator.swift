@@ -20,11 +20,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import class ProtonCore_DataModel.UserInfo
 import ProtonMailAnalytics
 import SideMenuSwift
-import class ProtonCore_DataModel.UserInfo
 
-class MailboxCoordinator: CoordinatorDismissalObserver {
+// sourcery: mock
+protocol MailboxCoordinatorProtocol: AnyObject {
+    var pendingActionAfterDismissal: (() -> Void)? { get set }
+    var conversationCoordinator: ConversationCoordinator? { get }
+    var singleMessageCoordinator: SingleMessageCoordinator? { get }
+
+    func go(to dest: MailboxCoordinator.Destination, sender: Any?)
+    func presentToolbarCustomizationView(
+        allActions: [MessageViewActionSheetAction],
+        currentActions: [MessageViewActionSheetAction]
+    )
+}
+
+class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
     let viewModel: MailboxViewModel
     var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
