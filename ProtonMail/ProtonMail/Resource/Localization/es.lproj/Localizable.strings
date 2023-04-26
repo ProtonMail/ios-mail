@@ -526,6 +526,9 @@
 /* Alert title */
 "Creating label not allowed" = "No se permite crear la etiqueta.";
 
+/* Change language title */
+"Current Language: " = "Idioma actual: ";
+
 /* Placeholder */
 "Current password" = "Contraseña actual";
 
@@ -699,6 +702,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Descargando metadatos...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Descargando mensajes nuevos...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Se descargan los correos para que puedas buscar en ellos. Los mensajes se cifran y almacenan localmente. %1$@";
@@ -1014,6 +1020,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Presentamos el nuevo aspecto de Proton.\nMuchos servicios, una sola misión. Te damos la bienvenida a una internet donde la privacidad es la norma.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Dirección de correo electrónico no válida";
 
 /* update password error */
 "Invalid hashed password!" = "Contraseña hash no válida";
@@ -2074,6 +2083,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "No se ha podido enviar el mensaje.";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Desbloquear";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatarios ocultos";

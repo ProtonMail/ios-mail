@@ -1015,6 +1015,9 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Παρουσίαση ανανεωμένης όψης του Proton.\nΠολλές υπηρεσίες, μία αποστολή. Καλώς ήρθατε σε ένα Διαδίκτυο όπου η ιδιωτικότητα είναι η προεπιλογή.";
 
+/* The error message is shown in composer */
+"Invalid email address" = "Μη έγκυρη διεύθυνση email";
+
 /* update password error */
 "Invalid hashed password!" = "Μη έγκυρος hashed κωδικός πρόσβασης!";
 
@@ -1803,7 +1806,7 @@
 "Some images could not be loaded with tracking protection." = "Ορισμένες εικόνες απέτυχαν να φορτωθούν με προστασία παρακολούθησης.";
 
 /* menu title */
-"Spam" = "Ανεπιθύμητα";
+"Spam" = "Ενοχλητικά";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -2248,9 +2251,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Απενεργοποιείτε το %@ στις ρυθμίσεις dου συστήματός σας. Το %@ έχει χρησιμοποιηθεί για την προστασία σημαντικdν πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %@ ή συνδεθείτε ξανά.";
 
 /* Message */
 "You have %d new emails!" = "Έχετε %d νέα E-mail!";

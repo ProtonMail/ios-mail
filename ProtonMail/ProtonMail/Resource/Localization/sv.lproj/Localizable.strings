@@ -288,6 +288,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Födelsedag";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blockera";
+
 /* Settings row */
 "Block email tracking" = "Blockera e-postspårning";
 
@@ -296,6 +299,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Blockera avsändare";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blockera avsändare";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blockerar avsändare från att se om och när du öppnade meddelandet";
@@ -526,6 +532,9 @@
 /* Alert title */
 "Creating label not allowed" = "Det är inte tillåtet att skapa etikett";
 
+/* Change language title */
+"Current Language: " = "Nuvarande språk: ";
+
 /* Placeholder */
 "Current password" = "Nuvarande lösenord";
 
@@ -699,6 +708,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Laddar ner metadata …";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Laddar ner nya meddelanden...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Laddar ner e-postmeddelanden så du kan söka inom dessa. Meddelanden är krypterade och lagras lokalt. %1$@";
@@ -915,6 +927,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Gå till inställningar";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Gå till inloggning";
+
 /* Got it action */
 "Got it" = "Förstått";
 
@@ -1000,6 +1015,9 @@
 /* place holder */
 "Input Display Name…" = "Mata in visningsnamn…";
 
+/* place holder */
+"Input Notification Email…" = "Mata in e-postavisering…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Osäker anslutning";
 
@@ -1014,6 +1032,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducerar Protons uppfräschade utseende.\nMånga tjänster, ett uppdrag. Välkommen till ett Internet där integritet är standard.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ogiltig e-postadress";
 
 /* update password error */
 "Invalid hashed password!" = "Ogiltigt hashat lösenord!";
@@ -1126,6 +1147,9 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markera som oläst";
+
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Kanske senare";
 
 /* menu title */
 "Menu" = "Meny";
@@ -1275,6 +1299,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Inga bilagor hittades";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Inga blockerade avsändare";
 
 /* Title */
 "No connectivity detected…" = "Ingen anslutning upptäcktes…";
@@ -1699,6 +1726,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Skicka läskvitto";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Avsändare %@ blockerad";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Avsändare %@ avblockerad";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Avsändare har blockerats";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Verifiering av avsändaren misslyckades";
 
@@ -1777,6 +1813,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Visa mig";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Logga in igen för att fortsätta ta emot uppdateringar";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Logga ut";
@@ -1792,6 +1831,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Loggade ut från %1$@ och loggade in med %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Utloggad från %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Hoppa över";
@@ -1953,6 +1995,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Den URL du försöker komma åt är inte standard och kanske inte laddas korrekt. Vill du öppna den med enhetens standardwebbläsare?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Denna användare är redan inloggad";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Det finns oskickade meddelanden som går förlorade om du loggar ut";
 
@@ -2074,6 +2119,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Kan inte skicka e-postmeddelandet";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Avblockera";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Hemliga mottagare";
@@ -2248,9 +2296,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du inaktiverade %@ i dina systeminställningar. %@ har använts för att skydda viktig kontoinformation. För åtkomst till ditt konto, gå till inställningar och återaktivera %@, eller logga in igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nya e-postmeddelanden!";

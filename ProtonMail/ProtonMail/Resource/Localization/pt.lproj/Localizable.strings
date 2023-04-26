@@ -26,7 +26,7 @@
 "8 to 21 characters long" = "8 a 21 caracteres";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "O acesso a esta conta está vedado devido a falta de pagamento. Por favor, inicie sessão através do proton.me para pagar o valor em falta.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "O acesso a esta conta está vedado devido a falta de pagamento. Inicie sessão através do proton.me para pagar o valor em falta.";
 
 /* Account manager title */
 "Account" = "Conta";
@@ -69,7 +69,7 @@
 "Add new custom field" = "Adicionar novo campo personalizado";
 
 /* new email action */
-"Add new email" = "Adicionar novo email";
+"Add new email" = "Adicionar um correio electrónico";
 
 /* new field action */
 "Add new field" = "Adicionar novo campo";
@@ -205,7 +205,7 @@
 "At %@" = "Às %@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Pelo menos um endereço de email no grupo não pôde ser encontrado";
+"At least one email address in the group could not be found" = "Pelo menos um endereço de correio electrónico no grupo não pôde ser encontrado.";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "Pelo menos um endereço de correio electrónico no grupo não pôde ser encontrado.";
@@ -282,6 +282,9 @@
 /* Button to block a sender */
 "Block sender" = "Bloquear o remetente";
 
+/* Spotlight explanation of the feature */
+"Blocks senders from seeing if and when you opened the message" = "Bloqueia os remetentes de ver se e quando se abriu a mensagem.";
+
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegue por tópicos no modo de conversas.";
 
@@ -334,7 +337,7 @@
 "Can't open the file" = "Impossível abrir o ficheiro";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "Impossível actualizar o grupo de contactos através da API";
+"Can't update contact group through the API" = "Impossível atualizar o grupo de contactos através da API";
 
 /* Button to cancel encrypted search
    Cancel action
@@ -503,16 +506,16 @@
 "Creating label not allowed" = "Não é permitido criar a etiqueta";
 
 /* Placeholder */
-"Current password" = "Palavra-passe actual";
+"Current password" = "Palavra-passe atual";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Correio electrónico de recuperação actual";
+"Current Recovery Email" = "Correio electrónico de recuperação atual";
 
 /* The text for current selection of the storage limit of encrypted search */
 "Current selection: " = "Seleção atual:";
 
 /* Title */
-"Current sign-in password" = "Palavra-passe de acesso actual";
+"Current sign-in password" = "Palavra-passe de acesso atual";
 
 /* contacts default label type
    Custom option for time config picker */
@@ -584,14 +587,14 @@
 "Details" = "Detalhes";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Desactive quaisquer proxies ou firewalls ou contacte o administrador da rede.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Desative quaisquer proxies ou firewalls ou contate o administrador da rede.";
 
 /* Cert pinning failed alert message */
-"Disable Validation" = "Desactivar validação";
+"Disable Validation" = "Desativar a validação";
 
 /* Action
    The text for downloaded messages in local storage when encrypted search is disabled. */
-"Disabled" = "Desactivado";
+"Disabled" = "Desativado";
 
 /* Action */
 "Discard" = "Descartar";
@@ -677,7 +680,7 @@
 "Drafts" = "Rascunhos";
 
 /* Onboarding title */
-"Easily up-to-date" = "Actualizado facilmente";
+"Easily up-to-date" = "Fácil de se manter atualizado";
 
 /* Action
    The button title of the scheduled message banner. */
@@ -708,7 +711,7 @@
 "Email address" = "Endereço de correio electrónico";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Endereço de correio electrónico desactivado";
+"Email address disabled" = "Endereço de correio electrónico desativado";
 
 /* contact detail view, email addresses section title */
 "Email addresses" = "Endereços de correio electrónico";
@@ -736,16 +739,16 @@
 
 /* Button to enable encrypted search
    The title of the button to move to settings and enable encrypted search. */
-"Enable" = "Activar";
+"Enable" = "Ativar";
 
 /* Title for the alert to enable encrypted search */
 "Enable content search" = "Ativar a pesquisa em conteúdo";
 
 /* Title */
-"Enable email notices" = "Activar avisos por correio electrónico";
+"Enable email notices" = "Ativar avisos por correio electrónico";
 
 /* Title */
-"Enable signature" = "Activar assinatura";
+"Enable signature" = "Ativar a assinatura";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "Encriptado pelo Proton";
@@ -811,7 +814,7 @@
 "Failed to determine type of file" = "Falha ao determinar o tipo de ficheiro";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Falha ao carregar o conteúdo!\nPor favor, tente novamente.";
+"Failed to load content!\nPlease try again." = "Falha ao carregar o conteúdo.\nTente novamente.";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -871,7 +874,7 @@
 "Go to settings" = "Ir para as definições";
 
 /* Got it action */
-"Got it" = "Percebi";
+"Got it" = "Entendido";
 
 /* network troubleshot cell title */
 "Government block" = "Bloqueio governamental";
@@ -961,14 +964,17 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Apresentando o visual atualizado do Proton.\nMuitos serviços, uma missão. Bem-vindo a uma Internet onde a privacidade vem predefinida.";
 
+/* The error message is shown in composer */
+"Invalid email address" = "Endereço electrónico não válido";
+
 /* update password error */
 "Invalid hashed password!" = "Palavra-passe de hash no válida";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "URL inválido";
+"Invalid URL" = "URL não válido";
 
 /* Error message */
-"Invalid username!" = "Utilizador inválido!";
+"Invalid username!" = "O nome de utilizador não é válido.";
 
 /* The article title of the referral share view. */
 "Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para o Proton,\n ganhe até $90 em créditos!";
@@ -1116,7 +1122,7 @@
 "Message saved to Drafts" = "Mensagem gravada em Rascunhos";
 
 /* Description */
-"Message sending failed. Please try again." = "Falha ao enviar a mensagem. Por favor, tente novamente.";
+"Message sending failed. Please try again." = "Falha ao enviar a mensagem. Tente novamente.";
 
 /* Description after message have been sent */
 "Message sent" = "Mensagem enviada";
@@ -1314,7 +1320,7 @@
 "Other" = "Outro";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "A nossa equipa de apoio ao cliente tentará activar o seu plano de serviço manualmente se concordar em anexar dados técnicos que a App Store forneceu à aplicação no momento da compra. Estes dados não incluem quaisquer detalhes sobre a sua conta do iTunes, Apple ID, cartões de pagamento associados ou qualquer outra informação de utilizador. Os dados técnicos ajudam-nos a confirmar e a verificar se a transacção foi realizada nos servidores da App Store.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "A nossa equipa de apoio ao cliente tentará ativar o seu plano de serviço manualmente se concordar em anexar dados técnicos que a App Store forneceu à aplicação no momento da compra. Estes dados não incluem quaisquer detalhes sobre a sua conta do iTunes, Apple ID, cartões de pagamento associados ou qualquer outra informação de utilizador. Os dados técnicos ajudam-nos a confirmar e a verificar se a transacção foi realizada nos servidores da App Store.";
 
 /* Setting option title of folder setting page */
 "Parent folder" = "Pasta principal";
@@ -1323,10 +1329,10 @@
 "Password Hint" = "Dica de palavra-passe";
 
 /* update password error */
-"Password update failed" = "Falha ao actualizar a palavra-passe";
+"Password update failed" = "Falha ao atualizar a palavra-passe";
 
 /* Message to show to user after updating password. */
-"Password updated" = "Palavra-passe actualizada";
+"Password updated" = "Palavra-passe atualizada";
 
 /* Placeholder */
 "Passwords must match" = "As palavras-passe têm de coincidir.";
@@ -1380,25 +1386,25 @@
 "PIN is too short" = "O PIN é demasiado curto.";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Por favor ligue-se e tente novamente";
+"Please connect and retry" = "Ligue-se e tente novamente.";
 
 /* error message */
-"Please input a valid email address." = "Por favor insira um endereço electrónico válido.";
+"Please input a valid email address." = "Insira um endereço electrónico válido.";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Por favor, mantenha o Proton Mail aberto até que a operação seja concluída.";
+"Please keep Proton Mail open until the operation is done." = "Mantenha o Proton Mail aberto até que a operação seja concluída.";
 
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Por favor, certifique-se de que a sua ligação à Internet está a funcionar.";
+"Please make sure that your internet connection is working." = "Certifique-se de que a sua ligação à internet está a funcionar.";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Por favor, dê um nome ao grupo";
+"Please provide a group name" = "Dê um nome ao grupo.";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Por favor, seleccione pelo menos um endereço";
+"Please select at least one email" = "Seleccione pelo menos um endereço.";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Por favor, seleccione pelo menos um endereço para o grupo de contactos";
+"Please select at least one email for the contact group" = "Seleccione pelo menos um endereço para o grupo de contactos.";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Defina um correio electrónico de recuperação/notificação";
@@ -1407,16 +1413,16 @@
 "Please share your problem." = "Compartilhe o seu problema.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Por favor, actualize para um plano pago para utilizar mais de 3 pastas";
+"Please upgrade to a paid plan to use more than 3 folders" = "Atualize para um plano pago para utilizar mais de 3 pastas.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Por favor, actualize para um plano pago para usar mais de 3 etiquetas";
+"Please upgrade to a paid plan to use more than 3 labels" = "Atualize para um plano pago para usar mais de 3 etiquetas.";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Por favor, atualize o seu plano";
+"Please upgrade your plan" = "Atualize o seu plano";
 
 /* Description */
-"Please use Proton Mail App sign-in first." = "Por favor, inicie sessão primeiro na aplicação Proton Mail.";
+"Please use Proton Mail App sign-in first." = "Iinicie sessão primeiro na aplicação Proton Mail.";
 
 /* No comment provided by engineer. */
 "Print" = "Imprimir";
@@ -1470,7 +1476,7 @@
 "Recovery email" = "Endereço de recuperação";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Recuperação activada";
+"Recovery enabled" = "Recuperação ativada";
 
 /* menu title
    The title of the refer button in referral prompt view. */
@@ -1795,16 +1801,16 @@
 "Tell us about your experience. (Optional)" = "Conte-nos a sua experiência. (Opcional)";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Desactive temporariamente o antivírus ou remova-o.";
+"Temporarily disable or remove your antivirus software." = "Desative temporariamente o antivírus ou remova-o.";
 
 /* The title of the terms and conditions button in referral share view. */
 "Terms & conditions" = "Termos & condições";
 
 /* No comment provided by engineer. */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Obrigado por enviar um relatório de erros.  Adicionámos o seu relatório ao nosso sistema de rastreio de erros.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Agradecemos o envio de um relatório de erros.  Adicionámos o seu relatório ao nosso sistema de rastreio de erros.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Obrigado pelo seu comentário!";
+"Thank you for your feedback!" = "Agradecemos a sua opinião!";
 
 /* Error message */
 "The 2 passwords are not matching" = "As 2 palavras-passe não coincidem.";
@@ -1813,7 +1819,7 @@
 "The actions in the toolbar will be reset to default" = "As ações na barra de ferramentas serão redefinidas para os valores padrão";
 
 /* Description */
-"The draft cache is broken. Please try again." = "A memória do rascunho está danificada. Por favor, tente novamente.";
+"The draft cache is broken. Please try again." = "A memória do rascunho está danificada. Tente novamente.";
 
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "Não foi possível anexar os seguintes ficheiros:";
@@ -1837,7 +1843,7 @@
 "The PIN codes must match!" = "Os códigos PIN devem ser iguais!";
 
 /* update password error */
-"The private key update failed." = "A actualização da chave privada falhou.";
+"The private key update failed." = "A atualização da chave privada falhou.";
 
 /* Title */
 "The request timed out." = "O pedido expirou.";
@@ -1879,7 +1885,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Esta ligação leva a um site que pode estar tentando roubar suas informações, como senhas e detalhes de cartão de crédito.\n%@\n\nPara sua segurança, não continue.";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Esta mensagem pode ser uma tentativa de phishing. Por favor, verifique o remetente e o conteúdo para se certificar de que são legítimos.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Esta mensagem pode ser uma tentativa de phishing. Verifique o remetente e o conteúdo para se certificar de que são legítimos.";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Esta mensagem expirará em %1$dD %2$dH %3$dM";
@@ -2007,13 +2013,13 @@
 "Up to 500 GB of storage" = "Até 500 GB de armazenamento";
 
 /* update notification email error title */
-"Update Notification Email" = "Actualizar endereço de notificação";
+"Update Notification Email" = "Atualizar o endereço de notificação";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Actualizado >há 1 hora";
+"Updated >1 hour ago" = "Atualizado >há 1 hora";
 
 /* The title of last update status of updated just now */
-"Updated just now" = "Actualizado agora";
+"Updated just now" = "Atualizado agora";
 
 /* Welcome to rebranding title */
 "Updated Proton, unified protection" = "Proton atualizado, proteção unificada";
@@ -2022,7 +2028,7 @@
 "Upgrade now" = "Atualizar agora";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Actualize para um plano pago para enviar a partir do seu endereço %@";
+"Upgrade to a paid plan to send from your %@ address" = "Atualize para um plano pago para enviar a partir do seu endereço %@";
 
 /* Action */
 "Upload device contacts" = "Enviar contactos do dispositivo";
@@ -2070,13 +2076,13 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Não foi possível enviar a mensagem, possivelmente por causa de uma rede fraca. A sua mensagem está nos rascunhos e será enviada automaticamente quando reiniciar a aplicação.";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Temos problemas na ligação aos servidores. Por favor, religue.";
+"We have trouble connecting to the servers. Please reconnect." = "Temos problemas na ligação aos servidores. Religue.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "Recomendamos antes definir uma palavra-passe para os seguintes destinatários:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomendamos antes definir uma palavra-passe ou desactivar o PGP para os seguintes destinatários:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomendamos antes definir uma palavra-passe ou desativar o PGP para os seguintes destinatários:";
 
 /* week */
 "week" = "semana";
@@ -2117,9 +2123,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Não pode predefinir o endereço %@, é uma funcionalidade paga.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Desactivou o %@ nas definições do sistema. O %@ foi utilizado para proteger informação importante da conta. Para aceder à conta, vá às definições e reactive o %@, ou reinicie sessão.";
-
 /* Message */
 "You have %d new emails!" = "Tem %d novas mensagens!";
 
@@ -2127,10 +2130,10 @@
 "You have a new email!" = "Tem uma nova mensagem!";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Inseriu pelo menos um endereço de correio electrónico inválido. Confirme os destinatários.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Inseriu pelo menos um endereço de correio electrónico não válido. Confirme os destinatários.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Inseriu pelo menos um destinatário desconhecido. Por favor, confirme os destinatários.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Inseriu pelo menos um destinatário desconhecido. Confirme os destinatários.";
 
 /* The status text of message history in downloaded messages if the user has no messages. */
 "You have no messages." = "Não tem mensagens.";
@@ -2172,7 +2175,7 @@
 "Your labels" = "As suas etiquetas";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "A sua sessão expirou porque não houve actividade por algum tempo ou porque foi revogada. Por favor, inicie sessão novamente.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "A sua sessão expirou porque não houve atividade por algum tempo ou porque foi revogada. Inicie sessão novamente.";
 
 /* contact placeholder */
 "ZIP" = "CP";

@@ -1015,6 +1015,9 @@
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton 界面现已焕然一新。\n服务繁多，使命不变。欢迎进入隐私优先的互联网。";
 
+/* The error message is shown in composer */
+"Invalid email address" = "无效的邮件地址";
+
 /* update password error */
 "Invalid hashed password!" = "哈希密码无效!";
 
@@ -2248,9 +2251,6 @@
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您已在系统设置中关闭 %@。此账户已受 %@ 保护，请前往系统设置开启 %@ 或重新登录。";
 
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";

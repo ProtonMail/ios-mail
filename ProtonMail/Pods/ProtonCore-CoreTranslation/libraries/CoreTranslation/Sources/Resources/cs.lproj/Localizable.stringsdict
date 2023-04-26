@@ -490,11 +490,11 @@
 			<key>few</key>
 			<string>Vysokorychlostní VPN na %d zařízení</string>
 			<key>many</key>
-			<string>Vysokorychlostní VPN na $%d zařízeních</string>
+			<string>Vysokorychlostní VPN na %d zařízeních</string>
 			<key>one</key>
 			<string>Vysokorychlostní VPN na %d zařízení</string>
 			<key>other</key>
-			<string>Vysokorychlostní VPN na $%d zařízeních</string>
+			<string>Vysokorychlostní VPN na %d zařízeních</string>
 		</dict>
 	</dict>
 	<key>New_Plans Medium VPN speed %d VPN connections</key>

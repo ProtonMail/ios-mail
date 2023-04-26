@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Všechna pošta";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Po odhlášení z aplikace se všechna nastavení ochrany resetují a vymažou.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Všechny vaše zprávy jsou staženy";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Narozeniny";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blokovat";
+
 /* Settings row */
 "Block email tracking" = "Blokovat sledování emailů";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Blokovat odesílatele";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Zablokovaní odesílatelé";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Zamezuje odesílatelům zjistit, zda a kdy jste zprávu otevřeli";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Vytvoření štítku není povoleno";
 
+/* Change language title */
+"Current Language: " = "Aktuální jazyk: ";
+
 /* Placeholder */
 "Current password" = "Aktuální heslo";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Stahování metadat ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Stahování nových zpráv...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Stáhne e-maily, abyste v nich mohli vyhledávat. Zprávy jsou šifrovány a ukládány lokálně. %1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Přejít do nastavení";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Přejít na přihlášení";
+
 /* Got it action */
 "Got it" = "Rozumím";
 
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Vložte zobrazované jméno…";
 
+/* place holder */
+"Input Notification Email…" = "Vložte e-mail pro zasílání upozornění…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nezabezpečené připojení";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Představujeme nový vzhled Protonu.\nMnoho služeb, jedno poslání. Vítejte na Internetu, kde je soukromí standardem.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Neplatná e-mailová adresa";
 
 /* update password error */
 "Invalid hashed password!" = "Neplatné hashované heslo!";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Označit jako nepřečtené";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Možná později";
+
 /* menu title */
 "Menu" = "Nabídka";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Nový kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nové e-maily od %@ nebudou doručeny a budou trvale smazány. Zablokované e-mailové adresy můžete spravovat v nastavení.";
+
 /* The title of create folder page */
 "New folder" = "Nová složka";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Žádná příloha nenalezena";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Žádní blokovaní odesílatelé";
 
 /* Title */
 "No connectivity detected…" = "Nerozpoznáno žádné síťové připojení…";
@@ -1699,6 +1732,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Odeslat potvrzení o přečtení";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Odesílatel %@ zablokován";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Odesílatel %@ odblokován";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Odesílatel byl zablokován";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Ověření odesílatele se nezdařilo";
 
@@ -1777,6 +1819,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Ukázat";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Chcete-li nadále dostávat aktualizace, znovu se přihlaste";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Odhlásit se";
@@ -1792,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Byli jste odhlášeni z %1$@ a přihlášeni k %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Odhlášeno z %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Přeskočit";
@@ -1953,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL adresa, kterou otevíráte, je nestandardní a nemusí se v pořádku načíst. Chcete ji otevřít výchozím prohlížečem vašeho zařízení?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Uživatel je již přihlášen";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Jsou evidovány neodeslané zprávy. V případě, že se odhlásíte, budou ztraceny";
 
@@ -1967,6 +2018,9 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Tato konverzace obsahuje zprávy vyhozené do koše";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "U tohoto e-mailu nebyly splněny požadavky na ověření domény odesílatele. E-mail může být podvržený a nebo nesprávně přeposlaný.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Tento e-mail zřejmě pochází z adresy Proton Mail, ale přišel z cizího systému a neprošel našimi požadavky na ověření. Může se jednat o podvržený nebo nesprávně přeposlaný e-mail!";
@@ -2057,6 +2111,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.";
+
 /* Placeholder */
 "Two Factor Code" = "Dvoufázový kód";
 
@@ -2074,6 +2131,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Nelze odeslat e-mail";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Odblokovat";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Nezveřejnění příjemci";
@@ -2250,7 +2310,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ adresu nelze nastavit jako výchozí, protože je to placená funkce.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "V nastavení systému jste zakázali %@. %@ bylo použito k ochraně důležitých informací o účtu. Chcete-li získat přístup ke svému účtu, přejděte do nastavení a znovu aktivujte %@ nebo se znovu přihlaste.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "V nastavení systému jste zakázali %@. %@ bylo použito k ochraně důležitých informací o účtu. Pro přístup k vašemu účtu, přejděte do nastavení a znovu aktivujte %@ a nebo se přihlaste běžným způsobem.";
 
 /* Message */
 "You have %d new emails!" = "Máte %d nových zpráv!";
@@ -2311,6 +2371,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Vaše zprávy jsou stahovány...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Vaše soukromí je lépe chráněno, pokud vaše kontakty také používají Proton Mail. Pozvěte své přátele do služby Proton a každý z vás získá prémiové výhody zdarma.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Vaše relace vypršela, protože jste byli delší dobu neaktivní nebo byla aktuální relace zrušena. Přihlaste se prosím znovu.";
