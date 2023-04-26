@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 
+// sourcery: CoreDataHelpers
 class LabelUpdate: NSManagedObject, LabelCount {
 
     @NSManaged var userID: String
