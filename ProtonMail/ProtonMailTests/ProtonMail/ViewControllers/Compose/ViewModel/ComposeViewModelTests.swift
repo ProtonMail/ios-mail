@@ -89,41 +89,34 @@ final class ComposeViewModelTests: XCTestCase {
             XCTAssertEqual(result[index].order, index)
         }
     }
-}
 
 // MARK: isEmptyDraft tests
 
 // The body decryption part and numAttachment are missing, seems no way to test
-private extension ComposeViewModelTests {
-    func testIsEmptyDraft_messageInit() throws {
-        let user = mockUserManager()
-        let viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
 
-        XCTAssertTrue(viewModel.isEmptyDraft())
+    func testIsEmptyDraft_messageInit() throws {
+        sut.initialize(message: message, action: .openDraft)
+        XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
-        let user = mockUserManager()
-        let viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
-
-        XCTAssertFalse(viewModel.isEmptyDraft())
+        sut.initialize(message: message, action: .openDraft)
+        XCTAssertFalse(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_recipientField() throws {
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"
-        let user = mockUserManager()
-        var viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
-
-        XCTAssertTrue(viewModel.isEmptyDraft())
+        sut.initialize(message: message, action: .openDraft)
+        XCTAssertTrue(sut.isEmptyDraft())
 
         message.toList = "eee"
         message.ccList = "abc"
         message.bccList = "fsx"
-        viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
-        XCTAssertFalse(viewModel.isEmptyDraft())
+        sut.initialize(message: message, action: .openDraft)
+        XCTAssertFalse(sut.isEmptyDraft())
     }
 
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
