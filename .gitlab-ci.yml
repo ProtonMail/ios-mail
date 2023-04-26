@@ -329,6 +329,7 @@ appetize:stop:
 testflight:build:upload:
   dependencies: []
   stage: testflight
+  needs: []
   variables:
     GIT_STRATEGY: clone
   rules:
