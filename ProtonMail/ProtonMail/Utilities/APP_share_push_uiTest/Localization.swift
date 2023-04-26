@@ -1272,7 +1272,7 @@ class LocalizedString {
     lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
     lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")
     lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
-    lazy var _provide_feedback = NSLocalizedString("Send feedback", comment: "Title of menu action to trigger feedback view")
+    lazy var _provide_feedback = _send_feedback
     lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
     lazy var collalse_message_title_in_converation_view = NSLocalizedString("Collapse message", comment: "The title of button to collapse the expanded message in conversation view for VoiceOver.")
 

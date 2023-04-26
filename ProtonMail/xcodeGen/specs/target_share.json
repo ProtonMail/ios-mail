@@ -38,6 +38,11 @@
          "preBuildScripts": [
             {
                "basedOnDependencyAnalysis": false,
+               "name": "locheck",
+               "path": "xcodeGen/locheck.sh"
+            },
+            {
+               "basedOnDependencyAnalysis": false,
                "name": "swiftGen",
                "path": "xcodeGen/swiftGen.sh",
                "outputFiles": [
