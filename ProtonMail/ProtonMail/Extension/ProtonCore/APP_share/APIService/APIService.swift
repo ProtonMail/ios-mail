@@ -51,9 +51,7 @@ extension PMAPIService {
             )
         }
         #if !APP_EXTENSION
-        if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            unauthorized.serviceDelegate = delegate
-        }
+        unauthorized.serviceDelegate = PMAPIService.ServiceDelegate.shared
         unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
         unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
@@ -65,12 +63,9 @@ extension PMAPIService {
         // TODO:: fix me -- shouldn't have gloabl access
         if let user = sharedServices.get(by: UsersManager.self).users.first {
             return user.apiService
+        } else {
+            return unauthorized
         }
-        #if !APP_EXTENSION
-        self.unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: .unauthorized)
-        self.unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        #endif
-        return self.unauthorized
     }
 
     static func setupTrustIfNeeded() {
@@ -130,5 +125,42 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
 
     func sessionWasInvalidated(for _: String, isAuthenticatedSession: Bool) {
         SharedCacheBase.getDefault()?.remove(forKey: key)
+    }
+}
+
+extension PMAPIService {
+    final class ServiceDelegate: APIServiceDelegate {
+        static let shared = ServiceDelegate()
+
+        var appVersion: String {
+            Constants.App.appVersion
+        }
+
+        var userAgent: String? {
+            UserAgent.default.ua
+        }
+
+        var locale: String {
+            if let local = LanguageManager().currentLanguageCode() {
+                return local
+            } else {
+                return Constants.defaultLocale
+            }
+        }
+
+        var additionalHeaders: [String : String]? {
+            nil
+        }
+
+        func onUpdate(serverTime: Int64) {
+            MailCrypto.updateTime(serverTime, processInfo: userCachedStatus)
+        }
+
+        func isReachable() -> Bool {
+            sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+        }
+
+        func onDohTroubleshot() {
+        }
     }
 }

@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Services
 import SkeletonView
 import ProtonCore_UIFoundations
 import UIKit
@@ -49,8 +50,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate,
-              delegate.isReachable() else {
+        guard PMAPIService.ServiceDelegate.shared.isReachable() else {
             // If device has connection, skeleton view will be dismissed after fetching user info
             // If device doesn't have connection, doesn't need to waste time to wait
             NotificationCenter.default.post(name: .switchView, object: nil)

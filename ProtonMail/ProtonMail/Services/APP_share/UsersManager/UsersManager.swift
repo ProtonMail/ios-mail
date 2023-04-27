@@ -145,7 +145,7 @@ class UsersManager: Service {
         let apiService = PMAPIService.createAPIService(
             doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
         )
-        apiService.serviceDelegate = self
+        apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -258,7 +258,7 @@ class UsersManager: Service {
                     sessionUID: session,
                     challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
                 )
-                apiService.serviceDelegate = self
+                apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -600,7 +600,7 @@ extension UsersManager {
             sessionUID: sessionID,
             challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
         )
-        apiService.serviceDelegate = self
+        apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
 #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -695,7 +695,7 @@ extension UsersManager {
             let apiService = PMAPIService.createAPIService(
                 doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
-            apiService.serviceDelegate = self
+            apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -753,7 +753,7 @@ extension UsersManager {
                     sessionUID: session,
                     challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
                 )
-                apiService.serviceDelegate = self
+                apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -856,42 +856,6 @@ extension UsersManager {
             return
         }
     }
-}
-
-// MARK: - APIServiceDelegate
-extension UsersManager: APIServiceDelegate {
-    var additionalHeaders: [String: String]? { nil }
-
-    var locale: String {
-        if let local = LanguageManager().currentLanguageCode() {
-            return local
-        } else {
-            return Constants.defaultLocale
-        }
-    }
-
-    func isReachable() -> Bool {
-        return internetConnectionStatusProvider.currentStatus != .notConnected
-    }
-
-    func onUpdate(serverTime: Int64) {
-        #if !APP_EXTENSION
-        let processInfo = userCachedStatus
-        #else
-        let processInfo = userCachedStatus as? SystemUpTimeProtocol
-        #endif
-        MailCrypto.updateTime(serverTime, processInfo: processInfo)
-    }
-
-    var appVersion: String {
-        Constants.App.appVersion
-    }
-
-    var userAgent: String? {
-        UserAgent.default.ua
-    }
-
-    func onDohTroubleshot() {}
 }
 
 #if !APP_EXTENSION

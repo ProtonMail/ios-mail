@@ -66,36 +66,6 @@ extension AppDelegate {
     }
 }
 
-extension AppDelegate: APIServiceDelegate {
-    var additionalHeaders: [String: String]? { nil }
-
-    var locale: String {
-        return LanguageManager().currentLanguageCode() ?? "en"
-    }
-
-    func isReachable() -> Bool {
-        #if !APP_EXTENSION
-        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
-        #else
-        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
-        #endif
-    }
-
-    func onUpdate(serverTime: Int64) {
-        MailCrypto.updateTime(serverTime, processInfo: userCachedStatus)
-    }
-
-    var appVersion: String {
-        Constants.App.appVersion
-    }
-
-    var userAgent: String? {
-        UserAgent.default.ua
-    }
-
-    func onDohTroubleshot() { }
-}
-
 extension AppDelegate: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
         let currentWindow: UIWindow? = {
