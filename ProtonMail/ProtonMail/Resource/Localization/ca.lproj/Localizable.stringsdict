@@ -75,9 +75,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Queda %d intent abans de l'eliminació de les dades segures!</string>
+			<string>Queda %d intent abans de l&apos;eliminació de les dades segures!</string>
 			<key>other</key>
-			<string>Queden %d intents abans de l'eliminació de les dades segures!</string>
+			<string>Queden %d intents abans de l&apos;eliminació de les dades segures!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -98,7 +98,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
 	</dict>
-	<key>%d conversation moved to %@</key>
+	<key>%1$d conversation moved to %2$@</key>
 	<dict>
 		<key>Conversation</key>
 		<dict>
@@ -212,7 +212,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
 	</dict>
-	<key>%d message moved to %@</key>
+	<key>%1$d message moved to %2$@</key>
 	<dict>
 		<key>MSG</key>
 		<dict>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Aquest %d missatge es mourà a Esborranys i se n'eliminarà la programació.</string>
+			<string>Aquest %d missatge es mourà a Esborranys i se n&apos;eliminarà la programació.</string>
 			<key>other</key>
-			<string>Aquests %d missatges es mouran a Esborranys i se n'eliminarà la programació.</string>
+			<string>Aquests %d missatges es mouran a Esborranys i se n&apos;eliminarà la programació.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
