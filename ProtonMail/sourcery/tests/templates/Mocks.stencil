@@ -1,9 +1,10 @@
 import CoreData
+import LocalAuthentication
 import ProtonCore_Crypto
 import ProtonCore_Environment
+import ProtonCore_Keymaker
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
-import ProtonCore_Keymaker
 
 import class ProtonCore_DataModel.UserInfo
 

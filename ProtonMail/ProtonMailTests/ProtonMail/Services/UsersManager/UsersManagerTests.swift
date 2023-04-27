@@ -31,6 +31,7 @@ class UsersManagerTests: XCTestCase {
     let suiteName = String.randomString(10)
     var customCache: SharedCacheBase!
     var customKeyChain: Keychain!
+    var notificationCenter: NotificationCenter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -40,11 +41,13 @@ class UsersManagerTests: XCTestCase {
         self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
         self.customKeyChain = .init(service: String.randomString(10),
                                     accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
+        self.notificationCenter = NotificationCenter()
         sut = UsersManager(
             doh: doh,
             userDataCache: cachedUserDataProviderMock,
             userDefaultCache: customCache,
-            keychain: customKeyChain
+            keychain: customKeyChain,
+            notificationCenter: notificationCenter
         )
     }
 
@@ -62,6 +65,7 @@ class UsersManagerTests: XCTestCase {
         self.customCache = nil
         self.customKeyChain.removeEverything()
         self.customKeyChain = nil
+        notificationCenter = nil
     }
 
     func testNumberOfFreeAccounts() {
@@ -286,7 +290,7 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         XCTAssertEqual(sut.users.count, 1)
         let expectation1 = expectation(description: "Closure is called")
-        expectation(forNotification: .didPrimaryAccountLogout, object: nil, handler: nil)
+        expectation(forNotification: .didSignOut, object: nil, notificationCenter: notificationCenter)
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)

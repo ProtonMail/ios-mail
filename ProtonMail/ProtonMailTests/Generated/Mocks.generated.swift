@@ -1,11 +1,12 @@
 // Generated using Sourcery 1.9.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import CoreData
+import LocalAuthentication
 import ProtonCore_Crypto
 import ProtonCore_Environment
+import ProtonCore_Keymaker
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
-import ProtonCore_Keymaker
 
 import class ProtonCore_DataModel.UserInfo
 
@@ -110,6 +111,44 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
     func updateExpirationOffset(of messageObjectID: NSManagedObjectID, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
         updateExpirationOffsetStub(messageObjectID, expirationTime, pwd, pwdHint, completion)
+    }
+
+}
+
+class MockCacheStatusInject: CacheStatusInject {
+    @PropertyStub(\MockCacheStatusInject.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
+    var isPinCodeEnabled: Bool {
+        isPinCodeEnabledStub()
+    }
+
+    @PropertyStub(\MockCacheStatusInject.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
+    var isTouchIDEnabled: Bool {
+        isTouchIDEnabledStub()
+    }
+
+    @PropertyStub(\MockCacheStatusInject.pinFailedCount, initialGet: Int()) var pinFailedCountStub
+    var pinFailedCount: Int {
+        get {
+            pinFailedCountStub()
+        }
+        set {
+            pinFailedCountStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockCacheStatusInject.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
+    var isAppKeyEnabled: Bool {
+        isAppKeyEnabledStub()
+    }
+
+    @PropertyStub(\MockCacheStatusInject.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
+    var isAppLockedAndAppKeyDisabled: Bool {
+        isAppLockedAndAppKeyDisabledStub()
+    }
+
+    @PropertyStub(\MockCacheStatusInject.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
+    var isAppLockedAndAppKeyEnabled: Bool {
+        isAppLockedAndAppKeyEnabledStub()
     }
 
 }
@@ -497,6 +536,34 @@ class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProv
 
 }
 
+class MockKeyMakerProtocol: KeyMakerProtocol {
+    @FuncStub(MockKeyMakerProtocol.mainKey, initialReturn: nil) var mainKeyStub
+    func mainKey(by protection: RandomPinProtection?) -> MainKey? {
+        mainKeyStub(protection)
+    }
+
+    @FuncStub(MockKeyMakerProtocol.obtainMainKey) var obtainMainKeyStub
+    func obtainMainKey(with protector: ProtectionStrategy, handler: @escaping (MainKey?) -> Void) {
+        obtainMainKeyStub(protector, handler)
+    }
+
+    @FuncStub(MockKeyMakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
+    func deactivate(_ protector: ProtectionStrategy) -> Bool {
+        deactivateStub(protector)
+    }
+
+    @FuncStub(MockKeyMakerProtocol.lockTheApp) var lockTheAppStub
+    func lockTheApp() {
+        lockTheAppStub()
+    }
+
+    @FuncStub(MockKeyMakerProtocol.mainKeyExists, initialReturn: Bool()) var mainKeyExistsStub
+    func mainKeyExists() -> Bool {
+        mainKeyExistsStub()
+    }
+
+}
+
 class MockKeymakerProtocol: KeymakerProtocol {
     @FuncStub(MockKeymakerProtocol.activate) var activateStub
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
@@ -506,6 +573,14 @@ class MockKeymakerProtocol: KeymakerProtocol {
     @FuncStub(MockKeymakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
     func deactivate(_ protector: ProtectionStrategy) -> Bool {
         deactivateStub(protector)
+    }
+
+}
+
+class MockLAContextProtocol: LAContextProtocol {
+    @FuncStub(MockLAContextProtocol.canEvaluatePolicy, initialReturn: Bool()) var canEvaluatePolicyStub
+    func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool {
+        canEvaluatePolicyStub(policy, error)
     }
 
 }
@@ -901,6 +976,34 @@ class MockToolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomization
         set {
             shouldHideToolbarCustomizeInfoBubbleViewStub(newValue)
         }
+    }
+
+}
+
+class MockUnlockManagerDelegate: UnlockManagerDelegate {
+    @FuncStub(MockUnlockManagerDelegate.cleanAll) var cleanAllStub
+    func cleanAll(completion: @escaping () -> Void) {
+        cleanAllStub(completion)
+    }
+
+    @FuncStub(MockUnlockManagerDelegate.isUserStored, initialReturn: Bool()) var isUserStoredStub
+    func isUserStored() -> Bool {
+        isUserStoredStub()
+    }
+
+    @FuncStub(MockUnlockManagerDelegate.isMailboxPasswordStored, initialReturn: Bool()) var isMailboxPasswordStoredStub
+    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
+        isMailboxPasswordStoredStub(uid)
+    }
+
+    @FuncStub(MockUnlockManagerDelegate.setupCoreData) var setupCoreDataStub
+    func setupCoreData() {
+        setupCoreDataStub()
+    }
+
+    @FuncStub(MockUnlockManagerDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
+    func loadUserDataAfterUnlock() {
+        loadUserDataAfterUnlockStub()
     }
 
 }

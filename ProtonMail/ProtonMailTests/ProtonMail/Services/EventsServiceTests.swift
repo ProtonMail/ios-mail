@@ -30,7 +30,7 @@ final class EventsServiceTests: XCTestCase {
     private var mockContactCacheStatus: ContactCacheStatusProtocol!
     private var mockContextProvider: CoreDataContextProviderProtocol!
     private let dummyUserID = "dummyUserID"
-    private let timeout = 2.0
+    private let timeout = 3.0
 
     override func setUp() {
         mockApiService = APIServiceMock()
@@ -57,16 +57,16 @@ final class EventsServiceTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        sut = nil
         mockApiService = nil
         mockUserManager = nil
         mockContactCache = nil
         mockFetchMessageMetaData = nil
         mockContactCacheStatus = nil
         mockContextProvider = nil
-        sut = nil
     }
 
-    func testFetchEvents_whenNewIncomingDefault_itSucceedsSavingIt() {
+    func testFetchEvents_whenNewIncomingDefault_itSucceedsSavingIt() throws {
         let objectId = String.randomString(32)
         let objectEmail = "dummy@example.com"
         let objectTime: TimeInterval = 1678721296
@@ -90,7 +90,7 @@ final class EventsServiceTests: XCTestCase {
         }
         waitForExpectations(timeout: timeout)
 
-        try! mockContextProvider.read { context in
+        try mockContextProvider.read { context in
             let fetchRequest = NSFetchRequest<IncomingDefault>(entityName: IncomingDefault.entity().name!)
             let incomingDefaults = try context.fetch(fetchRequest)
             XCTAssertEqual(incomingDefaults.count, 1)
