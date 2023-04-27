@@ -44,7 +44,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepLink(deeplink)
         } else {
             self.coordinator.start()
         }
@@ -56,7 +56,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
                      completionHandler: @escaping (Bool) -> Void) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
             completionHandler(true)
         } else {
             completionHandler(false)
@@ -102,7 +102,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func handleShortcutAction(shortcutItem: UIApplicationShortcutItem) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepLink(deeplink)
         } else {
             self.coordinator.start()
         }
@@ -137,7 +137,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
             return true
         }
 

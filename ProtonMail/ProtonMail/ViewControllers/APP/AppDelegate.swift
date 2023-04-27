@@ -185,7 +185,7 @@ extension AppDelegate: UIApplicationDelegate {
                                                selector: #selector(didSignOutNotification(_:)),
                                                name: NSNotification.Name.didSignOut,
                                                object: nil)
-
+        coordinator.delegate = self
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -227,7 +227,7 @@ extension AppDelegate: UIApplicationDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepLink(deeplink)
             return true
         }
 
@@ -293,7 +293,7 @@ extension AppDelegate: UIApplicationDelegate {
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
         }
         return true
     }
@@ -395,13 +395,13 @@ extension AppDelegate: UIApplicationDelegate {
                      completionHandler: @escaping (Bool) -> Void) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
         }
         completionHandler(true)
     }
 }
 
-extension AppDelegate: UnlockManagerDelegate {
+extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
         if users.hasUserName() || users.hasUsers() {
@@ -418,18 +418,34 @@ extension AppDelegate: UnlockManagerDelegate {
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
-    func cleanAll() {
-        ///
+    func cleanAll(completion: @escaping () -> Void) {
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
-        sharedServices.get(by: UsersManager.self).clean().cauterize()
-        keymaker.wipeMainKey()
-        keymaker.mainKeyExists()
+        sharedServices.get(by: UsersManager.self).clean().ensure {
+            keymaker.wipeMainKey()
+            keymaker.mainKeyExists()
+            completion()
+        }.cauterize()
     }
 
     func setupCoreData() {
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         sharedServices.add(LastUpdatedStore.self,
                            for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+    }
+
+    func loadUserDataAfterUnlock() {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        usersManager.run()
+        usersManager.tryRestore()
+
+        #if !APP_EXTENSION
+        sharedServices.get(by: UsersManager.self).users.forEach {
+            $0.messageService.injectTransientValuesIntoMessages()
+        }
+        if let primaryUser = usersManager.firstUser {
+            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
+        }
+        #endif
     }
 }
 

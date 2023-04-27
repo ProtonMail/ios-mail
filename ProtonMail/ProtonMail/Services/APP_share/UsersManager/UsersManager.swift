@@ -100,6 +100,7 @@ class UsersManager: Service {
     private let userDataCache: CachedUserDataProvider
     private let userDefaultCache: SharedCacheBase
     private let keychain: Keychain
+    private let notificationCenter: NotificationCenter
 
     #if !APP_EXTENSION
     private var encryptedSearchCache: EncryptedSearchUserCache {
@@ -112,7 +113,8 @@ class UsersManager: Service {
         userDataCache: CachedUserDataProvider = UserDataCache(),
         internetConnectionStatusProvider: InternetConnectionStatusProvider = .init(),
         userDefaultCache: SharedCacheBase = .init(),
-        keychain: Keychain = KeychainWrapper.keychain
+        keychain: Keychain = KeychainWrapper.keychain,
+        notificationCenter: NotificationCenter = .default
     ) {
         self.doh = doh
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
@@ -123,6 +125,7 @@ class UsersManager: Service {
         self.userDataCache = userDataCache
         self.userDefaultCache = userDefaultCache
         self.keychain = keychain
+        self.notificationCenter = notificationCenter
         setupValueTransforms()
         #if !APP_EXTENSION
         trackLifetime()
@@ -347,21 +350,31 @@ extension UsersManager {
                 self.remove(user: userToDelete)
             }
 
-            if self.users.isEmpty {
-                _ = self.clean().cauterize()
-            } else if shouldShowAccountSwitchAlert {
+#if !APP_EXTENSION
+            ImageProxyCache.shared.purge()
+            SenderImageCache.shared.purge()
+#endif
+
+            guard !self.users.isEmpty else {
+                _ = self.clean().ensure {
+                    self.notificationCenter.post(
+                        name: Notification.Name.didSignOut,
+                        object: self
+                    )
+                    completion?()
+                }.cauterize()
+                return
+            }
+
+            if shouldShowAccountSwitchAlert {
                 String(format: LocalString._signout_account_switched_when_token_revoked,
                        arguments: [userToDelete.defaultEmail,
                                    self.users.first?.defaultEmail ?? ""]).alertToast()
             }
 
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
-                NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+                self.notificationCenter.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
-            #if !APP_EXTENSION
-            ImageProxyCache.shared.purge()
-            SenderImageCache.shared.purge()
-            #endif
             completion?()
         }.cauterize()
     }

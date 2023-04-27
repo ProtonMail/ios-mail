@@ -66,10 +66,15 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
         return isUserCredentialStored
     }
 
-    func cleanAll() {
-        sharedServices.get(by: UsersManager.self).clean().cauterize()
-        keymaker.wipeMainKey()
-        keymaker.mainKeyExists()
+    func cleanAll(completion: @escaping () -> Void) {
+        sharedServices.get(by: UsersManager.self)
+            .clean()
+            .ensure {
+                keymaker.wipeMainKey()
+                keymaker.mainKeyExists()
+                completion()
+            }
+            .cauterize()
     }
 
     var isUserCredentialStored: Bool {
@@ -81,5 +86,11 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
             return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
         }
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
+    }
+
+    func loadUserDataAfterUnlock() {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        usersManager.run()
+        usersManager.tryRestore()
     }
 }
