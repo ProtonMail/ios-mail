@@ -122,7 +122,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
 	</dict>
-	<key>%d conversation moved to %@</key>
+	<key>%1$d conversation moved to %2$@</key>
 	<dict>
 		<key>Conversation</key>
 		<dict>
@@ -264,7 +264,7 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
 	</dict>
-	<key>%d message moved to %@</key>
+	<key>%1$d message moved to %2$@</key>
 	<dict>
 		<key>MSG</key>
 		<dict>

@@ -198,7 +198,7 @@
 			<string>%d days</string>
 		</dict>
 	</dict>
-	<key>%d message moved to %@</key>
+	<key>%1$d message moved to %2$@</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MSG@</string>
@@ -214,7 +214,7 @@
 			<string>%d messages moved to %@</string>
 		</dict>
 	</dict>
-	<key>%d conversation moved to %@</key>
+	<key>%1$d conversation moved to %2$@</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
