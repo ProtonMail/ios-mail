@@ -48,12 +48,7 @@ class PinRobot: CoreElements {
         return SettingsRobot()
     }
 
-    @available(*, deprecated, renamed: "pinTimer")
-    func pinTimmer() -> AutoLockTimeRobot {
-        pinTimer()
-    }
-
-    func pinTimer() -> AutoLockTimeRobot {
+    func openPinTimerSelection() -> AutoLockTimeRobot {
         cell(id.pinTimerCellIdentifier).tap()
         return AutoLockTimeRobot()
     }

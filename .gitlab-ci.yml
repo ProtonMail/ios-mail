@@ -215,7 +215,7 @@ report:slack:smoke:
 
 test:ui:feature:
   dependencies:
-    - build:debug:for-testing
+    - deploy:review
   stage: test
   rules: 
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
@@ -235,7 +235,7 @@ test:ui:feature:
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
     - cd ProtonMail
-    - bundle exec fastlane feature_tests testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
+    - bundle exec fastlane ui_test testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
   tags:
     - iOS_UITEST
 
