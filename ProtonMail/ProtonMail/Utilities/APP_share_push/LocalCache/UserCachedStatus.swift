@@ -637,36 +637,6 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
     }
 }
 
-extension UserCachedStatus: SystemUpTimeProtocol {
-
-    var localServerTime: TimeInterval {
-        get {
-            return TimeInterval(self.getShared().double(forKey: Key.localServerTime))
-        }
-        set {
-            self.setValue(newValue, forKey: Key.localServerTime)
-        }
-    }
-
-    var localSystemUpTime: TimeInterval {
-        get {
-            let time = self.getShared().double(forKey: Key.localSystemUpTime)
-            return time == 0 ? Date().timeIntervalSince1970: TimeInterval(time)
-        }
-        set {
-            self.setValue(newValue, forKey: Key.localSystemUpTime)
-        }
-    }
-
-    var systemUpTime: TimeInterval {
-        ProcessInfo.processInfo.systemUptime
-    }
-
-    func updateLocalSystemUpTime(time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
-        self.localSystemUpTime = time
-    }
-}
-
 extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
     var lastTourVersion: Int? {
         getShared().int(forKey: Key.lastTourVersion)
@@ -714,3 +684,33 @@ extension UserCachedStatus: ToolbarCustomizeSpotlightStatusProvider {
 }
 
 #endif
+
+extension UserCachedStatus: SystemUpTimeProtocol {
+
+    var localServerTime: TimeInterval {
+        get {
+            return TimeInterval(self.getShared().double(forKey: Key.localServerTime))
+        }
+        set {
+            self.setValue(newValue, forKey: Key.localServerTime)
+        }
+    }
+
+    var localSystemUpTime: TimeInterval {
+        get {
+            let time = self.getShared().double(forKey: Key.localSystemUpTime)
+            return time == 0 ? Date().timeIntervalSince1970: TimeInterval(time)
+        }
+        set {
+            self.setValue(newValue, forKey: Key.localSystemUpTime)
+        }
+    }
+
+    var systemUpTime: TimeInterval {
+        ProcessInfo.processInfo.systemUptime
+    }
+
+    func updateLocalSystemUpTime(time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
+        self.localSystemUpTime = time
+    }
+}
