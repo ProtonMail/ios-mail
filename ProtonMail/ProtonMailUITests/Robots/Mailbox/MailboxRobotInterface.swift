@@ -38,8 +38,12 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        if !cell(id.mailboxMessageCellIdentifier(subject)).exists() {
-            return refreshMailbox().clickMessageBySubject(subject)
+        clickMessageBySubject(subject, retriesLeft: 3)
+    }
+
+    private func clickMessageBySubject(_ subject: String, retriesLeft: Int) -> MessageRobot {
+        if !cell(id.mailboxMessageCellIdentifier(subject)).exists(), retriesLeft > 0 {
+            return refreshMailbox().clickMessageBySubject(subject, retriesLeft: retriesLeft - 1)
         } else {
             cell(id.mailboxMessageCellIdentifier(subject))
                 .firstMatch()
