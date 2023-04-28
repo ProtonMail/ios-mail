@@ -29,7 +29,7 @@ var dynamicDomain: String? {
  Parent class for all the test classes.
  */
 class BaseTestCase: CoreTestCase, QuarkTestable {
-
+    
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
     var forceUpgradeStubs = false
@@ -40,27 +40,18 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     var env: Environment = .black
     lazy var quarkCommands = QuarkCommands(doh: env.doh)
 
-    @MainActor
-    override func setUp() async throws {
-        try await super.setUp()
-        continueAfterFailure = false
-
-        setupTest()
-    }
-
-    @MainActor
-    func login(user: User) {
-        loginRobot
-            .loginUser(user)
-    }
-
-    @MainActor
     func terminateApp() {
         app.terminate()
     }
+    
+    override func setUp() async throws {
+        try await super.setUp()
+        env = Environment.custom(dynamicDomain!)
+        quarkCommands = QuarkCommands(doh: env.doh)
+    }
 
-    @MainActor
-    func setupTest() {
+    override func setUp() {
+        super.setUp()
 
         continueAfterFailure = false
 
@@ -82,21 +73,22 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         }
         app.launch()
 
-        env = Environment.custom(dynamicDomain!)
-        quarkCommands = QuarkCommands(doh: env.doh)
-
         handleInterruption()
     }
 
-    override func tearDown() async throws {
-        await terminateApp()
-        try await super.tearDown()
+    override func tearDown() {
+        terminateApp()
+        super.tearDown()
     }
 
     func handleInterruption() {
         let labels = [LocalString._skip_btn_title, "Allow Access to All Photos", "Select Photos...", "Don’t Allow", "Keep Current Selection",LocalString._send_anyway, LocalString._general_ok_action, LocalString._hide]
         /// Adds UI interruption monitor that queries all buttons and clicks if identifier is in the labels array. It is triggered when system alert interrupts the test execution.
         addUIMonitor(elementQueryToTap: XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons, identifiers: labels)
+    }
+    
+    fileprivate func login(user: User) {
+        loginRobot.loginUser(user)
     }
 
     private func loadUser(userKey: String) -> String {
@@ -127,14 +119,16 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
 @available(iOS 16.0, *)
 class CleanAuthenticatedTestCase: BaseTestCase {
-
-    var user: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
+    
+    var user = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
 
     override func setUp() async throws {
         try await super.setUp()
-
         quarkCommands.createUser(username: user.name, password: user.password, protonPlanName: UserPlan.mailpro2022.rawValue)
-
+    }
+    
+    override func setUp() {
+        super.setUp()
         login(user: user)
     }
 
@@ -147,17 +141,18 @@ class CleanAuthenticatedTestCase: BaseTestCase {
 @available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
-    var user: User?
     var scenario: MailScenario { .qaMail001 }
     var isSubscriptionIncluded: Bool { true }
+    var user: User?
 
     override func setUp() async throws {
-        let user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
-        self.user = user
-
+        user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
         try await super.setUp()
-
-        login(user: user)
+    }
+    
+    override func setUp() {
+        super.setUp()
+        login(user: user!)
     }
 
     override func tearDown() async throws {

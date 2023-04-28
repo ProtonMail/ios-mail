@@ -174,7 +174,10 @@ class PinInputRobot: CoreElements {
             staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).waitUntilExists().checkExists()
             return PinInputRobot()
         }
+        
+        @discardableResult
+        func pinInputScreenIsShown() {
+            otherElement(id.pinCodeViewIdentifier).waitUntilExists().checkExists()
+        }
     }
 }
-
-

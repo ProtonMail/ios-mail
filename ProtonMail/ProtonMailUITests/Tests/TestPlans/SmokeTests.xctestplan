@@ -42,6 +42,7 @@
         "MenuTests\/testSaveSpecialCharacterDisplayName()",
         "MenuTests\/testSaveTwoWordsDisplayName()",
         "MultiuserManagementTests\/testSwitchAccount()",
+        "PinTests\/testEnableAutoLockPin()",
         "PinTests\/testTurnOnAndOffPin()",
         "SpamTests\/testSwipeToSpamMessage()",
         "UnauthSessionTests\/testRefreshingAndOpeningMailWorks()"

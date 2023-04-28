@@ -13,39 +13,46 @@ class PinTests: CleanAuthenticatedTestCase {
 
     private let correctPin = "0000"
     private let pinRobot: PinRobot = PinRobot()
+    private let inboxRobot: InboxRobot = InboxRobot()
 
     override func setUp() {
         super.setUp()
 
-      InboxRobot()
+        inboxRobot
             .menuDrawer()
             .settings()
             .pin()
             .enablePin()
             .setPin(correctPin)
     }
-    
+
     func testTurnOnAndOffPin() {
         pinRobot
             .disablePin()
             .verify.isPinEnabled(false)
     }
-    
+
     func testEnterCorrectPinCanUnlock() {
         pinRobot
+            .openPinTimerSelection()
+            .selectAutolockEveryTime()
+            .navigateUpToSettings()
+            .close()
             .backgroundApp()
-            .foregroundApp()
+            .activateAppWithPin()
             .confirmWithEmptyPin()
             .verify.emptyPinErrorMessageShows()
             .clickOK()
             .inputCorrectPin()
             .verify.inboxShown()
     }
-    
+
     func testEnterIncorrectPinCantUnlock() {
         pinRobot
+            .openPinTimerSelection()
+            .selectAutolockEveryTime()
             .backgroundApp()
-            .foregroundApp()
+            .activateAppWithPin()
             .inputIncorrectPin()
             .verify.pinErrorMessageShows(1)
             .inputIncorrectPin()
@@ -53,26 +60,30 @@ class PinTests: CleanAuthenticatedTestCase {
             .logout()
             .verify.loginScreenIsShown()
     }
-    
+
     func testEnterEmptyPin() {
         pinRobot
+            .openPinTimerSelection()
+            .selectAutolockEveryTime()
             .backgroundApp()
-            .foregroundApp()
+            .activateAppWithPin()
             .confirmWithEmptyPin()
             .verify.emptyPinErrorMessageShows()
     }
-    
+
     func testEnterIncorrectPinTenTimesLogOut() {
         pinRobot
+            .openPinTimerSelection()
+            .selectAutolockEveryTime()
             .backgroundApp()
-            .foregroundApp()
+            .activateAppWithPin()
             .inputIncorrectPinNTimes(count: 10)
             .verify.loginScreenIsShown()
     }
-    
+
     func testIncorrectPinBeforeThirtySec() {
         pinRobot
-            .pinTimer()
+            .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -87,7 +98,7 @@ class PinTests: CleanAuthenticatedTestCase {
 
     func testErrorMessageOnThreeRmainingPinTries() {
         pinRobot
-            .pinTimer()
+            .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -105,11 +116,19 @@ class PinTests: CleanAuthenticatedTestCase {
     func testLogoutBeforeUnlockingDoesNotCrash() {
         pinRobot
             .enableAppKey()
-            .pinTimer()
+            .openPinTimerSelection()
             .selectAutolockEveryTime()
             .foregroundApp()
             .logout()
-            .verify
-            .loginScreenIsShown()
+            .verify.loginScreenIsShown()
+    }
+
+    func testEnableAutoLockPin() {
+        pinRobot
+            .openPinTimerSelection()
+            .selectAutolockEveryTime()
+            .backgroundApp()
+            .activateAppWithPin()
+            .verify.pinInputScreenIsShown()
     }
 }

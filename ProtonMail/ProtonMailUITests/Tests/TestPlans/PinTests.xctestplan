@@ -25,8 +25,14 @@
     {
       "parallelizable" : true,
       "selectedTests" : [
+        "PinTests\/testEnableAutoLockPin()",
         "PinTests\/testEnterCorrectPinCanUnlock()",
+        "PinTests\/testEnterEmptyPin()",
         "PinTests\/testEnterIncorrectPinCantUnlock()",
+        "PinTests\/testEnterIncorrectPinTenTimesLogOut()",
+        "PinTests\/testErrorMessageOnThreeRmainingPinTries()",
+        "PinTests\/testIncorrectPinBeforeThirtySec()",
+        "PinTests\/testLogoutBeforeUnlockingDoesNotCrash()",
         "PinTests\/testTurnOnAndOffPin()"
       ],
       "target" : {
