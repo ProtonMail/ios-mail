@@ -224,7 +224,8 @@ extension AppDelegate: UIApplicationDelegate {
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
-        keymaker.updateAutolockCountdownStart()
+
+        startAutoLockCountDownIfNeeded()
 
         let users: UsersManager = sharedServices.get()
         let queueManager: QueueManager = sharedServices.get()
@@ -368,6 +369,18 @@ extension AppDelegate: UIApplicationDelegate {
             self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
         }
         completionHandler(true)
+    }
+
+    private func startAutoLockCountDownIfNeeded() {
+        // When the app is launched without a lock set, the lock counter will immediately remove the mainKey, which triggers the app to display the lock screen.
+        // However, this behavior is not necessary if there is no lock set.
+        // We should only start the countdown when a lock has been set.
+        guard keymaker.isProtectorActive(PinProtection.self) ||
+            keymaker.isProtectorActive(BioProtection.self)
+        else {
+            return
+        }
+        keymaker.updateAutolockCountdownStart()
     }
 }
 
