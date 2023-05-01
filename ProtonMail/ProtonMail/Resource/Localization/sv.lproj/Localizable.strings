@@ -2123,6 +2123,9 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Avblockera";
 
+/* Button to unblock a sender */
+"Unblock sender" = "Avblockera avsändare";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Hemliga mottagare";
 

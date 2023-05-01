@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d conversation moved to %@</string>
+			<key>other</key>
+			<string>%d conversations moved to %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d message moved to %@</string>
+			<key>other</key>
+			<string>%d messages moved to %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -75,9 +107,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentative restante avant l&apos;effacement sécurisé des données !</string>
+			<string>%d tentative restante avant l'effacement sécurisé des données !</string>
 			<key>other</key>
-			<string>%d tentatives restantes avant l&apos;effacement sécurisé des données !</string>
+			<string>%d tentatives restantes avant l'effacement sécurisé des données !</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -94,22 +126,6 @@
 			<string>%d conversation labellisée</string>
 			<key>other</key>
 			<string>%d conversations labellisées</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%1$d conversation moved to %2$@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d conversation déplacée dans le dossier %@.</string>
-			<key>other</key>
-			<string>%d conversations déplacées dans le dossier %@.</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -141,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d&apos;e-mails bloqué</string>
+			<string>%d traqueur d'e-mails bloqué</string>
 			<key>other</key>
-			<string>%d traqueurs d&apos;e-mails bloqués</string>
+			<string>%d traqueurs d'e-mails bloqués</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -157,9 +173,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d&apos;e-mails trouvé</string>
+			<string>%d traqueur d'e-mails trouvé</string>
 			<key>other</key>
-			<string>%d traqueurs d&apos;e-mails trouvés</string>
+			<string>%d traqueurs d'e-mails trouvés</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -211,22 +227,6 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%1$d message moved to %2$@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d message déplacé dans le dossier %@.</string>
-			<key>other</key>
-			<string>%d messages déplacés dans le dossier %@.</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>

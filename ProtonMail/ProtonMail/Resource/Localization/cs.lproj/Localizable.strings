@@ -2019,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Tato konverzace obsahuje zprávy vyhozené do koše";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Zpráva nesplňuje požadavky na ověření domény odesílatele. Může být falešná nebo špatně přeposlaná.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "U tohoto e-mailu nebyly splněny požadavky na ověření domény odesílatele. E-mail může být podvržený a nebo nesprávně přeposlaný.";
 
@@ -2134,6 +2137,9 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Odblokovat";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Odblokovat odesílatele";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Nezveřejnění příjemci";
@@ -2310,7 +2316,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ adresu nelze nastavit jako výchozí, protože je to placená funkce.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "V nastavení systému jste zakázali %@. %@ bylo použito k ochraně důležitých informací o účtu. Pro přístup k vašemu účtu, přejděte do nastavení a znovu aktivujte %@ a nebo se přihlaste běžným způsobem.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "V nastavení systému jste zakázali %@. %@ bylo použito k ochraně důležitých informací o účtu. Chcete-li získat přístup ke svému účtu, přejděte do nastavení a znovu aktivujte %@ nebo se znovu přihlaste.";
 
 /* Message */
 "You have %d new emails!" = "Máte %d nových zpráv!";

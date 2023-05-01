@@ -2019,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Гэта размова змяшчае выдаленыя паведамленні";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі дамена. Ён можа быць падроблены або перасланы неналежным чынам.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі дамена. Ён можа быць падроблены або перасланы неналежным чынам.";
 
@@ -2134,6 +2137,9 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Разблакіраваць";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Разблакіраваць адпраўніка";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Схаваныя атрымальнікі";

@@ -1018,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Anzeigename eingeben …";
 
+/* place holder */
+"Input Notification Email…" = "Benachrichtigungs-E-Mail-Adresse eingeben…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Unverschlüsselte Verbindung";
 
@@ -2016,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dieses Thema enthält gelöschte Nachrichten";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein.";
 
@@ -2131,6 +2137,9 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Entblocken";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Absender entsperren";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Verborgene Empfänger";

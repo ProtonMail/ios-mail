@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Tot el correu";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Tots els ajustos de protecció es restabliran i s'eliminaran en tancar la sessió.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Tots els vostres missatges s'han descarregat";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Aniversari";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Bloqueja";
+
 /* Settings row */
 "Block email tracking" = "Bloquegi el seguiment del correu electrònic";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "Bloqueja el remitent";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Remitents bloquejats";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Bloqueja que els remitents puguin veure si heu obert el missatge i quan ho heu fet";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "No es permet crear l'etiqueta";
 
+/* Change language title */
+"Current Language: " = "Idioma actual: ";
+
 /* Placeholder */
 "Current password" = "Contrasenya actual";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Descarregant metadades...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Descarregant missatges nous...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Descarrega els correus electrònics per tal que pugueu cercar-hi dins. Els missatges són xifrats i desats localment. %1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Aneu a les preferències";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Aneu a l'inici de sessió";
+
 /* Got it action */
 "Got it" = "D'acord";
 
@@ -999,6 +1017,9 @@
 
 /* place holder */
 "Input Display Name…" = "Introduïu el nom a mostrar…";
+
+/* place holder */
+"Input Notification Email…" = "Introduïu el correu electrònic de notificació…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexió insegura";
@@ -1130,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Marca com a no llegit";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Potser després";
+
 /* menu title */
 "Menu" = "Menú";
 
@@ -1240,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Nou contacte";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Els correus electrònics nous de %@ no s'entregaran i se suprimiran permanentment. Gestioneu les adreces de correu electrònic bloquejades a les preferències.";
+
 /* The title of create folder page */
 "New folder" = "Carpeta nova";
 
@@ -1278,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "No s'ha trobat cap adjunt";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "No hi ha remitents bloquejats.";
 
 /* Title */
 "No connectivity detected…" = "No s'ha detectat cap connectivitat…";
@@ -1702,6 +1732,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Enviar confirmació de lectura";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Remitent %@ bloquejat";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Remitent %@ desbloquejat";
+
+/* Banner in the message view */
+"Sender has been blocked" = "S'ha bloquejat el remitent.";
+
 /* encryption lock description */
 "Sender Verification Failed" = "La verificació del remitent ha fallat";
 
@@ -1780,6 +1819,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Mostra'm";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Torneu a iniciar sessió per continuar rebent actualitzacions.";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Tanca la sessió";
@@ -1795,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Sessió de %1$@ tancada i iniciada amb %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "S'ha tancat la sessió de %@.";
 
 /* skip button title in onboarding page */
 "Skip" = "Omet";
@@ -1956,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL que voleu accedir no és estàndard i no es pot carregar correctament. Voleu obrir-lo amb el navegador per defecte del dispositiu?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "L'usuari ja ha iniciat la sessió.";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Hi ha missatges no enviats que es perdran si tanqueu la sessió";
 
@@ -1970,6 +2018,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Aquesta conversa conté missatges de la paperera";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requeriments d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu sembla que sigui d'una adreça de Proton Mail però ha arribat des de fora del nostre sistema i no ha passat els requisits d'autenticació. És possible que es tracti d'un correu falsejat o reenviat indegudament!";
@@ -2060,6 +2114,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intenta connectar-te al Proton des d'una xarxa diferent (o utilitzi %1$@ o %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activeu aquesta funcionalitat per completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb sessió iniciada.";
+
 /* Placeholder */
 "Two Factor Code" = "Codi de dos factors";
 
@@ -2077,6 +2134,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "No es pot enviar el correu electrònic";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Desbloqueja";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Desbloqueja l'emissor";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinataris ocults";
@@ -2252,6 +2315,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "No podeu configurar l'adreça %@ com per defecte perquè és una funció de pagament.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Heu deshabilitat %@ a la vostra configuració del sistema. %@ s’ha utilitzat per protegir informació important del compte. Per accedir al vostre compte, aneu a la configuració i reactiveu %@ o torneu a iniciar la sessió.";
+
 /* Message */
 "You have %d new emails!" = "Teniu %d nous correus electrònics!";
 
@@ -2311,6 +2377,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "S'estan descarregant els missatges...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "La vostra privacitat estarà més protegida si els vostres contactes també utilitzen Proton Mail. Convida'ls i ambdós aconseguireu avantatges Prèmium de franc.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La vostra sessió ha caducat perquè heu estat inactiva durant un temps o perquè s'ha revocat. Torneu a iniciar la sessió.";

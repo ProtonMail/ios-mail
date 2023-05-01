@@ -2019,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "В этой цепочке писем есть удаленные сообщения";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям подтверждения подлинности домена. Оно может быть поддельным, либо было переслано ненадлежащим образом.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Это письмо не соответствует требованиям подтверждения подлинности домена. Оно может быть поддельным, либо было переслано ненадлежащим образом.";
 
@@ -2044,7 +2047,7 @@
 "This message was automatically generated" = "Это сообщение было сгенерировано автоматически";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Сообщение будет отправлено %1$@ в %2$@";
+"This message will be sent on %@ at %@" = "Сообщение будет отправлено $%1$@ в $%2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Это письмо будет удалено через %1$dD %2$dH %3$dM";
@@ -2134,6 +2137,9 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Разблокировать";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Разблокировать отправителя";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Скрытые получатели";

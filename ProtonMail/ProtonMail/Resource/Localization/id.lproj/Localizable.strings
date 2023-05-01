@@ -1766,10 +1766,10 @@
 "Sent" = "Terkirim";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi nol akses";
+"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi nol akses kepada penerima yang terverifikasi";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access kepada penerima yang terverifikasi";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Dikirim oleh Anda dengan enkripsi ujung ke ujung";
@@ -1893,7 +1893,7 @@
 "Storage Warning" = "Peringatan Ruang Penyimpanan";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "Disimpan dengan enkripsi zero access";
+"Stored with zero-access encryption" = "Disimpan dengan enkripsi zero-access";
 
 /* contact placeholder */
 "Street" = "Jalan";
@@ -2019,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Percakapan ini berisi pesan yang telah dibuang";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini telah gagal memenuhi persyaratan autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Email ini telah gagal memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
 
@@ -2044,7 +2047,7 @@
 "This message was automatically generated" = "Pesan ini dihasilkan secara otomatis";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada %1$@ pukul %2$@";
+"This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada $%1$@ pukul $%2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";
@@ -2134,6 +2137,9 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Buka Blokir";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Buka blokir pengirim";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Penerima yang Dirahasiakan";
