@@ -242,6 +242,19 @@ extension String {
         // should return the original string
         return self
     }
+
+    subscript(value: NSRange) -> String {
+        let start = startIndex
+        let lower = index(start, offsetBy: value.location)
+        let upper = index(lower, offsetBy: value.length)
+        return String(self[lower..<upper])
+    }
+
+    func insert(every: Int, with separator: String) -> String {
+        return String(stride(from: 0, to: Array(self).count, by: every).map {
+            Array(Array(self)[$0..<min($0 + every, Array(self).count)])
+        }.joined(separator: separator))
+    }
 }
 
 extension Array where Element == String {

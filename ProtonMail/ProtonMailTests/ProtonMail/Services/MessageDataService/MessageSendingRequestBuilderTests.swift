@@ -579,6 +579,30 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertThrowsError(try sut.generatePackageBuilder())
     }
 
+    func testExtractBase64() throws {
+        let html = #"<html><head></head><body><div>hi test</div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGjAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr" alt="" /></body></html>"#
+        let boundary = sut.generateMessageBoundaryString()
+        let (updatedBody, inlines) = sut.extractBase64(clearBody: html, boundary: boundary)
+        XCTAssertEqual(inlines.count, 1)
+        let inline = try XCTUnwrap(inlines.first)
+        let regex = try RegularExpressionCache.regex(for: #"cid:(.*?)""#, options: .allowCommentsAndWhitespace)
+        guard
+            let match = regex.firstMatch(in: updatedBody, range: .init(location: 0, length: updatedBody.count)),
+            match.numberOfRanges == 2
+        else {
+            XCTFail("Unexpected")
+            return
+        }
+        let cid = updatedBody[match.range(at: 1)]
+        let expectedPrefix = #"\r\nContent-Type: image/png; name=".{8}"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: inline; filename=".{8}"\r\nContent-ID: <"#
+        let expectedSuffix = "\r\n\r\niVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGj\r\nAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr\r\n"
+        let expected = "--\(boundary)\(expectedPrefix)\(cid)"
+        XCTAssertTrue(inline.preg_match(expected))
+        // Somehow regular expression doesn't work with this suffix
+        // Workaround to verify
+        XCTAssertTrue(inline.hasSuffix(expectedSuffix))
+    }
+
     private func setupTestBody() {
         sut.update(bodyData: testBody,
                    bodySession: testSession,
