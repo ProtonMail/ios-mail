@@ -38,7 +38,8 @@ class ChangePasswordViewController: UIViewController {
 
     var keyboardHeight: CGFloat = 0.0 {
         didSet {
-            scrollViewBottom.constant = keyboardHeight
+            let offset = view.safeGuide.bottom
+            scrollViewBottom.constant = keyboardHeight - offset
         }
     }
     var textFieldPoint: CGFloat = 0.0
