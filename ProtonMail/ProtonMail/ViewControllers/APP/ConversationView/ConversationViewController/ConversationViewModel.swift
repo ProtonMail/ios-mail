@@ -210,23 +210,25 @@ class ConversationViewModel {
 
     func observeConversationMessages(tableView: UITableView) {
         self.tableView = tableView
+        if conversationMessagesProvider.hasStartedObservingConversation {
+            conversationMessagesProvider.listenToCoreDataUpdates()
+            return
+        }
+
         conversationMessagesProvider.observe { [weak self] update in
-            if case .didUpdate = update {
-                self?.checkTrashedHintBanner()
-            }
             self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
                 self?.checkTrashedHintBanner()
                 self?.reloadRowsIfNeeded()
             }
         } storedMessages: { [weak self] messages in
-            self?.checkTrashedHintBanner()
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
 
             if messages.count == self?.conversation.messageCount {
                 _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
             }
             self?.messagesDataSource = messageDataModels
+            self?.checkTrashedHintBanner()
         }
     }
 
