@@ -278,6 +278,22 @@ final class String_ExtensionTests: XCTestCase {
         result = str.removeMailToIfNeeded()
         XCTAssertEqual(result, str)
     }
+
+    func testInsert() {
+        let str = "abcde"
+        let temp1 = str.insert(every: 2, with: "@@")
+        XCTAssertEqual(temp1, "ab@@cd@@e")
+        let temp2 = str.insert(every: 3, with: "###")
+        XCTAssertEqual(temp2, "abc###de")
+    }
+
+    func testSubscriptRange() {
+        let str = "abcdefghijk"
+        let range1 = NSRange(location: 0, length: 3)
+        XCTAssertEqual(str[range1], "abc")
+        let range2 = NSRange(location: 5, length: 2)
+        XCTAssertEqual(str[range2], "fg")
+    }
 }
 
 extension String_ExtensionTests {

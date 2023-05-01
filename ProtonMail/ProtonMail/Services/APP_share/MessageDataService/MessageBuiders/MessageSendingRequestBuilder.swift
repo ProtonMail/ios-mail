@@ -20,6 +20,7 @@ import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Hash
+import SwiftSoup
 
 /// A sending message request builder
 ///
@@ -247,11 +248,12 @@ extension MessageSendingRequestBuilder {
         userKeys: [ArmoredKey],
         keys: [Key]
     ) throws {
-        var messageBody = self.clearBody ?? ""
-        messageBody = QuotedPrintable.encode(string: messageBody)
-
         let boundaryMsg = self.generateMessageBoundaryString()
-        var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
+        let messageBody = self.clearBody ?? ""
+        var (processedBody, inlines) = extractBase64(clearBody: messageBody, boundary: boundaryMsg)
+        processedBody = QuotedPrintable.encode(string: processedBody)
+
+        var signbody = self.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: processedBody)
 
         for preAttachment in self.preAttachments {
             guard let attachmentBody = self.attachmentBodys[preAttachment.attachmentId] else {
@@ -270,6 +272,7 @@ extension MessageSendingRequestBuilder {
                                                      attachmentMIMEType: attachment.rawMimeType)
             signbody.append(contentsOf: bodyToAdd)
         }
+        inlines.forEach { signbody.append(contentsOf: $0) }
 
         signbody.append(contentsOf: "--\(boundaryMsg)--")
 
@@ -338,12 +341,15 @@ extension MessageSendingRequestBuilder {
                              base64AttachmentContent: String,
                              attachmentName: String,
                              contentID: String,
+                             isAttachment: Bool = true, // false means inline
+                             encoding: String = "base64",
                              attachmentMIMEType: String) -> String {
+        let disposition = isAttachment ? "attachment" : "inline"
         var body = ""
         body.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
         body.append(contentsOf: "Content-Type: \(attachmentMIMEType); name=\"\(attachmentName)\"" + "\r\n")
-        body.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
-        body.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attachmentName)\"" + "\r\n")
+        body.append(contentsOf: "Content-Transfer-Encoding: \(encoding)" + "\r\n")
+        body.append(contentsOf: "Content-Disposition: \(disposition); filename=\"\(attachmentName)\"" + "\r\n")
         body.append(contentsOf: "Content-ID: <\(contentID)>\r\n")
 
         body.append(contentsOf: "\r\n")
@@ -486,5 +492,75 @@ extension MessageSendingRequestBuilder {
 extension MessageSendingRequestBuilder {
     struct Dependencies {
         let fetchAttachment: FetchAttachmentUseCase
+    }
+}
+
+// MARK: Build MIME
+extension MessageSendingRequestBuilder {
+    /// Extract base64 image data from message body
+    /// transform these base64 to content ID format
+    /// and convert extracted base64 data to EML string value
+    /// - Parameters:
+    ///   - clearBody: Clear message body
+    ///   - boundary: A string for multipart boundary
+    /// - Returns:
+    ///   - body: Processed message body, every base64 image becomes content ID format
+    ///           <img src="data..."> -> <img src="cid:...">
+    ///   - inlines: EML string value to represent base64 image
+    func extractBase64(clearBody: String, boundary: String) -> (body: String, inlines: [String]) {
+        guard
+            let document = try? SwiftSoup.parse(clearBody),
+            let inlines = try? document.select(#"img[src^="data"]"#).array(),
+            !inlines.isEmpty
+        else { return (clearBody, []) }
+
+        var data: [String] = []
+        for element in inlines {
+            let name = "\(String.randomString(8))"
+            let contentID = "\(String.randomString(8))@pm.me"
+            guard
+                let src = try? element.attr("src"),
+                let emlData = inlineDataForEML(from: src, name: name, contentID: contentID, boundary: boundary)
+            else { continue }
+            data.append(emlData)
+            _ = try? element.attr("src", "cid:\(contentID)")
+        }
+        document.outputSettings().prettyPrint(pretty: false)
+        guard let updatedBody = try? document.html() else { return (clearBody, []) }
+        return (updatedBody, data)
+    }
+
+    /// Convert base64 data URI to EML string value
+    /// - Parameters:
+    ///   - dataURI: "data:image/png;base64,iVBOR.....", the meaning is `data:(mimeType);(encoding), (data)`
+    ///   - name: inline file name
+    ///   - contentID: inline content ID
+    ///   - boundary: A string for multipart boundary
+    /// - Returns: EML string value
+    private func inlineDataForEML(from dataURI: String, name: String, contentID: String, boundary: String) -> String? {
+        let pattern = #"^(.*?):(.*?);(.*?),(.*)"#
+        guard
+            let regex = try? RegularExpressionCache.regex(for: pattern, options: [.allowCommentsAndWhitespace]),
+            let match = regex.firstMatch(in: dataURI, range: .init(location: 0, length: dataURI.count)),
+            match.numberOfRanges == 5
+        else { return nil }
+
+        let mimeType = dataURI[match.range(at: 2)].trimmingCharacters(in: .whitespacesAndNewlines)
+        let encoding = dataURI[match.range(at: 3)].trimmingCharacters(in: .whitespacesAndNewlines)
+        // The maximum length is 64, should insert `\r\n` every 64 characters
+        // Otherwise the EML is broken
+        let base64 = dataURI[match.range(at: 4)]
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .insert(every: 64, with: "\r\n")
+        let name = "\(String.randomString(8))"
+        return buildAttachmentBody(
+            boundaryMsg: boundary,
+            base64AttachmentContent: base64,
+            attachmentName: name,
+            contentID: contentID,
+            isAttachment: false,
+            encoding: encoding,
+            attachmentMIMEType: mimeType
+        )
     }
 }
