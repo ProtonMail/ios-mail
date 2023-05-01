@@ -42,7 +42,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     let viewMode: ViewMode
     var fetchedResultsController: NSFetchedResultsController<FetchResultType>?
     var messageService: MessageDataService { user.messageService }
-    private let isUnread: Bool
+    let isUnread: Bool
     /// For conversation mode, which message in this conversation should display
     private var targetMessageID: MessageID?
     let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
@@ -87,7 +87,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         let fetchedResultsController = messageService.fetchedResults(
             by: labelID,
             viewMode: viewMode,
-            isUnread: isUnread,
+            isUnread: false,
             isAscending: isAscending
         ) as? NSFetchedResultsController<FetchResultType>
         return fetchedResultsController
@@ -178,7 +178,16 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         guard let messages = fetchedResultsController?.fetchedObjects,
               let targetIndex = messages.firstIndex(where: { $0.messageID == id.rawValue }),
               let object = messages[safe: targetIndex + offset] else { return (nil, nil) }
-        return (MessageEntity(object), targetIndex + offset)
+        if isUnread {
+            if object.unRead {
+                return (MessageEntity(object), targetIndex + offset)
+            } else {
+                let newOffset = offset > 0 ? offset + 1 : offset - 1
+                return item(for: id, offset: newOffset)
+            }
+        } else {
+            return (MessageEntity(object), targetIndex + offset)
+        }
     }
 }
 
@@ -239,7 +248,16 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
               let targetIndex = contextLabels.firstIndex(where: { $0.conversationID == id.rawValue }),
               let context = contextLabels[safe: targetIndex + offset],
               let conversation = context.conversation else { return (nil, nil) }
-        return (ConversationEntity(conversation), targetIndex + offset)
+        if isUnread {
+            if context.unreadCount.intValue > 0 {
+                return (ConversationEntity(conversation), targetIndex + offset)
+            } else {
+                let newOffset = offset > 0 ? offset + 1 : offset - 1
+                return item(for: id, offset: newOffset)
+            }
+        } else {
+            return (ConversationEntity(conversation), targetIndex + offset)
+        }
     }
 }
 
