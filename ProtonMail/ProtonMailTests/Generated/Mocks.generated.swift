@@ -711,6 +711,11 @@ class MockMailSettingsHandler: MailSettingsHandler {
         }
     }
 
+    @PropertyStub(\MockMailSettingsHandler.userInfo, initialGet: UserInfo()) var userInfoStub
+    var userInfo: UserInfo {
+        userInfoStub()
+    }
+
 }
 
 class MockMailboxCoordinatorProtocol: MailboxCoordinatorProtocol {

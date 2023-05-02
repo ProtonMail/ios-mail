@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_DataModel
 
 struct MailSettings: Parsable, Equatable {
     let nextMessageOnMove: Bool
@@ -53,6 +53,7 @@ struct MailSettings: Parsable, Equatable {
 // sourcery: mock
 protocol MailSettingsHandler: AnyObject {
     var mailSettings: MailSettings { get set }
+    var userInfo: UserInfo { get }
 }
 
 extension UserManager: MailSettingsHandler {}
