@@ -170,7 +170,7 @@ final class MainQueueHandler: QueueHandler {
                 // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
                     let useSendRefactor = UIApplication.isDebugOrEnterprise ||
-                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled()
+                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled(userID: userID)
 
                     if useSendRefactor {
                         let params = SendMessageTask.Params(

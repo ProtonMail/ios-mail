@@ -299,6 +299,13 @@ extension SendMessageTask {
     }
 }
 
-enum SendMessageTaskError: Error {
-    case noMessageFoundForURI
+enum SendMessageTaskError: String, Error {
+    case noMessageFoundForURI = "No message found"
+}
+
+extension SendMessageTaskError: LocalizedError {
+
+    var errorDescription: String? {
+        "SendMessageTaskError: \(rawValue)"
+    }
 }
