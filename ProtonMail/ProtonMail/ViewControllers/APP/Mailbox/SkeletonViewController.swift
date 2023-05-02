@@ -30,13 +30,23 @@ class SkeletonViewController: ProtonMailTableViewController {
     private(set) var timeout: Int = 10
     private(set) var timer: Timer?
     private(set) var isEnabledTimeout = true
+    private let isUserInfoAlreadyFetched: Bool
 
     class func instance(timeout: Int = 10, isEnabledTimeout: Bool = true) -> SkeletonViewController {
-        let skeletonVC = SkeletonViewController(style: .plain)
+        let skeletonVC = SkeletonViewController(isUserInfoAlreadyFetched: false)
         skeletonVC.timeout = timeout
         skeletonVC.isEnabledTimeout = isEnabledTimeout
         _ = UINavigationController(rootViewController: skeletonVC)
         return skeletonVC
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init(isUserInfoAlreadyFetched: Bool) {
+        self.isUserInfoAlreadyFetched = isUserInfoAlreadyFetched
+        super.init(style: .plain)
     }
 
     override func viewDidLoad() {
@@ -50,17 +60,24 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        guard PMAPIService.ServiceDelegate.shared.isReachable() else {
+        guard
+            PMAPIService.ServiceDelegate.shared.isReachable(),
+            !isUserInfoAlreadyFetched
+        else {
             // If device has connection, skeleton view will be dismissed after fetching user info
             // If device doesn't have connection, doesn't need to waste time to wait
-            NotificationCenter.default.post(name: .switchView, object: nil)
+            dismissView()
             return
         }
 
         guard isEnabledTimeout else { return }
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
-            NotificationCenter.default.post(name: .switchView, object: nil)
+            self.dismissView()
         }
+    }
+
+    private func dismissView() {
+        NotificationCenter.default.post(name: .switchView, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {

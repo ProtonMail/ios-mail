@@ -420,7 +420,7 @@ class UserManager: Service {
             userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
             // When app launch, the app will show a skeleton view
             // After getting setting data, show inbox
-            NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
+            NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
             #endif
         }
     }
