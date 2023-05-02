@@ -226,7 +226,7 @@ class WindowsCoordinator {
             case .appWindow:
                 self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderViewController {
-                    let root = PMSideMenuController()
+                    let root = PMSideMenuController(isUserInfoAlreadyFetched: self.arePrimaryUserSettingsFetched)
                     let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
                     coordinator.delegate = self
                     self.menuCoordinator = coordinator
@@ -308,7 +308,7 @@ class WindowsCoordinator {
         }
 
         NotificationCenter.default.addObserver(
-            forName: .fetchPrimaryUserSettings,
+            forName: .didFetchSettingsForPrimaryUser,
             object: nil,
             queue: .main
         ) { [weak self] _ in
