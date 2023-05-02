@@ -28,6 +28,7 @@ fileprivate struct id {
     static let pinConfirmStaticTextIdentifier = LocalString._general_confirm_action
     static let okButtonIdentifier = LocalString._general_ok_action
     static let emptyPinStaticTextIdentifier = LocalString._pin_code_cant_be_empty
+    static let titleIdentifier = L11n.PinCodeView.title
 }
 
 class PinInputRobot: CoreElements {
@@ -178,6 +179,12 @@ class PinInputRobot: CoreElements {
         @discardableResult
         func pinInputScreenIsShown() {
             otherElement(id.pinCodeViewIdentifier).waitUntilExists().checkExists()
+		}
+
+        @discardableResult
+        func pinCodeEnterScreenIsShown() -> PinInputRobot {
+            staticText(id.titleIdentifier).waitUntilExists().checkExists()
+            return PinInputRobot()
         }
     }
 }

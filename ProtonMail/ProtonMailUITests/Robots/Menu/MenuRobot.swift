@@ -41,6 +41,7 @@ fileprivate struct id {
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
     static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
+    static let lockTheAppIdentifier = "MenuItemTableViewCell.Lock_The_App"
 }
 
 /**
@@ -108,6 +109,11 @@ class MenuRobot: CoreElements {
     func folderOrLabel(_ name: String) -> LabelFolderRobot {
         cell(id.folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_"))).swipeUpUntilVisible().tap()
         return LabelFolderRobot()
+    }
+
+    func lockTheApp() -> PinInputRobot {
+        cell(id.lockTheAppIdentifier).swipeUpUntilVisible().tap()
+        return PinInputRobot()
     }
     
     @discardableResult

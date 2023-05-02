@@ -27,6 +27,10 @@ import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import SideMenuSwift
 
+protocol MenuCoordinatorDelegate: AnyObject {
+    func lockTheScreen()
+}
+
 final class MenuCoordinator: CoordinatorDismissalObserver {
     enum Setup: String {
         case switchUser = "USER"
@@ -60,6 +64,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     let sideMenu: PMSideMenuController
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
     private var currentLocation: MenuLabel?
+    weak var delegate: MenuCoordinatorDelegate?
 
     init(services: ServiceFactory,
          pushService: PushNotificationService,
@@ -188,6 +193,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         if let labelToHighlight = labelToHighlight {
             self.viewModel.highlight(label: labelToHighlight)
         }
+    }
+
+    func lockTheScreen() {
+        delegate?.lockTheScreen()
     }
 
     private func checkIsCurrentViewInInboxView() -> Bool {

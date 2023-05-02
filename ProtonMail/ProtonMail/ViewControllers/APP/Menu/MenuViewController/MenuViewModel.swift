@@ -353,6 +353,12 @@ extension MenuViewModel: MenuVMProtocol {
     func go(to labelInfo: MenuLabel) {
         coordinator?.go(to: labelInfo, deepLink: nil)
     }
+
+    func lockTheScreen() {
+        keymaker.lockTheApp() // remove mainKey from memory
+        _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
+        coordinator?.lockTheScreen()
+    }
 }
 
 extension MenuViewModel: NSFetchedResultsControllerDelegate {

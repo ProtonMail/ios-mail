@@ -1595,6 +1595,10 @@ enum L11n {
         static let customizeSpotlight = NSLocalizedString("Customize (verb)", comment: "The action title of the button on the toolbar customization spotlight view. (verb)")
     }
 
+    struct PinCodeView {
+        static let title = NSLocalizedString("Enter PIN", comment: "The title of the pin code view.")
+	}
+
     struct BugReport {
         static let placeHolder = NSLocalizedString(
             "Bug Report Place Holder",

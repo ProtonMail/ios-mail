@@ -228,6 +228,7 @@ class WindowsCoordinator {
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderViewController {
                     let root = PMSideMenuController()
                     let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
+                    coordinator.delegate = self
                     self.menuCoordinator = coordinator
                     coordinator.start(launchedByNotification: self.launchedByNotification)
                     self.appWindow = UIWindow(root: root, scene: self.scene)
@@ -696,6 +697,12 @@ extension WindowsCoordinator {
                     })
             }
         )
+    }
+}
+
+extension WindowsCoordinator: MenuCoordinatorDelegate {
+    func lockTheScreen() {
+        go(dest: .lockWindow)
     }
 }
 
