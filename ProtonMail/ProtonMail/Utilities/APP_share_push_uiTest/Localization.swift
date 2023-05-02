@@ -850,9 +850,6 @@ class LocalizedString {
     /// "Unsupported file type"
     lazy var _unsupported_file = NSLocalizedString("Unsupported file type", comment: "Error message")
 
-    /// "Please use Proton Mail App signin first"
-    lazy var _please_use_protonmail_app_signin_first = NSLocalizedString("Please use Proton Mail App sign-in first.", comment: "Description")
-
     /// "Can't copy the file"
     lazy var _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
 
@@ -1583,6 +1580,7 @@ enum L11n {
 
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
+        static let sign_in_message = NSLocalizedString("Please sign in to the Proton Mail app.", comment: "Error message when user open the share extension without account logged in.")
     }
 
     struct ActionSheetActionTitle {
