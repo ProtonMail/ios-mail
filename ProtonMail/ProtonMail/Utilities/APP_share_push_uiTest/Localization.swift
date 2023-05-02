@@ -1594,4 +1594,11 @@ enum L11n {
     struct Toolbar {
         static let customizeSpotlight = NSLocalizedString("Customize (verb)", comment: "The action title of the button on the toolbar customization spotlight view. (verb)")
     }
+
+    struct BugReport {
+        static let placeHolder = NSLocalizedString(
+            "Bug Report Place Holder",
+            comment: "The place holder text in the bug report view."
+        )
+    }
 }
