@@ -19,17 +19,17 @@ import Foundation
 
 // sourcery: mock
 protocol SendRefactorStatusProvider: AnyObject {
-    func isSendRefactorEnabled() -> Bool
-    func setIsSendRefactorEnabled(_ value: Bool)
+    func isSendRefactorEnabled(userID: UserID) -> Bool
+    func setIsSendRefactorEnabled(userID: UserID, value: Bool)
 }
 
 extension UserCachedStatus: SendRefactorStatusProvider {
 
-    func isSendRefactorEnabled() -> Bool {
-        getShared().bool(forKey: Key.isSendRefactorEnabled)
+    func isSendRefactorEnabled(userID: UserID) -> Bool {
+        fetchValueOf(userID: userID, key: Key.isSendRefactorEnabled, defaultValue: false)
     }
 
-    func setIsSendRefactorEnabled(_ value: Bool) {
-        getShared().set(value, forKey: Key.isSendRefactorEnabled)
+    func setIsSendRefactorEnabled(userID: UserID, value: Bool) {
+        setValueOf(userID: userID, value: value, key: Key.isSendRefactorEnabled)
     }
 }

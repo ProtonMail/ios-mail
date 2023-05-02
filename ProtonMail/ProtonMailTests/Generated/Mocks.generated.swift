@@ -883,13 +883,13 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
 
 class MockSendRefactorStatusProvider: SendRefactorStatusProvider {
     @FuncStub(MockSendRefactorStatusProvider.isSendRefactorEnabled, initialReturn: Bool()) var isSendRefactorEnabledStub
-    func isSendRefactorEnabled() -> Bool {
-        isSendRefactorEnabledStub()
+    func isSendRefactorEnabled(userID: UserID) -> Bool {
+        isSendRefactorEnabledStub(userID)
     }
 
     @FuncStub(MockSendRefactorStatusProvider.setIsSendRefactorEnabled) var setIsSendRefactorEnabledStub
-    func setIsSendRefactorEnabled(_ value: Bool) {
-        setIsSendRefactorEnabledStub(value)
+    func setIsSendRefactorEnabled(userID: UserID, value: Bool) {
+        setIsSendRefactorEnabledStub(userID, value)
     }
 
 }

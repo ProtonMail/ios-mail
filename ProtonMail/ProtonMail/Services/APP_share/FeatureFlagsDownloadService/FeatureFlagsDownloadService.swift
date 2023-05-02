@@ -141,7 +141,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             }
 
             if let sendRefactor = response.result[FeatureFlagKey.sendRefactor.rawValue] as? Bool {
-                self.sendRefactorStatusProvider.setIsSendRefactorEnabled(sendRefactor)
+                self.sendRefactorStatusProvider.setIsSendRefactorEnabled(userID: self.userID, value: sendRefactor)
             }
 
             if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {
