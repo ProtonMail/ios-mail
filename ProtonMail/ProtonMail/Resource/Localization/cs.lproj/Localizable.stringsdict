@@ -2,6 +2,46 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversations moved to %@</string>
+			<key>many</key>
+			<string>%d conversations moved to %@</string>
+			<key>one</key>
+			<string>%d conversation moved to %@</string>
+			<key>other</key>
+			<string>%d conversations moved to %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d messages moved to %@</string>
+			<key>many</key>
+			<string>%d messages moved to %@</string>
+			<key>one</key>
+			<string>%d message moved to %@</string>
+			<key>other</key>
+			<string>%d messages moved to %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -118,26 +158,6 @@
 			<string>%d konverzace označena</string>
 			<key>other</key>
 			<string>%d konverzací označeno</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%1$d conversation moved to %2$@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d konverzace přesunuty do složky %@</string>
-			<key>many</key>
-			<string>%d konverzací přesunuto do složky %@</string>
-			<key>one</key>
-			<string>%d konverzace přesunuta do složky %@</string>
-			<key>other</key>
-			<string>%d konverzací přesunuto do složky %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -263,26 +283,6 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%1$d message moved to %2$@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d zprávy přesunuty do složky %@</string>
-			<key>many</key>
-			<string>%d zpráv přesunuto do složky %@</string>
-			<key>one</key>
-			<string>%d zpráva přesunuta do složky %@</string>
-			<key>other</key>
-			<string>%d zpráv přesunuto do složky %@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>

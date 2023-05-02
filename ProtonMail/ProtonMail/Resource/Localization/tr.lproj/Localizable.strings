@@ -238,7 +238,7 @@
 "attachment" = "ek dosya";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Ek dosya hatası";
+"Attachment failure" = "Dosya eklenemedi";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Ek dosya içe aktarıldı";
@@ -1025,7 +1025,7 @@
 "Insecure connection" = "Güvenli olmayan bağlantı";
 
 /* The preconditions are not met */
-"Internal Error" = "İç hata";
+"Internal Error" = "İç sorun";
 
 /* default vcard types */
 "Internet" = "İnternet";
@@ -2019,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Bu yazışmada, çöpe atılmış iletiler var";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir.";
 
@@ -2135,6 +2138,9 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Engellemeyi kaldır";
 
+/* Button to unblock a sender */
+"Unblock sender" = "Göndericinin engelini kaldır";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Gizli alıcılar";
 
@@ -2148,7 +2154,7 @@
 "Unknown" = "Bilinmiyor";
 
 /* Error */
-"Unknown Error" = "Bilinmeyen hata";
+"Unknown Error" = "Bilinmeyen sorun";
 
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
 "Unlimited" = "Sınırsız";
@@ -2217,7 +2223,7 @@
 "Use folder colors" = "Klasör renkleri kullanılsın";
 
 /* error title */
-"Verification error" = "Doğrulama hatası";
+"Verification error" = "Doğrulama sorunu";
 
 /* error details */
 "Verification of this content’s signature failed" = "Bu içeriğin imzası doğrulanamadı";

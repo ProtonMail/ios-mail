@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d conversation moved to %@</string>
+			<key>other</key>
+			<string>%d conversations moved to %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d message moved to %@</string>
+			<key>other</key>
+			<string>%d messages moved to %@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -75,9 +107,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Queda %d intent abans de l&apos;eliminació de les dades segures!</string>
+			<string>Queda %d intent abans de l'eliminació de les dades segures!</string>
 			<key>other</key>
-			<string>Queden %d intents abans de l&apos;eliminació de les dades segures!</string>
+			<string>Queden %d intents abans de l'eliminació de les dades segures!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -94,22 +126,6 @@
 			<string>%d conversa etiquetada</string>
 			<key>other</key>
 			<string>%d converses etiquetades</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%1$d conversation moved to %2$@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d conversa moguda a %@</string>
-			<key>other</key>
-			<string>%d converses mogudes a %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -211,22 +227,6 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%1$d message moved to %2$@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d missatge mogut a %@</string>
-			<key>other</key>
-			<string>%d missatges moguts a %@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Aquest %d missatge es mourà a Esborranys i se n&apos;eliminarà la programació.</string>
+			<string>Aquest %d missatge es mourà a Esborranys i se n'eliminarà la programació.</string>
 			<key>other</key>
-			<string>Aquests %d missatges es mouran a Esborranys i se n&apos;eliminarà la programació.</string>
+			<string>Aquests %d missatges es mouran a Esborranys i se n'eliminarà la programació.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "所有邮件";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "退出账户后所有防护设置都将被清除。";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "所有的邮件已下载";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "生日";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "屏蔽";
+
 /* Settings row */
 "Block email tracking" = "阻止电子邮件追踪";
 
@@ -296,6 +302,9 @@
 
 /* Button to block a sender */
 "Block sender" = "屏蔽发件人";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "已屏蔽的发件人";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止发件人查看您是否以及何时打开过邮件。";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "未能创建标签";
 
+/* Change language title */
+"Current Language: " = "当前语言：";
+
 /* Placeholder */
 "Current password" = "当前密码";
 
@@ -699,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "正在下载元数据...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "正在下载新邮件...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下载邮件以便搜索邮件内容。所有邮件均已加密且仅保存在此设备上。%1$@";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "前往设置";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "转至登录界面";
+
 /* Got it action */
 "Got it" = "知道了";
 
@@ -999,6 +1017,9 @@
 
 /* place holder */
 "Input Display Name…" = "输入您的称呼…";
+
+/* place holder */
+"Input Notification Email…" = "输入通知邮箱…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "连接不安全";
@@ -1130,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "标为未读";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "以后再说";
+
 /* menu title */
 "Menu" = "菜单";
 
@@ -1240,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "新建联系人";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "今后来自 %@ 的邮件将被直接删除，不再收取。已屏蔽的邮箱可以在设置中管理。";
+
 /* The title of create folder page */
 "New folder" = "新建文件夹";
 
@@ -1278,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "未找到附件";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "尚未屏蔽任何发件人";
 
 /* Title */
 "No connectivity detected…" = "未检测到网络连接…";
@@ -1702,6 +1732,15 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "发送回执";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "发件人 %@ 已被屏蔽";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "发件人 %@ 已取消屏蔽";
+
+/* Banner in the message view */
+"Sender has been blocked" = "发件人已在屏蔽名单中";
+
 /* encryption lock description */
 "Sender Verification Failed" = "发件人验证失败";
 
@@ -1780,6 +1819,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "展开";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "重新登录即可继续接收邮件提醒";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "退出";
@@ -1795,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "已从 %1$@ 退出 并以 %2$@ 登录";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "%@ 账户已退出登录";
 
 /* skip button title in onboarding page */
 "Skip" = "跳过";
@@ -1956,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您即将打开非标准 URL，可能无法正常加载。确定要用默认的浏览器打开吗？";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "该用户已登录";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "仍有未发送的邮件，现在退出邮件将丢失";
 
@@ -1970,6 +2018,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此会话包含废弃的邮件";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "这封邮件看似来自 Proton Mail 地址，但却是从我们的系统外部发来的，并且没能通过我们的验证。这可能是欺诈邮件，也可能是投递过程出现了问题。";
@@ -2060,6 +2114,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。";
+
 /* Placeholder */
 "Two Factor Code" = "双重验证码";
 
@@ -2077,6 +2134,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "无法发送电子邮件";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "解除屏蔽";
+
+/* Button to unblock a sender */
+"Unblock sender" = "取消屏蔽发件人";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公开收件人";
@@ -2252,6 +2315,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您在系统设置中关闭了 %@，但您的账户信息已受到 %@ 保护。请在系统设置中再次开启 %@ 或重新登录解锁账户。";
+
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";
 
@@ -2311,6 +2377,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "正在为您下载邮件...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "如果您的联系人也加入 Proton Mail，您的隐私将得到更好的保护。不妨邀请好友注册 Proton，您与好友都能免费体验高级账户权益。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";

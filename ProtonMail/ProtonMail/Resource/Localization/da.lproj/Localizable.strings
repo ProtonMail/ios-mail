@@ -1732,6 +1732,9 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Send læsekvittering";
 
+/* Banner in the message view */
+"Sender has been blocked" = "Afsender er blevet blokeret";
+
 /* encryption lock description */
 "Sender Verification Failed" = "Afsenderbekræftelse mislykkedes";
 
@@ -1809,6 +1812,9 @@
 
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Vis mig";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Log ind igen for at fortsat at modtage opdateringer";
 
 /* Alert title to confirm signout
    menu title */
@@ -1986,6 +1992,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL'en, du forsøger at få adgang til, er ikke standard og kan måske ikke indlæses korrekt. Vil du åbne den ved hjælp af din enheds standardbrowser?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Brugeren er allerede logget ind";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Der er usendte beskeder, der vil gå tabt, hvis du logger ud";
 
@@ -2000,6 +2009,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail bestod ikke sit domænes godkendelseskrav. Den kan være falsk eller ukorrekt videresendt.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Denne e-mail bestod ikke sit domænes godkendelseskrav. Den kan være falsk eller ukorrekt videresendt.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail ser ud til at være fra en Proton Mail-adresse, men den kom fra et sted uden for vores system og har ikke overholdt vores godkendelseskrav. Den kan være forfalsket eller ukorrekt videresendt!";
@@ -2090,6 +2105,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Slå denne funktion til for at autoudfylde e-mailadresser vha. kontakter fra alle de konti, hvor du er logget ind.";
+
 /* Placeholder */
 "Two Factor Code" = "To-faktorkode";
 
@@ -2107,6 +2125,9 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Kan ikke sende e-mailen";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Fjern blokering";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Oplyste modtagere";

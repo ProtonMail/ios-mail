@@ -2019,6 +2019,9 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Această conversaţie conţine mesaje care sunt șterse";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat.";
+
 /* The error message that the incoming mail failed dmarc authentication */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat.";
 
@@ -2134,6 +2137,9 @@
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Deblocare";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Deblocare expeditor";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatari nedivulgați";
