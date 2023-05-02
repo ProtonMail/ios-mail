@@ -37,13 +37,13 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
         try await super.setUp()
 
         await setupTest()
-        let user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+        let user = try await createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
         self.user = user
     }
 
     override func tearDown() async throws {
         await terminateApp()
-        try await deleteUser(domain: dynamicDomain!, user)
+        try await deleteUser(domain: dynamicDomain, user)
         try await super.tearDown()
     }
 
@@ -56,7 +56,7 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
     func setupTest() {
         app.launch()
 
-        env = Environment.custom(dynamicDomain!)
+        env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
     }
 
@@ -64,7 +64,7 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
         let launchArguments = ["-clear_all_preference", "YES", "-uiTests", "-skipTour"]
         let app =  XCUIApplication()
 
-        app.launchEnvironment[apiDomainKey] = dynamicDomain!
+        app.launchEnvironment[apiDomainKey] = dynamicDomain
         launchArguments.forEach { app.launchArguments.append($0) }
 
         return app }

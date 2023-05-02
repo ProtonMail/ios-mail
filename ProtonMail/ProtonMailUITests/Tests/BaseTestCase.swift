@@ -20,9 +20,8 @@ var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
 
-var dynamicDomain: String? {
-    let domain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"]
-    return domain?.isEmpty == false ? domain : ""
+var dynamicDomain: String {
+    ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
 }
 
 /**
@@ -46,7 +45,7 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     
     override func setUp() async throws {
         try await super.setUp()
-        env = Environment.custom(dynamicDomain!)
+        env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
     }
 
@@ -62,7 +61,7 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.launchArguments.append("-toolbarSpotlightOff")
         app.launchArguments.append("-uiTests")
 
-        app.launchEnvironment[apiDomainKey] = dynamicDomain!
+        app.launchEnvironment[apiDomainKey] = dynamicDomain
 
         if humanVerificationStubs {
             app.launchEnvironment["HumanVerificationStubs"] = "1"
@@ -133,7 +132,7 @@ class CleanAuthenticatedTestCase: BaseTestCase {
     }
 
     override func tearDown() async throws {
-        try await deleteUser(domain: dynamicDomain!, user)
+        try await deleteUser(domain: dynamicDomain, user)
         try await super.tearDown()
     }
 }
@@ -146,7 +145,7 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     var user: User?
 
     override func setUp() async throws {
-        user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+        user = try await createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
         try await super.setUp()
     }
     
@@ -156,7 +155,7 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     }
 
     override func tearDown() async throws {
-        try await deleteUser(domain: dynamicDomain!, user)
+        try await deleteUser(domain: dynamicDomain, user)
         try await super.tearDown()
     }
 

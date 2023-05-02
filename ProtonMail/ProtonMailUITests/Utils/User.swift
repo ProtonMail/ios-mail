@@ -25,7 +25,7 @@ class User {
     var quarkURL: URL?
     
     init(name: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
-        self.email = name + "@" + dynamicDomain!
+        self.email = "\(name)@\(dynamicDomain)"
         self.password = password
         self.mailboxPassword = mailboxPassword
         self.twoFASecurityKey = twoFASecurityKey
