@@ -123,13 +123,25 @@ class CleanAuthenticatedTestCase: BaseTestCase {
 
     override func setUp() async throws {
         try await super.setUp()
-        quarkCommands.createUser(username: user.name, password: user.password, protonPlanName: UserPlan.mailpro2022.rawValue)
-    }
-    
-    override func setUp() {
-        super.setUp()
+
+        _ = try await withCheckedThrowingContinuation { continuation in
+            quarkCommands.createUser(username: user.name, password: user.password, protonPlanName: UserPlan.mailpro2022.rawValue) { result in
+                switch result {
+                case .success(_):
+                    continuation.resume(returning: result)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+
         login(user: user)
     }
+
+	override func setUp() {
+		super.setUp()
+		login(user: user)
+	}
 
     override func tearDown() async throws {
         try await deleteUser(domain: dynamicDomain, user)

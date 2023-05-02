@@ -131,4 +131,14 @@ class PinTests: CleanAuthenticatedTestCase {
             .activateAppWithPin()
             .verify.pinInputScreenIsShown()
     }
+
+    func testSetPinAndLockTheAppActionInTheMenuWillLockTheApp() {
+        pinRobot
+            .navigateUpToSettings()
+            .close()
+            .menuDrawer()
+            .lockTheApp()
+            .verify
+            .pinCodeEnterScreenIsShown()
+    }
 }

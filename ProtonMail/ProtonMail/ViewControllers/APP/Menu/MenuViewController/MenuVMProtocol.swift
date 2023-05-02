@@ -55,6 +55,7 @@ protocol MenuVMProtocol: AnyObject {
     func getIconColor(of label: MenuLabel) -> UIColor
     func allowToCreate(type: PMLabelType) -> Bool
     func go(to labelInfo: MenuLabel)
+    func lockTheScreen()
 }
 
 extension MenuVMProtocol {

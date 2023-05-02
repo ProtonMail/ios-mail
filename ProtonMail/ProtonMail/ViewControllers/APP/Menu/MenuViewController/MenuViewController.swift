@@ -385,8 +385,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         }
         switch label.location {
         case .lockapp:
-            keymaker.lockTheApp() // remove mainKey from memory
-            _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
+            viewModel.lockTheScreen()
             self.closeMenu()
         case .signout:
             let cell = tableView.cellForRow(at: indexPath)

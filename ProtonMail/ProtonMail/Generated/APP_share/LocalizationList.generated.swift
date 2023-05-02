@@ -880,6 +880,8 @@ struct LocalizationList {
         "L11n.ActionSheetActionTitle.replyAll_in_conversation": L11n.ActionSheetActionTitle.replyAll_in_conversation,
         // L11n.Toolbar
         "L11n.Toolbar.customizeSpotlight": L11n.Toolbar.customizeSpotlight,
+        // L11n.PinCodeView
+        "L11n.PinCodeView.title": L11n.PinCodeView.title,
         // L11n.BugReport
         "L11n.BugReport.placeHolder": L11n.BugReport.placeHolder,
     ]

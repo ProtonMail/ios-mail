@@ -33,7 +33,8 @@
         "PinTests\/testErrorMessageOnThreeRmainingPinTries()",
         "PinTests\/testIncorrectPinBeforeThirtySec()",
         "PinTests\/testLogoutBeforeUnlockingDoesNotCrash()",
-        "PinTests\/testTurnOnAndOffPin()"
+        "PinTests\/testTurnOnAndOffPin()",
+        "PinTests\/testSetPinAndLockTheAppActionInTheMenuWillLockTheApp()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
