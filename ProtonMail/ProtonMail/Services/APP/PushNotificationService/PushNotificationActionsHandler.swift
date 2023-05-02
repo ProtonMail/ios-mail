@@ -110,7 +110,7 @@ private extension PushNotificationActionsHandler {
             dependencyIDs: [],
             isConversation: false
         )
-        _ = dependencies.queue.addTask(task, autoExecute: true)
+        dependencies.queue.addTask(task, autoExecute: true, completion: nil)
         SystemLogger.log(message: "Action enqueued \(action)", category: .pushNotification)
     }
 

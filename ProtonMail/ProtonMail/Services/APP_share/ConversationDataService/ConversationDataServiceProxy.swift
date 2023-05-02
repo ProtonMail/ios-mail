@@ -265,7 +265,7 @@ extension ConversationDataServiceProxy {
                                      userID: self.userID,
                                      dependencyIDs: [],
                                      isConversation: isConversation)
-        _ = self.queueManager?.addTask(task)
+        self.queueManager?.addTask(task)
     }
 
     private func reportEmptyConversationID(callOrigin: String?) {

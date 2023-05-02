@@ -22,9 +22,9 @@ final class MockQueueManager: QueueManagerProtocol {
     private(set) var executeTimes: Int = 0
     var addTaskWasCalled: Bool = false
 
-    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool {
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool, completion: ((Bool) -> Void)?) {
         addTaskWasCalled = true
-        return true
+        completion?(true)
     }
 
     func addBlock(_ block: @escaping () -> Void) {

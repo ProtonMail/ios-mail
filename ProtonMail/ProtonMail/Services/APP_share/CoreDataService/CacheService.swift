@@ -173,25 +173,25 @@ class CacheService: CacheServiceProtocol {
     }
 
     func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool, context: NSManagedObjectContext) -> Bool {
-            guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
-                return false
-            }
+        guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
+            return false
+        }
 
-            guard msgToUpdate.unRead != unRead else {
-                return true
-            }
+        guard msgToUpdate.unRead != unRead else {
+            return true
+        }
 
-            msgToUpdate.unRead = unRead
+        msgToUpdate.unRead = unRead
 
-            if unRead == false {
-                PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
-            }
-            if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
-                conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
-            }
-            self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
+        if unRead == false {
+            PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
+        }
+        if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
+            conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
+        }
+        self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
 
-        if let error = context.saveUpstreamIfNeeded(){
+        if let error = context.saveUpstreamIfNeeded() {
             assertionFailure("\(error)")
             return false
         } else {

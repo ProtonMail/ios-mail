@@ -62,7 +62,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.viewController = viewController
         if navigationController?.viewControllers.last is MessagePlaceholderVC,
            var viewControllers = navigationController?.viewControllers {
-            _ = viewControllers.popLast()
+            viewControllers.removeAll(where: { $0 is MessagePlaceholderVC })
             viewControllers.append(viewController)
             navigationController?.setViewControllers(viewControllers, animated: false)
         } else {

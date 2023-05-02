@@ -551,7 +551,7 @@ extension ContactDataService {
                                                         cardDatas: cardDatas,
                                                         importFromDevice: importedFromDevice)
                 let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                _ = self.queueManager?.addTask(task)
+                self.queueManager?.addTask(task)
             } catch {
                 return
             }
@@ -586,7 +586,7 @@ extension ContactDataService {
                     let action: MessageAction = .updateContact(objectID: idString,
                                                                cardDatas: cardDatas)
                     let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                    _ = self.queueManager?.addTask(task)
+                    self.queueManager?.addTask(task)
                     completion?(nil)
                 }
             } catch {
@@ -612,7 +612,7 @@ extension ContactDataService {
                 let idString = objectID.uriRepresentation().absoluteString
                 let action: MessageAction = .deleteContact(objectID: idString)
                 let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                _ = self.queueManager?.addTask(task)
+                self.queueManager?.addTask(task)
                 completion?(nil)
             } catch {
                 completion?(error as NSError)

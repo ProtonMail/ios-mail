@@ -36,7 +36,7 @@ final class BlockSender {
             dependencyIDs: [],
             isConversation: false
         )
-        _ = dependencies.queueManager.addTask(task, autoExecute: true)
+        _ = dependencies.queueManager.addTask(task, autoExecute: true, completion: nil)
     }
 }
 

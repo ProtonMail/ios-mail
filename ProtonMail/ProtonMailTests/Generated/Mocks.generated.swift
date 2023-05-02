@@ -815,9 +815,9 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
 }
 
 class MockQueueManagerProtocol: QueueManagerProtocol {
-    @FuncStub(MockQueueManagerProtocol.addTask, initialReturn: Bool()) var addTaskStub
-    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool {
-        addTaskStub(task, autoExecute)
+    @FuncStub(MockQueueManagerProtocol.addTask) var addTaskStub
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool, completion: ((Bool) -> Void)?) {
+        addTaskStub(task, autoExecute, completion)
     }
 
     @FuncStub(MockQueueManagerProtocol.addBlock) var addBlockStub

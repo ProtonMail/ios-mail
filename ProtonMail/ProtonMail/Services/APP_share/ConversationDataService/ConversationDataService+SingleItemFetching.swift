@@ -51,6 +51,7 @@ extension ConversationDataService {
                     completion(.failure(err))
                     return
                 }
+                let idsOfMessagesBeingSent = self.messageDataService.idsOfMessagesBeingSent()
 
                 self.contextProvider.performOnRootSavingContext { context in
                     do {
@@ -86,7 +87,6 @@ extension ConversationDataService {
                             messagesDict[index].addAttachmentOrderField()
                         }
 
-                        let idsOfMessagesBeingSent = self.messageDataService.idsOfMessagesBeingSent()
                         let filteredMessagesDict = self.messages(
                             among: messagesDict,
                             notContaining: idsOfMessagesBeingSent

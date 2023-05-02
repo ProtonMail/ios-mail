@@ -51,6 +51,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
     let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private var messageIDsOpenedFromNotification: [MessageID] = []
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -447,13 +448,16 @@ extension MailboxCoordinator {
 
     private func handleDetailDirectFromNotification(node: DeepLink.Node) {
         resetNavigationViewControllersIfNeeded()
-        presentMessagePlaceholder()
+        presentMessagePlaceholderIfNeeded()
 
         messageToShow(isNotification: true, node: node) { [weak self] message in
             guard let self = self,
                   let message = message else {
                 self?.viewController?.navigationController?.popViewController(animated: true)
                 L11n.Error.cant_open_message.alertToastBottom()
+                return
+            }
+            guard self.messageIDsOpenedFromNotification.last == message.messageID else {
                 return
             }
             let messageID = message.messageID
@@ -539,11 +543,12 @@ extension MailboxCoordinator {
         }
 
         // From notification
-        guard let messageID = node?.value else {
+        guard let messageID = node?.value,
+              !messageIDsOpenedFromNotification.contains(.init(messageID)) else {
             completion(nil)
             return
         }
-
+        messageIDsOpenedFromNotification.append(.init(messageID))
         viewModel.user.messageService.fetchNotificationMessageDetail(MessageID(messageID)) { [weak self] _ in
             guard let self = self else { return }
             if let message = Message.messageForMessageID(
@@ -629,15 +634,16 @@ extension MailboxCoordinator {
         guard let navigationController = viewController?.navigationController else { return }
         var viewControllers = navigationController.viewControllers
         if viewControllers.last is MessagePlaceholderVC {
-            _ = viewControllers.removeLast()
+            viewControllers.removeAll(where: { $0 is MessagePlaceholderVC })
         }
         let page = PagesViewController(viewModel: pageVM, services: services)
         viewControllers.append(page)
         navigationController.setViewControllers(viewControllers, animated: true)
     }
 
-    private func presentMessagePlaceholder() {
-        guard let navigationController = viewController?.navigationController else { return }
+    private func presentMessagePlaceholderIfNeeded() {
+        guard let navigationController = viewController?.navigationController,
+              !navigationController.viewControllers.contains(where: { $0 is MessagePlaceholderVC }) else { return }
         let placeholder = MessagePlaceholderVC()
         navigationController.pushViewController(placeholder, animated: true)
     }

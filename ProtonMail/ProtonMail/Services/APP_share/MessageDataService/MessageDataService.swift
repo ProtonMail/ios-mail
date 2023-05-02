@@ -244,7 +244,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 dependencyIDs: [],
                 isConversation: false
             )
-            _ = self.queueManager?.addTask(task)
+            self.queueManager?.addTask(task)
             self.cacheService.delete(attachment: att) {
                 seal.fulfill_()
             }
@@ -418,6 +418,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
+                                if let labelID = newMessage.firstValidFolder() {
+                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
+                                }
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
                                     if let labelID = newMessage.firstValidFolder() {
@@ -487,8 +490,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         self.mark(
                                             messageObjectIDs: [messageOut.objectID],
                                             labelID: LabelID(labelID),
-                                            unRead: false,
-                                            context: context
+                                            unRead: false
                                         )
                                     }
 
@@ -525,7 +527,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     return
                 }
                 if let labelID = message.firstValidFolder() {
-                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false, context: context)
+                    self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
                 }
                 DispatchQueue.main.async {
                     completion(nil)
@@ -1456,18 +1458,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         switch action {
         case .saveDraft, .send:
             let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-            _ = self.queueManager?.addTask(task)
+            self.queueManager?.addTask(task)
         default:
             if message.managedObjectContext != nil, !messageID.isEmpty {
                 let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                _ = self.queueManager?.addTask(task)
+                self.queueManager?.addTask(task)
             }
         }
     }
 
     func queue(_ action: MessageAction) {
         let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-        _ = self.queueManager?.addTask(task)
+        self.queueManager?.addTask(task)
     }
 
     private func queue(att: Attachment, action: MessageAction) {
@@ -1493,7 +1495,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             break
         }
         let task = QueueManager.Task(messageID: att.message.messageID, action: updatedAction ?? action, userID: self.userID, dependencyIDs: [], isConversation: false)
-        _ = self.queueManager?.addTask(task)
+        self.queueManager?.addTask(task)
     }
 
     func cleanLocalMessageCache(completion: @escaping (Error?) -> Void) {

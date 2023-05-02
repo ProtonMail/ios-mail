@@ -78,14 +78,26 @@ class QueueManagerTests: XCTestCase {
     
     func testAddUnknownTask() {
         let task = QueueManager.Task(messageID: "messageID", action: .emptySpam, userID: "", dependencyIDs: [], isConversation: false)
-        
-        XCTAssertFalse(sut.addTask(task))
+        let e = expectation(description: "Closure is called")
+
+        sut.addTask(task) { result in
+            XCTAssertFalse(result)
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
     
     func testAddTask() {
         let task = QueueManager.Task(messageID: "messageID", action: .emptySpam, userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task.uuid)
-        XCTAssertTrue(sut.addTask(task, autoExecute: false))
+        let e = expectation(description: "Closure is called")
+
+        sut.addTask(task, autoExecute: false) { result in
+            XCTAssertTrue(result)
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
         
         let finish = expectation(description: "Notification Raised")
         sut.backgroundFetch(remainingTime: {
@@ -100,16 +112,26 @@ class QueueManagerTests: XCTestCase {
     }
     
     func testAddEmptyTask() {
+        let e = expectation(description: "Closure is called")
         let task = QueueManager.Task(messageID: "", action: .emptySpam, userID: "", dependencyIDs: [], isConversation: false)
-        
-        XCTAssertFalse(sut.addTask(task))
+
+        sut.addTask(task) { result in
+            XCTAssertFalse(result)
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
         XCTAssertEqual(messageQueue.count, 0)
     }
     
     func testSignout() {
         loadTestData()
+        let e = expectation(description: "Closure is called")
         let task = QueueManager.Task(messageID: "", action: .signout, userID: "userID1", dependencyIDs: [], isConversation: false)
-        _ = sut.addTask(task, autoExecute: false)
+        sut.addTask(task, autoExecute: false, completion: { result in
+            e.fulfill()
+        })
+        waitForExpectations(timeout: 1)
         
         XCTAssertEqual(self.messageQueue.count, 1)
         XCTAssertEqual(self.miscQueue.count, 1)
@@ -128,13 +150,13 @@ class QueueManagerTests: XCTestCase {
     func testSignout_signin() {
         loadTestData()
         let task = QueueManager.Task(messageID: "", action: .signout, userID: "userID1", dependencyIDs: [], isConversation: false)
-        _ = sut.addTask(task, autoExecute: false)
+        _ = addTaskToSUT(task: task, autoExecute: false)
         
         XCTAssertEqual(self.messageQueue.count, 1)
         XCTAssertEqual(self.miscQueue.count, 1)
         
         let signin = QueueManager.Task(messageID: "", action: .signin, userID: "userID1", dependencyIDs: [], isConversation: false)
-        _ = sut.addTask(signin, autoExecute: false)
+        _ = addTaskToSUT(task: signin, autoExecute: false)
         
         XCTAssertEqual(self.messageQueue.count, 0)
         XCTAssertEqual(self.miscQueue.count, 0)
@@ -312,7 +334,7 @@ class QueueManagerTests: XCTestCase {
     
     func testDeleteAllQueuedMessageWithUnknownUserID() {
         let task = QueueManager.Task(messageID: "messageID1", action: .delete(currentLabelID: nil, itemIDs: []), userID: "No ID", dependencyIDs: [], isConversation: false)
-        XCTAssertTrue(sut.addTask(task, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task, autoExecute: false))
         
         loadTestData()
         
@@ -341,7 +363,7 @@ class QueueManagerTests: XCTestCase {
         let task = QueueManager.Task(messageID: "messageID", action: .read(itemIDs: [], objectIDs: []), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task.uuid)
         self.handlerMock.setResult(to: .connectionIssue)
-        XCTAssertTrue(sut.addTask(task, autoExecute: true))
+        XCTAssertTrue(addTaskToSUT(task: task, autoExecute: true))
         
         sleep(1)
         XCTAssertEqual(self.handlerMock.handleCount, self.miscTaskUUIDs.count)
@@ -353,7 +375,7 @@ class QueueManagerTests: XCTestCase {
         let task = QueueManager.Task(messageID: "messageID", action: .signout, userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task.uuid)
         self.handlerMock.setResult(to: .connectionIssue)
-        XCTAssertTrue(sut.addTask(task, autoExecute: true))
+        XCTAssertTrue(addTaskToSUT(task: task, autoExecute: true))
         
         sleep(1)
         XCTAssertEqual(self.handlerMock.handleCount, self.miscTaskUUIDs.count)
@@ -365,13 +387,13 @@ class QueueManagerTests: XCTestCase {
         self.handlerMock.setResult(to: .removeRelated)
         let task1 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task1.uuid)
-        XCTAssertTrue(sut.addTask(task1, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task1, autoExecute: false))
         
         let task2 = QueueManager.Task(messageID: "messageID3", action: .uploadAtt(attachmentObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
-        XCTAssertTrue(sut.addTask(task2, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task2, autoExecute: false))
         
         let task3 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
-        XCTAssertTrue(sut.addTask(task3, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task3, autoExecute: false))
         
         let finish = expectation(description: "Notification Raised")
         sut.backgroundFetch(remainingTime: {
@@ -389,16 +411,16 @@ class QueueManagerTests: XCTestCase {
         self.handlerMock.setResult(to: .checkReadQueue)
         let task1 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task1.uuid)
-        XCTAssertTrue(sut.addTask(task1, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task1, autoExecute: false))
         
         let task2 = QueueManager.Task(messageID: "messageID3", action: .uploadAtt(attachmentObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
-        XCTAssertTrue(sut.addTask(task2, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task2, autoExecute: false))
         
         let task3 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
-        XCTAssertTrue(sut.addTask(task3, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task3, autoExecute: false))
         
         let task4 = QueueManager.Task(messageID: "messageID3", action: .read(itemIDs: [], objectIDs: []), userID: "userID1", dependencyIDs: [], isConversation: false)
-        XCTAssertTrue(sut.addTask(task4, autoExecute: false))
+        XCTAssertTrue(addTaskToSUT(task: task4, autoExecute: false))
         
         let finish = expectation(description: "Notification Raised")
         self.sut.queue {
@@ -453,21 +475,32 @@ extension QueueManagerTests {
         let task = QueueManager.Task(messageID: "messageID1", action: .deleteLabel(labelID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task.uuid)
         
-        XCTAssertTrue(sut.addTask(task, autoExecute: autoExecute))
+        XCTAssertTrue(addTaskToSUT(task: task, autoExecute: autoExecute))
         
         let task2 = QueueManager.Task(messageID: "messageID2", action: .empty(currentLabelID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.miscTaskUUIDs.append(task2.uuid)
         
-        XCTAssertTrue(sut.addTask(task2, autoExecute: autoExecute))
+        XCTAssertTrue(addTaskToSUT(task: task2, autoExecute: autoExecute))
         
         let task3 = QueueManager.Task(messageID: "messageID3", action: .send(messageObjectID: "", deliveryTime: nil), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task3.uuid)
         
-        XCTAssertTrue(sut.addTask(task3, autoExecute: autoExecute))
+        XCTAssertTrue(addTaskToSUT(task: task3, autoExecute: autoExecute))
         
         let task4 = QueueManager.Task(messageID: "messageID3", action: .saveDraft(messageObjectID: ""), userID: "userID1", dependencyIDs: [], isConversation: false)
         self.loadedTaskUUIDs.append(task4.uuid)
         
-        XCTAssertTrue(sut.addTask(task4, autoExecute: autoExecute))
+        XCTAssertTrue(addTaskToSUT(task: task4, autoExecute: autoExecute))
+    }
+
+    private func addTaskToSUT(task: QueueManager.Task, autoExecute: Bool) -> Bool {
+        var result = false
+        let e = expectation(description: "Closure is called")
+        sut.addTask(task, autoExecute: autoExecute) { value in
+            result = value
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+        return result
     }
 }
