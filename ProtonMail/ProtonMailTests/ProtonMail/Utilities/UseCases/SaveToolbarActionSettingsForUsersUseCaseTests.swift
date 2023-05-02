@@ -34,7 +34,6 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
         firstUserMailSettings = .init(nextMessageOnMove: false)
         sut = SaveToolbarActionSettings(
             dependencies: .init(apiService: firstUserAPI,
-                                userInfo: firstUserInfo,
                                 mailSettingsHandler: UserManager(
                                     api: firstUserAPI,
                                     userInfo: firstUserInfo,
