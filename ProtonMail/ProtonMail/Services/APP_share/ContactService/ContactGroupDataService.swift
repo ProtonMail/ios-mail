@@ -304,7 +304,7 @@ extension ContactGroupsDataService {
                     let objectID = groupLabel.objectID.uriRepresentation().absoluteString
                     let action: MessageAction = .addContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs)
                     let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                    _ = queue?.addTask(task)
+                    queue?.addTask(task)
                     seal.fulfill_()
                 }
             }
@@ -344,7 +344,7 @@ extension ContactGroupsDataService {
                     let objectID = label.objectID.uriRepresentation().absoluteString
                     let action: MessageAction = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailIDs: addedEmailIDs, removedEmailIDs: removedEmailIDs)
                     let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                    _ = queue?.addTask(task)
+                    queue?.addTask(task)
                     seal.fulfill_()
                 }
             }
@@ -368,7 +368,7 @@ extension ContactGroupsDataService {
                 let objectID = label.objectID.uriRepresentation().absoluteString
                 let action: MessageAction = .deleteContactGroup(objectID: objectID)
                 let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                _ = queue?.addTask(task)
+                queue?.addTask(task)
                 seal.fulfill_()
             }
         }

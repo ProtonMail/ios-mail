@@ -93,16 +93,17 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         #endif
     }
 
-    func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
-        self.queue.sync {
+    func addTask(_ task: Task, autoExecute: Bool = true, completion: ((Bool) -> Void)? = nil) {
+        queue.async {
             guard !task.userID.rawValue.isEmpty else {
-                return false
+                completion?(false)
+                return
             }
             let action = task.action
             switch action {
             case .saveDraft,
-                 .uploadAtt, .uploadPubkey, .deleteAtt, .updateAttKeyPacket,
-                 .send:
+                    .uploadAtt, .uploadPubkey, .deleteAtt, .updateAttKeyPacket,
+                    .send:
                 let dependencies = self.getMessageTasks(of: task.userID)
                     .filter { $0.messageID == task.messageID }
                     .map(\.uuid)
@@ -127,7 +128,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
             if autoExecute {
                 self.dequeueIfNeeded()
             }
-            return true
+            completion?(true)
         }
     }
 
@@ -673,7 +674,7 @@ private extension Collection where Element == Any {
 
 // sourcery: mock
 protocol QueueManagerProtocol {
-    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool, completion: ((Bool) -> Void)?)
     func addBlock(_ block: @escaping () -> Void)
 }
 
