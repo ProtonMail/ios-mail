@@ -80,7 +80,6 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
         defer {
             notificationCenter.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
-            notificationCenter.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
         }
     }
 
@@ -190,14 +189,6 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
             notificationActionPendingUnlock = nil
             handleNotificationActionTask(notificationAction: notificationAction)
         }
-    }
-
-    @objc private func didSignOut() {
-        let settingsToUnreport = self.currentSubscriptions.subscriptions.compactMap { subscription -> SubscriptionSettings? in
-            subscription.state == .notReported ? nil : subscription.settings
-        }
-        self.currentSubscriptions.outdate(Set(settingsToUnreport))
-        self.unreportOutdatedSettings()
     }
 
     // register on BE and validate local values
