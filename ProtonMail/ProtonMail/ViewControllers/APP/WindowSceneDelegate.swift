@@ -64,7 +64,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        self.coordinator.scene = scene
 
         let notificationInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo
         if let userInfo = notificationInfo {
@@ -90,7 +89,12 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        self.coordinator.start(launchedByNotification: notificationInfo != nil)
+        // Show the view in correct scene, otherwise the app will break while connecting to external monitor.
+        if session.role == .windowApplication {
+            self.coordinator.scene = scene
+            self.coordinator.start(launchedByNotification: notificationInfo != nil)
+        }
+
 
         // For default mail function
         _ = connectionOptions.urlContexts.first { context in
