@@ -107,6 +107,13 @@ class ConversationViewModel {
             .allSatisfy(\.isSpam)
     }
 
+    var areAllMessagesInThreadInTheArchive: Bool {
+        guard !messagesDataSource.isEmpty else { return false }
+        return messagesDataSource
+            .compactMap(\.messageViewModel)
+            .allSatisfy { $0.message.contains(location: .archive) }
+    }
+
     let connectionStatusProvider: InternetConnectionStatusProvider
     private let observerID = UUID()
     var isInitialDataFetchCalled = false
@@ -801,7 +808,7 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let locationIsInArchive = labelId == Message.Location.archive.labelID
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
-        let isInArchive = conversation.contains(of: .archive)
+        let isInArchive = areAllMessagesInThreadInTheArchive
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = conversation.contains(of: .spam)
 
