@@ -40,6 +40,8 @@ import WebKit
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
     internal let renderedContents = RenderedContents()
     private var heightChanged: ((CGFloat) -> Void)?
+    /// Callback to update the webview is scrollable when the rendering is done.
+    private var contentShouldBeScrollableByDefaultChanged: ((Bool) -> Void)?
 
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
@@ -110,6 +112,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
     func observeHeight(_ callBack: @escaping ((CGFloat) -> Void)) {
         self.heightChanged = callBack
+    }
+
+    func observeContentShouldBeScrollableByDefault(_ callBack: @escaping ((Bool) -> Void)) {
+        self.contentShouldBeScrollableByDefaultChanged = callBack
     }
 
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
@@ -221,7 +227,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                     let result = searchBlockQuote(document);
 
                     // Hide the history of the message.
-                    document.body.innerHTML = result[0];
+                    if (result !== null) {
+                        document.body.innerHTML = result[0];
+                    }
                 """
             }
 
@@ -248,7 +256,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                         }
                     });
 
-                    window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
+                    window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight, 'contentShouldBeScrollableByDefault': ratio < 1});
             """
 
             userContentController.addUserScript(WebContents.blockQuoteJS)
@@ -273,6 +281,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
             let res = refHeight > 32 ? refHeight : CGFloat(height)
             self.heightChanged?(res)
+        }
+        if let contentShouldBeScrollableByDefault = dict["contentShouldBeScrollableByDefault"] as? Bool {
+            // The contentShouldBeScrollableByDefault means that the webview should be scrollable after rendering by default.
+            // It also means that the content width can not be fully displayed on the device.
+            // We will allow the user to scroll the content by default.
+            contentShouldBeScrollableByDefaultChanged?(contentShouldBeScrollableByDefault)
         }
     }
 

@@ -1,5 +1,7 @@
 const BLOCKQUOTE_SELECTOR = {{BLOCKQUOTE_SELECTOR_VALUE}}
 
+const BLOCKQUOTE_TEXT_SELECTORS = ['-----Original Message-----'];
+
 const split = (source, match) => {
     const index = source.indexOf(match);
     if (index === -1) {
