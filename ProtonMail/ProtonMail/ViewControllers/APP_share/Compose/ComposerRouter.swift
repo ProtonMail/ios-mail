@@ -18,7 +18,7 @@
 import UIKit
 
 final class ComposerRouter {
-    private var navigationController: UINavigationController?
+    private weak var navigationController: UINavigationController?
 
     init() {}
 
