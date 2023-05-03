@@ -91,10 +91,10 @@ extension PMAPIService {
                 parameters: parameters,
                 headers: .empty,
                 authenticated: false,
-                autoRetry: true,
+                autoRetry: false,
                 customAuthCredential: nil,
                 nonDefaultTimeout: nil,
-                retryPolicy: .background,
+                retryPolicy: .userInitiated,
                 jsonCompletion: completion)
     }
 }
