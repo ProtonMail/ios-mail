@@ -372,7 +372,8 @@ extension AccountSwitcher {
             self.account = account
             userName.text = account.name.isEmpty ? account.mail : account.name
             mailAddress.text = account.mail
-            initials.text = account.name.initials()
+            let ref = account.name.isEmpty ? account.mail : account.name
+            initials.text = ref.initials()
         }
 
         private func addSubComponents() {
