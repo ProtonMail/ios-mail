@@ -2143,7 +2143,6 @@ extension MailboxViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = self.shouldAnimateSkeletonLoading ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-
         if self.shouldAnimateSkeletonLoading {
             self.configure(cell: cell, rowItem: .skeleton(indexPath.row))
         } else if let mailboxItem = viewModel.mailboxItem(at: indexPath) {

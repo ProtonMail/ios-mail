@@ -20,18 +20,22 @@ import ProtonCore_DataModel
 struct MailSettings: Parsable, Equatable {
     let nextMessageOnMove: Bool
     let hideSenderImages: Bool
+    let showMoved: ShowMoved
 
     enum CodingKeys: String, CodingKey {
         case nextMessageOnMove = "NextMessageOnMove"
         case hideSenderImages = "HideSenderImages"
+        case showMoved = "ShowMoved"
     }
 
     init(
         nextMessageOnMove: Bool = DefaultValue.nextMessageOnMove,
-        hideSenderImages: Bool = DefaultValue.hideSenderImages
+        hideSenderImages: Bool = DefaultValue.hideSenderImages,
+        showMoved: ShowMoved = DefaultValue.showMoved
     ) {
         self.nextMessageOnMove = nextMessageOnMove
         self.hideSenderImages = hideSenderImages
+        self.showMoved = showMoved
     }
 
     init(from decoder: Decoder) throws {
@@ -42,11 +46,14 @@ struct MailSettings: Parsable, Equatable {
             forKey: .hideSenderImages,
             defaultValue: DefaultValue.hideSenderImages
         )
+        let showMovedValue = try container.decodeIfPresent(Int.self, forKey: .showMoved)
+        showMoved = ShowMoved(rawValue: showMovedValue)
     }
 
     struct DefaultValue {
         static let nextMessageOnMove = false
         static let hideSenderImages = false
+        static let showMoved = ShowMoved.doNotKeep
     }
 }
 

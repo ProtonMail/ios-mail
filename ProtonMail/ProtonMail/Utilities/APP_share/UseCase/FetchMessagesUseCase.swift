@@ -119,6 +119,16 @@ extension FetchMessages {
     struct Parameters {
         /// identifier for labels, folders and locations.
         let labelID: LabelID
+
+        init(labelID: LabelID) {
+            if labelID == LabelLocation.draft.labelID {
+                self.labelID = LabelLocation.hiddenDraft.labelID
+            } else if labelID == LabelLocation.sent.labelID {
+                self.labelID = LabelLocation.hiddenSent.labelID
+            } else {
+                self.labelID = labelID
+            }
+        }
     }
 
     struct Dependencies {

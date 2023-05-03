@@ -33,7 +33,7 @@ final class MainQueueHandler: QueueHandler {
     typealias Completion = (Error?) -> Void
 
     let userID: UserID
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
     private let apiService: APIService
     private let messageDataService: MessageDataService
     private let conversationDataService: ConversationProvider
@@ -47,7 +47,7 @@ final class MainQueueHandler: QueueHandler {
     private let sendMessageTask: SendMessageTask
     private let dependencies: Dependencies
 
-    init(coreDataService: CoreDataService,
+    init(coreDataService: CoreDataContextProviderProtocol,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
