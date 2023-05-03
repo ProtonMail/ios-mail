@@ -292,6 +292,30 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertEqual(result, [.inbox, .spam, .more])
     }
 
+    func testToolbarActionTypes_inInbox_toolbarHasArchive_oneOfMessagesIsArchived_shouldKeepArchiveAction() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        toolbarActionProviderMock.messageToolbarActions = [.archive]
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(location: .archive, multipleRecipients: true)),
+            .message(viewModel: makeFakeViewModel(location: .inbox, multipleRecipients: true))
+        ]
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.archive, .more])
+    }
+
+    func testToolbarActionTypes_inInbox_toolbarHasArchive_AllMessagesAreArchived_archiveShouldBeConveredToMoveToInbox() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        toolbarActionProviderMock.messageToolbarActions = [.archive]
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(location: .archive, multipleRecipients: true)),
+            .message(viewModel: makeFakeViewModel(location: .archive, multipleRecipients: true))
+        ]
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.inbox, .more])
+    }
+
     func testToolbarCustomizationCurrentTypes_notContainsMoreAction() {
         toolbarActionProviderMock.conversationToolbarActions = []
 
