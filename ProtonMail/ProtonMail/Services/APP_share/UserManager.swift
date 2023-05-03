@@ -135,9 +135,7 @@ class UserManager: Service {
 
     var isUserSelectedUnreadFilterInInbox = false
 
-    private var coreDataService: CoreDataService {
-        sharedServices.get(by: CoreDataService.self)
-    }
+    private let coreDataService: CoreDataContextProviderProtocol
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
@@ -351,9 +349,11 @@ class UserManager: Service {
         authCredential: AuthCredential,
         mailSettings: MailSettings?,
         parent: UsersManager?,
-        appTelemetry: AppTelemetry = MailAppTelemetry()
+        appTelemetry: AppTelemetry = MailAppTelemetry(),
+        coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         self.userInfo = userInfo
+        self.coreDataService = coreDataService
         self.apiService = api
         self.authCredential = authCredential
         self.mailSettings = mailSettings ?? .init()
@@ -375,13 +375,15 @@ class UserManager: Service {
         role: UserInfo.OrganizationRole,
         userInfo: UserInfo = UserInfo.getDefault(),
         mailSettings: MailSettings = .init(),
-        appTelemetry: AppTelemetry = MailAppTelemetry()
+        appTelemetry: AppTelemetry = MailAppTelemetry(),
+        coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
             fatalError("This initialization only for test")
         }
         userInfo.role = role.rawValue
         self.userInfo = userInfo
+        self.coreDataService = coreDataService
         self.apiService = api
         self.appTelemetry = appTelemetry
         self.authCredential = AuthCredential.none

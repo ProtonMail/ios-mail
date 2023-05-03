@@ -340,6 +340,16 @@ extension UpdateMailbox {
 extension UpdateMailbox {
     struct Parameters {
         let labelID: LabelID
+
+        init(labelID: LabelID) {
+            if labelID == LabelLocation.draft.labelID {
+                self.labelID = LabelLocation.hiddenDraft.labelID
+            } else if labelID == LabelLocation.sent.labelID {
+                self.labelID = LabelLocation.hiddenSent.labelID
+            } else {
+                self.labelID = labelID
+            }
+        }
     }
 
     struct Dependencies {

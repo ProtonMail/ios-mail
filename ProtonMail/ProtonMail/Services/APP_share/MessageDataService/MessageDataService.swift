@@ -537,7 +537,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     }
 
     // MARK: fuctions for only fetch the local cache
-
     /**
      fetch the message by location from local cache
 
@@ -549,31 +548,18 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         viewMode: ViewMode,
                         isUnread: Bool = false,
                         isAscending: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
+        guard let parent = parent else { return nil }
+        let showMoved = parent.mailSettings.showMoved
         switch viewMode {
         case .singleMessage:
             let moc = self.contextProvider.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            if isUnread {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@) AND (%K == %@)",
-                                                     labelID.rawValue,
-                                                     Message.Attributes.messageStatus,
-                                                     0,
-                                                     Message.Attributes.userID,
-                                                     self.userID.rawValue,
-                                                     Message.Attributes.unRead,
-                                                     NSNumber(true),
-                                                     Message.Attributes.isSoftDeleted,
-                                                     NSNumber(false))
-            } else {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@)",
-                                                     labelID.rawValue,
-                                                     Message.Attributes.messageStatus,
-                                                     0,
-                                                     Message.Attributes.userID,
-                                                     self.userID.rawValue,
-                                                     Message.Attributes.isSoftDeleted,
-                                                     NSNumber(false))
-            }
+
+            fetchRequest.predicate = predicatesForSingleMessageMode(
+                labelID: labelID,
+                isUnread: isUnread,
+                showMoved: showMoved
+            )
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: isAscending),
                                             NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
@@ -582,24 +568,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         case .conversation:
             let moc = self.contextProvider.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-            if isUnread {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K > 0) AND (%K == %@)",
-                                                     ContextLabel.Attributes.labelID,
-                                                     labelID.rawValue,
-                                                     ContextLabel.Attributes.userID,
-                                                     self.userID.rawValue,
-                                                     ContextLabel.Attributes.unreadCount,
-                                                     "conversation.\(Conversation.Attributes.isSoftDeleted)",
-                                                     NSNumber(false))
-            } else {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K == %@)",
-                                                     ContextLabel.Attributes.labelID,
-                                                     labelID.rawValue,
-                                                     ContextLabel.Attributes.userID,
-                                                     self.userID.rawValue,
-                                                     "conversation.\(Conversation.Attributes.isSoftDeleted)",
-                                                     NSNumber(false))
-            }
+            fetchRequest.predicate = predicatesForConversationMode(labelID: labelID, isUnread: isUnread)
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
                                             NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
@@ -607,6 +576,57 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
     }
+
+    private func predicatesForSingleMessageMode(labelID: LabelID, isUnread: Bool, showMoved: ShowMoved) -> NSPredicate {
+        let userIDPredicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, userID.rawValue)
+        let statusPredicate = NSPredicate(format: "%K > %d", Message.Attributes.messageStatus, 0)
+        let softDeletePredicate = NSPredicate(format: "%K == %@", Message.Attributes.isSoftDeleted, NSNumber(false))
+        let unreadPredicate = NSPredicate(format: "%K == %@", Message.Attributes.unRead, NSNumber(value: isUnread))
+        var subpredicates = [userIDPredicate, statusPredicate, softDeletePredicate]
+
+        if isUnread {
+            subpredicates.append(unreadPredicate)
+        }
+
+        if labelID == LabelLocation.draft.labelID && showMoved.keepDraft {
+            subpredicates.append(
+                NSPredicate(
+                    format: "(ANY labels.labelID == %@) OR (ANY labels.labelID == %@)",
+                    labelID.rawValue,
+                    LabelLocation.hiddenDraft.rawLabelID
+                )
+            )
+        } else if labelID == LabelLocation.sent.labelID && showMoved.keepSent {
+            subpredicates.append(
+                NSPredicate(
+                    format: "(ANY labels.labelID == %@) OR (ANY labels.labelID == %@)",
+                    labelID.rawValue,
+                    LabelLocation.hiddenSent.rawLabelID
+                )
+            )
+        } else {
+            subpredicates.append(NSPredicate(format: "(ANY labels.labelID = %@)", labelID.rawValue))
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+    }
+
+    private func predicatesForConversationMode(labelID: LabelID, isUnread: Bool) -> NSPredicate {
+        let userIDPredicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, userID.rawValue)
+        let nonNilConversation = NSPredicate(format: "conversation != nil")
+        let softDeletePredicate = NSPredicate(
+            format: "%K == %@",
+            "conversation.\(Conversation.Attributes.isSoftDeleted)",
+            NSNumber(false)
+        )
+        let labelIDPredicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.labelID, labelID.rawValue)
+        var subpredicates = [userIDPredicate, nonNilConversation, softDeletePredicate, labelIDPredicate]
+        if isUnread {
+            let unreadPredicate = NSPredicate(format: "(%K > 0)", ContextLabel.Attributes.unreadCount)
+            subpredicates.append(unreadPredicate)
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+    }
+
 
     /**
      fetch the message from local cache use message id

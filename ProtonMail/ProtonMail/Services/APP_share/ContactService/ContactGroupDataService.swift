@@ -51,11 +51,11 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
 
     private let apiService: APIService
     private let labelDataService: LabelsDataService
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
     private weak var queueManager: QueueManager?
     private let userID: UserID
 
-    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: UserID) {
+    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataContextProviderProtocol, queueManager: QueueManager, userID: UserID) {
         self.apiService = api
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService

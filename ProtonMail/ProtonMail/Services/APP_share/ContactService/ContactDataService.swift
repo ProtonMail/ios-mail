@@ -49,7 +49,7 @@ class ContactDataService: Service {
 
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
     private let apiService: APIService
     private let userInfo: UserInfo
     private let contactCacheStatus: ContactCacheStatusProtocol
@@ -60,7 +60,7 @@ class ContactDataService: Service {
         UserID(userInfo.userId)
     }
 
-    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataService, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
+    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataContextProviderProtocol, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
         self.userInfo = userInfo
         self.apiService = api
         self.addressBookService = AddressBookService()
