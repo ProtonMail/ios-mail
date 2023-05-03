@@ -731,7 +731,8 @@ private extension ConversationViewController {
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        guard !viewModel.user.shouldMoveToNextMessageAfterMove else {
+        guard UserInfo.isConversationSwipeEnabled,
+              !viewModel.user.shouldMoveToNextMessageAfterMove else {
             return
         }
         if var type = undoActionType {
@@ -748,7 +749,7 @@ private extension ConversationViewController {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
+        banner.show(at: .bottom, on: self.navigationController ?? self)
     }
 
     private func showSenderImageIfNeeded(in cell: ConversationMessageCell, message: MessageEntity) {
