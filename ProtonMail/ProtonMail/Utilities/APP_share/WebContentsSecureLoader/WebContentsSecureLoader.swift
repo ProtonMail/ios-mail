@@ -37,6 +37,7 @@ protocol WebContentsSecureLoader {
     func load(contents: WebContents, in webView: WKWebView)
     func inject(into config: WKWebViewConfiguration)
     func observeHeight(_ callBack: @escaping ((CGFloat) -> Void))
+    func observeContentShouldBeScrollableByDefault(_ callBack: @escaping ((Bool) -> Void))
 }
 extension WebContentsSecureLoader {
     func eject(from config: WKWebViewConfiguration) {

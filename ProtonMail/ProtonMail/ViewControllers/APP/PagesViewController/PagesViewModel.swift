@@ -142,7 +142,9 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     @objc
     func receiveSwipeExpectation(notification: Notification) {
         guard let userInfo = notification.userInfo,
-              let expectation = userInfo["expectation"] as? PagesSwipeAction else { return }
+              let expectation = userInfo["expectation"] as? PagesSwipeAction,
+              let pages = fetchedResultsController?.fetchedObjects?.count,
+              pages > 1 else { return }
         let shouldReload = userInfo["reload"] as? Bool
         idHasBeenMoved = uiDelegate?.getCurrentObjectID()
         uiDelegate?.handlePageViewNavigationDirection(action: expectation, shouldReload: shouldReload ?? false)
