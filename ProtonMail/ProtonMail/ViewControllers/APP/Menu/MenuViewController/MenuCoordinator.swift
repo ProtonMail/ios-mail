@@ -638,15 +638,16 @@ extension MenuCoordinator {
     }
 
     private func navigateToTroubleshooting() {
-        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-        troubleshootingVC.onDismiss = { [weak self] in
-            self?.navigateToAccountManager()
-        }
-        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
-        navigationVC.modalPresentationStyle = .fullScreen
-        sideMenu.present(navigationVC, animated: true) { [weak self] in
-            self?.sideMenu.hideMenu()
-        }
+        sideMenu.present(
+            doh: BackendConfiguration.shared.doh,
+            modalPresentationStyle: .fullScreen,
+            onPresent: { [weak self] in
+                self?.sideMenu.hideMenu()
+            },
+            onDismiss: { [weak self] in
+                self?.navigateToAccountManager()
+            }
+        )
     }
 
     private func navigateToCreateFolder(type: PMLabelType) {

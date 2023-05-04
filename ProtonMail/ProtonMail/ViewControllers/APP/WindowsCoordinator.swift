@@ -166,14 +166,14 @@ class WindowsCoordinator {
                             NotificationCenter.default.post(name: .switchView, object: nil)
                         }
                     case .userWantsToGoToTroubleshooting:
-                        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-                        troubleshootingVC.onDismiss = { [weak self] in
-                            // restart the process after user returns from troubleshooting
-                            self?.go(dest: .signInWindow(signInDestination))
-                        }
-                        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
-                        navigationVC.modalPresentationStyle = .fullScreen
-                        self?.currentWindow?.rootViewController?.present(navigationVC, animated: true, completion: nil)
+                        self?.currentWindow?.rootViewController?.present(
+                            doh: BackendConfiguration.shared.doh,
+                            modalPresentationStyle: .fullScreen,
+                            onDismiss: { [weak self] in
+                                // restart the process after user returns from troubleshooting
+                                self?.go(dest: .signInWindow(signInDestination))
+                            }
+                        )
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
                         self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
