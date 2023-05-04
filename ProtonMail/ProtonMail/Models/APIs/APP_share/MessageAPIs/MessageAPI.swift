@@ -35,9 +35,9 @@ struct MessageAPI {
 
 final class SearchMessageRequest: Request {
     var keyword: String
-    var page: Int
+    var page: UInt
 
-    init(keyword: String, page: Int) {
+    init(keyword: String, page: UInt) {
         self.keyword = keyword
         self.page = page
     }

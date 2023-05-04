@@ -769,49 +769,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func search(_ query: String, page: Int, completion: @escaping (Swift.Result<[Message], Error>) -> Void) {
-        let completionWrapper: ([String: Any]?, Error?) -> Void = { response, error in
-            if let error = error {
-                completion(.failure(error))
-            } else if var messagesArray = response?["Messages"] as? [[String: Any]] {
-                for (index, _) in messagesArray.enumerated() {
-                    messagesArray[index]["UserID"] = self.userID.rawValue
-                }
-                self.contextProvider.performOnRootSavingContext { context in
-                    do {
-                        if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
-                            for message in messages {
-                                message.messageStatus = 1
-                            }
-                            _ = context.saveUpstreamIfNeeded()
-
-                            completion(.success(messages))
-                        } else {
-                            fatalError("Groot output must be a Message.")
-                        }
-                    } catch let ex as NSError {
-                        completion(.failure(ex))
-                    }
-                }
-            } else {
-                let parseError = NSError(
-                    domain: APIServiceErrorDomain,
-                    code: APIErrorCode.badParameter,
-                    localizedDescription: "Unexpected data returned by the API."
-                )
-                completion(.failure(parseError))
-            }
-        }
-        let api = SearchMessageRequest(keyword: query, page: page)
-        self.apiService.perform(request: api, response: SearchMessageResponse()) { _, response in
-            if let error = response.error {
-                completionWrapper(nil, error)
-            } else {
-                completionWrapper(response.jsonDic, nil)
-            }
-        }
-    }
-
     func saveDraft(_ message: Message?) {
         if let message = message, let context = message.managedObjectContext {
             context.performAndWait {
@@ -1402,7 +1359,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             trace: Breadcrumbs.shared.trace(for: .invalidSignatureWhenSendingMessage)
         )
     }
-    
+
     private func markReplyStatus(_ oriMsgID: MessageID?, action : NSNumber?) -> Promise<Void> {
         guard let originMessageID = oriMsgID,
               let act = action,

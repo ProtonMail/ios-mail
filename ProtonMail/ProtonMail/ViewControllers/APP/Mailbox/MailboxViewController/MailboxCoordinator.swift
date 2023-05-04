@@ -315,6 +315,12 @@ extension MailboxCoordinator {
                         senderImageStatusProvider: userCachedStatus,
                         mailSettings: viewModel.user.mailSettings
                     )
+                ), backendSearch: BackendSearch(
+                    dependencies: .init(
+                        apiService: viewModel.user.apiService,
+                        contextProvider: coreDataService,
+                        userID: viewModel.user.userID
+                    )
                 )
             )
         )
