@@ -48,7 +48,7 @@ extension NSError {
     }
 
     func alertErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -56,11 +56,12 @@ extension NSError {
         hud.label.text = NSLocalizedString(localizedDescription, comment: "Title")
         hud.detailsLabel.text = description
         hud.removeFromSuperViewOnHide = true
-        hud.hide(animated: true, afterDelay: 3)
+        let delay = UIApplication.isInTestingBuild ? 10.0 : 3.0
+        hud.hide(animated: true, afterDelay: delay)
     }
 
     func alertHumanCheckErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -73,7 +74,7 @@ extension NSError {
     }
 
     class func alertMessageSentErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -86,7 +87,7 @@ extension NSError {
     }
 
     class func alertMessageSentError(details: String) {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -95,7 +96,8 @@ extension NSError {
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 2)
+        let delay = UIApplication.isInTestingBuild ? 10.0 : 3.0
+        hud.hide(animated: true, afterDelay: delay)
     }
 
     class func alertSavingDraftError(details: String) {
