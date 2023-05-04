@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,18 +17,32 @@
 
 import Foundation
 
-// sourcery: mock
-protocol NextMessageAfterMoveStatusProvider {
-    var shouldMoveToNextMessageAfterMove: Bool { get set }
-}
+enum NextMessageOnMove: Int, Encodable {
+    case explicitlyDisabled = 0
+    case implicitlyDisabled = 1
+    case explicitlyEnabled = 2
 
-extension UserManager: NextMessageAfterMoveStatusProvider {
-    var shouldMoveToNextMessageAfterMove: Bool {
-        get {
-            return mailSettings.nextMessageOnMove.isEnabled
+    init(rawValue: Int?) {
+        switch rawValue {
+        case 0:
+            self = .explicitlyDisabled
+        case 1:
+            self = .implicitlyDisabled
+        case 2:
+            self = .explicitlyEnabled
+        default:
+            self = .implicitlyDisabled
         }
-        set {
-            mailSettings.update(key: .nextMessageOnMove, to: newValue)
+    }
+
+    var isEnabled: Bool {
+        switch self {
+        case .explicitlyDisabled:
+            return false
+        case .implicitlyDisabled:
+            return false
+        case .explicitlyEnabled:
+            return true
         }
     }
 }
