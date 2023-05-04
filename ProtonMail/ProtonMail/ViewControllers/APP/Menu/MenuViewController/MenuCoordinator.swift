@@ -119,7 +119,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     }
 
     func follow(_ deepLink: DeepLink) {
-        if self.pushService.hasCachedLaunchOptions() {
+        if self.pushService.hasCachedNotificationOptions() {
             self.pushService.processCachedLaunchOptions()
             return
         }

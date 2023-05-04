@@ -278,7 +278,8 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        configurePushService(launchOptions: nil)
+        let pushService: PushNotificationService = sharedServices.get()
+        pushService.registerIfAuthorized()
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
         let queueManager = sharedServices.get(by: QueueManager.self)
@@ -521,10 +522,10 @@ extension AppDelegate {
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        let pushService : PushNotificationService = sharedServices.get()
+        let pushService: PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
-        pushService.setLaunchOptions(launchOptions)
+        pushService.setNotificationFrom(launchOptions: launchOptions)
     }
 
     private func registerKeyMakerNotification() {

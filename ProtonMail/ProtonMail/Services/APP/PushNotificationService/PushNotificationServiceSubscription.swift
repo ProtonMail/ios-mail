@@ -32,13 +32,6 @@ extension PushNotificationService {
     }
 
     class SubscriptionsPack: SubscriptionsPackProtocol {
-        init(_ subSaver: Saver<Set<SubscriptionWithSettings>>,
-             _ encSaver: Saver<Set<SubscriptionSettings>>,
-             _ outSaver: Saver<Set<SubscriptionSettings>>) {
-            self.subscriptionSaver = subSaver
-            self.encryptionKitSaver = encSaver
-            self.outdatedSaver = outSaver
-        }
         private let subscriptionSaver: Saver<Set<SubscriptionWithSettings>>
         internal let encryptionKitSaver: Saver<Set<SubscriptionSettings>>
         private let outdatedSaver: Saver<Set<SubscriptionSettings>>
@@ -48,50 +41,58 @@ extension PushNotificationService {
             set {
                 self.subscriptionSaver.set(newValue: newValue) // in keychain cuz should persist over reinstalls
 
-                let reportedSettings: [SubscriptionSettings] = newValue.compactMap { $0.state == .reported ? $0.settings : nil}
+                let reportedSettings: [SubscriptionSettings] = newValue
+                    .compactMap { $0.state == .reported ? $0.settings : nil }
                 self.encryptionKitSaver.set(newValue: Set(reportedSettings))
             }
         }
 
         private(set) var outdatedSettings: Set<SubscriptionSettings> {
-            get { return self.outdatedSaver.get() ?? [] } // cuz PushNotificationDecryptor can add values to this colletion while app is running
+            // cuz PushNotificationDecryptor can add values to this collection while app is running
+            get { return self.outdatedSaver.get() ?? [] }
             set { self.outdatedSaver.set(newValue: newValue) } // in keychain cuz should persist over reinstalls
         }
 
-        internal func removed(_ settingsToRemove: SubscriptionSettings) {
+        init(_ subSaver: Saver<Set<SubscriptionWithSettings>>,
+             _ encSaver: Saver<Set<SubscriptionSettings>>,
+             _ outSaver: Saver<Set<SubscriptionSettings>>) {
+            self.subscriptionSaver = subSaver
+            self.encryptionKitSaver = encSaver
+            self.outdatedSaver = outSaver
+        }
+
+        func removed(_ settingsToRemove: SubscriptionSettings) {
             self.outdatedSettings.remove(settingsToRemove)
         }
-        internal func outdate(_ settingsToMoveToOutdated: Set<SubscriptionSettings>) {
+
+        func outdate(_ settingsToMoveToOutdated: Set<SubscriptionSettings>) {
             let toOutdate = self.subscriptions.filter { settingsToMoveToOutdated.contains($0.settings) }
             self.subscriptions.subtract(toOutdate)
             self.outdatedSettings.formUnion(settingsToMoveToOutdated)
         }
-        internal func insert(_ subscriptionsToInsert: Set<SubscriptionWithSettings>) {
+
+        func insert(_ subscriptionsToInsert: Set<SubscriptionWithSettings>) {
             self.subscriptions.formUnion(subscriptionsToInsert)
         }
-        internal func update(_ settings: SubscriptionSettings, toState: SubscriptionState) {
+
+        func update(_ settings: SubscriptionSettings, toState: SubscriptionState) {
             let toReplace = self.subscriptions.filter { $0.settings == settings }
             var updated = self.subscriptions.subtracting(toReplace)
-            updated.insert(SubscriptionWithSettings.init(settings: settings, state: toState))
+
+            updated.insert(.init(settings: settings, state: toState))
             self.subscriptions = updated
         }
 
-        internal func settings() -> Set<SubscriptionSettings> {
+        func settings() -> Set<SubscriptionSettings> {
             return Set(self.subscriptions.map { $0.settings })
         }
 
-        internal func encryptionKit(forUID uid: String) -> EncryptionKit? {
+        func encryptionKit(forUID uid: String) -> EncryptionKit? {
             return self.encryptionKitSaver.get()?.first(where: { $0.UID == uid })?.encryptionKit
         }
     }
 
     class SubscriptionWithSettings: Hashable, Codable, CustomDebugStringConvertible {
-        static func == (lhs: PushNotificationService.SubscriptionWithSettings, rhs: PushNotificationService.SubscriptionWithSettings) -> Bool {
-            lhs.settings == rhs.settings
-        }
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(self.settings)
-        }
         var debugDescription: String {
             return "Settings: \(self.settings.token), \(self.settings.UID), \(self.settings.encryptionKit == nil ? "no encr kit" : "with encr ekit"), State: \(self.state.rawValue)"
         }
@@ -102,6 +103,17 @@ extension PushNotificationService {
         init(settings: SubscriptionSettings, state: SubscriptionState) {
             self.state = state
             self.settings = settings
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(self.settings)
+        }
+
+        static func == (
+            lhs: PushNotificationService.SubscriptionWithSettings,
+            rhs: PushNotificationService.SubscriptionWithSettings
+        ) -> Bool {
+            lhs.settings == rhs.settings
         }
     }
 }

@@ -936,6 +936,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     self?.refreshControl.endRefreshing()
                 }
                 self?.showNoResultLabelIfNeeded()
+                self?.updateLastUpdateTimeLabel()
             }
             self?.startAutoFetch(false)
         }

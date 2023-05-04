@@ -68,7 +68,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         let notificationInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo
         if let userInfo = notificationInfo {
             sharedServices.get(by: PushNotificationService.self)
-                            .setNotificationOptions(userInfo, fetchCompletionHandler: { /* nothing */ })
+                .setNotification(userInfo, fetchCompletionHandler: {})
         }
 
         if let shortcutItem = connectionOptions.shortcutItem,

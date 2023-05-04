@@ -108,7 +108,10 @@ private extension PushNavigationResolver {
             completion(link)
         case .failedToSend:
             let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uid)
-            link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
+            link.append(.init(
+                name: String(describing: MailboxViewController.self),
+                value: Message.Location.draft.rawValue
+            ))
             completion(link)
         case .none:
             logPushNotificationError(message: "Unrecognized local notification")
