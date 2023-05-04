@@ -101,7 +101,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                     return
                 }
                 guard sharedServices.get(by: UsersManager.self).hasUsers() else {
-                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_signin_first)
+                    self.showErrorAndQuit(errorMsg: L11n.Error.sign_in_message)
                     return
                 }
                 self.loginCheck()

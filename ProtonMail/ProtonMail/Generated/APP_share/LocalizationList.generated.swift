@@ -359,7 +359,6 @@ struct LocalizationList {
         "LocalizedString._share_alert": LocalString._share_alert,
         "LocalizedString._failed_to_determine_file_type": LocalString._failed_to_determine_file_type,
         "LocalizedString._unsupported_file": LocalString._unsupported_file,
-        "LocalizedString._please_use_protonmail_app_signin_first": LocalString._please_use_protonmail_app_signin_first,
         "LocalizedString._cant_copy_the_file": LocalString._cant_copy_the_file,
         "LocalizedString._no_photo_library_permission_content": LocalString._no_photo_library_permission_content,
         "LocalizedString._no_photo_library_permission_title": LocalString._no_photo_library_permission_title,
@@ -874,6 +873,7 @@ struct LocalizationList {
         "L11n.NextMsgAfterMove.rowFooterTitle": L11n.NextMsgAfterMove.rowFooterTitle,
         // L11n.Error
         "L11n.Error.cant_open_message": L11n.Error.cant_open_message,
+        "L11n.Error.sign_in_message": L11n.Error.sign_in_message,
         // L11n.ActionSheetActionTitle
         "L11n.ActionSheetActionTitle.reply_in_conversation": L11n.ActionSheetActionTitle.reply_in_conversation,
         "L11n.ActionSheetActionTitle.forward_in_conversation": L11n.ActionSheetActionTitle.forward_in_conversation,
