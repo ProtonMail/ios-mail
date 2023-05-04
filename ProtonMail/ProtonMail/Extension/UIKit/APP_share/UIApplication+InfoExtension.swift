@@ -24,6 +24,10 @@ import UIKit
 
 extension UIApplication {
 
+    static var isInTestingBuild: Bool {
+        return isDebugOrEnterprise || isTestflightBeta
+    }
+
     static var isDebugOrEnterprise: Bool {
         #if DEBUG_ENTERPRISE
         return true
