@@ -24,6 +24,7 @@ import Foundation
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_Payments
+import ProtonCore_TroubleShooting
 import ProtonCore_UIFoundations
 import Reachability
 import SideMenuSwift
@@ -47,7 +48,11 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
 
     private var reportSent: Bool = false
 
+    private let doh = BackendConfiguration.shared.doh
+    private let troubleShootingHelper: TroubleShootingHelper
+
     init(user: UserManager) {
+        troubleShootingHelper = TroubleShootingHelper(doh: doh)
         self.user = user
 
         super.init(nibName: nil, bundle: nil)
@@ -250,7 +255,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
-        guard BackendConfiguration.shared.doh.errorIndicatesDoHSolvableProblem(error: error) else {
+        guard doh.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
 
@@ -258,11 +263,9 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         let alertController = UIAlertController(title: LocalString._protonmail,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
-            let troubleShootView = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-            let nav = UINavigationController(rootViewController: troubleShootView)
-            self.present(nav, animated: true, completion: nil)
-        }))
+        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default) { _ in
+            self.troubleShootingHelper.showTroubleShooting(over: self)
+        })
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
 
         }))

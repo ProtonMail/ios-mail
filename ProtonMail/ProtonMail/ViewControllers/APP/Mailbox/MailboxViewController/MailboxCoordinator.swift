@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import class ProtonCore_DataModel.UserInfo
+import ProtonCore_TroubleShooting
 import ProtonMailAnalytics
 import SideMenuSwift
 
@@ -52,6 +53,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private let getApplicationState: () -> UIApplication.State
     let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     private var messageIDsOpenedFromNotification: [MessageID] = []
+
+    private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -379,9 +382,9 @@ extension MailboxCoordinator {
     }
 
     private func presentTroubleShootView() {
-        let view = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-        let nav = UINavigationController(rootViewController: view)
-        self.viewController?.present(nav, animated: true, completion: nil)
+        if let viewController = viewController {
+            troubleShootingHelper.showTroubleShooting(over: viewController)
+        }
     }
 
     func presentToolbarCustomizationView(

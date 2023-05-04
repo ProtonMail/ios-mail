@@ -22,19 +22,21 @@
 
 import XCTest
 import ProtonCore_Doh
+import ProtonCore_TestingToolkit
+
 @testable import ProtonMail
 
 final class NetworkSettingViewModelTests: XCTestCase {
 
     var sut: NetworkSettingViewModel!
     var dohLocalCacheStub: DohStub!
-    var dohSettingStub: DohStatusStub!
+    var dohSettingStub: DohInterfaceMock!
 
     override func setUp() {
         super.setUp()
 
         dohLocalCacheStub = DohStub()
-        dohSettingStub = DohStatusStub()
+        dohSettingStub = DohInterfaceMock()
         sut = NetworkSettingViewModel(userCache: dohLocalCacheStub, dohSetting: dohSettingStub)
     }
 
@@ -47,19 +49,19 @@ final class NetworkSettingViewModelTests: XCTestCase {
     }
 
     func testSections() throws {
+        dohSettingStub.statusStub.fixture = .on
         XCTAssertEqual(sut.output.sectionNumber, 1)
         let data = try XCTUnwrap(sut.output.cellData(for: IndexPath(row: 0, section: 0)))
         XCTAssertEqual(data.title, LocalString._allow_alternative_routing)
     }
 
     func testDohStatus() throws {
-        dohSettingStub.status = .off
+        dohSettingStub.statusStub.fixture = .off
         let data = try XCTUnwrap(sut.output.cellData(for: IndexPath(row: 0, section: 0)))
         XCTAssertEqual(data.status, false)
     }
 
     func testSetDohStatus() {
-        dohSettingStub.status = .off
         dohLocalCacheStub.isDohOn = false
 
         let ex = expectation(description: "Closure is called")
@@ -69,7 +71,8 @@ final class NetworkSettingViewModelTests: XCTestCase {
         }
         wait(for: [ex], timeout: 1)
         XCTAssertTrue(dohLocalCacheStub.isDohOn)
-        XCTAssertEqual(dohSettingStub.status, .on)
+        XCTAssertEqual(dohSettingStub.statusStub.setCallCounter, 1)
+        XCTAssertEqual(dohSettingStub.statusStub.setLastArguments?.value, .on)
     }
 
     func testNetworkSettingsSection() throws {

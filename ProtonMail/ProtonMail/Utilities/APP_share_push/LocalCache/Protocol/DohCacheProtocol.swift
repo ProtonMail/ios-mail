@@ -26,11 +26,3 @@ import ProtonCore_Doh
 protocol DohCacheProtocol {
     var isDohOn: Bool { get set }
 }
-
-protocol DohStatusProtocol {
-    var status: DoHStatus { get set }
-}
-
-extension DoH: DohStatusProtocol {
-
-}
