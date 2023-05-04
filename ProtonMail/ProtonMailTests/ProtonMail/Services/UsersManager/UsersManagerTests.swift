@@ -358,7 +358,7 @@ class UsersManagerTests: XCTestCase {
         XCTAssertTrue(sut.hasUsers())
         XCTAssertEqual(sut.users.count, 1)
         XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
-        XCTAssertEqual(sut.firstUser?.mailSettings.nextMessageOnMove, true)
+        XCTAssertEqual(sut.firstUser?.mailSettings.nextMessageOnMove.isEnabled, true)
     }
 
     func testTryRestore_withDifferentOrderOfUserData_shouldFollowTheOrderOfAuthCredentials() throws {
@@ -416,7 +416,7 @@ class UsersManagerTests: XCTestCase {
         let lockedUserInfo = try Locked<[UserInfo]>(clearValue: [userInfo], with: mainKey)
         customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
         if hasMailSetting {
-            let mailSetting = MailSettings(nextMessageOnMove: true)
+            let mailSetting = MailSettings(nextMessageOnMove: .explicitlyEnabled)
             let value: [String: MailSettings] = [userID: mailSetting]
             let lockedMailSetting = try Locked<[String: MailSettings]>(clearValue: value, with: mainKey)
             customCache.getShared().set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)

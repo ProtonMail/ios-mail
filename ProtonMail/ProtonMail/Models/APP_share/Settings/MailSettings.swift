@@ -18,9 +18,9 @@
 import ProtonCore_DataModel
 
 struct MailSettings: Parsable, Equatable {
-    let nextMessageOnMove: Bool
-    let hideSenderImages: Bool
-    let showMoved: ShowMoved
+    private(set) var nextMessageOnMove: NextMessageOnMove
+    private(set) var hideSenderImages: Bool
+    private(set) var showMoved: ShowMoved
 
     enum CodingKeys: String, CodingKey {
         case nextMessageOnMove = "NextMessageOnMove"
@@ -29,7 +29,7 @@ struct MailSettings: Parsable, Equatable {
     }
 
     init(
-        nextMessageOnMove: Bool = DefaultValue.nextMessageOnMove,
+        nextMessageOnMove: NextMessageOnMove = DefaultValue.nextMessageOnMove,
         hideSenderImages: Bool = DefaultValue.hideSenderImages,
         showMoved: ShowMoved = DefaultValue.showMoved
     ) {
@@ -40,8 +40,8 @@ struct MailSettings: Parsable, Equatable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        nextMessageOnMove = container
-            .decodeIfPresentBoolOrIntToBool(forKey: .nextMessageOnMove, defaultValue: DefaultValue.nextMessageOnMove)
+        let nextMessageOnMoveValue = try container.decodeIfPresent(Int.self, forKey: .nextMessageOnMove)
+        nextMessageOnMove = NextMessageOnMove(rawValue: nextMessageOnMoveValue)
         hideSenderImages = container.decodeIfPresentBoolOrIntToBool(
             forKey: .hideSenderImages,
             defaultValue: DefaultValue.hideSenderImages
@@ -50,8 +50,19 @@ struct MailSettings: Parsable, Equatable {
         showMoved = ShowMoved(rawValue: showMovedValue)
     }
 
+    mutating func update(key: CodingKeys, to newValue: Bool) {
+        switch key {
+        case .nextMessageOnMove:
+            nextMessageOnMove = newValue ? .explicitlyEnabled : .explicitlyDisabled
+        case .hideSenderImages:
+            hideSenderImages = newValue
+        case .showMoved:
+            assertionFailure("Not suitable for this key")
+        }
+    }
+
     struct DefaultValue {
-        static let nextMessageOnMove = false
+        static let nextMessageOnMove = NextMessageOnMove.implicitlyDisabled
         static let hideSenderImages = false
         static let showMoved = ShowMoved.doNotKeep
     }

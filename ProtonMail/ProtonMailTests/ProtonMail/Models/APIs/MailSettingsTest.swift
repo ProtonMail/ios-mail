@@ -18,30 +18,53 @@
 import XCTest
 @testable import ProtonMail
 
-class MailSettingsTests: XCTestCase {
+final class MailSettingsTest: XCTestCase {
+    var sut: MailSettings!
+
+    override func setUpWithError() throws {
+        sut = MailSettings()
+    }
+
+    override func tearDownWithError() throws {
+        sut = nil
+    }
+
+    func testUpdateKey_valueShouldUpdatedByGivenValue() throws {
+        // Default value is false
+        sut.update(key: .hideSenderImages, to: true)
+        XCTAssertTrue(sut.hideSenderImages)
+
+        // Default is implicitlyDisabled
+        sut.update(key: .nextMessageOnMove, to: true)
+        XCTAssertEqual(sut.nextMessageOnMove, .explicitlyEnabled)
+
+        sut.update(key: .nextMessageOnMove, to: false)
+        XCTAssertEqual(sut.nextMessageOnMove, .explicitlyDisabled)
+    }
+
     func testMailSettingsDecode_valueIsMoreThan0_flagIsTrue() throws {
         let value = Int.random(in: 1...Int.max)
         let json: [String: Any] = [
-            "NextMessageOnMove": value,
+            "NextMessageOnMove": 1,
             "HideSenderImages": value
         ]
         let data = try JSONSerialization.data(withJSONObject: json)
         let decoder = JSONDecoder()
         let result = try decoder.decode(MailSettings.self, from: data)
-        XCTAssertTrue(result.nextMessageOnMove)
+        XCTAssertEqual(result.nextMessageOnMove, .implicitlyDisabled)
         XCTAssertTrue(result.hideSenderImages)
     }
 
     func testMailSettingsDecode_valueIsSmallerThan1_flagIsFalse() throws {
         let value = Int.random(in: Int.min...0)
         let json: [String: Any] = [
-            "NextMessageOnMove": value,
+            "NextMessageOnMove": 0,
             "HideSenderImages": value
         ]
         let data = try JSONSerialization.data(withJSONObject: json)
         let decoder = JSONDecoder()
         let result = try decoder.decode(MailSettings.self, from: data)
-        XCTAssertFalse(result.nextMessageOnMove)
+        XCTAssertEqual(result.nextMessageOnMove, .explicitlyDisabled)
         XCTAssertFalse(result.hideSenderImages)
     }
 }
