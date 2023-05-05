@@ -568,17 +568,53 @@ class MailboxViewModelTests: XCTestCase {
 
     func testMarkConversationAsRead() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
+        testContext.performAndWait {
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "1",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 0,
+                            conversationID: "1",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "2",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 1,
+                            conversationID: "2",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            try? testContext.save()
+        }
+        createSut(labelID: "0", labelType: .folder, isCustom: false, labelName: nil)
+        sut.setupFetchController(nil)
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
+        sut.select(id: "1")
+        sut.select(id: "2")
         sut.mark(IDs: ids, unread: false) {
             XCTAssertTrue(self.conversationProviderMock.markAsReadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsReadStub.lastArguments
             XCTAssertNotNil(argument)
-            XCTAssertTrue(argument?.first.contains("1") ?? false)
+            XCTAssertFalse(argument?.first.contains("1") ?? false)
             XCTAssertTrue(argument?.first.contains("2") ?? false)
-            XCTAssertEqual(argument?.a2, "1245")
+            XCTAssertEqual(argument?.a2, "0")
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -589,17 +625,53 @@ class MailboxViewModelTests: XCTestCase {
 
     func testMarkConversationAsUnread() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
+        testContext.performAndWait {
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "1",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 0,
+                            conversationID: "1",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "2",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 1,
+                            conversationID: "2",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            try? testContext.save()
+        }
+        createSut(labelID: "0", labelType: .folder, isCustom: false, labelName: nil)
+        sut.setupFetchController(nil)
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
+        sut.select(id: "1")
+        sut.select(id: "2")
         sut.mark(IDs: ids, unread: true) {
             XCTAssertTrue(self.conversationProviderMock.markAsUnreadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsUnreadStub.lastArguments
             XCTAssertNotNil(argument)
             XCTAssertTrue(argument?.first.contains("1") ?? false)
-            XCTAssertTrue(argument?.first.contains("2") ?? false)
-            XCTAssertEqual(argument?.a2, "1245")
+            XCTAssertFalse(argument?.first.contains("2") ?? false)
+            XCTAssertEqual(argument?.a2, "0")
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -1134,6 +1206,63 @@ class MailboxViewModelTests: XCTestCase {
 
         let params = try XCTUnwrap(mockFetchMessageDetail.params)
         XCTAssertFalse(params.ignoreDownloaded)
+    }
+
+    func testMarkAsUnRead_selectOneReadAndOneUnreadMessage_onlyReadMessageIsMarkAsUnread() {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        let readMsgIds = String.randomString(10)
+        let unreadMsgIds = String.randomString(10)
+        testContext.performAndWait {
+            let msg = MessageEntity.make(
+                messageID: .init(readMsgIds),
+                userID: userManagerMock.userID,
+                unRead: false,
+                labels: [LabelEntity.make(labelID: .init("0"))]
+            )
+            _ = Message(from: msg, context: testContext)
+
+            let unreadMsg = MessageEntity.make(
+                messageID: .init(unreadMsgIds),
+                userID: userManagerMock.userID,
+                unRead: true,
+                labels: [LabelEntity.make(labelID: .init("0"))]
+            )
+            _ = Message(from: unreadMsg, context: testContext)
+
+            try? testContext.save()
+        }
+        createSut(labelID: Message.Location.inbox.rawValue,
+                  labelType: .folder,
+                  isCustom: false,
+                  labelName: nil)
+        sut.setupFetchController(nil)
+        sut.select(id: readMsgIds)
+        sut.select(id: unreadMsgIds)
+        let e = expectation(description: "Closure is called")
+
+
+        XCTAssertEqual(sut.selectedIDs.count, 2)
+        XCTAssertEqual(sut.selectedConversations.count, 0)
+        XCTAssertEqual(sut.selectedMessages.count, 2)
+        sut.mark(IDs: .init([readMsgIds, unreadMsgIds]), unread: true) {
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        // Check if the message is updated
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let msg = Message.messageForMessageID(
+                readMsgIds,
+                inManagedObjectContext: context
+            )
+            XCTAssertTrue(msg?.unRead ?? false)
+
+            let msg2 = Message.messageForMessageID(
+                unreadMsgIds,
+                inManagedObjectContext: context
+            )
+            XCTAssertTrue(msg2?.unRead ?? false)
+        }
     }
 }
 
