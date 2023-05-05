@@ -694,7 +694,7 @@ extension MainQueueHandler {
                     attachment.keyPacket = newKeyPack
                     attachment.keyChanged = true
                 }
-                let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message)
+                let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(messageObject: message).body
                 message.addressID = addressID
                 if message.nextAddressID == addressID {
                     message.nextAddressID = nil

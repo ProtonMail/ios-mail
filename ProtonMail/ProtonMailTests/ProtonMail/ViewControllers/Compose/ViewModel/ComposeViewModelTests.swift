@@ -40,15 +40,31 @@ final class ComposeViewModelTests: XCTestCase {
         fakeUserManager = mockUserManager()
         contactProvider = .init(coreDataContextProvider: mockCoreDataService)
 
-        let dependency = ComposeViewModel.Dependencies.init(
+        let copyMessage = MockCopyMessageUseCase()
+
+        copyMessage.executeStub.bodyIs { [unowned self] _, _ in
+            (message, nil)
+        }
+
+        let helperDependencies = ComposerMessageHelper.Dependencies(
+            messageDataService: fakeUserManager.messageService,
+            cacheService: fakeUserManager.cacheService,
+            contextProvider: mockCoreDataService,
+            copyMessage: copyMessage
+        )
+
+        let dependencies = ComposeViewModel.Dependencies(
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: .init(),
             fetchAttachment: .init(),
-            contactProvider: contactProvider)
+            contactProvider: contactProvider,
+            helperDependencies: helperDependencies
+        )
 
         self.message = testContext.performAndWait {
             Message(context: testContext)
         }
+
         sut = ComposeViewModel(
             msg: message,
             action: .openDraft,
@@ -56,7 +72,7 @@ final class ComposeViewModelTests: XCTestCase {
             user: fakeUserManager,
             coreDataContextProvider: mockCoreDataService,
             internetStatusProvider: .init(),
-            dependencies: dependency
+            dependencies: dependencies
         )
     }
 
@@ -70,7 +86,7 @@ final class ComposeViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testGetAttachment() throws {
+    func testGetAttachment() {
         let attachment1 = Attachment(context: testContext)
         attachment1.order = 0
         attachment1.message = message
@@ -82,7 +98,7 @@ final class ComposeViewModelTests: XCTestCase {
         attachmentSoftDeleted.isSoftDeleted = true
         attachmentSoftDeleted.message = message
 
-        let result = try XCTUnwrap(sut.getAttachments())
+        let result = sut.getAttachments()
         // TODO: fix this test and uncomment this line, or replace the test, it's not meaningful
         // XCTAssertNotEqual(result, [])
         for index in result.indices {
@@ -163,11 +179,11 @@ final class ComposeViewModelTests: XCTestCase {
 }
 
 extension ComposeViewModelTests {
-    private func mockUserManager(addressID: String = UUID().uuidString) -> UserManager {
+    private func mockUserManager() -> UserManager {
         let userInfo = UserInfo.getDefault()
         userInfo.defaultSignature = "Hi"
         let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
-        let address = Address(addressID: addressID,
+        let address = Address(addressID: UUID().uuidString,
                               domainID: "",
                               email: "",
                               send: .active,

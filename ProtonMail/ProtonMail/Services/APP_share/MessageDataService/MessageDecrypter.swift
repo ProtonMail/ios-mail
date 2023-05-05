@@ -29,16 +29,12 @@ protocol MessageDecrypterProtocol {
         signatureVerificationResult: SignatureVerificationResult
     )
 
-    func decrypt(message: Message) throws -> String
+    func decrypt(messageObject: Message) throws -> DecryptionOutput
 
     func decryptAndVerify(
         message: MessageEntity,
         verificationKeys: [ArmoredKey]
     ) throws -> DecryptionAndVerificationOutput
-
-    func copy(message: Message,
-              copyAttachments: Bool,
-              context: NSManagedObjectContext) -> Message
 }
 
 extension MessageDecrypterProtocol {
@@ -54,13 +50,9 @@ class MessageDecrypter: MessageDecrypterProtocol {
         self.userDataSource = userDataSource
     }
 
-    func decrypt(message: Message) throws -> String {
-        let messageEntity = MessageEntity(message)
-        let output = try decrypt(message: messageEntity)
-        if let tempAtts = output.attachments {
-            message.tempAtts = tempAtts
-        }
-        return output.body
+    func decrypt(messageObject: Message) throws -> DecryptionOutput {
+        let messageEntity = MessageEntity(messageObject)
+        return try decrypt(message: messageEntity)
     }
 
     func decrypt(message: MessageEntity) throws -> DecryptionOutput {
@@ -130,32 +122,6 @@ class MessageDecrypter: MessageDecrypterProtocol {
 
         let processedBody = postProcessNonMIME(decryptedBody: decryptedBody, isPlainText: message.isPlainText)
         return ((processedBody, nil), signatureVerificationResult)
-    }
-
-    func copy(message: Message,
-              copyAttachments: Bool,
-              context: NSManagedObjectContext) -> Message {
-        var newMessage: Message!
-
-        context.performAndWait {
-            newMessage = self.duplicate(message, context: context)
-
-            if let conversation = Conversation.conversationForConversationID(
-                message.conversationID,
-                inManagedObjectContext: context
-            ) {
-                let newCount = conversation.numMessages.intValue + 1
-                conversation.numMessages = NSNumber(value: newCount)
-            }
-
-            let body = try? self.decrypt(message: newMessage)
-            self.copy(attachments: message.attachments,
-                      to: newMessage,
-                      copyAttachment: copyAttachments,
-                      decryptedBody: body)
-            _ = context.saveUpstreamIfNeeded()
-        }
-        return newMessage
     }
 }
 
@@ -230,8 +196,39 @@ extension MessageDecrypter {
     }
 }
 
-// MARK: copy message
-extension MessageDecrypter {
+// TODO: move this to CopyMessage itself
+extension CopyMessage {
+    func copy(
+        message: Message,
+        copyAttachments: Bool,
+        context: NSManagedObjectContext
+    ) throws -> CopyOutput {
+        let newMessage = duplicate(message, context: context)
+
+            if let conversation = Conversation.conversationForConversationID(
+                message.conversationID,
+                inManagedObjectContext: context
+            ) {
+                let newCount = conversation.numMessages.intValue + 1
+                conversation.numMessages = NSNumber(value: newCount)
+            }
+
+            let decryptionOutput = try dependencies.messageDecrypter.decrypt(messageObject: newMessage)
+            let mimeAttachments = decryptionOutput.attachments
+
+             try copy(attachments: message.attachments,
+                      to: newMessage,
+                      copyAttachment: copyAttachments,
+                      decryptedBody: decryptionOutput.body,
+                      context: context)
+
+        if let error = context.saveUpstreamIfNeeded() {
+            throw error
+        }
+
+        return (newMessage, mimeAttachments)
+    }
+
     func getFirstAddressKey(for addressID: String?) -> Key? {
         guard let addressID = addressID,
         let userInfo = self.userDataSource?.userInfo,
@@ -241,7 +238,7 @@ extension MessageDecrypter {
         return keys.first
     }
 
-    func updateKeyPacketIfNeeded(attachment: Attachment, addressID: String?) {
+    private func updateKeyPacketIfNeeded(attachment: Attachment, addressID: String?) {
         guard let key = self.getFirstAddressKey(for: addressID),
               let userData = self.userDataSource else {
                   return
@@ -295,43 +292,51 @@ extension MessageDecrypter {
         return newMessage
     }
 
-    func copy(attachments: NSSet,
-              to newMessage: Message,
-              copyAttachment: Bool,
-              decryptedBody: String?) {
+    // TODO: this method should also accept MIME attachments
+    private func copy(
+        attachments: NSSet,
+        to newMessage: Message,
+        copyAttachment: Bool,
+        decryptedBody: String,
+        context: NSManagedObjectContext
+    ) throws {
         var newAttachmentCount: Int = 0
         let oldAttachments = attachments
             .allObjects
             .compactMap({ $0 as? Attachment })
         for attachment in oldAttachments {
-            guard attachment.inline() || copyAttachment,
-                  let context = newMessage.managedObjectContext else {
+            guard attachment.inline() || copyAttachment else {
                 continue
             }
-            if let body = decryptedBody, !copyAttachment {
+
+            if !copyAttachment {
                 if attachment.inline() == false {
                     // Normal attachment & shouldn't copy attachment
                     continue
                 }
                 // Inline attachment but the body doesn't contain the contentID
-                if let contentID = attachment.contentID(),
-                   !body.contains(check: contentID) {
+                if let contentID = attachment.contentID(), !decryptedBody.contains(check: contentID) {
                     continue
                 }
             }
-            let newAttachment = self.duplicate(oldAttachment: attachment,
-                                               newMessage: newMessage,
-                                               context: context)
-            if newAttachment.managedObjectContext?.saveUpstreamIfNeeded() == nil {
-                newAttachmentCount += 1
-            }
+
+            duplicate(oldAttachment: attachment, newMessage: newMessage, context: context)
+
+            newAttachmentCount += 1
         }
+
         newMessage.numAttachments = NSNumber(value: newAttachmentCount)
+
+        if let error = context.saveUpstreamIfNeeded() {
+            throw error
+        }
     }
 
-    func duplicate(oldAttachment: Attachment,
-                   newMessage: Message,
-                   context: NSManagedObjectContext) -> Attachment {
+    private func duplicate(
+        oldAttachment: Attachment,
+        newMessage: Message,
+        context: NSManagedObjectContext
+    ) {
         let attachment = Attachment(context: context)
         attachment.attachmentID = oldAttachment.attachmentID
         attachment.message = newMessage
@@ -348,6 +353,5 @@ extension MessageDecrypter {
 
         self.updateKeyPacketIfNeeded(attachment: attachment,
                                      addressID: newMessage.addressID)
-        return attachment
     }
 }

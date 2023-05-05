@@ -286,6 +286,10 @@ extension Message {
                                                    matchingValue: messageID) as? Message
     }
 
+    class func messageForMessageID(_ messageID: String, in context: NSManagedObjectContext) -> Message? {
+        messageForMessageID(messageID, inManagedObjectContext: context)
+    }
+
     class func messagesForConversationID(_ conversationID: String,
                                          inManagedObjectContext context: NSManagedObjectContext,
                                          shouldSort: Bool = false) -> [Message]? {

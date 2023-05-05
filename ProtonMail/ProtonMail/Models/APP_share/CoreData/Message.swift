@@ -136,8 +136,6 @@ final class Message: NSManagedObject {
 
     // @NSManaged var tag: String
 
-    var tempAtts: [MimeAttachment]?
-
     override func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilAttributesWithEmptyString(option: [.string, .transformable])

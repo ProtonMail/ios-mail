@@ -127,18 +127,32 @@ final class ComposerMessageHelper {
         }
     }
 
-    func copyAndCreateDraft(from message: Message, shouldCopyAttachment: Bool) {
-        var messageToAssign: Message?
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            messageToAssign = self.dependencies.messageDataService
-                .messageDecrypter.copy(
-                    message: message,
-                    copyAttachments: shouldCopyAttachment,
-                    context: context
-                )
-        }
+    func copyAndCreateDraft(from message: Message, action: ComposeMessageAction) throws {
+        let messageID = MessageID(message.messageID)
+
+        let (messageToAssign, mimeAttachments) = try dependencies.copyMessage.execute(
+            parameters: .init(copyAttachments: action == .forward, messageID: messageID)
+        )
+
         self.rawMessage = messageToAssign
         updateDraft()
+
+        updateMessageByMessageAction(action)
+
+        // TODO: MIME attachments should also be handled by CopyMessageUseCase instead of here
+        if action == ComposeMessageAction.forward {
+            /// add mime attachments if forward
+            if let mimeAtts = mimeAttachments {
+                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                for mimeAtt in mimeAtts {
+                    addMimeAttachments(
+                        attachment: mimeAtt,
+                        shouldStripMetaData: stripMetadata,
+                        completion: { _ in }
+                    )
+                }
+            }
+        }
     }
 
     func updateAddressID(addressID: String, completion: @escaping () -> Void) {
@@ -212,7 +226,7 @@ final class ComposerMessageHelper {
         var result = ""
         dependencies.contextProvider.performAndWaitOnRootSavingContext { _ in
             do {
-                result = try self.dependencies.messageDataService.messageDecrypter.decrypt(message: msg)
+                result = try self.dependencies.messageDataService.messageDecrypter.decrypt(messageObject: msg).body
             } catch {
                 result = msg.bodyToHtml()
             }
@@ -367,8 +381,9 @@ extension ComposerMessageHelper {
             attachment.toAttachment(context: context, stripMetadata: shouldStripMetaData).done { attachment in
                 if let attachment = attachment {
                     self.addAttachment(attachment.objectID)
+                    self.updateAttachmentView?()
+                    self.updateDraft()
                 }
-                self.updateDraft()
                 completion(attachment)
             }.cauterize()
         }
@@ -458,5 +473,6 @@ extension ComposerMessageHelper {
         let messageDataService: MessageDataServiceProtocol
         let cacheService: CacheServiceProtocol
         let contextProvider: CoreDataContextProviderProtocol
+        let copyMessage: CopyMessageUseCase
     }
 }

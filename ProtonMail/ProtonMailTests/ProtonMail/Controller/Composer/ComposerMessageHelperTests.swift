@@ -29,6 +29,8 @@ final class ComposerMessageHelperTests: XCTestCase {
     var testMessage: Message!
     var cacheServiceMock: MockCacheServiceProtocol!
 
+    private var copyMessage: MockCopyMessageUseCase!
+
     override func setUp() {
         super.setUp()
         contextProviderMock = MockCoreDataContextProvider()
@@ -36,16 +38,23 @@ final class ComposerMessageHelperTests: XCTestCase {
         messageDataServiceMock = MockMessageDataService()
         testMessage = createTestMessage()
         cacheServiceMock = .init()
+        copyMessage = .init()
         sut = ComposerMessageHelper(
             dependencies: .init(messageDataService: messageDataServiceMock,
                                 cacheService: cacheServiceMock,
-                                contextProvider: contextProviderMock),
+                                contextProvider: contextProviderMock,
+                                copyMessage: copyMessage),
             user: fakeUser)
+
+        copyMessage.executeStub.bodyIs { [unowned self] _, _ in
+            (self.testMessage, nil)
+        }
     }
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         sut = nil
+        copyMessage = nil
         messageDataServiceMock = nil
         fakeUser = nil
         contextProviderMock = nil
@@ -185,16 +194,15 @@ final class ComposerMessageHelperTests: XCTestCase {
 
     func testCopyAndCreateDraft() throws {
         messageDataServiceMock.mockDecrypter = .init(userDataSource: fakeUser)
-        messageDataServiceMock.mockDecrypter.callCopy.bodyIs { _, _, _, _ in
-            self.testMessage
-        }
         let shouldCopyAttachment = Bool.random()
-        sut.copyAndCreateDraft(from: testMessage, shouldCopyAttachment: shouldCopyAttachment)
+        let action: ComposeMessageAction = shouldCopyAttachment ? .forward : .reply
+        try sut.copyAndCreateDraft(from: testMessage, action: action)
 
-        XCTAssertTrue(messageDataServiceMock.mockDecrypter.callCopy.wasCalledExactlyOnce)
-        let arguments = try XCTUnwrap(messageDataServiceMock.mockDecrypter.callCopy.lastArguments)
-        XCTAssertEqual(arguments.a1, testMessage)
-        XCTAssertEqual(arguments.a2, shouldCopyAttachment)
+        XCTAssertEqual(copyMessage.executeStub.callCounter, 1)
+        let arguments = try XCTUnwrap(copyMessage.executeStub.lastArguments)
+        let copyMessageParameters = arguments.value
+        XCTAssertEqual(copyMessageParameters.messageID.rawValue, testMessage.messageID)
+        XCTAssertEqual(copyMessageParameters.copyAttachments, shouldCopyAttachment)
     }
 
     func testUpdateAddressID() throws {
@@ -293,7 +301,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         messageDataServiceMock.mockDecrypter = .init(userDataSource: fakeUser)
         let decryptedBody = String.randomString(40)
         messageDataServiceMock.mockDecrypter.callDecrypt.bodyIs { _, _ in
-            decryptedBody
+            (decryptedBody, nil)
         }
 
         let result = sut.decryptBody()

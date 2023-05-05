@@ -94,22 +94,29 @@ class ComposeViewModel: NSObject {
         self.messageService = msgService
         self.coreDataContextProvider = coreDataContextProvider
         self.isEditingScheduleMsg = false
-        self.composerMessageHelper = ComposerMessageHelper(
-            dependencies: .init(
-                messageDataService: messageService,
-                cacheService: user.cacheService,
-                contextProvider: coreDataContextProvider
-            ),
-            user: user
-        )
+
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
         self.dependencies = dependencies ?? Dependencies(
             fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
             internetStatusProvider: internetStatusProvider,
             fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            contactProvider: user.contactService
+            contactProvider: user.contactService,
+            helperDependencies: .init(
+                messageDataService: user.messageService,
+                cacheService: user.cacheService,
+                contextProvider: coreDataContextProvider,
+                copyMessage: CopyMessage(
+                    dependencies: .init(
+                        contextProvider: coreDataContextProvider,
+                        messageDecrypter: user.messageService.messageDecrypter
+                    ),
+                    userDataSource: user
+                )
+            )
         )
+
+        composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
         self.subject = subject
         self.body = body
@@ -158,23 +165,27 @@ class ComposeViewModel: NSObject {
         self.coreDataContextProvider = coreDataContextProvider
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
-        self.composerMessageHelper = ComposerMessageHelper(
-            dependencies: .init(
-                messageDataService: messageService,
-                cacheService: user.cacheService,
-                contextProvider: coreDataContextProvider
-            ),
-            user: user
-        )
 
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
         self.dependencies = dependencies ?? Dependencies(
-            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
+            helperDependencies: .init(
+                messageDataService: user.messageService,
+                cacheService: user.cacheService,
+                contextProvider: coreDataContextProvider,
+                copyMessage: CopyMessage(
+                    dependencies: .init(
+                        contextProvider: coreDataContextProvider,
+                        messageDecrypter: user.messageService.messageDecrypter
+                    ),
+                    userDataSource: user
+                )
+            ),
             internetStatusProvider: internetStatusProvider,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            contactProvider: user.contactService
+            user: user
         )
+
+        composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
         super.init()
 
@@ -195,22 +206,10 @@ class ComposeViewModel: NSObject {
                 fatalError("This should not happened.")
             }
 
-            composerMessageHelper.copyAndCreateDraft(from: msg,
-                                                     shouldCopyAttachment: action == ComposeMessageAction.forward)
-            composerMessageHelper.updateMessageByMessageAction(action)
-
-            if action == ComposeMessageAction.forward {
-                /// add mime attachments if forward
-                if let mimeAtts = msg.tempAtts {
-                    let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    for mimeAtt in mimeAtts {
-                        composerMessageHelper.addMimeAttachments(
-                            attachment: mimeAtt,
-                            shouldStripMetaData: stripMetadata,
-                            completion: { _ in }
-                        )
-                    }
-                }
+            do {
+                try composerMessageHelper.copyAndCreateDraft(from: msg, action: action)
+            } catch {
+                PMAssertionFailure(error)
             }
         }
 
@@ -222,7 +221,7 @@ class ComposeViewModel: NSObject {
         self.updateContacts(fromSent)
     }
 
-    func getAttachments() -> [AttachmentEntity]? {
+    func getAttachments() -> [AttachmentEntity] {
         return composerMessageHelper.attachments
             .filter { !$0.isSoftDeleted }
             .sorted(by: { $0.order < $1.order })
@@ -968,7 +967,7 @@ extension ComposeViewModel {
     }
 
     func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
-        guard let attachments = getAttachments() else { return }
+        let attachments = getAttachments()
         let inlineAttachments = attachments
             .filter({ attachment in
                 guard let contentId = attachment.contentId else { return false }
@@ -1071,18 +1070,7 @@ extension ComposeViewModel {
         let internetStatusProvider: InternetConnectionStatusProvider
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
-
-        init(
-            fetchAndVerifyContacts: FetchAndVerifyContactsUseCase,
-            internetStatusProvider: InternetConnectionStatusProvider,
-            fetchAttachment: FetchAttachmentUseCase,
-            contactProvider: ContactProviderProtocol
-        ) {
-            self.fetchAndVerifyContacts = fetchAndVerifyContacts
-            self.internetStatusProvider = internetStatusProvider
-            self.fetchAttachment = fetchAttachment
-            self.contactProvider = contactProvider
-        }
+        let helperDependencies: ComposerMessageHelper.Dependencies
     }
 
     struct EncodableRecipient: Encodable {
@@ -1105,6 +1093,22 @@ extension ComposeViewModel {
         let address: String
         let group: String?
         let name: String?
+    }
+}
+
+extension ComposeViewModel.Dependencies {
+    init(
+        helperDependencies: ComposerMessageHelper.Dependencies,
+        internetStatusProvider: InternetConnectionStatusProvider,
+        user: UserManager
+    ) {
+        self.init(
+            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
+            internetStatusProvider: internetStatusProvider,
+            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
+            contactProvider: user.contactService,
+            helperDependencies: helperDependencies
+        )
     }
 }
 

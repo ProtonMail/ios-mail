@@ -296,6 +296,14 @@ class MockConversationStateProviderProtocol: ConversationStateProviderProtocol {
 
 }
 
+class MockCopyMessageUseCase: CopyMessageUseCase {
+    @ThrowingFuncStub(MockCopyMessageUseCase.execute, initialReturn: .crash) var executeStub
+    func execute(parameters: CopyMessage.Parameters) throws -> CopyOutput {
+        try executeStub(parameters)
+    }
+
+}
+
 class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
     @FuncStub(MockEncryptedSearchUserCache.isEncryptedSearchOn, initialReturn: Bool()) var isEncryptedSearchOnStub
     func isEncryptedSearchOn(of userID: UserID) -> Bool {

@@ -78,7 +78,6 @@ final class ESMessage: Codable {
     var isStarred: Bool? = false
     // swiftlint:disable discouraged_optional_boolean
     var isDetailsDownloaded: Bool? = false
-    // var tempAtts: [MimeAttachment]? = nil
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
