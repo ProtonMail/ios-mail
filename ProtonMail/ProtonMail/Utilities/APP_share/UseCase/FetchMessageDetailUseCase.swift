@@ -46,7 +46,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 fetchMessageDetail(params: params, callback: callback)
             }
         } else {
-            handleDownloaded(entity: params.message, callback: callback)
+            callback(.success(params.message))
         }
     }
 
@@ -132,7 +132,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         }
 
         let messageEntity = try result.get()
-        return try updatingUnread(message: messageEntity)
+        return messageEntity
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {
@@ -167,55 +167,6 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             .filter { !$0.inline() }
             .count
         message.numAttachments = NSNumber(value: attachmentCount)
-    }
-
-    private func updatingUnread(message: MessageEntity) throws -> MessageEntity {
-        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
-
-        guard message.unRead else {
-            return message
-        }
-
-        if let labelID = message.firstValidFolder() {
-            _ = dependencies.messageDataAction.mark(
-                messageObjectIDs: [message.objectID.rawValue],
-                labelID: labelID,
-                unRead: false
-            )
-        }
-
-        dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
-
-        var result: Result<MessageEntity, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
-                guard let messageObject = try context.existingObject(with: message.objectID.rawValue) as? Message else {
-                    throw Errors.coreDataObjectNotExist
-                }
-
-                messageObject.unRead = false
-
-                result = .success(MessageEntity(messageObject))
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-            } catch {
-                result = .failure(error)
-            }
-        }
-
-        return try result.get()
-    }
-
-    private func handleDownloaded(entity: MessageEntity, callback: @escaping Callback) {
-        do {
-            let updated = try updatingUnread(message: entity)
-            callback(.success(updated))
-        } catch {
-            callback(.failure(error))
-        }
     }
 }
 

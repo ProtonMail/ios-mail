@@ -173,6 +173,65 @@ final class EventsServiceTests: XCTestCase {
             XCTAssertEqual(matchingStoredObject.location, "\(IncomingDefaultsAPI.Location.spam.rawValue)")
         }
     }
+
+    func testFetchEvents_whenNewMessageConversationInsert_itSucceedsSavingToCacheAndUpdateUnreadCount() throws {
+        let msgID = String.randomString(20)
+        let conversationID = String.randomString(20)
+        mockContextProvider.enqueueOnRootSavingContext { context in
+            let msgCount = LabelUpdate.newLabelUpdate(
+                by: "0",
+                userID: self.mockUserManager.userID.rawValue,
+                inManagedObjectContext: context
+            )
+            msgCount.unread = 0
+            msgCount.total = 0
+            let conversationCount = ConversationCount.newConversationCount(
+                by: "0",
+                userID: self.mockUserManager.userID.rawValue,
+                inManagedObjectContext: context
+            )
+            conversationCount.unread = 0
+            conversationCount.total = 0
+            _ = context.saveUpstreamIfNeeded()
+        }
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            if path.contains("/events") {
+                let result = self.newMessageEventJson(msgID: msgID, conversationID: conversationID).toDictionary()!
+                completion(nil, .success(result))
+            }
+        }
+        let expectation = expectation(description: "")
+        sut.start() // needed to set the correct sut status
+
+        sut.fetchEvents(byLabel: LabelID(rawValue: "0"), notificationMessageID: nil) { _ in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout)
+        mockContextProvider.read { context in
+            let msgCount = LabelUpdate.lastUpdate(
+                by: "0",
+                userID: mockUserManager.userID.rawValue,
+                inManagedObjectContext: context
+            )
+            XCTAssertEqual(msgCount?.unread, 1)
+            XCTAssertEqual(msgCount?.total, 1)
+
+            let conversationCount = ConversationCount.lastContextUpdate(
+                by: "0",
+                userID: mockUserManager.userID.rawValue,
+                inManagedObjectContext: context
+            )
+            XCTAssertEqual(conversationCount?.unread, 1)
+            XCTAssertEqual(conversationCount?.total, 1)
+
+            let message = Message.messageForMessageID(msgID, inManagedObjectContext: context)
+            XCTAssertEqual(message?.messageID, msgID)
+
+            let conversation = Conversation.conversationForConversationID(conversationID, inManagedObjectContext: context)
+            XCTAssertEqual(conversation?.conversationID, conversationID)
+        }
+    }
 }
 
 extension EventsServiceTests {
@@ -253,6 +312,135 @@ extension EventsServiceTests {
           ],
           "Pushes": [],
           "Notices": []
+        }
+        """
+    }
+
+    private func newMessageEventJson(msgID: String, conversationID: String) -> String {
+        return """
+        {
+        "Code": 1000,
+        "EventID": "18b6FFRIALmOueW5PG0ovcXEk39TspB1hRh7cHRbPFA0sK6wYW412Zx5Qtpqp5WKpuMRdCoU0sC_w12lxcg==",
+        "Refresh": 0,
+        "More": 0,
+        "Messages": [
+        {
+        "ID": "\(msgID)",
+        "Action": 1,
+        "Message": {
+        "ID": "\(msgID)",
+        "Order": 403162130546,
+        "ConversationID": "\(conversationID)",
+        "Subject": "Test",
+        "Unread": 1,
+        "Sender": {
+          "Name": "name",
+          "Address": "xxx@pm.me",
+          "IsProton": 1,
+          "DisplaySenderImage": 0,
+          "BimiSelector": null,
+          "IsSimpleLogin": 0
+        },
+        "SenderAddress": "xxx@pm.me",
+        "SenderName": "name",
+        "Flags": 8388609,
+        "Type": 0,
+        "IsEncrypted": 2,
+        "IsReplied": 0,
+        "IsRepliedAll": 0,
+        "IsForwarded": 0,
+        "IsProton": 0,
+        "DisplaySenderImage": 0,
+        "BimiSelector": null,
+        "ToList": [
+          {
+            "Name": "x",
+            "Address": "x@pm.me",
+            "Group": "",
+            "IsProton": 0
+          }
+        ],
+        "CCList": [],
+        "BCCList": [],
+        "Time": 1681267870,
+        "Size": 54679,
+        "NumAttachments": 2,
+        "ExpirationTime": 0,
+        "AddressID": "bHFOgqlbPihTyo5_AQD1RXFn9Fdzg1gD13QlkDwMw1dzGWiyiM_rvkIMkZQJbHfzCX7n5j0w==",
+        "ExternalID": "fa43-b1b0-e80f-e8afa9e55936@mail.com",
+        "LabelIDs": [
+          "0",
+          "5"
+        ],
+        "AttachmentInfo": {
+          "image/png": {
+            "attachment": 2
+          }
+        }
+        }
+        }
+        ],
+        "Conversations": [
+        {
+        "ID": "\(conversationID)",
+        "Action": 1,
+        "Conversation": {
+        "ID": "\(conversationID)",
+        "Order": 402117746315,
+        "Subject": "Dark Mode Email Test 931550",
+        "Senders": [
+          {
+            "Name": "name",
+            "Address": "xxx@pm.me",
+            "IsProton": 1,
+            "DisplaySenderImage": 0,
+            "BimiSelector": null,
+            "IsSimpleLogin": 0
+          }
+        ],
+        "Recipients": [
+          {
+            "Name": "x",
+            "Address": "x@pm.me",
+            "IsProton": 0
+          }
+        ],
+        "NumMessages": 1,
+        "NumUnread": 1,
+        "NumAttachments": 2,
+        "ExpirationTime": 0,
+        "Size": 54679,
+        "IsProton": 0,
+        "DisplaySenderImage": 0,
+        "BimiSelector": null,
+        "Labels": [
+          {
+            "ContextNumMessages": 1,
+            "ContextNumUnread": 1,
+            "ContextTime": 1681267870,
+            "ContextSize": 54679,
+            "ContextNumAttachments": 2,
+            "ID": "0"
+          },
+          {
+            "ContextNumMessages": 1,
+            "ContextNumUnread": 1,
+            "ContextTime": 1681267870,
+            "ContextSize": 54679,
+            "ContextNumAttachments": 2,
+            "ID": "5"
+          }
+        ],
+        "AttachmentInfo": {
+          "image/png": {
+            "attachment": 2
+          }
+        }
+        }
+        }
+        ],
+        "UsedSpace": 334091655,
+        "Notices": []
         }
         """
     }

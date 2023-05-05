@@ -860,17 +860,30 @@ extension MailboxViewModel {
         }
     }
 
-    func mark(IDs messageIDs: Set<String>,
-              unread: Bool,
-              completion: (() -> Void)? = nil) {
+    func mark(
+        IDs messageIDs: Set<String>,
+        unread: Bool,
+        completion: (() -> Void)? = nil
+    ) {
         switch self.locationViewMode {
         case .singleMessage:
-            let messages = selectedMessages.filter { messageIDs.contains($0.messageID.rawValue) }
-            messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
+            let filteredMessageIDs = selectedMessages.filter { messageIDs.contains($0.messageID.rawValue) && $0.unRead != unread
+            }.map(\.objectID.rawValue)
+            messageService.mark(
+                messageObjectIDs: filteredMessageIDs,
+                labelID: labelID,
+                unRead: unread
+            )
             completion?()
         case .conversation:
+            let filteredConversationIDs = selectedConversations.filter {
+                messageIDs.contains($0.conversationID.rawValue) && $0.isUnread(labelID: labelID) != unread
+            }.map(\.conversationID)
             if unread {
-                conversationProvider.markAsUnread(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), labelID: self.labelID) { [weak self] result in
+                conversationProvider.markAsUnread(
+                    conversationIDs: filteredConversationIDs,
+                    labelID: labelID
+                ) { [weak self] result in
                     defer {
                         completion?()
                     }
@@ -880,7 +893,10 @@ extension MailboxViewModel {
                     }
                 }
             } else {
-                conversationProvider.markAsRead(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), labelID: self.labelId) { [weak self] result in
+                conversationProvider.markAsRead(
+                    conversationIDs: filteredConversationIDs,
+                    labelID: labelId
+                ) { [weak self] result in
                     defer {
                         completion?()
                     }

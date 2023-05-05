@@ -394,6 +394,20 @@ extension EventsService {
                                         messagesNoCache.append(MessageID(messageid))
                                     }
                                 }
+
+                                if msg.Action == IncrementalUpdateType.insert {
+                                    messageObject.labels.allObjects
+                                        .compactMap { $0 as? Label }
+                                        .forEach { label in
+                                            let msgCount = LabelUpdate.lastUpdate(
+                                                by: label.labelID,
+                                                userID: self.userManager.userID.rawValue,
+                                                inManagedObjectContext: context
+                                            )
+                                            msgCount?.unread += 1
+                                            msgCount?.total += 1
+                                        }
+                                }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
@@ -473,6 +487,14 @@ extension EventsService {
                                             label.order = conversationObject.order
                                             label.userID = self.userManager.userID.rawValue
                                             label.conversationID = conversationObject.conversationID
+
+                                            let conversationCount = ConversationCount.lastContextUpdate(
+                                                by: label.labelID,
+                                                userID: self.userManager.userID.rawValue,
+                                                inManagedObjectContext: context
+                                            )
+                                            conversationCount?.unread += 1
+                                            conversationCount?.total += 1
                                         }
                                     }
                                 }
