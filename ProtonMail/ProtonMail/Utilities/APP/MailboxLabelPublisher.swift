@@ -44,7 +44,7 @@ final class MailboxLabelPublisher {
         ]
         dataPublisher = .init(
             entityName: Label.Attributes.entityName,
-            query: predicate,
+            predicate: predicate,
             sortDescriptors: sortDescriptors,
             contextProvider: contextProvider,
             onContentChanged: onContentChanged

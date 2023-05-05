@@ -113,6 +113,7 @@ class SingleMessageComponentsFactory {
         user: UserManager,
         senderImageStatusProvider: SenderImageStatusProvider
     ) -> SingleMessageContentViewModel.Dependencies {
+        let contextProvider = sharedServices.get(by: CoreDataService.self)
         let incomingDefaultService = user.incomingDefaultService
         let queueManager = sharedServices.get(by: QueueManager.self)
 
@@ -128,7 +129,7 @@ class SingleMessageComponentsFactory {
             dependencies: .init(
                 queueManager: queueManager,
                 apiService: user.apiService,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
+                contextProvider: contextProvider,
                 messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )

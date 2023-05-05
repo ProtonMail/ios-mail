@@ -19,21 +19,19 @@ import CoreData
 
 class DataPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControllerDelegate {
     private let fetchedResultsController: NSFetchedResultsController<T>
-    private let query: NSPredicate
 
     var onContentChanged: (([T]) -> Void)?
 
     init(
         entityName: String,
-        query: NSPredicate,
+        predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
         contextProvider: CoreDataContextProviderProtocol,
         onContentChanged: (([T]) -> Void)?
     ) {
-        self.query = query
         self.onContentChanged = onContentChanged
         let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
-        fetchRequest.predicate = query
+        fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = sortDescriptors
         self.fetchedResultsController = NSFetchedResultsController(
             fetchRequest: fetchRequest,

@@ -17,7 +17,7 @@
 
 import LifetimeTracker
 
-final class BlockedSendersViewModel: NSObject {
+final class BlockedSendersViewModel {
     private  let dependencies: Dependencies
 
     private var cellModels: [BlockedSenderCellModel] {
@@ -29,7 +29,7 @@ final class BlockedSendersViewModel: NSObject {
         }
     }
 
-    private(set) var state: State = .fetchInProgress {
+    private var state: State = .fetchInProgress {
         didSet {
             uiDelegate?.refreshView(state: state)
         }
@@ -39,8 +39,6 @@ final class BlockedSendersViewModel: NSObject {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-
-        super.init()
 
         trackLifetime()
     }
