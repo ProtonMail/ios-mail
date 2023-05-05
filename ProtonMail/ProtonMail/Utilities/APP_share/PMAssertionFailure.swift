@@ -37,10 +37,9 @@ func PMAssertionFailure(
 
 func PMAssertionFailure(
     _ error: Error,
-    userInfo: [AnyHashable: Any] = [:],
     caller: StaticString = #function,
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    PMAssertionFailure("\(error)", userInfo: userInfo, caller: caller, file: file, line: line)
+    PMAssertionFailure("\(error)", caller: caller, file: file, line: line)
 }

@@ -31,13 +31,8 @@ final class MessageDecrypterMock: MessageDecrypter {
         return try super.decryptAndVerify(message: message, verificationKeys: verificationKeys)
     }
 
-    @FuncStub(MessageDecrypterMock.copy, initialReturn: Message()) var callCopy
-    override func copy(message: Message, copyAttachments: Bool, context: NSManagedObjectContext) -> Message {
-        return callCopy(message, copyAttachments, context)
-    }
-
-    @ThrowingFuncStub(MessageDecrypterMock.decrypt, initialReturn: "") var callDecrypt
-    override func decrypt(message: Message) throws -> String {
-        return try callDecrypt(message)
+    @ThrowingFuncStub(MessageDecrypterMock.decrypt(messageObject:), initialReturn: ("", nil)) var callDecrypt
+    override func decrypt(messageObject: Message) throws -> DecryptionOutput {
+        return try callDecrypt(messageObject)
     }
 }

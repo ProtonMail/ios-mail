@@ -522,17 +522,17 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     }
 
     private func checkEmbedImageEdit(_ original: String, edited: String) {
-        if let atts = viewModel.getAttachments() {
-            for att in atts {
-                if let contentID = att.getContentID(),
-                   !contentID.isEmpty && att.isInline {
-                    if original.contains(contentID) {
-                        if !edited.contains(contentID) {
-                            self.viewModel.deleteAttachment(att).cauterize()
-                        }
-                    }
-                }
+        let atts = viewModel.getAttachments()
+        for att in atts {
+            guard
+                let contentID = att.getContentID(),
+                !contentID.isEmpty && att.isInline,
+                original.contains(contentID),
+                !edited.contains(contentID) else {
+                continue
             }
+
+            viewModel.deleteAttachment(att).cauterize()
         }
     }
 
@@ -555,7 +555,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     func removeInlineAttachment(_ sid: String, completion: (() -> Void)?) {
         // find attachment to remove
-        guard let attachment = self.viewModel.getAttachments()?
+        guard let attachment = self.viewModel.getAttachments()
             .first(where: { $0.name.hasPrefix(sid) }) else {
             completion?()
             return

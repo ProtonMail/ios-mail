@@ -114,10 +114,10 @@ extension MessageDecrypterTests {
         let body = MessageDecrypterTestData.decryptedHTMLMimeBody()
         let message = try self.prepareEncryptedMessage(body: body, mimeType: .multipartMixed)
 
-        let processedBody = try self.decrypter.decrypt(message: message)
+        let (processedBody, attachments) = try self.decrypter.decrypt(message: message)
         XCTAssert(processedBody.contains(check: MessageDecrypterTestData.imageAttachmentHTMLElement()))
 
-        let mimeAttachments = try XCTUnwrap(message.tempAtts)
+        let mimeAttachments = try XCTUnwrap(attachments)
         try self.verify(mimeAttachments: mimeAttachments)
     }
 
@@ -125,11 +125,11 @@ extension MessageDecrypterTests {
         let body = MessageDecrypterTestData.decryptedPlainTextMimeBody()
         let message = try self.prepareEncryptedMessage(body: body, mimeType: .multipartMixed)
 
-        let processedBody = try self.decrypter.decrypt(message: message)
+        let (processedBody, attachments) = try self.decrypter.decrypt(message: message)
         XCTAssertNotEqual(body, processedBody)
         XCTAssertEqual(processedBody, MessageDecrypterTestData.processedMIMEPlainTextBody())
 
-        let mimeAttachments = try XCTUnwrap(message.tempAtts)
+        let mimeAttachments = try XCTUnwrap(attachments)
         try self.verify(mimeAttachments: mimeAttachments)
     }
 
@@ -137,23 +137,23 @@ extension MessageDecrypterTests {
         let body = "A & B ' <>"
         let message = try prepareEncryptedMessage(body: body, mimeType: .textPlain)
 
-        let processedBody = try self.decrypter.decrypt(message: message)
+        let (processedBody, attachments) = try self.decrypter.decrypt(message: message)
 
-        XCTAssertNil(message.tempAtts)
         XCTAssertEqual(processedBody, "A &amp; B &#039; &lt;&gt;")
+        XCTAssertNil(attachments)
     }
 
     func testDecrypt_textHTML() throws {
         let body = "<html><head></head><body> A & B ' <>"
         let message = try prepareEncryptedMessage(body: body, mimeType: .textHTML)
 
-        let processedBody = try self.decrypter.decrypt(message: message)
+        let (processedBody, attachments) = try self.decrypter.decrypt(message: message)
 
-        XCTAssertNil(message.tempAtts)
         XCTAssertEqual(processedBody, body)
+        XCTAssertNil(attachments)
     }
 
-    private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> Message {
+    private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> MessageEntity {
         let encryptedBody = try Encryptor.encrypt(
             publicKey: mockUserData.addressKeys.toArmoredPrivateKeys[0],
             cleartext: body
@@ -162,23 +162,47 @@ extension MessageDecrypterTests {
         let message = Message(context: testContext)
         message.body = encryptedBody
         message.mimeType = mimeType.rawValue
-        return message
+        return MessageEntity(message)
     }
 }
 
-// MARK: copy message
+final class CopyMessageTests: XCTestCase {
+    private var sut: CopyMessage!
+    private var mockUserData: UserManager!
+    private var testContext: NSManagedObjectContext!
 
-extension MessageDecrypterTests {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
+        self.testContext = MockCoreDataStore.testPersistentContainer.viewContext
+        self.mockUserData = UserManager(api: APIServiceMock(), role: .member)
+        sut = CopyMessage(
+            dependencies: .init(
+                contextProvider: MockCoreDataContextProvider(),
+                messageDecrypter: mockUserData.messageService.messageDecrypter
+            ),
+            userDataSource: mockUserData
+        )
+    }
+
+    override func tearDownWithError() throws {
+        self.sut = nil
+        self.mockUserData = nil
+        self.testContext = nil
+
+        try super.tearDownWithError()
+    }
+
     func testGetFirstAddressKey() {
         let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1)
         let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2)
         let address = Address(addressID: "aaa", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 2, keys: [key1, key2])
 
         self.mockUserData.userInfo.userAddresses = [address]
-        var key = self.decrypter.getFirstAddressKey(for: nil)
+        var key = sut.getFirstAddressKey(for: nil)
         XCTAssertNil(key)
 
-        key = self.decrypter.getFirstAddressKey(for: "aaa")
+        key = sut.getFirstAddressKey(for: "aaa")
         XCTAssertEqual(key?.keyID, "key1")
     }
 
@@ -188,7 +212,7 @@ extension MessageDecrypterTests {
             XCTFail("The fake data initialize failed")
             return
         }
-        let duplicated = self.decrypter.duplicate(fakeMsg, context: self.testContext)
+        let duplicated = sut.duplicate(fakeMsg, context: self.testContext)
         XCTAssertEqual(fakeMsg.toList, duplicated.toList)
         XCTAssertEqual(fakeMsg.title, duplicated.title)
         XCTAssertEqual(fakeMsg.body, duplicated.body)
