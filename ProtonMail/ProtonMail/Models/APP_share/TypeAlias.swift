@@ -19,5 +19,5 @@
 
 import Foundation
 
-@available(iOS, deprecated:13.0, message: "When minimum iOS version is 13+, consider using UnitInformationStorage")
+@available(iOS, deprecated: 13.0, message: "When minimum iOS version is 13+, consider using UnitInformationStorage")
 typealias ByteCount = Int

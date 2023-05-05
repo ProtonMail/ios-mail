@@ -57,19 +57,16 @@ class WindowsCoordinator {
 
     var currentWindow: UIWindow? {
         didSet {
-            if #available(iOS 13, *) {
-                switch darkModeCache.darkModeStatus {
+            switch darkModeCache.darkModeStatus {
 
-                case .followSystem:
-                    self.currentWindow?.overrideUserInterfaceStyle = .unspecified
-                case .forceOn:
-                    self.currentWindow?.overrideUserInterfaceStyle = .dark
-                case .forceOff:
-                    self.currentWindow?.overrideUserInterfaceStyle = .light
-                }
-            } else if #available(iOS 13, *) {
+            case .followSystem:
+                self.currentWindow?.overrideUserInterfaceStyle = .unspecified
+            case .forceOn:
+                self.currentWindow?.overrideUserInterfaceStyle = .dark
+            case .forceOff:
                 self.currentWindow?.overrideUserInterfaceStyle = .light
             }
+
             self.currentWindow?.makeKeyAndVisible()
         }
     }

@@ -198,7 +198,7 @@ final class SearchIndexDBTests: XCTestCase {
         createDB()
         let messages = (0...5).map { MessageID("message\($0)") }
         for (index, id) in messages.enumerated() {
-            var time = (index + 1) * 2000
+            let time = (index + 1) * 2000
             let rowID = try sut.addNewEntryToSearchIndex(
                 messageID: id,
                 time: time,

@@ -52,13 +52,7 @@ final class PMDatePicker: UIView {
         self.datePicker = UIDatePicker(frame: .zero)
         self.cancelTitle = cancelTitle
         self.saveTitle = saveTitle
-        if #available(iOS 14, *) {
-            self.pickerHeight = 450
-        } else if #available(iOS 13.4, *) {
-            self.pickerHeight = 250
-        } else {
-            self.pickerHeight = 250
-        }
+        self.pickerHeight = 450
         super.init(frame: .zero)
         self.setUpView()
     }
@@ -191,11 +185,7 @@ extension PMDatePicker {
         datePicker.addTarget(self, action: #selector(self.pickerDateIsChanged), for: .valueChanged)
 
         let height = self.pickerHeight
-        if #available(iOS 14, *) {
-            self.datePicker.preferredDatePickerStyle = .inline
-        } else if #available(iOS 13.4, *) {
-            self.datePicker.preferredDatePickerStyle = .wheels
-        }
+        self.datePicker.preferredDatePickerStyle = .inline
 
         container.addSubview(self.datePicker)
         [

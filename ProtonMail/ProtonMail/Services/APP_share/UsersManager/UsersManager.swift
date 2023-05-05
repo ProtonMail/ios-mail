@@ -606,7 +606,7 @@ extension UsersManager {
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
 #endif
         if let oldMailBoxPassword = oldMailboxPassword() {
-            auth.udpate(password: oldMailBoxPassword)
+            auth.update(password: oldMailBoxPassword)
         }
         userInfo.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
         userInfo.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
@@ -709,7 +709,7 @@ extension UsersManager {
             )
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
-                oldAuth.udpate(password: pwd)
+                oldAuth.update(password: pwd)
             }
             user.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
             user.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)

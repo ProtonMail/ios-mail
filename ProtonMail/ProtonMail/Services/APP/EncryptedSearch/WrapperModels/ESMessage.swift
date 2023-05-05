@@ -171,7 +171,6 @@ final class ESMessage: Codable {
 }
 
 extension ESMessage {
-    // swiftlint:disable next function_body_length
     func toEntity() -> MessageEntity {
         assert(addressID != nil)
         assert(userID != nil)

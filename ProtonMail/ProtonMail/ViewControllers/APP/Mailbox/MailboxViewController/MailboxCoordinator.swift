@@ -176,29 +176,23 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case .details:
             handleDetailDirectFromNotification(node: path)
             viewModel.resetNotificationMessage()
-        case .composeShow where path.value != nil:
-            if let messageID = path.value,
-               let nav = self.navigation,
-               case let user = self.viewModel.user,
-               case let msgService = user.messageService,
-               let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
-                let viewModel = ComposeViewModel(
-                    msg: message,
-                    action: .openDraft,
-                    msgService: msgService,
-                    user: user,
-                    coreDataContextProvider: contextProvider,
-                    internetStatusProvider: internetStatusProvider
-                )
-
-                showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
-            }
-        case .composeShow where path.value == nil:
+        case .composeShow:
             if let nav = self.navigation {
                 let user = self.viewModel.user
+
+                let existingMessage: Message?
+                if let messageID = path.value {
+                    existingMessage = user.messageService.fetchMessages(
+                        withIDs: [messageID],
+                        in: contextProvider.mainContext
+                    ).first
+                } else {
+                    existingMessage = nil
+                }
+
                 let viewModel = ComposeViewModel(
-                    msg: nil,
-                    action: .newDraft,
+                    msg: existingMessage,
+                    action: existingMessage == nil ? .newDraft : .openDraft,
                     msgService: user.messageService,
                     user: user,
                     coreDataContextProvider: contextProvider,
@@ -427,7 +421,11 @@ extension MailboxCoordinator {
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return
         }
-        navigateToComposer(existingMessage: msg, isEditingScheduleMsg: true, originalScheduledTime: originalScheduledTime)
+        navigateToComposer(
+            existingMessage: msg,
+            isEditingScheduleMsg: true,
+            originalScheduledTime: originalScheduledTime
+        )
     }
 }
 
@@ -607,7 +605,6 @@ extension MailboxCoordinator {
     }
 
     private func presentPageViewsFor(message: MessageEntity) {
-        guard let navigationController = viewController?.navigationController else { return }
         let pageVM = MessagePagesViewModel(
             initialID: message.messageID,
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
@@ -623,7 +620,6 @@ extension MailboxCoordinator {
     }
 
     private func presentPageViewsFor(conversation: ConversationEntity, targetID: MessageID?) {
-        guard let navigationController = viewController?.navigationController else { return }
         let pageVM = ConversationPagesViewModel(
             initialID: conversation.conversationID,
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,

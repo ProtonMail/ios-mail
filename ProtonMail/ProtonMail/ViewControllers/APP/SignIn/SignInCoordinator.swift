@@ -198,7 +198,7 @@ final class SignInCoordinator {
         }
         let encryptedPassword = environment.mailboxPassword(password, auth)
         if encryptedPassword != password {
-            auth.udpate(password: encryptedPassword.value)
+            auth.update(password: encryptedPassword.value)
         }
         unlockMainKey(failOnMailboxPassword: true)
     }

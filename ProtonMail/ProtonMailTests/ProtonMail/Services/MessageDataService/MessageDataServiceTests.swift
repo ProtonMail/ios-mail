@@ -322,7 +322,7 @@ class MessageDataServiceTests: XCTestCase {
 extension MessageDataServiceTests {
     private func mockUser(showMoved: ShowMoved) -> UserManager {
         let userID = UUID().uuidString
-        var userInfo = UserInfo.getDefault()
+        let userInfo = UserInfo.getDefault()
         userInfo.userId = userID
         let user = UserManager(api: APIServiceMock(), role: .member, userInfo: userInfo, coreDataService: contextProvider)
         user.mailSettings = MailSettings(showMoved: showMoved)

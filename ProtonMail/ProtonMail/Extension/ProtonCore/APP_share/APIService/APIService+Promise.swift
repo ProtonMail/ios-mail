@@ -36,7 +36,7 @@ public extension APIService {
                 responseObject: T(),
                 originalResponse: task?.response,
                 responseDict: try? result.get(),
-                error: (result.error as? ResponseError)?.underlyingError ?? result.nsError 
+                error: (result.error as? ResponseError)?.underlyingError ?? result.nsError
             ) {
             case (_, let networkingError?):
                 deferred.resolver.reject(networkingError)

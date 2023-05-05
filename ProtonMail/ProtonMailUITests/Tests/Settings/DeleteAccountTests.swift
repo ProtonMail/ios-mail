@@ -76,8 +76,7 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
 
 
     func testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser() {
-
-        var user2: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
+        let user2: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
         quarkCommands.createUser(username: user2.email, password: user2.password, protonPlanName: UserPlan.free.rawValue)
 
         openAccountSettings(user: user)

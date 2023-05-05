@@ -59,32 +59,32 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-
-                    let response: JSONDictionary
-                    switch result {
-                    case .success(let value):
-                        response = value
-                    case .failure(let error):
-                        callback(.failure(error))
-                        return
-                    }
-                    guard let messageDict = response["Message"] as? [String: Any] else {
-                        callback(.failure(NSError.badResponse()))
-                        return
-                    }
-
-                    do {
-                        let handledMessage = try self.handle(
-                            messageDict: messageDict,
-                            messageObjectID: params.message.objectID,
-                            ignoreDownloaded: params.ignoreDownloaded,
-                            userID: params.userID
-                        )
-                        callback(.success(handledMessage))
-                    } catch {
-                        callback(.failure(error))
-                    }
+                
+                let response: JSONDictionary
+                switch result {
+                case .success(let value):
+                    response = value
+                case .failure(let error):
+                    callback(.failure(error))
+                    return
                 }
+                guard let messageDict = response["Message"] as? [String: Any] else {
+                    callback(.failure(NSError.badResponse()))
+                    return
+                }
+                
+                do {
+                    let handledMessage = try self.handle(
+                        messageDict: messageDict,
+                        messageObjectID: params.message.objectID,
+                        ignoreDownloaded: params.ignoreDownloaded,
+                        userID: params.userID
+                    )
+                    callback(.success(handledMessage))
+                } catch {
+                    callback(.failure(error))
+                }
+            }
     }
 
     private func handle(
