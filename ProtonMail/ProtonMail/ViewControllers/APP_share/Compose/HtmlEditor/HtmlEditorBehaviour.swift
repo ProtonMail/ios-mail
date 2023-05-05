@@ -101,13 +101,13 @@ class HtmlEditorBehaviour: NSObject {
     private func htmlToInject() -> String? {
         // Load editor 3 parts
         do {
-            let html = try Bundle.loadResource(named: "HtmlEditor", ofType: "html")
+            let html = Bundle.loadResource(named: "HtmlEditor", ofType: "html")
             let css = try ProtonCSS.htmlEditor.content()
 
-            let script = try Bundle.loadResource(named: "HtmlEditor", ofType: "js")
-            let purifier = try Bundle.loadResource(named: "purify.min", ofType: "js")
-            let jsQuotes = try Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
-            let escape = try Bundle.loadResource(named: "Escape", ofType: "js")
+            let script = Bundle.loadResource(named: "HtmlEditor", ofType: "js")
+            let purifier = Bundle.loadResource(named: "purify.min", ofType: "js")
+            let jsQuotes = Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
+            let escape = Bundle.loadResource(named: "Escape", ofType: "js")
 
             let fullScript = [jsQuotes, script, purifier, escape].joined(separator: "\n")
             let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)

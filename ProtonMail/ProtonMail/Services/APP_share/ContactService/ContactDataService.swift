@@ -515,17 +515,6 @@ class ContactDataService: Service {
         }
         return []
     }
-
-    private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, isContactCombine: Bool) -> [Email] {
-        let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
-        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
-        fetchRequest.predicate = predicate
-        do {
-            return try context.fetch(fetchRequest)
-        } catch {
-        }
-        return []
-    }
 }
 
 // MRAK: Queue related
