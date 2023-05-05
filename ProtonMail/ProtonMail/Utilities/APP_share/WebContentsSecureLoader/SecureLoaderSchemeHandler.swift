@@ -163,6 +163,12 @@ extension SecureLoaderSchemeHandler {
     }
 
     private func handlePMIncomingMailRequest(urlSchemeTask: WKURLSchemeTask) {
+        // Stop the duplicated request that is marked by webview.
+        guard !self.shouldBeStoppedTasks.contains(where: { $0.request == urlSchemeTask.request }) else {
+            self.shouldBeStoppedTasks.removeAll(where: { $0.request == urlSchemeTask.request })
+            return
+        }
+
         guard let contents = self.contents,
               let url = urlSchemeTask.request.url else {
             urlSchemeTask.didFinish()
